@@ -19,6 +19,7 @@
 #include "../world/tile_element/TrackElement.h"
 #include "Ride.h"
 #include "RideData.h"
+#include "RideEntry.h"
 #include "Track.h"
 #include "TrackData.h"
 #include "VehicleData.h"
@@ -50,10 +51,10 @@ void Vehicle::UpdateSwinging()
     // 0 == first swing
     // 3 == full swing
     uint8_t swingState = sub_state;
-    if (rideEntry->flags & RIDE_ENTRY_FLAG_INVERTER_SHIP_SWING_MODE)
+    if (rideEntry->flags.has(RideEntryFlag::inverterShipSwingMode))
     {
         swingState += 4;
-        if (rideEntry->flags & RIDE_ENTRY_FLAG_MAGIC_CARPET_SWING_MODE)
+        if (rideEntry->flags.has(RideEntryFlag::magicCarpetSwingMode))
             swingState += 4;
     }
 
@@ -262,11 +263,11 @@ void Vehicle::UpdateRotating()
     }
 
     const uint8_t* timeToSpriteMap;
-    if (rideEntry->flags & RIDE_ENTRY_FLAG_TWIST_ROTATION_TYPE)
+    if (rideEntry->flags.has(RideEntryFlag::hasTwistRotationType))
     {
         timeToSpriteMap = kTwistTimeToSpriteMaps[sub_state];
     }
-    else if (rideEntry->flags & RIDE_ENTRY_FLAG_ENTERPRISE_ROTATION_TYPE)
+    else if (rideEntry->flags.has(RideEntryFlag::hasEnterpriseRotationType))
     {
         timeToSpriteMap = kEnterpriseTimeToSpriteMaps[sub_state];
     }

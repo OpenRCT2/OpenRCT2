@@ -1276,7 +1276,7 @@ namespace OpenRCT2::Ui::Windows
                 if (rideEntry == nullptr)
                     return;
 
-                const bool isHalfScale = rideEntry->flags & RIDE_ENTRY_FLAG_VEHICLE_TAB_SCALE_HALF;
+                const bool isHalfScale = rideEntry->flags.has(RideEntryFlag::tabIconIsHalfScale);
 
                 auto screenCoords = ScreenCoordsXY{ widget.left + 1, widget.top + 1 };
                 int32_t clipWidth = widget.right - screenCoords.x;
@@ -1405,7 +1405,7 @@ namespace OpenRCT2::Ui::Windows
                 disabledTabs |= 1uLL << WIDX_TAB_2 | 1uLL << WIDX_TAB_3 | 1uLL << WIDX_TAB_4 | 1uLL << WIDX_TAB_5
                     | 1uLL << WIDX_TAB_6 | 1uLL << WIDX_TAB_7 | 1uLL << WIDX_TAB_8 | 1uLL << WIDX_TAB_9 | 1uLL << WIDX_TAB_10;
             }
-            else if ((rideEntry->flags & RIDE_ENTRY_FLAG_DISABLE_COLOUR_TAB) != 0)
+            else if (rideEntry->flags.has(RideEntryFlag::disableColourTab))
             {
                 disabledTabs |= (1uLL << WIDX_TAB_5);
             }
@@ -1756,7 +1756,7 @@ namespace OpenRCT2::Ui::Windows
             if (rideEntry == nullptr)
                 return false;
 
-            if (!(rideEntry->flags & RIDE_ENTRY_FLAG_HIDE_EMPTY_TRAINS))
+            if (!rideEntry->flags.has(RideEntryFlag::hideEmptyTrains))
                 return false;
 
             return GetNumPeepsInTrain(ride, trainIndex) == 0;

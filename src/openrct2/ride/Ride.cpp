@@ -1522,7 +1522,7 @@ bool Ride::canBreakDown() const
     }
 
     const auto* entry = getRideEntry();
-    return entry != nullptr && !(entry->flags & RIDE_ENTRY_FLAG_CANNOT_BREAK_DOWN);
+    return entry != nullptr && !entry->flags.has(RideEntryFlag::cannotBreakDown);
 }
 
 static void ChooseRandomTrainToBreakdownSafe(Ride& ride)
@@ -5982,7 +5982,7 @@ ResultWithMessage Ride::changeStatusCheckTrackValidity(const CoordsXYE& trackEle
         {
             return { false, STR_UNKNOWN_RIDE };
         }
-        if (rideEntry->flags & RIDE_ENTRY_FLAG_NO_INVERSIONS)
+        if (rideEntry->flags.has(RideEntryFlag::noInversions))
         {
             if (RideCheckTrackContainsInversions(trackElement, &problematicTrackElement))
             {
@@ -5990,7 +5990,7 @@ ResultWithMessage Ride::changeStatusCheckTrackValidity(const CoordsXYE& trackEle
                 return { false, STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN };
             }
         }
-        if (rideEntry->flags & RIDE_ENTRY_FLAG_NO_BANKED_TRACK)
+        if (rideEntry->flags.has(RideEntryFlag::noBankedTrack))
         {
             if (RideCheckTrackContainsBanked(trackElement, &problematicTrackElement))
             {

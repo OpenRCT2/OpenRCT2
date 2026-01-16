@@ -39,6 +39,37 @@ struct VehicleColourPresetList
     VehicleColour list[256];
 };
 
+// Constants used by the ride_type->flags property at 0x008
+enum class RideEntryFlag : uint8_t
+{
+    tabIconIsHalfScale,
+    noInversions,
+    noBankedTrack,
+    playDepartSound,
+    inverterShipSwingMode,
+    hasTwistRotationType,
+    hasEnterpriseRotationType,
+    disableWanderingDeprecated,
+    playSplashSound,
+    playSplashSoundSlide,
+    isACoveredRide,
+    limitAirTimeBonus,
+    // Both flags below were made redundant by ride groups and deprecated in favour of it
+    separateRideNameDeprecated,
+    separateRideDeprecated,
+    cannotBreakDown,
+    disableLastOperatingModeDeprecated,
+    disableDoorConstructionDeprecated,
+    disableFirstTwoOperatingModesDeprecated,
+    disableCollisionCrashes,
+    disableColourTab,
+    // Must be set with Inverter Ship swing mode as well
+    magicCarpetSwingMode,
+    riderControlsSpeed,
+    hideEmptyTrains,
+};
+using RideEntryFlags = FlagHolder<uint32_t, RideEntryFlag>;
+
 /**
  * Ride type structure.
  */
@@ -47,7 +78,7 @@ struct RideObjectEntry
     RideNaming naming;
     // The first three images are previews. They correspond to the ride_type[] array.
     uint32_t images_offset;
-    uint32_t flags;
+    RideEntryFlags flags;
     ride_type_t ride_type[OpenRCT2::RCT2::ObjectLimits::kMaxRideTypesPerRideEntry];
     uint8_t min_cars_in_train;
     uint8_t max_cars_in_train;

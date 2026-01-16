@@ -2053,27 +2053,24 @@ void Vehicle::UpdateHandleWaterSplash() const
     const auto* rideEntry = GetRideEntry();
     auto trackType = GetTrackType();
 
-    if (!(rideEntry->flags & RIDE_ENTRY_FLAG_PLAY_SPLASH_SOUND))
+    if (!rideEntry->flags.has(RideEntryFlag::playSplashSound) && rideEntry->flags.has(RideEntryFlag::playSplashSoundSlide))
     {
-        if (rideEntry->flags & RIDE_ENTRY_FLAG_PLAY_SPLASH_SOUND_SLIDE)
+        if (IsHead())
         {
-            if (IsHead())
+            if (IsOnCoveredTrack())
             {
-                if (IsOnCoveredTrack())
-                {
-                    Vehicle* nextVehicle = getGameState().entities.GetEntity<Vehicle>(next_vehicle_on_ride);
-                    if (nextVehicle == nullptr)
-                        return;
+                Vehicle* nextVehicle = getGameState().entities.GetEntity<Vehicle>(next_vehicle_on_ride);
+                if (nextVehicle == nullptr)
+                    return;
 
-                    Vehicle* nextNextVehicle = getGameState().entities.GetEntity<Vehicle>(nextVehicle->next_vehicle_on_ride);
-                    if (nextNextVehicle == nullptr)
-                        return;
-                    if (!nextNextVehicle->IsOnCoveredTrack())
+                Vehicle* nextNextVehicle = getGameState().entities.GetEntity<Vehicle>(nextVehicle->next_vehicle_on_ride);
+                if (nextNextVehicle == nullptr)
+                    return;
+                if (!nextNextVehicle->IsOnCoveredTrack())
+                {
+                    if (track_progress == 4)
                     {
-                        if (track_progress == 4)
-                        {
-                            vehicle_update_play_water_splash_sound();
-                        }
+                        vehicle_update_play_water_splash_sound();
                     }
                 }
             }
@@ -2756,7 +2753,7 @@ bool Vehicle::UpdateTrackMotionForwards(const CarEntry* carEntry, const Ride& cu
                     << kBoosterAccelerationShiftAmount;
             }
         }
-        else if (rideEntry.flags & RIDE_ENTRY_FLAG_RIDER_CONTROLS_SPEED && num_peeps > 0)
+        else if (rideEntry.flags.has(RideEntryFlag::riderControlsSpeed) && num_peeps > 0)
         {
             acceleration += CalculateRiderBraking();
         }
@@ -2883,7 +2880,7 @@ bool Vehicle::UpdateTrackMotionForwards(const CarEntry* carEntry, const Ride& cu
                         auto head = otherVeh->TrainHead();
 
                         auto velocityDelta = abs(velocity - head->velocity);
-                        if (!(rideEntry.flags & RIDE_ENTRY_FLAG_DISABLE_COLLISION_CRASHES))
+                        if (!rideEntry.flags.has(RideEntryFlag::disableCollisionCrashes))
                         {
                             if (velocityDelta > 14.0_mph)
                             {
@@ -3176,7 +3173,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
                             return false;
                         }
 
-                        if (!(rideEntry.flags & RIDE_ENTRY_FLAG_DISABLE_COLLISION_CRASHES))
+                        if (!rideEntry.flags.has(RideEntryFlag::disableCollisionCrashes))
                         {
                             if (abs(v4->velocity - v3->velocity) > 14.0_mph)
                             {
@@ -3543,7 +3540,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
         }
     }
 
-    if (rideEntry->flags & RIDE_ENTRY_FLAG_PLAY_SPLASH_SOUND_SLIDE)
+    if (rideEntry->flags.has(RideEntryFlag::playSplashSoundSlide))
     {
         if (vehicle->IsHead())
         {

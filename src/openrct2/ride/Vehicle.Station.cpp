@@ -1039,7 +1039,7 @@ void Vehicle::UpdateDeparting()
         sub_state = 1;
         PeepEasterEggHereWeAre();
 
-        if (rideEntry->flags & RIDE_ENTRY_FLAG_PLAY_DEPART_SOUND)
+        if (rideEntry->flags.has(RideEntryFlag::playDepartSound))
         {
             auto soundId = (rideEntry->Cars[0].soundRange == SoundRange::tramBell) ? SoundId::tram : SoundId::trainDeparting;
             Play3D(soundId, GetLocation());

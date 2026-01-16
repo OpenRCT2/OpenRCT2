@@ -160,7 +160,7 @@ namespace OpenRCT2
         _shouldLoadImages = context->ShouldLoadImages();
 
         stream->Seek(8, STREAM_SEEK_CURRENT);
-        _legacyType.flags = stream->ReadValue<uint32_t>();
+        _legacyType.flags.holder = stream->ReadValue<uint32_t>();
         for (auto& rideType : _legacyType.ride_type)
         {
             rideType = stream->ReadValue<uint8_t>();
@@ -225,7 +225,7 @@ namespace OpenRCT2
             if (_legacyType.ride_type[0] == RIDE_TYPE_FOOD_STALL || _legacyType.ride_type[0] == RIDE_TYPE_DRINK_STALL)
             {
                 // In RCT2, no food or drink stall could be recoloured.
-                _legacyType.flags |= RIDE_ENTRY_FLAG_DISABLE_COLOUR_TAB;
+                _legacyType.flags.set(RideEntryFlag::disableColourTab);
             }
         }
 
@@ -625,22 +625,22 @@ namespace OpenRCT2
                 auto swingMode = Json::GetNumber<int32_t>(properties["swingMode"]);
                 if (swingMode == 1)
                 {
-                    _legacyType.flags |= RIDE_ENTRY_FLAG_INVERTER_SHIP_SWING_MODE;
+                    _legacyType.flags.set(RideEntryFlag::inverterShipSwingMode);
                 }
                 else if (swingMode == 2)
                 {
-                    _legacyType.flags |= RIDE_ENTRY_FLAG_INVERTER_SHIP_SWING_MODE;
-                    _legacyType.flags |= RIDE_ENTRY_FLAG_MAGIC_CARPET_SWING_MODE;
+                    _legacyType.flags.set(RideEntryFlag::inverterShipSwingMode);
+                    _legacyType.flags.set(RideEntryFlag::magicCarpetSwingMode);
                 }
 
                 auto rotationMode = Json::GetNumber<int32_t>(properties["rotationMode"]);
                 if (rotationMode == 1)
                 {
-                    _legacyType.flags |= RIDE_ENTRY_FLAG_TWIST_ROTATION_TYPE;
+                    _legacyType.flags.set(RideEntryFlag::hasTwistRotationType);
                 }
                 else if (rotationMode == 2)
                 {
-                    _legacyType.flags |= RIDE_ENTRY_FLAG_ENTERPRISE_ROTATION_TYPE;
+                    _legacyType.flags.set(RideEntryFlag::hasEnterpriseRotationType);
                 }
 
                 auto ratingMultiplier = properties["ratingMultipler"];
@@ -653,23 +653,23 @@ namespace OpenRCT2
             }
 
             _legacyType.BuildMenuPriority = Json::GetNumber<uint8_t>(properties["buildMenuPriority"]);
-            _legacyType.flags |= Json::GetFlags<uint32_t>(
+            _legacyType.flags |= Json::GetFlagHolder<RideEntryFlags, RideEntryFlag>(
                 properties,
                 {
-                    { "noInversions", RIDE_ENTRY_FLAG_NO_INVERSIONS },
-                    { "noBanking", RIDE_ENTRY_FLAG_NO_BANKED_TRACK },
-                    { "playDepartSound", RIDE_ENTRY_FLAG_PLAY_DEPART_SOUND },
+                    { "noInversions", RideEntryFlag::noInversions },
+                    { "noBanking", RideEntryFlag::noBankedTrack },
+                    { "playDepartSound", RideEntryFlag::playDepartSound },
                     // Skipping "disallowWandering", no vehicle sets this flag.
-                    { "playSplashSound", RIDE_ENTRY_FLAG_PLAY_SPLASH_SOUND },
-                    { "playSplashSoundSlide", RIDE_ENTRY_FLAG_PLAY_SPLASH_SOUND_SLIDE },
-                    { "hasShelter", RIDE_ENTRY_FLAG_COVERED_RIDE },
-                    { "limitAirTimeBonus", RIDE_ENTRY_FLAG_LIMIT_AIRTIME_BONUS },
-                    { "disableBreakdown", RIDE_ENTRY_FLAG_CANNOT_BREAK_DOWN },
+                    { "playSplashSound", RideEntryFlag::playSplashSound },
+                    { "playSplashSoundSlide", RideEntryFlag::playSplashSoundSlide },
+                    { "hasShelter", RideEntryFlag::isACoveredRide },
+                    { "limitAirTimeBonus", RideEntryFlag::limitAirTimeBonus },
+                    { "disableBreakdown", RideEntryFlag::cannotBreakDown },
                     // Skipping noDoorsOverTrack, moved to ride groups.
-                    { "noCollisionCrashes", RIDE_ENTRY_FLAG_DISABLE_COLLISION_CRASHES },
-                    { "disablePainting", RIDE_ENTRY_FLAG_DISABLE_COLOUR_TAB },
-                    { "riderControlsSpeed", RIDE_ENTRY_FLAG_RIDER_CONTROLS_SPEED },
-                    { "hideEmptyTrains", RIDE_ENTRY_FLAG_HIDE_EMPTY_TRAINS },
+                    { "noCollisionCrashes", RideEntryFlag::disableCollisionCrashes },
+                    { "disablePainting", RideEntryFlag::disableColourTab },
+                    { "riderControlsSpeed", RideEntryFlag::riderControlsSpeed },
+                    { "hideEmptyTrains", RideEntryFlag::hideEmptyTrains },
                 });
         }
 
@@ -692,7 +692,7 @@ namespace OpenRCT2
         float tabScale = Json::GetNumber<float>(properties["tabScale"]);
         if (tabScale != 0 && tabScale <= 0.5f)
         {
-            _legacyType.flags |= RIDE_ENTRY_FLAG_VEHICLE_TAB_SCALE_HALF;
+            _legacyType.flags.set(RideEntryFlag::tabIconIsHalfScale);
         }
 
         json_t headCars = Json::AsArray(properties["headCars"]);
