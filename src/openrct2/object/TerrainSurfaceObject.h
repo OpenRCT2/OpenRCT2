@@ -59,7 +59,7 @@ namespace OpenRCT2
         uint8_t Rotations{};
         money64 Price{};
         TerrainSurfaceFlags Flags{};
-        OpenRCT2::Drawing::PaletteIndex MapColours[2]{};
+        Drawing::PaletteIndex MapColours[2]{};
 
         void ReadJson(IReadObjectContext* context, json_t& root) override;
         void Load() override;

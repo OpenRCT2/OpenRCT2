@@ -276,9 +276,9 @@ void GfxDrawStringLeftCentred(
 /**
  * Changes the palette so that the next character changes colour
  */
-static void ColourCharacter(Drawing::TextColour colour, bool withOutline, Drawing::TextColours& textPalette)
+static void ColourCharacter(TextColour colour, bool withOutline, TextColours& textPalette)
 {
-    auto mapping = Drawing::getTextColourMapping(colour);
+    auto mapping = getTextColourMapping(colour);
 
     if (!withOutline)
     {
@@ -293,9 +293,9 @@ static void ColourCharacter(Drawing::TextColour colour, bool withOutline, Drawin
  * Changes the palette so that the next character changes colour
  * This is specific to changing to a predefined window related colour
  */
-static void ColourCharacterWindow(colour_t colour, bool withOutline, Drawing::TextColours& textPalette)
+static void ColourCharacterWindow(colour_t colour, bool withOutline, TextColours& textPalette)
 {
-    Drawing::TextColours mapping = {
+    TextColours mapping = {
         ColourMapA[colour].colour_11,
         PaletteIndex::pi0,
         PaletteIndex::pi0,
@@ -537,7 +537,7 @@ static void TTFDrawStringRawTTF(RenderTarget& rt, std::string_view text, TextDra
         int32_t drawX = info->x + fontDesc->offset_x;
         int32_t drawY = info->y + fontDesc->offset_y;
         uint8_t hintThresh = Config::Get().fonts.enableHinting ? fontDesc->hinting_threshold : 0;
-        OpenRCT2::Drawing::IDrawingContext* dc = drawingEngine->GetDrawingContext();
+        IDrawingContext* dc = drawingEngine->GetDrawingContext();
         dc->DrawTTFBitmap(rt, info, surface, drawX, drawY, hintThresh);
     }
     info->x += surface->w;
@@ -757,7 +757,7 @@ static void TTFProcessInitialColour(ColourWithFlags colour, TextDrawInfo* info)
         }
         else
         {
-            Drawing::TextColours newPalette = {};
+            TextColours newPalette = {};
             switch (info->darkness)
             {
                 case TextDarkness::extraDark:

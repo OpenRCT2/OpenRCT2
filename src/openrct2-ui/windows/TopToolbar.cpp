@@ -430,13 +430,13 @@ namespace OpenRCT2::Ui::Windows
             }
 
 #ifdef ENABLE_SCRIPTING
-            const auto& customMenuItems = OpenRCT2::Scripting::CustomMenuItems;
+            const auto& customMenuItems = Scripting::CustomMenuItems;
             if (!customMenuItems.empty())
             {
                 gDropdown.items[i++] = Dropdown::Separator();
                 for (const auto& item : customMenuItems)
                 {
-                    if (item.Kind == OpenRCT2::Scripting::CustomToolbarMenuItemKind::Standard)
+                    if (item.Kind == Scripting::CustomToolbarMenuItemKind::Standard)
                     {
                         gDropdown.items[i] = Dropdown::PlainMenuLabel(item.Text.c_str());
                         i++;
@@ -477,12 +477,12 @@ namespace OpenRCT2::Ui::Windows
             else
             {
 #ifdef ENABLE_SCRIPTING
-                const auto& customMenuItems = OpenRCT2::Scripting::CustomMenuItems;
+                const auto& customMenuItems = Scripting::CustomMenuItems;
                 auto customIndex = static_cast<size_t>(dropdownIndex - customStartIndex);
                 size_t i = 0;
                 for (const auto& item : customMenuItems)
                 {
-                    if (item.Kind == OpenRCT2::Scripting::CustomToolbarMenuItemKind::Standard)
+                    if (item.Kind == Scripting::CustomToolbarMenuItemKind::Standard)
                     {
                         if (i == customIndex)
                         {
@@ -568,7 +568,7 @@ namespace OpenRCT2::Ui::Windows
                 gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_ABOUT);
                 gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_FILE_BUG_ON_GITHUB);
 
-                if (OpenRCT2::GetContext()->HasNewVersionInfo())
+                if (GetContext()->HasNewVersionInfo())
                     gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_UPDATE_AVAILABLE);
 
                 gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_OPTIONS);
@@ -593,7 +593,7 @@ namespace OpenRCT2::Ui::Windows
                 gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_ABOUT);
                 gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_FILE_BUG_ON_GITHUB);
 
-                if (OpenRCT2::GetContext()->HasNewVersionInfo())
+                if (GetContext()->HasNewVersionInfo())
                     gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_UPDATE_AVAILABLE);
 
                 gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_OPTIONS);
@@ -615,7 +615,7 @@ namespace OpenRCT2::Ui::Windows
                 gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_ABOUT);
                 gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_FILE_BUG_ON_GITHUB);
 
-                if (OpenRCT2::GetContext()->HasNewVersionInfo())
+                if (GetContext()->HasNewVersionInfo())
                     gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_UPDATE_AVAILABLE);
 
                 gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_OPTIONS);
@@ -696,7 +696,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case DDIDX_OBJECT_SELECTION:
                 {
-                    auto* windowMgr = Ui::GetWindowManager();
+                    auto* windowMgr = GetWindowManager();
                     windowMgr->CloseAll();
                     ContextOpenWindow(WindowClass::editorObjectSelection);
                     break;
@@ -863,7 +863,7 @@ namespace OpenRCT2::Ui::Windows
                     ContextOpenWindow(WindowClass::recentNews);
                     break;
                 case WIDX_MUTE:
-                    OpenRCT2::Audio::ToggleAllSounds();
+                    Audio::ToggleAllSounds();
                     break;
                 case WIDX_CHAT:
                     if (ChatAvailable())
@@ -935,7 +935,7 @@ namespace OpenRCT2::Ui::Windows
                         selectedIndex += DDIDX_SCREENSHOT;
 
                     // The "Update available" menu item is only available when there is one
-                    if (selectedIndex >= DDIDX_UPDATE_AVAILABLE && !OpenRCT2::GetContext()->HasNewVersionInfo())
+                    if (selectedIndex >= DDIDX_UPDATE_AVAILABLE && !GetContext()->HasNewVersionInfo())
                         selectedIndex += 1;
 
                     switch (selectedIndex)
@@ -991,7 +991,7 @@ namespace OpenRCT2::Ui::Windows
                             // Automatically fill the "OpenRCT2 build" input
                             auto versionStr = String::urlEncode(gVersionInfoFull);
                             url.append("&f299dd2a20432827d99b648f73eb4649b23f8ec98d158d6f82b81e43196ee36b=" + versionStr);
-                            OpenRCT2::GetContext()->GetUiContext().OpenURL(url);
+                            GetContext()->GetUiContext().OpenURL(url);
                         }
                         break;
                         case DDIDX_UPDATE_AVAILABLE:
@@ -999,7 +999,7 @@ namespace OpenRCT2::Ui::Windows
                             break;
                         case DDIDX_QUIT_TO_MENU:
                         {
-                            auto* windowMgr = Ui::GetWindowManager();
+                            auto* windowMgr = GetWindowManager();
                             windowMgr->CloseByClass(WindowClass::manageTrackDesign);
                             windowMgr->CloseByClass(WindowClass::trackDeletePrompt);
                             auto loadOrQuitAction = GameActions::LoadOrQuitAction(
@@ -1038,7 +1038,7 @@ namespace OpenRCT2::Ui::Windows
         // NB: these can't go into CustomWindow.cpp, as tools may be active without a visible window.
         void onToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
-            auto& customTool = OpenRCT2::Scripting::ActiveCustomTool;
+            auto& customTool = Scripting::ActiveCustomTool;
             if (customTool)
             {
                 customTool->OnUpdate(screenCoords);
@@ -1047,7 +1047,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
-            auto& customTool = OpenRCT2::Scripting::ActiveCustomTool;
+            auto& customTool = Scripting::ActiveCustomTool;
             if (customTool)
             {
                 customTool->OnDown(screenCoords);
@@ -1056,7 +1056,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
-            auto& customTool = OpenRCT2::Scripting::ActiveCustomTool;
+            auto& customTool = Scripting::ActiveCustomTool;
             if (customTool)
             {
                 customTool->OnDrag(screenCoords);
@@ -1065,7 +1065,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onToolUp(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
-            auto& customTool = OpenRCT2::Scripting::ActiveCustomTool;
+            auto& customTool = Scripting::ActiveCustomTool;
             if (customTool)
             {
                 customTool->OnUp(screenCoords);
@@ -1074,7 +1074,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onToolAbort(WidgetIndex widgetIndex) override
         {
-            auto& customTool = OpenRCT2::Scripting::ActiveCustomTool;
+            auto& customTool = Scripting::ActiveCustomTool;
             if (customTool)
             {
                 customTool->OnAbort();
@@ -1268,7 +1268,7 @@ namespace OpenRCT2::Ui::Windows
 
         void ApplyAudioState()
         {
-            if (!OpenRCT2::Audio::gGameSoundsOff)
+            if (!Audio::gGameSoundsOff)
                 widgets[WIDX_MUTE].image = ImageId(SPR_G2_TOOLBAR_MUTE, Drawing::FilterPaletteID::paletteNull);
             else
                 widgets[WIDX_MUTE].image = ImageId(SPR_G2_TOOLBAR_UNMUTE, Drawing::FilterPaletteID::paletteNull);

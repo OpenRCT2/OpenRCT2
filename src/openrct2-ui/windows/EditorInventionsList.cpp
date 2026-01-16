@@ -270,7 +270,7 @@ namespace OpenRCT2::Ui::Windows
             WindowEditorInventionsListDragOpen(researchItem, windowPos, widgets[WIDX_PRE_RESEARCHED_SCROLL].right);
         }
 
-        void onScrollDraw(int32_t scrollIndex, Drawing::RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             const auto& gameState = getGameState();
 
@@ -355,7 +355,7 @@ namespace OpenRCT2::Ui::Windows
             return fallback;
         }
 
-        void onDraw(Drawing::RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             drawWidgets(rt);
 
@@ -656,7 +656,7 @@ namespace OpenRCT2::Ui::Windows
             close();
         }
 
-        void onDraw(Drawing::RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             auto screenCoords = windowPos + ScreenCoordsXY{ 0, 2 };
 
@@ -687,7 +687,7 @@ namespace OpenRCT2::Ui::Windows
     static void WindowEditorInventionsListDragOpen(
         ResearchItem* researchItem, const ScreenCoordsXY& editorPos, int objectSelectionScrollWidth)
     {
-        auto* windowMgr = Ui::GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         windowMgr->CloseByClass(WindowClass::editorInventionListDrag);
         auto* wnd = windowMgr->Create<InventionDragWindow>(
             WindowClass::editorInventionListDrag, { 10, 14 },

@@ -438,7 +438,7 @@ static Gx _g2 = {};
 static Gx _fonts = {};
 static Gx _tracks = {};
 static Gx _csg = {};
-static G1Element _scrollingText[Drawing::ScrollingText::kMaxEntries]{};
+static G1Element _scrollingText[ScrollingText::kMaxEntries]{};
 static bool _csgLoaded = false;
 
 static G1Element _g1Temp = {};
@@ -672,7 +672,7 @@ std::optional<Gx> GfxLoadGx(const std::vector<uint8_t>& buffer)
 {
     try
     {
-        OpenRCT2::MemoryStream istream(buffer.data(), buffer.size());
+        MemoryStream istream(buffer.data(), buffer.size());
         Gx gx;
 
         gx.header = istream.ReadValue<G1Header>();

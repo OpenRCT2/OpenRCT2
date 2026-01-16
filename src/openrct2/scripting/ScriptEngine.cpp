@@ -1802,19 +1802,19 @@ void ScriptEngine::RemoveSockets(const std::shared_ptr<Plugin>& plugin)
     #endif
 }
 
-std::string OpenRCT2::Scripting::Stringify(const DukValue& val)
+std::string Scripting::Stringify(const DukValue& val)
 {
     return ExpressionStringifier::StringifyExpression(val);
 }
 
-std::string OpenRCT2::Scripting::ProcessString(const DukValue& value)
+std::string Scripting::ProcessString(const DukValue& value)
 {
     if (value.type() == DukValue::Type::STRING)
         return value.as_string();
     return {};
 }
 
-bool OpenRCT2::Scripting::IsGameStateMutable()
+bool Scripting::IsGameStateMutable()
 {
     // Allow single player to alter game state anywhere
     if (Network::GetMode() == Network::Mode::none)
@@ -1827,7 +1827,7 @@ bool OpenRCT2::Scripting::IsGameStateMutable()
     return execInfo.IsGameStateMutable();
 }
 
-void OpenRCT2::Scripting::ThrowIfGameStateNotMutable()
+void Scripting::ThrowIfGameStateNotMutable()
 {
     // Allow single player to alter game state anywhere
     if (Network::GetMode() != Network::Mode::none)
@@ -1842,7 +1842,7 @@ void OpenRCT2::Scripting::ThrowIfGameStateNotMutable()
     }
 }
 
-int32_t OpenRCT2::Scripting::GetTargetAPIVersion()
+int32_t Scripting::GetTargetAPIVersion()
 {
     auto& scriptEngine = GetContext()->GetScriptEngine();
     auto& execInfo = scriptEngine.GetExecInfo();

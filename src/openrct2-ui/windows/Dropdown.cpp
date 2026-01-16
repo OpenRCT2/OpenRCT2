@@ -104,7 +104,7 @@ namespace OpenRCT2::Ui::Windows
             DrawTextEllipsised(rt, { screenCoords.x + 2, screenCoords.y + yOffset }, width - 7, format, ft, { colour });
         }
 
-        void onDraw(Drawing::RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             drawWidgets(rt);
 
@@ -451,7 +451,7 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowDropdownClose()
     {
-        auto* windowMgr = Ui::GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         windowMgr->CloseByClass(WindowClass::dropdown);
     }
 

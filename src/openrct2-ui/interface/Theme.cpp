@@ -529,7 +529,7 @@ namespace OpenRCT2::Ui
         try
         {
             json = Json::ReadFromFile(path.c_str());
-            result = UITheme::FromJson(json);
+            result = FromJson(json);
         }
         catch (const std::exception&)
         {

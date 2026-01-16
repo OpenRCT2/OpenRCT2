@@ -630,10 +630,10 @@ namespace OpenRCT2::Platform
         wchar_t currCode[9];
         if (GetLocaleInfoEx(LOCALE_NAME_USER_DEFAULT, LOCALE_SINTLSYMBOL, currCode, static_cast<int>(std::size(currCode))) == 0)
         {
-            return Platform::GetCurrencyValue(nullptr);
+            return GetCurrencyValue(nullptr);
         }
 
-        return Platform::GetCurrencyValue(String::toUtf8(currCode).c_str());
+        return GetCurrencyValue(String::toUtf8(currCode).c_str());
     }
 
     MeasurementFormat GetLocaleMeasurementFormat()

@@ -102,7 +102,7 @@ namespace OpenRCT2::Scripting
 
     Vehicle* ScVehicle::GetVehicle() const
     {
-        return ::getGameState().entities.GetEntity<Vehicle>(_id);
+        return getGameState().entities.GetEntity<Vehicle>(_id);
     }
 
     ObjectEntryIndex ScVehicle::rideObject_get() const

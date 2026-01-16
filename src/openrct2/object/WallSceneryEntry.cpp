@@ -13,7 +13,6 @@ namespace OpenRCT2
 {
     Audio::DoorSoundType WallSceneryEntry::getDoorSoundType() const
     {
-        return static_cast<OpenRCT2::Audio::DoorSoundType>(
-            (flags2 & WALL_SCENERY_2_DOOR_SOUND_MASK) >> WALL_SCENERY_2_DOOR_SOUND_SHIFT);
+        return static_cast<Audio::DoorSoundType>((flags2 & WALL_SCENERY_2_DOOR_SOUND_MASK) >> WALL_SCENERY_2_DOOR_SOUND_SHIFT);
     }
 } // namespace OpenRCT2

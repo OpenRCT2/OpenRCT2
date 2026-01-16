@@ -573,7 +573,7 @@ namespace OpenRCT2::Ui::Windows
             onScrollMouseDown(scrollIndex, screenCoords);
         }
 
-        void onScrollDraw(int32_t scrollIndex, Drawing::RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             GfxClear(rt, PaletteIndex::pi10);
 
@@ -668,7 +668,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onDraw(Drawing::RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             drawWidgets(rt);
             DrawTabImages(rt);
@@ -961,7 +961,7 @@ namespace OpenRCT2::Ui::Windows
             return colourB;
         }
 
-        void PaintPeepOverlay(Drawing::RenderTarget& rt, const ScreenCoordsXY& offset)
+        void PaintPeepOverlay(RenderTarget& rt, const ScreenCoordsXY& offset)
         {
             auto flashColour = GetGuestFlashColour();
             for (auto guest : EntityList<Guest>())
@@ -975,8 +975,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawMapPeepPixel(
-            Peep* peep, const PaletteIndex flashColour, Drawing::RenderTarget& rt, const ScreenCoordsXY& offset)
+        void DrawMapPeepPixel(Peep* peep, const PaletteIndex flashColour, RenderTarget& rt, const ScreenCoordsXY& offset)
         {
             if (peep->x == kLocationNull)
                 return;
@@ -1022,7 +1021,7 @@ namespace OpenRCT2::Ui::Windows
             return colour;
         }
 
-        void PaintTrainOverlay(Drawing::RenderTarget& rt, const ScreenCoordsXY& offset)
+        void PaintTrainOverlay(RenderTarget& rt, const ScreenCoordsXY& offset)
         {
             for (auto train : TrainManager::View())
             {
@@ -1044,7 +1043,7 @@ namespace OpenRCT2::Ui::Windows
          * The call to Rectangle::fill was originally wrapped in Sub68DABD which made sure that arguments were ordered
          * correctly, but it doesn't look like it's ever necessary here so the call was removed.
          */
-        void PaintHudRectangle(Drawing::RenderTarget& rt, const ScreenCoordsXY& widgetOffset)
+        void PaintHudRectangle(RenderTarget& rt, const ScreenCoordsXY& widgetOffset)
         {
             WindowBase* mainWindow = WindowGetMain();
             if (mainWindow == nullptr)
@@ -1082,7 +1081,7 @@ namespace OpenRCT2::Ui::Windows
             Rectangle::fill(rt, { rightBottom - ScreenCoordsXY{ 0, 3 }, rightBottom }, PaletteIndex::pi56);
         }
 
-        void DrawTabImages(Drawing::RenderTarget& rt)
+        void DrawTabImages(RenderTarget& rt)
         {
             // Guest tab image (animated)
             uint32_t guestTabImage = SPR_TAB_GUESTS_0;

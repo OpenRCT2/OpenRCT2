@@ -40,8 +40,6 @@
 #include <openrct2/world/MapSelection.h>
 #include <openrct2/world/Park.h>
 
-using namespace OpenRCT2::Numerics;
-
 namespace OpenRCT2::Ui::Windows
 {
     static constexpr StringId kWindowTitle = STR_STRINGID;
@@ -483,7 +481,7 @@ namespace OpenRCT2::Ui::Windows
                             return;
                         }
 
-                        auto* windowMgr = Ui::GetWindowManager();
+                        auto* windowMgr = GetWindowManager();
                         windowMgr->CloseByClass(WindowClass::patrolArea);
 
                         auto staffSetPatrolAreaAction = GameActions::StaffSetPatrolAreaAction(
@@ -495,7 +493,7 @@ namespace OpenRCT2::Ui::Windows
                         auto staffId = EntityId::FromUnderlying(number);
                         if (WindowPatrolAreaGetCurrentStaffId() == staffId)
                         {
-                            auto* windowMgr = Ui::GetWindowManager();
+                            auto* windowMgr = GetWindowManager();
                             windowMgr->CloseByClass(WindowClass::patrolArea);
                         }
                         else

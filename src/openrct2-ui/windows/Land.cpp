@@ -612,7 +612,7 @@ namespace OpenRCT2::Ui::Windows
         void ToolUpdateLand(const ScreenCoordsXY& screenPos)
         {
             const bool mapCtrlPressed = GetInputManager().isModifierKeyPressed(ModifierKey::ctrl);
-            auto* windowMgr = Ui::GetWindowManager();
+            auto* windowMgr = GetWindowManager();
 
             if (gCurrentToolId == Tool::upDownArrow)
             {

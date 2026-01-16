@@ -56,7 +56,7 @@ namespace OpenRCT2
             CoordsXYZ ProximityStart;
             RideId CurrentRide;
             uint8_t State;
-            OpenRCT2::TrackElemType ProximityTrackType;
+            TrackElemType ProximityTrackType;
             uint8_t ProximityBaseHeight;
             uint16_t ProximityTotal;
             uint16_t ProximityScores[26];

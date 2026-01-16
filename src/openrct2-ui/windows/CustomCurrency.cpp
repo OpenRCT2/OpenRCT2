@@ -64,7 +64,7 @@ namespace OpenRCT2::Ui::Windows
         void onMouseDown(WidgetIndex widgetIndex) override
         {
             auto* widget = &widgets[widgetIndex - 1];
-            auto* windowMgr = Ui::GetWindowManager();
+            auto* windowMgr = GetWindowManager();
 
             switch (widgetIndex)
             {
@@ -146,7 +146,7 @@ namespace OpenRCT2::Ui::Windows
                 Config::Get().general.customCurrencyAffix = CurrencyDescriptors[EnumValue(CurrencyType::custom)].affix_unicode;
                 Config::Save();
 
-                auto* windowMgr = Ui::GetWindowManager();
+                auto* windowMgr = GetWindowManager();
                 windowMgr->InvalidateAll();
             }
         }
@@ -156,7 +156,7 @@ namespace OpenRCT2::Ui::Windows
             if (text.empty())
                 return;
 
-            auto* windowMgr = Ui::GetWindowManager();
+            auto* windowMgr = GetWindowManager();
 
             switch (widgetIndex)
             {

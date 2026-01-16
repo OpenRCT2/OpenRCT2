@@ -270,7 +270,7 @@ namespace OpenRCT2::Ui::Windows
                     gameAction.SetCallback([](const GameActions::GameAction* ga, const GameActions::Result* result) {
                         if (result->error == GameActions::Status::ok)
                         {
-                            auto* windowMgr = Ui::GetWindowManager();
+                            auto* windowMgr = GetWindowManager();
                             windowMgr->CloseByClass(WindowClass::newCampaign);
                         }
                     });

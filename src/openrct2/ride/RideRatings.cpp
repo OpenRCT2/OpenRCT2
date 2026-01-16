@@ -164,7 +164,7 @@ static void RideRatingsApplyPenaltyLateralGs(RideRating::Tuple& ratings, const R
 
 void RideRating::ResetUpdateStates()
 {
-    RideRating::UpdateState nullState{};
+    UpdateState nullState{};
     nullState.State = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
 
     auto& updateStates = getGameState().rideRatingUpdateStates;
@@ -179,7 +179,7 @@ void RideRating::ResetUpdateStates()
  */
 void RideRating::UpdateRide(const Ride& ride)
 {
-    RideRating::UpdateState state;
+    UpdateState state;
     if (ride.status != RideStatus::closed)
     {
         state.CurrentRide = ride.id;
