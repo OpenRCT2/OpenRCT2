@@ -260,7 +260,7 @@ namespace OpenRCT2::Ui::Windows
             setWidgetPressed(WIDX_TAB_OPTIONS, page == optionsTab);
         }
 
-        void DrawTabImages(Drawing::RenderTarget& rt)
+        void DrawTabImages(RenderTarget& rt)
         {
             if (!isWidgetDisabled(WIDX_TAB_NEWS))
             {
@@ -308,7 +308,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onDraw(Drawing::RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             drawWidgets(rt);
             DrawTabImages(rt);
@@ -455,7 +455,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onScrollDraw(int32_t scrollIndex, Drawing::RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             int32_t lineHeight = FontGetLineHeight(FontStyle::small);
             int32_t itemHeight = CalculateNewsItemHeight();
@@ -501,7 +501,7 @@ namespace OpenRCT2::Ui::Windows
                         { COLOUR_BRIGHT_GREEN, FontStyle::small });
                 }
                 // Subject button
-                if ((newsItem.typeHasSubject()) && !(newsItem.hasButton()))
+                if (newsItem.typeHasSubject() && !newsItem.hasButton())
                 {
                     auto screenCoords = ScreenCoordsXY{ 328 + scrollbarFill, y + lineHeight + 4 };
 
@@ -583,7 +583,7 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 // Location button
-                if ((newsItem.typeHasLocation()) && !(newsItem.hasButton()))
+                if (newsItem.typeHasLocation() && !newsItem.hasButton())
                 {
                     auto screenCoords = ScreenCoordsXY{ 352 + scrollbarFill, y + lineHeight + 4 };
 

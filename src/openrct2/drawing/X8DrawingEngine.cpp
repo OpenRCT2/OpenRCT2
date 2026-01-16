@@ -119,7 +119,7 @@ void X8WeatherDrawer::Restore(RenderTarget& rt)
     #pragma GCC diagnostic ignored "-Wsuggest-final-methods"
 #endif
 
-X8DrawingEngine::X8DrawingEngine([[maybe_unused]] Ui::IUiContext& uiContext)
+X8DrawingEngine::X8DrawingEngine([[maybe_unused]] IUiContext& uiContext)
 {
     _drawingContext = new X8DrawingContext(this);
     _mainRT.DrawingEngine = this;

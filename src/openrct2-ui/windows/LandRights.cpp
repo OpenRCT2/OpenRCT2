@@ -468,7 +468,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     _landRightsCost = kMoney64Undefined;
 
-                    auto* windowMgr = Ui::GetWindowManager();
+                    auto* windowMgr = GetWindowManager();
                     windowMgr->InvalidateByClass(WindowClass::landRights);
                 }
                 return;

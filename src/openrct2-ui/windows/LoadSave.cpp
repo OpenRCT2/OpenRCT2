@@ -404,7 +404,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawPreview(Drawing::RenderTarget& rt)
+        void DrawPreview(RenderTarget& rt)
         {
             // Find preview image to draw
             PreviewImage* image = nullptr;
@@ -540,7 +540,7 @@ namespace OpenRCT2::Ui::Windows
         {
             setWidgets(window_loadsave_widgets);
 
-            const auto& uiContext = OpenRCT2::GetContext()->GetUiContext();
+            const auto& uiContext = GetContext()->GetUiContext();
             if (!uiContext.HasFilePicker())
             {
                 disabledWidgets |= (1uLL << WIDX_SYSTEM_BROWSER);
@@ -592,7 +592,7 @@ namespace OpenRCT2::Ui::Windows
         {
             _listItems.clear();
 
-            auto* windowMgr = Ui::GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             windowMgr->CloseByClass(WindowClass::loadsaveOverwritePrompt);
 
             Config::Save();
@@ -731,7 +731,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onDraw(Drawing::RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             drawWidgets(rt);
 
@@ -1077,7 +1077,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onScrollDraw(int32_t scrollIndex, Drawing::RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             Rectangle::fill(
                 rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } }, ColourMapA[colours[1].colour].mid_light);

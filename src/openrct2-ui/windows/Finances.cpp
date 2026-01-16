@@ -347,7 +347,7 @@ namespace OpenRCT2::Ui::Windows
             onPrepareDrawGraph(graphPageWidget, centredGraph);
         }
 
-        void onDraw(Drawing::RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             drawWidgets(rt);
             DrawTabImages(rt);
@@ -396,7 +396,7 @@ namespace OpenRCT2::Ui::Windows
             return {};
         }
 
-        void onScrollDraw(int32_t scrollIndex, Drawing::RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             if (page != WINDOW_FINANCES_PAGE_SUMMARY)
                 return;
@@ -589,7 +589,7 @@ namespace OpenRCT2::Ui::Windows
                 initialiseScrollPosition(WIDX_SUMMARY_SCROLL, 0);
         }
 
-        void onDrawSummary(Drawing::RenderTarget& rt)
+        void onDrawSummary(RenderTarget& rt)
         {
             auto titleBarBottom = widgets[WIDX_TITLE].bottom;
             auto screenCoords = windowPos + ScreenCoordsXY{ 8, titleBarBottom + 37 };
@@ -707,7 +707,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onDrawMarketing(Drawing::RenderTarget& rt)
+        void onDrawMarketing(RenderTarget& rt)
         {
             auto screenCoords = windowPos + ScreenCoordsXY{ 8, widgets[WIDX_TAB_1].top + 45 };
             int32_t noCampaignsActive = 1;
@@ -786,7 +786,7 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma region Graph Events
 
-        void onDrawGraph(Drawing::RenderTarget& rt, const money64 currentValue, const StringId fmt) const
+        void onDrawGraph(RenderTarget& rt, const money64 currentValue, const StringId fmt) const
         {
             Formatter ft;
             ft.Add<money64>(currentValue);
@@ -853,7 +853,7 @@ namespace OpenRCT2::Ui::Windows
             widgetScrollUpdateThumbs(*this, widgetIndex);
         }
 
-        void DrawTabImage(Drawing::RenderTarget& rt, int32_t tabPage, int32_t spriteIndex)
+        void DrawTabImage(RenderTarget& rt, int32_t tabPage, int32_t spriteIndex)
         {
             WidgetIndex widgetIndex = WIDX_TAB_1 + tabPage;
 
@@ -871,7 +871,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawTabImages(Drawing::RenderTarget& rt)
+        void DrawTabImages(RenderTarget& rt)
         {
             DrawTabImage(rt, WINDOW_FINANCES_PAGE_SUMMARY, SPR_TAB_FINANCES_SUMMARY_0);
             DrawTabImage(rt, WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH, SPR_TAB_FINANCES_FINANCIAL_GRAPH_0);
@@ -884,7 +884,7 @@ namespace OpenRCT2::Ui::Windows
 
     static FinancesWindow* FinancesWindowOpen(uint8_t page)
     {
-        auto* windowMgr = Ui::GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         auto* window = windowMgr->FocusOrCreate<FinancesWindow>(
             WindowClass::finances, kWindowSizeSummary, WindowFlag::higherContrastOnPress);
 
@@ -896,7 +896,7 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* FinancesOpen()
     {
-        auto* windowMgr = Ui::GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         return windowMgr->FocusOrCreate<FinancesWindow>(
             WindowClass::finances, kWindowSizeSummary, WindowFlag::higherContrastOnPress);
     }

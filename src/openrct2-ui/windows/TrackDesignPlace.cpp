@@ -316,7 +316,7 @@ namespace OpenRCT2::Ui::Windows
                 auto getRide = GetRide(rideId);
                 if (getRide != nullptr)
                 {
-                    auto* windowMgr = Ui::GetWindowManager();
+                    auto* windowMgr = GetWindowManager();
                     windowMgr->CloseByClass(WindowClass::error);
 
                     Audio::Play3D(Audio::SoundId::placeItem, trackLoc);
@@ -779,7 +779,7 @@ namespace OpenRCT2::Ui::Windows
             return nullptr;
         }
 
-        auto* windowMgr = Ui::GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         windowMgr->CloseConstructionWindows();
 
         auto* window = windowMgr->FocusOrCreate<TrackDesignPlaceWindow>(WindowClass::trackDesignPlace, kWindowSize, {});

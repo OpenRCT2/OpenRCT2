@@ -282,7 +282,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (gWindowSceneryScatterEnabled)
             {
-                auto* windowMgr = Ui::GetWindowManager();
+                auto* windowMgr = GetWindowManager();
                 windowMgr->CloseByClass(WindowClass::sceneryScatter);
             }
 
@@ -292,7 +292,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onMouseUp(WidgetIndex widgetIndex) override
         {
-            auto* windowMgr = Ui::GetWindowManager();
+            auto* windowMgr = GetWindowManager();
 
             switch (widgetIndex)
             {
@@ -876,7 +876,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].type = canFit ? WidgetType::flatBtn : WidgetType::empty;
         }
 
-        void onDraw(Drawing::RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             drawWidgets(rt);
             DrawTabs(rt, windowPos);
@@ -1081,7 +1081,7 @@ namespace OpenRCT2::Ui::Windows
 
             PrepareWidgets();
 
-            auto* windowMgr = Ui::GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             windowMgr->InvalidateByClass(WindowClass::scenery);
         }
 
@@ -1573,7 +1573,7 @@ namespace OpenRCT2::Ui::Windows
             return { name, price };
         }
 
-        void DrawTabs(Drawing::RenderTarget& rt, const ScreenCoordsXY& offset)
+        void DrawTabs(RenderTarget& rt, const ScreenCoordsXY& offset)
         {
             for (size_t tabIndex = 0; tabIndex < _tabEntries.size(); tabIndex++)
             {
@@ -1588,7 +1588,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawSceneryItem(Drawing::RenderTarget& rt, ScenerySelection scenerySelection)
+        void DrawSceneryItem(RenderTarget& rt, ScenerySelection scenerySelection)
         {
             if (scenerySelection.SceneryType == SCENERY_TYPE_BANNER)
             {
@@ -1706,7 +1706,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onScrollDraw(int32_t scrollIndex, Drawing::RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             GfxClear(rt, ColourMapA[colours[1].colour].mid_light);
 
@@ -3225,7 +3225,7 @@ namespace OpenRCT2::Ui::Windows
 
                 if (_lastProvisionalError.error != GameActions::Status::ok)
                 {
-                    auto windowManager = Ui::GetWindowManager();
+                    auto windowManager = GetWindowManager();
                     windowManager->ShowError(
                         _lastProvisionalError.getErrorTitle(), _lastProvisionalError.getErrorMessage(), true);
                 }

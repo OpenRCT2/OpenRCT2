@@ -152,7 +152,7 @@ namespace OpenRCT2
         throw std::runtime_error("Not supported.");
     }
 
-    void Object::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream)
+    void Object::ReadLegacy(IReadObjectContext* context, IStream* stream)
     {
         throw std::runtime_error("Not supported.");
     }

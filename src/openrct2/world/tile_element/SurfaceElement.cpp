@@ -27,7 +27,7 @@ namespace OpenRCT2
 
     TerrainSurfaceObject* SurfaceElement::GetSurfaceObject() const
     {
-        auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+        auto& objManager = GetContext()->GetObjectManager();
         return objManager.GetLoadedObject<TerrainSurfaceObject>(GetSurfaceObjectIndex());
     }
 
@@ -38,7 +38,7 @@ namespace OpenRCT2
 
     TerrainEdgeObject* SurfaceElement::GetEdgeObject() const
     {
-        auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+        auto& objManager = GetContext()->GetObjectManager();
         return objManager.GetLoadedObject<TerrainEdgeObject>(GetEdgeObjectIndex());
     }
 
@@ -65,7 +65,7 @@ namespace OpenRCT2
     bool SurfaceElement::CanGrassGrow() const
     {
         auto surfaceStyle = GetSurfaceObjectIndex();
-        auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
+        auto& objMgr = GetContext()->GetObjectManager();
         const auto* surfaceObject = objMgr.GetLoadedObject<TerrainSurfaceObject>(surfaceStyle);
         if (surfaceObject != nullptr)
         {

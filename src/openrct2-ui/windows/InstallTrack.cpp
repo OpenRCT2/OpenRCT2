@@ -150,7 +150,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onDraw(Drawing::RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             drawWidgets(rt);
 
@@ -365,8 +365,8 @@ namespace OpenRCT2::Ui::Windows
 
         void InstallTrackDesign()
         {
-            auto& env = OpenRCT2::GetContext()->GetPlatformEnvironment();
-            auto destPath = env.GetDirectoryPath(OpenRCT2::DirBase::user, OpenRCT2::DirId::trackDesigns);
+            auto& env = GetContext()->GetPlatformEnvironment();
+            auto destPath = env.GetDirectoryPath(DirBase::user, DirId::trackDesigns);
             if (!Path::CreateDirectory(destPath))
             {
                 LOG_ERROR("Unable to create directory '%s'", destPath.c_str());
@@ -419,7 +419,7 @@ namespace OpenRCT2::Ui::Windows
             return nullptr;
         }
 
-        auto* windowMgr = Ui::GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         windowMgr->ForceClose(WindowClass::editorObjectSelection);
         windowMgr->CloseConstructionWindows();
 

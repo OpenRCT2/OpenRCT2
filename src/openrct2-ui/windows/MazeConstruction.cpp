@@ -369,9 +369,9 @@ namespace OpenRCT2::Ui::Windows
                 if (result->error != GameActions::Status::ok)
                     return;
 
-                OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::placeItem, result->position);
+                Audio::Play3D(Audio::SoundId::placeItem, result->position);
 
-                auto* windowMgr = Ui::GetWindowManager();
+                auto* windowMgr = GetWindowManager();
 
                 auto currentRide = GetRide(rideIndex);
                 if (currentRide != nullptr && RideAreAllPossibleEntrancesAndExitsBuilt(*currentRide).Successful)

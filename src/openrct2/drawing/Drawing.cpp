@@ -79,8 +79,8 @@ void PaletteMap::Copy(PaletteIndex dstIndex, const PaletteMap& src, PaletteIndex
     std::copy(src._data.begin() + srcOffset, src._data.begin() + srcOffset + copyLength, _data.begin() + dstOffset);
 }
 
-OpenRCT2::Drawing::GamePalette gPalette;
-OpenRCT2::Drawing::GamePalette gGamePalette;
+GamePalette gPalette;
+GamePalette gGamePalette;
 uint32_t gPaletteEffectFrame;
 
 ImageId gPickupPeepImage;
@@ -88,7 +88,7 @@ int32_t gPickupPeepX;
 int32_t gPickupPeepY;
 
 // Originally 0x9ABE04
-OpenRCT2::Drawing::TextColours gTextPalette = {
+TextColours gTextPalette = {
     PaletteIndex::pi0,
     PaletteIndex::pi0,
     PaletteIndex::pi0,
@@ -882,7 +882,7 @@ FilterPaletteID GetGlassPaletteId(colour_t c)
     return kGlassPaletteIds[c];
 }
 
-void UpdatePalette(std::span<const OpenRCT2::Drawing::PaletteBGRA> palette, PaletteIndex startIndex, int32_t numColours)
+void UpdatePalette(std::span<const PaletteBGRA> palette, PaletteIndex startIndex, int32_t numColours)
 {
     for (int32_t i = EnumValue(startIndex); i < numColours + EnumValue(startIndex); i++)
     {

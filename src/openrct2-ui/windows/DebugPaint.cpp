@@ -111,7 +111,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onPrepareDraw() override
         {
-            const auto& ls = OpenRCT2::GetContext()->GetLocalisationService();
+            const auto& ls = GetContext()->GetLocalisationService();
             const auto currentLanguage = ls.GetCurrentLanguage();
             if (ResizeLanguage != currentLanguage)
             {

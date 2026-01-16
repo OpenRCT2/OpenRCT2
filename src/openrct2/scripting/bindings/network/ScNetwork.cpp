@@ -143,7 +143,7 @@ namespace OpenRCT2::Scripting
     DukValue ScNetwork::stats_get() const
     {
     #ifndef DISABLE_NETWORK
-        auto obj = OpenRCT2::Scripting::DukObject(_context);
+        auto obj = DukObject(_context);
         auto networkStats = Network::GetStats();
         {
             duk_push_array(_context);

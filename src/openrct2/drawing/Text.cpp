@@ -122,7 +122,7 @@ void DrawTextBasic(RenderTarget& rt, const ScreenCoordsXY& coords, StringId form
 void DrawTextBasic(RenderTarget& rt, const ScreenCoordsXY& coords, StringId format, const Formatter& ft, TextPaint textPaint)
 {
     utf8 buffer[512];
-    OpenRCT2::FormatStringLegacy(buffer, sizeof(buffer), format, ft.Data());
+    FormatStringLegacy(buffer, sizeof(buffer), format, ft.Data());
     DrawText(rt, coords, textPaint, buffer);
 }
 
@@ -137,7 +137,7 @@ void DrawTextEllipsised(
     RenderTarget& rt, const ScreenCoordsXY& coords, int32_t width, StringId format, const Formatter& ft, TextPaint textPaint)
 {
     utf8 buffer[512];
-    OpenRCT2::FormatStringLegacy(buffer, sizeof(buffer), format, ft.Data());
+    FormatStringLegacy(buffer, sizeof(buffer), format, ft.Data());
     GfxClipString(buffer, width, textPaint.FontStyle);
 
     DrawText(rt, coords, textPaint, buffer);
@@ -155,7 +155,7 @@ int32_t DrawTextWrapped(
 {
     const void* args = ft.Data();
 
-    StaticLayout layout(OpenRCT2::FormatStringIDLegacy(format, args), textPaint, width);
+    StaticLayout layout(FormatStringIDLegacy(format, args), textPaint, width);
 
     if (textPaint.Alignment == TextAlignment::centre)
     {

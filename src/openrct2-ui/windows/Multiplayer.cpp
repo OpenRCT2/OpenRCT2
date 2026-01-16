@@ -183,7 +183,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void informationPaint(Drawing::RenderTarget& rt)
+        void informationPaint(RenderTarget& rt)
         {
             RenderTarget clippedRT;
             if (ClipRenderTarget(clippedRT, rt, windowPos, width, height))
@@ -236,7 +236,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void playersPaint(Drawing::RenderTarget& rt)
+        void playersPaint(RenderTarget& rt)
         {
             // Number of players
             StringId stringId = numListItems == 1 ? STR_MULTIPLAYER_PLAYER_COUNT : STR_MULTIPLAYER_PLAYER_COUNT_PLURAL;
@@ -246,7 +246,7 @@ namespace OpenRCT2::Ui::Windows
             DrawTextBasic(rt, screenCoords, stringId, ft, { colours[2] });
         }
 
-        void playersScrollPaint(int32_t scrollIndex, Drawing::RenderTarget& rt) const
+        void playersScrollPaint(int32_t scrollIndex, RenderTarget& rt) const
         {
             ScreenCoordsXY screenCoords;
             screenCoords.y = 0;
@@ -346,7 +346,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void groupsPaint(Drawing::RenderTarget& rt)
+        void groupsPaint(RenderTarget& rt)
         {
             thread_local std::string _buffer;
 
@@ -389,7 +389,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void groupsScrollPaint(int32_t scrollIndex, Drawing::RenderTarget& rt) const
+        void groupsScrollPaint(int32_t scrollIndex, RenderTarget& rt) const
         {
             auto screenCoords = ScreenCoordsXY{ 0, 0 };
 
@@ -432,7 +432,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void drawTabImage(Drawing::RenderTarget& rt, int32_t page_number, int32_t spriteIndex)
+        void drawTabImage(RenderTarget& rt, int32_t page_number, int32_t spriteIndex)
         {
             WidgetIndex widgetIndex = WIDX_TAB1 + page_number;
 
@@ -454,7 +454,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void drawTabImages(Drawing::RenderTarget& rt)
+        void drawTabImages(RenderTarget& rt)
         {
             drawTabImage(rt, WINDOW_MULTIPLAYER_PAGE_INFORMATION, SPR_TAB_KIOSKS_AND_FACILITIES_0);
             drawTabImage(rt, WINDOW_MULTIPLAYER_PAGE_PLAYERS, SPR_TAB_GUESTS_0);
@@ -704,7 +704,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onDraw(Drawing::RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             drawWidgets(rt);
             drawTabImages(rt);
@@ -900,7 +900,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onScrollDraw(int32_t scrollIndex, Drawing::RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             switch (page)
             {

@@ -62,14 +62,14 @@ RideId _currentRideIndex;
 CoordsXYZ _currentTrackBegin;
 
 uint8_t _currentTrackPieceDirection;
-OpenRCT2::TrackElemType _currentTrackPieceType;
+TrackElemType _currentTrackPieceType;
 TrackSelectionFlags _currentTrackSelectionFlags;
 uint32_t _rideConstructionNextArrowPulse = 0;
 TrackPitch _currentTrackPitchEnd;
 TrackRoll _currentTrackRollEnd;
 bool _currentTrackHasLiftHill;
-OpenRCT2::SelectedAlternative _currentTrackAlternative{};
-OpenRCT2::TrackElemType _selectedTrackType;
+SelectedAlternative _currentTrackAlternative{};
+TrackElemType _selectedTrackType;
 
 TrackRoll _previousTrackRollEnd;
 TrackPitch _previousTrackPitchEnd;
@@ -182,7 +182,7 @@ void Ride::removeVehicles()
         lifecycleFlags &= ~RIDE_LIFECYCLE_ON_TRACK;
         lifecycleFlags &= ~(RIDE_LIFECYCLE_TEST_IN_PROGRESS | RIDE_LIFECYCLE_HAS_STALLED_VEHICLE);
 
-        for (size_t i = 0; i <= OpenRCT2::Limits::kMaxTrainsPerRide; i++)
+        for (size_t i = 0; i <= Limits::kMaxTrainsPerRide; i++)
         {
             auto spriteIndex = vehicles[i];
             while (!spriteIndex.IsNull())
@@ -200,7 +200,7 @@ void Ride::removeVehicles()
             vehicles[i] = EntityId::GetNull();
         }
 
-        for (size_t i = 0; i < OpenRCT2::Limits::kMaxStationsPerRide; i++)
+        for (size_t i = 0; i < Limits::kMaxStationsPerRide; i++)
             stations[i].TrainAtStation = RideStation::kNoTrain;
 
         // Also clean up orphaned vehicles for good measure.
@@ -383,7 +383,7 @@ void RideClearBlockedTiles(const Ride& ride)
  * bp : flags
  */
 std::optional<CoordsXYZ> GetTrackElementOriginAndApplyChanges(
-    const CoordsXYZD& location, OpenRCT2::TrackElemType type, uint16_t extra_params, TileElement** output_element,
+    const CoordsXYZD& location, TrackElemType type, uint16_t extra_params, TileElement** output_element,
     TrackElementSetFlags flags)
 {
     // Find the relevant track piece, prefer sequence 0 (this ensures correct behaviour for diagonal track pieces)
@@ -588,7 +588,7 @@ void RideConstructionSetDefaultNextPiece()
     const auto& rtd = ride->getRideTypeDescriptor();
 
     int32_t z, direction;
-    OpenRCT2::TrackElemType trackType;
+    TrackElemType trackType;
     TrackBeginEnd trackBeginEnd;
     CoordsXYE xyElement;
     TileElement* tileElement;
@@ -1517,7 +1517,7 @@ TrackDrawerEntry getCurrentTrackDrawerEntry(const RideTypeDescriptor& rtd)
     return getTrackDrawerEntry(rtd, isInverted, isCovered);
 }
 
-OpenRCT2::TrackElemType GetTrackTypeFromCurve(
+TrackElemType GetTrackTypeFromCurve(
     TrackCurve curve, bool startsDiagonal, TrackPitch startSlope, TrackPitch endSlope, TrackRoll startBank, TrackRoll endBank)
 {
     for (uint32_t i = 0; i < std::size(gTrackDescriptors); i++)

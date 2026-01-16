@@ -277,7 +277,7 @@ void CustomListView::SetColumns(const std::vector<ListViewColumn>& columns, bool
     }
 }
 
-const std::vector<ListViewItem>& CustomListView::CustomListView::GetItems() const
+const std::vector<ListViewItem>& CustomListView::GetItems() const
 {
     return Items;
 }
