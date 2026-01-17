@@ -247,15 +247,16 @@ namespace OpenRCT2::RCT1
             const auto& rtd = GetRideTypeDescriptor(td->trackAndVehicle.rtdIndex);
             if (rtd.specialType == RtdSpecialType::maze)
             {
-                TD46MazeElement t4MazeElement{};
-                t4MazeElement.all = !0;
-                while (t4MazeElement.all != 0)
+                TD46MazeElement t4MazeElement;
+                while (true)
                 {
                     _stream.Read(&t4MazeElement, sizeof(TD46MazeElement));
-                    if (t4MazeElement.all != 0)
+                    if (t4MazeElement.all == 0)
                     {
-                        importMazeElement(*td, t4MazeElement);
+                        break;
                     }
+
+                    importMazeElement(*td, t4MazeElement);
                 }
             }
             else

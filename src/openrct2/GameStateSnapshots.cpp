@@ -74,7 +74,7 @@ struct GameStateSnapshot_t
     }
 
     // Must pass a function that can access the sprite.
-    void SerialiseSprites(std::function<EntitySnapshot*(const EntityId)> getEntity, const size_t numSprites, bool saving)
+    void SerialiseSprites(std::function<EntitySnapshot*(EntityId)> getEntity, const size_t numSprites, bool saving)
     {
         const bool loading = !saving;
 
