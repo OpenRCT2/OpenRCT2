@@ -54,7 +54,7 @@ namespace OpenRCT2::Console
 
         char buffer[4096];
         std::vsnprintf(buffer, sizeof(buffer), format, args);
-        auto ctx = OpenRCT2::GetContext();
+        auto ctx = GetContext();
         if (ctx != nullptr)
             ctx->WriteLine(buffer);
         else
@@ -101,7 +101,7 @@ namespace OpenRCT2::Console
         {
             char buffer[4096];
             std::vsnprintf(buffer, sizeof(buffer), format, args);
-            auto ctx = OpenRCT2::GetContext();
+            auto ctx = GetContext();
             if (ctx != nullptr)
                 ctx->WriteErrorLine(buffer);
             else

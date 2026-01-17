@@ -219,13 +219,13 @@ struct Vehicle : EntityBase
 
     constexpr bool IsHead() const
     {
-        return SubType == Vehicle::Type::head;
+        return SubType == Type::head;
     }
     void Update();
     Vehicle* GetHead();
     const Vehicle* GetHead() const;
     Vehicle* GetCar(size_t carIndex) const;
-    void SetState(Vehicle::Status vehicleStatus, uint8_t subState = 0);
+    void SetState(Status vehicleStatus, uint8_t subState = 0);
     bool IsGhost() const;
     std::optional<EntityId> DodgemsCarWouldCollideAt(const CoordsXY& coords) const;
     int32_t UpdateTrackMotion(int32_t* outStation);

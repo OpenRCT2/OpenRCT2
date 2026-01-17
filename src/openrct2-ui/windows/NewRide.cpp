@@ -306,7 +306,7 @@ namespace OpenRCT2::Ui::Windows
 
         static void ResetTabScrolls()
         {
-            std::fill_n(NewRideWindow::_windowNewRideTabScroll, RideTabCount, 0);
+            std::fill_n(_windowNewRideTabScroll, RideTabCount, 0);
         }
 
         void onOpen() override
