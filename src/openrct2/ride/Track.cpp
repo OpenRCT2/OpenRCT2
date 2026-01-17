@@ -692,7 +692,7 @@ bool TrackElementIsCovered(TrackElemType trackElementType)
     }
 }
 
-OpenRCT2::TrackElemType UncoverTrackElement(OpenRCT2::TrackElemType trackElementType)
+TrackElemType UncoverTrackElement(TrackElemType trackElementType)
 {
     switch (trackElementType)
     {
