@@ -20,6 +20,7 @@
 #include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/FileStream.h>
+#include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/interface/ColourWithFlags.h>
@@ -542,7 +543,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
-            auto paletteIndex = ColourMapA[colours[1].colour].midLight;
+            auto paletteIndex = getColourMap(colours[1].colour).midLight;
             GfxClear(rt, paletteIndex);
 
             StringId highlighted_format = STR_WINDOW_COLOUR_2_STRINGID;
@@ -639,8 +640,8 @@ namespace OpenRCT2::Ui::Windows
         void DrawCategoryHeading(RenderTarget& rt, int32_t left, int32_t right, int32_t y, StringId stringId) const
         {
             auto baseColour = colours[1];
-            auto lightColour = ColourMapA[baseColour.colour].lighter;
-            auto darkColour = ColourMapA[baseColour.colour].midDark;
+            auto lightColour = getColourMap(baseColour.colour).lighter;
+            auto darkColour = getColourMap(baseColour.colour).midDark;
 
             // Draw string
             int32_t centreX = (left + right) / 2;

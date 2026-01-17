@@ -32,6 +32,7 @@
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
+#include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/interface/ColourWithFlags.h>
@@ -462,7 +463,7 @@ namespace OpenRCT2::Ui::Windows
 
                 if (targetType == PreviewImageType::screenshot)
                 {
-                    auto colour = ColourMapA[colours[1].colour].dark;
+                    auto colour = getColourMap(colours[1].colour).dark;
                     GfxDrawSpriteSolid(rt, ImageId(SPR_G2_LOGO_MONO_DITHERED), imagePos, colour);
                 }
 
@@ -1080,7 +1081,8 @@ namespace OpenRCT2::Ui::Windows
         void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             Rectangle::fill(
-                rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } }, ColourMapA[colours[1].colour].midLight);
+                rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } },
+                getColourMap(colours[1].colour).midLight);
 
             const int32_t listWidth = widgets[WIDX_SCROLL].width() - 1;
             const auto sizeColumnLeft = widgets[WIDX_SORT_SIZE].left;

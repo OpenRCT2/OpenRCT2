@@ -16,6 +16,7 @@
 #include "../core/String.hpp"
 #include "../core/UTF8.h"
 #include "../core/UnicodeChar.h"
+#include "../drawing/ColourMap.h"
 #include "../drawing/Drawing.h"
 #include "../drawing/IDrawingContext.h"
 #include "../drawing/IDrawingEngine.h"
@@ -296,7 +297,7 @@ static void ColourCharacter(TextColour colour, bool withOutline, TextColours& te
 static void ColourCharacterWindow(colour_t colour, bool withOutline, TextColours& textPalette)
 {
     TextColours mapping = {
-        ColourMapA[colour].colour11,
+        getColourMap(colour).colour11,
         PaletteIndex::pi0,
         PaletteIndex::pi0,
     };
@@ -761,18 +762,18 @@ static void TTFProcessInitialColour(ColourWithFlags colour, TextDrawInfo* info)
             switch (info->darkness)
             {
                 case TextDarkness::extraDark:
-                    newPalette.fill = ColourMapA[colour.colour].dark;
-                    newPalette.shadowOutline = ColourMapA[colour.colour].midLight;
+                    newPalette.fill = getColourMap(colour.colour).dark;
+                    newPalette.shadowOutline = getColourMap(colour.colour).midLight;
                     break;
 
                 case TextDarkness::dark:
-                    newPalette.fill = ColourMapA[colour.colour].midDark;
-                    newPalette.shadowOutline = ColourMapA[colour.colour].light;
+                    newPalette.fill = getColourMap(colour.colour).midDark;
+                    newPalette.shadowOutline = getColourMap(colour.colour).light;
                     break;
 
                 case TextDarkness::regular:
-                    newPalette.fill = ColourMapA[colour.colour].midLight;
-                    newPalette.shadowOutline = ColourMapA[colour.colour].lighter;
+                    newPalette.fill = getColourMap(colour.colour).midLight;
+                    newPalette.shadowOutline = getColourMap(colour.colour).lighter;
                     break;
             }
 

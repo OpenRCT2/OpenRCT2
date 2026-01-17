@@ -18,6 +18,7 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/core/String.hpp>
 #include <openrct2/core/UnitConversion.h>
+#include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/IDrawingEngine.h>
 #include <openrct2/drawing/Rectangle.h>
@@ -471,7 +472,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Track preview
             auto& tdWidget = widgets[WIDX_TRACK_PREVIEW];
-            auto colour = ColourMapA[colours[0].colour].darkest;
+            auto colour = getColourMap(colours[0].colour).darkest;
             u8string path = _trackDesigns[trackIndex].path;
 
             // Show track file path (in debug mode)
@@ -676,7 +677,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onScrollDraw(const int32_t scrollIndex, RenderTarget& rt) override
         {
-            auto paletteIndex = ColourMapA[colours[0].colour].midLight;
+            auto paletteIndex = getColourMap(colours[0].colour).midLight;
             GfxClear(rt, paletteIndex);
 
             auto screenCoords = ScreenCoordsXY{ 0, 0 };

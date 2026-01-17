@@ -124,26 +124,6 @@ constexpr uint8_t kColourNumNormal = 54;
 constexpr colour_t kTextColour254 = 254;
 constexpr colour_t kTextColour255 = 255;
 
-struct ColourShadeMap
-{
-    OpenRCT2::Drawing::PaletteIndex colour0;
-    OpenRCT2::Drawing::PaletteIndex colour1;
-    OpenRCT2::Drawing::PaletteIndex darkest;
-    OpenRCT2::Drawing::PaletteIndex darker;
-    OpenRCT2::Drawing::PaletteIndex dark;
-    OpenRCT2::Drawing::PaletteIndex midDark;
-    OpenRCT2::Drawing::PaletteIndex midLight;
-    OpenRCT2::Drawing::PaletteIndex light;
-    OpenRCT2::Drawing::PaletteIndex lighter;
-    OpenRCT2::Drawing::PaletteIndex lightest;
-    OpenRCT2::Drawing::PaletteIndex colour10;
-    OpenRCT2::Drawing::PaletteIndex colour11;
-};
-
-extern ColourShadeMap ColourMapA[COLOUR_COUNT];
-
-void ColoursInitMaps();
-
 namespace OpenRCT2::Colour
 {
     colour_t FromString(std::string_view s, colour_t defaultValue = COLOUR_BLACK);

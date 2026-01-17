@@ -14,6 +14,7 @@
 #include <openrct2/SpriteIds.h>
 #include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/entity/EntityRegistry.h>
@@ -462,7 +463,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t y = 0;
             int32_t i = 0;
 
-            const auto backgroundPaletteIndex = ColourMapA[colours[3].colour].light;
+            const auto backgroundPaletteIndex = getColourMap(colours[3].colour).light;
             // Fill the scrollbar gap if no scrollbar is visible
             const bool scrollbarVisible = scrolls[0].contentHeight > widgets[WIDX_SCROLL].height() - 1;
             const auto scrollbarFill = scrollbarVisible ? 0 : kScrollBarWidth;

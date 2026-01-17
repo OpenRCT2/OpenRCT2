@@ -19,6 +19,7 @@
     #include <openrct2/SpriteIds.h>
     #include <openrct2/config/Config.h>
     #include <openrct2/core/Json.hpp>
+    #include <openrct2/drawing/ColourMap.h>
     #include <openrct2/drawing/Drawing.h>
     #include <openrct2/drawing/Rectangle.h>
     #include <openrct2/interface/Colour.h>
@@ -328,7 +329,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
-            auto paletteIndex = ColourMapA[colours[1].colour].midLight;
+            auto paletteIndex = getColourMap(colours[1].colour).midLight;
             GfxClear(rt, paletteIndex);
 
             auto& listWidget = widgets[WIDX_LIST];

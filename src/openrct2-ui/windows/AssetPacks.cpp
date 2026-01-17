@@ -15,6 +15,7 @@
 #include <openrct2/AssetPackManager.h>
 #include <openrct2/Context.h>
 #include <openrct2/SpriteIds.h>
+#include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/drawing/Text.h>
@@ -197,7 +198,7 @@ namespace OpenRCT2::Ui::Windows
             auto rtCoords = ScreenCoordsXY{ rt.x, rt.y };
             Rectangle::fill(
                 rt, { rtCoords, rtCoords + ScreenCoordsXY{ rt.width - 1, rt.height - 1 } },
-                ColourMapA[colours[1].colour].midLight);
+                getColourMap(colours[1].colour).midLight);
 
             auto assetPackManager = GetContext()->GetAssetPackManager();
             if (assetPackManager == nullptr)
@@ -244,12 +245,12 @@ namespace OpenRCT2::Ui::Windows
             auto fillRectangle = ScreenRect{ { 0, y }, { listWidth, y + ItemHeight - 1 } };
             if (isSelected)
             {
-                Rectangle::fill(rt, fillRectangle, ColourMapA[colours[1].colour].midDark);
+                Rectangle::fill(rt, fillRectangle, getColourMap(colours[1].colour).midDark);
                 stringId = STR_WINDOW_COLOUR_2_STRINGID;
             }
             else if (isHighlighted)
             {
-                Rectangle::fill(rt, fillRectangle, ColourMapA[colours[1].colour].midDark);
+                Rectangle::fill(rt, fillRectangle, getColourMap(colours[1].colour).midDark);
             }
 
             DrawTextEllipsised(rt, { 16, y + 1 }, listWidth, stringId, ft);

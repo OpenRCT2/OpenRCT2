@@ -14,6 +14,7 @@
 #include <openrct2/GameState.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/ParkSetLoanAction.h>
+#include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/localisation/Formatter.h>
@@ -415,7 +416,7 @@ namespace OpenRCT2::Ui::Windows
                         rt,
                         { screenCoords - ScreenCoordsXY{ 0, 1 },
                           screenCoords + ScreenCoordsXY{ row_width, (kTableCellHeight - 2) } },
-                        ColourMapA[colours[1].colour].lighter, true);
+                        getColourMap(colours[1].colour).lighter, true);
 
                 screenCoords.y += kTableCellHeight;
             }
@@ -609,7 +610,7 @@ namespace OpenRCT2::Ui::Windows
                     Rectangle::fill(
                         rt,
                         { screenCoords - ScreenCoordsXY{ 0, 1 }, screenCoords + ScreenCoordsXY{ 121, (kTableCellHeight - 2) } },
-                        ColourMapA[colours[1].colour].lighter, true);
+                        getColourMap(colours[1].colour).lighter, true);
 
                 DrawTextBasic(rt, screenCoords - ScreenCoordsXY{ 0, 1 }, _windowFinancesSummaryRowLabels[i]);
                 screenCoords.y += kTableCellHeight;

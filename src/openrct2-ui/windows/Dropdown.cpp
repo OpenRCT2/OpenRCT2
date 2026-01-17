@@ -20,6 +20,7 @@
 #include <openrct2/SpriteIds.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/BitSet.hpp>
+#include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/interface/ColourWithFlags.h>
@@ -134,9 +135,10 @@ namespace OpenRCT2::Ui::Windows
                     }
                     else
                     {
-                        Rectangle::fill(rt, { leftTop, rightBottom }, ColourMapA[colours[0].colour].midDark);
+                        Rectangle::fill(rt, { leftTop, rightBottom }, getColourMap(colours[0].colour).midDark);
                         Rectangle::fill(
-                            rt, { leftTop + shadowOffset, rightBottom + shadowOffset }, ColourMapA[colours[0].colour].lightest);
+                            rt, { leftTop + shadowOffset, rightBottom + shadowOffset },
+                            getColourMap(colours[0].colour).lightest);
                     }
                 }
                 else

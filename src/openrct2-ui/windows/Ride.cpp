@@ -41,6 +41,7 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/core/String.hpp>
 #include <openrct2/core/UnitConversion.h>
+#include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/entity/EntityList.h>
@@ -5259,7 +5260,7 @@ namespace OpenRCT2::Ui::Windows
             if (!isMusicActivated)
                 return;
 
-            auto paletteIndex = ColourMapA[colours[1].colour].midLight;
+            auto paletteIndex = getColourMap(colours[1].colour).midLight;
             GfxClear(rt, paletteIndex);
 
             auto* musicObj = ride->getMusicObject();
@@ -6042,7 +6043,7 @@ namespace OpenRCT2::Ui::Windows
 
         void GraphsOnScrollDraw(RenderTarget& rt, int32_t scrollIndex)
         {
-            GfxClear(rt, ColourMapA[COLOUR_SATURATED_GREEN].darker);
+            GfxClear(rt, getColourMap(COLOUR_SATURATED_GREEN).darker);
 
             auto widget = &widgets[WIDX_GRAPH];
             auto ride = GetRide(rideId);
@@ -6063,8 +6064,8 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Vertical grid lines
-            const auto lightColour = ColourMapA[COLOUR_SATURATED_GREEN].midLight;
-            const auto darkColour = ColourMapA[COLOUR_SATURATED_GREEN].midDark;
+            const auto lightColour = getColourMap(COLOUR_SATURATED_GREEN).midLight;
+            const auto darkColour = getColourMap(COLOUR_SATURATED_GREEN).midDark;
 
             int32_t time = 0;
             for (int32_t x = 0; x < rt.x + rt.width; x += 80)

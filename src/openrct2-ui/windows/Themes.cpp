@@ -16,6 +16,7 @@
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
 #include <openrct2/SpriteIds.h>
+#include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/interface/ColourWithFlags.h>
@@ -723,9 +724,8 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             if (!colours[1].flags.has(ColourFlag::translucent))
-                // Rectangle::fill(rt, rt->x, rt->y, rt->x + rt->width - 1, rt->y + rt->height - 1,
-                // ColourMapA[colours[1].colour].midLight);
-                GfxClear(rt, ColourMapA[colours[1].colour].midLight);
+                GfxClear(rt, getColourMap(colours[1].colour).midLight);
+
             screenCoords.y = 0;
             for (int32_t i = 0; i < GetColourSchemeTabCount(); i++)
             {
@@ -769,10 +769,10 @@ namespace OpenRCT2::Ui::Windows
                         }
                         else
                         {
-                            auto fillColour = ColourMapA[colours[1].colour].midDark;
+                            auto fillColour = getColourMap(colours[1].colour).midDark;
                             Rectangle::fill(rt, { leftTop, rightBottom }, fillColour);
 
-                            fillColour = ColourMapA[colours[1].colour].lightest;
+                            fillColour = getColourMap(colours[1].colour).lightest;
                             Rectangle::fill(rt, { leftTop + yPixelOffset, rightBottom + yPixelOffset }, fillColour);
                         }
                     }
