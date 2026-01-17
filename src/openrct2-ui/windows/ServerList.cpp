@@ -328,7 +328,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
-            auto paletteIndex = ColourMapA[colours[1].colour].mid_light;
+            auto paletteIndex = ColourMapA[colours[1].colour].midLight;
             GfxClear(rt, paletteIndex);
 
             auto& listWidget = widgets[WIDX_LIST];

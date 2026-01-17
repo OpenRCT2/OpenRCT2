@@ -732,7 +732,7 @@ namespace OpenRCT2::Ui::Windows
             ScreenCoordsXY screenCoords;
             bool ridePage = (GetSelectedObjectType() == ObjectType::ride);
 
-            auto paletteIndex = ColourMapA[colours[1].colour].mid_light;
+            auto paletteIndex = ColourMapA[colours[1].colour].midLight;
             GfxClear(rt, paletteIndex);
 
             screenCoords.y = 0;

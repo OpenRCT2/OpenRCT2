@@ -496,7 +496,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            GfxClear(rt, ColourMapA[colours[1].colour].mid_light);
+            GfxClear(rt, ColourMapA[colours[1].colour].midLight);
 
             ScreenCoordsXY coords{ 1, 1 };
             RideSelection* listItem = _windowNewRideListItems;

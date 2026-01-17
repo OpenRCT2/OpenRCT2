@@ -95,12 +95,12 @@ namespace OpenRCT2::Drawing::Rectangle
             if (brightness == FillBrightness::dark)
             {
                 shadow = ColourMapA[colour.colour].dark;
-                fill = ColourMapA[colour.colour].mid_light;
+                fill = ColourMapA[colour.colour].midLight;
                 hilight = ColourMapA[colour.colour].lighter;
             }
             else
             {
-                shadow = ColourMapA[colour.colour].mid_dark;
+                shadow = ColourMapA[colour.colour].midDark;
                 fill = ColourMapA[colour.colour].light;
                 hilight = ColourMapA[colour.colour].lighter;
             }

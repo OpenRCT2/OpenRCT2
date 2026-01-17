@@ -515,7 +515,7 @@ namespace OpenRCT2::Ui::Windows
             auto rtCoords = ScreenCoordsXY{ rt.x, rt.y };
             Rectangle::fill(
                 rt, { rtCoords, rtCoords + ScreenCoordsXY{ rt.width - 1, rt.height - 1 } },
-                ColourMapA[colours[1].colour].mid_light);
+                ColourMapA[colours[1].colour].midLight);
             const int32_t listWidth = widgets[WIDX_SCROLL].width() - 1;
 
             for (int32_t i = 0; i < numListItems; i++)
@@ -534,7 +534,7 @@ namespace OpenRCT2::Ui::Windows
                 if (i == selectedListItem)
                     Rectangle::fill(rt, screenRect, ColourMapA[colours[1].colour].darker);
                 else if (i == _highlightedIndex)
-                    Rectangle::fill(rt, screenRect, ColourMapA[colours[1].colour].mid_dark);
+                    Rectangle::fill(rt, screenRect, ColourMapA[colours[1].colour].midDark);
                 else if ((i & 1) != 0) // odd / even check
                     Rectangle::fill(rt, screenRect, ColourMapA[colours[1].colour].light);
 

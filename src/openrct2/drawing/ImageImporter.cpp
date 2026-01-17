@@ -242,9 +242,9 @@ namespace OpenRCT2::Drawing
             paletteIndex = GetClosestPaletteIndex(palette, rgbaSrc);
             if (mode == ImportMode::Dithering)
             {
-                auto dr = rgbaSrc[0] - static_cast<int16_t>(palette[paletteIndex].Red);
-                auto dg = rgbaSrc[1] - static_cast<int16_t>(palette[paletteIndex].Green);
-                auto db = rgbaSrc[2] - static_cast<int16_t>(palette[paletteIndex].Blue);
+                auto dr = rgbaSrc[0] - static_cast<int16_t>(palette[paletteIndex].red);
+                auto dg = rgbaSrc[1] - static_cast<int16_t>(palette[paletteIndex].green);
+                auto db = rgbaSrc[2] - static_cast<int16_t>(palette[paletteIndex].blue);
 
                 // We don't want to dither remappable colours with nonremappable colours, etc
                 PaletteIndexType thisIndexType = GetPaletteIndexType(paletteIndex);
@@ -308,8 +308,8 @@ namespace OpenRCT2::Drawing
         {
             for (uint32_t i = 0; i < kGamePaletteSize; i++)
             {
-                if (static_cast<int16_t>(palette[i].Red) == colour[0] && static_cast<int16_t>(palette[i].Green) == colour[1]
-                    && static_cast<int16_t>(palette[i].Blue) == colour[2])
+                if (static_cast<int16_t>(palette[i].red) == colour[0] && static_cast<int16_t>(palette[i].green) == colour[1]
+                    && static_cast<int16_t>(palette[i].blue) == colour[2])
                 {
                     return i;
                 }
@@ -368,11 +368,11 @@ namespace OpenRCT2::Drawing
         {
             if (IsChangablePixel(x))
             {
-                uint32_t error = (static_cast<int16_t>(palette[x].Red) - colour[0])
-                        * (static_cast<int16_t>(palette[x].Red) - colour[0])
-                    + (static_cast<int16_t>(palette[x].Green) - colour[1])
-                        * (static_cast<int16_t>(palette[x].Green) - colour[1])
-                    + (static_cast<int16_t>(palette[x].Blue) - colour[2]) * (static_cast<int16_t>(palette[x].Blue) - colour[2]);
+                uint32_t error = (static_cast<int16_t>(palette[x].red) - colour[0])
+                        * (static_cast<int16_t>(palette[x].red) - colour[0])
+                    + (static_cast<int16_t>(palette[x].green) - colour[1])
+                        * (static_cast<int16_t>(palette[x].green) - colour[1])
+                    + (static_cast<int16_t>(palette[x].blue) - colour[2]) * (static_cast<int16_t>(palette[x].blue) - colour[2]);
 
                 if (smallestError == static_cast<uint32_t>(-1) || smallestError > error)
                 {

@@ -567,7 +567,7 @@ void CustomListView::MouseUp(const ScreenCoordsXY& pos)
 
 void CustomListView::Paint(WindowBase* w, RenderTarget& rt, const ScrollArea* scroll) const
 {
-    auto paletteIndex = ColourMapA[w->colours[1].colour].mid_light;
+    auto paletteIndex = ColourMapA[w->colours[1].colour].midLight;
     Rectangle::fill(rt, { { rt.x, rt.y }, { rt.x + rt.width, rt.y + rt.height } }, paletteIndex);
 
     int32_t y = ShowColumnHeaders ? kColumnHeaderHeight : 0;
@@ -654,7 +654,7 @@ void CustomListView::Paint(WindowBase* w, RenderTarget& rt, const ScrollArea* sc
     {
         y = scroll->contentOffsetY;
 
-        auto bgColour = ColourMapA[w->colours[1].colour].mid_light;
+        auto bgColour = ColourMapA[w->colours[1].colour].midLight;
         Rectangle::fill(rt, { { rt.x, y }, { rt.x + rt.width, y + 12 } }, bgColour);
 
         int32_t x = 0;
@@ -718,7 +718,7 @@ void CustomListView::PaintSeparator(RenderTarget& rt, const ScreenCoordsXY& pos,
 
     auto baseColour = ParentWindow->colours[1];
     auto lightColour = ColourMapA[baseColour.colour].lighter;
-    auto darkColour = ColourMapA[baseColour.colour].mid_dark;
+    auto darkColour = ColourMapA[baseColour.colour].midDark;
 
     if (hasText)
     {

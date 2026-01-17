@@ -46,18 +46,18 @@ void ColoursInitMaps()
         const auto* g1 = GfxGetG1Element(paletteIndex + i);
         if (g1 != nullptr)
         {
-            ColourMapA[i].colour_0 = static_cast<PaletteIndex>(g1->offset[INDEX_COLOUR_0]);
-            ColourMapA[i].colour_1 = static_cast<PaletteIndex>(g1->offset[INDEX_COLOUR_1]);
+            ColourMapA[i].colour0 = static_cast<PaletteIndex>(g1->offset[INDEX_COLOUR_0]);
+            ColourMapA[i].colour1 = static_cast<PaletteIndex>(g1->offset[INDEX_COLOUR_1]);
             ColourMapA[i].darkest = static_cast<PaletteIndex>(g1->offset[INDEX_DARKEST]);
             ColourMapA[i].darker = static_cast<PaletteIndex>(g1->offset[INDEX_DARKER]);
             ColourMapA[i].dark = static_cast<PaletteIndex>(g1->offset[INDEX_DARK]);
-            ColourMapA[i].mid_dark = static_cast<PaletteIndex>(g1->offset[INDEX_MID_DARK]);
-            ColourMapA[i].mid_light = static_cast<PaletteIndex>(g1->offset[INDEX_MID_LIGHT]);
+            ColourMapA[i].midDark = static_cast<PaletteIndex>(g1->offset[INDEX_MID_DARK]);
+            ColourMapA[i].midLight = static_cast<PaletteIndex>(g1->offset[INDEX_MID_LIGHT]);
             ColourMapA[i].light = static_cast<PaletteIndex>(g1->offset[INDEX_LIGHT]);
             ColourMapA[i].lighter = static_cast<PaletteIndex>(g1->offset[INDEX_LIGHTER]);
             ColourMapA[i].lightest = static_cast<PaletteIndex>(g1->offset[INDEX_LIGHTEST]);
-            ColourMapA[i].colour_10 = static_cast<PaletteIndex>(g1->offset[INDEX_COLOUR_10]);
-            ColourMapA[i].colour_11 = static_cast<PaletteIndex>(g1->offset[INDEX_COLOUR_11]);
+            ColourMapA[i].colour10 = static_cast<PaletteIndex>(g1->offset[INDEX_COLOUR_10]);
+            ColourMapA[i].colour11 = static_cast<PaletteIndex>(g1->offset[INDEX_COLOUR_11]);
         }
     }
 }
@@ -153,8 +153,8 @@ static PaletteIndex FindClosestPaletteIndex(uint8_t red, uint8_t green, uint8_t 
     for (auto i = PaletteIndex::pi0; i < PaletteIndex::pi230; i = static_cast<PaletteIndex>(EnumValue(i) + 1))
     {
         const auto& paletteEntry = gPalette[EnumValue(i)];
-        const int32_t distance = std::pow(paletteEntry.Red - red, 2) + std::pow(paletteEntry.Green - green, 2)
-            + std::pow(paletteEntry.Blue - blue, 2);
+        const int32_t distance = std::pow(paletteEntry.red - red, 2) + std::pow(paletteEntry.green - green, 2)
+            + std::pow(paletteEntry.blue - blue, 2);
 
         if (distance < closestDistance)
         {
@@ -172,9 +172,9 @@ static void InitBlendColourMap()
     {
         for (size_t j = i; j < kGamePaletteSize; j++)
         {
-            uint8_t red = (gPalette[i].Red + gPalette[j].Red) / 2;
-            uint8_t green = (gPalette[i].Green + gPalette[j].Green) / 2;
-            uint8_t blue = (gPalette[i].Blue + gPalette[j].Blue) / 2;
+            uint8_t red = (gPalette[i].red + gPalette[j].red) / 2;
+            uint8_t green = (gPalette[i].green + gPalette[j].green) / 2;
+            uint8_t blue = (gPalette[i].blue + gPalette[j].blue) / 2;
 
             auto colour = FindClosestPaletteIndex(red, green, blue);
             BlendColourMap[i][j] = colour;

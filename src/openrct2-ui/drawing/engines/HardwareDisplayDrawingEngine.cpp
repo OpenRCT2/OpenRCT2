@@ -183,7 +183,7 @@ public:
         {
             for (int32_t i = 0; i < 256; i++)
             {
-                _paletteHWMapped[i] = SDL_MapRGB(_screenTextureFormat, palette[i].Red, palette[i].Green, palette[i].Blue);
+                _paletteHWMapped[i] = SDL_MapRGB(_screenTextureFormat, palette[i].red, palette[i].green, palette[i].blue);
             }
 
             if (Config::Get().general.enableLightFx)
@@ -192,7 +192,7 @@ public:
                 for (int32_t i = 0; i < 256; i++)
                 {
                     const auto& src = lightPalette[i];
-                    _lightPaletteHWMapped[i] = SDL_MapRGBA(_screenTextureFormat, src.Red, src.Green, src.Blue, src.Alpha);
+                    _lightPaletteHWMapped[i] = SDL_MapRGBA(_screenTextureFormat, src.red, src.green, src.blue, src.alpha);
                 }
             }
         }

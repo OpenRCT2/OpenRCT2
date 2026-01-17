@@ -542,7 +542,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
-            auto paletteIndex = ColourMapA[colours[1].colour].mid_light;
+            auto paletteIndex = ColourMapA[colours[1].colour].midLight;
             GfxClear(rt, paletteIndex);
 
             StringId highlighted_format = STR_WINDOW_COLOUR_2_STRINGID;
@@ -640,7 +640,7 @@ namespace OpenRCT2::Ui::Windows
         {
             auto baseColour = colours[1];
             auto lightColour = ColourMapA[baseColour.colour].lighter;
-            auto darkColour = ColourMapA[baseColour.colour].mid_dark;
+            auto darkColour = ColourMapA[baseColour.colour].midDark;
 
             // Draw string
             int32_t centreX = (left + right) / 2;

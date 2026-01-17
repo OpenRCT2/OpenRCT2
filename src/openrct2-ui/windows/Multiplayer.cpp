@@ -396,7 +396,7 @@ namespace OpenRCT2::Ui::Windows
             auto rtCoords = ScreenCoordsXY{ rt.x, rt.y };
             Rectangle::fill(
                 rt, { rtCoords, rtCoords + ScreenCoordsXY{ rt.width - 1, rt.height - 1 } },
-                ColourMapA[colours[1].colour].mid_light);
+                ColourMapA[colours[1].colour].midLight);
 
             for (int32_t i = 0; i < Network::GetNumActions(); i++)
             {

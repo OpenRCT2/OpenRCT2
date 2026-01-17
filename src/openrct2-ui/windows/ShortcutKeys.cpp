@@ -302,7 +302,7 @@ namespace OpenRCT2::Ui::Windows
             auto rtCoords = ScreenCoordsXY{ rt.x, rt.y };
             Rectangle::fill(
                 rt, { rtCoords, rtCoords + ScreenCoordsXY{ rt.width - 1, rt.height - 1 } },
-                ColourMapA[colours[1].colour].mid_light);
+                ColourMapA[colours[1].colour].midLight);
 
             // TODO: the line below is a workaround for what is presumably a bug with rt->width
             //       see https://github.com/OpenRCT2/OpenRCT2/issues/11238 for details
@@ -504,7 +504,7 @@ namespace OpenRCT2::Ui::Windows
         void DrawSeparator(RenderTarget& rt, int32_t y, int32_t scrollWidth)
         {
             const int32_t top = y + (kScrollableRowHeight / 2) - 1;
-            Rectangle::fill(rt, { { 0, top }, { scrollWidth, top } }, ColourMapA[colours[1].colour].mid_dark);
+            Rectangle::fill(rt, { { 0, top }, { scrollWidth, top } }, ColourMapA[colours[1].colour].midDark);
             Rectangle::fill(rt, { { 0, top + 1 }, { scrollWidth, top + 1 } }, ColourMapA[colours[1].colour].lightest);
         }
 

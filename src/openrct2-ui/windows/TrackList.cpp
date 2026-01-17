@@ -676,7 +676,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onScrollDraw(const int32_t scrollIndex, RenderTarget& rt) override
         {
-            auto paletteIndex = ColourMapA[colours[0].colour].mid_light;
+            auto paletteIndex = ColourMapA[colours[0].colour].midLight;
             GfxClear(rt, paletteIndex);
 
             auto screenCoords = ScreenCoordsXY{ 0, 0 };
