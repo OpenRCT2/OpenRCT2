@@ -110,7 +110,7 @@ namespace OpenRCT2::CommandLine::Sprite
                     const auto image = SpriteImageLoad(imagePath, meta);
                     if (image == std::nullopt)
                     {
-                        fprintf(stderr, "Could not read image file: %s\nCanceling\n", imagePath.c_str());
+                        fprintf(stderr, "Could not read image file: %s\nCancelling\n", imagePath.c_str());
                         return -1;
                     }
                     images[imagePath] = image.value();

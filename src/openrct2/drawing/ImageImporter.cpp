@@ -62,7 +62,7 @@ namespace OpenRCT2::Drawing
 
     PaletteImportResult ImageImporter::importJSONPalette(json_t& jPalette) const
     {
-        Guard::Assert(jPalette.is_object(), "ImageImporter::importJSONPalette expects parameter jPalette to be object");
+        Guard::Assert(jPalette.is_object(), "ImageImporter::importJSONPalette expects parameter jPalette to be an object");
 
         auto jColours = jPalette["colours"];
         auto numColours = jColours.size();
