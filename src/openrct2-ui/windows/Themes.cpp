@@ -724,9 +724,8 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             if (!colours[1].flags.has(ColourFlag::translucent))
-                // Rectangle::fill(rt, rt->x, rt->y, rt->x + rt->width - 1, rt->y + rt->height - 1,
-                // getColourMap(colours[1].colour).midLight);
                 GfxClear(rt, getColourMap(colours[1].colour).midLight);
+
             screenCoords.y = 0;
             for (int32_t i = 0; i < GetColourSchemeTabCount(); i++)
             {
