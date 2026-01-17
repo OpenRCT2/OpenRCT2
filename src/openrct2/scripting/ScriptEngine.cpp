@@ -782,7 +782,7 @@ void ScriptEngine::UnregisterPlugin(std::string_view path)
         });
         auto& plugin = *pluginIt;
 
-        StopPlugin(plugin);
+        StopPlugin(plugin, true);
         UnloadPlugin(plugin);
         LogPluginInfo(plugin, "Unregistered");
 
@@ -919,9 +919,11 @@ void ScriptEngine::StartPlugin(std::shared_ptr<Plugin> plugin)
     }
 }
 
-void ScriptEngine::StopPlugin(std::shared_ptr<Plugin> plugin)
+void ScriptEngine::StopPlugin(std::shared_ptr<Plugin> plugin, bool unregistering)
 {
-    if (plugin->HasStarted())
+    // This is hacky but on the title screen the plugin can register things without having
+    // been started. Therefore when unregistering we must make sure to clean those things up
+    if (plugin->HasStarted() || unregistering)
     {
         plugin->StopBegin();
 
@@ -935,7 +937,8 @@ void ScriptEngine::StopPlugin(std::shared_ptr<Plugin> plugin)
         _hookEngine.UnsubscribeAll(plugin);
 
         plugin->StopEnd();
-        LogPluginInfo(plugin, "Stopped");
+        if (!unregistering)
+            LogPluginInfo(plugin, "Stopped");
     }
 }
 

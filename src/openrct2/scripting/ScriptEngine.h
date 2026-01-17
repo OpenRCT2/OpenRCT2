@@ -284,7 +284,7 @@ namespace OpenRCT2::Scripting
         void LoadPlugin(std::shared_ptr<Plugin>& plugin);
         void UnloadPlugin(std::shared_ptr<Plugin>& plugin);
         void StartPlugin(std::shared_ptr<Plugin> plugin);
-        void StopPlugin(std::shared_ptr<Plugin> plugin);
+        void StopPlugin(std::shared_ptr<Plugin> plugin, bool unregistering = false);
         void ReloadPlugin(std::shared_ptr<Plugin> plugin);
         static bool ShouldLoadScript(std::string_view path);
         bool ShouldStartPlugin(const std::shared_ptr<Plugin>& plugin);
