@@ -18,10 +18,10 @@
     #include <openrct2/drawing/RenderTarget.h>
     #include <openrct2/scripting/Duktape.hpp>
 
-using namespace OpenRCT2::Drawing;
-
 namespace OpenRCT2::Scripting
 {
+    using namespace OpenRCT2::Drawing;
+
     class ScGraphicsContext
     {
     private:
