@@ -16,8 +16,6 @@
 #include "../paint/tile_element/Segment.h"
 #include "Track.h"
 
-using namespace OpenRCT2;
-
 namespace OpenRCT2::TrackMetaData
 {
     constexpr uint8_t kMaxSequencesPerPiece = 16;

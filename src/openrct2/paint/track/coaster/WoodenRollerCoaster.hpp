@@ -120,13 +120,13 @@ static void WoodenRCTrackStraightBankTrack(PaintSession& session, uint8_t direct
 template<bool isClassic, std::array<WoodenTrackSection, kNumOrthogonalDirections> imageIds>
 void WoodenRCTrackFlatToBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement, SupportType supportType)
+    const OpenRCT2::TrackElement& trackElement, SupportType supportType)
 {
     WoodenRCTrackStraightBankTrack<isClassic, imageIds>(session, direction, height);
     WoodenASupportsPaintSetupRotated(
         session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours);
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, OpenRCT2::kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
@@ -134,7 +134,7 @@ void WoodenRCTrackFlatToBank(
 template<bool isClassic, std::array<WoodenTrackSection, kNumOrthogonalDirections> imageIds>
 static void WoodenRCTrack25DegUpToBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement, SupportType supportType)
+    const OpenRCT2::TrackElement& trackElement, SupportType supportType)
 {
     WoodenRCTrackStraightBankTrack<isClassic, imageIds>(session, direction, height);
     WoodenASupportsPaintSetupRotated(
@@ -148,7 +148,7 @@ static void WoodenRCTrack25DegUpToBank(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
     }
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, OpenRCT2::kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
@@ -156,7 +156,7 @@ static void WoodenRCTrack25DegUpToBank(
 template<bool isClassic, std::array<WoodenTrackSection, kNumOrthogonalDirections> imageIds>
 static void WoodenRCTrackBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement, SupportType supportType)
+    const OpenRCT2::TrackElement& trackElement, SupportType supportType)
 {
     WoodenRCTrackStraightBankTrack<isClassic, imageIds>(session, direction, height);
     WoodenASupportsPaintSetupRotated(
@@ -170,7 +170,7 @@ static void WoodenRCTrackBankTo25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, OpenRCT2::kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
@@ -178,7 +178,7 @@ static void WoodenRCTrackBankTo25DegUp(
 template<bool isClassic, std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 3> imageIds>
 static void WoodenRCTrackLeftQuarterTurn3Bank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement, SupportType supportType)
+    const OpenRCT2::TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -297,13 +297,15 @@ static void WoodenRCTrackLeftQuarterTurn3Bank(
     TrackPaintUtilLeftQuarterTurn3TilesTunnel(session, kTunnelGroup, TunnelSubType::Flat, height, direction, trackSequence);
 
     static constexpr int blockedSegments[4] = {
-        kSegmentsAll,
-        kSegmentsNone,
-        EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
-        kSegmentsAll,
+        OpenRCT2::kSegmentsAll,
+        OpenRCT2::kSegmentsNone,
+        EnumsToFlags(
+            OpenRCT2::PaintSegment::left, OpenRCT2::PaintSegment::centre, OpenRCT2::PaintSegment::topLeft,
+            OpenRCT2::PaintSegment::bottomLeft),
+        OpenRCT2::kSegmentsAll,
     };
 
-    DrawSupportForSequenceA<TrackElemType::leftBankedQuarterTurn3Tiles>(
+    DrawSupportForSequenceA<OpenRCT2::TrackElemType::leftBankedQuarterTurn3Tiles>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments[trackSequence], direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -312,7 +314,7 @@ static void WoodenRCTrackLeftQuarterTurn3Bank(
 template<bool isClassic, std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 5> imageIds>
 static void WoodenRCTrackBankedRightQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement, SupportType supportType)
+    const OpenRCT2::TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -506,22 +508,23 @@ static void WoodenRCTrackBankedRightQuarterTurn5(
     TrackPaintUtilRightQuarterTurn5TilesTunnel(session, kTunnelGroup, TunnelSubType::Flat, height, direction, trackSequence);
 
     static constexpr int blockedSegments[7] = {
-        kSegmentsAll,
-        EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight),
+        OpenRCT2::kSegmentsAll,
+        EnumsToFlags(OpenRCT2::PaintSegment::top, OpenRCT2::PaintSegment::topLeft, OpenRCT2::PaintSegment::topRight),
         EnumsToFlags(
-            PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft,
-            PaintSegment::bottomRight),
+            OpenRCT2::PaintSegment::right, OpenRCT2::PaintSegment::bottom, OpenRCT2::PaintSegment::centre,
+            OpenRCT2::PaintSegment::topRight, OpenRCT2::PaintSegment::bottomLeft, OpenRCT2::PaintSegment::bottomRight),
         EnumsToFlags(
-            PaintSegment::top, PaintSegment::left, PaintSegment::right, PaintSegment::centre, PaintSegment::topLeft,
-            PaintSegment::topRight, PaintSegment::bottomLeft, PaintSegment::bottomRight),
-        EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight),
+            OpenRCT2::PaintSegment::top, OpenRCT2::PaintSegment::left, OpenRCT2::PaintSegment::right,
+            OpenRCT2::PaintSegment::centre, OpenRCT2::PaintSegment::topLeft, OpenRCT2::PaintSegment::topRight,
+            OpenRCT2::PaintSegment::bottomLeft, OpenRCT2::PaintSegment::bottomRight),
+        EnumsToFlags(OpenRCT2::PaintSegment::top, OpenRCT2::PaintSegment::topLeft, OpenRCT2::PaintSegment::topRight),
         EnumsToFlags(
-            PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft,
-            PaintSegment::bottomRight),
-        kSegmentsAll,
+            OpenRCT2::PaintSegment::left, OpenRCT2::PaintSegment::bottom, OpenRCT2::PaintSegment::centre,
+            OpenRCT2::PaintSegment::topLeft, OpenRCT2::PaintSegment::bottomLeft, OpenRCT2::PaintSegment::bottomRight),
+        OpenRCT2::kSegmentsAll,
     };
 
-    DrawSupportForSequenceA<TrackElemType::bankedRightQuarterTurn5Tiles>(
+    DrawSupportForSequenceA<OpenRCT2::TrackElemType::bankedRightQuarterTurn5Tiles>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments[trackSequence], direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -531,7 +534,7 @@ static void WoodenRCTrackBankedRightQuarterTurn5(
 template<bool isClassic, std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 3> imageIds>
 static void WoodenRCTrackLeftHalfBankedHelixUpSmall(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement, SupportType supportType)
+    const OpenRCT2::TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -586,15 +589,17 @@ static void WoodenRCTrackLeftHalfBankedHelixUpSmall(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::left, PaintSegment::right, PaintSegment::bottom, PaintSegment::bottomRight),
+                    EnumsToFlags(
+                        OpenRCT2::PaintSegment::left, OpenRCT2::PaintSegment::right, OpenRCT2::PaintSegment::bottom,
+                        OpenRCT2::PaintSegment::bottomRight),
                     direction),
                 48, 0x20);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
-                        PaintSegment::bottomLeft),
+                        OpenRCT2::PaintSegment::top, OpenRCT2::PaintSegment::centre, OpenRCT2::PaintSegment::topLeft,
+                        OpenRCT2::PaintSegment::topRight, OpenRCT2::PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -660,7 +665,9 @@ static void WoodenRCTrackLeftHalfBankedHelixUpSmall(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
+                    EnumsToFlags(
+                        OpenRCT2::PaintSegment::left, OpenRCT2::PaintSegment::centre, OpenRCT2::PaintSegment::topLeft,
+                        OpenRCT2::PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -721,15 +728,17 @@ static void WoodenRCTrackLeftHalfBankedHelixUpSmall(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::top, PaintSegment::left, PaintSegment::right, PaintSegment::topRight),
+                    EnumsToFlags(
+                        OpenRCT2::PaintSegment::top, OpenRCT2::PaintSegment::left, OpenRCT2::PaintSegment::right,
+                        OpenRCT2::PaintSegment::topRight),
                     direction),
                 48, 0x20);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft,
-                        PaintSegment::bottomRight),
+                        OpenRCT2::PaintSegment::bottom, OpenRCT2::PaintSegment::centre, OpenRCT2::PaintSegment::topLeft,
+                        OpenRCT2::PaintSegment::bottomLeft, OpenRCT2::PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -790,15 +799,17 @@ static void WoodenRCTrackLeftHalfBankedHelixUpSmall(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::top, PaintSegment::right, PaintSegment::bottom, PaintSegment::topRight),
+                    EnumsToFlags(
+                        OpenRCT2::PaintSegment::top, OpenRCT2::PaintSegment::right, OpenRCT2::PaintSegment::bottom,
+                        OpenRCT2::PaintSegment::topRight),
                     direction),
                 48, 0x20);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft,
-                        PaintSegment::bottomRight),
+                        OpenRCT2::PaintSegment::left, OpenRCT2::PaintSegment::centre, OpenRCT2::PaintSegment::topLeft,
+                        OpenRCT2::PaintSegment::bottomLeft, OpenRCT2::PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -865,7 +876,8 @@ static void WoodenRCTrackLeftHalfBankedHelixUpSmall(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
+                        OpenRCT2::PaintSegment::bottom, OpenRCT2::PaintSegment::centre, OpenRCT2::PaintSegment::bottomLeft,
+                        OpenRCT2::PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -921,15 +933,17 @@ static void WoodenRCTrackLeftHalfBankedHelixUpSmall(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::top, PaintSegment::left, PaintSegment::bottom, PaintSegment::topLeft),
+                    EnumsToFlags(
+                        OpenRCT2::PaintSegment::top, OpenRCT2::PaintSegment::left, OpenRCT2::PaintSegment::bottom,
+                        OpenRCT2::PaintSegment::topLeft),
                     direction),
                 48, 0x20);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft,
-                        PaintSegment::bottomRight),
+                        OpenRCT2::PaintSegment::right, OpenRCT2::PaintSegment::centre, OpenRCT2::PaintSegment::topRight,
+                        OpenRCT2::PaintSegment::bottomLeft, OpenRCT2::PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -941,7 +955,7 @@ static void WoodenRCTrackLeftHalfBankedHelixUpSmall(
 template<bool isClassic, std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 3> imageIds>
 static void WoodenRCTrackRightHalfBankedHelixUpSmall(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement, SupportType supportType)
+    const OpenRCT2::TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -996,15 +1010,17 @@ static void WoodenRCTrackRightHalfBankedHelixUpSmall(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::top, PaintSegment::left, PaintSegment::bottom, PaintSegment::topLeft),
+                    EnumsToFlags(
+                        OpenRCT2::PaintSegment::top, OpenRCT2::PaintSegment::left, OpenRCT2::PaintSegment::bottom,
+                        OpenRCT2::PaintSegment::topLeft),
                     direction),
                 48, 0x20);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft,
-                        PaintSegment::bottomRight),
+                        OpenRCT2::PaintSegment::right, OpenRCT2::PaintSegment::centre, OpenRCT2::PaintSegment::topRight,
+                        OpenRCT2::PaintSegment::bottomLeft, OpenRCT2::PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -1071,7 +1087,8 @@ static void WoodenRCTrackRightHalfBankedHelixUpSmall(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
+                        OpenRCT2::PaintSegment::bottom, OpenRCT2::PaintSegment::centre, OpenRCT2::PaintSegment::bottomLeft,
+                        OpenRCT2::PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -1132,15 +1149,17 @@ static void WoodenRCTrackRightHalfBankedHelixUpSmall(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::top, PaintSegment::right, PaintSegment::bottom, PaintSegment::topRight),
+                    EnumsToFlags(
+                        OpenRCT2::PaintSegment::top, OpenRCT2::PaintSegment::right, OpenRCT2::PaintSegment::bottom,
+                        OpenRCT2::PaintSegment::topRight),
                     direction),
                 48, 0x20);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft,
-                        PaintSegment::bottomRight),
+                        OpenRCT2::PaintSegment::left, OpenRCT2::PaintSegment::centre, OpenRCT2::PaintSegment::topLeft,
+                        OpenRCT2::PaintSegment::bottomLeft, OpenRCT2::PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -1201,15 +1220,17 @@ static void WoodenRCTrackRightHalfBankedHelixUpSmall(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::top, PaintSegment::left, PaintSegment::right, PaintSegment::topRight),
+                    EnumsToFlags(
+                        OpenRCT2::PaintSegment::top, OpenRCT2::PaintSegment::left, OpenRCT2::PaintSegment::right,
+                        OpenRCT2::PaintSegment::topRight),
                     direction),
                 48, 0x20);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft,
-                        PaintSegment::bottomRight),
+                        OpenRCT2::PaintSegment::bottom, OpenRCT2::PaintSegment::centre, OpenRCT2::PaintSegment::topLeft,
+                        OpenRCT2::PaintSegment::bottomLeft, OpenRCT2::PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -1275,7 +1296,9 @@ static void WoodenRCTrackRightHalfBankedHelixUpSmall(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
+                    EnumsToFlags(
+                        OpenRCT2::PaintSegment::left, OpenRCT2::PaintSegment::centre, OpenRCT2::PaintSegment::topLeft,
+                        OpenRCT2::PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -1331,15 +1354,17 @@ static void WoodenRCTrackRightHalfBankedHelixUpSmall(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::left, PaintSegment::right, PaintSegment::bottom, PaintSegment::bottomRight),
+                    EnumsToFlags(
+                        OpenRCT2::PaintSegment::left, OpenRCT2::PaintSegment::right, OpenRCT2::PaintSegment::bottom,
+                        OpenRCT2::PaintSegment::bottomRight),
                     direction),
                 48, 0x20);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
-                        PaintSegment::bottomLeft),
+                        OpenRCT2::PaintSegment::top, OpenRCT2::PaintSegment::centre, OpenRCT2::PaintSegment::topLeft,
+                        OpenRCT2::PaintSegment::topRight, OpenRCT2::PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -1351,7 +1376,7 @@ static void WoodenRCTrackRightHalfBankedHelixUpSmall(
 template<bool isClassic, std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 5> imageIds>
 static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement, SupportType supportType)
+    const OpenRCT2::TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -1406,15 +1431,17 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::left, PaintSegment::right, PaintSegment::bottom, PaintSegment::bottomRight),
+                    EnumsToFlags(
+                        OpenRCT2::PaintSegment::left, OpenRCT2::PaintSegment::right, OpenRCT2::PaintSegment::bottom,
+                        OpenRCT2::PaintSegment::bottomRight),
                     direction),
                 48, 0x20);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
-                        PaintSegment::bottomLeft),
+                        OpenRCT2::PaintSegment::top, OpenRCT2::PaintSegment::centre, OpenRCT2::PaintSegment::topLeft,
+                        OpenRCT2::PaintSegment::topRight, OpenRCT2::PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -1423,7 +1450,9 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::right, PaintSegment::topRight, PaintSegment::bottomRight), direction),
+                    EnumsToFlags(
+                        OpenRCT2::PaintSegment::right, OpenRCT2::PaintSegment::topRight, OpenRCT2::PaintSegment::bottomRight),
+                    direction),
                 48, 0x20);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
@@ -1475,8 +1504,8 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
-                        PaintSegment::topRight, PaintSegment::bottomLeft),
+                        OpenRCT2::PaintSegment::top, OpenRCT2::PaintSegment::left, OpenRCT2::PaintSegment::centre,
+                        OpenRCT2::PaintSegment::topLeft, OpenRCT2::PaintSegment::topRight, OpenRCT2::PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -1528,13 +1557,17 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::top, PaintSegment::bottom, PaintSegment::topLeft, PaintSegment::bottomLeft),
+                    EnumsToFlags(
+                        OpenRCT2::PaintSegment::top, OpenRCT2::PaintSegment::bottom, OpenRCT2::PaintSegment::topLeft,
+                        OpenRCT2::PaintSegment::bottomLeft),
                     direction),
                 48, 0x20);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
+                    EnumsToFlags(
+                        OpenRCT2::PaintSegment::right, OpenRCT2::PaintSegment::centre, OpenRCT2::PaintSegment::topRight,
+                        OpenRCT2::PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -1543,7 +1576,9 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::right, PaintSegment::topRight, PaintSegment::bottomRight), direction),
+                    EnumsToFlags(
+                        OpenRCT2::PaintSegment::right, OpenRCT2::PaintSegment::topRight, OpenRCT2::PaintSegment::bottomRight),
+                    direction),
                 48, 0x20);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
@@ -1595,8 +1630,9 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft,
-                        PaintSegment::bottomLeft, PaintSegment::bottomRight),
+                        OpenRCT2::PaintSegment::left, OpenRCT2::PaintSegment::bottom, OpenRCT2::PaintSegment::centre,
+                        OpenRCT2::PaintSegment::topLeft, OpenRCT2::PaintSegment::bottomLeft,
+                        OpenRCT2::PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -1657,15 +1693,17 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::top, PaintSegment::left, PaintSegment::right, PaintSegment::topRight),
+                    EnumsToFlags(
+                        OpenRCT2::PaintSegment::top, OpenRCT2::PaintSegment::left, OpenRCT2::PaintSegment::right,
+                        OpenRCT2::PaintSegment::topRight),
                     direction),
                 48, 0x20);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft,
-                        PaintSegment::bottomRight),
+                        OpenRCT2::PaintSegment::bottom, OpenRCT2::PaintSegment::centre, OpenRCT2::PaintSegment::topLeft,
+                        OpenRCT2::PaintSegment::bottomLeft, OpenRCT2::PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -1726,15 +1764,17 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::top, PaintSegment::right, PaintSegment::bottom, PaintSegment::topRight),
+                    EnumsToFlags(
+                        OpenRCT2::PaintSegment::top, OpenRCT2::PaintSegment::right, OpenRCT2::PaintSegment::bottom,
+                        OpenRCT2::PaintSegment::topRight),
                     direction),
                 48, 0x20);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft,
-                        PaintSegment::bottomRight),
+                        OpenRCT2::PaintSegment::left, OpenRCT2::PaintSegment::centre, OpenRCT2::PaintSegment::topLeft,
+                        OpenRCT2::PaintSegment::bottomLeft, OpenRCT2::PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -1743,7 +1783,9 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight), direction),
+                    EnumsToFlags(
+                        OpenRCT2::PaintSegment::top, OpenRCT2::PaintSegment::topLeft, OpenRCT2::PaintSegment::topRight),
+                    direction),
                 48, 0x20);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
@@ -1795,8 +1837,9 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft,
-                        PaintSegment::bottomLeft, PaintSegment::bottomRight),
+                        OpenRCT2::PaintSegment::left, OpenRCT2::PaintSegment::bottom, OpenRCT2::PaintSegment::centre,
+                        OpenRCT2::PaintSegment::topLeft, OpenRCT2::PaintSegment::bottomLeft,
+                        OpenRCT2::PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -1848,13 +1891,17 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::left, PaintSegment::right, PaintSegment::bottomLeft, PaintSegment::bottomRight),
+                    EnumsToFlags(
+                        OpenRCT2::PaintSegment::left, OpenRCT2::PaintSegment::right, OpenRCT2::PaintSegment::bottomLeft,
+                        OpenRCT2::PaintSegment::bottomRight),
                     direction),
                 48, 0x20);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
+                    EnumsToFlags(
+                        OpenRCT2::PaintSegment::top, OpenRCT2::PaintSegment::centre, OpenRCT2::PaintSegment::topLeft,
+                        OpenRCT2::PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -1863,7 +1910,9 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight), direction),
+                    EnumsToFlags(
+                        OpenRCT2::PaintSegment::top, OpenRCT2::PaintSegment::topLeft, OpenRCT2::PaintSegment::topRight),
+                    direction),
                 48, 0x20);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
@@ -1915,8 +1964,9 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
-                        PaintSegment::bottomLeft, PaintSegment::bottomRight),
+                        OpenRCT2::PaintSegment::right, OpenRCT2::PaintSegment::bottom, OpenRCT2::PaintSegment::centre,
+                        OpenRCT2::PaintSegment::topRight, OpenRCT2::PaintSegment::bottomLeft,
+                        OpenRCT2::PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -1972,15 +2022,17 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::top, PaintSegment::left, PaintSegment::bottom, PaintSegment::topLeft),
+                    EnumsToFlags(
+                        OpenRCT2::PaintSegment::top, OpenRCT2::PaintSegment::left, OpenRCT2::PaintSegment::bottom,
+                        OpenRCT2::PaintSegment::topLeft),
                     direction),
                 48, 0x20);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft,
-                        PaintSegment::bottomRight),
+                        OpenRCT2::PaintSegment::right, OpenRCT2::PaintSegment::centre, OpenRCT2::PaintSegment::topRight,
+                        OpenRCT2::PaintSegment::bottomLeft, OpenRCT2::PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -1992,7 +2044,7 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
 template<bool isClassic, std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 5> imageIds>
 static void WoodenRCTrackRightHalfBankedHelixUpLarge(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement, SupportType supportType)
+    const OpenRCT2::TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -2047,15 +2099,17 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::top, PaintSegment::left, PaintSegment::bottom, PaintSegment::topLeft),
+                    EnumsToFlags(
+                        OpenRCT2::PaintSegment::top, OpenRCT2::PaintSegment::left, OpenRCT2::PaintSegment::bottom,
+                        OpenRCT2::PaintSegment::topLeft),
                     direction),
                 48, 0x20);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft,
-                        PaintSegment::bottomRight),
+                        OpenRCT2::PaintSegment::right, OpenRCT2::PaintSegment::centre, OpenRCT2::PaintSegment::topRight,
+                        OpenRCT2::PaintSegment::bottomLeft, OpenRCT2::PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -2064,7 +2118,9 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight), direction),
+                    EnumsToFlags(
+                        OpenRCT2::PaintSegment::top, OpenRCT2::PaintSegment::topLeft, OpenRCT2::PaintSegment::topRight),
+                    direction),
                 48, 0x20);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
@@ -2116,8 +2172,9 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
-                        PaintSegment::bottomLeft, PaintSegment::bottomRight),
+                        OpenRCT2::PaintSegment::right, OpenRCT2::PaintSegment::bottom, OpenRCT2::PaintSegment::centre,
+                        OpenRCT2::PaintSegment::topRight, OpenRCT2::PaintSegment::bottomLeft,
+                        OpenRCT2::PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -2169,13 +2226,17 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::left, PaintSegment::right, PaintSegment::bottomLeft, PaintSegment::bottomRight),
+                    EnumsToFlags(
+                        OpenRCT2::PaintSegment::left, OpenRCT2::PaintSegment::right, OpenRCT2::PaintSegment::bottomLeft,
+                        OpenRCT2::PaintSegment::bottomRight),
                     direction),
                 48, 0x20);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
+                    EnumsToFlags(
+                        OpenRCT2::PaintSegment::top, OpenRCT2::PaintSegment::centre, OpenRCT2::PaintSegment::topLeft,
+                        OpenRCT2::PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -2184,7 +2245,9 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight), direction),
+                    EnumsToFlags(
+                        OpenRCT2::PaintSegment::top, OpenRCT2::PaintSegment::topLeft, OpenRCT2::PaintSegment::topRight),
+                    direction),
                 48, 0x20);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
@@ -2236,8 +2299,9 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft,
-                        PaintSegment::bottomLeft, PaintSegment::bottomRight),
+                        OpenRCT2::PaintSegment::left, OpenRCT2::PaintSegment::bottom, OpenRCT2::PaintSegment::centre,
+                        OpenRCT2::PaintSegment::topLeft, OpenRCT2::PaintSegment::bottomLeft,
+                        OpenRCT2::PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -2298,15 +2362,17 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::top, PaintSegment::right, PaintSegment::bottom, PaintSegment::topRight),
+                    EnumsToFlags(
+                        OpenRCT2::PaintSegment::top, OpenRCT2::PaintSegment::right, OpenRCT2::PaintSegment::bottom,
+                        OpenRCT2::PaintSegment::topRight),
                     direction),
                 48, 0x20);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft,
-                        PaintSegment::bottomRight),
+                        OpenRCT2::PaintSegment::left, OpenRCT2::PaintSegment::centre, OpenRCT2::PaintSegment::topLeft,
+                        OpenRCT2::PaintSegment::bottomLeft, OpenRCT2::PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -2367,15 +2433,17 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::top, PaintSegment::left, PaintSegment::right, PaintSegment::topRight),
+                    EnumsToFlags(
+                        OpenRCT2::PaintSegment::top, OpenRCT2::PaintSegment::left, OpenRCT2::PaintSegment::right,
+                        OpenRCT2::PaintSegment::topRight),
                     direction),
                 48, 0x20);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft,
-                        PaintSegment::bottomRight),
+                        OpenRCT2::PaintSegment::bottom, OpenRCT2::PaintSegment::centre, OpenRCT2::PaintSegment::topLeft,
+                        OpenRCT2::PaintSegment::bottomLeft, OpenRCT2::PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -2384,7 +2452,9 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::right, PaintSegment::topRight, PaintSegment::bottomRight), direction),
+                    EnumsToFlags(
+                        OpenRCT2::PaintSegment::right, OpenRCT2::PaintSegment::topRight, OpenRCT2::PaintSegment::bottomRight),
+                    direction),
                 48, 0x20);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
@@ -2436,8 +2506,9 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft,
-                        PaintSegment::bottomLeft, PaintSegment::bottomRight),
+                        OpenRCT2::PaintSegment::left, OpenRCT2::PaintSegment::bottom, OpenRCT2::PaintSegment::centre,
+                        OpenRCT2::PaintSegment::topLeft, OpenRCT2::PaintSegment::bottomLeft,
+                        OpenRCT2::PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -2489,13 +2560,17 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::top, PaintSegment::bottom, PaintSegment::topLeft, PaintSegment::bottomLeft),
+                    EnumsToFlags(
+                        OpenRCT2::PaintSegment::top, OpenRCT2::PaintSegment::bottom, OpenRCT2::PaintSegment::topLeft,
+                        OpenRCT2::PaintSegment::bottomLeft),
                     direction),
                 48, 0x20);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
+                    EnumsToFlags(
+                        OpenRCT2::PaintSegment::right, OpenRCT2::PaintSegment::centre, OpenRCT2::PaintSegment::topRight,
+                        OpenRCT2::PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -2504,7 +2579,9 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::right, PaintSegment::topRight, PaintSegment::bottomRight), direction),
+                    EnumsToFlags(
+                        OpenRCT2::PaintSegment::right, OpenRCT2::PaintSegment::topRight, OpenRCT2::PaintSegment::bottomRight),
+                    direction),
                 48, 0x20);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
@@ -2556,8 +2633,8 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
-                        PaintSegment::topRight, PaintSegment::bottomLeft),
+                        OpenRCT2::PaintSegment::top, OpenRCT2::PaintSegment::left, OpenRCT2::PaintSegment::centre,
+                        OpenRCT2::PaintSegment::topLeft, OpenRCT2::PaintSegment::topRight, OpenRCT2::PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -2613,15 +2690,17 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::left, PaintSegment::right, PaintSegment::bottom, PaintSegment::bottomRight),
+                    EnumsToFlags(
+                        OpenRCT2::PaintSegment::left, OpenRCT2::PaintSegment::right, OpenRCT2::PaintSegment::bottom,
+                        OpenRCT2::PaintSegment::bottomRight),
                     direction),
                 48, 0x20);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
-                        PaintSegment::bottomLeft),
+                        OpenRCT2::PaintSegment::top, OpenRCT2::PaintSegment::centre, OpenRCT2::PaintSegment::topLeft,
+                        OpenRCT2::PaintSegment::topRight, OpenRCT2::PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -2633,7 +2712,7 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
 template<bool isClassic, std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 2> imageIds>
 static void WoodenRCTrackLeftBankToLeftQuarterTurn325DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement, SupportType supportType)
+    const OpenRCT2::TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -2685,143 +2764,7 @@ static void WoodenRCTrackLeftBankToLeftQuarterTurn325DegUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
-            break;
-        case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
-            break;
-        case 2:
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
-                    direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
-            break;
-        case 3:
-            switch (direction)
-            {
-                case 0:
-                    WoodenRCTrackPaint<isClassic>(
-                        session, direction, imageIds[1][direction].track, imageIds[1][direction].handrail, { 6, 0, height },
-                        { { 6, 0, height }, { 20, 32, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
-                    break;
-                case 1:
-                    WoodenRCTrackPaint<isClassic>(
-                        session, direction, imageIds[1][direction].track, imageIds[1][direction].handrail, { 6, 0, height },
-                        { { 6, 0, height }, { 20, 32, 2 } });
-                    if (imageIds[1][direction].frontTrack != kImageIndexUndefined)
-                    {
-                        WoodenRCTrackPaint<isClassic>(
-                            session, direction, imageIds[1][direction].frontTrack, imageIds[1][direction].frontHandrail,
-                            { 6, 0, height }, { { 6, 0, height + 67 }, { 20, 32, 0 } });
-                    }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
-                    break;
-                case 2:
-                    WoodenRCTrackPaint<isClassic>(
-                        session, direction, imageIds[1][direction].track, imageIds[1][direction].handrail, { 6, 0, height },
-                        { { 6, 0, height }, { 20, 32, 2 } });
-                    if (imageIds[1][direction].frontTrack != kImageIndexUndefined)
-                    {
-                        WoodenRCTrackPaint<isClassic>(
-                            session, direction, imageIds[1][direction].frontTrack, imageIds[1][direction].frontHandrail,
-                            { 6, 0, height }, { { 6, 0, height + 67 }, { 20, 32, 0 } });
-                    }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
-                    break;
-                case 3:
-                    WoodenRCTrackPaint<isClassic>(
-                        session, direction, imageIds[1][direction].track, imageIds[1][direction].handrail, { 6, 0, height },
-                        { { 6, 0, height }, { 20, 32, 2 } });
-                    if (imageIds[1][direction].frontTrack != kImageIndexUndefined)
-                    {
-                        WoodenRCTrackPaint<isClassic>(
-                            session, direction, imageIds[1][direction].frontTrack, imageIds[1][direction].frontHandrail,
-                            { 6, 0, height }, { { 6, 0, height + 67 }, { 20, 32, 0 } });
-                    }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
-                    break;
-            }
-            switch (direction)
-            {
-                case 2:
-                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::SlopeEnd);
-                    break;
-                case 3:
-                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::SlopeEnd);
-                    break;
-            }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
-            break;
-    }
-}
-
-/** rct2: 0x008ACB48 */
-template<bool isClassic, std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 2> imageIds>
-static void WoodenRCTrackRightBankToRightQuarterTurn325DegUp(
-    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement, SupportType supportType)
-{
-    switch (trackSequence)
-    {
-        case 0:
-            switch (direction)
-            {
-                case 0:
-                    WoodenRCTrackPaint<isClassic>(
-                        session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 6, height },
-                        { { 0, 6, height }, { 32, 20, 2 } });
-                    if (imageIds[0][direction].frontTrack != kImageIndexUndefined)
-                    {
-                        WoodenRCTrackPaint<isClassic>(
-                            session, direction, imageIds[0][direction].frontTrack, imageIds[0][direction].frontHandrail,
-                            { 0, 6, height }, { { 0, 6, height + 67 }, { 32, 20, 0 } });
-                    }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
-                    break;
-                case 1:
-                    WoodenRCTrackPaint<isClassic>(
-                        session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 6, height },
-                        { { 0, 6, height }, { 32, 20, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
-                    break;
-                case 2:
-                    WoodenRCTrackPaint<isClassic>(
-                        session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 6, height },
-                        { { 0, 6, height }, { 32, 20, 2 } });
-                    if (imageIds[0][direction].frontTrack != kImageIndexUndefined)
-                    {
-                        WoodenRCTrackPaint<isClassic>(
-                            session, direction, imageIds[0][direction].frontTrack, imageIds[0][direction].frontHandrail,
-                            { 0, 6, height }, { { 0, 6, height + 67 }, { 32, 20, 0 } });
-                    }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
-                    break;
-                case 3:
-                    WoodenRCTrackPaint<isClassic>(
-                        session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 6, height },
-                        { { 0, 6, height }, { 32, 20, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
-                    break;
-            }
-            if (direction == 0 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-            }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            PaintUtilSetSegmentSupportHeight(session, OpenRCT2::kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 1:
@@ -2832,7 +2775,146 @@ static void WoodenRCTrackRightBankToRightQuarterTurn325DegUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
+                        OpenRCT2::PaintSegment::left, OpenRCT2::PaintSegment::centre, OpenRCT2::PaintSegment::topLeft,
+                        OpenRCT2::PaintSegment::bottomLeft),
+                    direction),
+                0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            break;
+        case 3:
+            switch (direction)
+            {
+                case 0:
+                    WoodenRCTrackPaint<isClassic>(
+                        session, direction, imageIds[1][direction].track, imageIds[1][direction].handrail, { 6, 0, height },
+                        { { 6, 0, height }, { 20, 32, 2 } });
+                    WoodenASupportsPaintSetup(
+                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                    break;
+                case 1:
+                    WoodenRCTrackPaint<isClassic>(
+                        session, direction, imageIds[1][direction].track, imageIds[1][direction].handrail, { 6, 0, height },
+                        { { 6, 0, height }, { 20, 32, 2 } });
+                    if (imageIds[1][direction].frontTrack != kImageIndexUndefined)
+                    {
+                        WoodenRCTrackPaint<isClassic>(
+                            session, direction, imageIds[1][direction].frontTrack, imageIds[1][direction].frontHandrail,
+                            { 6, 0, height }, { { 6, 0, height + 67 }, { 20, 32, 0 } });
+                    }
+                    WoodenASupportsPaintSetup(
+                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                    break;
+                case 2:
+                    WoodenRCTrackPaint<isClassic>(
+                        session, direction, imageIds[1][direction].track, imageIds[1][direction].handrail, { 6, 0, height },
+                        { { 6, 0, height }, { 20, 32, 2 } });
+                    if (imageIds[1][direction].frontTrack != kImageIndexUndefined)
+                    {
+                        WoodenRCTrackPaint<isClassic>(
+                            session, direction, imageIds[1][direction].frontTrack, imageIds[1][direction].frontHandrail,
+                            { 6, 0, height }, { { 6, 0, height + 67 }, { 20, 32, 0 } });
+                    }
+                    WoodenASupportsPaintSetup(
+                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                    break;
+                case 3:
+                    WoodenRCTrackPaint<isClassic>(
+                        session, direction, imageIds[1][direction].track, imageIds[1][direction].handrail, { 6, 0, height },
+                        { { 6, 0, height }, { 20, 32, 2 } });
+                    if (imageIds[1][direction].frontTrack != kImageIndexUndefined)
+                    {
+                        WoodenRCTrackPaint<isClassic>(
+                            session, direction, imageIds[1][direction].frontTrack, imageIds[1][direction].frontHandrail,
+                            { 6, 0, height }, { { 6, 0, height + 67 }, { 20, 32, 0 } });
+                    }
+                    WoodenASupportsPaintSetup(
+                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                    break;
+            }
+            switch (direction)
+            {
+                case 2:
+                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::SlopeEnd);
+                    break;
+                case 3:
+                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::SlopeEnd);
+                    break;
+            }
+            PaintUtilSetSegmentSupportHeight(session, OpenRCT2::kSegmentsAll, 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            break;
+    }
+}
+
+/** rct2: 0x008ACB48 */
+template<bool isClassic, std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 2> imageIds>
+static void WoodenRCTrackRightBankToRightQuarterTurn325DegUp(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const OpenRCT2::TrackElement& trackElement, SupportType supportType)
+{
+    switch (trackSequence)
+    {
+        case 0:
+            switch (direction)
+            {
+                case 0:
+                    WoodenRCTrackPaint<isClassic>(
+                        session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 6, height },
+                        { { 0, 6, height }, { 32, 20, 2 } });
+                    if (imageIds[0][direction].frontTrack != kImageIndexUndefined)
+                    {
+                        WoodenRCTrackPaint<isClassic>(
+                            session, direction, imageIds[0][direction].frontTrack, imageIds[0][direction].frontHandrail,
+                            { 0, 6, height }, { { 0, 6, height + 67 }, { 32, 20, 0 } });
+                    }
+                    WoodenASupportsPaintSetup(
+                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                    break;
+                case 1:
+                    WoodenRCTrackPaint<isClassic>(
+                        session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 6, height },
+                        { { 0, 6, height }, { 32, 20, 2 } });
+                    WoodenASupportsPaintSetup(
+                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                    break;
+                case 2:
+                    WoodenRCTrackPaint<isClassic>(
+                        session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 6, height },
+                        { { 0, 6, height }, { 32, 20, 2 } });
+                    if (imageIds[0][direction].frontTrack != kImageIndexUndefined)
+                    {
+                        WoodenRCTrackPaint<isClassic>(
+                            session, direction, imageIds[0][direction].frontTrack, imageIds[0][direction].frontHandrail,
+                            { 0, 6, height }, { { 0, 6, height + 67 }, { 32, 20, 0 } });
+                    }
+                    WoodenASupportsPaintSetup(
+                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                    break;
+                case 3:
+                    WoodenRCTrackPaint<isClassic>(
+                        session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 6, height },
+                        { { 0, 6, height }, { 32, 20, 2 } });
+                    WoodenASupportsPaintSetup(
+                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                    break;
+            }
+            if (direction == 0 || direction == 3)
+            {
+                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+            }
+            PaintUtilSetSegmentSupportHeight(session, OpenRCT2::kSegmentsAll, 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            break;
+        case 1:
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            break;
+        case 2:
+            PaintUtilSetSegmentSupportHeight(
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        OpenRCT2::PaintSegment::bottom, OpenRCT2::PaintSegment::centre, OpenRCT2::PaintSegment::bottomLeft,
+                        OpenRCT2::PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -2896,7 +2978,7 @@ static void WoodenRCTrackRightBankToRightQuarterTurn325DegUp(
                     PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            PaintUtilSetSegmentSupportHeight(session, OpenRCT2::kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
     }
@@ -2906,7 +2988,7 @@ static void WoodenRCTrackRightBankToRightQuarterTurn325DegUp(
 template<bool isClassic, std::array<WoodenTrackSection, kNumOrthogonalDirections> imageIds>
 static void WoodenRCTrackDiagFlatToBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement, SupportType supportType)
+    const OpenRCT2::TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -2964,9 +3046,9 @@ static void WoodenRCTrackDiagFlatToBank(
             break;
     }
 
-    DrawSupportForSequenceA<TrackElemType::diagFlat>(
+    DrawSupportForSequenceA<OpenRCT2::TrackElemType::diagFlat>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, OpenRCT2::kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
@@ -2974,7 +3056,7 @@ static void WoodenRCTrackDiagFlatToBank(
 template<bool isClassic, std::array<WoodenTrackSection, kNumOrthogonalDirections> imageIds>
 static void WoodenRCTrackDiagBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement, SupportType supportType)
+    const OpenRCT2::TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -3032,9 +3114,9 @@ static void WoodenRCTrackDiagBankTo25DegUp(
             break;
     }
 
-    DrawSupportForSequenceA<TrackElemType::diagFlatToUp25>(
+    DrawSupportForSequenceA<OpenRCT2::TrackElemType::diagFlatToUp25>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, OpenRCT2::kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
@@ -3042,7 +3124,7 @@ static void WoodenRCTrackDiagBankTo25DegUp(
 template<bool isClassic, std::array<WoodenTrackSection, kNumOrthogonalDirections> imageIds>
 static void WoodenRCTrackDiagUp25ToBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement, SupportType supportType)
+    const OpenRCT2::TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -3100,9 +3182,9 @@ static void WoodenRCTrackDiagUp25ToBank(
             break;
     }
 
-    DrawSupportForSequenceB<TrackElemType::diagUp25ToFlat>(
+    DrawSupportForSequenceB<OpenRCT2::TrackElemType::diagUp25ToFlat>(
         session, supportType.wooden, trackSequence, direction, height + 16, session.SupportColours);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, OpenRCT2::kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
@@ -3110,7 +3192,7 @@ static void WoodenRCTrackDiagUp25ToBank(
 template<bool isClassic, std::array<WoodenTrackSection, kNumOrthogonalDirections> imageIds>
 static void WoodenRCTrackDiagLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement, SupportType supportType)
+    const OpenRCT2::TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -3168,9 +3250,9 @@ static void WoodenRCTrackDiagLeftBank(
             break;
     }
 
-    DrawSupportForSequenceA<TrackElemType::diagLeftBank>(
+    DrawSupportForSequenceA<OpenRCT2::TrackElemType::diagLeftBank>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, OpenRCT2::kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
@@ -3178,7 +3260,7 @@ static void WoodenRCTrackDiagLeftBank(
 template<bool isClassic, std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 4> imageIds>
 static void WoodenRCTrackLeftEighthBankToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement, SupportType supportType)
+    const OpenRCT2::TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -3336,9 +3418,9 @@ static void WoodenRCTrackLeftEighthBankToDiag(
             break;
     }
 
-    DrawSupportForSequenceA<TrackElemType::leftEighthBankToDiag>(
+    DrawSupportForSequenceA<OpenRCT2::TrackElemType::leftEighthBankToDiag>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, OpenRCT2::kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
@@ -3346,7 +3428,7 @@ static void WoodenRCTrackLeftEighthBankToDiag(
 template<bool isClassic, std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 4> imageIds>
 static void WoodenRCTrackRightEighthBankToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement, SupportType supportType)
+    const OpenRCT2::TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -3504,10 +3586,10 @@ static void WoodenRCTrackRightEighthBankToDiag(
             break;
     }
 
-    DrawSupportForSequenceA<TrackElemType::rightEighthBankToDiag>(
+    DrawSupportForSequenceA<OpenRCT2::TrackElemType::rightEighthBankToDiag>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, OpenRCT2::kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
-TrackPaintFunction GetTrackPaintFunctionClassicWoodenRCFallback(TrackElemType trackType);
+TrackPaintFunction GetTrackPaintFunctionClassicWoodenRCFallback(OpenRCT2::TrackElemType trackType);
