@@ -92,6 +92,11 @@ namespace OpenRCT2::CommandLine::Sprite
         }
     }
 
+    void SpriteFile::addPalette(Drawing::PaletteImportResult& palette)
+    {
+        AddImage(*reinterpret_cast<Drawing::ImageImportResult*>(&palette));
+    }
+
     bool SpriteFile::Save(const utf8* path)
     {
         try

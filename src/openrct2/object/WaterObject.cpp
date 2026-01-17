@@ -15,6 +15,7 @@
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
 #include "../drawing/Drawing.h"
+#include "../drawing/ImageImporter.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Language.h"
 #include "../localisation/StringIds.h"
@@ -101,45 +102,10 @@ namespace OpenRCT2
 
     void WaterObject::ReadJsonPalette(json_t& jPalette)
     {
-        Guard::Assert(jPalette.is_object(), "WaterObject::ReadJsonPalette expects parameter jPalette to be object");
-
-        auto jColours = jPalette["colours"];
-        auto numColours = jColours.size();
-
-        // This pointer gets memcopied in ImageTable::AddImage so it's fine for the unique_ptr to go out of scope
-        auto data = std::make_unique<Drawing::BGRColour[]>(numColours);
-        size_t dataIndex = 0;
-
-        for (auto& jColour : jColours)
-        {
-            if (jColour.is_string())
-            {
-                data[dataIndex] = ParseColour(Json::GetString(jColour));
-            }
-            dataIndex++;
-        }
-
-        G1Palette g1 = {};
-        g1.palette = data.get();
-        g1.numColours = static_cast<int16_t>(numColours);
-        g1.startIndex = Json::GetNumber<int16_t>(jPalette["index"]);
+        auto importer = Drawing::ImageImporter();
+        const auto importResult = importer.importJSONPalette(jPalette);
 
         auto& imageTable = GetImageTable();
-        imageTable.addPalette(g1);
-    }
-
-    Drawing::BGRColour WaterObject::ParseColour(const std::string& s) const
-    {
-        uint8_t r = 0;
-        uint8_t g = 0;
-        uint8_t b = 0;
-        if (s[0] == '#' && s.size() == 7)
-        {
-            // Expect #RRGGBB
-            r = std::stoul(s.substr(1, 2), nullptr, 16) & 0xFF;
-            g = std::stoul(s.substr(3, 2), nullptr, 16) & 0xFF;
-            b = std::stoul(s.substr(5, 2), nullptr, 16) & 0xFF;
-        }
-        return { b, g, r };
+        imageTable.addPalette(importResult.element);
     }
 } // namespace OpenRCT2
