@@ -1085,19 +1085,20 @@ namespace OpenRCT2
             IScene* nextScene{};
             switch (gOpenRCT2StartupAction)
             {
-                case StartupAction::Intro:
+                using enum StartupAction;
+                case Intro:
                 {
                     nextScene = GetIntroScene();
                     break;
                 }
 
-                case StartupAction::Title:
+                case Title:
                 {
                     nextScene = GetTitleScene();
                     break;
                 }
 
-                case StartupAction::Open:
+                case Open:
                 {
                     // A path that includes "://" is illegal with all common filesystems, so it is almost certainly a URL
                     // This way all cURL supported protocols, like http, ftp, scp and smb are automatically handled
@@ -1145,7 +1146,7 @@ namespace OpenRCT2
                     break;
                 }
 
-                case StartupAction::Edit:
+                case Edit:
                 {
                     if (String::sizeOf(gOpenRCT2StartupActionPath) == 0)
                     {

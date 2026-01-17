@@ -369,39 +369,40 @@ TrackPaintFunction GetTrackPaintFunctionMiniHelicopters(TrackElemType trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::flat:
+        using enum TrackElemType;
+        case flat:
             return PaintMiniHelicoptersTrackFlat;
 
-        case TrackElemType::endStation:
-        case TrackElemType::beginStation:
-        case TrackElemType::middleStation:
+        case endStation:
+        case beginStation:
+        case middleStation:
             return PaintMiniHelicoptersTrackStation;
 
-        case TrackElemType::up25:
+        case up25:
             return PaintMiniHelicoptersTrack25DegUp;
-        case TrackElemType::flatToUp25:
+        case flatToUp25:
             return PaintMiniHelicoptersTrackFlatTo25DegUp;
-        case TrackElemType::up25ToFlat:
+        case up25ToFlat:
             return PaintMiniHelicoptersTrack25DegUpToFlat;
 
-        case TrackElemType::down25:
+        case down25:
             return PaintMiniHelicoptersTrack25DegDown;
-        case TrackElemType::flatToDown25:
+        case flatToDown25:
             return PaintMiniHelicoptersTrackFlatTo25DegDown;
-        case TrackElemType::down25ToFlat:
+        case down25ToFlat:
             return PaintMiniHelicoptersTrack25DegDownToFlat;
 
-        case TrackElemType::leftQuarterTurn3Tiles:
+        case leftQuarterTurn3Tiles:
             return PaintMiniHelicoptersTrackLeftQuarterTurn3Tiles;
-        case TrackElemType::rightQuarterTurn3Tiles:
+        case rightQuarterTurn3Tiles:
             return PaintMiniHelicoptersTrackRightQuarterTurn3Tiles;
 
-        case TrackElemType::leftQuarterTurn1Tile:
+        case leftQuarterTurn1Tile:
             return PaintMiniHelicoptersTrackLeftQuarterTurn1Tile;
-        case TrackElemType::rightQuarterTurn1Tile:
+        case rightQuarterTurn1Tile:
             return PaintMiniHelicoptersTrackRightQuarterTurn1Tile;
 
-        case TrackElemType::spinningTunnel:
+        case spinningTunnel:
             return PaintMiniHelicoptersTrackSpinningTunnel;
         default:
             return TrackPaintFunctionDummy;

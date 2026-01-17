@@ -506,7 +506,8 @@ ResultWithMessage TrackDesign::CreateTrackDesignScenery(TrackDesignState& tds)
     {
         switch (scenery.sceneryObject.GetType())
         {
-            case ObjectType::paths:
+            using enum ObjectType;
+            case paths:
             {
                 uint8_t slope = (scenery.getSlopeDirection() - _saveDirection) % kNumOrthogonalDirections;
                 scenery.setSlopeDirection(slope);
@@ -515,7 +516,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignScenery(TrackDesignState& tds)
                 scenery.setEdges(edges);
                 break;
             }
-            case ObjectType::walls:
+            case walls:
             {
                 auto direction = (scenery.getRotation() - _saveDirection) % kNumOrthogonalDirections;
                 scenery.setRotation(direction);
@@ -765,7 +766,8 @@ static void TrackDesignMirrorScenery(TrackDesign& td)
         auto obj = objectMgr.GetLoadedObject(entryInfo->Type, entryInfo->Index);
         switch (obj->GetObjectType())
         {
-            case ObjectType::largeScenery:
+            using enum ObjectType;
+            case largeScenery:
             {
                 auto* sceneryEntry = reinterpret_cast<const LargeSceneryEntry*>(obj->GetLegacyData());
                 int16_t x1 = 0, x2 = 0, y1 = 0, y2 = 0;
@@ -809,7 +811,7 @@ static void TrackDesignMirrorScenery(TrackDesign& td)
                 scenery.setRotation(DirectionFlipXAxis(scenery.getRotation()));
                 break;
             }
-            case ObjectType::smallScenery:
+            case smallScenery:
             {
                 auto* sceneryEntry = reinterpret_cast<const SmallSceneryEntry*>(obj->GetLegacyData());
                 scenery.loc.y = -scenery.loc.y;
@@ -828,14 +830,14 @@ static void TrackDesignMirrorScenery(TrackDesign& td)
                 scenery.setQuadrant(scenery.getQuadrant() ^ (1 << 0));
                 break;
             }
-            case ObjectType::walls:
+            case walls:
             {
                 scenery.loc.y = -scenery.loc.y;
                 scenery.setRotation(DirectionFlipXAxis(scenery.getRotation()));
                 break;
             }
-            case ObjectType::paths:
-            case ObjectType::footpathSurface:
+            case paths:
+            case footpathSurface:
             {
                 scenery.loc.y = -scenery.loc.y;
 
@@ -964,7 +966,8 @@ static GameActions::Result TrackDesignPlaceSceneryElementRemoveGhost(
     std::unique_ptr<GameActions::GameAction> ga;
     switch (entryInfo->Type)
     {
-        case ObjectType::smallScenery:
+        using enum ObjectType;
+        case smallScenery:
         {
             uint8_t quadrant = scenery.getQuadrant() + _currentTrackPieceDirection;
             quadrant &= 3;
@@ -981,15 +984,15 @@ static GameActions::Result TrackDesignPlaceSceneryElementRemoveGhost(
                 CoordsXYZ{ mapCoord.x, mapCoord.y, z }, quadrant, entryInfo->Index);
             break;
         }
-        case ObjectType::largeScenery:
+        case largeScenery:
             ga = std::make_unique<GameActions::LargeSceneryRemoveAction>(
                 CoordsXYZD{ mapCoord.x, mapCoord.y, z, sceneryRotation }, 0);
             break;
-        case ObjectType::walls:
+        case walls:
             ga = std::make_unique<GameActions::WallRemoveAction>(CoordsXYZD{ mapCoord.x, mapCoord.y, z, sceneryRotation });
             break;
-        case ObjectType::paths:
-        case ObjectType::footpathSurface:
+        case paths:
+        case footpathSurface:
             ga = std::make_unique<GameActions::FootpathRemoveAction>(CoordsXYZ{ mapCoord.x, mapCoord.y, z });
             break;
         default:
@@ -1055,7 +1058,8 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
 
     switch (entryInfo->Type)
     {
-        case ObjectType::smallScenery:
+        using enum ObjectType;
+        case smallScenery:
         {
             if (mode != 0)
             {
@@ -1097,7 +1101,7 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
             cost = res.error == GameActions::Status::ok ? res.cost : 0;
             break;
         }
-        case ObjectType::largeScenery:
+        case largeScenery:
         {
             if (mode != 0)
             {
@@ -1137,7 +1141,7 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
             cost = res.cost;
             break;
         }
-        case ObjectType::walls:
+        case walls:
         {
             if (mode != 0)
             {
@@ -1175,8 +1179,8 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
             cost = res.cost;
             break;
         }
-        case ObjectType::paths:
-        case ObjectType::footpathSurface:
+        case paths:
+        case footpathSurface:
             z = scenery.loc.z + originZ;
             if (mode == 0)
             {
@@ -1205,7 +1209,7 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
                 PathConstructFlags constructFlags = 0;
                 if (scenery.isQueue())
                     constructFlags |= PathConstructFlag::IsQueue;
-                if (entryInfo->Type == ObjectType::paths)
+                if (entryInfo->Type == paths)
                     constructFlags |= PathConstructFlag::IsLegacyPathObject;
                 auto footpathPlaceAction = GameActions::FootpathLayoutPlaceAction(
                     { mapCoord.x, mapCoord.y, z }, slope, entryInfo->Index, entryInfo->SecondaryIndex, edges, constructFlags);
@@ -1335,19 +1339,20 @@ static std::optional<GameActions::Result> TrackDesignPlaceEntrances(
 
         switch (tds.placeOperation)
         {
-            case TrackPlaceOperation::drawOutlines:
+            using enum TrackPlaceOperation;
+            case drawOutlines:
                 TrackDesignAddSelectedTile(newCoords);
                 break;
-            case TrackPlaceOperation::placeQuery:
-            case TrackPlaceOperation::place:
-            case TrackPlaceOperation::placeGhost:
-            case TrackPlaceOperation::placeTrackPreview:
+            case placeQuery:
+            case place:
+            case placeGhost:
+            case placeTrackPreview:
             {
                 rotation = (rotation + entrance.location.direction) & 3;
                 newCoords.z = entrance.location.z * kCoordsZStep;
                 newCoords.z += tds.origin.z;
 
-                if (tds.placeOperation != TrackPlaceOperation::placeQuery)
+                if (tds.placeOperation != placeQuery)
                 {
                     auto tile = CoordsXY{ newCoords } + CoordsDirectionDelta[rotation];
                     TileElement* tile_element = MapGetFirstElementAt(tile);
@@ -1370,16 +1375,16 @@ static std::optional<GameActions::Result> TrackDesignPlaceEntrances(
 
                         auto stationIndex = tile_element->AsTrack()->GetStationIndex();
                         CommandFlags flags = { CommandFlag::apply };
-                        if (tds.placeOperation == TrackPlaceOperation::placeTrackPreview)
+                        if (tds.placeOperation == placeTrackPreview)
                         {
                             flags = { CommandFlag::apply, CommandFlag::allowDuringPaused, CommandFlag::noSpend };
                         }
-                        if (tds.placeOperation == TrackPlaceOperation::placeGhost)
+                        if (tds.placeOperation == placeGhost)
                         {
                             flags = { CommandFlag::apply, CommandFlag::allowDuringPaused, CommandFlag::noSpend,
                                       CommandFlag::ghost };
                         }
-                        if (tds.placeOperation == TrackPlaceOperation::placeQuery)
+                        if (tds.placeOperation == placeQuery)
                         {
                             flags = {};
                         }
@@ -1419,8 +1424,8 @@ static std::optional<GameActions::Result> TrackDesignPlaceEntrances(
                 }
                 break;
             }
-            case TrackPlaceOperation::removeGhost:
-            case TrackPlaceOperation::getPlaceZ:
+            case removeGhost:
+            case getPlaceZ:
                 break;
         }
     }
@@ -1583,7 +1588,8 @@ static GameActions::Result TrackDesignPlaceRide(
 
         switch (tds.placeOperation)
         {
-            case TrackPlaceOperation::drawOutlines:
+            using enum TrackPlaceOperation;
+            case drawOutlines:
                 for (uint8_t i = 0; i < ted.numSequences; i++)
                 {
                     const auto& trackBlock = ted.sequences[i].clearance;
@@ -1592,7 +1598,7 @@ static GameActions::Result TrackDesignPlaceRide(
                     TrackDesignAddSelectedTile(tile);
                 }
                 break;
-            case TrackPlaceOperation::removeGhost:
+            case removeGhost:
             {
                 const TrackCoordinates* trackCoordinates = &ted.coordinates;
                 int32_t tempZ = newCoords.z - trackCoordinates->zBegin + ted.sequences[0].clearance.z;
@@ -1603,10 +1609,10 @@ static GameActions::Result TrackDesignPlaceRide(
                 GameActions::ExecuteNested(&trackRemoveAction, gameState);
                 break;
             }
-            case TrackPlaceOperation::placeQuery:
-            case TrackPlaceOperation::place:
-            case TrackPlaceOperation::placeGhost:
-            case TrackPlaceOperation::placeTrackPreview:
+            case placeQuery:
+            case place:
+            case placeGhost:
+            case placeTrackPreview:
             {
                 const TrackCoordinates* trackCoordinates = &ted.coordinates;
 
@@ -1624,15 +1630,15 @@ static GameActions::Result TrackDesignPlaceRide(
                 }
 
                 CommandFlags flags = { CommandFlag::apply };
-                if (tds.placeOperation == TrackPlaceOperation::placeTrackPreview)
+                if (tds.placeOperation == placeTrackPreview)
                 {
                     flags.set(CommandFlag::allowDuringPaused, CommandFlag::noSpend);
                 }
-                else if (tds.placeOperation == TrackPlaceOperation::placeGhost)
+                else if (tds.placeOperation == placeGhost)
                 {
                     flags.set(CommandFlag::allowDuringPaused, CommandFlag::noSpend, CommandFlag::ghost);
                 }
-                else if (tds.placeOperation == TrackPlaceOperation::placeQuery)
+                else if (tds.placeOperation == placeQuery)
                 {
                     flags = { CommandFlag::noSpend };
                 }
@@ -1656,7 +1662,7 @@ static GameActions::Result TrackDesignPlaceRide(
                 totalCost += res.cost;
                 break;
             }
-            case TrackPlaceOperation::getPlaceZ:
+            case getPlaceZ:
             {
                 int32_t tempZ = newCoords.z - ted.coordinates.zBegin;
                 for (uint8_t i = 0; i < ted.numSequences; i++)

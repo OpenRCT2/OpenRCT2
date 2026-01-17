@@ -1090,42 +1090,43 @@ TrackPaintFunction GetTrackPaintFunctionMiniGolf(TrackElemType trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::flat:
+        using enum TrackElemType;
+        case flat:
             return PaintMiniGolfTrackFlat;
 
-        case TrackElemType::beginStation:
-        case TrackElemType::middleStation:
-        case TrackElemType::endStation:
+        case beginStation:
+        case middleStation:
+        case endStation:
             return PaintMiniGolfStation;
 
-        case TrackElemType::up25:
+        case up25:
             return PaintMiniGolfTrack25DegUp;
-        case TrackElemType::flatToUp25:
+        case flatToUp25:
             return PaintMiniGolfTrackFlatTo25DegUp;
-        case TrackElemType::up25ToFlat:
+        case up25ToFlat:
             return PaintMiniGolfTrack25DegUpToFlat;
 
-        case TrackElemType::down25:
+        case down25:
             return PaintMiniGolfTrack25DegDown;
-        case TrackElemType::flatToDown25:
+        case flatToDown25:
             return PaintMiniGolfTrackFlatTo25DegDown;
-        case TrackElemType::down25ToFlat:
+        case down25ToFlat:
             return PaintMiniGolfTrack25DegDownToFlat;
 
-        case TrackElemType::leftQuarterTurn1Tile:
+        case leftQuarterTurn1Tile:
             return PaintMiniGolfTrackLeftQuarterTurn1Tile;
-        case TrackElemType::rightQuarterTurn1Tile:
+        case rightQuarterTurn1Tile:
             return PaintMiniGolfTrackRightQuarterTurn1Tile;
 
-        case TrackElemType::minigolfHoleA:
+        case minigolfHoleA:
             return PaintMiniGolfHoleA;
-        case TrackElemType::minigolfHoleB:
+        case minigolfHoleB:
             return PaintMiniGolfHoleB;
-        case TrackElemType::minigolfHoleC:
+        case minigolfHoleC:
             return PaintMiniGolfHoleC;
-        case TrackElemType::minigolfHoleD:
+        case minigolfHoleD:
             return PaintMiniGolfHoleD;
-        case TrackElemType::minigolfHoleE:
+        case minigolfHoleE:
             return PaintMiniGolfHoleE;
         default:
             return TrackPaintFunctionDummy;

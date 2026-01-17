@@ -228,14 +228,15 @@ namespace OpenRCT2::Ui::Windows
 
             switch (_rideConstructionState)
             {
-                case RideConstructionState::Place:
+                using enum RideConstructionState;
+                case Place:
                     if (!isToolActive(*this, WIDX_MAZE_DIRECTION_GROUPBOX))
                     {
                         close();
                         return;
                     }
                     break;
-                case RideConstructionState::EntranceExit:
+                case EntranceExit:
                     if (!isToolActive(*this, WIDX_MAZE_ENTRANCE) && !isToolActive(*this, WIDX_MAZE_EXIT))
                     {
                         _rideConstructionState = gRideEntranceExitPlacePreviousRideConstructionState;

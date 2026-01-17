@@ -8989,277 +8989,278 @@ TrackPaintFunction GetTrackPaintFunctionMiniRC(TrackElemType trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::flat:
+        using enum TrackElemType;
+        case flat:
             return MiniRCTrackFlat;
-        case TrackElemType::endStation:
-        case TrackElemType::beginStation:
-        case TrackElemType::middleStation:
+        case endStation:
+        case beginStation:
+        case middleStation:
             return MiniRCTrackStation;
-        case TrackElemType::up25:
+        case up25:
             return MiniRCTrack25DegUp;
-        case TrackElemType::up60:
+        case up60:
             return MiniRCTrack60DegUp;
-        case TrackElemType::flatToUp25:
+        case flatToUp25:
             return MiniRCTrackFlatTo25DegUp;
-        case TrackElemType::up25ToUp60:
+        case up25ToUp60:
             return MiniRCTrack25DegUpTo60DegUp;
-        case TrackElemType::up60ToUp25:
+        case up60ToUp25:
             return MiniRCTrack60DegUpTo25DegUp;
-        case TrackElemType::up25ToFlat:
+        case up25ToFlat:
             return MiniRCTrack25DegUpToFlat;
-        case TrackElemType::down25:
+        case down25:
             return MiniRCTrack25DegDown;
-        case TrackElemType::down60:
+        case down60:
             return MiniRCTrack60DegDown;
-        case TrackElemType::flatToDown25:
+        case flatToDown25:
             return MiniRCTrackFlatTo25DegDown;
-        case TrackElemType::down25ToDown60:
+        case down25ToDown60:
             return MiniRCTrack25DegDownTo60DegDown;
-        case TrackElemType::down60ToDown25:
+        case down60ToDown25:
             return MiniRCTrack60DegDownTo25DegDown;
-        case TrackElemType::down25ToFlat:
+        case down25ToFlat:
             return MiniRCTrack25DegDownToFlat;
-        case TrackElemType::leftQuarterTurn5Tiles:
+        case leftQuarterTurn5Tiles:
             return MiniRCTrackLeftQuarterTurn5;
-        case TrackElemType::rightQuarterTurn5Tiles:
+        case rightQuarterTurn5Tiles:
             return MiniRCTrackRightQuarterTurn5;
-        case TrackElemType::flatToLeftBank:
+        case flatToLeftBank:
             return MiniRCTrackFlatToLeftBank;
-        case TrackElemType::flatToRightBank:
+        case flatToRightBank:
             return MiniRCTrackFlatToRightBank;
-        case TrackElemType::leftBankToFlat:
+        case leftBankToFlat:
             return MiniRCTrackLeftBankToFlat;
-        case TrackElemType::rightBankToFlat:
+        case rightBankToFlat:
             return MiniRCTrackRightBankToFlat;
-        case TrackElemType::bankedLeftQuarterTurn5Tiles:
+        case bankedLeftQuarterTurn5Tiles:
             return MiniRCTrackBankedLeftQuarterTurn5;
-        case TrackElemType::bankedRightQuarterTurn5Tiles:
+        case bankedRightQuarterTurn5Tiles:
             return MiniRCTrackBankedRightQuarterTurn5;
-        case TrackElemType::leftBankToUp25:
+        case leftBankToUp25:
             return MiniRCTrackLeftBankTo25DegUp;
-        case TrackElemType::rightBankToUp25:
+        case rightBankToUp25:
             return MiniRCTrackRightBankTo25DegUp;
-        case TrackElemType::up25ToLeftBank:
+        case up25ToLeftBank:
             return MiniRCTrack25DegUpToLeftBank;
-        case TrackElemType::up25ToRightBank:
+        case up25ToRightBank:
             return MiniRCTrack25DegUpToRightBank;
-        case TrackElemType::leftBankToDown25:
+        case leftBankToDown25:
             return MiniRCTrackLeftBankTo25DegDown;
-        case TrackElemType::rightBankToDown25:
+        case rightBankToDown25:
             return MiniRCTrackRightBankTo25DegDown;
-        case TrackElemType::down25ToLeftBank:
+        case down25ToLeftBank:
             return MiniRCTrack25DegDownToLeftBank;
-        case TrackElemType::down25ToRightBank:
+        case down25ToRightBank:
             return MiniRCTrack25DegDownToRightBank;
-        case TrackElemType::leftBank:
+        case leftBank:
             return MiniRCTrackLeftBank;
-        case TrackElemType::rightBank:
+        case rightBank:
             return MiniRCTrackRightBank;
-        case TrackElemType::leftQuarterTurn5TilesUp25:
+        case leftQuarterTurn5TilesUp25:
             return MiniRCTrackLeftQuarterTurn525DegUp;
-        case TrackElemType::rightQuarterTurn5TilesUp25:
+        case rightQuarterTurn5TilesUp25:
             return MiniRCTrackRightQuarterTurn525DegUp;
-        case TrackElemType::leftQuarterTurn5TilesDown25:
+        case leftQuarterTurn5TilesDown25:
             return MiniRCTrackLeftQuarterTurn525DegDown;
-        case TrackElemType::rightQuarterTurn5TilesDown25:
+        case rightQuarterTurn5TilesDown25:
             return MiniRCTrackRightQuarterTurn525DegDown;
-        case TrackElemType::sBendLeft:
+        case sBendLeft:
             return MiniRCTrackSBendLeft;
-        case TrackElemType::sBendRight:
+        case sBendRight:
             return MiniRCTrackSBendRight;
-        case TrackElemType::leftQuarterTurn3Tiles:
+        case leftQuarterTurn3Tiles:
             return MiniRCTrackLeftQuarterTurn3;
-        case TrackElemType::rightQuarterTurn3Tiles:
+        case rightQuarterTurn3Tiles:
             return MiniRCTrackRightQuarterTurn3;
-        case TrackElemType::leftBankedQuarterTurn3Tiles:
+        case leftBankedQuarterTurn3Tiles:
             return MiniRCTrackLeftQuarterTurn3Bank;
-        case TrackElemType::rightBankedQuarterTurn3Tiles:
+        case rightBankedQuarterTurn3Tiles:
             return MiniRCTrackRightQuarterTurn3Bank;
-        case TrackElemType::leftQuarterTurn3TilesUp25:
+        case leftQuarterTurn3TilesUp25:
             return MiniRCTrackLeftQuarterTurn325DegUp;
-        case TrackElemType::rightQuarterTurn3TilesUp25:
+        case rightQuarterTurn3TilesUp25:
             return MiniRCTrackRightQuarterTurn325DegUp;
-        case TrackElemType::leftQuarterTurn3TilesDown25:
+        case leftQuarterTurn3TilesDown25:
             return MiniRCTrackLeftQuarterTurn325DegDown;
-        case TrackElemType::rightQuarterTurn3TilesDown25:
+        case rightQuarterTurn3TilesDown25:
             return MiniRCTrackRightQuarterTurn325DegDown;
-        case TrackElemType::leftHalfBankedHelixUpSmall:
+        case leftHalfBankedHelixUpSmall:
             return MiniRCTrackLeftHalfBankedHelixUpSmall;
-        case TrackElemType::rightHalfBankedHelixUpSmall:
+        case rightHalfBankedHelixUpSmall:
             return MiniRCTrackRightHalfBankedHelixUpSmall;
-        case TrackElemType::leftHalfBankedHelixDownSmall:
+        case leftHalfBankedHelixDownSmall:
             return MiniRCTrackLeftHalfBankedHelixDownSmall;
-        case TrackElemType::rightHalfBankedHelixDownSmall:
+        case rightHalfBankedHelixDownSmall:
             return MiniRCTrackRightHalfBankedHelixDownSmall;
-        case TrackElemType::leftHalfBankedHelixUpLarge:
+        case leftHalfBankedHelixUpLarge:
             return MiniRCTrackLeftHalfBankedHelixUpLarge;
-        case TrackElemType::rightHalfBankedHelixUpLarge:
+        case rightHalfBankedHelixUpLarge:
             return MiniRCTrackRightHalfBankedHelixUpLarge;
-        case TrackElemType::leftHalfBankedHelixDownLarge:
+        case leftHalfBankedHelixDownLarge:
             return MiniRCTrackLeftHalfBankedHelixDownLarge;
-        case TrackElemType::rightHalfBankedHelixDownLarge:
+        case rightHalfBankedHelixDownLarge:
             return MiniRCTrackRightHalfBankedHelixDownLarge;
-        case TrackElemType::leftQuarterTurn1TileUp60:
+        case leftQuarterTurn1TileUp60:
             return MiniRCTrackLeftQuarterTurn160DegUp;
-        case TrackElemType::rightQuarterTurn1TileUp60:
+        case rightQuarterTurn1TileUp60:
             return MiniRCTrackRightQuarterTurn160DegUp;
-        case TrackElemType::leftQuarterTurn1TileDown60:
+        case leftQuarterTurn1TileDown60:
             return MiniRCTrackLeftQuarterTurn160DegDown;
-        case TrackElemType::rightQuarterTurn1TileDown60:
+        case rightQuarterTurn1TileDown60:
             return MiniRCTrackRightQuarterTurn160DegDown;
-        case TrackElemType::brakes:
+        case brakes:
             return MiniRCTrackBrakes;
-        case TrackElemType::up25LeftBanked:
+        case up25LeftBanked:
             return MiniRCTrack25DegUpLeftBanked;
-        case TrackElemType::up25RightBanked:
+        case up25RightBanked:
             return MiniRCTrack25DegUpRightBanked;
-        case TrackElemType::onRidePhoto:
+        case onRidePhoto:
             return MiniRCTrackOnRidePhoto;
-        case TrackElemType::down25LeftBanked:
+        case down25LeftBanked:
             return MiniRCTrack25DegDownLeftBanked;
-        case TrackElemType::down25RightBanked:
+        case down25RightBanked:
             return MiniRCTrack25DegDownRightBanked;
-        case TrackElemType::leftEighthToDiag:
+        case leftEighthToDiag:
             return MiniRCTrackLeftEighthToDiag;
-        case TrackElemType::rightEighthToDiag:
+        case rightEighthToDiag:
             return MiniRCTrackRightEighthToDiag;
-        case TrackElemType::leftEighthToOrthogonal:
+        case leftEighthToOrthogonal:
             return MiniRCTrackLeftEighthToOrthogonal;
-        case TrackElemType::rightEighthToOrthogonal:
+        case rightEighthToOrthogonal:
             return MiniRCTrackRightEighthToOrthogonal;
-        case TrackElemType::leftEighthBankToDiag:
+        case leftEighthBankToDiag:
             return MiniRCTrackLeftEighthBankToDiag;
-        case TrackElemType::rightEighthBankToDiag:
+        case rightEighthBankToDiag:
             return MiniRCTrackRightEighthBankToDiag;
-        case TrackElemType::leftEighthBankToOrthogonal:
+        case leftEighthBankToOrthogonal:
             return MiniRCTrackLeftEighthBankToOrthogonal;
-        case TrackElemType::rightEighthBankToOrthogonal:
+        case rightEighthBankToOrthogonal:
             return MiniRCTrackRightEighthBankToOrthogonal;
-        case TrackElemType::diagFlat:
+        case diagFlat:
             return MiniRCTrackDiagFlat;
-        case TrackElemType::diagUp25:
+        case diagUp25:
             return MiniRCTrackDiag25DegUp;
-        case TrackElemType::diagUp60:
+        case diagUp60:
             return MiniRCTrackDiag60DegUp;
-        case TrackElemType::diagFlatToUp25:
+        case diagFlatToUp25:
             return MiniRCTrackDiagFlatTo25DegUp;
-        case TrackElemType::diagUp25ToUp60:
+        case diagUp25ToUp60:
             return MiniRCTrackDiag25DegUpTo60DegUp;
-        case TrackElemType::diagUp60ToUp25:
+        case diagUp60ToUp25:
             return MiniRCTrackDiag60DegUpTo25DegUp;
-        case TrackElemType::diagUp25ToFlat:
+        case diagUp25ToFlat:
             return MiniRCTrackDiag25DegUpToFlat;
-        case TrackElemType::diagDown25:
+        case diagDown25:
             return MiniRCTrackDiag25DegDown;
-        case TrackElemType::diagDown60:
+        case diagDown60:
             return MiniRCTrackDiag60DegDown;
-        case TrackElemType::diagFlatToDown25:
+        case diagFlatToDown25:
             return MiniRCTrackDiagFlatTo25DegDown;
-        case TrackElemType::diagDown25ToDown60:
+        case diagDown25ToDown60:
             return MiniRCTrackDiag25DegDownTo60DegDown;
-        case TrackElemType::diagDown60ToDown25:
+        case diagDown60ToDown25:
             return MiniRCTrackDiag60DegDownTo25DegDown;
-        case TrackElemType::diagDown25ToFlat:
+        case diagDown25ToFlat:
             return MiniRCTrackDiag25DegDownToFlat;
-        case TrackElemType::diagFlatToLeftBank:
+        case diagFlatToLeftBank:
             return MiniRCTrackDiagFlatToLeftBank;
-        case TrackElemType::diagFlatToRightBank:
+        case diagFlatToRightBank:
             return MiniRCTrackDiagFlatToRightBank;
-        case TrackElemType::diagLeftBankToFlat:
+        case diagLeftBankToFlat:
             return MiniRCTrackDiagLeftBankToFlat;
-        case TrackElemType::diagRightBankToFlat:
+        case diagRightBankToFlat:
             return MiniRCTrackDiagRightBankToFlat;
-        case TrackElemType::diagLeftBankToUp25:
+        case diagLeftBankToUp25:
             return MiniRCTrackDiagLeftBankTo25DegUp;
-        case TrackElemType::diagRightBankToUp25:
+        case diagRightBankToUp25:
             return MiniRCTrackDiagRightBankTo25DegUp;
-        case TrackElemType::diagUp25ToLeftBank:
+        case diagUp25ToLeftBank:
             return MiniRCTrackDiag25DegUpToLeftBank;
-        case TrackElemType::diagUp25ToRightBank:
+        case diagUp25ToRightBank:
             return MiniRCTrackDiag25DegUpToRightBank;
-        case TrackElemType::diagLeftBankToDown25:
+        case diagLeftBankToDown25:
             return MiniRCTrackDiagLeftBankTo25DegDown;
-        case TrackElemType::diagRightBankToDown25:
+        case diagRightBankToDown25:
             return MiniRCTrackDiagRightBankTo25DegDown;
-        case TrackElemType::diagDown25ToLeftBank:
+        case diagDown25ToLeftBank:
             return MiniRCTrackDiag25DegDownToLeftBank;
-        case TrackElemType::diagDown25ToRightBank:
+        case diagDown25ToRightBank:
             return MiniRCTrackDiag25DegDownToRightBank;
-        case TrackElemType::diagLeftBank:
+        case diagLeftBank:
             return MiniRCTrackDiagLeftBank;
-        case TrackElemType::diagRightBank:
+        case diagRightBank:
             return MiniRCTrackDiagRightBank;
-        case TrackElemType::blockBrakes:
+        case blockBrakes:
             return MiniRCTrackBlockBrakes;
-        case TrackElemType::leftBankedQuarterTurn3TileUp25:
+        case leftBankedQuarterTurn3TileUp25:
             return MiniRCTrackLeftBankedQuarterTurn325DegUp;
-        case TrackElemType::rightBankedQuarterTurn3TileUp25:
+        case rightBankedQuarterTurn3TileUp25:
             return MiniRCTrackRightBankedQuarterTurn325DegUp;
-        case TrackElemType::leftBankedQuarterTurn3TileDown25:
+        case leftBankedQuarterTurn3TileDown25:
             return MiniRCTrackLeftBankedQuarterTurn325DegDown;
-        case TrackElemType::rightBankedQuarterTurn3TileDown25:
+        case rightBankedQuarterTurn3TileDown25:
             return MiniRCTrackRightBankedQuarterTurn325DegDown;
-        case TrackElemType::leftBankedQuarterTurn5TileUp25:
+        case leftBankedQuarterTurn5TileUp25:
             return MiniRCTrackLeftBankedQuarterTurn525DegUp;
-        case TrackElemType::rightBankedQuarterTurn5TileUp25:
+        case rightBankedQuarterTurn5TileUp25:
             return MiniRCTrackRightBankedQuarterTurn525DegUp;
-        case TrackElemType::leftBankedQuarterTurn5TileDown25:
+        case leftBankedQuarterTurn5TileDown25:
             return MiniRCTrackLeftBankedQuarterTurn525DegDown;
-        case TrackElemType::rightBankedQuarterTurn5TileDown25:
+        case rightBankedQuarterTurn5TileDown25:
             return MiniRCTrackRightBankedQuarterTurn525DegDown;
-        case TrackElemType::up25ToLeftBankedUp25:
+        case up25ToLeftBankedUp25:
             return MiniRCTrack25DegUpToLeftBanked25DegUp;
-        case TrackElemType::up25ToRightBankedUp25:
+        case up25ToRightBankedUp25:
             return MiniRCTrack25DegUpToRightBanked25DegUp;
-        case TrackElemType::leftBankedUp25ToUp25:
+        case leftBankedUp25ToUp25:
             return MiniRCTrackLeftBanked25DegUpTo25DegUp;
-        case TrackElemType::rightBankedUp25ToUp25:
+        case rightBankedUp25ToUp25:
             return MiniRCTrackRightBanked25DegUpTo25DegUp;
-        case TrackElemType::down25ToLeftBankedDown25:
+        case down25ToLeftBankedDown25:
             return MiniRCTrack25DegDownToLeftBanked25DegDown;
-        case TrackElemType::down25ToRightBankedDown25:
+        case down25ToRightBankedDown25:
             return MiniRCTrack25DegDownToRightBanked25DegDown;
-        case TrackElemType::leftBankedDown25ToDown25:
+        case leftBankedDown25ToDown25:
             return MiniRCTrackLeftBanked25DegDownTo25DegDown;
-        case TrackElemType::rightBankedDown25ToDown25:
+        case rightBankedDown25ToDown25:
             return MiniRCTrackRightBanked25DegDownTo25DegDown;
-        case TrackElemType::leftBankedFlatToLeftBankedUp25:
+        case leftBankedFlatToLeftBankedUp25:
             return MiniRCTrackLeftBankedFlatToLeftBanked25DegUp;
-        case TrackElemType::rightBankedFlatToRightBankedUp25:
+        case rightBankedFlatToRightBankedUp25:
             return MiniRCTrackRightBankedFlatToRightBanked25DegUp;
-        case TrackElemType::leftBankedUp25ToLeftBankedFlat:
+        case leftBankedUp25ToLeftBankedFlat:
             return MiniRCTrackLeftBanked25DegUpToLeftBankedFlat;
-        case TrackElemType::rightBankedUp25ToRightBankedFlat:
+        case rightBankedUp25ToRightBankedFlat:
             return MiniRCTrackRightBanked25DegUpToRightBankedFlat;
-        case TrackElemType::leftBankedFlatToLeftBankedDown25:
+        case leftBankedFlatToLeftBankedDown25:
             return MiniRCTrackLeftBankedFlatToLeftBanked25DegDown;
-        case TrackElemType::rightBankedFlatToRightBankedDown25:
+        case rightBankedFlatToRightBankedDown25:
             return MiniRCTrackRightBankedFlatToRightBanked25DegDown;
-        case TrackElemType::leftBankedDown25ToLeftBankedFlat:
+        case leftBankedDown25ToLeftBankedFlat:
             return MiniRCTrackLeftBanked25DegDownToLeftBankedFlat;
-        case TrackElemType::rightBankedDown25ToRightBankedFlat:
+        case rightBankedDown25ToRightBankedFlat:
             return MiniRCTrackRightBanked25DegDownToRightBankedFlat;
-        case TrackElemType::flatToLeftBankedUp25:
+        case flatToLeftBankedUp25:
             return MiniRCTrackFlatToLeftBanked25DegUp;
-        case TrackElemType::flatToRightBankedUp25:
+        case flatToRightBankedUp25:
             return MiniRCTrackFlatToRightBanked25DegUp;
-        case TrackElemType::leftBankedUp25ToFlat:
+        case leftBankedUp25ToFlat:
             return MiniRCTrackLeftBanked25DegUpToFlat;
-        case TrackElemType::rightBankedUp25ToFlat:
+        case rightBankedUp25ToFlat:
             return MiniRCTrackRightBanked25DegUpToFlat;
-        case TrackElemType::flatToLeftBankedDown25:
+        case flatToLeftBankedDown25:
             return MiniRCTrackFlatToLeftBanked25DegDown;
-        case TrackElemType::flatToRightBankedDown25:
+        case flatToRightBankedDown25:
             return MiniRCTrackFlatToRightBanked25DegDown;
-        case TrackElemType::leftBankedDown25ToFlat:
+        case leftBankedDown25ToFlat:
             return MiniRCTrackLeftBanked25DegDownToFlat;
-        case TrackElemType::rightBankedDown25ToFlat:
+        case rightBankedDown25ToFlat:
             return MiniRCTrackRightBanked25DegDownToFlat;
-        case TrackElemType::leftCurvedLiftHill:
+        case leftCurvedLiftHill:
             return MiniRCTrackLeftCurvedLiftHill;
-        case TrackElemType::rightCurvedLiftHill:
+        case rightCurvedLiftHill:
             return MiniRCTrackRightCurvedLiftHill;
-        case TrackElemType::booster:
+        case booster:
             return MiniRCTrackBooster;
         default:
             return TrackPaintFunctionDummy;

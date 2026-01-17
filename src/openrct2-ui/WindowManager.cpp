@@ -66,101 +66,102 @@ public:
     {
         switch (wc)
         {
-            case WindowClass::about:
+            using enum WindowClass;
+            case about:
                 return AboutOpen();
-            case WindowClass::bottomToolbar:
+            case bottomToolbar:
                 return GameBottomToolbarOpen();
-            case WindowClass::changelog:
+            case changelog:
                 return openView(WindowView::changelog);
-            case WindowClass::cheats:
+            case cheats:
                 return CheatsOpen();
-            case WindowClass::clearScenery:
+            case clearScenery:
                 return ClearSceneryOpen();
-            case WindowClass::customCurrencyConfig:
+            case customCurrencyConfig:
                 return CustomCurrencyOpen();
-            case WindowClass::debugPaint:
+            case debugPaint:
                 return DebugPaintOpen();
-            case WindowClass::editorInventionList:
+            case editorInventionList:
                 return EditorInventionsListOpen();
-            case WindowClass::editorObjectSelection:
+            case editorObjectSelection:
                 return EditorObjectSelectionOpen();
-            case WindowClass::editorScenarioOptions:
+            case editorScenarioOptions:
                 return EditorScenarioOptionsOpen();
-            case WindowClass::finances:
+            case finances:
                 return FinancesOpen();
-            case WindowClass::footpath:
+            case footpath:
                 return FootpathOpen();
-            case WindowClass::guestList:
+            case guestList:
                 return GuestListOpen();
-            case WindowClass::land:
+            case land:
                 return LandOpen();
-            case WindowClass::landRights:
+            case landRights:
                 return LandRightsOpen();
-            case WindowClass::mainWindow:
+            case mainWindow:
                 return MainOpen();
-            case WindowClass::map:
+            case map:
                 return MapOpen();
-            case WindowClass::mapgen:
+            case mapgen:
                 return MapgenOpen();
-            case WindowClass::multiplayer:
+            case multiplayer:
                 return MultiplayerOpen();
-            case WindowClass::constructRide:
+            case constructRide:
                 return NewRideOpen();
-            case WindowClass::parkInformation:
+            case parkInformation:
                 return ParkEntranceOpen();
-            case WindowClass::recentNews:
+            case recentNews:
                 return NewsOpen();
-            case WindowClass::rideConstruction:
+            case rideConstruction:
                 return RideConstructionOpen();
-            case WindowClass::research:
+            case research:
                 return ResearchOpen();
-            case WindowClass::rideList:
+            case rideList:
                 return RideListOpen();
-            case WindowClass::options:
+            case options:
                 return OptionsOpen();
-            case WindowClass::savePrompt:
+            case savePrompt:
                 return SavePromptOpen();
-            case WindowClass::scenery:
+            case scenery:
                 return SceneryOpen();
-            case WindowClass::sceneryScatter:
+            case sceneryScatter:
                 return SceneryScatterOpen();
 #ifndef DISABLE_NETWORK
-            case WindowClass::serverList:
+            case serverList:
                 return ServerListOpen();
-            case WindowClass::serverStart:
+            case serverStart:
                 return ServerStartOpen();
 #endif
-            case WindowClass::keyboardShortcutList:
+            case keyboardShortcutList:
                 return ShortcutKeysOpen();
-            case WindowClass::staffList:
+            case staffList:
                 return StaffListOpen();
-            case WindowClass::themes:
+            case themes:
                 return ThemesOpen();
-            case WindowClass::tileInspector:
+            case tileInspector:
                 return TileInspectorOpen();
-            case WindowClass::titleExit:
+            case titleExit:
                 return TitleExitOpen();
-            case WindowClass::titleLogo:
+            case titleLogo:
                 return TitleLogoOpen();
-            case WindowClass::titleMenu:
+            case titleMenu:
                 return TitleMenuOpen();
-            case WindowClass::titleOptions:
+            case titleOptions:
                 return TitleOptionsOpen();
-            case WindowClass::titleVersion:
+            case titleVersion:
                 return TitleVersionOpen();
-            case WindowClass::topToolbar:
+            case topToolbar:
                 return TopToolbarOpen();
-            case WindowClass::viewClipping:
+            case viewClipping:
                 return ViewClippingOpen();
-            case WindowClass::viewport:
+            case viewport:
                 return ViewportOpen();
-            case WindowClass::water:
+            case water:
                 return WaterOpen();
-            case WindowClass::transparency:
+            case transparency:
                 return TransparencyOpen();
-            case WindowClass::assetPacks:
+            case assetPacks:
                 return AssetPacksOpen();
-            case WindowClass::editorParkEntrance:
+            case editorParkEntrance:
                 return EditorParkEntranceOpen();
             default:
                 Console::Error::WriteLine("Unhandled window class (%d)", wc);
@@ -172,35 +173,36 @@ public:
     {
         switch (view)
         {
-            case WindowView::parkAwards:
+            using enum WindowView;
+            case parkAwards:
                 return ParkAwardsOpen();
-            case WindowView::parkRating:
+            case parkRating:
                 return ParkRatingOpen();
-            case WindowView::parkObjective:
+            case parkObjective:
                 return ParkObjectiveOpen();
-            case WindowView::parkGuests:
+            case parkGuests:
                 return ParkGuestsOpen();
-            case WindowView::financesResearch:
+            case financesResearch:
                 return FinancesResearchOpen();
-            case WindowView::rideResearch:
+            case rideResearch:
                 if (Config::Get().interface.toolbarShowResearch)
                 {
                     return this->OpenWindow(WindowClass::research);
                 }
                 return NewRideOpenResearch();
-            case WindowView::mazeConstruction:
+            case mazeConstruction:
                 return MazeConstructionOpen();
-            case WindowView::networkPassword:
+            case networkPassword:
                 return NetworkStatusOpenPassword();
-            case WindowView::editorBottomToolbar:
+            case editorBottomToolbar:
                 return EditorBottomToolbarOpen();
-            case WindowView::changelog:
-                return ChangelogOpen(WindowView::changelog);
-            case WindowView::newVersionInfo:
-                return ChangelogOpen(WindowView::newVersionInfo);
-            case WindowView::contributors:
-                return ChangelogOpen(WindowView::contributors);
-            case WindowView::financeMarketing:
+            case changelog:
+                return ChangelogOpen(changelog);
+            case newVersionInfo:
+                return ChangelogOpen(newVersionInfo);
+            case contributors:
+                return ChangelogOpen(contributors);
+            case financeMarketing:
                 return FinancesMarketingOpen();
             default:
                 return nullptr;
@@ -211,19 +213,20 @@ public:
     {
         switch (type)
         {
-            case WindowDetail::banner:
+            using enum WindowDetail;
+            case banner:
                 return BannerOpen(id);
-            case WindowDetail::newCampaign:
+            case newCampaign:
                 return NewCampaignOpen(id);
-            case WindowDetail::demolishRide:
+            case demolishRide:
                 return RideDemolishPromptOpen(*GetRide(RideId::FromUnderlying(id)));
-            case WindowDetail::refurbishRide:
+            case refurbishRide:
                 return RideRefurbishPromptOpen(*GetRide(RideId::FromUnderlying(id)));
-            case WindowDetail::sign:
+            case sign:
                 return SignOpen(id);
-            case WindowDetail::signSmall:
+            case signSmall:
                 return SignSmallOpen(id);
-            case WindowDetail::player:
+            case player:
                 return PlayerOpen(id);
 
             default:
@@ -245,17 +248,18 @@ public:
     {
         switch (intent->GetWindowClass())
         {
-            case WindowClass::peep:
+            using enum WindowClass;
+            case peep:
                 return GuestOpen(static_cast<Peep*>(intent->GetPointerExtra(INTENT_EXTRA_PEEP)));
-            case WindowClass::firePrompt:
+            case firePrompt:
                 return StaffFirePromptOpen(static_cast<Peep*>(intent->GetPointerExtra(INTENT_EXTRA_PEEP)));
-            case WindowClass::installTrack:
+            case installTrack:
                 return InstallTrackOpen(intent->GetStringExtra(INTENT_EXTRA_PATH).c_str());
-            case WindowClass::guestList:
+            case guestList:
                 return GuestListOpenWithFilter(
                     static_cast<GuestListFilterType>(intent->GetSIntExtra(INTENT_EXTRA_GUEST_LIST_FILTER)),
                     intent->GetSIntExtra(INTENT_EXTRA_RIDE_ID));
-            case WindowClass::loadsave:
+            case loadsave:
             {
                 auto action = intent->GetEnumExtra<LoadSaveAction>(INTENT_EXTRA_LOADSAVE_ACTION);
                 auto type = intent->GetEnumExtra<LoadSaveType>(INTENT_EXTRA_LOADSAVE_TYPE);
@@ -274,15 +278,15 @@ public:
                     trackDesign);
                 return w;
             }
-            case WindowClass::manageTrackDesign:
+            case manageTrackDesign:
                 return TrackManageOpen(static_cast<TrackDesignFileRef*>(intent->GetPointerExtra(INTENT_EXTRA_TRACK_DESIGN)));
-            case WindowClass::networkStatus:
+            case networkStatus:
             {
                 std::string message = intent->GetStringExtra(INTENT_EXTRA_MESSAGE);
                 CloseCallback callback = intent->GetCloseCallbackExtra(INTENT_EXTRA_CALLBACK);
                 return NetworkStatusOpen(message, callback);
             }
-            case WindowClass::objectLoadError:
+            case objectLoadError:
             {
                 std::string path = intent->GetStringExtra(INTENT_EXTRA_PATH);
                 auto objects = static_cast<const ObjectEntryDescriptor*>(intent->GetPointerExtra(INTENT_EXTRA_LIST));
@@ -291,26 +295,26 @@ public:
 
                 return nullptr;
             }
-            case WindowClass::ride:
+            case ride:
             {
                 const auto rideId = RideId::FromUnderlying(intent->GetSIntExtra(INTENT_EXTRA_RIDE_ID));
                 auto ride = GetRide(rideId);
                 return ride == nullptr ? nullptr : RideMainOpen(*ride);
             }
-            case WindowClass::trackDesignPlace:
+            case trackDesignPlace:
                 return TrackPlaceOpen(static_cast<TrackDesignFileRef*>(intent->GetPointerExtra(INTENT_EXTRA_TRACK_DESIGN)));
-            case WindowClass::trackDesignList:
+            case trackDesignList:
             {
                 RideSelection rideItem;
                 rideItem.Type = intent->GetUIntExtra(INTENT_EXTRA_RIDE_TYPE);
                 rideItem.EntryIndex = intent->GetUIntExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX);
                 return TrackListOpen(rideItem);
             }
-            case WindowClass::scenarioSelect:
+            case scenarioSelect:
                 return ScenarioselectOpen(
                     reinterpret_cast<ScenarioSelectCallback>(intent->GetCloseCallbackExtra(INTENT_EXTRA_CALLBACK)));
 
-            case WindowClass::null:
+            case null:
                 // Intent does not hold a window class
                 break;
 

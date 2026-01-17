@@ -764,14 +764,15 @@ namespace OpenRCT2::Ui::Windows
             // Decide on shape of the brush for bigger selection size
             switch (gMapSelectType)
             {
-                case MapSelectType::edge0:
-                case MapSelectType::edge2:
+                using enum MapSelectType;
+                case edge0:
+                case edge2:
                     // Line
                     mapTile->y -= (tool_size - 1) * 16;
                     mapTile->y = mapTile->ToTileStart().y;
                     break;
-                case MapSelectType::edge1:
-                case MapSelectType::edge3:
+                case edge1:
+                case edge3:
                     // Line
                     mapTile->x -= (tool_size - 1) * 16;
                     mapTile->x = mapTile->ToTileStart().x;

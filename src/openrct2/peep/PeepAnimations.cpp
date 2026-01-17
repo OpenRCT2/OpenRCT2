@@ -102,15 +102,16 @@ namespace OpenRCT2
     {
         switch (peepType)
         {
-            case AnimationPeepType::guest:
+            using enum AnimationPeepType;
+            case guest:
                 return availableGuestAnimations;
-            case AnimationPeepType::handyman:
+            case handyman:
                 return availableHandymanAnimations;
-            case AnimationPeepType::mechanic:
+            case mechanic:
                 return availableMechanicAnimations;
-            case AnimationPeepType::security:
+            case security:
                 return availableSecurityAnimations;
-            case AnimationPeepType::entertainer:
+            case entertainer:
             default:
                 return availableEntertainerAnimations;
         }

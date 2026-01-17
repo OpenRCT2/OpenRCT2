@@ -508,7 +508,8 @@ bool InputManager::getState(const ShortcutInput& shortcut) const
     {
         switch (shortcut.kind)
         {
-            case InputDeviceKind::mouse:
+            using enum InputDeviceKind;
+            case mouse:
             {
                 if (_mouseState & (1 << shortcut.button))
                 {
@@ -516,7 +517,7 @@ bool InputManager::getState(const ShortcutInput& shortcut) const
                 }
                 break;
             }
-            case InputDeviceKind::keyboard:
+            case keyboard:
             {
                 auto scanCode = static_cast<size_t>(SDL_GetScancodeFromKey(shortcut.button));
                 if (scanCode < _keyboardState.size() && _keyboardState[scanCode])
@@ -525,7 +526,7 @@ bool InputManager::getState(const ShortcutInput& shortcut) const
                 }
                 break;
             }
-            case InputDeviceKind::joyButton:
+            case joyButton:
             {
                 for (auto* gameController : _gameControllers)
                 {
@@ -538,7 +539,7 @@ bool InputManager::getState(const ShortcutInput& shortcut) const
                 }
                 break;
             }
-            case InputDeviceKind::joyHat:
+            case joyHat:
             {
                 for (auto* gameController : _gameControllers)
                 {
@@ -559,7 +560,7 @@ bool InputManager::getState(const ShortcutInput& shortcut) const
                 }
                 break;
             }
-            case InputDeviceKind::joyAxis:
+            case joyAxis:
             {
                 // analogue axes don't have a simple "pressed" state like buttons
                 // Return false for shortcuts on analogue axes as they're handled differently

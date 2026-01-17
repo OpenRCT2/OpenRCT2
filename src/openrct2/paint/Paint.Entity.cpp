@@ -130,45 +130,46 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
 
         switch (entity->Type)
         {
-            case EntityType::vehicle:
+            using enum EntityType;
+            case vehicle:
                 entity->cast<Vehicle>()->Paint(session, image_direction);
                 if (LightFx::ForVehiclesIsAvailable())
                 {
                     LightFx::AddLightsMagicVehicle(entity->cast<Vehicle>());
                 }
                 break;
-            case EntityType::guest:
-            case EntityType::staff:
+            case guest:
+            case staff:
                 entity->cast<Peep>()->Paint(session, image_direction);
                 break;
-            case EntityType::steamParticle:
+            case steamParticle:
                 entity->cast<SteamParticle>()->Paint(session, image_direction);
                 break;
-            case EntityType::moneyEffect:
+            case moneyEffect:
                 entity->cast<MoneyEffect>()->Paint(session, image_direction);
                 break;
-            case EntityType::crashedVehicleParticle:
+            case crashedVehicleParticle:
                 entity->cast<VehicleCrashParticle>()->Paint(session, image_direction);
                 break;
-            case EntityType::explosionCloud:
+            case explosionCloud:
                 entity->cast<ExplosionCloud>()->Paint(session, image_direction);
                 break;
-            case EntityType::crashSplash:
+            case crashSplash:
                 entity->cast<CrashSplashParticle>()->Paint(session, image_direction);
                 break;
-            case EntityType::explosionFlare:
+            case explosionFlare:
                 entity->cast<ExplosionFlare>()->Paint(session, image_direction);
                 break;
-            case EntityType::jumpingFountain:
+            case jumpingFountain:
                 entity->cast<JumpingFountain>()->Paint(session, image_direction);
                 break;
-            case EntityType::balloon:
+            case balloon:
                 entity->cast<Balloon>()->Paint(session, image_direction);
                 break;
-            case EntityType::duck:
+            case duck:
                 entity->cast<Duck>()->Paint(session, image_direction);
                 break;
-            case EntityType::litter:
+            case litter:
                 entity->cast<Litter>()->Paint(session, image_direction);
                 break;
             default:

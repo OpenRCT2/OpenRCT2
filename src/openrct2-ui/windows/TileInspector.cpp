@@ -592,7 +592,8 @@ static uint64_t PageDisabledWidgets[] = {
             // Page widgets
             switch (tileElement->GetType())
             {
-                case TileElementType::Surface:
+                using enum TileElementType;
+                case Surface:
                     switch (widgetIndex)
                     {
                         case WIDX_SURFACE_BUTTON_REMOVE_FENCES:
@@ -615,7 +616,7 @@ static uint64_t PageDisabledWidgets[] = {
                             break;
                     } // switch widgetindex
                     break;
-                case TileElementType::Path:
+                case Path:
                     switch (widgetIndex)
                     {
                         case WIDX_PATH_CHECK_SLOPED:
@@ -660,7 +661,7 @@ static uint64_t PageDisabledWidgets[] = {
                     } // switch widget index
                     break;
 
-                case TileElementType::Track:
+                case Track:
                     switch (widgetIndex)
                     {
                         case WIDX_TRACK_CHECK_APPLY_TO_ALL:
@@ -687,7 +688,7 @@ static uint64_t PageDisabledWidgets[] = {
                     } // switch widget index
                     break;
 
-                case TileElementType::SmallScenery:
+                case SmallScenery:
                     switch (widgetIndex)
                     {
                         case WIDX_SCENERY_CHECK_QUARTER_N:
@@ -707,7 +708,7 @@ static uint64_t PageDisabledWidgets[] = {
                     } // switch widget index
                     break;
 
-                case TileElementType::Entrance:
+                case Entrance:
                     switch (widgetIndex)
                     {
                         case WIDX_ENTRANCE_BUTTON_MAKE_USABLE:
@@ -716,7 +717,7 @@ static uint64_t PageDisabledWidgets[] = {
                     } // switch widget index
                     break;
 
-                case TileElementType::Banner:
+                case Banner:
                     switch (widgetIndex)
                     {
                         case WIDX_BANNER_CHECK_BLOCK_NE:
@@ -728,8 +729,8 @@ static uint64_t PageDisabledWidgets[] = {
                     } // switch widget index
                     break;
 
-                case TileElementType::LargeScenery:
-                case TileElementType::Wall:
+                case LargeScenery:
+                case Wall:
                     switch (widgetIndex)
                     {
                         case WIDX_WALL_ANIMATION_IS_BACKWARDS:
@@ -809,7 +810,8 @@ static uint64_t PageDisabledWidgets[] = {
 
             switch (tileElement->GetType())
             {
-                case TileElementType::Surface:
+                using enum TileElementType;
+                case Surface:
                     switch (widgetIndex)
                     {
                         case WIDX_SURFACE_SPINNER_HEIGHT_INCREASE:
@@ -822,7 +824,7 @@ static uint64_t PageDisabledWidgets[] = {
                     } // switch widget index
                     break;
 
-                case TileElementType::Path:
+                case Path:
                     switch (widgetIndex)
                     {
                         case WIDX_PATH_SPINNER_HEIGHT_INCREASE:
@@ -835,7 +837,7 @@ static uint64_t PageDisabledWidgets[] = {
                     } // switch widget index
                     break;
 
-                case TileElementType::Track:
+                case Track:
                     switch (widgetIndex)
                     {
                         case WIDX_TRACK_SPINNER_HEIGHT_INCREASE:
@@ -854,7 +856,7 @@ static uint64_t PageDisabledWidgets[] = {
                     } // switch widget index
                     break;
 
-                case TileElementType::SmallScenery:
+                case SmallScenery:
                     switch (widgetIndex)
                     {
                         case WIDX_SCENERY_SPINNER_HEIGHT_INCREASE:
@@ -867,7 +869,7 @@ static uint64_t PageDisabledWidgets[] = {
                     } // switch widget index
                     break;
 
-                case TileElementType::Entrance:
+                case Entrance:
                     switch (widgetIndex)
                     {
                         case WIDX_ENTRANCE_SPINNER_HEIGHT_INCREASE:
@@ -884,7 +886,7 @@ static uint64_t PageDisabledWidgets[] = {
                     } // switch widget index
                     break;
 
-                case TileElementType::Wall:
+                case Wall:
                     switch (widgetIndex)
                     {
                         case WIDX_WALL_SPINNER_HEIGHT_INCREASE:
@@ -923,7 +925,7 @@ static uint64_t PageDisabledWidgets[] = {
                     } // switch widget index
                     break;
 
-                case TileElementType::LargeScenery:
+                case LargeScenery:
                     switch (widgetIndex)
                     {
                         case WIDX_LARGE_SCENERY_SPINNER_HEIGHT_INCREASE:
@@ -936,7 +938,7 @@ static uint64_t PageDisabledWidgets[] = {
                     } // switch widget index
                     break;
 
-                case TileElementType::Banner:
+                case Banner:
                     switch (widgetIndex)
                     {
                         case WIDX_BANNER_SPINNER_HEIGHT_INCREASE:
@@ -1085,7 +1087,8 @@ static uint64_t PageDisabledWidgets[] = {
 
                 switch (tileElement->GetType())
                 {
-                    case TileElementType::Surface:
+                    using enum TileElementType;
+                    case Surface:
                     {
                         // Details
                         // Terrain texture name
@@ -1153,7 +1156,7 @@ static uint64_t PageDisabledWidgets[] = {
                         DrawTextBasic(rt, screenCoords, STR_TILE_INSPECTOR_SURFACE_CORNERS, {}, { colours[1] });
                         break;
                     }
-                    case TileElementType::Path:
+                    case Path:
                     {
                         // Details
                         auto pathEl = tileElement->AsPath();
@@ -1228,7 +1231,7 @@ static uint64_t PageDisabledWidgets[] = {
                         break;
                     }
 
-                    case TileElementType::Track:
+                    case Track:
                     {
                         auto trackElement = tileElement->AsTrack();
                         RideId id = trackElement->GetRideIndex();
@@ -1305,7 +1308,7 @@ static uint64_t PageDisabledWidgets[] = {
                         break;
                     }
 
-                    case TileElementType::SmallScenery:
+                    case SmallScenery:
                     {
                         // Details
                         // Age
@@ -1361,7 +1364,7 @@ static uint64_t PageDisabledWidgets[] = {
                         break;
                     }
 
-                    case TileElementType::Entrance:
+                    case Entrance:
                     {
                         // Details
                         // Entrance type
@@ -1438,7 +1441,7 @@ static uint64_t PageDisabledWidgets[] = {
                         break;
                     }
 
-                    case TileElementType::Wall:
+                    case Wall:
                     {
                         // Details
                         // Type
@@ -1496,7 +1499,7 @@ static uint64_t PageDisabledWidgets[] = {
                         break;
                     }
 
-                    case TileElementType::LargeScenery:
+                    case LargeScenery:
                     {
                         // Details
                         // Type
@@ -1547,7 +1550,7 @@ static uint64_t PageDisabledWidgets[] = {
                         break;
                     }
 
-                    case TileElementType::Banner:
+                    case Banner:
                     {
                         // Details
                         // Banner info
@@ -1651,20 +1654,21 @@ static uint64_t PageDisabledWidgets[] = {
                 const auto type = tileElement->GetType();
                 switch (type)
                 {
-                    case TileElementType::Surface:
+                    using enum TileElementType;
+                    case Surface:
                         typeName = LanguageGetString(STR_TILE_INSPECTOR_SURFACE);
                         break;
 
-                    case TileElementType::Path:
+                    case Path:
                         typeName = tileElement->AsPath()->IsQueue() ? LanguageGetString(STR_QUEUE_LINE_MAP_TIP)
                                                                     : LanguageGetString(STR_FOOTPATH_MAP_TIP);
                         break;
 
-                    case TileElementType::Track:
+                    case Track:
                         typeName = LanguageGetString(STR_RIDE_COMPONENT_TRACK_CAPITALISED);
                         break;
 
-                    case TileElementType::SmallScenery:
+                    case SmallScenery:
                     {
                         const auto* sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
                         snprintf(
@@ -1674,11 +1678,11 @@ static uint64_t PageDisabledWidgets[] = {
                         break;
                     }
 
-                    case TileElementType::Entrance:
+                    case Entrance:
                         typeName = LanguageGetString(STR_RIDE_CONSTRUCTION_ENTRANCE);
                         break;
 
-                    case TileElementType::Wall:
+                    case Wall:
                     {
                         const auto* entry = tileElement->AsWall()->GetEntry();
                         snprintf(
@@ -1688,11 +1692,11 @@ static uint64_t PageDisabledWidgets[] = {
                         break;
                     }
 
-                    case TileElementType::LargeScenery:
+                    case LargeScenery:
                         typeName = LanguageGetString(STR_OBJECT_SELECTION_LARGE_SCENERY);
                         break;
 
-                    case TileElementType::Banner:
+                    case Banner:
                         snprintf(
                             buffer, sizeof(buffer), "%s (%u)", LanguageGetString(STR_BANNER_WINDOW_TITLE),
                             tileElement->AsBanner()->GetIndex().ToUnderlying());
@@ -2090,35 +2094,36 @@ static uint64_t PageDisabledWidgets[] = {
             {
                 switch (tileElement->GetType())
                 {
-                    case TileElementType::Surface:
+                    using enum TileElementType;
+                    case Surface:
                         p = TileInspectorPage::Surface;
                         break;
 
-                    case TileElementType::Path:
+                    case Path:
                         p = TileInspectorPage::Path;
                         break;
 
-                    case TileElementType::Track:
+                    case Track:
                         p = TileInspectorPage::Track;
                         break;
 
-                    case TileElementType::SmallScenery:
+                    case SmallScenery:
                         p = TileInspectorPage::Scenery;
                         break;
 
-                    case TileElementType::Entrance:
+                    case Entrance:
                         p = TileInspectorPage::Entrance;
                         break;
 
-                    case TileElementType::Wall:
+                    case Wall:
                         p = TileInspectorPage::Wall;
                         break;
 
-                    case TileElementType::LargeScenery:
+                    case LargeScenery:
                         p = TileInspectorPage::LargeScenery;
                         break;
 
-                    case TileElementType::Banner:
+                    case Banner:
                         p = TileInspectorPage::Banner;
                         break;
                 }
@@ -2186,7 +2191,8 @@ static uint64_t PageDisabledWidgets[] = {
 
             switch (tileElement->GetType())
             {
-                case TileElementType::Surface:
+                using enum TileElementType;
+                case Surface:
                     widgets[WIDX_SURFACE_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 0) + 3;
                     widgets[WIDX_SURFACE_SPINNER_HEIGHT].bottom = GBBB(propertiesAnchor, 0) - 3;
                     widgets[WIDX_SURFACE_SPINNER_HEIGHT_INCREASE].top = GBBT(propertiesAnchor, 0) + 4;
@@ -2223,7 +2229,7 @@ static uint64_t PageDisabledWidgets[] = {
                         WIDX_SURFACE_CHECK_DIAGONAL, tileElement->AsSurface()->GetSlope() & kTileSlopeDiagonalFlag);
                     break;
 
-                case TileElementType::Path:
+                case Path:
                     widgets[WIDX_PATH_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 0) + 3;
                     widgets[WIDX_PATH_SPINNER_HEIGHT].bottom = GBBB(propertiesAnchor, 0) - 3;
                     widgets[WIDX_PATH_SPINNER_HEIGHT_INCREASE].top = GBBT(propertiesAnchor, 0) + 4;
@@ -2273,7 +2279,7 @@ static uint64_t PageDisabledWidgets[] = {
                         WIDX_PATH_CHECK_EDGE_N, tileElement->AsPath()->GetCorners() & (1 << ((3 - GetCurrentRotation()) & 3)));
                     break;
 
-                case TileElementType::Track:
+                case Track:
                     widgets[WIDX_TRACK_CHECK_APPLY_TO_ALL].top = GBBT(propertiesAnchor, 0);
                     widgets[WIDX_TRACK_CHECK_APPLY_TO_ALL].bottom = GBBB(propertiesAnchor, 0);
                     widgets[WIDX_TRACK_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 1) + 3;
@@ -2297,7 +2303,7 @@ static uint64_t PageDisabledWidgets[] = {
                     setCheckboxValue(WIDX_TRACK_CHECK_IS_INDESTRUCTIBLE, tileElement->AsTrack()->IsIndestructible());
                     break;
 
-                case TileElementType::SmallScenery:
+                case SmallScenery:
                 {
                     // Raise / Lower
                     widgets[WIDX_SCENERY_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 0) + 3;
@@ -2348,7 +2354,7 @@ static uint64_t PageDisabledWidgets[] = {
                     break;
                 }
 
-                case TileElementType::Entrance:
+                case Entrance:
                     widgets[WIDX_ENTRANCE_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 0) + 3;
                     widgets[WIDX_ENTRANCE_SPINNER_HEIGHT].bottom = GBBB(propertiesAnchor, 0) - 3;
                     widgets[WIDX_ENTRANCE_SPINNER_HEIGHT_INCREASE].top = GBBT(propertiesAnchor, 0) + 4;
@@ -2362,7 +2368,7 @@ static uint64_t PageDisabledWidgets[] = {
                         !(tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE));
                     break;
 
-                case TileElementType::Wall:
+                case Wall:
                 {
                     bool canBeSloped = false;
                     bool hasAnimation = false;
@@ -2408,7 +2414,7 @@ static uint64_t PageDisabledWidgets[] = {
                     break;
                 }
 
-                case TileElementType::LargeScenery:
+                case LargeScenery:
                     widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 0) + 3;
                     widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT].bottom = GBBB(propertiesAnchor, 0) - 3;
                     widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT_INCREASE].top = GBBT(propertiesAnchor, 0) + 4;
@@ -2417,7 +2423,7 @@ static uint64_t PageDisabledWidgets[] = {
                     widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT_DECREASE].bottom = GBBB(propertiesAnchor, 0) - 4;
                     break;
 
-                case TileElementType::Banner:
+                case Banner:
                     widgets[WIDX_BANNER_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 0) + 3;
                     widgets[WIDX_BANNER_SPINNER_HEIGHT].bottom = GBBB(propertiesAnchor, 0) - 3;
                     widgets[WIDX_BANNER_SPINNER_HEIGHT_INCREASE].top = GBBT(propertiesAnchor, 0) + 4;

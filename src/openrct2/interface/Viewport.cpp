@@ -646,11 +646,12 @@ namespace OpenRCT2
 
         switch (entity->Type)
         {
-            case EntityType::vehicle:
+            using enum EntityType;
+            case vehicle:
                 ViewportUpdateSmartFollowVehicle(window);
                 break;
 
-            case EntityType::guest:
+            case guest:
             {
                 auto* guest = entity->As<Guest>();
                 if (guest == nullptr)
@@ -660,7 +661,7 @@ namespace OpenRCT2
                 ViewportUpdateSmartFollowGuest(window, *guest);
                 break;
             }
-            case EntityType::staff:
+            case staff:
             {
                 auto* staff = entity->As<Staff>();
                 if (staff == nullptr)
@@ -1366,7 +1367,8 @@ namespace OpenRCT2
                 {
                     switch (ps->Entity->Type)
                     {
-                        case EntityType::vehicle:
+                        using enum EntityType;
+                        case vehicle:
                         {
                             if (viewFlags & VIEWPORT_FLAG_HIDE_VEHICLES || clipped)
                             {
@@ -1390,7 +1392,7 @@ namespace OpenRCT2
                             }
                             break;
                         }
-                        case EntityType::guest:
+                        case guest:
                             if (viewFlags & VIEWPORT_FLAG_HIDE_GUESTS)
                             {
                                 return VisibilityKind::hidden;
@@ -1400,7 +1402,7 @@ namespace OpenRCT2
                                 return VisibilityKind::partial;
                             }
                             break;
-                        case EntityType::staff:
+                        case staff:
                             if (viewFlags & VIEWPORT_FLAG_HIDE_STAFF)
                             {
                                 return VisibilityKind::hidden;

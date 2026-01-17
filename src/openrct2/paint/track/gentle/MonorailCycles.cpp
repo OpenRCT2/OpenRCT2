@@ -595,27 +595,28 @@ TrackPaintFunction GetTrackPaintFunctionMonorailCycles(TrackElemType trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::flat:
+        using enum TrackElemType;
+        case flat:
             return PaintMonorailCyclesTrackFlat;
 
-        case TrackElemType::endStation:
-        case TrackElemType::beginStation:
-        case TrackElemType::middleStation:
+        case endStation:
+        case beginStation:
+        case middleStation:
             return PaintMonorailCyclesStation;
 
-        case TrackElemType::leftQuarterTurn5Tiles:
+        case leftQuarterTurn5Tiles:
             return PaintMonorailCyclesTrackLeftQuarterTurn5Tiles;
-        case TrackElemType::rightQuarterTurn5Tiles:
+        case rightQuarterTurn5Tiles:
             return PaintMonorailCyclesTrackRightQuarterTurn5Tiles;
 
-        case TrackElemType::sBendLeft:
+        case sBendLeft:
             return PaintMonorailCyclesTrackSBendLeft;
-        case TrackElemType::sBendRight:
+        case sBendRight:
             return PaintMonorailCyclesTrackSBendRight;
 
-        case TrackElemType::leftQuarterTurn3Tiles:
+        case leftQuarterTurn3Tiles:
             return PaintMonorailCyclesTrackLeftQuarterTurn3Tiles;
-        case TrackElemType::rightQuarterTurn3Tiles:
+        case rightQuarterTurn3Tiles:
             return PaintMonorailCyclesTrackRightQuarterTurn3Tiles;
         default:
             return TrackPaintFunctionDummy;

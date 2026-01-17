@@ -377,22 +377,23 @@ namespace OpenRCT2::Audio
     {
         switch (id)
         {
-            case SoundId::liftClassic:
-            case SoundId::trackFrictionClassicWood:
-            case SoundId::frictionClassic:
-            case SoundId::liftFrictionWheels:
-            case SoundId::goKartEngine:
-            case SoundId::trackFrictionTrain:
-            case SoundId::trackFrictionWater:
-            case SoundId::liftArrow:
-            case SoundId::liftWood:
-            case SoundId::trackFrictionWood:
-            case SoundId::liftWildMouse:
-            case SoundId::liftBM:
-            case SoundId::trackFrictionBM:
-            case SoundId::liftRMC:
-            case SoundId::trackFrictionRMC:
-            case SoundId::liftFlume:
+            using enum SoundId;
+            case liftClassic:
+            case trackFrictionClassicWood:
+            case frictionClassic:
+            case liftFrictionWheels:
+            case goKartEngine:
+            case trackFrictionTrain:
+            case trackFrictionWater:
+            case liftArrow:
+            case liftWood:
+            case trackFrictionWood:
+            case liftWildMouse:
+            case liftBM:
+            case trackFrictionBM:
+            case liftRMC:
+            case trackFrictionRMC:
+            case liftFlume:
                 return true;
             default:
                 return false;
@@ -403,17 +404,18 @@ namespace OpenRCT2::Audio
     {
         switch (id)
         {
-            case SoundId::scream1:
-            case SoundId::scream2:
-            case SoundId::scream3:
-            case SoundId::scream4:
-            case SoundId::scream5:
-            case SoundId::scream6:
-            case SoundId::scream7:
-            case SoundId::scream8:
-            case SoundId::trainWhistle:
-            case SoundId::trainDeparting:
-            case SoundId::tram:
+            using enum SoundId;
+            case scream1:
+            case scream2:
+            case scream3:
+            case scream4:
+            case scream5:
+            case scream6:
+            case scream7:
+            case scream8:
+            case trainWhistle:
+            case trainDeparting:
+            case tram:
                 return true;
             default:
                 return false;

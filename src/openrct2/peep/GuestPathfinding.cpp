@@ -114,31 +114,32 @@ namespace OpenRCT2::PathFinding
     {
         switch (pathFindSearchResult)
         {
-            case PathSearchResult::DeadEnd:
+            using enum PathSearchResult;
+            case DeadEnd:
                 return "DeadEnd";
-            case PathSearchResult::Wide:
+            case Wide:
                 return "Wide";
-            case PathSearchResult::Thin:
+            case Thin:
                 return "Thin";
-            case PathSearchResult::Junction:
+            case Junction:
                 return "Junction";
-            case PathSearchResult::RideQueue:
+            case RideQueue:
                 return "RideQueue";
-            case PathSearchResult::RideEntrance:
+            case RideEntrance:
                 return "RideEntrance";
-            case PathSearchResult::RideExit:
+            case RideExit:
                 return "RideExit";
-            case PathSearchResult::ParkExit:
+            case ParkExit:
                 return "ParkEntryExit";
-            case PathSearchResult::ShopEntrance:
+            case ShopEntrance:
                 return "ShopEntrance";
-            case PathSearchResult::LimitReached:
+            case LimitReached:
                 return "LimitReached";
-            case PathSearchResult::Other:
+            case Other:
                 return "Other";
-            case PathSearchResult::Loop:
+            case Loop:
                 return "Loop";
-            case PathSearchResult::Failed:
+            case Failed:
                 return "Failed";
                 // The default case is omitted intentionally.
         }
@@ -418,7 +419,8 @@ namespace OpenRCT2::PathFinding
 
             switch (tileElement->GetType())
             {
-                case TileElementType::Track:
+                using enum TileElementType;
+                case Track:
                 {
                     if (loc.z != tileElement->BaseHeight)
                         continue;
@@ -431,7 +433,7 @@ namespace OpenRCT2::PathFinding
                     }
                 }
                 break;
-                case TileElementType::Entrance:
+                case Entrance:
                     if (loc.z != tileElement->BaseHeight)
                         continue;
                     switch (tileElement->AsEntrance()->GetEntranceType())
@@ -456,7 +458,7 @@ namespace OpenRCT2::PathFinding
                             return PathSearchResult::ParkExit;
                     }
                     break;
-                case TileElementType::Path:
+                case Path:
                 {
                     const auto* pathElement = tileElement->AsPath();
                     if (!FootpathIsZAndDirectionValid(*pathElement, loc.z, chosenDirection))
@@ -785,7 +787,8 @@ namespace OpenRCT2::PathFinding
             RideId rideIndex = RideId::GetNull();
             switch (tileElement->GetType())
             {
-                case TileElementType::Track:
+                using enum TileElementType;
+                case Track:
                 {
                     if (loc.z != tileElement->BaseHeight)
                         continue;
@@ -800,7 +803,7 @@ namespace OpenRCT2::PathFinding
                     searchResult = PathSearchResult::ShopEntrance;
                     break;
                 }
-                case TileElementType::Entrance:
+                case Entrance:
                     if (loc.z != tileElement->BaseHeight)
                         continue;
                     Direction direction;
@@ -845,7 +848,7 @@ namespace OpenRCT2::PathFinding
                             continue;
                     }
                     break;
-                case TileElementType::Path:
+                case Path:
                 {
                     const auto* pathElement = tileElement->AsPath();
                     /* For peeps heading for a ride with a queue, the goal is the last

@@ -989,44 +989,45 @@ TrackPaintFunction GetTrackPaintFunctionLogFlume(TrackElemType trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::flat:
+        using enum TrackElemType;
+        case flat:
             return PaintLogFlumeTrackFlat;
 
-        case TrackElemType::endStation:
-        case TrackElemType::beginStation:
-        case TrackElemType::middleStation:
+        case endStation:
+        case beginStation:
+        case middleStation:
             return PaintLogFlumeTrackStation;
-        case TrackElemType::up25:
+        case up25:
             return PaintLogFlumeTrack25DegUp;
-        case TrackElemType::flatToUp25:
+        case flatToUp25:
             return PaintLogFlumeTrackFlatTo25DegUp;
-        case TrackElemType::up25ToFlat:
+        case up25ToFlat:
             return PaintLogFlumeTrack25DegUpToFlat;
-        case TrackElemType::down25:
+        case down25:
             return PaintLogFlumeTrack25DegDown;
-        case TrackElemType::flatToDown25:
+        case flatToDown25:
             return PaintLogFlumeTrackFlatTo25DegDown;
-        case TrackElemType::down25ToFlat:
+        case down25ToFlat:
             return PaintLogFlumeTrack25DegDownToFlat;
-        case TrackElemType::sBendLeft:
+        case sBendLeft:
             return PaintLogFlumeTrackSBendLeft;
-        case TrackElemType::sBendRight:
+        case sBendRight:
             return PaintLogFlumeTrackSBendRight;
-        case TrackElemType::leftQuarterTurn3Tiles:
+        case leftQuarterTurn3Tiles:
             return PaintLogFlumeTrackLeftQuarterTurn3Tiles;
-        case TrackElemType::rightQuarterTurn3Tiles:
+        case rightQuarterTurn3Tiles:
             return PaintLogFlumeTrackRightQuarterTurn3Tiles;
-        case TrackElemType::onRidePhoto:
+        case onRidePhoto:
             return PaintLogFlumeTrackOnRidePhoto;
-        case TrackElemType::logFlumeReverser:
+        case logFlumeReverser:
             return PaintLogFlumeTrackReverser;
 
             // Added by OpenRCT2
-        case TrackElemType::down25ToDown60:
+        case down25ToDown60:
             return LogFlumeTrack25Down60;
-        case TrackElemType::down60:
+        case down60:
             return LogFlumeTrack60Down;
-        case TrackElemType::down60ToDown25:
+        case down60ToDown25:
             return LogFlumeTrack60Down25;
         default:
             return TrackPaintFunctionDummy;

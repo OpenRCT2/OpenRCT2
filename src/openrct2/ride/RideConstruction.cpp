@@ -512,24 +512,25 @@ void RideConstructionInvalidateCurrentTrack()
 {
     switch (_rideConstructionState)
     {
-        case RideConstructionState::Selected:
+        using enum RideConstructionState;
+        case Selected:
             GetTrackElementOriginAndApplyChanges(
                 { _currentTrackBegin, static_cast<Direction>(_currentTrackPieceDirection & 3) }, _currentTrackPieceType, 0,
                 nullptr, { TrackElementSetFlag::highlightOff });
             break;
-        case RideConstructionState::MazeBuild:
-        case RideConstructionState::MazeMove:
-        case RideConstructionState::MazeFill:
-        case RideConstructionState::Front:
-        case RideConstructionState::Back:
+        case MazeBuild:
+        case MazeMove:
+        case MazeFill:
+        case Front:
+        case Back:
             if (_currentTrackSelectionFlags.has(TrackSelectionFlag::arrow))
             {
                 MapInvalidateTileFull(_currentTrackBegin.ToTileStart());
             }
             RideConstructionRemoveGhosts();
             break;
-        case RideConstructionState::Place:
-        case RideConstructionState::EntranceExit:
+        case Place:
+        case EntranceExit:
         default:
             if (_currentTrackSelectionFlags.has(TrackSelectionFlag::arrow))
             {

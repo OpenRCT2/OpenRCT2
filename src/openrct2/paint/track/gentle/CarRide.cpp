@@ -727,54 +727,55 @@ TrackPaintFunction GetTrackPaintFunctionCarRide(TrackElemType trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::flat:
+        using enum TrackElemType;
+        case flat:
             return PaintCarRideTrackFlat;
 
-        case TrackElemType::endStation:
-        case TrackElemType::beginStation:
-        case TrackElemType::middleStation:
+        case endStation:
+        case beginStation:
+        case middleStation:
             return PaintCarRideStation;
 
-        case TrackElemType::up25:
+        case up25:
             return PaintCarRideTrack25DegUp;
-        case TrackElemType::up60:
+        case up60:
             return PaintCarRideTrack60DegUp;
-        case TrackElemType::flatToUp25:
+        case flatToUp25:
             return PaintCarRideTrackFlatTo25DegUp;
-        case TrackElemType::up25ToUp60:
+        case up25ToUp60:
             return PaintCarRideTrack25DegUpTo60DegUp;
-        case TrackElemType::up60ToUp25:
+        case up60ToUp25:
             return PaintCarRideTrack60DegUpTo25DegUp;
-        case TrackElemType::up25ToFlat:
+        case up25ToFlat:
             return PaintCarRideTrack25DegUpToFlat;
 
-        case TrackElemType::down25:
+        case down25:
             return PaintCarRideTrack25DegDown;
-        case TrackElemType::down60:
+        case down60:
             return PaintCarRideTrack60DegDown;
-        case TrackElemType::flatToDown25:
+        case flatToDown25:
             return PaintCarRideTrackFlatTo25DegDown;
-        case TrackElemType::down25ToDown60:
+        case down25ToDown60:
             return PaintCarRideTrack25DegDownTo60DegDown;
-        case TrackElemType::down60ToDown25:
+        case down60ToDown25:
             return PaintCarRideTrack60DegDownTo25DegDown;
-        case TrackElemType::down25ToFlat:
+        case down25ToFlat:
             return PaintCarRideTrack25DegDownToFlat;
 
-        case TrackElemType::leftQuarterTurn3Tiles:
+        case leftQuarterTurn3Tiles:
             return PaintCarRideTrackLeftQuarterTurn3Tiles;
-        case TrackElemType::rightQuarterTurn3Tiles:
+        case rightQuarterTurn3Tiles:
             return PaintCarRideTrackRightQuarterTurn3Tiles;
 
-        case TrackElemType::leftQuarterTurn1Tile:
+        case leftQuarterTurn1Tile:
             return PaintCarRideTrackLeftQuarterTurn1Tile;
-        case TrackElemType::rightQuarterTurn1Tile:
+        case rightQuarterTurn1Tile:
             return PaintCarRideTrackRightQuarterTurn1Tile;
 
-        case TrackElemType::rapids:
+        case rapids:
             return PaintCarRideTrackLogBumps;
 
-        case TrackElemType::spinningTunnel:
+        case spinningTunnel:
             return PaintCarRideTrackSpinningTunnel;
 
         default:

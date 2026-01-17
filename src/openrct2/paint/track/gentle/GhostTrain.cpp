@@ -563,42 +563,43 @@ TrackPaintFunction GetTrackPaintFunctionGhostTrain(TrackElemType trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::flat:
+        using enum TrackElemType;
+        case flat:
             return PaintGhostTrainTrackFlat;
 
-        case TrackElemType::endStation:
-        case TrackElemType::beginStation:
-        case TrackElemType::middleStation:
+        case endStation:
+        case beginStation:
+        case middleStation:
             return PaintGhostTrainStation;
 
-        case TrackElemType::up25:
+        case up25:
             return PaintGhostTrainTrack25DegUp;
-        case TrackElemType::flatToUp25:
+        case flatToUp25:
             return PaintGhostTrainTrackFlatTo25DegUp;
-        case TrackElemType::up25ToFlat:
+        case up25ToFlat:
             return PaintGhostTrainTrack25DegUpToFlat;
 
-        case TrackElemType::down25:
+        case down25:
             return PaintGhostTrainTrack25DegDown;
-        case TrackElemType::flatToDown25:
+        case flatToDown25:
             return PaintGhostTrainTrackFlatTo25DegDown;
-        case TrackElemType::down25ToFlat:
+        case down25ToFlat:
             return PaintGhostTrainTrack25DegDownToFlat;
 
-        case TrackElemType::leftQuarterTurn3Tiles:
+        case leftQuarterTurn3Tiles:
             return PaintGhostTrainTrackLeftQuarterTurn3Tiles;
-        case TrackElemType::rightQuarterTurn3Tiles:
+        case rightQuarterTurn3Tiles:
             return PaintGhostTrainTrackRightQuarterTurn3Tiles;
 
-        case TrackElemType::leftQuarterTurn1Tile:
+        case leftQuarterTurn1Tile:
             return PaintGhostTrainTrackLeftQuarterTurn1Tile;
-        case TrackElemType::rightQuarterTurn1Tile:
+        case rightQuarterTurn1Tile:
             return PaintGhostTrainTrackRightQuarterTurn1Tile;
 
-        case TrackElemType::brakes:
+        case brakes:
             return PaintGhostTrainTrackBrakes;
 
-        case TrackElemType::spinningTunnel:
+        case spinningTunnel:
             return PaintGhostTrainTrackSpinningTunnel;
         default:
             return TrackPaintFunctionDummy;

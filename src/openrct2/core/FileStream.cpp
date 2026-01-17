@@ -47,17 +47,18 @@ namespace OpenRCT2
         const char* mode;
         switch (fileMode)
         {
-            case FileMode::open:
+            using enum FileMode;
+            case open:
                 mode = "rb";
                 _canRead = true;
                 _canWrite = false;
                 break;
-            case FileMode::write:
+            case write:
                 mode = "w+b";
                 _canRead = true;
                 _canWrite = true;
                 break;
-            case FileMode::append:
+            case append:
                 mode = "a";
                 _canRead = false;
                 _canWrite = true;
