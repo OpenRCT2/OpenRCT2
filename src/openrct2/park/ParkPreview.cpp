@@ -59,7 +59,7 @@ namespace OpenRCT2
 
     static PaletteIndex getPreviewColourByTilePos(const TileCoordsXY& pos)
     {
-        PaletteIndex paletteIndex = PaletteIndex::pi0;
+        PaletteIndex paletteIndex = PaletteIndex::transparent;
 
         auto tileElement = MapGetFirstElementAt(pos);
         if (tileElement == nullptr)
@@ -76,7 +76,7 @@ namespace OpenRCT2
                     auto* surfaceElement = tileElement->AsSurface();
                     if (surfaceElement == nullptr)
                     {
-                        surfaceColour = paletteIndex = PaletteIndex::pi0;
+                        surfaceColour = paletteIndex = PaletteIndex::transparent;
                         break;
                     }
 
