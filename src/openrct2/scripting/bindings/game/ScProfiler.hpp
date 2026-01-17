@@ -21,8 +21,7 @@ namespace OpenRCT2::Scripting
     {
     private:
         static JSValue GetFunctionIndexArray(
-            JSContext* ctx, const std::vector<Profiling::Function*>& all,
-            const std::vector<Profiling::Function*>& items)
+            JSContext* ctx, const std::vector<Profiling::Function*>& all, const std::vector<Profiling::Function*>& items)
         {
             JSValue functionArray = JS_NewArray(ctx);
             int64_t index = 0;
