@@ -14,7 +14,9 @@
     #include "../../Duktape.hpp"
 
     #include <cstdint>
+    #include <memory>
     #include <string>
+    #include <vector>
 
 namespace OpenRCT2::Scripting
 {
@@ -69,6 +71,7 @@ namespace OpenRCT2::Scripting
         bool getTrackFlag() const;
         std::string getTrackCurvature() const;
         std::string getTrackPitchDirection() const;
+        std::vector<std::shared_ptr<ScTrackSegment>> getNextValidSegments(int32_t rideId) const;
     };
 
 } // namespace OpenRCT2::Scripting

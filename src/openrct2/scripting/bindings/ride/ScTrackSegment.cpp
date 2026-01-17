@@ -12,6 +12,9 @@
     #include "ScTrackSegment.h"
 
     #include "../../../Context.h"
+    #include "../../../ride/Ride.h"
+    #include "../../../ride/RideData.h"
+    #include "../../../ride/Track.h"
     #include "../../../ride/TrackData.h"
     #include "../../../ride/Vehicle.h"
     #include "../../ScriptEngine.h"
@@ -68,6 +71,7 @@ void ScTrackSegment::Register(duk_context* ctx)
 
     dukglue_register_method(ctx, &ScTrackSegment::getSubpositionLength, "getSubpositionLength");
     dukglue_register_method(ctx, &ScTrackSegment::getSubpositions, "getSubpositions");
+    dukglue_register_method(ctx, &ScTrackSegment::getNextValidSegments, "getNextValidSegments");
 }
 
 int32_t ScTrackSegment::type_get() const
@@ -296,6 +300,49 @@ std::string ScTrackSegment::getTrackPitchDirection() const
     if (ted.flags.has(TrackElementFlag::down))
         return "down";
     return "flat";
+}
+
+std::vector<std::shared_ptr<ScTrackSegment>> ScTrackSegment::getNextValidSegments(int32_t rideId) const
+{
+    std::vector<std::shared_ptr<ScTrackSegment>> result;
+
+    auto ride = GetRide(RideId::FromUnderlying(rideId));
+    if (ride == nullptr)
+        return result;
+
+    const auto& rtd = ride->getRideTypeDescriptor();
+    const auto& thisTed = GetTrackElementDescriptor(_type);
+
+    // Get this segment's ending state
+    const auto endPitch = thisTed.definition.pitchEnd;
+    const auto endRoll = thisTed.definition.rollEnd;
+    const auto endDirectionIsDiagonal = TrackPieceDirectionIsDiagonal(thisTed.coordinates.rotationEnd);
+
+    // Iterate through all track element types
+    for (uint16_t type = 0; type < EnumValue(TrackElemType::count); type++)
+    {
+        auto trackType = static_cast<TrackElemType>(type);
+        const auto& candidateTed = GetTrackElementDescriptor(trackType);
+
+        // Skip if track group not supported by this ride type
+        if (!rtd.SupportsTrackGroup(candidateTed.definition.group))
+            continue;
+
+        // Check geometric compatibility:
+        // - Candidate's starting pitch must match our ending pitch
+        // - Candidate's starting roll must match our ending roll
+        // - Diagonal direction must match
+        if (candidateTed.definition.pitchStart != endPitch)
+            continue;
+        if (candidateTed.definition.rollStart != endRoll)
+            continue;
+        if (TrackPieceDirectionIsDiagonal(candidateTed.coordinates.rotationBegin) != endDirectionIsDiagonal)
+            continue;
+
+        result.push_back(std::make_shared<ScTrackSegment>(trackType));
+    }
+
+    return result;
 }
 
 #endif
