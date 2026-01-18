@@ -130,7 +130,7 @@ namespace OpenRCT2::Scripting
             }
             else
             {
-                WindowSetResize(*w, { w->minHeight, valueInt }, { w->maxHeight, valueInt });
+                WindowSetResize(*w, { w->minWidth, valueInt }, { w->maxWidth, valueInt });
             }
         }
         return JS_UNDEFINED;
