@@ -704,6 +704,14 @@ namespace OpenRCT2
 
         void OpenProgress(StringId captionStringId) override
         {
+            // Don't open progress window from non-main threads, such as worker threads that
+            // update progress with no progress window being available yet
+            const auto isMainThread = _mainThreadId == std::this_thread::get_id();
+            if (!gOpenRCT2Headless && !isMainThread)
+            {
+                return;
+            }
+
             auto captionString = _localisationService->GetString(captionStringId);
             auto intent = Intent(INTENT_ACTION_PROGRESS_OPEN);
             intent.PutExtra(INTENT_EXTRA_MESSAGE, captionString);
@@ -737,6 +745,12 @@ namespace OpenRCT2
 
         void CloseProgress() override
         {
+            const auto isMainThread = _mainThreadId == std::this_thread::get_id();
+            if (!gOpenRCT2Headless && !isMainThread)
+            {
+                return;
+            }
+
             auto intent = Intent(INTENT_ACTION_PROGRESS_CLOSE);
             ContextOpenIntent(&intent);
         }
