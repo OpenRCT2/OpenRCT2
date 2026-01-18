@@ -2309,45 +2309,46 @@ namespace OpenRCT2::RCT2
 
     void S6Importer::ImportEntity(GameState_t& gameState, const RCT12EntityBase& src)
     {
+        using enum EntityType;
         switch (GetEntityTypeFromRCT2Sprite(&src))
         {
-            case EntityType::vehicle:
+            case vehicle:
                 ImportEntity<::Vehicle>(gameState, src);
                 break;
-            case EntityType::guest:
+            case guest:
                 ImportEntity<::Guest>(gameState, src);
                 break;
-            case EntityType::staff:
+            case staff:
                 ImportEntity<::Staff>(gameState, src);
                 break;
-            case EntityType::steamParticle:
+            case steamParticle:
                 ImportEntity<::SteamParticle>(gameState, src);
                 break;
-            case EntityType::moneyEffect:
+            case moneyEffect:
                 ImportEntity<::MoneyEffect>(gameState, src);
                 break;
-            case EntityType::crashedVehicleParticle:
+            case crashedVehicleParticle:
                 ImportEntity<::VehicleCrashParticle>(gameState, src);
                 break;
-            case EntityType::explosionCloud:
+            case explosionCloud:
                 ImportEntity<::ExplosionCloud>(gameState, src);
                 break;
-            case EntityType::explosionFlare:
+            case explosionFlare:
                 ImportEntity<::ExplosionFlare>(gameState, src);
                 break;
-            case EntityType::crashSplash:
+            case crashSplash:
                 ImportEntity<::CrashSplashParticle>(gameState, src);
                 break;
-            case EntityType::jumpingFountain:
+            case jumpingFountain:
                 ImportEntity<::JumpingFountain>(gameState, src);
                 break;
-            case EntityType::balloon:
+            case balloon:
                 ImportEntity<::Balloon>(gameState, src);
                 break;
-            case EntityType::duck:
+            case duck:
                 ImportEntity<::Duck>(gameState, src);
                 break;
-            case EntityType::litter:
+            case litter:
                 ImportEntity<::Litter>(gameState, src);
                 break;
             default:

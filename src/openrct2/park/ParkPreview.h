@@ -38,7 +38,7 @@ namespace OpenRCT2
         PreviewImageType type;
         uint8_t width;
         uint8_t height;
-        OpenRCT2::Drawing::PaletteIndex pixels[kMaxPreviewImageSize * kMaxPreviewImageSize]{};
+        Drawing::PaletteIndex pixels[kMaxPreviewImageSize * kMaxPreviewImageSize]{};
     };
 
     struct ParkPreview

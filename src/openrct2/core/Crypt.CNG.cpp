@@ -664,7 +664,7 @@ public:
 private:
     static std::tuple<DWORD, PBYTE> HashData(const void* data, size_t dataLen)
     {
-        auto hash = OpenRCT2::Crypt::SHA256(data, dataLen);
+        auto hash = SHA256(data, dataLen);
         return ToHeap(hash.data(), hash.size());
     }
 
