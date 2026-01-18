@@ -41,14 +41,15 @@ void RideUpdateStation(Ride& ride, StationIndex stationIndex)
 
     switch (ride.mode)
     {
-        case RideMode::race:
+        using enum RideMode;
+        case race:
             RideUpdateStationRace(ride, stationIndex);
             break;
-        case RideMode::dodgems:
+        case dodgems:
             RideUpdateStationDodgems(ride, stationIndex);
             break;
-        case RideMode::continuousCircuitBlockSectioned:
-        case RideMode::poweredLaunchBlockSectioned:
+        case continuousCircuitBlockSectioned:
+        case poweredLaunchBlockSectioned:
             RideUpdateStationBlockSection(ride, stationIndex);
             break;
         default:

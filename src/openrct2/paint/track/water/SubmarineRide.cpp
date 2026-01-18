@@ -176,22 +176,23 @@ TrackPaintFunction GetTrackPaintFunctionSubmarineRide(TrackElemType trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::beginStation:
-        case TrackElemType::middleStation:
-        case TrackElemType::endStation:
+        using enum TrackElemType;
+        case beginStation:
+        case middleStation:
+        case endStation:
             return SubmarineRidePaintTrackStation;
 
-        case TrackElemType::flat:
+        case flat:
             return SubmarineRidePaintTrackFlat;
 
-        case TrackElemType::leftQuarterTurn3Tiles:
+        case leftQuarterTurn3Tiles:
             return SubmarineRidePaintTrackLeftQuarterTurn3Tiles;
-        case TrackElemType::rightQuarterTurn3Tiles:
+        case rightQuarterTurn3Tiles:
             return SubmarineRidePaintTrackRightQuarterTurn3Tiles;
 
-        case TrackElemType::leftQuarterTurn1Tile:
+        case leftQuarterTurn1Tile:
             return SubmarineRidePaintTrackLeftQuarterTurn1Tile;
-        case TrackElemType::rightQuarterTurn1Tile:
+        case rightQuarterTurn1Tile:
             return SubmarineRidePaintTrackRightQuarterTurn1Tile;
         default:
             return TrackPaintFunctionDummy;

@@ -106,33 +106,35 @@ public:
         u8string_view directoryName;
         switch (base)
         {
+            using enum DirBase;
             default:
-            case DirBase::rct1:
+            case rct1:
                 if (basePath.empty())
                     return {};
 
                 directoryName = kDirectoryNamesRCT2[EnumValue(did)];
                 break;
-            case DirBase::rct2:
+            case rct2:
                 switch (_rct2Variant)
                 {
-                    case RCT2Variant::rct2Original:
+                    using enum RCT2Variant;
+                    case rct2Original:
                         directoryName = kDirectoryNamesRCT2[EnumValue(did)];
                         break;
-                    case RCT2Variant::rctClassicWindows:
+                    case rctClassicWindows:
                         directoryName = Platform::kRCTClassicWindowsDataFolder;
                         break;
-                    case RCT2Variant::rctClassicMac:
+                    case rctClassicMac:
                         directoryName = Platform::kRCTClassicMacOSDataFolder;
                         break;
-                    case RCT2Variant::rctClassicPlusMac:
+                    case rctClassicPlusMac:
                         directoryName = Platform::kRCTClassicPlusMacOSDataFolder;
                         break;
                 }
                 break;
-            case DirBase::openrct2:
-            case DirBase::user:
-            case DirBase::config:
+            case openrct2:
+            case user:
+            case config:
                 directoryName = kDirectoryNamesOpenRCT2[EnumValue(did)];
                 break;
         }
@@ -202,24 +204,25 @@ private:
     {
         switch (pathid)
         {
-            case PathId::config:
-            case PathId::configShortcutsLegacy:
-            case PathId::configShortcuts:
+            using enum PathId;
+            case config:
+            case configShortcutsLegacy:
+            case configShortcuts:
                 return DirBase::config;
-            case PathId::cacheObjects:
-            case PathId::cacheTracks:
-            case PathId::cacheScenarios:
+            case cacheObjects:
+            case cacheTracks:
+            case cacheScenarios:
                 return DirBase::cache;
-            case PathId::scoresRCT2:
+            case scoresRCT2:
                 return DirBase::rct2;
-            case PathId::changelog:
-            case PathId::contributors:
+            case changelog:
+            case contributors:
                 return DirBase::documentation;
-            case PathId::networkGroups:
-            case PathId::networkServers:
-            case PathId::networkUsers:
-            case PathId::scores:
-            case PathId::scoresLegacy:
+            case networkGroups:
+            case networkServers:
+            case networkUsers:
+            case scores:
+            case scoresLegacy:
             default:
                 return DirBase::user;
         }

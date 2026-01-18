@@ -171,35 +171,36 @@ static bool vehicle_move_info_valid(
     int32_t size = 0;
     switch (trackSubposition)
     {
-        case VehicleTrackSubposition::Default:
+        using enum VehicleTrackSubposition;
+        case Default:
             size = VehicleTrackSubpositionSizeDefault;
             break;
-        case VehicleTrackSubposition::ChairliftGoingOut:
+        case ChairliftGoingOut:
             size = 692;
             break;
-        case VehicleTrackSubposition::ChairliftGoingBack:
-        case VehicleTrackSubposition::ChairliftEndBullwheel:
-        case VehicleTrackSubposition::ChairliftStartBullwheel:
+        case ChairliftGoingBack:
+        case ChairliftEndBullwheel:
+        case ChairliftStartBullwheel:
             size = 404;
             break;
-        case VehicleTrackSubposition::GoKartsLeftLane:
-        case VehicleTrackSubposition::GoKartsRightLane:
+        case GoKartsLeftLane:
+        case GoKartsRightLane:
             size = 1204;
             break;
-        case VehicleTrackSubposition::GoKartsMovingToRightLane:
-        case VehicleTrackSubposition::GoKartsMovingToLeftLane:
+        case GoKartsMovingToRightLane:
+        case GoKartsMovingToLeftLane:
             size = 568;
             break;
-        case VehicleTrackSubposition::MiniGolfPathA9: // VehicleTrackSubposition::MiniGolfStart9
-        case VehicleTrackSubposition::MiniGolfBallPathA10:
-        case VehicleTrackSubposition::MiniGolfPathB11:
-        case VehicleTrackSubposition::MiniGolfBallPathB12:
-        case VehicleTrackSubposition::MiniGolfPathC13:
-        case VehicleTrackSubposition::MiniGolfBallPathC14:
+        case MiniGolfPathA9: // MiniGolfStart9
+        case MiniGolfBallPathA10:
+        case MiniGolfPathB11:
+        case MiniGolfBallPathB12:
+        case MiniGolfPathC13:
+        case MiniGolfBallPathC14:
             size = 824;
             break;
-        case VehicleTrackSubposition::ReverserRCFrontBogie:
-        case VehicleTrackSubposition::ReverserRCRearBogie:
+        case ReverserRCFrontBogie:
+        case ReverserRCRearBogie:
             size = 868;
             break;
         default:
@@ -620,22 +621,23 @@ void Vehicle::UpdateMeasurements()
 
         switch (trackElemType)
         {
-            case TrackElemType::rapids:
+            using enum TrackElemType;
+            case rapids:
                 curRide->specialTrackElements.set(SpecialElement::rapids);
                 break;
-            case TrackElemType::spinningTunnel:
+            case spinningTunnel:
                 curRide->specialTrackElements.set(SpecialElement::spinningTunnel);
                 break;
-            case TrackElemType::waterfall:
+            case waterfall:
                 curRide->specialTrackElements.set(SpecialElement::waterfall);
                 break;
-            case TrackElemType::logFlumeReverser:
+            case logFlumeReverser:
                 curRide->specialTrackElements.set(SpecialElement::reverser);
                 break;
-            case TrackElemType::whirlpool:
+            case whirlpool:
                 curRide->specialTrackElements.set(SpecialElement::whirlpool);
                 break;
-            case TrackElemType::watersplash:
+            case watersplash:
                 if (velocity >= 11.0_mph)
                 {
                     curRide->specialTrackElements.set(SpecialElement::splash);
@@ -957,71 +959,72 @@ void Vehicle::Update()
 
     switch (status)
     {
-        case Status::movingToEndOfStation:
+        using enum Status;
+        case movingToEndOfStation:
             UpdateMovingToEndOfStation();
             break;
-        case Status::waitingForPassengers:
+        case waitingForPassengers:
             UpdateWaitingForPassengers();
             break;
-        case Status::waitingToDepart:
+        case waitingToDepart:
             UpdateWaitingToDepart();
             break;
-        case Status::crashing:
-        case Status::crashed:
+        case crashing:
+        case crashed:
             UpdateCrash();
             break;
-        case Status::travellingDodgems:
+        case travellingDodgems:
             UpdateDodgemsMode();
             break;
-        case Status::swinging:
+        case swinging:
             UpdateSwinging();
             break;
-        case Status::simulatorOperating:
+        case simulatorOperating:
             UpdateSimulatorOperating();
             break;
-        case Status::topSpinOperating:
+        case topSpinOperating:
             UpdateTopSpinOperating();
             break;
-        case Status::ferrisWheelRotating:
+        case ferrisWheelRotating:
             UpdateFerrisWheelRotating();
             break;
-        case Status::spaceRingsOperating:
+        case spaceRingsOperating:
             UpdateSpaceRingsOperating();
             break;
-        case Status::hauntedHouseOperating:
+        case hauntedHouseOperating:
             UpdateHauntedHouseOperating();
             break;
-        case Status::crookedHouseOperating:
+        case crookedHouseOperating:
             UpdateCrookedHouseOperating();
             break;
-        case Status::rotating:
+        case rotating:
             UpdateRotating();
             break;
-        case Status::departing:
+        case departing:
             UpdateDeparting();
             break;
-        case Status::travelling:
+        case travelling:
             UpdateTravelling();
             break;
-        case Status::travellingCableLift:
+        case travellingCableLift:
             UpdateTravellingCableLift();
             break;
-        case Status::travellingBoat:
+        case travellingBoat:
             UpdateTravellingBoat();
             break;
-        case Status::arriving:
+        case arriving:
             UpdateArriving();
             break;
-        case Status::unloadingPassengers:
+        case unloadingPassengers:
             UpdateUnloadingPassengers();
             break;
-        case Status::waitingForCableLift:
+        case waitingForCableLift:
             UpdateWaitingForCableLift();
             break;
-        case Status::showingFilm:
+        case showingFilm:
             UpdateShowingFilm();
             break;
-        case Status::doingCircusShow:
+        case doingCircusShow:
             UpdateDoingCircusShow();
             break;
         default:
@@ -1046,10 +1049,11 @@ void Vehicle::UpdateMovingToEndOfStation()
 
     switch (curRide->mode)
     {
-        case RideMode::upwardLaunch:
-        case RideMode::rotatingLift:
-        case RideMode::downwardLaunch:
-        case RideMode::freefallDrop:
+        using enum RideMode;
+        case upwardLaunch:
+        case rotatingLift:
+        case downwardLaunch:
+        case freefallDrop:
             if (velocity >= -131940)
             {
                 acceleration = -3298;
@@ -1063,23 +1067,23 @@ void Vehicle::UpdateMovingToEndOfStation()
             if (!(curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_5))
                 break;
             [[fallthrough]];
-        case RideMode::dodgems:
-        case RideMode::swing:
-        case RideMode::rotation:
-        case RideMode::forwardRotation:
-        case RideMode::backwardRotation:
-        case RideMode::filmAvengingAviators:
-        case RideMode::filmThrillRiders:
-        case RideMode::beginners:
-        case RideMode::intense:
-        case RideMode::berserk:
-        case RideMode::mouseTails3DFilm:
-        case RideMode::stormChasers3DFilm:
-        case RideMode::spaceRaiders3DFilm:
-        case RideMode::spaceRings:
-        case RideMode::hauntedHouse:
-        case RideMode::crookedHouse:
-        case RideMode::circus:
+        case dodgems:
+        case swing:
+        case rotation:
+        case forwardRotation:
+        case backwardRotation:
+        case filmAvengingAviators:
+        case filmThrillRiders:
+        case beginners:
+        case intense:
+        case berserk:
+        case mouseTails3DFilm:
+        case stormChasers3DFilm:
+        case spaceRaiders3DFilm:
+        case spaceRings:
+        case hauntedHouse:
+        case crookedHouse:
+        case circus:
             current_station = StationIndex::FromUnderlying(0);
             velocity = 0;
             acceleration = 0;
@@ -1116,7 +1120,7 @@ void Vehicle::UpdateMovingToEndOfStation()
                 acceleration = 0;
                 sub_state++;
 
-                if (curRide->mode == RideMode::race && sub_state >= 40)
+                if (curRide->mode == race && sub_state >= 40)
                 {
                     SetState(Status::waitingForPassengers);
                     break;
@@ -1540,48 +1544,49 @@ void Vehicle::UpdateWaitingToDepart()
 
     switch (curRide->mode)
     {
-        case RideMode::dodgems:
+        using enum RideMode;
+        case dodgems:
             // Dodgems mode uses sub_state and TimeActive to tell how long
             // the vehicle has been ridden.
             SetState(Status::travellingDodgems);
             TimeActive = 0;
             UpdateDodgemsMode();
             break;
-        case RideMode::swing:
+        case swing:
             SetState(Status::swinging);
             NumSwings = 0;
             current_time = -1;
             UpdateSwinging();
             break;
-        case RideMode::rotation:
+        case rotation:
             SetState(Status::rotating);
             NumRotations = 0;
             current_time = -1;
             UpdateRotating();
             break;
-        case RideMode::filmAvengingAviators:
+        case filmAvengingAviators:
             SetState(Status::simulatorOperating);
             current_time = -1;
             UpdateSimulatorOperating();
             break;
-        case RideMode::filmThrillRiders:
+        case filmThrillRiders:
             SetState(Status::simulatorOperating, 1);
             current_time = -1;
             UpdateSimulatorOperating();
             break;
-        case RideMode::beginners:
-        case RideMode::intense:
-        case RideMode::berserk:
+        case beginners:
+        case intense:
+        case berserk:
             SetState(Status::topSpinOperating, sub_state);
             switch (curRide->mode)
             {
-                case RideMode::beginners:
+                case beginners:
                     sub_state = 0;
                     break;
-                case RideMode::intense:
+                case intense:
                     sub_state = 1;
                     break;
-                case RideMode::berserk:
+                case berserk:
                     sub_state = 2;
                     break;
                 default:
@@ -1595,27 +1600,27 @@ void Vehicle::UpdateWaitingToDepart()
             flatRideSecondaryAnimationFrame = 0;
             UpdateTopSpinOperating();
             break;
-        case RideMode::forwardRotation:
-        case RideMode::backwardRotation:
+        case forwardRotation:
+        case backwardRotation:
             SetState(Status::ferrisWheelRotating, flatRideAnimationFrame);
             NumRotations = 0;
             ferris_wheel_var_0 = 8;
             ferris_wheel_var_1 = 8;
             UpdateFerrisWheelRotating();
             break;
-        case RideMode::mouseTails3DFilm:
-        case RideMode::stormChasers3DFilm:
-        case RideMode::spaceRaiders3DFilm:
+        case mouseTails3DFilm:
+        case stormChasers3DFilm:
+        case spaceRaiders3DFilm:
             SetState(Status::showingFilm, sub_state);
             switch (curRide->mode)
             {
-                case RideMode::mouseTails3DFilm:
+                case mouseTails3DFilm:
                     sub_state = 0;
                     break;
-                case RideMode::stormChasers3DFilm:
+                case stormChasers3DFilm:
                     sub_state = 1;
                     break;
-                case RideMode::spaceRaiders3DFilm:
+                case spaceRaiders3DFilm:
                     sub_state = 2;
                     break;
                 default:
@@ -1627,24 +1632,24 @@ void Vehicle::UpdateWaitingToDepart()
             current_time = -1;
             UpdateShowingFilm();
             break;
-        case RideMode::circus:
+        case circus:
             SetState(Status::doingCircusShow);
             current_time = -1;
             UpdateDoingCircusShow();
             break;
-        case RideMode::spaceRings:
+        case spaceRings:
             SetState(Status::spaceRingsOperating);
             flatRideAnimationFrame = 0;
             current_time = -1;
             UpdateSpaceRingsOperating();
             break;
-        case RideMode::hauntedHouse:
+        case hauntedHouse:
             SetState(Status::hauntedHouseOperating);
             flatRideAnimationFrame = 0;
             current_time = -1;
             UpdateHauntedHouseOperating();
             break;
-        case RideMode::crookedHouse:
+        case crookedHouse:
             SetState(Status::crookedHouseOperating);
             flatRideAnimationFrame = 0;
             current_time = -1;
@@ -2236,21 +2241,22 @@ void Vehicle::UpdateDeparting()
     const auto& rtd = curRide->getRideTypeDescriptor();
     switch (curRide->mode)
     {
-        case RideMode::reverseInclineLaunchedShuttle:
+        using enum RideMode;
+        case reverseInclineLaunchedShuttle:
             if (velocity >= -131940)
                 acceleration = -3298;
             break;
-        case RideMode::poweredLaunchPasstrough:
-        case RideMode::poweredLaunch:
-        case RideMode::poweredLaunchBlockSectioned:
-        case RideMode::limPoweredLaunch:
-        case RideMode::upwardLaunch:
+        case poweredLaunchPasstrough:
+        case poweredLaunch:
+        case poweredLaunchBlockSectioned:
+        case limPoweredLaunch:
+        case upwardLaunch:
             if ((curRide->launchSpeed << 16) > velocity)
             {
                 acceleration = curRide->launchSpeed << rtd.BoosterSettings.AccelerationFactor;
             }
             break;
-        case RideMode::downwardLaunch:
+        case downwardLaunch:
             if (NumLaunches >= 1)
             {
                 if ((14 << 16) > velocity)
@@ -2258,11 +2264,11 @@ void Vehicle::UpdateDeparting()
                 break;
             }
             [[fallthrough]];
-        case RideMode::continuousCircuit:
-        case RideMode::continuousCircuitBlockSectioned:
-        case RideMode::rotatingLift:
-        case RideMode::freefallDrop:
-        case RideMode::boatHire:
+        case continuousCircuit:
+        case continuousCircuitBlockSectioned:
+        case rotatingLift:
+        case freefallDrop:
+        case boatHire:
             if (carEntry.flags & CAR_ENTRY_FLAG_POWERED)
                 break;
 
@@ -2950,22 +2956,23 @@ void Vehicle::UpdateArriving()
 
     switch (curRide->mode)
     {
-        case RideMode::swing:
-        case RideMode::rotation:
-        case RideMode::forwardRotation:
-        case RideMode::backwardRotation:
-        case RideMode::filmAvengingAviators:
-        case RideMode::filmThrillRiders:
-        case RideMode::beginners:
-        case RideMode::intense:
-        case RideMode::berserk:
-        case RideMode::mouseTails3DFilm:
-        case RideMode::stormChasers3DFilm:
-        case RideMode::spaceRaiders3DFilm:
-        case RideMode::circus:
-        case RideMode::spaceRings:
-        case RideMode::hauntedHouse:
-        case RideMode::crookedHouse:
+        using enum RideMode;
+        case swing:
+        case rotation:
+        case forwardRotation:
+        case backwardRotation:
+        case filmAvengingAviators:
+        case filmThrillRiders:
+        case beginners:
+        case intense:
+        case berserk:
+        case mouseTails3DFilm:
+        case stormChasers3DFilm:
+        case spaceRaiders3DFilm:
+        case circus:
+        case spaceRings:
+        case hauntedHouse:
+        case crookedHouse:
             ClearFlag(VehicleFlags::ReverseInclineCompletedLap);
             velocity = 0;
             acceleration = 0;
@@ -4556,7 +4563,8 @@ void Vehicle::UpdateSound()
     const auto currentTicks = getGameState().currentTicks;
     switch (carEntry.soundRange)
     {
-        case SoundRange::steamWhistle:
+        using enum SoundRange;
+        case steamWhistle:
             screamSound.id = scream_sound_id;
             if (!(currentTicks & 0x7F))
             {
@@ -4578,7 +4586,7 @@ void Vehicle::UpdateSound()
             screamSound.volume = 255;
             break;
 
-        case SoundRange::tramBell:
+        case tramBell:
             screamSound.id = scream_sound_id;
             if (!(currentTicks & 0x7F))
             {
@@ -4704,13 +4712,14 @@ SoundId Vehicle::ProduceScreamSound(const int32_t totalNumPeeps)
         {
             switch (carEntry.soundRange)
             {
-                case SoundRange::screamsMisc:
+                using enum SoundRange;
+                case screamsMisc:
                     scream_sound_id = _screamSetMisc[r % std::size(_screamSetMisc)];
                     break;
-                case SoundRange::screamsWoodenRollerCoaster:
+                case screamsWoodenRollerCoaster:
                     scream_sound_id = _screamSetWooden[r % std::size(_screamSetWooden)];
                     break;
-                case SoundRange::screamSteelRollerCoaster:
+                case screamSteelRollerCoaster:
                     scream_sound_id = _screamSetSteel[r % std::size(_screamSetSteel)];
                     break;
                 default:
@@ -5242,7 +5251,8 @@ void Vehicle::CheckAndApplyBlockSectionStopSite()
 
     switch (trackType)
     {
-        case TrackElemType::blockBrakes:
+        using enum TrackElemType;
+        case blockBrakes:
             // Check if this brake is the start of a cable lift
             if (curRide->lifecycleFlags & RIDE_LIFECYCLE_CABLE_LIFT)
             {
@@ -5257,26 +5267,26 @@ void Vehicle::CheckAndApplyBlockSectionStopSite()
                 }
             }
             [[fallthrough]];
-        case TrackElemType::diagBlockBrakes:
+        case diagBlockBrakes:
             if (curRide->isBlockSectioned() && trackElement->AsTrack()->IsBrakeClosed())
                 ApplyStopBlockBrake();
             else
                 ApplyNonStopBlockBrake();
 
             break;
-        case TrackElemType::endStation:
+        case endStation:
             if (trackElement->AsTrack()->IsBrakeClosed())
                 _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_BLOCK_BRAKE;
 
             break;
-        case TrackElemType::up25ToFlat:
-        case TrackElemType::up60ToFlat:
-        case TrackElemType::cableLiftHill:
-        case TrackElemType::diagUp25ToFlat:
-        case TrackElemType::diagUp60ToFlat:
+        case up25ToFlat:
+        case up60ToFlat:
+        case cableLiftHill:
+        case diagUp25ToFlat:
+        case diagUp60ToFlat:
             if (curRide->isBlockSectioned())
             {
-                if (trackType == TrackElemType::cableLiftHill || trackElement->AsTrack()->HasChain())
+                if (trackType == cableLiftHill || trackElement->AsTrack()->HasChain())
                 {
                     if (trackElement->AsTrack()->IsBrakeClosed())
                     {
@@ -5342,40 +5352,41 @@ int32_t Vehicle::GetSwingAmount() const
 {
     switch (GetTrackType())
     {
-        case TrackElemType::leftQuarterTurn5Tiles:
-        case TrackElemType::bankedLeftQuarterTurn5Tiles:
-        case TrackElemType::leftQuarterTurn5TilesUp25:
-        case TrackElemType::leftQuarterTurn5TilesDown25:
-        case TrackElemType::leftQuarterTurn5TilesCovered:
-        case TrackElemType::leftHalfBankedHelixUpLarge:
-        case TrackElemType::leftHalfBankedHelixDownLarge:
-        case TrackElemType::leftQuarterBankedHelixLargeUp:
-        case TrackElemType::leftQuarterBankedHelixLargeDown:
-        case TrackElemType::leftQuarterHelixLargeUp:
-        case TrackElemType::leftQuarterHelixLargeDown:
-        case TrackElemType::leftBankedQuarterTurn5TileUp25:
-        case TrackElemType::leftBankedQuarterTurn5TileDown25:
+        using enum TrackElemType;
+        case leftQuarterTurn5Tiles:
+        case bankedLeftQuarterTurn5Tiles:
+        case leftQuarterTurn5TilesUp25:
+        case leftQuarterTurn5TilesDown25:
+        case leftQuarterTurn5TilesCovered:
+        case leftHalfBankedHelixUpLarge:
+        case leftHalfBankedHelixDownLarge:
+        case leftQuarterBankedHelixLargeUp:
+        case leftQuarterBankedHelixLargeDown:
+        case leftQuarterHelixLargeUp:
+        case leftQuarterHelixLargeDown:
+        case leftBankedQuarterTurn5TileUp25:
+        case leftBankedQuarterTurn5TileDown25:
             // Loc6D67E1
             return 14;
 
-        case TrackElemType::rightQuarterTurn5Tiles:
-        case TrackElemType::bankedRightQuarterTurn5Tiles:
-        case TrackElemType::rightQuarterTurn5TilesUp25:
-        case TrackElemType::rightQuarterTurn5TilesDown25:
-        case TrackElemType::rightQuarterTurn5TilesCovered:
-        case TrackElemType::rightHalfBankedHelixUpLarge:
-        case TrackElemType::rightHalfBankedHelixDownLarge:
-        case TrackElemType::rightQuarterBankedHelixLargeUp:
-        case TrackElemType::rightQuarterBankedHelixLargeDown:
-        case TrackElemType::rightQuarterHelixLargeUp:
-        case TrackElemType::rightQuarterHelixLargeDown:
-        case TrackElemType::rightBankedQuarterTurn5TileUp25:
-        case TrackElemType::rightBankedQuarterTurn5TileDown25:
+        case rightQuarterTurn5Tiles:
+        case bankedRightQuarterTurn5Tiles:
+        case rightQuarterTurn5TilesUp25:
+        case rightQuarterTurn5TilesDown25:
+        case rightQuarterTurn5TilesCovered:
+        case rightHalfBankedHelixUpLarge:
+        case rightHalfBankedHelixDownLarge:
+        case rightQuarterBankedHelixLargeUp:
+        case rightQuarterBankedHelixLargeDown:
+        case rightQuarterHelixLargeUp:
+        case rightQuarterHelixLargeDown:
+        case rightBankedQuarterTurn5TileUp25:
+        case rightBankedQuarterTurn5TileDown25:
             // Loc6D6804
             return -14;
 
-        case TrackElemType::sBendLeft:
-        case TrackElemType::sBendLeftCovered:
+        case sBendLeft:
+        case sBendLeftCovered:
             // Loc6D67EF
             if (track_progress < 48)
             {
@@ -5383,8 +5394,8 @@ int32_t Vehicle::GetSwingAmount() const
             }
             return -15;
 
-        case TrackElemType::sBendRight:
-        case TrackElemType::sBendRightCovered:
+        case sBendRight:
+        case sBendRightCovered:
             // Loc6D67CC
             if (track_progress < 48)
             {
@@ -5392,59 +5403,59 @@ int32_t Vehicle::GetSwingAmount() const
             }
             return 15;
 
-        case TrackElemType::leftQuarterTurn3Tiles:
-        case TrackElemType::leftBankedQuarterTurn3Tiles:
-        case TrackElemType::leftQuarterTurn3TilesUp25:
-        case TrackElemType::leftQuarterTurn3TilesDown25:
-        case TrackElemType::leftQuarterTurn3TilesCovered:
-        case TrackElemType::leftHalfBankedHelixUpSmall:
-        case TrackElemType::leftHalfBankedHelixDownSmall:
-        case TrackElemType::leftBankToLeftQuarterTurn3TilesUp25:
-        case TrackElemType::leftQuarterTurn3TilesDown25ToLeftBank:
-        case TrackElemType::leftCurvedLiftHill:
-        case TrackElemType::leftBankedQuarterTurn3TileUp25:
-        case TrackElemType::leftBankedQuarterTurn3TileDown25:
+        case leftQuarterTurn3Tiles:
+        case leftBankedQuarterTurn3Tiles:
+        case leftQuarterTurn3TilesUp25:
+        case leftQuarterTurn3TilesDown25:
+        case leftQuarterTurn3TilesCovered:
+        case leftHalfBankedHelixUpSmall:
+        case leftHalfBankedHelixDownSmall:
+        case leftBankToLeftQuarterTurn3TilesUp25:
+        case leftQuarterTurn3TilesDown25ToLeftBank:
+        case leftCurvedLiftHill:
+        case leftBankedQuarterTurn3TileUp25:
+        case leftBankedQuarterTurn3TileDown25:
             // Loc6D67BE
             return 13;
 
-        case TrackElemType::rightQuarterTurn3Tiles:
-        case TrackElemType::rightBankedQuarterTurn3Tiles:
-        case TrackElemType::rightQuarterTurn3TilesUp25:
-        case TrackElemType::rightQuarterTurn3TilesDown25:
-        case TrackElemType::rightQuarterTurn3TilesCovered:
-        case TrackElemType::rightHalfBankedHelixUpSmall:
-        case TrackElemType::rightHalfBankedHelixDownSmall:
-        case TrackElemType::rightBankToRightQuarterTurn3TilesUp25:
-        case TrackElemType::rightQuarterTurn3TilesDown25ToRightBank:
-        case TrackElemType::rightCurvedLiftHill:
-        case TrackElemType::rightBankedQuarterTurn3TileUp25:
-        case TrackElemType::rightBankedQuarterTurn3TileDown25:
+        case rightQuarterTurn3Tiles:
+        case rightBankedQuarterTurn3Tiles:
+        case rightQuarterTurn3TilesUp25:
+        case rightQuarterTurn3TilesDown25:
+        case rightQuarterTurn3TilesCovered:
+        case rightHalfBankedHelixUpSmall:
+        case rightHalfBankedHelixDownSmall:
+        case rightBankToRightQuarterTurn3TilesUp25:
+        case rightQuarterTurn3TilesDown25ToRightBank:
+        case rightCurvedLiftHill:
+        case rightBankedQuarterTurn3TileUp25:
+        case rightBankedQuarterTurn3TileDown25:
             // Loc6D67B0
             return -13;
 
-        case TrackElemType::leftQuarterTurn1Tile:
-        case TrackElemType::leftQuarterTurn1TileUp60:
-        case TrackElemType::leftQuarterTurn1TileDown60:
+        case leftQuarterTurn1Tile:
+        case leftQuarterTurn1TileUp60:
+        case leftQuarterTurn1TileDown60:
             // Loc6D67A2
             return 12;
 
-        case TrackElemType::rightQuarterTurn1Tile:
-        case TrackElemType::rightQuarterTurn1TileUp60:
-        case TrackElemType::rightQuarterTurn1TileDown60:
+        case rightQuarterTurn1Tile:
+        case rightQuarterTurn1TileUp60:
+        case rightQuarterTurn1TileDown60:
             // Loc6D6794
             return -12;
 
-        case TrackElemType::leftEighthToDiag:
-        case TrackElemType::leftEighthToOrthogonal:
-        case TrackElemType::leftEighthBankToDiag:
-        case TrackElemType::leftEighthBankToOrthogonal:
+        case leftEighthToDiag:
+        case leftEighthToOrthogonal:
+        case leftEighthBankToDiag:
+        case leftEighthBankToOrthogonal:
             // Loc6D67D3
             return 15;
 
-        case TrackElemType::rightEighthToDiag:
-        case TrackElemType::rightEighthToOrthogonal:
-        case TrackElemType::rightEighthBankToDiag:
-        case TrackElemType::rightEighthBankToOrthogonal:
+        case rightEighthToDiag:
+        case rightEighthToOrthogonal:
+        case rightEighthBankToDiag:
+        case rightEighthBankToOrthogonal:
             // Loc6D67F6
             return -15;
         default:
@@ -5533,15 +5544,16 @@ void Vehicle::UpdateSwingingCar()
         auto trackType = GetTrackType();
         switch (trackType)
         {
-            case TrackElemType::bankedLeftQuarterTurn5Tiles:
-            case TrackElemType::leftBank:
-            case TrackElemType::leftBankedQuarterTurn3Tiles:
+            using enum TrackElemType;
+            case bankedLeftQuarterTurn5Tiles:
+            case leftBank:
+            case leftBankedQuarterTurn3Tiles:
                 dx = 10831;
                 cx = -819;
                 break;
-            case TrackElemType::bankedRightQuarterTurn5Tiles:
-            case TrackElemType::rightBank:
-            case TrackElemType::rightBankedQuarterTurn3Tiles:
+            case bankedRightQuarterTurn5Tiles:
+            case rightBank:
+            case rightBankedQuarterTurn3Tiles:
                 dx = 819;
                 cx = -10831;
                 break;
@@ -6661,19 +6673,20 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(
     bool isGoingBack = false;
     switch (TrackSubposition)
     {
-        case VehicleTrackSubposition::ChairliftGoingBack:
-        case VehicleTrackSubposition::ChairliftEndBullwheel:
-            TrackSubposition = VehicleTrackSubposition::ChairliftGoingBack;
+        using enum VehicleTrackSubposition;
+        case ChairliftGoingBack:
+        case ChairliftEndBullwheel:
+            TrackSubposition = ChairliftGoingBack;
             isGoingBack = true;
             break;
-        case VehicleTrackSubposition::ChairliftStartBullwheel:
-            TrackSubposition = VehicleTrackSubposition::ChairliftGoingOut;
+        case ChairliftStartBullwheel:
+            TrackSubposition = ChairliftGoingOut;
             break;
-        case VehicleTrackSubposition::GoKartsMovingToRightLane:
-            TrackSubposition = VehicleTrackSubposition::GoKartsRightLane;
+        case GoKartsMovingToRightLane:
+            TrackSubposition = GoKartsRightLane;
             break;
-        case VehicleTrackSubposition::GoKartsMovingToLeftLane:
-            TrackSubposition = VehicleTrackSubposition::GoKartsLeftLane;
+        case GoKartsMovingToLeftLane:
+            TrackSubposition = GoKartsLeftLane;
             break;
         default:
             break;
@@ -7062,18 +7075,19 @@ bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(TrackElemType trackType, con
 
     switch (TrackSubposition)
     {
-        case VehicleTrackSubposition::ChairliftEndBullwheel:
-            TrackSubposition = VehicleTrackSubposition::ChairliftGoingOut;
+        using enum VehicleTrackSubposition;
+        case ChairliftEndBullwheel:
+            TrackSubposition = ChairliftGoingOut;
             break;
-        case VehicleTrackSubposition::GoKartsMovingToRightLane:
-            TrackSubposition = VehicleTrackSubposition::GoKartsLeftLane;
+        case GoKartsMovingToRightLane:
+            TrackSubposition = GoKartsLeftLane;
             break;
-        case VehicleTrackSubposition::GoKartsMovingToLeftLane:
-            TrackSubposition = VehicleTrackSubposition::GoKartsRightLane;
+        case GoKartsMovingToLeftLane:
+            TrackSubposition = GoKartsRightLane;
             break;
-        case VehicleTrackSubposition::ChairliftGoingBack:
-        case VehicleTrackSubposition::ChairliftStartBullwheel:
-            TrackSubposition = VehicleTrackSubposition::ChairliftGoingBack;
+        case ChairliftGoingBack:
+        case ChairliftStartBullwheel:
+            TrackSubposition = ChairliftGoingBack;
             nextTileBackwards = false;
             break;
         default:
@@ -7600,7 +7614,8 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
             }
             switch (MiniGolfState(moveInfo->y))
             {
-                case MiniGolfState::Unk0: // Loc6DC7B4
+                using enum MiniGolfState;
+                case Unk0: // Loc6DC7B4
                     if (!IsHead())
                     {
                         mini_golf_flags |= MiniGolfFlag::Flag3;
@@ -7621,21 +7636,21 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
                     }
                     track_progress++;
                     break;
-                case MiniGolfState::Unk1: // Loc6DC7ED
+                case Unk1: // Loc6DC7ED
                     LOG_ERROR("Unused move info...");
                     assert(false);
                     var_D3 = static_cast<uint8_t>(moveInfo->z);
                     track_progress++;
                     break;
-                case MiniGolfState::Unk2: // Loc6DC800
+                case Unk2: // Loc6DC800
                     mini_golf_flags |= MiniGolfFlag::Flag0;
                     track_progress++;
                     break;
-                case MiniGolfState::Unk3: // Loc6DC810
+                case Unk3: // Loc6DC810
                     mini_golf_flags |= MiniGolfFlag::Flag1;
                     track_progress++;
                     break;
-                case MiniGolfState::Unk4: // Loc6DC820
+                case Unk4: // Loc6DC820
                 {
                     auto animation = MiniGolfAnimation(moveInfo->z);
                     // When the ride is closed occasionally the peep is removed
@@ -7664,11 +7679,11 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
                     track_progress++;
                     break;
                 }
-                case MiniGolfState::Unk5: // Loc6DC87A
+                case Unk5: // Loc6DC87A
                     mini_golf_flags |= MiniGolfFlag::Flag2;
                     track_progress++;
                     break;
-                case MiniGolfState::Unk6: // Loc6DC88A
+                case Unk6: // Loc6DC88A
                     mini_golf_flags &= ~MiniGolfFlag::Flag4;
                     mini_golf_flags |= MiniGolfFlag::Flag5;
                     track_progress++;

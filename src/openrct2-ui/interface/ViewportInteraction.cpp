@@ -114,7 +114,8 @@ namespace OpenRCT2::Ui
             case ViewportInteractionItem::entity:
                 switch (sprite->Type)
                 {
-                    case EntityType::vehicle:
+                    using enum EntityType;
+                    case vehicle:
                     {
                         auto vehicle = sprite->As<Vehicle>();
                         if (vehicle != nullptr && !vehicle->IsCableLift())
@@ -123,8 +124,8 @@ namespace OpenRCT2::Ui
                             info.interactionType = ViewportInteractionItem::none;
                     }
                     break;
-                    case EntityType::guest:
-                    case EntityType::staff:
+                    case guest:
+                    case staff:
                     {
                         auto peep = sprite->As<Peep>();
                         if (peep != nullptr)
@@ -205,22 +206,23 @@ namespace OpenRCT2::Ui
                 auto entity = info.Entity;
                 switch (entity->Type)
                 {
-                    case EntityType::vehicle:
+                    using enum EntityType;
+                    case vehicle:
                     {
                         auto intent = Intent(WindowDetail::vehicle);
                         intent.PutExtra(INTENT_EXTRA_VEHICLE, entity);
                         ContextOpenIntent(&intent);
                         break;
                     }
-                    case EntityType::guest:
-                    case EntityType::staff:
+                    case guest:
+                    case staff:
                     {
                         auto intent = Intent(WindowClass::peep);
                         intent.PutExtra(INTENT_EXTRA_PEEP, entity);
                         ContextOpenIntent(&intent);
                         break;
                     }
-                    case EntityType::balloon:
+                    case balloon:
                     {
                         if (GameIsNotPaused())
                         {
@@ -229,7 +231,7 @@ namespace OpenRCT2::Ui
                         }
                     }
                     break;
-                    case EntityType::duck:
+                    case duck:
                     {
                         if (GameIsNotPaused())
                         {

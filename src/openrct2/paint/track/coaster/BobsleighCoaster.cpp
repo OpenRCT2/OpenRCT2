@@ -4083,94 +4083,95 @@ TrackPaintFunction GetTrackPaintFunctionBobsleighRC(TrackElemType trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::flat:
+        using enum TrackElemType;
+        case flat:
             return BobsleighRCTrackFlat;
-        case TrackElemType::endStation:
-        case TrackElemType::beginStation:
-        case TrackElemType::middleStation:
+        case endStation:
+        case beginStation:
+        case middleStation:
             return BobsleighRCTrackStation;
-        case TrackElemType::up25:
+        case up25:
             return BobsleighRCTrack25DegUp;
-        case TrackElemType::flatToUp25:
+        case flatToUp25:
             return BobsleighRCTrackFlatTo25DegUp;
-        case TrackElemType::up25ToFlat:
+        case up25ToFlat:
             return BobsleighRCTrack25DegUpToFlat;
-        case TrackElemType::down25:
+        case down25:
             return BobsleighRCTrack25DegDown;
-        case TrackElemType::flatToDown25:
+        case flatToDown25:
             return BobsleighRCTrackFlatTo25DegDown;
-        case TrackElemType::down25ToFlat:
+        case down25ToFlat:
             return BobsleighRCTrack25DegDownToFlat;
-        case TrackElemType::leftQuarterTurn5Tiles:
+        case leftQuarterTurn5Tiles:
             return BobsleighRCTrackLeftQuarterTurn5;
-        case TrackElemType::rightQuarterTurn5Tiles:
+        case rightQuarterTurn5Tiles:
             return BobsleighRCTrackRightQuarterTurn5;
-        case TrackElemType::flatToLeftBank:
+        case flatToLeftBank:
             return BobsleighRCTrackFlatToLeftBank;
-        case TrackElemType::flatToRightBank:
+        case flatToRightBank:
             return BobsleighRCTrackFlatToRightBank;
-        case TrackElemType::leftBankToFlat:
+        case leftBankToFlat:
             return BobsleighRCTrackLeftBankToFlat;
-        case TrackElemType::rightBankToFlat:
+        case rightBankToFlat:
             return BobsleighRCTrackRightBankToFlat;
-        case TrackElemType::bankedLeftQuarterTurn5Tiles:
+        case bankedLeftQuarterTurn5Tiles:
             return BobsleighRCTrackBankedLeftQuarterTurn5;
-        case TrackElemType::bankedRightQuarterTurn5Tiles:
+        case bankedRightQuarterTurn5Tiles:
             return BobsleighRCTrackBankedRightQuarterTurn5;
-        case TrackElemType::leftBankToUp25:
+        case leftBankToUp25:
             return BobsleighRCTrackLeftBankTo25DegUp;
-        case TrackElemType::rightBankToUp25:
+        case rightBankToUp25:
             return BobsleighRCTrackRightBankTo25DegUp;
-        case TrackElemType::up25ToLeftBank:
+        case up25ToLeftBank:
             return BobsleighRCTrack25DegUpToLeftBank;
-        case TrackElemType::up25ToRightBank:
+        case up25ToRightBank:
             return BobsleighRCTrack25DegUpToRightBank;
-        case TrackElemType::leftBankToDown25:
+        case leftBankToDown25:
             return BobsleighRCTrackLeftBankTo25DegDown;
-        case TrackElemType::rightBankToDown25:
+        case rightBankToDown25:
             return BobsleighRCTrackRightBankTo25DegDown;
-        case TrackElemType::down25ToLeftBank:
+        case down25ToLeftBank:
             return BobsleighRCTrack25DegDownToLeftBank;
-        case TrackElemType::down25ToRightBank:
+        case down25ToRightBank:
             return BobsleighRCTrack25DegDownToRightBank;
-        case TrackElemType::leftBank:
+        case leftBank:
             return BobsleighRCTrackLeftBank;
-        case TrackElemType::rightBank:
+        case rightBank:
             return BobsleighRCTrackRightBank;
-        case TrackElemType::sBendLeft:
+        case sBendLeft:
             return BobsleighRCTrackSBendLeft;
-        case TrackElemType::sBendRight:
+        case sBendRight:
             return BobsleighRCTrackSBendRight;
-        case TrackElemType::leftQuarterTurn3Tiles:
+        case leftQuarterTurn3Tiles:
             return BobsleighRCTrackLeftQuarterTurn3;
-        case TrackElemType::rightQuarterTurn3Tiles:
+        case rightQuarterTurn3Tiles:
             return BobsleighRCTrackRightQuarterTurn3;
-        case TrackElemType::leftBankedQuarterTurn3Tiles:
+        case leftBankedQuarterTurn3Tiles:
             return BobsleighRCTrackLeftQuarterTurn3Bank;
-        case TrackElemType::rightBankedQuarterTurn3Tiles:
+        case rightBankedQuarterTurn3Tiles:
             return BobsleighRCTrackRightQuarterTurn3Bank;
-        case TrackElemType::leftHalfBankedHelixUpSmall:
+        case leftHalfBankedHelixUpSmall:
             return BobsleighRCTrackLeftHalfBankedHelixUpSmall;
-        case TrackElemType::rightHalfBankedHelixUpSmall:
+        case rightHalfBankedHelixUpSmall:
             return BobsleighRCTrackRightHalfBankedHelixUpSmall;
-        case TrackElemType::leftHalfBankedHelixDownSmall:
+        case leftHalfBankedHelixDownSmall:
             return BobsleighRCTrackLeftHalfBankedHelixDownSmall;
-        case TrackElemType::rightHalfBankedHelixDownSmall:
+        case rightHalfBankedHelixDownSmall:
             return BobsleighRCTrackRightHalfBankedHelixDownSmall;
-        case TrackElemType::leftHalfBankedHelixUpLarge:
+        case leftHalfBankedHelixUpLarge:
             return BobsleighRCTrackLeftHalfBankedHelixUpLarge;
-        case TrackElemType::rightHalfBankedHelixUpLarge:
+        case rightHalfBankedHelixUpLarge:
             return BobsleighRCTrackRightHalfBankedHelixUpLarge;
-        case TrackElemType::leftHalfBankedHelixDownLarge:
+        case leftHalfBankedHelixDownLarge:
             return BobsleighRCTrackLeftHalfBankedHelixDownLarge;
-        case TrackElemType::rightHalfBankedHelixDownLarge:
+        case rightHalfBankedHelixDownLarge:
             return BobsleighRCTrackRightHalfBankedHelixDownLarge;
-        case TrackElemType::brakes:
+        case brakes:
             return BobsleighRCTrackBrakes;
-        case TrackElemType::blockBrakes:
+        case blockBrakes:
             return BobsleighRCTrackBlockBrakes;
 
-        case TrackElemType::onRidePhoto:
+        case onRidePhoto:
             return BobsleighRCTrackOnRidePhoto;
 
         default:

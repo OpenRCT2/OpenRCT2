@@ -623,9 +623,10 @@ bool TrackTypeIsStation(TrackElemType trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::endStation:
-        case TrackElemType::beginStation:
-        case TrackElemType::middleStation:
+        using enum TrackElemType;
+        case endStation:
+        case beginStation:
+        case middleStation:
             return true;
         default:
             return false;
@@ -636,10 +637,11 @@ bool TrackTypeIsBrakes(TrackElemType trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::brakes:
-        case TrackElemType::diagBrakes:
-        case TrackElemType::down25Brakes:
-        case TrackElemType::diagDown25Brakes:
+        using enum TrackElemType;
+        case brakes:
+        case diagBrakes:
+        case down25Brakes:
+        case diagDown25Brakes:
             return true;
         default:
             return false;
@@ -667,73 +669,75 @@ bool TrackElementIsCovered(TrackElemType trackElementType)
 {
     switch (trackElementType)
     {
-        case TrackElemType::flatCovered:
-        case TrackElemType::up25Covered:
-        case TrackElemType::up60Covered:
-        case TrackElemType::flatToUp25Covered:
-        case TrackElemType::up25ToUp60Covered:
-        case TrackElemType::up60ToUp25Covered:
-        case TrackElemType::up25ToFlatCovered:
-        case TrackElemType::down25Covered:
-        case TrackElemType::down60Covered:
-        case TrackElemType::flatToDown25Covered:
-        case TrackElemType::down25ToDown60Covered:
-        case TrackElemType::down60ToDown25Covered:
-        case TrackElemType::down25ToFlatCovered:
-        case TrackElemType::leftQuarterTurn5TilesCovered:
-        case TrackElemType::rightQuarterTurn5TilesCovered:
-        case TrackElemType::sBendLeftCovered:
-        case TrackElemType::sBendRightCovered:
-        case TrackElemType::leftQuarterTurn3TilesCovered:
-        case TrackElemType::rightQuarterTurn3TilesCovered:
+        using enum TrackElemType;
+        case flatCovered:
+        case up25Covered:
+        case up60Covered:
+        case flatToUp25Covered:
+        case up25ToUp60Covered:
+        case up60ToUp25Covered:
+        case up25ToFlatCovered:
+        case down25Covered:
+        case down60Covered:
+        case flatToDown25Covered:
+        case down25ToDown60Covered:
+        case down60ToDown25Covered:
+        case down25ToFlatCovered:
+        case leftQuarterTurn5TilesCovered:
+        case rightQuarterTurn5TilesCovered:
+        case sBendLeftCovered:
+        case sBendRightCovered:
+        case leftQuarterTurn3TilesCovered:
+        case rightQuarterTurn3TilesCovered:
             return true;
         default:
             return false;
     }
 }
 
-OpenRCT2::TrackElemType UncoverTrackElement(OpenRCT2::TrackElemType trackElementType)
+TrackElemType UncoverTrackElement(TrackElemType trackElementType)
 {
     switch (trackElementType)
     {
-        case TrackElemType::flatCovered:
-            return TrackElemType::flat;
-        case TrackElemType::up25Covered:
-            return TrackElemType::up25;
-        case TrackElemType::up60Covered:
-            return TrackElemType::up60;
-        case TrackElemType::flatToUp25Covered:
-            return TrackElemType::flatToUp25;
-        case TrackElemType::up25ToUp60Covered:
-            return TrackElemType::up25ToUp60;
-        case TrackElemType::up60ToUp25Covered:
-            return TrackElemType::up60ToUp25;
-        case TrackElemType::up25ToFlatCovered:
-            return TrackElemType::up25ToFlat;
-        case TrackElemType::down25Covered:
-            return TrackElemType::down25;
-        case TrackElemType::down60Covered:
-            return TrackElemType::down60;
-        case TrackElemType::flatToDown25Covered:
-            return TrackElemType::flatToDown25;
-        case TrackElemType::down25ToDown60Covered:
-            return TrackElemType::down25ToDown60;
-        case TrackElemType::down60ToDown25Covered:
-            return TrackElemType::down60ToDown25;
-        case TrackElemType::down25ToFlatCovered:
-            return TrackElemType::down25ToFlat;
-        case TrackElemType::leftQuarterTurn5TilesCovered:
-            return TrackElemType::leftQuarterTurn5Tiles;
-        case TrackElemType::rightQuarterTurn5TilesCovered:
-            return TrackElemType::rightQuarterTurn5Tiles;
-        case TrackElemType::sBendLeftCovered:
-            return TrackElemType::sBendLeft;
-        case TrackElemType::sBendRightCovered:
-            return TrackElemType::sBendRight;
-        case TrackElemType::leftQuarterTurn3TilesCovered:
-            return TrackElemType::leftQuarterTurn3Tiles;
-        case TrackElemType::rightQuarterTurn3TilesCovered:
-            return TrackElemType::rightQuarterTurn3Tiles;
+        using enum TrackElemType;
+        case flatCovered:
+            return flat;
+        case up25Covered:
+            return up25;
+        case up60Covered:
+            return up60;
+        case flatToUp25Covered:
+            return flatToUp25;
+        case up25ToUp60Covered:
+            return up25ToUp60;
+        case up60ToUp25Covered:
+            return up60ToUp25;
+        case up25ToFlatCovered:
+            return up25ToFlat;
+        case down25Covered:
+            return down25;
+        case down60Covered:
+            return down60;
+        case flatToDown25Covered:
+            return flatToDown25;
+        case down25ToDown60Covered:
+            return down25ToDown60;
+        case down60ToDown25Covered:
+            return down60ToDown25;
+        case down25ToFlatCovered:
+            return down25ToFlat;
+        case leftQuarterTurn5TilesCovered:
+            return leftQuarterTurn5Tiles;
+        case rightQuarterTurn5TilesCovered:
+            return rightQuarterTurn5Tiles;
+        case sBendLeftCovered:
+            return sBendLeft;
+        case sBendRightCovered:
+            return sBendRight;
+        case leftQuarterTurn3TilesCovered:
+            return leftQuarterTurn3Tiles;
+        case rightQuarterTurn3TilesCovered:
+            return rightQuarterTurn3Tiles;
         default:
             return trackElementType;
     }

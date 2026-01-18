@@ -1234,51 +1234,52 @@ TrackPaintFunction GetTrackPaintFunctionBoatHire(TrackElemType trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::flat:
+        using enum TrackElemType;
+        case flat:
             return PaintBoatHireTrackFlat;
 
-        case TrackElemType::endStation:
-        case TrackElemType::beginStation:
-        case TrackElemType::middleStation:
+        case endStation:
+        case beginStation:
+        case middleStation:
             return PaintBoatHireStation;
 
-        case TrackElemType::leftQuarterTurn1Tile:
+        case leftQuarterTurn1Tile:
             return PaintBoatHireTrackLeftQuarterTurn1Tile;
-        case TrackElemType::rightQuarterTurn1Tile:
+        case rightQuarterTurn1Tile:
             return PaintBoatHireTrackRightQuarterTurn1Tile;
 
         // Added by OpenRCT2
 
         // Small turns
-        case TrackElemType::leftQuarterTurn3Tiles:
+        case leftQuarterTurn3Tiles:
             return PaintBoatHireTrackLeftQuarterTurn3Tiles;
-        case TrackElemType::rightQuarterTurn3Tiles:
+        case rightQuarterTurn3Tiles:
             return PaintBoatHireTrackRightQuarterTurn3Tiles;
 
         // Medium turns
-        case TrackElemType::leftQuarterTurn5Tiles:
+        case leftQuarterTurn5Tiles:
             return PaintBoatHireTrackLeftQuarterTurn5Tiles;
-        case TrackElemType::rightQuarterTurn5Tiles:
+        case rightQuarterTurn5Tiles:
             return PaintBoatHireTrackRightQuarterTurn5Tiles;
 
         // Large turns
-        case TrackElemType::leftEighthToDiag:
+        case leftEighthToDiag:
             return PaintBoatHireTrackLeftEighthToDiag;
-        case TrackElemType::rightEighthToDiag:
+        case rightEighthToDiag:
             return PaintBoatHireTrackRightEighthToDiag;
-        case TrackElemType::leftEighthToOrthogonal:
+        case leftEighthToOrthogonal:
             return PaintBoatHireTrackLeftEighthToOrthogonal;
-        case TrackElemType::rightEighthToOrthogonal:
+        case rightEighthToOrthogonal:
             return PaintBoatHireTrackRightEighthToOrthogonal;
 
         // Diagonal
-        case TrackElemType::diagFlat:
+        case diagFlat:
             return PaintBoatHireTrackDiagFlat;
 
         // S bends
-        case TrackElemType::sBendLeft:
+        case sBendLeft:
             return PaintBoatHireTrackSBendLeft;
-        case TrackElemType::sBendRight:
+        case sBendRight:
             return PaintBoatHireTrackSBendRight;
 
         default:

@@ -2265,6 +2265,7 @@ void ShiftMap(const TileCoordsXY& amount)
         auto& list = getGameState().entities.GetEntityList(entityType);
         for (const auto& entityId : list)
         {
+            using enum EntityType;
             auto entity = getGameState().entities.GetEntity(entityId);
 
             // Do not tween the entity
@@ -2276,8 +2277,8 @@ void ShiftMap(const TileCoordsXY& amount)
 
             switch (entityType)
             {
-                case EntityType::guest:
-                case EntityType::staff:
+                case guest:
+                case staff:
                 {
                     auto peep = entity->As<Peep>();
                     if (peep != nullptr)
@@ -2291,7 +2292,7 @@ void ShiftMap(const TileCoordsXY& amount)
                     }
                     break;
                 }
-                case EntityType::vehicle:
+                case vehicle:
                 {
                     auto vehicle = entity->As<Vehicle>();
                     if (vehicle != nullptr)
@@ -2301,7 +2302,7 @@ void ShiftMap(const TileCoordsXY& amount)
                     }
                     break;
                 }
-                case EntityType::duck:
+                case duck:
                 {
                     auto duck = entity->As<Duck>();
                     if (duck != nullptr)
@@ -2311,7 +2312,7 @@ void ShiftMap(const TileCoordsXY& amount)
                     }
                     break;
                 }
-                case EntityType::jumpingFountain:
+                case jumpingFountain:
                 {
                     auto fountain = entity->As<JumpingFountain>();
                     if (fountain != nullptr)
@@ -2324,7 +2325,7 @@ void ShiftMap(const TileCoordsXY& amount)
                 default:
                     break;
             }
-            if (entityType == EntityType::staff)
+            if (entityType == staff)
             {
                 auto staff = entity->As<Staff>();
                 if (staff != nullptr)

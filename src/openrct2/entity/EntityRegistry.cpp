@@ -68,15 +68,16 @@ namespace OpenRCT2
     {
         switch (type)
         {
-            case EntityType::steamParticle:
-            case EntityType::moneyEffect:
-            case EntityType::crashedVehicleParticle:
-            case EntityType::explosionCloud:
-            case EntityType::crashSplash:
-            case EntityType::explosionFlare:
-            case EntityType::jumpingFountain:
-            case EntityType::balloon:
-            case EntityType::duck:
+            using enum EntityType;
+            case steamParticle:
+            case moneyEffect:
+            case crashedVehicleParticle:
+            case explosionCloud:
+            case crashSplash:
+            case explosionFlare:
+            case jumpingFountain:
+            case balloon:
+            case duck:
                 return true;
             default:
                 return false;

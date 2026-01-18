@@ -129,34 +129,35 @@ struct GameStateSnapshot_t
 
             switch (sprite.base.Type)
             {
-                case EntityType::vehicle:
+                using enum EntityType;
+                case vehicle:
                     reinterpret_cast<Vehicle&>(sprite).Serialise(ds);
                     break;
-                case EntityType::guest:
+                case guest:
                     reinterpret_cast<Guest&>(sprite).Serialise(ds);
                     break;
-                case EntityType::staff:
+                case staff:
                     reinterpret_cast<Staff&>(sprite).Serialise(ds);
                     break;
-                case EntityType::litter:
+                case litter:
                     reinterpret_cast<Litter&>(sprite).Serialise(ds);
                     break;
-                case EntityType::moneyEffect:
+                case moneyEffect:
                     reinterpret_cast<MoneyEffect&>(sprite).Serialise(ds);
                     break;
-                case EntityType::balloon:
+                case balloon:
                     reinterpret_cast<Balloon&>(sprite).Serialise(ds);
                     break;
-                case EntityType::duck:
+                case duck:
                     reinterpret_cast<Duck&>(sprite).Serialise(ds);
                     break;
-                case EntityType::jumpingFountain:
+                case jumpingFountain:
                     reinterpret_cast<JumpingFountain&>(sprite).Serialise(ds);
                     break;
-                case EntityType::steamParticle:
+                case steamParticle:
                     reinterpret_cast<SteamParticle&>(sprite).Serialise(ds);
                     break;
-                case EntityType::null:
+                case null:
                     break;
                 default:
                     break;
@@ -560,66 +561,67 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         {
             switch (spriteBase.base.Type)
             {
-                case EntityType::guest:
+                using enum EntityType;
+                case guest:
                     CompareSpriteDataGuest(
                         static_cast<const Guest&>(spriteBase.base), static_cast<const Guest&>(spriteCmp.base), changeData);
                     break;
-                case EntityType::staff:
+                case staff:
                     CompareSpriteDataStaff(
                         static_cast<const Staff&>(spriteBase.base), static_cast<const Staff&>(spriteCmp.base), changeData);
                     break;
-                case EntityType::vehicle:
+                case vehicle:
                     CompareSpriteDataVehicle(
                         static_cast<const Vehicle&>(spriteBase.base), static_cast<const Vehicle&>(spriteCmp.base), changeData);
                     break;
-                case EntityType::litter:
+                case litter:
                     CompareSpriteDataLitter(
                         static_cast<const Litter&>(spriteBase.base), static_cast<const Litter&>(spriteCmp.base), changeData);
                     break;
-                case EntityType::steamParticle:
+                case steamParticle:
                     CompareSpriteDataSteamParticle(
                         static_cast<const SteamParticle&>(spriteBase.base), static_cast<const SteamParticle&>(spriteCmp.base),
                         changeData);
                     break;
-                case EntityType::moneyEffect:
+                case moneyEffect:
                     CompareSpriteDataMoneyEffect(
                         static_cast<const MoneyEffect&>(spriteBase.base), static_cast<const MoneyEffect&>(spriteCmp.base),
                         changeData);
                     break;
-                case EntityType::crashedVehicleParticle:
+                case crashedVehicleParticle:
                     CompareSpriteDataVehicleCrashParticle(
                         static_cast<const VehicleCrashParticle&>(spriteBase.base),
                         static_cast<const VehicleCrashParticle&>(spriteCmp.base), changeData);
                     break;
-                case EntityType::explosionCloud:
+                case explosionCloud:
                     CompareSpriteDataExplosionCloud(
                         static_cast<const ExplosionCloud&>(spriteBase.base), static_cast<const ExplosionCloud&>(spriteCmp.base),
                         changeData);
                     break;
-                case EntityType::crashSplash:
+                case crashSplash:
                     CompareSpriteDataCrashSplash(
                         static_cast<const CrashSplashParticle&>(spriteBase.base),
                         static_cast<const CrashSplashParticle&>(spriteCmp.base), changeData);
                     break;
-                case EntityType::explosionFlare:
+                case explosionFlare:
                     CompareSpriteDataExplosionFlare(
                         static_cast<const ExplosionFlare&>(spriteBase.base), static_cast<const ExplosionFlare&>(spriteCmp.base),
                         changeData);
                     break;
-                case EntityType::jumpingFountain:
+                case jumpingFountain:
                     CompareSpriteDataJumpingFountain(
                         static_cast<const JumpingFountain&>(spriteBase.base),
                         static_cast<const JumpingFountain&>(spriteCmp.base), changeData);
                     break;
-                case EntityType::balloon:
+                case balloon:
                     CompareSpriteDataBalloon(
                         static_cast<const Balloon&>(spriteBase.base), static_cast<const Balloon&>(spriteCmp.base), changeData);
                     break;
-                case EntityType::duck:
+                case duck:
                     CompareSpriteDataDuck(
                         static_cast<const Duck&>(spriteBase.base), static_cast<const Duck&>(spriteCmp.base), changeData);
                     break;
-                case EntityType::null:
+                case null:
                     break;
                 default:
                     break;
@@ -688,33 +690,34 @@ struct GameStateSnapshots final : public IGameStateSnapshots
     {
         switch (type)
         {
-            case EntityType::null:
+            using enum EntityType;
+            case null:
                 return "Null";
-            case EntityType::guest:
+            case guest:
                 return "Guest";
-            case EntityType::staff:
+            case staff:
                 return "Staff";
-            case EntityType::vehicle:
+            case vehicle:
                 return "Vehicle";
-            case EntityType::litter:
+            case litter:
                 return "Litter";
-            case EntityType::steamParticle:
+            case steamParticle:
                 return "Misc: Steam Particle";
-            case EntityType::moneyEffect:
+            case moneyEffect:
                 return "Misc: Money effect";
-            case EntityType::crashedVehicleParticle:
+            case crashedVehicleParticle:
                 return "Misc: Crash Vehicle Particle";
-            case EntityType::explosionCloud:
+            case explosionCloud:
                 return "Misc: Explosion Cloud";
-            case EntityType::crashSplash:
+            case crashSplash:
                 return "Misc: Crash Splash";
-            case EntityType::explosionFlare:
+            case explosionFlare:
                 return "Misc: Explosion Flare";
-            case EntityType::jumpingFountain:
+            case jumpingFountain:
                 return "Misc: Jumping fountain";
-            case EntityType::balloon:
+            case balloon:
                 return "Misc: Balloon";
-            case EntityType::duck:
+            case duck:
                 return "Misc: Duck";
             default:
                 break;

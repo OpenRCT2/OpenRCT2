@@ -2771,151 +2771,152 @@ TrackPaintFunction GetTrackPaintFunctionGoKarts(TrackElemType trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::flat:
+        using enum TrackElemType;
+        case flat:
             return PaintGoKartsTrackFlat;
 
-        case TrackElemType::endStation:
-        case TrackElemType::beginStation:
-        case TrackElemType::middleStation:
+        case endStation:
+        case beginStation:
+        case middleStation:
             return PaintGoKartsStation;
 
-        case TrackElemType::up25:
+        case up25:
             return PaintGoKartsTrack25DegUp;
-        case TrackElemType::flatToUp25:
+        case flatToUp25:
             return PaintGoKartsTrackFlatTo25DegUp;
-        case TrackElemType::up25ToFlat:
+        case up25ToFlat:
             return PaintGoKartsTrack25DegUpToFlat;
 
-        case TrackElemType::down25:
+        case down25:
             return PaintGoKartsTrack25DegDown;
-        case TrackElemType::flatToDown25:
+        case flatToDown25:
             return PaintGoKartsTrackFlatTo25DegDown;
-        case TrackElemType::down25ToFlat:
+        case down25ToFlat:
             return PaintGoKartsTrack25DegDownToFlat;
 
-        case TrackElemType::leftQuarterTurn1Tile:
+        case leftQuarterTurn1Tile:
             return PaintGoKartsTrackLeftQuarterTurn1Tile;
-        case TrackElemType::rightQuarterTurn1Tile:
+        case rightQuarterTurn1Tile:
             return PaintGoKartsTrackRightQuarterTurn1Tile;
 
         // Added by OpenRCT2
 
         // Steep
-        case TrackElemType::up60:
+        case up60:
             return TrackUp60;
-        case TrackElemType::up25ToUp60:
+        case up25ToUp60:
             return TrackUp25ToUp60;
-        case TrackElemType::up60ToUp25:
+        case up60ToUp25:
             return TrackUp60ToUp25;
-        case TrackElemType::down60:
+        case down60:
             return TrackDown60;
-        case TrackElemType::down25ToDown60:
+        case down25ToDown60:
             return TrackDown25ToDown60;
-        case TrackElemType::down60ToDown25:
+        case down60ToDown25:
             return TrackDown60ToDown25;
 
         // Flat to steep
-        case TrackElemType::flatToUp60LongBase:
+        case flatToUp60LongBase:
             return TrackFlatToUp60LongBase;
-        case TrackElemType::up60ToFlatLongBase:
+        case up60ToFlatLongBase:
             return TrackUp60ToFlatLongBase;
-        case TrackElemType::flatToDown60LongBase:
+        case flatToDown60LongBase:
             return TrackFlatToDown60LongBase;
-        case TrackElemType::down60ToFlatLongBase:
+        case down60ToFlatLongBase:
             return TrackDown60ToFlatLongBase;
 
         // Small turns
-        case TrackElemType::leftQuarterTurn3Tiles:
+        case leftQuarterTurn3Tiles:
             return TrackLeftQuarterTurn3Tiles;
-        case TrackElemType::rightQuarterTurn3Tiles:
+        case rightQuarterTurn3Tiles:
             return TrackRightQuarterTurn3Tiles;
 
         // Medium turns
-        case TrackElemType::leftQuarterTurn5Tiles:
+        case leftQuarterTurn5Tiles:
             return TrackLeftQuarterTurn5Tiles;
-        case TrackElemType::rightQuarterTurn5Tiles:
+        case rightQuarterTurn5Tiles:
             return TrackRightQuarterTurn5Tiles;
 
         // Large turns
-        case TrackElemType::leftEighthToDiag:
+        case leftEighthToDiag:
             return TrackLeftEighthToDiag;
-        case TrackElemType::rightEighthToDiag:
+        case rightEighthToDiag:
             return TrackRightEighthToDiag;
-        case TrackElemType::leftEighthToOrthogonal:
+        case leftEighthToOrthogonal:
             return TrackLeftEighthToOrthogonal;
-        case TrackElemType::rightEighthToOrthogonal:
+        case rightEighthToOrthogonal:
             return TrackRightEighthToOrthogonal;
 
         // Diagonal
-        case TrackElemType::diagFlat:
+        case diagFlat:
             return TrackDiagFlat;
-        case TrackElemType::diagFlatToUp25:
+        case diagFlatToUp25:
             return TrackDiagFlatToUp25;
-        case TrackElemType::diagUp25ToFlat:
+        case diagUp25ToFlat:
             return TrackDiagUp25ToFlat;
-        case TrackElemType::diagFlatToDown25:
+        case diagFlatToDown25:
             return TrackDiagFlatToDown25;
-        case TrackElemType::diagDown25ToFlat:
+        case diagDown25ToFlat:
             return TrackDiagDown25ToFlat;
-        case TrackElemType::diagUp25:
+        case diagUp25:
             return TrackDiagUp25;
-        case TrackElemType::diagDown25:
+        case diagDown25:
             return TrackDiagDown25;
-        case TrackElemType::diagUp25ToUp60:
+        case diagUp25ToUp60:
             return TrackDiagUp25ToUp60;
-        case TrackElemType::diagUp60ToUp25:
+        case diagUp60ToUp25:
             return TrackDiagUp60ToUp25;
-        case TrackElemType::diagUp60:
+        case diagUp60:
             return TrackDiagUp60;
-        case TrackElemType::diagDown25ToDown60:
+        case diagDown25ToDown60:
             return TrackDiagDown25ToDown60;
-        case TrackElemType::diagDown60ToDown25:
+        case diagDown60ToDown25:
             return TrackDiagDown60ToDown25;
-        case TrackElemType::diagDown60:
+        case diagDown60:
             return TrackDiagDown60;
 
         // Small gentle turns
-        case TrackElemType::leftQuarterTurn3TilesUp25:
+        case leftQuarterTurn3TilesUp25:
             return TrackLeftQuarterTurn3TilesUp25;
-        case TrackElemType::rightQuarterTurn3TilesUp25:
+        case rightQuarterTurn3TilesUp25:
             return TrackRightQuarterTurn3TilesUp25;
-        case TrackElemType::leftQuarterTurn3TilesDown25:
+        case leftQuarterTurn3TilesDown25:
             return TrackLeftQuarterTurn3TilesDown25;
-        case TrackElemType::rightQuarterTurn3TilesDown25:
+        case rightQuarterTurn3TilesDown25:
             return TrackRightQuarterTurn3TilesDown25;
 
         // Medium gentle turns
-        case TrackElemType::leftQuarterTurn5TilesUp25:
+        case leftQuarterTurn5TilesUp25:
             return TrackLeftQuarterTurn5TilesUp25;
-        case TrackElemType::rightQuarterTurn5TilesUp25:
+        case rightQuarterTurn5TilesUp25:
             return TrackRightQuarterTurn5TilesUp25;
-        case TrackElemType::leftQuarterTurn5TilesDown25:
+        case leftQuarterTurn5TilesDown25:
             return TrackLeftQuarterTurn5TilesDown25;
-        case TrackElemType::rightQuarterTurn5TilesDown25:
+        case rightQuarterTurn5TilesDown25:
             return TrackRightQuarterTurn5TilesDown25;
 
         // Large gentle turns
-        case TrackElemType::leftEighthToDiagUp25:
+        case leftEighthToDiagUp25:
             return TrackLeftEighthToDiagUp25;
-        case TrackElemType::rightEighthToDiagUp25:
+        case rightEighthToDiagUp25:
             return TrackRightEighthToDiagUp25;
-        case TrackElemType::leftEighthToDiagDown25:
+        case leftEighthToDiagDown25:
             return TrackLeftEighthToDiagDown25;
-        case TrackElemType::rightEighthToDiagDown25:
+        case rightEighthToDiagDown25:
             return TrackRightEighthToDiagDown25;
-        case TrackElemType::leftEighthToOrthogonalUp25:
+        case leftEighthToOrthogonalUp25:
             return TrackLeftEighthToOrthogonalUp25;
-        case TrackElemType::rightEighthToOrthogonalUp25:
+        case rightEighthToOrthogonalUp25:
             return TrackRightEighthToOrthogonalUp25;
-        case TrackElemType::leftEighthToOrthogonalDown25:
+        case leftEighthToOrthogonalDown25:
             return TrackLeftEighthToOrthogonalDown25;
-        case TrackElemType::rightEighthToOrthogonalDown25:
+        case rightEighthToOrthogonalDown25:
             return TrackRightEighthToOrthogonalDown25;
 
         // S bends
-        case TrackElemType::sBendLeft:
+        case sBendLeft:
             return TrackSBendLeft;
-        case TrackElemType::sBendRight:
+        case sBendRight:
             return TrackSBendRight;
 
         default:

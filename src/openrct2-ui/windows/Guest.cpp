@@ -1645,10 +1645,11 @@ namespace OpenRCT2::Ui::Windows
             Ride* invRide{};
             switch (item)
             {
-                case ShopItem::balloon:
+                using enum ShopItem;
+                case balloon:
                     itemImage = ImageId(itemDesc.Image, guest.BalloonColour);
                     break;
-                case ShopItem::photo:
+                case photo:
                     invRide = GetRide(guest.Photo1RideRef);
                     if (invRide != nullptr)
                     {
@@ -1658,10 +1659,10 @@ namespace OpenRCT2::Ui::Windows
                     }
 
                     break;
-                case ShopItem::umbrella:
+                case umbrella:
                     itemImage = ImageId(itemDesc.Image, guest.UmbrellaColour);
                     break;
-                case ShopItem::voucher:
+                case voucher:
                     switch (guest.VoucherType)
                     {
                         case VOUCHER_TYPE_PARK_ENTRY_FREE:
@@ -1696,13 +1697,13 @@ namespace OpenRCT2::Ui::Windows
                             break;
                     }
                     break;
-                case ShopItem::hat:
+                case hat:
                     itemImage = ImageId(itemDesc.Image, guest.HatColour);
                     break;
-                case ShopItem::tShirt:
+                case tShirt:
                     itemImage = ImageId(itemDesc.Image, guest.TshirtColour);
                     break;
-                case ShopItem::photo2:
+                case photo2:
                     invRide = GetRide(guest.Photo2RideRef);
                     if (invRide != nullptr)
                     {
@@ -1711,7 +1712,7 @@ namespace OpenRCT2::Ui::Windows
                         invRide->formatNameTo(ft);
                     }
                     break;
-                case ShopItem::photo3:
+                case photo3:
                     invRide = GetRide(guest.Photo3RideRef);
                     if (invRide != nullptr)
                     {
@@ -1720,7 +1721,7 @@ namespace OpenRCT2::Ui::Windows
                         invRide->formatNameTo(ft);
                     }
                     break;
-                case ShopItem::photo4:
+                case photo4:
                     invRide = GetRide(guest.Photo4RideRef);
                     if (invRide != nullptr)
                     {

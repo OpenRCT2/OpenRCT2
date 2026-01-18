@@ -257,20 +257,21 @@ namespace OpenRCT2
 
         switch (state)
         {
-            case MouseState::released:
+            using enum MouseState;
+            case released:
                 if (screenCoords.x != 0 || screenCoords.y != 0)
                 {
                     _ticksSinceDragStart = std::nullopt;
                     InputScrollDragContinue(screenCoords, w);
                 }
                 break;
-            case MouseState::rightRelease:
+            case rightRelease:
                 _inputState = InputState::Reset;
                 ContextShowCursor();
                 break;
-            case MouseState::leftPress:
-            case MouseState::leftRelease:
-            case MouseState::rightPress:
+            case leftPress:
+            case leftRelease:
+            case rightPress:
                 // Function only handles right button, so it's the only one relevant
                 break;
         }
@@ -295,10 +296,11 @@ namespace OpenRCT2
 
         switch (_inputState)
         {
-            case InputState::Reset:
+            using enum InputState;
+            case Reset:
                 WindowTooltipReset(screenCoords);
                 [[fallthrough]];
-            case InputState::Normal:
+            case Normal:
                 switch (state)
                 {
                     case MouseState::released:
@@ -340,14 +342,14 @@ namespace OpenRCT2
                         break;
                 }
                 break;
-            case InputState::WidgetPressed:
+            case WidgetPressed:
                 InputStateWidgetPressed(screenCoords, state, widgetIndex, w, widget);
                 break;
-            case InputState::PositioningWindow:
+            case PositioningWindow:
                 w = windowMgr->FindByNumber(_dragWidget.windowClassification, _dragWidget.windowNumber);
                 if (w == nullptr)
                 {
-                    _inputState = InputState::Reset;
+                    _inputState = Reset;
                 }
                 else
                 {
@@ -358,7 +360,7 @@ namespace OpenRCT2
                     }
                 }
                 break;
-            case InputState::ViewportRight:
+            case ViewportRight:
                 if (state == MouseState::released)
                 {
                     InputViewportDragContinue();
@@ -373,23 +375,24 @@ namespace OpenRCT2
                     }
                 }
                 break;
-            case InputState::DropdownActive:
+            case DropdownActive:
                 InputStateWidgetPressed(screenCoords, state, widgetIndex, w, widget);
                 break;
-            case InputState::ViewportLeft:
+            case ViewportLeft:
                 w = windowMgr->FindByNumber(_dragWidget.windowClassification, _dragWidget.windowNumber);
                 if (w == nullptr)
                 {
-                    _inputState = InputState::Reset;
+                    _inputState = Reset;
                     break;
                 }
 
                 switch (state)
                 {
-                    case MouseState::released:
+                    using enum MouseState;
+                    case released:
                         if (w->viewport == nullptr)
                         {
-                            _inputState = InputState::Reset;
+                            _inputState = Reset;
                             break;
                         }
 
@@ -410,8 +413,8 @@ namespace OpenRCT2
 
                         w->onToolDrag(gCurrentToolWidget.widgetIndex, screenCoords);
                         break;
-                    case MouseState::leftRelease:
-                        _inputState = InputState::Reset;
+                    case leftRelease:
+                        _inputState = Reset;
                         if (_dragWidget.windowNumber == w->number)
                         {
                             if (gInputFlags.has(InputFlag::toolActive))
@@ -429,34 +432,35 @@ namespace OpenRCT2
                             }
                         }
                         break;
-                    case MouseState::leftPress:
-                    case MouseState::rightPress:
-                    case MouseState::rightRelease:
+                    case leftPress:
+                    case rightPress:
+                    case rightRelease:
                         // In this switch only left button release is relevant
                         break;
                 }
                 break;
-            case InputState::ScrollLeft:
+            case ScrollLeft:
                 switch (state)
                 {
-                    case MouseState::released:
+                    using enum MouseState;
+                    case released:
                         InputScrollContinue(*w, widgetIndex, screenCoords);
                         break;
-                    case MouseState::leftRelease:
+                    case leftRelease:
                         InputScrollEnd();
                         break;
-                    case MouseState::leftPress:
-                    case MouseState::rightPress:
-                    case MouseState::rightRelease:
+                    case leftPress:
+                    case rightPress:
+                    case rightRelease:
                         // In this switch only left button release is relevant
                         break;
                 }
                 break;
-            case InputState::Resizing:
+            case Resizing:
                 w = windowMgr->FindByNumber(_dragWidget.windowClassification, _dragWidget.windowNumber);
                 if (w == nullptr)
                 {
-                    _inputState = InputState::Reset;
+                    _inputState = Reset;
                 }
                 else
                 {
@@ -470,7 +474,7 @@ namespace OpenRCT2
                     }
                 }
                 break;
-            case InputState::ScrollRight:
+            case ScrollRight:
                 InputScrollRight(screenCoords, state);
                 break;
         }
@@ -1072,13 +1076,14 @@ namespace OpenRCT2
 
         switch (widget.type)
         {
-            case WidgetType::frame:
-            case WidgetType::resize:
+            using enum WidgetType;
+            case frame:
+            case resize:
                 if (w->canBeResized()
                     && (screenCoords.x >= w->windowPos.x + w->width - 19 && screenCoords.y >= w->windowPos.y + w->height - 19))
                     InputWindowResizeBegin(*w, widgetIndex, screenCoords);
                 break;
-            case WidgetType::viewport:
+            case viewport:
                 _inputState = InputState::ViewportLeft;
                 gInputDragLast = screenCoords;
                 _dragWidget.windowClassification = windowClass;
@@ -1093,35 +1098,35 @@ namespace OpenRCT2
                     }
                 }
                 break;
-            case WidgetType::caption:
+            case caption:
                 InputWindowPositionBegin(*w, widgetIndex, screenCoords);
                 break;
-            case WidgetType::scroll:
+            case scroll:
                 InputScrollBegin(*w, widgetIndex, screenCoords);
                 break;
-            case WidgetType::empty:
-            case WidgetType::labelCentred:
-            case WidgetType::label:
-            case WidgetType::groupbox:
-            case WidgetType::progressBar:
-            case WidgetType::placeholder:
-            case WidgetType::horizontalSeparator:
+            case empty:
+            case labelCentred:
+            case label:
+            case groupbox:
+            case progressBar:
+            case placeholder:
+            case horizontalSeparator:
                 // Non-interactive widget type
                 break;
-            case WidgetType::imgBtn:
-            case WidgetType::colourBtn:
-            case WidgetType::trnBtn:
-            case WidgetType::tab:
-            case WidgetType::flatBtn:
-            case WidgetType::hiddenButton:
-            case WidgetType::button:
-            case WidgetType::tableHeader:
-            case WidgetType::spinner:
-            case WidgetType::dropdownMenu:
-            case WidgetType::closeBox:
-            case WidgetType::checkbox:
-            case WidgetType::textBox:
-            case WidgetType::custom:
+            case imgBtn:
+            case colourBtn:
+            case trnBtn:
+            case tab:
+            case flatBtn:
+            case hiddenButton:
+            case button:
+            case tableHeader:
+            case spinner:
+            case dropdownMenu:
+            case closeBox:
+            case checkbox:
+            case textBox:
+            case custom:
                 if (!widgetIsDisabled(*w, widgetIndex))
                 {
                     OpenRCT2::Audio::Play(Audio::SoundId::click1, 0, w->windowPos.x + widget.midX());

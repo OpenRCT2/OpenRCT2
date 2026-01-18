@@ -71,7 +71,8 @@ namespace OpenRCT2
         {
             switch (tileElement->GetType())
             {
-                case TileElementType::Surface:
+                using enum TileElementType;
+                case Surface:
                 {
                     auto* surfaceElement = tileElement->AsSurface();
                     if (surfaceElement == nullptr)
@@ -97,20 +98,20 @@ namespace OpenRCT2
                     break;
                 }
 
-                case TileElementType::Path:
+                case Path:
                     paletteIndex = PaletteIndex::pi17;
                     break;
 
-                case TileElementType::Track:
+                case Track:
                     paletteIndex = PaletteIndex::pi183;
                     break;
 
-                case TileElementType::SmallScenery:
-                case TileElementType::LargeScenery:
+                case SmallScenery:
+                case LargeScenery:
                     paletteIndex = PaletteIndex::pi99;
                     break;
 
-                case TileElementType::Entrance:
+                case Entrance:
                     paletteIndex = PaletteIndex::pi186;
                     break;
 

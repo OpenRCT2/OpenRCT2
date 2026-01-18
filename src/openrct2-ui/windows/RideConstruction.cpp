@@ -468,10 +468,11 @@ namespace OpenRCT2::Ui::Windows
             {
                 switch (_currentlySelectedTrack.curve)
                 {
-                    case TrackCurve::leftVerySmall:
-                    case TrackCurve::leftSmall:
-                    case TrackCurve::left:
-                    case TrackCurve::leftLarge:
+                    using enum TrackCurve;
+                    case leftVerySmall:
+                    case leftSmall:
+                    case left:
+                    case leftLarge:
                         newDisabledWidgets |= (1uLL << WIDX_BANK_RIGHT);
                         if (_previousTrackRollEnd == TrackRoll::none)
                         {
@@ -482,10 +483,10 @@ namespace OpenRCT2::Ui::Windows
                             newDisabledWidgets |= (1uLL << WIDX_BANK_STRAIGHT);
                         }
                         break;
-                    case TrackCurve::rightLarge:
-                    case TrackCurve::right:
-                    case TrackCurve::rightSmall:
-                    case TrackCurve::rightVerySmall:
+                    case rightLarge:
+                    case right:
+                    case rightSmall:
+                    case rightVerySmall:
                         newDisabledWidgets |= (1uLL << WIDX_BANK_LEFT);
                         if (_previousTrackRollEnd == TrackRoll::none)
                         {

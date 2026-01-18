@@ -455,9 +455,10 @@ namespace OpenRCT2::Scripting
         auto spriteId = sprite->Id;
         switch (sprite->Type)
         {
-            case EntityType::vehicle:
+            using enum EntityType;
+            case vehicle:
                 return GetObjectAsDukValue(_context, std::make_shared<ScVehicle>(spriteId));
-            case EntityType::staff:
+            case staff:
             {
                 auto staff = getGameState().entities.GetEntity<Staff>(spriteId);
                 if (staff != nullptr)
@@ -479,15 +480,15 @@ namespace OpenRCT2::Scripting
                     return GetObjectAsDukValue(_context, std::make_shared<ScStaff>(spriteId));
                 }
             }
-            case EntityType::guest:
+            case guest:
                 return GetObjectAsDukValue(_context, std::make_shared<ScGuest>(spriteId));
-            case EntityType::litter:
+            case litter:
                 return GetObjectAsDukValue(_context, std::make_shared<ScLitter>(spriteId));
-            case EntityType::balloon:
+            case balloon:
                 return GetObjectAsDukValue(_context, std::make_shared<ScBalloon>(spriteId));
-            case EntityType::moneyEffect:
+            case moneyEffect:
                 return GetObjectAsDukValue(_context, std::make_shared<ScMoneyEffect>(spriteId));
-            case EntityType::crashedVehicleParticle:
+            case crashedVehicleParticle:
                 return GetObjectAsDukValue(_context, std::make_shared<ScCrashedVehicleParticle>(spriteId));
             default:
                 return GetObjectAsDukValue(_context, std::make_shared<ScEntity>(spriteId));

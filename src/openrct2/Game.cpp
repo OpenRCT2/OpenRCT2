@@ -684,7 +684,8 @@ void GameLoadOrQuitNoSavePrompt()
 
     switch (gSavePromptMode)
     {
-        case PromptMode::saveBeforeLoad:
+        using enum PromptMode;
+        case saveBeforeLoad:
         {
             auto loadOrQuitAction = GameActions::LoadOrQuitAction(GameActions::LoadOrQuitModes::CloseSavePrompt);
             GameActions::Execute(&loadOrQuitAction, gameState);
@@ -703,7 +704,7 @@ void GameLoadOrQuitNoSavePrompt()
             }
             break;
         }
-        case PromptMode::saveBeforeQuit:
+        case saveBeforeQuit:
         {
             auto loadOrQuitAction = GameActions::LoadOrQuitAction(GameActions::LoadOrQuitModes::CloseSavePrompt);
             GameActions::Execute(&loadOrQuitAction, gameState);
@@ -724,7 +725,7 @@ void GameLoadOrQuitNoSavePrompt()
             context->SetActiveScene(context->GetTitleScene());
             break;
         }
-        case PromptMode::saveBeforeNewGame:
+        case saveBeforeNewGame:
         {
             auto loadOrQuitAction = GameActions::LoadOrQuitAction(GameActions::LoadOrQuitModes::CloseSavePrompt);
             GameActions::Execute(&loadOrQuitAction, gameState);

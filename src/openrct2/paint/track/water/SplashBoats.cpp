@@ -1192,49 +1192,50 @@ TrackPaintFunction GetTrackPaintFunctionSplashBoats(TrackElemType trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::up25:
+        using enum TrackElemType;
+        case up25:
             return PaintSplashBoatsTrack25DegUp;
-        case TrackElemType::up60:
+        case up60:
             return PaintSplashBoatsTrack60DegUp;
-        case TrackElemType::flatToUp25:
+        case flatToUp25:
             return PaintSplashBoatsTrackFlatTo25DegUp;
-        case TrackElemType::up25ToUp60:
+        case up25ToUp60:
             return PaintSplashBoatsTrack25DegUpTo60DegUp;
-        case TrackElemType::up60ToUp25:
+        case up60ToUp25:
             return PaintSplashBoatsTrack60DegUpTo25DegUp;
-        case TrackElemType::up25ToFlat:
+        case up25ToFlat:
             return PaintSplashBoatsTrack25DegUpToFlat;
-        case TrackElemType::down25:
+        case down25:
             return PaintSplashBoatsTrack25DegDown;
-        case TrackElemType::down60:
+        case down60:
             return PaintSplashBoatsTrack60DegDown;
-        case TrackElemType::flatToDown25:
+        case flatToDown25:
             return PaintSplashBoatsTrackFlatTo25DegDown;
-        case TrackElemType::down25ToDown60:
+        case down25ToDown60:
             return PaintSplashBoatsTrack25DegDownTo60DegDown;
-        case TrackElemType::down60ToDown25:
+        case down60ToDown25:
             return PaintSplashBoatsTrack60DegDownTo25DegDown;
-        case TrackElemType::down25ToFlat:
+        case down25ToFlat:
             return PaintSplashBoatsTrack25DegDownToFlat;
 
         // Originally taken from River Rafts
-        case TrackElemType::flat:
+        case flat:
             return PaintSplashBoatsTrackFlat;
-        case TrackElemType::endStation:
-        case TrackElemType::beginStation:
-        case TrackElemType::middleStation:
+        case endStation:
+        case beginStation:
+        case middleStation:
             return PaintSplashBoatsStation;
-        case TrackElemType::leftQuarterTurn5Tiles:
+        case leftQuarterTurn5Tiles:
             return PaintSplashBoatsTrackLeftQuarterTurn5Tiles;
-        case TrackElemType::rightQuarterTurn5Tiles:
+        case rightQuarterTurn5Tiles:
             return PaintSplashBoatsTrackRightQuarterTurn5Tiles;
-        case TrackElemType::sBendLeft:
+        case sBendLeft:
             return PaintSplashBoatsTrackSBendLeft;
-        case TrackElemType::sBendRight:
+        case sBendRight:
             return PaintSplashBoatsTrackSBendRight;
 
         // Added by OpenRCT2
-        case TrackElemType::onRidePhoto:
+        case onRidePhoto:
             return PaintSplashBoatsTrackOnRidePhoto;
         default:
             return TrackPaintFunctionDummy;

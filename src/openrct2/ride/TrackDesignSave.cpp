@@ -154,12 +154,13 @@ static size_t TrackDesignSaveGetTotalElementCount(TileElement* tileElement)
 {
     switch (tileElement->GetType())
     {
-        case TileElementType::Path:
-        case TileElementType::SmallScenery:
-        case TileElementType::Wall:
+        using enum TileElementType;
+        case Path:
+        case SmallScenery:
+        case Wall:
             return 1;
 
-        case TileElementType::LargeScenery:
+        case LargeScenery:
         {
             auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
             return sceneryEntry->tiles.size();
@@ -408,13 +409,14 @@ static TrackDesignAddStatus TrackDesignSaveAddTileElement(const CoordsXY& loc, T
 
     switch (tileElement->GetType())
     {
-        case TileElementType::SmallScenery:
+        using enum TileElementType;
+        case SmallScenery:
             return TrackDesignSaveAddSmallScenery(loc, tileElement->AsSmallScenery());
-        case TileElementType::LargeScenery:
+        case LargeScenery:
             return TrackDesignSaveAddLargeScenery(loc, tileElement->AsLargeScenery());
-        case TileElementType::Wall:
+        case Wall:
             return TrackDesignSaveAddWall(loc, tileElement->AsWall());
-        case TileElementType::Path:
+        case Path:
             return TrackDesignSaveAddFootpath(loc, tileElement->AsPath());
         default:
             return TrackDesignAddStatus::Fail(STR_UNKNOWN_OBJECT_TYPE);
@@ -558,16 +560,17 @@ static void TrackDesignSaveRemoveTileElement(const CoordsXY& loc, TileElement* t
 {
     switch (tileElement->GetType())
     {
-        case TileElementType::SmallScenery:
+        using enum TileElementType;
+        case SmallScenery:
             TrackDesignSaveRemoveSmallScenery(loc, tileElement->AsSmallScenery());
             break;
-        case TileElementType::LargeScenery:
+        case LargeScenery:
             TrackDesignSaveRemoveLargeScenery(loc, tileElement->AsLargeScenery());
             break;
-        case TileElementType::Wall:
+        case Wall:
             TrackDesignSaveRemoveWall(loc, tileElement->AsWall());
             break;
-        case TileElementType::Path:
+        case Path:
             TrackDesignSaveRemoveFootpath(loc, tileElement->AsPath());
             break;
         default:
@@ -579,15 +582,16 @@ static bool TrackDesignSaveShouldSelectSceneryAround(RideId rideIndex, TileEleme
 {
     switch (tileElement->GetType())
     {
-        case TileElementType::Path:
+        using enum TileElementType;
+        case Path:
             if (tileElement->AsPath()->IsQueue() && tileElement->AsPath()->GetRideIndex() == rideIndex)
                 return true;
             break;
-        case TileElementType::Track:
+        case Track:
             if (tileElement->AsTrack()->GetRideIndex() == rideIndex)
                 return true;
             break;
-        case TileElementType::Entrance:
+        case Entrance:
             // FIXME: This will always break and return false!
             if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_ENTRANCE)
                 break;
@@ -618,19 +622,20 @@ static void TrackDesignSaveShouldSelectNearbySceneryForTile(RideId rideIndex, in
                 ViewportInteractionItem interactionType = ViewportInteractionItem::none;
                 switch (tileElement->GetType())
                 {
-                    case TileElementType::Path:
+                    using enum TileElementType;
+                    case Path:
                         if (!tileElement->AsPath()->IsQueue())
                             interactionType = ViewportInteractionItem::footpath;
                         else if (tileElement->AsPath()->GetRideIndex() == rideIndex)
                             interactionType = ViewportInteractionItem::footpath;
                         break;
-                    case TileElementType::SmallScenery:
+                    case SmallScenery:
                         interactionType = ViewportInteractionItem::scenery;
                         break;
-                    case TileElementType::Wall:
+                    case Wall:
                         interactionType = ViewportInteractionItem::wall;
                         break;
-                    case TileElementType::LargeScenery:
+                    case LargeScenery:
                         interactionType = ViewportInteractionItem::largeScenery;
                         break;
                     default:

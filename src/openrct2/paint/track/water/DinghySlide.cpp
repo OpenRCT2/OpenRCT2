@@ -1062,47 +1062,48 @@ TrackPaintFunction GetTrackPaintFunctionDinghySlide(TrackElemType trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::flat:
+        using enum TrackElemType;
+        case flat:
             return DinghySlideTrackFlat;
-        case TrackElemType::endStation:
-        case TrackElemType::beginStation:
-        case TrackElemType::middleStation:
+        case endStation:
+        case beginStation:
+        case middleStation:
             return DinghySlideTrackStation;
-        case TrackElemType::up25:
+        case up25:
             return DinghySlideTrack25DegUp;
-        case TrackElemType::up60:
+        case up60:
             return DinghySlideTrack60DegUp;
-        case TrackElemType::flatToUp25:
+        case flatToUp25:
             return DinghySlideTrackFlatTo25DegUp;
-        case TrackElemType::up25ToUp60:
+        case up25ToUp60:
             return DinghySlideTrack25DegUpTo60DegUp;
-        case TrackElemType::up60ToUp25:
+        case up60ToUp25:
             return DinghySlideTrack60DegUpTo25DegUp;
-        case TrackElemType::up25ToFlat:
+        case up25ToFlat:
             return DinghySlideTrack25DegUpToFlat;
-        case TrackElemType::down25:
+        case down25:
             return DinghySlideTrack25DegDown;
-        case TrackElemType::down60:
+        case down60:
             return DinghySlideTrack60DegDown;
-        case TrackElemType::flatToDown25:
+        case flatToDown25:
             return DinghySlideTrackFlatTo25DegDown;
-        case TrackElemType::down25ToDown60:
+        case down25ToDown60:
             return DinghySlideTrack25DegDownTo60DegDown;
-        case TrackElemType::down60ToDown25:
+        case down60ToDown25:
             return DinghySlideTrack60DegDownTo25DegDown;
-        case TrackElemType::down25ToFlat:
+        case down25ToFlat:
             return DinghySlideTrack25DegDownToFlat;
-        case TrackElemType::leftQuarterTurn5Tiles:
+        case leftQuarterTurn5Tiles:
             return DinghySlideTrackLeftQuarterTurn5;
-        case TrackElemType::rightQuarterTurn5Tiles:
+        case rightQuarterTurn5Tiles:
             return DinghySlideTrackRightQuarterTurn5;
-        case TrackElemType::sBendLeft:
+        case sBendLeft:
             return DinghySlideTrackSBendLeft;
-        case TrackElemType::sBendRight:
+        case sBendRight:
             return DinghySlideTrackSBendRight;
-        case TrackElemType::leftQuarterTurn3Tiles:
+        case leftQuarterTurn3Tiles:
             return DinghySlideTrackLeftQuarterTurn3;
-        case TrackElemType::rightQuarterTurn3Tiles:
+        case rightQuarterTurn3Tiles:
             return DinghySlideTrackRightQuarterTurn3;
         default:
             return TrackPaintFunctionDummy;

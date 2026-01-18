@@ -709,43 +709,44 @@ TrackPaintFunction GetTrackPaintFunctionRiverRapids(TrackElemType trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::flat:
+        using enum TrackElemType;
+        case flat:
             return PaintRiverRapidsTrackFlat;
 
-        case TrackElemType::endStation:
-        case TrackElemType::beginStation:
-        case TrackElemType::middleStation:
+        case endStation:
+        case beginStation:
+        case middleStation:
             return PaintRiverRapidsStation;
 
-        case TrackElemType::up25:
+        case up25:
             return PaintRiverRapidsTrack25DegUp;
-        case TrackElemType::flatToUp25:
+        case flatToUp25:
             return PaintRiverRapidsTrackFlatTo25DegUp;
-        case TrackElemType::up25ToFlat:
+        case up25ToFlat:
             return PaintRiverRapidsTrack25DegUpToFlat;
 
-        case TrackElemType::down25:
+        case down25:
             return PaintRiverRapidsTrack25DegDown;
-        case TrackElemType::flatToDown25:
+        case flatToDown25:
             return PaintRiverRapidsTrackFlatTo25DegDown;
-        case TrackElemType::down25ToFlat:
+        case down25ToFlat:
             return PaintRiverRapidsTrack25DegDownToFlat;
 
-        case TrackElemType::leftQuarterTurn1Tile:
+        case leftQuarterTurn1Tile:
             return PaintRiverRapidsTrackLeftQuarterTurn1Tile;
-        case TrackElemType::rightQuarterTurn1Tile:
+        case rightQuarterTurn1Tile:
             return PaintRiverRapidsTrackRightQuarterTurn1Tile;
 
-        case TrackElemType::waterfall:
+        case waterfall:
             return PaintRiverRapidsTrackWaterfall;
 
-        case TrackElemType::rapids:
+        case rapids:
             return PaintRiverRapidsTrackRapids;
 
-        case TrackElemType::onRidePhoto:
+        case onRidePhoto:
             return PaintRiverRapidsTrackOnRidePhoto;
 
-        case TrackElemType::whirlpool:
+        case whirlpool:
             return PaintRiverRapidsTrackWhirlpool;
         default:
             return TrackPaintFunctionDummy;
