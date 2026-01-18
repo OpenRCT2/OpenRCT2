@@ -242,6 +242,7 @@
     <ClInclude Include="core\ZipStream.hpp" />
     <ClInclude Include="Date.h" />
     <ClInclude Include="Diagnostic.h" />
+    <ClInclude Include="drawing\BlendColourMap.h" />
     <ClInclude Include="drawing\ColourMap.h" />
     <ClInclude Include="drawing\ColourPalette.h" />
     <ClInclude Include="drawing\Drawing.h" />
@@ -829,6 +830,7 @@
     <ClCompile Include="Date.cpp" />
     <ClCompile Include="Diagnostic.cpp" />
     <ClCompile Include="drawing\AVX2Drawing.cpp" />
+    <ClCompile Include="drawing\BlendColourMap.cpp" />
     <ClCompile Include="drawing\ColourMap.cpp" />
     <ClCompile Include="drawing\Drawing.cpp" />
     <ClCompile Include="drawing\Drawing.Sprite.BMP.cpp" />
