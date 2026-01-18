@@ -52,10 +52,10 @@ namespace OpenRCT2::Ui::Windows
     static constexpr ScreenSize kWindowSize = { 200, 124 };
     static constexpr ScreenSize kTrackMiniPreviewSize = { 168, 78 };
 
-    static constexpr auto kPaletteIndexColourEntrance = PaletteIndex::pi20; // White
-    static constexpr auto kPaletteIndexColourExit = PaletteIndex::pi10;     // Black
-    static constexpr auto kPaletteIndexColourTrack = PaletteIndex::pi248;   // Grey (dark)
-    static constexpr auto kPaletteIndexColourStation = PaletteIndex::pi252; // Grey (light)
+    static constexpr auto kPaletteIndexColourEntrance = PaletteIndex::pi20;         // White
+    static constexpr auto kPaletteIndexColourExit = PaletteIndex::pi10;             // Black
+    static constexpr auto kPaletteIndexColourTrack = PaletteIndex::primaryRemap5;   // Grey (dark)
+    static constexpr auto kPaletteIndexColourStation = PaletteIndex::primaryRemap9; // Grey (light)
 
     enum
     {
@@ -453,7 +453,7 @@ namespace OpenRCT2::Ui::Windows
         void ClearMiniPreview()
         {
             // Fill with transparent colour.
-            std::fill(_miniPreview.begin(), _miniPreview.end(), PaletteIndex::pi0);
+            std::fill(_miniPreview.begin(), _miniPreview.end(), PaletteIndex::transparent);
         }
 
     private:

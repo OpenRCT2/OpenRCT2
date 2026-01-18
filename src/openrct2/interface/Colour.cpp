@@ -106,7 +106,7 @@ static PaletteIndex FindClosestPaletteIndex(uint8_t red, uint8_t green, uint8_t 
     PaletteIndex closest = PaletteIndex::pi255;
     int32_t closestDistance = INT32_MAX;
 
-    for (auto i = PaletteIndex::pi0; i < PaletteIndex::pi230; i = static_cast<PaletteIndex>(EnumValue(i) + 1))
+    for (auto i = PaletteIndex::transparent; i < PaletteIndex::waterWaves0; i = static_cast<PaletteIndex>(EnumValue(i) + 1))
     {
         const auto& paletteEntry = gPalette[EnumValue(i)];
         const int32_t distance = std::pow(paletteEntry.red - red, 2) + std::pow(paletteEntry.green - green, 2)

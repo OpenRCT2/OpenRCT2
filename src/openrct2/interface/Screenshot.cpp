@@ -241,7 +241,7 @@ static RenderTarget CreateRT(const Viewport& viewport)
 
     if (viewport.flags & VIEWPORT_FLAG_TRANSPARENT_BACKGROUND)
     {
-        std::memset(rt.bits, EnumValue(PaletteIndex::pi0), static_cast<size_t>(rt.width) * rt.height);
+        std::memset(rt.bits, EnumValue(PaletteIndex::transparent), static_cast<size_t>(rt.width) * rt.height);
     }
 
     return rt;

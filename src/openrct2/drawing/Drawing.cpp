@@ -62,7 +62,7 @@ PaletteIndex PaletteMap::Blend(PaletteIndex src, PaletteIndex dst) const
 {
 #ifdef _DEBUG
     // src = 0 would be transparent so there is no blend palette for that, hence (src - 1)
-    assert(src != PaletteIndex::pi0 && (EnumValue(src) - 1) < _numMaps);
+    assert(src != PaletteIndex::transparent && (EnumValue(src) - 1) < _numMaps);
     assert(EnumValue(dst) < _mapLength);
 #endif
     auto idx = ((EnumValue(src) - 1) * 256) + EnumValue(dst);
@@ -89,9 +89,9 @@ int32_t gPickupPeepY;
 
 // Originally 0x9ABE04
 TextColours gTextPalette = {
-    PaletteIndex::pi0,
-    PaletteIndex::pi0,
-    PaletteIndex::pi0,
+    PaletteIndex::transparent,
+    PaletteIndex::transparent,
+    PaletteIndex::transparent,
 };
 
 bool gPaintForceRedraw{ false };
@@ -1029,7 +1029,7 @@ void UpdatePaletteEffects()
             int32_t n = kPaletteLengthWaterWaves;
             for (int32_t i = 0; i < n; i++)
             {
-                auto& vd = gGamePalette[EnumValue(kPaletteOffsetWaterWaves) + i];
+                auto& vd = gGamePalette[EnumValue(PaletteIndex::waterWaves0) + i];
                 vd.blue = g1PaletteEntry->blue;
                 vd.green = g1PaletteEntry->green;
                 vd.red = g1PaletteEntry->red;
@@ -1054,7 +1054,7 @@ void UpdatePaletteEffects()
             int32_t n = kPaletteLengthWaterSparkles;
             for (int32_t i = 0; i < n; i++)
             {
-                auto& vd = gGamePalette[EnumValue(kPaletteOffsetWaterSparkles) + i];
+                auto& vd = gGamePalette[EnumValue(PaletteIndex::waterSparkles0) + i];
                 vd.blue = src->blue;
                 vd.green = src->green;
                 vd.red = src->red;
@@ -1075,7 +1075,7 @@ void UpdatePaletteEffects()
             const int32_t n = 3;
             for (int32_t i = 0; i < n; i++)
             {
-                auto& vd = gGamePalette[EnumValue(PaletteIndex::pi243) + i];
+                auto& vd = gGamePalette[EnumValue(PaletteIndex::primaryRemap0) + i];
                 vd.blue = src->blue;
                 vd.green = src->green;
                 vd.red = src->red;
