@@ -256,6 +256,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Ruohao (Jater) Xu (jaterx)
 * Marcel Vos (MarcelVos96)
 * Jonas Doggart
+* Robert Gooding (goodingr)
 
 ## Toolchain
 * (Balletie) - macOS
