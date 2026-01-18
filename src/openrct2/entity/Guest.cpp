@@ -770,8 +770,9 @@ int32_t Guest::CheckEasterEggName(int32_t index) const
 void Guest::UpdateMotivesIdle()
 {
     // Idle peep happiness tends towards 127 (50%).
+    // Falls faster when above
     if (HappinessTarget >= 128)
-        HappinessTarget--;
+        HappinessTarget -= 2;
     else
         HappinessTarget++;
 
@@ -779,22 +780,22 @@ void Guest::UpdateMotivesIdle()
 
     if (Energy <= 50)
     {
-        Energy = std::max(Energy - 2, 0);
+        HappinessTarget = std::max(HappinessTarget - 2, 0);
     }
 
     if (Hunger < 10)
     {
-        Hunger = std::max(Hunger - 1, 0);
+        HappinessTarget = std::max(HappinessTarget - 1, 0);
     }
 
     if (Thirst < 10)
     {
-        Thirst = std::max(Thirst - 1, 0);
+        HappinessTarget = std::max(HappinessTarget - 1, 0);
     }
 
     if (Toilet >= 195)
     {
-        Toilet--;
+        HappinessTarget = std::max(HappinessTarget - 1, 0);
     }
 
     if (State == PeepState::walking && NauseaTarget >= 128)
