@@ -1399,19 +1399,16 @@ JSValue ScriptEngine::GameActionResultToJS(
         JS_SetPropertyStr(ctx, obj, "expenditureType", JSFromStdString(ctx, ExpenditureTypeToString(result.expenditure)));
     }
 
-    // RideCreateAction only
-    if (action.GetType() == GameCommand::CreateRide)
+    if (result.error == GameActions::Status::ok)
     {
-        if (result.error == GameActions::Status::ok)
+        // RideCreateAction only
+        if (action.GetType() == GameCommand::CreateRide)
         {
             const auto rideIndex = result.getData<RideId>();
             JS_SetPropertyStr(ctx, obj, "ride", JS_NewInt32(ctx, rideIndex.ToUnderlying()));
         }
-    }
-    // StaffHireNewAction only
-    else if (action.GetType() == GameCommand::HireNewStaffMember)
-    {
-        if (result.error == GameActions::Status::ok)
+        // StaffHireNewAction only
+        else if (action.GetType() == GameCommand::HireNewStaffMember)
         {
             const auto actionResult = result.getData<GameActions::StaffHireNewActionResult>();
             if (!actionResult.StaffEntityId.IsNull())
@@ -1419,26 +1416,26 @@ JSValue ScriptEngine::GameActionResultToJS(
                 JS_SetPropertyStr(ctx, obj, "peep", JS_NewInt32(ctx, actionResult.StaffEntityId.ToUnderlying()));
             }
         }
-    }
-    // BannerPlaceAction, LargeSceneryPlaceAction, WallPlaceAction
-    auto bannerId = BannerIndex::GetNull();
-    switch (action.GetType())
-    {
-        case GameCommand::PlaceBanner:
-            bannerId = result.getData<GameActions::BannerPlaceActionResult>().bannerId;
-            break;
-        case GameCommand::PlaceLargeScenery:
-            bannerId = result.getData<GameActions::LargeSceneryPlaceActionResult>().bannerId;
-            break;
-        case GameCommand::PlaceWall:
-            bannerId = result.getData<GameActions::WallPlaceActionResult>().BannerId;
-            break;
-        default:
-            break;
-    }
-    if (!bannerId.IsNull())
-    {
-        JS_SetPropertyStr(ctx, obj, "bannerIndex", JS_NewInt32(ctx, bannerId.ToUnderlying()));
+        // BannerPlaceAction, LargeSceneryPlaceAction, WallPlaceAction
+        auto bannerId = BannerIndex::GetNull();
+        switch (action.GetType())
+        {
+            case GameCommand::PlaceBanner:
+                bannerId = result.getData<GameActions::BannerPlaceActionResult>().bannerId;
+                break;
+            case GameCommand::PlaceLargeScenery:
+                bannerId = result.getData<GameActions::LargeSceneryPlaceActionResult>().bannerId;
+                break;
+            case GameCommand::PlaceWall:
+                bannerId = result.getData<GameActions::WallPlaceActionResult>().BannerId;
+                break;
+            default:
+                break;
+        }
+        if (!bannerId.IsNull())
+        {
+            JS_SetPropertyStr(ctx, obj, "bannerIndex", JS_NewInt32(ctx, bannerId.ToUnderlying()));
+        }
     }
 
     return obj;
