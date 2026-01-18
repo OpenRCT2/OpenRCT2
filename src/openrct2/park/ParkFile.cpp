@@ -2639,10 +2639,19 @@ namespace OpenRCT2
     template<typename T>
     void ParkFile::WriteEntitiesOfType(GameState_t& gameState, OrcaStream& os, OrcaStream::ChunkStream& cs)
     {
-        uint16_t count = gameState.entities.GetEntityListCount(T::cEntityType);
+        const auto entityList = EntityList<T>();
+        // We do not rely on GetEntityListCount as there is a potential issue (#23636) that needs investigating.
+        const auto count = [&]() -> uint16_t {
+            uint16_t res = 0;
+            for ([[maybe_unused]] auto* _ : entityList)
+            {
+                res++;
+            }
+            return res;
+        }();
         cs.write(T::cEntityType);
         cs.write(count);
-        for (auto* ent : EntityList<T>())
+        for (auto* ent : entityList)
         {
             cs.write(ent->Id);
             ReadWriteEntity(os, cs, *ent);
