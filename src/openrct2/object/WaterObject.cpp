@@ -39,10 +39,10 @@ namespace OpenRCT2
     void WaterObject::Load()
     {
         GetStringTable().Sort();
-        _legacyType.string_idx = LanguageAllocateObjectString(GetName());
-        _legacyType.image_id = LoadImages();
-        _legacyType.palette_index_1 = _legacyType.image_id + 1;
-        _legacyType.palette_index_2 = _legacyType.image_id + 4;
+        _legacyType.stringId = LanguageAllocateObjectString(GetName());
+        _legacyType.mainPalette = LoadImages();
+        _legacyType.waterWavesPalette = _legacyType.mainPalette + 1;
+        _legacyType.waterSparklesPalette = _legacyType.mainPalette + 4;
 
         LoadPalette();
     }
@@ -50,12 +50,12 @@ namespace OpenRCT2
     void WaterObject::Unload()
     {
         UnloadImages();
-        LanguageFreeObjectString(_legacyType.string_idx);
+        LanguageFreeObjectString(_legacyType.stringId);
 
-        _legacyType.string_idx = 0;
-        _legacyType.image_id = 0;
-        _legacyType.palette_index_1 = 0;
-        _legacyType.palette_index_2 = 0;
+        _legacyType.stringId = 0;
+        _legacyType.mainPalette = 0;
+        _legacyType.waterWavesPalette = 0;
+        _legacyType.waterSparklesPalette = 0;
     }
 
     void WaterObject::DrawPreview(Drawing::RenderTarget& rt, int32_t width, int32_t height) const
