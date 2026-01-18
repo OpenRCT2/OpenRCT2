@@ -58,13 +58,15 @@ namespace OpenRCT2::Ui::FileBrowser
     const char* GetFilterPatternByType(LoadSaveType type, bool isSave);
     u8string RemovePatternWildcard(u8string_view pattern);
     u8string GetDir(LoadSaveType type);
-    void RegisterCallback(LoadSaveCallback callback);
+    void RegisterCallback(LoadSaveCallback callback, bool isJsCallback);
+    void UnregisterJSCallback();
     void InvokeCallback(ModalResult result, const utf8* path);
     void Select(const char* path, LoadSaveAction action, LoadSaveType type, TrackDesign* trackDesignPtr);
     StringId GetTitleStringId(LoadSaveType type, bool isSave);
     u8string OpenSystemFileBrowser(bool isSave, LoadSaveType type, u8string defaultDirectory, u8string defaultPath);
     WindowBase* OpenPreferred(
-        LoadSaveAction action, LoadSaveType type, u8string defaultPath, LoadSaveCallback callback, TrackDesign* trackDesign);
+        LoadSaveAction action, LoadSaveType type, u8string defaultPath, LoadSaveCallback callback, bool isJsCallback,
+        TrackDesign* trackDesign);
 } // namespace OpenRCT2::Ui::FileBrowser
 
 #ifdef __EMSCRIPTEN__

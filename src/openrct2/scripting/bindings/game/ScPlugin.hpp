@@ -11,73 +11,73 @@
 
 #ifdef ENABLE_SCRIPTING
 
-    #include "../../Duktape.hpp"
     #include "../../ScriptEngine.h"
     #include "../game/ScContext.hpp"
 
 namespace OpenRCT2::Scripting
 {
-    class ScPlugin
+    class ScPlugin;
+    extern ScPlugin gScPlugin;
+    class ScPlugin final : public ScBase
     {
-    public:
-        static void Register(duk_context* ctx)
-        {
-            dukglue_register_property(ctx, &ScPlugin::plugins_get, nullptr, "plugins");
-        }
-
     private:
-        std::vector<DukValue> plugins_get()
-        {
-            auto ctx = getContext();
-            auto& allPlugins = getallPlugins();
-            return formatMetadata(ctx, allPlugins);
-        }
-
-        duk_context* getContext()
-        {
-            // Get the context from the script engine
-            ScriptEngine& scriptEngine = GetContext()->GetScriptEngine();
-            return scriptEngine.GetContext();
-        }
-
-        const std::vector<std::shared_ptr<Plugin>> getallPlugins()
+        static const std::vector<std::shared_ptr<Plugin>> getallPlugins()
         {
             // Get all of the plugins from the script engine
             ScriptEngine& scriptEngine = GetContext()->GetScriptEngine();
             return scriptEngine.GetPlugins();
         }
 
-        const std::vector<DukValue> formatMetadata(duk_context* ctx, const std::vector<std::shared_ptr<Plugin>>& allPlugins)
+        static JSValue plugins_get(JSContext* ctx, JSValue)
         {
-            std::vector<DukValue> formattedMetadata;
-            duk_idx_t dukIdx = DUK_INVALID_INDEX;
-            // Iterate through all plugins and and cast their data to Duk objects
+            auto& allPlugins = getallPlugins();
+            return formatMetadata(ctx, allPlugins);
+        }
+
+        static JSValue formatMetadata(
+            JSContext* ctx, const std::vector<std::shared_ptr<OpenRCT2::Scripting::Plugin>>& allPlugins)
+        {
+            JSValue formattedMetadata = JS_NewArray(ctx);
+            // Iterate through all plugins and and cast their data to JSValue objects
+            int64_t index = 0;
             for (const auto& pluginPtr : allPlugins)
             {
                 // Pull out metadata
                 Plugin& plugin = *pluginPtr;
                 PluginMetadata metadata = plugin.GetMetadata();
-                // Create object using Duk stack
-                dukIdx = duk_push_object(ctx);
+                // Create object using context
+                JSValue val = JS_NewObject(ctx);
                 // Name and Version
-                duk_push_string(ctx, metadata.Name.c_str());
-                duk_put_prop_string(ctx, dukIdx, "name");
-                duk_push_string(ctx, metadata.Version.c_str());
-                duk_put_prop_string(ctx, dukIdx, "version");
+                JS_SetPropertyStr(ctx, val, "name", JSFromStdString(ctx, metadata.Name));
+                JS_SetPropertyStr(ctx, val, "version", JSFromStdString(ctx, metadata.Version));
                 // Authors
-                duk_idx_t arrIdx = duk_push_array(ctx);
-                for (auto [s, idx] = std::tuple{ metadata.Authors.begin(), 0 }; s != metadata.Authors.end(); s++, idx++)
+                JSValue authorsArray = JS_NewArray(ctx);
+
+                int64_t idx = 0;
+                for (auto& str : metadata.Authors)
                 {
-                    auto& str = *s;
-                    duk_push_string(ctx, str.c_str());
-                    duk_put_prop_index(ctx, arrIdx, idx);
+                    JSValue authorStr = JSFromStdString(ctx, str);
+                    JS_SetPropertyInt64(ctx, authorsArray, idx++, authorStr);
                 }
-                duk_put_prop_string(ctx, dukIdx, "authors");
-                // Take from Duk stack
-                formattedMetadata.push_back(DukValue::take_from_stack(ctx, dukIdx));
-                dukIdx = DUK_INVALID_INDEX;
+                JS_SetPropertyStr(ctx, val, "authors", authorsArray);
+                JS_SetPropertyInt64(ctx, formattedMetadata, index++, val);
             }
             return formattedMetadata;
+        }
+
+    public:
+        JSValue New(JSContext* ctx)
+        {
+            static constexpr JSCFunctionListEntry funcs[] = {
+                JS_CGETSET_DEF("plugins", ScPlugin::plugins_get, nullptr),
+            };
+
+            return MakeWithOpaque(ctx, funcs, nullptr);
+        }
+
+        void Register(JSContext* ctx)
+        {
+            RegisterBaseStr(ctx, "PluginManager");
         }
     };
 } // namespace OpenRCT2::Scripting

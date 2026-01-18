@@ -11,64 +11,58 @@
 
 #ifdef ENABLE_SCRIPTING
 
-    #include "../../Duktape.hpp"
+    #include "../../ScriptEngine.h"
 
     #include <cstdint>
     #include <string>
 
 namespace OpenRCT2::Scripting
 {
-    template<>
-    inline DukValue ToDuk(duk_context* ctx, const VehicleInfo& value)
-    {
-        DukObject dukSubposition(ctx);
-        dukSubposition.Set("x", value.x);
-        dukSubposition.Set("y", value.y);
-        dukSubposition.Set("z", value.z);
-        dukSubposition.Set("yaw", value.yaw);
-        dukSubposition.Set("pitch", EnumValue(value.pitch));
-        dukSubposition.Set("roll", EnumValue(value.roll));
-        return dukSubposition.Take();
-    }
+    class ScTrackSegment;
+    extern ScTrackSegment gScTrackSegment;
 
-    class ScTrackSegment
+    class ScTrackSegment final : public ScBase
     {
     private:
-        TrackElemType _type;
+        struct TrackSegmentData
+        {
+            TrackElemType _type;
+        };
 
     public:
-        ScTrackSegment(TrackElemType type);
-
-        static void Register(duk_context* ctx);
+        void Register(JSContext* ctx);
+        JSValue New(JSContext* ctx, TrackElemType type);
 
     private:
-        int32_t type_get() const;
-        std::string description_get() const;
-        int32_t beginZ_get() const;
-        int32_t beginDirection_get() const;
-        int32_t beginSlope_get() const;
-        int32_t beginBank_get() const;
-        int32_t endX_get() const;
-        int32_t endY_get() const;
-        int32_t endZ_get() const;
-        int32_t endDirection_get() const;
-        int32_t endSlope_get() const;
-        int32_t endBank_get() const;
-        int32_t length_get() const;
-        DukValue elements_get() const;
-        uint16_t getSubpositionLength(uint8_t trackSubposition, uint8_t direction) const;
-        std::vector<DukValue> getSubpositions(uint8_t trackSubposition, uint8_t direction) const;
-        DukValue nextCurveElement_get() const;
-        DukValue previousCurveElement_get() const;
-        DukValue getMirrorElement() const;
-        DukValue getAlternativeElement() const;
-        int32_t getPriceModifier() const;
-        int32_t getPreviewZOffset() const;
-        int32_t getTrackGroup() const;
+        static void Finalize(JSRuntime* rt, JSValue thisVal);
+        static TrackSegmentData* GetTrackSegmentData(JSValue thisVal);
+
+        static JSValue type_get(JSContext* ctx, JSValue thisVal);
+        static JSValue description_get(JSContext* ctx, JSValue thisVal);
+        static JSValue beginZ_get(JSContext* ctx, JSValue thisVal);
+        static JSValue beginDirection_get(JSContext* ctx, JSValue thisVal);
+        static JSValue beginSlope_get(JSContext* ctx, JSValue thisVal);
+        static JSValue beginBank_get(JSContext* ctx, JSValue thisVal);
+        static JSValue endX_get(JSContext* ctx, JSValue thisVal);
+        static JSValue endY_get(JSContext* ctx, JSValue thisVal);
+        static JSValue endZ_get(JSContext* ctx, JSValue thisVal);
+        static JSValue endDirection_get(JSContext* ctx, JSValue thisVal);
+        static JSValue endSlope_get(JSContext* ctx, JSValue thisVal);
+        static JSValue endBank_get(JSContext* ctx, JSValue thisVal);
+        static JSValue length_get(JSContext* ctx, JSValue thisVal);
+        static JSValue elements_get(JSContext* ctx, JSValue thisVal);
+        static JSValue getSubpositionLength(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
+        static JSValue getSubpositions(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
+        static JSValue nextCurveElement_get(JSContext* ctx, JSValue thisVal);
+        static JSValue previousCurveElement_get(JSContext* ctx, JSValue thisVal);
+        static JSValue getMirrorElement(JSContext* ctx, JSValue thisVal);
+        static JSValue getAlternativeElement(JSContext* ctx, JSValue thisVal);
+        static JSValue getPriceModifier(JSContext* ctx, JSValue thisVal);
+        static JSValue getTrackGroup(JSContext* ctx, JSValue thisVal);
         template<TrackElementFlag flag>
-        bool getTrackFlag() const;
-        std::string getTrackCurvature() const;
-        std::string getTrackPitchDirection() const;
+        static JSValue getTrackFlag(JSContext* ctx, JSValue thisVal);
+        static JSValue getTrackCurvature(JSContext* ctx, JSValue thisVal);
+        static JSValue getTrackPitchDirection(JSContext* ctx, JSValue thisVal);
     };
 
 } // namespace OpenRCT2::Scripting

@@ -80,6 +80,8 @@ namespace OpenRCT2::File
         }
         else
         {
+            // Reserve capacity for fsize + 1 to support the caller adding a null terminator if they want (needed for quickjs)
+            result.reserve(fsize + 1);
             result.resize(fsize);
             fs.read(reinterpret_cast<char*>(result.data()), result.size());
             fs.exceptions(fs.failbit);

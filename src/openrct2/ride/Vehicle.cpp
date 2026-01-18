@@ -145,16 +145,15 @@ static void InvokeVehicleCrashHook(const EntityId vehicleId, const std::string_v
     auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
     if (hookEngine.HasSubscriptions(Scripting::HookType::vehicleCrash))
     {
-        auto ctx = GetContext()->GetScriptEngine().GetContext();
+        JSContext* ctx = GetContext()->GetScriptEngine().GetContext();
 
         // Create event args object
-        auto obj = Scripting::DukObject(ctx);
-        obj.Set("id", vehicleId.ToUnderlying());
-        obj.Set("crashIntoType", crashId);
+        JSValue obj = JS_NewObject(ctx);
+        JS_SetPropertyStr(ctx, obj, "id", JS_NewInt64(ctx, vehicleId.ToUnderlying()));
+        JS_SetPropertyStr(ctx, obj, "crashIntoType", Scripting::JSFromStdString(ctx, crashId));
 
         // Call the subscriptions
-        auto e = obj.Take();
-        hookEngine.Call(Scripting::HookType::vehicleCrash, e, true);
+        hookEngine.Call(Scripting::HookType::vehicleCrash, obj, true);
     }
 }
 #endif

@@ -22,7 +22,6 @@
 #include "../platform/Platform.h"
 #include "../profiling/Profiling.h"
 #include "../scenario/Scenario.h"
-#include "../scripting/Duktape.hpp"
 #include "../scripting/HookEngine.h"
 #include "../scripting/ScriptEngine.h"
 #include "../ui/WindowManager.h"
@@ -487,21 +486,21 @@ namespace OpenRCT2::GameActions
             auto ctx = GetContext()->GetScriptEngine().GetContext();
 
             // Create event args object
-            auto obj = Scripting::DukObject(ctx);
-            obj.Set("x", coords.x);
-            obj.Set("y", coords.y);
-            obj.Set("player", _playerId);
-            obj.Set("type", EnumValue(_type));
+            JSValue obj = JS_NewObject(ctx);
+            JS_SetPropertyStr(ctx, obj, "x", JS_NewInt32(ctx, coords.x));
+            JS_SetPropertyStr(ctx, obj, "y", JS_NewInt32(ctx, coords.y));
+            JS_SetPropertyStr(ctx, obj, "player", JS_NewInt32(ctx, _playerId));
+            JS_SetPropertyStr(ctx, obj, "type", JS_NewInt32(ctx, EnumValue(_type)));
 
             auto flags = GetActionFlags();
-            obj.Set("isClientOnly", (flags & Flags::ClientOnly) != 0);
-            obj.Set("result", true);
+            JS_SetPropertyStr(ctx, obj, "isClientOnly", JS_NewBool(ctx, (flags & Flags::ClientOnly) != 0));
+            JS_SetPropertyStr(ctx, obj, "result", JS_NewBool(ctx, true));
 
             // Call the subscriptions
-            auto e = obj.Take();
-            hookEngine.Call(Scripting::HookType::actionLocation, e, true);
+            hookEngine.Call(Scripting::HookType::actionLocation, obj, true, true);
 
-            auto scriptResult = Scripting::AsOrDefault(e["result"], true);
+            auto scriptResult = Scripting::AsOrDefault(ctx, obj, "result", true);
+            JS_FreeValue(ctx, obj);
 
             return scriptResult;
         }

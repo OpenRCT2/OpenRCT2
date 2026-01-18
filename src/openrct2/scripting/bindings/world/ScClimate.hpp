@@ -17,44 +17,60 @@
     #include "../../../object/ClimateObject.h"
     #include "../../../object/ObjectManager.h"
     #include "../../../world/Climate.h"
-    #include "../../Duktape.hpp"
     #include "../../ScriptEngine.h"
 
 namespace OpenRCT2::Scripting
 {
-    class ScWeatherState
+    class ScWeatherState;
+    extern ScWeatherState gScWeatherState;
+    class ScWeatherState final : public ScBase
     {
     private:
-        std::string _weather;
-        int8_t _temperature;
+        using OpaqueWeatherStateData = struct
+        {
+            std::string weather;
+            int8_t temperature;
+        };
+
+        static JSValue weather_get(JSContext* ctx, JSValue thisVal)
+        {
+            return JSFromStdString(ctx, gScWeatherState.GetOpaque<OpaqueWeatherStateData*>(thisVal)->weather);
+        }
+
+        static JSValue temperature_get(JSContext* ctx, JSValue thisVal)
+        {
+            return JS_NewInt32(ctx, gScWeatherState.GetOpaque<OpaqueWeatherStateData*>(thisVal)->temperature);
+        }
 
     public:
-        ScWeatherState(std::string weather, int8_t temperature)
-            : _weather(weather)
-            , _temperature(temperature)
+        JSValue New(JSContext* ctx, const std::string& weather, int8_t temperature)
         {
+            static constexpr JSCFunctionListEntry funcs[] = {
+                JS_CGETSET_DEF("weather", ScWeatherState::weather_get, nullptr),
+                JS_CGETSET_DEF("temperature", ScWeatherState::temperature_get, nullptr),
+            };
+
+            return MakeWithOpaque(ctx, funcs, new OpaqueWeatherStateData{ weather, temperature });
         }
 
-        std::string weather_get() const
+        void Register(JSContext* ctx)
         {
-            return _weather;
+            RegisterBaseStr(ctx, "WeatherState");
         }
 
-        int8_t temperature_get() const
+        void Finalize(JSRuntime*, JSValue thisVal)
         {
-            return _temperature;
-        }
-
-        static void Register(duk_context* ctx)
-        {
-            dukglue_register_property(ctx, &ScWeatherState::weather_get, nullptr, "weather");
-            dukglue_register_property(ctx, &ScWeatherState::temperature_get, nullptr, "temperature");
+            OpaqueWeatherStateData* data = gScWeatherState.GetOpaque<OpaqueWeatherStateData*>(thisVal);
+            if (data)
+                delete data;
         }
     };
 
-    class ScClimate
+    class ScClimate;
+    extern ScClimate gScClimate;
+    class ScClimate final : public ScBase
     {
-    public:
+    private:
         static std::string WeatherTypeToString(WeatherType token)
         {
             switch (token)
@@ -83,35 +99,45 @@ namespace OpenRCT2::Scripting
             return {};
         }
 
-        std::string type_get() const
+        static JSValue type_get(JSContext* ctx, JSValue)
         {
-            auto& objManager = GetContext()->GetObjectManager();
+            auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
             auto* climateObj = objManager.GetLoadedObject<ClimateObject>(0);
             if (climateObj == nullptr)
-                return {};
+                return JSFromStdString(ctx, {});
 
-            return climateObj->getScriptName();
+            return JSFromStdString(ctx, climateObj->getScriptName());
         }
 
-        std::shared_ptr<ScWeatherState> current_get() const
+        static JSValue current_get(JSContext* ctx, JSValue)
         {
             auto& gameState = getGameState();
             std::string weatherType = WeatherTypeToString(gameState.weatherCurrent.weatherType);
-            return std::make_shared<ScWeatherState>(weatherType, gameState.weatherCurrent.temperature);
+            return gScWeatherState.New(ctx, weatherType, gameState.weatherCurrent.temperature);
         }
 
-        std::shared_ptr<ScWeatherState> future_get() const
+        static JSValue future_get(JSContext* ctx, JSValue)
         {
             auto& gameState = getGameState();
             std::string weatherType = WeatherTypeToString(gameState.weatherNext.weatherType);
-            return std::make_shared<ScWeatherState>(weatherType, gameState.weatherNext.temperature);
+            return gScWeatherState.New(ctx, weatherType, gameState.weatherCurrent.temperature);
         }
 
-        static void Register(duk_context* ctx)
+    public:
+        JSValue New(JSContext* ctx)
         {
-            dukglue_register_property(ctx, &ScClimate::type_get, nullptr, "type");
-            dukglue_register_property(ctx, &ScClimate::current_get, nullptr, "current");
-            dukglue_register_property(ctx, &ScClimate::future_get, nullptr, "future");
+            static constexpr JSCFunctionListEntry funcs[] = {
+                JS_CGETSET_DEF("type", ScClimate::type_get, nullptr),
+                JS_CGETSET_DEF("current", ScClimate::current_get, nullptr),
+                JS_CGETSET_DEF("future", ScClimate::future_get, nullptr),
+            };
+
+            return MakeWithOpaque(ctx, funcs, nullptr);
+        }
+
+        void Register(JSContext* ctx)
+        {
+            RegisterBaseStr(ctx, "Climate");
         }
     };
 

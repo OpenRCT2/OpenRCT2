@@ -765,7 +765,7 @@ namespace OpenRCT2
             {
 #ifdef ENABLE_SCRIPTING
                 auto& scriptEngine = GetContext()->GetScriptEngine();
-                scriptEngine.SetParkStorageFromJSON(gameState.pluginStorage);
+                scriptEngine.SetParkStorageFromJSON(gameState.pluginStorage, gameState.scenarioFileName);
 #endif
             }
         }

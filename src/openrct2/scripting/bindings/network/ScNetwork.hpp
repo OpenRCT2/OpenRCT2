@@ -11,7 +11,7 @@
 
 #ifdef ENABLE_SCRIPTING
 
-    #include "../../Duktape.hpp"
+    #include "../../ScriptEngine.h"
     #include "ScPlayer.hpp"
     #include "ScPlayerGroup.hpp"
     #include "ScSocket.hpp"
@@ -20,57 +20,48 @@
 
 namespace OpenRCT2::Scripting
 {
-    class ScNetwork
+    class ScNetwork final : public ScBase
     {
-    private:
-    #ifdef __clang__
-        [[maybe_unused]]
-    #endif
-        duk_context* _context;
+        static JSValue mode_get(JSContext* ctx, JSValue thisVal);
+        static JSValue numPlayers_get(JSContext* ctx, JSValue thisVal);
+        static JSValue numGroups_get(JSContext* ctx, JSValue thisVal);
+        static JSValue defaultGroup_get(JSContext* ctx, JSValue thisVal);
+        static JSValue defaultGroup_set(JSContext* ctx, JSValue thisVal, JSValue value);
+
+        static JSValue groups_get(JSContext* ctx, JSValue thisVal);
+
+        static JSValue players_get(JSContext* ctx, JSValue thisVal);
+
+        static JSValue currentPlayer_get(JSContext* ctx, JSValue thisVal);
+
+        static JSValue getPlayer(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
+
+        static JSValue stats_get(JSContext* ctx, JSValue thisVal);
+
+        static JSValue getGroup(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
+
+        static JSValue addGroup(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
+
+        static JSValue removeGroup(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
+
+        static JSValue kickPlayer(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
+
+        static JSValue sendMessage(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
+
+        static JSValue createListener(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
+
+        static JSValue createSocket(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
 
     public:
-        ScNetwork(duk_context* ctx);
+        JSValue New(JSContext* ctx);
 
-        std::string mode_get() const;
-        int32_t numPlayers_get() const;
-        int32_t numGroups_get() const;
-        int32_t defaultGroup_get() const;
-        void defaultGroup_set(int32_t value);
-
-        std::vector<std::shared_ptr<ScPlayerGroup>> groups_get() const;
-
-        std::vector<std::shared_ptr<ScPlayer>> players_get() const;
-
-        std::shared_ptr<ScPlayer> currentPlayer_get() const;
-
-        std::shared_ptr<ScPlayer> getPlayer(int32_t id) const;
-
-        DukValue stats_get() const;
-
-        std::shared_ptr<ScPlayerGroup> getGroup(int32_t id) const;
-
-        void addGroup();
-
-        void removeGroup(int32_t id);
-
-        void kickPlayer(int32_t id);
-
-        void sendMessage(std::string message, DukValue players);
-
-    #ifndef DISABLE_NETWORK
-        std::shared_ptr<ScListener> createListener();
-    #else
-        void createListener();
-    #endif
-
-    #ifndef DISABLE_NETWORK
-        std::shared_ptr<ScSocket> createSocket();
-    #else
-        void createSocket();
-    #endif
-
-        static void Register(duk_context* ctx);
+        void Register(JSContext* ctx)
+        {
+            RegisterBaseStr(ctx, "Network");
+        }
     };
+
+    extern ScNetwork gScNetwork;
 } // namespace OpenRCT2::Scripting
 
 #endif

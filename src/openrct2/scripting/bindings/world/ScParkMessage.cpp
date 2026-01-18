@@ -19,161 +19,198 @@
     #include "../../../management/NewsItem.h"
     #include "../../../windows/Intent.h"
     #include "../../../world/Park.h"
-    #include "../../Duktape.hpp"
     #include "../../ScriptEngine.h"
 
 namespace OpenRCT2::Scripting
 {
-    ScParkMessage::ScParkMessage(size_t index)
-        : _index(index)
+    using OpaqueParkMessageData = struct
     {
+        size_t index;
+    };
+
+    News::Item* ScParkMessage::GetMessage(JSValue thisVal)
+    {
+        auto index = gScParkMessage.GetOpaque<OpaqueParkMessageData*>(thisVal)->index;
+        return &getGameState().newsItems[index];
     }
 
-    void ScParkMessage::Register(duk_context* ctx)
+    JSValue ScParkMessage::isArchived_get(JSContext* ctx, JSValue thisVal)
     {
-        dukglue_register_property(ctx, &ScParkMessage::isArchived_get, nullptr, "isArchived");
-        dukglue_register_property(ctx, &ScParkMessage::month_get, &ScParkMessage::month_set, "month");
-        dukglue_register_property(ctx, &ScParkMessage::day_get, &ScParkMessage::day_set, "day");
-        dukglue_register_property(ctx, &ScParkMessage::tickCount_get, &ScParkMessage::tickCount_set, "tickCount");
-        dukglue_register_property(ctx, &ScParkMessage::type_get, &ScParkMessage::type_set, "type");
-        dukglue_register_property(ctx, &ScParkMessage::subject_get, &ScParkMessage::subject_set, "subject");
-        dukglue_register_property(ctx, &ScParkMessage::text_get, &ScParkMessage::text_set, "text");
-        dukglue_register_method(ctx, &ScParkMessage::remove, "remove");
+        auto index = gScParkMessage.GetOpaque<OpaqueParkMessageData*>(thisVal)->index;
+        return JS_NewBool(ctx, index >= News::ItemHistoryStart);
     }
 
-    News::Item* ScParkMessage::GetMessage() const
+    JSValue ScParkMessage::month_get(JSContext* ctx, JSValue thisVal)
     {
-        return &getGameState().newsItems[_index];
-    }
-
-    bool ScParkMessage::isArchived_get() const
-    {
-        return _index >= News::ItemHistoryStart;
-    }
-
-    uint16_t ScParkMessage::month_get() const
-    {
-        auto msg = GetMessage();
+        auto msg = GetMessage(thisVal);
         if (msg != nullptr)
         {
-            return msg->monthYear;
+            return JS_NewUint32(ctx, msg->monthYear);
         }
-        return 0;
+        return JS_NewUint32(ctx, 0);
     }
 
-    void ScParkMessage::month_set(uint16_t value)
+    JSValue ScParkMessage::month_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto msg = GetMessage();
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+
+        auto msg = GetMessage(thisVal);
         if (msg != nullptr)
         {
-            msg->monthYear = value;
+            msg->monthYear = static_cast<uint16_t>(value);
         }
+        return JS_UNDEFINED;
     }
 
-    uint8_t ScParkMessage::day_get() const
+    JSValue ScParkMessage::day_get(JSContext* ctx, JSValue thisVal)
     {
-        auto msg = GetMessage();
+        auto msg = GetMessage(thisVal);
         if (msg != nullptr)
         {
-            return msg->day;
+            return JS_NewUint32(ctx, msg->day);
         }
-        return 0;
+        return JS_NewUint32(ctx, 0);
     }
 
-    void ScParkMessage::day_set(uint8_t value)
+    JSValue ScParkMessage::day_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto msg = GetMessage();
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+
+        auto msg = GetMessage(thisVal);
         if (msg != nullptr)
         {
-            msg->day = value;
+            msg->day = static_cast<uint8_t>(value);
         }
+        return JS_UNDEFINED;
     }
 
-    uint16_t ScParkMessage::tickCount_get() const
+    JSValue ScParkMessage::tickCount_get(JSContext* ctx, JSValue thisVal)
     {
-        auto msg = GetMessage();
+        auto msg = GetMessage(thisVal);
         if (msg != nullptr)
         {
-            return msg->ticks;
+            return JS_NewUint32(ctx, msg->ticks);
         }
-        return 0;
+        return JS_NewUint32(ctx, 0);
     }
 
-    void ScParkMessage::tickCount_set(uint16_t value)
+    JSValue ScParkMessage::tickCount_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto msg = GetMessage();
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+
+        auto msg = GetMessage(thisVal);
         if (msg != nullptr)
         {
-            msg->ticks = value;
+            msg->ticks = static_cast<uint16_t>(value);
         }
+        return JS_UNDEFINED;
     }
 
-    std::string ScParkMessage::type_get() const
+    JSValue ScParkMessage::type_get(JSContext* ctx, JSValue thisVal)
     {
-        auto msg = GetMessage();
+        auto msg = GetMessage(thisVal);
         if (msg != nullptr)
         {
-            return GetParkMessageType(msg->type);
+            return JSFromStdString(ctx, GetParkMessageType(msg->type));
         }
-        return {};
+        return JSFromStdString(ctx, {});
     }
 
-    void ScParkMessage::type_set(const std::string& value)
+    JSValue ScParkMessage::type_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto msg = GetMessage();
+        JS_UNPACK_STR(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+
+        auto msg = GetMessage(thisVal);
         if (msg != nullptr)
         {
             msg->type = GetParkMessageType(value);
         }
+        return JS_UNDEFINED;
     }
 
-    uint32_t ScParkMessage::subject_get() const
+    JSValue ScParkMessage::subject_get(JSContext* ctx, JSValue thisVal)
     {
-        auto msg = GetMessage();
+        auto msg = GetMessage(thisVal);
         if (msg != nullptr)
         {
-            return msg->assoc;
+            return JS_NewUint32(ctx, msg->assoc);
         }
-        return 0;
+        return JS_NewUint32(ctx, 0);
     }
 
-    void ScParkMessage::subject_set(uint32_t value)
+    JSValue ScParkMessage::subject_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto msg = GetMessage();
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+
+        auto msg = GetMessage(thisVal);
         if (msg != nullptr)
         {
             msg->assoc = value;
         }
+        return JS_UNDEFINED;
     }
 
-    std::string ScParkMessage::text_get() const
+    JSValue ScParkMessage::text_get(JSContext* ctx, JSValue thisVal)
     {
-        auto msg = GetMessage();
+        auto msg = GetMessage(thisVal);
         if (msg != nullptr)
         {
-            return msg->text;
+            return JSFromStdString(ctx, msg->text);
         }
-        return {};
+        return JSFromStdString(ctx, {});
     }
 
-    void ScParkMessage::text_set(const std::string& value)
+    JSValue ScParkMessage::text_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto msg = GetMessage();
+        JS_UNPACK_STR(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+
+        auto msg = GetMessage(thisVal);
         if (msg != nullptr)
         {
             msg->text = value;
         }
+        return JS_UNDEFINED;
     }
 
-    void ScParkMessage::remove()
+    JSValue ScParkMessage::remove(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
     {
-        News::RemoveItem(static_cast<int32_t>(_index));
+        auto index = gScParkMessage.GetOpaque<OpaqueParkMessageData*>(thisVal)->index;
+        News::RemoveItem(static_cast<int32_t>(index));
+        return JS_UNDEFINED;
+    }
+
+    JSValue ScParkMessage::New(JSContext* ctx, size_t index)
+    {
+        static constexpr JSCFunctionListEntry funcs[] = {
+            JS_CGETSET_DEF("isArchived", ScParkMessage::isArchived_get, nullptr),
+            JS_CGETSET_DEF("month", ScParkMessage::month_get, ScParkMessage::month_set),
+            JS_CGETSET_DEF("day", ScParkMessage::day_get, ScParkMessage::day_set),
+            JS_CGETSET_DEF("tickCount", ScParkMessage::tickCount_get, ScParkMessage::tickCount_set),
+            JS_CGETSET_DEF("type", ScParkMessage::type_get, ScParkMessage::type_set),
+            JS_CGETSET_DEF("subject", ScParkMessage::subject_get, ScParkMessage::subject_set),
+            JS_CGETSET_DEF("text", ScParkMessage::text_get, ScParkMessage::text_set),
+            JS_CFUNC_DEF("remove", 0, ScParkMessage::remove),
+        };
+
+        return MakeWithOpaque(ctx, funcs, new OpaqueParkMessageData{ index });
+    }
+
+    void ScParkMessage::Register(JSContext* ctx)
+    {
+        RegisterBaseStr(ctx, "ParkMessage");
+    }
+
+    void ScParkMessage::Finalize(JSRuntime*, JSValue thisVal)
+    {
+        auto* data = gScParkMessage.GetOpaque<OpaqueParkMessageData*>(thisVal);
+        if (data)
+            delete data;
     }
 
 } // namespace OpenRCT2::Scripting

@@ -156,14 +156,15 @@ namespace OpenRCT2::Park
         auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
         if (hookEngine.HasSubscriptions(HookType::parkCalculateGuestCap))
         {
-            auto ctx = GetContext()->GetScriptEngine().GetContext();
-            auto obj = DukObject(ctx);
-            obj.Set("suggestedGuestMaximum", suggestedMaxGuests);
-            auto e = obj.Take();
-            hookEngine.Call(HookType::parkCalculateGuestCap, e, true);
+            JSContext* ctx = GetContext()->GetScriptEngine().GetContext();
+            JSValue obj = JS_NewObject(ctx);
+            JS_SetPropertyStr(ctx, obj, "suggestedGuestMaximum", JS_NewInt64(ctx, suggestedMaxGuests));
+            hookEngine.Call(HookType::parkCalculateGuestCap, obj, true, true);
 
-            suggestedMaxGuests = AsOrDefault(e["suggestedGuestMaximum"], static_cast<int32_t>(suggestedMaxGuests));
+            suggestedMaxGuests = AsOrDefault(ctx, obj, "suggestedGuestMaximum", static_cast<int32_t>(suggestedMaxGuests));
             suggestedMaxGuests = std::clamp<uint16_t>(suggestedMaxGuests, 0, UINT16_MAX);
+
+            JS_FreeValue(ctx, obj);
         }
 #endif
         return suggestedMaxGuests;

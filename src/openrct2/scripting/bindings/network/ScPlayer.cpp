@@ -19,103 +19,128 @@
 
 namespace OpenRCT2::Scripting
 {
-    ScPlayer::ScPlayer(int32_t id)
-        : _id(id)
+    using OpaquePlayerData = struct
     {
+        int32_t id;
+    };
+
+    int32_t ScPlayer::GetPlayerId(JSValue thisVal)
+    {
+        OpaquePlayerData* data = gScPlayer.GetOpaque<OpaquePlayerData*>(thisVal);
+        if (data)
+            return data->id;
+        return -1;
     }
 
-    int32_t ScPlayer::id_get() const
+    JSValue ScPlayer::id_get(JSContext* ctx, JSValue thisVal)
     {
-        return _id;
+        return JS_NewInt32(ctx, GetPlayerId(thisVal));
     }
 
-    std::string ScPlayer::name_get() const
+    JSValue ScPlayer::name_get(JSContext* ctx, JSValue thisVal)
     {
     #ifndef DISABLE_NETWORK
-        auto index = Network::GetPlayerIndex(_id);
+        auto index = Network::GetPlayerIndex(GetPlayerId(thisVal));
         if (index == -1)
-            return {};
-        return Network::GetPlayerName(index);
+            return JSFromStdString(ctx, {});
+        return JSFromStdString(ctx, Network::GetPlayerName(index));
     #else
-        return {};
+        return JSFromStdString(ctx, {});
     #endif
     }
 
-    int32_t ScPlayer::group_get() const
+    JSValue ScPlayer::group_get(JSContext* ctx, JSValue thisVal)
     {
     #ifndef DISABLE_NETWORK
-        auto index = Network::GetPlayerIndex(_id);
+        auto index = Network::GetPlayerIndex(GetPlayerId(thisVal));
         if (index == -1)
-            return {};
-        return Network::GetPlayerGroup(index);
+            return JS_NewInt32(ctx, {});
+        return JS_NewInt32(ctx, Network::GetPlayerGroup(index));
     #else
-        return 0;
+        return JS_NewInt32(ctx, 0);
     #endif
     }
-    void ScPlayer::group_set(int32_t value)
+    JSValue ScPlayer::group_set(JSContext* ctx, JSValue thisVal, JSValue value)
     {
     #ifndef DISABLE_NETWORK
-        auto playerSetGroupAction = GameActions::PlayerSetGroupAction(_id, value);
+        JS_UNPACK_INT32(valueInt, ctx, value)
+        auto playerSetGroupAction = GameActions::PlayerSetGroupAction(GetPlayerId(thisVal), valueInt);
         GameActions::Execute(&playerSetGroupAction, getGameState());
     #endif
+        return JS_UNDEFINED;
     }
 
-    int32_t ScPlayer::ping_get() const
+    JSValue ScPlayer::ping_get(JSContext* ctx, JSValue thisVal)
     {
     #ifndef DISABLE_NETWORK
-        auto index = Network::GetPlayerIndex(_id);
+        auto index = Network::GetPlayerIndex(GetPlayerId(thisVal));
         if (index == -1)
-            return {};
-        return Network::GetPlayerPing(index);
+            return JS_NewInt32(ctx, {});
+        return JS_NewInt32(ctx, Network::GetPlayerPing(index));
     #else
-        return 0;
+        return JS_NewInt32(ctx, 0);
     #endif
     }
 
-    int32_t ScPlayer::commandsRan_get() const
+    JSValue ScPlayer::commandsRan_get(JSContext* ctx, JSValue thisVal)
     {
     #ifndef DISABLE_NETWORK
-        auto index = Network::GetPlayerIndex(_id);
+        auto index = Network::GetPlayerIndex(GetPlayerId(thisVal));
         if (index == -1)
-            return {};
-        return Network::GetPlayerCommandsRan(index);
+            return JS_NewInt32(ctx, {});
+        return JS_NewInt32(ctx, Network::GetPlayerCommandsRan(index));
     #else
-        return 0;
+        return JS_NewInt32(ctx, 0);
     #endif
     }
 
-    int32_t ScPlayer::moneySpent_get() const
+    JSValue ScPlayer::moneySpent_get(JSContext* ctx, JSValue thisVal)
     {
     #ifndef DISABLE_NETWORK
-        auto index = Network::GetPlayerIndex(_id);
+        auto index = Network::GetPlayerIndex(GetPlayerId(thisVal));
         if (index == -1)
-            return {};
-        return Network::GetPlayerMoneySpent(index);
+            return JS_NewInt64(ctx, {});
+        return JS_NewInt64(ctx, Network::GetPlayerMoneySpent(index));
     #else
-        return 0;
+        return JS_NewInt64(ctx, 0);
     #endif
     }
 
-    std::string ScPlayer::ipAddress_get() const
+    JSValue ScPlayer::ipAddress_get(JSContext* ctx, JSValue thisVal)
     {
-        return Network::GetPlayerIPAddress(_id);
+        return JSFromStdString(ctx, Network::GetPlayerIPAddress(GetPlayerId(thisVal)));
     }
 
-    std::string ScPlayer::publicKeyHash_get() const
+    JSValue ScPlayer::publicKeyHash_get(JSContext* ctx, JSValue thisVal)
     {
-        return Network::GetPlayerPublicKeyHash(_id);
+        return JSFromStdString(ctx, Network::GetPlayerPublicKeyHash(GetPlayerId(thisVal)));
     }
 
-    void ScPlayer::Register(duk_context* ctx)
+    JSValue ScPlayer::New(JSContext* ctx, int32_t id)
     {
-        dukglue_register_property(ctx, &ScPlayer::id_get, nullptr, "id");
-        dukglue_register_property(ctx, &ScPlayer::name_get, nullptr, "name");
-        dukglue_register_property(ctx, &ScPlayer::group_get, &ScPlayer::group_set, "group");
-        dukglue_register_property(ctx, &ScPlayer::ping_get, nullptr, "ping");
-        dukglue_register_property(ctx, &ScPlayer::commandsRan_get, nullptr, "commandsRan");
-        dukglue_register_property(ctx, &ScPlayer::moneySpent_get, nullptr, "moneySpent");
-        dukglue_register_property(ctx, &ScPlayer::ipAddress_get, nullptr, "ipAddress");
-        dukglue_register_property(ctx, &ScPlayer::publicKeyHash_get, nullptr, "publicKeyHash");
+        static constexpr JSCFunctionListEntry funcs[] = {
+            JS_CGETSET_DEF("id", ScPlayer::id_get, nullptr),
+            JS_CGETSET_DEF("name", ScPlayer::name_get, nullptr),
+            JS_CGETSET_DEF("group", ScPlayer::group_get, ScPlayer::group_set),
+            JS_CGETSET_DEF("ping", ScPlayer::ping_get, nullptr),
+            JS_CGETSET_DEF("commandsRan", ScPlayer::commandsRan_get, nullptr),
+            JS_CGETSET_DEF("moneySpent", ScPlayer::moneySpent_get, nullptr),
+            JS_CGETSET_DEF("ipAddress", ScPlayer::ipAddress_get, nullptr),
+            JS_CGETSET_DEF("publicKeyHash", ScPlayer::publicKeyHash_get, nullptr),
+        };
+        return MakeWithOpaque(ctx, funcs, new OpaquePlayerData{ id });
+    }
+
+    void ScPlayer::Register(JSContext* ctx)
+    {
+        RegisterBaseStr(ctx, "Player", Finalize);
+    }
+
+    void ScPlayer::Finalize(JSRuntime* rt, JSValue thisVal)
+    {
+        OpaquePlayerData* data = gScPlayer.GetOpaque<OpaquePlayerData*>(thisVal);
+        if (data)
+            delete data;
     }
 
 } // namespace OpenRCT2::Scripting

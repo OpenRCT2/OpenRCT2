@@ -14,11 +14,13 @@
     #include "../../../Context.h"
     #include "../../../config/Config.h"
     #include "../../../localisation/LocalisationService.h"
-    #include "../../Duktape.hpp"
     #include "../../ScriptEngine.h"
 
 namespace OpenRCT2::Scripting
 {
+    class ScConfiguration;
+    extern ScConfiguration gScConfiguration;
+
     enum class ScConfigurationKind
     {
         User,
@@ -26,36 +28,53 @@ namespace OpenRCT2::Scripting
         Park
     };
 
-    class ScConfiguration
+    class ScConfiguration final : public ScBase
     {
     private:
-        ScConfigurationKind _kind;
-        DukValue _backingObject;
-
-    public:
-        // context.configuration
-        ScConfiguration()
-            : _kind(ScConfigurationKind::User)
+        struct ConfigurationData
         {
+            ScConfigurationKind _kind;
+            std::string _pluginName;
+        };
+
+        static JSValue GetParkStorageForPlugin(JSContext* ctx, const std::string& pluginName)
+        {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
+            JSValue parkStore = scriptEngine.GetParkStorage();
+            JSValue pluginStore = JS_GetPropertyStr(ctx, parkStore, pluginName.c_str());
+
+            // Create if it doesn't exist
+            if (!JS_IsObject(pluginStore))
+            {
+                JS_FreeValue(ctx, pluginStore);
+                pluginStore = JS_NewObject(ctx);
+                JS_SetPropertyStr(ctx, parkStore, pluginName.c_str(), JS_DupValue(ctx, pluginStore));
+            }
+
+            return pluginStore;
         }
 
-        // context.sharedStorage / context.getParkStorage
-        ScConfiguration(ScConfigurationKind kind, const DukValue& backingObject)
-            : _kind(kind)
-            , _backingObject(backingObject)
+        static JSValue GetStoreForConfigType(JSContext* ctx, const ConfigurationData* data)
         {
+            switch (data->_kind)
+            {
+                case ScConfigurationKind::Park:
+                {
+                    return GetParkStorageForPlugin(ctx, data->_pluginName);
+                }
+                case ScConfigurationKind::Shared:
+                {
+                    auto& scriptEngine = GetContext()->GetScriptEngine();
+                    return JS_DupValue(ctx, scriptEngine.GetSharedStorage());
+                }
+                case ScConfigurationKind::User:
+                default:
+                    Guard::Fail("Invalid ScConfigurationKind");
+                    return JS_UNDEFINED;
+            }
         }
 
-        static void Register(duk_context* ctx)
-        {
-            dukglue_register_method(ctx, &ScConfiguration::getAll, "getAll");
-            dukglue_register_method(ctx, &ScConfiguration::get, "get");
-            dukglue_register_method(ctx, &ScConfiguration::set, "set");
-            dukglue_register_method(ctx, &ScConfiguration::has, "has");
-        }
-
-    private:
-        std::pair<std::string_view, std::string_view> GetNextNamespace(std::string_view input) const
+        static std::pair<std::string_view, std::string_view> GetNextNamespace(std::string_view input)
         {
             auto pos = input.find('.');
             if (pos == std::string_view::npos)
@@ -66,16 +85,16 @@ namespace OpenRCT2::Scripting
             return std::make_pair(input.substr(0, pos), input.substr(pos + 1));
         }
 
-        std::pair<std::string_view, std::string_view> GetNamespaceAndKey(std::string_view input) const
+        static std::pair<std::string_view, std::string_view> GetNamespaceAndKey(std::string_view input)
         {
             auto pos = input.find_last_of('.');
             return pos == std::string_view::npos ? std::make_pair(std::string_view(), input)
                                                  : std::make_pair(input.substr(0, pos), input.substr(pos + 1));
         }
 
-        std::optional<DukValue> GetNamespaceObject(std::string_view ns) const
+        static JSValue GetNamespaceObject(JSContext* ctx, const ConfigurationData* data, std::string_view ns)
         {
-            auto store = _backingObject;
+            auto store = GetStoreForConfigType(ctx, data);
             if (!ns.empty())
             {
                 auto k = ns;
@@ -83,17 +102,19 @@ namespace OpenRCT2::Scripting
                 do
                 {
                     auto [next, remainder] = GetNextNamespace(k);
-                    store = store[next];
+                    auto oldStore = store;
+                    store = JS_GetPropertyStr(ctx, store, std::string(next).c_str());
+                    JS_FreeValue(ctx, oldStore);
                     k = remainder;
-                    end = store.type() == DukValue::Type::UNDEFINED || remainder.empty();
+                    end = JS_IsUndefined(store) || remainder.empty();
                 } while (!end);
             }
-            return store.type() == DukValue::OBJECT ? std::make_optional(store) : std::nullopt;
+            return store;
         }
 
-        DukValue GetOrCreateNamespaceObject(duk_context* ctx, std::string_view ns) const
+        static JSValue GetOrCreateNamespaceObject(JSContext* ctx, const ConfigurationData* data, std::string_view ns)
         {
-            auto store = _backingObject;
+            auto store = GetStoreForConfigType(ctx, data);
             if (!ns.empty())
             {
                 std::string_view k = ns;
@@ -101,19 +122,21 @@ namespace OpenRCT2::Scripting
                 do
                 {
                     auto [next, remainder] = GetNextNamespace(k);
-                    auto subStore = store[next];
+                    std::string nextStr(next);
                     k = remainder;
-                    if (subStore.type() == DukValue::Type::UNDEFINED)
+
+                    auto subStore = JS_GetPropertyStr(ctx, store, nextStr.c_str());
+                    auto oldStore = store;
+                    if (JS_IsUndefined(subStore))
                     {
-                        store.push();
-                        duk_push_object(ctx);
-                        store = DukValue::copy_from_stack(ctx);
-                        duk_put_prop_lstring(ctx, -2, next.data(), next.size());
-                        duk_pop(ctx);
+                        store = JS_NewObject(ctx);
+                        JS_SetPropertyStr(ctx, oldStore, nextStr.c_str(), JS_DupValue(ctx, store));
+                        JS_FreeValue(ctx, oldStore);
                     }
                     else
                     {
-                        store = std::move(subStore);
+                        store = subStore;
+                        JS_FreeValue(ctx, oldStore);
                     }
                     end = remainder.empty();
                 } while (!end);
@@ -121,14 +144,14 @@ namespace OpenRCT2::Scripting
             return store;
         }
 
-        bool IsValidNamespace(std::string_view ns) const
+        static bool IsValidNamespace(std::string_view ns, ScConfigurationKind kind)
         {
             if (!ns.empty() && (ns[0] == '.' || ns[ns.size() - 1] == '.'))
             {
                 return false;
             }
 
-            if (_kind != ScConfigurationKind::Park)
+            if (kind != ScConfigurationKind::Park)
             {
                 if (ns.empty())
                 {
@@ -146,154 +169,211 @@ namespace OpenRCT2::Scripting
             return true;
         }
 
-        bool IsValidKey(std::string_view key) const
+        static bool IsValidKey(std::string_view key)
         {
             return !key.empty() && key.find('.') == std::string_view::npos;
         }
 
-        DukValue getAll(const DukValue& dukNamespace) const
+        static JSValue getAll(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
-            DukValue result;
-            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            JSValue jsNamespace = argv[0];
+            ConfigurationData* data = gScConfiguration.GetOpaque<ConfigurationData*>(thisVal);
 
             std::string ns = "";
-            if (dukNamespace.type() == DukValue::Type::STRING)
+            if (JS_IsString(jsNamespace))
             {
-                ns = dukNamespace.as_string();
+                ns = JSToStdString(ctx, jsNamespace);
             }
-            else if (dukNamespace.type() != DukValue::Type::UNDEFINED)
+            else if (!JS_IsUndefined(jsNamespace))
             {
-                duk_error(ctx, DUK_ERR_ERROR, "Namespace was invalid.");
+                JS_ThrowPlainError(ctx, "Namespace was invalid.");
+                return JS_EXCEPTION;
             }
 
-            if (IsValidNamespace(ns))
+            if (IsValidNamespace(ns, data->_kind))
             {
-                if (_kind == ScConfigurationKind::User)
+                if (data->_kind == ScConfigurationKind::User)
                 {
-                    DukObject obj(ctx);
+                    JSValue obj = JS_NewObject(ctx);
                     if (ns == "general")
                     {
-                        obj.Set("general.language", Config::Get().general.language);
-                        obj.Set("general.showFps", Config::Get().general.showFPS);
+                        auto& localisationService = GetContext()->GetLocalisationService();
+                        auto locale = localisationService.GetCurrentLanguageLocale();
+                        JS_SetPropertyStr(ctx, obj, "general.language", JSFromStdString(ctx, locale));
+                        JS_SetPropertyStr(ctx, obj, "general.showFps", JS_NewBool(ctx, Config::Get().general.showFPS));
                     }
-                    result = obj.Take();
+                    return obj;
                 }
                 else
                 {
-                    auto obj = GetNamespaceObject(ns);
-                    result = obj ? *obj : DukObject(ctx).Take();
+                    auto obj = GetNamespaceObject(ctx, data, ns);
+                    if (!JS_IsObject(obj))
+                    {
+                        JS_FreeValue(ctx, obj);
+                        return JS_NewObject(ctx);
+                    }
+                    return obj;
                 }
             }
             else
             {
-                duk_error(ctx, DUK_ERR_ERROR, "Namespace was invalid.");
+                JS_ThrowPlainError(ctx, "Namespace was invalid.");
+                return JS_EXCEPTION;
             }
-            return result;
         }
 
-        DukValue get(const std::string& key, const DukValue& defaultValue) const
+        static JSValue get(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
-            auto ctx = GetContext()->GetScriptEngine().GetContext();
-            if (_kind == ScConfigurationKind::User)
+            JS_UNPACK_STR(key, ctx, argv[0]);
+            JSValue defaultValue = argv[1];
+            ConfigurationData* data = gScConfiguration.GetOpaque<ConfigurationData*>(thisVal);
+
+            if (data->_kind == ScConfigurationKind::User)
             {
                 if (key == "general.language")
                 {
                     auto& localisationService = GetContext()->GetLocalisationService();
                     auto locale = localisationService.GetCurrentLanguageLocale();
-                    duk_push_lstring(ctx, locale.data(), locale.size());
-                    return DukValue::take_from_stack(ctx);
+                    return JSFromStdString(ctx, locale);
                 }
                 if (key == "general.showFps")
                 {
-                    duk_push_boolean(ctx, Config::Get().general.showFPS);
-                    return DukValue::take_from_stack(ctx);
+                    return JS_NewBool(ctx, Config::Get().general.showFPS);
                 }
             }
             else
             {
                 auto [ns, n] = GetNamespaceAndKey(key);
-                if (!IsValidNamespace(ns))
+                if (!IsValidNamespace(ns, data->_kind))
                 {
-                    duk_error(ctx, DUK_ERR_ERROR, "Namespace was invalid.");
+                    JS_ThrowPlainError(ctx, "Namespace was invalid.");
+                    return JS_EXCEPTION;
                 }
                 else if (!IsValidKey(n))
                 {
-                    duk_error(ctx, DUK_ERR_ERROR, "Key was invalid.");
+                    JS_ThrowPlainError(ctx, "Key was invalid.");
+                    return JS_EXCEPTION;
                 }
                 else
                 {
-                    auto obj = GetNamespaceObject(ns);
-                    if (obj)
+                    auto obj = GetNamespaceObject(ctx, data, ns);
+                    if (JS_IsObject(obj))
                     {
-                        auto val = (*obj)[n];
-                        if (val.type() != DukValue::Type::UNDEFINED)
+                        auto val = JS_GetPropertyStr(ctx, obj, std::string(n).c_str());
+                        JS_FreeValue(ctx, obj);
+                        if (!JS_IsUndefined(val))
                         {
                             return val;
                         }
                     }
+                    else
+                    {
+                        JS_FreeValue(ctx, obj);
+                    }
                 }
             }
-            return defaultValue;
+            return JS_DupValue(ctx, defaultValue);
         }
 
-        void set(const std::string& key, const DukValue& value) const
+        static JSValue set(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            auto ctx = scriptEngine.GetContext();
-            if (_kind == ScConfigurationKind::User)
+            JS_UNPACK_STR(key, ctx, argv[0]);
+            JSValue value = argv[1];
+            ConfigurationData* data = gScConfiguration.GetOpaque<ConfigurationData*>(thisVal);
+
+            if (data->_kind == ScConfigurationKind::User)
             {
-                try
+                if (key == "general.showFps")
                 {
-                    if (key == "general.showFps")
+                    if (JS_IsBool(value))
                     {
-                        Config::Get().general.showFPS = value.as_bool();
+                        Config::Get().general.showFPS = JS_ToBool(ctx, value) > 0;
+                        return JS_UNDEFINED;
                     }
                     else
                     {
-                        duk_error(ctx, DUK_ERR_ERROR, "Property does not exist.");
+                        JS_ThrowPlainError(ctx, "Invalid value for this property.");
+                        return JS_EXCEPTION;
                     }
                 }
-                catch (const DukException&)
+                else
                 {
-                    duk_error(ctx, DUK_ERR_ERROR, "Invalid value for this property.");
+                    JS_ThrowPlainError(ctx, "Property does not exist.");
+                    return JS_EXCEPTION;
                 }
             }
             else
             {
                 auto [ns, n] = GetNamespaceAndKey(key);
-                if (!IsValidNamespace(ns))
+                if (!IsValidNamespace(ns, data->_kind))
                 {
-                    duk_error(ctx, DUK_ERR_ERROR, "Namespace was invalid.");
+                    JS_ThrowPlainError(ctx, "Namespace was invalid.");
+                    return JS_EXCEPTION;
                 }
                 else if (!IsValidKey(n))
                 {
-                    duk_error(ctx, DUK_ERR_ERROR, "Key was invalid.");
+                    JS_ThrowPlainError(ctx, "Key was invalid.");
+                    return JS_EXCEPTION;
                 }
                 else
                 {
-                    auto obj = GetOrCreateNamespaceObject(ctx, ns);
-                    obj.push();
-                    if (value.type() == DukValue::Type::UNDEFINED)
-                    {
-                        duk_del_prop_lstring(ctx, -1, n.data(), n.size());
-                    }
-                    else
-                    {
-                        value.push();
-                        duk_put_prop_lstring(ctx, -2, n.data(), n.size());
-                    }
-                    duk_pop(ctx);
+                    auto obj = GetOrCreateNamespaceObject(ctx, data, ns);
+                    JS_SetPropertyStr(ctx, obj, std::string(n).c_str(), JS_DupValue(ctx, value));
+                    JS_FreeValue(ctx, obj);
 
+                    auto& scriptEngine = GetContext()->GetScriptEngine();
                     scriptEngine.SaveSharedStorage();
+                    return JS_UNDEFINED;
                 }
             }
         }
 
-        bool has(const std::string& key) const
+        static JSValue has(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
-            auto val = get(key, DukValue());
-            return val.type() != DukValue::Type::UNDEFINED;
+            std::array newArgs = { argv[0], JS_UNDEFINED };
+            auto val = get(ctx, thisVal, 2, newArgs.data());
+            if (JS_IsException(val))
+            {
+                return val;
+            }
+            bool retval = !JS_IsUndefined(val);
+            JS_FreeValue(ctx, val);
+            return JS_NewBool(ctx, retval);
         }
+
+        static constexpr JSCFunctionListEntry funcs[] = {
+            JS_CFUNC_DEF("getAll", 1, ScConfiguration::getAll),
+            JS_CFUNC_DEF("get", 2, ScConfiguration::get),
+            JS_CFUNC_DEF("set", 2, ScConfiguration::set),
+            JS_CFUNC_DEF("has", 1, ScConfiguration::has),
+        };
+
+    public:
+        // context.configuration
+        JSValue New(JSContext* ctx)
+        {
+            return MakeWithOpaque(ctx, funcs, new ConfigurationData{ ScConfigurationKind::User, {} });
+        }
+
+        // context.sharedStorage / context.getParkStorage
+        JSValue New(JSContext* ctx, ScConfigurationKind kind, std::string_view pluginName = {})
+        {
+            return MakeWithOpaque(ctx, funcs, new ConfigurationData{ kind, std::string(pluginName) });
+        }
+
+        void Register(JSContext* ctx)
+        {
+            RegisterBaseStr(ctx, "Configuration", Finalize);
+        }
+
+        static void Finalize(JSRuntime* rt, JSValue thisVal)
+        {
+            ConfigurationData* data = gScConfiguration.GetOpaque<ConfigurationData*>(thisVal);
+            if (data)
+                delete data;
+        }
+
+    private:
     };
 } // namespace OpenRCT2::Scripting
 

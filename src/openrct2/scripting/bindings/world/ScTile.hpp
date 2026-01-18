@@ -11,7 +11,6 @@
 
 #ifdef ENABLE_SCRIPTING
 
-    #include "../../Duktape.hpp"
     #include "ScTileElement.hpp"
 
     #include <cstdio>
@@ -22,39 +21,39 @@
 
 namespace OpenRCT2::Scripting
 {
-    class ScTile
+    class ScTile;
+    extern ScTile gScTile;
+
+    class ScTile : public ScBase
     {
     private:
-        CoordsXY _coords;
+        static JSValue x_get(JSContext* ctx, JSValue thisValue);
+
+        static JSValue y_get(JSContext* ctx, JSValue thisValue);
+
+        static JSValue numElements_get(JSContext* ctx, JSValue thisValue);
+
+        static JSValue elements_get(JSContext* ctx, JSValue thisValue);
+
+        static JSValue data_get(JSContext* ctx, JSValue thisValue);
+        static JSValue data_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
+
+        static JSValue getElement(JSContext* ctx, JSValue thisValue, int argc, JSValue* argv);
+        static JSValue insertElement(JSContext* ctx, JSValue thisValue, int argc, JSValue* argv);
+
+        static JSValue removeElement(JSContext* ctx, JSValue thisValue, int argc, JSValue* argv);
+
+        static CoordsXY GetCoordinates(JSValue thisValue);
+        static TileElement* GetFirstElement(JSValue thisValue);
+
+        static uint32_t GetNumElements(const TileElement* first);
 
     public:
-        ScTile(const CoordsXY& coords);
+        JSValue New(JSContext* ctx, CoordsXY& coords);
+        void Register(JSContext* ctx);
 
     private:
-        int32_t x_get() const;
-
-        int32_t y_get() const;
-
-        uint32_t numElements_get() const;
-
-        std::vector<std::shared_ptr<ScTileElement>> elements_get() const;
-
-        DukValue data_get() const;
-        void data_set(DukValue value);
-
-        std::shared_ptr<ScTileElement> getElement(uint32_t index) const;
-        std::shared_ptr<ScTileElement> insertElement(uint32_t index);
-
-        void removeElement(uint32_t index);
-
-        TileElement* GetFirstElement() const;
-
-        static size_t GetNumElements(const TileElement* first);
-
-        duk_context* GetDukContext() const;
-
-    public:
-        static void Register(duk_context* ctx);
+        static void Finalize(JSRuntime* rt, JSValue thisValue);
     };
 } // namespace OpenRCT2::Scripting
 

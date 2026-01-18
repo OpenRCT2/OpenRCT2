@@ -11,11 +11,12 @@
 
 #ifdef ENABLE_SCRIPTING
 
+    #include "../../../core/EnumMap.hpp"
     #include "ScEntity.hpp"
 
 namespace OpenRCT2::Scripting
 {
-    static const DukEnumMap<uint32_t> PeepFlagMap(
+    static const EnumMap<uint32_t> PeepFlagMap(
         {
             { "leavingPark", PEEP_FLAGS_LEAVING_PARK },
             { "slowWalk", PEEP_FLAGS_SLOW_WALK },
@@ -49,65 +50,74 @@ namespace OpenRCT2::Scripting
     class ScPeep : public ScEntity
     {
     public:
-        ScPeep(EntityId id)
-            : ScEntity(id)
+        static JSValue New(JSContext* ctx, EntityId entityId)
         {
-        }
-
-        static void Register(duk_context* ctx)
-        {
-            dukglue_set_base_class<ScEntity, ScPeep>(ctx);
-            dukglue_register_property(ctx, &ScPeep::peepType_get, nullptr, "peepType");
-            dukglue_register_property(ctx, &ScPeep::name_get, &ScPeep::name_set, "name");
-            dukglue_register_property(ctx, &ScPeep::destination_get, &ScPeep::destination_set, "destination");
-            dukglue_register_property(ctx, &ScPeep::direction_get, &ScPeep::direction_set, "direction");
-            dukglue_register_property(ctx, &ScPeep::energy_get, &ScPeep::energy_set, "energy");
-            dukglue_register_property(ctx, &ScPeep::energyTarget_get, &ScPeep::energyTarget_set, "energyTarget");
-            dukglue_register_method(ctx, &ScPeep::getFlag, "getFlag");
-            dukglue_register_method(ctx, &ScPeep::setFlag, "setFlag");
+            JSValue obj = gScEntity.New(ctx, entityId);
+            AddFuncs(ctx, obj);
+            return obj;
         }
 
     private:
-        std::string peepType_get() const
+        static void AddFuncs(JSContext* ctx, JSValue obj)
         {
-            auto peep = GetPeep();
-            if (peep != nullptr)
-            {
-                return peep->Is<Staff>() ? "staff" : "guest";
-            }
-            return {};
+            static constexpr JSCFunctionListEntry funcs[] = {
+                JS_CGETSET_DEF("peepType", &ScPeep::peepType_get, nullptr),
+                JS_CGETSET_DEF("name", &ScPeep::name_get, &ScPeep::name_set),
+                JS_CGETSET_DEF("destination", &ScPeep::destination_get, &ScPeep::destination_set),
+                JS_CGETSET_DEF("direction", &ScPeep::direction_get, &ScPeep::direction_set),
+                JS_CGETSET_DEF("energy", &ScPeep::energy_get, &ScPeep::energy_set),
+                JS_CGETSET_DEF("energyTarget", &ScPeep::energyTarget_get, &ScPeep::energyTarget_set),
+                JS_CFUNC_DEF("getFlag", 1, &ScPeep::getFlag),
+                JS_CFUNC_DEF("setFlag", 2, &ScPeep::setFlag),
+            };
+            JS_SetPropertyFunctionList(ctx, obj, funcs, std::size(funcs));
         }
 
-        std::string name_get() const
+        static JSValue peepType_get(JSContext* ctx, JSValue thisVal)
         {
-            auto peep = GetPeep();
-            return peep != nullptr ? peep->GetName() : std::string();
+            auto peep = GetPeep(thisVal);
+            if (peep != nullptr)
+            {
+                return JSFromStdString(ctx, peep->Is<Staff>() ? "staff" : "guest");
+            }
+            return JS_UNDEFINED;
         }
-        void name_set(const std::string& value)
+
+        static JSValue name_get(JSContext* ctx, JSValue thisVal)
         {
-            ThrowIfGameStateNotMutable();
-            auto peep = GetPeep();
+            auto peep = GetPeep(thisVal);
+            return JSFromStdString(ctx, peep != nullptr ? peep->GetName() : std::string());
+        }
+        static JSValue name_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
+        {
+            JS_UNPACK_STR(value, ctx, jsValue);
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+            auto peep = GetPeep(thisVal);
             if (peep != nullptr)
             {
                 peep->SetName(value);
             }
+            return JS_UNDEFINED;
         }
 
-        bool getFlag(const std::string& key) const
+        static JSValue getFlag(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
-            auto peep = GetPeep();
+            JS_UNPACK_STR(key, ctx, argv[0]);
+            auto peep = GetPeep(thisVal);
             if (peep != nullptr)
             {
                 auto mask = PeepFlagMap[key];
-                return (peep->PeepFlags & mask) != 0;
+                return JS_NewBool(ctx, (peep->PeepFlags & mask) != 0);
             }
-            return false;
+            return JS_NewBool(ctx, false);
         }
 
-        void setFlag(const std::string& key, bool value)
+        static JSValue setFlag(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
-            ThrowIfGameStateNotMutable();
-            auto peep = GetPeep();
+            JS_UNPACK_STR(key, ctx, argv[0]);
+            JS_UNPACK_BOOL(value, ctx, argv[1]);
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+            auto peep = GetPeep(thisVal);
             if (peep != nullptr)
             {
                 auto mask = PeepFlagMap[key];
@@ -117,86 +127,95 @@ namespace OpenRCT2::Scripting
                     peep->PeepFlags &= ~mask;
                 peep->Invalidate();
             }
+            return JS_UNDEFINED;
         }
 
-        DukValue destination_get() const
+        static JSValue destination_get(JSContext* ctx, JSValue thisVal)
         {
-            auto ctx = GetContext()->GetScriptEngine().GetContext();
-            auto peep = GetPeep();
+            auto peep = GetPeep(thisVal);
             if (peep != nullptr)
             {
-                return ToDuk(ctx, peep->GetDestination());
+                return ToJSValue(ctx, peep->GetDestination());
             }
-            return ToDuk(ctx, nullptr);
+            return JS_NULL;
         }
 
-        void destination_set(const DukValue& value)
+        static JSValue destination_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
         {
-            ThrowIfGameStateNotMutable();
-            auto peep = GetPeep();
+            JS_UNPACK_OBJECT(value, ctx, jsValue);
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+            auto peep = GetPeep(thisVal);
             if (peep != nullptr)
             {
-                auto pos = FromDuk<CoordsXY>(value);
+                auto pos = JSToCoordsXY(ctx, value);
                 peep->SetDestination(pos);
                 peep->Invalidate();
             }
+            return JS_UNDEFINED;
         }
 
-        uint8_t direction_get() const
+        static JSValue direction_get(JSContext* ctx, JSValue thisVal)
         {
-            auto peep = GetPeep();
-            return peep != nullptr ? peep->PeepDirection : 0;
+            auto peep = GetPeep(thisVal);
+            return JS_NewUint32(ctx, peep != nullptr ? peep->PeepDirection : 0);
         }
 
-        void direction_set(const uint8_t value)
+        static JSValue direction_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
         {
-            ThrowIfGameStateNotMutable();
-            auto peep = GetPeep();
+            JS_UNPACK_UINT32(value, ctx, jsValue);
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+            auto peep = GetPeep(thisVal);
             if (peep != nullptr && value < kNumOrthogonalDirections)
             {
                 peep->PeepDirection = value;
                 peep->Orientation = value << 3;
                 peep->Invalidate();
             }
+            return JS_UNDEFINED;
         }
 
-        uint8_t energy_get() const
+        static JSValue energy_get(JSContext* ctx, JSValue thisVal)
         {
-            auto peep = GetPeep();
-            return peep != nullptr ? peep->Energy : 0;
+            auto peep = GetPeep(thisVal);
+            return JS_NewUint32(ctx, peep != nullptr ? peep->Energy : 0);
         }
-        void energy_set(uint8_t value)
+        static JSValue energy_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
         {
-            ThrowIfGameStateNotMutable();
-            auto peep = GetPeep();
+            JS_UNPACK_UINT32(value, ctx, jsValue);
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+            auto peep = GetPeep(thisVal);
             if (peep != nullptr)
             {
-                value = std::clamp(value, kPeepMinEnergy, kPeepMaxEnergy);
+                value = std::clamp(static_cast<uint8_t>(value), kPeepMinEnergy, kPeepMaxEnergy);
                 peep->Energy = value;
                 peep->Invalidate();
             }
+            return JS_UNDEFINED;
         }
 
-        uint8_t energyTarget_get() const
+        static JSValue energyTarget_get(JSContext* ctx, JSValue thisVal)
         {
-            auto peep = GetPeep();
-            return peep != nullptr ? peep->EnergyTarget : 0;
+            auto peep = GetPeep(thisVal);
+            return JS_NewUint32(ctx, peep != nullptr ? peep->EnergyTarget : 0);
         }
-        void energyTarget_set(uint8_t value)
+        static JSValue energyTarget_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
         {
-            ThrowIfGameStateNotMutable();
-            auto peep = GetPeep();
+            JS_UNPACK_UINT32(value, ctx, jsValue);
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+            auto peep = GetPeep(thisVal);
             if (peep != nullptr)
             {
-                value = std::clamp(value, kPeepMinEnergy, kPeepMaxEnergyTarget);
-                peep->EnergyTarget = value;
+                auto target = std::clamp(static_cast<uint8_t>(value), kPeepMinEnergy, kPeepMaxEnergyTarget);
+                peep->EnergyTarget = target;
             }
+            return JS_UNDEFINED;
         }
 
     protected:
-        Peep* GetPeep() const
+        static Peep* GetPeep(JSValue thisVal)
         {
-            return getGameState().entities.GetEntity<Peep>(_id);
+            auto id = GetEntityId(thisVal);
+            return getGameState().entities.GetEntity<Peep>(id);
         }
     };
 

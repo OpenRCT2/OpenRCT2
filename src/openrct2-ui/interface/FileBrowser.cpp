@@ -41,12 +41,12 @@ extern void EmscriptenSaveGame(bool isTrackDesign, bool isAutosave, LoadSaveType
 namespace OpenRCT2::Ui::FileBrowser
 {
     static LoadSaveCallback _loadSaveCallback;
+    static bool _loadSaveCallbackIsJs = false;
 
     WindowBase* OpenPreferred(
-        LoadSaveAction action, LoadSaveType type, u8string defaultPath, LoadSaveCallback callback, TrackDesign* trackDesign)
+        LoadSaveAction action, LoadSaveType type, u8string defaultPath, LoadSaveCallback callback, bool isJsCallback,
+        TrackDesign* trackDesign)
     {
-        RegisterCallback(callback);
-
 #ifdef __EMSCRIPTEN__
         if (action == LoadSaveAction::save)
         {
@@ -69,16 +69,18 @@ namespace OpenRCT2::Ui::FileBrowser
             const bool isSave = (action == LoadSaveAction::save);
             const auto defaultDirectory = GetDir(type);
 
+            RegisterCallback(callback, isJsCallback);
             const u8string path = OpenSystemFileBrowser(isSave, type, defaultDirectory, defaultPath);
             if (!path.empty())
             {
                 Select(path.c_str(), action, type, trackDesign);
             }
+            UnregisterJSCallback();
             return nullptr;
         }
 
         // Use built-in load/save window
-        return Windows::LoadsaveOpen(action, type, defaultPath, callback, trackDesign);
+        return Windows::LoadsaveOpen(action, type, defaultPath, callback, isJsCallback, trackDesign);
     }
 
     bool ListItemSort(LoadSaveListItem& a, LoadSaveListItem& b)
@@ -219,9 +221,19 @@ namespace OpenRCT2::Ui::FileBrowser
         return result;
     }
 
-    void RegisterCallback(LoadSaveCallback callback)
+    void RegisterCallback(LoadSaveCallback callback, bool isJsCallback)
     {
         _loadSaveCallback = callback;
+        _loadSaveCallbackIsJs = isJsCallback;
+    }
+
+    void UnregisterJSCallback()
+    {
+        // This is very hacky but for a silly confluence of reasons we have to clear the callback if it is a callback to
+        // javascript plugin code, but not if it is to normal C++ code.
+        // https://github.com/mrmbernardi/OpenRCT2/pull/11#issuecomment-3448197606
+        if (_loadSaveCallbackIsJs)
+            _loadSaveCallback = {};
     }
 
     void InvokeCallback(ModalResult result, const utf8* path)

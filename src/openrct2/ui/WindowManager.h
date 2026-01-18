@@ -97,6 +97,7 @@ namespace OpenRCT2::Ui
         virtual void CloseAllExceptFlags(WindowFlags flags) = 0;
         virtual void CloseAllExceptNumberAndClass(WindowNumber number, WindowClass cls) = 0;
         virtual void CloseConstructionWindows() = 0;
+        virtual void Cleanup() = 0;
 
         virtual WindowBase* FindByClass(WindowClass cls) = 0;
         virtual WindowBase* FindByNumber(WindowClass cls, WindowNumber number) = 0;
