@@ -2,8 +2,10 @@
 Checks: >
     -*,
     cppcoreguidelines-macro-usage,
+    modernize-use-bool-literals,
     modernize-use-nullptr,
     modernize-use-override,
+    readability-avoid-const-params-in-decls,
     readability-uppercase-literal-suffix
 CheckOptions:
     - key: cppcoreguidelines-macro-usage.AllowedRegexp
