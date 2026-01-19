@@ -1118,11 +1118,11 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            int32_t happinessPercentage = NormalizeGuestStatValue(peep->Happiness, kPeepMaxHappiness, 10);
+            int32_t happinessPercentage = NormalizeGuestStatValue(peep->Happiness, kPeepMaxHappiness, 3);
             widgetProgressBarSetNewPercentage(widgets[WIDX_HAPPINESS_BAR], happinessPercentage);
 
             int32_t energyPercentage = NormalizeGuestStatValue(
-                peep->Energy - kPeepMinEnergy, kPeepMaxEnergy - kPeepMinEnergy, 10);
+                peep->Energy - kPeepMinEnergy, kPeepMaxEnergy - kPeepMinEnergy, 3);
             widgetProgressBarSetNewPercentage(widgets[WIDX_ENERGY_BAR], energyPercentage);
 
             int32_t hungerPercentage = NormalizeGuestStatValue(peep->Hunger - 32, 158, 0);
