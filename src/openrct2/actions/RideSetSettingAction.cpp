@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,6 +12,8 @@
 #include "../Context.h"
 #include "../Diagnostic.h"
 #include "../GameState.h"
+#include "../drawing/Drawing.h"
+#include "../object/MusicObject.h"
 #include "../object/ObjectManager.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
@@ -68,7 +70,7 @@ namespace OpenRCT2::GameActions
                     return Result(Status::disallowed, STR_CANT_CHANGE_OPERATING_MODE, STR_MUST_BE_CLOSED_FIRST);
                 }
 
-                if (!RideIsModeValid(*ride) && !getGameState().cheats.showAllOperatingModes)
+                if (!RideIsModeValid(*ride) && !gameState.cheats.showAllOperatingModes)
                 {
                     LOG_ERROR("Invalid ride mode: %u", _value);
                     return Result(Status::invalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_ERR_VALUE_OUT_OF_RANGE);
@@ -91,7 +93,7 @@ namespace OpenRCT2::GameActions
                 }
                 break;
             case RideSetSetting::Operation:
-                if (!RideIsValidOperationOption(*ride))
+                if (!RideIsValidOperationOption(gameState, *ride))
                 {
                     LOG_ERROR("Invalid operation option value: %u", _value);
                     return Result(Status::invalidParameters, STR_CANT_CHANGE_OPERATING_MODE, GetOperationErrorMessage(*ride));
@@ -118,7 +120,7 @@ namespace OpenRCT2::GameActions
                 break;
             }
             case RideSetSetting::LiftHillSpeed:
-                if (!RideIsValidLiftHillSpeed(*ride))
+                if (!RideIsValidLiftHillSpeed(gameState, *ride))
                 {
                     LOG_ERROR("Invalid lift hill speed: %u", _value);
                     return Result(Status::invalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_ERR_VALUE_OUT_OF_RANGE);
@@ -132,14 +134,14 @@ namespace OpenRCT2::GameActions
                         STR_MULTICIRCUIT_NOT_POSSIBLE_WITH_CABLE_LIFT_HILL);
                 }
 
-                if (!RideIsValidNumCircuits())
+                if (!RideIsValidNumCircuits(gameState))
                 {
                     LOG_ERROR("Invalid number of circuits: %u", _value);
                     return Result(Status::invalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_ERR_VALUE_OUT_OF_RANGE);
                 }
                 break;
             case RideSetSetting::RideType:
-                if (!getGameState().cheats.allowArbitraryRideTypeChanges)
+                if (!gameState.cheats.allowArbitraryRideTypeChanges)
                 {
                     LOG_ERROR("Arbitrary ride type changes not allowed.");
                     return Result(Status::disallowed, STR_CANT_CHANGE_OPERATING_MODE, kStringIdNone);
@@ -203,7 +205,7 @@ namespace OpenRCT2::GameActions
                 {
                     ride->lifecycleFlags |= RIDE_LIFECYCLE_MUSIC;
                 }
-                ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MUSIC;
+                ride->windowInvalidateFlags.set(RideInvalidateFlag::music);
                 break;
             case RideSetSetting::MusicType:
                 if (_value != ride->music)
@@ -250,27 +252,26 @@ namespace OpenRCT2::GameActions
         return ride.getRideTypeDescriptor().RideModes & (1uLL << _value);
     }
 
-    bool RideSetSettingAction::RideIsValidLiftHillSpeed(const Ride& ride) const
+    bool RideSetSettingAction::RideIsValidLiftHillSpeed(GameState_t& gameState, const Ride& ride) const
     {
-        auto& gameState = getGameState();
         int32_t minSpeed = gameState.cheats.unlockOperatingLimits ? 0 : ride.getRideTypeDescriptor().LiftData.minimum_speed;
         int32_t maxSpeed = gameState.cheats.unlockOperatingLimits ? 255 : ride.getRideTypeDescriptor().LiftData.maximum_speed;
         return _value >= minSpeed && _value <= maxSpeed;
     }
 
-    bool RideSetSettingAction::RideIsValidNumCircuits() const
+    bool RideSetSettingAction::RideIsValidNumCircuits(GameState_t& gameState) const
     {
         int32_t minNumCircuits = 1;
-        int32_t maxNumCircuits = getGameState().cheats.unlockOperatingLimits ? 255 : Limits::kMaxCircuitsPerRide;
+        int32_t maxNumCircuits = gameState.cheats.unlockOperatingLimits ? 255 : Limits::kMaxCircuitsPerRide;
         return _value >= minNumCircuits && _value <= maxNumCircuits;
     }
 
-    bool RideSetSettingAction::RideIsValidOperationOption(const Ride& ride) const
+    bool RideSetSettingAction::RideIsValidOperationOption(GameState_t& gameState, const Ride& ride) const
     {
         const auto& operatingSettings = ride.getRideTypeDescriptor().OperatingSettings;
         uint8_t minValue = operatingSettings.MinValue;
         uint8_t maxValue = operatingSettings.MaxValue;
-        if (getGameState().cheats.unlockOperatingLimits)
+        if (gameState.cheats.unlockOperatingLimits)
         {
             minValue = 0;
             maxValue = 255;

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -23,7 +23,7 @@ namespace OpenRCT2::World::MapGenerator
         SLOPE_E_THRESHOLD_FLAGS = (1 << 3)
     };
 
-    using SmoothFunction = std::function<int32_t(const TileCoordsXY)>;
+    using SmoothFunction = std::function<int32_t(TileCoordsXY)>;
 
     int32_t smoothTileStrong(TileCoordsXY tileCoord);
     int32_t smoothTileWeak(TileCoordsXY tileCoord);

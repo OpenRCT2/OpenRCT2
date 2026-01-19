@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -40,7 +40,7 @@ namespace OpenRCT2::SawyerCoding
     class SawyerChunk final
     {
     private:
-        OpenRCT2::MemoryStream _data;
+        MemoryStream _data;
         ChunkEncoding _encoding = ChunkEncoding::none;
 
     public:
@@ -57,6 +57,6 @@ namespace OpenRCT2::SawyerCoding
             return _encoding;
         }
 
-        SawyerChunk(ChunkEncoding encoding, OpenRCT2::MemoryStream&& data);
+        SawyerChunk(ChunkEncoding encoding, MemoryStream&& data);
     };
 } // namespace OpenRCT2::SawyerCoding

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,6 +13,7 @@
 #include "../Context.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
+#include "../core/Guard.hpp"
 #include "../core/Money.hpp"
 #include "../core/UnitConversion.h"
 #include "../profiling/Profiling.h"
@@ -163,7 +164,7 @@ static void RideRatingsApplyPenaltyLateralGs(RideRating::Tuple& ratings, const R
 
 void RideRating::ResetUpdateStates()
 {
-    RideRating::UpdateState nullState{};
+    UpdateState nullState{};
     nullState.State = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
 
     auto& updateStates = getGameState().rideRatingUpdateStates;
@@ -178,9 +179,9 @@ void RideRating::ResetUpdateStates()
  */
 void RideRating::UpdateRide(const Ride& ride)
 {
-    RideRating::UpdateState state;
     if (ride.status != RideStatus::closed)
     {
+        UpdateState state;
         state.CurrentRide = ride.id;
         state.State = RIDE_RATINGS_STATE_INITIALISE;
         while (state.State != RIDE_RATINGS_STATE_FIND_NEXT_RIDE)
@@ -893,7 +894,7 @@ static void RideRatingsCalculate(RideRating::UpdateState& state, Ride& ride)
             break;
         case RatingsCalculationType::Stall:
             ride.upkeepCost = RideComputeUpkeep(state, ride);
-            ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_INCOME;
+            ride.windowInvalidateFlags.set(RideInvalidateFlag::income);
             // Exit ratings
             return;
     }
@@ -1056,11 +1057,11 @@ static void RideRatingsCalculate(RideRating::UpdateState& state, Ride& ride)
     if (ride.ratings != ratings)
     {
         ride.ratings = ratings;
-        ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_RATINGS;
+        ride.windowInvalidateFlags.set(RideInvalidateFlag::ratings);
     }
 
     ride.upkeepCost = RideComputeUpkeep(state, ride);
-    ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_INCOME;
+    ride.windowInvalidateFlags.set(RideInvalidateFlag::income);
 
 #ifdef ORIGINAL_RATINGS
     if (!ride.ratings.isNull())

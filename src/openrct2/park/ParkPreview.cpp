@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -30,6 +30,8 @@ namespace OpenRCT2
     static std::optional<PreviewImage> generatePreviewMap();
     static std::optional<PreviewImage> generatePreviewScreenshot();
 
+    using OpenRCT2::Drawing::PaletteIndex;
+
     ParkPreview generatePreviewFromGameState(const GameState_t& gameState)
     {
         ParkPreview preview{
@@ -57,7 +59,7 @@ namespace OpenRCT2
 
     static PaletteIndex getPreviewColourByTilePos(const TileCoordsXY& pos)
     {
-        PaletteIndex paletteIndex = PaletteIndex::pi0;
+        PaletteIndex paletteIndex = PaletteIndex::transparent;
 
         auto tileElement = MapGetFirstElementAt(pos);
         if (tileElement == nullptr)
@@ -74,7 +76,7 @@ namespace OpenRCT2
                     auto* surfaceElement = tileElement->AsSurface();
                     if (surfaceElement == nullptr)
                     {
-                        surfaceColour = paletteIndex = PaletteIndex::pi0;
+                        surfaceColour = paletteIndex = PaletteIndex::transparent;
                         break;
                     }
 
@@ -229,7 +231,7 @@ namespace OpenRCT2
         drawingEngine->BeginDraw();
 
         Drawing::RenderTarget rt{
-            .bits = static_cast<uint8_t*>(image.pixels),
+            .bits = reinterpret_cast<uint8_t*>(image.pixels),
             .x = 0,
             .y = 0,
             .width = image.width,
@@ -249,7 +251,7 @@ namespace OpenRCT2
     void drawPreviewImage(const PreviewImage& image, Drawing::RenderTarget& rt, ScreenCoordsXY screenPos)
     {
         G1Element g1temp = {};
-        g1temp.offset = const_cast<uint8_t*>(image.pixels);
+        g1temp.offset = reinterpret_cast<uint8_t*>(const_cast<PaletteIndex*>(image.pixels));
         g1temp.width = image.width;
         g1temp.height = image.height;
 

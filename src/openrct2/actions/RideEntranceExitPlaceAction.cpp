@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,6 +12,7 @@
 #include "../Diagnostic.h"
 #include "../GameState.h"
 #include "../actions/RideEntranceExitRemoveAction.h"
+#include "../core/Guard.hpp"
 #include "../management/Finance.h"
 #include "../ride/Ride.h"
 #include "../ride/Station.h"
@@ -88,8 +89,7 @@ namespace OpenRCT2::GameActions
 
         if (!location.IsNull())
         {
-            auto rideEntranceExitRemove = GameActions::RideEntranceExitRemoveAction(
-                location.ToCoordsXY(), _rideIndex, _stationNum, _isExit);
+            auto rideEntranceExitRemove = RideEntranceExitRemoveAction(location.ToCoordsXY(), _rideIndex, _stationNum, _isExit);
             rideEntranceExitRemove.SetFlags(GetFlags());
 
             auto result = QueryNested(&rideEntranceExitRemove, gameState);
@@ -105,7 +105,7 @@ namespace OpenRCT2::GameActions
         {
             return Result(Status::invalidParameters, errorTitle, STR_OFF_EDGE_OF_MAP);
         }
-        if (!getGameState().cheats.sandboxMode && !MapIsLocationOwned({ _loc, z }))
+        if (!gameState.cheats.sandboxMode && !MapIsLocationOwned({ _loc, z }))
         {
             return Result(Status::notOwned, errorTitle, STR_LAND_NOT_OWNED_BY_PARK);
         }
@@ -164,8 +164,7 @@ namespace OpenRCT2::GameActions
         const auto location = _isExit ? station.Exit : station.Entrance;
         if (!location.IsNull())
         {
-            auto rideEntranceExitRemove = GameActions::RideEntranceExitRemoveAction(
-                location.ToCoordsXY(), _rideIndex, _stationNum, _isExit);
+            auto rideEntranceExitRemove = RideEntranceExitRemoveAction(location.ToCoordsXY(), _rideIndex, _stationNum, _isExit);
             rideEntranceExitRemove.SetFlags(GetFlags());
 
             auto result = ExecuteNested(&rideEntranceExitRemove, gameState);
@@ -178,7 +177,7 @@ namespace OpenRCT2::GameActions
 
         auto z = station.GetBaseZ();
         if (!GetFlags().has(CommandFlag::allowDuringPaused) && !GetFlags().has(CommandFlag::ghost)
-            && !getGameState().cheats.disableClearanceChecks)
+            && !gameState.cheats.disableClearanceChecks)
         {
             FootpathRemoveLitter({ _loc, z });
             WallRemoveAtZ({ _loc, z });
@@ -237,12 +236,12 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    Result RideEntranceExitPlaceAction::TrackPlaceQuery(const CoordsXYZ& loc, const bool isExit)
+    Result RideEntranceExitPlaceAction::TrackPlaceQuery(GameState_t& gameState, const CoordsXYZ& loc, const bool isExit)
     {
         const auto errorTitle = isExit ? STR_CANT_BUILD_MOVE_EXIT_FOR_THIS_RIDE_ATTRACTION
                                        : STR_CANT_BUILD_MOVE_ENTRANCE_FOR_THIS_RIDE_ATTRACTION;
 
-        if (!getGameState().cheats.sandboxMode && !MapIsLocationOwned(loc))
+        if (!gameState.cheats.sandboxMode && !MapIsLocationOwned(loc))
         {
             return Result(Status::notOwned, errorTitle, STR_LAND_NOT_OWNED_BY_PARK);
         }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -20,11 +20,11 @@ using namespace OpenRCT2;
 class IniWriter final : public IIniWriter
 {
 private:
-    OpenRCT2::IStream* _stream;
+    IStream* _stream;
     bool _firstSection = true;
 
 public:
-    explicit IniWriter(OpenRCT2::IStream* stream)
+    explicit IniWriter(IStream* stream)
         : _stream(stream)
     {
     }
@@ -105,7 +105,7 @@ void IIniWriter::WriteString(const std::string& name, const utf8* value)
     WriteString(name, String::toStd(value));
 }
 
-std::unique_ptr<IIniWriter> CreateIniWriter(OpenRCT2::IStream* stream)
+std::unique_ptr<IIniWriter> CreateIniWriter(IStream* stream)
 {
     return std::make_unique<IniWriter>(stream);
 }

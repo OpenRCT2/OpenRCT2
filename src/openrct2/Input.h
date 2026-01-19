@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,26 +15,18 @@
 
 namespace OpenRCT2
 {
-    enum InputFlag
+    enum class InputFlag : uint8_t
     {
         widgetPressed,
-
         // The dropdown can stay open if the mouse is released, set on flag Dropdown::Flag::StayOpen.
         dropdownStayOpen,
-
-        // The mouse has been released and the dropdown is still open.
-        // InputFlag::dropdownStayOpen is already set if this happens.
+        // The mouse has been released and the dropdown is still open. dropdownStayOpen is already set if this happens.
         dropdownMouseUp,
-
         toolActive,
-
         // Left click on a viewport
         leftMousePressed,
-
         rightMousePressed,
-
         allowRightMouseRemoval,
-
         viewportScrolling,
     };
     using InputFlags = FlagHolder<uint8_t, InputFlag>;

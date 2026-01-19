@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -19,7 +19,7 @@ static void FASTCALL DrawRLESpriteMagnify(RenderTarget& rt, const DrawSpriteArgs
 {
     auto& paletteMap = args.PalMap;
     auto imgData = args.SourceImage.offset;
-    auto dst = args.DestinationBits;
+    auto* dst = reinterpret_cast<PaletteIndex*>(args.DestinationBits);
     auto srcX = args.SrcX;
     auto srcY = args.SrcY;
     auto width = args.Width;
@@ -29,7 +29,7 @@ static void FASTCALL DrawRLESpriteMagnify(RenderTarget& rt, const DrawSpriteArgs
 
     for (int32_t y = 0; y < height; y++)
     {
-        uint8_t* nextDst = dst + dstLineWidth;
+        PaletteIndex* nextDst = dst + dstLineWidth;
         const int32_t rowNum = zoom.ApplyTo(srcY + y);
         uint16_t lineOffset;
         std::memcpy(&lineOffset, &imgData[rowNum * sizeof(uint16_t)], sizeof(uint16_t));
@@ -51,7 +51,7 @@ static void FASTCALL DrawRLESpriteMagnify(RenderTarget& rt, const DrawSpriteArgs
                 numPixels &= 0x7F;
             }
             if (pixelRunStart <= colNum && colNum < pixelRunStart + numPixels)
-                BlitPixel<TBlendOp>(data8 + colNum - pixelRunStart, dst, paletteMap);
+                BlitPixel<TBlendOp>(reinterpret_cast<const PaletteIndex*>(data8 + colNum - pixelRunStart), dst, paletteMap);
             dst++;
         }
 
@@ -88,7 +88,7 @@ static void FASTCALL DrawRLESpriteMinify(RenderTarget& rt, const DrawSpriteArgs&
         // This will move the pointer to the correct source line.
         uint16_t lineOffset = src0[y * 2] | (src0[y * 2 + 1] << 8);
         auto nextRun = src0 + lineOffset;
-        auto dstLineStart = dst0 + dstLineWidth * (i >> TZoom);
+        auto* dstLineStart = reinterpret_cast<PaletteIndex*>(dst0 + dstLineWidth * (i >> TZoom));
 
         // For every data chunk in the line
         auto isEndOfLine = false;
@@ -144,7 +144,7 @@ static void FASTCALL DrawRLESpriteMinify(RenderTarget& rt, const DrawSpriteArgs&
                 auto& paletteMap = args.PalMap;
                 while (numPixels > 0)
                 {
-                    BlitPixel<TBlendOp>(src, dst, paletteMap);
+                    BlitPixel<TBlendOp>(reinterpret_cast<PaletteIndex*>(src), dst, paletteMap);
                     numPixels -= zoom;
                     src += zoom;
                     dst++;

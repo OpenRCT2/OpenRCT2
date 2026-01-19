@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -21,6 +21,7 @@
 #include <openrct2/actions/CheatSetAction.h>
 #include <openrct2/actions/ParkSetDateAction.h>
 #include <openrct2/core/EnumUtils.hpp>
+#include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Currency.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.Date.h>
@@ -883,29 +884,25 @@ static StringId window_cheats_page_titles[] = {
                 case WIDX_MONTH_UP:
                     _monthSpinnerValue++;
                     _monthSpinnerValue = std::clamp(_monthSpinnerValue, 1, static_cast<int32_t>(MONTH_COUNT));
-                    _daySpinnerValue = std::clamp(
-                        _daySpinnerValue, 1, static_cast<int32_t>(Date::GetDaysInMonth(_monthSpinnerValue - 1)));
+                    _daySpinnerValue = std::clamp(_daySpinnerValue, 1, Date::GetDaysInMonth(_monthSpinnerValue - 1));
                     invalidateWidget(WIDX_MONTH_BOX);
                     invalidateWidget(WIDX_DAY_BOX);
                     break;
                 case WIDX_MONTH_DOWN:
                     _monthSpinnerValue--;
                     _monthSpinnerValue = std::clamp(_monthSpinnerValue, 1, static_cast<int32_t>(MONTH_COUNT));
-                    _daySpinnerValue = std::clamp(
-                        _daySpinnerValue, 1, static_cast<int32_t>(Date::GetDaysInMonth(_monthSpinnerValue - 1)));
+                    _daySpinnerValue = std::clamp(_daySpinnerValue, 1, Date::GetDaysInMonth(_monthSpinnerValue - 1));
                     invalidateWidget(WIDX_MONTH_BOX);
                     invalidateWidget(WIDX_DAY_BOX);
                     break;
                 case WIDX_DAY_UP:
                     _daySpinnerValue++;
-                    _daySpinnerValue = std::clamp(
-                        _daySpinnerValue, 1, static_cast<int32_t>(Date::GetDaysInMonth(_monthSpinnerValue - 1)));
+                    _daySpinnerValue = std::clamp(_daySpinnerValue, 1, Date::GetDaysInMonth(_monthSpinnerValue - 1));
                     invalidateWidget(WIDX_DAY_BOX);
                     break;
                 case WIDX_DAY_DOWN:
                     _daySpinnerValue--;
-                    _daySpinnerValue = std::clamp(
-                        _daySpinnerValue, 1, static_cast<int32_t>(Date::GetDaysInMonth(_monthSpinnerValue - 1)));
+                    _daySpinnerValue = std::clamp(_daySpinnerValue, 1, Date::GetDaysInMonth(_monthSpinnerValue - 1));
                     invalidateWidget(WIDX_DAY_BOX);
                     break;
                 case WIDX_DATE_SET:

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -174,17 +174,16 @@ namespace OpenRCT2
     int32_t ContextGetHeight();
     bool ContextHasFocus();
     void ContextSetCursorTrap(bool value);
-    OpenRCT2::WindowBase* ContextOpenWindow(WindowClass wc);
-    OpenRCT2::WindowBase* ContextOpenDetailWindow(WindowDetail type, int32_t id);
-    OpenRCT2::WindowBase* ContextOpenWindowView(WindowView view);
-    OpenRCT2::WindowBase* ContextShowError(
-        StringId title, StringId message, const class OpenRCT2::Formatter& args, bool autoClose = false);
-    OpenRCT2::WindowBase* ContextOpenIntent(OpenRCT2::Intent* intent);
-    void ContextBroadcastIntent(OpenRCT2::Intent* intent);
+    WindowBase* ContextOpenWindow(WindowClass wc);
+    WindowBase* ContextOpenDetailWindow(WindowDetail type, int32_t id);
+    WindowBase* ContextOpenWindowView(WindowView view);
+    WindowBase* ContextShowError(StringId title, StringId message, const class Formatter& args, bool autoClose = false);
+    WindowBase* ContextOpenIntent(Intent* intent);
+    void ContextBroadcastIntent(Intent* intent);
     void ContextForceCloseWindowByClass(WindowClass wc);
     void ContextHandleInput();
     void ContextInputHandleKeyboard(bool isTitle);
     void ContextQuit();
     bool ContextLoadParkFromStream(void* stream);
-    u8string ContextOpenCommonFileDialog(OpenRCT2::Ui::FileDialogDesc& desc);
+    u8string ContextOpenCommonFileDialog(Ui::FileDialogDesc& desc);
 } // namespace OpenRCT2

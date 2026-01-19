@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -256,7 +256,7 @@ static bool SurfaceShouldSmoothSelf(const TerrainSurfaceObject* surfaceObject)
     if (surfaceObject == nullptr)
         return false;
 
-    return surfaceObject->Flags & TerrainSurfaceFlags::smoothWithSelf;
+    return surfaceObject->Flags.has(TerrainSurfaceFlag::smoothWithSelf);
 }
 
 static bool SurfaceShouldSmooth(const TerrainSurfaceObject* surfaceObject)
@@ -264,7 +264,7 @@ static bool SurfaceShouldSmooth(const TerrainSurfaceObject* surfaceObject)
     if (surfaceObject == nullptr)
         return false;
 
-    return surfaceObject->Flags & TerrainSurfaceFlags::smoothWithOther;
+    return surfaceObject->Flags.has(TerrainSurfaceFlag::smoothWithOther);
 }
 
 static ImageId GetEdgeImageWithOffset(const TerrainEdgeObject* edgeObject, uint32_t offset)
@@ -935,7 +935,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
     session.Flags |= PaintSessionFlags::PassedSurface;
     session.Surface = &tileElement;
 
-    const auto zoomLevel = session.DPI.zoom_level;
+    const auto zoomLevel = session.rt.zoom_level;
     const uint8_t rotation = session.CurrentRotation;
     const uint8_t surfaceShape = ViewportSurfacePaintSetupGetRelativeSlope(tileElement, rotation);
     const CoordsXY& base = session.SpritePosition;

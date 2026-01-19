@@ -25,12 +25,10 @@ bool EntityBase::Is<Litter>() const
 
 static bool IsLocationLitterable(const CoordsXYZ& mapPos)
 {
-    TileElement* tileElement;
-
     if (!MapIsLocationOwned(mapPos))
         return false;
 
-    tileElement = MapGetFirstElementAt(mapPos);
+    TileElement* tileElement = MapGetFirstElementAt(mapPos);
     if (tileElement == nullptr)
         return false;
     do
@@ -184,7 +182,7 @@ void Litter::Paint(PaintSession& session, int32_t imageDirection) const
 {
     PROFILED_FUNCTION();
 
-    auto& rt = session.DPI;
+    auto& rt = session.rt;
     if (rt.zoom_level > ZoomLevel{ 0 })
         return; // If zoomed at all no litter drawn
 

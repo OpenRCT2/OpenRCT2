@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,6 +13,7 @@
 
     #include "../../../GameState.h"
     #include "../../../entity/Guest.h"
+    #include "../../../localisation/Formatter.h"
     #include "../../../localisation/Formatting.h"
     #include "../../../object/ObjectManager.h"
     #include "../../../object/PeepAnimationsObject.h"
@@ -194,7 +195,7 @@ namespace OpenRCT2::Scripting
 
     Guest* ScGuest::GetGuest() const
     {
-        return OpenRCT2::getGameState().entities.GetEntity<Guest>(_id);
+        return getGameState().entities.GetEntity<Guest>(_id);
     }
 
     uint8_t ScGuest::tshirtColour_get() const
@@ -572,7 +573,7 @@ namespace OpenRCT2::Scripting
                 }
 
                 // GuestItem
-                auto obj = OpenRCT2::Scripting::DukObject(ctx);
+                auto obj = DukObject(ctx);
                 obj.Set("type", itemEnumPair.first);
 
                 if (shopItem == ShopItem::voucher)

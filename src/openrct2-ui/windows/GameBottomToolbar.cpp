@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,6 +18,7 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/entity/Guest.h>
@@ -89,7 +90,7 @@ namespace OpenRCT2::Ui::Windows
                     : colours[0].colour);
         }
 
-        void DrawLeftPanel(Drawing::RenderTarget& rt)
+        void DrawLeftPanel(RenderTarget& rt)
         {
             const auto& leftPanelWidget = widgets[WIDX_LEFT_OUTSET];
 
@@ -154,7 +155,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawParkRating(Drawing::RenderTarget& rt, int32_t colour, const ScreenCoordsXY& coords, uint8_t factor)
+        void DrawParkRating(RenderTarget& rt, int32_t colour, const ScreenCoordsXY& coords, uint8_t factor)
         {
             int16_t bar_width = (factor * 114) / 255;
             Rectangle::fillInset(
@@ -175,7 +176,7 @@ namespace OpenRCT2::Ui::Windows
             GfxDrawSprite(rt, ImageId(SPR_RATING_HIGH), coords + ScreenCoordsXY{ 114, 0 });
         }
 
-        void DrawRightPanel(Drawing::RenderTarget& rt)
+        void DrawRightPanel(RenderTarget& rt)
         {
             const auto& rightPanelWidget = widgets[WIDX_RIGHT_OUTSET];
 
@@ -237,7 +238,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawNewsItem(Drawing::RenderTarget& rt)
+        void DrawNewsItem(RenderTarget& rt)
         {
             const auto& middleOutsetWidget = widgets[WIDX_MIDDLE_OUTSET];
             auto* newsItem = News::GetItem(0);
@@ -271,7 +272,7 @@ namespace OpenRCT2::Ui::Windows
                         break;
 
                     RenderTarget clippedRT;
-                    if (!ClipDrawPixelInfo(clippedRT, rt, screenCoords + ScreenCoordsXY{ 1, 1 }, 22, 22))
+                    if (!ClipRenderTarget(clippedRT, rt, screenCoords + ScreenCoordsXY{ 1, 1 }, 22, 22))
                     {
                         break;
                     }
@@ -353,7 +354,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawMiddlePanel(Drawing::RenderTarget& rt)
+        void DrawMiddlePanel(RenderTarget& rt)
         {
             Widget* middleOutsetWidget = &widgets[WIDX_MIDDLE_OUTSET];
 
@@ -620,7 +621,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onDraw(Drawing::RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             const auto& leftWidget = widgets[WIDX_LEFT_OUTSET];
             const auto& rightWidget = widgets[WIDX_RIGHT_OUTSET];
@@ -711,7 +712,7 @@ namespace OpenRCT2::Ui::Windows
     {
         if (gLegacyScene == LegacyScene::playing)
         {
-            auto* windowMgr = Ui::GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             windowMgr->InvalidateWidgetByClass(WindowClass::bottomToolbar, WIDX_MIDDLE_OUTSET);
         }
     }

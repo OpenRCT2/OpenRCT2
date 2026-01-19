@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -27,7 +27,7 @@ namespace OpenRCT2
 
     TerrainSurfaceObject* SurfaceElement::GetSurfaceObject() const
     {
-        auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+        auto& objManager = GetContext()->GetObjectManager();
         return objManager.GetLoadedObject<TerrainSurfaceObject>(GetSurfaceObjectIndex());
     }
 
@@ -38,7 +38,7 @@ namespace OpenRCT2
 
     TerrainEdgeObject* SurfaceElement::GetEdgeObject() const
     {
-        auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+        auto& objManager = GetContext()->GetObjectManager();
         return objManager.GetLoadedObject<TerrainEdgeObject>(GetEdgeObjectIndex());
     }
 
@@ -65,11 +65,11 @@ namespace OpenRCT2
     bool SurfaceElement::CanGrassGrow() const
     {
         auto surfaceStyle = GetSurfaceObjectIndex();
-        auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
+        auto& objMgr = GetContext()->GetObjectManager();
         const auto* surfaceObject = objMgr.GetLoadedObject<TerrainSurfaceObject>(surfaceStyle);
         if (surfaceObject != nullptr)
         {
-            if (surfaceObject->Flags & TerrainSurfaceFlags::canGrow)
+            if (surfaceObject->Flags.has(TerrainSurfaceFlag::canGrow))
             {
                 return true;
             }

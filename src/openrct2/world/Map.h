@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -131,7 +131,7 @@ void TileElementIteratorRestartForTile(TileElementIterator* it);
 void MapUpdateTiles();
 int32_t MapGetHighestZ(const CoordsXY& loc);
 
-bool TileElementWantsPathConnectionTowards(const TileCoordsXYZD& coords, const OpenRCT2::TileElement* const elementToBeRemoved);
+bool TileElementWantsPathConnectionTowards(const TileCoordsXYZD& coords, const OpenRCT2::TileElement* elementToBeRemoved);
 
 void MapRemoveOutOfRangeElements();
 void MapExtendBoundarySurfaceX();

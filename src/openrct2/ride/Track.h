@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,9 +11,9 @@
 
 #include "../Identifiers.h"
 #include "../actions/CommandFlag.h"
-#include "../object/Object.h"
 #include "../world/Location.hpp"
 #include "../world/QuarterTile.h"
+#include "RideTypes.h"
 
 #include <optional>
 

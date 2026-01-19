@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -55,7 +55,6 @@ void TileElementPaintSetup(PaintSession& session, const CoordsXY& mapCoords, boo
 void PaintEntrance(PaintSession& session, uint8_t direction, int32_t height, const OpenRCT2::EntranceElement& entranceElement);
 void PaintBanner(PaintSession& session, uint8_t direction, int32_t height, const OpenRCT2::BannerElement& bannerElement);
 void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, const OpenRCT2::SurfaceElement& tileElement);
-void PaintPath(PaintSession& session, uint16_t height, const OpenRCT2::PathElement& tileElement);
 void PaintSmallScenery(
     PaintSession& session, uint8_t direction, int32_t height, const OpenRCT2::SmallSceneryElement& sceneryElement);
 void PaintWall(PaintSession& session, uint8_t direction, int32_t height, const OpenRCT2::WallElement& tileElement);
@@ -63,4 +62,4 @@ void PaintLargeScenery(
     PaintSession& session, uint8_t direction, uint16_t height, const OpenRCT2::LargeSceneryElement& tileElement);
 void PaintTrack(PaintSession& session, uint8_t direction, int32_t height, const OpenRCT2::TrackElement& tileElement);
 
-bool PaintShouldShowHeightMarkers(const PaintSession& session, const uint32_t viewportFlag);
+bool PaintShouldShowHeightMarkers(const PaintSession& session, uint32_t viewportFlag);

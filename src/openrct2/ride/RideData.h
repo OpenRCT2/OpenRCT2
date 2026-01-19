@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -275,7 +275,7 @@ using StartRideMusicFunction = void (*)(const OpenRCT2::RideAudio::ViewportRideM
 using LightFXAddLightsMagicVehicleFunction = void (*)(const Vehicle* vehicle);
 using RideLocationFunction = CoordsXY (*)(const Vehicle& vehicle, const Ride& ride, const StationIndex& CurrentRideStation);
 using RideUpdateFunction = void (*)(Ride& ride);
-using RideUpdateMeasurementsSpecialElementsFunc = void (*)(Ride& ride, const OpenRCT2::TrackElemType trackType);
+using RideUpdateMeasurementsSpecialElementsFunc = void (*)(Ride& ride, OpenRCT2::TrackElemType trackType);
 using MusicTrackOffsetLengthFunc = std::pair<size_t, size_t> (*)(const Ride& ride);
 using SpecialElementRatingAdjustmentFunc = void (*)(const Ride& ride, int32_t& excitement, int32_t& intensity, int32_t& nausea);
 
@@ -300,7 +300,7 @@ struct TrackDrawerEntry
     StringId tooltip = kStringIdNone;
 
     void GetAvailableTrackGroups(RideTrackGroups& res) const;
-    bool SupportsTrackGroup(const TrackGroup trackGroup) const;
+    bool SupportsTrackGroup(TrackGroup trackGroup) const;
 };
 
 struct TrackDrawerDescriptor
@@ -545,7 +545,7 @@ struct RideTypeDescriptor
 
     bool HasFlag(RtdFlag flag) const;
     /** @deprecated */
-    bool SupportsTrackGroup(const TrackGroup trackGroup) const;
+    bool SupportsTrackGroup(TrackGroup trackGroup) const;
     ResearchCategory GetResearchCategory() const;
     bool SupportsRideMode(RideMode rideMode) const;
     /**

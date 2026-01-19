@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,7 +12,7 @@
         #define WIN32_LEAN_AND_MEAN
     #endif
     #include <windows.h>
-#elif defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
+#elif defined(__unix__) || defined(__HAIKU__) || (defined(__APPLE__) && defined(__MACH__))
     #include <dirent.h>
     #include <sys/stat.h>
     #include <sys/types.h>
@@ -251,7 +251,7 @@ private:
 
 #endif // _WIN32
 
-#if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
+#if defined(__unix__) || defined(__HAIKU__) || (defined(__APPLE__) && defined(__MACH__))
 
 class FileScannerUnix final : public FileScannerBase
 {
@@ -290,7 +290,13 @@ private:
     {
         DirectoryChild result;
         result.Name = std::string(node->d_name);
+    #ifdef __HAIKU__
+        struct stat stbuf;
+        stat(node->d_name, &stbuf);
+        if (S_ISDIR(stbuf.st_mode))
+    #else
         if (node->d_type == DT_DIR)
+    #endif
         {
             result.Type = DirectoryChildType::directory;
         }
@@ -318,20 +324,20 @@ private:
     }
 };
 
-#endif // defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
+#endif // defined(__unix__) || defined(__HAIKU__) || (defined(__APPLE__) && defined(__MACH__))
 
 std::unique_ptr<IFileScanner> Path::ScanDirectory(const std::string& pattern, bool recurse)
 {
 #ifdef _WIN32
     return std::make_unique<FileScannerWindows>(pattern, recurse);
-#elif defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
+#elif defined(__unix__) || defined(__HAIKU__) || (defined(__APPLE__) && defined(__MACH__))
     return std::make_unique<FileScannerUnix>(pattern, recurse);
 #endif
 }
 
 void Path::QueryDirectory(QueryDirectoryResult* result, const std::string& pattern)
 {
-    auto scanner = Path::ScanDirectory(pattern, true);
+    auto scanner = ScanDirectory(pattern, true);
     while (scanner->Next())
     {
         const FileScanner::FileInfo& fileInfo = scanner->GetFileInfo();

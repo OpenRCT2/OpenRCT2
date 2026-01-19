@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -209,9 +209,9 @@ namespace OpenRCT2::Imaging
                 for (size_t i = 0; i < PNG_MAX_PALETTE_LENGTH; i++)
                 {
                     const auto& entry = (*image.Palette)[i];
-                    png_palette[i].blue = entry.Blue;
-                    png_palette[i].green = entry.Green;
-                    png_palette[i].red = entry.Red;
+                    png_palette[i].blue = entry.blue;
+                    png_palette[i].green = entry.green;
+                    png_palette[i].red = entry.red;
                 }
                 png_set_PLTE(png_ptr, info_ptr, png_palette, PNG_MAX_PALETTE_LENGTH);
             }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,6 +18,7 @@
 #include "../OpenRCT2.h"
 #include "../ParkImporter.h"
 #include "../PlatformEnvironment.h"
+#include "../actions/ResultWithMessage.h"
 #include "../audio/Audio.h"
 #include "../config/Config.h"
 #include "../core/BitSet.hpp"
@@ -26,20 +27,20 @@
 #include "../core/Path.hpp"
 #include "../core/Random.hpp"
 #include "../core/UnitConversion.h"
+#include "../drawing/Drawing.h"
 #include "../entity/Duck.h"
 #include "../entity/Guest.h"
 #include "../entity/Staff.h"
 #include "../interface/Viewport.h"
+#include "../localisation/Formatter.h"
 #include "../management/Award.h"
 #include "../management/Finance.h"
 #include "../management/Marketing.h"
 #include "../management/NewsItem.h"
 #include "../management/Research.h"
 #include "../network/Network.h"
-#include "../object/Object.h"
 #include "../object/ObjectEntryManager.h"
 #include "../object/ObjectLimits.h"
-#include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../object/ScenarioMetaObject.h"
 #include "../object/WaterEntry.h"
@@ -380,7 +381,7 @@ static void ScenarioUpdateDayNightCycle()
     // Only update palette if day / night cycle has changed
     if (gDayNightCycle != currentDayNightCycle)
     {
-        UpdatePalette(gGamePalette, 10, 236);
+        UpdatePalette(gGamePalette, Drawing::PaletteIndex::pi10, 236);
     }
 }
 
@@ -488,7 +489,7 @@ bool ScenarioCreateDucks()
 const random_engine_t::state_type& ScenarioRandState()
 {
     return getGameState().scenarioRand.state();
-};
+}
 
 void ScenarioRandSeed(random_engine_t::result_type s0, random_engine_t::result_type s1)
 {

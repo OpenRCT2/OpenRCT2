@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -38,8 +38,7 @@ namespace OpenRCT2
         }
 
         session.CurrentlyDrawnEntity = vehicleToPaint;
-        imageDirection = OpenRCT2::Entity::Yaw::Add(
-            OpenRCT2::Entity::Yaw::YawFrom4(session.CurrentRotation), vehicleToPaint->Orientation);
+        imageDirection = Entity::Yaw::Add(Entity::Yaw::YawFrom4(session.CurrentRotation), vehicleToPaint->Orientation);
         session.SpritePosition.x = vehicleToPaint->x;
         session.SpritePosition.y = vehicleToPaint->y;
         vehicleToPaint->Paint(session, imageDirection);

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -20,6 +20,7 @@
 #include "../world/Map.h"
 #include "../world/tile_element/SurfaceElement.h"
 #include "../world/tile_element/TrackElement.h"
+#include "ResultWithMessage.h"
 #include "RideSetSettingAction.h"
 
 namespace OpenRCT2::GameActions
@@ -423,7 +424,7 @@ namespace OpenRCT2::GameActions
 
             InvalidateTestResults(*ride);
             FootpathQueueChainReset();
-            if (!getGameState().cheats.disableClearanceChecks || !(tileElement->IsGhost()))
+            if (!gameState.cheats.disableClearanceChecks || !(tileElement->IsGhost()))
             {
                 FootpathRemoveEdgesAt(mapLoc, tileElement);
             }
@@ -460,12 +461,12 @@ namespace OpenRCT2::GameActions
                         if (ride->mode != newMode)
                         {
                             bool canSwitch = ride->getRideTypeDescriptor().SupportsRideMode(newMode)
-                                || getGameState().cheats.showAllOperatingModes;
+                                || gameState.cheats.showAllOperatingModes;
                             if (canSwitch)
                             {
-                                ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_OPERATING;
-                                auto rideSetSetting = GameActions::RideSetSettingAction(
-                                    ride->id, GameActions::RideSetSetting::Mode, static_cast<uint8_t>(newMode));
+                                ride->windowInvalidateFlags.set(RideInvalidateFlag::operatingSettings);
+                                auto rideSetSetting = RideSetSettingAction(
+                                    ride->id, RideSetSetting::Mode, static_cast<uint8_t>(newMode));
                                 ExecuteNested(&rideSetSetting, gameState);
                             }
                         }

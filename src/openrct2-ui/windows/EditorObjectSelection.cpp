@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -22,13 +22,15 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/LoadOrQuitAction.h>
+#include <openrct2/actions/ResultWithMessage.h>
 #include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/EnumUtils.hpp>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
+#include <openrct2/drawing/ColourMap.h>
+#include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
-#include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/object/ClimateObject.h>
 #include <openrct2/object/MusicObject.h>
@@ -381,7 +383,7 @@ namespace OpenRCT2::Ui::Windows
                     if (gLegacyScene != LegacyScene::trackDesignsManager && !EditorObjectSelectionWindowCheck())
                         return;
 
-                    auto* windowMgr = Ui::GetWindowManager();
+                    auto* windowMgr = GetWindowManager();
                     windowMgr->CloseByClass(WindowClass::editorObjectSelection);
 
                     if (isInEditorMode())
@@ -393,7 +395,7 @@ namespace OpenRCT2::Ui::Windows
                         GameNotifyMapChange();
                         GameUnloadScripts();
 
-                        auto* context = OpenRCT2::GetContext();
+                        auto* context = GetContext();
                         context->SetActiveScene(context->GetTitleScene());
                     }
                     break;
@@ -604,7 +606,7 @@ namespace OpenRCT2::Ui::Windows
         {
             // Used for in-game object selection cheat to prevent crashing the game
             // when windows attempt to draw objects that don't exist any more
-            auto* windowMgr = Ui::GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             windowMgr->CloseAllExceptClass(WindowClass::editorObjectSelection);
 
             int32_t selected_object = GetObjectFromObjectSelection(GetSelectedObjectType(), screenCoords.y);
@@ -725,13 +727,13 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onScrollDraw(int32_t scrollIndex, Drawing::RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             // ScrollPaint
             ScreenCoordsXY screenCoords;
             bool ridePage = (GetSelectedObjectType() == ObjectType::ride);
 
-            uint8_t paletteIndex = ColourMapA[colours[1].colour].mid_light;
+            auto paletteIndex = getColourMap(colours[1].colour).midLight;
             GfxClear(rt, paletteIndex);
 
             screenCoords.y = 0;
@@ -1008,7 +1010,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_PREVIEW].right = widgets[WIDX_PREVIEW].left + kPreviewSize;
         }
 
-        void onDraw(Drawing::RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             drawWidgets(rt);
 
@@ -1066,7 +1068,7 @@ namespace OpenRCT2::Ui::Windows
                 rt,
                 { windowPos + ScreenCoordsXY{ previewWidget.left + 1, previewWidget.top + 1 },
                   windowPos + ScreenCoordsXY{ previewWidget.right - 1, previewWidget.bottom - 1 } },
-                ColourMapA[colours[1].colour].darkest);
+                getColourMap(colours[1].colour).darkest);
 
             // Draw number of selected items
             if (!(gLegacyScene == LegacyScene::trackDesignsManager))
@@ -1109,13 +1111,13 @@ namespace OpenRCT2::Ui::Windows
 
             // Draw preview
             {
-                RenderTarget clipDPI;
+                RenderTarget clipRT;
                 auto screenPos = windowPos + ScreenCoordsXY{ previewWidget.left + 1, previewWidget.top + 1 };
                 int32_t previewWidth = previewWidget.width() - 2;
                 int32_t previewHeight = previewWidget.height() - 2;
-                if (ClipDrawPixelInfo(clipDPI, rt, screenPos, previewWidth, previewHeight))
+                if (ClipRenderTarget(clipRT, rt, screenPos, previewWidth, previewHeight))
                 {
-                    _loadedObject->DrawPreview(clipDPI, previewWidth, previewHeight);
+                    _loadedObject->DrawPreview(clipRT, previewWidth, previewHeight);
                 }
             }
 
@@ -1248,7 +1250,7 @@ namespace OpenRCT2::Ui::Windows
             _listItems.shrink_to_fit();
         }
 
-        void DrawDescriptions(Drawing::RenderTarget& rt)
+        void DrawDescriptions(RenderTarget& rt)
         {
             auto screenPos = windowPos + ScreenCoordsXY{ widgets[WIDX_PREVIEW].midX(), widgets[WIDX_PREVIEW].bottom + 3 };
             auto descriptionWidth = width - widgets[WIDX_LIST].right - 12;
@@ -1356,7 +1358,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawDebugData(Drawing::RenderTarget& rt)
+        void DrawDebugData(RenderTarget& rt)
         {
             ObjectListItem* listItem = &_listItems[selectedListItem];
             auto screenPos = windowPos + ScreenCoordsXY{ width - 5, height - (kListRowHeight * 6) };
@@ -1750,7 +1752,7 @@ namespace OpenRCT2::Ui::Windows
 
         ContextShowError(STR_INVALID_SELECTION_OF_OBJECTS, errorString, {});
 
-        auto* windowMgr = Ui::GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         WindowBase* w = windowMgr->FindByClass(WindowClass::editorObjectSelection);
         if (w != nullptr)
         {

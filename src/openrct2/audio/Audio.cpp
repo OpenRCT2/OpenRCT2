@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -116,7 +116,7 @@ namespace OpenRCT2::Audio
 
     void PopulateDevices()
     {
-        auto& audioContext = OpenRCT2::GetContext()->GetAudioContext();
+        auto& audioContext = GetContext()->GetAudioContext();
         std::vector<std::string> devices = audioContext.GetOutputDevices();
 
         // Replace blanks with localised unknown string
@@ -128,11 +128,12 @@ namespace OpenRCT2::Audio
             }
         }
 
-#ifndef __linux__
-        // The first device is always system default on Windows and macOS
+        // The first device is always system default
         std::string defaultDevice = LanguageGetString(STR_OPTIONS_SOUND_VALUE_DEFAULT);
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wnull-dereference"
         devices.insert(devices.begin(), defaultDevice);
-#endif
+#pragma GCC diagnostic pop
 
         _audioDevices = devices;
     }

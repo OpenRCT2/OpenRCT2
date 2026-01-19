@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,6 +15,7 @@
 #include <openrct2/AssetPackManager.h>
 #include <openrct2/Context.h>
 #include <openrct2/SpriteIds.h>
+#include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/drawing/Text.h>
@@ -187,17 +188,17 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_APPLY].top = widgets[WIDX_APPLY].bottom - 24;
         }
 
-        void onDraw(Drawing::RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             drawWidgets(rt);
         }
 
-        void onScrollDraw(int32_t scrollIndex, Drawing::RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             auto rtCoords = ScreenCoordsXY{ rt.x, rt.y };
             Rectangle::fill(
                 rt, { rtCoords, rtCoords + ScreenCoordsXY{ rt.width - 1, rt.height - 1 } },
-                ColourMapA[colours[1].colour].mid_light);
+                getColourMap(colours[1].colour).midLight);
 
             auto assetPackManager = GetContext()->GetAssetPackManager();
             if (assetPackManager == nullptr)
@@ -237,19 +238,19 @@ namespace OpenRCT2::Ui::Windows
         }
 
     private:
-        void PaintItem(Drawing::RenderTarget& rt, int32_t y, Formatter& ft, bool isChecked, bool isSelected, bool isHighlighted)
+        void PaintItem(RenderTarget& rt, int32_t y, Formatter& ft, bool isChecked, bool isSelected, bool isHighlighted)
         {
             auto listWidth = widgets[WIDX_LIST].right - widgets[WIDX_LIST].left;
             auto stringId = STR_BLACK_STRING;
             auto fillRectangle = ScreenRect{ { 0, y }, { listWidth, y + ItemHeight - 1 } };
             if (isSelected)
             {
-                Rectangle::fill(rt, fillRectangle, ColourMapA[colours[1].colour].mid_dark);
+                Rectangle::fill(rt, fillRectangle, getColourMap(colours[1].colour).midDark);
                 stringId = STR_WINDOW_COLOUR_2_STRINGID;
             }
             else if (isHighlighted)
             {
-                Rectangle::fill(rt, fillRectangle, ColourMapA[colours[1].colour].mid_dark);
+                Rectangle::fill(rt, fillRectangle, getColourMap(colours[1].colour).midDark);
             }
 
             DrawTextEllipsised(rt, { 16, y + 1 }, listWidth, stringId, ft);
@@ -258,7 +259,7 @@ namespace OpenRCT2::Ui::Windows
             PaintCheckbox(rt, { { 2, y + 1 }, { 2 + checkboxSize + 1, y + 1 + checkboxSize } }, isChecked);
         }
 
-        void PaintCheckbox(Drawing::RenderTarget& rt, const ScreenRect& rect, bool checked)
+        void PaintCheckbox(RenderTarget& rt, const ScreenRect& rect, bool checked)
         {
             Rectangle::fillInset(
                 rt, rect, colours[1], Rectangle::BorderStyle::inset, Rectangle::FillBrightness::dark,

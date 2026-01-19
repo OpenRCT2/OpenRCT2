@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -147,10 +147,10 @@ static const TrackElement* ChairliftPaintUtilMapGetTrackElementAtFromRideFuzzy(
     } while (!(tileElement++)->IsLastForTile());
 
     return nullptr;
-};
+}
 
 static bool ChairliftPaintUtilIsFirstTrack(
-    const Ride& ride, const TrackElement& trackElement, const CoordsXY& pos, OpenRCT2::TrackElemType trackType)
+    const Ride& ride, const TrackElement& trackElement, const CoordsXY& pos, TrackElemType trackType)
 {
     if (trackElement.GetTrackType() != TrackElemType::beginStation)
     {
@@ -170,7 +170,7 @@ static bool ChairliftPaintUtilIsFirstTrack(
 }
 
 static bool ChairliftPaintUtilIsLastTrack(
-    const Ride& ride, const TrackElement& trackElement, const CoordsXY& pos, OpenRCT2::TrackElemType trackType)
+    const Ride& ride, const TrackElement& trackElement, const CoordsXY& pos, TrackElemType trackType)
 {
     if (trackElement.GetTrackType() != TrackElemType::endStation)
     {
@@ -662,7 +662,7 @@ static void ChairliftPaintRightQuarterTurn1Tile(
 }
 
 /* 0x008AAA0C */
-TrackPaintFunction GetTrackPaintFunctionChairlift(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionChairlift(TrackElemType trackType)
 {
     switch (trackType)
     {

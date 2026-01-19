@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,14 +11,20 @@
 
 #include <cstdint>
 
-enum PaletteIndex : uint8_t;
 struct ImageId;
 struct PaintSession;
 using StringId = uint16_t;
 
+constexpr uint8_t kScrollingModeNone = 255;
+
 namespace OpenRCT2
 {
     class Formatter;
+}
+
+namespace OpenRCT2::Drawing
+{
+    enum class PaletteIndex : uint8_t;
 }
 
 namespace OpenRCT2::Drawing::ScrollingText
@@ -30,6 +36,5 @@ namespace OpenRCT2::Drawing::ScrollingText
     void initialiseBitmaps();
     void invalidate();
     ImageId setup(
-        PaintSession& session, StringId stringId, OpenRCT2::Formatter& ft, uint16_t scroll, uint16_t scrollingMode,
-        PaletteIndex colour);
+        PaintSession& session, StringId stringId, Formatter& ft, uint16_t scroll, uint16_t scrollingMode, PaletteIndex colour);
 } // namespace OpenRCT2::Drawing::ScrollingText

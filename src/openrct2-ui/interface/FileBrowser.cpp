@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -19,7 +19,9 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
+#include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/Window.h>
+#include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/rct2/T6Exporter.h>
@@ -58,7 +60,7 @@ namespace OpenRCT2::Ui::FileBrowser
         return nullptr;
 #endif
 
-        auto hasFilePicker = OpenRCT2::GetContext()->GetUiContext().HasFilePicker();
+        auto hasFilePicker = GetContext()->GetUiContext().HasFilePicker();
         auto& config = Config::Get().general;
 
         // Open system file picker?
@@ -243,7 +245,7 @@ namespace OpenRCT2::Ui::FileBrowser
 
         // Closing this will cause a Ride window to pop up, so we have to do this to ensure that
         // no windows are open (besides the toolbars and LoadSave window).
-        auto* windowMgr = Ui::GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         windowMgr->CloseByClass(WindowClass::rideConstruction);
         windowMgr->CloseAllExceptClass(WindowClass::loadsave);
 
@@ -487,7 +489,7 @@ namespace OpenRCT2::Ui::FileBrowser
         }
     }
 
-    static Ui::FileDialogDesc::Filter GetFilterForType(LoadSaveType type, bool isSave)
+    static FileDialogDesc::Filter GetFilterForType(LoadSaveType type, bool isSave)
     {
         switch (type)
         {
@@ -536,7 +538,7 @@ namespace OpenRCT2::Ui::FileBrowser
         u8string extension = GetDefaultExtensionByType(type);
         StringId title = GetTitleStringId(type, isSave);
 
-        Ui::FileDialogDesc desc = {
+        FileDialogDesc desc = {
             .Type = isSave ? FileDialogType::Save : FileDialogType::Open,
             .Title = LanguageGetString(title),
             .InitialDirectory = defaultDirectory,

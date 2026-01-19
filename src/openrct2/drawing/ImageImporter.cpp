@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,6 +9,7 @@
 
 #include "ImageImporter.h"
 
+#include "../core/Guard.hpp"
 #include "../core/Imaging.h"
 #include "../core/Json.hpp"
 
@@ -20,7 +21,7 @@ namespace OpenRCT2::Drawing
 {
     static constexpr int32_t kPaletteTransparent = -1;
 
-    ImageImporter::ImportResult ImageImporter::Import(const Image& image, ImageImportMeta& meta) const
+    ImageImportResult ImageImporter::Import(const Image& image, ImageImportMeta& meta) const
     {
         if (meta.srcSize.width == 0)
             meta.srcSize.width = image.Width;
@@ -52,11 +53,58 @@ namespace OpenRCT2::Drawing
         if (HasFlag(meta.importFlags, ImportFlags::NoDrawOnZoom))
             outElement.flags.set(G1Flag::noZoomDraw);
 
-        ImageImporter::ImportResult result;
+        ImageImportResult result;
         result.Element = outElement;
         result.Buffer = std::move(buffer);
         result.Element.offset = result.Buffer.data();
         return result;
+    }
+
+    PaletteImportResult ImageImporter::importJSONPalette(json_t& jPalette) const
+    {
+        Guard::Assert(jPalette.is_object(), "ImageImporter::importJSONPalette expects parameter jPalette to be an object");
+
+        auto jColours = jPalette["colours"];
+        auto numColours = jColours.size();
+
+        std::vector<BGRColour> buffer;
+        buffer.reserve(numColours);
+
+        for (auto& jColour : jColours)
+        {
+            BGRColour colour{};
+            if (jColour.is_string())
+            {
+                colour = parseJSONPaletteColour(Json::GetString(jColour));
+            }
+            buffer.push_back(colour);
+        }
+
+        G1Palette outElement = {};
+        outElement.numColours = static_cast<int16_t>(numColours);
+        outElement.startIndex = Json::GetNumber<int16_t>(jPalette["index"]);
+        outElement.flags = { G1Flag::isPalette };
+
+        PaletteImportResult result;
+        result.element = outElement;
+        result.buffer = std::move(buffer);
+        result.element.palette = result.buffer.data();
+        return result;
+    }
+
+    BGRColour ImageImporter::parseJSONPaletteColour(const std::string& s) const
+    {
+        uint8_t r = 0;
+        uint8_t g = 0;
+        uint8_t b = 0;
+        if (s[0] == '#' && s.size() == 7)
+        {
+            // Expect #RRGGBB
+            r = std::stoul(s.substr(1, 2), nullptr, 16) & 0xFF;
+            g = std::stoul(s.substr(3, 2), nullptr, 16) & 0xFF;
+            b = std::stoul(s.substr(5, 2), nullptr, 16) & 0xFF;
+        }
+        return { b, g, r };
     }
 
     std::vector<int32_t> ImageImporter::GetPixels(const Image& image, const ImageImportMeta& meta)
@@ -242,9 +290,9 @@ namespace OpenRCT2::Drawing
             paletteIndex = GetClosestPaletteIndex(palette, rgbaSrc);
             if (mode == ImportMode::Dithering)
             {
-                auto dr = rgbaSrc[0] - static_cast<int16_t>(palette[paletteIndex].Red);
-                auto dg = rgbaSrc[1] - static_cast<int16_t>(palette[paletteIndex].Green);
-                auto db = rgbaSrc[2] - static_cast<int16_t>(palette[paletteIndex].Blue);
+                auto dr = rgbaSrc[0] - static_cast<int16_t>(palette[paletteIndex].red);
+                auto dg = rgbaSrc[1] - static_cast<int16_t>(palette[paletteIndex].green);
+                auto db = rgbaSrc[2] - static_cast<int16_t>(palette[paletteIndex].blue);
 
                 // We don't want to dither remappable colours with nonremappable colours, etc
                 PaletteIndexType thisIndexType = GetPaletteIndexType(paletteIndex);
@@ -308,8 +356,8 @@ namespace OpenRCT2::Drawing
         {
             for (uint32_t i = 0; i < kGamePaletteSize; i++)
             {
-                if (static_cast<int16_t>(palette[i].Red) == colour[0] && static_cast<int16_t>(palette[i].Green) == colour[1]
-                    && static_cast<int16_t>(palette[i].Blue) == colour[2])
+                if (static_cast<int16_t>(palette[i].red) == colour[0] && static_cast<int16_t>(palette[i].green) == colour[1]
+                    && static_cast<int16_t>(palette[i].blue) == colour[2])
                 {
                     return i;
                 }
@@ -368,11 +416,11 @@ namespace OpenRCT2::Drawing
         {
             if (IsChangablePixel(x))
             {
-                uint32_t error = (static_cast<int16_t>(palette[x].Red) - colour[0])
-                        * (static_cast<int16_t>(palette[x].Red) - colour[0])
-                    + (static_cast<int16_t>(palette[x].Green) - colour[1])
-                        * (static_cast<int16_t>(palette[x].Green) - colour[1])
-                    + (static_cast<int16_t>(palette[x].Blue) - colour[2]) * (static_cast<int16_t>(palette[x].Blue) - colour[2]);
+                uint32_t error = (static_cast<int16_t>(palette[x].red) - colour[0])
+                        * (static_cast<int16_t>(palette[x].red) - colour[0])
+                    + (static_cast<int16_t>(palette[x].green) - colour[1])
+                        * (static_cast<int16_t>(palette[x].green) - colour[1])
+                    + (static_cast<int16_t>(palette[x].blue) - colour[2]) * (static_cast<int16_t>(palette[x].blue) - colour[2]);
 
                 if (smallestError == static_cast<uint32_t>(-1) || smallestError > error)
                 {
@@ -407,5 +455,5 @@ namespace OpenRCT2::Drawing
 
         return ImageImportMeta{ { xOffset, yOffset },    palette,     flags, ImportMode::Default, { srcX, srcY },
                                 { srcWidth, srcHeight }, zoomedOffset };
-    };
+    }
 } // namespace OpenRCT2::Drawing

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -128,7 +128,7 @@ enum
     SHOP_ITEM_FLAG_IS_RECOLOURABLE = (1 << 5),
 };
 
-money64 ShopItemGetCommonPrice(Ride* forRide, const ShopItem shopItem);
-bool ShopItemHasCommonPrice(const ShopItem shopItem);
+money64 ShopItemGetCommonPrice(Ride* forRide, ShopItem shopItem);
+bool ShopItemHasCommonPrice(ShopItem shopItem);
 
 const ShopItemDescriptor& GetShopItemDescriptor(ShopItem item);

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,20 +9,27 @@
 
 #pragma once
 
-#include "../../drawing/Drawing.h"
-#include "../../drawing/ImageImporter.h"
+#include "../../core/StringTypes.h"
+#include "../../drawing/G1Element.h"
+
+#include <optional>
+
+namespace OpenRCT2::Drawing
+{
+    struct ImageImportResult;
+    struct PaletteImportResult;
+} // namespace OpenRCT2::Drawing
 
 namespace OpenRCT2::CommandLine::Sprite
 {
-    using OpenRCT2::Drawing::ImageImporter;
-
     class SpriteFile
     {
     public:
         G1Header Header{};
         std::vector<G1Element> Entries;
         std::vector<uint8_t> Data;
-        void AddImage(ImageImporter::ImportResult& image);
+        void AddImage(Drawing::ImageImportResult& image);
+        void addPalette(Drawing::PaletteImportResult& image);
         bool Save(const utf8* path);
         static std::optional<SpriteFile> Open(const utf8* path);
 

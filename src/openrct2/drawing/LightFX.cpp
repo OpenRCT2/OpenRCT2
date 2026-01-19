@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -1006,11 +1006,11 @@ namespace OpenRCT2::Drawing::LightFx
                     (-overExpose + static_cast<float>(*b) * reduceColourNat * natLightB + envFog * fogB + addLightNatB))));
 
             auto dstEntry = &gPalette_light[i];
-            dstEntry->Red = static_cast<uint8_t>(
+            dstEntry->red = static_cast<uint8_t>(
                 std::min<float>(0xFF, (static_cast<float>(*r) * reduceColourLit * boost + lightFog) * elecMultR));
-            dstEntry->Green = static_cast<uint8_t>(
+            dstEntry->green = static_cast<uint8_t>(
                 std::min<float>(0xFF, (static_cast<float>(*g) * reduceColourLit * boost + lightFog) * elecMultG));
-            dstEntry->Blue = static_cast<uint8_t>(
+            dstEntry->blue = static_cast<uint8_t>(
                 std::min<float>(0xFF, (static_cast<float>(*b) * reduceColourLit * boost + lightFog) * elecMultB));
         }
     }

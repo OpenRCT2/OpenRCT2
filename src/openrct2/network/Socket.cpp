@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -72,6 +72,10 @@
         #define FLAG_NO_PIPE 0
     #endif // defined(__linux__)
 #endif // _WIN32
+
+#ifdef __HAIKU__
+    #include <sys/sockio.h>
+#endif
 // clang-format on
 
     #include "Socket.h"
@@ -773,9 +777,7 @@ namespace OpenRCT2::Network
             {
                 const char* bufferStart = static_cast<const char*>(buffer) + totalSent;
                 size_t remainingSize = size - totalSent;
-                int32_t sentBytes = sendto(
-                    _socket, bufferStart, static_cast<int32_t>(remainingSize), FLAG_NO_PIPE, static_cast<const sockaddr*>(ss),
-                    ss_len);
+                int32_t sentBytes = sendto(_socket, bufferStart, static_cast<int32_t>(remainingSize), FLAG_NO_PIPE, ss, ss_len);
                 if (sentBytes == SOCKET_ERROR)
                 {
                     return totalSent;

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -103,7 +103,7 @@ void DrawText(RenderTarget& rt, const ScreenCoordsXY& coords, const TextPaint& p
         Rectangle::fill(
             rt, { { alignedCoords + ScreenCoordsXY{ 0, 11 } }, { alignedCoords + ScreenCoordsXY{ width, 11 } } },
             gTextPalette.fill);
-        if (gTextPalette.sunnyOutline != 0)
+        if (gTextPalette.sunnyOutline != PaletteIndex::transparent)
         {
             Rectangle::fill(
                 rt, { { alignedCoords + ScreenCoordsXY{ 1, 12 } }, { alignedCoords + ScreenCoordsXY{ width + 1, 12 } } },
@@ -122,7 +122,7 @@ void DrawTextBasic(RenderTarget& rt, const ScreenCoordsXY& coords, StringId form
 void DrawTextBasic(RenderTarget& rt, const ScreenCoordsXY& coords, StringId format, const Formatter& ft, TextPaint textPaint)
 {
     utf8 buffer[512];
-    OpenRCT2::FormatStringLegacy(buffer, sizeof(buffer), format, ft.Data());
+    FormatStringLegacy(buffer, sizeof(buffer), format, ft.Data());
     DrawText(rt, coords, textPaint, buffer);
 }
 
@@ -137,7 +137,7 @@ void DrawTextEllipsised(
     RenderTarget& rt, const ScreenCoordsXY& coords, int32_t width, StringId format, const Formatter& ft, TextPaint textPaint)
 {
     utf8 buffer[512];
-    OpenRCT2::FormatStringLegacy(buffer, sizeof(buffer), format, ft.Data());
+    FormatStringLegacy(buffer, sizeof(buffer), format, ft.Data());
     GfxClipString(buffer, width, textPaint.FontStyle);
 
     DrawText(rt, coords, textPaint, buffer);
@@ -155,7 +155,7 @@ int32_t DrawTextWrapped(
 {
     const void* args = ft.Data();
 
-    StaticLayout layout(OpenRCT2::FormatStringIDLegacy(format, args), textPaint, width);
+    StaticLayout layout(FormatStringIDLegacy(format, args), textPaint, width);
 
     if (textPaint.Alignment == TextAlignment::centre)
     {

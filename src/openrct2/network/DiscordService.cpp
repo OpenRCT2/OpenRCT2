@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -91,13 +91,13 @@ namespace OpenRCT2::Network
         {
             default:
                 details = GetParkName();
-                if (Network::GetMode() == Network::Mode::none)
+                if (GetMode() == Mode::none)
                 {
                     state = "Playing Solo";
                 }
                 else
                 {
-                    FmtString fmtServerName(Network::GetServerName());
+                    FmtString fmtServerName(GetServerName());
                     std::string serverName;
                     for (const auto& token : fmtServerName)
                     {
@@ -115,10 +115,10 @@ namespace OpenRCT2::Network
                     }
                     state = serverName;
 
-                    partyId = Network::GetServerName();
+                    partyId = GetServerName();
                     // NOTE: the party size is displayed next to state
                     discordPresence.partyId = partyId.c_str();
-                    discordPresence.partySize = Network::GetNumPlayers();
+                    discordPresence.partySize = GetNumPlayers();
                     discordPresence.partyMax = 256;
 
                     // TODO generate secrets for the server

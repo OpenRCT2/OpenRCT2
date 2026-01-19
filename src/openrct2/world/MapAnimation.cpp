@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -653,8 +653,8 @@ static void InvalidateAll(const ViewportList& viewports)
 
         // Code adapted from PaintSessionGenerateRotate.
         // Ideally this would iterate over tiles in memory order.
-        constexpr const int32_t maxTileHeightModifier = 88; // from magic value in PaintSessionGenerateRotate
-        constexpr const int32_t maxTileHeight = (kMaxTileElementHeight * kCoordsZStep) + maxTileHeightModifier;
+        constexpr int32_t maxTileHeightModifier = 88; // from magic value in PaintSessionGenerateRotate
+        constexpr int32_t maxTileHeight = (kMaxTileElementHeight * kCoordsZStep) + maxTileHeightModifier;
 
         const auto direction = DirectionFlipXAxis(viewport->rotation);
         const int32_t numVerticalTiles = (viewport->ViewHeight() + maxTileHeight) / kScreenCoordsTileHeight;

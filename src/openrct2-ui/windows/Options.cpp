@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -30,6 +30,8 @@
 #include <openrct2/core/EnumUtils.hpp>
 #include <openrct2/core/File.h>
 #include <openrct2/core/String.hpp>
+#include <openrct2/drawing/ColourMap.h>
+#include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/IDrawingEngine.h>
 #include <openrct2/drawing/ScrollingText.h>
 #include <openrct2/localisation/Currency.h>
@@ -57,6 +59,7 @@ extern void ImportPersistentData();
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
+using namespace OpenRCT2::Drawing;
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -628,7 +631,7 @@ namespace OpenRCT2::Ui::Windows
             CommonPrepareDrawAfter();
         }
 
-        void onDraw(Drawing::RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             drawWidgets(rt);
             DrawTabImages(rt);
@@ -743,7 +746,7 @@ namespace OpenRCT2::Ui::Windows
             SetPressedTab();
 
             disabledWidgets = 0;
-            auto hasFilePicker = OpenRCT2::GetContext()->GetUiContext().HasFilePicker();
+            auto hasFilePicker = GetContext()->GetUiContext().HasFilePicker();
             const bool advancedTabSelected = (WIDX_FIRST_TAB + page) == WIDX_TAB_ADVANCED;
             if (!hasFilePicker && advancedTabSelected)
             {
@@ -817,7 +820,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_RESOLUTION_DROPDOWN:
                 {
-                    const auto& resolutions = OpenRCT2::GetContext()->GetUiContext().GetFullscreenResolutions();
+                    const auto& resolutions = GetContext()->GetUiContext().GetFullscreenResolutions();
 
                     int32_t selectedResolution = -1;
                     for (size_t i = 0; i < resolutions.size(); i++)
@@ -907,7 +910,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_RESOLUTION_DROPDOWN:
                 {
-                    const auto& resolutions = OpenRCT2::GetContext()->GetUiContext().GetFullscreenResolutions();
+                    const auto& resolutions = GetContext()->GetUiContext().GetFullscreenResolutions();
 
                     const Resolution& resolution = resolutions[dropdownIndex];
                     if (resolution.Width != Config::Get().general.fullscreenWidth
@@ -916,9 +919,8 @@ namespace OpenRCT2::Ui::Windows
                         Config::Get().general.fullscreenWidth = resolution.Width;
                         Config::Get().general.fullscreenHeight = resolution.Height;
 
-                        if (Config::Get().general.fullscreenMode
-                            == static_cast<int32_t>(OpenRCT2::Ui::FullscreenMode::fullscreen))
-                            ContextSetFullscreenMode(static_cast<int32_t>(OpenRCT2::Ui::FullscreenMode::fullscreen));
+                        if (Config::Get().general.fullscreenMode == static_cast<int32_t>(FullscreenMode::fullscreen))
+                            ContextSetFullscreenMode(static_cast<int32_t>(FullscreenMode::fullscreen));
 
                         Config::Save();
                         GfxInvalidateScreen();
@@ -952,16 +954,16 @@ namespace OpenRCT2::Ui::Windows
                     switch (dropdownIndex)
                     {
                         case 0: // vanilla
-                            config.uncapFPS = 0;
-                            config.useVSync = 0;
+                            config.uncapFPS = false;
+                            config.useVSync = false;
                             break;
                         case 1: // vsync
-                            config.uncapFPS = 1;
-                            config.useVSync = 1;
+                            config.uncapFPS = true;
+                            config.useVSync = true;
                             break;
                         case 2: // uncapped
-                            config.uncapFPS = 1;
-                            config.useVSync = 0;
+                            config.uncapFPS = true;
+                            config.useVSync = false;
                             break;
                     }
 
@@ -982,7 +984,7 @@ namespace OpenRCT2::Ui::Windows
             ft.Add<uint16_t>(static_cast<uint16_t>(Config::Get().general.fullscreenHeight));
 
             // Disable resolution dropdown on "Windowed" and "Fullscreen (desktop)"
-            if (Config::Get().general.fullscreenMode != static_cast<int32_t>(OpenRCT2::Ui::FullscreenMode::fullscreen))
+            if (Config::Get().general.fullscreenMode != static_cast<int32_t>(FullscreenMode::fullscreen))
             {
                 disabledWidgets |= (1uLL << WIDX_RESOLUTION_DROPDOWN);
                 disabledWidgets |= (1uLL << WIDX_RESOLUTION);
@@ -1019,7 +1021,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_FRAME_RATE_LIMIT].text = kFrameRateLimitStringIds[activeItem];
         }
 
-        void DisplayDraw(Drawing::RenderTarget& rt)
+        void DisplayDraw(RenderTarget& rt)
         {
             auto ft = Formatter();
             ft.Add<int32_t>(static_cast<int32_t>(Config::Get().general.windowScale * 100));
@@ -1073,7 +1075,7 @@ namespace OpenRCT2::Ui::Windows
                     Config::Get().general.upperCaseBanners ^= 1;
                     Config::Save();
                     invalidate();
-                    Drawing::ScrollingText::invalidate();
+                    ScrollingText::invalidate();
                     break;
                 case WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX:
                     Config::Get().general.disableLightningEffect ^= 1;
@@ -1274,11 +1276,11 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_HEIGHT_LABELS_DROPDOWN:
                     // reset flag and set it to 1 if height as units is selected
-                    Config::Get().general.showHeightAsUnits = 0;
+                    Config::Get().general.showHeightAsUnits = false;
 
                     if (dropdownIndex == 0)
                     {
-                        Config::Get().general.showHeightAsUnits = 1;
+                        Config::Get().general.showHeightAsUnits = true;
                     }
                     Config::Save();
                     UpdateHeightMarkers();
@@ -1402,11 +1404,11 @@ namespace OpenRCT2::Ui::Windows
                 {
                     Config::Get().sound.masterSoundEnabled = !Config::Get().sound.masterSoundEnabled;
                     if (!Config::Get().sound.masterSoundEnabled)
-                        OpenRCT2::Audio::Pause();
+                        Pause();
                     else
-                        OpenRCT2::Audio::Resume();
+                        Resume();
 
-                    auto* windowMgr = Ui::GetWindowManager();
+                    auto* windowMgr = GetWindowManager();
                     windowMgr->InvalidateByClass(WindowClass::topToolbar);
                     Config::Save();
                     invalidate();
@@ -1417,7 +1419,7 @@ namespace OpenRCT2::Ui::Windows
                     Config::Get().sound.rideMusicEnabled = !Config::Get().sound.rideMusicEnabled;
                     if (!Config::Get().sound.rideMusicEnabled)
                     {
-                        OpenRCT2::RideAudio::StopAllChannels();
+                        RideAudio::StopAllChannels();
                     }
                     Config::Save();
                     invalidate();
@@ -1438,17 +1440,17 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_SOUND_DROPDOWN:
-                    OpenRCT2::Audio::PopulateDevices();
+                    PopulateDevices();
 
                     // populate the list with the sound devices
-                    for (int32_t i = 0; i < OpenRCT2::Audio::GetDeviceCount(); i++)
+                    for (int32_t i = 0; i < GetDeviceCount(); i++)
                     {
-                        gDropdown.items[i] = Dropdown::MenuLabel(OpenRCT2::Audio::GetDeviceName(i).c_str());
+                        gDropdown.items[i] = Dropdown::MenuLabel(GetDeviceName(i).c_str());
                     }
 
-                    ShowDropdown(widget, OpenRCT2::Audio::GetDeviceCount());
+                    ShowDropdown(widget, GetDeviceCount());
 
-                    gDropdown.items[OpenRCT2::Audio::GetCurrentDeviceIndex()].setChecked(true);
+                    gDropdown.items[GetCurrentDeviceIndex()].setChecked(true);
                     break;
                 case WIDX_TITLE_MUSIC_DROPDOWN:
                 {
@@ -1477,8 +1479,8 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_SOUND_DROPDOWN:
-                    OpenRCT2::Audio::InitRideSounds(dropdownIndex);
-                    if (dropdownIndex < OpenRCT2::Audio::GetDeviceCount())
+                    InitRideSounds(dropdownIndex);
+                    if (dropdownIndex < GetDeviceCount())
                     {
                         auto& audioContext = GetContext()->GetAudioContext();
                         if (dropdownIndex == 0)
@@ -1493,7 +1495,7 @@ namespace OpenRCT2::Ui::Windows
                             Config::Get().sound.device = deviceName;
                         }
                         Config::Save();
-                        OpenRCT2::Audio::PlayTitleMusic();
+                        PlayTitleMusic();
                     }
                     invalidate();
                     break;
@@ -1512,10 +1514,10 @@ namespace OpenRCT2::Ui::Windows
                     Config::Save();
                     invalidate();
 
-                    OpenRCT2::Audio::StopTitleMusic();
+                    StopTitleMusic();
                     if (Config::Get().sound.titleMusic != TitleMusicKind::None)
                     {
-                        OpenRCT2::Audio::PlayTitleMusic();
+                        PlayTitleMusic();
                     }
                     break;
                 }
@@ -1611,8 +1613,8 @@ namespace OpenRCT2::Ui::Windows
             // Sound device
             StringId audioDeviceStringId = STR_OPTIONS_SOUND_VALUE_DEFAULT;
             const char* audioDeviceName = nullptr;
-            const int32_t currentDeviceIndex = OpenRCT2::Audio::GetCurrentDeviceIndex();
-            if (currentDeviceIndex == -1 || OpenRCT2::Audio::GetDeviceCount() == 0)
+            const int32_t currentDeviceIndex = GetCurrentDeviceIndex();
+            if (currentDeviceIndex == -1 || GetDeviceCount() == 0)
             {
                 audioDeviceStringId = STR_SOUND_NONE;
             }
@@ -1627,7 +1629,7 @@ namespace OpenRCT2::Ui::Windows
 #endif // __linux__
                 if (audioDeviceStringId == STR_STRING)
                 {
-                    audioDeviceName = OpenRCT2::Audio::GetDeviceName(currentDeviceIndex).c_str();
+                    audioDeviceName = GetDeviceName(currentDeviceIndex).c_str();
                 }
             }
 
@@ -1658,7 +1660,7 @@ namespace OpenRCT2::Ui::Windows
 #pragma region Controls tab events
         void ControlsMouseUp(WidgetIndex widgetIndex)
         {
-            auto* windowMgr = Ui::GetWindowManager();
+            auto* windowMgr = GetWindowManager();
 
             switch (widgetIndex)
             {
@@ -1746,7 +1748,7 @@ namespace OpenRCT2::Ui::Windows
             Config::Save();
             invalidate();
 
-            auto* windowMgr = Ui::GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             windowMgr->InvalidateByClass(WindowClass::topToolbar);
         }
 
@@ -1872,7 +1874,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     Config::Get().general.scenarioUnlockingEnabled ^= 1;
                     Config::Save();
-                    auto* windowMgr = Ui::GetWindowManager();
+                    auto* windowMgr = GetWindowManager();
                     windowMgr->InvalidateByClass(WindowClass::scenarioSelect);
                     break;
                 }
@@ -1989,7 +1991,7 @@ namespace OpenRCT2::Ui::Windows
                         Config::Get().interface.scenarioPreviewScreenshots = dropdownIndex;
                         Config::Save();
                         invalidate();
-                        auto* windowMgr = Ui::GetWindowManager();
+                        auto* windowMgr = GetWindowManager();
                         windowMgr->InvalidateByClass(WindowClass::scenarioSelect);
                     }
                     break;
@@ -2074,7 +2076,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_PATH_TO_RCT1_BROWSE:
                 {
-                    auto rct1path = OpenRCT2::GetContext()->GetUiContext().ShowDirectoryDialog(
+                    auto rct1path = GetContext()->GetUiContext().ShowDirectoryDialog(
                         LanguageGetString(STR_PATH_TO_RCT1_BROWSER));
                     if (!rct1path.empty())
                     {
@@ -2225,10 +2227,10 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_ASSET_PACKS].bottom = widgets[WIDX_GROUP_ADVANCED].bottom - 6;
         }
 
-        void AdvancedDraw(Drawing::RenderTarget& rt)
+        void AdvancedDraw(RenderTarget& rt)
         {
             auto ft = Formatter();
-            ft.Add<int32_t>(static_cast<int32_t>(Config::Get().general.autosaveAmount));
+            ft.Add<int32_t>(Config::Get().general.autosaveAmount);
             DrawTextBasic(
                 rt, windowPos + ScreenCoordsXY{ widgets[WIDX_AUTOSAVE_AMOUNT].left + 1, widgets[WIDX_AUTOSAVE_AMOUNT].top + 1 },
                 STR_WINDOW_COLOUR_2_COMMA32, ft, { colours[1] });
@@ -2302,7 +2304,7 @@ namespace OpenRCT2::Ui::Windows
                 Dropdown::Flag::StayOpen, num_items, widget->width() - 4);
         }
 
-        void DrawTabImages(Drawing::RenderTarget& rt)
+        void DrawTabImages(RenderTarget& rt)
         {
             DrawTabImage(rt, WINDOW_OPTIONS_PAGE_DISPLAY, SPR_G2_MONITOR_TAB_START);
             DrawTabImage(rt, WINDOW_OPTIONS_PAGE_RENDERING, SPR_G2_TAB_TREE);
@@ -2314,7 +2316,7 @@ namespace OpenRCT2::Ui::Windows
             DrawTabImage(rt, WINDOW_OPTIONS_PAGE_ADVANCED, SPR_TAB_WRENCH_0);
         }
 
-        void DrawTabImage(Drawing::RenderTarget& rt, int32_t p, int32_t spriteIndex)
+        void DrawTabImage(RenderTarget& rt, int32_t p, int32_t spriteIndex)
         {
             WidgetIndex widgetIndex = WIDX_FIRST_TAB + p;
             Widget* widget = &widgets[widgetIndex];
@@ -2339,10 +2341,10 @@ namespace OpenRCT2::Ui::Windows
 
                 // Draw greyed out (light border bottom right shadow)
                 GfxDrawSpriteSolid(
-                    rt, ImageId(spriteIndex), screenCoords + ScreenCoordsXY{ 1, 1 }, ColourMapA[windowColour].lighter);
+                    rt, ImageId(spriteIndex), screenCoords + ScreenCoordsXY{ 1, 1 }, getColourMap(windowColour).lighter);
 
                 // Draw greyed out (dark)
-                GfxDrawSpriteSolid(rt, ImageId(spriteIndex), screenCoords, ColourMapA[windowColour].mid_light);
+                GfxDrawSpriteSolid(rt, ImageId(spriteIndex), screenCoords, getColourMap(windowColour).midLight);
             }
         }
 

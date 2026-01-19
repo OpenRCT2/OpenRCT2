@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,6 +11,7 @@
 
 #include "../Diagnostic.h"
 #include "../GameState.h"
+#include "../drawing/Drawing.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/Staff.h"
 #include "../ui/WindowManager.h"
@@ -46,7 +47,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 
-        auto staff = getGameState().entities.TryGetEntity<Staff>(_spriteId);
+        auto staff = gameState.entities.TryGetEntity<Staff>(_spriteId);
         if (staff == nullptr)
         {
             LOG_ERROR("Staff entity not found for spriteId %u", _spriteId);
@@ -67,7 +68,7 @@ namespace OpenRCT2::GameActions
 
     Result StaffFireAction::Execute(GameState_t& gameState) const
     {
-        auto staff = getGameState().entities.TryGetEntity<Staff>(_spriteId);
+        auto staff = gameState.entities.TryGetEntity<Staff>(_spriteId);
         if (staff == nullptr)
         {
             LOG_ERROR("Staff entity not found for spriteId %u", _spriteId);

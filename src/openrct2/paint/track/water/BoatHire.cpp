@@ -1,6 +1,5 @@
 /*****************************************************************************
-/*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -1231,7 +1230,7 @@ static void PaintBoatHireTrackSBendRight(
 /**
  * rct2: 0x008B0D60
  */
-TrackPaintFunction GetTrackPaintFunctionBoatHire(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionBoatHire(TrackElemType trackType)
 {
     switch (trackType)
     {

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -54,7 +54,7 @@ namespace OpenRCT2::Drawing::LightFx
     void UpdateBuffers(RenderTarget&);
     const GamePalette& GetPalette();
 
-    void Add3DLight(const EntityBase& entity, const uint8_t id, const CoordsXYZ& loc, const LightType lightType);
+    void Add3DLight(const EntityBase& entity, uint8_t id, const CoordsXYZ& loc, LightType lightType);
 
     void Add3DLightMagicFromDrawingTile(
         const CoordsXY& mapPosition, int16_t offsetX, int16_t offsetY, int16_t offsetZ, LightType lightType);
@@ -67,8 +67,8 @@ namespace OpenRCT2::Drawing::LightFx
     void AddLightsMagicVehicle_Monorail(const Vehicle* vehicle);
     void AddLightsMagicVehicle_MiniatureRailway(const Vehicle* vehicle);
 
-    void AddKioskLights(const CoordsXY& mapPosition, const int32_t height, const uint8_t zOffset);
-    void AddShopLights(const CoordsXY& mapPosition, const uint8_t direction, const int32_t height, const uint8_t zOffset);
+    void AddKioskLights(const CoordsXY& mapPosition, int32_t height, uint8_t zOffset);
+    void AddShopLights(const CoordsXY& mapPosition, uint8_t direction, int32_t height, uint8_t zOffset);
 
     void ApplyPaletteFilter(uint8_t i, uint8_t* r, uint8_t* g, uint8_t* b);
     void RenderToTexture(

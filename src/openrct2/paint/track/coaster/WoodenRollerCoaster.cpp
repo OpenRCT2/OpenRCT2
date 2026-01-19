@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13359,7 +13359,7 @@ static void WoodenRCTrackRightLargeHalfLoopDown(
 }
 
 template<bool isClassic>
-TrackPaintFunction GetTrackPaintFunctionWoodenAndClassicWoodenRC(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionWoodenAndClassicWoodenRC(TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -13678,12 +13678,12 @@ TrackPaintFunction GetTrackPaintFunctionWoodenAndClassicWoodenRC(OpenRCT2::Track
     }
 }
 
-TrackPaintFunction GetTrackPaintFunctionWoodenRC(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionWoodenRC(TrackElemType trackType)
 {
     return GetTrackPaintFunctionWoodenAndClassicWoodenRC<false>(trackType);
 }
 
-TrackPaintFunction GetTrackPaintFunctionClassicWoodenRCFallback(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionClassicWoodenRCFallback(TrackElemType trackType)
 {
     return GetTrackPaintFunctionWoodenAndClassicWoodenRC<true>(trackType);
 }

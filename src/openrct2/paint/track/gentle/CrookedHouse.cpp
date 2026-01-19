@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -147,7 +147,7 @@ static void PaintCrookedHouse(
     PaintUtilSetGeneralSupportHeight(session, height + 128);
 }
 
-TrackPaintFunction GetTrackPaintFunctionCrookedHouse(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionCrookedHouse(TrackElemType trackType)
 {
     if (trackType != TrackElemType::flatTrack3x3)
     {

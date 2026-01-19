@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -43,7 +43,7 @@ namespace OpenRCT2::RCT2
     {
         try
         {
-            auto fs = OpenRCT2::FileStream(path, OpenRCT2::FileMode::write);
+            auto fs = FileStream(path, FileMode::write);
             return SaveTrack(&fs);
         }
         catch (const std::exception& e)
@@ -53,17 +53,17 @@ namespace OpenRCT2::RCT2
         }
     }
 
-    bool T6Exporter::SaveTrack(OpenRCT2::IStream* stream)
+    bool T6Exporter::SaveTrack(IStream* stream)
     {
         auto& rtd = GetRideTypeDescriptor(_trackDesign.trackAndVehicle.rtdIndex);
         auto td6rideType = OpenRCT2RideTypeToRCT2RideType(_trackDesign.trackAndVehicle.rtdIndex);
-        OpenRCT2::MemoryStream tempStream;
+        MemoryStream tempStream;
         tempStream.WriteValue<uint8_t>(td6rideType);
         tempStream.WriteValue<uint8_t>(0);
         tempStream.WriteValue<uint32_t>(0);
         tempStream.WriteValue<uint8_t>(static_cast<uint8_t>(_trackDesign.operation.rideMode));
         tempStream.WriteValue<uint8_t>(EnumValue(_trackDesign.appearance.vehicleColourSettings) | (2 << 2));
-        for (auto i = 0; i < RCT2::Limits::kMaxVehicleColours; i++)
+        for (auto i = 0; i < Limits::kMaxVehicleColours; i++)
         {
             tempStream.WriteValue<uint8_t>(_trackDesign.appearance.vehicleColours[i].Body);
             tempStream.WriteValue<uint8_t>(_trackDesign.appearance.vehicleColours[i].Trim);
@@ -120,7 +120,7 @@ namespace OpenRCT2::RCT2
         tempStream.Write(&_trackDesign.trackAndVehicle.vehicleObject.Entry, sizeof(RCTObjectEntry));
         tempStream.WriteValue<uint8_t>(_trackDesign.statistics.spaceRequired.x);
         tempStream.WriteValue<uint8_t>(_trackDesign.statistics.spaceRequired.y);
-        for (auto i = 0; i < RCT2::Limits::kMaxVehicleColours; i++)
+        for (auto i = 0; i < Limits::kMaxVehicleColours; i++)
         {
             tempStream.WriteValue<uint8_t>(_trackDesign.appearance.vehicleColours[i].Tertiary);
         }
@@ -155,7 +155,7 @@ namespace OpenRCT2::RCT2
                 auto trackType = OpenRCT2TrackTypeToRCT2(trackElement.type);
                 if (trackElement.type == TrackElemType::multiDimInvertedUp90ToFlatQuarterLoop)
                 {
-                    trackType = OpenRCT2::RCT12::TrackElemType::invertedUp90ToFlatQuarterLoopAlias;
+                    trackType = RCT12::TrackElemType::invertedUp90ToFlatQuarterLoopAlias;
                 }
                 tempStream.WriteValue<uint8_t>(static_cast<uint8_t>(trackType));
                 auto flags = RCT12::convertToTD46Flags(trackElement);

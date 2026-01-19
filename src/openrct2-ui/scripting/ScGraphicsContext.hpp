@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,8 +13,9 @@
 
     #include "CustomImages.h"
 
+    #include <openrct2/drawing/Drawing.h>
     #include <openrct2/drawing/Rectangle.h>
-    #include <openrct2/drawing/Text.h>
+    #include <openrct2/drawing/RenderTarget.h>
     #include <openrct2/scripting/Duktape.hpp>
 
 using namespace OpenRCT2::Drawing;
@@ -31,8 +32,8 @@ namespace OpenRCT2::Scripting
         std::optional<colour_t> _secondaryColour{};
         std::optional<colour_t> _tertiaryColour{};
         std::optional<uint8_t> _paletteId{};
-        uint8_t _stroke{};
-        uint8_t _fill{};
+        PaletteIndex _stroke{};
+        PaletteIndex _fill{};
 
     public:
         ScGraphicsContext(duk_context* ctx, const RenderTarget& rt)
@@ -124,22 +125,22 @@ namespace OpenRCT2::Scripting
 
         uint8_t fill_get() const
         {
-            return _fill;
+            return EnumValue(_fill);
         }
 
         void fill_set(uint8_t value)
         {
-            _fill = value;
+            _fill = static_cast<PaletteIndex>(value);
         }
 
         uint8_t stroke_get() const
         {
-            return _stroke;
+            return EnumValue(_stroke);
         }
 
         void stroke_set(uint8_t value)
         {
-            _stroke = value;
+            _stroke = static_cast<PaletteIndex>(value);
         }
 
         int32_t width_get() const
@@ -183,9 +184,9 @@ namespace OpenRCT2::Scripting
 
         void clip(int32_t x, int32_t y, int32_t width, int32_t height)
         {
-            RenderTarget newDpi;
-            ClipDrawPixelInfo(newDpi, _rt, { x, y }, width, height);
-            _rt = newDpi;
+            RenderTarget newRT;
+            ClipRenderTarget(newRT, _rt, { x, y }, width, height);
+            _rt = newRT;
         }
 
         void image(uint32_t id, int32_t x, int32_t y)
@@ -218,7 +219,7 @@ namespace OpenRCT2::Scripting
 
         void rect(int32_t x, int32_t y, int32_t width, int32_t height)
         {
-            if (_stroke != 0)
+            if (_stroke != PaletteIndex::transparent)
             {
                 line(x, y, x + width, y);
                 line(x + width - 1, y + 1, x + width - 1, y + height - 1);
@@ -230,7 +231,7 @@ namespace OpenRCT2::Scripting
                 width -= 2;
                 height -= 2;
             }
-            if (_fill != 0)
+            if (_fill != PaletteIndex::transparent)
             {
                 Rectangle::fill(_rt, { x, y, x + width - 1, y + height - 1 }, _fill);
             }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -7159,7 +7159,6 @@ static void LayDownRCTrackRightFlyerCorkscrewDown(
 {
     auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::leftFlyerCorkscrewUp);
     function(session, ride, 2 - trackSequence, (direction + 3) % 4, height, trackElement, supportType);
-    return;
 }
 
 /** rct2: 0x00824FEC */
@@ -8165,7 +8164,7 @@ static void LayDownRCTrackHalfLoopInvertedUp(
     }
 }
 
-TrackPaintFunction GetTrackPaintFunctionLayDownRCInverted(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionLayDownRCInverted(TrackElemType trackType)
 {
     switch (trackType)
     {

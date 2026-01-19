@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,6 +10,7 @@
 #include "SpriteFile.h"
 
 #include "../../core/FileStream.h"
+#include "../../drawing/ImageImporter.h"
 
 namespace OpenRCT2::CommandLine::Sprite
 {
@@ -73,7 +74,7 @@ namespace OpenRCT2::CommandLine::Sprite
         isAbsolute = false;
     }
 
-    void SpriteFile::AddImage(ImageImporter::ImportResult& image)
+    void SpriteFile::AddImage(Drawing::ImageImportResult& image)
     {
         Header.numEntries++;
         // New image will have its data inserted after previous image
@@ -89,6 +90,11 @@ namespace OpenRCT2::CommandLine::Sprite
             const auto& buffer = image.Buffer;
             std::copy(buffer.begin(), buffer.end(), std::back_inserter(Data));
         }
+    }
+
+    void SpriteFile::addPalette(Drawing::PaletteImportResult& palette)
+    {
+        AddImage(*reinterpret_cast<Drawing::ImageImportResult*>(&palette));
     }
 
     bool SpriteFile::Save(const utf8* path)

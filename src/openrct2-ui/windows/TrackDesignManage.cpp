@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -86,7 +86,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_CLOSE:
                 {
-                    auto* windowMgr = Ui::GetWindowManager();
+                    auto* windowMgr = GetWindowManager();
                     windowMgr->CloseByClass(WindowClass::trackDeletePrompt);
                     close();
                     break;
@@ -121,7 +121,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (TrackRepositoryRename(_trackDesignFileReference->path, std::string(text)))
             {
-                auto* windowMgr = Ui::GetWindowManager();
+                auto* windowMgr = GetWindowManager();
                 windowMgr->CloseByClass(WindowClass::trackDeletePrompt);
                 close();
                 WindowTrackDesignListReloadTracks();
@@ -171,7 +171,7 @@ namespace OpenRCT2::Ui::Windows
                     close();
                     if (TrackRepositoryDelete(tdPath))
                     {
-                        auto* windowMgr = Ui::GetWindowManager();
+                        auto* windowMgr = GetWindowManager();
                         windowMgr->CloseByClass(WindowClass::manageTrackDesign);
                         WindowTrackDesignListReloadTracks();
                     }
@@ -207,7 +207,7 @@ namespace OpenRCT2::Ui::Windows
      */
     WindowBase* TrackManageOpen(TrackDesignFileRef* tdFileRef)
     {
-        auto* windowMgr = Ui::GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         windowMgr->CloseByClass(WindowClass::manageTrackDesign);
         auto trackDesignManageWindow = std::make_unique<TrackDesignManageWindow>(tdFileRef);
 
@@ -224,7 +224,7 @@ namespace OpenRCT2::Ui::Windows
      */
     static void WindowTrackDeletePromptOpen(TrackDesignFileRef* tdFileRef)
     {
-        auto* windowMgr = Ui::GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         windowMgr->CloseByClass(WindowClass::trackDeletePrompt);
 
         auto trackDeletePromptWindow = std::make_unique<TrackDeletePromptWindow>(tdFileRef);

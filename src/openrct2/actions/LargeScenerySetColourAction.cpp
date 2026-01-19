@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -54,15 +54,15 @@ namespace OpenRCT2::GameActions
 
     Result LargeScenerySetColourAction::Query(GameState_t& gameState) const
     {
-        return QueryExecute(false);
+        return QueryExecute(gameState, false);
     }
 
     Result LargeScenerySetColourAction::Execute(GameState_t& gameState) const
     {
-        return QueryExecute(true);
+        return QueryExecute(gameState, true);
     }
 
-    Result LargeScenerySetColourAction::QueryExecute(bool isExecuting) const
+    Result LargeScenerySetColourAction::QueryExecute(GameState_t& gameState, bool isExecuting) const
     {
         auto res = Result();
         res.expenditure = ExpenditureType::landscaping;
@@ -128,7 +128,7 @@ namespace OpenRCT2::GameActions
             auto rotatedTileCoords = CoordsXYZ{ CoordsXY{ tile.offset }.Rotate(_loc.direction), tile.offset.z };
             auto currentTile = CoordsXYZ{ baseTile.x, baseTile.y, baseTile.z } + rotatedTileCoords;
 
-            if (gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
+            if (gLegacyScene != LegacyScene::scenarioEditor && !gameState.cheats.sandboxMode)
             {
                 if (!MapIsLocationOwned(currentTile))
                 {

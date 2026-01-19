@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,16 +15,16 @@
 #include "../core/Json.hpp"
 #include "../core/Memory.hpp"
 #include "../drawing/Drawing.h"
+#include "../drawing/ScrollingText.h"
 #include "../interface/Cursors.h"
 #include "../localisation/Language.h"
-#include "../world/Banner.h"
 #include "../world/Location.hpp"
 
 #include <iterator>
 
 namespace OpenRCT2
 {
-    static RCTLargeSceneryText ReadLegacy3DFont(OpenRCT2::IStream& stream)
+    static RCTLargeSceneryText ReadLegacy3DFont(IStream& stream)
     {
         RCTLargeSceneryText _3dFontLegacy = {};
         _3dFontLegacy.offset[0].x = stream.ReadValue<int16_t>();
@@ -52,17 +52,17 @@ namespace OpenRCT2
         return _3dFontLegacy;
     }
 
-    void LargeSceneryObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream)
+    void LargeSceneryObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     {
-        stream->Seek(6, OpenRCT2::STREAM_SEEK_CURRENT);
+        stream->Seek(6, STREAM_SEEK_CURRENT);
         _legacyType.tool_id = static_cast<CursorID>(stream->ReadValue<uint8_t>());
         _legacyType.flags = stream->ReadValue<uint8_t>();
         _legacyType.price = stream->ReadValue<int16_t>() * 10;
         _legacyType.removal_price = stream->ReadValue<int16_t>() * 10;
-        stream->Seek(5, OpenRCT2::STREAM_SEEK_CURRENT);
+        stream->Seek(5, STREAM_SEEK_CURRENT);
         _legacyType.scenery_tab_id = kObjectEntryIndexNull;
         _legacyType.scrolling_mode = stream->ReadValue<uint8_t>();
-        stream->Seek(4, OpenRCT2::STREAM_SEEK_CURRENT);
+        stream->Seek(4, STREAM_SEEK_CURRENT);
 
         GetStringTable().Read(context, stream, ObjectStringID::name);
 
@@ -164,7 +164,7 @@ namespace OpenRCT2
         LARGE_SCENERY_TILE_FLAG_ALLOW_SUPPORTS_ABOVE = 0x40,
     };
 
-    std::vector<LargeSceneryTile> LargeSceneryObject::ReadTiles(OpenRCT2::IStream* stream)
+    std::vector<LargeSceneryTile> LargeSceneryObject::ReadTiles(IStream* stream)
     {
         auto tiles = std::vector<LargeSceneryTile>();
 
@@ -184,7 +184,7 @@ namespace OpenRCT2
 
         while (stream->ReadValue<uint16_t>() != 0xFFFF)
         {
-            stream->Seek(-2, OpenRCT2::STREAM_SEEK_CURRENT);
+            stream->Seek(-2, STREAM_SEEK_CURRENT);
             tiles.push_back(ReadLegacyTile());
         }
         uint8_t index = 0;

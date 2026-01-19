@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,6 +12,7 @@
 #include "../Cheats.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
+#include "../core/Guard.hpp"
 #include "../core/MemoryStream.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
@@ -59,7 +60,7 @@ namespace OpenRCT2::GameActions
 
     Result ParkEntrancePlaceAction::Query(GameState_t& gameState) const
     {
-        if (!isInEditorMode() && !getGameState().cheats.sandboxMode)
+        if (!isInEditorMode() && !gameState.cheats.sandboxMode)
         {
             return Result(Status::notInEditorMode, STR_CANT_BUILD_THIS_HERE, kStringIdNone);
         }
@@ -80,7 +81,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::noFreeElements, STR_CANT_BUILD_THIS_HERE, STR_ERR_LANDSCAPE_DATA_AREA_FULL);
         }
 
-        if (gameState.park.entrances.size() >= OpenRCT2::Limits::kMaxParkEntrances)
+        if (gameState.park.entrances.size() >= Limits::kMaxParkEntrances)
         {
             return Result(Status::invalidParameters, STR_CANT_BUILD_THIS_HERE, STR_ERR_TOO_MANY_PARK_ENTRANCES);
         }
@@ -125,7 +126,7 @@ namespace OpenRCT2::GameActions
 
         auto flags = GetFlags();
 
-        getGameState().park.entrances.push_back(_loc);
+        gameState.park.entrances.push_back(_loc);
 
         auto zLow = _loc.z;
         auto zHigh = zLow + ParkEntranceHeight;

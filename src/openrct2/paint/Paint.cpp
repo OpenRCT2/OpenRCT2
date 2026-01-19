@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -40,20 +40,20 @@ uint8_t gClipHeight = 128; // Default to middle value
 CoordsXY gClipSelectionA = { 0, 0 };
 CoordsXY gClipSelectionB = { kMaximumTileStartXY, kMaximumTileStartXY };
 
-static constexpr uint8_t BoundBoxDebugColours[] = {
-    0,   // NONE
-    102, // TERRAIN
-    114, // SPRITE
-    229, // RIDE
-    126, // WATER
-    138, // SCENERY
-    150, // FOOTPATH
-    162, // FOOTPATH_ITEM
-    174, // PARK
-    186, // WALL
-    198, // LARGE_SCENERY
-    210, // LABEL
-    222, // BANNER
+static constexpr PaletteIndex kBoundBoxDebugColours[] = {
+    PaletteIndex::transparent, // NONE
+    PaletteIndex::pi102,       // TERRAIN
+    PaletteIndex::pi114,       // SPRITE
+    PaletteIndex::pi229,       // RIDE
+    PaletteIndex::pi126,       // WATER
+    PaletteIndex::pi138,       // SCENERY
+    PaletteIndex::pi150,       // FOOTPATH
+    PaletteIndex::pi162,       // FOOTPATH_ITEM
+    PaletteIndex::pi174,       // PARK
+    PaletteIndex::pi186,       // WALL
+    PaletteIndex::pi198,       // LARGE_SCENERY
+    PaletteIndex::hotPink8,    // LABEL
+    PaletteIndex::pi222,       // BANNER
 };
 
 bool gShowDirtyVisuals;
@@ -105,7 +105,7 @@ static void PaintSessionAddPSToQuadrant(PaintSession& session, PaintStruct* ps)
     session.QuadrantFrontIndex = std::max(session.QuadrantFrontIndex, paintQuadrantIndex);
 }
 
-static constexpr bool imageWithinDPI(const ScreenCoordsXY& imagePos, const G1Element& g1, const RenderTarget& rt)
+static constexpr bool imageWithinRT(const ScreenCoordsXY& imagePos, const G1Element& g1, const RenderTarget& rt)
 {
     const int32_t left = imagePos.x + g1.xOffset;
     const int32_t bottom = imagePos.y + g1.yOffset;
@@ -188,7 +188,7 @@ static PaintStruct* CreateNormalPaintStruct(
 
     const auto imagePos = Translate3DTo2DWithZ(session.CurrentRotation, swappedRotCoord);
 
-    if (!imageWithinDPI(imagePos, *g1, session.DPI))
+    if (!imageWithinRT(imagePos, *g1, session.rt))
     {
         return nullptr;
     }
@@ -236,7 +236,7 @@ static PaintStruct* CreateNormalPaintStructHeight(
 
     const auto imagePos = Translate3DTo2DWithZ(session.CurrentRotation, swappedRotCoord);
 
-    if (!imageWithinDPI(imagePos, *g1, session.DPI))
+    if (!imageWithinRT(imagePos, *g1, session.rt))
     {
         return nullptr;
     }
@@ -273,7 +273,7 @@ template<uint8_t direction>
 void PaintSessionGenerateRotate(PaintSession& session)
 {
     // Optimised modified version of ViewportPosToMapPos
-    ScreenCoordsXY screenCoord = { floor2(session.DPI.WorldX(), 32), floor2((session.DPI.WorldY() - 16), 32) };
+    ScreenCoordsXY screenCoord = { floor2(session.rt.WorldX(), 32), floor2((session.rt.WorldY() - 16), 32) };
     CoordsXY mapTile = { screenCoord.y - screenCoord.x / 2, screenCoord.y + screenCoord.x / 2 };
     mapTile = mapTile.Rotate(direction);
 
@@ -283,7 +283,7 @@ void PaintSessionGenerateRotate(PaintSession& session)
     }
     mapTile = mapTile.ToTileStart();
 
-    uint16_t numVerticalTiles = (session.DPI.WorldHeight() + 2128) >> 5;
+    uint16_t numVerticalTiles = (session.rt.WorldHeight() + 2128) >> 5;
 
     // Adjacent tiles to also check due to overlapping of sprites
     constexpr CoordsXY adjacentTiles[] = {
@@ -709,11 +709,11 @@ static inline void PaintDrawStruct(PaintSession& session, PaintStruct* ps)
     auto screenPos = ps->ScreenPos;
     if (ps->InteractionItem == ViewportInteractionItem::entity)
     {
-        if (session.DPI.zoom_level >= ZoomLevel{ 1 })
+        if (session.rt.zoom_level >= ZoomLevel{ 1 })
         {
             screenPos.x = floor2(screenPos.x, 2);
             screenPos.y = floor2(screenPos.y, 2);
-            if (session.DPI.zoom_level >= ZoomLevel{ 2 })
+            if (session.rt.zoom_level >= ZoomLevel{ 2 })
             {
                 screenPos.x = floor2(screenPos.x, 4);
                 screenPos.y = floor2(screenPos.y, 4);
@@ -727,7 +727,7 @@ static inline void PaintDrawStruct(PaintSession& session, PaintStruct* ps)
     }
     else
     {
-        GfxDrawSprite(session.DPI, imageId, screenPos);
+        GfxDrawSprite(session.rt, imageId, screenPos);
     }
 
     if (ps->Children != nullptr)
@@ -736,7 +736,7 @@ static inline void PaintDrawStruct(PaintSession& session, PaintStruct* ps)
     }
     else
     {
-        PaintAttachedPS(session.DPI, ps, session.ViewFlags);
+        PaintAttachedPS(session.rt, ps, session.ViewFlags);
     }
 }
 
@@ -756,9 +756,9 @@ void PaintDrawStructs(PaintSession& session)
 
 static void PaintPSImageWithBoundingBoxes(PaintSession& session, PaintStruct* ps, ImageId imageId, int32_t x, int32_t y)
 {
-    auto& rt = session.DPI;
+    auto& rt = session.rt;
 
-    const uint8_t colour = BoundBoxDebugColours[EnumValue(ps->InteractionItem)];
+    const PaletteIndex colour = kBoundBoxDebugColours[EnumValue(ps->InteractionItem)];
     const uint8_t rotation = session.CurrentRotation;
 
     const CoordsXYZ frontTop = {

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,9 +11,17 @@
 
 #include "core/EnumUtils.hpp"
 #include "core/FlagHolder.hpp"
-#include "object/Object.h"
+#include "localisation/StringIdType.h"
+#include "object/ObjectTypes.h"
 
+#include <optional>
 #include <vector>
+
+namespace OpenRCT2
+{
+    struct ObjectEntryDescriptor;
+    struct ObjectRepositoryItem;
+} // namespace OpenRCT2
 
 struct ResultWithMessage;
 

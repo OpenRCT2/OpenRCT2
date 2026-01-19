@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,6 +12,7 @@
 #include "../Context.h"
 #include "../GameState.h"
 #include "../Input.h"
+#include "../actions/ResultWithMessage.h"
 #include "../actions/RideEntranceExitRemoveAction.h"
 #include "../actions/RideSetSettingAction.h"
 #include "../actions/RideSetStatusAction.h"
@@ -24,7 +25,6 @@
 #include "../network/Network.h"
 #include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
-#include "../world/Banner.h"
 #include "../world/Climate.h"
 #include "../world/Entrance.h"
 #include "../world/Footpath.h"
@@ -62,14 +62,14 @@ RideId _currentRideIndex;
 CoordsXYZ _currentTrackBegin;
 
 uint8_t _currentTrackPieceDirection;
-OpenRCT2::TrackElemType _currentTrackPieceType;
+TrackElemType _currentTrackPieceType;
 TrackSelectionFlags _currentTrackSelectionFlags;
 uint32_t _rideConstructionNextArrowPulse = 0;
 TrackPitch _currentTrackPitchEnd;
 TrackRoll _currentTrackRollEnd;
 bool _currentTrackHasLiftHill;
-OpenRCT2::SelectedAlternative _currentTrackAlternative{};
-OpenRCT2::TrackElemType _selectedTrackType;
+SelectedAlternative _currentTrackAlternative{};
+TrackElemType _selectedTrackType;
 
 TrackRoll _previousTrackRollEnd;
 TrackPitch _previousTrackPitchEnd;
@@ -182,7 +182,7 @@ void Ride::removeVehicles()
         lifecycleFlags &= ~RIDE_LIFECYCLE_ON_TRACK;
         lifecycleFlags &= ~(RIDE_LIFECYCLE_TEST_IN_PROGRESS | RIDE_LIFECYCLE_HAS_STALLED_VEHICLE);
 
-        for (size_t i = 0; i <= OpenRCT2::Limits::kMaxTrainsPerRide; i++)
+        for (size_t i = 0; i <= Limits::kMaxTrainsPerRide; i++)
         {
             auto spriteIndex = vehicles[i];
             while (!spriteIndex.IsNull())
@@ -200,7 +200,7 @@ void Ride::removeVehicles()
             vehicles[i] = EntityId::GetNull();
         }
 
-        for (size_t i = 0; i < OpenRCT2::Limits::kMaxStationsPerRide; i++)
+        for (size_t i = 0; i < Limits::kMaxStationsPerRide; i++)
             stations[i].TrainAtStation = RideStation::kNoTrain;
 
         // Also clean up orphaned vehicles for good measure.
@@ -224,7 +224,7 @@ void RideClearForConstruction(Ride& ride)
     ride.measurement = {};
 
     ride.lifecycleFlags &= ~(RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN);
-    ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
+    ride.windowInvalidateFlags.set(RideInvalidateFlag::main, RideInvalidateFlag::list);
 
     // Open circuit rides will go directly into building mode (creating ghosts) where it would normally clear the stats,
     // however this causes desyncs since it's directly run from the window and other clients would not get it.
@@ -344,7 +344,7 @@ void Ride::removePeeps()
     }
     numRiders = 0;
     slideInUse = 0;
-    windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAIN;
+    windowInvalidateFlags.set(RideInvalidateFlag::main);
 }
 
 void RideClearBlockedTiles(const Ride& ride)
@@ -383,7 +383,7 @@ void RideClearBlockedTiles(const Ride& ride)
  * bp : flags
  */
 std::optional<CoordsXYZ> GetTrackElementOriginAndApplyChanges(
-    const CoordsXYZD& location, OpenRCT2::TrackElemType type, uint16_t extra_params, TileElement** output_element,
+    const CoordsXYZD& location, TrackElemType type, uint16_t extra_params, TileElement** output_element,
     TrackElementSetFlags flags)
 {
     // Find the relevant track piece, prefer sequence 0 (this ensures correct behaviour for diagonal track pieces)
@@ -588,7 +588,7 @@ void RideConstructionSetDefaultNextPiece()
     const auto& rtd = ride->getRideTypeDescriptor();
 
     int32_t z, direction;
-    OpenRCT2::TrackElemType trackType;
+    TrackElemType trackType;
     TrackBeginEnd trackBeginEnd;
     CoordsXYE xyElement;
     TileElement* tileElement;
@@ -1517,7 +1517,7 @@ TrackDrawerEntry getCurrentTrackDrawerEntry(const RideTypeDescriptor& rtd)
     return getTrackDrawerEntry(rtd, isInverted, isCovered);
 }
 
-OpenRCT2::TrackElemType GetTrackTypeFromCurve(
+TrackElemType GetTrackTypeFromCurve(
     TrackCurve curve, bool startsDiagonal, TrackPitch startSlope, TrackPitch endSlope, TrackRoll startBank, TrackRoll endBank)
 {
     for (uint32_t i = 0; i < std::size(gTrackDescriptors); i++)

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,7 +12,8 @@
 #include "../core/EnumUtils.hpp"
 #include "../core/Imaging.h"
 #include "../core/JsonFwd.hpp"
-#include "Drawing.h"
+#include "../drawing/G1Element.h"
+#include "../world/Location.hpp"
 
 #include <string_view>
 #include <tuple>
@@ -51,19 +52,25 @@ namespace OpenRCT2::Drawing
         int32_t zoomedOffset{};
     };
 
+    struct ImageImportResult
+    {
+        G1Element Element{};
+        std::vector<uint8_t> Buffer;
+    };
+    struct PaletteImportResult
+    {
+        G1Palette element{};
+        std::vector<BGRColour> buffer;
+    };
+
     /**
      * Imports images to the internal RCT G1 format.
      */
     class ImageImporter
     {
     public:
-        struct ImportResult
-        {
-            G1Element Element{};
-            std::vector<uint8_t> Buffer;
-        };
-
-        ImportResult Import(const Image& image, ImageImportMeta& meta) const;
+        ImageImportResult Import(const Image& image, ImageImportMeta& meta) const;
+        PaletteImportResult importJSONPalette(json_t& jPalette) const;
 
     private:
         enum class PaletteIndexType : uint8_t
@@ -87,6 +94,7 @@ namespace OpenRCT2::Drawing
         static bool IsChangablePixel(int32_t paletteIndex);
         static PaletteIndexType GetPaletteIndexType(int32_t paletteIndex);
         static int32_t GetClosestPaletteIndex(const GamePalette& palette, const int16_t* colour);
+        BGRColour parseJSONPaletteColour(const std::string& s) const;
     };
 
     // Note: jsonSprite is deliberately left non-const: json_t behaviour changes when const.

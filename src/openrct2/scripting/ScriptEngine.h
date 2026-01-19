@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -213,7 +213,7 @@ namespace OpenRCT2::Scripting
             for (const auto& plugin : _plugins)
             {
                 const auto& metadata = plugin->GetMetadata();
-                if (metadata.Type == OpenRCT2::Scripting::PluginType::Remote)
+                if (metadata.Type == PluginType::Remote)
                 {
                     res.push_back(plugin);
                 }

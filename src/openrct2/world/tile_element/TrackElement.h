@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -40,13 +40,12 @@ namespace OpenRCT2
         TRACK_ELEMENT_COLOUR_SEAT_ROTATION_MASK = 0b11110000,
     };
 
-    constexpr const int32_t kLandEdgeDoorFrameClosed = 0;
-    constexpr const int32_t kLandEdgeDoorFrameOpening = 1;
-    constexpr const int32_t kLandEdgeDoorFrameOpen = 3;
-    constexpr const int32_t kLandEdgeDoorFrameClosing = 4;
-    constexpr const int32_t kLandEdgeDoorFrameEnd = 6;
-
-    constexpr const int32_t kLandEdgeDoorFrameCount = 8;
+    constexpr int32_t kLandEdgeDoorFrameClosed = 0;
+    constexpr int32_t kLandEdgeDoorFrameOpening = 1;
+    constexpr int32_t kLandEdgeDoorFrameOpen = 3;
+    constexpr int32_t kLandEdgeDoorFrameClosing = 4;
+    constexpr int32_t kLandEdgeDoorFrameEnd = 6;
+    constexpr int32_t kLandEdgeDoorFrameCount = 8;
 
 #pragma pack(push, 1)
 
@@ -87,7 +86,7 @@ namespace OpenRCT2
         void SetTrackType(TrackElemType newEntryIndex);
 
         ride_type_t GetRideType() const;
-        void SetRideType(const ride_type_t rideType);
+        void SetRideType(ride_type_t rideType);
 
         uint8_t GetSequenceIndex() const;
         void SetSequenceIndex(uint8_t newSequenceIndex);

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -56,7 +56,7 @@ namespace OpenRCT2
             CoordsXYZ ProximityStart;
             RideId CurrentRide;
             uint8_t State;
-            OpenRCT2::TrackElemType ProximityTrackType;
+            TrackElemType ProximityTrackType;
             uint8_t ProximityBaseHeight;
             uint16_t ProximityTotal;
             uint16_t ProximityScores[26];

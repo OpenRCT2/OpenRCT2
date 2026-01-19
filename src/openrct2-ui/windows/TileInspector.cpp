@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -21,6 +21,8 @@
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/TileModifyAction.h>
 #include <openrct2/core/Guard.hpp>
+#include <openrct2/drawing/ColourMap.h>
+#include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/object/FootpathObject.h>
@@ -1044,7 +1046,7 @@ static uint64_t PageDisabledWidgets[] = {
             invalidateWidget(WIDX_LIST);
         }
 
-        void onDraw(Drawing::RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             drawWidgets(rt);
             ScreenCoordsXY screenCoords(windowPos.x, windowPos.y);
@@ -1582,11 +1584,12 @@ static uint64_t PageDisabledWidgets[] = {
             }
         }
 
-        void onScrollDraw(int32_t scrollIndex, Drawing::RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             const int32_t listWidth = widgets[WIDX_LIST].width() - 1;
             Rectangle::fill(
-                rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } }, ColourMapA[colours[1].colour].mid_light);
+                rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } },
+                getColourMap(colours[1].colour).midLight);
 
             // Show usage hint when nothing is selected
             if (!_tileSelected)
@@ -1620,12 +1623,12 @@ static uint64_t PageDisabledWidgets[] = {
                 auto fillRectangle = ScreenRect{ { 0, screenCoords.y },
                                                  { listWidth, screenCoords.y + kScrollableRowHeight - 1 } };
                 if (selectedRow)
-                    Rectangle::fill(rt, fillRectangle, ColourMapA[colours[1].colour].mid_dark);
+                    Rectangle::fill(rt, fillRectangle, getColourMap(colours[1].colour).midDark);
                 else if (hoveredRow)
-                    Rectangle::fill(rt, fillRectangle, ColourMapA[colours[1].colour].mid_dark | 0x1000000);
+                    Rectangle::fill(rt, fillRectangle, getColourMap(colours[1].colour).midDark, true);
                 // Zebra stripes
                 else if (((windowTileInspectorElementCount - i) & 1) == 0)
-                    Rectangle::fill(rt, fillRectangle, ColourMapA[colours[1].colour].light | 0x1000000);
+                    Rectangle::fill(rt, fillRectangle, getColourMap(colours[1].colour).light, true);
 
                 StringId stringFormat = STR_WINDOW_COLOUR_2_STRINGID;
                 if (selectedRow || hoveredRow)

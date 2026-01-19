@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -60,7 +60,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_REMOVE_FOOTPATH_FROM_HERE, STR_OFF_EDGE_OF_MAP);
         }
 
-        if (!(gLegacyScene == LegacyScene::scenarioEditor || getGameState().cheats.sandboxMode) && !MapIsLocationOwned(_loc))
+        if (!(gLegacyScene == LegacyScene::scenarioEditor || gameState.cheats.sandboxMode) && !MapIsLocationOwned(_loc))
         {
             return Result(Status::notOwned, STR_CANT_REMOVE_FOOTPATH_FROM_HERE, STR_LAND_NOT_OWNED_BY_PARK);
         }

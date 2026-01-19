@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -32,7 +32,7 @@ namespace OpenRCT2
         PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
         const CarEntry* carEntry)
     {
-        imageDirection = OpenRCT2::Entity::Yaw::YawTo32(imageDirection);
+        imageDirection = Entity::Yaw::YawTo32(imageDirection);
         const uint8_t rotation = session.CurrentRotation;
         int32_t ecx = ((vehicle->spin_sprite / 8) + (rotation * 8)) & 31;
         int32_t baseImage_id = [&] {
@@ -63,7 +63,7 @@ namespace OpenRCT2
         }
         PaintAddImageAsParent(session, image_id, { 0, 0, z }, bb);
 
-        if (session.DPI.zoom_level < ZoomLevel{ 2 } && vehicle->num_peeps > 0 && !vehicle->IsGhost())
+        if (session.rt.zoom_level < ZoomLevel{ 2 } && vehicle->num_peeps > 0 && !vehicle->IsGhost())
         {
             uint8_t riding_peep_sprites[4] = { 0xFF, 0xFF, 0xFF, 0xFF };
             for (int32_t i = 0; i < vehicle->num_peeps; i++)

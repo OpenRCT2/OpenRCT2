@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,6 +18,7 @@
 #include <openrct2/Input.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/MazeSetTrackAction.h>
+#include <openrct2/actions/ResultWithMessage.h>
 #include <openrct2/actions/RideDemolishAction.h>
 #include <openrct2/actions/RideEntranceExitPlaceAction.h>
 #include <openrct2/audio/Audio.h>
@@ -368,9 +369,9 @@ namespace OpenRCT2::Ui::Windows
                 if (result->error != GameActions::Status::ok)
                     return;
 
-                OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::placeItem, result->position);
+                Audio::Play3D(Audio::SoundId::placeItem, result->position);
 
-                auto* windowMgr = Ui::GetWindowManager();
+                auto* windowMgr = GetWindowManager();
 
                 auto currentRide = GetRide(rideIndex);
                 if (currentRide != nullptr && RideAreAllPossibleEntrancesAndExitsBuilt(*currentRide).Successful)

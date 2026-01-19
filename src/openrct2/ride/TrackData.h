@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../core/FlagHolder.hpp"
+#include "../localisation/StringIdType.h"
 #include "../paint/support/MetalSupports.h"
 #include "../paint/support/WoodenSupports.h"
 #include "../paint/tile_element/Segment.h"
@@ -38,7 +39,7 @@ namespace OpenRCT2::TrackMetaData
         TrackCurve trackCurve;
         TrackPitch slopeEnd;
         TrackRoll rollEnd;
-        OpenRCT2::TrackElemType trackElement;
+        TrackElemType trackElement;
     };
 
     enum class SpinFunction : uint8_t
@@ -68,13 +69,13 @@ namespace OpenRCT2::TrackMetaData
         uint8_t bottom;
     };
 
-    constexpr DodgemsTrackSize GetDodgemsTrackSize(OpenRCT2::TrackElemType type)
+    constexpr DodgemsTrackSize GetDodgemsTrackSize(TrackElemType type)
     {
-        if (type == OpenRCT2::TrackElemType::flatTrack2x2)
+        if (type == TrackElemType::flatTrack2x2)
             return { 4, 4, 59, 59 };
-        if (type == OpenRCT2::TrackElemType::flatTrack4x4)
+        if (type == TrackElemType::flatTrack4x4)
             return { 4, 4, 123, 123 };
-        if (type == OpenRCT2::TrackElemType::flatTrack2x4)
+        if (type == TrackElemType::flatTrack2x4)
             return { 4, 4, 59, 123 };
         return { 0, 0, 0, 0 };
     }
@@ -112,7 +113,7 @@ namespace OpenRCT2::TrackMetaData
         }
     };
 
-    using TrackComputeFunction = int32_t (*)(const int16_t);
+    using TrackComputeFunction = int32_t (*)(int16_t);
     struct TrackElementDescriptor
     {
         StringId description;
@@ -123,11 +124,11 @@ namespace OpenRCT2::TrackMetaData
         // Piece the ride construction window automatically selects next
         TrackCurveChain curveChain;
         // Track element to build when building "covered"/"splashdown" track
-        OpenRCT2::TrackElemType alternativeType;
+        TrackElemType alternativeType;
         // Price Modifier should be used as in the following calculation:
         // (RideTrackPrice * TED::PriceModifier) / 65536
         uint32_t priceModifier;
-        OpenRCT2::TrackElemType mirrorElement;
+        TrackElemType mirrorElement;
         TrackFlags flags;
 
         uint8_t numSequences{};
@@ -140,5 +141,5 @@ namespace OpenRCT2::TrackMetaData
         TrackComputeFunction lateralFactor;
     };
 
-    const TrackElementDescriptor& GetTrackElementDescriptor(OpenRCT2::TrackElemType type);
+    const TrackElementDescriptor& GetTrackElementDescriptor(TrackElemType type);
 } // namespace OpenRCT2::TrackMetaData

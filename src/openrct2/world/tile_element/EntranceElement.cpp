@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -81,7 +81,7 @@ namespace OpenRCT2
 
     const FootpathObject* EntranceElement::GetLegacyPathEntry() const
     {
-        auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
+        auto& objMgr = GetContext()->GetObjectManager();
         return objMgr.GetLoadedObject<FootpathObject>(GetLegacyPathEntryIndex());
     }
 
@@ -101,7 +101,7 @@ namespace OpenRCT2
 
     const FootpathSurfaceObject* EntranceElement::GetSurfaceEntry() const
     {
-        auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
+        auto& objMgr = GetContext()->GetObjectManager();
         return objMgr.GetLoadedObject<FootpathSurfaceObject>(GetSurfaceEntryIndex());
     }
 

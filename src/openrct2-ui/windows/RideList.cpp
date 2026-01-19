@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -19,6 +19,7 @@
 #include <openrct2/actions/RideDemolishAction.h>
 #include <openrct2/actions/RideSetStatusAction.h>
 #include <openrct2/core/String.hpp>
+#include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/interface/Colour.h>
@@ -587,7 +588,7 @@ namespace OpenRCT2::Ui::Windows
          *
          *  rct2: 0x006B3235
          */
-        void onDraw(Drawing::RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             WindowDrawWidgets(*this, rt);
             DrawTabImages(rt);
@@ -601,9 +602,9 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<StringId>(strId);
                 ft.Add<StringId>(indicatorId);
 
-                auto cdpi = const_cast<const RenderTarget&>(rt);
+                auto cRT = const_cast<const RenderTarget&>(rt);
                 DrawTextEllipsised(
-                    cdpi, windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 }, widget.width() - 1,
+                    cRT, windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 }, widget.width() - 1,
                     STR_RIDE_LIST_HEADER_FORMAT, ft, { colours[1] });
             };
 
@@ -624,11 +625,11 @@ namespace OpenRCT2::Ui::Windows
          *
          *  rct2: 0x006B3240
          */
-        void onScrollDraw(int32_t scrollIndex, Drawing::RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             auto rtCoords = ScreenCoordsXY{ rt.x, rt.y };
             Rectangle::fill(
-                rt, { rtCoords, rtCoords + ScreenCoordsXY{ rt.width, rt.height } }, ColourMapA[colours[1].colour].mid_light);
+                rt, { rtCoords, rtCoords + ScreenCoordsXY{ rt.width, rt.height } }, getColourMap(colours[1].colour).midLight);
 
             auto y = 0;
             for (size_t i = 0; i < _rideList.size(); i++)
@@ -881,7 +882,7 @@ namespace OpenRCT2::Ui::Windows
          *
          *  rct2: 0x006B38EA
          */
-        void DrawTabImages(Drawing::RenderTarget& rt)
+        void DrawTabImages(RenderTarget& rt)
         {
             int32_t sprite_idx;
 
@@ -977,9 +978,9 @@ namespace OpenRCT2::Ui::Windows
                 // Get the ride name once and use it for both filtering and storage
                 auto rideName = rideRef.getName();
 
-                if (rideRef.windowInvalidateFlags & RIDE_INVALIDATE_RIDE_LIST)
+                if (rideRef.windowInvalidateFlags.has(RideInvalidateFlag::list))
                 {
-                    rideRef.windowInvalidateFlags &= ~RIDE_INVALIDATE_RIDE_LIST;
+                    rideRef.windowInvalidateFlags.unset(RideInvalidateFlag::list);
                 }
 
                 const auto filterApplies = IsFiltered(rideName);

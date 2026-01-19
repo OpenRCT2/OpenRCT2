@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -50,7 +50,7 @@ namespace OpenRCT2
         outerSegments = (outerSegments * 0x0202020202 & 0x010884422010) % 1023; // reverse the bits, std::byteswap is c++23
         outerSegments = Numerics::rol8(outerSegments, 3);
         return (segments & EnumToFlag(PaintSegment::centre)) | outerSegments;
-    };
+    }
 
     enum class BlockedSegmentsType : uint8_t
     {
@@ -63,7 +63,7 @@ namespace OpenRCT2
     constexpr std::array<uint16_t, kBlockedSegmentsTypeCount> blockedSegmentsAllTypes(const uint16_t segments)
     {
         return { segments, segments, segments };
-    };
+    }
 
     constexpr std::array<uint16_t, kBlockedSegmentsTypeCount> blockedSegmentsRotate(
         std::array<uint16_t, kBlockedSegmentsTypeCount> blockedSegments, const uint8_t rotation)

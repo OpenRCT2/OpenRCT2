@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -44,7 +44,7 @@ const News::Item& News::ItemQueues::Current() const
 
 bool News::IsValidIndex(int32_t index)
 {
-    if (index >= News::MaxItems)
+    if (index >= MaxItems)
     {
         LOG_ERROR("Tried to get news item past MAX_NEWS.");
         return false;
@@ -59,7 +59,7 @@ News::Item* News::GetItem(int32_t index)
 
 News::Item& News::ItemQueues::operator[](size_t index)
 {
-    return const_cast<News::Item&>(const_cast<const News::ItemQueues&>(*this)[index]);
+    return const_cast<Item&>(const_cast<const ItemQueues&>(*this)[index]);
 }
 
 const News::Item& News::ItemQueues::operator[](size_t index) const
@@ -72,12 +72,12 @@ const News::Item& News::ItemQueues::operator[](size_t index) const
 
 News::Item* News::ItemQueues::At(int32_t index)
 {
-    return const_cast<News::Item*>(const_cast<const News::ItemQueues&>(*this).At(index));
+    return const_cast<Item*>(const_cast<const ItemQueues&>(*this).At(index));
 }
 
 const News::Item* News::ItemQueues::At(int32_t index) const
 {
-    if (News::IsValidIndex(index))
+    if (IsValidIndex(index))
     {
         return &(*this)[index];
     }
@@ -132,7 +132,7 @@ static void TickCurrent()
     if (ticks == 1 && (gLegacyScene == LegacyScene::playing))
     {
         // Play sound
-        OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::newsItem, 0, ContextGetWidth() / 2);
+        OpenRCT2::Audio::Play(Audio::SoundId::newsItem, 0, ContextGetWidth() / 2);
     }
 }
 
@@ -209,7 +209,7 @@ void News::ItemQueues::ArchiveCurrent()
  *
  *  rct2: 0x0066BA74
  */
-std::optional<CoordsXYZ> News::GetSubjectLocation(News::ItemType type, int32_t subject)
+std::optional<CoordsXYZ> News::GetSubjectLocation(ItemType type, int32_t subject)
 {
     std::optional<CoordsXYZ> subjectLoc{ std::nullopt };
 
@@ -217,7 +217,7 @@ std::optional<CoordsXYZ> News::GetSubjectLocation(News::ItemType type, int32_t s
 
     switch (type)
     {
-        case News::ItemType::ride:
+        case ItemType::ride:
         {
             Ride* ride = GetRide(RideId::FromUnderlying(subject));
             if (ride == nullptr || ride->overallView.IsNull())
@@ -228,7 +228,7 @@ std::optional<CoordsXYZ> News::GetSubjectLocation(News::ItemType type, int32_t s
             subjectLoc = CoordsXYZ{ rideViewCentre, TileElementHeight(rideViewCentre) };
             break;
         }
-        case News::ItemType::peepOnRide:
+        case ItemType::peepOnRide:
         {
             auto peep = gameState.entities.TryGetEntity<Peep>(EntityId::FromUnderlying(subject));
             if (peep == nullptr)
@@ -265,7 +265,7 @@ std::optional<CoordsXYZ> News::GetSubjectLocation(News::ItemType type, int32_t s
             }
             break;
         }
-        case News::ItemType::peep:
+        case ItemType::peep:
         {
             auto peep = gameState.entities.TryGetEntity<Peep>(EntityId::FromUnderlying(subject));
             if (peep != nullptr)
@@ -274,7 +274,7 @@ std::optional<CoordsXYZ> News::GetSubjectLocation(News::ItemType type, int32_t s
             }
             break;
         }
-        case News::ItemType::blank:
+        case ItemType::blank:
         {
             auto subjectUnsigned = static_cast<uint32_t>(subject);
             auto subjectXY = CoordsXY{ static_cast<int16_t>(subjectUnsigned & 0xFFFF),
@@ -302,7 +302,7 @@ News::Item* News::ItemQueues::FirstOpenOrNewSlot()
     // The for loop above guarantees there is always an extra element to use
     assert(Recent.capacity() - Recent.size() >= 2);
     auto newsItem = res + 1;
-    newsItem->type = News::ItemType::null;
+    newsItem->type = ItemType::null;
 
     return &*res;
 }
@@ -311,13 +311,13 @@ News::Item* News::ItemQueues::FirstOpenOrNewSlot()
  *
  *  rct2: 0x0066DF55
  */
-News::Item* News::AddItemToQueue(News::ItemType type, StringId string_id, uint32_t assoc, const Formatter& formatter)
+News::Item* News::AddItemToQueue(ItemType type, StringId string_id, uint32_t assoc, const Formatter& formatter)
 {
     utf8 buffer[256];
 
     // overflows possible?
-    OpenRCT2::FormatStringLegacy(buffer, 256, string_id, formatter.Data());
-    return News::AddItemToQueue(type, buffer, assoc);
+    FormatStringLegacy(buffer, 256, string_id, formatter.Data());
+    return AddItemToQueue(type, buffer, assoc);
 }
 
 // TODO: Use variant for assoc, requires strong type for each possible input.
@@ -326,10 +326,10 @@ News::Item* News::AddItemToQueue(ItemType type, StringId string_id, EntityId ass
     return AddItemToQueue(type, string_id, assoc.ToUnderlying(), formatter);
 }
 
-News::Item* News::AddItemToQueue(News::ItemType type, const utf8* text, uint32_t assoc)
+News::Item* News::AddItemToQueue(ItemType type, const utf8* text, uint32_t assoc)
 {
     auto& date = GetDate();
-    News::Item* newsItem = getGameState().newsItems.FirstOpenOrNewSlot();
+    Item* newsItem = getGameState().newsItems.FirstOpenOrNewSlot();
     newsItem->type = type;
     newsItem->flags = 0;
     newsItem->assoc = assoc; // Make optional for Award, Money, Graph and Null
@@ -346,14 +346,14 @@ News::Item* News::AddItemToQueue(News::ItemType type, const utf8* text, uint32_t
  * @return A boolean if assoc is required.
  */
 
-bool News::CheckIfItemRequiresAssoc(News::ItemType type)
+bool News::CheckIfItemRequiresAssoc(ItemType type)
 {
     switch (type)
     {
-        case News::ItemType::null:
-        case News::ItemType::award:
-        case News::ItemType::money:
-        case News::ItemType::graph:
+        case ItemType::null:
+        case ItemType::award:
+        case ItemType::money:
+        case ItemType::graph:
             return false;
         default:
             return true; // Everything else requires assoc
@@ -366,19 +366,19 @@ bool News::CheckIfItemRequiresAssoc(News::ItemType type)
  *  rct2: 0x0066EBE6
  *
  */
-void News::OpenSubject(News::ItemType type, int32_t subject)
+void News::OpenSubject(ItemType type, int32_t subject)
 {
     switch (type)
     {
-        case News::ItemType::ride:
+        case ItemType::ride:
         {
             auto intent = Intent(WindowClass::ride);
             intent.PutExtra(INTENT_EXTRA_RIDE_ID, subject);
             ContextOpenIntent(&intent);
             break;
         }
-        case News::ItemType::peepOnRide:
-        case News::ItemType::peep:
+        case ItemType::peepOnRide:
+        case ItemType::peep:
         {
             auto peep = getGameState().entities.TryGetEntity<Peep>(EntityId::FromUnderlying(subject));
             if (peep != nullptr)
@@ -389,13 +389,13 @@ void News::OpenSubject(News::ItemType type, int32_t subject)
             }
             break;
         }
-        case News::ItemType::money:
+        case ItemType::money:
             ContextOpenWindow(WindowClass::finances);
             break;
-        case News::ItemType::campaign:
+        case ItemType::campaign:
             ContextOpenWindowView(WindowView::financeMarketing);
             break;
-        case News::ItemType::research:
+        case ItemType::research:
         {
             auto item = ResearchItem(subject, ResearchCategory::transport, 0);
             if (item.type == Research::EntryType::ride)
@@ -412,7 +412,7 @@ void News::OpenSubject(News::ItemType type, int32_t subject)
             ContextOpenIntent(&intent);
             break;
         }
-        case News::ItemType::peeps:
+        case ItemType::peeps:
         {
             auto intent = Intent(WindowClass::guestList);
             intent.PutExtra(INTENT_EXTRA_GUEST_LIST_FILTER, static_cast<int32_t>(GuestListFilterType::guestsThinkingX));
@@ -420,15 +420,15 @@ void News::OpenSubject(News::ItemType type, int32_t subject)
             ContextOpenIntent(&intent);
             break;
         }
-        case News::ItemType::award:
+        case ItemType::award:
             ContextOpenWindowView(WindowView::parkAwards);
             break;
-        case News::ItemType::graph:
+        case ItemType::graph:
             ContextOpenWindowView(WindowView::parkRating);
             break;
-        case News::ItemType::null:
-        case News::ItemType::blank:
-        case News::ItemType::count:
+        case ItemType::null:
+        case ItemType::blank:
+        case ItemType::count:
             break;
     }
 }
@@ -437,14 +437,14 @@ void News::OpenSubject(News::ItemType type, int32_t subject)
  *
  *  rct2: 0x0066E407
  */
-void News::DisableNewsItems(News::ItemType type, uint32_t assoc)
+void News::DisableNewsItems(ItemType type, uint32_t assoc)
 {
     auto& gameState = getGameState();
     // TODO: write test invalidating windows
     gameState.newsItems.ForeachRecentNews([type, assoc, &gameState](auto& newsItem) {
         if (type == newsItem.type && assoc == newsItem.assoc)
         {
-            newsItem.setFlags(News::ItemFlags::hasButton);
+            newsItem.setFlags(ItemFlags::hasButton);
             if (&newsItem == &gameState.newsItems.Current())
             {
                 auto intent = Intent(INTENT_ACTION_INVALIDATE_TICKER_NEWS);
@@ -456,48 +456,47 @@ void News::DisableNewsItems(News::ItemType type, uint32_t assoc)
     gameState.newsItems.ForeachArchivedNews([type, assoc](auto& newsItem) {
         if (type == newsItem.type && assoc == newsItem.assoc)
         {
-            newsItem.setFlags(News::ItemFlags::hasButton);
+            newsItem.setFlags(ItemFlags::hasButton);
             auto* windowMgr = Ui::GetWindowManager();
             windowMgr->InvalidateByClass(WindowClass::recentNews);
         }
     });
 }
 
-void News::AddItemToQueue(News::Item* newNewsItem)
+void News::AddItemToQueue(Item* newNewsItem)
 {
-    News::Item* newsItem = getGameState().newsItems.FirstOpenOrNewSlot();
+    Item* newsItem = getGameState().newsItems.FirstOpenOrNewSlot();
     *newsItem = *newNewsItem;
 }
 
 void News::RemoveItem(int32_t index)
 {
-    if (index < 0 || index >= News::MaxItems)
+    if (index < 0 || index >= MaxItems)
         return;
 
     auto& gameState = getGameState();
     // News item is already null, no need to remove it
-    if (gameState.newsItems[index].type == News::ItemType::null)
+    if (gameState.newsItems[index].type == ItemType::null)
         return;
 
-    size_t newsBoundary = index < News::ItemHistoryStart ? News::ItemHistoryStart : News::MaxItems;
+    size_t newsBoundary = index < ItemHistoryStart ? ItemHistoryStart : MaxItems;
     for (size_t i = index; i < newsBoundary - 1; i++)
     {
         gameState.newsItems[i] = gameState.newsItems[i + 1];
     }
-    gameState.newsItems[newsBoundary - 1].type = News::ItemType::null;
+    gameState.newsItems[newsBoundary - 1].type = ItemType::null;
 }
 
-void News::importNewsItems(
-    GameState_t& gameState, const std::span<const News::Item> recent, const std::span<const News::Item> archived)
+void News::importNewsItems(GameState_t& gameState, const std::span<const Item> recent, const std::span<const Item> archived)
 {
     gameState.newsItems.Clear();
 
-    for (size_t i = 0; i < std::min<size_t>(recent.size(), News::ItemHistoryStart); i++)
+    for (size_t i = 0; i < std::min<size_t>(recent.size(), ItemHistoryStart); i++)
     {
         gameState.newsItems[i] = recent[i];
     }
-    for (size_t i = 0; i < std::min<size_t>(archived.size(), News::MaxItemsArchive); i++)
+    for (size_t i = 0; i < std::min<size_t>(archived.size(), MaxItemsArchive); i++)
     {
-        gameState.newsItems[News::ItemHistoryStart + i] = archived[i];
+        gameState.newsItems[ItemHistoryStart + i] = archived[i];
     }
 }

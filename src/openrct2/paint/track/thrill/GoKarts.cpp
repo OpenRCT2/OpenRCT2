@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -1971,7 +1971,7 @@ static void TrackLeftQuarterTurn5Tiles(
         session, session.TrackColours.WithIndex(kGoKartsLeftQuarterTurn5TilesSprites[direction][trackSequence][2]), height,
         { 0, 0, 0 }, kGoKartsLeftQuarterTurn5TilesBoundBoxes[direction][trackSequence][2]);
 
-    DrawSupportForSequenceA<OpenRCT2::TrackElemType::leftQuarterTurn5Tiles>(
+    DrawSupportForSequenceA<TrackElemType::leftQuarterTurn5Tiles>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     if (trackSequence == 0 && (direction == 0 || direction == 3))
     {
@@ -2023,7 +2023,7 @@ static void TrackLeftEighthToDiag(
         session, session.TrackColours.WithIndex(kGoKartsLeftEighthToDiagSprites[direction][trackSequence][2]), height,
         { 0, 0, 0 }, kGoKartsLeftEighthToDiagBoundBoxes[direction][trackSequence][2]);
 
-    DrawSupportForSequenceA<OpenRCT2::TrackElemType::leftEighthToDiag>(
+    DrawSupportForSequenceA<TrackElemType::leftEighthToDiag>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     if (trackSequence == 0 && (direction == 0 || direction == 3))
     {
@@ -2047,7 +2047,7 @@ static void TrackRightEighthToDiag(
         session, session.TrackColours.WithIndex(kGoKartsRightEighthToDiagSprites[direction][trackSequence][2]), height,
         { 0, 0, 0 }, kGoKartsRightEighthToDiagBoundBoxes[direction][trackSequence][2]);
 
-    DrawSupportForSequenceA<OpenRCT2::TrackElemType::rightEighthToDiag>(
+    DrawSupportForSequenceA<TrackElemType::rightEighthToDiag>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     if (trackSequence == 0 && (direction == 0 || direction == 3))
     {
@@ -2086,7 +2086,7 @@ static void TrackDiagFlat(
         session, session.TrackColours.WithIndex(kGoKartsDiagFlatSprites[direction][trackSequence][1]), height, { 0, 0, 0 },
         kGoKartsDiagFlatBoundBoxes[direction][trackSequence][1]);
 
-    DrawSupportForSequenceA<OpenRCT2::TrackElemType::diagFlat>(
+    DrawSupportForSequenceA<TrackElemType::diagFlat>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -2103,7 +2103,7 @@ static void TrackDiagFlatToUp25(
         session, session.TrackColours.WithIndex(kGoKartsDiagFlatToUp25Sprites[direction][trackSequence][1]), height,
         { 0, 0, 0 }, kGoKartsDiagFlatToUp25BoundBoxes[direction][trackSequence][1]);
 
-    DrawSupportForSequenceA<OpenRCT2::TrackElemType::diagFlatToUp25>(
+    DrawSupportForSequenceA<TrackElemType::diagFlatToUp25>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -2120,7 +2120,7 @@ static void TrackDiagUp25ToFlat(
         session, session.TrackColours.WithIndex(kGoKartsDiagUp25ToFlatSprites[direction][trackSequence][1]), height,
         { 0, 0, 0 }, kGoKartsDiagUp25ToFlatBoundBoxes[direction][trackSequence][1]);
 
-    DrawSupportForSequenceB<OpenRCT2::TrackElemType::diagUp25ToFlat>(
+    DrawSupportForSequenceB<TrackElemType::diagUp25ToFlat>(
         session, supportType.wooden, trackSequence, direction, height + 16, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
@@ -2137,7 +2137,7 @@ static void TrackDiagUp25(
         session, session.TrackColours.WithIndex(kGoKartsDiagUp25Sprites[direction][trackSequence][1]), height, { 0, 0, 0 },
         kGoKartsDiagUp25BoundBoxes[direction][trackSequence][1]);
 
-    DrawSupportForSequenceB<OpenRCT2::TrackElemType::diagUp25>(
+    DrawSupportForSequenceB<TrackElemType::diagUp25>(
         session, supportType.wooden, trackSequence, direction, height + 16, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
@@ -2181,7 +2181,7 @@ static void TrackDiagUp25ToUp60(
         session, session.TrackColours.WithIndex(kGoKartsDiagUp25ToUp60Sprites[direction][trackSequence][1]), height,
         { 0, 0, 0 }, kGoKartsDiagUp25ToUp60BoundBoxes[direction][trackSequence][1]);
 
-    DrawSupportForSequenceB<OpenRCT2::TrackElemType::diagUp25ToUp60>(
+    DrawSupportForSequenceB<TrackElemType::diagUp25ToUp60>(
         session, supportType.wooden, trackSequence, direction, height + 16, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -2198,7 +2198,7 @@ static void TrackDiagUp60ToUp25(
         session, session.TrackColours.WithIndex(kGoKartsDiagUp60ToUp25Sprites[direction][trackSequence][1]), height,
         { 0, 0, 0 }, kGoKartsDiagUp60ToUp25BoundBoxes[direction][trackSequence][1]);
 
-    DrawSupportForSequenceB<OpenRCT2::TrackElemType::diagUp60ToUp25>(
+    DrawSupportForSequenceB<TrackElemType::diagUp60ToUp25>(
         session, supportType.wooden, trackSequence, direction, height + 16, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -2215,7 +2215,7 @@ static void TrackDiagUp60(
         session, session.TrackColours.WithIndex(kGoKartsDiagUp60Sprites[direction][trackSequence][1]), height, { 0, 0, 0 },
         kGoKartsDiagUp60BoundBoxes[direction][trackSequence][1]);
 
-    DrawSupportForSequenceB<OpenRCT2::TrackElemType::diagUp60>(
+    DrawSupportForSequenceB<TrackElemType::diagUp60>(
         session, supportType.wooden, trackSequence, direction, height + 16, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 104);
@@ -2708,7 +2708,7 @@ static void TrackSBendLeft(
         session, session.TrackColours.WithIndex(kGoKartsSBendLeftSprites[direction][trackSequence][2]), height, { 0, 0, 0 },
         kGoKartsSBendLeftBoundBoxes[direction][trackSequence][2]);
 
-    DrawSupportForSequenceA<OpenRCT2::TrackElemType::sBendLeft>(
+    DrawSupportForSequenceA<TrackElemType::sBendLeft>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     if ((trackSequence == 0 && (direction == 0 || direction == 3))
         || (trackSequence == 3 && (direction == 1 || direction == 2)))
@@ -2743,7 +2743,7 @@ static void TrackSBendRight(
         session, session.TrackColours.WithIndex(kGoKartsSBendRightSprites[direction][trackSequence][2]), height, { 0, 0, 0 },
         kGoKartsSBendRightBoundBoxes[direction][trackSequence][2]);
 
-    DrawSupportForSequenceA<OpenRCT2::TrackElemType::sBendRight>(
+    DrawSupportForSequenceA<TrackElemType::sBendRight>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     if ((trackSequence == 0 && (direction == 0 || direction == 3))
         || (trackSequence == 3 && (direction == 1 || direction == 2)))
@@ -2767,7 +2767,7 @@ static void TrackSBendRight(
 /**
  * rct2: 0x0074A668
  */
-TrackPaintFunction GetTrackPaintFunctionGoKarts(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionGoKarts(TrackElemType trackType)
 {
     switch (trackType)
     {

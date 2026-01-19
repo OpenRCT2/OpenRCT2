@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -28,6 +28,7 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/core/Console.hpp>
 #include <openrct2/core/Guard.hpp>
+#include <openrct2/drawing/Drawing.h>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/interface/Viewport.h>
 #include <openrct2/rct2/T6Exporter.h>
@@ -545,7 +546,7 @@ public:
                 break;
 
             case INTENT_ACTION_UPDATE_VEHICLE_SOUNDS:
-                OpenRCT2::Audio::UpdateVehicleSounds();
+                Audio::UpdateVehicleSounds();
                 break;
 
             case INTENT_ACTION_SET_MAP_TOOLTIP:
@@ -906,7 +907,7 @@ public:
         if (!flags.hasAny(WindowFlag::stickToBack, WindowFlag::stickToFront))
         {
             wp->flash();
-            OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::windowOpen, 0, pos.x + (windowSize.width / 2));
+            Audio::Play(Audio::SoundId::windowOpen, 0, pos.x + (windowSize.width / 2));
         }
 
         wp->windowPos = pos;
@@ -1399,7 +1400,7 @@ public:
     }
 };
 
-std::unique_ptr<IWindowManager> OpenRCT2::Ui::CreateWindowManager()
+std::unique_ptr<IWindowManager> Ui::CreateWindowManager()
 {
     return std::make_unique<WindowManager>();
 }

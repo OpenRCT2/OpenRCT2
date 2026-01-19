@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -81,7 +81,7 @@ namespace OpenRCT2::GameActions
                 if (surfaceElement == nullptr)
                     continue;
 
-                if (gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
+                if (gLegacyScene != LegacyScene::scenarioEditor && !gameState.cheats.sandboxMode)
                 {
                     if (!MapIsLocationInPark(CoordsXY{ x, y }))
                     {
@@ -118,7 +118,6 @@ namespace OpenRCT2::GameActions
         if (!withinOwnership)
         {
             return Result(Status::disallowed, STR_CANT_LOWER_WATER_LEVEL_HERE, STR_LAND_NOT_OWNED_BY_PARK);
-            ;
         }
 
         if (isExecuting && hasChanged)
@@ -139,7 +138,7 @@ namespace OpenRCT2::GameActions
         {
             for (int32_t x = validRange.GetX1(); x <= validRange.GetX2(); x += kCoordsXYStep)
             {
-                if (gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
+                if (gLegacyScene != LegacyScene::scenarioEditor && !gameState.cheats.sandboxMode)
                 {
                     if (!MapIsLocationInPark(CoordsXY{ x, y }))
                     {

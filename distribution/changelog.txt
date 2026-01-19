@@ -1,6 +1,11 @@
 0.4.31 (in development)
 ------------------------------------------------------------------------
-- Fix: [#25735] Ride synchronisation z-check works incorrectly
+- Feature: [#25844] The sprite builder now also supports adding JSON-based palettes.
+- Improved: [#25765] The ‘View options’ and ‘Special track elements’ dropdowns no longer need click-and-hold.
+- Fix: [#4643, #25167] Many metal supports draw with a filled in top when they didn't in vanilla, causing some slight misalignment and glitching.
+- Fix: [#25739] Game freezes when a tab in the New Ride window contains more than 384 items.
+- Fix: [#25745] Crash when a player connection is aborted early.
+- Fix: [#25799] The animated options tab icon of the news window does not always redraw.
 
 0.4.30 (2026-01-04)
 ------------------------------------------------------------------------

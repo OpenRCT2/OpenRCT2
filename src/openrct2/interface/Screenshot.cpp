@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -53,7 +53,7 @@ extern uint8_t gClipHeight;
 
 uint8_t gScreenshotCountdown = 0;
 
-static bool WriteDpiToFile(std::string_view path, const RenderTarget& rt, const GamePalette& palette)
+static bool WriteRTToFile(std::string_view path, const RenderTarget& rt, const GamePalette& palette)
 {
     auto const pixels8 = rt.bits;
     auto const pixelsLen = rt.LineStride() * rt.height;
@@ -92,7 +92,7 @@ void ScreenshotCheck()
 
             if (!screenshotPath.empty())
             {
-                OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::windowOpen, 100, ContextGetWidth() / 2);
+                Audio::Play(Audio::SoundId::windowOpen, 100, ContextGetWidth() / 2);
 
                 // Show user that screenshot saved successfully
                 const auto filename = Path::GetFileName(screenshotPath);
@@ -171,7 +171,7 @@ static std::optional<std::string> ScreenshotGetNextPath()
 
     LOG_ERROR("You have too many saved screenshots saved at exactly the same date and time.");
     return std::nullopt;
-};
+}
 
 std::string ScreenshotDumpPNG(RenderTarget& rt)
 {
@@ -183,7 +183,7 @@ std::string ScreenshotDumpPNG(RenderTarget& rt)
         return {};
     }
 
-    if (WriteDpiToFile(path.value(), rt, gPalette))
+    if (WriteRTToFile(path.value(), rt, gPalette))
     {
         return path.value();
     }
@@ -228,7 +228,7 @@ static int32_t GetTallestVisibleTileTop(
     return minViewY - 64;
 }
 
-static RenderTarget CreateDPI(const Viewport& viewport)
+static RenderTarget CreateRT(const Viewport& viewport)
 {
     RenderTarget rt;
     rt.width = viewport.width;
@@ -241,13 +241,13 @@ static RenderTarget CreateDPI(const Viewport& viewport)
 
     if (viewport.flags & VIEWPORT_FLAG_TRANSPARENT_BACKGROUND)
     {
-        std::memset(rt.bits, PaletteIndex::pi0, static_cast<size_t>(rt.width) * rt.height);
+        std::memset(rt.bits, EnumValue(PaletteIndex::transparent), static_cast<size_t>(rt.width) * rt.height);
     }
 
     return rt;
 }
 
-static void ReleaseDPI(RenderTarget& rt)
+static void ReleaseRT(RenderTarget& rt)
 {
     if (rt.bits != nullptr)
         delete[] rt.bits;
@@ -356,10 +356,10 @@ void ScreenshotGiant()
             viewport.flags |= VIEWPORT_FLAG_TRANSPARENT_BACKGROUND;
         }
 
-        rt = CreateDPI(viewport);
+        rt = CreateRT(viewport);
 
         RenderViewport(nullptr, viewport, rt);
-        WriteDpiToFile(path.value(), rt, gPalette);
+        WriteRTToFile(path.value(), rt, gPalette);
 
         // Show user that screenshot saved successfully
         const auto filename = Path::GetFileName(path.value());
@@ -374,7 +374,7 @@ void ScreenshotGiant()
         ContextShowError(STR_SCREENSHOT_FAILED, kStringIdNone, {}, true);
     }
 
-    ReleaseDPI(rt);
+    ReleaseRT(rt);
 }
 
 static void ApplyOptions(const ScreenshotOptions* options, Viewport& viewport)
@@ -560,17 +560,17 @@ int32_t CommandLineForScreenshot(const char** argv, int32_t argc, ScreenshotOpti
 
         ApplyOptions(options, viewport);
 
-        rt = CreateDPI(viewport);
+        rt = CreateRT(viewport);
 
         RenderViewport(nullptr, viewport, rt);
-        WriteDpiToFile(outputPath, rt, gPalette);
+        WriteRTToFile(outputPath, rt, gPalette);
     }
     catch (const std::exception& e)
     {
         std::printf("%s\n", e.what());
         exitCode = -1;
     }
-    ReleaseDPI(rt);
+    ReleaseRT(rt);
 
     DrawingEngineDispose();
 
@@ -653,8 +653,8 @@ void CaptureImage(const CaptureOptions& options)
     }
 
     auto outputPath = ResolveFilenameForCapture(options.Filename);
-    auto rt = CreateDPI(viewport);
+    auto rt = CreateRT(viewport);
     RenderViewport(nullptr, viewport, rt);
-    WriteDpiToFile(outputPath, rt, gPalette);
-    ReleaseDPI(rt);
+    WriteRTToFile(outputPath, rt, gPalette);
+    ReleaseRT(rt);
 }

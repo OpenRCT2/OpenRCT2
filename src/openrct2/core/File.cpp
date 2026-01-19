@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -127,7 +127,7 @@ namespace OpenRCT2::File
 
     void WriteAllBytes(u8string_view path, const void* buffer, size_t length)
     {
-        auto fs = OpenRCT2::FileStream(path, OpenRCT2::FileMode::write);
+        auto fs = FileStream(path, FileMode::write);
         fs.Write(buffer, length);
     }
 

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -70,6 +70,6 @@ namespace OpenRCT2::GameActions
          * Some thin tracks for example are allowed to have walls either side of the track, but wider tracks can not.
          */
         static bool TrackIsAllowedWallEdges(
-            ride_type_t rideType, OpenRCT2::TrackElemType trackType, uint8_t trackSequence, uint8_t direction);
+            ride_type_t rideType, TrackElemType trackType, uint8_t trackSequence, uint8_t direction);
     };
 } // namespace OpenRCT2::GameActions

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -192,50 +192,50 @@ namespace OpenRCT2::Scripting
     private:
         uint16_t rotationFrameMask_get() const
         {
-            auto entry = GetEntry();
-            if (entry != nullptr)
+            auto carEntry = GetEntry();
+            if (carEntry != nullptr)
             {
-                return entry->TabRotationMask;
+                return carEntry->TabRotationMask;
             }
             return 0;
         }
 
         uint32_t spacing_get() const
         {
-            auto entry = GetEntry();
-            if (entry != nullptr)
+            auto carEntry = GetEntry();
+            if (carEntry != nullptr)
             {
-                return entry->spacing;
+                return carEntry->spacing;
             }
             return 0;
         }
 
         uint16_t carMass_get() const
         {
-            auto entry = GetEntry();
-            if (entry != nullptr)
+            auto carEntry = GetEntry();
+            if (carEntry != nullptr)
             {
-                return entry->car_mass;
+                return carEntry->car_mass;
             }
             return 0;
         }
 
         int8_t tabHeight_get() const
         {
-            auto entry = GetEntry();
-            if (entry != nullptr)
+            auto carEntry = GetEntry();
+            if (carEntry != nullptr)
             {
-                return entry->tab_height;
+                return carEntry->tab_height;
             }
             return 0;
         }
 
         uint8_t numSeats_get() const
         {
-            auto entry = GetEntry();
-            if (entry != nullptr)
+            auto carEntry = GetEntry();
+            if (carEntry != nullptr)
             {
-                return entry->num_seats;
+                return carEntry->num_seats;
             }
             return 0;
         }
@@ -247,70 +247,70 @@ namespace OpenRCT2::Scripting
 
         uint8_t spriteWidth_get() const
         {
-            auto entry = GetEntry();
-            if (entry != nullptr)
+            auto carEntry = GetEntry();
+            if (carEntry != nullptr)
             {
-                return entry->spriteWidth;
+                return carEntry->spriteWidth;
             }
             return 0;
         }
 
         uint8_t spriteHeightNegative_get() const
         {
-            auto entry = GetEntry();
-            if (entry != nullptr)
+            auto carEntry = GetEntry();
+            if (carEntry != nullptr)
             {
-                return entry->spriteHeightNegative;
+                return carEntry->spriteHeightNegative;
             }
             return 0;
         }
 
         uint8_t spriteHeightPositive_get() const
         {
-            auto entry = GetEntry();
-            if (entry != nullptr)
+            auto carEntry = GetEntry();
+            if (carEntry != nullptr)
             {
-                return entry->spriteHeightPositive;
+                return carEntry->spriteHeightPositive;
             }
             return 0;
         }
 
         uint8_t animation_get() const
         {
-            auto entry = GetEntry();
-            if (entry != nullptr)
+            auto carEntry = GetEntry();
+            if (carEntry != nullptr)
             {
-                return EnumValue(entry->animation);
+                return EnumValue(carEntry->animation);
             }
             return 0;
         }
 
         uint32_t flags_get() const
         {
-            auto entry = GetEntry();
-            if (entry != nullptr)
+            auto carEntry = GetEntry();
+            if (carEntry != nullptr)
             {
-                return entry->flags;
+                return carEntry->flags;
             }
             return 0;
         }
 
         uint16_t baseNumFrames_get() const
         {
-            auto entry = GetEntry();
-            if (entry != nullptr)
+            auto carEntry = GetEntry();
+            if (carEntry != nullptr)
             {
-                return entry->base_num_frames;
+                return carEntry->base_num_frames;
             }
             return 0;
         }
 
         uint32_t baseImageId_get() const
         {
-            auto entry = GetEntry();
-            if (entry != nullptr)
+            auto carEntry = GetEntry();
+            if (carEntry != nullptr)
             {
-                return entry->base_image_id;
+                return carEntry->base_image_id;
             }
             return 0;
         }
@@ -320,12 +320,12 @@ namespace OpenRCT2::Scripting
             auto& scriptEngine = GetContext()->GetScriptEngine();
             auto* ctx = scriptEngine.GetContext();
             DukObject groups(ctx);
-            auto entry = GetEntry();
-            if (entry != nullptr)
+            auto carEntry = GetEntry();
+            if (carEntry != nullptr)
             {
                 for (uint8_t g = 0; g < EnumValue<SpriteGroupType>(SpriteGroupType::Count); g++)
                 {
-                    auto group = entry->SpriteGroups[g];
+                    auto group = carEntry->SpriteGroups[g];
                     if (group.Enabled())
                         groups.Set(SpriteGroupNames[g], ToDuk<VehicleSpriteGroup>(ctx, group));
                 }
@@ -335,140 +335,140 @@ namespace OpenRCT2::Scripting
 
         uint32_t noVehicleImages_get() const
         {
-            auto entry = GetEntry();
-            if (entry != nullptr)
+            auto carEntry = GetEntry();
+            if (carEntry != nullptr)
             {
-                return entry->NumCarImages;
+                return carEntry->NumCarImages;
             }
             return 0;
         }
 
         uint8_t noSeatingRows_get() const
         {
-            auto entry = GetEntry();
-            if (entry != nullptr)
+            auto carEntry = GetEntry();
+            if (carEntry != nullptr)
             {
-                return entry->no_seating_rows;
+                return carEntry->no_seating_rows;
             }
             return 0;
         }
 
         uint8_t spinningInertia_get() const
         {
-            auto entry = GetEntry();
-            if (entry != nullptr)
+            auto carEntry = GetEntry();
+            if (carEntry != nullptr)
             {
-                return entry->spinning_inertia;
+                return carEntry->spinning_inertia;
             }
             return 0;
         }
 
         uint8_t spinningFriction_get() const
         {
-            auto entry = GetEntry();
-            if (entry != nullptr)
+            auto carEntry = GetEntry();
+            if (carEntry != nullptr)
             {
-                return entry->spinning_friction;
+                return carEntry->spinning_friction;
             }
             return 0;
         }
 
         int32_t frictionSoundId_get() const
         {
-            auto entry = GetEntry();
-            if (entry != nullptr)
+            auto carEntry = GetEntry();
+            if (carEntry != nullptr)
             {
-                return static_cast<int32_t>(entry->friction_sound_id);
+                return static_cast<int32_t>(carEntry->friction_sound_id);
             }
             return 0;
         }
 
         uint8_t logFlumeReverserVehicleType_get() const
         {
-            auto entry = GetEntry();
-            if (entry != nullptr)
+            auto carEntry = GetEntry();
+            if (carEntry != nullptr)
             {
-                return entry->ReversedCarIndex;
+                return carEntry->ReversedCarIndex;
             }
             return 0;
         }
 
         uint8_t soundRange_get() const
         {
-            auto entry = GetEntry();
-            if (entry != nullptr)
+            auto carEntry = GetEntry();
+            if (carEntry != nullptr)
             {
-                return EnumValue(entry->soundRange);
+                return EnumValue(carEntry->soundRange);
             }
             return 0;
         }
 
         uint8_t doubleSoundFrequency_get() const
         {
-            auto entry = GetEntry();
-            if (entry != nullptr)
+            auto carEntry = GetEntry();
+            if (carEntry != nullptr)
             {
-                return entry->double_sound_frequency;
+                return carEntry->double_sound_frequency;
             }
             return 0;
         }
 
         uint8_t poweredAcceleration_get() const
         {
-            auto entry = GetEntry();
-            if (entry != nullptr)
+            auto carEntry = GetEntry();
+            if (carEntry != nullptr)
             {
-                return entry->powered_acceleration;
+                return carEntry->powered_acceleration;
             }
             return 0;
         }
 
         uint8_t poweredMaxSpeed_get() const
         {
-            auto entry = GetEntry();
-            if (entry != nullptr)
+            auto carEntry = GetEntry();
+            if (carEntry != nullptr)
             {
-                return entry->powered_max_speed;
+                return carEntry->powered_max_speed;
             }
             return 0;
         }
 
         uint8_t carVisual_get() const
         {
-            auto entry = GetEntry();
-            if (entry != nullptr)
+            auto carEntry = GetEntry();
+            if (carEntry != nullptr)
             {
-                return entry->PaintStyle;
+                return carEntry->PaintStyle;
             }
             return 0;
         }
 
         uint8_t effectVisual_get() const
         {
-            auto entry = GetEntry();
-            if (entry != nullptr)
+            auto carEntry = GetEntry();
+            if (carEntry != nullptr)
             {
-                return entry->effect_visual;
+                return carEntry->effect_visual;
             }
             return 0;
         }
 
         uint8_t drawOrder_get() const
         {
-            auto entry = GetEntry();
-            if (entry != nullptr)
+            auto carEntry = GetEntry();
+            if (carEntry != nullptr)
             {
-                return entry->draw_order;
+                return carEntry->draw_order;
             }
             return 0;
         }
 
         uint8_t numVerticalFramesOverride_get() const
         {
-            auto entry = GetEntry();
-            if (entry != nullptr)
+            auto carEntry = GetEntry();
+            if (carEntry != nullptr)
             {
-                return entry->num_vertical_frames_override;
+                return carEntry->num_vertical_frames_override;
             }
             return 0;
         }
@@ -552,20 +552,20 @@ namespace OpenRCT2::Scripting
 
         uint32_t firstImageId_get() const
         {
-            auto entry = GetEntry();
-            if (entry != nullptr)
+            auto rideEntry = GetEntry();
+            if (rideEntry != nullptr)
             {
-                return entry->images_offset;
+                return rideEntry->images_offset;
             }
             return 0;
         }
 
         uint32_t flags_get() const
         {
-            auto entry = GetEntry();
-            if (entry != nullptr)
+            auto rideEntry = GetEntry();
+            if (rideEntry != nullptr)
             {
-                return entry->flags;
+                return rideEntry->flags;
             }
             return 0;
         }
@@ -573,10 +573,10 @@ namespace OpenRCT2::Scripting
         std::vector<uint8_t> rideType_get() const
         {
             std::vector<uint8_t> result;
-            auto entry = GetEntry();
-            if (entry != nullptr)
+            auto rideEntry = GetEntry();
+            if (rideEntry != nullptr)
             {
-                for (auto rideType : entry->ride_type)
+                for (auto rideType : rideEntry->ride_type)
                 {
                     result.push_back(rideType);
                 }
@@ -586,100 +586,100 @@ namespace OpenRCT2::Scripting
 
         uint8_t minCarsInTrain_get() const
         {
-            auto entry = GetEntry();
-            if (entry != nullptr)
+            auto rideEntry = GetEntry();
+            if (rideEntry != nullptr)
             {
-                return entry->min_cars_in_train;
+                return rideEntry->min_cars_in_train;
             }
             return 0;
         }
 
         uint8_t maxCarsInTrain_get() const
         {
-            auto entry = GetEntry();
-            if (entry != nullptr)
+            auto rideEntry = GetEntry();
+            if (rideEntry != nullptr)
             {
-                return entry->max_cars_in_train;
+                return rideEntry->max_cars_in_train;
             }
             return 0;
         }
 
         uint8_t carsPerFlatRide_get() const
         {
-            auto entry = GetEntry();
-            if (entry != nullptr)
+            auto rideEntry = GetEntry();
+            if (rideEntry != nullptr)
             {
-                return entry->cars_per_flat_ride;
+                return rideEntry->cars_per_flat_ride;
             }
             return 0;
         }
 
         uint8_t zeroCars_get() const
         {
-            auto entry = GetEntry();
-            if (entry != nullptr)
+            auto rideEntry = GetEntry();
+            if (rideEntry != nullptr)
             {
-                return entry->zero_cars;
+                return rideEntry->zero_cars;
             }
             return 0;
         }
 
         uint8_t tabVehicle_get() const
         {
-            auto entry = GetEntry();
-            if (entry != nullptr)
+            auto rideEntry = GetEntry();
+            if (rideEntry != nullptr)
             {
-                return entry->TabCar;
+                return rideEntry->TabCar;
             }
             return 0;
         }
 
         uint8_t defaultVehicle_get() const
         {
-            auto entry = GetEntry();
-            if (entry != nullptr)
+            auto rideEntry = GetEntry();
+            if (rideEntry != nullptr)
             {
-                return entry->DefaultCar;
+                return rideEntry->DefaultCar;
             }
             return 0;
         }
 
         uint8_t frontVehicle_get() const
         {
-            auto entry = GetEntry();
-            if (entry != nullptr)
+            auto rideEntry = GetEntry();
+            if (rideEntry != nullptr)
             {
-                return entry->FrontCar;
+                return rideEntry->FrontCar;
             }
             return 0;
         }
 
         uint8_t secondVehicle_get() const
         {
-            auto entry = GetEntry();
-            if (entry != nullptr)
+            auto rideEntry = GetEntry();
+            if (rideEntry != nullptr)
             {
-                return entry->SecondCar;
+                return rideEntry->SecondCar;
             }
             return 0;
         }
 
         uint8_t rearVehicle_get() const
         {
-            auto entry = GetEntry();
-            if (entry != nullptr)
+            auto rideEntry = GetEntry();
+            if (rideEntry != nullptr)
             {
-                return entry->RearCar;
+                return rideEntry->RearCar;
             }
             return 0;
         }
 
         uint8_t thirdVehicle_get() const
         {
-            auto entry = GetEntry();
-            if (entry != nullptr)
+            auto rideEntry = GetEntry();
+            if (rideEntry != nullptr)
             {
-                return entry->ThirdCar;
+                return rideEntry->ThirdCar;
             }
             return 0;
         }
@@ -687,10 +687,10 @@ namespace OpenRCT2::Scripting
         std::vector<std::shared_ptr<ScRideObjectVehicle>> vehicles_get() const
         {
             std::vector<std::shared_ptr<ScRideObjectVehicle>> result;
-            auto entry = GetEntry();
-            if (entry != nullptr)
+            auto rideEntry = GetEntry();
+            if (rideEntry != nullptr)
             {
-                for (size_t i = 0; i < std::size(entry->Cars); i++)
+                for (size_t i = 0; i < std::size(rideEntry->Cars); i++)
                 {
                     result.push_back(std::make_shared<ScRideObjectVehicle>(_index, i));
                 }
@@ -700,60 +700,60 @@ namespace OpenRCT2::Scripting
 
         int8_t excitementMultiplier_get() const
         {
-            auto entry = GetEntry();
-            if (entry != nullptr)
+            auto rideEntry = GetEntry();
+            if (rideEntry != nullptr)
             {
-                return entry->excitement_multiplier;
+                return rideEntry->excitement_multiplier;
             }
             return 0;
         }
 
         int8_t intensityMultiplier_get() const
         {
-            auto entry = GetEntry();
-            if (entry != nullptr)
+            auto rideEntry = GetEntry();
+            if (rideEntry != nullptr)
             {
-                return entry->intensity_multiplier;
+                return rideEntry->intensity_multiplier;
             }
             return 0;
         }
 
         int8_t nauseaMultiplier_get() const
         {
-            auto entry = GetEntry();
-            if (entry != nullptr)
+            auto rideEntry = GetEntry();
+            if (rideEntry != nullptr)
             {
-                return entry->nausea_multiplier;
+                return rideEntry->nausea_multiplier;
             }
             return 0;
         }
 
         uint8_t maxHeight_get() const
         {
-            auto entry = GetEntry();
-            if (entry != nullptr)
+            auto rideEntry = GetEntry();
+            if (rideEntry != nullptr)
             {
-                return entry->maxHeight;
+                return rideEntry->maxHeight;
             }
             return 0;
         }
 
         uint8_t shopItem_get() const
         {
-            auto entry = GetEntry();
-            if (entry != nullptr)
+            auto rideEntry = GetEntry();
+            if (rideEntry != nullptr)
             {
-                return EnumValue(entry->shop_item[0]);
+                return EnumValue(rideEntry->shop_item[0]);
             }
             return 0;
         }
 
         uint8_t shopItemSecondary_get() const
         {
-            auto entry = GetEntry();
-            if (entry != nullptr)
+            auto rideEntry = GetEntry();
+            if (rideEntry != nullptr)
             {
-                return EnumValue(entry->shop_item[1]);
+                return EnumValue(rideEntry->shop_item[1]);
             }
             return 0;
         }

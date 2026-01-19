@@ -242,11 +242,14 @@
     <ClInclude Include="core\ZipStream.hpp" />
     <ClInclude Include="Date.h" />
     <ClInclude Include="Diagnostic.h" />
+    <ClInclude Include="drawing\BlendColourMap.h" />
+    <ClInclude Include="drawing\ColourMap.h" />
     <ClInclude Include="drawing\ColourPalette.h" />
     <ClInclude Include="drawing\Drawing.h" />
     <ClInclude Include="drawing\Drawing.String.h" />
     <ClInclude Include="drawing\FilterPaletteIds.h" />
     <ClInclude Include="drawing\Font.h" />
+    <ClInclude Include="drawing\G1Element.h" />
     <ClInclude Include="drawing\IDrawingContext.h" />
     <ClInclude Include="drawing\IDrawingEngine.h" />
     <ClInclude Include="drawing\Image.h" />
@@ -255,6 +258,7 @@
     <ClInclude Include="drawing\InvalidationGrid.h" />
     <ClInclude Include="drawing\LightFX.h" />
     <ClInclude Include="drawing\NewDrawing.h" />
+    <ClInclude Include="drawing\PaletteIndex.h" />
     <ClInclude Include="drawing\Rectangle.h" />
     <ClInclude Include="drawing\RenderTarget.h" />
     <ClInclude Include="drawing\ScrollingText.h" />
@@ -358,6 +362,7 @@
     <ClInclude Include="object\ObjectList.h" />
     <ClInclude Include="object\ObjectManager.h" />
     <ClInclude Include="object\ObjectRepository.h" />
+    <ClInclude Include="object\ObjectSourceGame.h" />
     <ClInclude Include="object\ObjectType.h" />
     <ClInclude Include="object\ObjectTypes.h" />
     <ClInclude Include="object\PathAdditionEntry.h" />
@@ -389,6 +394,7 @@
     <ClInclude Include="paint\Painter.h" />
     <ClInclude Include="paint\support\MetalSupports.h" />
     <ClInclude Include="paint\support\WoodenSupports.h" />
+    <ClInclude Include="paint\tile_element\Paint.Path.h" />
     <ClInclude Include="paint\tile_element\Paint.PathAddition.h" />
     <ClInclude Include="paint\tile_element\Paint.Surface.h" />
     <ClInclude Include="paint\tile_element\Paint.TileElement.h" />
@@ -824,6 +830,8 @@
     <ClCompile Include="Date.cpp" />
     <ClCompile Include="Diagnostic.cpp" />
     <ClCompile Include="drawing\AVX2Drawing.cpp" />
+    <ClCompile Include="drawing\BlendColourMap.cpp" />
+    <ClCompile Include="drawing\ColourMap.cpp" />
     <ClCompile Include="drawing\Drawing.cpp" />
     <ClCompile Include="drawing\Drawing.Sprite.BMP.cpp" />
     <ClCompile Include="drawing\Drawing.Sprite.cpp" />
@@ -1048,7 +1056,7 @@
     <ClCompile Include="paint\vehicle\Vehicle.RotoDrop.cpp" />
     <ClCompile Include="paint\vehicle\Vehicle.SplashBoats.cpp" />
     <ClCompile Include="paint\vehicle\Vehicle.Submarine.cpp" />
-    <ClCompile Include="paint\vehicle\Vehicle.VirginaReel.cpp" />
+    <ClCompile Include="paint\vehicle\Vehicle.VirginiaReel.cpp" />
     <ClCompile Include="paint\VirtualFloor.cpp" />
     <ClCompile Include="ParkImporter.cpp" />
     <ClCompile Include="park\Legacy.cpp" />

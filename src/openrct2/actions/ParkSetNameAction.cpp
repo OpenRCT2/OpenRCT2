@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -56,7 +56,7 @@ namespace OpenRCT2::GameActions
     Result ParkSetNameAction::Execute(GameState_t& gameState) const
     {
         // Do a no-op if new name is the same as the current name is the same
-        auto& park = getGameState().park;
+        auto& park = gameState.park;
         if (_name != park.name)
         {
             park.name = _name;

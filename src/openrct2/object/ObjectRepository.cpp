@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -517,12 +517,11 @@ namespace OpenRCT2
 
             // Encode data
             ObjectType objectType = entry->GetType();
-            SawyerCoding::ChunkHeader chunkHeader;
+            ChunkHeader chunkHeader;
             chunkHeader.encoding = kLegacyObjectEntryGroupEncoding[EnumValue(objectType)];
             chunkHeader.length = static_cast<uint32_t>(dataSize);
             uint8_t* encodedDataBuffer = Memory::Allocate<uint8_t>(0x600000);
-            size_t encodedDataSize = SawyerCoding::WriteChunkBuffer(
-                encodedDataBuffer, reinterpret_cast<const uint8_t*>(data), chunkHeader);
+            size_t encodedDataSize = WriteChunkBuffer(encodedDataBuffer, reinterpret_cast<const uint8_t*>(data), chunkHeader);
 
             // Save to file
             try
@@ -611,7 +610,7 @@ namespace OpenRCT2
                 }
 
                 // Convert to UTF-8 filename
-                return String::convertToUtf8(normalisedName, OpenRCT2::CodePage::CP_1252);
+                return String::convertToUtf8(normalisedName, CodePage::CP_1252);
             }
             else
             {
@@ -619,7 +618,7 @@ namespace OpenRCT2
             }
         }
 
-        void WritePackedObject(OpenRCT2::IStream* stream, const RCTObjectEntry* entry)
+        void WritePackedObject(IStream* stream, const RCTObjectEntry* entry)
         {
             const ObjectRepositoryItem* item = FindObject(entry);
             if (item == nullptr)
@@ -628,7 +627,7 @@ namespace OpenRCT2
             }
 
             // Read object data from file
-            auto fs = OpenRCT2::FileStream(item->Path, OpenRCT2::FileMode::open);
+            auto fs = FileStream(item->Path, FileMode::open);
             auto fileEntry = fs.ReadValue<RCTObjectEntry>();
             if (*entry != fileEntry)
             {

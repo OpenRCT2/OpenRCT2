@@ -10,7 +10,6 @@
 #include "TestData.h"
 
 #include <gtest/gtest.h>
-#include <openrct2/Cheats.h>
 #include <openrct2/Context.h>
 #include <openrct2/Diagnostic.h>
 #include <openrct2/Game.h>
@@ -20,21 +19,17 @@
 #include <openrct2/ParkImporter.h>
 #include <openrct2/audio/AudioContext.h>
 #include <openrct2/core/Crypt.h>
-#include <openrct2/core/File.h>
 #include <openrct2/core/MemoryStream.h>
-#include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
+#include <openrct2/drawing/Drawing.h>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/entity/EntityTweener.h>
-#include <openrct2/network/Network.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/park/ParkFile.h>
-#include <openrct2/platform/Platform.h>
 #include <openrct2/rct2/RCT2.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/world/MapAnimation.h>
-#include <openrct2/world/Scenery.h>
 #include <stdio.h>
 #include <string>
 
@@ -121,7 +116,7 @@ static bool ExportSave(MemoryStream& stream, std::unique_ptr<IContext>& context)
     exporter->ExportObjectsList = objManager.GetPackableObjects();
 
     auto& gameState = getGameState();
-    exporter->Export(gameState, stream, OpenRCT2::kParkFileSaveCompressionLevel);
+    exporter->Export(gameState, stream, kParkFileSaveCompressionLevel);
 
     return true;
 }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -103,7 +103,7 @@ static u8string ToOwnershipJsonKey(int ownershipType)
         case OWNERSHIP_AVAILABLE:
             return "available";
     }
-    Guard::Assert(0, "Unrecognized ownership type flag");
+    Guard::Assert(false, "Unrecognized ownership type flag");
     return {};
 }
 
@@ -111,7 +111,7 @@ static void readCoordinate(std::vector<TileCoordsXY>& out, const json_t& coordin
 {
     if (coordinatesArray.size() != 2)
     {
-        Guard::Assert(0, "Fix coordinates sub array should have 2 elements");
+        Guard::Assert(false, "Fix coordinates sub array should have 2 elements");
         return;
     }
 
@@ -122,7 +122,7 @@ static void readCoordinate(std::vector<TileCoordsXYZ>& out, const json_t& coordi
 {
     if (coordinatesArray.size() != 3)
     {
-        Guard::Assert(0, "Fix coordinates sub array should have 3 elements");
+        Guard::Assert(false, "Fix coordinates sub array should have 3 elements");
         return;
     }
 
@@ -136,19 +136,19 @@ static std::vector<TTileCoords> getCoordinates(const json_t& parameters)
 {
     if (!parameters.contains(_coordinatesKey))
     {
-        Guard::Assert(0, "Cannot have fix without coordinates array");
+        Guard::Assert(false, "Cannot have fix without coordinates array");
         return {};
     }
     else if (!parameters[_coordinatesKey].is_array())
     {
-        Guard::Assert(0, "Fix coordinates should be an array");
+        Guard::Assert(false, "Fix coordinates should be an array");
         return {};
     }
 
     auto coords = Json::AsArray(parameters[_coordinatesKey]);
     if (coords.empty())
     {
-        Guard::Assert(0, "Fix coordinates array should not be empty");
+        Guard::Assert(false, "Fix coordinates array should not be empty");
         return {};
     }
 
@@ -158,7 +158,7 @@ static std::vector<TTileCoords> getCoordinates(const json_t& parameters)
     {
         if (!coords[i].is_array())
         {
-            Guard::Assert(0, "Fix coordinates should contain only arrays");
+            Guard::Assert(false, "Fix coordinates should contain only arrays");
             return {};
         }
 
@@ -176,7 +176,7 @@ static Direction GetDirection(const json_t& parameters)
     }
     else if (!parameters[_directionKey].is_number())
     {
-        Guard::Assert(0, "Fix direction must be a number");
+        Guard::Assert(false, "Fix direction must be a number");
         return kInvalidDirection;
     }
 
@@ -184,7 +184,7 @@ static Direction GetDirection(const json_t& parameters)
 
     if (direction > 3)
     {
-        Guard::Assert(0, "Direction must be between 0 and 3");
+        Guard::Assert(false, "Direction must be between 0 and 3");
         return kInvalidDirection;
     }
 
@@ -199,7 +199,7 @@ static bool IsQueue(const json_t& parameters)
     }
     else if (!parameters[_isQueue].is_boolean())
     {
-        Guard::Assert(0, "queue must be a boolean");
+        Guard::Assert(false, "queue must be a boolean");
         return false;
     }
     else
@@ -249,14 +249,14 @@ static void ApplyWaterFixes(const json_t& scenarioPatch)
 
     if (!scenarioPatch[_waterFixKey].is_array())
     {
-        Guard::Assert(0, "Water fix should be an array");
+        Guard::Assert(false, "Water fix should be an array");
         return;
     }
 
     auto waterFixes = Json::AsArray(scenarioPatch[_waterFixKey]);
     if (waterFixes.empty())
     {
-        Guard::Assert(0, "Water fix array should not be empty");
+        Guard::Assert(false, "Water fix array should not be empty");
         return;
     }
 
@@ -264,7 +264,7 @@ static void ApplyWaterFixes(const json_t& scenarioPatch)
     {
         if (!waterFixes[i].contains(_heightKey))
         {
-            Guard::Assert(0, "Water fix sub-array should set a height");
+            Guard::Assert(false, "Water fix sub-array should set a height");
             return;
         }
         if (_dryRun)
@@ -290,7 +290,7 @@ static TrackElemType toTrackType(const u8string_view trackTypeString)
         return TrackElemType::flatCovered;
     else
     {
-        Guard::Assert(0, "Unsupported track type conversion");
+        Guard::Assert(false, "Unsupported track type conversion");
         return TrackElemType::none;
     }
 }
@@ -299,20 +299,20 @@ static void ApplyTrackTypeFixes(const json_t& trackTilesFixes)
 {
     if (!trackTilesFixes.contains(_operationsKey))
     {
-        Guard::Assert(0, "Cannot apply track tile fixes when operations array is unset");
+        Guard::Assert(false, "Cannot apply track tile fixes when operations array is unset");
         return;
     }
 
     if (!trackTilesFixes[_operationsKey].is_array())
     {
-        Guard::Assert(0, "Track tile fixes should have an operations array");
+        Guard::Assert(false, "Track tile fixes should have an operations array");
         return;
     }
 
     auto fixOperations = Json::AsArray(trackTilesFixes[_operationsKey]);
     if (fixOperations.empty())
     {
-        Guard::Assert(0, "Operations fix array should not be empty");
+        Guard::Assert(false, "Operations fix array should not be empty");
         return;
     }
 
@@ -320,13 +320,13 @@ static void ApplyTrackTypeFixes(const json_t& trackTilesFixes)
     {
         if (!fixOperations[i].contains(_fromKey))
         {
-            Guard::Assert(0, "Operation sub-array should contain a from key");
+            Guard::Assert(false, "Operation sub-array should contain a from key");
             return;
         }
 
         if (!fixOperations[i].contains(_toKey))
         {
-            Guard::Assert(0, "Operation sub-array should contain a to key");
+            Guard::Assert(false, "Operation sub-array should contain a to key");
             return;
         }
 
@@ -366,7 +366,7 @@ static TileElementType toTileElementType(const u8string_view tileTypeString)
         return TileElementType::Track;
     else
     {
-        Guard::Assert(0, "Unsupported tile type conversion");
+        Guard::Assert(false, "Unsupported tile type conversion");
         return TileElementType::Track;
     }
 }
@@ -381,7 +381,7 @@ static void ApplyTileFixes(const json_t& scenarioPatch)
     auto tilesFixes = scenarioPatch[_tilesKey];
     if (!tilesFixes.contains(_typeKey))
     {
-        Guard::Assert(0, "Cannot apply tile fixes without defined type");
+        Guard::Assert(false, "Cannot apply tile fixes without defined type");
     }
     else
     {
@@ -402,14 +402,14 @@ static void ApplySurfaceFixes(const json_t& scenarioPatch)
 
     if (!scenarioPatch[_surfacesKey].is_array())
     {
-        Guard::Assert(0, "Surface fix should be an array");
+        Guard::Assert(false, "Surface fix should be an array");
         return;
     }
 
     auto surfaceFixes = Json::AsArray(scenarioPatch[_surfacesKey]);
     if (surfaceFixes.empty())
     {
-        Guard::Assert(0, "Surface fix array should not be empty");
+        Guard::Assert(false, "Surface fix array should not be empty");
         return;
     }
 
@@ -417,7 +417,7 @@ static void ApplySurfaceFixes(const json_t& scenarioPatch)
     {
         if (!surfaceFixes[i].contains(_destinationSurface))
         {
-            Guard::Assert(0, "Surface fix sub-array should set a destination surface");
+            Guard::Assert(false, "Surface fix sub-array should set a destination surface");
             return;
         }
         if (_dryRun)
@@ -430,7 +430,7 @@ static void ApplySurfaceFixes(const json_t& scenarioPatch)
         auto surfaceObj = objectManager.GetLoadedObject(ObjectEntryDescriptor::Parse(destinationSurface));
         if (surfaceObj == nullptr)
         {
-            Guard::Assert(0, "Surface object not found");
+            Guard::Assert(false, "Surface object not found");
             return;
         }
 
@@ -453,14 +453,14 @@ static void RemoveTileElements(const json_t& scenarioPatch)
 
     if (!scenarioPatch[_elementsToDelete].is_array())
     {
-        Guard::Assert(0, "Elements to delete should be an array");
+        Guard::Assert(false, "Elements to delete should be an array");
         return;
     }
 
     auto elementsToDelete = Json::AsArray(scenarioPatch[_elementsToDelete]);
     if (elementsToDelete.empty())
     {
-        Guard::Assert(0, "Elements to delete should not be empty");
+        Guard::Assert(false, "Elements to delete should not be empty");
         return;
     }
 
@@ -468,7 +468,7 @@ static void RemoveTileElements(const json_t& scenarioPatch)
     {
         if (!elementsToDelete[i].contains(_element_index))
         {
-            Guard::Assert(0, "Elements to delete sub-array should set an element_index");
+            Guard::Assert(false, "Elements to delete sub-array should set an element_index");
             return;
         }
         auto elementIndex = elementsToDelete[i][_element_index];
@@ -483,7 +483,7 @@ static void RemoveTileElements(const json_t& scenarioPatch)
             auto tileElement = MapGetNthElementAt(tile.ToCoordsXY(), elementIndex);
             if (tileElement == nullptr)
             {
-                Guard::Assert(0, "Invalid Nth element at tile");
+                Guard::Assert(false, "Invalid Nth element at tile");
                 return;
             }
             else
@@ -499,7 +499,7 @@ static void SwapRideEntranceAndExit(RideId rideId)
     auto ride = GetRide(rideId);
     if (ride == nullptr)
     {
-        Guard::Assert(0, "Invalid Ride Id for SwapRideEntranceAndExit");
+        Guard::Assert(false, "Invalid Ride Id for SwapRideEntranceAndExit");
         return;
     }
 
@@ -546,14 +546,14 @@ static void ApplyRideFixes(const json_t& scenarioPatch)
 
     if (!scenarioPatch[_ridesKey].is_array())
     {
-        Guard::Assert(0, "Ride fixes should be an array of arrays");
+        Guard::Assert(false, "Ride fixes should be an array of arrays");
         return;
     }
 
     auto rideFixes = Json::AsArray(scenarioPatch[_ridesKey]);
     if (rideFixes.empty())
     {
-        Guard::Assert(0, "Ride fixes should not be an empty array");
+        Guard::Assert(false, "Ride fixes should not be an empty array");
         return;
     }
 
@@ -561,13 +561,13 @@ static void ApplyRideFixes(const json_t& scenarioPatch)
     {
         if (!rideFixes[i].contains(_rideIdKey))
         {
-            Guard::Assert(0, "Ride fixes should contain a ride id");
+            Guard::Assert(false, "Ride fixes should contain a ride id");
             return;
         }
 
         if (!rideFixes[i].contains(_operationKey))
         {
-            Guard::Assert(0, "Ride fixes should contain a ride operation");
+            Guard::Assert(false, "Ride fixes should contain a ride operation");
             return;
         }
 
@@ -585,7 +585,7 @@ static void ApplyRideFixes(const json_t& scenarioPatch)
         }
         else
         {
-            Guard::Assert(0, "Unsupported ride fix operation");
+            Guard::Assert(false, "Unsupported ride fix operation");
         }
     }
 }
@@ -599,14 +599,14 @@ static void ApplyPathFixes(const json_t& scenarioPatch)
 
     if (!scenarioPatch[_pathsKey].is_array())
     {
-        Guard::Assert(0, "Path fixes should be an array of arrays");
+        Guard::Assert(false, "Path fixes should be an array of arrays");
         return;
     }
 
     auto pathFixes = Json::AsArray(scenarioPatch[_pathsKey]);
     if (pathFixes.empty())
     {
-        Guard::Assert(0, "Path fixes should not be an empty array");
+        Guard::Assert(false, "Path fixes should not be an empty array");
         return;
     }
 
@@ -616,13 +616,13 @@ static void ApplyPathFixes(const json_t& scenarioPatch)
 
         if (!pathFix.contains(_railingsKey))
         {
-            Guard::Assert(0, "Path fixes should have railings");
+            Guard::Assert(false, "Path fixes should have railings");
             return;
         }
 
         if (!pathFix.contains(_surfaceKey))
         {
-            Guard::Assert(0, "Path fixes should have a surface");
+            Guard::Assert(false, "Path fixes should have a surface");
             return;
         }
 
@@ -640,13 +640,13 @@ static void ApplyPathFixes(const json_t& scenarioPatch)
 
         if (railingsObjIndex == kObjectEntryIndexNull)
         {
-            Guard::Assert(0, "Railings object not found");
+            Guard::Assert(false, "Railings object not found");
             return;
         }
 
         if (surfaceObjIndex == kObjectEntryIndexNull)
         {
-            Guard::Assert(0, "Surface object not found");
+            Guard::Assert(false, "Surface object not found");
             return;
         }
 
@@ -665,7 +665,7 @@ static void ApplyPathFixes(const json_t& scenarioPatch)
             auto result = footpathPlaceAction.Execute(gameState);
             if (result.error != GameActions::Status::ok)
             {
-                Guard::Assert(0, "Could not patch path");
+                Guard::Assert(false, "Could not patch path");
             }
         }
     }
@@ -701,13 +701,13 @@ static bool ValidateSHA256(const json_t& scenarioPatch, u8string_view scenarioHa
 
     if (!scenarioPatch.contains(_scenarioNameKey))
     {
-        Guard::Assert(0, "All .parkpatch files should contain the name of the original scenario");
+        Guard::Assert(false, "All .parkpatch files should contain the name of the original scenario");
         return false;
     }
 
     if (!scenarioPatch.contains(_fullSHAKey))
     {
-        Guard::Assert(0, "All .parkpatch files should contain the sha256 of the original scenario");
+        Guard::Assert(false, "All .parkpatch files should contain the sha256 of the original scenario");
         return false;
     }
 
@@ -725,7 +725,7 @@ void RCT12::ApplyScenarioPatch(u8string_view scenarioPatchFile, u8string scenari
     auto scenarioPatch = Json::ReadFromFile(scenarioPatchFile);
     if (!ValidateSHA256(scenarioPatch, scenarioSHA))
     {
-        Guard::Assert(0, "Invalid full SHA256. Check for shortened SHA collision");
+        Guard::Assert(false, "Invalid full SHA256. Check for shortened SHA collision");
         return;
     }
     ApplyLandOwnershipFixes(scenarioPatch);

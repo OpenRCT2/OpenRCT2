@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,8 +16,9 @@
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
 #include <openrct2/SpriteIds.h>
+#include <openrct2/drawing/ColourMap.h>
+#include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
-#include <openrct2/drawing/Text.h>
 #include <openrct2/interface/ColourWithFlags.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
@@ -388,7 +389,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onDraw(Drawing::RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             // Widgets
             WindowDrawWidgets(*this, rt);
@@ -417,7 +418,7 @@ namespace OpenRCT2::Ui::Windows
         void onMouseDown(WidgetIndex widgetIndex) override
         {
             auto widget = &widgets[widgetIndex];
-            auto* windowMgr = Ui::GetWindowManager();
+            auto* windowMgr = GetWindowManager();
 
             switch (widgetIndex)
             {
@@ -707,7 +708,7 @@ namespace OpenRCT2::Ui::Windows
                             ThemeSetColour(wc, _buttonIndex, colour);
                             ColourSchemeUpdateAll();
 
-                            auto* windowMgr = Ui::GetWindowManager();
+                            auto* windowMgr = GetWindowManager();
                             windowMgr->InvalidateAll();
                         }
                     }
@@ -715,7 +716,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onScrollDraw(int32_t scrollIndex, Drawing::RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             ScreenCoordsXY screenCoords;
 
@@ -723,9 +724,8 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             if (!colours[1].flags.has(ColourFlag::translucent))
-                // Rectangle::fill(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1,
-                // ColourMapA[colours[1].colour].mid_light);
-                GfxClear(rt, ColourMapA[colours[1].colour].mid_light);
+                GfxClear(rt, getColourMap(colours[1].colour).midLight);
+
             screenCoords.y = 0;
             for (int32_t i = 0; i < GetColourSchemeTabCount(); i++)
             {
@@ -769,11 +769,11 @@ namespace OpenRCT2::Ui::Windows
                         }
                         else
                         {
-                            colour = ColourMapA[colours[1].colour].mid_dark;
-                            Rectangle::fill(rt, { leftTop, rightBottom }, colour.colour);
+                            auto fillColour = getColourMap(colours[1].colour).midDark;
+                            Rectangle::fill(rt, { leftTop, rightBottom }, fillColour);
 
-                            colour = ColourMapA[colours[1].colour].lightest;
-                            Rectangle::fill(rt, { leftTop + yPixelOffset, rightBottom + yPixelOffset }, colour.colour);
+                            fillColour = getColourMap(colours[1].colour).lightest;
+                            Rectangle::fill(rt, { leftTop + yPixelOffset, rightBottom + yPixelOffset }, fillColour);
                         }
                     }
 
@@ -906,7 +906,7 @@ namespace OpenRCT2::Ui::Windows
             return 0;
         }
 
-        void WindowThemesDrawTabImages(Drawing::RenderTarget& rt)
+        void WindowThemesDrawTabImages(RenderTarget& rt)
         {
             for (int32_t i = 0; i < WINDOW_THEMES_TAB_COUNT; i++)
             {

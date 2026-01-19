@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -148,7 +148,7 @@ namespace OpenRCT2::Network
 
         json_t GetBroadcastJson()
         {
-            json_t root = Network::GetServerInfoAsJson();
+            json_t root = GetServerInfoAsJson();
             root["port"] = _port;
             return root;
         }
@@ -319,7 +319,7 @@ namespace OpenRCT2::Network
 
         json_t GetHeartbeatJson()
         {
-            uint32_t numPlayers = Network::GetNumVisiblePlayers();
+            uint32_t numPlayers = GetNumVisiblePlayers();
 
             json_t root = {
                 { "token", _token },

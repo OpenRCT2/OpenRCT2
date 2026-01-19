@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,6 +11,7 @@
 #include <openrct2-ui/interface/FileBrowser.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Windows.h>
+#include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/ui/WindowManager.h>
 #include <string>
@@ -73,7 +74,7 @@ namespace OpenRCT2::Ui::Windows
 
                     // As the LoadSaveWindow::Select function can change the order of the
                     // windows we can't use WindowClose(w).
-                    auto* windowMgr = Ui::GetWindowManager();
+                    auto* windowMgr = GetWindowManager();
                     windowMgr->CloseByClass(WindowClass::loadsaveOverwritePrompt);
                     break;
                 }
@@ -102,7 +103,7 @@ namespace OpenRCT2::Ui::Windows
         const std::string_view name, const std::string_view path, LoadSaveAction action, LoadSaveType type,
         TrackDesign* trackDesignPtr)
     {
-        auto* windowMgr = Ui::GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         windowMgr->CloseByClass(WindowClass::loadsaveOverwritePrompt);
 
         return windowMgr->Create<OverwritePromptWindow>(

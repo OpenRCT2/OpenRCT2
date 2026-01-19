@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -75,7 +75,7 @@ namespace OpenRCT2
     bool ObjectEntryDescriptor::HasValue() const
     {
         return Generation != ObjectGeneration::JSON || !Identifier.empty();
-    };
+    }
 
     ObjectType ObjectEntryDescriptor::GetType() const
     {
@@ -152,7 +152,7 @@ namespace OpenRCT2
         throw std::runtime_error("Not supported.");
     }
 
-    void Object::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream)
+    void Object::ReadLegacy(IReadObjectContext* context, IStream* stream)
     {
         throw std::runtime_error("Not supported.");
     }

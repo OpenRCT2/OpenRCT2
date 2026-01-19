@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -345,8 +345,6 @@ namespace OpenRCT2::PathFinding
     static PathSearchResult FootpathElementNextInDirection(
         TileCoordsXYZ loc, PathElement* pathElement, Direction chosenDirection)
     {
-        TileElement* nextTileElement;
-
         if (pathElement->IsSloped())
         {
             if (pathElement->GetSlopeDirection() == chosenDirection)
@@ -356,7 +354,7 @@ namespace OpenRCT2::PathFinding
         }
 
         loc += TileDirectionDelta[chosenDirection];
-        nextTileElement = MapGetFirstElementAt(loc);
+        TileElement* nextTileElement = MapGetFirstElementAt(loc);
         do
         {
             if (nextTileElement == nullptr)
@@ -2077,7 +2075,6 @@ namespace OpenRCT2::PathFinding
             {
                 bestScore = score;
                 closestStationNum = stationIndex;
-                continue;
             }
         }
 

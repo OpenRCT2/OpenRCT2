@@ -2,7 +2,6 @@
 
 #include "../System.hpp"
 #include "../actions/GameAction.h"
-#include "../object/Object.h"
 #include "../scenario/Scenario.h"
 #include "NetworkConnection.h"
 #include "NetworkGroup.h"
@@ -21,7 +20,8 @@
 namespace OpenRCT2
 {
     struct IContext;
-}
+    struct ObjectRepositoryItem;
+} // namespace OpenRCT2
 
 namespace OpenRCT2::Network
 {
@@ -196,7 +196,7 @@ namespace OpenRCT2::Network
         std::ofstream _chat_log_fs;
         uint32_t _lastUpdateTime = 0;
         uint32_t _currentDeltaTime = 0;
-        Mode mode = Network::Mode::none;
+        Mode mode = Mode::none;
         uint8_t default_group = 0;
         bool _closeLock = false;
         bool _requireClose = false;
@@ -240,7 +240,7 @@ namespace OpenRCT2::Network
         uint32_t last_ping_sent_time = 0;
         uint32_t server_connect_time = 0;
         uint32_t _actionId;
-        Status status = Network::Status::none;
+        Status status = Status::none;
         uint8_t player_id = 0;
         uint16_t _port = 0;
         SocketStatus _lastConnectStatus = SocketStatus::closed;

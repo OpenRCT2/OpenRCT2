@@ -180,7 +180,7 @@ if (MINGW)
     target_link_libraries(libopenrct2 -fstack-protector-strong)
 endif()
 
-if (UNIX AND NOT ${CMAKE_SYSTEM_NAME} MATCHES "BSD")
+if (UNIX AND NOT HAIKU AND NOT ${CMAKE_SYSTEM_NAME} MATCHES "BSD")
     # Include libdl for dlopen
     target_link_libraries(libopenrct2 dl)
 endif ()

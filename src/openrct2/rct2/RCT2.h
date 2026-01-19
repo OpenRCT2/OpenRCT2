@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -17,13 +17,17 @@
 #include "../world/ParkData.h"
 #include "Limits.h"
 
-#include <tuple>
 #include <vector>
 
 struct RideObjectEntry;
 enum class EditorStep : uint8_t;
 enum class MechanicStatus : uint8_t;
+enum class RideInvalidateFlag : uint8_t;
 enum class VehicleColourSettings : uint8_t;
+
+template<typename THolderType, typename TEnumType>
+struct FlagHolder;
+using RideInvalidateFlags = FlagHolder<uint8_t, RideInvalidateFlag>;
 
 namespace OpenRCT2::Scenario
 {
@@ -207,23 +211,22 @@ namespace OpenRCT2::RCT2
         money16 price;                                       // 0x138
         RCT12xy8 chairliftBullwheelLocation[2];              // 0x13A
         uint8_t chairliftBullwheelZ[2];                      // 0x13E
-        OpenRCT2::RideRating::Tuple ratings;                 // 0x140
+        RideRating::Tuple ratings;                           // 0x140
         money16 value;                                       // 0x146
         uint16_t chairliftBullwheelRotation;                 // 0x148
         uint8_t satisfaction;                                // 0x14A
         uint8_t satisfactionTimeOut;                         // 0x14B
         uint8_t satisfactionNext;                            // 0x14C
-        // Various flags stating whether a window needs to be refreshed
-        uint8_t windowInvalidateFlags; // 0x14D
-        uint8_t pad14E[0x02];          // 0x14E
-        uint32_t totalCustomers;       // 0x150
-        money32 totalProfit;           // 0x154
-        uint8_t popularity;            // 0x158
-        uint8_t popularityTimeOut;     // 0x159 Updated every purchase and ?possibly by time?
-        uint8_t popularityNext;        // 0x15A When timeout reached this will be the next popularity
-        uint8_t numRiders;             // 0x15B
-        uint8_t musicTuneId;           // 0x15C
-        uint8_t slideInUse;            // 0x15D
+        RideInvalidateFlags windowInvalidateFlags;           // 0x14D
+        uint8_t pad14E[0x02];                                // 0x14E
+        uint32_t totalCustomers;                             // 0x150
+        money32 totalProfit;                                 // 0x154
+        uint8_t popularity;                                  // 0x158
+        uint8_t popularityTimeOut;                           // 0x159 Updated every purchase and ?possibly by time?
+        uint8_t popularityNext;                              // 0x15A When timeout reached this will be the next popularity
+        uint8_t numRiders;                                   // 0x15B
+        uint8_t musicTuneId;                                 // 0x15C
+        uint8_t slideInUse;                                  // 0x15D
         union
         {
             uint16_t slidePeep; // 0x15E
@@ -524,15 +527,15 @@ namespace OpenRCT2::RCT2
         uint8_t SeatRotation;       // 0xD8
         uint8_t TargetSeatRotation; // 0xD9
 
-        OpenRCT2::RCT12::TrackElemType GetTrackType() const
+        RCT12::TrackElemType GetTrackType() const
         {
-            return static_cast<OpenRCT2::RCT12::TrackElemType>(TrackTypeAndDirection >> 2);
+            return static_cast<RCT12::TrackElemType>(TrackTypeAndDirection >> 2);
         }
         uint8_t GetTrackDirection() const
         {
             return TrackTypeAndDirection & kRCT12VehicleTrackDirectionMask;
         }
-        void SetTrackType(OpenRCT2::RCT12::TrackElemType trackType)
+        void SetTrackType(RCT12::TrackElemType trackType)
         {
             // set the upper 14 bits to 0
             TrackTypeAndDirection &= ~kRCT12VehicleTrackTypeMask;
@@ -746,7 +749,7 @@ namespace OpenRCT2::RCT2
         uint16_t ProximityStartZ;
         uint8_t CurrentRide;
         uint8_t State;
-        OpenRCT2::RCT12::TrackElemType ProximityTrackType;
+        RCT12::TrackElemType ProximityTrackType;
         uint8_t ProximityBaseHeight;
         uint16_t ProximityTotal;
         uint16_t ProximityScores[26];
@@ -1042,11 +1045,9 @@ namespace OpenRCT2::RCT2
         flatRide,
     };
 
-    OpenRCT2::TrackElemType RCT2TrackTypeToOpenRCT2(
-        OpenRCT2::RCT12::TrackElemType origTrackType, ride_type_t rideType, bool isFlatRide);
-    OpenRCT2::TrackElemType RCT2TrackTypeToOpenRCT2(
-        OpenRCT2::RCT12::TrackElemType origTrackType, OriginalRideClass originalClass);
-    OpenRCT2::RCT12::TrackElemType OpenRCT2TrackTypeToRCT2(OpenRCT2::TrackElemType origTrackType);
+    TrackElemType RCT2TrackTypeToOpenRCT2(RCT12::TrackElemType origTrackType, ride_type_t rideType, bool isFlatRide);
+    TrackElemType RCT2TrackTypeToOpenRCT2(RCT12::TrackElemType origTrackType, OriginalRideClass originalClass);
+    RCT12::TrackElemType OpenRCT2TrackTypeToRCT2(TrackElemType origTrackType);
 
     struct FootpathMapping
     {

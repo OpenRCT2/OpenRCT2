@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -183,7 +183,7 @@ public:
         {
             for (int32_t i = 0; i < 256; i++)
             {
-                _paletteHWMapped[i] = SDL_MapRGB(_screenTextureFormat, palette[i].Red, palette[i].Green, palette[i].Blue);
+                _paletteHWMapped[i] = SDL_MapRGB(_screenTextureFormat, palette[i].red, palette[i].green, palette[i].blue);
             }
 
             if (Config::Get().general.enableLightFx)
@@ -192,7 +192,7 @@ public:
                 for (int32_t i = 0; i < 256; i++)
                 {
                     const auto& src = lightPalette[i];
-                    _lightPaletteHWMapped[i] = SDL_MapRGBA(_screenTextureFormat, src.Red, src.Green, src.Blue, src.Alpha);
+                    _lightPaletteHWMapped[i] = SDL_MapRGBA(_screenTextureFormat, src.red, src.green, src.blue, src.alpha);
                 }
             }
         }
@@ -378,7 +378,7 @@ private:
     }
 };
 
-std::unique_ptr<IDrawingEngine> OpenRCT2::Ui::CreateHardwareDisplayDrawingEngine(IUiContext& uiContext)
+std::unique_ptr<IDrawingEngine> Ui::CreateHardwareDisplayDrawingEngine(IUiContext& uiContext)
 {
     return std::make_unique<HardwareDisplayDrawingEngine>(uiContext);
 }

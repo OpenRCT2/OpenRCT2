@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,7 +10,6 @@
 #pragma once
 
 #include "../core/CallingConventions.h"
-#include "../core/FlagHolder.hpp"
 #include "../core/StringTypes.h"
 #include "../interface/Colour.h"
 #include "../interface/ZoomLevel.h"
@@ -18,6 +17,7 @@
 #include "ColourPalette.h"
 #include "FilterPaletteIds.h"
 #include "Font.h"
+#include "G1Element.h"
 #include "ImageId.hpp"
 #include "RenderTarget.h"
 #include "Text.h"
@@ -44,65 +44,8 @@ namespace OpenRCT2
 namespace OpenRCT2::Drawing
 {
     struct IDrawingEngine;
-}
-
-enum class G1Flag : uint8_t
-{
-    hasTransparency, // Image data contains transparent pixels (0XFF) which will not be rendered
-    one,
-    hasRLECompression, // Image data is encoded using RCT2's form of run length encoding
-    isPalette,         // Image data is a sequence of palette entries R8G8B8
-    hasZoomSprite,     // Use a different sprite for higher zoom levels
-    noZoomDraw,        // Does not get drawn at higher zoom levels (only zoom 0)
-};
-using G1Flags = FlagHolder<uint16_t, G1Flag>;
-
-struct G1Element
-{
-    uint8_t* offset = nullptr; // 0x00
-    union
-    {
-        int16_t width = 0;  // 0x04
-        int16_t numColours; // If G1Flag::isPalette is set
-    };
-    int16_t height = 0; // 0x06
-    union
-    {
-        int16_t xOffset = 0; // 0x08
-        int16_t startIndex;  // If G1Flag::isPalette is set
-    };
-    int16_t yOffset = 0;      // 0x0A
-    G1Flags flags = {};       // 0x0C
-    int32_t zoomedOffset = 0; // 0x0E
-};
-
-#pragma pack(push, 1)
-struct G1Header
-{
-    uint32_t numEntries = 0;
-    uint32_t totalSize = 0;
-};
-static_assert(sizeof(G1Header) == 8);
-#pragma pack(pop)
-
-struct Gx
-{
-    G1Header header;
-    std::vector<G1Element> elements;
-    std::unique_ptr<uint8_t[]> data;
-};
-
-struct StoredG1Element
-{
-    uint32_t offset;       // 0x00 note: uint32_t always!
-    int16_t width;         // 0x04
-    int16_t height;        // 0x06
-    int16_t xOffset;       // 0x08
-    int16_t yOffset;       // 0x0A
-    G1Flags flags;         // 0x0C
-    uint16_t zoomedOffset; // 0x0E
-};
-static_assert(sizeof(StoredG1Element) == 0x10);
+    enum class FilterPaletteID : int32_t;
+} // namespace OpenRCT2::Drawing
 
 using DrawBlendOp = uint8_t;
 
@@ -142,7 +85,7 @@ namespace OpenRCT2::Drawing
 struct PaletteMap
 {
 private:
-    std::span<uint8_t> _data{};
+    std::span<OpenRCT2::Drawing::PaletteIndex> _data{};
 #ifdef _DEBUG
     // We only require those fields for the asserts in debug builds.
     size_t _numMaps{};
@@ -154,7 +97,7 @@ public:
 
     constexpr PaletteMap() = default;
 
-    constexpr PaletteMap(uint8_t* data, size_t numMaps, size_t mapLength)
+    constexpr PaletteMap(OpenRCT2::Drawing::PaletteIndex* data, size_t numMaps, size_t mapLength)
         : _data{ data, numMaps * mapLength }
 #ifdef _DEBUG
         , _numMaps(numMaps)
@@ -163,7 +106,7 @@ public:
     {
     }
 
-    constexpr PaletteMap(std::span<uint8_t> map)
+    constexpr PaletteMap(std::span<OpenRCT2::Drawing::PaletteIndex> map)
         : _data(map)
 #ifdef _DEBUG
         , _numMaps(1)
@@ -172,18 +115,20 @@ public:
     {
     }
 
-    uint8_t& operator[](size_t index);
-    uint8_t operator[](size_t index) const;
+    OpenRCT2::Drawing::PaletteIndex& operator[](size_t index);
+    OpenRCT2::Drawing::PaletteIndex operator[](size_t index) const;
 
-    uint8_t Blend(uint8_t src, uint8_t dst) const;
-    void Copy(size_t dstIndex, const PaletteMap& src, size_t srcIndex, size_t length);
+    OpenRCT2::Drawing::PaletteIndex Blend(OpenRCT2::Drawing::PaletteIndex src, OpenRCT2::Drawing::PaletteIndex dst) const;
+    void Copy(
+        OpenRCT2::Drawing::PaletteIndex dstIndex, const PaletteMap& src, OpenRCT2::Drawing::PaletteIndex srcIndex,
+        size_t length);
 };
 
 struct DrawSpriteArgs
 {
     ImageId Image;
     PaletteMap PalMap;
-    const G1Element& SourceImage;
+    const OpenRCT2::G1Element& SourceImage;
     int32_t SrcX;
     int32_t SrcY;
     int32_t Width;
@@ -191,8 +136,8 @@ struct DrawSpriteArgs
     uint8_t* DestinationBits;
 
     DrawSpriteArgs(
-        ImageId image, const PaletteMap& palMap, const G1Element& sourceImage, int32_t srcX, int32_t srcY, int32_t width,
-        int32_t height, uint8_t* destinationBits)
+        ImageId image, const PaletteMap& palMap, const OpenRCT2::G1Element& sourceImage, int32_t srcX, int32_t srcY,
+        int32_t width, int32_t height, uint8_t* destinationBits)
         : Image(image)
         , PalMap(palMap)
         , SourceImage(sourceImage)
@@ -206,12 +151,13 @@ struct DrawSpriteArgs
 };
 
 template<DrawBlendOp TBlendOp>
-bool FASTCALL BlitPixel(const uint8_t* src, uint8_t* dst, const PaletteMap& paletteMap)
+bool FASTCALL
+    BlitPixel(const OpenRCT2::Drawing::PaletteIndex* src, OpenRCT2::Drawing::PaletteIndex* dst, const PaletteMap& paletteMap)
 {
     if constexpr (TBlendOp & kBlendTransparent)
     {
         // Ignore transparent pixels
-        if (*src == 0)
+        if (*src == OpenRCT2::Drawing::PaletteIndex::transparent)
         {
             return false;
         }
@@ -222,7 +168,7 @@ bool FASTCALL BlitPixel(const uint8_t* src, uint8_t* dst, const PaletteMap& pale
         auto pixel = paletteMap.Blend(*src, *dst);
         if constexpr (TBlendOp & kBlendTransparent)
         {
-            if (pixel == 0)
+            if (pixel == OpenRCT2::Drawing::PaletteIndex::transparent)
             {
                 return false;
             }
@@ -232,10 +178,10 @@ bool FASTCALL BlitPixel(const uint8_t* src, uint8_t* dst, const PaletteMap& pale
     }
     else if constexpr ((TBlendOp & kBlendSrc) != 0)
     {
-        auto pixel = paletteMap[*src];
+        auto pixel = paletteMap[EnumValue(*src)];
         if constexpr (TBlendOp & kBlendTransparent)
         {
-            if (pixel == 0)
+            if (pixel == OpenRCT2::Drawing::PaletteIndex::transparent)
             {
                 return false;
             }
@@ -245,10 +191,10 @@ bool FASTCALL BlitPixel(const uint8_t* src, uint8_t* dst, const PaletteMap& pale
     }
     else if constexpr ((TBlendOp & kBlendDst) != 0)
     {
-        auto pixel = paletteMap[*dst];
+        auto pixel = paletteMap[EnumValue(*dst)];
         if constexpr (TBlendOp & kBlendTransparent)
         {
-            if (pixel == 0)
+            if (pixel == OpenRCT2::Drawing::PaletteIndex::transparent)
             {
                 return false;
             }
@@ -292,29 +238,29 @@ extern int32_t gPickupPeepX;
 extern int32_t gPickupPeepY;
 extern bool gPaintForceRedraw;
 
-bool ClipDrawPixelInfo(
+bool ClipRenderTarget(
     OpenRCT2::Drawing::RenderTarget& dst, OpenRCT2::Drawing::RenderTarget& src, const ScreenCoordsXY& coords, int32_t width,
     int32_t height);
 void GfxSetDirtyBlocks(const ScreenRect& rect);
 void GfxInvalidateScreen();
 
 // palette
-void GfxTransposePalette(int32_t pal, uint8_t product);
+void GfxTransposePalette(ImageIndex pal, uint8_t product);
 void LoadPalette();
 
 // other
-void GfxClear(OpenRCT2::Drawing::RenderTarget& rt, uint8_t paletteIndex);
+void GfxClear(OpenRCT2::Drawing::RenderTarget& rt, OpenRCT2::Drawing::PaletteIndex paletteIndex);
 void GfxFilterPixel(
     OpenRCT2::Drawing::RenderTarget& rt, const ScreenCoordsXY& coords, OpenRCT2::Drawing::FilterPaletteID palette);
 void GfxInvalidatePickedUpPeep();
 void GfxDrawPickedUpPeep(OpenRCT2::Drawing::RenderTarget& rt);
 
 // line
-void GfxDrawLine(OpenRCT2::Drawing::RenderTarget& rt, const ScreenLine& line, int32_t colour);
-void GfxDrawLineSoftware(OpenRCT2::Drawing::RenderTarget& rt, const ScreenLine& line, int32_t colour);
+void GfxDrawLine(OpenRCT2::Drawing::RenderTarget& rt, const ScreenLine& line, OpenRCT2::Drawing::PaletteIndex colour);
+void GfxDrawLineSoftware(OpenRCT2::Drawing::RenderTarget& rt, const ScreenLine& line, OpenRCT2::Drawing::PaletteIndex colour);
 void GfxDrawDashedLine(
-    OpenRCT2::Drawing::RenderTarget& rt, const ScreenLine& screenLine, const int32_t dashedLineSegmentLength,
-    const int32_t color);
+    OpenRCT2::Drawing::RenderTarget& rt, const ScreenLine& screenLine, int32_t dashedLineSegmentLength,
+    OpenRCT2::Drawing::PaletteIndex colour);
 
 // sprite
 bool GfxLoadG1(const OpenRCT2::IPlatformEnvironment& env);
@@ -323,27 +269,27 @@ bool GfxLoadCsg();
 void GfxUnloadG1();
 void GfxUnloadG2AndFonts();
 void GfxUnloadCsg();
-const G1Element* GfxGetG1Element(const ImageId imageId);
-const G1Element* GfxGetG1Element(ImageIndex image_id);
-void GfxSetG1Element(ImageIndex imageId, const G1Element* g1);
-std::optional<Gx> GfxLoadGx(const std::vector<uint8_t>& buffer);
+const OpenRCT2::G1Element* GfxGetG1Element(ImageId imageId);
+const OpenRCT2::G1Element* GfxGetG1Element(ImageIndex image_id);
+const OpenRCT2::G1Palette* GfxGetG1Palette(ImageIndex imageId);
+void GfxSetG1Element(ImageIndex imageId, const OpenRCT2::G1Element* g1);
+std::optional<OpenRCT2::Gx> GfxLoadGx(const std::vector<uint8_t>& buffer);
 bool IsCsgLoaded();
 void FASTCALL GfxSpriteToBuffer(OpenRCT2::Drawing::RenderTarget& rt, const DrawSpriteArgs& args);
 void FASTCALL GfxBmpSpriteToBuffer(OpenRCT2::Drawing::RenderTarget& rt, const DrawSpriteArgs& args);
 void FASTCALL GfxRleSpriteToBuffer(OpenRCT2::Drawing::RenderTarget& rt, const DrawSpriteArgs& args);
-void FASTCALL GfxDrawSprite(OpenRCT2::Drawing::RenderTarget& rt, const ImageId image_id, const ScreenCoordsXY& coords);
+void FASTCALL GfxDrawSprite(OpenRCT2::Drawing::RenderTarget& rt, ImageId image_id, const ScreenCoordsXY& coords);
 void FASTCALL GfxDrawGlyph(
-    OpenRCT2::Drawing::RenderTarget& rt, const ImageId image, const ScreenCoordsXY& coords, const PaletteMap& paletteMap);
-void FASTCALL
-    GfxDrawSpriteSolid(OpenRCT2::Drawing::RenderTarget& rt, const ImageId image, const ScreenCoordsXY& coords, uint8_t colour);
+    OpenRCT2::Drawing::RenderTarget& rt, ImageId image, const ScreenCoordsXY& coords, const PaletteMap& paletteMap);
+void FASTCALL GfxDrawSpriteSolid(
+    OpenRCT2::Drawing::RenderTarget& rt, ImageId image, const ScreenCoordsXY& coords, OpenRCT2::Drawing::PaletteIndex colour);
 void FASTCALL GfxDrawSpriteRawMasked(
-    OpenRCT2::Drawing::RenderTarget& rt, const ScreenCoordsXY& coords, const ImageId maskImage, const ImageId colourImage);
-void FASTCALL
-    GfxDrawSpriteSoftware(OpenRCT2::Drawing::RenderTarget& rt, const ImageId imageId, const ScreenCoordsXY& spriteCoords);
+    OpenRCT2::Drawing::RenderTarget& rt, const ScreenCoordsXY& coords, ImageId maskImage, ImageId colourImage);
+void FASTCALL GfxDrawSpriteSoftware(OpenRCT2::Drawing::RenderTarget& rt, ImageId imageId, const ScreenCoordsXY& spriteCoords);
 void FASTCALL GfxDrawSpritePaletteSetSoftware(
-    OpenRCT2::Drawing::RenderTarget& rt, const ImageId imageId, const ScreenCoordsXY& coords, const PaletteMap& paletteMap);
+    OpenRCT2::Drawing::RenderTarget& rt, ImageId imageId, const ScreenCoordsXY& coords, const PaletteMap& paletteMap);
 void FASTCALL GfxDrawSpriteRawMaskedSoftware(
-    OpenRCT2::Drawing::RenderTarget& rt, const ScreenCoordsXY& scrCoords, const ImageId maskImage, const ImageId colourImage);
+    OpenRCT2::Drawing::RenderTarget& rt, const ScreenCoordsXY& scrCoords, ImageId maskImage, ImageId colourImage);
 
 // string
 void GfxDrawStringLeftCentred(
@@ -368,7 +314,7 @@ void TTFDrawString(
     OpenRCT2::Drawing::RenderTarget& rt, const_utf8string text, ColourWithFlags colour, const ScreenCoordsXY& coords,
     bool noFormatting, FontStyle fontStyle, TextDarkness darkness);
 
-size_t G1CalculateDataSize(const G1Element* g1);
+size_t G1CalculateDataSize(const OpenRCT2::G1Element* g1);
 
 void MaskScalar(
     int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,
@@ -384,14 +330,15 @@ void MaskFn(
     int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,
     int32_t maskWrap, int32_t colourWrap, int32_t dstWrap);
 
-std::optional<uint32_t> GetPaletteG1Index(colour_t paletteId);
-std::optional<PaletteMap> GetPaletteMapForColour(colour_t paletteId);
-void UpdatePalette(std::span<const OpenRCT2::Drawing::PaletteBGRA> palette, int32_t start_index, int32_t num_colours);
+std::optional<uint32_t> GetPaletteG1Index(OpenRCT2::Drawing::FilterPaletteID paletteId);
+std::optional<PaletteMap> GetPaletteMapForColour(OpenRCT2::Drawing::FilterPaletteID paletteId);
+void UpdatePalette(
+    std::span<const OpenRCT2::Drawing::BGRAColour> palette, OpenRCT2::Drawing::PaletteIndex startIndex, int32_t numColours);
 void UpdatePaletteEffects();
 
 void RefreshVideo();
 void ToggleWindowedMode();
 
-void DebugDPI(OpenRCT2::Drawing::RenderTarget& rt);
+void DebugRT(OpenRCT2::Drawing::RenderTarget& rt);
 
 #include "NewDrawing.h"

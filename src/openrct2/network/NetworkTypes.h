@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -24,7 +24,7 @@ namespace OpenRCT2::Network
     namespace TickFlags
     {
         constexpr uint16_t kChecksums = 1 << 0;
-    };
+    }
 
     enum class Mode : int32_t
     {
@@ -36,7 +36,7 @@ namespace OpenRCT2::Network
     namespace PlayerFlags
     {
         constexpr uint16_t kIsServer = 1 << 0;
-    };
+    }
 
     enum class Status : int32_t
     {

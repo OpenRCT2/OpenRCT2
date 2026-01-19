@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -27,7 +27,7 @@ using namespace OpenRCT2::Drawing;
 namespace OpenRCT2
 {
     static constexpr PaletteIndex kBackgroundColourDark = PaletteIndex::pi10;
-    static constexpr PaletteIndex kBackgroundColourLogo = PaletteIndex::pi245;
+    static constexpr PaletteIndex kBackgroundColourLogo = PaletteIndex::primaryRemap2;
     static constexpr PaletteIndex kBorderColourPublisher = PaletteIndex::pi129;
 
     static constexpr ImageIndex kPaletteChrisSawyerLogo = 23217;

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,7 +10,7 @@
 #pragma once
 
 #include "../core/JsonFwd.hpp"
-#include "../drawing/Drawing.h"
+#include "../drawing/G1Element.h"
 
 #include <memory>
 #include <vector>
@@ -68,5 +68,6 @@ namespace OpenRCT2
             return static_cast<uint32_t>(_entries.size());
         }
         void AddImage(const G1Element* g1);
+        void addPalette(const G1Palette& g1);
     };
 } // namespace OpenRCT2

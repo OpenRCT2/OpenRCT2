@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -1282,7 +1282,7 @@ namespace OpenRCT2::TrackMetaData
     };
 
     /** rct2: 0x00993D1C */
-    static constexpr OpenRCT2::TrackElemType kAlternativeTrackTypes[] = {
+    static constexpr TrackElemType kAlternativeTrackTypes[] = {
         TrackElemType::flatCovered,                        // TrackElemType::flat
         TrackElemType::none,
         TrackElemType::none,
@@ -1992,7 +1992,7 @@ namespace OpenRCT2::TrackMetaData
     static_assert(std::size(kTrackPricing) == EnumValue(TrackElemType::count));
 
     /** rct2: 0x0099EA1C */
-    static constexpr OpenRCT2::TrackElemType kTrackElementMirrorMap[] = {
+    static constexpr TrackElemType kTrackElementMirrorMap[] = {
         TrackElemType::flat,
         TrackElemType::endStation,
         TrackElemType::beginStation,
@@ -4489,7 +4489,7 @@ namespace OpenRCT2::TrackMetaData
 
 #pragma region trackBlocks
 
-    using PS = OpenRCT2::PaintSegment;
+    using PS = PaintSegment;
 
     static constexpr SequenceDescriptor kFlatSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
@@ -16082,7 +16082,7 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr auto kTrackElementDescriptors = BuildDescriptorTable();
 
-    const TrackElementDescriptor& GetTrackElementDescriptor(OpenRCT2::TrackElemType type)
+    const TrackElementDescriptor& GetTrackElementDescriptor(TrackElemType type)
     {
         if (EnumValue(type) >= kTrackElementDescriptors.size())
             return kTrackElementDescriptors[0];

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -39,7 +39,7 @@ namespace OpenRCT2::Title
     static std::vector<std::string> GetSaves(const std::string& path);
     static std::vector<std::string> GetSaves(IZipArchive* zip);
     static std::vector<TitleCommand> LegacyScriptRead(const std::vector<uint8_t>& script, std::vector<std::string> saves);
-    static void LegacyScriptGetLine(OpenRCT2::IStream* stream, std::vector<std::array<char, 128>>& parts);
+    static void LegacyScriptGetLine(IStream* stream, std::vector<std::array<char, 128>>& parts);
     static std::vector<uint8_t> ReadScriptFile(const std::string& path);
     static std::string LegacyScriptWrite(const TitleSequence& seq);
 
@@ -92,7 +92,7 @@ namespace OpenRCT2::Title
 
         auto commands = LegacyScriptRead(script, saves);
 
-        auto seq = OpenRCT2::Title::CreateTitleSequence();
+        auto seq = CreateTitleSequence();
         seq->Name = Path::GetFileNameWithoutExtension(path);
         seq->Path = path;
         seq->Saves = saves;
@@ -113,7 +113,7 @@ namespace OpenRCT2::Title
                 if (zip != nullptr)
                 {
                     auto data = zip->GetFileData(filename);
-                    auto ms = std::make_unique<OpenRCT2::MemoryStream>();
+                    auto ms = std::make_unique<MemoryStream>();
                     ms->Write(data.data(), data.size());
                     ms->SetPosition(0);
 
@@ -130,10 +130,10 @@ namespace OpenRCT2::Title
             else
             {
                 auto absolutePath = Path::Combine(seq.Path, filename);
-                std::unique_ptr<OpenRCT2::IStream> fileStream = nullptr;
+                std::unique_ptr<IStream> fileStream = nullptr;
                 try
                 {
-                    fileStream = std::make_unique<OpenRCT2::FileStream>(absolutePath, OpenRCT2::FileMode::open);
+                    fileStream = std::make_unique<FileStream>(absolutePath, FileMode::open);
                 }
                 catch (const IOException& exception)
                 {
@@ -330,7 +330,7 @@ namespace OpenRCT2::Title
     static std::vector<TitleCommand> LegacyScriptRead(const std::vector<uint8_t>& script, std::vector<std::string> saves)
     {
         std::vector<TitleCommand> commands;
-        auto fs = OpenRCT2::MemoryStream(script.data(), script.size());
+        auto fs = MemoryStream(script.data(), script.size());
         do
         {
             std::vector<std::array<char, 128>> parts;
@@ -412,7 +412,7 @@ namespace OpenRCT2::Title
         return commands;
     }
 
-    static void LegacyScriptGetLine(OpenRCT2::IStream* stream, std::vector<std::array<char, 128>>& parts)
+    static void LegacyScriptGetLine(IStream* stream, std::vector<std::array<char, 128>>& parts)
     {
         int32_t part = 0;
         int32_t cindex = 0;
@@ -484,7 +484,7 @@ namespace OpenRCT2::Title
         std::vector<uint8_t> result;
         try
         {
-            auto fs = OpenRCT2::FileStream(path, OpenRCT2::FileMode::open);
+            auto fs = FileStream(path, FileMode::open);
             auto size = static_cast<size_t>(fs.GetLength());
             result.resize(size);
             fs.Read(result.data(), size);

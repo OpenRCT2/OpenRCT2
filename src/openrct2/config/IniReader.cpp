@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -97,7 +97,7 @@ private:
     std::unordered_map<std::string, std::string, StringIHash, StringICmp> _values;
 
 public:
-    explicit IniReader(OpenRCT2::IStream* stream)
+    explicit IniReader(IStream* stream)
     {
         uint64_t length = stream->GetLength() - stream->GetPosition();
         _buffer.resize(length);
@@ -428,7 +428,7 @@ public:
     }
 };
 
-std::unique_ptr<IIniReader> CreateIniReader(OpenRCT2::IStream* stream)
+std::unique_ptr<IIniReader> CreateIniReader(IStream* stream)
 {
     return std::make_unique<IniReader>(stream);
 }

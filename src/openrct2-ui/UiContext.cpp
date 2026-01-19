@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -56,7 +56,6 @@
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
-using namespace OpenRCT2::Scripting;
 using namespace OpenRCT2::Ui;
 
 #ifdef __MACOSX__
@@ -139,7 +138,7 @@ public:
     {
 #ifdef ENABLE_SCRIPTING
         auto& scriptEngine = GetContext()->GetScriptEngine();
-        UiScriptExtensions::Extend(scriptEngine);
+        Scripting::UiScriptExtensions::Extend(scriptEngine);
 #endif
     }
 
@@ -308,7 +307,7 @@ public:
     }
 
     // Drawing
-    std::shared_ptr<Drawing::IDrawingEngineFactory> GetDrawingEngineFactory() override
+    std::shared_ptr<IDrawingEngineFactory> GetDrawingEngineFactory() override
     {
         return std::make_shared<DrawingEngineFactory>();
     }
@@ -754,7 +753,7 @@ public:
     {
         if (_titleSequencePlayer == nullptr)
         {
-            _titleSequencePlayer = OpenRCT2::Title::CreateTitleSequencePlayer();
+            _titleSequencePlayer = Title::CreateTitleSequencePlayer();
         }
         return _titleSequencePlayer.get();
     }
@@ -1076,24 +1075,24 @@ private:
     }
 };
 
-std::unique_ptr<IUiContext> OpenRCT2::Ui::CreateUiContext(IPlatformEnvironment& env)
+std::unique_ptr<IUiContext> Ui::CreateUiContext(IPlatformEnvironment& env)
 {
     return std::make_unique<UiContext>(env);
 }
 
-InGameConsole& OpenRCT2::Ui::GetInGameConsole()
+InGameConsole& Ui::GetInGameConsole()
 {
     auto& uiContext = static_cast<UiContext&>(GetContext()->GetUiContext());
     return uiContext.GetInGameConsole();
 }
 
-InputManager& OpenRCT2::Ui::GetInputManager()
+InputManager& Ui::GetInputManager()
 {
     auto& uiContext = static_cast<UiContext&>(GetContext()->GetUiContext());
     return uiContext.GetInputManager();
 }
 
-ShortcutManager& OpenRCT2::Ui::GetShortcutManager()
+ShortcutManager& Ui::GetShortcutManager()
 {
     auto& uiContext = static_cast<UiContext&>(GetContext()->GetUiContext());
     return uiContext.GetShortcutManager();

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -53,12 +53,12 @@ int main(int argc, const char** argv)
         Module.canvas.addEventListener("contextmenu", function(e) { e.preventDefault(); });
     });
 #endif
-    std::unique_ptr<IContext> context;
     int32_t rc = EXIT_SUCCESS;
     int runGame = CommandLineRun(argv, argc);
     RegisterBitmapReader();
     if (runGame == EXITCODE_CONTINUE)
     {
+        std::unique_ptr<IContext> context;
         if (gOpenRCT2Headless)
         {
             // Run OpenRCT2 with a plain context

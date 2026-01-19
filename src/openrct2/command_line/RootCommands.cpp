@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -134,19 +134,19 @@ namespace OpenRCT2
     #endif
         DefineCommand("set-rct2", "<path>",                 kStandardOptions, HandleCommandSetRCT2),
         DefineCommand("scan-objects", "<path>",             kStandardOptions, HandleCommandScanObjects),
-        DefineCommand("handle-uri", "openrct2://.../",      kStandardOptions, CommandLine::HandleCommandUri),
-        DefineCommand("trigger-steam-download", "",         kStandardOptions, CommandLine::HandleCommandTriggerSteamDownload),
+        DefineCommand("handle-uri", "openrct2://.../",      kStandardOptions, HandleCommandUri),
+        DefineCommand("trigger-steam-download", "",         kStandardOptions, HandleCommandTriggerSteamDownload),
 
     #if defined(_WIN32)
         DefineCommand("register-shell", "", RegisterShellOptions, HandleCommandRegisterShell),
     #endif
 
         // Sub-commands
-        DefineSubCommand("convert",         CommandLine::kConvertCommands          ),
-        DefineSubCommand("screenshot",      CommandLine::kScreenshotCommands       ),
-        DefineSubCommand("sprite",          CommandLine::Sprite::kSpriteCommands   ),
-        DefineSubCommand("simulate",        CommandLine::kSimulateCommands         ),
-        DefineSubCommand("parkinfo",        CommandLine::kParkInfoCommands         ),
+        DefineSubCommand("convert",         kConvertCommands          ),
+        DefineSubCommand("screenshot",      kScreenshotCommands       ),
+        DefineSubCommand("sprite",          Sprite::kSpriteCommands   ),
+        DefineSubCommand("simulate",        kSimulateCommands         ),
+        DefineSubCommand("parkinfo",        kParkInfoCommands         ),
         kCommandTableEnd
     };
 
@@ -194,7 +194,7 @@ namespace OpenRCT2
 
         if (_help || _all)
         {
-            CommandLine::PrintHelp(_all);
+            PrintHelp(_all);
             result = EXITCODE_OK;
         }
 
@@ -373,8 +373,8 @@ namespace OpenRCT2
         }
 
         // Update RCT2 path in config
-        auto env = OpenRCT2::CreatePlatformEnvironment();
-        auto configPath = env->GetFilePath(OpenRCT2::PathId::config);
+        auto env = CreatePlatformEnvironment();
+        auto configPath = env->GetFilePath(PathId::config);
         Config::SetDefaults();
         Config::OpenFromPath(configPath);
         Config::Get().general.rct2Path = path;
@@ -401,7 +401,7 @@ namespace OpenRCT2
         gOpenRCT2Headless = true;
         gOpenRCT2NoGraphics = true;
 
-        auto context = OpenRCT2::CreateContext();
+        auto context = CreateContext();
         auto& env = context->GetPlatformEnvironment();
         auto objectRepository = CreateObjectRepository(env);
         objectRepository->Construct(Config::Get().general.language);
@@ -456,15 +456,15 @@ namespace OpenRCT2
         Console::WriteFormat("Network version: %s", Network::GetVersion().c_str());
         Console::WriteLine();
 #ifdef ENABLE_SCRIPTING
-        Console::WriteFormat("Plugin API version: %d", OpenRCT2::Scripting::kPluginApiVersion);
+        Console::WriteFormat("Plugin API version: %d", Scripting::kPluginApiVersion);
         Console::WriteLine();
 #else
         Console::WriteFormat("Plugin API not enabled in this build");
         Console::WriteLine();
 #endif
-        Console::WriteFormat("Current park file version: %d", OpenRCT2::kParkFileCurrentVersion);
+        Console::WriteFormat("Current park file version: %d", kParkFileCurrentVersion);
         Console::WriteLine();
-        Console::WriteFormat("Minimum park file version: %d", OpenRCT2::kParkFileMinVersion);
+        Console::WriteFormat("Minimum park file version: %d", kParkFileMinVersion);
         Console::WriteLine();
 #ifdef USE_BREAKPAD
         Console::WriteFormat("With breakpad support enabled");

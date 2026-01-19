@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -23,7 +23,7 @@
 #include "../core/File.h"
 #include "../core/Guard.hpp"
 #include "../core/Json.hpp"
-#include "../entity/EntityList.h"
+#include "../drawing/Drawing.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/EntityTweener.h"
 #include "../localisation/Formatter.h"
@@ -547,7 +547,10 @@ namespace OpenRCT2::Network
 
             if (!ProcessConnection(*connection))
             {
-                LOG_INFO("Disconnecting player %s", connection->player->Name.c_str());
+                if (connection->player != nullptr)
+                    LOG_INFO("Disconnecting player %s", connection->player->Name.c_str());
+                else
+                    LOG_INFO("Disconnecting unknown player");
                 connection->Disconnect();
             }
             else
@@ -1757,7 +1760,7 @@ namespace OpenRCT2::Network
         intent.PutExtra(INTENT_EXTRA_MESSAGE, captionString);
         intent.PutExtra(INTENT_EXTRA_CALLBACK, []() -> void {
             LOG_INFO("User aborted network operation");
-            OpenRCT2::GetContext()->GetNetwork().Close();
+            GetContext()->GetNetwork().Close();
         });
         ContextOpenIntent(&intent);
     }
@@ -1891,7 +1894,7 @@ namespace OpenRCT2::Network
         using namespace OpenRCT2::Scripting;
 
         auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
-        if (hookEngine.HasSubscriptions(Scripting::HookType::networkAuthenticate))
+        if (hookEngine.HasSubscriptions(HookType::networkAuthenticate))
         {
             auto ctx = GetContext()->GetScriptEngine().GetContext();
 
@@ -1904,7 +1907,7 @@ namespace OpenRCT2::Network
             auto e = eObj.Take();
 
             // Call the subscriptions
-            hookEngine.Call(Scripting::HookType::networkAuthenticate, e, false);
+            hookEngine.Call(HookType::networkAuthenticate, e, false);
 
             // Check if any hook has cancelled the join
             if (AsOrDefault(e["cancel"], false))
@@ -1922,7 +1925,7 @@ namespace OpenRCT2::Network
         using namespace OpenRCT2::Scripting;
 
         auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
-        if (hookEngine.HasSubscriptions(Scripting::HookType::networkJoin))
+        if (hookEngine.HasSubscriptions(HookType::networkJoin))
         {
             auto ctx = GetContext()->GetScriptEngine().GetContext();
 
@@ -1932,7 +1935,7 @@ namespace OpenRCT2::Network
             auto e = eObj.Take();
 
             // Call the subscriptions
-            hookEngine.Call(Scripting::HookType::networkJoin, e, false);
+            hookEngine.Call(HookType::networkJoin, e, false);
         }
     #endif
     }
@@ -1943,7 +1946,7 @@ namespace OpenRCT2::Network
         using namespace OpenRCT2::Scripting;
 
         auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
-        if (hookEngine.HasSubscriptions(Scripting::HookType::networkLeave))
+        if (hookEngine.HasSubscriptions(HookType::networkLeave))
         {
             auto ctx = GetContext()->GetScriptEngine().GetContext();
 
@@ -1953,7 +1956,7 @@ namespace OpenRCT2::Network
             auto e = eObj.Take();
 
             // Call the subscriptions
-            hookEngine.Call(Scripting::HookType::networkLeave, e, false);
+            hookEngine.Call(HookType::networkLeave, e, false);
         }
     #endif
     }

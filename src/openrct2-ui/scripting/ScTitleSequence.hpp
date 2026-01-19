@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -50,16 +50,16 @@ namespace OpenRCT2::Scripting
 
     static const DukEnumMap<TitleScript> TitleScriptMap(
         {
-            { OpenRCT2::Title::LoadParkCommand::ScriptingName, TitleScript::Load },
-            { OpenRCT2::Title::SetLocationCommand::ScriptingName, TitleScript::Location },
-            { OpenRCT2::Title::RotateViewCommand::ScriptingName, TitleScript::Rotate },
-            { OpenRCT2::Title::SetZoomCommand::ScriptingName, TitleScript::Zoom },
-            { OpenRCT2::Title::FollowEntityCommand::ScriptingName, TitleScript::Follow },
-            { OpenRCT2::Title::SetSpeedCommand::ScriptingName, TitleScript::Speed },
-            { OpenRCT2::Title::WaitCommand::ScriptingName, TitleScript::Wait },
-            { OpenRCT2::Title::LoadScenarioCommand::ScriptingName, TitleScript::LoadSc },
-            { OpenRCT2::Title::RestartCommand::ScriptingName, TitleScript::Restart },
-            { OpenRCT2::Title::EndCommand::ScriptingName, TitleScript::End },
+            { Title::LoadParkCommand::ScriptingName, TitleScript::Load },
+            { Title::SetLocationCommand::ScriptingName, TitleScript::Location },
+            { Title::RotateViewCommand::ScriptingName, TitleScript::Rotate },
+            { Title::SetZoomCommand::ScriptingName, TitleScript::Zoom },
+            { Title::FollowEntityCommand::ScriptingName, TitleScript::Follow },
+            { Title::SetSpeedCommand::ScriptingName, TitleScript::Speed },
+            { Title::WaitCommand::ScriptingName, TitleScript::Wait },
+            { Title::LoadScenarioCommand::ScriptingName, TitleScript::LoadSc },
+            { Title::RestartCommand::ScriptingName, TitleScript::Restart },
+            { Title::EndCommand::ScriptingName, TitleScript::End },
         });
 
     template<>
@@ -69,7 +69,7 @@ namespace OpenRCT2::Scripting
     }
 
     template<>
-    DukValue ToDuk(duk_context* ctx, const OpenRCT2::Title::TitleCommand& value)
+    DukValue ToDuk(duk_context* ctx, const Title::TitleCommand& value)
     {
         using namespace OpenRCT2::Title;
         DukObject obj(ctx);
@@ -127,7 +127,7 @@ namespace OpenRCT2::Scripting
     }
 
     template<>
-    OpenRCT2::Title::TitleCommand FromDuk(const DukValue& value)
+    Title::TitleCommand FromDuk(const DukValue& value)
     {
         using namespace OpenRCT2::Title;
         auto type = FromDuk<TitleScript>(value["type"]);
@@ -212,7 +212,7 @@ namespace OpenRCT2::Scripting
             if (value == _fileName)
                 return;
 
-            auto seq = OpenRCT2::Title::LoadTitleSequence(_titleSequencePath);
+            auto seq = Title::LoadTitleSequence(_titleSequencePath);
             if (seq != nullptr)
             {
                 // Check if name already in use
@@ -231,7 +231,7 @@ namespace OpenRCT2::Scripting
 
         void delete_()
         {
-            auto seq = OpenRCT2::Title::LoadTitleSequence(_titleSequencePath);
+            auto seq = Title::LoadTitleSequence(_titleSequencePath);
             if (seq != nullptr)
             {
                 auto index = GetIndex(*seq, _fileName);
@@ -245,7 +245,7 @@ namespace OpenRCT2::Scripting
 
         void load()
         {
-            auto seq = OpenRCT2::Title::LoadTitleSequence(_titleSequencePath);
+            auto seq = Title::LoadTitleSequence(_titleSequencePath);
             if (seq != nullptr)
             {
                 auto index = GetIndex(*seq, _fileName);
@@ -297,7 +297,7 @@ namespace OpenRCT2::Scripting
         }
 
     private:
-        static std::optional<size_t> GetIndex(const OpenRCT2::Title::TitleSequence& seq, const std::string_view needle)
+        static std::optional<size_t> GetIndex(const Title::TitleSequence& seq, const std::string_view needle)
         {
             for (size_t i = 0; i < seq.Saves.size(); i++)
             {
@@ -378,7 +378,7 @@ namespace OpenRCT2::Scripting
         std::vector<std::shared_ptr<ScTitleSequencePark>> parks_get() const
         {
             std::vector<std::shared_ptr<ScTitleSequencePark>> result;
-            auto titleSeq = OpenRCT2::Title::LoadTitleSequence(_path);
+            auto titleSeq = Title::LoadTitleSequence(_path);
             if (titleSeq != nullptr)
             {
                 for (size_t i = 0; i < titleSeq->Saves.size(); i++)
@@ -395,7 +395,7 @@ namespace OpenRCT2::Scripting
             auto ctx = scriptEngine.GetContext();
 
             std::vector<DukValue> result;
-            auto titleSeq = OpenRCT2::Title::LoadTitleSequence(_path);
+            auto titleSeq = Title::LoadTitleSequence(_path);
             if (titleSeq != nullptr)
             {
                 for (const auto& command : titleSeq->Commands)
@@ -408,21 +408,21 @@ namespace OpenRCT2::Scripting
 
         void commands_set(const std::vector<DukValue>& value)
         {
-            std::vector<OpenRCT2::Title::TitleCommand> commands;
+            std::vector<Title::TitleCommand> commands;
             for (const auto& v : value)
             {
-                auto command = FromDuk<OpenRCT2::Title::TitleCommand>(v);
+                auto command = FromDuk<Title::TitleCommand>(v);
                 commands.push_back(std::move(command));
             }
 
-            auto titleSeq = OpenRCT2::Title::LoadTitleSequence(_path);
+            auto titleSeq = Title::LoadTitleSequence(_path);
             titleSeq->Commands = commands;
             OpenRCT2::Title::TitleSequenceSave(*titleSeq);
         }
 
         void addPark(const std::string& path, const std::string& fileName)
         {
-            auto titleSeq = OpenRCT2::Title::LoadTitleSequence(_path);
+            auto titleSeq = Title::LoadTitleSequence(_path);
             OpenRCT2::Title::TitleSequenceAddPark(*titleSeq, path.c_str(), fileName.c_str());
             OpenRCT2::Title::TitleSequenceSave(*titleSeq);
         }

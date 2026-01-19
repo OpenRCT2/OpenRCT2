@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -2352,7 +2352,7 @@ static bool ConvertPeepAnimationType(TPeepType* peep, AnimObjectConversionTable&
     return true;
 }
 
-void ConvertPeepAnimationTypeToObjects(OpenRCT2::GameState_t& gameState)
+void ConvertPeepAnimationTypeToObjects(GameState_t& gameState)
 {
     // First, build a conversion table based on the currently selected objects
     auto table = BuildPeepAnimObjectConversionTable();
@@ -2383,12 +2383,12 @@ static constexpr auto kClimateObjectIdsByLegacyClimateType = std::to_array<std::
     "rct2.climate.cold",
 });
 
-std::string_view GetClimateObjectIdFromLegacyClimateType(OpenRCT2::RCT12::ClimateType climate)
+std::string_view GetClimateObjectIdFromLegacyClimateType(RCT12::ClimateType climate)
 {
     return kClimateObjectIdsByLegacyClimateType[EnumValue(climate)];
 }
 
-bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, OpenRCT2::TrackElemType trackType, int32_t parkFileVersion)
+bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, TrackElemType trackType, int32_t parkFileVersion)
 {
     // Lots of Log Flumes exist where the downward slopes are simulated by using other track
     // types like the Splash Boats, but not actually made invisible, because they never needed

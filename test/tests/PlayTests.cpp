@@ -20,16 +20,15 @@
 #include <openrct2/actions/ParkSetParameterAction.h>
 #include <openrct2/actions/RideSetPriceAction.h>
 #include <openrct2/actions/RideSetStatusAction.h>
+#include <openrct2/drawing/Drawing.h>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/entity/EntityTweener.h>
 #include <openrct2/entity/Peep.h>
 #include <openrct2/object/ObjectManager.h>
-#include <openrct2/platform/Platform.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideManager.hpp>
 #include <openrct2/world/MapAnimation.h>
 #include <openrct2/world/Park.h>
-#include <openrct2/world/Scenery.h>
 #include <string>
 
 using namespace OpenRCT2;

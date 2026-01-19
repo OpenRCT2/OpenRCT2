@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -30,7 +30,7 @@ namespace OpenRCT2::Scripting
     private:
         DukValue getData()
         {
-            const auto& data = OpenRCT2::Profiling::GetData();
+            const auto& data = Profiling::GetData();
             duk_push_array(_ctx);
             duk_uarridx_t index = 0;
             for (const auto& f : data)
@@ -51,7 +51,7 @@ namespace OpenRCT2::Scripting
         }
 
         DukValue GetFunctionIndexArray(
-            const std::vector<OpenRCT2::Profiling::Function*>& all, const std::vector<OpenRCT2::Profiling::Function*>& items)
+            const std::vector<Profiling::Function*>& all, const std::vector<Profiling::Function*>& items)
         {
             duk_push_array(_ctx);
             duk_uarridx_t index = 0;
@@ -71,22 +71,22 @@ namespace OpenRCT2::Scripting
 
         void start()
         {
-            OpenRCT2::Profiling::Enable();
+            Profiling::Enable();
         }
 
         void stop()
         {
-            OpenRCT2::Profiling::Disable();
+            Profiling::Disable();
         }
 
         void reset()
         {
-            OpenRCT2::Profiling::ResetData();
+            Profiling::ResetData();
         }
 
         bool enabled_get() const
         {
-            return OpenRCT2::Profiling::IsEnabled();
+            return Profiling::IsEnabled();
         }
 
     public:

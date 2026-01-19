@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,6 +14,7 @@
 #include <openrct2-ui/input/ShortcutManager.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2/SpriteIds.h>
+#include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/localisation/Formatter.h>
@@ -121,7 +122,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onDraw(Drawing::RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             drawWidgets(rt);
 
@@ -192,7 +193,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onClose() override
         {
-            auto* windowMgr = Ui::GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             windowMgr->CloseByClass(WindowClass::resetShortcutKeysPrompt);
         }
 
@@ -251,7 +252,7 @@ namespace OpenRCT2::Ui::Windows
             setWidgetPressed(static_cast<WidgetIndex>(WIDX_TAB_0 + _currentTabIndex), true);
         }
 
-        void onDraw(Drawing::RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             drawWidgets(rt);
             DrawTabImages(rt);
@@ -297,14 +298,14 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onScrollDraw(int32_t scrollIndex, Drawing::RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             auto rtCoords = ScreenCoordsXY{ rt.x, rt.y };
             Rectangle::fill(
                 rt, { rtCoords, rtCoords + ScreenCoordsXY{ rt.width - 1, rt.height - 1 } },
-                ColourMapA[colours[1].colour].mid_light);
+                getColourMap(colours[1].colour).midLight);
 
-            // TODO: the line below is a workaround for what is presumably a bug with dpi->width
+            // TODO: the line below is a workaround for what is presumably a bug with rt->width
             //       see https://github.com/OpenRCT2/OpenRCT2/issues/11238 for details
             const auto scrollWidth = width - kScrollBarWidth - 10;
 
@@ -472,7 +473,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawTabImages(Drawing::RenderTarget& rt) const
+        void DrawTabImages(RenderTarget& rt) const
         {
             for (size_t i = 0; i < _tabs.size(); i++)
             {
@@ -480,7 +481,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawTabImage(Drawing::RenderTarget& rt, size_t tabIndex) const
+        void DrawTabImage(RenderTarget& rt, size_t tabIndex) const
         {
             const auto& tabDesc = _tabs[tabIndex];
             auto widgetIndex = static_cast<WidgetIndex>(WIDX_TAB_0 + tabIndex);
@@ -501,15 +502,14 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawSeparator(Drawing::RenderTarget& rt, int32_t y, int32_t scrollWidth)
+        void DrawSeparator(RenderTarget& rt, int32_t y, int32_t scrollWidth)
         {
             const int32_t top = y + (kScrollableRowHeight / 2) - 1;
-            Rectangle::fill(rt, { { 0, top }, { scrollWidth, top } }, ColourMapA[colours[1].colour].mid_dark);
-            Rectangle::fill(rt, { { 0, top + 1 }, { scrollWidth, top + 1 } }, ColourMapA[colours[1].colour].lightest);
+            Rectangle::fill(rt, { { 0, top }, { scrollWidth, top } }, getColourMap(colours[1].colour).midDark);
+            Rectangle::fill(rt, { { 0, top + 1 }, { scrollWidth, top + 1 } }, getColourMap(colours[1].colour).lightest);
         }
 
-        void DrawItem(
-            Drawing::RenderTarget& rt, int32_t y, int32_t scrollWidth, const ShortcutStringPair& shortcut, bool isHighlighted)
+        void DrawItem(RenderTarget& rt, int32_t y, int32_t scrollWidth, const ShortcutStringPair& shortcut, bool isHighlighted)
         {
             auto format = STR_BLACK_STRING;
             if (isHighlighted)

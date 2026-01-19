@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -23,6 +23,7 @@
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
+#include <openrct2/drawing/Drawing.h>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/interface/Viewport.h>
 #include <openrct2/localisation/StringIds.h>
@@ -354,7 +355,7 @@ namespace OpenRCT2::Title
          * @param stream The stream to read the park data from.
          * @param hintPath Hint path, the extension is grabbed to determine what importer to use.
          */
-        bool LoadParkFromStream(OpenRCT2::IStream* stream, const std::string& hintPath)
+        bool LoadParkFromStream(IStream* stream, const std::string& hintPath)
         {
             LOG_VERBOSE("TitleSequencePlayer::LoadParkFromStream(%s)", hintPath.c_str());
             bool success = false;

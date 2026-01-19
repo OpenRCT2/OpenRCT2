@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,8 +18,9 @@
 
 namespace OpenRCT2::Drawing
 {
+    enum class PaletteIndex : uint8_t;
     struct RenderTarget;
-}
+} // namespace OpenRCT2::Drawing
 
 namespace OpenRCT2
 {
@@ -37,7 +38,7 @@ namespace OpenRCT2
         PreviewImageType type;
         uint8_t width;
         uint8_t height;
-        uint8_t pixels[kMaxPreviewImageSize * kMaxPreviewImageSize]{};
+        OpenRCT2::Drawing::PaletteIndex pixels[kMaxPreviewImageSize * kMaxPreviewImageSize]{};
     };
 
     struct ParkPreview

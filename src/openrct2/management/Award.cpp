@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,6 +13,7 @@
 #include "../config/Config.h"
 #include "../entity/EntityList.h"
 #include "../entity/Guest.h"
+#include "../localisation/Formatter.h"
 #include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
@@ -652,7 +653,7 @@ void AwardUpdateAll()
         }
 
         // Check if there was a free award entry
-        if (currentAwards.size() < OpenRCT2::Limits::kMaxAwards)
+        if (currentAwards.size() < Limits::kMaxAwards)
         {
             // Get a random award type not already active
             AwardType awardType;
@@ -678,7 +679,7 @@ void AwardGrant(AwardType type)
     std::erase_if(currentAwards, [type](const Award& award) { return award.Type == type; });
 
     // Ensure there is space for the award
-    if (currentAwards.size() >= OpenRCT2::Limits::kMaxAwards)
+    if (currentAwards.size() >= Limits::kMaxAwards)
     {
         currentAwards.erase(currentAwards.begin());
     }

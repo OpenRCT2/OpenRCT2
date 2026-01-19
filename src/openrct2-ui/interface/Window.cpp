@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -111,7 +111,7 @@ namespace OpenRCT2::Ui
 
         widgetScrollUpdateThumbs(w, widgetIndex);
 
-        auto* windowMgr = Ui::GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         windowMgr->InvalidateWidget(w, widgetIndex);
     }
 
@@ -349,7 +349,7 @@ namespace OpenRCT2::Ui
 
     void Window::invalidateWidget(WidgetIndex widgetIndex)
     {
-        auto* windowMgr = Ui::GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         windowMgr->InvalidateWidget(*this, widgetIndex);
     }
 
@@ -412,20 +412,20 @@ namespace OpenRCT2::Ui
         }
         else
         {
-            auto* windowMgr = Ui::GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             windowMgr->Close(*this);
         }
     }
 
     void Window::closeOthers()
     {
-        auto* windowMgr = Ui::GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         windowMgr->CloseAllExceptNumberAndClass(number, classification);
     }
 
     void Window::closeOthersOfThisClass()
     {
-        auto* windowMgr = Ui::GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         windowMgr->CloseByClass(classification);
     }
 
@@ -447,7 +447,7 @@ namespace OpenRCT2::Ui
         WidgetIndex callWidget, StringId title, StringId description, const Formatter& descriptionArgs, StringId existingText,
         uintptr_t existingArgs, int32_t maxLength)
     {
-        OpenRCT2::Ui::Windows::WindowTextInputOpen(
+        Windows::WindowTextInputOpen(
             this, callWidget, title, description, descriptionArgs, existingText, existingArgs, maxLength);
     }
 
@@ -491,10 +491,10 @@ namespace OpenRCT2::Ui
         assert(start_tab_id < w->widgets.size());
         assert(end_tab_id < w->widgets.size());
 
-        int32_t i, x = w->widgets[start_tab_id].left;
+        int32_t x = w->widgets[start_tab_id].left;
         int32_t tab_width = w->widgets[start_tab_id].width() - 1;
 
-        for (i = start_tab_id; i <= end_tab_id; i++)
+        for (int32_t i = start_tab_id; i <= end_tab_id; i++)
         {
             auto& widget = w->widgets[i];
             assert(widget.type == WidgetType::tab);
@@ -566,7 +566,7 @@ namespace OpenRCT2::Ui::Windows
         _currentTextBox.widgetIndex = callWidget;
         _textBoxFrameNo = 0;
 
-        auto* windowMgr = Ui::GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         windowMgr->CloseByClass(WindowClass::textinput);
 
         _textBoxInput = existingText;
@@ -1003,14 +1003,14 @@ namespace OpenRCT2::Ui::Windows
      */
     void InvalidateAllWindowsAfterInput()
     {
-        WindowVisitEach([](WindowBase* w) { Windows::WindowUpdateScrollWidgets(*w); });
+        WindowVisitEach([](WindowBase* w) { WindowUpdateScrollWidgets(*w); });
     }
 
     /**
      *
      *  rct2: 0x00685BE1
      *
-     * @param dpi (edi)
+     * @param rt (edi)
      * @param w (esi)
      */
     void WindowDrawViewport(RenderTarget& rt, WindowBase& w)

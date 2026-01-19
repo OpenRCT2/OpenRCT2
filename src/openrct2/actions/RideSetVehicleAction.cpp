@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -94,7 +94,7 @@ namespace OpenRCT2::GameActions
                 break;
             case RideSetVehicleType::RideEntry:
             {
-                if (!RideIsVehicleTypeValid(*ride))
+                if (!RideIsVehicleTypeValid(gameState, *ride))
                 {
                     LOG_ERROR("Invalid vehicle type %d", _value);
                     return Result(Status::invalidParameters, errTitle, STR_ERR_VALUE_OUT_OF_RANGE);
@@ -158,7 +158,7 @@ namespace OpenRCT2::GameActions
                 }
                 uint8_t clampValue = _value;
                 static_assert(sizeof(clampValue) == sizeof(ride->proposedNumCarsPerTrain));
-                if (!getGameState().cheats.disableTrainLengthLimit)
+                if (!gameState.cheats.disableTrainLengthLimit)
                 {
                     clampValue = std::clamp(clampValue, rideEntry->min_cars_in_train, rideEntry->max_cars_in_train);
                 }
@@ -181,7 +181,7 @@ namespace OpenRCT2::GameActions
                 }
 
                 RideSetVehicleColoursToRandomPreset(*ride, _colour);
-                if (!getGameState().cheats.disableTrainLengthLimit)
+                if (!gameState.cheats.disableTrainLengthLimit)
                 {
                     ride->proposedNumCarsPerTrain = std::clamp(
                         ride->proposedNumCarsPerTrain, rideEntry->min_cars_in_train, rideEntry->max_cars_in_train);
@@ -221,11 +221,10 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    bool RideSetVehicleAction::RideIsVehicleTypeValid(const Ride& ride) const
+    bool RideSetVehicleAction::RideIsVehicleTypeValid(GameState_t& gameState, const Ride& ride) const
     {
         bool selectionShouldBeExpanded;
         ride_type_t rideTypeIterator, rideTypeIteratorMax;
-        auto& gameState = getGameState();
 
         {
             const auto& rtd = ride.getRideTypeDescriptor();

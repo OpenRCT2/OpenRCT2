@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -70,13 +70,13 @@ namespace OpenRCT2
             return (sPos.x >= pos.x && sPos.x < pos.x + width && sPos.y >= pos.y && sPos.y < pos.y + height);
         }
 
-        [[nodiscard]] bool ContainsTile(const TileCoordsXY coords) const noexcept;
+        [[nodiscard]] bool ContainsTile(TileCoordsXY coords) const noexcept;
 
         [[nodiscard]] ScreenCoordsXY ScreenToViewportCoord(const ScreenCoordsXY& screenCoord) const;
 
         void Invalidate() const;
 
-        void Invalidate(const int32_t x, const int32_t y, const int32_t z0, const int32_t z1, const ZoomLevel maxZoom) const;
+        void Invalidate(int32_t x, int32_t y, int32_t z0, int32_t z1, ZoomLevel maxZoom) const;
     };
 
     struct Focus;
@@ -200,7 +200,7 @@ namespace OpenRCT2
     void ViewportUpdateSmartFollowGuest(WindowBase* window, const Guest& peep);
     void ViewportRotateSingle(WindowBase* window, int32_t direction);
     void ViewportRotateAll(int32_t direction);
-    void ViewportRender(OpenRCT2::Drawing::RenderTarget& rt, const Viewport* viewport);
+    void ViewportRender(Drawing::RenderTarget& rt, const Viewport* viewport);
 
     CoordsXYZ ViewportAdjustForMapHeight(const ScreenCoordsXY& startCoords, uint8_t rotation);
 

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -59,7 +59,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE, kStringIdNone);
         }
 
-        auto* const peep = getGameState().entities.TryGetEntity<Peep>(_entityId);
+        auto* const peep = gameState.entities.TryGetEntity<Peep>(_entityId);
         if (peep == nullptr)
         {
             LOG_ERROR("Failed to pick up peep for sprite %d", _entityId);
@@ -117,7 +117,7 @@ namespace OpenRCT2::GameActions
 
     Result PeepPickupAction::Execute(GameState_t& gameState) const
     {
-        Peep* const peep = getGameState().entities.TryGetEntity<Peep>(_entityId);
+        Peep* const peep = gameState.entities.TryGetEntity<Peep>(_entityId);
         if (peep == nullptr)
         {
             LOG_ERROR("Failed to pick up peep for sprite %d", _entityId);

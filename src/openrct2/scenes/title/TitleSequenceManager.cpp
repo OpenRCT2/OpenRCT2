@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -266,7 +266,7 @@ namespace OpenRCT2::TitleSequenceManager
 
     static bool IsNameReserved(const std::string& name)
     {
-        for (const auto& pseq : TitleSequenceManager::PredefinedSequences)
+        for (const auto& pseq : PredefinedSequences)
         {
             if (String::iequals(name, pseq.ConfigId))
             {

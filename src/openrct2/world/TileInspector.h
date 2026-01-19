@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -25,14 +25,14 @@ namespace OpenRCT2::GameActions
 
 namespace OpenRCT2::TileInspector
 {
-    OpenRCT2::TileElement* GetSelectedElement();
+    TileElement* GetSelectedElement();
 
     GameActions::Result InsertCorruptElementAt(const CoordsXY& loc, int16_t elementIndex, bool isExecuting);
     GameActions::Result RemoveElementAt(const CoordsXY& loc, int16_t elementIndex, bool isExecuting);
     GameActions::Result SwapElementsAt(const CoordsXY& loc, int16_t first, int16_t second, bool isExecuting);
     GameActions::Result RotateElementAt(const CoordsXY& loc, int32_t elementIndex, bool isExecuting);
     GameActions::Result ToggleInvisibilityOfElementAt(const CoordsXY& loc, int32_t elementIndex, bool isExecuting);
-    GameActions::Result PasteElementAt(const CoordsXY& loc, OpenRCT2::TileElement element, Banner banner, bool isExecuting);
+    GameActions::Result PasteElementAt(const CoordsXY& loc, TileElement element, Banner banner, bool isExecuting);
     GameActions::Result SortElementsAt(const CoordsXY& loc, bool isExecuting);
     GameActions::Result AnyBaseHeightOffset(const CoordsXY& loc, int16_t elementIndex, int8_t heightOffset, bool isExecuting);
     GameActions::Result SurfaceShowParkFences(const CoordsXY& loc, bool showFences, bool isExecuting);

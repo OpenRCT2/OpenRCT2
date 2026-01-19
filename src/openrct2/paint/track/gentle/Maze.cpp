@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -187,7 +187,7 @@ static void MazePaintSetup(
 /**
  * rct2: 0x008A81E8
  */
-TrackPaintFunction GetTrackPaintFunctionMaze(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionMaze(TrackElemType trackType)
 {
     if (trackType != TrackElemType::maze)
     {

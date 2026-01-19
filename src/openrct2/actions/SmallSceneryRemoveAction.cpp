@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -64,7 +64,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_REMOVE_THIS, STR_OFF_EDGE_OF_MAP);
         }
 
-        auto* entry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(_sceneryType);
+        auto* entry = ObjectManager::GetObjectEntry<SmallSceneryEntry>(_sceneryType);
         if (entry == nullptr)
         {
             return Result(Status::invalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
@@ -74,11 +74,10 @@ namespace OpenRCT2::GameActions
         res.expenditure = ExpenditureType::landscaping;
         res.position = _loc;
 
-        if (gLegacyScene != LegacyScene::scenarioEditor && !GetFlags().has(CommandFlag::ghost)
-            && !getGameState().cheats.sandboxMode)
+        if (gLegacyScene != LegacyScene::scenarioEditor && !GetFlags().has(CommandFlag::ghost) && !gameState.cheats.sandboxMode)
         {
             // Check if allowed to remove item
-            if (getGameState().park.flags & PARK_FLAGS_FORBID_TREE_REMOVAL)
+            if (gameState.park.flags & PARK_FLAGS_FORBID_TREE_REMOVAL)
             {
                 if (entry->HasFlag(SMALL_SCENERY_FLAG_IS_TREE))
                 {
@@ -112,7 +111,7 @@ namespace OpenRCT2::GameActions
     {
         Result res = Result();
 
-        auto* entry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(_sceneryType);
+        auto* entry = ObjectManager::GetObjectEntry<SmallSceneryEntry>(_sceneryType);
         if (entry == nullptr)
         {
             LOG_ERROR("Invalid small scenery type %u", _sceneryType);

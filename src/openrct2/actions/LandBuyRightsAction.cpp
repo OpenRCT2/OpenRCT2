@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -59,15 +59,15 @@ namespace OpenRCT2::GameActions
 
     Result LandBuyRightsAction::Query(GameState_t& gameState) const
     {
-        return QueryExecute(false);
+        return QueryExecute(gameState, false);
     }
 
     Result LandBuyRightsAction::Execute(GameState_t& gameState) const
     {
-        return QueryExecute(true);
+        return QueryExecute(gameState, true);
     }
 
-    Result LandBuyRightsAction::QueryExecute(bool isExecuting) const
+    Result LandBuyRightsAction::QueryExecute(GameState_t& gameState, bool isExecuting) const
     {
         auto res = Result();
 
@@ -95,7 +95,7 @@ namespace OpenRCT2::GameActions
             {
                 if (!LocationValid({ x, y }))
                     continue;
-                auto result = MapBuyLandRightsForTile({ x, y }, isExecuting);
+                auto result = MapBuyLandRightsForTile(gameState, { x, y }, isExecuting);
                 if (result.error == Status::ok)
                 {
                     res.cost += result.cost;
@@ -109,7 +109,7 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    Result LandBuyRightsAction::MapBuyLandRightsForTile(const CoordsXY& loc, bool isExecuting) const
+    Result LandBuyRightsAction::MapBuyLandRightsForTile(GameState_t& gameState, const CoordsXY& loc, bool isExecuting) const
     {
         if (_setting >= LandBuyRightSetting::Count)
         {
@@ -142,7 +142,7 @@ namespace OpenRCT2::GameActions
                     surfaceElement->SetOwnership(OWNERSHIP_OWNED);
                     Park::UpdateFencesAroundTile(loc);
                 }
-                res.cost = getGameState().scenarioOptions.landPrice;
+                res.cost = gameState.scenarioOptions.landPrice;
                 return res;
 
             case LandBuyRightSetting::BuyConstructionRights: // 2
@@ -163,7 +163,7 @@ namespace OpenRCT2::GameActions
                     uint16_t baseZ = surfaceElement->GetBaseZ();
                     MapInvalidateTile({ loc, baseZ, baseZ + 16 });
                 }
-                res.cost = getGameState().scenarioOptions.constructionRightsPrice;
+                res.cost = gameState.scenarioOptions.constructionRightsPrice;
                 return res;
 
             default:

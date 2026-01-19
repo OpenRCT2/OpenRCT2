@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,6 +12,7 @@
 #include "../core/Guard.hpp"
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
+#include "../drawing/Drawing.h"
 #include "../drawing/Image.h"
 #include "FootpathEntry.h"
 #include "ObjectRepository.h"
@@ -30,10 +31,10 @@ namespace OpenRCT2
             BaseImageId = PreviewImageId + 1;
         }
 
-        _descriptor.Name = NameStringId;
-        _descriptor.Image = BaseImageId;
-        _descriptor.PreviewImage = PreviewImageId;
-        _descriptor.Flags = Flags;
+        _descriptor.name = NameStringId;
+        _descriptor.image = BaseImageId;
+        _descriptor.previewImage = PreviewImageId;
+        _descriptor.flags = Flags;
     }
 
     void FootpathSurfaceObject::Unload()

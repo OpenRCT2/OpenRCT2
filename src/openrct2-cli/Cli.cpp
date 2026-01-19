@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,7 +10,6 @@
 #include <openrct2/Context.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/command_line/CommandLine.hpp>
-#include <openrct2/platform/Platform.h>
 
 using namespace OpenRCT2;
 

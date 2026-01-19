@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -75,7 +75,7 @@ namespace OpenRCT2::Ui::Windows
         if (ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR)
         {
             // The map tooltip is drawn by the bottom toolbar
-            auto* windowMgr = Ui::GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             windowMgr->InvalidateByClass(WindowClass::bottomToolbar);
             return;
         }
@@ -101,7 +101,7 @@ namespace OpenRCT2::Ui::Windows
         if (_cursorHoldDuration < 25 || stringId == kStringIdNone || im.isModifierKeyPressed(ModifierKey::ctrl)
             || im.isModifierKeyPressed(ModifierKey::shift) || wm->FindByClass(WindowClass::error) != nullptr)
         {
-            auto* windowMgr = Ui::GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             windowMgr->CloseByClass(WindowClass::mapTooltip);
         }
         else

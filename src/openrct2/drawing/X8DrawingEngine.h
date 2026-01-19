@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,6 +12,7 @@
 #include "IDrawingContext.h"
 #include "IDrawingEngine.h"
 #include "InvalidationGrid.h"
+#include "RenderTarget.h"
 
 #include <memory>
 
@@ -106,11 +107,9 @@ namespace OpenRCT2
             void CopyRect(int32_t x, int32_t y, int32_t width, int32_t height, int32_t dx, int32_t dy) override;
             std::string Screenshot() override;
             IDrawingContext* GetDrawingContext() override;
-            RenderTarget* GetDrawingPixelInfo() override;
+            RenderTarget* getRT() override;
             DrawingEngineFlags GetFlags() override;
             void InvalidateImage(uint32_t image) override;
-
-            RenderTarget* GetDPI();
 
         protected:
             void ConfigureBits(uint32_t width, uint32_t height, uint32_t pitch);
@@ -136,16 +135,17 @@ namespace OpenRCT2
 
             void BeginDraw();
             void EndDraw();
-            void Clear(RenderTarget& rt, uint8_t paletteIndex) override;
-            void FillRect(RenderTarget& rt, uint32_t colour, int32_t x, int32_t y, int32_t w, int32_t h) override;
+            void Clear(RenderTarget& rt, PaletteIndex paletteIndex) override;
+            void FillRect(
+                RenderTarget& rt, PaletteIndex paletteIndex, int32_t x, int32_t y, int32_t w, int32_t h,
+                bool crossHatch) override;
             void FilterRect(
                 RenderTarget& rt, FilterPaletteID palette, int32_t left, int32_t top, int32_t right, int32_t bottom) override;
-            void DrawLine(RenderTarget& rt, uint32_t colour, const ScreenLine& line) override;
-            void DrawSprite(RenderTarget& rt, const ImageId imageId, int32_t x, int32_t y) override;
-            void DrawSpriteRawMasked(
-                RenderTarget& rt, int32_t x, int32_t y, const ImageId maskImage, const ImageId colourImage) override;
-            void DrawSpriteSolid(RenderTarget& rt, const ImageId image, int32_t x, int32_t y, uint8_t colour) override;
-            void DrawGlyph(RenderTarget& rt, const ImageId image, int32_t x, int32_t y, const PaletteMap& paletteMap) override;
+            void DrawLine(RenderTarget& rt, PaletteIndex colour, const ScreenLine& line) override;
+            void DrawSprite(RenderTarget& rt, ImageId imageId, int32_t x, int32_t y) override;
+            void DrawSpriteRawMasked(RenderTarget& rt, int32_t x, int32_t y, ImageId maskImage, ImageId colourImage) override;
+            void DrawSpriteSolid(RenderTarget& rt, ImageId image, int32_t x, int32_t y, PaletteIndex colour) override;
+            void DrawGlyph(RenderTarget& rt, ImageId image, int32_t x, int32_t y, const PaletteMap& paletteMap) override;
             void DrawTTFBitmap(
                 RenderTarget& rt, TextDrawInfo* info, TTFSurface* surface, int32_t x, int32_t y,
                 uint8_t hintingThreshold) override;

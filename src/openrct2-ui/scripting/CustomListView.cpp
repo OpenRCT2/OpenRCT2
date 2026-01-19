@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,6 +18,8 @@
     #include <numeric>
     #include <openrct2/Context.h>
     #include <openrct2/core/String.hpp>
+    #include <openrct2/drawing/ColourMap.h>
+    #include <openrct2/drawing/Drawing.h>
     #include <openrct2/drawing/Rectangle.h>
     #include <openrct2/localisation/Formatter.h>
     #include <openrct2/localisation/Formatting.h>
@@ -276,7 +278,7 @@ void CustomListView::SetColumns(const std::vector<ListViewColumn>& columns, bool
     }
 }
 
-const std::vector<ListViewItem>& CustomListView::CustomListView::GetItems() const
+const std::vector<ListViewItem>& CustomListView::GetItems() const
 {
     return Items;
 }
@@ -566,7 +568,7 @@ void CustomListView::MouseUp(const ScreenCoordsXY& pos)
 
 void CustomListView::Paint(WindowBase* w, RenderTarget& rt, const ScrollArea* scroll) const
 {
-    auto paletteIndex = ColourMapA[w->colours[1].colour].mid_light;
+    auto paletteIndex = getColourMap(w->colours[1].colour).midLight;
     Rectangle::fill(rt, { { rt.x, rt.y }, { rt.x + rt.width, rt.y + rt.height } }, paletteIndex);
 
     int32_t y = ShowColumnHeaders ? kColumnHeaderHeight : 0;
@@ -609,7 +611,7 @@ void CustomListView::Paint(WindowBase* w, RenderTarget& rt, const ScrollArea* sc
                 {
                     Rectangle::fill(
                         rt, { { rt.x, y }, { rt.x + rt.width, y + (kListRowHeight - 1) } },
-                        ColourMapA[w->colours[1].colour].lighter | 0x1000000);
+                        getColourMap(w->colours[1].colour).lighter, true);
                 }
 
                 // Columns
@@ -653,7 +655,7 @@ void CustomListView::Paint(WindowBase* w, RenderTarget& rt, const ScrollArea* sc
     {
         y = scroll->contentOffsetY;
 
-        auto bgColour = ColourMapA[w->colours[1].colour].mid_light;
+        auto bgColour = getColourMap(w->colours[1].colour).midLight;
         Rectangle::fill(rt, { { rt.x, y }, { rt.x + rt.width, y + 12 } }, bgColour);
 
         int32_t x = 0;
@@ -716,8 +718,8 @@ void CustomListView::PaintSeparator(RenderTarget& rt, const ScreenCoordsXY& pos,
     auto lineY1 = lineY0 + 1;
 
     auto baseColour = ParentWindow->colours[1];
-    auto lightColour = ColourMapA[baseColour.colour].lighter;
-    auto darkColour = ColourMapA[baseColour.colour].mid_dark;
+    auto lightColour = getColourMap(baseColour.colour).lighter;
+    auto darkColour = getColourMap(baseColour.colour).midDark;
 
     if (hasText)
     {

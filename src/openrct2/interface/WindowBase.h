@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -96,7 +96,7 @@ namespace OpenRCT2
          * Set to 3 when the window should flash and decremented per tick.
          */
         uint8_t flashTimer{};
-        OpenRCT2::ScrollArea scrolls[3];
+        ScrollArea scrolls[3];
         uint16_t numListItems{};    // 0 for no items
         int16_t selectedListItem{}; // -1 for none selected
         std::optional<Focus> focus;
@@ -119,7 +119,7 @@ namespace OpenRCT2
         void setViewportLocation(const CoordsXYZ& coords);
         void invalidate();
         void removeViewport();
-        void setWidgets(const std::span<const Widget> newWidgets);
+        void setWidgets(std::span<const Widget> newWidgets);
         void resizeFrame();
 
         int16_t getTitleBarTargetHeight() const;

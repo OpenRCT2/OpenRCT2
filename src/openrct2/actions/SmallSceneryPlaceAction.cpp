@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -361,7 +361,7 @@ namespace OpenRCT2::GameActions
         if (!GetFlags().has(CommandFlag::ghost))
         {
             FootpathRemoveLitter({ _loc, targetHeight });
-            if (!getGameState().cheats.disableClearanceChecks && (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_NO_WALLS)))
+            if (!gameState.cheats.disableClearanceChecks && (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_NO_WALLS)))
             {
                 WallRemoveAt({ _loc, targetHeight, targetHeight + sceneryEntry->height });
             }

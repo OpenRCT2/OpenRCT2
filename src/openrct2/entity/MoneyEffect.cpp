@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -107,7 +107,7 @@ void MoneyEffect::SetValue(money64 value)
     {
         auto [stringId, newValue] = GetStringId();
         char buffer[128];
-        OpenRCT2::FormatStringLegacy(buffer, 128, stringId, &newValue);
+        FormatStringLegacy(buffer, 128, stringId, &newValue);
         offsetX = -(GfxGetStringWidth(buffer, FontStyle::medium) / 2);
     }
     OffsetX = offsetX;
@@ -198,7 +198,7 @@ void MoneyEffect::Paint(PaintSession& session, int32_t imageDirection) const
         return;
     }
 
-    auto& rt = session.DPI;
+    auto& rt = session.rt;
     if (rt.zoom_level > ZoomLevel{ 0 })
     {
         return;

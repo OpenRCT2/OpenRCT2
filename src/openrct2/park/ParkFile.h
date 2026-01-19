@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -67,7 +67,7 @@ namespace OpenRCT2
     public:
         std::vector<const ObjectRepositoryItem*> ExportObjectsList;
 
-        void Export(OpenRCT2::GameState_t& gameState, std::string_view path, int16_t compressionLevel);
-        void Export(OpenRCT2::GameState_t& gameState, OpenRCT2::IStream& stream, int16_t compressionLevel);
+        void Export(GameState_t& gameState, std::string_view path, int16_t compressionLevel);
+        void Export(GameState_t& gameState, IStream& stream, int16_t compressionLevel);
     };
 } // namespace OpenRCT2

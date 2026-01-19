@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -30,6 +30,7 @@
 #include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/EnumUtils.hpp>
+#include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/Chat.h>
 #include <openrct2/interface/Screenshot.h>
 #include <openrct2/network/Network.h>
@@ -504,7 +505,7 @@ static void ShortcutToggleWallSlope()
         return;
     }
 
-    const TileElement* tileElement = OpenRCT2::TileInspector::GetSelectedElement();
+    const TileElement* tileElement = TileInspector::GetSelectedElement();
 
     // Ensure an element is selected and it's a wall
     if (tileElement == nullptr || tileElement->GetType() != TileElementType::Wall)
@@ -751,7 +752,7 @@ void ShortcutManager::registerDefaultShortcuts()
     // clang-format off
     // Interface
     registerShortcut(ShortcutId::kInterfaceCloseTop, STR_SHORTCUT_CLOSE_TOP_MOST_WINDOW, "BACKSPACE", []() {
-        auto* windowMgr = Ui::GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         windowMgr->CloseTop();
     });
     registerShortcut(ShortcutId::kInterfaceCloseAll, STR_SHORTCUT_CLOSE_ALL_FLOATING_WINDOWS, "SHIFT+BACKSPACE", []() {
@@ -795,7 +796,7 @@ void ShortcutManager::registerDefaultShortcuts()
     registerShortcut(ShortcutId::kInterfaceGiantScreenshot, STR_SHORTCUT_GIANT_SCREENSHOT, "CTRL+SHIFT+S", ScreenshotGiant);
     registerShortcut(ShortcutId::kInterfaceLoadGame, STR_LOAD_GAME, "CTRL+L", ShortcutLoadGame);
     registerShortcut(ShortcutId::kInterfaceSaveGame, STR_SAVE_GAME, "CTRL+F10", ShortcutQuickSaveGame);
-    registerShortcut(ShortcutId::kInterfaceMute, STR_SHORTCUT_MUTE_SOUND, OpenRCT2::Audio::ToggleAllSounds);
+    registerShortcut(ShortcutId::kInterfaceMute, STR_SHORTCUT_MUTE_SOUND, Audio::ToggleAllSounds);
     registerShortcut(ShortcutId::kInterfaceSceneryPicker, STR_SHORTCUT_OPEN_SCENERY_PICKER, ShortcutOpenSceneryPicker);
     registerShortcut(
         ShortcutId::kInterfaceDisableClearance, STR_SHORTCUT_TOGGLE_CLEARANCE_CHECKS, ShortcutToggleClearanceChecks);

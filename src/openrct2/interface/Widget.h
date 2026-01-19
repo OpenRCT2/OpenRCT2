@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -168,7 +168,7 @@ namespace OpenRCT2
 
         bool IsVisible() const
         {
-            return !flags.has(OpenRCT2::WidgetFlag::isHidden);
+            return !flags.has(WidgetFlag::isHidden);
         }
     };
 

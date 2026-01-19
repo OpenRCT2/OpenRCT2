@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -69,7 +69,7 @@ static void PaintTwistStructure(
     };
     PaintAddImageAsParent(session, imageId, { xOffset, yOffset, height }, bb);
 
-    if (session.DPI.zoom_level < ZoomLevel{ 1 } && ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
+    if (session.rt.zoom_level < ZoomLevel{ 1 } && ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
         for (int32_t i = 0; i < vehicle->num_peeps; i += 2)
         {
@@ -170,7 +170,7 @@ static void PaintTwist(
 /**
  * rct2: 0x0076D658
  */
-TrackPaintFunction GetTrackPaintFunctionTwist(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionTwist(TrackElemType trackType)
 {
     if (trackType != TrackElemType::flatTrack3x3)
     {

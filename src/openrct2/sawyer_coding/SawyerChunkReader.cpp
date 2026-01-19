@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -24,9 +24,9 @@ namespace OpenRCT2::SawyerCoding
     constexpr const char* kExceptionMessageInvalidChunkEncoding = "Invalid chunk encoding.";
     constexpr const char* kExceptionMessageZeroSizedChunk = "Encountered zero-sized chunk.";
 
-    static MemoryStream DecodeChunk(const void* src, const SawyerCoding::ChunkHeader& header);
+    static MemoryStream DecodeChunk(const void* src, const ChunkHeader& header);
 
-    SawyerChunkReader::SawyerChunkReader(OpenRCT2::IStream* stream)
+    SawyerChunkReader::SawyerChunkReader(IStream* stream)
         : _stream(stream)
     {
     }
@@ -36,8 +36,8 @@ namespace OpenRCT2::SawyerCoding
         uint64_t originalPosition = _stream->GetPosition();
         try
         {
-            auto header = _stream->ReadValue<SawyerCoding::ChunkHeader>();
-            _stream->Seek(header.length, OpenRCT2::STREAM_SEEK_CURRENT);
+            auto header = _stream->ReadValue<ChunkHeader>();
+            _stream->Seek(header.length, STREAM_SEEK_CURRENT);
         }
         catch (const std::exception&)
         {
@@ -52,7 +52,7 @@ namespace OpenRCT2::SawyerCoding
         uint64_t originalPosition = _stream->GetPosition();
         try
         {
-            auto header = _stream->ReadValue<SawyerCoding::ChunkHeader>();
+            auto header = _stream->ReadValue<ChunkHeader>();
             if (header.length >= kMaxUncompressedChunkSize)
                 throw SawyerChunkException(kExceptionMessageCorruptChunkSize);
 
@@ -108,7 +108,7 @@ namespace OpenRCT2::SawyerCoding
                 throw SawyerChunkException(kExceptionMessageCorruptChunkSize);
             }
 
-            SawyerCoding::ChunkHeader header{ ChunkEncoding::rle, compressedDataLength };
+            ChunkHeader header{ ChunkEncoding::rle, compressedDataLength };
             auto buffer = DecodeChunk(compressedData.get(), header);
             if (buffer.GetLength() == 0)
             {
@@ -260,7 +260,7 @@ namespace OpenRCT2::SawyerCoding
         return buf;
     }
 
-    static MemoryStream DecodeChunk(const void* src, const SawyerCoding::ChunkHeader& header)
+    static MemoryStream DecodeChunk(const void* src, const ChunkHeader& header)
     {
         MemoryStream buf;
 

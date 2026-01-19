@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -138,7 +138,7 @@ static void SpiralSlidePaintTileFront(
         PaintAddImageAsParent(session, imageId, { 16, 16, height }, { { 8, 0, height + 3 }, { 8, 16, 108 } });
     }
 
-    if (session.DPI.zoom_level <= ZoomLevel{ 0 } && ride.slideInUse)
+    if (session.rt.zoom_level <= ZoomLevel{ 0 } && ride.slideInUse)
     {
         uint8_t slide_progress = ride.spiralSlideProgress;
         if (slide_progress != 0)
@@ -253,7 +253,7 @@ static void PaintSpiralSlide(
 /**
  * rct2: 0x0074840C
  */
-TrackPaintFunction GetTrackPaintFunctionSpiralSlide(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionSpiralSlide(TrackElemType trackType)
 {
     if (trackType != TrackElemType::flatTrack2x2)
     {

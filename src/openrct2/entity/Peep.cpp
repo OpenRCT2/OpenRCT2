@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -25,6 +25,7 @@
 #include "../core/EnumUtils.hpp"
 #include "../core/Guard.hpp"
 #include "../core/String.hpp"
+#include "../drawing/Drawing.h"
 #include "../drawing/LightFX.h"
 #include "../entity/Balloon.h"
 #include "../entity/EntityList.h"
@@ -590,7 +591,7 @@ void PeepDecrementNumRiders(Peep* peep)
         if (ride != nullptr)
         {
             ride->numRiders = std::max(0, ride->numRiders - 1);
-            ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
+            ride->windowInvalidateFlags.set(RideInvalidateFlag::main, RideInvalidateFlag::list);
         }
     }
 }
@@ -615,7 +616,7 @@ void PeepWindowStateUpdate(Peep* peep)
             if (ride != nullptr)
             {
                 ride->numRiders++;
-                ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
+                ride->windowInvalidateFlags.set(RideInvalidateFlag::main, RideInvalidateFlag::list);
             }
         }
 
@@ -859,8 +860,6 @@ void Peep::UpdateFalling()
                 saved_height = map_height;
                 saved_map = tile_element;
             } // If not a path or surface go see next element
-            else
-                continue;
         } while (!(tile_element++)->IsLastForTile());
     }
 
@@ -1174,7 +1173,7 @@ void PeepUpdateCrowdNoise()
 {
     PROFILED_FUNCTION();
 
-    if (OpenRCT2::Audio::gGameSoundsOff)
+    if (gGameSoundsOff)
         return;
 
     if (!Config::Get().sound.soundEnabled)
@@ -1222,11 +1221,9 @@ void PeepUpdateCrowdNoise()
     }
     else
     {
-        int32_t volume;
-
         // Formula to scale peeps to dB where peeps [0, 120] scales approximately logarithmically to [-3314, -150] dB/100
         // 207360000 maybe related to DSBVOLUME_MIN which is -10,000 (dB/100)
-        volume = 120 - std::min(visiblePeeps, 120);
+        int32_t volume = 120 - std::min(visiblePeeps, 120);
         volume = volume * volume * volume * volume;
         volume = (viewport->zoom.ApplyInversedTo(207360000 - volume) - 207360000) / 65536 - 150;
 
@@ -1236,7 +1233,7 @@ void PeepUpdateCrowdNoise()
             _crowdSoundChannel = CreateAudioChannel(SoundId::crowdAmbience, true, 0);
             if (_crowdSoundChannel != nullptr)
             {
-                _crowdSoundChannel->SetGroup(OpenRCT2::Audio::MixerGroup::Sound);
+                _crowdSoundChannel->SetGroup(MixerGroup::Sound);
             }
         }
         if (_crowdSoundChannel != nullptr)
@@ -1271,7 +1268,7 @@ void PeepApplause()
     }
 
     // Play applause noise
-    OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::applause, 0, ContextGetWidth() / 2);
+    Play(SoundId::applause, 0, ContextGetWidth() / 2);
 }
 
 /**
@@ -2291,7 +2288,7 @@ static bool PeepInteractWithShop(Peep* peep, const CoordsXYE& coords)
         if (cost != 0 && !(getGameState().park.flags & PARK_FLAGS_NO_MONEY))
         {
             ride->totalProfit = AddClamp(ride->totalProfit, cost);
-            ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_INCOME;
+            ride->windowInvalidateFlags.set(RideInvalidateFlag::income);
             guest->SpendMoney(cost, ExpenditureType::shopSales);
         }
 
@@ -2570,12 +2567,12 @@ int32_t PeepCompare(const EntityId sprite_index_a, const EntityId sprite_index_b
     char nameA[256]{};
     Formatter ft;
     peep_a->FormatNameTo(ft);
-    OpenRCT2::FormatStringLegacy(nameA, sizeof(nameA), STR_STRINGID, ft.Data());
+    FormatStringLegacy(nameA, sizeof(nameA), STR_STRINGID, ft.Data());
 
     char nameB[256]{};
     ft.Rewind();
     peep_b->FormatNameTo(ft);
-    OpenRCT2::FormatStringLegacy(nameB, sizeof(nameB), STR_STRINGID, ft.Data());
+    FormatStringLegacy(nameB, sizeof(nameB), STR_STRINGID, ft.Data());
     return String::logicalCmp(nameA, nameB);
 }
 
@@ -2777,7 +2774,7 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
         }
     }
 
-    if (session.DPI.zoom_level > ZoomLevel{ 2 })
+    if (session.rt.zoom_level > ZoomLevel{ 2 })
     {
         return;
     }

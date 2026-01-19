@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,7 +11,9 @@
 #include "../Diagnostic.h"
 #include "../Game.h"
 #include "../audio/Audio.h"
+#include "../drawing/Drawing.h"
 #include "../interface/Viewport.h"
+#include "../localisation/Formatter.h"
 #include "../localisation/StringIds.h"
 #include "../object/FootpathObject.h"
 #include "../object/FootpathRailingsObject.h"
@@ -272,7 +274,7 @@ static TrackDesignSceneryElement TrackDesignSaveCreateLargeSceneryDesc(
 static TrackDesignAddStatus TrackDesignSaveAddLargeScenery(const CoordsXY& loc, LargeSceneryElement* tileElement)
 {
     auto entryIndex = tileElement->GetEntryIndex();
-    auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
+    auto& objectMgr = GetContext()->GetObjectManager();
     auto obj = objectMgr.GetLoadedObject<LargeSceneryObject>(entryIndex);
     if (obj != nullptr && TrackDesignSaveIsSupportedObject(obj))
     {
@@ -283,8 +285,7 @@ static TrackDesignAddStatus TrackDesignSaveAddLargeScenery(const CoordsXY& loc, 
         auto direction = tileElement->GetDirection();
         auto sequence = tileElement->GetSequenceIndex();
 
-        auto sceneryOrigin = MapLargeSceneryGetOrigin(
-            { loc.x, loc.y, z << 3, static_cast<Direction>(direction) }, sequence, nullptr);
+        auto sceneryOrigin = MapLargeSceneryGetOrigin({ loc.x, loc.y, z << 3, direction }, sequence, nullptr);
         if (!sceneryOrigin.has_value())
         {
             return TrackDesignAddStatus::Success();
@@ -298,7 +299,7 @@ static TrackDesignAddStatus TrackDesignSaveAddLargeScenery(const CoordsXY& loc, 
 
             CoordsXYZ tileLoc = { sceneryOrigin->x + rotatedOffsetPos.x, sceneryOrigin->y + rotatedOffsetPos.y,
                                   sceneryOrigin->z + tile.offset.z };
-            auto largeElement = MapGetLargeScenerySegment({ tileLoc, static_cast<Direction>(direction) }, tile.index);
+            auto largeElement = MapGetLargeScenerySegment({ tileLoc, direction }, tile.index);
             if (largeElement != nullptr)
             {
                 if (tile.index == 0)
@@ -344,11 +345,10 @@ static TrackDesignAddStatus TrackDesignSaveAddWall(const CoordsXY& loc, WallElem
 
 static std::optional<RCTObjectEntry> TrackDesignSaveFootpathGetBestEntry(const PathElement& pathElement)
 {
-    RCTObjectEntry pathEntry;
     auto legacyPathObj = pathElement.GetLegacyPathEntry();
     if (legacyPathObj != nullptr)
     {
-        pathEntry = legacyPathObj->GetObjectEntry();
+        RCTObjectEntry pathEntry = legacyPathObj->GetObjectEntry();
         if (!pathEntry.IsEmpty())
         {
             return pathEntry;
@@ -488,7 +488,7 @@ static void TrackDesignSaveRemoveLargeScenery(const CoordsXY& loc, LargeSceneryE
     }
 
     auto entryIndex = tileElement->GetEntryIndex();
-    auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
+    auto& objectMgr = GetContext()->GetObjectManager();
     auto obj = objectMgr.GetLoadedObject<LargeSceneryObject>(entryIndex);
     if (obj != nullptr)
     {
@@ -499,8 +499,7 @@ static void TrackDesignSaveRemoveLargeScenery(const CoordsXY& loc, LargeSceneryE
         auto direction = tileElement->GetDirection();
         auto sequence = tileElement->GetSequenceIndex();
 
-        auto sceneryOrigin = MapLargeSceneryGetOrigin(
-            { loc.x, loc.y, z << 3, static_cast<Direction>(direction) }, sequence, nullptr);
+        auto sceneryOrigin = MapLargeSceneryGetOrigin({ loc.x, loc.y, z << 3, direction }, sequence, nullptr);
         if (!sceneryOrigin)
         {
             return;
@@ -514,7 +513,7 @@ static void TrackDesignSaveRemoveLargeScenery(const CoordsXY& loc, LargeSceneryE
 
             CoordsXYZ tileLoc = { sceneryOrigin->x + rotatedOffsetPos.x, sceneryOrigin->y + rotatedOffsetPos.y,
                                   sceneryOrigin->z + tile.offset.z };
-            auto largeElement = MapGetLargeScenerySegment({ tileLoc, static_cast<Direction>(direction) }, tile.index);
+            auto largeElement = MapGetLargeScenerySegment({ tileLoc, direction }, tile.index);
             if (largeElement != nullptr)
             {
                 if (tile.index == 0)

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,6 +14,7 @@
 #include "../Diagnostic.h"
 #include "../GameState.h"
 #include "../core/MemoryStream.h"
+#include "../drawing/Drawing.h"
 #include "../drawing/ScrollingText.h"
 #include "../entity/EntityList.h"
 #include "../management/NewsItem.h"
@@ -66,7 +67,7 @@ namespace OpenRCT2::GameActions
 
         if ((ride->lifecycleFlags & (RIDE_LIFECYCLE_INDESTRUCTIBLE | RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
              && _modifyType == RideModifyType::demolish)
-            && !getGameState().cheats.makeAllDestructible)
+            && !gameState.cheats.makeAllDestructible)
         {
             return Result(
                 Status::noClearance, STR_CANT_DEMOLISH_RIDE,
@@ -279,7 +280,7 @@ namespace OpenRCT2::GameActions
         ride.lifecycleFlags &= ~RIDE_LIFECYCLE_EVER_BEEN_OPENED;
         ride.lastCrashType = RIDE_CRASH_TYPE_NONE;
 
-        ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAINTENANCE | RIDE_INVALIDATE_RIDE_CUSTOMER;
+        ride.windowInvalidateFlags.set(RideInvalidateFlag::maintenance, RideInvalidateFlag::customers);
 
         if (!ride.overallView.IsNull())
         {

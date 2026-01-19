@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -26,8 +26,8 @@ namespace OpenRCT2
     private:
         RideObjectEntry _legacyType = {};
         VehicleColourPresetList _presetColours = {};
-        std::vector<int8_t> _peepLoadingPositions[OpenRCT2::RCT2::ObjectLimits::kMaxCarTypesPerRideEntry];
-        std::vector<std::array<CoordsXY, 3>> _peepLoadingWaypoints[OpenRCT2::RCT2::ObjectLimits::kMaxCarTypesPerRideEntry];
+        std::vector<int8_t> _peepLoadingPositions[RCT2::ObjectLimits::kMaxCarTypesPerRideEntry];
+        std::vector<std::array<CoordsXY, 3>> _peepLoadingWaypoints[RCT2::ObjectLimits::kMaxCarTypesPerRideEntry];
         bool _shouldLoadImages = false;
 
     public:
@@ -43,7 +43,7 @@ namespace OpenRCT2
         }
 
         void ReadJson(IReadObjectContext* context, json_t& root) override;
-        void ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream) override;
+        void ReadLegacy(IReadObjectContext* context, IStream* stream) override;
         void Load() override;
         void Unload() override;
 
@@ -58,7 +58,7 @@ namespace OpenRCT2
         static ride_type_t ParseRideType(const std::string& s);
 
     private:
-        void ReadLegacyCar(IReadObjectContext* context, OpenRCT2::IStream* stream, CarEntry& car);
+        void ReadLegacyCar(IReadObjectContext* context, IStream* stream, CarEntry& car);
 
         void ReadJsonVehicleInfo(IReadObjectContext* context, json_t& properties);
         std::vector<CarEntry> ReadJsonCars([[maybe_unused]] IReadObjectContext* context, json_t& jCars);

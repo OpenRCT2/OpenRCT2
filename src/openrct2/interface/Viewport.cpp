@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -21,7 +21,6 @@
 #include "../drawing/Drawing.h"
 #include "../drawing/IDrawingEngine.h"
 #include "../drawing/Rectangle.h"
-#include "../entity/EntityList.h"
 #include "../entity/Guest.h"
 #include "../entity/Staff.h"
 #include "../interface/Cursors.h"
@@ -118,9 +117,9 @@ namespace OpenRCT2
         return std::visit(
             [](auto&& arg) {
                 using T = std::decay_t<decltype(arg)>;
-                if constexpr (std::is_same_v<T, Focus::CoordinateFocus>)
+                if constexpr (std::is_same_v<T, CoordinateFocus>)
                     return arg;
-                else if constexpr (std::is_same_v<T, Focus::EntityFocus>)
+                else if constexpr (std::is_same_v<T, EntityFocus>)
                 {
                     auto* centreEntity = getGameState().entities.GetEntity(arg);
                     if (centreEntity != nullptr)
@@ -469,7 +468,7 @@ namespace OpenRCT2
 
         if (DrawingEngineHasDirtyOptimisations())
         {
-            RenderTarget& rt = DrawingEngineGetDpi();
+            RenderTarget& rt = DrawingEngineGetRT();
             ViewportShiftPixels(rt, w, { left, top, right, bottom }, { x_diff, y_diff });
         }
         else
@@ -816,7 +815,7 @@ namespace OpenRCT2
      *  bx: top
      *  dx: right
      *  esi: viewport
-     *  edi: dpi
+     *  edi: rt
      *  ebp: bottom
      */
     void ViewportRender(RenderTarget& rt, const Viewport* viewport)
@@ -853,12 +852,12 @@ namespace OpenRCT2
                    | VIEWPORT_FLAG_CLIP_VIEW)
             && (~session.ViewFlags & VIEWPORT_FLAG_TRANSPARENT_BACKGROUND))
         {
-            uint8_t colour = COLOUR_AQUAMARINE;
+            PaletteIndex colour = PaletteIndex::pi10;
             if (session.ViewFlags & VIEWPORT_FLAG_HIDE_ENTITIES)
             {
-                colour = COLOUR_BLACK;
+                colour = PaletteIndex::transparent;
             }
-            GfxClear(session.DPI, colour);
+            GfxClear(session.rt, colour);
         }
 
         PaintDrawStructs(session);
@@ -866,12 +865,12 @@ namespace OpenRCT2
         if (Config::Get().general.renderWeatherGloom && !gTrackDesignSaveMode
             && !(session.ViewFlags & VIEWPORT_FLAG_HIDE_ENTITIES) && !(session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
         {
-            ViewportPaintWeatherGloom(session.DPI);
+            ViewportPaintWeatherGloom(session.rt);
         }
 
         if (session.PSStringHead != nullptr)
         {
-            PaintDrawMoneyStructs(session.DPI, session.PSStringHead);
+            PaintDrawMoneyStructs(session.rt, session.PSStringHead);
         }
     }
 
@@ -882,7 +881,7 @@ namespace OpenRCT2
      *  ebx: top
      *  edx: right
      *  esi: viewport
-     *  edi: dpi
+     *  edi: rt
      *  ebp: bottom
      */
     static void ViewportPaint(const Viewport* viewport, RenderTarget& rt)
@@ -934,7 +933,7 @@ namespace OpenRCT2
             PaintSession* session = PaintSessionAlloc(worldRT, viewport->flags, viewport->rotation);
             _paintColumns.push_back(session);
 
-            RenderTarget& columnRT = session->DPI;
+            RenderTarget& columnRT = session->rt;
             if (x >= columnRT.x)
             {
                 const int32_t leftPitch = x - columnRT.x;
@@ -1505,7 +1504,7 @@ namespace OpenRCT2
 
         if (imageType & IMAGE_TYPE_REMAP)
         {
-            return paletteMap[*index] != 0;
+            return paletteMap[*index] != PaletteIndex::transparent;
         }
 
         if (imageType & IMAGE_TYPE_TRANSPARENT)
@@ -1628,7 +1627,7 @@ namespace OpenRCT2
             {
                 paletteIndex = imageId.GetRemap();
             }
-            if (auto pm = GetPaletteMapForColour(paletteIndex); pm.has_value())
+            if (auto pm = GetPaletteMapForColour(static_cast<FilterPaletteID>(paletteIndex)); pm.has_value())
             {
                 paletteMap = pm.value();
             }
@@ -1663,7 +1662,7 @@ namespace OpenRCT2
             while (next_ps != nullptr)
             {
                 ps = next_ps;
-                if (IsSpriteInteractedWith(session->DPI, ps->image_id, ps->ScreenPos))
+                if (IsSpriteInteractedWith(session->rt, ps->image_id, ps->ScreenPos))
                 {
                     if (PSInteractionTypeIsInFilter(ps, filter)
                         && GetPaintStructVisibility(ps, viewFlags) == VisibilityKind::visible)
@@ -1678,7 +1677,7 @@ namespace OpenRCT2
 #pragma GCC diagnostic ignored "-Wnull-dereference"
             for (AttachedPaintStruct* attached_ps = ps->Attached; attached_ps != nullptr; attached_ps = attached_ps->NextEntry)
             {
-                if (IsSpriteInteractedWith(session->DPI, attached_ps->image_id, ps->ScreenPos + attached_ps->RelativePos))
+                if (IsSpriteInteractedWith(session->rt, attached_ps->image_id, ps->ScreenPos + attached_ps->RelativePos))
                 {
                     if (PSInteractionTypeIsInFilter(ps, filter)
                         && GetPaintStructVisibility(ps, viewFlags) == VisibilityKind::visible)
@@ -1724,8 +1723,7 @@ namespace OpenRCT2
         Viewport* viewport = window->viewport;
         auto viewLoc = screenCoords;
         viewLoc -= viewport->pos;
-        if (viewLoc.x >= 0 && viewLoc.x < static_cast<int32_t>(viewport->width) && viewLoc.y >= 0
-            && viewLoc.y < static_cast<int32_t>(viewport->height))
+        if ((viewLoc.x >= 0) && (viewLoc.x < viewport->width) && (viewLoc.y >= 0) && (viewLoc.y < viewport->height))
         {
             viewLoc.x = viewport->zoom.ApplyTo(viewLoc.x);
             viewLoc.y = viewport->zoom.ApplyTo(viewLoc.y);

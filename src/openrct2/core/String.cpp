@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -57,9 +57,9 @@ namespace OpenRCT2::String
     {
 #ifdef _WIN32
         int srcLen = static_cast<int>(src.size());
-        int sizeReq = WideCharToMultiByte(OpenRCT2::CodePage::UTF8, 0, src.data(), srcLen, nullptr, 0, nullptr, nullptr);
+        int sizeReq = WideCharToMultiByte(CodePage::UTF8, 0, src.data(), srcLen, nullptr, 0, nullptr, nullptr);
         auto result = std::string(sizeReq, 0);
-        WideCharToMultiByte(OpenRCT2::CodePage::UTF8, 0, src.data(), srcLen, result.data(), sizeReq, nullptr, nullptr);
+        WideCharToMultiByte(CodePage::UTF8, 0, src.data(), srcLen, result.data(), sizeReq, nullptr, nullptr);
         return result;
 #else
     // Which constructor to use depends on the size of wchar_t...
@@ -85,9 +85,9 @@ namespace OpenRCT2::String
     {
 #ifdef _WIN32
         int srcLen = static_cast<int>(src.size());
-        int sizeReq = MultiByteToWideChar(OpenRCT2::CodePage::UTF8, 0, src.data(), srcLen, nullptr, 0);
+        int sizeReq = MultiByteToWideChar(CodePage::UTF8, 0, src.data(), srcLen, nullptr, 0);
         auto result = std::wstring(sizeReq, 0);
-        MultiByteToWideChar(OpenRCT2::CodePage::UTF8, 0, src.data(), srcLen, result.data(), sizeReq);
+        MultiByteToWideChar(CodePage::UTF8, 0, src.data(), srcLen, result.data(), sizeReq);
         return result;
 #else
         icu::UnicodeString str = icu::UnicodeString::fromUTF8(std::string(src));
@@ -609,9 +609,9 @@ namespace OpenRCT2::String
         std::string dst;
         {
             int srcLen = static_cast<int>(u16.size());
-            int sizeReq = WideCharToMultiByte(OpenRCT2::CodePage::UTF8, 0, u16.data(), srcLen, nullptr, 0, nullptr, nullptr);
+            int sizeReq = WideCharToMultiByte(CodePage::UTF8, 0, u16.data(), srcLen, nullptr, 0, nullptr, nullptr);
             dst = std::string(sizeReq, 0);
-            WideCharToMultiByte(OpenRCT2::CodePage::UTF8, 0, u16.data(), srcLen, dst.data(), sizeReq, nullptr, nullptr);
+            WideCharToMultiByte(CodePage::UTF8, 0, u16.data(), srcLen, dst.data(), sizeReq, nullptr, nullptr);
         }
 
         return dst;

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -24,16 +24,16 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::SawyerCoding;
 
-static bool TryClassifyAsPark(OpenRCT2::IStream* stream, ClassifiedFileInfo* result);
-static bool TryClassifyAsS6(OpenRCT2::IStream* stream, ClassifiedFileInfo* result);
-static bool TryClassifyAsS4(OpenRCT2::IStream* stream, ClassifiedFileInfo* result);
-static bool TryClassifyAsTD4_TD6(OpenRCT2::IStream* stream, ClassifiedFileInfo* result);
+static bool TryClassifyAsPark(IStream* stream, ClassifiedFileInfo* result);
+static bool TryClassifyAsS6(IStream* stream, ClassifiedFileInfo* result);
+static bool TryClassifyAsS4(IStream* stream, ClassifiedFileInfo* result);
+static bool TryClassifyAsTD4_TD6(IStream* stream, ClassifiedFileInfo* result);
 
 bool TryClassifyFile(const std::string& path, ClassifiedFileInfo* result)
 {
     try
     {
-        auto fs = OpenRCT2::FileStream(path, OpenRCT2::FileMode::open);
+        auto fs = FileStream(path, FileMode::open);
         return TryClassifyFile(&fs, result);
     }
     catch (const std::exception&)
@@ -42,7 +42,7 @@ bool TryClassifyFile(const std::string& path, ClassifiedFileInfo* result)
     }
 }
 
-bool TryClassifyFile(OpenRCT2::IStream* stream, ClassifiedFileInfo* result)
+bool TryClassifyFile(IStream* stream, ClassifiedFileInfo* result)
 {
     // TODO Currently track designs get classified as SC4s because they use the
     //      same checksum algorithm. The only way after to tell the difference
@@ -76,14 +76,14 @@ bool TryClassifyFile(OpenRCT2::IStream* stream, ClassifiedFileInfo* result)
     return false;
 }
 
-static bool TryClassifyAsPark(OpenRCT2::IStream* stream, ClassifiedFileInfo* result)
+static bool TryClassifyAsPark(IStream* stream, ClassifiedFileInfo* result)
 {
     bool success = false;
     uint64_t originalPosition = stream->GetPosition();
     try
     {
         auto magic = stream->ReadValue<uint32_t>();
-        if (magic == OpenRCT2::kParkFileMagic)
+        if (magic == kParkFileMagic)
         {
             result->Type = FileType::park;
             result->Version = 0;
@@ -99,7 +99,7 @@ static bool TryClassifyAsPark(OpenRCT2::IStream* stream, ClassifiedFileInfo* res
     return success;
 }
 
-static bool TryClassifyAsS6(OpenRCT2::IStream* stream, ClassifiedFileInfo* result)
+static bool TryClassifyAsS6(IStream* stream, ClassifiedFileInfo* result)
 {
     bool success = false;
     uint64_t originalPosition = stream->GetPosition();
@@ -127,7 +127,7 @@ static bool TryClassifyAsS6(OpenRCT2::IStream* stream, ClassifiedFileInfo* resul
     return success;
 }
 
-static bool TryClassifyAsS4(OpenRCT2::IStream* stream, ClassifiedFileInfo* result)
+static bool TryClassifyAsS4(IStream* stream, ClassifiedFileInfo* result)
 {
     bool success = false;
     uint64_t originalPosition = stream->GetPosition();
@@ -136,7 +136,7 @@ static bool TryClassifyAsS4(OpenRCT2::IStream* stream, ClassifiedFileInfo* resul
         size_t dataLength = static_cast<size_t>(stream->GetLength());
         auto data = stream->ReadArray<uint8_t>(dataLength);
         stream->SetPosition(originalPosition);
-        int32_t fileTypeVersion = SawyerCoding::DetectFileType(data.get(), dataLength);
+        int32_t fileTypeVersion = DetectFileType(data.get(), dataLength);
 
         int32_t type = fileTypeVersion & FILE_TYPE_MASK;
         int32_t version = fileTypeVersion & FILE_VERSION_MASK;
@@ -163,7 +163,7 @@ static bool TryClassifyAsS4(OpenRCT2::IStream* stream, ClassifiedFileInfo* resul
     return success;
 }
 
-static bool TryClassifyAsTD4_TD6(OpenRCT2::IStream* stream, ClassifiedFileInfo* result)
+static bool TryClassifyAsTD4_TD6(IStream* stream, ClassifiedFileInfo* result)
 {
     bool success = false;
     uint64_t originalPosition = stream->GetPosition();
@@ -174,11 +174,11 @@ static bool TryClassifyAsTD4_TD6(OpenRCT2::IStream* stream, ClassifiedFileInfo* 
         auto data = stream->ReadArray<uint8_t>(dataLength);
         stream->SetPosition(originalPosition);
 
-        if (SawyerCoding::ValidateTrackChecksum(data.get(), dataLength))
+        if (ValidateTrackChecksum(data.get(), dataLength))
         {
             std::unique_ptr<uint8_t, decltype(&Memory::Free<uint8_t>)> td6data(
                 Memory::Allocate<uint8_t>(0x10000), &Memory::Free<uint8_t>);
-            size_t td6len = SawyerCoding::DecodeTD6(data.get(), td6data.get(), dataLength);
+            size_t td6len = DecodeTD6(data.get(), td6data.get(), dataLength);
             if (td6data != nullptr && td6len >= 8)
             {
                 uint8_t version = (td6data.get()[7] >> 2) & 3;
