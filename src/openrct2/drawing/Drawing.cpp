@@ -738,8 +738,8 @@ void LoadPalette()
     auto water_type = OpenRCT2::ObjectManager::GetObjectEntry<WaterObjectEntry>(0);
     if (water_type != nullptr)
     {
-        Guard::Assert(water_type->image_id != kImageIndexUndefined, "Failed to load water palette");
-        palette = water_type->image_id;
+        Guard::Assert(water_type->mainPalette != kImageIndexUndefined, "Failed to load water palette");
+        palette = water_type->mainPalette;
     }
 
     const auto* g1 = GfxGetG1Palette(palette);
@@ -953,7 +953,7 @@ void UpdatePaletteEffects()
 
         if (water_type != nullptr)
         {
-            palette = water_type->image_id;
+            palette = water_type->mainPalette;
         }
         const auto* g1 = GfxGetG1Palette(palette);
         if (g1 != nullptr)
@@ -982,7 +982,7 @@ void UpdatePaletteEffects()
 
             if (water_type != nullptr)
             {
-                palette = water_type->image_id;
+                palette = water_type->mainPalette;
             }
 
             const auto* g1 = GfxGetG1Palette(palette);
@@ -1020,7 +1020,7 @@ void UpdatePaletteEffects()
         uint32_t waterId = SPR_GAME_PALETTE_WATER;
         if (water_type != nullptr)
         {
-            waterId = water_type->palette_index_1;
+            waterId = water_type->waterWavesPalette;
         }
         const auto* g1 = GfxGetG1Palette(shade + waterId);
         if (g1 != nullptr)
@@ -1044,7 +1044,7 @@ void UpdatePaletteEffects()
         waterId = SPR_GAME_PALETTE_3;
         if (water_type != nullptr)
         {
-            waterId = water_type->palette_index_2;
+            waterId = water_type->waterSparklesPalette;
         }
 
         g1 = GfxGetG1Palette(shade + waterId);

@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../drawing/ImageIndexType.h"
 #include "../localisation/StringIdType.h"
 #include "ObjectTypes.h"
 
@@ -23,10 +24,10 @@ namespace OpenRCT2
     {
         static constexpr auto kObjectType = ObjectType::water;
 
-        StringId string_idx;      // 0x00
-        uint32_t image_id;        // 0x02
-        uint32_t palette_index_1; // 0x06
-        uint32_t palette_index_2; // 0x0A
-        uint16_t flags;           // 0x0E
+        StringId stringId;
+        ImageIndex mainPalette;
+        ImageIndex waterWavesPalette;
+        ImageIndex waterSparklesPalette;
+        uint16_t flags;
     };
 } // namespace OpenRCT2

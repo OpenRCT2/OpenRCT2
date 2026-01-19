@@ -97,8 +97,6 @@ enum
     COLOUR_DEEP_WATER = 50
 };
 
-constexpr size_t kPaletteCount = 256;
-
 constexpr auto kPaletteOffsetDynamic = OpenRCT2::Drawing::PaletteIndex::pi10;
 constexpr uint8_t kPaletteLengthDynamic = 236;
 
@@ -121,11 +119,3 @@ namespace OpenRCT2::Colour
     colour_t FromString(std::string_view s, colour_t defaultValue = COLOUR_BLACK);
     u8string ToString(colour_t colour);
 } // namespace OpenRCT2::Colour
-
-#ifndef DISABLE_TTF
-OpenRCT2::Drawing::PaletteIndex BlendColours(
-    OpenRCT2::Drawing::PaletteIndex paletteIndex1, OpenRCT2::Drawing::PaletteIndex paletteIndex2);
-#endif
-
-typedef OpenRCT2::Drawing::PaletteIndex BlendColourMapType[kPaletteCount][kPaletteCount];
-BlendColourMapType* GetBlendColourMap();

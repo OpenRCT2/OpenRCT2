@@ -19,6 +19,7 @@
 #include "../localisation/Formatting.h"
 #include "../localisation/LocalisationService.h"
 #include "../paint/Paint.h"
+#include "BlendColourMap.h"
 #include "Drawing.h"
 #include "TTF.h"
 

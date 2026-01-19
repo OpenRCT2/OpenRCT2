@@ -18,6 +18,7 @@
 #include "../interface/Window.h"
 #include "../scenes/intro/IntroScene.h"
 #include "../ui/UiContext.h"
+#include "BlendColourMap.h"
 #include "Drawing.String.h"
 #include "Drawing.h"
 #include "IDrawingContext.h"
