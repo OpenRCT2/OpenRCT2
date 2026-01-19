@@ -770,9 +770,8 @@ int32_t Guest::CheckEasterEggName(int32_t index) const
 void Guest::UpdateMotivesIdle()
 {
     // Idle peep happiness tends towards 127 (50%).
-    // Falls faster when above
     if (HappinessTarget >= 128)
-        HappinessTarget -= 2;
+        HappinessTarget--;
     else
         HappinessTarget++;
 
@@ -1230,6 +1229,8 @@ void Guest::Tick128UpdateGuest(uint32_t index)
                     if (HappinessTarget < 90)
                         HappinessTarget = 90;
 
+                    // This is +2 as UpdateMotivesIdle (that is called later in the function)
+                    // will -1. We want to gradually increase happiness to 165
                     if (HappinessTarget < 165)
                         HappinessTarget += 2;
                 }
