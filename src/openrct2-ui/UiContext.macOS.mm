@@ -66,13 +66,29 @@ namespace OpenRCT2::Ui
 
         bool HasMenuSupport() override
         {
-            return false;
+            return true;
         }
 
         int32_t ShowMenuDialog(
             const std::vector<std::string>& options, const std::string& title, const std::string& text) override
         {
-            return -1;
+            @autoreleasepool
+            {   
+                NSAlert* alert = [[[NSAlert alloc] init] autorelease];
+                for (const std::string& option : options)
+                {
+                    [alert addButtonWithTitle:[NSString stringWithUTF8String:option.c_str()]];
+                }
+                
+                alert.messageText = [NSString stringWithUTF8String:title.c_str()];
+                alert.informativeText = [NSString stringWithUTF8String:text.c_str()];
+                NSModalResponse response = [alert runModal];
+                if (response >= 1000)
+                {
+                    return static_cast<int32_t>(response - 1000);
+                }
+                return -1;
+            }
         }
 
         void OpenFolder(const std::string& path) override
