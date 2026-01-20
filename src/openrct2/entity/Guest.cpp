@@ -779,22 +779,22 @@ void Guest::UpdateMotivesIdle()
 
     if (Energy <= 50)
     {
-        Energy = std::max(Energy - 2, 0);
+        HappinessTarget = std::max(HappinessTarget - 2, 0);
     }
 
     if (Hunger < 10)
     {
-        Hunger = std::max(Hunger - 1, 0);
+        HappinessTarget = std::max(HappinessTarget - 1, 0);
     }
 
     if (Thirst < 10)
     {
-        Thirst = std::max(Thirst - 1, 0);
+        HappinessTarget = std::max(HappinessTarget - 1, 0);
     }
 
     if (Toilet >= 195)
     {
-        Toilet--;
+        HappinessTarget = std::max(HappinessTarget - 1, 0);
     }
 
     if (State == PeepState::walking && NauseaTarget >= 128)
@@ -1229,6 +1229,8 @@ void Guest::Tick128UpdateGuest(uint32_t index)
                     if (HappinessTarget < 90)
                         HappinessTarget = 90;
 
+                    // This is +2 as UpdateMotivesIdle (that is called later in the function)
+                    // will -1. We want to gradually increase happiness to 165
                     if (HappinessTarget < 165)
                         HappinessTarget += 2;
                 }
@@ -2887,11 +2889,11 @@ static int16_t GuestCalculateRideIntensityNauseaSatisfaction(Guest& guest, const
  */
 static void GuestUpdateRideNauseaGrowth(Guest& guest, const Ride& ride)
 {
-    uint32_t nauseaMultiplier = std::clamp(256 - guest.HappinessTarget, 64, 200);
-    uint32_t nauseaGrowthRateChange = (ride.ratings.nausea * nauseaMultiplier) / 512;
-    nauseaGrowthRateChange *= std::max(static_cast<uint8_t>(128), guest.Hunger) / 64;
-    nauseaGrowthRateChange >>= (EnumValue(guest.NauseaTolerance) & 3);
-    guest.NauseaTarget = static_cast<uint8_t>(std::min(guest.NauseaTarget + nauseaGrowthRateChange, 255u));
+    const auto nauseaMultiplier = std::clamp(256 - guest.HappinessTarget, 64, 200);
+    const auto rideGeneratedNausea = (ride.ratings.nausea * nauseaMultiplier) / 512;
+    const auto hungerAdjustedNausea = ((rideGeneratedNausea * std::max<uint8_t>(128, guest.Hunger)) / 128) * 2;
+    const auto nauseaGrowthRateChange = hungerAdjustedNausea >> (EnumValue(guest.NauseaTolerance) & 3);
+    guest.NauseaTarget = static_cast<uint8_t>(std::min<int32_t>(guest.NauseaTarget + nauseaGrowthRateChange, 255));
 }
 
 static bool GuestShouldGoOnRideAgain(Guest& guest, const Ride& ride)
