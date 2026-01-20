@@ -6,6 +6,7 @@
 - Fix: [#25739] Game freezes when a tab in the New Ride window contains more than 384 items.
 - Fix: [#25745] Crash when a player connection is aborted early.
 - Fix: [#25799] The animated options tab icon of the news window does not always redraw.
+- Fix: [#25850] Guests do not have their happiness penalised by low energy, low hunger, low thirst, high toilet. Ride nausea generation different compared to vanilla.
 
 0.4.30 (2026-01-04)
 ------------------------------------------------------------------------
