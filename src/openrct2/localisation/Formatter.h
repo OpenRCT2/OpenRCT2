@@ -89,18 +89,18 @@ namespace OpenRCT2
 
             // clang-format off
             static_assert(
-                std::is_same_v<typename std::remove_cv_t<TSpecified>, char*> ||
-                std::is_same_v<typename std::remove_cv_t<TSpecified>, const char*> ||
-                std::is_same_v<typename std::remove_cv_t<TSpecified>, int16_t> ||
-                std::is_same_v<typename std::remove_cv_t<TSpecified>, int32_t> ||
-                std::is_same_v<typename std::remove_cv_t<TSpecified>, money64> ||
-                std::is_same_v<typename std::remove_cv_t<TSpecified>, RideId> ||
-                std::is_same_v<typename std::remove_cv_t<TSpecified>, EntityId> ||
-                std::is_same_v<typename std::remove_cv_t<TSpecified>, StringId> ||
-                std::is_same_v<typename std::remove_cv_t<TSpecified>, uint16_t> ||
-                std::is_same_v<typename std::remove_cv_t<TSpecified>, uint32_t> ||
-                std::is_same_v<typename std::remove_cv_t<TSpecified>, utf8*> ||
-                std::is_same_v<typename std::remove_cv_t<TSpecified>, const utf8*>
+                std::is_same_v<std::remove_cv_t<TSpecified>, char*> ||
+                std::is_same_v<std::remove_cv_t<TSpecified>, const char*> ||
+                std::is_same_v<std::remove_cv_t<TSpecified>, int16_t> ||
+                std::is_same_v<std::remove_cv_t<TSpecified>, int32_t> ||
+                std::is_same_v<std::remove_cv_t<TSpecified>, money64> ||
+                std::is_same_v<std::remove_cv_t<TSpecified>, RideId> ||
+                std::is_same_v<std::remove_cv_t<TSpecified>, EntityId> ||
+                std::is_same_v<std::remove_cv_t<TSpecified>, StringId> ||
+                std::is_same_v<std::remove_cv_t<TSpecified>, uint16_t> ||
+                std::is_same_v<std::remove_cv_t<TSpecified>, uint32_t> ||
+                std::is_same_v<std::remove_cv_t<TSpecified>, utf8*> ||
+                std::is_same_v<std::remove_cv_t<TSpecified>, const utf8*>
             );
             // clang-format on
 

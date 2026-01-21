@@ -66,7 +66,7 @@ template<typename T>
 static T ByteSwapBE(const T& value)
 {
     using ByteSwap = ByteSwapT<sizeof(T)>;
-    using UIntType = typename ByteSwap::UIntType;
+    using UIntType = ByteSwap::UIntType;
 
     if constexpr (std::is_enum_v<T> || std::is_integral_v<T>)
     {

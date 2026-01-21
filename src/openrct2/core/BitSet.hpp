@@ -135,7 +135,7 @@ namespace OpenRCT2
         template<size_t TBitSize>
         struct storage_block_type_aligned
         {
-            using value_type = typename StorageBlockType<ComputeBlockSize<TBitSize>()>::value_type;
+            using value_type = StorageBlockType<ComputeBlockSize<TBitSize>()>::value_type;
         };
     } // namespace Detail::BitSet
 
@@ -144,7 +144,7 @@ namespace OpenRCT2
     {
         static constexpr size_t kByteAlignedBitSize = Detail::BitSet::ByteAlignBits<TBitSize>();
 
-        using StorageBlockType = typename Detail::BitSet::storage_block_type_aligned<kByteAlignedBitSize>::value_type;
+        using StorageBlockType = Detail::BitSet::storage_block_type_aligned<kByteAlignedBitSize>::value_type;
 
         static constexpr size_t kBlockByteSize = sizeof(StorageBlockType);
         static constexpr size_t kBlockBitSize = kBlockByteSize * Detail::BitSet::kBitsPerByte;

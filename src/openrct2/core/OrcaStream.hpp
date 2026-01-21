@@ -346,7 +346,7 @@ namespace OpenRCT2
             template<typename T, std::enable_if_t<std::is_enum<T>::value, bool> = true>
             void readWrite(T& v)
             {
-                using underlying = typename std::underlying_type<T>::type;
+                using underlying = std::underlying_type<T>::type;
                 if (_mode == Mode::reading)
                 {
                     v = static_cast<T>(readInteger<underlying>());

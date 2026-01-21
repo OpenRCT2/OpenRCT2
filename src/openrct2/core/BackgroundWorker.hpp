@@ -214,7 +214,7 @@ namespace OpenRCT2
                 "Work function must be callable with or without stop_token");
 
             constexpr bool expectsToken = std::is_invocable_v<WorkFunc, std::atomic_bool&>;
-            using Result = typename Detail::ResultType<WorkFunc, std::integral_constant<bool, expectsToken>>::type;
+            using Result = Detail::ResultType<WorkFunc, std::integral_constant<bool, expectsToken>>::type;
 
             const auto wrappedFunc = [wf = std::forward<WorkFunc>(work)](std::atomic_bool& token) {
                 if constexpr (std::is_invocable_v<WorkFunc, std::atomic_bool&>)

@@ -103,7 +103,7 @@ public:
         return this;
     }
 
-    typename TBase::Result Finish() override
+    TBase::Result Finish() override
     {
         typename TBase::Result result;
         auto status = BCryptFinishHash(_hHash, result.data(), static_cast<ULONG>(result.size()), 0);
