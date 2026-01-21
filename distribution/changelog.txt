@@ -7,6 +7,7 @@
 - Fix: [#25745] Crash when a player connection is aborted early.
 - Fix: [#25799] The animated options tab icon of the news window does not always redraw.
 - Fix: [#25850] Guests do not have their happiness penalised by low energy, low hunger, low thirst, high toilet. Ride nausea generation different compared to vanilla.
+- Fix: [#25854] When a guest is at 0 happiness or energy, the game draws too big of a bar in the guest stats window.
 
 0.4.30 (2026-01-04)
 ------------------------------------------------------------------------
