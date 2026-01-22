@@ -16,6 +16,7 @@
 #include "../../core/EnumUtils.hpp"
 #include "../../core/Numerics.hpp"
 #include "../../core/UTF8.h"
+#include "../../drawing/ColourMap.h"
 #include "../../drawing/Drawing.h"
 #include "../../drawing/ScrollingText.h"
 #include "../../interface/Viewport.h"
@@ -309,7 +310,7 @@ static void PaintLargeSceneryScrollingText(
     PROFILED_FUNCTION();
 
     auto textColour = isGhost ? static_cast<colour_t>(COLOUR_GREY) : tileElement.GetSecondaryColour();
-    auto textPaletteIndex = direction == 0 ? ColourMapA[textColour].mid_dark : ColourMapA[textColour].light;
+    auto textPaletteIndex = direction == 0 ? getColourMap(textColour).midDark : getColourMap(textColour).light;
 
     auto banner = tileElement.GetBanner();
     if (banner == nullptr)

@@ -2835,7 +2835,7 @@ static void SideFrictionRCTrackDiag25DegDownTo60DegDown(
 {
     SideFrictionRCTrackDiag60DegUpTo25DegUp(
         session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement, supportType);
-};
+}
 
 static void SideFrictionRCTrackDiag25DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
@@ -2907,7 +2907,7 @@ static void SideFrictionRCTrackDiag60DegDownTo25DegDown(
 {
     SideFrictionRCTrackDiag25DegUpTo60DegUp(
         session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement, supportType);
-};
+}
 
 TrackPaintFunction GetTrackPaintFunctionSideFrictionRC(TrackElemType trackType)
 {

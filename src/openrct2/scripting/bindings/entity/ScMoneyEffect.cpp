@@ -29,7 +29,7 @@ namespace OpenRCT2::Scripting
 
     MoneyEffect* ScMoneyEffect::GetMoneyEffect() const
     {
-        return OpenRCT2::getGameState().entities.GetEntity<MoneyEffect>(_id);
+        return getGameState().entities.GetEntity<MoneyEffect>(_id);
     }
 
     money64 ScMoneyEffect::value_get() const

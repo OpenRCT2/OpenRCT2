@@ -14,6 +14,7 @@
 #include <openrct2/SpriteIds.h>
 #include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/entity/EntityRegistry.h>
@@ -260,7 +261,7 @@ namespace OpenRCT2::Ui::Windows
             setWidgetPressed(WIDX_TAB_OPTIONS, page == optionsTab);
         }
 
-        void DrawTabImages(Drawing::RenderTarget& rt)
+        void DrawTabImages(RenderTarget& rt)
         {
             if (!isWidgetDisabled(WIDX_TAB_NEWS))
             {
@@ -308,7 +309,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onDraw(Drawing::RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             drawWidgets(rt);
             DrawTabImages(rt);
@@ -347,13 +348,8 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onUpdate() override
+        void onUpdateNews()
         {
-            currentFrame++;
-
-            if (page != newsTab)
-                return;
-
             if (_pressedNewsItemIndex == -1 || --_suspendUpdateTicks != 0)
             {
                 return;
@@ -389,6 +385,25 @@ namespace OpenRCT2::Ui::Windows
                 {
                     WindowScrollToLocation(*_mainWindow, subjectLoc.value());
                 }
+            }
+        }
+
+        void onUpdateOptions()
+        {
+            currentFrame++;
+            invalidateWidget(WIDX_TAB_OPTIONS);
+        }
+
+        void onUpdate() override
+        {
+            switch (page)
+            {
+                case newsTab:
+                    onUpdateNews();
+                    break;
+                case optionsTab:
+                    onUpdateOptions();
+                    break;
             }
         }
 
@@ -441,14 +456,14 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onScrollDraw(int32_t scrollIndex, Drawing::RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             int32_t lineHeight = FontGetLineHeight(FontStyle::small);
             int32_t itemHeight = CalculateNewsItemHeight();
             int32_t y = 0;
             int32_t i = 0;
 
-            const auto backgroundPaletteIndex = ColourMapA[colours[3].colour].light;
+            const auto backgroundPaletteIndex = getColourMap(colours[3].colour).light;
             // Fill the scrollbar gap if no scrollbar is visible
             const bool scrollbarVisible = scrolls[0].contentHeight > widgets[WIDX_SCROLL].height() - 1;
             const auto scrollbarFill = scrollbarVisible ? 0 : kScrollBarWidth;
@@ -487,7 +502,7 @@ namespace OpenRCT2::Ui::Windows
                         { COLOUR_BRIGHT_GREEN, FontStyle::small });
                 }
                 // Subject button
-                if ((newsItem.typeHasSubject()) && !(newsItem.hasButton()))
+                if (newsItem.typeHasSubject() && !newsItem.hasButton())
                 {
                     auto screenCoords = ScreenCoordsXY{ 328 + scrollbarFill, y + lineHeight + 4 };
 
@@ -569,7 +584,7 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 // Location button
-                if ((newsItem.typeHasLocation()) && !(newsItem.hasButton()))
+                if (newsItem.typeHasLocation() && !newsItem.hasButton())
                 {
                     auto screenCoords = ScreenCoordsXY{ 352 + scrollbarFill, y + lineHeight + 4 };
 

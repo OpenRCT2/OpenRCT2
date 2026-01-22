@@ -43,7 +43,7 @@ namespace OpenRCT2::Scenario
         count
     };
 
-    bool ObjectiveNeedsMoney(const ObjectiveType objective);
+    bool ObjectiveNeedsMoney(ObjectiveType objective);
 
     enum class ObjectiveStatus : uint8_t
     {

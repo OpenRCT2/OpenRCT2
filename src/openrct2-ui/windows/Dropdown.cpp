@@ -20,6 +20,7 @@
 #include <openrct2/SpriteIds.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/BitSet.hpp>
+#include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/interface/ColourWithFlags.h>
@@ -104,7 +105,7 @@ namespace OpenRCT2::Ui::Windows
             DrawTextEllipsised(rt, { screenCoords.x + 2, screenCoords.y + yOffset }, width - 7, format, ft, { colour });
         }
 
-        void onDraw(Drawing::RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             drawWidgets(rt);
 
@@ -134,9 +135,10 @@ namespace OpenRCT2::Ui::Windows
                     }
                     else
                     {
-                        Rectangle::fill(rt, { leftTop, rightBottom }, ColourMapA[colours[0].colour].mid_dark);
+                        Rectangle::fill(rt, { leftTop, rightBottom }, getColourMap(colours[0].colour).midDark);
                         Rectangle::fill(
-                            rt, { leftTop + shadowOffset, rightBottom + shadowOffset }, ColourMapA[colours[0].colour].lightest);
+                            rt, { leftTop + shadowOffset, rightBottom + shadowOffset },
+                            getColourMap(colours[0].colour).lightest);
                     }
                 }
                 else
@@ -451,7 +453,7 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowDropdownClose()
     {
-        auto* windowMgr = Ui::GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         windowMgr->CloseByClass(WindowClass::dropdown);
     }
 

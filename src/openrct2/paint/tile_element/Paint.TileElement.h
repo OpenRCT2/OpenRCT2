@@ -62,4 +62,4 @@ void PaintLargeScenery(
     PaintSession& session, uint8_t direction, uint16_t height, const OpenRCT2::LargeSceneryElement& tileElement);
 void PaintTrack(PaintSession& session, uint8_t direction, int32_t height, const OpenRCT2::TrackElement& tileElement);
 
-bool PaintShouldShowHeightMarkers(const PaintSession& session, const uint32_t viewportFlag);
+bool PaintShouldShowHeightMarkers(const PaintSession& session, uint32_t viewportFlag);

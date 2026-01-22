@@ -74,7 +74,7 @@ namespace OpenRCT2::Ui::Windows
 
                     // As the LoadSaveWindow::Select function can change the order of the
                     // windows we can't use WindowClose(w).
-                    auto* windowMgr = Ui::GetWindowManager();
+                    auto* windowMgr = GetWindowManager();
                     windowMgr->CloseByClass(WindowClass::loadsaveOverwritePrompt);
                     break;
                 }
@@ -103,7 +103,7 @@ namespace OpenRCT2::Ui::Windows
         const std::string_view name, const std::string_view path, LoadSaveAction action, LoadSaveType type,
         TrackDesign* trackDesignPtr)
     {
-        auto* windowMgr = Ui::GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         windowMgr->CloseByClass(WindowClass::loadsaveOverwritePrompt);
 
         return windowMgr->Create<OverwritePromptWindow>(

@@ -331,7 +331,7 @@ namespace OpenRCT2::RCT1
         money16 price;                                       // 0x0E8
         RCT12xy8 chairliftBullwheelLocation[2];              // 0x0EA
         uint8_t chairliftBullwheelZ[2];                      // 0x0EE
-        OpenRCT2::RideRating::Tuple ratings;                 // 0x0F0
+        RideRating::Tuple ratings;                           // 0x0F0
         money16 value;                                       // 0x0F6
         uint16_t chairliftBullwheelRotation;                 // 0x0F8
         uint8_t satisfaction;                                // 0x0FA
@@ -504,9 +504,9 @@ namespace OpenRCT2::RCT1
         uint8_t RideSubtype;     // 0xD6
         uint8_t ColoursExtended; // 0xD7
 
-        OpenRCT2::RCT12::TrackElemType GetTrackType() const
+        RCT12::TrackElemType GetTrackType() const
         {
-            return static_cast<OpenRCT2::RCT12::TrackElemType>(TrackTypeAndDirection >> 2);
+            return static_cast<RCT12::TrackElemType>(TrackTypeAndDirection >> 2);
         }
 
         uint8_t GetTrackDirection() const
@@ -1312,5 +1312,5 @@ namespace OpenRCT2::RCT1
         RCT1_PATH_SUPPORT_TYPE_BAMBOO,
     };
 
-    OpenRCT2::TrackElemType RCT1TrackTypeToOpenRCT2(OpenRCT2::RCT12::TrackElemType origTrackType, ride_type_t rideType);
+    TrackElemType RCT1TrackTypeToOpenRCT2(RCT12::TrackElemType origTrackType, ride_type_t rideType);
 } // namespace OpenRCT2::RCT1

@@ -438,7 +438,7 @@ static Gx _g2 = {};
 static Gx _fonts = {};
 static Gx _tracks = {};
 static Gx _csg = {};
-static G1Element _scrollingText[Drawing::ScrollingText::kMaxEntries]{};
+static G1Element _scrollingText[ScrollingText::kMaxEntries]{};
 static bool _csgLoaded = false;
 
 static G1Element _g1Temp = {};
@@ -672,7 +672,7 @@ std::optional<Gx> GfxLoadGx(const std::vector<uint8_t>& buffer)
 {
     try
     {
-        OpenRCT2::MemoryStream istream(buffer.data(), buffer.size());
+        MemoryStream istream(buffer.data(), buffer.size());
         Gx gx;
 
         gx.header = istream.ReadValue<G1Header>();
@@ -713,21 +713,22 @@ static std::optional<PaletteMap> FASTCALL GfxDrawSpriteGetPalette(ImageId imageI
         if (tertiaryPaletteMap.has_value())
         {
             paletteMap.Copy(
-                kPaletteOffsetRemapTertiary, tertiaryPaletteMap.value(), kPaletteOffsetRemapPrimary, kPaletteLengthRemap);
+                PaletteIndex::tertiaryRemap0, tertiaryPaletteMap.value(), PaletteIndex::primaryRemap0, kPaletteLengthRemap);
         }
     }
 
     auto primaryPaletteMap = GetPaletteMapForColour(static_cast<FilterPaletteID>(imageId.GetPrimary()));
     if (primaryPaletteMap.has_value())
     {
-        paletteMap.Copy(kPaletteOffsetRemapPrimary, primaryPaletteMap.value(), kPaletteOffsetRemapPrimary, kPaletteLengthRemap);
+        paletteMap.Copy(
+            PaletteIndex::primaryRemap0, primaryPaletteMap.value(), PaletteIndex::primaryRemap0, kPaletteLengthRemap);
     }
 
     auto secondaryPaletteMap = GetPaletteMapForColour(static_cast<FilterPaletteID>(imageId.GetSecondary()));
     if (secondaryPaletteMap.has_value())
     {
         paletteMap.Copy(
-            kPaletteOffsetRemapSecondary, secondaryPaletteMap.value(), kPaletteOffsetRemapPrimary, kPaletteLengthRemap);
+            PaletteIndex::secondaryRemap0, secondaryPaletteMap.value(), PaletteIndex::primaryRemap0, kPaletteLengthRemap);
     }
 
     return paletteMap;

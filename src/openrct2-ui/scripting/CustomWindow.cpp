@@ -584,7 +584,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_CLOSE:
                 {
-                    auto* windowMgr = Ui::GetWindowManager();
+                    auto* windowMgr = GetWindowManager();
                     windowMgr->Close(*this);
                     break;
                 }
@@ -1208,7 +1208,7 @@ namespace OpenRCT2::Ui::Windows
                 customWidgetInfo->Text = value;
                 w->widgets[widgetIndex].string = customWidgetInfo->Text.data();
 
-                auto* windowMgr = Ui::GetWindowManager();
+                auto* windowMgr = GetWindowManager();
                 windowMgr->InvalidateWidget(*w, widgetIndex);
             }
         }
@@ -1244,7 +1244,7 @@ namespace OpenRCT2::Ui::Windows
                     customWidgetInfo->Colour = colour;
                     widget.image = getColourButtonImage(colour);
 
-                    auto* windowMgr = Ui::GetWindowManager();
+                    auto* windowMgr = GetWindowManager();
                     windowMgr->InvalidateWidget(*w, widgetIndex);
 
                     std::vector<DukValue> args;
@@ -1290,7 +1290,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 customWidgetInfo->SelectedIndex = selectedIndex;
 
-                auto* windowMgr = Ui::GetWindowManager();
+                auto* windowMgr = GetWindowManager();
                 windowMgr->InvalidateWidget(*w, widgetIndex);
 
                 if (lastSelectedIndex != selectedIndex)
@@ -1497,7 +1497,7 @@ namespace OpenRCT2::Ui::Windows
 
         for (auto& window : customWindows)
         {
-            auto* windowMgr = Ui::GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             windowMgr->Close(*window);
         }
     }

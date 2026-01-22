@@ -36,6 +36,5 @@ namespace OpenRCT2::Drawing::ScrollingText
     void initialiseBitmaps();
     void invalidate();
     ImageId setup(
-        PaintSession& session, StringId stringId, OpenRCT2::Formatter& ft, uint16_t scroll, uint16_t scrollingMode,
-        PaletteIndex colour);
+        PaintSession& session, StringId stringId, Formatter& ft, uint16_t scroll, uint16_t scrollingMode, PaletteIndex colour);
 } // namespace OpenRCT2::Drawing::ScrollingText

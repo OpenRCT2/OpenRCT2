@@ -203,7 +203,7 @@ static_assert(std::size(kStationBaseTypeSpriteIndexes) == kStationBaseTypeCount)
 
 static bool TrackPaintUtilDrawStationImpl(
     PaintSession& session, const Ride& ride, Direction direction, uint16_t height, uint16_t coverHeight,
-    const TrackElement& trackElement, const StationBaseType baseType, const int32_t baseOffsetZ, int32_t fenceOffsetA,
+    const TrackElement& trackElement, StationBaseType baseType, int32_t baseOffsetZ, int32_t fenceOffsetA,
     int32_t fenceOffsetB);
 
 bool TrackPaintUtilDrawStation(

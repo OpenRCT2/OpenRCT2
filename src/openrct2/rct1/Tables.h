@@ -54,5 +54,5 @@ namespace OpenRCT2::RCT1
 
     const std::vector<const char*> GetSceneryObjects(uint8_t sceneryType);
 
-    bool VehicleTypeIsReversed(const VehicleType vehicleType);
+    bool VehicleTypeIsReversed(VehicleType vehicleType);
 } // namespace OpenRCT2::RCT1

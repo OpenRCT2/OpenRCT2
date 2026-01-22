@@ -130,7 +130,7 @@ namespace OpenRCT2::Ui::Windows
                     setPage(widgetIndex - WIDX_TAB_ABOUT_OPENRCT2);
                     break;
                 case WIDX_JOIN_DISCORD:
-                    OpenRCT2::GetContext()->GetUiContext().OpenURL("https://discord.gg/ZXZd8D8");
+                    GetContext()->GetUiContext().OpenURL("https://discord.gg/ZXZd8D8");
                     break;
                 case WIDX_CHANGELOG:
                     ContextOpenWindow(WindowClass::changelog);
@@ -139,7 +139,7 @@ namespace OpenRCT2::Ui::Windows
                     ContextOpenWindowView(WindowView::newVersionInfo);
                     break;
                 case WIDX_COPY_BUILD_INFO:
-                    OpenRCT2::GetContext()->GetUiContext().SetClipboardText(gVersionInfoFull);
+                    GetContext()->GetUiContext().SetClipboardText(gVersionInfoFull);
                     break;
                 case WIDX_CONTRIBUTORS_BUTTON:
                     ContextOpenWindowView(WindowView::contributors);
@@ -237,7 +237,7 @@ namespace OpenRCT2::Ui::Windows
             DrawTextWrapped(rt, centrePos, versionWidget.width() - 1, STR_STRING, ft, { colours[1], TextAlignment::centre });
 
             // Shows the update available button
-            if (OpenRCT2::GetContext()->HasNewVersionInfo())
+            if (GetContext()->HasNewVersionInfo())
             {
                 widgets[WIDX_NEW_VERSION].type = WidgetType::button;
             }

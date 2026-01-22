@@ -250,7 +250,7 @@ struct CoordsXY
     constexpr bool IsNull() const
     {
         return x == kCoordsNull;
-    };
+    }
 
     constexpr void SetNull()
     {
@@ -449,7 +449,7 @@ struct TileCoordsXY
     constexpr bool IsNull() const
     {
         return x == kCoordsNull;
-    };
+    }
 
     constexpr void SetNull()
     {

@@ -63,7 +63,7 @@ namespace OpenRCT2::Network
 
         const utf8* GetLastDisconnectReason() const noexcept;
         void SetLastDisconnectReason(std::string_view src);
-        void SetLastDisconnectReason(const StringId string_id, void* args = nullptr);
+        void SetLastDisconnectReason(StringId string_id, void* args = nullptr);
 
     private:
         std::vector<uint8_t> _inboundBuffer;

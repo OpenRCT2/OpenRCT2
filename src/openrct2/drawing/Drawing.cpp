@@ -62,7 +62,7 @@ PaletteIndex PaletteMap::Blend(PaletteIndex src, PaletteIndex dst) const
 {
 #ifdef _DEBUG
     // src = 0 would be transparent so there is no blend palette for that, hence (src - 1)
-    assert(src != PaletteIndex::pi0 && (EnumValue(src) - 1) < _numMaps);
+    assert(src != PaletteIndex::transparent && (EnumValue(src) - 1) < _numMaps);
     assert(EnumValue(dst) < _mapLength);
 #endif
     auto idx = ((EnumValue(src) - 1) * 256) + EnumValue(dst);
@@ -79,8 +79,8 @@ void PaletteMap::Copy(PaletteIndex dstIndex, const PaletteMap& src, PaletteIndex
     std::copy(src._data.begin() + srcOffset, src._data.begin() + srcOffset + copyLength, _data.begin() + dstOffset);
 }
 
-OpenRCT2::Drawing::GamePalette gPalette;
-OpenRCT2::Drawing::GamePalette gGamePalette;
+GamePalette gPalette;
+GamePalette gGamePalette;
 uint32_t gPaletteEffectFrame;
 
 ImageId gPickupPeepImage;
@@ -88,10 +88,10 @@ int32_t gPickupPeepX;
 int32_t gPickupPeepY;
 
 // Originally 0x9ABE04
-OpenRCT2::Drawing::TextColours gTextPalette = {
-    PaletteIndex::pi0,
-    PaletteIndex::pi0,
-    PaletteIndex::pi0,
+TextColours gTextPalette = {
+    PaletteIndex::transparent,
+    PaletteIndex::transparent,
+    PaletteIndex::transparent,
 };
 
 bool gPaintForceRedraw{ false };
@@ -712,9 +712,9 @@ void GfxTransposePalette(ImageIndex pal, uint8_t product)
         auto& dst = gGamePalette[index];
         // Make sure the image never gets darker than the void colour (not-quite-black), to avoid the background colour
         // jumping between void and 100% black.
-        dst.Blue = std::max<uint8_t>(35, ((src->blue * product) >> 8));
-        dst.Green = std::max<uint8_t>(35, ((src->green * product) >> 8));
-        dst.Red = std::max<uint8_t>(23, ((src->red * product) >> 8));
+        dst.blue = std::max<uint8_t>(35, ((src->blue * product) >> 8));
+        dst.green = std::max<uint8_t>(35, ((src->green * product) >> 8));
+        dst.red = std::max<uint8_t>(23, ((src->red * product) >> 8));
         src++;
 
         index++;
@@ -738,8 +738,8 @@ void LoadPalette()
     auto water_type = OpenRCT2::ObjectManager::GetObjectEntry<WaterObjectEntry>(0);
     if (water_type != nullptr)
     {
-        Guard::Assert(water_type->image_id != kImageIndexUndefined, "Failed to load water palette");
-        palette = water_type->image_id;
+        Guard::Assert(water_type->mainPalette != kImageIndexUndefined, "Failed to load water palette");
+        palette = water_type->mainPalette;
     }
 
     const auto* g1 = GfxGetG1Palette(palette);
@@ -750,9 +750,9 @@ void LoadPalette()
         for (auto numColours = g1->numColours; numColours > 0; numColours--)
         {
             auto& dst = gGamePalette[index];
-            dst.Blue = src->blue;
-            dst.Green = src->green;
-            dst.Red = src->red;
+            dst.blue = src->blue;
+            dst.green = src->green;
+            dst.red = src->red;
             src++;
             index++;
         }
@@ -882,14 +882,14 @@ FilterPaletteID GetGlassPaletteId(colour_t c)
     return kGlassPaletteIds[c];
 }
 
-void UpdatePalette(std::span<const OpenRCT2::Drawing::PaletteBGRA> palette, PaletteIndex startIndex, int32_t numColours)
+void UpdatePalette(std::span<const BGRAColour> palette, PaletteIndex startIndex, int32_t numColours)
 {
     for (int32_t i = EnumValue(startIndex); i < numColours + EnumValue(startIndex); i++)
     {
         const auto& colour = palette[i];
-        uint8_t b = colour.Blue;
-        uint8_t g = colour.Green;
-        uint8_t r = colour.Red;
+        uint8_t b = colour.blue;
+        uint8_t g = colour.green;
+        uint8_t r = colour.red;
 
         if (LightFx::IsAvailable())
         {
@@ -906,17 +906,17 @@ void UpdatePalette(std::span<const OpenRCT2::Drawing::PaletteBGRA> palette, Pale
             }
         }
 
-        gPalette[i].Blue = b;
-        gPalette[i].Green = g;
-        gPalette[i].Red = r;
-        gPalette[i].Alpha = 0;
+        gPalette[i].blue = b;
+        gPalette[i].green = g;
+        gPalette[i].red = r;
+        gPalette[i].alpha = 0;
     }
 
     // Fix #1749 and #6535: rainbow path, donut shop and pause button contain black spots that should be white.
-    gPalette[255].Blue = 255;
-    gPalette[255].Green = 255;
-    gPalette[255].Red = 255;
-    gPalette[255].Alpha = 0;
+    gPalette[255].blue = 255;
+    gPalette[255].green = 255;
+    gPalette[255].red = 255;
+    gPalette[255].alpha = 0;
 
     if (!gOpenRCT2Headless)
     {
@@ -953,7 +953,7 @@ void UpdatePaletteEffects()
 
         if (water_type != nullptr)
         {
-            palette = water_type->image_id;
+            palette = water_type->mainPalette;
         }
         const auto* g1 = GfxGetG1Palette(palette);
         if (g1 != nullptr)
@@ -964,9 +964,9 @@ void UpdatePaletteEffects()
             {
                 auto& paletteOffset = gGamePalette[startIndex + i];
                 const auto& g1PaletteEntry = g1->palette[i];
-                paletteOffset.Blue = -((0xFF - g1PaletteEntry.blue) / 2) - 1;
-                paletteOffset.Green = -((0xFF - g1PaletteEntry.green) / 2) - 1;
-                paletteOffset.Red = -((0xFF - g1PaletteEntry.red) / 2) - 1;
+                paletteOffset.blue = -((0xFF - g1PaletteEntry.blue) / 2) - 1;
+                paletteOffset.green = -((0xFF - g1PaletteEntry.green) / 2) - 1;
+                paletteOffset.red = -((0xFF - g1PaletteEntry.red) / 2) - 1;
             }
 
             UpdatePalette(gGamePalette, kPaletteOffsetDynamic, kPaletteLengthDynamic);
@@ -982,7 +982,7 @@ void UpdatePaletteEffects()
 
             if (water_type != nullptr)
             {
-                palette = water_type->image_id;
+                palette = water_type->mainPalette;
             }
 
             const auto* g1 = GfxGetG1Palette(palette);
@@ -994,9 +994,9 @@ void UpdatePaletteEffects()
                 {
                     auto& paletteOffset = gGamePalette[startIndex + i];
                     const auto& g1PaletteEntry = g1->palette[i];
-                    paletteOffset.Blue = g1PaletteEntry.blue;
-                    paletteOffset.Green = g1PaletteEntry.green;
-                    paletteOffset.Red = g1PaletteEntry.red;
+                    paletteOffset.blue = g1PaletteEntry.blue;
+                    paletteOffset.green = g1PaletteEntry.green;
+                    paletteOffset.red = g1PaletteEntry.red;
                 }
             }
         }
@@ -1020,7 +1020,7 @@ void UpdatePaletteEffects()
         uint32_t waterId = SPR_GAME_PALETTE_WATER;
         if (water_type != nullptr)
         {
-            waterId = water_type->palette_index_1;
+            waterId = water_type->waterWavesPalette;
         }
         const auto* g1 = GfxGetG1Palette(shade + waterId);
         if (g1 != nullptr)
@@ -1029,10 +1029,10 @@ void UpdatePaletteEffects()
             int32_t n = kPaletteLengthWaterWaves;
             for (int32_t i = 0; i < n; i++)
             {
-                auto& vd = gGamePalette[EnumValue(kPaletteOffsetWaterWaves) + i];
-                vd.Blue = g1PaletteEntry->blue;
-                vd.Green = g1PaletteEntry->green;
-                vd.Red = g1PaletteEntry->red;
+                auto& vd = gGamePalette[EnumValue(PaletteIndex::waterWaves0) + i];
+                vd.blue = g1PaletteEntry->blue;
+                vd.green = g1PaletteEntry->green;
+                vd.red = g1PaletteEntry->red;
                 g1PaletteEntry += 3;
                 if (g1PaletteEntry >= &g1->palette[3 * n])
                 {
@@ -1044,7 +1044,7 @@ void UpdatePaletteEffects()
         waterId = SPR_GAME_PALETTE_3;
         if (water_type != nullptr)
         {
-            waterId = water_type->palette_index_2;
+            waterId = water_type->waterSparklesPalette;
         }
 
         g1 = GfxGetG1Palette(shade + waterId);
@@ -1054,10 +1054,10 @@ void UpdatePaletteEffects()
             int32_t n = kPaletteLengthWaterSparkles;
             for (int32_t i = 0; i < n; i++)
             {
-                auto& vd = gGamePalette[EnumValue(kPaletteOffsetWaterSparkles) + i];
-                vd.Blue = src->blue;
-                vd.Green = src->green;
-                vd.Red = src->red;
+                auto& vd = gGamePalette[EnumValue(PaletteIndex::waterSparkles0) + i];
+                vd.blue = src->blue;
+                vd.green = src->green;
+                vd.red = src->red;
                 src += 3;
                 if (src >= &g1->palette[3 * n])
                 {
@@ -1075,10 +1075,10 @@ void UpdatePaletteEffects()
             const int32_t n = 3;
             for (int32_t i = 0; i < n; i++)
             {
-                auto& vd = gGamePalette[EnumValue(PaletteIndex::pi243) + i];
-                vd.Blue = src->blue;
-                vd.Green = src->green;
-                vd.Red = src->red;
+                auto& vd = gGamePalette[EnumValue(PaletteIndex::primaryRemap0) + i];
+                vd.blue = src->blue;
+                vd.green = src->green;
+                vd.red = src->red;
                 src++;
                 if (src >= &g1->palette[3])
                 {

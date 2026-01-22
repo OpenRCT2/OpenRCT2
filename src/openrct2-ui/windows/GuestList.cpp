@@ -17,6 +17,7 @@
 #include <openrct2/SpriteIds.h>
 #include <openrct2/core/Numerics.hpp>
 #include <openrct2/core/String.hpp>
+#include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/entity/EntityList.h>
@@ -427,7 +428,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onDraw(Drawing::RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             drawWidgets(rt);
             DrawTabImages(rt);
@@ -573,10 +574,11 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onScrollDraw(int32_t scrollIndex, Drawing::RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             Rectangle::fill(
-                rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } }, ColourMapA[colours[1].colour].mid_light);
+                rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } },
+                getColourMap(colours[1].colour).midLight);
             switch (_selectedTab)
             {
                 case TabId::Individual:
@@ -618,7 +620,7 @@ namespace OpenRCT2::Ui::Windows
 
                     Formatter ft;
                     peep->FormatNameTo(ft);
-                    OpenRCT2::FormatStringLegacy(item.Name, sizeof(item.Name), STR_STRINGID, ft.Data());
+                    FormatStringLegacy(item.Name, sizeof(item.Name), STR_STRINGID, ft.Data());
                 }
 
                 std::sort(_guestList.begin(), _guestList.end(), GetGuestCompareFunc());
@@ -626,7 +628,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
     private:
-        void DrawTabImages(Drawing::RenderTarget& rt)
+        void DrawTabImages(RenderTarget& rt)
         {
             // Tab 1 image
             auto i = (_selectedTab == TabId::Individual ? _tabAnimationIndex & ~3 : 0);
@@ -643,7 +645,7 @@ namespace OpenRCT2::Ui::Windows
                 windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_2].left, widgets[WIDX_TAB_2].top });
         }
 
-        void DrawScrollIndividual(Drawing::RenderTarget& rt)
+        void DrawScrollIndividual(RenderTarget& rt)
         {
             size_t index = 0;
             auto y = static_cast<int32_t>(_selectedPage) * -kGuestPageHeight;
@@ -710,7 +712,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawScrollSummarised(Drawing::RenderTarget& rt)
+        void DrawScrollSummarised(RenderTarget& rt)
         {
             size_t index = 0;
             auto y = 0;
@@ -773,7 +775,7 @@ namespace OpenRCT2::Ui::Windows
 
                 Formatter ft;
                 peep.FormatNameTo(ft);
-                OpenRCT2::FormatStringLegacy(name, sizeof(name), STR_STRINGID, ft.Data());
+                FormatStringLegacy(name, sizeof(name), STR_STRINGID, ft.Data());
                 if (!String::contains(name, _filterName.c_str(), true))
                 {
                     return false;

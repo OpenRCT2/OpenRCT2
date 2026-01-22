@@ -63,7 +63,7 @@ extern uint8_t gMapSelectArrowDirection;
 
 MapRange getMapSelectRange();
 void setMapSelectRange(const MapRange& range);
-void setMapSelectRange(const CoordsXY coords);
+void setMapSelectRange(CoordsXY coords);
 
 namespace OpenRCT2::MapSelection
 {

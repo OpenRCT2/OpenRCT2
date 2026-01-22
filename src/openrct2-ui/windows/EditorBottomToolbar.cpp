@@ -126,7 +126,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onDraw(Drawing::RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             auto drawPreviousButton = widgets[WIDX_PREVIOUS_STEP_BUTTON].type != WidgetType::empty;
             auto drawNextButton = widgets[WIDX_NEXT_STEP_BUTTON].type != WidgetType::empty;
@@ -164,7 +164,7 @@ namespace OpenRCT2::Ui::Windows
     private:
         void JumpBackToObjectSelection() const
         {
-            auto* windowMgr = Ui::GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             windowMgr->CloseAll();
 
             getGameState().editorStep = EditorStep::ObjectSelection;
@@ -173,7 +173,7 @@ namespace OpenRCT2::Ui::Windows
 
         void JumpBackToLandscapeEditor() const
         {
-            auto* windowMgr = Ui::GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             windowMgr->CloseAll();
 
             SetAllSceneryItemsInvented();
@@ -185,7 +185,7 @@ namespace OpenRCT2::Ui::Windows
 
         void JumpBackToInventionListSetUp() const
         {
-            auto* windowMgr = Ui::GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             windowMgr->CloseAll();
 
             ContextOpenWindow(WindowClass::editorInventionList);
@@ -195,7 +195,7 @@ namespace OpenRCT2::Ui::Windows
 
         void JumpBackToObjectiveSelection() const
         {
-            auto* windowMgr = Ui::GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             windowMgr->CloseAll();
 
             ContextOpenWindow(WindowClass::editorScenarioOptions);
@@ -205,7 +205,7 @@ namespace OpenRCT2::Ui::Windows
 
         void JumpBackToOptionsSelection() const
         {
-            auto* windowMgr = Ui::GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             windowMgr->CloseAll();
 
             ContextOpenWindow(WindowClass::editorScenarioOptions);
@@ -218,7 +218,7 @@ namespace OpenRCT2::Ui::Windows
             if (!EditorObjectSelectionWindowCheck())
                 return;
 
-            auto* windowMgr = Ui::GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             windowMgr->CloseByClass(WindowClass::editorObjectSelection);
 
             FinishObjectSelection();
@@ -238,7 +238,7 @@ namespace OpenRCT2::Ui::Windows
             auto [checksPassed, errorString] = Editor::CheckPark();
             if (checksPassed)
             {
-                auto* windowMgr = Ui::GetWindowManager();
+                auto* windowMgr = GetWindowManager();
                 windowMgr->CloseAll();
                 ContextOpenWindow(WindowClass::editorInventionList);
                 getGameState().editorStep = EditorStep::InventionsListSetUp;
@@ -253,7 +253,7 @@ namespace OpenRCT2::Ui::Windows
 
         void JumpForwardToObjectiveSelection() const
         {
-            auto* windowMgr = Ui::GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             windowMgr->CloseAll();
 
             ContextOpenWindow(WindowClass::editorScenarioOptions);
@@ -263,7 +263,7 @@ namespace OpenRCT2::Ui::Windows
 
         void JumpForwardToOptionsSelection() const
         {
-            auto* windowMgr = Ui::GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             windowMgr->CloseAll();
 
             ContextOpenWindow(WindowClass::editorScenarioOptions);
@@ -273,7 +273,7 @@ namespace OpenRCT2::Ui::Windows
 
         void JumpForwardToScenarioDetails() const
         {
-            auto* windowMgr = Ui::GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             windowMgr->CloseAll();
 
             ContextOpenWindow(WindowClass::editorScenarioOptions);
@@ -312,7 +312,7 @@ namespace OpenRCT2::Ui::Windows
             scriptEngine.ClearParkStorage();
 #endif
 
-            auto* windowMgr = Ui::GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             windowMgr->CloseAll();
 
             auto intent = Intent(WindowClass::loadsave);
@@ -335,7 +335,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_NEXT_IMAGE].type = WidgetType::empty;
         }
 
-        void DrawLeftButtonBack(Drawing::RenderTarget& rt)
+        void DrawLeftButtonBack(RenderTarget& rt)
         {
             const auto& previousWidget = widgets[WIDX_PREVIOUS_IMAGE];
             auto leftTop = windowPos + ScreenCoordsXY{ previousWidget.left, previousWidget.top };
@@ -343,7 +343,7 @@ namespace OpenRCT2::Ui::Windows
             Rectangle::filter(rt, { leftTop, rightBottom }, FilterPaletteID::palette51);
         }
 
-        void DrawLeftButton(Drawing::RenderTarget& rt)
+        void DrawLeftButton(RenderTarget& rt)
         {
             const auto topLeft = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_PREVIOUS_IMAGE].left + 1, widgets[WIDX_PREVIOUS_IMAGE].top + 1 };
@@ -375,7 +375,7 @@ namespace OpenRCT2::Ui::Windows
             DrawTextBasic(rt, { textX, textY + 10 }, stringId, {}, { textColour, TextAlignment::centre });
         }
 
-        void DrawRightButtonBack(Drawing::RenderTarget& rt)
+        void DrawRightButtonBack(RenderTarget& rt)
         {
             auto nextWidget = widgets[WIDX_NEXT_IMAGE];
             auto leftTop = windowPos + ScreenCoordsXY{ nextWidget.left, nextWidget.top };
@@ -383,7 +383,7 @@ namespace OpenRCT2::Ui::Windows
             Rectangle::filter(rt, { leftTop, rightBottom }, FilterPaletteID::palette51);
         }
 
-        void DrawRightButton(Drawing::RenderTarget& rt)
+        void DrawRightButton(RenderTarget& rt)
         {
             const auto topLeft = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_NEXT_IMAGE].left + 1, widgets[WIDX_NEXT_IMAGE].top + 1 };
@@ -416,7 +416,7 @@ namespace OpenRCT2::Ui::Windows
             DrawTextBasic(rt, { textX, textY + 10 }, stringId, {}, { textColour, TextAlignment::centre });
         }
 
-        void DrawStepText(Drawing::RenderTarget& rt)
+        void DrawStepText(RenderTarget& rt)
         {
             int16_t stateX = (widgets[WIDX_PREVIOUS_IMAGE].right + widgets[WIDX_NEXT_IMAGE].left) / 2 + windowPos.x;
             int16_t stateY = height - 0x0C + windowPos.y;

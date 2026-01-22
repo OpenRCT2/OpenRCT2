@@ -54,10 +54,10 @@ namespace OpenRCT2::Ui::FileBrowser
     void SetAndSaveConfigPath(u8string& config_str, u8string_view path);
     bool IsValidPath(const char* path);
     u8string GetLastDirectoryByType(LoadSaveType type);
-    u8string GetInitialDirectoryByType(const LoadSaveType type);
-    const char* GetFilterPatternByType(const LoadSaveType type, const bool isSave);
+    u8string GetInitialDirectoryByType(LoadSaveType type);
+    const char* GetFilterPatternByType(LoadSaveType type, bool isSave);
     u8string RemovePatternWildcard(u8string_view pattern);
-    u8string GetDir(const LoadSaveType type);
+    u8string GetDir(LoadSaveType type);
     void RegisterCallback(LoadSaveCallback callback);
     void InvokeCallback(ModalResult result, const utf8* path);
     void Select(const char* path, LoadSaveAction action, LoadSaveType type, TrackDesign* trackDesignPtr);

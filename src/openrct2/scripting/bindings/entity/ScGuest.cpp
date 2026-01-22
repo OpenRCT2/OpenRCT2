@@ -195,7 +195,7 @@ namespace OpenRCT2::Scripting
 
     Guest* ScGuest::GetGuest() const
     {
-        return OpenRCT2::getGameState().entities.GetEntity<Guest>(_id);
+        return getGameState().entities.GetEntity<Guest>(_id);
     }
 
     uint8_t ScGuest::tshirtColour_get() const
@@ -573,7 +573,7 @@ namespace OpenRCT2::Scripting
                 }
 
                 // GuestItem
-                auto obj = OpenRCT2::Scripting::DukObject(ctx);
+                auto obj = DukObject(ctx);
                 obj.Set("type", itemEnumPair.first);
 
                 if (shopItem == ShopItem::voucher)

@@ -126,9 +126,7 @@ int32_t LargeSceneryText::MeasureHeight(std::string_view text) const
 
 void SceneryUpdateTile(const CoordsXY& sceneryPos)
 {
-    TileElement* tileElement;
-
-    tileElement = MapGetFirstElementAt(sceneryPos);
+    TileElement* tileElement = MapGetFirstElementAt(sceneryPos);
     if (tileElement == nullptr)
         return;
     do

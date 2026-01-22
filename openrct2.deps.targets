@@ -224,8 +224,8 @@
     <OpenSFXSha256>06b90f3e19c216752df441d551b26a9e3e1ba7755bdd2102504b73bf993608be</OpenSFXSha256>
     <OpenMSXUrl>https://github.com/OpenRCT2/OpenMusic/releases/download/v1.6.1/openmusic.zip</OpenMSXUrl>
     <OpenMSXSha256>994b350d3b180ee1cb9619fe27f7ebae3a1a5232840c4bd47a89f33fa89de1a1</OpenMSXSha256>
-    <ReplaysUrl>https://github.com/OpenRCT2/replays/releases/download/v0.0.91/replays.zip</ReplaysUrl>
-    <ReplaysSha256>5b99edc3d8445fcd2cb22c204708247f575d0bdd3128561322e3abf01e977c79</ReplaysSha256>
+    <ReplaysUrl>https://github.com/OpenRCT2/replays/releases/download/v0.0.92/replays.zip</ReplaysUrl>
+    <ReplaysSha256>455a19172a8df81b935a942bbbda20167b4740b34653fdb74127740686bf4cbe</ReplaysSha256>
   </PropertyGroup>
 
   <!-- Unified Dependency Target -->

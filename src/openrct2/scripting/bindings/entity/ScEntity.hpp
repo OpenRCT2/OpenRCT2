@@ -192,7 +192,7 @@ namespace OpenRCT2::Scripting
 
         EntityBase* GetEntity() const
         {
-            return OpenRCT2::getGameState().entities.GetEntity(_id);
+            return getGameState().entities.GetEntity(_id);
         }
 
     public:

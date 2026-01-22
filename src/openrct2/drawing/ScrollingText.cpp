@@ -19,6 +19,7 @@
 #include "../localisation/Formatting.h"
 #include "../localisation/LocalisationService.h"
 #include "../paint/Paint.h"
+#include "BlendColourMap.h"
 #include "Drawing.h"
 #include "TTF.h"
 
@@ -78,7 +79,7 @@ namespace OpenRCT2::Drawing::ScrollingText
                 _characterBitmaps[i][x] = val;
             }
         }
-    };
+    }
 
     static void initialiseScrollingText()
     {
@@ -1464,7 +1465,7 @@ static constexpr const int16_t* kScrollPositions[kMaxModes] = {
 
         const int16_t* scrollingModePositions = kScrollPositions[scrollingMode];
 
-        std::fill_n(scrollText->bitmap, 320 * 8, PaletteIndex::pi0);
+        std::fill_n(scrollText->bitmap, 320 * 8, PaletteIndex::transparent);
         if (LocalisationService_UseTrueTypeFont())
         {
             setBitmapForTTF(scrollString, scroll, scrollText->bitmap, scrollingModePositions, colour);

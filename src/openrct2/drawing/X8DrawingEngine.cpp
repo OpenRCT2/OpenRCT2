@@ -18,6 +18,7 @@
 #include "../interface/Window.h"
 #include "../scenes/intro/IntroScene.h"
 #include "../ui/UiContext.h"
+#include "BlendColourMap.h"
 #include "Drawing.String.h"
 #include "Drawing.h"
 #include "IDrawingContext.h"
@@ -119,7 +120,7 @@ void X8WeatherDrawer::Restore(RenderTarget& rt)
     #pragma GCC diagnostic ignored "-Wsuggest-final-methods"
 #endif
 
-X8DrawingEngine::X8DrawingEngine([[maybe_unused]] Ui::IUiContext& uiContext)
+X8DrawingEngine::X8DrawingEngine([[maybe_unused]] IUiContext& uiContext)
 {
     _drawingContext = new X8DrawingContext(this);
     _mainRT.DrawingEngine = this;
@@ -565,7 +566,7 @@ void X8DrawingContext::DrawSpriteSolid(RenderTarget& rt, const ImageId image, in
 
     PaletteIndex palette[256];
     std::fill_n(palette, sizeof(palette), colour);
-    palette[0] = PaletteIndex::pi0;
+    palette[0] = PaletteIndex::transparent;
 
     const auto spriteCoords = ScreenCoordsXY{ x, y };
     GfxDrawSpritePaletteSetSoftware(rt, ImageId(image.GetIndex(), 0), spriteCoords, PaletteMap(palette));

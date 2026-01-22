@@ -944,7 +944,7 @@ bool Staff::DoPathFinding()
 
         default:
             assert(false);
-            return 0;
+            return false;
     }
 }
 
@@ -2458,7 +2458,7 @@ bool Staff::UpdateFixingFixStationBrakes(bool firstRun, Ride& ride)
     if (AnimationFrameNum == 0x13 || AnimationFrameNum == 0x19 || AnimationFrameNum == 0x1F || AnimationFrameNum == 0x25
         || AnimationFrameNum == 0x2B)
     {
-        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::mechanicFix, GetLocation());
+        Audio::Play3D(Audio::SoundId::mechanicFix, GetLocation());
     }
 
     return false;

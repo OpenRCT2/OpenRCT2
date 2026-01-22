@@ -20,7 +20,7 @@ namespace OpenRCT2
 #ifndef DISABLE_NETWORK
     static exitcode_t HandleUriJoin(const std::vector<std::string_view>& args);
     static bool TryParseHostnamePort(
-        const std::string_view hostnamePort, std::string* outHostname, int32_t* outPort, int32_t defaultPort);
+        std::string_view hostnamePort, std::string* outHostname, int32_t* outPort, int32_t defaultPort);
 #endif
 
     exitcode_t CommandLine::HandleCommandUri(CommandLineArgEnumerator* enumerator)

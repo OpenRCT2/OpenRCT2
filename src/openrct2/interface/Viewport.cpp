@@ -117,9 +117,9 @@ namespace OpenRCT2
         return std::visit(
             [](auto&& arg) {
                 using T = std::decay_t<decltype(arg)>;
-                if constexpr (std::is_same_v<T, Focus::CoordinateFocus>)
+                if constexpr (std::is_same_v<T, CoordinateFocus>)
                     return arg;
-                else if constexpr (std::is_same_v<T, Focus::EntityFocus>)
+                else if constexpr (std::is_same_v<T, EntityFocus>)
                 {
                     auto* centreEntity = getGameState().entities.GetEntity(arg);
                     if (centreEntity != nullptr)
@@ -855,7 +855,7 @@ namespace OpenRCT2
             PaletteIndex colour = PaletteIndex::pi10;
             if (session.ViewFlags & VIEWPORT_FLAG_HIDE_ENTITIES)
             {
-                colour = PaletteIndex::pi0;
+                colour = PaletteIndex::transparent;
             }
             GfxClear(session.rt, colour);
         }
@@ -1504,7 +1504,7 @@ namespace OpenRCT2
 
         if (imageType & IMAGE_TYPE_REMAP)
         {
-            return paletteMap[*index] != PaletteIndex::pi0;
+            return paletteMap[*index] != PaletteIndex::transparent;
         }
 
         if (imageType & IMAGE_TYPE_TRANSPARENT)

@@ -461,7 +461,7 @@ void PeepWindowStateUpdate(Peep* peep);
 void PeepDecrementNumRiders(Peep* peep);
 
 void PeepSetMapTooltip(Peep* peep);
-int32_t PeepCompare(const EntityId sprite_index_a, const EntityId sprite_index_b);
+int32_t PeepCompare(EntityId sprite_index_a, EntityId sprite_index_b);
 
 void PeepUpdateNames();
 

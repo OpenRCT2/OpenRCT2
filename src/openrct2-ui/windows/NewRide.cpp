@@ -21,6 +21,7 @@
 #include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/String.hpp>
+#include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/localisation/Formatter.h>
@@ -424,14 +425,14 @@ namespace OpenRCT2::Ui::Windows
                 WindowResearchDevelopmentPrepareDraw(this, WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP);
             }
 
-            const auto& ls = OpenRCT2::GetContext()->GetLocalisationService();
+            const auto& ls = GetContext()->GetLocalisationService();
             auto string = ls.GetString(STR_GROUP_BY_TRACK_TYPE);
             auto strWidth = GfxGetStringWidth(string, FontStyle::medium);
             auto localizedGroupByTrackTypeWidth = strWidth + 14;
             widgets[WIDX_GROUP_BY_TRACK_TYPE].left = width - 8 - localizedGroupByTrackTypeWidth;
         }
 
-        void onDraw(Drawing::RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             drawWidgets(rt);
             DrawTabImages(rt);
@@ -484,19 +485,19 @@ namespace OpenRCT2::Ui::Windows
 
             _newRideVars.SelectedRide = item;
 
-            OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::click1, 0, windowPos.x + (width / 2));
+            Audio::Play(Audio::SoundId::click1, 0, windowPos.x + (width / 2));
             _newRideVars.SelectedRideCountdown = 8;
             invalidate();
         }
 
-        void onScrollDraw(int32_t scrollIndex, Drawing::RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             if (_currentTab == RESEARCH_TAB)
             {
                 return;
             }
 
-            GfxClear(rt, ColourMapA[colours[1].colour].mid_light);
+            GfxClear(rt, getColourMap(colours[1].colour).midLight);
 
             ScreenCoordsXY coords{ 1, 1 };
             RideSelection* listItem = _windowNewRideListItems;
@@ -584,7 +585,7 @@ namespace OpenRCT2::Ui::Windows
 
             close();
 
-            auto* windowMgr = Ui::GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             windowMgr->CloseConstructionWindows();
 
             auto count = GetNumTrackDesigns(item);
@@ -618,7 +619,7 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            auto repo = OpenRCT2::GetContext()->GetTrackDesignRepository();
+            auto repo = GetContext()->GetTrackDesignRepository();
             _lastTrackDesignCount = static_cast<int32_t>(repo->GetCountForObjectEntry(item.Type, entryName));
             _lastTrackDesignCountRideType = item;
             return _lastTrackDesignCount;
@@ -632,7 +633,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+            auto& objManager = GetContext()->GetObjectManager();
             auto& rideEntries = objManager.GetAllRideEntries(rideType);
             auto isFirst = true;
             for (auto rideEntryIndex : rideEntries)
@@ -661,7 +662,7 @@ namespace OpenRCT2::Ui::Windows
 
         ImageIndex GetRideImage(RideSelection rideSelection)
         {
-            auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
+            auto& objMgr = GetContext()->GetObjectManager();
             auto obj = objMgr.GetLoadedObject<RideObject>(rideSelection.EntryIndex);
             return obj == nullptr ? kImageIndexUndefined : obj->GetPreviewImage(rideSelection.Type);
         }
@@ -697,7 +698,7 @@ namespace OpenRCT2::Ui::Windows
             uint8_t highestVehiclePriority = 0;
 
             // For each ride entry for this ride type
-            auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+            auto& objManager = GetContext()->GetObjectManager();
             auto& rideEntries = objManager.GetAllRideEntries(rideType);
             for (auto rideEntryIndex : rideEntries)
             {
@@ -706,7 +707,7 @@ namespace OpenRCT2::Ui::Windows
                     continue;
 
                 // Ride entries
-                auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
+                auto& objMgr = GetContext()->GetObjectManager();
                 auto* rideObj = objMgr.GetLoadedObject<RideObject>(rideEntryIndex);
 
                 // Skip if the vehicle isn't the preferred vehicle for this generic track type
@@ -942,10 +943,9 @@ namespace OpenRCT2::Ui::Windows
             widgetScrollUpdateThumbs(*this, WIDX_RIDE_LIST);
         }
 
-        void DrawRideInformation(
-            Drawing::RenderTarget& rt, RideSelection item, const ScreenCoordsXY& screenPos, int32_t textWidth)
+        void DrawRideInformation(RenderTarget& rt, RideSelection item, const ScreenCoordsXY& screenPos, int32_t textWidth)
         {
-            auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
+            auto& objMgr = GetContext()->GetObjectManager();
             const auto* rideObj = objMgr.GetLoadedObject<RideObject>(item.EntryIndex);
             const auto& rideEntry = rideObj->GetEntry();
             RideNaming rideNaming = GetRideNaming(item.Type, &rideEntry);
@@ -1029,7 +1029,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawTabImage(Drawing::RenderTarget& rt, NewRideTabId tab, int32_t spriteIndex)
+        void DrawTabImage(RenderTarget& rt, NewRideTabId tab, int32_t spriteIndex)
         {
             WidgetIndex widgetIndex = WIDX_TAB_1 + static_cast<int32_t>(tab);
 
@@ -1047,7 +1047,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawTabImages(Drawing::RenderTarget& rt)
+        void DrawTabImages(RenderTarget& rt)
         {
             DrawTabImage(rt, TRANSPORT_TAB, SPR_TAB_RIDES_TRANSPORT_0);
             DrawTabImage(rt, GENTLE_TAB, SPR_TAB_RIDES_GENTLE_0);
@@ -1099,7 +1099,7 @@ namespace OpenRCT2::Ui::Windows
      */
     WindowBase* NewRideOpen()
     {
-        auto* windowMgr = Ui::GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         auto* window = windowMgr->BringToFrontByClass(WindowClass::constructRide);
         if (window)
         {

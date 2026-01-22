@@ -274,7 +274,7 @@ static TrackDesignSceneryElement TrackDesignSaveCreateLargeSceneryDesc(
 static TrackDesignAddStatus TrackDesignSaveAddLargeScenery(const CoordsXY& loc, LargeSceneryElement* tileElement)
 {
     auto entryIndex = tileElement->GetEntryIndex();
-    auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
+    auto& objectMgr = GetContext()->GetObjectManager();
     auto obj = objectMgr.GetLoadedObject<LargeSceneryObject>(entryIndex);
     if (obj != nullptr && TrackDesignSaveIsSupportedObject(obj))
     {
@@ -345,11 +345,10 @@ static TrackDesignAddStatus TrackDesignSaveAddWall(const CoordsXY& loc, WallElem
 
 static std::optional<RCTObjectEntry> TrackDesignSaveFootpathGetBestEntry(const PathElement& pathElement)
 {
-    RCTObjectEntry pathEntry;
     auto legacyPathObj = pathElement.GetLegacyPathEntry();
     if (legacyPathObj != nullptr)
     {
-        pathEntry = legacyPathObj->GetObjectEntry();
+        RCTObjectEntry pathEntry = legacyPathObj->GetObjectEntry();
         if (!pathEntry.IsEmpty())
         {
             return pathEntry;
@@ -489,7 +488,7 @@ static void TrackDesignSaveRemoveLargeScenery(const CoordsXY& loc, LargeSceneryE
     }
 
     auto entryIndex = tileElement->GetEntryIndex();
-    auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
+    auto& objectMgr = GetContext()->GetObjectManager();
     auto obj = objectMgr.GetLoadedObject<LargeSceneryObject>(entryIndex);
     if (obj != nullptr)
     {

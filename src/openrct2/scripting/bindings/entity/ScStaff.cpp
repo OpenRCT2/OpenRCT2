@@ -45,7 +45,7 @@ namespace OpenRCT2::Scripting
 
     Staff* ScStaff::GetStaff() const
     {
-        return OpenRCT2::getGameState().entities.GetEntity<Staff>(_id);
+        return getGameState().entities.GetEntity<Staff>(_id);
     }
 
     std::string ScStaff::staffType_get() const
@@ -422,7 +422,7 @@ namespace OpenRCT2::Scripting
 
     Staff* ScHandyman::GetHandyman() const
     {
-        return OpenRCT2::getGameState().entities.GetEntity<Staff>(_id);
+        return getGameState().entities.GetEntity<Staff>(_id);
     }
 
     DukValue ScHandyman::lawnsMown_get() const
@@ -503,7 +503,7 @@ namespace OpenRCT2::Scripting
 
     Staff* ScMechanic::GetMechanic() const
     {
-        return OpenRCT2::getGameState().entities.GetEntity<Staff>(_id);
+        return getGameState().entities.GetEntity<Staff>(_id);
     }
 
     DukValue ScMechanic::ridesFixed_get() const
@@ -551,7 +551,7 @@ namespace OpenRCT2::Scripting
 
     Staff* ScSecurity::GetSecurity() const
     {
-        return OpenRCT2::getGameState().entities.GetEntity<Staff>(_id);
+        return getGameState().entities.GetEntity<Staff>(_id);
     }
 
     DukValue ScSecurity::vandalsStopped_get() const

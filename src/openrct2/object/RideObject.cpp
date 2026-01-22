@@ -117,7 +117,7 @@ namespace OpenRCT2
         if (numRotationFrames == 0)
             return SpritePrecision::None;
         else
-            return static_cast<SpritePrecision>(Numerics::bitScanForward(numRotationFrames) + 1);
+            return static_cast<SpritePrecision>(bitScanForward(numRotationFrames) + 1);
     }
 
     static void RideObjectUpdateRideType(RideObjectEntry& rideEntry)
@@ -445,7 +445,7 @@ namespace OpenRCT2
         car.no_seating_rows = stream->ReadValue<uint8_t>();
         car.spinning_inertia = stream->ReadValue<uint8_t>();
         car.spinning_friction = stream->ReadValue<uint8_t>();
-        car.friction_sound_id = stream->ReadValue<OpenRCT2::Audio::SoundId>();
+        car.friction_sound_id = stream->ReadValue<Audio::SoundId>();
         car.ReversedCarIndex = stream->ReadValue<uint8_t>();
         car.soundRange = stream->ReadValue<SoundRange>();
         car.double_sound_frequency = stream->ReadValue<uint8_t>();
@@ -599,7 +599,7 @@ namespace OpenRCT2
                 car.spriteHeightPositive = 1;
                 car.flags = { CarEntryFlag::hasSpinning };
                 car.PaintStyle = VEHICLE_VISUAL_FLAT_RIDE_OR_CAR_RIDE;
-                car.friction_sound_id = OpenRCT2::Audio::SoundId::null;
+                car.friction_sound_id = Audio::SoundId::null;
                 car.soundRange = SoundRange::none;
                 car.draw_order = 6;
 
@@ -757,8 +757,7 @@ namespace OpenRCT2
         car.no_seating_rows = Json::GetNumber<uint8_t>(jCar["numSeatRows"]);
         car.spinning_inertia = Json::GetNumber<uint8_t>(jCar["spinningInertia"]);
         car.spinning_friction = Json::GetNumber<uint8_t>(jCar["spinningFriction"]);
-        car.friction_sound_id = Json::GetEnum<OpenRCT2::Audio::SoundId>(
-            jCar["frictionSoundId"], OpenRCT2::Audio::SoundId::null);
+        car.friction_sound_id = Json::GetEnum<Audio::SoundId>(jCar["frictionSoundId"], Audio::SoundId::null);
         car.ReversedCarIndex = Json::GetNumber<uint8_t>(jCar["logFlumeReverserVehicleType"]);
         car.soundRange = Json::GetEnum<SoundRange>(jCar["soundRange"], SoundRange::none);
         car.double_sound_frequency = Json::GetNumber<uint8_t>(jCar["doubleSoundFrequency"]);

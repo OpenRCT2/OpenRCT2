@@ -165,7 +165,7 @@ namespace OpenRCT2::ShelteredSectionsBits
     constexpr uint8_t kNumShelteredSectionsMask = 0b00011111;
     constexpr uint8_t kRotatingWhileSheltered = 0b00100000;
     constexpr uint8_t kBankingWhileSheltered = 0b01000000;
-}; // namespace OpenRCT2::ShelteredSectionsBits
+} // namespace OpenRCT2::ShelteredSectionsBits
 
 struct TrackDesign;
 struct TrackDesignState;
@@ -458,8 +458,8 @@ public:
      */
     void updateRideTypeForAllPieces();
 
-    void updateSatisfaction(const uint8_t happiness);
-    void updatePopularity(const uint8_t pop_amount);
+    void updateSatisfaction(uint8_t happiness);
+    void updatePopularity(uint8_t pop_amount);
     void removePeeps();
 
     int32_t getTotalLength() const;

@@ -12,6 +12,7 @@
 #include "../../Game.h"
 #include "../../GameState.h"
 #include "../../config/Config.h"
+#include "../../drawing/ColourMap.h"
 #include "../../drawing/Drawing.h"
 #include "../../drawing/ScrollingText.h"
 #include "../../interface/Colour.h"
@@ -172,7 +173,7 @@ static void PaintWallScrollingText(
         return;
 
     auto textColour = isGhost ? static_cast<colour_t>(COLOUR_GREY) : wallElement.GetSecondaryColour();
-    auto textPaletteIndex = direction == 0 ? ColourMapA[textColour].mid_dark : ColourMapA[textColour].light;
+    auto textPaletteIndex = direction == 0 ? getColourMap(textColour).midDark : getColourMap(textColour).light;
 
     auto ft = Formatter();
     banner->formatTextTo(ft);

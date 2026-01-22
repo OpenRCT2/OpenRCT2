@@ -352,7 +352,7 @@ constexpr uint16_t kRCT12TileElementLargeTypeMask = 0x3FF;
 constexpr uint8_t kRCT12TrackElementTypeFlagChainLift = 1 << 7;
 constexpr uint8_t kRCT12TrackElementSequenceGreenLight = 1 << 7;
 
-constexpr uint16_t const kRCT12xy8Undefined = 0xFFFF;
+constexpr uint16_t kRCT12xy8Undefined = 0xFFFF;
 
 using RCT12ObjectEntryIndex = uint8_t;
 constexpr RCT12ObjectEntryIndex kRCT12ObjectEntryIndexNull = 255;
@@ -1223,8 +1223,8 @@ static_assert(sizeof(RCT12VehicleColour) == 2);
 
 #pragma pack(pop)
 
-OpenRCT2::ObjectEntryIndex RCTEntryIndexToOpenRCT2EntryIndex(const RCT12ObjectEntryIndex index);
-RideId RCT12RideIdToOpenRCT2RideId(const RCT12RideId rideId);
+OpenRCT2::ObjectEntryIndex RCTEntryIndexToOpenRCT2EntryIndex(RCT12ObjectEntryIndex index);
+RideId RCT12RideIdToOpenRCT2RideId(RCT12RideId rideId);
 bool IsLikelyUTF8(std::string_view s);
 std::string RCT12RemoveFormattingUTF8(std::string_view s);
 std::string ConvertFormattedStringToOpenRCT2(std::string_view buffer);
@@ -1278,6 +1278,6 @@ namespace OpenRCT2::RCT12
      * Handles single and multi-byte strings.
      */
     size_t GetRCTStringBufferLen(const char* buffer, size_t maxBufferLen);
-    bool TrackTypeHasSpeedSetting(OpenRCT2::RCT12::TrackElemType trackType);
-    bool TrackTypeIsStation(OpenRCT2::RCT12::TrackElemType trackType);
+    bool TrackTypeHasSpeedSetting(TrackElemType trackType);
+    bool TrackTypeIsStation(TrackElemType trackType);
 } // namespace OpenRCT2::RCT12

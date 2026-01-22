@@ -355,7 +355,7 @@ namespace OpenRCT2::Title
          * @param stream The stream to read the park data from.
          * @param hintPath Hint path, the extension is grabbed to determine what importer to use.
          */
-        bool LoadParkFromStream(OpenRCT2::IStream* stream, const std::string& hintPath)
+        bool LoadParkFromStream(IStream* stream, const std::string& hintPath)
         {
             LOG_VERBOSE("TitleSequencePlayer::LoadParkFromStream(%s)", hintPath.c_str());
             bool success = false;

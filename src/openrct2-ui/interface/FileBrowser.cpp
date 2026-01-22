@@ -60,7 +60,7 @@ namespace OpenRCT2::Ui::FileBrowser
         return nullptr;
 #endif
 
-        auto hasFilePicker = OpenRCT2::GetContext()->GetUiContext().HasFilePicker();
+        auto hasFilePicker = GetContext()->GetUiContext().HasFilePicker();
         auto& config = Config::Get().general;
 
         // Open system file picker?
@@ -245,7 +245,7 @@ namespace OpenRCT2::Ui::FileBrowser
 
         // Closing this will cause a Ride window to pop up, so we have to do this to ensure that
         // no windows are open (besides the toolbars and LoadSave window).
-        auto* windowMgr = Ui::GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         windowMgr->CloseByClass(WindowClass::rideConstruction);
         windowMgr->CloseAllExceptClass(WindowClass::loadsave);
 
@@ -489,7 +489,7 @@ namespace OpenRCT2::Ui::FileBrowser
         }
     }
 
-    static Ui::FileDialogDesc::Filter GetFilterForType(LoadSaveType type, bool isSave)
+    static FileDialogDesc::Filter GetFilterForType(LoadSaveType type, bool isSave)
     {
         switch (type)
         {
@@ -538,7 +538,7 @@ namespace OpenRCT2::Ui::FileBrowser
         u8string extension = GetDefaultExtensionByType(type);
         StringId title = GetTitleStringId(type, isSave);
 
-        Ui::FileDialogDesc desc = {
+        FileDialogDesc desc = {
             .Type = isSave ? FileDialogType::Save : FileDialogType::Open,
             .Title = LanguageGetString(title),
             .InitialDirectory = defaultDirectory,

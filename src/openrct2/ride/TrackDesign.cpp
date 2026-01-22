@@ -624,7 +624,7 @@ std::unique_ptr<TrackDesign> TrackDesignImport(const utf8* path)
  */
 static void TrackDesignLoadSceneryObjects(const TrackDesign& td)
 {
-    auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
+    auto& objectManager = GetContext()->GetObjectManager();
     objectManager.UnloadAllTransient();
 
     // Load ride object
@@ -690,7 +690,7 @@ static std::optional<TrackSceneryEntry> TrackDesignPlaceSceneryElementGetEntry(c
 {
     TrackSceneryEntry result;
 
-    auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
+    auto& objectMgr = GetContext()->GetObjectManager();
     if (scenery.sceneryObject.GetType() == ObjectType::paths)
     {
         auto footpathMapping = RCT2::GetFootpathSurfaceId(scenery.sceneryObject, true, scenery.isQueue());
@@ -755,7 +755,7 @@ static std::optional<TrackSceneryEntry> TrackDesignPlaceSceneryElementGetEntry(c
  */
 static void TrackDesignMirrorScenery(TrackDesign& td)
 {
-    auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
+    auto& objectMgr = GetContext()->GetObjectManager();
     for (auto& scenery : td.sceneryElements)
     {
         auto entryInfo = TrackDesignPlaceSceneryElementGetEntry(scenery);

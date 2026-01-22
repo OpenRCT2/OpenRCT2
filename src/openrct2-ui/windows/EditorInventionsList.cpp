@@ -16,6 +16,7 @@
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/SpriteIds.h>
+#include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/interface/ColourWithFlags.h>
@@ -270,12 +271,12 @@ namespace OpenRCT2::Ui::Windows
             WindowEditorInventionsListDragOpen(researchItem, windowPos, widgets[WIDX_PRE_RESEARCHED_SCROLL].right);
         }
 
-        void onScrollDraw(int32_t scrollIndex, Drawing::RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             const auto& gameState = getGameState();
 
             // Draw background
-            auto paletteIndex = ColourMapA[colours[1].colour].mid_light;
+            auto paletteIndex = getColourMap(colours[1].colour).midLight;
             GfxClear(rt, paletteIndex);
 
             int16_t boxWidth = widgets[WIDX_RESEARCH_ORDER_SCROLL].width() - 1;
@@ -355,7 +356,7 @@ namespace OpenRCT2::Ui::Windows
             return fallback;
         }
 
-        void onDraw(Drawing::RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             drawWidgets(rt);
 
@@ -379,7 +380,7 @@ namespace OpenRCT2::Ui::Windows
                 rt,
                 { windowPos + ScreenCoordsXY{ bkWidget.left + 1, bkWidget.top + 1 },
                   windowPos + ScreenCoordsXY{ bkWidget.right - 1, bkWidget.bottom - 1 } },
-                ColourMapA[colours[1].colour].darkest);
+                getColourMap(colours[1].colour).darkest);
 
             auto* researchItem = WindowEditorInventionsListDragGetItem();
             if (researchItem == nullptr || researchItem->IsNull())
@@ -656,7 +657,7 @@ namespace OpenRCT2::Ui::Windows
             close();
         }
 
-        void onDraw(Drawing::RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             auto screenCoords = windowPos + ScreenCoordsXY{ 0, 2 };
 
@@ -687,7 +688,7 @@ namespace OpenRCT2::Ui::Windows
     static void WindowEditorInventionsListDragOpen(
         ResearchItem* researchItem, const ScreenCoordsXY& editorPos, int objectSelectionScrollWidth)
     {
-        auto* windowMgr = Ui::GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         windowMgr->CloseByClass(WindowClass::editorInventionListDrag);
         auto* wnd = windowMgr->Create<InventionDragWindow>(
             WindowClass::editorInventionListDrag, { 10, 14 },

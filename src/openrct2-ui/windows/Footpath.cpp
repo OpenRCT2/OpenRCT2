@@ -66,7 +66,7 @@ namespace OpenRCT2::Ui::Windows
 
     static money64 FootpathProvisionalSet(
         ObjectEntryIndex type, ObjectEntryIndex railingsType, const CoordsXY& footpathLocA, const CoordsXY& footpathLocB,
-        int32_t startZ, const std::span<const ProvisionalTile> tiles, PathConstructFlags constructFlags);
+        int32_t startZ, std::span<const ProvisionalTile> tiles, PathConstructFlags constructFlags);
 
     enum class PathConstructionMode : uint8_t
     {
@@ -259,7 +259,7 @@ namespace OpenRCT2::Ui::Windows
             ViewportSetVisibility(ViewportVisibility::standard);
             gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
 
-            auto* windowMgr = Ui::GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             windowMgr->InvalidateByClass(WindowClass::topToolbar);
             HideGridlines();
         }
@@ -580,7 +580,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else
                 {
-                    auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+                    auto& objManager = GetContext()->GetObjectManager();
                     const auto* pathObj = objManager.GetLoadedObject<FootpathObject>(gFootpathSelection.legacyPath);
                     if (pathObj != nullptr)
                     {
@@ -717,7 +717,7 @@ namespace OpenRCT2::Ui::Windows
             }
             else
             {
-                auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+                auto& objManager = GetContext()->GetObjectManager();
 
                 // Set footpath and queue type button images
                 auto pathImage = kImageIndexUndefined;
@@ -747,7 +747,7 @@ namespace OpenRCT2::Ui::Windows
          */
         void WindowFootpathShowFootpathTypesDialog(Widget* widget, bool showQueues)
         {
-            auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+            auto& objManager = GetContext()->GetObjectManager();
 
             uint32_t numPathTypes = 0;
             // If the game is in sandbox mode, also show paths that are normally restricted to the scenario editor
@@ -1345,7 +1345,7 @@ namespace OpenRCT2::Ui::Windows
                     // Don't play sound if it is no cost to prevent multiple sounds. TODO: make this work in no money scenarios
                     if (result->cost != 0)
                     {
-                        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::placeItem, result->position);
+                        Audio::Play3D(Audio::SoundId::placeItem, result->position);
                     }
                 }
                 else
@@ -1436,7 +1436,7 @@ namespace OpenRCT2::Ui::Windows
                 [footpathLoc](const GameActions::GameAction* ga, const GameActions::Result* result) {
                     if (result->error == GameActions::Status::ok)
                     {
-                        Audio::Play3D(OpenRCT2::Audio::SoundId::placeItem, result->position);
+                        Audio::Play3D(Audio::SoundId::placeItem, result->position);
                     }
 
                     auto* windowMgr = GetWindowManager();
@@ -2124,7 +2124,7 @@ namespace OpenRCT2::Ui::Windows
     static bool FootpathIsLegacyPathEntryOkay(ObjectEntryIndex index)
     {
         bool showEditorPaths = (gLegacyScene == LegacyScene::scenarioEditor || getGameState().cheats.sandboxMode);
-        auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+        auto& objManager = GetContext()->GetObjectManager();
         auto footpathObj = objManager.GetLoadedObject<FootpathObject>(index);
         if (footpathObj != nullptr)
         {

@@ -22,6 +22,7 @@
 #include <openrct2/actions/ParkSetNameAction.h>
 #include <openrct2/actions/ScenarioSetSettingAction.h>
 #include <openrct2/core/String.hpp>
+#include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Font.h>
 #include <openrct2/drawing/Rectangle.h>
@@ -457,7 +458,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onDraw(Drawing::RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             switch (page)
             {
@@ -515,7 +516,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onScrollDraw(int32_t scrollIndex, Drawing::RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             if (page == WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_RIDES)
             {
@@ -584,13 +585,12 @@ namespace OpenRCT2::Ui::Windows
 
         void SetPressedTab()
         {
-            int32_t i;
-            for (i = 0; i < WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_COUNT; i++)
+            for (int32_t i = 0; i < WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_COUNT; i++)
                 setWidgetPressed(WIDX_TAB_1 + i, false);
             setWidgetPressed(WIDX_TAB_1 + page, true);
         }
 
-        void DrawTabImages(Drawing::RenderTarget& rt)
+        void DrawTabImages(RenderTarget& rt)
         {
             Widget* widget;
             int32_t spriteIndex;
@@ -1141,7 +1141,7 @@ namespace OpenRCT2::Ui::Windows
          *
          *  rct2: 0x0067161C
          */
-        void ObjectiveOnDraw(Drawing::RenderTarget& rt)
+        void ObjectiveOnDraw(RenderTarget& rt)
         {
             const auto& gameState = getGameState();
             const auto& scenarioOptions = gameState.scenarioOptions;
@@ -1272,7 +1272,7 @@ namespace OpenRCT2::Ui::Windows
             SetPressedTab();
         }
 
-        void ScenarioDetailsOnDraw(Drawing::RenderTarget& rt)
+        void ScenarioDetailsOnDraw(RenderTarget& rt)
         {
             drawWidgets(rt);
             DrawTabImages(rt);
@@ -1577,7 +1577,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (gLegacyScene == LegacyScene::playing)
             {
-                auto* windowMgr = Ui::GetWindowManager();
+                auto* windowMgr = GetWindowManager();
                 windowMgr->InvalidateByClass(WindowClass::finances);
                 windowMgr->InvalidateByClass(WindowClass::bottomToolbar);
             }
@@ -1684,7 +1684,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_CLOSE].type = gLegacyScene == LegacyScene::scenarioEditor ? WidgetType::empty : WidgetType::closeBox;
         }
 
-        void FinancialDraw(Drawing::RenderTarget& rt)
+        void FinancialDraw(RenderTarget& rt)
         {
             ScreenCoordsXY screenCoords{};
 
@@ -1970,7 +1970,7 @@ namespace OpenRCT2::Ui::Windows
             setWidgetPressed(WIDX_HARD_GUEST_GENERATION, gameState.park.flags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION);
         }
 
-        void GuestsDraw(Drawing::RenderTarget& rt)
+        void GuestsDraw(RenderTarget& rt)
         {
             ScreenCoordsXY screenCoords{};
 
@@ -2173,7 +2173,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_CLOSE].type = gLegacyScene == LegacyScene::scenarioEditor ? WidgetType::empty : WidgetType::closeBox;
         }
 
-        void LandDraw(Drawing::RenderTarget& rt)
+        void LandDraw(RenderTarget& rt)
         {
             ScreenCoordsXY screenCoords{};
 
@@ -2327,7 +2327,7 @@ namespace OpenRCT2::Ui::Windows
          *
          *  rct2: 0x00672340
          */
-        void RidesOnDraw(Drawing::RenderTarget& rt)
+        void RidesOnDraw(RenderTarget& rt)
         {
             drawWidgets(rt);
             DrawTabImages(rt);
@@ -2337,9 +2337,9 @@ namespace OpenRCT2::Ui::Windows
          *
          *  rct2: 0x0067236F
          */
-        void RidesOnScrollDraw(Drawing::RenderTarget& rt, int32_t scrollIndex)
+        void RidesOnScrollDraw(RenderTarget& rt, int32_t scrollIndex)
         {
-            auto colour = ColourMapA[colours[1].colour].mid_light;
+            auto colour = getColourMap(colours[1].colour).midLight;
             Rectangle::fill(rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } }, colour);
 
             for (int32_t i = 0; i < static_cast<int32_t>(_rideableRides.size()); i++)

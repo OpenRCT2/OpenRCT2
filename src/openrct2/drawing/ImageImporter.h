@@ -57,6 +57,11 @@ namespace OpenRCT2::Drawing
         G1Element Element{};
         std::vector<uint8_t> Buffer;
     };
+    struct PaletteImportResult
+    {
+        G1Palette element{};
+        std::vector<BGRColour> buffer;
+    };
 
     /**
      * Imports images to the internal RCT G1 format.
@@ -65,6 +70,7 @@ namespace OpenRCT2::Drawing
     {
     public:
         ImageImportResult Import(const Image& image, ImageImportMeta& meta) const;
+        PaletteImportResult importJSONPalette(json_t& jPalette) const;
 
     private:
         enum class PaletteIndexType : uint8_t
@@ -88,6 +94,7 @@ namespace OpenRCT2::Drawing
         static bool IsChangablePixel(int32_t paletteIndex);
         static PaletteIndexType GetPaletteIndexType(int32_t paletteIndex);
         static int32_t GetClosestPaletteIndex(const GamePalette& palette, const int16_t* colour);
+        BGRColour parseJSONPaletteColour(const std::string& s) const;
     };
 
     // Note: jsonSprite is deliberately left non-const: json_t behaviour changes when const.

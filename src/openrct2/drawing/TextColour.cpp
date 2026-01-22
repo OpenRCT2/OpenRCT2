@@ -8,8 +8,8 @@ namespace OpenRCT2::Drawing
     static std::array<TextColours, kNumTextColours> kTextColourToPaletteIndex = { {
         {
             PaletteIndex::pi10,
-            PaletteIndex::pi0,
-            PaletteIndex::pi0,
+            PaletteIndex::transparent,
+            PaletteIndex::transparent,
         },
         {
             PaletteIndex::pi18,
@@ -32,7 +32,7 @@ namespace OpenRCT2::Drawing
             PaletteIndex::pi10,
         },
         {
-            PaletteIndex::pi55,
+            PaletteIndex::yellow9,
             PaletteIndex::pi10,
             PaletteIndex::pi10,
         },

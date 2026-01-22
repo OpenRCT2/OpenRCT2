@@ -50,8 +50,8 @@ namespace OpenRCT2::Ui::Windows
 {
     struct ColourPair
     {
-        PaletteIndex a = PaletteIndex::pi0;
-        PaletteIndex b = PaletteIndex::pi0;
+        PaletteIndex a = PaletteIndex::transparent;
+        PaletteIndex b = PaletteIndex::transparent;
 
         constexpr ColourPair() = default;
 
@@ -185,14 +185,14 @@ namespace OpenRCT2::Ui::Windows
     };
 
     static constexpr ColourPair kRideKeyColours[] = {
-        ColourPair(PaletteIndex::pi61),  // COLOUR_KEY_RIDE
-        ColourPair(PaletteIndex::pi42),  // COLOUR_KEY_FOOD
-        ColourPair(PaletteIndex::pi20),  // COLOUR_KEY_DRINK
-        ColourPair(PaletteIndex::pi209), // COLOUR_KEY_SOUVENIR
-        ColourPair(PaletteIndex::pi136), // COLOUR_KEY_KIOSK
-        ColourPair(PaletteIndex::pi102), // COLOUR_KEY_FIRST_AID
-        ColourPair(PaletteIndex::pi55),  // COLOUR_KEY_CASH_MACHINE
-        ColourPair(PaletteIndex::pi161), // COLOUR_KEY_TOILETS
+        ColourPair(PaletteIndex::pi61),     // COLOUR_KEY_RIDE
+        ColourPair(PaletteIndex::pi42),     // COLOUR_KEY_FOOD
+        ColourPair(PaletteIndex::pi20),     // COLOUR_KEY_DRINK
+        ColourPair(PaletteIndex::hotPink7), // COLOUR_KEY_SOUVENIR
+        ColourPair(PaletteIndex::pi136),    // COLOUR_KEY_KIOSK
+        ColourPair(PaletteIndex::pi102),    // COLOUR_KEY_FIRST_AID
+        ColourPair(PaletteIndex::yellow9),  // COLOUR_KEY_CASH_MACHINE
+        ColourPair(PaletteIndex::pi161),    // COLOUR_KEY_TOILETS
     };
 
     static constexpr PaletteIndex DefaultPeepMapColour = PaletteIndex::pi20;
@@ -204,14 +204,14 @@ namespace OpenRCT2::Ui::Windows
     static constexpr auto kWaterColour = ColourPair(PaletteIndex::pi195);
 
     static constexpr ColourPair kElementTypeOverwriteColour[] = {
-        ColourPair(PaletteIndex::pi0),                      // TILE_ELEMENT_TYPE_SURFACE
-        ColourPair(PaletteIndex::pi17),                     // TILE_ELEMENT_TYPE_PATH
-        ColourPair(PaletteIndex::pi183, PaletteIndex::pi0), // TILE_ELEMENT_TYPE_TRACK
-        ColourPair(PaletteIndex::pi0, PaletteIndex::pi99),  // TILE_ELEMENT_TYPE_SMALL_SCENERY
-        ColourPair(PaletteIndex::pi186),                    // TILE_ELEMENT_TYPE_ENTRANCE
-        ColourPair(PaletteIndex::pi0),                      // TILE_ELEMENT_TYPE_WALL
-        ColourPair(PaletteIndex::pi99),                     // TILE_ELEMENT_TYPE_LARGE_SCENERY
-        ColourPair(PaletteIndex::pi0),                      // TILE_ELEMENT_TYPE_BANNER
+        ColourPair(PaletteIndex::transparent),                      // TILE_ELEMENT_TYPE_SURFACE
+        ColourPair(PaletteIndex::pi17),                             // TILE_ELEMENT_TYPE_PATH
+        ColourPair(PaletteIndex::pi183, PaletteIndex::transparent), // TILE_ELEMENT_TYPE_TRACK
+        ColourPair(PaletteIndex::transparent, PaletteIndex::pi99),  // TILE_ELEMENT_TYPE_SMALL_SCENERY
+        ColourPair(PaletteIndex::pi186),                            // TILE_ELEMENT_TYPE_ENTRANCE
+        ColourPair(PaletteIndex::transparent),                      // TILE_ELEMENT_TYPE_WALL
+        ColourPair(PaletteIndex::pi99),                             // TILE_ELEMENT_TYPE_LARGE_SCENERY
+        ColourPair(PaletteIndex::transparent),                      // TILE_ELEMENT_TYPE_BANNER
     };
 
     namespace MapFlashingFlags
@@ -573,7 +573,7 @@ namespace OpenRCT2::Ui::Windows
             onScrollMouseDown(scrollIndex, screenCoords);
         }
 
-        void onScrollDraw(int32_t scrollIndex, Drawing::RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             GfxClear(rt, PaletteIndex::pi10);
 
@@ -668,7 +668,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onDraw(Drawing::RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             drawWidgets(rt);
             DrawTabImages(rt);
@@ -855,9 +855,9 @@ namespace OpenRCT2::Ui::Windows
         {
             auto* surfaceElement = MapGetSurfaceElementAt(c);
             if (surfaceElement == nullptr)
-                return { PaletteIndex::pi0, PaletteIndex::pi0 };
+                return { PaletteIndex::transparent, PaletteIndex::transparent };
 
-            auto colour = ColourPair(PaletteIndex::pi0);
+            auto colour = ColourPair(PaletteIndex::transparent);
             const auto* surfaceObject = surfaceElement->GetSurfaceObject();
             if (surfaceObject != nullptr)
                 colour = ColourPair(surfaceObject->MapColours[0], surfaceObject->MapColours[1]);
@@ -884,11 +884,11 @@ namespace OpenRCT2::Ui::Windows
                     tileElementType = TileElementType::Surface;
                 }
                 const auto overwriteColours = kElementTypeOverwriteColour[EnumValue(tileElementType)];
-                if (overwriteColours.a != PaletteIndex::pi0)
+                if (overwriteColours.a != PaletteIndex::transparent)
                 {
                     colour.a = overwriteColours.a;
                 }
-                if (overwriteColours.b != PaletteIndex::pi0)
+                if (overwriteColours.b != PaletteIndex::transparent)
                 {
                     colour.b = overwriteColours.b;
                 }
@@ -955,13 +955,13 @@ namespace OpenRCT2::Ui::Windows
                 }
             } while (!(tileElement++)->IsLastForTile());
 
-            if (colourA != ColourPair(PaletteIndex::pi0, PaletteIndex::pi0))
+            if (colourA != ColourPair(PaletteIndex::transparent, PaletteIndex::transparent))
                 return colourA;
 
             return colourB;
         }
 
-        void PaintPeepOverlay(Drawing::RenderTarget& rt, const ScreenCoordsXY& offset)
+        void PaintPeepOverlay(RenderTarget& rt, const ScreenCoordsXY& offset)
         {
             auto flashColour = GetGuestFlashColour();
             for (auto guest : EntityList<Guest>())
@@ -975,8 +975,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawMapPeepPixel(
-            Peep* peep, const PaletteIndex flashColour, Drawing::RenderTarget& rt, const ScreenCoordsXY& offset)
+        void DrawMapPeepPixel(Peep* peep, const PaletteIndex flashColour, RenderTarget& rt, const ScreenCoordsXY& offset)
         {
             if (peep->x == kLocationNull)
                 return;
@@ -1022,7 +1021,7 @@ namespace OpenRCT2::Ui::Windows
             return colour;
         }
 
-        void PaintTrainOverlay(Drawing::RenderTarget& rt, const ScreenCoordsXY& offset)
+        void PaintTrainOverlay(RenderTarget& rt, const ScreenCoordsXY& offset)
         {
             for (auto train : TrainManager::View())
             {
@@ -1044,7 +1043,7 @@ namespace OpenRCT2::Ui::Windows
          * The call to Rectangle::fill was originally wrapped in Sub68DABD which made sure that arguments were ordered
          * correctly, but it doesn't look like it's ever necessary here so the call was removed.
          */
-        void PaintHudRectangle(Drawing::RenderTarget& rt, const ScreenCoordsXY& widgetOffset)
+        void PaintHudRectangle(RenderTarget& rt, const ScreenCoordsXY& widgetOffset)
         {
             WindowBase* mainWindow = WindowGetMain();
             if (mainWindow == nullptr)
@@ -1066,23 +1065,23 @@ namespace OpenRCT2::Ui::Windows
             auto leftBottom = ScreenCoordsXY{ leftTop.x, rightBottom.y };
 
             // top horizontal lines
-            Rectangle::fill(rt, { leftTop, leftTop + ScreenCoordsXY{ 3, 0 } }, PaletteIndex::pi56);
-            Rectangle::fill(rt, { rightTop - ScreenCoordsXY{ 3, 0 }, rightTop }, PaletteIndex::pi56);
+            Rectangle::fill(rt, { leftTop, leftTop + ScreenCoordsXY{ 3, 0 } }, PaletteIndex::yellow10);
+            Rectangle::fill(rt, { rightTop - ScreenCoordsXY{ 3, 0 }, rightTop }, PaletteIndex::yellow10);
 
             // left vertical lines
-            Rectangle::fill(rt, { leftTop, leftTop + ScreenCoordsXY{ 0, 3 } }, PaletteIndex::pi56);
-            Rectangle::fill(rt, { leftBottom - ScreenCoordsXY{ 0, 3 }, leftBottom }, PaletteIndex::pi56);
+            Rectangle::fill(rt, { leftTop, leftTop + ScreenCoordsXY{ 0, 3 } }, PaletteIndex::yellow10);
+            Rectangle::fill(rt, { leftBottom - ScreenCoordsXY{ 0, 3 }, leftBottom }, PaletteIndex::yellow10);
 
             // bottom horizontal lines
-            Rectangle::fill(rt, { leftBottom, leftBottom + ScreenCoordsXY{ 3, 0 } }, PaletteIndex::pi56);
-            Rectangle::fill(rt, { rightBottom - ScreenCoordsXY{ 3, 0 }, rightBottom }, PaletteIndex::pi56);
+            Rectangle::fill(rt, { leftBottom, leftBottom + ScreenCoordsXY{ 3, 0 } }, PaletteIndex::yellow10);
+            Rectangle::fill(rt, { rightBottom - ScreenCoordsXY{ 3, 0 }, rightBottom }, PaletteIndex::yellow10);
 
             // right vertical lines
-            Rectangle::fill(rt, { rightTop, rightTop + ScreenCoordsXY{ 0, 3 } }, PaletteIndex::pi56);
-            Rectangle::fill(rt, { rightBottom - ScreenCoordsXY{ 0, 3 }, rightBottom }, PaletteIndex::pi56);
+            Rectangle::fill(rt, { rightTop, rightTop + ScreenCoordsXY{ 0, 3 } }, PaletteIndex::yellow10);
+            Rectangle::fill(rt, { rightBottom - ScreenCoordsXY{ 0, 3 }, rightBottom }, PaletteIndex::yellow10);
         }
 
-        void DrawTabImages(Drawing::RenderTarget& rt)
+        void DrawTabImages(RenderTarget& rt)
         {
             // Guest tab image (animated)
             uint32_t guestTabImage = SPR_TAB_GUESTS_0;

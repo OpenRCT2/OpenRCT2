@@ -81,7 +81,7 @@ namespace OpenRCT2
 
     const FootpathObject* EntranceElement::GetLegacyPathEntry() const
     {
-        auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
+        auto& objMgr = GetContext()->GetObjectManager();
         return objMgr.GetLoadedObject<FootpathObject>(GetLegacyPathEntryIndex());
     }
 
@@ -101,7 +101,7 @@ namespace OpenRCT2
 
     const FootpathSurfaceObject* EntranceElement::GetSurfaceEntry() const
     {
-        auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
+        auto& objMgr = GetContext()->GetObjectManager();
         return objMgr.GetLoadedObject<FootpathSurfaceObject>(GetSurfaceEntryIndex());
     }
 

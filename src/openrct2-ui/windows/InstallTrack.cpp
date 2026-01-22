@@ -20,6 +20,7 @@
 #include <openrct2/core/File.h>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/UnitConversion.h>
+#include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/localisation/Formatter.h>
@@ -150,14 +151,14 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onDraw(Drawing::RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             drawWidgets(rt);
 
             // Track preview
             Widget* widget = &widgets[WIDX_TRACK_PREVIEW];
             auto screenPos = windowPos + ScreenCoordsXY{ widget->left + 1, widget->top + 1 };
-            auto colour = ColourMapA[colours[0].colour].darkest;
+            auto colour = getColourMap(colours[0].colour).darkest;
             Rectangle::fill(rt, { screenPos, screenPos + ScreenCoordsXY{ 369, 216 } }, colour);
 
             G1Element g1temp = {};
@@ -365,8 +366,8 @@ namespace OpenRCT2::Ui::Windows
 
         void InstallTrackDesign()
         {
-            auto& env = OpenRCT2::GetContext()->GetPlatformEnvironment();
-            auto destPath = env.GetDirectoryPath(OpenRCT2::DirBase::user, OpenRCT2::DirId::trackDesigns);
+            auto& env = GetContext()->GetPlatformEnvironment();
+            auto destPath = env.GetDirectoryPath(DirBase::user, DirId::trackDesigns);
             if (!Path::CreateDirectory(destPath))
             {
                 LOG_ERROR("Unable to create directory '%s'", destPath.c_str());
@@ -419,7 +420,7 @@ namespace OpenRCT2::Ui::Windows
             return nullptr;
         }
 
-        auto* windowMgr = Ui::GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         windowMgr->ForceClose(WindowClass::editorObjectSelection);
         windowMgr->CloseConstructionWindows();
 

@@ -27,10 +27,10 @@ namespace OpenRCT2::SawyerCoding
     class SawyerChunkWriter final
     {
     private:
-        OpenRCT2::IStream* const _stream = nullptr;
+        IStream* const _stream = nullptr;
 
     public:
-        explicit SawyerChunkWriter(OpenRCT2::IStream* stream);
+        explicit SawyerChunkWriter(IStream* stream);
 
         /**
          * Writes a chunk to the stream.

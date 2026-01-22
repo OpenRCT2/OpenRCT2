@@ -17,6 +17,7 @@
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/ParkEntrancePlaceAction.h>
 #include <openrct2/audio/Audio.h>
+#include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/object/EntranceObject.h>
@@ -106,7 +107,7 @@ namespace OpenRCT2::Ui::Windows
             return numRows;
         }
 
-        void PaintPreview(Drawing::RenderTarget& rt, ImageIndex imageStart, ScreenCoordsXY screenCoords, Direction direction)
+        void PaintPreview(RenderTarget& rt, ImageIndex imageStart, ScreenCoordsXY screenCoords, Direction direction)
         {
             imageStart += (direction * 3);
 
@@ -308,7 +309,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_LIST].bottom = height - 5;
         }
 
-        void onDraw(Drawing::RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             drawWidgets(rt);
             GfxDrawSprite(
@@ -316,9 +317,9 @@ namespace OpenRCT2::Ui::Windows
                 windowPos + ScreenCoordsXY{ widgets[WIDX_TAB].left, widgets[WIDX_TAB].top });
         }
 
-        void onScrollDraw(int32_t scrollIndex, Drawing::RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
-            GfxClear(rt, ColourMapA[colours[1].colour].mid_light);
+            GfxClear(rt, getColourMap(colours[1].colour).midLight);
 
             ScreenCoordsXY coords{ 1, 1 };
 

@@ -227,7 +227,7 @@ private:
 
         try
         {
-            auto& objRepository = OpenRCT2::GetContext()->GetObjectRepository();
+            auto& objRepository = GetContext()->GetObjectRepository();
             std::unique_ptr<IParkImporter> importer;
             std::string extension = Path::GetExtension(path);
 

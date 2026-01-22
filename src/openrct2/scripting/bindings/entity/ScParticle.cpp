@@ -49,7 +49,7 @@ namespace OpenRCT2::Scripting
 
     VehicleCrashParticle* ScCrashedVehicleParticle::GetCrashedVehicleParticle() const
     {
-        return OpenRCT2::getGameState().entities.GetEntity<VehicleCrashParticle>(_id);
+        return getGameState().entities.GetEntity<VehicleCrashParticle>(_id);
     }
 
     void ScCrashedVehicleParticle::frame_set(uint8_t value)
@@ -225,6 +225,6 @@ namespace OpenRCT2::Scripting
             entity->Invalidate();
         }
     }
-}; // namespace OpenRCT2::Scripting
+} // namespace OpenRCT2::Scripting
 
 #endif

@@ -148,7 +148,7 @@ namespace OpenRCT2::Network
 
         json_t GetBroadcastJson()
         {
-            json_t root = Network::GetServerInfoAsJson();
+            json_t root = GetServerInfoAsJson();
             root["port"] = _port;
             return root;
         }
@@ -319,7 +319,7 @@ namespace OpenRCT2::Network
 
         json_t GetHeartbeatJson()
         {
-            uint32_t numPlayers = Network::GetNumVisiblePlayers();
+            uint32_t numPlayers = GetNumVisiblePlayers();
 
             json_t root = {
                 { "token", _token },

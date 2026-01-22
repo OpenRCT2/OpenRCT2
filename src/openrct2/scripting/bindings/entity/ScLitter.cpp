@@ -45,7 +45,7 @@ namespace OpenRCT2::Scripting
 
     Litter* ScLitter::GetLitter() const
     {
-        return OpenRCT2::getGameState().entities.GetEntity<Litter>(_id);
+        return getGameState().entities.GetEntity<Litter>(_id);
     }
 
     std::string ScLitter::litterType_get() const

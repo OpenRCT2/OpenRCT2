@@ -168,4 +168,4 @@ OpenRCT2::GameActions::Result StaffSetColour(StaffType staffType, colour_t value
 
 money64 GetStaffWage(StaffType type);
 
-const PatrolArea& GetMergedPatrolArea(const StaffType type);
+const PatrolArea& GetMergedPatrolArea(StaffType type);

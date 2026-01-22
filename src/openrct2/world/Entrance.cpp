@@ -211,7 +211,7 @@ void MazeEntranceHedgeRemoval(const CoordsXYE& entrance)
     } while (!(tileElement++)->IsLastForTile());
 }
 
-void ParkEntranceFixLocations(void)
+void ParkEntranceFixLocations()
 {
     auto& park = getGameState().park;
     // Fix ParkEntrance locations for which the tile_element no longer exists

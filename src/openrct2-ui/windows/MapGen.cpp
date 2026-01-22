@@ -18,6 +18,7 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/core/FileSystem.hpp>
 #include <openrct2/core/UnitConversion.h>
+#include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/object/ObjectManager.h>
@@ -28,6 +29,7 @@
 #include <openrct2/world/map_generator/MapGen.h>
 #include <openrct2/world/map_generator/PngTerrainGenerator.h>
 
+using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::World;
 
 namespace OpenRCT2::Ui::Windows
@@ -299,7 +301,7 @@ namespace OpenRCT2::Ui::Windows
             pressedWidgets |= 1LL << (WIDX_TAB_1 + page);
         }
 
-        void DrawTabImage(Drawing::RenderTarget& rt, int32_t newPage, int32_t spriteIndex)
+        void DrawTabImage(RenderTarget& rt, int32_t newPage, int32_t spriteIndex)
         {
             WidgetIndex widgetIndex = WIDX_TAB_1 + newPage;
 
@@ -317,7 +319,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawTabImages(Drawing::RenderTarget& rt)
+        void DrawTabImages(RenderTarget& rt)
         {
             DrawTabImage(rt, WINDOW_MAPGEN_PAGE_BASE, SPR_TAB_GEARS_0);
             DrawTabImage(rt, WINDOW_MAPGEN_PAGE_TERRAIN, SPR_G2_MAP_GEN_TERRAIN_TAB);
@@ -597,7 +599,7 @@ namespace OpenRCT2::Ui::Windows
             // clang-format on
         }
 
-        void BaseDraw(Drawing::RenderTarget& rt)
+        void BaseDraw(RenderTarget& rt)
         {
             drawWidgets(rt);
             DrawTabImages(rt);
@@ -759,7 +761,7 @@ namespace OpenRCT2::Ui::Windows
             setWidgetDisabled(WIDX_TREE_ALTITUDE_MAX_DOWN, !_settings.trees || isFlatland);
         }
 
-        void ForestsDraw(Drawing::RenderTarget& rt)
+        void ForestsDraw(RenderTarget& rt)
         {
             drawWidgets(rt);
             DrawTabImages(rt);
@@ -863,7 +865,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void SimplexDraw(Drawing::RenderTarget& rt)
+        void SimplexDraw(RenderTarget& rt)
         {
             drawWidgets(rt);
             DrawTabImages(rt);
@@ -973,7 +975,7 @@ namespace OpenRCT2::Ui::Windows
             setCheckboxValue(WIDX_HEIGHTMAP_NORMALIZE, _settings.normalize_height);
         }
 
-        void HeightmapDraw(Drawing::RenderTarget& rt)
+        void HeightmapDraw(RenderTarget& rt)
         {
             const auto enabledColour = colours[1];
             const auto disabledColour = enabledColour.withFlag(ColourFlag::inset, true);
@@ -1159,7 +1161,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawDropdownButton(Drawing::RenderTarget& rt, WidgetIndex widgetIndex, ImageId image)
+        void DrawDropdownButton(RenderTarget& rt, WidgetIndex widgetIndex, ImageId image)
         {
             const auto& widget = widgets[widgetIndex];
             ScreenCoordsXY pos = { windowPos.x + widget.left, windowPos.y + widget.top };
@@ -1167,12 +1169,12 @@ namespace OpenRCT2::Ui::Windows
             {
                 // Draw greyed out (light border bottom right shadow)
                 auto colour = colours[widget.colour].colour;
-                auto paletteIndex = ColourMapA[colour].lighter;
+                auto paletteIndex = getColourMap(colour).lighter;
                 GfxDrawSpriteSolid(rt, image, pos + ScreenCoordsXY{ 1, 1 }, paletteIndex);
 
                 // Draw greyed out (dark)
                 colour = colours[widget.colour].colour;
-                paletteIndex = ColourMapA[colour].mid_light;
+                paletteIndex = getColourMap(colour).midLight;
                 GfxDrawSpriteSolid(rt, image, pos, paletteIndex);
             }
             else
@@ -1181,7 +1183,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawDropdownButtons(Drawing::RenderTarget& rt, WidgetIndex floorWidgetIndex, WidgetIndex edgeWidgetIndex)
+        void DrawDropdownButtons(RenderTarget& rt, WidgetIndex floorWidgetIndex, WidgetIndex edgeWidgetIndex)
         {
             auto& objManager = GetContext()->GetObjectManager();
             const auto* surfaceObj = objManager.GetLoadedObject<TerrainSurfaceObject>(_settings.landTexture);
@@ -1223,7 +1225,7 @@ namespace OpenRCT2::Ui::Windows
             SetPressedTab();
         }
 
-        void TerrainDraw(Drawing::RenderTarget& rt)
+        void TerrainDraw(RenderTarget& rt)
         {
             drawWidgets(rt);
             DrawTabImages(rt);
@@ -1334,7 +1336,7 @@ namespace OpenRCT2::Ui::Windows
             SetPressedTab();
         }
 
-        void WaterDraw(Drawing::RenderTarget& rt)
+        void WaterDraw(RenderTarget& rt)
         {
             drawWidgets(rt);
             DrawTabImages(rt);
@@ -1446,7 +1448,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onDraw(Drawing::RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             switch (page)
             {

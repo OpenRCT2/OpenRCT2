@@ -27,6 +27,7 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/core/EnumUtils.hpp>
 #include <openrct2/core/String.hpp>
+#include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/entity/EntityList.h>
@@ -273,7 +274,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_STAFF_LIST_HIRE_BUTTON].right = width - 11;
         }
 
-        void onDraw(Drawing::RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             drawWidgets(rt);
             DrawTabImages(rt);
@@ -367,12 +368,12 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onScrollDraw(int32_t scrollIndex, Drawing::RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             auto rtCoords = ScreenCoordsXY{ rt.x, rt.y };
             Rectangle::fill(
                 rt, { rtCoords, rtCoords + ScreenCoordsXY{ rt.width - 1, rt.height - 1 } },
-                ColourMapA[colours[1].colour].mid_light);
+                getColourMap(colours[1].colour).midLight);
 
             // How much space do we have for the name and action columns? (Discount scroll area and icons.)
             const int32_t nonIconSpace = widgets[WIDX_STAFF_LIST_LIST].width() - 1 - 15 - 68;
@@ -595,7 +596,7 @@ namespace OpenRCT2::Ui::Windows
             return static_cast<StaffType>(_selectedTab);
         }
 
-        void DrawTabImages(Drawing::RenderTarget& rt) const
+        void DrawTabImages(RenderTarget& rt) const
         {
             const auto& gameState = getGameState();
             DrawTabImage(rt, WINDOW_STAFF_LIST_TAB_HANDYMEN, AnimationPeepType::handyman, gameState.park.staffHandymanColour);
@@ -604,7 +605,7 @@ namespace OpenRCT2::Ui::Windows
             DrawTabImage(rt, WINDOW_STAFF_LIST_TAB_ENTERTAINERS, AnimationPeepType::entertainer);
         }
 
-        void DrawTabImage(Drawing::RenderTarget& rt, int32_t tabIndex, AnimationPeepType type, colour_t colour) const
+        void DrawTabImage(RenderTarget& rt, int32_t tabIndex, AnimationPeepType type, colour_t colour) const
         {
             PeepAnimationsObject* animObj = findPeepAnimationsObjectForType(type);
             if (animObj == nullptr)
@@ -622,7 +623,7 @@ namespace OpenRCT2::Ui::Windows
                 windowPos + ScreenCoordsXY{ (widget.left + widget.right) / 2, widget.bottom - 6 });
         }
 
-        void DrawTabImage(Drawing::RenderTarget& rt, int32_t tabIndex, AnimationPeepType type) const
+        void DrawTabImage(RenderTarget& rt, int32_t tabIndex, AnimationPeepType type) const
         {
             PeepAnimationsObject* animObj = findPeepAnimationsObjectForType(type);
             if (animObj == nullptr)

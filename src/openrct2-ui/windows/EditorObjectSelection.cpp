@@ -28,6 +28,7 @@
 #include <openrct2/core/EnumUtils.hpp>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
+#include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/localisation/Formatter.h>
@@ -382,7 +383,7 @@ namespace OpenRCT2::Ui::Windows
                     if (gLegacyScene != LegacyScene::trackDesignsManager && !EditorObjectSelectionWindowCheck())
                         return;
 
-                    auto* windowMgr = Ui::GetWindowManager();
+                    auto* windowMgr = GetWindowManager();
                     windowMgr->CloseByClass(WindowClass::editorObjectSelection);
 
                     if (isInEditorMode())
@@ -394,7 +395,7 @@ namespace OpenRCT2::Ui::Windows
                         GameNotifyMapChange();
                         GameUnloadScripts();
 
-                        auto* context = OpenRCT2::GetContext();
+                        auto* context = GetContext();
                         context->SetActiveScene(context->GetTitleScene());
                     }
                     break;
@@ -605,7 +606,7 @@ namespace OpenRCT2::Ui::Windows
         {
             // Used for in-game object selection cheat to prevent crashing the game
             // when windows attempt to draw objects that don't exist any more
-            auto* windowMgr = Ui::GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             windowMgr->CloseAllExceptClass(WindowClass::editorObjectSelection);
 
             int32_t selected_object = GetObjectFromObjectSelection(GetSelectedObjectType(), screenCoords.y);
@@ -726,13 +727,13 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onScrollDraw(int32_t scrollIndex, Drawing::RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             // ScrollPaint
             ScreenCoordsXY screenCoords;
             bool ridePage = (GetSelectedObjectType() == ObjectType::ride);
 
-            auto paletteIndex = ColourMapA[colours[1].colour].mid_light;
+            auto paletteIndex = getColourMap(colours[1].colour).midLight;
             GfxClear(rt, paletteIndex);
 
             screenCoords.y = 0;
@@ -1009,7 +1010,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_PREVIEW].right = widgets[WIDX_PREVIEW].left + kPreviewSize;
         }
 
-        void onDraw(Drawing::RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             drawWidgets(rt);
 
@@ -1067,7 +1068,7 @@ namespace OpenRCT2::Ui::Windows
                 rt,
                 { windowPos + ScreenCoordsXY{ previewWidget.left + 1, previewWidget.top + 1 },
                   windowPos + ScreenCoordsXY{ previewWidget.right - 1, previewWidget.bottom - 1 } },
-                ColourMapA[colours[1].colour].darkest);
+                getColourMap(colours[1].colour).darkest);
 
             // Draw number of selected items
             if (!(gLegacyScene == LegacyScene::trackDesignsManager))
@@ -1249,7 +1250,7 @@ namespace OpenRCT2::Ui::Windows
             _listItems.shrink_to_fit();
         }
 
-        void DrawDescriptions(Drawing::RenderTarget& rt)
+        void DrawDescriptions(RenderTarget& rt)
         {
             auto screenPos = windowPos + ScreenCoordsXY{ widgets[WIDX_PREVIEW].midX(), widgets[WIDX_PREVIEW].bottom + 3 };
             auto descriptionWidth = width - widgets[WIDX_LIST].right - 12;
@@ -1357,7 +1358,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawDebugData(Drawing::RenderTarget& rt)
+        void DrawDebugData(RenderTarget& rt)
         {
             ObjectListItem* listItem = &_listItems[selectedListItem];
             auto screenPos = windowPos + ScreenCoordsXY{ width - 5, height - (kListRowHeight * 6) };
@@ -1751,7 +1752,7 @@ namespace OpenRCT2::Ui::Windows
 
         ContextShowError(STR_INVALID_SELECTION_OF_OBJECTS, errorString, {});
 
-        auto* windowMgr = Ui::GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         WindowBase* w = windowMgr->FindByClass(WindowClass::editorObjectSelection);
         if (w != nullptr)
         {

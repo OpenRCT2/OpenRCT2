@@ -108,8 +108,7 @@ static bool InvalidArguments(bool* invalid, bool arguments);
 static int32_t ConsoleParseInt(const std::string& src, bool* valid)
 {
     utf8* end;
-    int32_t value;
-    value = static_cast<int32_t>(strtol(src.c_str(), &end, 10));
+    int32_t value = static_cast<int32_t>(strtol(src.c_str(), &end, 10));
     *valid = (*end == '\0');
     return value;
 }
@@ -117,8 +116,7 @@ static int32_t ConsoleParseInt(const std::string& src, bool* valid)
 static double ConsoleParseDouble(const std::string& src, bool* valid)
 {
     utf8* end;
-    double value;
-    value = strtod(src.c_str(), &end);
+    double value = strtod(src.c_str(), &end);
     *valid = (*end == '\0');
     return value;
 }
@@ -170,7 +168,7 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
                     {
                         char mode_name[128] = { 0 };
                         StringId mode_string_id = kRideModeNames[i];
-                        OpenRCT2::FormatStringLegacy(mode_name, 128, mode_string_id, nullptr);
+                        FormatStringLegacy(mode_name, 128, mode_string_id, nullptr);
                         console.WriteFormatLine("%02d - %s", i, mode_name);
                     }
                 }
@@ -730,7 +728,7 @@ static void ConsoleCommandGet(InteractiveConsole& console, const arguments_t& ar
         }
         else if (argv[0] == "host_timescale")
         {
-            console.WriteFormatLine("host_timescale %.02f", OpenRCT2::GetContext()->GetTimeScale());
+            console.WriteFormatLine("host_timescale %.02f", GetContext()->GetTimeScale());
         }
 #ifndef DISABLE_TTF
         else if (argv[0] == "enable_hinting")
@@ -1018,7 +1016,7 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
         {
             float newScale = static_cast<float>(double_val[0]);
 
-            OpenRCT2::GetContext()->SetTimeScale(newScale);
+            GetContext()->SetTimeScale(newScale);
 
             console.Execute("get host_timescale");
         }
@@ -1089,7 +1087,7 @@ static void ConsoleCommandLoadObject(InteractiveConsole& console, const argument
         return;
     }
 
-    auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
+    auto& objectManager = GetContext()->GetObjectManager();
     loadedObject = objectManager.LoadRepositoryItem(*ori);
     if (loadedObject == nullptr)
     {
@@ -1267,7 +1265,7 @@ static void ConsoleCommandShowLimits(InteractiveConsole& console, [[maybe_unused
     console.WriteFormatLine("Sprites: %d/%d", spriteCount, kMaxEntities);
     console.WriteFormatLine("Map Elements: %zu/%d", tileElementCount, kMaxTileElements);
     console.WriteFormatLine("Banners: %d/%zu", bannerCount, kMaxBanners);
-    console.WriteFormatLine("Rides: %d/%d", rideCount, OpenRCT2::Limits::kMaxRidesInPark);
+    console.WriteFormatLine("Rides: %d/%d", rideCount, Limits::kMaxRidesInPark);
     console.WriteFormatLine("Images: %zu/%zu", ImageListGetUsedCount(), ImageListGetMaximum());
 }
 
@@ -1340,8 +1338,8 @@ static void ConsoleCommandLoadPark([[maybe_unused]] InteractiveConsole& console,
     if (String::indexOf(argv[0].c_str(), '/') == SIZE_MAX && String::indexOf(argv[0].c_str(), '\\') == SIZE_MAX)
     {
         // no / or \ was included. File should be in save dir.
-        auto& env = OpenRCT2::GetContext()->GetPlatformEnvironment();
-        auto directory = env.GetDirectoryPath(OpenRCT2::DirBase::user, OpenRCT2::DirId::saves);
+        auto& env = GetContext()->GetPlatformEnvironment();
+        auto directory = env.GetDirectoryPath(DirBase::user, DirId::saves);
         savePath = Path::Combine(directory, argv[0]);
     }
     else
@@ -1353,7 +1351,7 @@ static void ConsoleCommandLoadPark([[maybe_unused]] InteractiveConsole& console,
     {
         savePath += ".park";
     }
-    if (OpenRCT2::GetContext()->LoadParkFromFile(savePath))
+    if (GetContext()->LoadParkFromFile(savePath))
     {
         console.WriteFormatLine("Park %s was loaded successfully", savePath.c_str());
     }
@@ -1413,21 +1411,20 @@ static void ConsoleCommandReplayStartRecord(InteractiveConsole& console, const a
     {
         name += ".parkrep";
     }
-    std::string outPath = OpenRCT2::GetContext()->GetPlatformEnvironment().GetDirectoryPath(
-        OpenRCT2::DirBase::user, OpenRCT2::DirId::replayRecordings);
+    std::string outPath = GetContext()->GetPlatformEnvironment().GetDirectoryPath(DirBase::user, DirId::replayRecordings);
     name = Path::Combine(outPath, name);
 
     // If ticks are specified by user use that otherwise maximum ticks specified by const.
-    uint32_t maxTicks = OpenRCT2::k_MaxReplayTicks;
+    uint32_t maxTicks = k_MaxReplayTicks;
     if (argv.size() >= 2)
     {
         maxTicks = atol(argv[1].c_str());
     }
 
-    auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
+    auto* replayManager = GetContext()->GetReplayManager();
     if (replayManager->StartRecording(name, maxTicks))
     {
-        OpenRCT2::ReplayRecordInfo info;
+        ReplayRecordInfo info;
         replayManager->GetCurrentReplayInfo(info);
 
         const char* logFmt = "Replay recording started: (%s) %s";
@@ -1444,14 +1441,14 @@ static void ConsoleCommandReplayStopRecord(InteractiveConsole& console, const ar
         return;
     }
 
-    auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
+    auto* replayManager = GetContext()->GetReplayManager();
     if (!replayManager->IsRecording() && !replayManager->IsNormalising())
     {
         console.WriteFormatLine("Replay currently not recording");
         return;
     }
 
-    OpenRCT2::ReplayRecordInfo info;
+    ReplayRecordInfo info;
     replayManager->GetCurrentReplayInfo(info);
 
     if (replayManager->StopRecording())
@@ -1483,7 +1480,7 @@ static void ConsoleCommandReplayStart(InteractiveConsole& console, const argumen
 
     std::string name = argv[0];
 
-    auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
+    auto* replayManager = GetContext()->GetReplayManager();
 
     try
     {
@@ -1495,7 +1492,7 @@ static void ConsoleCommandReplayStart(InteractiveConsole& console, const argumen
         return;
     }
 
-    OpenRCT2::ReplayRecordInfo info;
+    ReplayRecordInfo info;
     replayManager->GetCurrentReplayInfo(info);
 
     std::time_t ts = info.TimeRecorded;
@@ -1521,7 +1518,7 @@ static void ConsoleCommandReplayStop(InteractiveConsole& console, const argument
         return;
     }
 
-    auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
+    auto* replayManager = GetContext()->GetReplayManager();
     if (replayManager->StopPlayback())
     {
         console.WriteFormatLine("Stopped replay");
@@ -1547,11 +1544,10 @@ static void ConsoleCommandReplayNormalise(InteractiveConsole& console, const arg
     {
         outputFile += ".parkrep";
     }
-    std::string outPath = OpenRCT2::GetContext()->GetPlatformEnvironment().GetDirectoryPath(
-        OpenRCT2::DirBase::user, OpenRCT2::DirId::replayRecordings);
+    std::string outPath = GetContext()->GetPlatformEnvironment().GetDirectoryPath(DirBase::user, DirId::replayRecordings);
     outputFile = Path::Combine(outPath, outputFile);
 
-    auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
+    auto* replayManager = GetContext()->GetReplayManager();
     if (replayManager->NormaliseReplay(inputFile, outputFile))
     {
         console.WriteFormatLine("Stopped replay");
@@ -1691,13 +1687,13 @@ static void ConsoleCommandAddNewsItem([[maybe_unused]] InteractiveConsole& conso
 
 static void ConsoleCommandProfilerReset([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
-    OpenRCT2::Profiling::ResetData();
+    Profiling::ResetData();
 }
 static void ConsoleCommandProfilerStart([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
-    if (!OpenRCT2::Profiling::IsEnabled())
+    if (!Profiling::IsEnabled())
         console.WriteLine("Started profiler");
-    OpenRCT2::Profiling::Enable();
+    Profiling::Enable();
 }
 
 static void ConsoleCommandProfilerExportCSV(
@@ -1709,7 +1705,7 @@ static void ConsoleCommandProfilerExportCSV(
     }
 
     const auto& csvFilePath = argv[0];
-    if (!OpenRCT2::Profiling::ExportCSV(csvFilePath))
+    if (!Profiling::ExportCSV(csvFilePath))
     {
         console.WriteFormatLine("Unable to export CSV file to %s", csvFilePath.c_str());
     }
@@ -1719,9 +1715,9 @@ static void ConsoleCommandProfilerExportCSV(
 
 static void ConsoleCommandProfilerStop([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
-    if (OpenRCT2::Profiling::IsEnabled())
+    if (Profiling::IsEnabled())
         console.WriteLine("Stopped profiler");
-    OpenRCT2::Profiling::Disable();
+    Profiling::Disable();
 
     // Export to CSV if argument is provided.
     if (argv.size() >= 1)
@@ -2000,7 +1996,7 @@ void InteractiveConsole::WriteFormatLine(const char* format, ...)
 
 void InteractiveConsole::BeginAsyncExecution()
 {
-    OpenRCT2::Guard::Assert(!_commandExecuting.test_and_set(), "Command already executing asynchronously");
+    Guard::Assert(!_commandExecuting.test_and_set(), "Command already executing asynchronously");
 }
 
 void InteractiveConsole::EndAsyncExecution()

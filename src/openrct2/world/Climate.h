@@ -98,4 +98,4 @@ bool ClimateIsPrecipitating();
 bool WeatherIsDry(WeatherType);
 bool ClimateHasWeatherEffect();
 OpenRCT2::Drawing::FilterPaletteID ClimateGetWeatherGloomPaletteId(const WeatherState& state);
-uint32_t ClimateGetWeatherSpriteId(const WeatherType weatherType);
+uint32_t ClimateGetWeatherSpriteId(WeatherType weatherType);

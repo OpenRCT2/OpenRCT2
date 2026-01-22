@@ -111,7 +111,7 @@ namespace OpenRCT2
         WriteConvertFromAndToMessage(sourceFileType, destinationFileType);
 
         gOpenRCT2Headless = true;
-        auto context = OpenRCT2::CreateContext();
+        auto context = CreateContext();
         context->Initialise();
 
         auto& objManager = context->GetObjectManager();

@@ -164,7 +164,7 @@ namespace OpenRCT2::Platform
     void SetUpFileAssociations();
     bool SetUpFileAssociation(
         std::string_view extension, std::string_view fileTypeText, std::string_view commandText, std::string_view commandArgs,
-        const uint32_t iconIndex);
+        uint32_t iconIndex);
     void RemoveFileAssociations();
     bool SetupUriProtocol();
 #endif

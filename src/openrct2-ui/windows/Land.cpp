@@ -127,11 +127,11 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_MOUNTAINMODE:
                     _landToolMountainMode ^= 1;
-                    _landToolPaintMode = 0;
+                    _landToolPaintMode = false;
                     invalidate();
                     break;
                 case WIDX_PAINTMODE:
-                    _landToolMountainMode = 0;
+                    _landToolMountainMode = false;
                     _landToolPaintMode ^= 1;
                     invalidate();
                     break;
@@ -612,7 +612,7 @@ namespace OpenRCT2::Ui::Windows
         void ToolUpdateLand(const ScreenCoordsXY& screenPos)
         {
             const bool mapCtrlPressed = GetInputManager().isModifierKeyPressed(ModifierKey::ctrl);
-            auto* windowMgr = Ui::GetWindowManager();
+            auto* windowMgr = GetWindowManager();
 
             if (gCurrentToolId == Tool::upDownArrow)
             {

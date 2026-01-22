@@ -40,13 +40,12 @@ namespace OpenRCT2
         TRACK_ELEMENT_COLOUR_SEAT_ROTATION_MASK = 0b11110000,
     };
 
-    constexpr const int32_t kLandEdgeDoorFrameClosed = 0;
-    constexpr const int32_t kLandEdgeDoorFrameOpening = 1;
-    constexpr const int32_t kLandEdgeDoorFrameOpen = 3;
-    constexpr const int32_t kLandEdgeDoorFrameClosing = 4;
-    constexpr const int32_t kLandEdgeDoorFrameEnd = 6;
-
-    constexpr const int32_t kLandEdgeDoorFrameCount = 8;
+    constexpr int32_t kLandEdgeDoorFrameClosed = 0;
+    constexpr int32_t kLandEdgeDoorFrameOpening = 1;
+    constexpr int32_t kLandEdgeDoorFrameOpen = 3;
+    constexpr int32_t kLandEdgeDoorFrameClosing = 4;
+    constexpr int32_t kLandEdgeDoorFrameEnd = 6;
+    constexpr int32_t kLandEdgeDoorFrameCount = 8;
 
 #pragma pack(push, 1)
 
@@ -87,7 +86,7 @@ namespace OpenRCT2
         void SetTrackType(TrackElemType newEntryIndex);
 
         ride_type_t GetRideType() const;
-        void SetRideType(const ride_type_t rideType);
+        void SetRideType(ride_type_t rideType);
 
         uint8_t GetSequenceIndex() const;
         void SetSequenceIndex(uint8_t newSequenceIndex);

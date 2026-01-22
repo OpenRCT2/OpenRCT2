@@ -33,7 +33,7 @@ public:
     const QuarterTile Rotate(uint8_t amount) const;
     uint8_t GetBaseQuarterOccupied() const;
     uint8_t GetZQuarterOccupied() const;
-    TileCornersZ GetQuarterHeights(const int32_t height) const;
+    TileCornersZ GetQuarterHeights(int32_t height) const;
 };
 
 enum

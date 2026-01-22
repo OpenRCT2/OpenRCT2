@@ -572,12 +572,11 @@ int16_t TileElementHeight(const CoordsXYZ& loc, uint8_t slope)
     int8_t quad = 0, quad_extra = 0; // which quadrant the element is in?
                                      // quad_extra is for extra height tiles
 
-    uint8_t xl, yl; // coordinates across this tile
+    // coordinates across this tile
+    uint8_t xl = loc.x & 0x1f;
+    uint8_t yl = loc.y & 0x1f;
 
     uint8_t TILE_SIZE = 32;
-
-    xl = loc.x & 0x1f;
-    yl = loc.y & 0x1f;
 
     // Slope logic:
     // Each of the four bits in slope represents that corner being raised
@@ -1769,13 +1768,11 @@ void MapInvalidateElement(const CoordsXY& elementPos, TileElement* tileElement)
 
 void MapInvalidateRegion(const CoordsXY& mins, const CoordsXY& maxs)
 {
-    int32_t x0, y0, x1, y1, left, right, top, bottom;
-
-    x0 = mins.x + 16;
-    y0 = mins.y + 16;
-
-    x1 = maxs.x + 16;
-    y1 = maxs.y + 16;
+    int32_t x0 = mins.x + 16;
+    int32_t y0 = mins.y + 16;
+    int32_t x1 = maxs.x + 16;
+    int32_t y1 = maxs.y + 16;
+    int32_t left, right, top, bottom;
 
     MapGetBoundingBox({ x0, y0, x1, y1 }, &left, &top, &right, &bottom);
 
@@ -1893,7 +1890,7 @@ TrackElement* MapGetTrackElementAt(const CoordsXYZ& trackPos)
  * @param y y units, not tiles.
  * @param z Base height.
  */
-TileElement* MapGetTrackElementAtOfType(const CoordsXYZ& trackPos, OpenRCT2::TrackElemType trackType)
+TileElement* MapGetTrackElementAtOfType(const CoordsXYZ& trackPos, TrackElemType trackType)
 {
     TileElement* tileElement = MapGetFirstElementAt(trackPos);
     if (tileElement == nullptr)
@@ -1920,7 +1917,7 @@ TileElement* MapGetTrackElementAtOfType(const CoordsXYZ& trackPos, OpenRCT2::Tra
  * @param y y units, not tiles.
  * @param z Base height.
  */
-TileElement* MapGetTrackElementAtOfTypeSeq(const CoordsXYZ& trackPos, OpenRCT2::TrackElemType trackType, int32_t sequence)
+TileElement* MapGetTrackElementAtOfTypeSeq(const CoordsXYZ& trackPos, TrackElemType trackType, int32_t sequence)
 {
     TileElement* tileElement = MapGetFirstElementAt(trackPos);
     auto trackTilePos = TileCoordsXYZ{ trackPos };
@@ -1943,7 +1940,7 @@ TileElement* MapGetTrackElementAtOfTypeSeq(const CoordsXYZ& trackPos, OpenRCT2::
     return nullptr;
 }
 
-TrackElement* MapGetTrackElementAtOfType(const CoordsXYZD& location, OpenRCT2::TrackElemType trackType)
+TrackElement* MapGetTrackElementAtOfType(const CoordsXYZD& location, TrackElemType trackType)
 {
     auto tileElement = MapGetFirstElementAt(location);
     if (tileElement != nullptr)
@@ -1966,7 +1963,7 @@ TrackElement* MapGetTrackElementAtOfType(const CoordsXYZD& location, OpenRCT2::T
     return nullptr;
 }
 
-TrackElement* MapGetTrackElementAtOfTypeSeq(const CoordsXYZD& location, OpenRCT2::TrackElemType trackType, int32_t sequence)
+TrackElement* MapGetTrackElementAtOfTypeSeq(const CoordsXYZD& location, TrackElemType trackType, int32_t sequence)
 {
     auto tileElement = MapGetFirstElementAt(location);
     if (tileElement != nullptr)
@@ -1997,7 +1994,7 @@ TrackElement* MapGetTrackElementAtOfTypeSeq(const CoordsXYZD& location, OpenRCT2
  * @param y y units, not tiles.
  * @param z Base height.
  */
-TileElement* MapGetTrackElementAtOfTypeFromRide(const CoordsXYZ& trackPos, OpenRCT2::TrackElemType trackType, RideId rideIndex)
+TileElement* MapGetTrackElementAtOfTypeFromRide(const CoordsXYZ& trackPos, TrackElemType trackType, RideId rideIndex)
 {
     TileElement* tileElement = MapGetFirstElementAt(trackPos);
     if (tileElement == nullptr)
@@ -2018,7 +2015,7 @@ TileElement* MapGetTrackElementAtOfTypeFromRide(const CoordsXYZ& trackPos, OpenR
     } while (!(tileElement++)->IsLastForTile());
 
     return nullptr;
-};
+}
 
 /**
  * Gets the track element at x, y, z that is the given track type and sequence.
@@ -2045,7 +2042,7 @@ TileElement* MapGetTrackElementAtFromRide(const CoordsXYZ& trackPos, RideId ride
     } while (!(tileElement++)->IsLastForTile());
 
     return nullptr;
-};
+}
 
 TileElement* MapGetTrackElementAtBeforeSurfaceFromRide(const CoordsXYZ& trackPos, const RideId rideIndex)
 {
@@ -2068,7 +2065,7 @@ TileElement* MapGetTrackElementAtBeforeSurfaceFromRide(const CoordsXYZ& trackPos
     } while (!(tileElement++)->IsLastForTile());
 
     return nullptr;
-};
+}
 
 /**
  * Gets the track element at x, y, z that is the given track type and sequence.
@@ -2098,7 +2095,7 @@ TileElement* MapGetTrackElementAtWithDirectionFromRide(const CoordsXYZD& trackPo
     } while (!(tileElement++)->IsLastForTile());
 
     return nullptr;
-};
+}
 
 WallElement* MapGetWallElementAt(const CoordsXYRangedZ& coords)
 {

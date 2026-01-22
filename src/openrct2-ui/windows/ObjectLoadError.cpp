@@ -15,6 +15,7 @@
 #include <openrct2/core/Http.h>
 #include <openrct2/core/Json.hpp>
 #include <openrct2/core/String.hpp>
+#include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/localisation/Formatter.h>
@@ -130,7 +131,7 @@ namespace OpenRCT2::Ui::Windows
                         ft.Add<int16_t>(static_cast<int16_t>(_downloadStatusInfo.Count));
                         ft.Add<int16_t>(static_cast<int16_t>(_downloadStatusInfo.Total));
                         ft.Add<char*>(_downloadStatusInfo.Name.c_str());
-                        OpenRCT2::FormatStringLegacy(
+                        FormatStringLegacy(
                             str_downloading_objects, sizeof(str_downloading_objects), STR_DOWNLOADING_OBJECTS, ft.Data());
                     }
                     else
@@ -139,7 +140,7 @@ namespace OpenRCT2::Ui::Windows
                         ft.Add<char*>(_downloadStatusInfo.Source.c_str());
                         ft.Add<int16_t>(static_cast<int16_t>(_downloadStatusInfo.Count));
                         ft.Add<int16_t>(static_cast<int16_t>(_downloadStatusInfo.Total));
-                        OpenRCT2::FormatStringLegacy(
+                        FormatStringLegacy(
                             str_downloading_objects, sizeof(str_downloading_objects), STR_DOWNLOADING_OBJECTS_FROM, ft.Data());
                     }
 
@@ -180,7 +181,7 @@ namespace OpenRCT2::Ui::Windows
                             auto data = reinterpret_cast<uint8_t*>(response.body.data());
                             auto dataLen = response.body.size();
 
-                            auto& objRepo = OpenRCT2::GetContext()->GetObjectRepository();
+                            auto& objRepo = GetContext()->GetObjectRepository();
                             objRepo.AddObjectFromFile(ObjectGeneration::DAT, name, data, dataLen);
 
                             std::lock_guard<std::mutex> guard(_downloadedEntriesMutex);
@@ -380,7 +381,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             const auto clip = stream.str();
-            OpenRCT2::GetContext()->GetUiContext().SetClipboardText(clip.c_str());
+            GetContext()->GetUiContext().SetClipboardText(clip.c_str());
         }
 
         void SelectObjectFromList(const int32_t index)
@@ -424,7 +425,7 @@ namespace OpenRCT2::Ui::Windows
                     if (selectedListItem > -1 && selectedListItem < numListItems)
                     {
                         const auto name = std::string(_invalidEntries[selectedListItem].GetName());
-                        OpenRCT2::GetContext()->GetUiContext().SetClipboardText(name.c_str());
+                        GetContext()->GetUiContext().SetClipboardText(name.c_str());
                     }
                     break;
                 case WIDX_COPY_ALL:
@@ -492,7 +493,7 @@ namespace OpenRCT2::Ui::Windows
             invalidateWidget(WIDX_SCROLL);
         }
 
-        void onDraw(Drawing::RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             WindowDrawWidgets(*this, rt);
 
@@ -510,12 +511,12 @@ namespace OpenRCT2::Ui::Windows
             DrawTextEllipsised(rt, screenPos + ScreenCoordsXY{ 0, 29 }, kWindowSize.width - 5, STR_BLACK_STRING, ft);
         }
 
-        void onScrollDraw(const int32_t scrollIndex, Drawing::RenderTarget& rt) override
+        void onScrollDraw(const int32_t scrollIndex, RenderTarget& rt) override
         {
             auto rtCoords = ScreenCoordsXY{ rt.x, rt.y };
             Rectangle::fill(
                 rt, { rtCoords, rtCoords + ScreenCoordsXY{ rt.width - 1, rt.height - 1 } },
-                ColourMapA[colours[1].colour].mid_light);
+                getColourMap(colours[1].colour).midLight);
             const int32_t listWidth = widgets[WIDX_SCROLL].width() - 1;
 
             for (int32_t i = 0; i < numListItems; i++)
@@ -532,11 +533,11 @@ namespace OpenRCT2::Ui::Windows
                                                     { listWidth, screenCoords.y + kScrollableRowHeight - 1 } };
                 // If hovering over item, change the color and fill the backdrop.
                 if (i == selectedListItem)
-                    Rectangle::fill(rt, screenRect, ColourMapA[colours[1].colour].darker);
+                    Rectangle::fill(rt, screenRect, getColourMap(colours[1].colour).darker);
                 else if (i == _highlightedIndex)
-                    Rectangle::fill(rt, screenRect, ColourMapA[colours[1].colour].mid_dark);
+                    Rectangle::fill(rt, screenRect, getColourMap(colours[1].colour).midDark);
                 else if ((i & 1) != 0) // odd / even check
-                    Rectangle::fill(rt, screenRect, ColourMapA[colours[1].colour].light);
+                    Rectangle::fill(rt, screenRect, getColourMap(colours[1].colour).light);
 
                 // Draw the actual object entry's name...
                 screenCoords.x = kNameColLeft - 3;
@@ -576,7 +577,7 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* ObjectLoadErrorOpen(utf8* path, size_t numMissingObjects, const ObjectEntryDescriptor* missingObjects)
     {
         // Check if window is already open
-        auto* windowMgr = Ui::GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         auto* window = windowMgr->BringToFrontByClass(WindowClass::objectLoadError);
         if (window == nullptr)
         {

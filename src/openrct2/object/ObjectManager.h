@@ -51,7 +51,7 @@ namespace OpenRCT2
         virtual Object* LoadObject(const ObjectEntryDescriptor& descriptor) = 0;
         virtual Object* LoadObject(const ObjectEntryDescriptor& descriptor, ObjectEntryIndex slot) = 0;
         virtual Object* LoadRepositoryItem(const ObjectRepositoryItem& ori) = 0;
-        virtual void LoadObjects(const ObjectList& entries, const bool reportProgress = false) = 0;
+        virtual void LoadObjects(const ObjectList& entries, bool reportProgress = false) = 0;
         virtual void UnloadObjects(const std::vector<ObjectEntryDescriptor>& entries) = 0;
         virtual void UnloadAllTransient() = 0;
         virtual void UnloadAll() = 0;
@@ -70,5 +70,5 @@ namespace OpenRCT2
     Object* ObjectManagerLoadObject(const RCTObjectEntry* entry);
     void ObjectManagerUnloadObjects(const std::vector<ObjectEntryDescriptor>& entries);
     void ObjectManagerUnloadAllObjects();
-    [[nodiscard]] StringId ObjectManagerGetSourceGameString(const ObjectSourceGame sourceGame);
+    [[nodiscard]] StringId ObjectManagerGetSourceGameString(ObjectSourceGame sourceGame);
 } // namespace OpenRCT2

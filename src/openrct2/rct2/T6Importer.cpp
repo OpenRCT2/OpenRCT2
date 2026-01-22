@@ -41,7 +41,7 @@ namespace OpenRCT2::RCT2
     class TD6Importer final : public ITrackImporter
     {
     private:
-        OpenRCT2::MemoryStream _stream;
+        MemoryStream _stream;
         std::string _name;
 
     public:
@@ -55,14 +55,14 @@ namespace OpenRCT2::RCT2
             if (String::iequals(extension, ".td6"))
             {
                 _name = GetNameFromTrackPath(path);
-                auto fs = OpenRCT2::FileStream(path, OpenRCT2::FileMode::open);
+                auto fs = FileStream(path, FileMode::open);
                 return LoadFromStream(&fs);
             }
 
             throw std::runtime_error("Invalid RCT2 track extension.");
         }
 
-        bool LoadFromStream(OpenRCT2::IStream* stream) override
+        bool LoadFromStream(IStream* stream) override
         {
             auto chunkReader = SawyerChunkReader(stream);
             auto data = chunkReader.ReadChunkTrack();
@@ -139,15 +139,16 @@ namespace OpenRCT2::RCT2
             const auto& rtd = GetRideTypeDescriptor(td->trackAndVehicle.rtdIndex);
             if (rtd.specialType == RtdSpecialType::maze)
             {
-                TD46MazeElement t6MazeElement{};
-                t6MazeElement.all = !0;
-                while (t6MazeElement.all != 0)
+                TD46MazeElement t6MazeElement;
+                while (true)
                 {
                     _stream.Read(&t6MazeElement, sizeof(TD46MazeElement));
-                    if (t6MazeElement.all != 0)
+                    if (t6MazeElement.all == 0)
                     {
-                        importMazeElement(*td, t6MazeElement);
+                        break;
                     }
+
+                    importMazeElement(*td, t6MazeElement);
                 }
             }
             else
@@ -159,8 +160,8 @@ namespace OpenRCT2::RCT2
                     _stream.Read(&t6TrackElement, sizeof(TD46TrackElement));
                     TrackDesignTrackElement trackElement{};
 
-                    OpenRCT2::TrackElemType trackType;
-                    if (t6TrackElement.Type == OpenRCT2::RCT12::TrackElemType::invertedUp90ToFlatQuarterLoopAlias)
+                    TrackElemType trackType;
+                    if (t6TrackElement.Type == RCT12::TrackElemType::invertedUp90ToFlatQuarterLoopAlias)
                     {
                         trackType = TrackElemType::multiDimInvertedUp90ToFlatQuarterLoop;
                     }

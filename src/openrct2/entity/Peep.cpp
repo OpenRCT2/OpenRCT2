@@ -860,8 +860,6 @@ void Peep::UpdateFalling()
                 saved_height = map_height;
                 saved_map = tile_element;
             } // If not a path or surface go see next element
-            else
-                continue;
         } while (!(tile_element++)->IsLastForTile());
     }
 
@@ -1175,7 +1173,7 @@ void PeepUpdateCrowdNoise()
 {
     PROFILED_FUNCTION();
 
-    if (OpenRCT2::Audio::gGameSoundsOff)
+    if (gGameSoundsOff)
         return;
 
     if (!Config::Get().sound.soundEnabled)
@@ -1223,11 +1221,9 @@ void PeepUpdateCrowdNoise()
     }
     else
     {
-        int32_t volume;
-
         // Formula to scale peeps to dB where peeps [0, 120] scales approximately logarithmically to [-3314, -150] dB/100
         // 207360000 maybe related to DSBVOLUME_MIN which is -10,000 (dB/100)
-        volume = 120 - std::min(visiblePeeps, 120);
+        int32_t volume = 120 - std::min(visiblePeeps, 120);
         volume = volume * volume * volume * volume;
         volume = (viewport->zoom.ApplyInversedTo(207360000 - volume) - 207360000) / 65536 - 150;
 
@@ -1237,7 +1233,7 @@ void PeepUpdateCrowdNoise()
             _crowdSoundChannel = CreateAudioChannel(SoundId::crowdAmbience, true, 0);
             if (_crowdSoundChannel != nullptr)
             {
-                _crowdSoundChannel->SetGroup(OpenRCT2::Audio::MixerGroup::Sound);
+                _crowdSoundChannel->SetGroup(MixerGroup::Sound);
             }
         }
         if (_crowdSoundChannel != nullptr)
@@ -1272,7 +1268,7 @@ void PeepApplause()
     }
 
     // Play applause noise
-    OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::applause, 0, ContextGetWidth() / 2);
+    Play(SoundId::applause, 0, ContextGetWidth() / 2);
 }
 
 /**
@@ -2571,12 +2567,12 @@ int32_t PeepCompare(const EntityId sprite_index_a, const EntityId sprite_index_b
     char nameA[256]{};
     Formatter ft;
     peep_a->FormatNameTo(ft);
-    OpenRCT2::FormatStringLegacy(nameA, sizeof(nameA), STR_STRINGID, ft.Data());
+    FormatStringLegacy(nameA, sizeof(nameA), STR_STRINGID, ft.Data());
 
     char nameB[256]{};
     ft.Rewind();
     peep_b->FormatNameTo(ft);
-    OpenRCT2::FormatStringLegacy(nameB, sizeof(nameB), STR_STRINGID, ft.Data());
+    FormatStringLegacy(nameB, sizeof(nameB), STR_STRINGID, ft.Data());
     return String::logicalCmp(nameA, nameB);
 }
 

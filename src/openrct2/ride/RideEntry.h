@@ -99,4 +99,4 @@ struct RideObjectEntry
     }
 };
 
-RideNaming GetRideNaming(const ride_type_t rideType, const RideObjectEntry* rideEntry);
+RideNaming GetRideNaming(ride_type_t rideType, const RideObjectEntry* rideEntry);

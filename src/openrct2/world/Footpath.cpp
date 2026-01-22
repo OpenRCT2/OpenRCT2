@@ -782,15 +782,14 @@ void FootpathChainRideQueue(
     RideId rideIndex, StationIndex entranceIndex, const CoordsXY& initialFootpathPos, TileElement* const initialTileElement,
     int32_t direction)
 {
-    TileElement *lastPathElement, *lastQueuePathElement;
+    TileElement* lastPathElement = nullptr;
+    TileElement* lastQueuePathElement = nullptr;
     auto tileElement = initialTileElement;
     auto curQueuePos = initialFootpathPos;
     auto lastPath = curQueuePos;
     int32_t baseZ = tileElement->GetBaseZ();
     int32_t lastPathDirection = direction;
 
-    lastPathElement = nullptr;
-    lastQueuePathElement = nullptr;
     for (;;)
     {
         if (tileElement->GetType() == TileElementType::Path)
@@ -1778,19 +1777,19 @@ void FootpathRemoveEdgesAt(const CoordsXY& footpathPos, TileElement* tileElement
 
 const FootpathObject* GetLegacyFootpathEntry(ObjectEntryIndex entryIndex)
 {
-    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
+    auto& objMgr = GetContext()->GetObjectManager();
     return objMgr.GetLoadedObject<FootpathObject>(entryIndex);
 }
 
 const FootpathSurfaceObject* GetPathSurfaceEntry(ObjectEntryIndex entryIndex)
 {
-    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
+    auto& objMgr = GetContext()->GetObjectManager();
     return objMgr.GetLoadedObject<FootpathSurfaceObject>(entryIndex);
 }
 
 const FootpathRailingsObject* GetPathRailingsEntry(ObjectEntryIndex entryIndex)
 {
-    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
+    auto& objMgr = GetContext()->GetObjectManager();
     return objMgr.GetLoadedObject<FootpathRailingsObject>(entryIndex);
 }
 

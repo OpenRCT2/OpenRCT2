@@ -505,7 +505,7 @@ static void ShortcutToggleWallSlope()
         return;
     }
 
-    const TileElement* tileElement = OpenRCT2::TileInspector::GetSelectedElement();
+    const TileElement* tileElement = TileInspector::GetSelectedElement();
 
     // Ensure an element is selected and it's a wall
     if (tileElement == nullptr || tileElement->GetType() != TileElementType::Wall)
@@ -752,7 +752,7 @@ void ShortcutManager::registerDefaultShortcuts()
     // clang-format off
     // Interface
     registerShortcut(ShortcutId::kInterfaceCloseTop, STR_SHORTCUT_CLOSE_TOP_MOST_WINDOW, "BACKSPACE", []() {
-        auto* windowMgr = Ui::GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         windowMgr->CloseTop();
     });
     registerShortcut(ShortcutId::kInterfaceCloseAll, STR_SHORTCUT_CLOSE_ALL_FLOATING_WINDOWS, "SHIFT+BACKSPACE", []() {
@@ -796,7 +796,7 @@ void ShortcutManager::registerDefaultShortcuts()
     registerShortcut(ShortcutId::kInterfaceGiantScreenshot, STR_SHORTCUT_GIANT_SCREENSHOT, "CTRL+SHIFT+S", ScreenshotGiant);
     registerShortcut(ShortcutId::kInterfaceLoadGame, STR_LOAD_GAME, "CTRL+L", ShortcutLoadGame);
     registerShortcut(ShortcutId::kInterfaceSaveGame, STR_SAVE_GAME, "CTRL+F10", ShortcutQuickSaveGame);
-    registerShortcut(ShortcutId::kInterfaceMute, STR_SHORTCUT_MUTE_SOUND, OpenRCT2::Audio::ToggleAllSounds);
+    registerShortcut(ShortcutId::kInterfaceMute, STR_SHORTCUT_MUTE_SOUND, Audio::ToggleAllSounds);
     registerShortcut(ShortcutId::kInterfaceSceneryPicker, STR_SHORTCUT_OPEN_SCENERY_PICKER, ShortcutOpenSceneryPicker);
     registerShortcut(
         ShortcutId::kInterfaceDisableClearance, STR_SHORTCUT_TOGGLE_CLEARANCE_CHECKS, ShortcutToggleClearanceChecks);

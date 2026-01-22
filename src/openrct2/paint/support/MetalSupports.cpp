@@ -21,8 +21,6 @@ using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::Numerics;
 
-constexpr auto kMetalSupportSkip = 9 * 4 * 2;
-
 // There are 13 types of metal support graphics, including rotated versions. A graphic showing all of them is available here:
 // https://cloud.githubusercontent.com/assets/737603/19420485/7eaba28e-93ec-11e6-83cb-03190accc094.png
 enum class MetalSupportGraphic : uint8_t
@@ -87,47 +85,119 @@ static constexpr CoordsXY kMetalSupportBoundBoxOffsets[] = {
     { 16, 28 },
 };
 
+struct RepositionPair
+{
+    MetalSupportPlace place = MetalSupportPlace::centre;
+    uint8_t crossBeamIndex = 0xFF;
+    
+    constexpr bool isNull() const
+    {
+        return crossBeamIndex == 0xFF;
+    }
+};
+struct RepositionRow
+{
+    std::array<RepositionPair, kNumOrthogonalDirections> pairs;
+    
+    constexpr RepositionRow(const RepositionPair pair)
+    {
+        pairs = { pair, pair, pair, pair };
+    }
+    
+    constexpr RepositionRow(const RepositionPair pair1, const RepositionPair pair2, const RepositionPair pair3, const RepositionPair pair4)
+    {
+        pairs = { pair1, pair2, pair3, pair4 };
+    }
+    
+    constexpr RepositionPair operator[](const Direction direction) const noexcept
+    {
+        return pairs[direction];
+    }
+};
+
+constexpr uint8_t kNumMetalSupportPlaces = 9;
+using RepositionAttempt = std::array<RepositionRow, kNumMetalSupportPlaces>;
+
+static constexpr RepositionAttempt kMetalSupportSegmentOffsets0 = {
+    {
+         { { MetalSupportPlace::topLeftSide, 2 } },     /* topCorner          */
+         { { MetalSupportPlace::bottomLeftSide, 1 } },  /* leftCorner         */
+         { { MetalSupportPlace::topRightSide, 3 } },    /* rightCorner        */
+         { { MetalSupportPlace::bottomRightSide, 0 } }, /* bottomCorner       */
+         {                                               
+             { MetalSupportPlace::topLeftSide, 3 },            /* centre, rotation 0 */
+             { MetalSupportPlace::topRightSide, 0 },           /* centre, rotation 1 */
+             { MetalSupportPlace::bottomRightSide, 1 },        /* centre, rotation 2 */
+             { MetalSupportPlace::bottomLeftSide, 2 }          /* centre, rotation 3 */
+         },                                             
+         { { MetalSupportPlace::leftCorner, 2 } },      /* topLeftSide        */
+         { { MetalSupportPlace::topCorner, 3 } },       /* topRightSide       */
+         { { MetalSupportPlace::bottomCorner, 1 } },    /* bottomLeftSide     */
+         { { MetalSupportPlace::rightCorner, 0 } },     /* bottomRightSide    */
+    }
+};
+
+static constexpr RepositionAttempt kMetalSupportSegmentOffsets1 = {
+{
+         { { MetalSupportPlace::topRightSide, 1 } },    /* topCorner          */
+         { { MetalSupportPlace::topLeftSide, 0 } },     /* leftCorner         */
+         { { MetalSupportPlace::bottomRightSide, 2 } }, /* rightCorner        */
+         { { MetalSupportPlace::bottomLeftSide, 3 } },  /* bottomCorner       */
+         { 
+             { MetalSupportPlace::topRightSide, 0 },           /* centre, rotation 0 */
+             { MetalSupportPlace::bottomRightSide, 1},         /* centre, rotation 1 */
+             { MetalSupportPlace::bottomLeftSide, 2},          /* centre, rotation 2 */
+             { MetalSupportPlace::topLeftSide, 3 }             /* centre, rotation 3 */
+         },
+         { { MetalSupportPlace::topCorner, 0 } },       /* topLeftSide        */
+         { { MetalSupportPlace::rightCorner, 1 } },     /* topRightSide       */
+         { { MetalSupportPlace::leftCorner, 3 } },      /* bottomLeftSide     */
+         { { MetalSupportPlace::bottomCorner, 2 } },    /* bottomRightSide    */
+    }
+};
+static constexpr RepositionAttempt kMetalSupportSegmentOffsets2 = {
+    {
+         { { MetalSupportPlace::leftCorner, 6 } },      /* topCorner          */ 
+         { { MetalSupportPlace::bottomCorner, 5 } },    /* leftCorner         */
+         { { MetalSupportPlace::topCorner, 7 } },       /* rightCorner        */
+         { { MetalSupportPlace::rightCorner, 4 } },     /* bottomCorner       */
+         {                                               
+             { MetalSupportPlace::bottomRightSide, 1 },        /* centre, rotation 0 */ 
+             { MetalSupportPlace::bottomLeftSide, 2 },         /* centre, rotation 1 */
+             { MetalSupportPlace::topLeftSide, 3 },            /* centre, rotation 2 */
+             { MetalSupportPlace::topRightSide, 0 }            /* centre, rotation 3 */
+         },                                             
+         { { MetalSupportPlace::centre, 1 } },          /* topLeftSide        */
+         { { MetalSupportPlace::centre, 2 } },          /* topRightSide       */
+         { { MetalSupportPlace::centre, 0 } },          /* bottomLeftSide     */
+         { { MetalSupportPlace::centre, 3 } },          /* bottomRightSide    */
+    }
+};
+static constexpr RepositionAttempt kMetalSupportSegmentOffsets3 = {
+    {
+         { { MetalSupportPlace::rightCorner, 5 } },     /* topCorner          */
+         { { MetalSupportPlace::topCorner, 4 } },       /* leftCorner         */
+         { { MetalSupportPlace::bottomCorner, 6 } },    /* rightCorner        */
+         { { MetalSupportPlace::leftCorner, 7 } },      /* bottomCorner       */
+         {                                               
+             { MetalSupportPlace::bottomLeftSide, 2 },         /* centre, rotation 0 */
+             { MetalSupportPlace::topLeftSide, 3 },            /* centre, rotation 1 */
+             { MetalSupportPlace::topRightSide, 0 },           /* centre, rotation 2 */
+             { MetalSupportPlace::bottomRightSide, 1 }         /* centre, rotation 3 */
+         },                                             
+         { { MetalSupportPlace::bottomRightSide, 5 } }, /* topLeftSide        */
+         { { MetalSupportPlace::bottomLeftSide, 6 } },  /* topRightSide       */
+         { { MetalSupportPlace::topRightSide, 4 } },    /* bottomLeftSide     */
+         { { MetalSupportPlace::topLeftSide, 7 } },     /* bottomRightSide    */
+    }
+};
+
 /** rct2: 0x0097AF32 */
-static constexpr uint8_t kMetalSupportSegmentOffsets[] = {
-    5, 2, 5, 2, 5, 2, 5, 2,
-    7, 1, 7, 1, 7, 1, 7, 1,
-    6, 3, 6, 3, 6, 3, 6, 3,
-    8, 0, 8, 0, 8, 0, 8, 0,
-    5, 3, 6, 0, 8, 1, 7, 2,
-    1, 2, 1, 2, 1, 2, 1, 2,
-    0, 3, 0, 3, 0, 3, 0, 3,
-    3, 1, 3, 1, 3, 1, 3, 1,
-    2, 0, 2, 0, 2, 0, 2, 0,
-
-    6, 1, 6, 1, 6, 1, 6, 1,
-    5, 0, 5, 0, 5, 0, 5, 0,
-    8, 2, 8, 2, 8, 2, 8, 2,
-    7, 3, 7, 3, 7, 3, 7, 3,
-    6, 0, 8, 1, 7, 2, 5, 3,
-    0, 0, 0, 0, 0, 0, 0, 0,
-    2, 1, 2, 1, 2, 1, 2, 1,
-    1, 3, 1, 3, 1, 3, 1, 3,
-    3, 2, 3, 2, 3, 2, 3, 2,
-
-    1, 6, 1, 6, 1, 6, 1, 6,
-    3, 5, 3, 5, 3, 5, 3, 5,
-    0, 7, 0, 7, 0, 7, 0, 7,
-    2, 4, 2, 4, 2, 4, 2, 4,
-    8, 1, 7, 2, 5, 3, 6, 0,
-    4, 1, 4, 1, 4, 1, 4, 1,
-    4, 2, 4, 2, 4, 2, 4, 2,
-    4, 0, 4, 0, 4, 0, 4, 0,
-    4, 3, 4, 3, 4, 3, 4, 3,
-
-    2, 5, 2, 5, 2, 5, 2, 5,
-    0, 4, 0, 4, 0, 4, 0, 4,
-    3, 6, 3, 6, 3, 6, 3, 6,
-    1, 7, 1, 7, 1, 7, 1, 7,
-    7, 2, 5, 3, 6, 0, 8, 1,
-    8, 5, 8, 5, 8, 5, 8, 5,
-    7, 6, 7, 6, 7, 6, 7, 6,
-    6, 4, 6, 4, 6, 4, 6, 4,
-    5, 7, 5, 7, 5, 7, 5, 7,
+static constexpr std::array<RepositionAttempt, 4> kMetalSupportSegmentOffsets = {
+    kMetalSupportSegmentOffsets0,
+    kMetalSupportSegmentOffsets1,
+    kMetalSupportSegmentOffsets2,
+    kMetalSupportSegmentOffsets3,
 };
 
 /** rct2: 0x0097B052, 0x0097B053 */
@@ -324,29 +394,22 @@ static bool MetalSupportsPaintSetupCommon(
         if (currentHeight < 0)
             return false;
 
-        uint16_t baseIndex = session.CurrentRotation * 2;
-        uint8_t newSegment = kMetalSupportSegmentOffsets[baseIndex + segment * 8];
-        if (currentHeight <= supportSegments[newSegment].height)
+        RepositionPair newPlacement = {};
+        for (size_t attempt = 0; attempt < kMetalSupportSegmentOffsets.size(); attempt++)
         {
-            baseIndex += kMetalSupportSkip;
-            newSegment = kMetalSupportSegmentOffsets[baseIndex + segment * 8];
-            if (currentHeight <= supportSegments[newSegment].height)
+            const auto& candidate = kMetalSupportSegmentOffsets[attempt][segment][session.CurrentRotation];
+            if (currentHeight > supportSegments[EnumValue(candidate.place)].height)
             {
-                baseIndex += kMetalSupportSkip;
-                newSegment = kMetalSupportSegmentOffsets[baseIndex + segment * 8];
-                if (currentHeight <= supportSegments[newSegment].height)
-                {
-                    baseIndex += kMetalSupportSkip;
-                    newSegment = kMetalSupportSegmentOffsets[baseIndex + segment * 8];
-                    if (currentHeight <= supportSegments[newSegment].height)
-                    {
-                        return false;
-                    }
-                }
+                newPlacement = candidate;
+                break;
             }
         }
+        if (newPlacement.isNull())
+        {
+            return false;
+        }
 
-        const uint8_t crossBeamIndex = kMetalSupportSegmentOffsets[baseIndex + segment * 8 + 1];
+        const uint8_t crossBeamIndex = newPlacement.crossBeamIndex;
         if constexpr (typeB)
         {
             if (crossBeamIndex >= kMetalSupportCrossbeamTwoSegmentOffsetIndex)
@@ -358,7 +421,7 @@ static bool MetalSupportsPaintSetupCommon(
             { kMetalSupportBoundBoxOffsets[segment] + kMetalSupportCrossBeamBoundBoxOffsets[crossBeamIndex], currentHeight },
             { kMetalSupportCrossBeamBoundBoxLengths[crossBeamIndex], 1 });
 
-        segment = newSegment;
+        segment = EnumValue(newPlacement.place);
     }
 
     const int16_t crossbeamHeight = currentHeight;
@@ -421,8 +484,8 @@ static bool MetalSupportsPaintSetupCommon(
 
     // Draw extra support segments above height with a zero height bounding box
     currentHeight = heightExtra < 0 ? height - 1 : height;
-    const auto extraSupportBeamImageIndex = typeB ? kSupportBasesAndBeams[supportType].beamUncapped
-                                                  : kSupportBasesAndBeams[supportType].beamCapped;
+    const auto extraSupportBeamImageIndex = heightExtra >= 0 ? kSupportBasesAndBeams[supportType].beamUncapped
+                                                             : kSupportBasesAndBeams[supportType].beamCapped;
     const auto totalHeightExtra = heightExtra < 0 ? currentHeight + (-heightExtra) : currentHeight + heightExtra;
     const CoordsXYZ boundBoxOffset = CoordsXYZ(kMetalSupportBoundBoxOffsets[originalSegment], currentHeight);
     while (true)

@@ -9,58 +9,10 @@
 
 #include "Colour.h"
 
-#include "../SpriteIds.h"
 #include "../core/EnumMap.hpp"
-#include "../core/EnumUtils.hpp"
 #include "../drawing/Drawing.h"
 
-#include <cmath>
-
 using namespace OpenRCT2::Drawing;
-
-ColourShadeMap ColourMapA[COLOUR_COUNT] = {};
-
-enum
-{
-    INDEX_COLOUR_0 = 243,
-    INDEX_COLOUR_1 = 245,
-    INDEX_DARKEST = 245,
-    INDEX_DARKER = 246,
-    INDEX_DARK = 247,
-    INDEX_MID_DARK = 248,
-    INDEX_MID_LIGHT = 249,
-    INDEX_LIGHT = 250,
-    INDEX_LIGHTER = 251,
-    INDEX_LIGHTEST = 252,
-    INDEX_COLOUR_10 = 253,
-    INDEX_COLOUR_11 = 254,
-};
-
-void ColoursInitMaps()
-{
-    // Get colour maps from g1
-    for (int32_t i = 0; i < COLOUR_COUNT; i++)
-    {
-        // Get palette index in g1 / g2
-        const auto paletteIndex = (i < kColourNumOriginal) ? SPR_PALETTE_2_START : SPR_G2_PALETTE_BEGIN - kColourNumOriginal;
-        const auto* g1 = GfxGetG1Element(paletteIndex + i);
-        if (g1 != nullptr)
-        {
-            ColourMapA[i].colour_0 = static_cast<PaletteIndex>(g1->offset[INDEX_COLOUR_0]);
-            ColourMapA[i].colour_1 = static_cast<PaletteIndex>(g1->offset[INDEX_COLOUR_1]);
-            ColourMapA[i].darkest = static_cast<PaletteIndex>(g1->offset[INDEX_DARKEST]);
-            ColourMapA[i].darker = static_cast<PaletteIndex>(g1->offset[INDEX_DARKER]);
-            ColourMapA[i].dark = static_cast<PaletteIndex>(g1->offset[INDEX_DARK]);
-            ColourMapA[i].mid_dark = static_cast<PaletteIndex>(g1->offset[INDEX_MID_DARK]);
-            ColourMapA[i].mid_light = static_cast<PaletteIndex>(g1->offset[INDEX_MID_LIGHT]);
-            ColourMapA[i].light = static_cast<PaletteIndex>(g1->offset[INDEX_LIGHT]);
-            ColourMapA[i].lighter = static_cast<PaletteIndex>(g1->offset[INDEX_LIGHTER]);
-            ColourMapA[i].lightest = static_cast<PaletteIndex>(g1->offset[INDEX_LIGHTEST]);
-            ColourMapA[i].colour_10 = static_cast<PaletteIndex>(g1->offset[INDEX_COLOUR_10]);
-            ColourMapA[i].colour_11 = static_cast<PaletteIndex>(g1->offset[INDEX_COLOUR_11]);
-        }
-    }
-}
 
 namespace OpenRCT2::Colour
 {
@@ -139,71 +91,3 @@ namespace OpenRCT2::Colour
     }
 
 } // namespace OpenRCT2::Colour
-
-#ifndef DISABLE_TTF
-static BlendColourMapType BlendColourMap = {};
-
-static bool BlendColourMapInitialised = false;
-
-static PaletteIndex FindClosestPaletteIndex(uint8_t red, uint8_t green, uint8_t blue)
-{
-    PaletteIndex closest = PaletteIndex::pi255;
-    int32_t closestDistance = INT32_MAX;
-
-    for (auto i = PaletteIndex::pi0; i < PaletteIndex::pi230; i = static_cast<PaletteIndex>(EnumValue(i) + 1))
-    {
-        const auto& paletteEntry = gPalette[EnumValue(i)];
-        const int32_t distance = std::pow(paletteEntry.Red - red, 2) + std::pow(paletteEntry.Green - green, 2)
-            + std::pow(paletteEntry.Blue - blue, 2);
-
-        if (distance < closestDistance)
-        {
-            closest = i;
-            closestDistance = distance;
-        }
-    }
-
-    return closest;
-}
-
-static void InitBlendColourMap()
-{
-    for (size_t i = 0; i < kGamePaletteSize; i++)
-    {
-        for (size_t j = i; j < kGamePaletteSize; j++)
-        {
-            uint8_t red = (gPalette[i].Red + gPalette[j].Red) / 2;
-            uint8_t green = (gPalette[i].Green + gPalette[j].Green) / 2;
-            uint8_t blue = (gPalette[i].Blue + gPalette[j].Blue) / 2;
-
-            auto colour = FindClosestPaletteIndex(red, green, blue);
-            BlendColourMap[i][j] = colour;
-            BlendColourMap[j][i] = colour;
-        }
-    }
-    BlendColourMapInitialised = true;
-}
-
-BlendColourMapType* GetBlendColourMap()
-{
-    if (!BlendColourMapInitialised)
-    {
-        InitBlendColourMap();
-    }
-    return &BlendColourMap;
-}
-
-PaletteIndex BlendColours(const PaletteIndex paletteIndex1, const PaletteIndex paletteIndex2)
-{
-    if (!BlendColourMapInitialised)
-    {
-        InitBlendColourMap();
-    }
-    return BlendColourMap[EnumValue(paletteIndex1)][EnumValue(paletteIndex2)];
-}
-#else
-BlendColourMapType* GetBlendColourMap()
-{
-    return nullptr;
-}
-#endif

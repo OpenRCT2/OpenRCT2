@@ -19,6 +19,7 @@
 #include <openrct2/actions/RideDemolishAction.h>
 #include <openrct2/actions/RideSetStatusAction.h>
 #include <openrct2/core/String.hpp>
+#include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/interface/Colour.h>
@@ -587,7 +588,7 @@ namespace OpenRCT2::Ui::Windows
          *
          *  rct2: 0x006B3235
          */
-        void onDraw(Drawing::RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             WindowDrawWidgets(*this, rt);
             DrawTabImages(rt);
@@ -624,11 +625,11 @@ namespace OpenRCT2::Ui::Windows
          *
          *  rct2: 0x006B3240
          */
-        void onScrollDraw(int32_t scrollIndex, Drawing::RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             auto rtCoords = ScreenCoordsXY{ rt.x, rt.y };
             Rectangle::fill(
-                rt, { rtCoords, rtCoords + ScreenCoordsXY{ rt.width, rt.height } }, ColourMapA[colours[1].colour].mid_light);
+                rt, { rtCoords, rtCoords + ScreenCoordsXY{ rt.width, rt.height } }, getColourMap(colours[1].colour).midLight);
 
             auto y = 0;
             for (size_t i = 0; i < _rideList.size(); i++)
@@ -881,7 +882,7 @@ namespace OpenRCT2::Ui::Windows
          *
          *  rct2: 0x006B38EA
          */
-        void DrawTabImages(Drawing::RenderTarget& rt)
+        void DrawTabImages(RenderTarget& rt)
         {
             int32_t sprite_idx;
 
