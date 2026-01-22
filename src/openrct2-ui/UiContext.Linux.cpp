@@ -394,7 +394,7 @@ namespace OpenRCT2::Ui
                 }
             }
 
-            return options.size();
+            return -1;
         }
 
     private:
