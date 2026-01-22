@@ -114,6 +114,7 @@ namespace OpenRCT2::Config
     static const auto Enum_Temperature = ConfigEnum<TemperatureUnit>({
         ConfigEnumEntry<TemperatureUnit>("CELSIUS", TemperatureUnit::Celsius),
         ConfigEnumEntry<TemperatureUnit>("FAHRENHEIT", TemperatureUnit::Fahrenheit),
+        ConfigEnumEntry<TemperatureUnit>("KELVIN", TemperatureUnit::Kelvin),
     });
 
     static const auto Enum_FileBrowserSort = ConfigEnum<FileBrowserSort>({

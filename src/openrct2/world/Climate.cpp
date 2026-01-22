@@ -102,6 +102,11 @@ int32_t ClimateCelsiusToFahrenheit(int32_t celsius)
     return (celsius * 29) / 16 + 32;
 }
 
+int32_t ClimateCelsiusToKelvin(int32_t celsius)
+{
+    return celsius + 273;
+}
+
 /**
  * Set climate and determine start weather.
  */

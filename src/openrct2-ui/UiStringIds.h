@@ -2300,5 +2300,8 @@ namespace OpenRCT2
         STR_ADJUST_LARGER_WATER_TIP = 2381,
         STR_ADJUST_SMALLER_WATER_TIP = 2380,
         STR_WATER = 2383,
+
+        STR_KELVIN = 7017,
+        STR_KELVIN_VALUE = 7018,
     };
 } // namespace OpenRCT2

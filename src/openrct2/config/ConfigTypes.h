@@ -40,7 +40,8 @@ namespace OpenRCT2
     enum class TemperatureUnit : int32_t
     {
         Celsius,
-        Fahrenheit
+        Fahrenheit,
+        Kelvin
     };
 
     enum class ScaleQuality : int32_t

@@ -1244,8 +1244,9 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_TEMPERATURE_DROPDOWN:
                     gDropdown.items[0] = Dropdown::MenuLabel(STR_CELSIUS);
                     gDropdown.items[1] = Dropdown::MenuLabel(STR_FAHRENHEIT);
+                    gDropdown.items[2] = Dropdown::MenuLabel(STR_KELVIN);
 
-                    ShowDropdown(widget, 2);
+                    ShowDropdown(widget, 3);
 
                     gDropdown.items[static_cast<int32_t>(Config::Get().general.temperatureFormat)].setChecked(true);
                     break;
@@ -1377,9 +1378,22 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_DATE_FORMAT].text = DateFormatStringIDs[Config::Get().general.dateFormat];
 
             // Temperature: celsius/fahrenheit
-            widgets[WIDX_TEMPERATURE].text = Config::Get().general.temperatureFormat == TemperatureUnit::Fahrenheit
-                ? STR_FAHRENHEIT
-                : STR_CELSIUS;
+            {
+                StringId stringId = STR_CELSIUS;
+                switch (Config::Get().general.temperatureFormat)
+                {
+                    case TemperatureUnit::Fahrenheit:
+                        stringId = STR_FAHRENHEIT;
+                        break;
+                    case TemperatureUnit::Kelvin:
+                        stringId = STR_KELVIN;
+                        break;
+                    case TemperatureUnit::Celsius:
+                    default:
+                        break;
+                }
+                widgets[WIDX_TEMPERATURE].text = stringId;
+            }
 
             // Height: units/real values
             widgets[WIDX_HEIGHT_LABELS].text = Config::Get().general.showHeightAsUnits ? STR_HEIGHT_IN_UNITS : STR_REAL_VALUES;

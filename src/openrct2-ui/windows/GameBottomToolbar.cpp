@@ -217,6 +217,11 @@ namespace OpenRCT2::Ui::Windows
                 temperature = ClimateCelsiusToFahrenheit(temperature);
                 format = STR_FAHRENHEIT_VALUE;
             }
+            else if (Config::Get().general.temperatureFormat == TemperatureUnit::Kelvin)
+            {
+                temperature = ClimateCelsiusToKelvin(temperature);
+                format = STR_KELVIN_VALUE;
+            }
             ft = Formatter();
             ft.Add<int16_t>(temperature);
             DrawTextBasic(rt, screenCoords + ScreenCoordsXY{ 0, 6 }, format, ft);
