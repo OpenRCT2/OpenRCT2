@@ -929,6 +929,7 @@ namespace OpenRCT2::Config
                     std::string gog = LanguageGetString(STR_OWN_ON_GOG);
                     std::string steam = LanguageGetString(STR_OWN_ON_STEAM);
                     std::string hdd = LanguageGetString(STR_INSTALLED_ON_HDD);
+                    std::string exit = LanguageGetString(STR_QUIT_ONBOARDING);
 
                     std::string chosenOption;
 
@@ -938,12 +939,18 @@ namespace OpenRCT2::Config
                         options.push_back(hdd);
                         options.push_back(gog);
                         options.push_back(steam);
+                        options.push_back(exit);
                         int optionIndex = uiContext.ShowMenuDialog(
                             options, LanguageGetString(STR_OPENRCT2_SETUP), LanguageGetString(STR_WHICH_APPLIES_BEST));
-                        if (optionIndex < 0 || static_cast<uint32_t>(optionIndex) >= options.size())
+                        // Error while trying to show menu options, fall back.
+                        if (optionIndex < 0)
                         {
-                            // graceful fallback if app errors or user exits out of window
                             chosenOption = hdd;
+                        }
+                        // User clicked the Cancel or Close button
+                        else if (static_cast<uint32_t>(optionIndex) >= options.size())
+                        {
+                            chosenOption = exit;
                         }
                         else
                         {
@@ -958,7 +965,9 @@ namespace OpenRCT2::Config
                     std::vector<std::string> possibleInstallPaths{};
                     if (chosenOption == hdd)
                     {
-                        possibleInstallPaths.emplace_back(uiContext.ShowDirectoryDialog(LanguageGetString(STR_PICK_RCT2_DIR)));
+                        auto pickedPath = uiContext.ShowDirectoryDialog(LanguageGetString(STR_PICK_RCT2_DIR));
+                        if (!pickedPath.empty())
+                            possibleInstallPaths.emplace_back(pickedPath);
                     }
                     else if (chosenOption == gog)
                     {
@@ -1009,6 +1018,10 @@ namespace OpenRCT2::Config
                             Get().general.rct2Path = steamPath;
                             return true;
                         }
+                    }
+                    else if (chosenOption == exit)
+                    {
+                        ContextQuit();
                     }
                     if (possibleInstallPaths.empty())
                     {
