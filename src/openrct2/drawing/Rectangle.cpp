@@ -58,33 +58,32 @@ namespace OpenRCT2::Drawing::Rectangle
             switch (borderStyle)
             {
                 case BorderStyle::none:
-                    Rectangle::filter(rt, rect, palette.base);
+                    filter(rt, rect, palette.base);
                     break;
 
                 case BorderStyle::inset:
                     // Draw outline of box
-                    Rectangle::filter(rt, { leftTop, leftBottom }, palette.highlight);
-                    Rectangle::filter(rt, { leftTop, rightTop }, palette.highlight);
-                    Rectangle::filter(rt, { rightTop, rightBottom }, palette.shadow);
-                    Rectangle::filter(rt, { leftBottom, rightBottom }, palette.shadow);
+                    filter(rt, { leftTop, leftBottom }, palette.highlight);
+                    filter(rt, { leftTop, rightTop }, palette.highlight);
+                    filter(rt, { rightTop, rightBottom }, palette.shadow);
+                    filter(rt, { leftBottom, rightBottom }, palette.shadow);
 
                     if (fillMode != FillMode::none)
                     {
-                        Rectangle::filter(
-                            rt, { leftTop + ScreenCoordsXY{ 1, 1 }, rightBottom - ScreenCoordsXY{ 1, 1 } }, palette.base);
+                        filter(rt, { leftTop + ScreenCoordsXY{ 1, 1 }, rightBottom - ScreenCoordsXY{ 1, 1 } }, palette.base);
                     }
                     break;
 
                 case BorderStyle::outset:
                     // Draw outline of box
-                    Rectangle::filter(rt, { leftTop, leftBottom }, palette.shadow);
-                    Rectangle::filter(rt, { leftTop, rightTop }, palette.shadow);
-                    Rectangle::filter(rt, { rightTop, rightBottom }, palette.highlight);
-                    Rectangle::filter(rt, { leftBottom, rightBottom }, palette.highlight);
+                    filter(rt, { leftTop, leftBottom }, palette.shadow);
+                    filter(rt, { leftTop, rightTop }, palette.shadow);
+                    filter(rt, { rightTop, rightBottom }, palette.highlight);
+                    filter(rt, { leftBottom, rightBottom }, palette.highlight);
 
                     if (fillMode != FillMode::none)
                     {
-                        Rectangle::filter(
+                        filter(
                             rt, { leftTop + ScreenCoordsXY{ 1, 1 }, { rightBottom - ScreenCoordsXY{ 1, 1 } } }, palette.base);
                     }
                     break;

@@ -131,32 +131,32 @@ protected:
         return *pos == goal;
     }
 
-    static ::testing::AssertionResult AssertIsStartPosition(const char*, const TileCoordsXYZ& location)
+    static testing::AssertionResult AssertIsStartPosition(const char*, const TileCoordsXYZ& location)
     {
         const uint32_t expectedSurfaceStyle = 11u;
         const uint32_t style = MapGetSurfaceElementAt(location.ToCoordsXYZ())->GetSurfaceObjectIndex();
 
         if (style != expectedSurfaceStyle)
-            return ::testing::AssertionFailure()
+            return testing::AssertionFailure()
                 << "Start location " << location << " should have surface style " << expectedSurfaceStyle
                 << " but actually has style " << style
                 << ". Either the test map is not set up correctly, or you got the coordinates wrong.";
 
-        return ::testing::AssertionSuccess();
+        return testing::AssertionSuccess();
     }
 
-    static ::testing::AssertionResult AssertIsNotForbiddenPosition(const char*, const TileCoordsXYZ& location)
+    static testing::AssertionResult AssertIsNotForbiddenPosition(const char*, const TileCoordsXYZ& location)
     {
         const uint32_t forbiddenSurfaceStyle = 8u;
 
         const uint32_t style = MapGetSurfaceElementAt(location.ToCoordsXYZ())->GetSurfaceObjectIndex();
 
         if (style == forbiddenSurfaceStyle)
-            return ::testing::AssertionFailure()
+            return testing::AssertionFailure()
                 << "Path traversed location " << location << ", but it is marked as a forbidden location (surface style "
                 << forbiddenSurfaceStyle << "). Either the map is set up incorrectly, or the pathfinder went the wrong way.";
 
-        return ::testing::AssertionSuccess();
+        return testing::AssertionSuccess();
     }
 
 private:
@@ -178,13 +178,13 @@ struct SimplePathfindingScenario
     {
     }
 
-    static std::string ToName(const ::testing::TestParamInfo<SimplePathfindingScenario>& param_info)
+    static std::string ToName(const testing::TestParamInfo<SimplePathfindingScenario>& param_info)
     {
         return param_info.param.name;
     }
 };
 
-class SimplePathfindingTest : public PathfindingTestBase, public ::testing::WithParamInterface<SimplePathfindingScenario>
+class SimplePathfindingTest : public PathfindingTestBase, public testing::WithParamInterface<SimplePathfindingScenario>
 {
 };
 
@@ -203,8 +203,8 @@ TEST_P(SimplePathfindingTest, CanFindPathFromStartToGoal)
         entrancePos.x - TileDirectionDelta[entrancePos.direction].x,
         entrancePos.y - TileDirectionDelta[entrancePos.direction].y, entrancePos.z);
 
-    const auto succeeded = FindPath(&pos, goal, scenario.steps, ride->id) ? ::testing::AssertionSuccess()
-                                                                          : ::testing::AssertionFailure()
+    const auto succeeded = FindPath(&pos, goal, scenario.steps, ride->id) ? testing::AssertionSuccess()
+                                                                          : testing::AssertionFailure()
             << "Failed to find path from " << scenario.start << " to " << goal << " in " << scenario.steps << " steps; reached "
             << pos << " before giving up.";
 
@@ -223,7 +223,7 @@ INSTANTIATE_TEST_SUITE_P(
         SimplePathfindingScenario("SelfCrossingPath", { 6, 5, 14 }, 211)),
     SimplePathfindingScenario::ToName);
 
-class ImpossiblePathfindingTest : public PathfindingTestBase, public ::testing::WithParamInterface<SimplePathfindingScenario>
+class ImpossiblePathfindingTest : public PathfindingTestBase, public testing::WithParamInterface<SimplePathfindingScenario>
 {
 };
 
