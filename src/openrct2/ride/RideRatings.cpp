@@ -342,6 +342,7 @@ static void ride_ratings_update_state_1(RideRating::UpdateState& state)
         state.ProximityScores[i] = 0;
     }
     state.AmountOfBrakes = 0;
+    state.amountOfBoosters = 0;
     state.AmountOfReversers = 0;
     state.State = RIDE_RATINGS_STATE_2;
     state.StationFlags = 0;
@@ -869,6 +870,10 @@ static void ride_ratings_score_close_proximity(RideRating::UpdateState& state, T
         case TrackElemType::brakes:
             state.AmountOfBrakes++;
             break;
+        case TrackElemType::booster:
+        case TrackElemType::diagBooster:
+            state.amountOfBoosters++;
+            break;
         case TrackElemType::leftReverser:
         case TrackElemType::rightReverser:
             state.AmountOfReversers++;
@@ -1212,6 +1217,9 @@ static money64 RideComputeUpkeep(RideRating::UpdateState& state, const Ride& rid
 
     // Add maintenance cost for brake track pieces
     upkeep += 20 * state.AmountOfBrakes;
+
+    // Add maintenance cost for booster track pieces
+    upkeep += 80 * state.amountOfBoosters;
 
     // these seem to be adhoc adjustments to a ride's upkeep/cost, times
     // various variables set on the ride itself.
