@@ -865,22 +865,12 @@ static void ride_ratings_score_close_proximity(RideRating::UpdateState& state, T
     ride_ratings_score_close_proximity_in_direction(state, inputTileElement, (direction - 1) & 3);
     ride_ratings_score_close_proximity_loops(state, inputTileElement);
 
-    switch (state.ProximityTrackType)
-    {
-        case TrackElemType::brakes:
-            state.AmountOfBrakes++;
-            break;
-        case TrackElemType::booster:
-        case TrackElemType::diagBooster:
-            state.amountOfBoosters++;
-            break;
-        case TrackElemType::leftReverser:
-        case TrackElemType::rightReverser:
-            state.AmountOfReversers++;
-            break;
-        default:
-            break;
-    }
+    if (TrackTypeIsBrakes(state.ProximityTrackType))
+        state.AmountOfBrakes++;
+    else if (TrackTypeIsBooster(state.ProximityTrackType))
+        state.amountOfBoosters++;
+    else if (TrackTypeIsReverser(state.ProximityTrackType))
+        state.AmountOfReversers++;
 }
 
 static void RideRatingsCalculate(RideRating::UpdateState& state, Ride& ride)

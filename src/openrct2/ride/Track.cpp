@@ -663,6 +663,11 @@ bool TrackTypeIsBooster(TrackElemType trackType)
     }
 }
 
+bool TrackTypeIsReverser(TrackElemType trackType)
+{
+    return (trackType == TrackElemType::leftReverser) || (trackType == TrackElemType::rightReverser);
+}
+
 bool TrackElementIsCovered(TrackElemType trackElementType)
 {
     switch (trackElementType)
