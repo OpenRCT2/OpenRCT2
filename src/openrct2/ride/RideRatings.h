@@ -61,6 +61,7 @@ namespace OpenRCT2
             uint16_t ProximityTotal;
             uint16_t ProximityScores[26];
             uint16_t AmountOfBrakes;
+            uint16_t amountOfBoosters;
             uint16_t AmountOfReversers;
             uint16_t StationFlags;
         };
