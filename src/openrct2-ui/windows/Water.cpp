@@ -304,8 +304,10 @@ namespace OpenRCT2::Ui::Windows
 
                 auto waterLowerAction = GameActions::WaterLowerAction(
                     { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y });
+                waterLowerAction.SetFlags({ GameActions::CommandFlag::allowDuringPaused });
                 auto waterRaiseAction = GameActions::WaterRaiseAction(
                     { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y });
+                waterRaiseAction.SetFlags({ GameActions::CommandFlag::allowDuringPaused });
 
                 auto res = GameActions::Query(&waterLowerAction, gameState);
                 money64 lowerCost = res.error == GameActions::Status::ok ? res.cost : kMoney64Undefined;
@@ -394,8 +396,10 @@ namespace OpenRCT2::Ui::Windows
 
             auto waterLowerAction = GameActions::WaterLowerAction(
                 { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y });
+            waterLowerAction.SetFlags({ GameActions::CommandFlag::allowDuringPaused });
             auto waterRaiseAction = GameActions::WaterRaiseAction(
                 { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y });
+            waterRaiseAction.SetFlags({ GameActions::CommandFlag::allowDuringPaused });
 
             auto res = GameActions::Query(&waterLowerAction, gameState);
             money64 lowerCost = res.error == GameActions::Status::ok ? res.cost : kMoney64Undefined;
