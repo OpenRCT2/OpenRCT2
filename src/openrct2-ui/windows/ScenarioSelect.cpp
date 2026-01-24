@@ -327,7 +327,7 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<StringId>(kScenarioOriginStringIds[i]);
 
                 auto stringCoords = windowPos + ScreenCoordsXY{ widget.midX(), widget.midY() - 3 };
-                DrawTextWrapped(rt, stringCoords, 87, format, ft, { COLOUR_AQUAMARINE, fontStyle, TextAlignment::centre });
+                DrawTextWrapped(rt, stringCoords, 87, format, ft, { COLOUR_LIGHT_WATER, fontStyle, TextAlignment::centre });
             }
 
             auto previewPaneWidth = GetPreviewPaneWidth();

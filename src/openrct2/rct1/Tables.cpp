@@ -33,7 +33,7 @@ namespace OpenRCT2::RCT1
             COLOUR_BRIGHT_PURPLE,
             COLOUR_DARK_BLUE,
             COLOUR_LIGHT_BLUE,
-            COLOUR_TEAL,
+            COLOUR_DARK_WATER,
             COLOUR_SATURATED_GREEN,
             COLOUR_DARK_GREEN,
             COLOUR_MOSS_GREEN,
@@ -55,7 +55,7 @@ namespace OpenRCT2::RCT1
             COLOUR_LIGHT_PINK,
             COLOUR_DARK_PINK,
             COLOUR_DARK_PURPLE,
-            COLOUR_AQUAMARINE,
+            COLOUR_LIGHT_WATER,
             COLOUR_BRIGHT_YELLOW,
             COLOUR_ICY_BLUE
         };

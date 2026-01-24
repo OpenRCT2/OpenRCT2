@@ -1333,7 +1333,7 @@ namespace OpenRCT2::Ui::Windows
                 spriteIndex += animObj->GetPeepAnimation(PeepAnimationGroup::normal).baseImage + 1;
 
                 GfxDrawSprite(
-                    rt, ImageId(spriteIndex, COLOUR_BRIGHT_RED, COLOUR_TEAL),
+                    rt, ImageId(spriteIndex, COLOUR_BRIGHT_RED, COLOUR_DARK_WATER),
                     windowPos + ScreenCoordsXY{ widget.midX(), widget.bottom - 6 });
             }
         }

@@ -10,7 +10,6 @@
 #pragma once
 
 #include "../core/StringTypes.h"
-#include "../drawing/PaletteIndex.h"
 
 #include <cstdint>
 #include <string_view>
@@ -32,8 +31,8 @@ enum : colour_t
     COLOUR_DARK_BLUE,        // Dark blue
     COLOUR_LIGHT_BLUE,       // Light blue
     COLOUR_ICY_BLUE,         // Icy blue
-    COLOUR_TEAL,             // Dark water
-    COLOUR_AQUAMARINE,       // Light water
+    COLOUR_DARK_WATER,       // Dark water
+    COLOUR_LIGHT_WATER,      // Light water
     COLOUR_SATURATED_GREEN,  // Saturated green
     COLOUR_DARK_GREEN,       // Dark green
     COLOUR_MOSS_GREEN,       // Moss green
@@ -75,7 +74,7 @@ enum : colour_t
     COLOUR_SATURATED_PURPLE_DARK,  // Violet
     COLOUR_SATURATED_PURPLE_LIGHT, // Lavender
     COLOUR_ORANGE_LIGHT,           // Pastel orange
-    COLOUR_AQUA_DARK,              // Deep water
+    COLOUR_DEEP_WATER,             // Deep water
     COLOUR_MAGENTA_LIGHT,          // Pastel pink
     COLOUR_DULL_BROWN_DARK,        // Umber
     COLOUR_DULL_BROWN_LIGHT,       // Beige
@@ -87,32 +86,8 @@ enum : colour_t
     COLOUR_NULL = 255,
 };
 
-/**
- * These colours change depending on the current water colours.
- */
-enum
-{
-    COLOUR_DARK_WATER = 9,
-    COLOUR_LIGHT_WATER = 10,
-    COLOUR_DEEP_WATER = 50
-};
-
-constexpr auto kPaletteOffsetDynamic = OpenRCT2::Drawing::PaletteIndex::pi10;
-constexpr uint8_t kPaletteLengthDynamic = 236;
-
-constexpr uint8_t kPaletteLengthWaterWaves = 5;
-constexpr uint8_t kPaletteLengthWaterSparkles = 5;
-
-constexpr uint8_t kPaletteLengthRemap = 12;
-
-constexpr auto kPaletteOffsetAnimated = OpenRCT2::Drawing::PaletteIndex::waterWaves0;
-constexpr uint8_t kPaletteLengthAnimated = 16;
-
 constexpr uint8_t kColourNumOriginal = 32;
 constexpr uint8_t kColourNumNormal = 54;
-
-constexpr colour_t kTextColour254 = 254;
-constexpr colour_t kTextColour255 = 255;
 
 namespace OpenRCT2::Colour
 {

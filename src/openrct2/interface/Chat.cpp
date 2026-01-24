@@ -195,7 +195,7 @@ void ChatDraw(RenderTarget& rt, ColourWithFlags chatBackgroundColor)
         auto ft = Formatter();
         ft.Add<const char*>(lineCh);
         inputLineHeight = DrawTextWrapped(
-            rt, screenCoords + ScreenCoordsXY{ 0, 3 }, _chatWidth - 10, STR_STRING, ft, { kTextColour255 });
+            rt, screenCoords + ScreenCoordsXY{ 0, 3 }, _chatWidth - 10, STR_STRING, ft, { COLOUR_NULL });
         GfxSetDirtyBlocks({ screenCoords, { screenCoords + ScreenCoordsXY{ _chatWidth, inputLineHeight + 15 } } });
 
         // TODO: Show caret if the input text has multiple lines
@@ -306,7 +306,7 @@ static int32_t ChatHistoryDrawString(RenderTarget& rt, const char* text, const S
     int32_t lineY = screenCoords.y;
     for (int32_t line = 0; line <= numLines; ++line)
     {
-        DrawText(rt, { screenCoords.x, lineY - (numLines * lineHeight) }, { kTextColour254 }, bufferPtr);
+        DrawText(rt, { screenCoords.x, lineY - (numLines * lineHeight) }, { COLOUR_NULL }, bufferPtr);
         bufferPtr = GetStringEnd(bufferPtr) + 1;
         lineY += lineHeight;
     }
