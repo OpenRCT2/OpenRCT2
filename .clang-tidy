@@ -2,6 +2,7 @@
 Checks: >
     -*,
     cppcoreguidelines-macro-usage,
+    modernize-use-bool-literals,
     modernize-use-nullptr,
     modernize-use-override,
     readability-uppercase-literal-suffix
