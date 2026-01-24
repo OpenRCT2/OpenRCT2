@@ -99,9 +99,6 @@ enum
 constexpr uint8_t kColourNumOriginal = 32;
 constexpr uint8_t kColourNumNormal = 54;
 
-constexpr colour_t kTextColour254 = 254;
-constexpr colour_t kTextColour255 = 255;
-
 namespace OpenRCT2::Colour
 {
     colour_t FromString(std::string_view s, colour_t defaultValue = COLOUR_BLACK);

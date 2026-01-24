@@ -56,7 +56,7 @@ public:
         for (int32_t line = 0; line < LineCount; ++line)
         {
             DrawText(rt, lineCoords, tempPaint, buffer);
-            tempPaint.Colour = kTextColour254;
+            tempPaint.Colour = COLOUR_NULL;
             buffer = GetStringEnd(buffer) + 1;
             lineCoords.y += LineHeight;
         }
