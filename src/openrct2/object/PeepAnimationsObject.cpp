@@ -214,10 +214,14 @@ namespace OpenRCT2
         GfxDrawSprite(rt, ImageId(_imageOffsetId + 0), centre + ScreenCoordsXY{ -8, -8 });
 
         // Draw four cardinal directions around the inline sprite
-        GfxDrawSprite(rt, ImageId(_imageOffsetId + 4, COLOUR_BRIGHT_RED, COLOUR_TEAL), centre + ScreenCoordsXY{ -32, -24 });
-        GfxDrawSprite(rt, ImageId(_imageOffsetId + 2, COLOUR_BRIGHT_RED, COLOUR_TEAL), centre + ScreenCoordsXY{ +32, +32 });
-        GfxDrawSprite(rt, ImageId(_imageOffsetId + 1, COLOUR_BRIGHT_RED, COLOUR_TEAL), centre + ScreenCoordsXY{ +32, -24 });
-        GfxDrawSprite(rt, ImageId(_imageOffsetId + 3, COLOUR_BRIGHT_RED, COLOUR_TEAL), centre + ScreenCoordsXY{ -32, +32 });
+        GfxDrawSprite(
+            rt, ImageId(_imageOffsetId + 4, COLOUR_BRIGHT_RED, COLOUR_DARK_WATER), centre + ScreenCoordsXY{ -32, -24 });
+        GfxDrawSprite(
+            rt, ImageId(_imageOffsetId + 2, COLOUR_BRIGHT_RED, COLOUR_DARK_WATER), centre + ScreenCoordsXY{ +32, +32 });
+        GfxDrawSprite(
+            rt, ImageId(_imageOffsetId + 1, COLOUR_BRIGHT_RED, COLOUR_DARK_WATER), centre + ScreenCoordsXY{ +32, -24 });
+        GfxDrawSprite(
+            rt, ImageId(_imageOffsetId + 3, COLOUR_BRIGHT_RED, COLOUR_DARK_WATER), centre + ScreenCoordsXY{ -32, +32 });
     }
 
     void PeepAnimationsObject::SetRepositoryItem(ObjectRepositoryItem* item) const

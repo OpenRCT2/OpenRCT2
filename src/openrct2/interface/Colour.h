@@ -31,8 +31,8 @@ enum : colour_t
     COLOUR_DARK_BLUE,        // Dark blue
     COLOUR_LIGHT_BLUE,       // Light blue
     COLOUR_ICY_BLUE,         // Icy blue
-    COLOUR_TEAL,             // Dark water
-    COLOUR_AQUAMARINE,       // Light water
+    COLOUR_DARK_WATER,       // Dark water
+    COLOUR_LIGHT_WATER,      // Light water
     COLOUR_SATURATED_GREEN,  // Saturated green
     COLOUR_DARK_GREEN,       // Dark green
     COLOUR_MOSS_GREEN,       // Moss green
@@ -74,7 +74,7 @@ enum : colour_t
     COLOUR_SATURATED_PURPLE_DARK,  // Violet
     COLOUR_SATURATED_PURPLE_LIGHT, // Lavender
     COLOUR_ORANGE_LIGHT,           // Pastel orange
-    COLOUR_AQUA_DARK,              // Deep water
+    COLOUR_DEEP_WATER,             // Deep water
     COLOUR_MAGENTA_LIGHT,          // Pastel pink
     COLOUR_DULL_BROWN_DARK,        // Umber
     COLOUR_DULL_BROWN_LIGHT,       // Beige
@@ -84,16 +84,6 @@ enum : colour_t
     COLOUR_COUNT,
 
     COLOUR_NULL = 255,
-};
-
-/**
- * These colours change depending on the current water colours.
- */
-enum
-{
-    COLOUR_DARK_WATER = 9,
-    COLOUR_LIGHT_WATER = 10,
-    COLOUR_DEEP_WATER = 50
 };
 
 constexpr uint8_t kColourNumOriginal = 32;

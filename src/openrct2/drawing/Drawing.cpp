@@ -592,8 +592,8 @@ const TranslucentWindowPalette kTranslucentWindowPalettes[COLOUR_COUNT] = {
     kWindowPaletteLightBlue,              // COLOUR_DARK_BLUE
     kWindowPaletteLightBlue,              // COLOUR_LIGHT_BLUE
     kWindowPaletteLightBlue,              // COLOUR_ICY_BLUE
-    kWindowPaletteTeal,                    // COLOUR_TEAL
-    kWindowPaletteTeal,                    // COLOUR_AQUAMARINE
+    kWindowPaletteTeal,                   // COLOUR_DARK_WATER
+    kWindowPaletteTeal,                   // COLOUR_LIGHT_WATER
     kWindowPaletteBrightGreen,            // COLOUR_SATURATED_GREEN
     kWindowPaletteDarkGreen,              // COLOUR_DARK_GREEN
     kWindowPaletteMossGreen,              // COLOUR_MOSS_GREEN
@@ -633,7 +633,7 @@ const TranslucentWindowPalette kTranslucentWindowPalettes[COLOUR_COUNT] = {
     kWindowPaletteBrightPurple,           // COLOUR_SATURATED_PURPLE_DARK
     kWindowPaletteBrightPurple,           // COLOUR_SATURATED_PURPLE_LIGHT
     kWindowPaletteLightOrange,            // COLOUR_ORANGE_LIGHT
-    kWindowPaletteTeal,                    // COLOUR_AQUA_DARK
+    kWindowPaletteTeal,                   // COLOUR_DEEP_WATER
     kWindowPaletteBrightPink,             // COLOUR_MAGENTA_LIGHT
     kWindowPaletteDarkBrown,              // COLOUR_DULL_BROWN_DARK
     kWindowPaletteDarkBrown,              // COLOUR_DULL_BROWN_LIGHT

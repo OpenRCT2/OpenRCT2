@@ -165,14 +165,14 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<StringId>(STR_TITLE_SEQUENCE_OPENRCT2);
                 DrawTextWrapped(
                     rt, aboutOpenRCT2Coords, 87, STR_WINDOW_COLOUR_2_STRINGID, ft,
-                    { COLOUR_AQUAMARINE, TextAlignment::centre });
+                    { COLOUR_LIGHT_WATER, TextAlignment::centre });
             }
             {
                 // TODO: this string shouldn't be reused for this tab
                 auto ft = Formatter();
                 ft.Add<StringId>(STR_TITLE_SEQUENCE_RCT2);
                 DrawTextWrapped(
-                    rt, aboutRCT2Coords, 87, STR_WINDOW_COLOUR_2_STRINGID, ft, { COLOUR_AQUAMARINE, TextAlignment::centre });
+                    rt, aboutRCT2Coords, 87, STR_WINDOW_COLOUR_2_STRINGID, ft, { COLOUR_LIGHT_WATER, TextAlignment::centre });
             }
 
             int32_t newHeight = 0;
