@@ -33,6 +33,8 @@ using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::Ui;
 
+static constexpr uint8_t kPaletteLengthRemap = 12;
+
 /**
  * 12 elements from 0xF3 are the peep top colour, 12 elements from 0xCA are peep trouser colour
  *

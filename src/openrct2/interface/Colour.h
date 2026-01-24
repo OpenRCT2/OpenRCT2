@@ -10,7 +10,6 @@
 #pragma once
 
 #include "../core/StringTypes.h"
-#include "../drawing/PaletteIndex.h"
 
 #include <cstdint>
 #include <string_view>
@@ -96,17 +95,6 @@ enum
     COLOUR_LIGHT_WATER = 10,
     COLOUR_DEEP_WATER = 50
 };
-
-constexpr auto kPaletteOffsetDynamic = OpenRCT2::Drawing::PaletteIndex::pi10;
-constexpr uint8_t kPaletteLengthDynamic = 236;
-
-constexpr uint8_t kPaletteLengthWaterWaves = 5;
-constexpr uint8_t kPaletteLengthWaterSparkles = 5;
-
-constexpr uint8_t kPaletteLengthRemap = 12;
-
-constexpr auto kPaletteOffsetAnimated = OpenRCT2::Drawing::PaletteIndex::waterWaves0;
-constexpr uint8_t kPaletteLengthAnimated = 16;
 
 constexpr uint8_t kColourNumOriginal = 32;
 constexpr uint8_t kColourNumNormal = 54;

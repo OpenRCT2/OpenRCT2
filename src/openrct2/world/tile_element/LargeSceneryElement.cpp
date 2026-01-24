@@ -9,6 +9,7 @@
 
 #include "LargeSceneryElement.h"
 
+#include "../../interface/Colour.h"
 #include "../../object/LargeSceneryEntry.h"
 #include "../../object/ObjectEntryManager.h"
 #include "../../object/ObjectManager.h"

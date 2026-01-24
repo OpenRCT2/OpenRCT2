@@ -34,6 +34,15 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
 
+static constexpr auto kPaletteOffsetDynamic = PaletteIndex::pi10;
+static constexpr uint8_t kPaletteLengthDynamic = 236;
+
+static constexpr uint8_t kPaletteLengthWaterWaves = 5;
+static constexpr uint8_t kPaletteLengthWaterSparkles = 5;
+
+static constexpr auto kPaletteOffsetAnimated = PaletteIndex::waterWaves0;
+static constexpr uint8_t kPaletteLengthAnimated = 16;
+
 static auto _defaultPaletteMapping = []() {
     std::array<PaletteIndex, 256> res;
     for (size_t i = 0; i < std::size(res); i++)

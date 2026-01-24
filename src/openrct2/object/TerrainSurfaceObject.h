@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../core/Money.hpp"
+#include "../drawing/PaletteIndex.h"
 #include "../interface/Colour.h"
 #include "Object.h"
 
