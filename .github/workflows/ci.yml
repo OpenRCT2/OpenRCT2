@@ -164,7 +164,7 @@ jobs:
           path: OpenRCT2
       - name: Download gxc
         run: |
-          curl -Lo tools.tar.gz https://github.com/IntelOrca/libsawyer/releases/download/v1.3.0/libsawyer-tools-linux-x64.tar.gz
+          curl -Lo tools.tar.gz https://github.com/OpenRCT2/libsawyer/releases/download/v1.4.0/libsawyer-tools-linux-x64.tar.gz
           mkdir -p "$GITHUB_WORKSPACE/bin"
           tar -C "$GITHUB_WORKSPACE/bin" -xf tools.tar.gz
           echo "$GITHUB_WORKSPACE/bin" >> $GITHUB_PATH
