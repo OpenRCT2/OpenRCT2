@@ -28,6 +28,7 @@
 #include "../world/MapAnimation.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
+#include "../world/tile_element/SmallSceneryElement.h"
 #include "../world/tile_element/TileElement.h"
 #include "../world/tile_element/TrackElement.h"
 #include "Ride.h"
@@ -784,4 +785,41 @@ std::optional<CoordsXYZD> GetTrackSegmentOrigin(const CoordsXYE& posEl)
     coords.z -= trackBlock.z;
 
     return CoordsXYZD(coords, direction);
+}
+
+// Extracted from the calculation in Vehicle::UpdateMeasurements()
+bool TrackGetIsSheltered(const CoordsXYZ& input)
+{
+    // Set tile_element to first element. Since elements aren't always ordered by base height,
+    // we must start at the first element and iterate through each tile element.
+    auto tileElement = MapGetFirstElementAt(input);
+    if (tileElement == nullptr)
+        return false;
+
+    do
+    {
+        // If the tile_element is lower than the vehicle, continue (don't set flag)
+        if (tileElement->GetBaseZ() <= input.z)
+            continue;
+
+        if (tileElement->GetType() == TileElementType::LargeScenery)
+            return true;
+
+        if (tileElement->GetType() == TileElementType::Path)
+            return true;
+
+        if (tileElement->GetType() != TileElementType::SmallScenery)
+            continue;
+
+        auto* sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
+        if (sceneryEntry == nullptr)
+            continue;
+
+        if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE))
+            return true;
+
+        // Iterate through each tile_element.
+    } while (!(tileElement++)->IsLastForTile());
+
+    return false;
 }
