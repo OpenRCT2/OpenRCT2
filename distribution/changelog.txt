@@ -1,6 +1,7 @@
 0.4.32 (in development)
 ------------------------------------------------------------------------
 - Improved: [#25941] The command line sprite build command is now faster.
+- Fix: [#25237] Wrong colours on the Knight costume.
 
 0.4.31 (2026-02-01)
 ------------------------------------------------------------------------
