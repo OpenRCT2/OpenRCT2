@@ -47,9 +47,9 @@ constexpr RideTypeDescriptor WoodenWildMouseRTD =
     .PhotoItem = ShopItem::photo3,
     .BonusValue = 55,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_WHITE },
-        { COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_SATURATED_BROWN },
-        { COLOUR_LIGHT_BLUE, COLOUR_LIGHT_BLUE, COLOUR_SATURATED_BROWN },
+        { OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::white },
+        { OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::saturatedBrown },
+        { OpenRCT2::Drawing::Colour::lightBlue, OpenRCT2::Drawing::Colour::lightBlue, OpenRCT2::Drawing::Colour::saturatedBrown },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_WOODEN_WILD_MOUSE_TRACK, SPR_RIDE_DESIGN_PREVIEW_WOODEN_WILD_MOUSE_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

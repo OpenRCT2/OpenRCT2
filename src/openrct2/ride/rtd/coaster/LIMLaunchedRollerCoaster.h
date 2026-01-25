@@ -50,12 +50,12 @@ constexpr RideTypeDescriptor LIMLaunchedRollerCoasterRTD =
     .PhotoItem = ShopItem::photo,
     .BonusValue = 55,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_BRIGHT_GREEN, COLOUR_BRIGHT_GREEN, COLOUR_WHITE },
-        { COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_DARK_BROWN },
-        { COLOUR_YELLOW, COLOUR_YELLOW, COLOUR_SATURATED_GREEN },
-        { COLOUR_BRIGHT_GREEN, COLOUR_SATURATED_GREEN_LIGHT, COLOUR_SATURATED_PURPLE_DARK}, // Joker's Jinx
-        { COLOUR_SATURATED_GREEN_LIGHT, COLOUR_GRASS_GREEN_LIGHT , COLOUR_DEEP_WATER}, // Poltergeist
-        { COLOUR_GREY, COLOUR_DARK_BROWN , COLOUR_BLACK}, // Flight of Fear
+        { OpenRCT2::Drawing::Colour::brightGreen, OpenRCT2::Drawing::Colour::brightGreen, OpenRCT2::Drawing::Colour::white },
+        { OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::darkBrown },
+        { OpenRCT2::Drawing::Colour::yellow, OpenRCT2::Drawing::Colour::yellow, OpenRCT2::Drawing::Colour::saturatedGreen },
+        { OpenRCT2::Drawing::Colour::brightGreen, OpenRCT2::Drawing::Colour::limeGreen, OpenRCT2::Drawing::Colour::violet}, // Joker's Jinx
+        { OpenRCT2::Drawing::Colour::limeGreen, OpenRCT2::Drawing::Colour::chartreuse , OpenRCT2::Drawing::Colour::deepWater}, // Poltergeist
+        { OpenRCT2::Drawing::Colour::grey, OpenRCT2::Drawing::Colour::darkBrown , OpenRCT2::Drawing::Colour::black}, // Flight of Fear
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_LIM_LAUNCHED_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_LIM_LAUNCHED_ROLLER_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

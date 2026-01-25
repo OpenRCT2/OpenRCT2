@@ -77,17 +77,17 @@ namespace OpenRCT2
         screenCoords.x += 14;
         screenCoords.y += (_legacyType.height * 2) + 16;
 
-        auto imageId = ImageId(_legacyType.image, COLOUR_BORDEAUX_RED);
+        auto imageId = ImageId(_legacyType.image, OpenRCT2::Drawing::Colour::bordeauxRed);
         if (_legacyType.flags & WALL_SCENERY_HAS_SECONDARY_COLOUR)
         {
-            imageId = imageId.WithSecondary(COLOUR_YELLOW);
+            imageId = imageId.WithSecondary(OpenRCT2::Drawing::Colour::yellow);
         }
 
         GfxDrawSprite(rt, imageId, screenCoords);
 
         if (_legacyType.flags & WALL_SCENERY_HAS_GLASS)
         {
-            auto glassImageId = imageId.WithTransparency(COLOUR_BORDEAUX_RED).WithIndexOffset(6);
+            auto glassImageId = imageId.WithTransparency(OpenRCT2::Drawing::Colour::bordeauxRed).WithIndexOffset(6);
             GfxDrawSprite(rt, glassImageId, screenCoords);
         }
         else if (_legacyType.flags & WALL_SCENERY_IS_DOOR)

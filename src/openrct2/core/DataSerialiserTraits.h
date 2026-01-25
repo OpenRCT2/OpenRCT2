@@ -335,6 +335,12 @@ struct DataSerializerTraitsT<uint64_t[_Size]> : public DataSerializerTraitsPODAr
 {
 };
 
+template<size_t _Size>
+struct DataSerializerTraitsT<OpenRCT2::Drawing::Colour[_Size]>
+    : public DataSerializerTraitsPODArray<OpenRCT2::Drawing::Colour, _Size>
+{
+};
+
 template<typename T, T TNullValue, typename TTag, size_t _Size>
 struct DataSerializerTraitsT<TIdentifier<T, TNullValue, TTag>[_Size]>
     : public DataSerializerTraitsPODArray<TIdentifier<T, TNullValue, TTag>, _Size>
@@ -777,7 +783,8 @@ struct DataSerializerTraitsT<TrackDesignSceneryElement>
         snprintf(
             msg, sizeof(msg),
             "TrackDesignSceneryElement(x = %d, y = %d, z = %d, flags = %d, colour1 = %d, colour2 = %d, colour3 = %d)",
-            val.loc.x, val.loc.y, val.loc.z, val.flags, val.primaryColour, val.secondaryColour, val.tertiaryColour);
+            val.loc.x, val.loc.y, val.loc.z, val.flags, EnumValue(val.primaryColour), EnumValue(val.secondaryColour),
+            EnumValue(val.tertiaryColour));
         stream->Write(msg, strlen(msg));
 
         auto identifier = val.sceneryObject.GetName();
@@ -804,7 +811,8 @@ struct DataSerializerTraitsT<TrackColour>
     {
         char msg[128] = {};
         snprintf(
-            msg, sizeof(msg), "TrackColour(main = %d, additional = %d, supports = %d)", val.main, val.additional, val.supports);
+            msg, sizeof(msg), "TrackColour(main = %d, additional = %d, supports = %d)", EnumValue(val.main),
+            EnumValue(val.additional), EnumValue(val.supports));
         stream->Write(msg, strlen(msg));
     }
 };
@@ -827,7 +835,9 @@ struct DataSerializerTraitsT<VehicleColour>
     static void log(OpenRCT2::IStream* stream, const VehicleColour& val)
     {
         char msg[128] = {};
-        snprintf(msg, sizeof(msg), "VehicleColour(Body = %d, Trim = %d, Tertiary = %d)", val.Body, val.Trim, val.Tertiary);
+        snprintf(
+            msg, sizeof(msg), "VehicleColour(Body = %d, Trim = %d, Tertiary = %d)", EnumValue(val.Body), EnumValue(val.Trim),
+            EnumValue(val.Tertiary));
         stream->Write(msg, strlen(msg));
     }
 };

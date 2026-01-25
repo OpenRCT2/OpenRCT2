@@ -18,14 +18,15 @@ namespace OpenRCT2::GameActions
     private:
         CoordsXYZD _loc;
         uint8_t _tileIndex{};
-        uint8_t _primaryColour{};
-        uint8_t _secondaryColour{};
-        uint8_t _tertiaryColour{};
+        Drawing::Colour _primaryColour{};
+        Drawing::Colour _secondaryColour{};
+        Drawing::Colour _tertiaryColour{};
 
     public:
         LargeScenerySetColourAction() = default;
         LargeScenerySetColourAction(
-            const CoordsXYZD& loc, uint8_t tileIndex, uint8_t primaryColour, uint8_t secondaryColour, uint8_t tertiaryColour);
+            const CoordsXYZD& loc, uint8_t tileIndex, Drawing::Colour primaryColour, Drawing::Colour secondaryColour,
+            Drawing::Colour tertiaryColour);
 
         void AcceptParameters(GameActionParameterVisitor&) final;
 

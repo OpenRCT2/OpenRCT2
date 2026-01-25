@@ -49,9 +49,9 @@ constexpr RideTypeDescriptor AirPoweredVerticalCoasterRTD =
     .PhotoItem = ShopItem::photo,
     .BonusValue = 70,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_WHITE, COLOUR_BRIGHT_RED, COLOUR_DARK_BROWN },
-        { COLOUR_BRIGHT_RED, COLOUR_LIGHT_BLUE, COLOUR_WHITE },
-        { COLOUR_LIGHT_ORANGE, COLOUR_BRIGHT_RED, COLOUR_BRIGHT_YELLOW },
+        { OpenRCT2::Drawing::Colour::white, OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::darkBrown },
+        { OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::lightBlue, OpenRCT2::Drawing::Colour::white },
+        { OpenRCT2::Drawing::Colour::lightOrange, OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::brightYellow },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_AIR_POWERED_VERTICAL_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_AIR_POWERED_VERTICAL_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

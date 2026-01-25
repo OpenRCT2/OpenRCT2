@@ -762,7 +762,7 @@ namespace OpenRCT2::Ui::Windows
 
                         if (colour.flags.has(ColourFlag::translucent))
                         {
-                            TranslucentWindowPalette windowPalette = kTranslucentWindowPalettes[colour.colour];
+                            TranslucentWindowPalette windowPalette = kTranslucentWindowPalettes[EnumValue(colour.colour)];
 
                             Rectangle::filter(rt, { leftTop, rightBottom }, windowPalette.highlight);
                             Rectangle::filter(rt, { leftTop + yPixelOffset, rightBottom + yPixelOffset }, windowPalette.shadow);

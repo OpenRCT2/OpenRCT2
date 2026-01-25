@@ -215,13 +215,17 @@ namespace OpenRCT2
 
         // Draw four cardinal directions around the inline sprite
         GfxDrawSprite(
-            rt, ImageId(_imageOffsetId + 4, COLOUR_BRIGHT_RED, COLOUR_DARK_WATER), centre + ScreenCoordsXY{ -32, -24 });
+            rt, ImageId(_imageOffsetId + 4, OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::darkWater),
+            centre + ScreenCoordsXY{ -32, -24 });
         GfxDrawSprite(
-            rt, ImageId(_imageOffsetId + 2, COLOUR_BRIGHT_RED, COLOUR_DARK_WATER), centre + ScreenCoordsXY{ +32, +32 });
+            rt, ImageId(_imageOffsetId + 2, OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::darkWater),
+            centre + ScreenCoordsXY{ +32, +32 });
         GfxDrawSprite(
-            rt, ImageId(_imageOffsetId + 1, COLOUR_BRIGHT_RED, COLOUR_DARK_WATER), centre + ScreenCoordsXY{ +32, -24 });
+            rt, ImageId(_imageOffsetId + 1, OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::darkWater),
+            centre + ScreenCoordsXY{ +32, -24 });
         GfxDrawSprite(
-            rt, ImageId(_imageOffsetId + 3, COLOUR_BRIGHT_RED, COLOUR_DARK_WATER), centre + ScreenCoordsXY{ -32, +32 });
+            rt, ImageId(_imageOffsetId + 3, OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::darkWater),
+            centre + ScreenCoordsXY{ -32, +32 });
     }
 
     void PeepAnimationsObject::SetRepositoryItem(ObjectRepositoryItem* item) const

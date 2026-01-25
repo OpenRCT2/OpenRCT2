@@ -715,8 +715,8 @@ namespace OpenRCT2::RCT2
 
             for (uint8_t i = 0; i < Limits::kMaxVehicleColours; i++)
             {
-                dst->vehicleColours[i].Body = src->vehicleColours[i].BodyColour;
-                dst->vehicleColours[i].Trim = src->vehicleColours[i].TrimColour;
+                dst->vehicleColours[i].Body = static_cast<Drawing::Colour>(src->vehicleColours[i].BodyColour);
+                dst->vehicleColours[i].Trim = static_cast<Drawing::Colour>(src->vehicleColours[i].TrimColour);
             }
 
             // Pad046;
@@ -963,7 +963,7 @@ namespace OpenRCT2::RCT2
                 auto object = ObjectEntryGetObject(ObjectType::ride, dst->subtype);
                 if (object != nullptr && object->GetIdentifier() == "rct2.ride.icecr1")
                 {
-                    dst->trackColours[0].main = COLOUR_LIGHT_BLUE;
+                    dst->trackColours[0].main = OpenRCT2::Drawing::Colour::lightBlue;
                 }
             }
 
@@ -1148,7 +1148,7 @@ namespace OpenRCT2::RCT2
             }
             else
             {
-                dst->colour = src->Colour;
+                dst->colour = static_cast<Drawing::Colour>(src->Colour);
             }
 
             dst->textColour = src->textColour;
@@ -1978,9 +1978,9 @@ namespace OpenRCT2::RCT2
         dst->acceleration = src->Acceleration;
         dst->ride = RideId::FromUnderlying(src->Ride);
         dst->vehicle_type = src->VehicleType;
-        dst->colours.Body = src->Colours.BodyColour;
-        dst->colours.Trim = src->Colours.TrimColour;
-        dst->colours.Tertiary = src->ColoursExtended;
+        dst->colours.Body = static_cast<Drawing::Colour>(src->Colours.BodyColour);
+        dst->colours.Trim = static_cast<Drawing::Colour>(src->Colours.TrimColour);
+        dst->colours.Tertiary = static_cast<Drawing::Colour>(src->ColoursExtended);
         dst->track_progress = src->TrackProgress;
         dst->TrackLocation = { src->TrackX, src->TrackY, src->TrackZ };
         if (src->BoatLocation.IsNull() || static_cast<RideMode>(ride.mode) != RideMode::boatHire
@@ -2218,8 +2218,8 @@ namespace OpenRCT2::RCT2
         dst->frame = src->Frame;
         dst->time_to_live = src->TimeToLive;
         dst->frame = src->Frame;
-        dst->colour[0] = src->Colour[0];
-        dst->colour[1] = src->Colour[1];
+        dst->colour[0] = static_cast<Drawing::Colour>(src->Colour[0]);
+        dst->colour[1] = static_cast<Drawing::Colour>(src->Colour[1]);
         dst->crashed_sprite_base = src->CrashedEntityBase;
         dst->velocity_x = src->VelocityX;
         dst->velocity_y = src->VelocityY;
@@ -2282,7 +2282,7 @@ namespace OpenRCT2::RCT2
         dst->popped = src->Popped;
         dst->time_to_move = src->TimeToMove;
         dst->frame = src->Frame;
-        dst->colour = src->Colour;
+        dst->colour = static_cast<Drawing::Colour>(src->Colour);
     }
 
     template<>

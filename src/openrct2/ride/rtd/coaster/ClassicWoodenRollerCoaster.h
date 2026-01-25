@@ -49,9 +49,9 @@ constexpr RideTypeDescriptor ClassicWoodenRollerCoasterRTD =
    .PhotoItem = ShopItem::photo3,
    .BonusValue = 105,
    .ColourPresets = TRACK_COLOUR_PRESETS(
-       { COLOUR_SATURATED_BROWN, COLOUR_SATURATED_BROWN, COLOUR_SATURATED_BROWN},
-       { COLOUR_WHITE, COLOUR_LIGHT_BROWN, COLOUR_WHITE },
-       { COLOUR_LIGHT_BROWN, COLOUR_BLACK, COLOUR_LIGHT_BROWN },
+       { OpenRCT2::Drawing::Colour::saturatedBrown, OpenRCT2::Drawing::Colour::saturatedBrown, OpenRCT2::Drawing::Colour::saturatedBrown},
+       { OpenRCT2::Drawing::Colour::white, OpenRCT2::Drawing::Colour::lightBrown, OpenRCT2::Drawing::Colour::white },
+       { OpenRCT2::Drawing::Colour::lightBrown, OpenRCT2::Drawing::Colour::black, OpenRCT2::Drawing::Colour::lightBrown },
    ),
    .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_CLASSIC_WOODEN_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_CLASSIC_WOODEN_ROLLER_COASTER_SUPPORTS },
    .ColourKey = RideColourKey::Ride,

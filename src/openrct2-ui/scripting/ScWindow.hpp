@@ -238,7 +238,7 @@ namespace OpenRCT2::Scripting
                 result.reserve(std::size(w->colours));
                 for (auto c : w->colours)
                 {
-                    auto colour = c.colour;
+                    auto colour = EnumValue(c.colour);
                     if (c.flags.has(ColourFlag::translucent))
                         colour |= kLegacyColourFlagTranslucent;
                     result.push_back(colour);
@@ -253,12 +253,13 @@ namespace OpenRCT2::Scripting
             {
                 for (size_t i = 0; i < std::size(w->colours); i++)
                 {
-                    auto c = ColourWithFlags{ COLOUR_BLACK };
+                    auto c = ColourWithFlags{ Drawing::Colour::black };
                     if (i < colours.size())
                     {
-                        colour_t colour = colours[i] & ~kLegacyColourFlagTranslucent;
+                        auto colour = static_cast<Drawing::Colour>(
+                            (colours[i] & ~kLegacyColourFlagTranslucent) % Drawing::kColourNumTotal);
                         bool isTranslucent = (colours[i] & kLegacyColourFlagTranslucent);
-                        c.colour = std::clamp<colour_t>(colour, COLOUR_BLACK, COLOUR_COUNT - 1);
+                        c.colour = colour;
                         c.flags.set(ColourFlag::translucent, isTranslucent);
                     }
                     w->colours[i] = c;

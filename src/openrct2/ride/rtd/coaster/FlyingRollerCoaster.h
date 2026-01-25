@@ -56,13 +56,13 @@ constexpr RideTypeDescriptor FlyingRollerCoasterRTD =
     .PhotoItem = ShopItem::photo2,
     .BonusValue = 100,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_OLIVE_GREEN, COLOUR_OLIVE_GREEN, COLOUR_DARK_WATER },
-        { COLOUR_DARK_WATER, COLOUR_DARK_WATER, COLOUR_BORDEAUX_RED },
-        { COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_DARK_PURPLE },
-        { COLOUR_DULL_GREEN_DARK, COLOUR_SATURATED_GREEN_LIGHT, COLOUR_DEEP_WATER },
-        { COLOUR_BORDEAUX_RED_DARK, COLOUR_BORDEAUX_RED_DARK, COLOUR_SATURATED_BROWN }, // FLY
-        { COLOUR_LIGHT_BLUE, COLOUR_DARK_BLUE, COLOUR_ICY_BLUE }, // Manta
-        { COLOUR_YELLOW, COLOUR_BRIGHT_RED, COLOUR_LIGHT_ORANGE } // Tatsu
+        { OpenRCT2::Drawing::Colour::oliveGreen, OpenRCT2::Drawing::Colour::oliveGreen, OpenRCT2::Drawing::Colour::darkWater },
+        { OpenRCT2::Drawing::Colour::darkWater, OpenRCT2::Drawing::Colour::darkWater, OpenRCT2::Drawing::Colour::bordeauxRed },
+        { OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::darkPurple },
+        { OpenRCT2::Drawing::Colour::viridian, OpenRCT2::Drawing::Colour::limeGreen, OpenRCT2::Drawing::Colour::deepWater },
+        { OpenRCT2::Drawing::Colour::maroon, OpenRCT2::Drawing::Colour::maroon, OpenRCT2::Drawing::Colour::saturatedBrown }, // FLY
+        { OpenRCT2::Drawing::Colour::lightBlue, OpenRCT2::Drawing::Colour::darkBlue, OpenRCT2::Drawing::Colour::icyBlue }, // Manta
+        { OpenRCT2::Drawing::Colour::yellow, OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::lightOrange } // Tatsu
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_FLYING_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_FLYING_ROLLER_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,
@@ -131,9 +131,9 @@ constexpr RideTypeDescriptor FlyingRollerCoasterAltRTD =
     .PhotoItem = ShopItem::photo2,
     .BonusValue = 100,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_OLIVE_GREEN, COLOUR_OLIVE_GREEN, COLOUR_DARK_WATER },
-        { COLOUR_DARK_WATER, COLOUR_DARK_WATER, COLOUR_BORDEAUX_RED },
-        { COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_DARK_PURPLE },
+        { OpenRCT2::Drawing::Colour::oliveGreen, OpenRCT2::Drawing::Colour::oliveGreen, OpenRCT2::Drawing::Colour::darkWater },
+        { OpenRCT2::Drawing::Colour::darkWater, OpenRCT2::Drawing::Colour::darkWater, OpenRCT2::Drawing::Colour::bordeauxRed },
+        { OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::darkPurple },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_FLYING_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_FLYING_ROLLER_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

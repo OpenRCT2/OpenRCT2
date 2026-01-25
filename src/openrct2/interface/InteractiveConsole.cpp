@@ -41,7 +41,6 @@
 #include "../entity/EntityRegistry.h"
 #include "../entity/Staff.h"
 #include "../interface/Chat.h"
-#include "../interface/Colour.h"
 #include "../interface/Viewport.h"
 #include "../interface/WindowBase.h"
 #include "../localisation/Formatting.h"
@@ -1582,7 +1581,7 @@ static void ConsoleCommandMpDesync(InteractiveConsole& console, const arguments_
                 auto* guest = guests[0];
                 if (guests.size() > 1)
                     guest = guests[UtilRand() % guests.size() - 1];
-                guest->TshirtColour = UtilRand() & 0xFF;
+                guest->TshirtColour = static_cast<Drawing::Colour>(UtilRand() % Drawing::kColourNumNormal);
                 guest->Invalidate();
             }
             break;
@@ -1736,10 +1735,10 @@ static void ConsoleSpawnBalloon(InteractiveConsole& console, const arguments_t& 
     int32_t x = kCoordsXYStep * atof(argv[0].c_str());
     int32_t y = kCoordsXYStep * atof(argv[1].c_str());
     int32_t z = kCoordsZStep * atof(argv[2].c_str());
-    int32_t col = 28;
+    Drawing::Colour colour = Drawing::Colour::brightRed;
     if (argv.size() > 3)
-        col = atoi(argv[3].c_str());
-    Balloon::Create({ x, y, z }, col, false);
+        colour = static_cast<Drawing::Colour>(atoi(argv[3].c_str()) % Drawing::kColourNumNormal);
+    Balloon::Create({ x, y, z }, colour, false);
 }
 
 using console_command_func = void (*)(InteractiveConsole& console, const arguments_t& argv);

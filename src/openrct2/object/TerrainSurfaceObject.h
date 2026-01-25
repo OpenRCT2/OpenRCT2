@@ -10,8 +10,8 @@
 #pragma once
 
 #include "../core/Money.hpp"
+#include "../drawing/Colour.h"
 #include "../drawing/PaletteIndex.h"
-#include "../interface/Colour.h"
 #include "Object.h"
 
 struct CoordsXY;
@@ -56,7 +56,7 @@ namespace OpenRCT2
         std::vector<SpecialEntry> SpecialEntriesUnderground;
         std::vector<SpecialEntry> SpecialEntriesGrid;
 
-        colour_t Colour{};
+        OpenRCT2::Drawing::Colour Colour{};
         uint8_t Rotations{};
         money64 Price{};
         TerrainSurfaceFlags Flags{};

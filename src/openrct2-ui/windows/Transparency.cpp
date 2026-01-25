@@ -148,7 +148,7 @@ namespace OpenRCT2::Ui::Windows
             // Locate mechanic button image
             const auto& widget = widgets[WIDX_HIDE_STAFF];
             auto screenCoords = windowPos + ScreenCoordsXY{ widget.left, widget.top };
-            auto image = ImageId(SPR_MECHANIC, COLOUR_BLACK, getGameState().park.staffMechanicColour);
+            auto image = ImageId(SPR_MECHANIC, OpenRCT2::Drawing::Colour::black, getGameState().park.staffMechanicColour);
             GfxDrawSprite(rt, image, screenCoords);
         }
 

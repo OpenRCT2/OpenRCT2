@@ -48,9 +48,9 @@ constexpr RideTypeDescriptor ObservationTowerRTD =
     .PhotoItem = ShopItem::photo,
     .BonusValue = 45,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_BRIGHT_RED, COLOUR_BLACK, COLOUR_GREY },
-        { COLOUR_LIGHT_BLUE, COLOUR_YELLOW, COLOUR_GREY },
-        { COLOUR_WHITE, COLOUR_YELLOW, COLOUR_GREY },
+        { OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::black, OpenRCT2::Drawing::Colour::grey },
+        { OpenRCT2::Drawing::Colour::lightBlue, OpenRCT2::Drawing::Colour::yellow, OpenRCT2::Drawing::Colour::grey },
+        { OpenRCT2::Drawing::Colour::white, OpenRCT2::Drawing::Colour::yellow, OpenRCT2::Drawing::Colour::grey },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_OBSERVATION_TOWER_TRACK, SPR_RIDE_DESIGN_PREVIEW_OBSERVATION_TOWER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

@@ -19,15 +19,15 @@ namespace OpenRCT2::GameActions
         CoordsXYZ _loc;
         uint8_t _quadrant{};
         ObjectEntryIndex _sceneryType{};
-        uint8_t _primaryColour{};
-        uint8_t _secondaryColour{};
-        uint8_t _tertiaryColour{};
+        Drawing::Colour _primaryColour{};
+        Drawing::Colour _secondaryColour{};
+        Drawing::Colour _tertiaryColour{};
 
     public:
         SmallScenerySetColourAction() = default;
         SmallScenerySetColourAction(
-            const CoordsXYZ& loc, uint8_t quadrant, ObjectEntryIndex sceneryType, uint8_t primaryColour,
-            uint8_t secondaryColour, uint8_t tertiaryColour);
+            const CoordsXYZ& loc, uint8_t quadrant, ObjectEntryIndex sceneryType, Drawing::Colour primaryColour,
+            Drawing::Colour secondaryColour, Drawing::Colour tertiaryColour);
 
         void AcceptParameters(GameActionParameterVisitor&) final;
 

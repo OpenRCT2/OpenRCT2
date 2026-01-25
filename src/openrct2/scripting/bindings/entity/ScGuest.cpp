@@ -201,7 +201,7 @@ namespace OpenRCT2::Scripting
     uint8_t ScGuest::tshirtColour_get() const
     {
         auto peep = GetGuest();
-        return peep != nullptr ? peep->TshirtColour : 0;
+        return peep != nullptr ? EnumValue(peep->TshirtColour) : 0;
     }
     void ScGuest::tshirtColour_set(uint8_t value)
     {
@@ -209,7 +209,7 @@ namespace OpenRCT2::Scripting
         auto peep = GetGuest();
         if (peep != nullptr)
         {
-            peep->TshirtColour = value;
+            peep->TshirtColour = static_cast<Drawing::Colour>(value);
             peep->Invalidate();
         }
     }
@@ -217,7 +217,7 @@ namespace OpenRCT2::Scripting
     uint8_t ScGuest::trousersColour_get() const
     {
         auto peep = GetGuest();
-        return peep != nullptr ? peep->TrousersColour : 0;
+        return peep != nullptr ? EnumValue(peep->TrousersColour) : 0;
     }
     void ScGuest::trousersColour_set(uint8_t value)
     {
@@ -225,7 +225,7 @@ namespace OpenRCT2::Scripting
         auto peep = GetGuest();
         if (peep != nullptr)
         {
-            peep->TrousersColour = value;
+            peep->TrousersColour = static_cast<Drawing::Colour>(value);
             peep->Invalidate();
         }
     }
@@ -233,7 +233,7 @@ namespace OpenRCT2::Scripting
     uint8_t ScGuest::balloonColour_get() const
     {
         auto peep = GetGuest();
-        return peep != nullptr ? peep->BalloonColour : 0;
+        return peep != nullptr ? EnumValue(peep->BalloonColour) : 0;
     }
     void ScGuest::balloonColour_set(uint8_t value)
     {
@@ -241,7 +241,7 @@ namespace OpenRCT2::Scripting
         auto peep = GetGuest();
         if (peep != nullptr)
         {
-            peep->BalloonColour = value;
+            peep->BalloonColour = static_cast<Drawing::Colour>(value);
             peep->Invalidate();
         }
     }
@@ -249,7 +249,7 @@ namespace OpenRCT2::Scripting
     uint8_t ScGuest::hatColour_get() const
     {
         auto peep = GetGuest();
-        return peep != nullptr ? peep->HatColour : 0;
+        return peep != nullptr ? EnumValue(peep->HatColour) : 0;
     }
     void ScGuest::hatColour_set(uint8_t value)
     {
@@ -257,7 +257,7 @@ namespace OpenRCT2::Scripting
         auto peep = GetGuest();
         if (peep != nullptr)
         {
-            peep->HatColour = value;
+            peep->HatColour = static_cast<Drawing::Colour>(value);
             peep->Invalidate();
         }
     }
@@ -265,7 +265,7 @@ namespace OpenRCT2::Scripting
     uint8_t ScGuest::umbrellaColour_get() const
     {
         auto peep = GetGuest();
-        return peep != nullptr ? peep->UmbrellaColour : 0;
+        return peep != nullptr ? EnumValue(peep->UmbrellaColour) : 0;
     }
     void ScGuest::umbrellaColour_set(uint8_t value)
     {
@@ -273,7 +273,7 @@ namespace OpenRCT2::Scripting
         auto peep = GetGuest();
         if (peep != nullptr)
         {
-            peep->UmbrellaColour = value;
+            peep->UmbrellaColour = static_cast<Drawing::Colour>(value);
             peep->Invalidate();
         }
     }

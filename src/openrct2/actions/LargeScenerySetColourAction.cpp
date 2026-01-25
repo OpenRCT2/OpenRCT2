@@ -21,7 +21,8 @@
 namespace OpenRCT2::GameActions
 {
     LargeScenerySetColourAction::LargeScenerySetColourAction(
-        const CoordsXYZD& loc, uint8_t tileIndex, uint8_t primaryColour, uint8_t secondaryColour, uint8_t tertiaryColour)
+        const CoordsXYZD& loc, uint8_t tileIndex, Drawing::Colour primaryColour, Drawing::Colour secondaryColour,
+        Drawing::Colour tertiaryColour)
         : _loc(loc)
         , _tileIndex(tileIndex)
         , _primaryColour(primaryColour)
@@ -78,17 +79,17 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 
-        if (_primaryColour >= COLOUR_COUNT)
+        if (!Drawing::colourIsValid(_primaryColour))
         {
             LOG_ERROR("Invalid primary colour %u", _primaryColour);
             return Result(Status::invalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_INVALID_COLOUR);
         }
-        else if (_secondaryColour >= COLOUR_COUNT)
+        if (!Drawing::colourIsValid(_secondaryColour))
         {
             LOG_ERROR("Invalid secondary colour %u", _secondaryColour);
             return Result(Status::invalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_INVALID_COLOUR);
         }
-        else if (_tertiaryColour >= COLOUR_COUNT)
+        if (!Drawing::colourIsValid(_tertiaryColour))
         {
             LOG_ERROR("Invalid tertiary colour %u", _tertiaryColour);
             return Result(Status::invalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_INVALID_COLOUR);

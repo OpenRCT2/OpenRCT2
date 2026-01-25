@@ -31,16 +31,16 @@ namespace OpenRCT2::GameActions
     private:
         CoordsXYZD _loc;
         ObjectEntryIndex _sceneryType{ kObjectEntryIndexNull };
-        uint8_t _primaryColour{};
-        uint8_t _secondaryColour{};
-        uint8_t _tertiaryColour{};
+        Drawing::Colour _primaryColour{};
+        Drawing::Colour _secondaryColour{};
+        Drawing::Colour _tertiaryColour{};
 
     public:
         LargeSceneryPlaceAction() = default;
 
         LargeSceneryPlaceAction(
-            const CoordsXYZD& loc, ObjectEntryIndex sceneryType, uint8_t primaryColour, uint8_t secondaryColour,
-            uint8_t tertiaryColour);
+            const CoordsXYZD& loc, ObjectEntryIndex sceneryType, Drawing::Colour primaryColour, Drawing::Colour secondaryColour,
+            Drawing::Colour tertiaryColour);
 
         void AcceptParameters(GameActionParameterVisitor&) final;
 

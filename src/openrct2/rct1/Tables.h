@@ -18,13 +18,13 @@ namespace OpenRCT2::RCT1
 {
     struct VehicleColourSchemeCopyDescriptor
     {
-        int8_t colour1, colour2, colour3;
+        Drawing::Colour colour1, colour2, colour3;
     };
 
     enum class RideType : uint8_t;
     enum class PeepAnimationGroup : uint8_t;
 
-    colour_t GetColour(colour_t colour);
+    Drawing::Colour GetColour(uint8_t colour);
     RCT12PeepAnimationGroup GetPeepAnimationGroup(PeepAnimationGroup rct1AnimationGroup);
 
     uint8_t GetRideType(RideType rideType, VehicleType vehicleType);

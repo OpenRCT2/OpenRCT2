@@ -63,10 +63,10 @@ constexpr RideTypeDescriptor WaterCoasterRTD =
     .PhotoItem = ShopItem::photo4,
     .BonusValue = 60,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_DARK_GREEN, COLOUR_DARK_GREEN, COLOUR_BLACK },
-        { COLOUR_DARK_BROWN, COLOUR_DARK_BROWN, COLOUR_BORDEAUX_RED },
-        { COLOUR_WHITE, COLOUR_WHITE, COLOUR_DARK_PURPLE },
-        { COLOUR_DULL_BROWN_LIGHT, COLOUR_DULL_BROWN_LIGHT, COLOUR_DARK_BROWN }, // De Vliegende Hollander
+        { OpenRCT2::Drawing::Colour::darkGreen, OpenRCT2::Drawing::Colour::darkGreen, OpenRCT2::Drawing::Colour::black },
+        { OpenRCT2::Drawing::Colour::darkBrown, OpenRCT2::Drawing::Colour::darkBrown, OpenRCT2::Drawing::Colour::bordeauxRed },
+        { OpenRCT2::Drawing::Colour::white, OpenRCT2::Drawing::Colour::white, OpenRCT2::Drawing::Colour::darkPurple },
+        { OpenRCT2::Drawing::Colour::beige, OpenRCT2::Drawing::Colour::beige, OpenRCT2::Drawing::Colour::darkBrown }, // De Vliegende Hollander
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_WATER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_WATER_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

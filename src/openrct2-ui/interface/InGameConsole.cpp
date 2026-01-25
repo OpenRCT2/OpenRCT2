@@ -22,7 +22,6 @@
 #include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
-#include <openrct2/interface/Colour.h>
 #include <openrct2/interface/ColourWithFlags.h>
 #include <openrct2/interface/Viewport.h>
 #include <openrct2/interface/Window.h>
@@ -341,10 +340,11 @@ void InGameConsole::Draw(RenderTarget& rt) const
         {
             // This is something of a hack to ensure the text is actually black
             // as opposed to a desaturated grey
-            if (textColour.colour == COLOUR_BLACK)
+            if (textColour.colour == OpenRCT2::Drawing::Colour::black)
             {
                 DrawText(rt, screenCoords, { textColour, style }, "{BLACK}");
-                DrawText(rt, screenCoords, { COLOUR_NULL, style }, _consoleLines[index].first.c_str(), true);
+                DrawText(
+                    rt, screenCoords, { OpenRCT2::Drawing::Colour::null, style }, _consoleLines[index].first.c_str(), true);
             }
             else
             {
@@ -355,7 +355,7 @@ void InGameConsole::Draw(RenderTarget& rt) const
         {
             std::string lineColour = FormatTokenToStringWithBraces(_consoleLines[index].second);
             DrawText(rt, screenCoords, { textColour, style }, lineColour.c_str());
-            DrawText(rt, screenCoords, { COLOUR_NULL, style }, _consoleLines[index].first.c_str(), true);
+            DrawText(rt, screenCoords, { OpenRCT2::Drawing::Colour::null, style }, _consoleLines[index].first.c_str(), true);
         }
 
         screenCoords.y += lineHeight;
@@ -364,10 +364,10 @@ void InGameConsole::Draw(RenderTarget& rt) const
     screenCoords.y = _consoleBottomRight.y - lineHeight - kConsoleEdgePadding - 1;
 
     // Draw current line
-    if (textColour.colour == COLOUR_BLACK)
+    if (textColour.colour == OpenRCT2::Drawing::Colour::black)
     {
         DrawText(rt, screenCoords, { textColour, style }, "{BLACK}");
-        DrawText(rt, screenCoords, { COLOUR_NULL, style }, _consoleCurrentLine.c_str(), true);
+        DrawText(rt, screenCoords, { OpenRCT2::Drawing::Colour::null, style }, _consoleCurrentLine.c_str(), true);
     }
     else
     {

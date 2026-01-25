@@ -243,6 +243,7 @@
     <ClInclude Include="Date.h" />
     <ClInclude Include="Diagnostic.h" />
     <ClInclude Include="drawing\BlendColourMap.h" />
+    <ClInclude Include="drawing\Colour.h" />
     <ClInclude Include="drawing\ColourMap.h" />
     <ClInclude Include="drawing\ColourPalette.h" />
     <ClInclude Include="drawing\Drawing.h" />
@@ -291,7 +292,6 @@
     <ClInclude Include="Identifiers.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="interface\Chat.h" />
-    <ClInclude Include="interface\Colour.h" />
     <ClInclude Include="interface\ColourWithFlags.h" />
     <ClInclude Include="interface\Cursors.h" />
     <ClInclude Include="interface\FontFamilies.h" />
@@ -831,6 +831,7 @@
     <ClCompile Include="Diagnostic.cpp" />
     <ClCompile Include="drawing\AVX2Drawing.cpp" />
     <ClCompile Include="drawing\BlendColourMap.cpp" />
+    <ClCompile Include="drawing\Colour.cpp" />
     <ClCompile Include="drawing\ColourMap.cpp" />
     <ClCompile Include="drawing\Drawing.cpp" />
     <ClCompile Include="drawing\Drawing.Sprite.BMP.cpp" />
@@ -875,7 +876,6 @@
     <ClCompile Include="GameStateSnapshots.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="interface\Chat.cpp" />
-    <ClCompile Include="interface\Colour.cpp" />
     <ClCompile Include="interface\ColourWithFlags.cpp" />
     <ClCompile Include="interface\Cursors.cpp" />
     <ClCompile Include="interface\FontFamilies.cpp" />

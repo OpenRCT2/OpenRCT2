@@ -491,11 +491,11 @@ static bool AwardIsDeservedBestCustomDesignedRides(GameState_t& gameState, int32
 static bool AwardIsDeservedMostDazzlingRideColours(GameState_t& gameState, int32_t activeAwardTypes)
 {
     /** At least 5 colourful rides and more than half of the rides are colourful. */
-    static constexpr colour_t dazzling_ride_colours[] = {
-        COLOUR_BRIGHT_PURPLE,
-        COLOUR_BRIGHT_GREEN,
-        COLOUR_LIGHT_ORANGE,
-        COLOUR_BRIGHT_PINK,
+    static constexpr OpenRCT2::Drawing::Colour dazzling_ride_colours[] = {
+        OpenRCT2::Drawing::Colour::brightPurple,
+        OpenRCT2::Drawing::Colour::brightGreen,
+        OpenRCT2::Drawing::Colour::lightOrange,
+        OpenRCT2::Drawing::Colour::brightPink,
     };
 
     if (activeAwardTypes & EnumToFlag(AwardType::mostDisappointing))

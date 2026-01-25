@@ -90,11 +90,11 @@ namespace OpenRCT2::Ui::Windows
 
         static void drawTextItem(
             RenderTarget& rt, ScreenCoordsXY screenCoords, int32_t width, const Dropdown::Item& item, bool highlighted,
-            StringId format, colour_t background)
+            StringId format, Colour background)
         {
             ColourWithFlags colour = { background };
             if (highlighted)
-                colour.colour = COLOUR_WHITE;
+                colour.colour = Colour::white;
             if (item.isDisabled())
                 colour = { background, { ColourFlag::inset } };
 
@@ -129,7 +129,7 @@ namespace OpenRCT2::Ui::Windows
 
                     if (colours[0].flags.has(ColourFlag::translucent))
                     {
-                        TranslucentWindowPalette palette = kTranslucentWindowPalettes[colours[0].colour];
+                        TranslucentWindowPalette palette = kTranslucentWindowPalettes[EnumValue(colours[0].colour)];
                         Rectangle::filter(rt, { leftTop, rightBottom }, palette.highlight);
                         Rectangle::filter(rt, { leftTop + shadowOffset, rightBottom + shadowOffset }, palette.shadow);
                     }
@@ -471,70 +471,33 @@ namespace OpenRCT2::Ui::Windows
         return -1;
     }
 
-    // colour_t ordered for use in colour dropdown
-    static constexpr colour_t kColoursDropdownOrder[] = {
-        COLOUR_BLACK,
-        COLOUR_SATURATED_RED,
-        COLOUR_DARK_ORANGE,
-        COLOUR_DARK_YELLOW,
-        COLOUR_GRASS_GREEN_DARK,
-        COLOUR_SATURATED_GREEN,
-        COLOUR_DEEP_WATER,
-        COLOUR_DARK_BLUE,
-        COLOUR_SATURATED_PURPLE_DARK,
+    // Colour ordered for use in colour dropdown
+    static constexpr Colour kColoursDropdownOrder[] = {
+        Colour::black,          Colour::saturatedRed,   Colour::darkOrange,   Colour::darkYellow,
+        Colour::forestGreen,    Colour::saturatedGreen, Colour::deepWater,    Colour::darkBlue,
+        Colour::violet,
 
-        COLOUR_GREY,
-        COLOUR_BRIGHT_RED,
-        COLOUR_LIGHT_ORANGE,
-        COLOUR_YELLOW,
-        COLOUR_MOSS_GREEN,
-        COLOUR_BRIGHT_GREEN,
-        COLOUR_DARK_WATER,
-        COLOUR_LIGHT_BLUE,
-        COLOUR_BRIGHT_PURPLE,
+        Colour::grey,           Colour::brightRed,      Colour::lightOrange,  Colour::yellow,
+        Colour::mossGreen,      Colour::brightGreen,    Colour::darkWater,    Colour::lightBlue,
+        Colour::brightPurple,
 
-        COLOUR_WHITE,
-        COLOUR_LIGHT_PINK,
-        COLOUR_ORANGE_LIGHT,
-        COLOUR_BRIGHT_YELLOW,
-        COLOUR_GRASS_GREEN_LIGHT,
-        COLOUR_SATURATED_GREEN_LIGHT,
-        COLOUR_LIGHT_WATER,
-        COLOUR_ICY_BLUE,
-        COLOUR_SATURATED_PURPLE_LIGHT,
+        Colour::white,          Colour::lightPink,      Colour::pastelOrange, Colour::brightYellow,
+        Colour::chartreuse,     Colour::limeGreen,      Colour::lightWater,   Colour::icyBlue,
+        Colour::lavender,
 
-        COLOUR_DULL_BROWN_DARK,
-        COLOUR_BORDEAUX_RED_DARK,
-        COLOUR_TAN_DARK,
-        COLOUR_SATURATED_BROWN,
-        COLOUR_DARK_OLIVE_DARK,
-        COLOUR_OLIVE_DARK,
-        COLOUR_DULL_GREEN_DARK,
-        COLOUR_DARK_PURPLE,
-        COLOUR_DARK_PINK,
+        Colour::umber,          Colour::maroon,         Colour::sepia,        Colour::saturatedBrown,
+        Colour::armyGreen,      Colour::hunterGreen,    Colour::viridian,     Colour::darkPurple,
+        Colour::darkPink,
 
-        COLOUR_DARK_BROWN,
-        COLOUR_BORDEAUX_RED,
-        COLOUR_SALMON_PINK,
-        COLOUR_LIGHT_BROWN,
-        COLOUR_DARK_OLIVE_GREEN,
-        COLOUR_OLIVE_GREEN,
-        COLOUR_DARK_GREEN,
-        COLOUR_LIGHT_PURPLE,
-        COLOUR_BRIGHT_PINK,
+        Colour::darkBrown,      Colour::bordeauxRed,    Colour::salmonPink,   Colour::lightBrown,
+        Colour::darkOliveGreen, Colour::oliveGreen,     Colour::darkGreen,    Colour::lightPurple,
+        Colour::brightPink,
 
-        COLOUR_DULL_BROWN_LIGHT,
-        COLOUR_BORDEAUX_RED_LIGHT,
-        COLOUR_TAN_LIGHT,
-        COLOUR_SATURATED_BROWN_LIGHT,
-        COLOUR_DARK_OLIVE_LIGHT,
-        COLOUR_OLIVE_LIGHT,
-        COLOUR_DULL_GREEN_LIGHT,
-        COLOUR_DULL_PURPLE_LIGHT,
-        COLOUR_MAGENTA_LIGHT,
+        Colour::beige,          Colour::coralPink,      Colour::peach,        Colour::tan,
+        Colour::honeyDew,       Colour::celadon,        Colour::seafoamGreen, Colour::periwinkle,
+        Colour::pastelPink,
 
-        COLOUR_INVISIBLE,
-        COLOUR_VOID,
+        Colour::invisible,      Colour::voidBackground,
     };
 
     constexpr std::array kColourTooltips = {
@@ -602,7 +565,7 @@ namespace OpenRCT2::Ui::Windows
         STR_COLOUR_VOID_TIP,
     };
 
-    colour_t ColourDropDownIndexToColour(uint8_t ddidx)
+    Colour ColourDropDownIndexToColour(uint8_t ddidx)
     {
         return kColoursDropdownOrder[ddidx];
     }
@@ -611,12 +574,12 @@ namespace OpenRCT2::Ui::Windows
      *  rct2: 0x006ED43D
      */
     void WindowDropdownShowColour(
-        WindowBase* w, Widget* widget, ColourWithFlags dropdownColour, colour_t selectedColour, bool alwaysHideSpecialColours)
+        WindowBase* w, Widget* widget, ColourWithFlags dropdownColour, Colour selectedColour, bool alwaysHideSpecialColours)
     {
         int32_t defaultIndex = -1;
 
         const bool specialColoursEnabled = !alwaysHideSpecialColours && getGameState().cheats.allowSpecialColourSchemes;
-        auto numColours = specialColoursEnabled ? static_cast<uint8_t>(COLOUR_COUNT) : kColourNumNormal;
+        auto numColours = specialColoursEnabled ? static_cast<uint8_t>(OpenRCT2::Drawing::kColourNumTotal) : kColourNumNormal;
         // Set items
         for (uint64_t i = 0; i < numColours; i++)
         {
@@ -627,13 +590,13 @@ namespace OpenRCT2::Ui::Windows
             ImageId imageId;
             if (Config::Get().interface.enlargedUi)
             {
-                imageId = (orderedColour == COLOUR_INVISIBLE) ? ImageId(SPR_G2_ICON_PALETTE_INVISIBLE_LARGE, COLOUR_WHITE)
-                                                              : ImageId(SPR_G2_ICON_PALETTE_LARGE, orderedColour);
+                imageId = (orderedColour == Colour::invisible) ? ImageId(SPR_G2_ICON_PALETTE_INVISIBLE_LARGE, Colour::white)
+                                                               : ImageId(SPR_G2_ICON_PALETTE_LARGE, orderedColour);
             }
             else
             {
-                imageId = (orderedColour == COLOUR_INVISIBLE) ? ImageId(SPR_G2_ICON_PALETTE_INVISIBLE, COLOUR_WHITE)
-                                                              : ImageId(SPR_PALETTE_BTN, orderedColour);
+                imageId = (orderedColour == Colour::invisible) ? ImageId(SPR_G2_ICON_PALETTE_INVISIBLE, Colour::white)
+                                                               : ImageId(SPR_PALETTE_BTN, orderedColour);
             }
 
             gDropdown.items[i] = { .type = Dropdown::ItemType::colour, .image = imageId, .tooltip = kColourTooltips[i] };

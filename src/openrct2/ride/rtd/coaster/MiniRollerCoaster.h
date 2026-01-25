@@ -49,9 +49,9 @@ constexpr RideTypeDescriptor MiniRollerCoasterRTD =
     .PhotoItem = ShopItem::photo,
     .BonusValue = 60,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_GREY, COLOUR_GREY, COLOUR_DARK_BROWN },
-        { COLOUR_MOSS_GREEN, COLOUR_MOSS_GREEN, COLOUR_DARK_BROWN },
-        { COLOUR_SALMON_PINK, COLOUR_SALMON_PINK, COLOUR_BORDEAUX_RED },
+        { OpenRCT2::Drawing::Colour::grey, OpenRCT2::Drawing::Colour::grey, OpenRCT2::Drawing::Colour::darkBrown },
+        { OpenRCT2::Drawing::Colour::mossGreen, OpenRCT2::Drawing::Colour::mossGreen, OpenRCT2::Drawing::Colour::darkBrown },
+        { OpenRCT2::Drawing::Colour::salmonPink, OpenRCT2::Drawing::Colour::salmonPink, OpenRCT2::Drawing::Colour::bordeauxRed },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_MINI_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_MINI_ROLLER_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

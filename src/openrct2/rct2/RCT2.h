@@ -232,24 +232,24 @@ namespace OpenRCT2::RCT2
             uint16_t slidePeep; // 0x15E
             uint16_t mazeTiles; // 0x15E
         };
-        uint8_t pad160[0xE];            // 0x160
-        uint8_t slidePeepTShirtColour;  // 0x16E
-        uint8_t pad16F[0x7];            // 0x16F
-        uint8_t spiralSlideProgress;    // 0x176
-        uint8_t pad177[0x9];            // 0x177
-        int16_t buildDate;              // 0x180
-        money16 upkeepCost;             // 0x182
-        uint16_t raceWinner;            // 0x184
-        uint8_t pad186[0x02];           // 0x186
-        uint32_t musicPosition;         // 0x188
-        uint8_t breakdownReasonPending; // 0x18C
-        MechanicStatus mechanicStatus;  // 0x18D
-        uint16_t mechanic;              // 0x18E
-        uint8_t inspectionStation;      // 0x190
-        uint8_t brokenTrain;            // 0x191
-        uint8_t brokenCar;              // 0x192
-        uint8_t breakdownReason;        // 0x193
-        money16 priceSecondary;         // 0x194
+        uint8_t pad160[0xE];                   // 0x160
+        Drawing::Colour slidePeepTShirtColour; // 0x16E
+        uint8_t pad16F[0x7];                   // 0x16F
+        uint8_t spiralSlideProgress;           // 0x176
+        uint8_t pad177[0x9];                   // 0x177
+        int16_t buildDate;                     // 0x180
+        money16 upkeepCost;                    // 0x182
+        uint16_t raceWinner;                   // 0x184
+        uint8_t pad186[0x02];                  // 0x186
+        uint32_t musicPosition;                // 0x188
+        uint8_t breakdownReasonPending;        // 0x18C
+        MechanicStatus mechanicStatus;         // 0x18D
+        uint16_t mechanic;                     // 0x18E
+        uint8_t inspectionStation;             // 0x190
+        uint8_t brokenTrain;                   // 0x191
+        uint8_t brokenCar;                     // 0x192
+        uint8_t breakdownReason;               // 0x193
+        money16 priceSecondary;                // 0x194
         union
         {
             struct
@@ -272,33 +272,33 @@ namespace OpenRCT2::RCT2
         uint8_t breakdownSoundModifier;                        // 0x1AC
         // Used to oscillate the sound when ride breaks down.
         // 0 = no change, 255 = max change
-        uint8_t notFixedTimeout;                                    // 0x1AD
-        uint8_t lastCrashType;                                      // 0x1AE
-        uint8_t connectedMessageThrottle;                           // 0x1AF
-        money32 incomePerHour;                                      // 0x1B0
-        money32 profit;                                             // 0x1B4
-        uint8_t queueTime[Limits::kMaxStationsPerRide];             // 0x1B8
-        uint8_t trackColourMain[Limits::kNumColourSchemes];         // 0x1BC
-        uint8_t trackColourAdditional[Limits::kNumColourSchemes];   // 0x1C0
-        uint8_t trackColourSupports[Limits::kNumColourSchemes];     // 0x1C4
-        uint8_t music;                                              // 0x1C8
-        uint8_t entranceStyle;                                      // 0x1C9
-        uint16_t vehicleChangeTimeout;                              // 0x1CA
-        uint8_t numBlockBrakes;                                     // 0x1CC
-        uint8_t liftHillSpeed;                                      // 0x1CD
-        uint16_t guestsFavourite;                                   // 0x1CE
-        uint32_t lifecycleFlags;                                    // 0x1D0
-        uint8_t vehicleColoursExtended[Limits::kMaxVehicleColours]; // 0x1D4
-        uint16_t totalAirTime;                                      // 0x1F4
-        uint8_t currentTestStation;                                 // 0x1F6
-        uint8_t numCircuits;                                        // 0x1F7
-        int16_t cableLiftX;                                         // 0x1F8
-        int16_t cableLiftY;                                         // 0x1FA
-        uint8_t cableLiftZ;                                         // 0x1FC
-        uint8_t pad1FD;                                             // 0x1FD
-        uint16_t cableLift;                                         // 0x1FE
-        uint16_t queueLength[Limits::kMaxStationsPerRide];          // 0x200
-        uint8_t pad208[0x58];                                       // 0x208
+        uint8_t notFixedTimeout;                                            // 0x1AD
+        uint8_t lastCrashType;                                              // 0x1AE
+        uint8_t connectedMessageThrottle;                                   // 0x1AF
+        money32 incomePerHour;                                              // 0x1B0
+        money32 profit;                                                     // 0x1B4
+        uint8_t queueTime[Limits::kMaxStationsPerRide];                     // 0x1B8
+        Drawing::Colour trackColourMain[Limits::kNumColourSchemes];         // 0x1BC
+        Drawing::Colour trackColourAdditional[Limits::kNumColourSchemes];   // 0x1C0
+        Drawing::Colour trackColourSupports[Limits::kNumColourSchemes];     // 0x1C4
+        uint8_t music;                                                      // 0x1C8
+        uint8_t entranceStyle;                                              // 0x1C9
+        uint16_t vehicleChangeTimeout;                                      // 0x1CA
+        uint8_t numBlockBrakes;                                             // 0x1CC
+        uint8_t liftHillSpeed;                                              // 0x1CD
+        uint16_t guestsFavourite;                                           // 0x1CE
+        uint32_t lifecycleFlags;                                            // 0x1D0
+        Drawing::Colour vehicleColoursExtended[Limits::kMaxVehicleColours]; // 0x1D4
+        uint16_t totalAirTime;                                              // 0x1F4
+        uint8_t currentTestStation;                                         // 0x1F6
+        uint8_t numCircuits;                                                // 0x1F7
+        int16_t cableLiftX;                                                 // 0x1F8
+        int16_t cableLiftY;                                                 // 0x1FA
+        uint8_t cableLiftZ;                                                 // 0x1FC
+        uint8_t pad1FD;                                                     // 0x1FD
+        uint16_t cableLift;                                                 // 0x1FE
+        uint16_t queueLength[Limits::kMaxStationsPerRide];                  // 0x200
+        uint8_t pad208[0x58];                                               // 0x208
 
         uint8_t getMinCarsPerTrain() const;
         uint8_t getMaxCarsPerTrain() const;
@@ -328,15 +328,15 @@ namespace OpenRCT2::RCT2
     /* Track Scenery entry  size: 0x16 */
     struct TD6SceneryElement
     {
-        RCTObjectEntry SceneryObject; // 0x00
-        int8_t x;                     // 0x10
-        int8_t y;                     // 0x11
-        int8_t z;                     // 0x12
-        uint8_t Flags;                // 0x13 direction quadrant tertiary colour
-        uint8_t PrimaryColour;        // 0x14
-        uint8_t SecondaryColour;      // 0x15
+        RCTObjectEntry SceneryObject;    // 0x00
+        int8_t x;                        // 0x10
+        int8_t y;                        // 0x11
+        int8_t z;                        // 0x12
+        uint8_t Flags;                   // 0x13 direction quadrant tertiary colour
+        Drawing::Colour PrimaryColour;   // 0x14
+        Drawing::Colour SecondaryColour; // 0x15
 
-        colour_t getTertiaryWallColour() const;
+        Drawing::Colour getTertiaryWallColour() const;
     };
     static_assert(sizeof(TD6SceneryElement) == 0x16);
 
@@ -372,21 +372,21 @@ namespace OpenRCT2::RCT2
             uint8_t Inversions; // 0x58
             uint8_t Holes;      // 0x58
         };
-        uint8_t Drops;                                              // 0x59
-        uint8_t HighestDropHeight;                                  // 0x5A
-        uint8_t Excitement;                                         // 0x5B
-        uint8_t Intensity;                                          // 0x5C
-        uint8_t Nausea;                                             // 0x5D
-        money16 UpkeepCost;                                         // 0x5E
-        uint8_t TrackSpineColour[Limits::kNumColourSchemes];        // 0x60
-        uint8_t TrackRailColour[Limits::kNumColourSchemes];         // 0x64
-        uint8_t TrackSupportColour[Limits::kNumColourSchemes];      // 0x68
-        uint32_t Flags2;                                            // 0x6C
-        RCTObjectEntry VehicleObject;                               // 0x70
-        uint8_t SpaceRequiredX;                                     // 0x80
-        uint8_t SpaceRequiredY;                                     // 0x81
-        uint8_t VehicleAdditionalColour[Limits::kMaxTrainsPerRide]; // 0x82
-        uint8_t LiftHillSpeedNumCircuits;                           // 0xA2 0bCCCL_LLLL
+        uint8_t Drops;                                                 // 0x59
+        uint8_t HighestDropHeight;                                     // 0x5A
+        uint8_t Excitement;                                            // 0x5B
+        uint8_t Intensity;                                             // 0x5C
+        uint8_t Nausea;                                                // 0x5D
+        money16 UpkeepCost;                                            // 0x5E
+        Drawing::Colour TrackSpineColour[Limits::kNumColourSchemes];   // 0x60
+        Drawing::Colour TrackRailColour[Limits::kNumColourSchemes];    // 0x64
+        Drawing::Colour TrackSupportColour[Limits::kNumColourSchemes]; // 0x68
+        uint32_t Flags2;                                               // 0x6C
+        RCTObjectEntry VehicleObject;                                  // 0x70
+        uint8_t SpaceRequiredX;                                        // 0x80
+        uint8_t SpaceRequiredY;                                        // 0x81
+        uint8_t VehicleAdditionalColour[Limits::kMaxTrainsPerRide];    // 0x82
+        uint8_t LiftHillSpeedNumCircuits;                              // 0xA2 0bCCCL_LLLL
         // 0xA3 (data starts here in file)
     };
     static_assert(sizeof(TD6Track) == 0xA3);
@@ -476,14 +476,14 @@ namespace OpenRCT2::RCT2
             int16_t SwingSpeed;
             int16_t CrashZ; // 0x4E
         };
-        uint8_t Status;                // 0x50
-        uint8_t SubState;              // 0x51
-        uint16_t Peep[32];             // 0x52
-        uint8_t PeepTshirtColours[32]; // 0x92
-        uint8_t NumSeats;              // 0xB2
-        uint8_t NumPeeps;              // 0xB3
-        uint8_t NextFreeSeat;          // 0xB4
-        uint8_t RestraintsPosition;    // 0xB5
+        uint8_t Status;                        // 0x50
+        uint8_t SubState;                      // 0x51
+        uint16_t Peep[32];                     // 0x52
+        Drawing::Colour PeepTshirtColours[32]; // 0x92
+        uint8_t NumSeats;                      // 0xB2
+        uint8_t NumPeeps;                      // 0xB3
+        uint8_t NextFreeSeat;                  // 0xB4
+        uint8_t RestraintsPosition;            // 0xB5
         union
         {
             int16_t SpinSpeed; // 0xB6
@@ -568,11 +568,11 @@ namespace OpenRCT2::RCT2
             uint8_t StaffType; // 0x2F
             uint8_t NoOfRides; // 0x2F
         };
-        uint8_t TshirtColour;         // 0x30
-        uint8_t TrousersColour;       // 0x31
-        uint16_t DestinationX;        // 0x32
-        uint16_t DestinationY;        // 0x34
-        uint8_t DestinationTolerance; // 0x36
+        Drawing::Colour TshirtColour;   // 0x30
+        Drawing::Colour TrousersColour; // 0x31
+        uint16_t DestinationX;          // 0x32
+        uint16_t DestinationY;          // 0x34
+        uint8_t DestinationTolerance;   // 0x36
         uint8_t Var37;
         uint8_t Energy;                // 0x38
         uint8_t EnergyTarget;          // 0x39
@@ -695,13 +695,13 @@ namespace OpenRCT2::RCT2
         RCT12RideId VoucherArguments;       // 0xF1 ride_id or string_offset_id
         uint8_t SurroundingsThoughtTimeout; // 0xF2
         uint8_t Angriness;                  // 0xF3
-        uint8_t TimeLost;            // 0xF4 the time the peep has been lost when it reaches 254 generates the lost thought
-        uint8_t DaysInQueue;         // 0xF5
-        uint8_t BalloonColour;       // 0xF6
-        uint8_t UmbrellaColour;      // 0xF7
-        uint8_t HatColour;           // 0xF8
-        RCT12RideId FavouriteRide;   // 0xF9
-        uint8_t FavouriteRideRating; // 0xFA
+        uint8_t TimeLost;               // 0xF4 the time the peep has been lost when it reaches 254 generates the lost thought
+        uint8_t DaysInQueue;            // 0xF5
+        Drawing::Colour BalloonColour;  // 0xF6
+        Drawing::Colour UmbrellaColour; // 0xF7
+        Drawing::Colour HatColour;      // 0xF8
+        RCT12RideId FavouriteRide;      // 0xF9
+        uint8_t FavouriteRideRating;    // 0xFA
         uint8_t PadFB;
         uint32_t ItemStandardFlags; // 0xFC
         uint64_t GetItemFlags() const
@@ -870,9 +870,9 @@ namespace OpenRCT2::RCT2
         // SC6[8]
         uint16_t LastGuestsInPark;
         uint8_t Pad01357BCA[3];
-        uint8_t HandymanColour;
-        uint8_t MechanicColour;
-        uint8_t SecurityColour;
+        Drawing::Colour HandymanColour;
+        Drawing::Colour MechanicColour;
+        Drawing::Colour SecurityColour;
 
         // Ignored in scenario
         uint32_t ResearchedSceneryItems[Limits::kMaxResearchedSceneryItemQuads];

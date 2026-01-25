@@ -208,8 +208,8 @@ namespace OpenRCT2::Scripting
         if (entity != nullptr)
         {
             DukObject dukColour(ctx);
-            dukColour.Set("body", entity->colour[0]);
-            dukColour.Set("trim", entity->colour[1]);
+            dukColour.Set("body", EnumValue(entity->colour[0]));
+            dukColour.Set("trim", EnumValue(entity->colour[1]));
             return dukColour.Take();
         }
         return ToDuk(ctx, nullptr);

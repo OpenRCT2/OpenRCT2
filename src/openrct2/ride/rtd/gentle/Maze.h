@@ -49,7 +49,7 @@ constexpr RideTypeDescriptor MazeRTD =
     .PhotoItem = ShopItem::photo,
     .BonusValue = 40,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_GREY, COLOUR_GREY, COLOUR_GREY },
+        { OpenRCT2::Drawing::Colour::grey, OpenRCT2::Drawing::Colour::grey, OpenRCT2::Drawing::Colour::grey },
     ),
     .ColourPreview = { 0, 0 },
     .ColourKey = RideColourKey::Ride,

@@ -111,7 +111,7 @@ namespace OpenRCT2::Scripting
     uint8_t ScStaff::colour_get() const
     {
         auto peep = GetStaff();
-        return peep != nullptr ? peep->TshirtColour : 0;
+        return peep != nullptr ? EnumValue(peep->TshirtColour) : 0;
     }
 
     void ScStaff::colour_set(uint8_t value)
@@ -120,8 +120,7 @@ namespace OpenRCT2::Scripting
         auto peep = GetStaff();
         if (peep != nullptr)
         {
-            peep->TshirtColour = value;
-            peep->TrousersColour = value;
+            peep->TshirtColour = static_cast<Drawing::Colour>(value);
             peep->Invalidate();
         }
     }

@@ -47,8 +47,8 @@ constexpr RideTypeDescriptor MiniSuspendedCoasterRTD =
     .PhotoItem = ShopItem::photo2,
     .BonusValue = 50,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_BLACK, COLOUR_BLACK, COLOUR_SATURATED_BROWN },
-        { COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_BLACK },
+        { OpenRCT2::Drawing::Colour::black, OpenRCT2::Drawing::Colour::black, OpenRCT2::Drawing::Colour::saturatedBrown },
+        { OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::black },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_MINI_SUSPENDED_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_MINI_SUSPENDED_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

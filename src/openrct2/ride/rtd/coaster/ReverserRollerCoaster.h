@@ -47,8 +47,8 @@ constexpr RideTypeDescriptor ReverserRollerCoasterRTD =
     .PhotoItem = ShopItem::photo3,
     .BonusValue = 65,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_DARK_BROWN, COLOUR_LIGHT_BROWN, COLOUR_DARK_BROWN },
-        { COLOUR_SATURATED_BROWN, COLOUR_BORDEAUX_RED, COLOUR_SATURATED_BROWN },
+        { OpenRCT2::Drawing::Colour::darkBrown, OpenRCT2::Drawing::Colour::lightBrown, OpenRCT2::Drawing::Colour::darkBrown },
+        { OpenRCT2::Drawing::Colour::saturatedBrown, OpenRCT2::Drawing::Colour::bordeauxRed, OpenRCT2::Drawing::Colour::saturatedBrown },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_REVERSER_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_REVERSER_ROLLER_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

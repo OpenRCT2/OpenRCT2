@@ -49,9 +49,9 @@ constexpr RideTypeDescriptor MagicCarpetRTD =
     .PhotoItem = ShopItem::photo,
     .BonusValue = 35,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_DARK_PURPLE, COLOUR_WHITE, COLOUR_BLACK },
-        { COLOUR_YELLOW, COLOUR_WHITE, COLOUR_BLACK },
-        { COLOUR_BRIGHT_RED, COLOUR_YELLOW, COLOUR_BLACK },
+        { OpenRCT2::Drawing::Colour::darkPurple, OpenRCT2::Drawing::Colour::white, OpenRCT2::Drawing::Colour::black },
+        { OpenRCT2::Drawing::Colour::yellow, OpenRCT2::Drawing::Colour::white, OpenRCT2::Drawing::Colour::black },
+        { OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::yellow, OpenRCT2::Drawing::Colour::black },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_MAGIC_CARPET_TRACK, SPR_RIDE_DESIGN_PREVIEW_MAGIC_CARPET_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

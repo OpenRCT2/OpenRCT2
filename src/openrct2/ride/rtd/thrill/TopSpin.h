@@ -48,9 +48,9 @@ constexpr RideTypeDescriptor TopSpinRTD =
     .PhotoItem = ShopItem::photo,
     .BonusValue = 55,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_BRIGHT_RED, COLOUR_YELLOW, COLOUR_YELLOW },
-        { COLOUR_DARK_WATER, COLOUR_WHITE, COLOUR_WHITE },
-        { COLOUR_DARK_GREEN, COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED },
+        { OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::yellow, OpenRCT2::Drawing::Colour::yellow },
+        { OpenRCT2::Drawing::Colour::darkWater, OpenRCT2::Drawing::Colour::white, OpenRCT2::Drawing::Colour::white },
+        { OpenRCT2::Drawing::Colour::darkGreen, OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::brightRed },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_TOP_SPIN_TRACK, 0 },
     .ColourKey = RideColourKey::Ride,

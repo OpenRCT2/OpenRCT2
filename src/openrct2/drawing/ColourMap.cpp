@@ -30,11 +30,11 @@ namespace OpenRCT2::Drawing
     constexpr uint8_t kIndexColour10 = 253;
     constexpr uint8_t kIndexColour11 = 254;
 
-    static std::array<ColourShadeMap, COLOUR_COUNT> _colourMap = {};
+    static std::array<ColourShadeMap, kColourNumTotal> _colourMap = {};
 
     void initColourMaps()
     {
-        for (int32_t i = 0; i < COLOUR_COUNT; i++)
+        for (int32_t i = 0; i < kColourNumTotal; i++)
         {
             const auto* g1 = GfxGetG1Element(SPR_PALETTE_2_START + i);
             if (g1 != nullptr)
@@ -55,9 +55,9 @@ namespace OpenRCT2::Drawing
         }
     }
 
-    ColourShadeMap getColourMap(colour_t colour)
+    ColourShadeMap getColourMap(Colour colour)
     {
-        Guard::Assert(colour < _colourMap.size());
-        return _colourMap[colour];
+        Guard::Assert(EnumValue(colour) < _colourMap.size());
+        return _colourMap[EnumValue(colour)];
     }
 } // namespace OpenRCT2::Drawing

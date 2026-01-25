@@ -13,7 +13,6 @@
 #include "../core/EnumUtils.hpp"
 #include "../windows/TileInspectorGlobals.h"
 #include "../world/Location.hpp"
-#include "Colour.h"
 #include "Widget.h"
 #include "WindowClasses.h"
 #include "ZoomLevel.h"
@@ -287,7 +286,7 @@ namespace OpenRCT2
 
     extern uint32_t gWindowUpdateTicks;
 
-    extern colour_t gCurrentWindowColours[3];
+    extern OpenRCT2::Drawing::Colour gCurrentWindowColours[3];
 
     std::vector<std::unique_ptr<WindowBase>>::iterator WindowGetIterator(const WindowBase* w);
     void WindowVisitEach(std::function<void(WindowBase*)> func);

@@ -25,8 +25,8 @@
 namespace OpenRCT2::GameActions
 {
     SmallScenerySetColourAction::SmallScenerySetColourAction(
-        const CoordsXYZ& loc, uint8_t quadrant, ObjectEntryIndex sceneryType, uint8_t primaryColour, uint8_t secondaryColour,
-        uint8_t tertiaryColour)
+        const CoordsXYZ& loc, uint8_t quadrant, ObjectEntryIndex sceneryType, Drawing::Colour primaryColour,
+        Drawing::Colour secondaryColour, Drawing::Colour tertiaryColour)
         : _loc(loc)
         , _quadrant(quadrant)
         , _sceneryType(sceneryType)

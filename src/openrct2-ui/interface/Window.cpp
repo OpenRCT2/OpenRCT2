@@ -1052,8 +1052,9 @@ namespace OpenRCT2::Ui::Windows
         if (w.flashTimer > 0)
         {
             Rectangle::fillInset(
-                rt, { w.windowPos, w.windowPos + ScreenCoordsXY{ w.width - 1, w.height - 1 } }, { COLOUR_WHITE },
-                Rectangle::BorderStyle::outset, Rectangle::FillBrightness::light, Rectangle::FillMode::none);
+                rt, { w.windowPos, w.windowPos + ScreenCoordsXY{ w.width - 1, w.height - 1 } },
+                { OpenRCT2::Drawing::Colour::white }, Rectangle::BorderStyle::outset, Rectangle::FillBrightness::light,
+                Rectangle::FillMode::none);
         }
     }
 

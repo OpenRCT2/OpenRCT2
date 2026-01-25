@@ -1191,7 +1191,7 @@ namespace OpenRCT2::Ui::Windows
             if (surfaceObj != nullptr)
             {
                 surfaceImage = ImageId(surfaceObj->IconImageId);
-                if (surfaceObj->Colour != TerrainSurfaceObject::kNoValue)
+                if (surfaceObj->Colour != Colour::null)
                 {
                     surfaceImage = surfaceImage.WithPrimary(surfaceObj->Colour);
                 }

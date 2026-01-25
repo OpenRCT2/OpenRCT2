@@ -18,11 +18,11 @@ namespace OpenRCT2::GameActions
     {
     private:
         uint8_t _staffType{};
-        uint8_t _colour{};
+        Drawing::Colour _colour{};
 
     public:
         StaffSetColourAction() = default;
-        StaffSetColourAction(StaffType staffType, uint8_t colour);
+        StaffSetColourAction(StaffType staffType, Drawing::Colour colour);
 
         void AcceptParameters(GameActionParameterVisitor&) final;
 

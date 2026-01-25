@@ -441,7 +441,7 @@ Banner* CreateBanner()
         banner->flags = {};
         banner->type = 0;
         banner->text = {};
-        banner->colour = COLOUR_WHITE;
+        banner->colour = OpenRCT2::Drawing::Colour::white;
         banner->textColour = Drawing::TextColour::white;
     }
     return banner;

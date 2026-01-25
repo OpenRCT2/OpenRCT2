@@ -1109,11 +1109,11 @@ namespace OpenRCT2::RCT1
                 // Balloons were always blue in the original RCT.
                 if (src->type == RideType::balloonStall)
                 {
-                    dst->trackColours[0].main = COLOUR_LIGHT_BLUE;
+                    dst->trackColours[0].main = Drawing::Colour::lightBlue;
                 }
                 else if (src->type == RideType::riverRapids)
                 {
-                    dst->trackColours[0].main = COLOUR_WHITE;
+                    dst->trackColours[0].main = Drawing::Colour::white;
                 }
             }
             else
@@ -1143,8 +1143,8 @@ namespace OpenRCT2::RCT1
             if (_gameVersion < FILE_VERSION_RCT1_LL && src->type == RideType::merryGoRound)
             {
                 // The merry-go-round in pre-LL versions was always yellow with red
-                dst->vehicleColours[0].Body = COLOUR_YELLOW;
-                dst->vehicleColours[0].Trim = COLOUR_BRIGHT_RED;
+                dst->vehicleColours[0].Body = Drawing::Colour::yellow;
+                dst->vehicleColours[0].Trim = Drawing::Colour::brightRed;
             }
             else
             {
@@ -1152,11 +1152,11 @@ namespace OpenRCT2::RCT1
                 {
                     // RCT1 had no third colour
                     const auto colourSchemeCopyDescriptor = GetColourSchemeCopyDescriptor(src->vehicleType);
-                    if (colourSchemeCopyDescriptor.colour1 == COPY_COLOUR_1)
+                    if (colourSchemeCopyDescriptor.colour1 == kCopyColour1)
                     {
                         dst->vehicleColours[i].Body = GetColour(src->vehicleColours[i].body);
                     }
-                    else if (colourSchemeCopyDescriptor.colour1 == COPY_COLOUR_2)
+                    else if (colourSchemeCopyDescriptor.colour1 == kCopyColour2)
                     {
                         dst->vehicleColours[i].Body = GetColour(src->vehicleColours[i].trim);
                     }
@@ -1165,11 +1165,11 @@ namespace OpenRCT2::RCT1
                         dst->vehicleColours[i].Body = colourSchemeCopyDescriptor.colour1;
                     }
 
-                    if (colourSchemeCopyDescriptor.colour2 == COPY_COLOUR_1)
+                    if (colourSchemeCopyDescriptor.colour2 == kCopyColour1)
                     {
                         dst->vehicleColours[i].Trim = GetColour(src->vehicleColours[i].body);
                     }
-                    else if (colourSchemeCopyDescriptor.colour2 == COPY_COLOUR_2)
+                    else if (colourSchemeCopyDescriptor.colour2 == kCopyColour2)
                     {
                         dst->vehicleColours[i].Trim = GetColour(src->vehicleColours[i].trim);
                     }
@@ -1178,11 +1178,11 @@ namespace OpenRCT2::RCT1
                         dst->vehicleColours[i].Trim = colourSchemeCopyDescriptor.colour2;
                     }
 
-                    if (colourSchemeCopyDescriptor.colour3 == COPY_COLOUR_1)
+                    if (colourSchemeCopyDescriptor.colour3 == kCopyColour1)
                     {
                         dst->vehicleColours[i].Tertiary = GetColour(src->vehicleColours[i].body);
                     }
-                    else if (colourSchemeCopyDescriptor.colour3 == COPY_COLOUR_2)
+                    else if (colourSchemeCopyDescriptor.colour3 == kCopyColour2)
                     {
                         dst->vehicleColours[i].Tertiary = GetColour(src->vehicleColours[i].trim);
                     }
@@ -1198,9 +1198,9 @@ namespace OpenRCT2::RCT1
             if (src->type == RideType::hedgeMaze)
             {
                 if (_gameVersion < FILE_VERSION_RCT1_LL || src->trackColourSupports[0] > 3)
-                    dst->trackColours[0].supports = hedges;
+                    dst->trackColours[0].supports = static_cast<Drawing::Colour>(hedges);
                 else
-                    dst->trackColours[0].supports = src->trackColourSupports[0];
+                    dst->trackColours[0].supports = static_cast<Drawing::Colour>(src->trackColourSupports[0]);
             }
         }
 
@@ -1279,11 +1279,11 @@ namespace OpenRCT2::RCT1
             VehicleColourSchemeCopyDescriptor colourSchemeCopyDescriptor = GetColourSchemeCopyDescriptor(srcRide.vehicleType);
 
             // RCT1 had no third colour
-            if (colourSchemeCopyDescriptor.colour1 == COPY_COLOUR_1)
+            if (colourSchemeCopyDescriptor.colour1 == kCopyColour1)
             {
                 dst->colours.Body = GetColour(src->Colours.BodyColour);
             }
-            else if (colourSchemeCopyDescriptor.colour1 == COPY_COLOUR_2)
+            else if (colourSchemeCopyDescriptor.colour1 == kCopyColour2)
             {
                 dst->colours.Body = GetColour(src->Colours.TrimColour);
             }
@@ -1292,11 +1292,11 @@ namespace OpenRCT2::RCT1
                 dst->colours.Body = colourSchemeCopyDescriptor.colour1;
             }
 
-            if (colourSchemeCopyDescriptor.colour2 == COPY_COLOUR_1)
+            if (colourSchemeCopyDescriptor.colour2 == kCopyColour1)
             {
                 dst->colours.Trim = GetColour(src->Colours.BodyColour);
             }
-            else if (colourSchemeCopyDescriptor.colour2 == COPY_COLOUR_2)
+            else if (colourSchemeCopyDescriptor.colour2 == kCopyColour2)
             {
                 dst->colours.Trim = GetColour(src->Colours.TrimColour);
             }
@@ -1305,11 +1305,11 @@ namespace OpenRCT2::RCT1
                 dst->colours.Trim = colourSchemeCopyDescriptor.colour2;
             }
 
-            if (colourSchemeCopyDescriptor.colour3 == COPY_COLOUR_1)
+            if (colourSchemeCopyDescriptor.colour3 == kCopyColour1)
             {
                 dst->colours.Tertiary = GetColour(src->Colours.BodyColour);
             }
-            else if (colourSchemeCopyDescriptor.colour3 == COPY_COLOUR_2)
+            else if (colourSchemeCopyDescriptor.colour3 == kCopyColour2)
             {
                 dst->colours.Tertiary = GetColour(src->Colours.TrimColour);
             }
@@ -1786,7 +1786,7 @@ namespace OpenRCT2::RCT1
                     dst2->SetEntryIndex(entryIndex);
                     dst2->SetAge(src2->GetAge());
                     dst2->SetSceneryQuadrant(src2->GetSceneryQuadrant());
-                    dst2->SetPrimaryColour(GetColour(src2->GetPrimaryColour()));
+                    dst2->SetPrimaryColour(GetColour(EnumValue(src2->GetPrimaryColour())));
                     if (src2->NeedsSupports())
                         dst2->SetNeedsSupports();
 
@@ -1798,15 +1798,15 @@ namespace OpenRCT2::RCT1
                         case RCT1_SCENERY_GEOMETRIC_SCULPTURE_3:
                         case RCT1_SCENERY_GEOMETRIC_SCULPTURE_4:
                         case RCT1_SCENERY_GEOMETRIC_SCULPTURE_5:
-                            dst2->SetSecondaryColour(COLOUR_WHITE);
+                            dst2->SetSecondaryColour(Drawing::Colour::white);
                             break;
                         case RCT1_SCENERY_TULIPS_1:
                         case RCT1_SCENERY_TULIPS_2:
-                            dst2->SetPrimaryColour(COLOUR_BRIGHT_RED);
-                            dst2->SetSecondaryColour(COLOUR_YELLOW);
+                            dst2->SetPrimaryColour(Drawing::Colour::brightRed);
+                            dst2->SetSecondaryColour(Drawing::Colour::yellow);
                             break;
                         case RCT1_SCENERY_SMALL_RED_GARDENS:
-                            dst2->SetPrimaryColour(COLOUR_BRIGHT_RED);
+                            dst2->SetPrimaryColour(Drawing::Colour::brightRed);
                             break;
                     }
 
@@ -1847,9 +1847,9 @@ namespace OpenRCT2::RCT1
                         if (type == -1)
                             continue;
 
-                        colour_t colourA = GetColour(src2->GetRCT1WallColour());
-                        colour_t colourB = COLOUR_BLACK;
-                        colour_t colourC = COLOUR_BLACK;
+                        Drawing::Colour colourA = GetColour(EnumValue(src2->GetRCT1WallColour()));
+                        Drawing::Colour colourB = Drawing::Colour::black;
+                        Drawing::Colour colourC = Drawing::Colour::black;
                         ConvertWall(type, &colourA, &colourB);
 
                         type = _wallTypeToEntryMap[type];
@@ -1898,8 +1898,8 @@ namespace OpenRCT2::RCT1
                     auto type = src2->GetEntryIndex();
                     dst2->SetEntryIndex(_largeSceneryTypeToEntryMap[type]);
                     dst2->SetSequenceIndex(src2->GetSequenceIndex());
-                    dst2->SetPrimaryColour(GetColour(src2->GetPrimaryColour()));
-                    dst2->SetSecondaryColour(GetColour(src2->GetSecondaryColour()));
+                    dst2->SetPrimaryColour(GetColour(EnumValue(src2->GetPrimaryColour())));
+                    dst2->SetSecondaryColour(GetColour(EnumValue(src2->GetSecondaryColour())));
 
                     return 1;
                 }
@@ -2463,25 +2463,25 @@ namespace OpenRCT2::RCT1
             gameState.savedViewRotation = _s4.ViewRotation;
         }
 
-        void ConvertWall(const int32_t& type, colour_t* colourA, colour_t* colourB)
+        void ConvertWall(const int32_t& type, Drawing::Colour* colourA, Drawing::Colour* colourB)
         {
             switch (type)
             {
                 case RCT1_WALL_TYPE_WOODEN_PANEL_FENCE:
-                    *colourA = COLOUR_DARK_BROWN;
+                    *colourA = Drawing::Colour::darkBrown;
                     break;
                 case RCT1_WALL_TYPE_WHITE_WOODEN_PANEL_FENCE:
-                    *colourA = COLOUR_WHITE;
+                    *colourA = Drawing::Colour::white;
                     break;
                 case RCT1_WALL_TYPE_RED_WOODEN_PANEL_FENCE:
-                    *colourA = COLOUR_SALMON_PINK;
+                    *colourA = Drawing::Colour::salmonPink;
                     break;
                 case RCT1_WALL_TYPE_WOODEN_PANEL_FENCE_WITH_SNOW:
-                    *colourA = COLOUR_DARK_BROWN;
+                    *colourA = Drawing::Colour::darkBrown;
                     break;
                 case RCT1_WALL_TYPE_GLASS_SMOOTH:
                 case RCT1_WALL_TYPE_GLASS_PANELS:
-                    *colourB = COLOUR_WHITE;
+                    *colourB = Drawing::Colour::white;
                     break;
                 case RCT1_WALL_TYPE_SMALL_GREY_CASTLE:
                 case RCT1_WALL_TYPE_LARGE_GREY_CASTLE:
@@ -2489,7 +2489,7 @@ namespace OpenRCT2::RCT1
                 case RCT1_WALL_TYPE_LARGE_GREY_CASTLE_GATE:
                 case RCT1_WALL_TYPE_LARGE_GREY_CASTLE_WINDOW:
                 case RCT1_WALL_TYPE_MEDIUM_GREY_CASTLE:
-                    *colourA = COLOUR_GREY;
+                    *colourA = Drawing::Colour::grey;
                     break;
             }
         }
@@ -2933,8 +2933,8 @@ namespace OpenRCT2::RCT1
         // Balloons were always blue in RCT1 without AA/LL, umbrellas always red
         if (_gameVersion == FILE_VERSION_RCT1)
         {
-            dst->UmbrellaColour = COLOUR_BRIGHT_RED;
-            dst->BalloonColour = COLOUR_LIGHT_BLUE;
+            dst->UmbrellaColour = Drawing::Colour::brightRed;
+            dst->BalloonColour = Drawing::Colour::lightBlue;
         }
         else
         {
@@ -3149,7 +3149,7 @@ namespace OpenRCT2::RCT1
         // Balloons were always blue in RCT1 without AA/LL
         if (_gameVersion == FILE_VERSION_RCT1)
         {
-            dst->colour = COLOUR_LIGHT_BLUE;
+            dst->colour = Drawing::Colour::lightBlue;
         }
         else
         {

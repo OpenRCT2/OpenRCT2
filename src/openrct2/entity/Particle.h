@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../drawing/Drawing.h"
 #include "EntityBase.h"
 
 class DataSerialiser;
@@ -26,7 +27,7 @@ struct VehicleCrashParticle : EntityBase
     static constexpr auto cEntityType = EntityType::crashedVehicleParticle;
     uint16_t frame;
     uint16_t time_to_live;
-    uint8_t colour[2];
+    OpenRCT2::Drawing::Colour colour[2];
     uint16_t crashed_sprite_base;
     int16_t velocity_x;
     int16_t velocity_y;

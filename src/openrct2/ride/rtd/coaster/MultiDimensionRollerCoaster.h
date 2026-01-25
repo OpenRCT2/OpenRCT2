@@ -56,12 +56,12 @@ constexpr RideTypeDescriptor MultiDimensionRollerCoasterRTD =
     .PhotoItem = ShopItem::photo2,
     .BonusValue = 100,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_BRIGHT_PINK, COLOUR_YELLOW, COLOUR_YELLOW }, // X
-        { COLOUR_LIGHT_PURPLE, COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED },
-        { COLOUR_BORDEAUX_RED, COLOUR_WHITE, COLOUR_WHITE },
-        { COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_BLACK }, // X2
-        { COLOUR_BORDEAUX_RED_DARK, COLOUR_DARK_YELLOW, COLOUR_OLIVE_DARK }, // Dinoconda
-        { COLOUR_BLACK, COLOUR_BLACK, COLOUR_GREY }, // Eejanaika
+        { OpenRCT2::Drawing::Colour::brightPink, OpenRCT2::Drawing::Colour::yellow, OpenRCT2::Drawing::Colour::yellow }, // X
+        { OpenRCT2::Drawing::Colour::lightPurple, OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::brightRed },
+        { OpenRCT2::Drawing::Colour::bordeauxRed, OpenRCT2::Drawing::Colour::white, OpenRCT2::Drawing::Colour::white },
+        { OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::black }, // X2
+        { OpenRCT2::Drawing::Colour::maroon, OpenRCT2::Drawing::Colour::darkYellow, OpenRCT2::Drawing::Colour::hunterGreen }, // Dinoconda
+        { OpenRCT2::Drawing::Colour::black, OpenRCT2::Drawing::Colour::black, OpenRCT2::Drawing::Colour::grey }, // Eejanaika
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_MULTI_DIMENSION_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_MULTI_DIMENSION_ROLLER_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,
@@ -130,9 +130,9 @@ constexpr RideTypeDescriptor MultiDimensionRollerCoasterAltRTD =
     .PhotoItem = ShopItem::photo2,
     .BonusValue = 100,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_BRIGHT_PINK, COLOUR_YELLOW, COLOUR_YELLOW },
-        { COLOUR_LIGHT_PURPLE, COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED },
-        { COLOUR_BORDEAUX_RED, COLOUR_WHITE, COLOUR_WHITE },
+        { OpenRCT2::Drawing::Colour::brightPink, OpenRCT2::Drawing::Colour::yellow, OpenRCT2::Drawing::Colour::yellow },
+        { OpenRCT2::Drawing::Colour::lightPurple, OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::brightRed },
+        { OpenRCT2::Drawing::Colour::bordeauxRed, OpenRCT2::Drawing::Colour::white, OpenRCT2::Drawing::Colour::white },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_MULTI_DIMENSION_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_MULTI_DIMENSION_ROLLER_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

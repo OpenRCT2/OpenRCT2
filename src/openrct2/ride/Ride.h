@@ -13,7 +13,6 @@
 #include "../core/BitSet.hpp"
 #include "../core/FixedPoint.hpp"
 #include "../core/FlagHolder.hpp"
-#include "../rct2/Limits.h"
 #include "RideColour.h"
 #include "RideEntry.h"
 #include "RideRatings.h"
@@ -286,7 +285,7 @@ struct Ride
         EntityId slidePeep;
         uint16_t mazeTiles{};
     };
-    uint8_t slidePeepTShirtColour{};
+    OpenRCT2::Drawing::Colour slidePeepTShirtColour{};
     uint8_t spiralSlideProgress{};
     int32_t buildDate{};
     money64 upkeepCost{};

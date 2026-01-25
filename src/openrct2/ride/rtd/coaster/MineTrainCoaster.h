@@ -48,8 +48,8 @@ constexpr RideTypeDescriptor MineTrainCoasterRTD =
     .PhotoItem = ShopItem::photo,
     .BonusValue = 85,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_DARK_BROWN, COLOUR_GREY, COLOUR_DARK_BROWN },
-        { COLOUR_DARK_BROWN, COLOUR_GREY, COLOUR_BLACK },
+        { OpenRCT2::Drawing::Colour::darkBrown, OpenRCT2::Drawing::Colour::grey, OpenRCT2::Drawing::Colour::darkBrown },
+        { OpenRCT2::Drawing::Colour::darkBrown, OpenRCT2::Drawing::Colour::grey, OpenRCT2::Drawing::Colour::black },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_MINE_TRAIN_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_MINE_TRAIN_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

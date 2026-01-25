@@ -97,7 +97,7 @@ namespace OpenRCT2::Ui::Windows
 
             ScreenCoordsXY screenCoords(windowPos.x + (width / 2), windowPos.y + (height / 2));
             screenCoords.x -= GfxGetStringWidth(_buffer, FontStyle::medium) / 2;
-            DrawText(rt, screenCoords, { COLOUR_BLACK }, _buffer.c_str());
+            DrawText(rt, screenCoords, { OpenRCT2::Drawing::Colour::black }, _buffer.c_str());
         }
 
         void setCloseCallBack(CloseCallback callback)

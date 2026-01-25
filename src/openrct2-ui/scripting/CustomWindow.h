@@ -26,10 +26,10 @@ namespace OpenRCT2::Ui::Windows
     void UpdateWindowTab(WindowBase* w, int32_t tabIndex);
     void UpdateWidgetText(WindowBase* w, WidgetIndex widget, std::string_view string_view);
     void UpdateWidgetItems(WindowBase* w, WidgetIndex widgetIndex, const std::vector<std::string>& items);
-    void UpdateWidgetColour(WindowBase* w, WidgetIndex widgetIndex, colour_t colour);
+    void UpdateWidgetColour(WindowBase* w, WidgetIndex widgetIndex, OpenRCT2::Drawing::Colour colour);
     void UpdateWidgetSelectedIndex(WindowBase* w, WidgetIndex widgetIndex, int32_t selectedIndex);
     std::vector<std::string> GetWidgetItems(WindowBase* w, WidgetIndex widgetIndex);
-    colour_t GetWidgetColour(WindowBase* w, WidgetIndex widgetIndex);
+    OpenRCT2::Drawing::Colour GetWidgetColour(WindowBase* w, WidgetIndex widgetIndex);
     int32_t GetWidgetSelectedIndex(WindowBase* w, WidgetIndex widgetIndex);
     WindowBase* FindCustomWindowByClassification(std::string_view classification);
     std::optional<WidgetIndex> FindWidgetIndexByName(WindowBase* w, std::string_view name);

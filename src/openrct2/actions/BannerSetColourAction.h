@@ -11,17 +11,22 @@
 
 #include "GameAction.h"
 
+namespace OpenRCT2::Drawing
+{
+    enum class Colour : uint8_t;
+}
+
 namespace OpenRCT2::GameActions
 {
     class BannerSetColourAction final : public GameActionBase<GameCommand::SetBannerColour>
     {
     private:
         CoordsXYZD _loc;
-        uint8_t _primaryColour{};
+        Drawing::Colour _primaryColour{};
 
     public:
         BannerSetColourAction() = default;
-        BannerSetColourAction(const CoordsXYZD& loc, uint8_t primaryColour);
+        BannerSetColourAction(const CoordsXYZD& loc, Drawing::Colour primaryColour);
 
         void AcceptParameters(GameActionParameterVisitor&) final;
 

@@ -85,9 +85,9 @@ namespace OpenRCT2::RCT2
             td->appearance.vehicleColourSettings = static_cast<VehicleColourSettings>(td6.VersionAndColourScheme & 0x3);
             for (auto i = 0; i < Limits::kMaxVehicleColours; ++i)
             {
-                td->appearance.vehicleColours[i].Body = td6.VehicleColours[i].BodyColour;
-                td->appearance.vehicleColours[i].Trim = td6.VehicleColours[i].TrimColour;
-                td->appearance.vehicleColours[i].Tertiary = td6.VehicleAdditionalColour[i];
+                td->appearance.vehicleColours[i].Body = static_cast<Drawing::Colour>(td6.VehicleColours[i].BodyColour);
+                td->appearance.vehicleColours[i].Trim = static_cast<Drawing::Colour>(td6.VehicleColours[i].TrimColour);
+                td->appearance.vehicleColours[i].Tertiary = static_cast<Drawing::Colour>(td6.VehicleAdditionalColour[i]);
             }
             td->appearance.stationObjectIdentifier = GetStationIdentifierFromStyle(td6.EntranceStyle);
             td->statistics.totalAirTime = (td6.TotalAirTime * 1024) / 123;

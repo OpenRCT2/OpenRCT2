@@ -24,7 +24,6 @@
 #include "../GameState.h"
 #include "../SpriteIds.h"
 #include "../audio/Audio.h"
-#include "../interface/Colour.h"
 #include "../management/Research.h"
 #include "Ride.h"
 #include "ShopItem.h"

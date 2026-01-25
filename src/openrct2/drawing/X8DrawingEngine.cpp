@@ -569,7 +569,7 @@ void X8DrawingContext::DrawSpriteSolid(RenderTarget& rt, const ImageId image, in
     palette[0] = PaletteIndex::transparent;
 
     const auto spriteCoords = ScreenCoordsXY{ x, y };
-    GfxDrawSpritePaletteSetSoftware(rt, ImageId(image.GetIndex(), 0), spriteCoords, PaletteMap(palette));
+    GfxDrawSpritePaletteSetSoftware(rt, ImageId(image.GetIndex(), Colour::black), spriteCoords, PaletteMap(palette));
 }
 
 void X8DrawingContext::DrawGlyph(RenderTarget& rt, const ImageId image, int32_t x, int32_t y, const PaletteMap& paletteMap)

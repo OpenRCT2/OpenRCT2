@@ -74,7 +74,7 @@ namespace OpenRCT2
     {
         auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
 
-        const auto imageId = ImageId(_legacyType.image + 1, COLOUR_DARK_GREEN);
+        const auto imageId = ImageId(_legacyType.image + 1, OpenRCT2::Drawing::Colour::darkGreen);
         GfxDrawSprite(rt, imageId, screenCoords - ScreenCoordsXY{ 15, 14 });
     }
 

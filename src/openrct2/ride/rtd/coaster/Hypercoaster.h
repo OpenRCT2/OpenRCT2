@@ -51,12 +51,12 @@ constexpr RideTypeDescriptor HypercoasterRTD =
     .PhotoItem = ShopItem::photo,
     .BonusValue = 100,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_BORDEAUX_RED, COLOUR_BORDEAUX_RED, COLOUR_BLACK },
-        { COLOUR_LIGHT_BLUE, COLOUR_LIGHT_BLUE, COLOUR_WHITE },
-        { COLOUR_BLACK, COLOUR_BORDEAUX_RED, COLOUR_BLACK },
-        { COLOUR_WHITE, COLOUR_WHITE, COLOUR_DARK_GREEN },
-        { COLOUR_DULL_GREEN_LIGHT, COLOUR_DULL_GREEN_LIGHT, COLOUR_BLACK }, // Phantom's Revenge (Old)
-        { COLOUR_SATURATED_PURPLE_DARK, COLOUR_SATURATED_PURPLE_DARK, COLOUR_BLACK }, // Phantom's Revenge (New)
+        { OpenRCT2::Drawing::Colour::bordeauxRed, OpenRCT2::Drawing::Colour::bordeauxRed, OpenRCT2::Drawing::Colour::black },
+        { OpenRCT2::Drawing::Colour::lightBlue, OpenRCT2::Drawing::Colour::lightBlue, OpenRCT2::Drawing::Colour::white },
+        { OpenRCT2::Drawing::Colour::black, OpenRCT2::Drawing::Colour::bordeauxRed, OpenRCT2::Drawing::Colour::black },
+        { OpenRCT2::Drawing::Colour::white, OpenRCT2::Drawing::Colour::white, OpenRCT2::Drawing::Colour::darkGreen },
+        { OpenRCT2::Drawing::Colour::seafoamGreen, OpenRCT2::Drawing::Colour::seafoamGreen, OpenRCT2::Drawing::Colour::black }, // Phantom's Revenge (Old)
+        { OpenRCT2::Drawing::Colour::violet, OpenRCT2::Drawing::Colour::violet, OpenRCT2::Drawing::Colour::black }, // Phantom's Revenge (New)
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_CORKSCREW_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_CORKSCREW_ROLLER_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

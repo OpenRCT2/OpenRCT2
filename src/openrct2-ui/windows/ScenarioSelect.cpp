@@ -327,7 +327,9 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<StringId>(kScenarioOriginStringIds[i]);
 
                 auto stringCoords = windowPos + ScreenCoordsXY{ widget.midX(), widget.midY() - 3 };
-                DrawTextWrapped(rt, stringCoords, 87, format, ft, { COLOUR_LIGHT_WATER, fontStyle, TextAlignment::centre });
+                DrawTextWrapped(
+                    rt, stringCoords, 87, format, ft,
+                    { OpenRCT2::Drawing::Colour::lightWater, fontStyle, TextAlignment::centre });
             }
 
             auto previewPaneWidth = GetPreviewPaneWidth();
@@ -600,7 +602,7 @@ namespace OpenRCT2::Ui::Windows
                         ft.Add<StringId>(STR_STRING);
                         ft.Add<const char*>(scenario->Name.c_str());
                         auto colour = isDisabled ? colours[1].withFlag(ColourFlag::inset, true)
-                                                 : ColourWithFlags{ COLOUR_BLACK };
+                                                 : ColourWithFlags{ OpenRCT2::Drawing::Colour::black };
                         auto darkness = isDisabled ? TextDarkness::dark : TextDarkness::regular;
                         const auto scrollCentre = widgets[WIDX_SCENARIOLIST].width() / 2;
 

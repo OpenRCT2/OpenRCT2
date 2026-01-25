@@ -52,12 +52,12 @@ constexpr RideTypeDescriptor HyperTwisterRTD =
     .PhotoItem = ShopItem::photo,
     .BonusValue = 120,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_YELLOW, COLOUR_YELLOW, COLOUR_BORDEAUX_RED },
-        { COLOUR_LIGHT_WATER, COLOUR_LIGHT_WATER, COLOUR_DARK_PURPLE },
-        { COLOUR_WHITE, COLOUR_WHITE, COLOUR_LIGHT_BLUE },
-        { COLOUR_DARK_GREEN, COLOUR_MOSS_GREEN, COLOUR_DARK_BROWN },
-        { COLOUR_BORDEAUX_RED, COLOUR_LIGHT_ORANGE, COLOUR_WHITE },
-        { COLOUR_DARK_PURPLE, COLOUR_SATURATED_PURPLE_DARK, COLOUR_DEEP_WATER }, // Mako
+        { OpenRCT2::Drawing::Colour::yellow, OpenRCT2::Drawing::Colour::yellow, OpenRCT2::Drawing::Colour::bordeauxRed },
+        { OpenRCT2::Drawing::Colour::lightWater, OpenRCT2::Drawing::Colour::lightWater, OpenRCT2::Drawing::Colour::darkPurple },
+        { OpenRCT2::Drawing::Colour::white, OpenRCT2::Drawing::Colour::white, OpenRCT2::Drawing::Colour::lightBlue },
+        { OpenRCT2::Drawing::Colour::darkGreen, OpenRCT2::Drawing::Colour::mossGreen, OpenRCT2::Drawing::Colour::darkBrown },
+        { OpenRCT2::Drawing::Colour::bordeauxRed, OpenRCT2::Drawing::Colour::lightOrange, OpenRCT2::Drawing::Colour::white },
+        { OpenRCT2::Drawing::Colour::darkPurple, OpenRCT2::Drawing::Colour::violet, OpenRCT2::Drawing::Colour::deepWater }, // Mako
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_TWISTER_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_TWISTER_ROLLER_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

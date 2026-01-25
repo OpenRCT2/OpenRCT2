@@ -51,8 +51,8 @@ constexpr RideTypeDescriptor SplashBoatsRTD =
     .PhotoItem = ShopItem::photo4,
     .BonusValue = 65,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_DARK_BROWN, COLOUR_DARK_BROWN, COLOUR_BLACK },
-        { COLOUR_DARK_GREEN, COLOUR_DARK_GREEN, COLOUR_GREY },
+        { OpenRCT2::Drawing::Colour::darkBrown, OpenRCT2::Drawing::Colour::darkBrown, OpenRCT2::Drawing::Colour::black },
+        { OpenRCT2::Drawing::Colour::darkGreen, OpenRCT2::Drawing::Colour::darkGreen, OpenRCT2::Drawing::Colour::grey },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_SPLASH_BOATS_TRACK, SPR_RIDE_DESIGN_PREVIEW_SPLASH_BOATS_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

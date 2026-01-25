@@ -47,9 +47,9 @@ constexpr RideTypeDescriptor InvertedHairpinCoasterRTD =
     .PhotoItem = ShopItem::photo2,
     .BonusValue = 55,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_BRIGHT_YELLOW, COLOUR_BRIGHT_YELLOW, COLOUR_BRIGHT_RED },
-        { COLOUR_BLACK, COLOUR_ICY_BLUE, COLOUR_BLACK },
-        { COLOUR_WHITE, COLOUR_WHITE, COLOUR_YELLOW },
+        { OpenRCT2::Drawing::Colour::brightYellow, OpenRCT2::Drawing::Colour::brightYellow, OpenRCT2::Drawing::Colour::brightRed },
+        { OpenRCT2::Drawing::Colour::black, OpenRCT2::Drawing::Colour::icyBlue, OpenRCT2::Drawing::Colour::black },
+        { OpenRCT2::Drawing::Colour::white, OpenRCT2::Drawing::Colour::white, OpenRCT2::Drawing::Colour::yellow },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_INVERTED_HAIRPIN_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_INVERTED_HAIRPIN_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

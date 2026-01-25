@@ -14,7 +14,6 @@
 #include "../core/CodepointView.hpp"
 #include "../core/EnumUtils.hpp"
 #include "../core/String.hpp"
-#include "../interface/Colour.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Formatting.h"
 #include "../localisation/LocalisationService.h"

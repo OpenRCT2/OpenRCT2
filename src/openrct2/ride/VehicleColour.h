@@ -11,9 +11,14 @@
 
 #include <cstdint>
 
+namespace OpenRCT2::Drawing
+{
+    enum class Colour : uint8_t;
+}
+
 struct VehicleColour
 {
-    uint8_t Body;
-    uint8_t Trim;
-    uint8_t Tertiary;
+    OpenRCT2::Drawing::Colour Body;
+    OpenRCT2::Drawing::Colour Trim;
+    OpenRCT2::Drawing::Colour Tertiary;
 };

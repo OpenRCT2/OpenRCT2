@@ -824,8 +824,8 @@ public:
     RCT12ObjectEntryIndex GetEntryIndex() const;
     uint8_t GetAge() const;
     uint8_t GetSceneryQuadrant() const;
-    colour_t GetPrimaryColour() const;
-    colour_t GetSecondaryColour() const;
+    OpenRCT2::Drawing::Colour GetPrimaryColour() const;
+    OpenRCT2::Drawing::Colour GetSecondaryColour() const;
     bool NeedsSupports() const;
 };
 static_assert(sizeof(RCT12SmallSceneryElement) == 8);
@@ -837,8 +837,8 @@ private:
 public:
     uint32_t GetEntryIndex() const;
     uint16_t GetSequenceIndex() const;
-    colour_t GetPrimaryColour() const;
-    colour_t GetSecondaryColour() const;
+    OpenRCT2::Drawing::Colour GetPrimaryColour() const;
+    OpenRCT2::Drawing::Colour GetSecondaryColour() const;
     uint8_t GetBannerIndex() const;
 };
 static_assert(sizeof(RCT12LargeSceneryElement) == 8);
@@ -851,20 +851,21 @@ private:
         uint8_t Colour3;     // 5
         uint8_t BannerIndex; // 5
     };
-    uint8_t Colour1;   // 6 0b_2221_1111 2 = colour_2 (uses Flags for rest of colour2), 1 = colour_1
+    uint8_t Colour1;   // 6 0b_2221_1111 2 = colour_2 (uses Flags for rest of colour2), 1 =
+                       // colour_1
     uint8_t Animation; // 7 0b_dfff_ft00 d = direction, f = frame num, t = across track flag (not used)
 public:
     RCT12ObjectEntryIndex GetEntryIndex() const;
     uint8_t GetSlope() const;
-    colour_t GetPrimaryColour() const;
-    colour_t GetSecondaryColour() const;
-    colour_t GetTertiaryColour() const;
+    OpenRCT2::Drawing::Colour GetPrimaryColour() const;
+    OpenRCT2::Drawing::Colour GetSecondaryColour() const;
+    OpenRCT2::Drawing::Colour GetTertiaryColour() const;
     uint8_t GetAnimationFrame() const;
     uint8_t GetBannerIndex() const;
     bool IsAcrossTrack() const;
     bool AnimationIsBackwards() const;
     int32_t GetRCT1WallType(int32_t edge) const;
-    colour_t GetRCT1WallColour() const;
+    OpenRCT2::Drawing::Colour GetRCT1WallColour() const;
     uint8_t GetRCT1Slope() const;
 };
 static_assert(sizeof(RCT12WallElement) == 8);

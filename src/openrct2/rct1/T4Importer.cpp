@@ -105,7 +105,7 @@ namespace OpenRCT2::RCT1
             // will mess up style 3 (wooden fences).
             if (td4aa.Type == RideType::hedgeMaze)
             {
-                td->appearance.trackColours[0].supports = td4aa.TrackSupportColour[0];
+                td->appearance.trackColours[0].supports = static_cast<Drawing::Colour>(td4aa.TrackSupportColour[0]);
             }
 
             return ImportTD4Base(std::move(td), td4aa);
@@ -125,12 +125,12 @@ namespace OpenRCT2::RCT1
                 // Mazes were only hedges
                 if (td4.Type == RideType::hedgeMaze)
                 {
-                    td->appearance.trackColours[i].supports = MazeWallType::hedges;
+                    td->appearance.trackColours[i].supports = static_cast<Drawing::Colour>(MazeWallType::hedges);
                 }
                 else if (td4.Type == RideType::riverRapids)
                 {
-                    td->appearance.trackColours[i].main = COLOUR_WHITE;
-                    td->appearance.trackColours[i].additional = COLOUR_WHITE;
+                    td->appearance.trackColours[i].main = Drawing::Colour::white;
+                    td->appearance.trackColours[i].additional = Drawing::Colour::white;
                 }
             }
 
@@ -167,11 +167,11 @@ namespace OpenRCT2::RCT1
                 // RCT1 had no third colour
                 VehicleColourSchemeCopyDescriptor colourSchemeCopyDescriptor = GetColourSchemeCopyDescriptor(
                     td4Base.VehicleType);
-                if (colourSchemeCopyDescriptor.colour1 == COPY_COLOUR_1)
+                if (colourSchemeCopyDescriptor.colour1 == kCopyColour1)
                 {
                     td->appearance.vehicleColours[i].Body = GetColour(td4Base.VehicleColours[i].BodyColour);
                 }
-                else if (colourSchemeCopyDescriptor.colour1 == COPY_COLOUR_2)
+                else if (colourSchemeCopyDescriptor.colour1 == kCopyColour2)
                 {
                     td->appearance.vehicleColours[i].Body = GetColour(td4Base.VehicleColours[i].TrimColour);
                 }
@@ -180,11 +180,11 @@ namespace OpenRCT2::RCT1
                     td->appearance.vehicleColours[i].Body = colourSchemeCopyDescriptor.colour1;
                 }
 
-                if (colourSchemeCopyDescriptor.colour2 == COPY_COLOUR_1)
+                if (colourSchemeCopyDescriptor.colour2 == kCopyColour1)
                 {
                     td->appearance.vehicleColours[i].Trim = GetColour(td4Base.VehicleColours[i].BodyColour);
                 }
-                else if (colourSchemeCopyDescriptor.colour2 == COPY_COLOUR_2)
+                else if (colourSchemeCopyDescriptor.colour2 == kCopyColour2)
                 {
                     td->appearance.vehicleColours[i].Trim = GetColour(td4Base.VehicleColours[i].TrimColour);
                 }
@@ -193,11 +193,11 @@ namespace OpenRCT2::RCT1
                     td->appearance.vehicleColours[i].Trim = colourSchemeCopyDescriptor.colour2;
                 }
 
-                if (colourSchemeCopyDescriptor.colour3 == COPY_COLOUR_1)
+                if (colourSchemeCopyDescriptor.colour3 == kCopyColour1)
                 {
                     td->appearance.vehicleColours[i].Tertiary = GetColour(td4Base.VehicleColours[i].BodyColour);
                 }
-                else if (colourSchemeCopyDescriptor.colour3 == COPY_COLOUR_2)
+                else if (colourSchemeCopyDescriptor.colour3 == kCopyColour2)
                 {
                     td->appearance.vehicleColours[i].Tertiary = GetColour(td4Base.VehicleColours[i].TrimColour);
                 }

@@ -51,9 +51,9 @@ constexpr RideTypeDescriptor SuspendedMonorailRTD =
     .PhotoItem = ShopItem::photo,
     .BonusValue = 60,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_BORDEAUX_RED, COLOUR_BLACK, COLOUR_BLACK },
-        { COLOUR_DARK_PURPLE, COLOUR_DARK_PURPLE, COLOUR_BLACK },
-        { COLOUR_DARK_GREEN, COLOUR_DARK_GREEN, COLOUR_BLACK },
+        { OpenRCT2::Drawing::Colour::bordeauxRed, OpenRCT2::Drawing::Colour::black, OpenRCT2::Drawing::Colour::black },
+        { OpenRCT2::Drawing::Colour::darkPurple, OpenRCT2::Drawing::Colour::darkPurple, OpenRCT2::Drawing::Colour::black },
+        { OpenRCT2::Drawing::Colour::darkGreen, OpenRCT2::Drawing::Colour::darkGreen, OpenRCT2::Drawing::Colour::black },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_SUSPENDED_MONORAIL_TRACK, SPR_RIDE_DESIGN_PREVIEW_SUSPENDED_MONORAIL_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

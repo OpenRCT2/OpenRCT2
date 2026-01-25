@@ -72,8 +72,8 @@ namespace OpenRCT2
     {
         auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
 
-        auto image0 = ImageId(_legacyType.image, COLOUR_BORDEAUX_RED);
-        auto image1 = ImageId(_legacyType.image + 1, COLOUR_BORDEAUX_RED);
+        auto image0 = ImageId(_legacyType.image, OpenRCT2::Drawing::Colour::bordeauxRed);
+        auto image1 = ImageId(_legacyType.image + 1, OpenRCT2::Drawing::Colour::bordeauxRed);
 
         GfxDrawSprite(rt, image0, screenCoords + ScreenCoordsXY{ -12, 8 });
         GfxDrawSprite(rt, image1, screenCoords + ScreenCoordsXY{ -12, 8 });

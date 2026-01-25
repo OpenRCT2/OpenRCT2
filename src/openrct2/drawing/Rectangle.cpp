@@ -9,7 +9,6 @@
 
 #include "Rectangle.h"
 
-#include "../interface/Colour.h"
 #include "../interface/ColourWithFlags.h"
 #include "../world/Location.hpp"
 #include "ColourMap.h"
@@ -53,7 +52,7 @@ namespace OpenRCT2::Drawing::Rectangle
         const auto rightBottom = ScreenCoordsXY{ rect.GetRight(), rect.GetBottom() };
         if (colour.flags.has(ColourFlag::translucent))
         {
-            auto palette = kTranslucentWindowPalettes[colour.colour];
+            auto palette = kTranslucentWindowPalettes[EnumValue(colour.colour)];
 
             switch (borderStyle)
             {

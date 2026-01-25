@@ -16,12 +16,11 @@
             __VA_ARGS__                                                                                                        \
         }                                                                                                                      \
     }
-#define kDefaultFlatRideColourPreset TRACK_COLOUR_PRESETS({ COLOUR_BRIGHT_RED, COLOUR_LIGHT_BLUE, COLOUR_YELLOW })
-#define kDefaultStallColourPreset TRACK_COLOUR_PRESETS({ COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED })
 
 #include "../audio/Audio.h"
 #include "../core/BitSet.hpp"
 #include "../core/EnumUtils.hpp"
+#include "../drawing/Colour.h"
 #include "../drawing/ImageIndexType.h"
 #include "../entity/Guest.h"
 #include "../localisation/StringIds.h"
@@ -46,6 +45,11 @@ constexpr uint8_t kDefaultToiletHeight = 4 * kCoordsZStep;
 constexpr uint8_t kDefaultInformationKioskHeight = 6 * kCoordsZStep;
 constexpr uint8_t kDefaultFirstAidHeight = 6 * kCoordsZStep;
 constexpr uint8_t kDefaultCashMachineHeight = 8 * kCoordsZStep;
+
+constexpr TrackColourPresetList kDefaultFlatRideColourPreset = TRACK_COLOUR_PRESETS(
+    { OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::lightBlue, OpenRCT2::Drawing::Colour::yellow });
+constexpr TrackColourPresetList kDefaultStallColourPreset = TRACK_COLOUR_PRESETS(
+    { OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::brightRed });
 
 struct RideComponentName
 {

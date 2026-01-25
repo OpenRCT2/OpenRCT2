@@ -47,10 +47,10 @@ constexpr RideTypeDescriptor BobsleighCoasterRTD =
     .PhotoItem = ShopItem::photo,
     .BonusValue = 75,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_WHITE, COLOUR_BRIGHT_RED, COLOUR_WHITE },
-        { COLOUR_LIGHT_BLUE, COLOUR_WHITE, COLOUR_BLACK },
-        { COLOUR_YELLOW, COLOUR_BRIGHT_RED, COLOUR_BLACK },
-        { COLOUR_TAN_DARK, COLOUR_DARK_ORANGE, COLOUR_DULL_BROWN_LIGHT }, // Reptilian
+        { OpenRCT2::Drawing::Colour::white, OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::white },
+        { OpenRCT2::Drawing::Colour::lightBlue, OpenRCT2::Drawing::Colour::white, OpenRCT2::Drawing::Colour::black },
+        { OpenRCT2::Drawing::Colour::yellow, OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::black },
+        { OpenRCT2::Drawing::Colour::sepia, OpenRCT2::Drawing::Colour::darkOrange, OpenRCT2::Drawing::Colour::beige }, // Reptilian
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_BOBSLEIGH_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_BOBSLEIGH_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

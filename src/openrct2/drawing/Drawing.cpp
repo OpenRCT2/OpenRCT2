@@ -105,7 +105,7 @@ TextColours gTextPalette = {
 
 bool gPaintForceRedraw{ false };
 
-static constexpr FilterPaletteID kGlassPaletteIds[COLOUR_COUNT] = {
+static constexpr FilterPaletteID kGlassPaletteIds[OpenRCT2::Drawing::kColourNumTotal] = {
     FilterPaletteID::paletteGlassBlack,
     FilterPaletteID::paletteGlassGrey,
     FilterPaletteID::paletteGlassWhite,
@@ -391,61 +391,61 @@ static constexpr TranslucentWindowPalette kWindowPaletteBordeauxRed = { FilterPa
 static constexpr TranslucentWindowPalette kWindowPaletteBrightRed = { FilterPaletteID::paletteTranslucentBrightRed,            FilterPaletteID::paletteTranslucentBrightRedHighlight,       FilterPaletteID::paletteTranslucentBrightRedShadow };
 static constexpr TranslucentWindowPalette kWindowPaletteBrightPink = { FilterPaletteID::paletteTranslucentBrightPink,           FilterPaletteID::paletteTranslucentBrightPinkHighlight,      FilterPaletteID::paletteTranslucentBrightPinkShadow };
 
-const TranslucentWindowPalette kTranslucentWindowPalettes[COLOUR_COUNT] = {
-    kWindowPaletteGrey,                    // COLOUR_BLACK
-    kWindowPaletteGrey,                    // COLOUR_GREY
+const TranslucentWindowPalette kTranslucentWindowPalettes[OpenRCT2::Drawing::kColourNumTotal] = {
+    kWindowPaletteGrey,                    // OpenRCT2::Drawing::Colour::black
+    kWindowPaletteGrey,                    // OpenRCT2::Drawing::Colour::grey
     { FilterPaletteID::paletteTranslucentWhite, FilterPaletteID::paletteTranslucentWhiteHighlight,FilterPaletteID::paletteTranslucentWhiteShadow },
-    kWindowPaletteLightPurple,            // COLOUR_DARK_PURPLE
-    kWindowPaletteLightPurple,            // COLOUR_LIGHT_PURPLE
-    kWindowPaletteBrightPurple,           // COLOUR_BRIGHT_PURPLE
-    kWindowPaletteLightBlue,              // COLOUR_DARK_BLUE
-    kWindowPaletteLightBlue,              // COLOUR_LIGHT_BLUE
-    kWindowPaletteLightBlue,              // COLOUR_ICY_BLUE
-    kWindowPaletteTeal,                   // COLOUR_DARK_WATER
-    kWindowPaletteTeal,                   // COLOUR_LIGHT_WATER
-    kWindowPaletteBrightGreen,            // COLOUR_SATURATED_GREEN
-    kWindowPaletteDarkGreen,              // COLOUR_DARK_GREEN
-    kWindowPaletteMossGreen,              // COLOUR_MOSS_GREEN
-    kWindowPaletteBrightGreen,            // COLOUR_BRIGHT_GREEN
-    kWindowPaletteOliveGreen,             // COLOUR_OLIVE_GREEN
-    kWindowPaletteDarkOliveGreen,        // COLOUR_DARK_OLIVE_GREEN
-    kWindowPaletteYellow,                  // COLOUR_BRIGHT_YELLOW
-    kWindowPaletteYellow,                  // COLOUR_YELLOW
-    kWindowPaletteYellow,                  // COLOUR_DARK_YELLOW
-    kWindowPaletteLightOrange,            // COLOUR_LIGHT_ORANGE
-    kWindowPaletteLightOrange,            // COLOUR_DARK_ORANGE
-    kWindowPaletteLightBrown,             // COLOUR_LIGHT_BROWN
-    kWindowPaletteLightBrown,             // COLOUR_SATURATED_BROWN
-    kWindowPaletteDarkBrown,              // COLOUR_DARK_BROWN
-    kWindowPaletteSalmonPink,             // COLOUR_SALMON_PINK
-    kWindowPaletteBordeauxRed,            // COLOUR_BORDEAUX_RED
-    kWindowPaletteBrightRed,              // COLOUR_SATURATED_RED
-    kWindowPaletteBrightRed,              // COLOUR_BRIGHT_RED
-    kWindowPaletteBrightPink,             // COLOUR_DARK_PINK
-    kWindowPaletteBrightPink,             // COLOUR_BRIGHT_PINK
+    kWindowPaletteLightPurple,            // OpenRCT2::Drawing::Colour::darkPurple
+    kWindowPaletteLightPurple,            // OpenRCT2::Drawing::Colour::lightPurple
+    kWindowPaletteBrightPurple,           // OpenRCT2::Drawing::Colour::brightPurple
+    kWindowPaletteLightBlue,              // OpenRCT2::Drawing::Colour::darkBlue
+    kWindowPaletteLightBlue,              // OpenRCT2::Drawing::Colour::lightBlue
+    kWindowPaletteLightBlue,              // OpenRCT2::Drawing::Colour::icyBlue
+    kWindowPaletteTeal,                   // OpenRCT2::Drawing::Colour::darkWater
+    kWindowPaletteTeal,                   // OpenRCT2::Drawing::Colour::lightWater
+    kWindowPaletteBrightGreen,            // OpenRCT2::Drawing::Colour::saturatedGreen
+    kWindowPaletteDarkGreen,              // OpenRCT2::Drawing::Colour::darkGreen
+    kWindowPaletteMossGreen,              // OpenRCT2::Drawing::Colour::mossGreen
+    kWindowPaletteBrightGreen,            // OpenRCT2::Drawing::Colour::brightGreen
+    kWindowPaletteOliveGreen,             // OpenRCT2::Drawing::Colour::oliveGreen
+    kWindowPaletteDarkOliveGreen,        // OpenRCT2::Drawing::Colour::darkOliveGreen
+    kWindowPaletteYellow,                  // OpenRCT2::Drawing::Colour::brightYellow
+    kWindowPaletteYellow,                  // OpenRCT2::Drawing::Colour::yellow
+    kWindowPaletteYellow,                  // OpenRCT2::Drawing::Colour::darkYellow
+    kWindowPaletteLightOrange,            // OpenRCT2::Drawing::Colour::lightOrange
+    kWindowPaletteLightOrange,            // OpenRCT2::Drawing::Colour::darkOrange
+    kWindowPaletteLightBrown,             // OpenRCT2::Drawing::Colour::lightBrown
+    kWindowPaletteLightBrown,             // OpenRCT2::Drawing::Colour::saturatedBrown
+    kWindowPaletteDarkBrown,              // OpenRCT2::Drawing::Colour::darkBrown
+    kWindowPaletteSalmonPink,             // OpenRCT2::Drawing::Colour::salmonPink
+    kWindowPaletteBordeauxRed,            // OpenRCT2::Drawing::Colour::bordeauxRed
+    kWindowPaletteBrightRed,              // OpenRCT2::Drawing::Colour::saturatedRed
+    kWindowPaletteBrightRed,              // OpenRCT2::Drawing::Colour::brightRed
+    kWindowPaletteBrightPink,             // OpenRCT2::Drawing::Colour::darkPink
+    kWindowPaletteBrightPink,             // OpenRCT2::Drawing::Colour::brightPink
     { FilterPaletteID::paletteTranslucentLightPink, FilterPaletteID::paletteTranslucentLightPinkHighlight, FilterPaletteID::paletteTranslucentLightPinkShadow },
-    kWindowPaletteDarkOliveGreen,        // COLOUR_DARK_OLIVE_DARK
-    kWindowPaletteDarkOliveGreen,        // COLOUR_DARK_OLIVE_LIGHT
-    kWindowPaletteLightBrown,             // COLOUR_SATURATED_BROWN_LIGHT
-    kWindowPaletteBordeauxRed,            // COLOUR_BORDEAUX_RED_DARK
-    kWindowPaletteBordeauxRed,            // COLOUR_BORDEAUX_RED_LIGHT
-    kWindowPaletteMossGreen,              // COLOUR_GRASS_GREEN_DARK
-    kWindowPaletteMossGreen,              // COLOUR_GRASS_GREEN_LIGHT
-    kWindowPaletteOliveGreen,             // COLOUR_OLIVE_DARK
-    kWindowPaletteOliveGreen,             // COLOUR_OLIVE_LIGHT
-    kWindowPaletteBrightGreen,            // COLOUR_SATURATED_GREEN_LIGHT
-    kWindowPaletteSalmonPink,             // COLOUR_TAN_DARK
-    kWindowPaletteSalmonPink,             // COLOUR_TAN_LIGHT
-    kWindowPaletteLightPurple,            // COLOUR_DULL_PURPLE_LIGHT
-    kWindowPaletteDarkGreen,              // COLOUR_DULL_GREEN_DARK
-    kWindowPaletteDarkGreen,              // COLOUR_DULL_GREEN_LIGHT
-    kWindowPaletteBrightPurple,           // COLOUR_SATURATED_PURPLE_DARK
-    kWindowPaletteBrightPurple,           // COLOUR_SATURATED_PURPLE_LIGHT
-    kWindowPaletteLightOrange,            // COLOUR_ORANGE_LIGHT
-    kWindowPaletteTeal,                   // COLOUR_DEEP_WATER
-    kWindowPaletteBrightPink,             // COLOUR_MAGENTA_LIGHT
-    kWindowPaletteDarkBrown,              // COLOUR_DULL_BROWN_DARK
-    kWindowPaletteDarkBrown,              // COLOUR_DULL_BROWN_LIGHT
+    kWindowPaletteDarkOliveGreen,        // OpenRCT2::Drawing::Colour::armyGreen
+    kWindowPaletteDarkOliveGreen,        // OpenRCT2::Drawing::Colour::honeyDew
+    kWindowPaletteLightBrown,             // OpenRCT2::Drawing::Colour::tan
+    kWindowPaletteBordeauxRed,            // OpenRCT2::Drawing::Colour::maroon
+    kWindowPaletteBordeauxRed,            // OpenRCT2::Drawing::Colour::coralPink
+    kWindowPaletteMossGreen,              // OpenRCT2::Drawing::Colour::forestGreen
+    kWindowPaletteMossGreen,              // OpenRCT2::Drawing::Colour::chartreuse
+    kWindowPaletteOliveGreen,             // OpenRCT2::Drawing::Colour::hunterGreen
+    kWindowPaletteOliveGreen,             // OpenRCT2::Drawing::Colour::celadon
+    kWindowPaletteBrightGreen,            // OpenRCT2::Drawing::Colour::limeGreen
+    kWindowPaletteSalmonPink,             // OpenRCT2::Drawing::Colour::sepia
+    kWindowPaletteSalmonPink,             // OpenRCT2::Drawing::Colour::peach
+    kWindowPaletteLightPurple,            // OpenRCT2::Drawing::Colour::periwinkle
+    kWindowPaletteDarkGreen,              // OpenRCT2::Drawing::Colour::viridian
+    kWindowPaletteDarkGreen,              // OpenRCT2::Drawing::Colour::seafoamGreen
+    kWindowPaletteBrightPurple,           // OpenRCT2::Drawing::Colour::violet
+    kWindowPaletteBrightPurple,           // OpenRCT2::Drawing::Colour::lavender
+    kWindowPaletteLightOrange,            // OpenRCT2::Drawing::Colour::pastelOrange
+    kWindowPaletteTeal,                   // OpenRCT2::Drawing::Colour::deepWater
+    kWindowPaletteBrightPink,             // OpenRCT2::Drawing::Colour::pastelPink
+    kWindowPaletteDarkBrown,              // OpenRCT2::Drawing::Colour::umber
+    kWindowPaletteDarkBrown,              // OpenRCT2::Drawing::Colour::beige
     { FilterPaletteID::paletteDarken1,           FilterPaletteID::paletteDarken1,      FilterPaletteID::paletteDarken1 },
     { FilterPaletteID::paletteDarken2,           FilterPaletteID::paletteDarken2,      FilterPaletteID::paletteDarken2 },
 };
@@ -695,9 +695,9 @@ std::optional<PaletteMap> GetPaletteMapForColour(FilterPaletteID paletteId)
     return std::nullopt;
 }
 
-FilterPaletteID GetGlassPaletteId(colour_t c)
+FilterPaletteID GetGlassPaletteId(Colour c)
 {
-    return kGlassPaletteIds[c];
+    return kGlassPaletteIds[EnumValue(c)];
 }
 
 void UpdatePalette(std::span<const BGRAColour> palette, PaletteIndex startIndex, int32_t numColours)
@@ -932,8 +932,8 @@ void DebugRT(RenderTarget& rt)
     GfxDrawLine(rt, { topLeft, topLeft + ScreenCoordsXY{ 4, 0 } }, PaletteIndex::pi136);
 
     const auto str = std::to_string(rt.x);
-    DrawText(rt, ScreenCoordsXY{ rt.x, rt.y }, { COLOUR_WHITE, FontStyle::tiny }, str.c_str());
+    DrawText(rt, ScreenCoordsXY{ rt.x, rt.y }, { OpenRCT2::Drawing::Colour::white, FontStyle::tiny }, str.c_str());
 
     const auto str2 = std::to_string(rt.y);
-    DrawText(rt, ScreenCoordsXY{ rt.x, rt.y + 6 }, { COLOUR_WHITE, FontStyle::tiny }, str2.c_str());
+    DrawText(rt, ScreenCoordsXY{ rt.x, rt.y + 6 }, { OpenRCT2::Drawing::Colour::white, FontStyle::tiny }, str2.c_str());
 }

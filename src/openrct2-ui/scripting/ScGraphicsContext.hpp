@@ -28,9 +28,9 @@ namespace OpenRCT2::Scripting
         duk_context* _ctx{};
         RenderTarget _rt{};
 
-        std::optional<colour_t> _colour{};
-        std::optional<colour_t> _secondaryColour{};
-        std::optional<colour_t> _tertiaryColour{};
+        std::optional<uint8_t> _colour{};
+        std::optional<uint8_t> _secondaryColour{};
+        std::optional<uint8_t> _tertiaryColour{};
         std::optional<uint8_t> _paletteId{};
         PaletteIndex _stroke{};
         PaletteIndex _fill{};
@@ -44,7 +44,6 @@ namespace OpenRCT2::Scripting
 
         static void Register(duk_context* ctx)
         {
-            dukglue_register_property(ctx, &ScGraphicsContext::colour_get, &ScGraphicsContext::colour_set, "colour");
             dukglue_register_property(
                 ctx, &ScGraphicsContext::secondaryColour_get, &ScGraphicsContext::secondaryColour_set, "secondaryColour");
             dukglue_register_property(
@@ -79,7 +78,7 @@ namespace OpenRCT2::Scripting
         void colour_set(DukValue value)
         {
             if (value.type() == DukValue::NUMBER)
-                _colour = static_cast<colour_t>(value.as_uint());
+                _colour = static_cast<uint8_t>(value.as_uint());
             else
                 _colour = {};
         }
@@ -92,7 +91,7 @@ namespace OpenRCT2::Scripting
         void secondaryColour_set(DukValue value)
         {
             if (value.type() == DukValue::NUMBER)
-                _secondaryColour = static_cast<colour_t>(value.as_uint());
+                _secondaryColour = static_cast<uint8_t>(value.as_uint());
             else
                 _secondaryColour = {};
         }
@@ -105,7 +104,7 @@ namespace OpenRCT2::Scripting
         void tertiaryColour_set(DukValue value)
         {
             if (value.type() == DukValue::NUMBER)
-                _tertiaryColour = static_cast<colour_t>(value.as_uint());
+                _tertiaryColour = static_cast<uint8_t>(value.as_uint());
             else
                 _tertiaryColour = {};
         }
@@ -167,14 +166,14 @@ namespace OpenRCT2::Scripting
 
         void box(int32_t x, int32_t y, int32_t width, int32_t height)
         {
-            Rectangle::fillInset(_rt, { x, y, x + width - 1, y + height - 1 }, { _colour.value_or(0) });
+            Rectangle::fillInset(_rt, { x, y, x + width - 1, y + height - 1 }, { static_cast<Colour>(_colour.value_or(0)) });
         }
 
         void well(int32_t x, int32_t y, int32_t width, int32_t height)
         {
             Rectangle::fillInset(
-                _rt, { x, y, x + width - 1, y + height - 1 }, { _colour.value_or(0) }, Rectangle::BorderStyle::inset,
-                Rectangle::FillBrightness::light, Rectangle::FillMode::dontLightenWhenInset);
+                _rt, { x, y, x + width - 1, y + height - 1 }, { static_cast<Colour>(_colour.value_or(0)) },
+                Rectangle::BorderStyle::inset, Rectangle::FillBrightness::light, Rectangle::FillMode::dontLightenWhenInset);
         }
 
         void clear()
@@ -201,15 +200,15 @@ namespace OpenRCT2::Scripting
             {
                 if (_colour)
                 {
-                    img = img.WithPrimary(*_colour);
+                    img = img.WithPrimary(static_cast<Colour>(*_colour));
                 }
                 if (_secondaryColour)
                 {
-                    img = img.WithSecondary(*_secondaryColour);
+                    img = img.WithSecondary(static_cast<Colour>(*_secondaryColour));
                 }
             }
 
-            GfxDrawSprite(_rt, img.WithTertiary(_tertiaryColour.value_or(0)), { x, y });
+            GfxDrawSprite(_rt, img.WithTertiary(static_cast<Colour>(_tertiaryColour.value_or(0))), { x, y });
         }
 
         void line(int32_t x1, int32_t y1, int32_t x2, int32_t y2)
@@ -239,7 +238,7 @@ namespace OpenRCT2::Scripting
 
         void text(const std::string& text, int32_t x, int32_t y)
         {
-            DrawText(_rt, { x, y }, { _colour.value_or(0) }, text.c_str());
+            DrawText(_rt, { x, y }, { static_cast<Colour>(_colour.value_or(0)) }, text.c_str());
         }
     };
 } // namespace OpenRCT2::Scripting

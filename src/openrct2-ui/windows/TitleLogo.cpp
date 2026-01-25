@@ -11,7 +11,6 @@
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/drawing/Drawing.h>
-#include <openrct2/interface/Colour.h>
 #include <openrct2/interface/ColourWithFlags.h>
 #include <openrct2/ui/WindowManager.h>
 
@@ -38,9 +37,9 @@ namespace OpenRCT2::Ui::Windows
         {
             setWidgets(_titleLogoWidgets);
             WindowInitScrollWidgets(*this);
-            colours[0] = ColourWithFlags{ COLOUR_GREY }.withFlag(ColourFlag::translucent, true);
-            colours[1] = ColourWithFlags{ COLOUR_GREY }.withFlag(ColourFlag::translucent, true);
-            colours[2] = ColourWithFlags{ COLOUR_GREY }.withFlag(ColourFlag::translucent, true);
+            colours[0] = ColourWithFlags{ OpenRCT2::Drawing::Colour::grey }.withFlag(ColourFlag::translucent, true);
+            colours[1] = ColourWithFlags{ OpenRCT2::Drawing::Colour::grey }.withFlag(ColourFlag::translucent, true);
+            colours[2] = ColourWithFlags{ OpenRCT2::Drawing::Colour::grey }.withFlag(ColourFlag::translucent, true);
         }
 
         void onMouseUp(WidgetIndex widgetIndex) override

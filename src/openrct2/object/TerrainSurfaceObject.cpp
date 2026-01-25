@@ -52,7 +52,7 @@ namespace OpenRCT2
     void TerrainSurfaceObject::DrawPreview(Drawing::RenderTarget& rt, int32_t width, int32_t height) const
     {
         auto imageId = ImageId(GetImageId({}, 1, 0, 0, false, false));
-        if (Colour != kNoValue)
+        if (Colour != Drawing::Colour::null)
         {
             imageId = imageId.WithPrimary(Colour);
         }
@@ -84,7 +84,7 @@ namespace OpenRCT2
 
         if (properties.is_object())
         {
-            Colour = Colour::FromString(Json::GetString(properties["colour"]), kNoValue);
+            Colour = colourFromString(Json::GetString(properties["colour"]), Drawing::Colour::null);
             Rotations = Json::GetNumber<int8_t>(properties["rotations"], 1);
             Price = Json::GetNumber<money64>(properties["price"]);
             Flags = Json::GetFlagHolder<TerrainSurfaceFlags, TerrainSurfaceFlag>(
@@ -172,7 +172,7 @@ namespace OpenRCT2
         }
 
         ImageId image(EntryBaseImageId + (result * kNumImagesInEntry) + offset);
-        if (Colour != kNoValue)
+        if (Colour != Drawing::Colour::null)
         {
             image = image.WithPrimary(Colour);
         }

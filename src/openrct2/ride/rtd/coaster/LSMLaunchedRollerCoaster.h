@@ -51,10 +51,10 @@ constexpr RideTypeDescriptor LSMLaunchedRollerCoasterRTD =
     .PhotoItem = ShopItem::photo,
     .BonusValue = 120,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_LIGHT_BLUE, COLOUR_LIGHT_BLUE, COLOUR_BLACK}, // Taiga
-        { COLOUR_BRIGHT_GREEN, COLOUR_BRIGHT_GREEN, COLOUR_YELLOW}, // Cheetah Hunt
-        { COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_DULL_BROWN_LIGHT}, // Maverick
-        { COLOUR_BLACK, COLOUR_BLACK, COLOUR_DULL_BROWN_DARK}, // Taron
+        { OpenRCT2::Drawing::Colour::lightBlue, OpenRCT2::Drawing::Colour::lightBlue, OpenRCT2::Drawing::Colour::black}, // Taiga
+        { OpenRCT2::Drawing::Colour::brightGreen, OpenRCT2::Drawing::Colour::brightGreen, OpenRCT2::Drawing::Colour::yellow}, // Cheetah Hunt
+        { OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::beige}, // Maverick
+        { OpenRCT2::Drawing::Colour::black, OpenRCT2::Drawing::Colour::black, OpenRCT2::Drawing::Colour::umber}, // Taron
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_GIGA_RC, SPR_RIDE_DESIGN_PREVIEW_GIGA_RC_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

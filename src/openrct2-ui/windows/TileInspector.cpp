@@ -1167,7 +1167,9 @@ static uint64_t PageDisabledWidgets[] = {
                             {
                                 auto ft = Formatter();
                                 ft.Add<StringId>(surfaceObj->NameStringId);
-                                DrawTextBasic(rt, screenCoords, STR_TILE_INSPECTOR_FOOTPATH_SURFACE_NAME, ft, { COLOUR_WHITE });
+                                DrawTextBasic(
+                                    rt, screenCoords, STR_TILE_INSPECTOR_FOOTPATH_SURFACE_NAME, ft,
+                                    { OpenRCT2::Drawing::Colour::white });
                             }
 
                             // Railings name
@@ -1178,7 +1180,7 @@ static uint64_t PageDisabledWidgets[] = {
                                 ft.Add<StringId>(railingsObj->NameStringId);
                                 DrawTextBasic(
                                     rt, screenCoords + ScreenCoordsXY{ 0, 11 }, STR_TILE_INSPECTOR_FOOTPATH_RAILINGS_NAME, ft,
-                                    { COLOUR_WHITE });
+                                    { OpenRCT2::Drawing::Colour::white });
                             }
                         }
                         else
@@ -1187,7 +1189,8 @@ static uint64_t PageDisabledWidgets[] = {
                             auto footpathEntry = reinterpret_cast<const FootpathEntry*>(footpathObj->GetLegacyData());
                             auto ft = Formatter();
                             ft.Add<StringId>(footpathEntry->string_idx);
-                            DrawTextBasic(rt, screenCoords, STR_TILE_INSPECTOR_PATH_NAME, ft, { COLOUR_WHITE });
+                            DrawTextBasic(
+                                rt, screenCoords, STR_TILE_INSPECTOR_PATH_NAME, ft, { OpenRCT2::Drawing::Colour::white });
                         }
 
                         // Path addition
@@ -1201,13 +1204,13 @@ static uint64_t PageDisabledWidgets[] = {
                             ft.Add<StringId>(additionNameId);
                             DrawTextBasic(
                                 rt, screenCoords + ScreenCoordsXY{ 0, 2 * 11 }, STR_TILE_INSPECTOR_PATH_ADDITIONS, ft,
-                                { COLOUR_WHITE });
+                                { OpenRCT2::Drawing::Colour::white });
                         }
                         else
                         {
                             DrawTextBasic(
                                 rt, screenCoords + ScreenCoordsXY{ 0, 2 * 11 }, STR_TILE_INSPECTOR_PATH_ADDITIONS_NONE, {},
-                                { COLOUR_WHITE });
+                                { OpenRCT2::Drawing::Colour::white });
                         }
 
                         // Properties

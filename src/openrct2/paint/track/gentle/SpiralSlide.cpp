@@ -186,7 +186,7 @@ static void SpiralSlidePaintTileFront(
                 boundingBox.x = 8;
             }
 
-            imageId = ImageId(offset + slide_progress, ride.slidePeepTShirtColour, COLOUR_GREY);
+            imageId = ImageId(offset + slide_progress, ride.slidePeepTShirtColour, OpenRCT2::Drawing::Colour::grey);
 
             PaintAddImageAsChild(session, imageId, { 16, 16, height }, { boundingBoxOffset, boundingBox });
         }

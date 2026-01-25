@@ -25,6 +25,11 @@ namespace OpenRCT2
     struct WallElement;
 } // namespace OpenRCT2
 
+namespace OpenRCT2::Drawing
+{
+    enum class Colour : uint8_t;
+}
+
 constexpr OpenRCT2::ObjectEntryIndex kBannerNull = OpenRCT2::kObjectEntryIndexNull;
 constexpr size_t kMaxBanners = 8192;
 
@@ -44,7 +49,7 @@ struct Banner
     BannerFlags flags{};
     std::string text;
     mutable std::string formattedTextBuffer;
-    uint8_t colour{};
+    OpenRCT2::Drawing::Colour colour{};
     RideId rideIndex{};
     OpenRCT2::Drawing::TextColour textColour{};
     TileCoordsXY position;

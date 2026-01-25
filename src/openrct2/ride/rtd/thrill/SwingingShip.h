@@ -50,7 +50,7 @@ constexpr RideTypeDescriptor SwingingShipRTD =
     .PhotoItem = ShopItem::photo,
     .BonusValue = 35,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_DARK_BROWN, COLOUR_DARK_BROWN, COLOUR_BLACK },
+        { OpenRCT2::Drawing::Colour::darkBrown, OpenRCT2::Drawing::Colour::darkBrown, OpenRCT2::Drawing::Colour::black },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_SWINGING_SHIP_TRACK, SPR_RIDE_DESIGN_PREVIEW_SWINGING_SHIP_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

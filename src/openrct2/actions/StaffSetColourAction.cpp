@@ -21,7 +21,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    StaffSetColourAction::StaffSetColourAction(StaffType staffType, uint8_t colour)
+    StaffSetColourAction::StaffSetColourAction(StaffType staffType, Drawing::Colour colour)
         : _staffType(static_cast<uint8_t>(staffType))
         , _colour(colour)
     {

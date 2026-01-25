@@ -62,8 +62,8 @@ namespace OpenRCT2::Ui::Windows
             initScrollWidgets();
             WindowPushOthersBelow(*this);
 
-            colours[0] = ColourWithFlags{ COLOUR_BLACK }.withFlag(ColourFlag::translucent, true);
-            colours[1] = COLOUR_GREY;
+            colours[0] = ColourWithFlags{ OpenRCT2::Drawing::Colour::black }.withFlag(ColourFlag::translucent, true);
+            colours[1] = OpenRCT2::Drawing::Colour::grey;
 
             ResizeLanguage = LANGUAGE_UNDEFINED;
         }

@@ -82,36 +82,36 @@ namespace OpenRCT2
         }
     }
 
-    colour_t SmallSceneryElement::GetPrimaryColour() const
+    Drawing::Colour SmallSceneryElement::GetPrimaryColour() const
     {
         return Colour[0];
     }
 
-    colour_t SmallSceneryElement::GetSecondaryColour() const
+    Drawing::Colour SmallSceneryElement::GetSecondaryColour() const
     {
         return Colour[1];
     }
 
-    colour_t SmallSceneryElement::GetTertiaryColour() const
+    Drawing::Colour SmallSceneryElement::GetTertiaryColour() const
     {
         return Colour[2];
     }
 
-    void SmallSceneryElement::SetPrimaryColour(colour_t newColour)
+    void SmallSceneryElement::SetPrimaryColour(Drawing::Colour newColour)
     {
-        assert(newColour < COLOUR_COUNT);
+        assert(Drawing::colourIsValid(newColour));
         Colour[0] = newColour;
     }
 
-    void SmallSceneryElement::SetSecondaryColour(colour_t newColour)
+    void SmallSceneryElement::SetSecondaryColour(Drawing::Colour newColour)
     {
-        assert(newColour < COLOUR_COUNT);
+        assert(Drawing::colourIsValid(newColour));
         Colour[1] = newColour;
     }
 
-    void SmallSceneryElement::SetTertiaryColour(colour_t newColour)
+    void SmallSceneryElement::SetTertiaryColour(Drawing::Colour newColour)
     {
-        assert(newColour < COLOUR_COUNT);
+        assert(Drawing::colourIsValid(newColour));
         Colour[2] = newColour;
     }
 

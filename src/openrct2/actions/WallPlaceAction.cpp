@@ -37,8 +37,8 @@ namespace OpenRCT2::GameActions
     using namespace OpenRCT2::TrackMetaData;
 
     WallPlaceAction::WallPlaceAction(
-        ObjectEntryIndex wallType, const CoordsXYZ& loc, uint8_t edge, int32_t primaryColour, int32_t secondaryColour,
-        int32_t tertiaryColour)
+        ObjectEntryIndex wallType, const CoordsXYZ& loc, uint8_t edge, Drawing::Colour primaryColour,
+        Drawing::Colour secondaryColour, Drawing::Colour tertiaryColour)
         : _wallType(wallType)
         , _loc(loc)
         , _edge(edge)
@@ -346,7 +346,7 @@ namespace OpenRCT2::GameActions
             }
 
             banner->text = {};
-            banner->colour = COLOUR_WHITE;
+            banner->colour = Drawing::Colour::white;
             banner->textColour = Drawing::TextColour::white;
             banner->flags = { BannerFlag::isWall };
             banner->type = 0; // Banner must be deleted after this point in an early return

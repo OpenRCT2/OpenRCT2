@@ -10,7 +10,6 @@
 #pragma once
 
 #include "../core/FlagHolder.hpp"
-#include "../interface/Colour.h"
 #include "../interface/ColourWithFlags.h"
 #include "TextColour.h"
 

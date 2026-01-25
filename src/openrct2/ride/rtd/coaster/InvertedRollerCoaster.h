@@ -50,15 +50,15 @@ constexpr RideTypeDescriptor InvertedRollerCoasterRTD =
     .PhotoItem = ShopItem::photo2,
     .BonusValue = 100,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_BORDEAUX_RED, COLOUR_BORDEAUX_RED, COLOUR_BLACK },
-        { COLOUR_WHITE, COLOUR_YELLOW, COLOUR_WHITE },
-        { COLOUR_SALMON_PINK, COLOUR_SALMON_PINK, COLOUR_GREY },
-        { COLOUR_BLACK, COLOUR_BRIGHT_RED, COLOUR_BLACK },
-        { COLOUR_SATURATED_BROWN, COLOUR_WHITE, COLOUR_SATURATED_BROWN },
-        { COLOUR_YELLOW, COLOUR_YELLOW, COLOUR_BLACK },
-        { COLOUR_BLACK, COLOUR_BLACK, COLOUR_DULL_PURPLE_LIGHT }, // Great Bear
-        { COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_SATURATED_BROWN_LIGHT }, // Montu / Oziris
-        { COLOUR_DARK_PINK, COLOUR_DARK_PINK, COLOUR_SATURATED_PURPLE_DARK }, // Banshee (Renders)
+        { OpenRCT2::Drawing::Colour::bordeauxRed, OpenRCT2::Drawing::Colour::bordeauxRed, OpenRCT2::Drawing::Colour::black },
+        { OpenRCT2::Drawing::Colour::white, OpenRCT2::Drawing::Colour::yellow, OpenRCT2::Drawing::Colour::white },
+        { OpenRCT2::Drawing::Colour::salmonPink, OpenRCT2::Drawing::Colour::salmonPink, OpenRCT2::Drawing::Colour::grey },
+        { OpenRCT2::Drawing::Colour::black, OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::black },
+        { OpenRCT2::Drawing::Colour::saturatedBrown, OpenRCT2::Drawing::Colour::white, OpenRCT2::Drawing::Colour::saturatedBrown },
+        { OpenRCT2::Drawing::Colour::yellow, OpenRCT2::Drawing::Colour::yellow, OpenRCT2::Drawing::Colour::black },
+        { OpenRCT2::Drawing::Colour::black, OpenRCT2::Drawing::Colour::black, OpenRCT2::Drawing::Colour::periwinkle }, // Great Bear
+        { OpenRCT2::Drawing::Colour::darkBlue, OpenRCT2::Drawing::Colour::darkBlue, OpenRCT2::Drawing::Colour::tan }, // Montu / Oziris
+        { OpenRCT2::Drawing::Colour::darkPink, OpenRCT2::Drawing::Colour::darkPink, OpenRCT2::Drawing::Colour::violet }, // Banshee (Renders)
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_INVERTED_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_INVERTED_ROLLER_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

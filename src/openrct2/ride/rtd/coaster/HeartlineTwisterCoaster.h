@@ -50,9 +50,9 @@ constexpr RideTypeDescriptor HeartlineTwisterCoasterRTD =
     .PhotoItem = ShopItem::photo,
     .BonusValue = 70,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_WHITE, COLOUR_LIGHT_BLUE, COLOUR_WHITE },
-        { COLOUR_BORDEAUX_RED, COLOUR_YELLOW, COLOUR_BLACK },
-        { COLOUR_DARK_PURPLE, COLOUR_WHITE, COLOUR_DARK_GREEN },
+        { OpenRCT2::Drawing::Colour::white, OpenRCT2::Drawing::Colour::lightBlue, OpenRCT2::Drawing::Colour::white },
+        { OpenRCT2::Drawing::Colour::bordeauxRed, OpenRCT2::Drawing::Colour::yellow, OpenRCT2::Drawing::Colour::black },
+        { OpenRCT2::Drawing::Colour::darkPurple, OpenRCT2::Drawing::Colour::white, OpenRCT2::Drawing::Colour::darkGreen },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_HEARTLINE_TWISTER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_HEARTLINE_TWISTER_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

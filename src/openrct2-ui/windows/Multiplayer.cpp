@@ -269,7 +269,7 @@ namespace OpenRCT2::Ui::Windows
                     _buffer.clear();
 
                     // Draw player name
-                    auto colour = ColourWithFlags{ COLOUR_BLACK };
+                    auto colour = ColourWithFlags{ OpenRCT2::Drawing::Colour::black };
                     if (listPosition == selectedListItem)
                     {
                         Rectangle::filter(

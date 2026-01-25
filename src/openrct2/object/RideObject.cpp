@@ -220,7 +220,8 @@ namespace OpenRCT2
         {
             // This used to be hard-coded. JSON objects set this themselves.
             _presetColours.count = 1;
-            _presetColours.list[0] = { COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED };
+            _presetColours.list[0] = { OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::brightRed,
+                                       OpenRCT2::Drawing::Colour::brightRed };
 
             if (_legacyType.ride_type[0] == RIDE_TYPE_FOOD_STALL || _legacyType.ride_type[0] == RIDE_TYPE_DRINK_STALL)
             {
@@ -991,16 +992,16 @@ namespace OpenRCT2
             auto colours = Json::AsArray(jColours);
             if (colours.size() >= 1)
             {
-                carColour.Body = Colour::FromString(Json::GetString(colours[0]));
+                carColour.Body = Drawing::colourFromString(Json::GetString(colours[0]));
                 carColour.Trim = carColour.Body;
                 carColour.Tertiary = carColour.Body;
                 if (colours.size() >= 2)
                 {
-                    carColour.Trim = Colour::FromString(Json::GetString(colours[1]));
+                    carColour.Trim = Drawing::colourFromString(Json::GetString(colours[1]));
                 }
                 if (colours.size() >= 3)
                 {
-                    carColour.Tertiary = Colour::FromString(Json::GetString(colours[2]));
+                    carColour.Tertiary = Drawing::colourFromString(Json::GetString(colours[2]));
                 }
             }
             config.push_back(carColour);

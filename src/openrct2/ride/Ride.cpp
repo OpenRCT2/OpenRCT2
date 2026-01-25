@@ -4341,7 +4341,8 @@ int32_t RideGetRandomColourPresetIndex(ride_type_t rideType)
 void Ride::setColourPreset(uint8_t trackColourPreset, uint8_t vehicleColourPreset)
 {
     const TrackColourPresetList* colourPresets = &getRideTypeDescriptor().ColourPresets;
-    TrackColour colours = { COLOUR_BLACK, COLOUR_BLACK, COLOUR_BLACK };
+    TrackColour colours = { OpenRCT2::Drawing::Colour::black, OpenRCT2::Drawing::Colour::black,
+                            OpenRCT2::Drawing::Colour::black };
     // Stalls save their default colour in the vehicle settings (since they share a common ride type)
     if (!isRide())
     {
