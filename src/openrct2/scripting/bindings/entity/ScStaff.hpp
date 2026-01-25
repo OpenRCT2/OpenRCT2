@@ -20,110 +20,105 @@ enum class StaffType : uint8_t;
 
 namespace OpenRCT2::Scripting
 {
-    class ScPatrolArea
+    class ScPatrolArea;
+    extern ScPatrolArea gScPatrolArea;
+
+    class ScPatrolArea final : public ScBase
     {
-    private:
-        EntityId _staffId;
-
     public:
-        ScPatrolArea(EntityId id);
-
-        static void Register(duk_context* ctx);
+        JSValue New(JSContext* ctx, EntityId staffId);
+        void Register(JSContext* ctx);
 
     private:
-        Staff* GetStaff() const;
-        void ModifyArea(const DukValue& coordsOrRange, bool value) const;
+        static void Finalize(JSRuntime* rt, JSValue thisVal);
+        static Staff* GetStaff(JSValue thisVal);
+        static void ModifyArea(JSContext* ctx, JSValue thisVal, JSValue coordsOrRange, bool reset);
 
-        DukValue tiles_get() const;
-        void tiles_set(const DukValue& value);
+        static JSValue tiles_get(JSContext* ctx, JSValue thisVal);
+        static JSValue tiles_set(JSContext* ctx, JSValue thisVal, JSValue value);
 
-        void clear();
-        void add(const DukValue& coordsOrRange);
-        void remove(const DukValue& coordsOrRange);
-        bool contains(const DukValue& coord) const;
+        static JSValue clear(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
+        static JSValue add(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
+        static JSValue remove(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
+        static JSValue contains(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
     };
 
     class ScStaff : public ScPeep
     {
     public:
-        ScStaff(EntityId Id);
+        static JSValue New(JSContext* ctx, EntityId entityId);
 
-        static void Register(duk_context* ctx);
+    protected:
+        static Staff* GetStaff(JSValue thisVal);
 
     private:
-        Staff* GetStaff() const;
+        static void AddFuncs(JSContext* ctx, JSValue obj);
 
-        std::string staffType_get() const;
-        void staffType_set(const std::string& value);
+        static JSValue staffType_get(JSContext* ctx, JSValue thisVal);
+        static JSValue staffType_set(JSContext* ctx, JSValue thisVal, JSValue jsValue);
 
-        uint8_t colour_get() const;
-        void colour_set(uint8_t value);
+        static JSValue colour_get(JSContext* ctx, JSValue thisVal);
+        static JSValue colour_set(JSContext* ctx, JSValue thisVal, JSValue jsValue);
 
-        std::vector<std::string> availableCostumes_get() const;
-        std::vector<std::string> getCostumeStrings() const;
-        std::string costume_get() const;
-        void costume_set(const DukValue& value);
+        static JSValue availableCostumes_get(JSContext* ctx, JSValue thisVal);
+        static JSValue getCostumeStrings(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
+        static JSValue costume_get(JSContext* ctx, JSValue thisVal);
+        static JSValue costume_set(JSContext* ctx, JSValue thisVal, JSValue jsValue);
 
-        std::shared_ptr<ScPatrolArea> patrolArea_get() const;
+        static JSValue patrolArea_get(JSContext* ctx, JSValue thisVal);
 
-        uint8_t orders_get() const;
-        void orders_set(uint8_t value);
+        static JSValue orders_get(JSContext* ctx, JSValue thisVal);
+        static JSValue orders_set(JSContext* ctx, JSValue thisVal, JSValue jsValue);
 
-        const DukEnumMap<PeepAnimationType>& animationsByStaffType(StaffType staffType) const;
-        std::vector<uint32_t> getAnimationSpriteIds(std::string groupKey, uint8_t rotation) const;
-        std::vector<std::string> availableAnimations_get() const;
-        std::string animation_get() const;
-        void animation_set(std::string groupKey);
-        uint8_t animationOffset_get() const;
-        void animationOffset_set(uint8_t offset);
-        uint8_t animationLength_get() const;
+        static EnumMap<PeepAnimationType> animationsByStaffType(StaffType staffType);
+        static JSValue getAnimationSpriteIds(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
+        static JSValue availableAnimations_get(JSContext* ctx, JSValue thisVal);
+        static JSValue animation_get(JSContext* ctx, JSValue thisVal);
+        static JSValue animation_set(JSContext* ctx, JSValue thisVal, JSValue jsValue);
+        static JSValue animationOffset_get(JSContext* ctx, JSValue thisVal);
+        static JSValue animationOffset_set(JSContext* ctx, JSValue thisVal, JSValue jsValue);
+        static JSValue animationLength_get(JSContext* ctx, JSValue thisVal);
     };
 
-    class ScHandyman : public ScStaff
+    class ScHandyman final : public ScStaff
     {
     public:
-        ScHandyman(EntityId Id);
-
-        static void Register(duk_context* ctx);
+        static JSValue New(JSContext* ctx, EntityId entityId);
 
     private:
-        Staff* GetHandyman() const;
+        static void AddFuncs(JSContext* ctx, JSValue obj);
 
-        DukValue lawnsMown_get() const;
+        static JSValue lawnsMown_get(JSContext* ctx, JSValue thisVal);
 
-        DukValue gardensWatered_get() const;
+        static JSValue gardensWatered_get(JSContext* ctx, JSValue thisVal);
 
-        DukValue litterSwept_get() const;
+        static JSValue litterSwept_get(JSContext* ctx, JSValue thisVal);
 
-        DukValue binsEmptied_get() const;
+        static JSValue binsEmptied_get(JSContext* ctx, JSValue thisVal);
     };
 
-    class ScMechanic : public ScStaff
+    class ScMechanic final : public ScStaff
     {
     public:
-        ScMechanic(EntityId Id);
-
-        static void Register(duk_context* ctx);
+        static JSValue New(JSContext* ctx, EntityId entityId);
 
     private:
-        Staff* GetMechanic() const;
+        static void AddFuncs(JSContext* ctx, JSValue obj);
 
-        DukValue ridesFixed_get() const;
+        static JSValue ridesFixed_get(JSContext* ctx, JSValue thisVal);
 
-        DukValue ridesInspected_get() const;
+        static JSValue ridesInspected_get(JSContext* ctx, JSValue thisVal);
     };
 
-    class ScSecurity : public ScStaff
+    class ScSecurity final : public ScStaff
     {
     public:
-        ScSecurity(EntityId Id);
-
-        static void Register(duk_context* ctx);
+        static JSValue New(JSContext* ctx, EntityId entityId);
 
     private:
-        Staff* GetSecurity() const;
+        static void AddFuncs(JSContext* ctx, JSValue obj);
 
-        DukValue vandalsStopped_get() const;
+        static JSValue vandalsStopped_get(JSContext* ctx, JSValue thisVal);
     };
 
 } // namespace OpenRCT2::Scripting

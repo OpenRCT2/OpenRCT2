@@ -7396,15 +7396,7 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
     auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
     if (hookEngine.HasSubscriptions(Scripting::HookType::guestGeneration))
     {
-        auto ctx = GetContext()->GetScriptEngine().GetContext();
-
-        // Create event args object
-        auto obj = Scripting::DukObject(ctx);
-        obj.Set("id", peep->Id.ToUnderlying());
-
-        // Call the subscriptions
-        auto e = obj.Take();
-        hookEngine.Call(Scripting::HookType::guestGeneration, e, true);
+        hookEngine.Call(Scripting::HookType::guestGeneration, { { "id", peep->Id.ToUnderlying() } }, true);
     }
 #endif
 

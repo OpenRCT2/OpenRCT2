@@ -22,105 +22,116 @@
 using namespace OpenRCT2::Scripting;
 using namespace OpenRCT2::TrackMetaData;
 
-std::shared_ptr<ScTrackIterator> ScTrackIterator::FromElement(const CoordsXY& position, int32_t elementIndex)
+JSValue ScTrackIterator::FromElement(JSContext* ctx, const CoordsXY& position, int32_t elementIndex)
 {
     auto el = MapGetNthElementAt(position, elementIndex);
     if (el == nullptr)
-        return nullptr;
+        return JS_NULL;
     auto origin = GetTrackSegmentOrigin(CoordsXYE(position, el));
     if (!origin)
-        return nullptr;
+        return JS_NULL;
 
     auto trackEl = el->AsTrack();
-    return std::make_shared<ScTrackIterator>(*origin, trackEl->GetTrackType(), trackEl->GetRideIndex());
+    return gScTrackIterator.New(ctx, *origin, trackEl->GetTrackType());
 }
 
-ScTrackIterator::ScTrackIterator(const CoordsXYZD& position, OpenRCT2::TrackElemType type, RideId ride)
-    : _position(position)
-    , _type(type)
-    , _ride(ride)
+void ScTrackIterator::Register(JSContext* ctx)
 {
+    RegisterBaseStr(ctx, "TrackIterator", Finalize);
 }
 
-void ScTrackIterator::Register(duk_context* ctx)
+JSValue ScTrackIterator::New(JSContext* ctx, const CoordsXYZD& position, OpenRCT2::TrackElemType type)
 {
-    dukglue_register_property(ctx, &ScTrackIterator::position_get, nullptr, "position");
-    dukglue_register_property(ctx, &ScTrackIterator::segment_get, nullptr, "segment");
-    dukglue_register_property(ctx, &ScTrackIterator::previousPosition_get, nullptr, "previousPosition");
-    dukglue_register_property(ctx, &ScTrackIterator::nextPosition_get, nullptr, "nextPosition");
-    dukglue_register_method(ctx, &ScTrackIterator::previous, "previous");
-    dukglue_register_method(ctx, &ScTrackIterator::next, "next");
+    static constexpr JSCFunctionListEntry funcs[] = {
+        JS_CGETSET_DEF("position", ScTrackIterator::position_get, nullptr),
+        JS_CGETSET_DEF("segment", ScTrackIterator::segment_get, nullptr),
+        JS_CGETSET_DEF("previousPosition", ScTrackIterator::previousPosition_get, nullptr),
+        JS_CGETSET_DEF("nextPosition", ScTrackIterator::nextPosition_get, nullptr),
+        JS_CFUNC_DEF("previous", 0, ScTrackIterator::previous),
+        JS_CFUNC_DEF("next", 0, ScTrackIterator::next),
+    };
+    return MakeWithOpaque(ctx, funcs, new TrackIteratorData{ position, type });
 }
 
-DukValue ScTrackIterator::position_get() const
+void ScTrackIterator::Finalize(JSRuntime* rt, JSValue thisVal)
 {
-    auto& scriptEngine = GetContext()->GetScriptEngine();
-    auto ctx = scriptEngine.GetContext();
-    return ToDuk(ctx, _position);
+    TrackIteratorData* data = GetTrackIteratorData(thisVal);
+    if (data)
+        delete data;
 }
 
-DukValue ScTrackIterator::segment_get() const
+ScTrackIterator::TrackIteratorData* ScTrackIterator::GetTrackIteratorData(JSValue thisVal)
 {
-    auto& scriptEngine = GetContext()->GetScriptEngine();
-    auto ctx = scriptEngine.GetContext();
-
-    if (_type >= TrackElemType::count)
-        return ToDuk(ctx, nullptr);
-
-    return GetObjectAsDukValue(ctx, std::make_shared<ScTrackSegment>(_type));
+    return gScTrackIterator.GetOpaque<TrackIteratorData*>(thisVal);
 }
 
-DukValue ScTrackIterator::previousPosition_get() const
+JSValue ScTrackIterator::position_get(JSContext* ctx, JSValue thisVal)
 {
-    auto& scriptEngine = GetContext()->GetScriptEngine();
-    auto ctx = scriptEngine.GetContext();
+    auto* data = GetTrackIteratorData(thisVal);
+    return ToJSValue(ctx, data->_position);
+}
 
-    auto& ted = GetTrackElementDescriptor(_type);
+JSValue ScTrackIterator::segment_get(JSContext* ctx, JSValue thisVal)
+{
+    auto* data = GetTrackIteratorData(thisVal);
+
+    if (data->_type >= TrackElemType::count)
+        return JS_NULL;
+
+    return gScTrackSegment.New(ctx, data->_type);
+}
+
+JSValue ScTrackIterator::previousPosition_get(JSContext* ctx, JSValue thisVal)
+{
+    auto* data = GetTrackIteratorData(thisVal);
+
+    auto& ted = GetTrackElementDescriptor(data->_type);
     const auto& seq0 = ted.sequences[0].clearance;
-    auto pos = _position + CoordsXYZ(seq0.x, seq0.y, seq0.z);
+    auto pos = data->_position + CoordsXYZ(seq0.x, seq0.y, seq0.z);
 
-    auto el = MapGetTrackElementAtOfTypeSeq(pos, _type, 0);
+    auto el = MapGetTrackElementAtOfTypeSeq(pos, data->_type, 0);
     if (el == nullptr)
-        return ToDuk(ctx, nullptr);
+        return JS_NULL;
 
     auto posEl = CoordsXYE(pos.x, pos.y, reinterpret_cast<TileElement*>(el));
     TrackBeginEnd tbe{};
     TrackBlockGetPrevious(posEl, &tbe);
     CoordsXYZD result(tbe.end_x, tbe.end_y, tbe.begin_z, tbe.begin_direction);
-    return ToDuk(ctx, result);
+    return ToJSValue(ctx, result);
 }
 
-DukValue ScTrackIterator::nextPosition_get() const
+JSValue ScTrackIterator::nextPosition_get(JSContext* ctx, JSValue thisVal)
 {
-    auto& scriptEngine = GetContext()->GetScriptEngine();
-    auto ctx = scriptEngine.GetContext();
+    auto* data = GetTrackIteratorData(thisVal);
 
-    auto& ted = GetTrackElementDescriptor(_type);
+    auto& ted = GetTrackElementDescriptor(data->_type);
     const auto& seq0 = ted.sequences[0].clearance;
-    auto pos = _position + CoordsXYZ(seq0.x, seq0.y, seq0.z);
+    auto pos = data->_position + CoordsXYZ(seq0.x, seq0.y, seq0.z);
 
-    auto el = MapGetTrackElementAtOfTypeSeq(pos, _type, 0);
+    auto el = MapGetTrackElementAtOfTypeSeq(pos, data->_type, 0);
     if (el == nullptr)
-        return ToDuk(ctx, nullptr);
+        return JS_NULL;
 
-    auto posEl = CoordsXYE(_position.x, _position.y, reinterpret_cast<TileElement*>(el));
+    auto posEl = CoordsXYE(data->_position.x, data->_position.y, reinterpret_cast<TileElement*>(el));
     CoordsXYE next;
     int32_t z{};
     int32_t direction{};
     TrackBlockGetNext(&posEl, &next, &z, &direction);
     CoordsXYZD result(next.x, next.y, z, direction);
-    return ToDuk(ctx, result);
+    return ToJSValue(ctx, result);
 }
 
-bool ScTrackIterator::previous()
+JSValue ScTrackIterator::previous(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
 {
-    auto& ted = GetTrackElementDescriptor(_type);
-    const auto& seq0 = ted.sequences[0].clearance;
-    auto pos = _position + CoordsXYZ(seq0.x, seq0.y, seq0.z);
+    auto* data = GetTrackIteratorData(thisVal);
 
-    auto el = MapGetTrackElementAtOfTypeSeq(pos, _type, 0);
+    auto& ted = GetTrackElementDescriptor(data->_type);
+    const auto& seq0 = ted.sequences[0].clearance;
+    auto pos = data->_position + CoordsXYZ(seq0.x, seq0.y, seq0.z);
+
+    auto el = MapGetTrackElementAtOfTypeSeq(pos, data->_type, 0);
     if (el == nullptr)
-        return false;
+        return JS_NewBool(ctx, false);
 
     auto posEl = CoordsXYE(pos.x, pos.y, reinterpret_cast<TileElement*>(el));
     TrackBeginEnd tbe{};
@@ -130,25 +141,27 @@ bool ScTrackIterator::previous()
         auto origin = GetTrackSegmentOrigin(prev);
         if (origin)
         {
-            _position = *origin;
-            _type = prev.element->AsTrack()->GetTrackType();
-            return true;
+            data->_position = *origin;
+            data->_type = prev.element->AsTrack()->GetTrackType();
+            return JS_NewBool(ctx, true);
         }
     }
-    return false;
+    return JS_NewBool(ctx, false);
 }
 
-bool ScTrackIterator::next()
+JSValue ScTrackIterator::next(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
 {
-    auto& ted = GetTrackElementDescriptor(_type);
+    auto* data = GetTrackIteratorData(thisVal);
+
+    auto& ted = GetTrackElementDescriptor(data->_type);
     const auto& seq0 = ted.sequences[0].clearance;
-    auto pos = _position + CoordsXYZ(seq0.x, seq0.y, seq0.z);
+    auto pos = data->_position + CoordsXYZ(seq0.x, seq0.y, seq0.z);
 
-    auto el = MapGetTrackElementAtOfTypeSeq(pos, _type, 0);
+    auto el = MapGetTrackElementAtOfTypeSeq(pos, data->_type, 0);
     if (el == nullptr)
-        return false;
+        return JS_NewBool(ctx, false);
 
-    auto posEl = CoordsXYE(_position.x, _position.y, reinterpret_cast<TileElement*>(el));
+    auto posEl = CoordsXYE(data->_position.x, data->_position.y, reinterpret_cast<TileElement*>(el));
     CoordsXYE next;
     int32_t z{};
     int32_t direction{};
@@ -157,12 +170,12 @@ bool ScTrackIterator::next()
         auto origin = GetTrackSegmentOrigin(next);
         if (origin)
         {
-            _position = *origin;
-            _type = next.element->AsTrack()->GetTrackType();
-            return true;
+            data->_position = *origin;
+            data->_type = next.element->AsTrack()->GetTrackType();
+            return JS_NewBool(ctx, true);
         }
     }
-    return false;
+    return JS_NewBool(ctx, false);
 }
 
 #endif

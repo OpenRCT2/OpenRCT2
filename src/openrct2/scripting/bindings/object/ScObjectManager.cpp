@@ -15,69 +15,78 @@
     #include "../../../object/ObjectList.h"
     #include "../../../ride/RideData.h"
     #include "../../../windows/Intent.h"
-    #include "../../Duktape.hpp"
     #include "../../ScriptEngine.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Scripting;
 
-void ScObjectManager::Register(duk_context* ctx)
+void ScObjectManager::Register(JSContext* ctx)
 {
-    dukglue_register_property(ctx, &ScObjectManager::installedObjects_get, nullptr, "installedObjects");
-    dukglue_register_method(ctx, &ScObjectManager::installedObject_get, "getInstalledObject");
-    dukglue_register_method(ctx, &ScObjectManager::load, "load");
-    dukglue_register_method(ctx, &ScObjectManager::unload, "unload");
-    dukglue_register_method(ctx, &ScObjectManager::getObject, "getObject");
-    dukglue_register_method(ctx, &ScObjectManager::getAllObjects, "getAllObjects");
+    RegisterBaseStr(ctx, "ObjectManager");
 }
 
-std::vector<std::shared_ptr<ScInstalledObject>> ScObjectManager::installedObjects_get() const
+JSValue ScObjectManager::New(JSContext* ctx)
 {
-    std::vector<std::shared_ptr<ScInstalledObject>> result;
+    static constexpr JSCFunctionListEntry funcs[] = {
+        JS_CGETSET_DEF("installedObjects", ScObjectManager::installedObjects_get, nullptr),
+        JS_CFUNC_DEF("getInstalledObject", 1, ScObjectManager::getInstalledObject),
+        JS_CFUNC_DEF("load", 2, ScObjectManager::load),
+        JS_CFUNC_DEF("unload", 1, ScObjectManager::unload),
+        JS_CFUNC_DEF("getObject", 2, ScObjectManager::getObject),
+        JS_CFUNC_DEF("getAllObjects", 1, ScObjectManager::getAllObjects),
+    };
+    return MakeWithOpaque(ctx, funcs, nullptr);
+}
+
+JSValue ScObjectManager::installedObjects_get(JSContext* ctx, JSValue thisVal)
+{
+    JSValue result = JS_NewArray(ctx);
 
     auto context = GetContext();
     auto& objectManager = context->GetObjectRepository();
-    auto count = objectManager.GetNumObjects();
-    for (size_t i = 0; i < count; i++)
+    auto count = static_cast<int64_t>(objectManager.GetNumObjects());
+    for (int64_t i = 0; i < count; i++)
     {
-        auto installedObject = std::make_shared<ScInstalledObject>(i);
-        result.push_back(installedObject);
+        JSValue installedObject = gScInstalledObject.New(ctx, i);
+        JS_SetPropertyInt64(ctx, result, i, installedObject);
     }
 
     return result;
 }
 
-std::shared_ptr<ScInstalledObject> ScObjectManager::installedObject_get(const std::string& identifier) const
+JSValue ScObjectManager::getInstalledObject(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
 {
+    JS_UNPACK_STR(identifier, ctx, argv[0]);
+
     auto context = GetContext();
     auto& objectRepository = context->GetObjectRepository();
     auto object = objectRepository.FindObject(identifier);
-    return object != nullptr ? std::make_shared<ScInstalledObject>(object->Id) : nullptr;
+    return object != nullptr ? gScInstalledObject.New(ctx, object->Id) : JS_NULL;
 }
 
-DukValue ScObjectManager::load(const DukValue& p1, const DukValue& p2)
+JSValue ScObjectManager::load(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
 {
     auto context = GetContext();
-    auto& scriptEngine = context->GetScriptEngine();
     auto& objectRepository = context->GetObjectRepository();
     auto& objectManager = context->GetObjectManager();
-    auto ctx = scriptEngine.GetContext();
 
-    if (p1.is_array())
+    if (JS_IsArray(argv[0]))
     {
         // load(identifiers)
+        JS_UNPACK_ARRAY(array, ctx, argv[0]);
         std::vector<ObjectEntryDescriptor> descriptors;
-        for (const auto& item : p1.as_array())
-        {
-            if (item.type() != DukValue::STRING)
-                throw DukException() << "Expected string for 'identifier'.";
+        int64_t length;
+        JS_GetLength(ctx, array, &length);
 
-            const auto& identifier = item.as_string();
+        for (int64_t i = 0; i < length; i++)
+        {
+            JSValue item = JS_GetPropertyInt64(ctx, array, i);
+            JS_UNPACK_STR(identifier, ctx, item);
             descriptors.push_back(ObjectEntryDescriptor::Parse(identifier));
         }
 
-        duk_push_array(ctx);
-        duk_uarridx_t index = 0;
+        JSValue result = JS_NewArray(ctx);
+        int64_t index = 0;
         for (const auto& descriptor : descriptors)
         {
             auto obj = objectManager.LoadObject(descriptor);
@@ -85,38 +94,31 @@ DukValue ScObjectManager::load(const DukValue& p1, const DukValue& p2)
             {
                 MarkAsResearched(obj);
                 auto objIndex = objectManager.GetLoadedObjectEntryIndex(obj);
-                auto scLoadedObject = CreateScObject(scriptEngine.GetContext(), obj->GetObjectType(), objIndex);
-                scLoadedObject.push();
-                duk_put_prop_index(ctx, -2, index);
+                auto scLoadedObject = CreateScObject(ctx, obj->GetObjectType(), objIndex);
+                JS_SetPropertyInt64(ctx, result, index, scLoadedObject);
             }
             else
             {
-                duk_push_null(ctx);
-                duk_put_prop_index(ctx, -2, index);
+                JS_SetPropertyInt64(ctx, result, index, JS_NULL);
             }
             index++;
         }
         RefreshResearchedItems();
-        return DukValue::take_from_stack(ctx);
+        return result;
     }
     else
     {
         // load(identifier, index?)
-        if (p1.type() != DukValue::STRING)
-            throw DukException() << "Expected string for 'identifier'.";
-
-        const auto& identifier = p1.as_string();
+        JS_UNPACK_STR(identifier, ctx, argv[0]);
         auto descriptor = ObjectEntryDescriptor::Parse(identifier);
 
         auto installedObject = objectRepository.FindObject(descriptor);
         if (installedObject != nullptr)
         {
-            if (p2.type() != DukValue::UNDEFINED)
+            if (argc > 1 && !JS_IsUndefined(argv[1]))
             {
-                if (p2.type() != DukValue::NUMBER)
-                    throw DukException() << "Expected number for 'index'.";
+                JS_UNPACK_UINT32(index, ctx, argv[1]);
 
-                auto index = static_cast<size_t>(p2.as_uint());
                 auto limit = getObjectTypeLimit(installedObject->Type);
                 if (index < limit)
                 {
@@ -131,7 +133,7 @@ DukValue ScObjectManager::load(const DukValue& p1, const DukValue& p2)
                         MarkAsResearched(obj);
                         RefreshResearchedItems();
                         auto objIndex = objectManager.GetLoadedObjectEntryIndex(obj);
-                        return CreateScObject(scriptEngine.GetContext(), obj->GetObjectType(), objIndex);
+                        return CreateScObject(ctx, obj->GetObjectType(), objIndex);
                     }
                 }
             }
@@ -143,30 +145,28 @@ DukValue ScObjectManager::load(const DukValue& p1, const DukValue& p2)
                     MarkAsResearched(obj);
                     RefreshResearchedItems();
                     auto objIndex = objectManager.GetLoadedObjectEntryIndex(obj);
-                    return CreateScObject(scriptEngine.GetContext(), obj->GetObjectType(), objIndex);
+                    return CreateScObject(ctx, obj->GetObjectType(), objIndex);
                 }
             }
         }
     }
-    return ToDuk(ctx, nullptr);
+    return JS_NULL;
 }
 
-void ScObjectManager::unload(const DukValue& p1, const DukValue& p2)
+JSValue ScObjectManager::unload(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
 {
+    // TODO: shouldn't this throw JS_THROW_IF_GAME_STATE_NOT_MUTABLE()?
     auto context = GetContext();
     auto& objectManager = context->GetObjectManager();
 
-    if (p1.type() == DukValue::STRING)
+    if (JS_IsString(argv[0]))
     {
-        const auto& szP1 = p1.as_string();
+        JS_UNPACK_STR(szP1, ctx, argv[0]);
         auto objType = objectTypeFromString(szP1);
         if (objType != ObjectType::none)
         {
             // unload(type, index)
-            if (p2.type() != DukValue::NUMBER)
-                throw DukException() << "'index' is invalid.";
-
-            auto objIndex = p2.as_uint();
+            JS_UNPACK_UINT32(objIndex, ctx, argv[1]);
             auto obj = objectManager.GetLoadedObject(objType, objIndex);
             if (obj != nullptr)
             {
@@ -179,27 +179,35 @@ void ScObjectManager::unload(const DukValue& p1, const DukValue& p2)
             objectManager.UnloadObjects({ ObjectEntryDescriptor::Parse(szP1) });
         }
     }
-    else if (p1.is_array())
+    else if (JS_IsArray(argv[0]))
     {
         // unload(identifiers)
-        auto identifiers = p1.as_array();
+        JS_UNPACK_ARRAY(array, ctx, argv[0]);
+        int64_t length;
+        JS_GetLength(ctx, array, &length);
+
         std::vector<ObjectEntryDescriptor> descriptors;
-        for (const auto& identifier : identifiers)
+        for (int64_t i = 0; i < length; i++)
         {
-            if (identifier.type() == DukValue::STRING)
+            JSValue item = JS_GetPropertyInt64(ctx, array, i);
+            if (JS_IsString(item))
             {
-                descriptors.push_back(ObjectEntryDescriptor::Parse(identifier.as_string()));
+                JS_UNPACK_STR(identifier, ctx, item);
+                descriptors.push_back(ObjectEntryDescriptor::Parse(identifier));
             }
         }
         objectManager.UnloadObjects(descriptors);
     }
     auto intent = Intent(INTENT_ACTION_REFRESH_SCENERY);
     ContextBroadcastIntent(&intent);
+
+    return JS_UNDEFINED;
 }
 
-DukValue ScObjectManager::getObject(const std::string& typez, int32_t index) const
+JSValue ScObjectManager::getObject(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
 {
-    auto ctx = GetContext()->GetScriptEngine().GetContext();
+    JS_UNPACK_STR(typez, ctx, argv[0]);
+    JS_UNPACK_INT32(index, ctx, argv[1]);
     auto& objManager = GetContext()->GetObjectManager();
 
     auto type = objectTypeFromString(typez);
@@ -213,35 +221,35 @@ DukValue ScObjectManager::getObject(const std::string& typez, int32_t index) con
     }
     else
     {
-        duk_error(ctx, DUK_ERR_ERROR, "Invalid object type.");
+        return JS_ThrowPlainError(ctx, "Invalid object type.");
     }
-    return ToDuk(ctx, nullptr);
+    return JS_NULL;
 }
 
-std::vector<DukValue> ScObjectManager::getAllObjects(const std::string& typez) const
+JSValue ScObjectManager::getAllObjects(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
 {
-    auto ctx = GetContext()->GetScriptEngine().GetContext();
-    auto& objManager = GetContext()->GetObjectManager();
+    JS_UNPACK_STR(typez, ctx, argv[0]);
 
-    std::vector<DukValue> result;
+    auto& objManager = GetContext()->GetObjectManager();
     auto type = objectTypeFromString(typez);
+
     if (type != ObjectType::none)
     {
-        auto count = getObjectEntryGroupCount(type);
-        for (auto i = 0u; i < count; i++)
+        JSValue result = JS_NewArray(ctx);
+        size_t count = getObjectEntryGroupCount(type);
+        int64_t resultIndex = 0;
+        for (size_t i = 0; i < count; i++)
         {
             auto obj = objManager.GetLoadedObject(type, i);
             if (obj != nullptr)
             {
-                result.push_back(CreateScObject(ctx, type, i));
+                JSValue scObj = CreateScObject(ctx, type, static_cast<int32_t>(i));
+                JS_SetPropertyInt64(ctx, result, resultIndex++, scObj);
             }
         }
+        return result;
     }
-    else
-    {
-        duk_error(ctx, DUK_ERR_ERROR, "Invalid object type.");
-    }
-    return result;
+    return JS_ThrowPlainError(ctx, "Invalid object type.");
 }
 
 void ScObjectManager::MarkAsResearched(const Object* object)
@@ -270,26 +278,42 @@ void ScObjectManager::RefreshResearchedItems()
     gSilentResearch = false;
 }
 
-DukValue ScObjectManager::CreateScObject(duk_context* ctx, ObjectType type, int32_t index)
+JSValue ScObjectManager::CreateScObject(JSContext* ctx, ObjectType type, int32_t index)
 {
     switch (type)
     {
         case ObjectType::ride:
-            return GetObjectAsDukValue(ctx, std::make_shared<ScRideObject>(type, index));
+        {
+            return ScRideObject::New(ctx, type, index);
+        }
         case ObjectType::smallScenery:
-            return GetObjectAsDukValue(ctx, std::make_shared<ScSmallSceneryObject>(type, index));
+        {
+            return ScSmallSceneryObject::New(ctx, type, index);
+        }
         case ObjectType::largeScenery:
-            return GetObjectAsDukValue(ctx, std::make_shared<ScLargeSceneryObject>(type, index));
+        {
+            return ScLargeSceneryObject::New(ctx, type, index);
+        }
         case ObjectType::walls:
-            return GetObjectAsDukValue(ctx, std::make_shared<ScWallObject>(type, index));
+        {
+            return ScWallObject::New(ctx, type, index);
+        }
         case ObjectType::pathAdditions:
-            return GetObjectAsDukValue(ctx, std::make_shared<ScFootpathAdditionObject>(type, index));
+        {
+            return ScFootpathAdditionObject::New(ctx, type, index);
+        }
         case ObjectType::banners:
-            return GetObjectAsDukValue(ctx, std::make_shared<ScBannerObject>(type, index));
+        {
+            return ScBannerObject::New(ctx, type, index);
+        }
         case ObjectType::sceneryGroup:
-            return GetObjectAsDukValue(ctx, std::make_shared<ScSceneryGroupObject>(type, index));
+        {
+            return ScSceneryGroupObject::New(ctx, type, index);
+        }
         default:
-            return GetObjectAsDukValue(ctx, std::make_shared<ScObject>(type, index));
+        {
+            return ScObject::New(ctx, type, index);
+        }
     }
 }
 

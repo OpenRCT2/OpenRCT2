@@ -15,7 +15,6 @@
         #include "../../../Context.h"
         #include "../../../config/Config.h"
         #include "../../../network/Socket.h"
-        #include "../../Duktape.hpp"
         #include "../../ScriptEngine.h"
 
         #include <memory>
@@ -26,9 +25,9 @@ namespace OpenRCT2::Scripting
     class EventList
     {
     private:
-        std::vector<std::vector<DukValue>> _listeners;
+        std::vector<std::vector<JSCallback>> _listeners;
 
-        std::vector<DukValue>& GetListenerList(uint32_t id)
+        std::vector<JSCallback>& GetListenerList(uint32_t id)
         {
             if (_listeners.size() <= id)
             {
@@ -39,7 +38,7 @@ namespace OpenRCT2::Scripting
 
     public:
         void Raise(
-            uint32_t id, const std::shared_ptr<Plugin>& plugin, const std::vector<DukValue>& args, bool isGameStateMutable)
+            uint32_t id, const std::shared_ptr<Plugin>& plugin, const std::vector<JSValue>& args, bool isGameStateMutable)
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
 
@@ -47,23 +46,26 @@ namespace OpenRCT2::Scripting
             auto listeners = GetListenerList(id);
             for (size_t i = 0; i < listeners.size(); i++)
             {
-                scriptEngine.ExecutePluginCall(plugin, listeners[i], args, isGameStateMutable);
+                scriptEngine.ExecutePluginCall(plugin, listeners[i].callback, args, isGameStateMutable);
 
                 // Safety, listeners might get reallocated
                 listeners = GetListenerList(id);
             }
         }
 
-        void AddListener(uint32_t id, const DukValue& listener)
+        void AddListener(uint32_t id, const JSCallback& listener)
         {
             auto& listeners = GetListenerList(id);
             listeners.push_back(listener);
         }
 
-        void RemoveListener(uint32_t id, const DukValue& value)
+        void RemoveListener(uint32_t id, const JSCallback& value)
         {
             auto& listeners = GetListenerList(id);
-            listeners.erase(std::remove(listeners.begin(), listeners.end(), value), listeners.end());
+            std::erase_if(listeners, [&value](const JSCallback& x) {
+                // Note: this might be hacky because I am not sure if/when quickjs will keep these function ptrs stable.
+                return JS_VALUE_GET_PTR(value.callback) == JS_VALUE_GET_PTR(x.callback);
+            });
         }
 
         void RemoveAllListeners(uint32_t id)
@@ -71,204 +73,61 @@ namespace OpenRCT2::Scripting
             auto& listeners = GetListenerList(id);
             listeners.clear();
         }
+
+        void RemoveAllListeners()
+        {
+            _listeners.clear();
+        }
     };
 
-    class ScSocketBase
+    inline bool IsLocalhostAddress(std::string_view s)
     {
-    private:
-        std::shared_ptr<Plugin> _plugin;
+        return s == "localhost" || s == "127.0.0.1" || s == "::";
+    }
 
-    protected:
-        static bool IsLocalhostAddress(std::string_view s)
+    inline bool IsOnWhiteList(std::string_view host)
+    {
+        constexpr char delimiter = ',';
+        size_t start_pos = 0;
+        size_t end_pos = 0;
+        while ((end_pos = Config::Get().plugin.allowedHosts.find(delimiter, start_pos)) != std::string::npos)
         {
-            return s == "localhost" || s == "127.0.0.1" || s == "::";
-        }
-
-        static bool IsOnWhiteList(std::string_view host)
-        {
-            constexpr char delimiter = ',';
-            size_t start_pos = 0;
-            size_t end_pos = 0;
-            while ((end_pos = Config::Get().plugin.allowedHosts.find(delimiter, start_pos)) != std::string::npos)
+            if (host == Config::Get().plugin.allowedHosts.substr(start_pos, end_pos - start_pos))
             {
-                if (host == Config::Get().plugin.allowedHosts.substr(start_pos, end_pos - start_pos))
-                {
-                    return true;
-                }
-                start_pos = end_pos + 1;
+                return true;
             }
-            return host
-                == Config::Get().plugin.allowedHosts.substr(start_pos, Config::Get().plugin.allowedHosts.length() - start_pos);
+            start_pos = end_pos + 1;
         }
+        return host
+            == Config::Get().plugin.allowedHosts.substr(start_pos, Config::Get().plugin.allowedHosts.length() - start_pos);
+    }
 
-    public:
-        ScSocketBase(const std::shared_ptr<Plugin>& plugin)
-            : _plugin(plugin)
-        {
-        }
+    struct SocketDataBase
+    {
+        EventList _eventList;
+        std::unique_ptr<Network::ITcpSocket> _socket;
+        std::shared_ptr<Plugin> _plugin;
+        bool _disposed{};
 
-        virtual ~ScSocketBase()
-        {
-            Dispose();
-        }
-
-        const std::shared_ptr<Plugin>& GetPlugin() const
-        {
-            return _plugin;
-        }
-
+        virtual ~SocketDataBase() = default;
         virtual void Update() = 0;
-
-        virtual void Dispose()
-        {
-        }
-
-        virtual bool IsDisposed() const = 0;
+        virtual void Dispose() = 0;
     };
 
-    class ScSocket final : public ScSocketBase
+    struct SocketData final : SocketDataBase
     {
-    private:
         static constexpr uint32_t EVENT_NONE = std::numeric_limits<uint32_t>::max();
         static constexpr uint32_t EVENT_CLOSE = 0;
         static constexpr uint32_t EVENT_DATA = 1;
         static constexpr uint32_t EVENT_CONNECT_ONCE = 2;
         static constexpr uint32_t EVENT_ERROR = 3;
 
-        EventList _eventList;
-        std::unique_ptr<Network::ITcpSocket> _socket;
-        bool _disposed{};
         bool _connecting{};
         bool _wasConnected{};
 
-    public:
-        ScSocket(const std::shared_ptr<Plugin>& plugin)
-            : ScSocketBase(plugin)
+        ~SocketData() override
         {
-        }
-
-        ScSocket(const std::shared_ptr<Plugin>& plugin, std::unique_ptr<Network::ITcpSocket>&& socket)
-            : ScSocketBase(plugin)
-            , _socket(std::move(socket))
-        {
-        }
-
-    private:
-        ScSocket* destroy(const DukValue& error)
-        {
-            CloseSocket();
-            return this;
-        }
-
-        ScSocket* setNoDelay(bool noDelay)
-        {
-            if (_socket != nullptr)
-            {
-                _socket->SetNoDelay(noDelay);
-            }
-            return this;
-        }
-
-        ScSocket* connect(uint16_t port, const std::string& host, const DukValue& callback)
-        {
-            auto ctx = GetContext()->GetScriptEngine().GetContext();
-            if (_socket != nullptr)
-            {
-                duk_error(ctx, DUK_ERR_ERROR, "Socket has already been created.");
-            }
-            else if (_disposed)
-            {
-                duk_error(ctx, DUK_ERR_ERROR, "Socket is disposed.");
-            }
-            else if (_connecting)
-            {
-                duk_error(ctx, DUK_ERR_ERROR, "Socket is already connecting.");
-            }
-            else if (!IsLocalhostAddress(host) && !IsOnWhiteList(host))
-            {
-                duk_error(ctx, DUK_ERR_ERROR, "For security reasons, only connecting to localhost is allowed.");
-            }
-            else
-            {
-                _socket = Network::CreateTcpSocket();
-                try
-                {
-                    _socket->ConnectAsync(host, port);
-                    _eventList.AddListener(EVENT_CONNECT_ONCE, callback);
-                    _connecting = true;
-                }
-                catch (const std::exception& e)
-                {
-                    duk_error(ctx, DUK_ERR_ERROR, e.what());
-                }
-            }
-            return this;
-        }
-
-        ScSocket* end(const DukValue& data)
-        {
-            if (_disposed)
-            {
-                auto ctx = GetContext()->GetScriptEngine().GetContext();
-                duk_error(ctx, DUK_ERR_ERROR, "Socket is disposed.");
-            }
-            else if (_socket != nullptr)
-            {
-                if (data.type() == DukValue::Type::STRING)
-                {
-                    write(data.as_string());
-                    _socket->Finish();
-                }
-                else
-                {
-                    _socket->Finish();
-                    auto ctx = GetContext()->GetScriptEngine().GetContext();
-                    duk_error(ctx, DUK_ERR_ERROR, "Only sending strings is currently supported.");
-                }
-            }
-            return this;
-        }
-
-        bool write(const std::string& data)
-        {
-            if (_disposed)
-            {
-                auto ctx = GetContext()->GetScriptEngine().GetContext();
-                duk_error(ctx, DUK_ERR_ERROR, "Socket is disposed.");
-            }
-            else if (_socket != nullptr)
-            {
-                try
-                {
-                    auto sentBytes = _socket->SendData(data.c_str(), data.size());
-                    return sentBytes != data.size();
-                }
-                catch (const std::exception&)
-                {
-                    return false;
-                }
-            }
-            return false;
-        }
-
-        ScSocket* on(const std::string& eventType, const DukValue& callback)
-        {
-            auto eventId = GetEventType(eventType);
-            if (eventId != EVENT_NONE)
-            {
-                _eventList.AddListener(eventId, callback);
-            }
-            return this;
-        }
-
-        ScSocket* off(const std::string& eventType, const DukValue& callback)
-        {
-            auto eventId = GetEventType(eventType);
-            if (eventId != EVENT_NONE)
-            {
-                _eventList.RemoveListener(eventId, callback);
-            }
-            return this;
+            SocketData::Dispose();
         }
 
         void CloseSocket()
@@ -283,22 +142,22 @@ namespace OpenRCT2::Scripting
                     RaiseOnClose(false);
                 }
             }
+            _eventList.RemoveAllListeners();
         }
 
         void RaiseOnClose(bool hadError)
         {
-            auto ctx = GetContext()->GetScriptEngine().GetContext();
-            _eventList.Raise(EVENT_CLOSE, GetPlugin(), { ToDuk(ctx, hadError) }, false);
+            JSContext* ctx = GetContext()->GetScriptEngine().GetContext();
+            _eventList.Raise(EVENT_CLOSE, _plugin, { JS_NewBool(ctx, hadError) }, false);
         }
 
-        void RaiseOnData(const std::string& data)
+        void RaiseOnData(std::string_view data)
         {
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            auto ctx = scriptEngine.GetContext();
-            _eventList.Raise(EVENT_DATA, GetPlugin(), { ToDuk(ctx, data) }, false);
+            JSContext* ctx = GetContext()->GetScriptEngine().GetContext();
+            _eventList.Raise(EVENT_DATA, _plugin, { JSFromStdString(ctx, data) }, false);
         }
 
-        uint32_t GetEventType(std::string_view name)
+        static uint32_t GetEventType(std::string_view name)
         {
             if (name == "close")
                 return EVENT_CLOSE;
@@ -309,7 +168,6 @@ namespace OpenRCT2::Scripting
             return EVENT_NONE;
         }
 
-    public:
         void Update() override
         {
             if (_disposed)
@@ -324,22 +182,21 @@ namespace OpenRCT2::Scripting
                     {
                         _connecting = false;
                         _wasConnected = true;
-                        _eventList.Raise(EVENT_CONNECT_ONCE, GetPlugin(), {}, false);
+                        _eventList.Raise(EVENT_CONNECT_ONCE, _plugin, {}, false);
                         _eventList.RemoveAllListeners(EVENT_CONNECT_ONCE);
                     }
                     else if (status == Network::SocketStatus::closed)
                     {
                         _connecting = false;
 
-                        auto& scriptEngine = GetContext()->GetScriptEngine();
-                        auto ctx = scriptEngine.GetContext();
+                        JSContext* ctx = GetContext()->GetScriptEngine().GetContext();
                         auto err = _socket->GetError();
                         if (err == nullptr)
                         {
                             err = "";
                         }
-                        auto dukErr = ToDuk(ctx, std::string_view(err));
-                        _eventList.Raise(EVENT_ERROR, GetPlugin(), { dukErr }, true);
+                        auto jsErr = JSFromStdString(ctx, std::string_view(err));
+                        _eventList.Raise(EVENT_ERROR, _plugin, { jsErr }, true);
                     }
                 }
                 else if (status == Network::SocketStatus::connected)
@@ -350,7 +207,7 @@ namespace OpenRCT2::Scripting
                     switch (result)
                     {
                         case Network::ReadPacket::success:
-                            RaiseOnData(std::string(buffer, bytesRead));
+                            RaiseOnData(std::string_view(buffer, bytesRead));
                             break;
                         case Network::ReadPacket::noData:
                             break;
@@ -373,129 +230,235 @@ namespace OpenRCT2::Scripting
             CloseSocket();
             _disposed = true;
         }
-
-        bool IsDisposed() const override
-        {
-            return _disposed;
-        }
-
-        static void Register(duk_context* ctx)
-        {
-            dukglue_register_method(ctx, &ScSocket::destroy, "destroy");
-            dukglue_register_method(ctx, &ScSocket::setNoDelay, "setNoDelay");
-            dukglue_register_method(ctx, &ScSocket::connect, "connect");
-            dukglue_register_method(ctx, &ScSocket::end, "end");
-            dukglue_register_method(ctx, &ScSocket::write, "write");
-            dukglue_register_method(ctx, &ScSocket::on, "on");
-            dukglue_register_method(ctx, &ScSocket::off, "off");
-        }
     };
 
-    class ScListener final : public ScSocketBase
+    class ScSocket;
+    extern ScSocket gScSocket;
+    class ScSocket final : public ScBase
     {
     private:
-        static constexpr uint32_t EVENT_NONE = std::numeric_limits<uint32_t>::max();
-        static constexpr uint32_t EVENT_CONNECTION = 0;
-
-        EventList _eventList;
-        std::unique_ptr<Network::ITcpSocket> _socket;
-        std::vector<std::shared_ptr<ScSocket>> _scClientSockets;
-        bool _disposed{};
-
-        bool listening_get()
+        static SocketData* GetData(JSValue thisVal)
         {
-            if (_socket != nullptr)
+            return gScSocket.GetOpaque<SocketData*>(thisVal);
+        }
+
+        static JSValue destroy(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
+        {
+            auto data = GetData(thisVal);
+            if (!data)
+                return JS_ThrowInternalError(ctx, "Invalid socket");
+
+            data->CloseSocket();
+            return JS_DupValue(ctx, thisVal);
+        }
+
+        static JSValue setNoDelay(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
+        {
+            JS_UNPACK_BOOL(noDelay, ctx, argv[0]);
+
+            auto data = GetData(thisVal);
+            if (!data)
+                return JS_ThrowInternalError(ctx, "Invalid socket");
+
+            if (data->_socket != nullptr)
             {
-                return _socket->GetStatus() == Network::SocketStatus::listening;
+                data->_socket->SetNoDelay(noDelay);
             }
-            return false;
+            return JS_DupValue(ctx, thisVal);
         }
 
-        ScListener* close()
+        static JSValue connect(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
-            CloseSocket();
-            return this;
-        }
+            JS_UNPACK_UINT32(port, ctx, argv[0]);
+            if (port & 0xFFFF0000)
+                return JS_ThrowRangeError(ctx, "Invalid port.");
+            JS_UNPACK_STR(host, ctx, argv[1]);
 
-        ScListener* listen(int32_t port, const DukValue& dukHost)
-        {
-            auto ctx = GetContext()->GetScriptEngine().GetContext();
-            if (_disposed)
+            auto data = GetData(thisVal);
+            if (!data)
+                return JS_ThrowInternalError(ctx, "Invalid socket");
+
+            if (data->_socket != nullptr)
             {
-                duk_error(ctx, DUK_ERR_ERROR, "Socket is disposed.");
+                JS_ThrowPlainError(ctx, "Socket has already been created.");
+            }
+            else if (data->_disposed)
+            {
+                JS_ThrowPlainError(ctx, "Socket is disposed.");
+            }
+            else if (data->_connecting)
+            {
+                JS_ThrowPlainError(ctx, "Socket is already connecting.");
+            }
+            else if (!IsLocalhostAddress(host) && !IsOnWhiteList(host))
+            {
+                JS_ThrowPlainError(ctx, "For security reasons, only connecting to localhost is allowed.");
             }
             else
             {
-                if (_socket == nullptr)
+                data->_socket = Network::CreateTcpSocket();
+                try
                 {
-                    _socket = Network::CreateTcpSocket();
+                    data->_socket->ConnectAsync(host, port);
+                    if (JS_IsFunction(ctx, argv[2]))
+                    {
+                        data->_eventList.AddListener(SocketData::EVENT_CONNECT_ONCE, JSCallback(ctx, argv[2]));
+                    }
+                    data->_connecting = true;
                 }
-
-                if (_socket->GetStatus() == Network::SocketStatus::listening)
+                catch (const std::exception& e)
                 {
-                    duk_error(ctx, DUK_ERR_ERROR, "Server is already listening.");
+                    JS_ThrowInternalError(ctx, "%s", e.what());
+                }
+            }
+            return JS_DupValue(ctx, thisVal);
+        }
+
+        static JSValue end(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
+        {
+            auto data = GetData(thisVal);
+            if (!data)
+                return JS_ThrowInternalError(ctx, "Invalid socket");
+
+            if (data->_disposed)
+            {
+                JS_ThrowPlainError(ctx, "Socket is disposed.");
+            }
+            else if (data->_socket != nullptr)
+            {
+                if (JS_IsString(argv[0]))
+                {
+                    if (JSValue res = write(ctx, thisVal, argc, argv); JS_IsException(res))
+                    {
+                        return res;
+                    }
+                    data->_socket->Finish();
                 }
                 else
                 {
-                    if (dukHost.type() == DukValue::Type::STRING)
-                    {
-                        auto host = dukHost.as_string();
-                        if (IsLocalhostAddress(host) || IsOnWhiteList(host))
-                        {
-                            try
-                            {
-                                _socket->Listen(host, port);
-                            }
-                            catch (const std::exception& e)
-                            {
-                                duk_error(ctx, DUK_ERR_ERROR, e.what());
-                            }
-                        }
-                        else
-                        {
-                            duk_error(ctx, DUK_ERR_ERROR, "For security reasons, only binding to localhost is allowed.");
-                        }
-                    }
-                    else
-                    {
-                        _socket->Listen("127.0.0.1", port);
-                    }
+                    data->_socket->Finish();
+                    JS_ThrowPlainError(ctx, "Only sending strings is currently supported.");
                 }
             }
-            return this;
+            return JS_DupValue(ctx, thisVal);
         }
 
-        ScListener* on(const std::string& eventType, const DukValue& callback)
+        static JSValue write(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
-            auto eventId = GetEventType(eventType);
-            if (eventId != EVENT_NONE)
+            JS_UNPACK_STR(str, ctx, argv[0]);
+
+            auto data = GetData(thisVal);
+            if (!data)
+                return JS_ThrowInternalError(ctx, "Invalid socket");
+
+            if (data->_disposed)
             {
-                _eventList.AddListener(eventId, callback);
+                JS_ThrowPlainError(ctx, "Socket is disposed.");
             }
-            return this;
-        }
-
-        ScListener* off(const std::string& eventType, const DukValue& callback)
-        {
-            auto eventId = GetEventType(eventType);
-            if (eventId != EVENT_NONE)
+            else if (data->_socket != nullptr)
             {
-                _eventList.RemoveListener(eventId, callback);
+                try
+                {
+                    auto sentBytes = data->_socket->SendData(str.c_str(), str.size());
+                    return JS_NewBool(ctx, sentBytes != str.size());
+                }
+                catch (const std::exception&)
+                {
+                    return JS_NewBool(ctx, false);
+                }
             }
-            return this;
+            return JS_NewBool(ctx, false);
         }
 
-        uint32_t GetEventType(std::string_view name)
+        static JSValue on(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
-            if (name == "connection")
-                return EVENT_CONNECTION;
-            return EVENT_NONE;
+            JS_UNPACK_STR(eventType, ctx, argv[0]);
+            JS_UNPACK_CALLBACK(callback, ctx, argv[1]);
+
+            auto data = GetData(thisVal);
+            if (!data)
+                return JS_ThrowInternalError(ctx, "Invalid socket");
+
+            auto eventId = SocketData::GetEventType(eventType);
+            if (eventId != SocketData::EVENT_NONE)
+            {
+                data->_eventList.AddListener(eventId, callback);
+            }
+            return JS_DupValue(ctx, thisVal);
+        }
+
+        static JSValue off(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
+        {
+            JS_UNPACK_STR(eventType, ctx, argv[0]);
+            JS_UNPACK_CALLBACK(callback, ctx, argv[1]);
+
+            auto data = GetData(thisVal);
+            if (!data)
+                return JS_ThrowInternalError(ctx, "Invalid socket");
+
+            auto eventId = SocketData::GetEventType(eventType);
+            if (eventId != SocketData::EVENT_NONE)
+            {
+                data->_eventList.RemoveListener(eventId, callback);
+            }
+            return JS_DupValue(ctx, thisVal);
         }
 
     public:
-        ScListener(const std::shared_ptr<Plugin>& plugin)
-            : ScSocketBase(plugin)
+        static constexpr JSCFunctionListEntry funcs[] = {
+            JS_CFUNC_DEF("destroy", 1, ScSocket::destroy), JS_CFUNC_DEF("setNoDelay", 1, ScSocket::setNoDelay),
+            JS_CFUNC_DEF("connect", 3, ScSocket::connect), JS_CFUNC_DEF("end", 1, ScSocket::end),
+            JS_CFUNC_DEF("write", 1, ScSocket::write),     JS_CFUNC_DEF("on", 2, ScSocket::on),
+            JS_CFUNC_DEF("off", 2, ScSocket::off),
+        };
+
+        JSValue New(JSContext* ctx, const std::shared_ptr<Plugin>& plugin)
         {
+            // unique ptr is used to avoid static analyzer false positives.
+            auto data = std::make_unique<SocketData>();
+            data->_plugin = plugin;
+            GetContext()->GetScriptEngine().AddSocket(data.get());
+            return MakeWithOpaque(ctx, funcs, data.release());
+        }
+
+        JSValue New(JSContext* ctx, const std::shared_ptr<Plugin>& plugin, std::unique_ptr<Network::ITcpSocket>&& socket)
+        {
+            auto data = std::make_unique<SocketData>();
+            data->_plugin = plugin;
+            data->_socket = std::move(socket);
+            GetContext()->GetScriptEngine().AddSocket(data.get());
+            return MakeWithOpaque(ctx, funcs, data.release());
+        }
+
+        void Register(JSContext* ctx)
+        {
+            RegisterBaseStr(ctx, "Socket", Finalize);
+        }
+
+        static void Finalize(JSRuntime* rt, JSValue thisVal)
+        {
+            SocketData* data = gScSocket.GetOpaque<SocketData*>(thisVal);
+            if (data)
+            {
+                // Note the game context pointer can be null if the game is shutting down,
+                // but all sockets should have been cleaned up by then.
+                IContext* gameContext = GetContext();
+                assert(gameContext != nullptr);
+                gameContext->GetScriptEngine().RemoveSocket(data);
+                data->Dispose();
+                delete data;
+            }
+        }
+    };
+
+    struct ListenerData final : SocketDataBase
+    {
+        static constexpr uint32_t EVENT_NONE = std::numeric_limits<uint32_t>::max();
+        static constexpr uint32_t EVENT_CONNECTION = 0;
+
+        ~ListenerData() override
+        {
+            ListenerData::Dispose();
         }
 
         void Update() override
@@ -514,13 +477,9 @@ namespace OpenRCT2::Scripting
                     // Default to using Nagle's algorithm like node.js does
                     client->SetNoDelay(false);
 
-                    auto& scriptEngine = GetContext()->GetScriptEngine();
-                    auto clientSocket = std::make_shared<ScSocket>(GetPlugin(), std::move(client));
-                    scriptEngine.AddSocket(clientSocket);
-
-                    auto ctx = scriptEngine.GetContext();
-                    auto dukClientSocket = GetObjectAsDukValue(ctx, clientSocket);
-                    _eventList.Raise(EVENT_CONNECTION, GetPlugin(), { dukClientSocket }, false);
+                    JSContext* ctx = GetContext()->GetScriptEngine().GetContext();
+                    auto clientSocket = gScSocket.New(ctx, _plugin, std::move(client));
+                    _eventList.Raise(EVENT_CONNECTION, _plugin, { clientSocket }, false);
                 }
             }
         }
@@ -532,6 +491,7 @@ namespace OpenRCT2::Scripting
                 _socket->Close();
                 _socket = nullptr;
             }
+            _eventList.RemoveAllListeners();
         }
 
         void Dispose() override
@@ -539,19 +499,172 @@ namespace OpenRCT2::Scripting
             CloseSocket();
             _disposed = true;
         }
+    };
 
-        bool IsDisposed() const override
+    class ScListener;
+    extern ScListener gScListener;
+    class ScListener final : public ScBase
+    {
+        static ListenerData* GetData(JSValue thisVal)
         {
-            return _disposed;
+            return gScListener.GetOpaque<ListenerData*>(thisVal);
         }
 
-        static void Register(duk_context* ctx)
+        static JSValue listening_get(JSContext* ctx, JSValue thisVal)
         {
-            dukglue_register_property(ctx, &ScListener::listening_get, nullptr, "listening");
-            dukglue_register_method(ctx, &ScListener::close, "close");
-            dukglue_register_method(ctx, &ScListener::listen, "listen");
-            dukglue_register_method(ctx, &ScListener::on, "on");
-            dukglue_register_method(ctx, &ScListener::off, "off");
+            auto data = GetData(thisVal);
+            if (!data)
+                return JS_ThrowInternalError(ctx, "Invalid listener");
+
+            if (data->_socket != nullptr)
+            {
+                return JS_NewBool(ctx, data->_socket->GetStatus() == Network::SocketStatus::listening);
+            }
+            return JS_NewBool(ctx, false);
+        }
+
+        static JSValue close(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
+        {
+            auto data = GetData(thisVal);
+            if (!data)
+                return JS_ThrowInternalError(ctx, "Invalid listener");
+
+            data->CloseSocket();
+            return JS_DupValue(ctx, thisVal);
+        }
+
+        static JSValue listen(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
+        {
+            JS_UNPACK_UINT32(port, ctx, argv[0]);
+            if (port & 0xFFFF0000)
+                return JS_ThrowRangeError(ctx, "Invalid port.");
+
+            auto data = GetData(thisVal);
+            if (!data)
+                return JS_ThrowInternalError(ctx, "Invalid listener");
+
+            if (data->_disposed)
+            {
+                JS_ThrowPlainError(ctx, "Socket is disposed.");
+            }
+            else
+            {
+                if (data->_socket == nullptr)
+                {
+                    data->_socket = Network::CreateTcpSocket();
+                }
+
+                if (data->_socket->GetStatus() == Network::SocketStatus::listening)
+                {
+                    JS_ThrowPlainError(ctx, "Server is already listening.");
+                }
+                else
+                {
+                    if (JS_IsString(argv[1]))
+                    {
+                        std::string host = JSToStdString(ctx, argv[1]);
+                        if (IsLocalhostAddress(host) || IsOnWhiteList(host))
+                        {
+                            try
+                            {
+                                data->_socket->Listen(host, port);
+                            }
+                            catch (const std::exception& e)
+                            {
+                                JS_ThrowPlainError(ctx, "%s", e.what());
+                            }
+                        }
+                        else
+                        {
+                            JS_ThrowPlainError(ctx, "For security reasons, only binding to localhost is allowed.");
+                        }
+                    }
+                    else
+                    {
+                        data->_socket->Listen("127.0.0.1", port);
+                    }
+                }
+            }
+            return JS_DupValue(ctx, thisVal);
+        }
+
+        static JSValue on(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
+        {
+            JS_UNPACK_STR(eventType, ctx, argv[0]);
+            JS_UNPACK_CALLBACK(callback, ctx, argv[1]);
+
+            auto data = GetData(thisVal);
+            if (!data)
+                return JS_ThrowInternalError(ctx, "Invalid listener");
+
+            auto eventId = GetEventType(eventType);
+            if (eventId != ListenerData::EVENT_NONE)
+            {
+                data->_eventList.AddListener(eventId, callback);
+            }
+            return JS_DupValue(ctx, thisVal);
+        }
+
+        static JSValue off(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
+        {
+            JS_UNPACK_STR(eventType, ctx, argv[0]);
+            JS_UNPACK_CALLBACK(callback, ctx, argv[1]);
+
+            auto data = GetData(thisVal);
+            if (!data)
+                return JS_ThrowInternalError(ctx, "Invalid listener");
+
+            auto eventId = GetEventType(eventType);
+            if (eventId != ListenerData::EVENT_NONE)
+            {
+                data->_eventList.RemoveListener(eventId, callback);
+            }
+            return JS_DupValue(ctx, thisVal);
+        }
+
+        static uint32_t GetEventType(std::string_view name)
+        {
+            if (name == "connection")
+                return ListenerData::EVENT_CONNECTION;
+            return ListenerData::EVENT_NONE;
+        }
+
+    public:
+        JSValue New(JSContext* ctx, const std::shared_ptr<Plugin>& plugin)
+        {
+            static constexpr JSCFunctionListEntry funcs[] = {
+                JS_CGETSET_DEF("listening", ScListener::listening_get, nullptr),
+                JS_CFUNC_DEF("close", 0, ScListener::close),
+                JS_CFUNC_DEF("listen", 2, ScListener::listen),
+                JS_CFUNC_DEF("on", 2, ScListener::on),
+                JS_CFUNC_DEF("off", 2, ScListener::off),
+            };
+
+            // unique ptr is used to avoid static analyzer false positives.
+            auto data = std::make_unique<ListenerData>();
+            data->_plugin = plugin;
+            GetContext()->GetScriptEngine().AddSocket(data.get());
+            return MakeWithOpaque(ctx, funcs, data.release());
+        }
+
+        void Register(JSContext* ctx)
+        {
+            RegisterBaseStr(ctx, "Listener", Finalize);
+        }
+
+        static void Finalize(JSRuntime* rt, JSValue thisVal)
+        {
+            ListenerData* data = gScListener.GetOpaque<ListenerData*>(thisVal);
+            if (data)
+            {
+                // Note the game context pointer can be null if the game is shutting down,
+                // but all sockets should have been cleaned up by then.
+                IContext* gameContext = GetContext();
+                assert(gameContext != nullptr);
+                gameContext->GetScriptEngine().RemoveSocket(data);
+                data->Dispose();
+                delete data;
+            }
         }
     };
 } // namespace OpenRCT2::Scripting

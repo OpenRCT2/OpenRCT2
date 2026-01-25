@@ -12,55 +12,64 @@
 #ifdef ENABLE_SCRIPTING
 
     #include "../../../interface/InteractiveConsole.h"
-    #include "../../Duktape.hpp"
     #include "../../ScriptEngine.h"
 
 namespace OpenRCT2::Scripting
 {
-    class ScConsole
+    class ScConsole;
+    extern ScConsole gScConsole;
+
+    class ScConsole final : public ScBase
     {
     private:
-        InteractiveConsole& _console;
+        static JSValue clear(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
+        {
+            if (const auto console = gScConsole.GetOpaque<InteractiveConsole*>(thisVal))
+                console->Clear();
+            return JS_UNDEFINED;
+        }
+
+        static JSValue log(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
+        {
+            if (const auto console = gScConsole.GetOpaque<InteractiveConsole*>(thisVal))
+            {
+                std::string line;
+                for (int i = 0; i < argc; i++)
+                {
+                    if (i != 0)
+                        line.push_back(' ');
+                    line += Stringify(ctx, argv[i]);
+                }
+                console->WriteLine(line);
+            }
+            return JS_UNDEFINED;
+        }
+
+        static JSValue executeLegacy(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
+        {
+            if (const auto console = gScConsole.GetOpaque<InteractiveConsole*>(thisVal))
+            {
+                JS_UNPACK_STR(str, ctx, argv[0]);
+                console->Execute(str);
+            }
+            return JS_UNDEFINED;
+        }
+
+        static constexpr JSCFunctionListEntry funcs[] = {
+            JS_CFUNC_DEF("clear", 0, clear),
+            JS_CFUNC_DEF("log", 0, log),
+            JS_CFUNC_DEF("executeLegacy", 1, executeLegacy),
+        };
 
     public:
-        ScConsole(InteractiveConsole& console)
-            : _console(console)
+        JSValue New(JSContext* ctx, InteractiveConsole& console)
         {
+            return MakeWithOpaque(ctx, funcs, &console);
         }
 
-        void clear()
+        void Register(JSContext* ctx)
         {
-            _console.Clear();
-        }
-
-        duk_ret_t log(duk_context* ctx)
-        {
-            std::string line;
-            auto nargs = duk_get_top(ctx);
-            for (duk_idx_t i = 0; i < nargs; i++)
-            {
-                auto arg = DukValue::copy_from_stack(ctx, i);
-                auto argsz = Stringify(arg);
-                if (i != 0)
-                {
-                    line.push_back(' ');
-                }
-                line += argsz;
-            }
-            _console.WriteLine(line);
-            return 0;
-        }
-
-        void executeLegacy(const std::string& command)
-        {
-            _console.Execute(command);
-        }
-
-        static void Register(duk_context* ctx)
-        {
-            dukglue_register_method(ctx, &ScConsole::clear, "clear");
-            dukglue_register_method_varargs(ctx, &ScConsole::log, "log");
-            dukglue_register_method(ctx, &ScConsole::executeLegacy, "executeLegacy");
+            RegisterBaseStr(ctx, "Console");
         }
     };
 } // namespace OpenRCT2::Scripting

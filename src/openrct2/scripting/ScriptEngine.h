@@ -13,8 +13,8 @@
 
     #include "../actions/CustomAction.h"
     #include "../core/FileWatcher.h"
+    #include "../core/Guard.hpp"
     #include "../management/Finance.h"
-    #include "../world/Location.hpp"
     #include "HookEngine.h"
     #include "Plugin.h"
 
@@ -23,13 +23,11 @@
     #include <memory>
     #include <mutex>
     #include <queue>
+    #include <quickjs.h>
     #include <string>
     #include <unordered_map>
     #include <unordered_set>
     #include <vector>
-
-struct duk_hthread;
-typedef struct duk_hthread duk_context;
 
 namespace OpenRCT2::GameActions
 {
@@ -56,7 +54,7 @@ namespace OpenRCT2::Scripting
     static constexpr int32_t kApiVersionNetworkIDs = 77;
 
     #ifndef DISABLE_NETWORK
-    class ScSocketBase;
+    struct SocketDataBase;
     #endif
 
     class ScriptExecutionInfo
@@ -105,34 +103,13 @@ namespace OpenRCT2::Scripting
         }
     };
 
-    class DukContext
-    {
-    private:
-        duk_context* _context{};
-
-    public:
-        DukContext();
-        DukContext(DukContext&) = delete;
-        DukContext(DukContext&& src) noexcept
-            : _context(std::move(src._context))
-        {
-            src._context = {};
-        }
-        ~DukContext();
-
-        operator duk_context*()
-        {
-            return _context;
-        }
-    };
-
     using IntervalHandle = uint32_t;
     struct ScriptInterval
     {
         std::shared_ptr<Plugin> Owner;
         uint32_t Delay{};
         int64_t LastTimestamp{};
-        DukValue Callback;
+        JSCallback Callback;
         bool Repeat{};
         bool Deleted{};
     };
@@ -142,7 +119,8 @@ namespace OpenRCT2::Scripting
     private:
         InteractiveConsole& _console;
         IPlatformEnvironment& _env;
-        DukContext _context;
+        static JSRuntime* _runtime;
+        JSContext* _replContext = nullptr;
         bool _initialised{};
         bool _hotReloadingInitialised{};
         bool _transientPluginsEnabled{};
@@ -153,8 +131,8 @@ namespace OpenRCT2::Scripting
         uint32_t _lastHotReloadCheckTick{};
         HookEngine _hookEngine;
         ScriptExecutionInfo _execInfo;
-        DukValue _sharedStorage;
-        DukValue _parkStorage;
+        JSValue _sharedStorage = JS_UNDEFINED;
+        JSValue _parkStorage = JS_UNDEFINED;
 
         uint32_t _lastIntervalTimestamp{};
         std::map<IntervalHandle, ScriptInterval> _intervals;
@@ -165,26 +143,37 @@ namespace OpenRCT2::Scripting
         std::mutex _changedPluginFilesMutex;
         std::vector<std::function<void(std::shared_ptr<Plugin>)>> _pluginStoppedSubscriptions;
 
+        struct ExtensionCallbacks
+        {
+            std::function<void(JSContext*)> newContext;
+            std::function<void()> unregister;
+        };
+
+        std::vector<ExtensionCallbacks> _extensions;
+
         struct CustomActionInfo
         {
             std::shared_ptr<Plugin> Owner;
             std::string Name;
-            DukValue Query;
-            DukValue Execute;
+            JSCallback Query;
+            JSCallback Execute;
         };
 
         std::unordered_map<std::string, CustomActionInfo> _customActions;
     #ifndef DISABLE_NETWORK
-        std::list<std::shared_ptr<ScSocketBase>> _sockets;
+        std::vector<SocketDataBase*> _sockets;
     #endif
+
+        void InitialiseContext(JSContext* ctx) const;
 
     public:
         ScriptEngine(InteractiveConsole& console, IPlatformEnvironment& env);
         ScriptEngine(ScriptEngine&) = delete;
+        ~ScriptEngine();
 
-        duk_context* GetContext()
+        JSContext* GetContext()
         {
-            return _context;
+            return _replContext;
         }
         HookEngine& GetHookEngine()
         {
@@ -194,11 +183,11 @@ namespace OpenRCT2::Scripting
         {
             return _execInfo;
         }
-        DukValue GetSharedStorage()
+        JSValue GetSharedStorage()
         {
             return _sharedStorage;
         }
-        DukValue GetParkStorage()
+        JSValue GetParkStorage()
         {
             return _parkStorage;
         }
@@ -223,20 +212,21 @@ namespace OpenRCT2::Scripting
 
         void ClearParkStorage();
         std::string GetParkStorageAsJSON();
-        void SetParkStorageFromJSON(std::string_view value);
+        void SetParkStorageFromJSON(const std::string& value, const std::string& filename);
 
         void Initialise();
+        JSContext* CreateContext() const;
         void LoadTransientPlugins();
         void UnloadTransientPlugins();
         void StopUnloadRegisterAllPlugins();
         void Tick();
         std::future<void> Eval(const std::string& s);
-        DukValue ExecutePluginCall(
-            const std::shared_ptr<Plugin>& plugin, const DukValue& func, const std::vector<DukValue>& args,
-            bool isGameStateMutable);
-        DukValue ExecutePluginCall(
-            std::shared_ptr<Plugin> plugin, const DukValue& func, const DukValue& thisValue, const std::vector<DukValue>& args,
-            bool isGameStateMutable);
+        void ExecutePluginCall(
+            const std::shared_ptr<Plugin>& plugin, JSValue func, const std::vector<JSValue>& args, bool isGameStateMutable,
+            bool keepArgsAlive = false);
+        JSValue ExecutePluginCall(
+            const std::shared_ptr<Plugin>& plugin, JSValue func, JSValue thisValue, const std::vector<JSValue>& args,
+            bool isGameStateMutable, bool keepArgsAlive = false, bool keepRetValueAlive = false);
 
         void LogPluginInfo(std::string_view message);
         void LogPluginInfo(const std::shared_ptr<Plugin>& plugin, std::string_view message);
@@ -246,32 +236,43 @@ namespace OpenRCT2::Scripting
             _pluginStoppedSubscriptions.push_back(callback);
         }
 
+        void RegisterExtension(std::function<void(JSContext*)> newContext, std::function<void()> unregister)
+        {
+            _extensions.emplace_back(newContext, unregister);
+            newContext(_replContext);
+        }
+
         void AddNetworkPlugin(std::string_view code);
         void RemoveNetworkPlugins();
 
         [[nodiscard]] GameActions::Result QueryOrExecuteCustomGameAction(
             const GameActions::CustomAction& action, bool isExecute);
         bool RegisterCustomAction(
-            const std::shared_ptr<Plugin>& plugin, std::string_view action, const DukValue& query, const DukValue& execute);
+            const std::shared_ptr<Plugin>& plugin, std::string_view action, const JSCallback& query, const JSCallback& execute);
         void RunGameActionHooks(const GameActions::GameAction& action, GameActions::Result& result, bool isExecute);
-        [[nodiscard]] std::unique_ptr<GameActions::GameAction> CreateGameAction(
-            const std::string& actionid, const DukValue& args, const std::string& pluginName);
-        [[nodiscard]] DukValue GameActionResultToDuk(const GameActions::GameAction& action, const GameActions::Result& result);
+        [[nodiscard]] std::pair<std::unique_ptr<GameActions::GameAction>, bool> CreateGameAction(
+            JSContext* ctx, const std::string& actionid, JSValue args, const std::string& pluginName);
+        [[nodiscard]] JSValue GameActionResultToJS(
+            JSContext* ctx, const GameActions::GameAction& action, const GameActions::Result& result);
 
         void SaveSharedStorage();
 
-        IntervalHandle AddInterval(const std::shared_ptr<Plugin>& plugin, int32_t delay, bool repeat, DukValue&& callback);
+        IntervalHandle AddInterval(
+            const std::shared_ptr<Plugin>& plugin, int32_t delay, bool repeat, const JSCallback& callback);
         void RemoveInterval(const std::shared_ptr<Plugin>& plugin, IntervalHandle handle);
 
         static std::string_view ExpenditureTypeToString(ExpenditureType expenditureType);
         static ExpenditureType StringToExpenditureType(std::string_view expenditureType);
 
     #ifndef DISABLE_NETWORK
-        void AddSocket(const std::shared_ptr<ScSocketBase>& socket);
+        void AddSocket(SocketDataBase* data);
+        void RemoveSocket(SocketDataBase* data);
     #endif
 
     private:
-        void RegisterConstants();
+        static void RegisterClasses(JSContext* ctx);
+        static void UnregisterClasses();
+        static void RegisterConstants(JSContext* ctx);
         void RefreshPlugins();
         std::vector<std::string> GetPluginFiles() const;
         void UnregisterPlugin(std::string_view path);
@@ -283,7 +284,7 @@ namespace OpenRCT2::Scripting
         void LoadPlugin(std::shared_ptr<Plugin>& plugin);
         void UnloadPlugin(std::shared_ptr<Plugin>& plugin);
         void StartPlugin(std::shared_ptr<Plugin> plugin);
-        void StopPlugin(std::shared_ptr<Plugin> plugin);
+        void StopPlugin(std::shared_ptr<Plugin> plugin, bool unregistering = false);
         void ReloadPlugin(std::shared_ptr<Plugin> plugin);
         static bool ShouldLoadScript(std::string_view path);
         bool ShouldStartPlugin(const std::shared_ptr<Plugin>& plugin);
@@ -292,7 +293,7 @@ namespace OpenRCT2::Scripting
         void AutoReloadPlugins();
         void ProcessREPL();
         void RemoveCustomGameActions(const std::shared_ptr<Plugin>& plugin);
-        [[nodiscard]] GameActions::Result DukToGameActionResult(const DukValue& d);
+        [[nodiscard]] static GameActions::Result JSToGameActionResult(JSContext* ctx, JSValue d);
 
         void InitSharedStorage();
         void LoadSharedStorage();
@@ -306,10 +307,66 @@ namespace OpenRCT2::Scripting
     };
 
     bool IsGameStateMutable();
-    void ThrowIfGameStateNotMutable();
     int32_t GetTargetAPIVersion();
 
-    std::string Stringify(const DukValue& value);
+    std::string Stringify(JSContext* context, JSValue value);
+
+    class ScBase
+    {
+    private:
+        JSClassID classId = JS_INVALID_CLASS_ID;
+
+    public:
+        void Unregister()
+        {
+            classId = JS_INVALID_CLASS_ID;
+        }
+
+    protected:
+        [[nodiscard]] JSValue MakeWithOpaque(JSContext* ctx, std::span<const JSCFunctionListEntry> classFuncs, void* opaque)
+        {
+            JSValue obj = JS_NewObjectClass(ctx, classId);
+            if (JS_IsException(obj))
+                throw std::runtime_error("Failed to create new object for class.");
+            JS_SetOpaque(obj, opaque);
+
+            // Note: Usually one would set a class prototype rather than setting the functions as properties on every creation.
+            //       However, that causes the attached functions to not be "own properties" which make them a little less
+            //       visible to the user, and also does not match the previous behaviour with the DukTape engine.
+            JS_SetPropertyFunctionList(ctx, obj, classFuncs.data(), static_cast<int>(classFuncs.size()));
+            return obj;
+        }
+
+        template<typename T>
+        [[nodiscard]] T GetOpaque(JSValue obj) const
+        {
+            return static_cast<T>(JS_GetOpaque(obj, classId));
+        }
+
+        void RegisterBase(JSContext* ctx, const JSClassDef& classDef)
+        {
+            Guard::Assert(classId == JS_INVALID_CLASS_ID);
+            // Note: Technically JS_NewClassID is meant to be called once during the lifetime of the program
+            //       whereas JS_NewClass is meant to be called for each runtime.
+            //       If we ever have any more runtimes, this flow would be wrong.
+            //       More runtimes would also require refactoring the way values are passed to the JS code when
+            //       calling callbacks.
+            JSRuntime* rt = JS_GetRuntime(ctx);
+            JS_NewClassID(rt, &classId);
+            JS_NewClass(rt, classId, &classDef);
+            JS_SetClassProto(ctx, classId, JS_NewObject(ctx));
+        }
+
+        void RegisterBaseStr(JSContext* ctx, const char* className)
+        {
+            RegisterBase(ctx, { className, nullptr, nullptr, nullptr, nullptr });
+        }
+
+        void RegisterBaseStr(JSContext* ctx, const char* className, JSClassFinalizer* finalizer)
+        {
+            RegisterBase(ctx, { className, finalizer, nullptr, nullptr, nullptr });
+        }
+    };
 
 } // namespace OpenRCT2::Scripting
 

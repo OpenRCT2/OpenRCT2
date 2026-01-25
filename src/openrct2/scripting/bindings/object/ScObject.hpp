@@ -17,7 +17,6 @@
     #include "../../../object/RideObject.h"
     #include "../../../object/SceneryGroupObject.h"
     #include "../../../object/SmallSceneryObject.h"
-    #include "../../Duktape.hpp"
     #include "../../ScriptEngine.h"
     #include "ScInstalledObject.hpp"
 
@@ -26,747 +25,611 @@
 
 namespace OpenRCT2::Scripting
 {
-    class ScObject
+    class ScObject;
+    extern ScObject gScObject;
+
+    class ScObject : public ScBase
     {
     protected:
-        ObjectType _type{};
-        int32_t _index{};
+        struct ObjectData
+        {
+            ObjectType _type{};
+            int32_t _index{};
+        };
 
     public:
-        ScObject(ObjectType type, int32_t index)
-            : _type(type)
-            , _index(index)
+        void Register(JSContext* ctx)
         {
+            RegisterBaseStr(ctx, "Object", Finalize);
         }
 
-        static void Register(duk_context* ctx)
+        JSValue NewInstance(JSContext* ctx, ObjectType type, int32_t index)
         {
-            dukglue_register_property(ctx, &ScObject::installedObject_get, nullptr, "installedObject");
-            dukglue_register_property(ctx, &ScObject::type_get, nullptr, "type");
-            dukglue_register_property(ctx, &ScObject::index_get, nullptr, "index");
-            dukglue_register_property(ctx, &ScObject::identifier_get, nullptr, "identifier");
-            dukglue_register_property(ctx, &ScObject::legacyIdentifier_get, nullptr, "legacyIdentifier");
-            dukglue_register_property(ctx, &ScObject::name_get, nullptr, "name");
-            dukglue_register_property(ctx, &ScObject::baseImageId_get, nullptr, "baseImageId");
-            dukglue_register_property(ctx, &ScObject::numImages_get, nullptr, "numImages");
+            static constexpr JSCFunctionListEntry funcs[] = {
+                JS_CGETSET_DEF("installedObject", ScObject::installedObject_get, nullptr),
+                JS_CGETSET_DEF("type", ScObject::type_get, nullptr),
+                JS_CGETSET_DEF("index", ScObject::index_get, nullptr),
+                JS_CGETSET_DEF("identifier", ScObject::identifier_get, nullptr),
+                JS_CGETSET_DEF("legacyIdentifier", ScObject::legacyIdentifier_get, nullptr),
+                JS_CGETSET_DEF("name", ScObject::name_get, nullptr),
+                JS_CGETSET_DEF("baseImageId", ScObject::baseImageId_get, nullptr),
+                JS_CGETSET_DEF("numImages", ScObject::numImages_get, nullptr),
+            };
+            return MakeWithOpaque(ctx, funcs, new ObjectData{ type, index });
+        }
+
+        static JSValue New(JSContext* ctx, ObjectType type, int32_t index)
+        {
+            return gScObject.NewInstance(ctx, type, index);
         }
 
     private:
-        std::shared_ptr<ScInstalledObject> installedObject_get() const
+        static void Finalize(JSRuntime* rt, JSValue thisVal)
         {
-            auto obj = GetObject();
+            ObjectData* data = GetObjectData(thisVal);
+            if (data)
+                delete data;
+        }
+
+        static JSValue installedObject_get(JSContext* ctx, JSValue thisVal)
+        {
+            auto obj = GetObject(thisVal);
             if (obj != nullptr)
             {
                 auto& objectRepository = GetContext()->GetObjectRepository();
                 auto installedObject = objectRepository.FindObject(obj->GetDescriptor());
                 if (installedObject != nullptr)
                 {
-                    return std::make_shared<ScInstalledObject>(installedObject->Id);
+                    return gScInstalledObject.New(ctx, installedObject->Id);
                 }
             }
-            return {};
+            return JS_NULL;
         }
 
-        std::string type_get() const
+        static JSValue type_get(JSContext* ctx, JSValue thisVal)
         {
-            return std::string(objectTypeToString(_type));
+            auto* data = GetObjectData(thisVal);
+            return JSFromStdString(ctx, std::string(objectTypeToString(data->_type)));
         }
 
-        int32_t index_get() const
+        static JSValue index_get(JSContext* ctx, JSValue thisVal)
         {
-            return _index;
+            auto* data = GetObjectData(thisVal);
+            return JS_NewInt32(ctx, data->_index);
         }
 
-        std::string identifier_get() const
+        static JSValue identifier_get(JSContext* ctx, JSValue thisVal)
         {
-            auto obj = GetObject();
+            auto obj = GetObject(thisVal);
+            std::string str;
             if (obj != nullptr)
             {
                 if (obj->GetGeneration() == ObjectGeneration::DAT)
                 {
-                    return obj->GetDescriptor().ToString();
+                    str = obj->GetDescriptor().ToString();
                 }
                 else
                 {
-                    return std::string(obj->GetIdentifier());
+                    str = obj->GetIdentifier();
                 }
             }
-            return {};
+            else
+            {
+                str = "";
+            }
+            return JSFromStdString(ctx, str);
         }
 
-        std::string legacyIdentifier_get() const
+        static JSValue legacyIdentifier_get(JSContext* ctx, JSValue thisVal)
         {
-            auto obj = GetObject();
-            if (obj != nullptr)
+            auto obj = GetObject(thisVal);
+            if (obj != nullptr && obj->GetLegacyIdentifier().find('\0') == std::string::npos)
             {
-                return std::string(obj->GetLegacyIdentifier());
+                return JSFromStdString(ctx, obj->GetLegacyIdentifier());
             }
-            return {};
+            return JSFromStdString(ctx, {});
         }
 
-        std::string name_get() const
+        static JSValue name_get(JSContext* ctx, JSValue thisVal)
         {
-            auto obj = GetObject();
-            if (obj != nullptr)
-            {
-                return obj->GetName();
-            }
-            return {};
+            auto obj = GetObject(thisVal);
+            return JSFromStdString(ctx, obj != nullptr ? obj->GetName() : "");
         }
 
-        uint32_t baseImageId_get() const
+        static JSValue baseImageId_get(JSContext* ctx, JSValue thisVal)
         {
-            auto obj = GetObject();
-            if (obj != nullptr)
-            {
-                return obj->GetBaseImageId();
-            }
-            return 0;
+            auto obj = GetObject(thisVal);
+            return JS_NewUint32(ctx, obj != nullptr ? obj->GetBaseImageId() : 0);
         }
 
-        uint32_t numImages_get() const
+        static JSValue numImages_get(JSContext* ctx, JSValue thisVal)
         {
-            auto obj = GetObject();
-            if (obj != nullptr)
-            {
-                return obj->GetNumImages();
-            }
-            return 0;
+            auto obj = GetObject(thisVal);
+            return JS_NewUint32(ctx, obj != nullptr ? obj->GetNumImages() : 0);
         }
 
     protected:
-        Object* GetObject() const
+        static ObjectData* GetObjectData(JSValue thisVal)
         {
+            return gScObject.GetOpaque<ObjectData*>(thisVal);
+        }
+
+        static Object* GetObject(JSValue thisVal)
+        {
+            ObjectData* data = GetObjectData(thisVal);
             auto& objManager = GetContext()->GetObjectManager();
-            return objManager.GetLoadedObject(_type, _index);
+            return objManager.GetLoadedObject(data->_type, data->_index);
         }
     };
 
-    class ScRideObjectVehicle
+    class ScRideObjectVehicle;
+    extern ScRideObjectVehicle gScRideObjectVehicle;
+
+    class ScRideObjectVehicle final : public ScBase
     {
     private:
-        ObjectEntryIndex _objectIndex{};
-        size_t _vehicleIndex{};
+        struct VehicleData
+        {
+            ObjectEntryIndex _objectIndex{};
+            size_t _vehicleIndex{};
+        };
 
     public:
-        ScRideObjectVehicle(ObjectEntryIndex objectIndex, size_t vehicleIndex)
-            : _objectIndex(objectIndex)
-            , _vehicleIndex(vehicleIndex)
+        void Register(JSContext* ctx)
         {
+            RegisterBaseStr(ctx, "RideObjectVehicle", Finalize);
         }
 
-        static void Register(duk_context* ctx)
+        JSValue New(JSContext* ctx, ObjectEntryIndex objectIndex, size_t vehicleIndex)
         {
-            dukglue_register_property(ctx, &ScRideObjectVehicle::rotationFrameMask_get, nullptr, "rotationFrameMask");
-            dukglue_register_property(ctx, &ScRideObjectVehicle::spacing_get, nullptr, "spacing");
-            dukglue_register_property(ctx, &ScRideObjectVehicle::carMass_get, nullptr, "carMass");
-            dukglue_register_property(ctx, &ScRideObjectVehicle::tabHeight_get, nullptr, "tabHeight");
-            dukglue_register_property(ctx, &ScRideObjectVehicle::numSeats_get, nullptr, "numSeats");
-            dukglue_register_property(ctx, &ScRideObjectVehicle::spriteFlags_get, nullptr, "spriteFlags");
-            dukglue_register_property(ctx, &ScRideObjectVehicle::spriteWidth_get, nullptr, "spriteWidth");
-            dukglue_register_property(ctx, &ScRideObjectVehicle::spriteHeightNegative_get, nullptr, "spriteHeightNegative");
-            dukglue_register_property(ctx, &ScRideObjectVehicle::spriteHeightPositive_get, nullptr, "spriteHeightPositive");
-            dukglue_register_property(ctx, &ScRideObjectVehicle::animation_get, nullptr, "animation");
-            dukglue_register_property(ctx, &ScRideObjectVehicle::flags_get, nullptr, "flags");
-            dukglue_register_property(ctx, &ScRideObjectVehicle::baseNumFrames_get, nullptr, "baseNumFrames");
-            dukglue_register_property(ctx, &ScRideObjectVehicle::baseImageId_get, nullptr, "baseImageId");
-            dukglue_register_property(ctx, &ScRideObjectVehicle::spriteGroups_get, nullptr, "spriteGroups");
-            dukglue_register_property(ctx, &ScRideObjectVehicle::noVehicleImages_get, nullptr, "noVehicleImages");
-            dukglue_register_property(ctx, &ScRideObjectVehicle::noSeatingRows_get, nullptr, "noSeatingRows");
-            dukglue_register_property(ctx, &ScRideObjectVehicle::spinningInertia_get, nullptr, "spinningInertia");
-            dukglue_register_property(ctx, &ScRideObjectVehicle::spinningFriction_get, nullptr, "spinningFriction");
-            dukglue_register_property(ctx, &ScRideObjectVehicle::frictionSoundId_get, nullptr, "frictionSoundId");
-            dukglue_register_property(
-                ctx, &ScRideObjectVehicle::logFlumeReverserVehicleType_get, nullptr, "logFlumeReverserVehicleType");
-            dukglue_register_property(ctx, &ScRideObjectVehicle::soundRange_get, nullptr, "soundRange");
-            dukglue_register_property(ctx, &ScRideObjectVehicle::doubleSoundFrequency_get, nullptr, "doubleSoundFrequency");
-            dukglue_register_property(ctx, &ScRideObjectVehicle::poweredAcceleration_get, nullptr, "poweredAcceleration");
-            dukglue_register_property(ctx, &ScRideObjectVehicle::poweredMaxSpeed_get, nullptr, "poweredMaxSpeed");
-            dukglue_register_property(ctx, &ScRideObjectVehicle::carVisual_get, nullptr, "carVisual");
-            dukglue_register_property(ctx, &ScRideObjectVehicle::effectVisual_get, nullptr, "effectVisual");
-            dukglue_register_property(ctx, &ScRideObjectVehicle::drawOrder_get, nullptr, "drawOrder");
-            dukglue_register_property(
-                ctx, &ScRideObjectVehicle::numVerticalFramesOverride_get, nullptr, "numVerticalFramesOverride");
+            static constexpr JSCFunctionListEntry funcs[] = {
+                JS_CGETSET_DEF("rotationFrameMask", ScRideObjectVehicle::rotationFrameMask_get, nullptr),
+                JS_CGETSET_DEF("spacing", ScRideObjectVehicle::spacing_get, nullptr),
+                JS_CGETSET_DEF("carMass", ScRideObjectVehicle::carMass_get, nullptr),
+                JS_CGETSET_DEF("tabHeight", ScRideObjectVehicle::tabHeight_get, nullptr),
+                JS_CGETSET_DEF("numSeats", ScRideObjectVehicle::numSeats_get, nullptr),
+                JS_CGETSET_DEF("spriteFlags", ScRideObjectVehicle::spriteFlags_get, nullptr),
+                JS_CGETSET_DEF("spriteWidth", ScRideObjectVehicle::spriteWidth_get, nullptr),
+                JS_CGETSET_DEF("spriteHeightNegative", ScRideObjectVehicle::spriteHeightNegative_get, nullptr),
+                JS_CGETSET_DEF("spriteHeightPositive", ScRideObjectVehicle::spriteHeightPositive_get, nullptr),
+                JS_CGETSET_DEF("animation", ScRideObjectVehicle::animation_get, nullptr),
+                JS_CGETSET_DEF("flags", ScRideObjectVehicle::flags_get, nullptr),
+                JS_CGETSET_DEF("baseNumFrames", ScRideObjectVehicle::baseNumFrames_get, nullptr),
+                JS_CGETSET_DEF("baseImageId", ScRideObjectVehicle::baseImageId_get, nullptr),
+                JS_CGETSET_DEF("spriteGroups", ScRideObjectVehicle::spriteGroups_get, nullptr),
+                JS_CGETSET_DEF("noVehicleImages", ScRideObjectVehicle::noVehicleImages_get, nullptr),
+                JS_CGETSET_DEF("noSeatingRows", ScRideObjectVehicle::noSeatingRows_get, nullptr),
+                JS_CGETSET_DEF("spinningInertia", ScRideObjectVehicle::spinningInertia_get, nullptr),
+                JS_CGETSET_DEF("spinningFriction", ScRideObjectVehicle::spinningFriction_get, nullptr),
+                JS_CGETSET_DEF("frictionSoundId", ScRideObjectVehicle::frictionSoundId_get, nullptr),
+                JS_CGETSET_DEF("logFlumeReverserVehicleType", ScRideObjectVehicle::logFlumeReverserVehicleType_get, nullptr),
+                JS_CGETSET_DEF("soundRange", ScRideObjectVehicle::soundRange_get, nullptr),
+                JS_CGETSET_DEF("doubleSoundFrequency", ScRideObjectVehicle::doubleSoundFrequency_get, nullptr),
+                JS_CGETSET_DEF("poweredAcceleration", ScRideObjectVehicle::poweredAcceleration_get, nullptr),
+                JS_CGETSET_DEF("poweredMaxSpeed", ScRideObjectVehicle::poweredMaxSpeed_get, nullptr),
+                JS_CGETSET_DEF("carVisual", ScRideObjectVehicle::carVisual_get, nullptr),
+                JS_CGETSET_DEF("effectVisual", ScRideObjectVehicle::effectVisual_get, nullptr),
+                JS_CGETSET_DEF("drawOrder", ScRideObjectVehicle::drawOrder_get, nullptr),
+                JS_CGETSET_DEF("numVerticalFramesOverride", ScRideObjectVehicle::numVerticalFramesOverride_get, nullptr),
+            };
+            return MakeWithOpaque(ctx, funcs, new VehicleData{ objectIndex, vehicleIndex });
         }
 
     private:
-        uint16_t rotationFrameMask_get() const
+        static void Finalize(JSRuntime* rt, JSValue thisVal)
         {
-            auto carEntry = GetEntry();
-            if (carEntry != nullptr)
-            {
-                return carEntry->TabRotationMask;
-            }
-            return 0;
+            VehicleData* data = gScRideObjectVehicle.GetOpaque<VehicleData*>(thisVal);
+            if (data)
+                delete data;
         }
 
-        uint32_t spacing_get() const
+        static JSValue rotationFrameMask_get(JSContext* ctx, JSValue thisVal)
         {
-            auto carEntry = GetEntry();
-            if (carEntry != nullptr)
-            {
-                return carEntry->spacing;
-            }
-            return 0;
+            auto carEntry = GetEntry(thisVal);
+            return JS_NewUint32(ctx, carEntry != nullptr ? carEntry->TabRotationMask : 0);
         }
 
-        uint16_t carMass_get() const
+        static JSValue spacing_get(JSContext* ctx, JSValue thisVal)
         {
-            auto carEntry = GetEntry();
-            if (carEntry != nullptr)
-            {
-                return carEntry->car_mass;
-            }
-            return 0;
+            auto carEntry = GetEntry(thisVal);
+            return JS_NewUint32(ctx, carEntry != nullptr ? carEntry->spacing : 0);
         }
 
-        int8_t tabHeight_get() const
+        static JSValue carMass_get(JSContext* ctx, JSValue thisVal)
         {
-            auto carEntry = GetEntry();
-            if (carEntry != nullptr)
-            {
-                return carEntry->tab_height;
-            }
-            return 0;
+            auto carEntry = GetEntry(thisVal);
+            return JS_NewUint32(ctx, carEntry != nullptr ? carEntry->car_mass : 0);
         }
 
-        uint8_t numSeats_get() const
+        static JSValue tabHeight_get(JSContext* ctx, JSValue thisVal)
         {
-            auto carEntry = GetEntry();
-            if (carEntry != nullptr)
-            {
-                return carEntry->num_seats;
-            }
-            return 0;
+            auto carEntry = GetEntry(thisVal);
+            return JS_NewInt32(ctx, carEntry != nullptr ? carEntry->tab_height : 0);
         }
 
-        uint16_t spriteFlags_get() const
+        static JSValue numSeats_get(JSContext* ctx, JSValue thisVal)
         {
-            return 0;
+            auto carEntry = GetEntry(thisVal);
+            return JS_NewUint32(ctx, carEntry != nullptr ? carEntry->num_seats : 0);
         }
 
-        uint8_t spriteWidth_get() const
+        static JSValue spriteFlags_get(JSContext* ctx, JSValue thisVal)
         {
-            auto carEntry = GetEntry();
-            if (carEntry != nullptr)
-            {
-                return carEntry->spriteWidth;
-            }
-            return 0;
+            return JS_NewUint32(ctx, 0);
         }
 
-        uint8_t spriteHeightNegative_get() const
+        static JSValue spriteWidth_get(JSContext* ctx, JSValue thisVal)
         {
-            auto carEntry = GetEntry();
-            if (carEntry != nullptr)
-            {
-                return carEntry->spriteHeightNegative;
-            }
-            return 0;
+            auto carEntry = GetEntry(thisVal);
+            return JS_NewUint32(ctx, carEntry != nullptr ? carEntry->spriteWidth : 0);
         }
 
-        uint8_t spriteHeightPositive_get() const
+        static JSValue spriteHeightNegative_get(JSContext* ctx, JSValue thisVal)
         {
-            auto carEntry = GetEntry();
-            if (carEntry != nullptr)
-            {
-                return carEntry->spriteHeightPositive;
-            }
-            return 0;
+            auto carEntry = GetEntry(thisVal);
+            return JS_NewUint32(ctx, carEntry != nullptr ? carEntry->spriteHeightNegative : 0);
         }
 
-        uint8_t animation_get() const
+        static JSValue spriteHeightPositive_get(JSContext* ctx, JSValue thisVal)
         {
-            auto carEntry = GetEntry();
-            if (carEntry != nullptr)
-            {
-                return EnumValue(carEntry->animation);
-            }
-            return 0;
+            auto carEntry = GetEntry(thisVal);
+            return JS_NewUint32(ctx, carEntry != nullptr ? carEntry->spriteHeightPositive : 0);
         }
 
-        uint32_t flags_get() const
+        static JSValue animation_get(JSContext* ctx, JSValue thisVal)
         {
-            auto carEntry = GetEntry();
-            if (carEntry != nullptr)
-            {
-                return carEntry->flags;
-            }
-            return 0;
+            auto carEntry = GetEntry(thisVal);
+            return JS_NewUint32(ctx, carEntry != nullptr ? EnumValue(carEntry->animation) : 0);
         }
 
-        uint16_t baseNumFrames_get() const
+        static JSValue flags_get(JSContext* ctx, JSValue thisVal)
         {
-            auto carEntry = GetEntry();
-            if (carEntry != nullptr)
-            {
-                return carEntry->base_num_frames;
-            }
-            return 0;
+            auto carEntry = GetEntry(thisVal);
+            return JS_NewInt64(ctx, carEntry != nullptr ? static_cast<int64_t>(carEntry->flags) : 0);
         }
 
-        uint32_t baseImageId_get() const
+        static JSValue baseNumFrames_get(JSContext* ctx, JSValue thisVal)
         {
-            auto carEntry = GetEntry();
-            if (carEntry != nullptr)
-            {
-                return carEntry->base_image_id;
-            }
-            return 0;
+            auto carEntry = GetEntry(thisVal);
+            return JS_NewUint32(ctx, carEntry != nullptr ? carEntry->base_num_frames : 0);
         }
 
-        DukValue spriteGroups_get() const
+        static JSValue baseImageId_get(JSContext* ctx, JSValue thisVal)
         {
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            auto* ctx = scriptEngine.GetContext();
-            DukObject groups(ctx);
-            auto carEntry = GetEntry();
+            auto carEntry = GetEntry(thisVal);
+            return JS_NewUint32(ctx, carEntry != nullptr ? carEntry->base_image_id : 0);
+        }
+
+        static JSValue spriteGroups_get(JSContext* ctx, JSValue thisVal)
+        {
+            JSValue groups = JS_NewObject(ctx);
+            auto carEntry = GetEntry(thisVal);
             if (carEntry != nullptr)
             {
-                for (uint8_t g = 0; g < EnumValue<SpriteGroupType>(SpriteGroupType::Count); g++)
+                for (std::underlying_type_t<SpriteGroupType> g = 0; g < EnumValue<SpriteGroupType>(SpriteGroupType::Count); g++)
                 {
                     auto group = carEntry->SpriteGroups[g];
                     if (group.Enabled())
-                        groups.Set(SpriteGroupNames[g], ToDuk<VehicleSpriteGroup>(ctx, group));
+                    {
+                        JSValue groupObj = JS_NewObject(ctx);
+                        JS_SetPropertyStr(ctx, groupObj, "imageId", JS_NewUint32(ctx, group.imageId));
+                        JS_SetPropertyStr(
+                            ctx, groupObj, "spriteNumImages",
+                            JS_NewUint32(ctx, OpenRCT2::Entity::Yaw::NumSpritesPrecision(group.spritePrecision)));
+                        JS_SetPropertyStr(ctx, groups, SpriteGroupNames[g], groupObj);
+                    }
                 }
             }
-            return groups.Take();
+            return groups;
         }
 
-        uint32_t noVehicleImages_get() const
+        static JSValue noVehicleImages_get(JSContext* ctx, JSValue thisVal)
         {
-            auto carEntry = GetEntry();
-            if (carEntry != nullptr)
-            {
-                return carEntry->NumCarImages;
-            }
-            return 0;
+            auto carEntry = GetEntry(thisVal);
+            return JS_NewUint32(ctx, carEntry != nullptr ? carEntry->NumCarImages : 0);
         }
 
-        uint8_t noSeatingRows_get() const
+        static JSValue noSeatingRows_get(JSContext* ctx, JSValue thisVal)
         {
-            auto carEntry = GetEntry();
-            if (carEntry != nullptr)
-            {
-                return carEntry->no_seating_rows;
-            }
-            return 0;
+            auto carEntry = GetEntry(thisVal);
+            return JS_NewUint32(ctx, carEntry != nullptr ? carEntry->no_seating_rows : 0);
         }
 
-        uint8_t spinningInertia_get() const
+        static JSValue spinningInertia_get(JSContext* ctx, JSValue thisVal)
         {
-            auto carEntry = GetEntry();
-            if (carEntry != nullptr)
-            {
-                return carEntry->spinning_inertia;
-            }
-            return 0;
+            auto carEntry = GetEntry(thisVal);
+            return JS_NewUint32(ctx, carEntry != nullptr ? carEntry->spinning_inertia : 0);
         }
 
-        uint8_t spinningFriction_get() const
+        static JSValue spinningFriction_get(JSContext* ctx, JSValue thisVal)
         {
-            auto carEntry = GetEntry();
-            if (carEntry != nullptr)
-            {
-                return carEntry->spinning_friction;
-            }
-            return 0;
+            auto carEntry = GetEntry(thisVal);
+            return JS_NewUint32(ctx, carEntry != nullptr ? carEntry->spinning_friction : 0);
         }
 
-        int32_t frictionSoundId_get() const
+        static JSValue frictionSoundId_get(JSContext* ctx, JSValue thisVal)
         {
-            auto carEntry = GetEntry();
-            if (carEntry != nullptr)
-            {
-                return static_cast<int32_t>(carEntry->friction_sound_id);
-            }
-            return 0;
+            auto carEntry = GetEntry(thisVal);
+            return JS_NewInt32(ctx, carEntry != nullptr ? static_cast<int32_t>(carEntry->friction_sound_id) : 0);
         }
 
-        uint8_t logFlumeReverserVehicleType_get() const
+        static JSValue logFlumeReverserVehicleType_get(JSContext* ctx, JSValue thisVal)
         {
-            auto carEntry = GetEntry();
-            if (carEntry != nullptr)
-            {
-                return carEntry->ReversedCarIndex;
-            }
-            return 0;
+            auto carEntry = GetEntry(thisVal);
+            return JS_NewUint32(ctx, carEntry != nullptr ? carEntry->ReversedCarIndex : 0);
         }
 
-        uint8_t soundRange_get() const
+        static JSValue soundRange_get(JSContext* ctx, JSValue thisVal)
         {
-            auto carEntry = GetEntry();
-            if (carEntry != nullptr)
-            {
-                return EnumValue(carEntry->soundRange);
-            }
-            return 0;
+            auto carEntry = GetEntry(thisVal);
+            return JS_NewUint32(ctx, carEntry != nullptr ? EnumValue(carEntry->soundRange) : 0);
         }
 
-        uint8_t doubleSoundFrequency_get() const
+        static JSValue doubleSoundFrequency_get(JSContext* ctx, JSValue thisVal)
         {
-            auto carEntry = GetEntry();
-            if (carEntry != nullptr)
-            {
-                return carEntry->double_sound_frequency;
-            }
-            return 0;
+            auto carEntry = GetEntry(thisVal);
+            return JS_NewUint32(ctx, carEntry != nullptr ? carEntry->double_sound_frequency : 0);
         }
 
-        uint8_t poweredAcceleration_get() const
+        static JSValue poweredAcceleration_get(JSContext* ctx, JSValue thisVal)
         {
-            auto carEntry = GetEntry();
-            if (carEntry != nullptr)
-            {
-                return carEntry->powered_acceleration;
-            }
-            return 0;
+            auto carEntry = GetEntry(thisVal);
+            return JS_NewUint32(ctx, carEntry != nullptr ? carEntry->powered_acceleration : 0);
         }
 
-        uint8_t poweredMaxSpeed_get() const
+        static JSValue poweredMaxSpeed_get(JSContext* ctx, JSValue thisVal)
         {
-            auto carEntry = GetEntry();
-            if (carEntry != nullptr)
-            {
-                return carEntry->powered_max_speed;
-            }
-            return 0;
+            auto carEntry = GetEntry(thisVal);
+            return JS_NewUint32(ctx, carEntry != nullptr ? carEntry->powered_max_speed : 0);
         }
 
-        uint8_t carVisual_get() const
+        static JSValue carVisual_get(JSContext* ctx, JSValue thisVal)
         {
-            auto carEntry = GetEntry();
-            if (carEntry != nullptr)
-            {
-                return carEntry->PaintStyle;
-            }
-            return 0;
+            auto carEntry = GetEntry(thisVal);
+            return JS_NewUint32(ctx, carEntry != nullptr ? carEntry->PaintStyle : 0);
         }
 
-        uint8_t effectVisual_get() const
+        static JSValue effectVisual_get(JSContext* ctx, JSValue thisVal)
         {
-            auto carEntry = GetEntry();
-            if (carEntry != nullptr)
-            {
-                return carEntry->effect_visual;
-            }
-            return 0;
+            auto carEntry = GetEntry(thisVal);
+            return JS_NewUint32(ctx, carEntry != nullptr ? carEntry->effect_visual : 0);
         }
 
-        uint8_t drawOrder_get() const
+        static JSValue drawOrder_get(JSContext* ctx, JSValue thisVal)
         {
-            auto carEntry = GetEntry();
-            if (carEntry != nullptr)
-            {
-                return carEntry->draw_order;
-            }
-            return 0;
+            auto carEntry = GetEntry(thisVal);
+            return JS_NewUint32(ctx, carEntry != nullptr ? carEntry->draw_order : 0);
         }
 
-        uint8_t numVerticalFramesOverride_get() const
+        static JSValue numVerticalFramesOverride_get(JSContext* ctx, JSValue thisVal)
         {
-            auto carEntry = GetEntry();
-            if (carEntry != nullptr)
-            {
-                return carEntry->num_vertical_frames_override;
-            }
-            return 0;
+            auto carEntry = GetEntry(thisVal);
+            return JS_NewUint32(ctx, carEntry != nullptr ? carEntry->num_vertical_frames_override : 0);
         }
 
-        const RideObject* GetObject() const
+        static const RideObject* GetObject(JSValue thisVal)
         {
+            VehicleData* data = gScRideObjectVehicle.GetOpaque<VehicleData*>(thisVal);
             auto& objManager = GetContext()->GetObjectManager();
-            return objManager.GetLoadedObject<RideObject>(_objectIndex);
+            return objManager.GetLoadedObject<RideObject>(data->_objectIndex);
         }
 
-        const CarEntry* GetEntry() const
+        static const CarEntry* GetEntry(JSValue thisVal)
         {
-            auto obj = GetObject();
+            auto obj = GetObject(thisVal);
             if (obj != nullptr)
             {
+                VehicleData* data = gScRideObjectVehicle.GetOpaque<VehicleData*>(thisVal);
                 auto rideEntry = &obj->GetEntry();
-                if (rideEntry != nullptr && _vehicleIndex < std::size(rideEntry->Cars))
+                if (rideEntry != nullptr && data->_vehicleIndex < std::size(rideEntry->Cars))
                 {
-                    return rideEntry->GetCar(_vehicleIndex);
+                    return rideEntry->GetCar(data->_vehicleIndex);
                 }
             }
             return nullptr;
         }
     };
 
-    class ScRideObject : public ScObject
+    class ScRideObject final : public ScObject
     {
     public:
-        ScRideObject(ObjectType type, int32_t index)
-            : ScObject(type, index)
+        static JSValue New(JSContext* ctx, ObjectType type, int32_t index)
         {
-        }
-
-        static void Register(duk_context* ctx)
-        {
-            dukglue_set_base_class<ScObject, ScRideObject>(ctx);
-            dukglue_register_property(ctx, &ScRideObject::description_get, nullptr, "description");
-            dukglue_register_property(ctx, &ScRideObject::capacity_get, nullptr, "capacity");
-            dukglue_register_property(ctx, &ScRideObject::firstImageId_get, nullptr, "firstImageId");
-            dukglue_register_property(ctx, &ScRideObject::flags_get, nullptr, "flags");
-            dukglue_register_property(ctx, &ScRideObject::rideType_get, nullptr, "rideType");
-            dukglue_register_property(ctx, &ScRideObject::minCarsInTrain_get, nullptr, "minCarsInTrain");
-            dukglue_register_property(ctx, &ScRideObject::maxCarsInTrain_get, nullptr, "maxCarsInTrain");
-            dukglue_register_property(ctx, &ScRideObject::carsPerFlatRide_get, nullptr, "carsPerFlatRide");
-            dukglue_register_property(ctx, &ScRideObject::zeroCars_get, nullptr, "zeroCars");
-            dukglue_register_property(ctx, &ScRideObject::tabVehicle_get, nullptr, "tabVehicle");
-            dukglue_register_property(ctx, &ScRideObject::defaultVehicle_get, nullptr, "defaultVehicle");
-            dukglue_register_property(ctx, &ScRideObject::frontVehicle_get, nullptr, "frontVehicle");
-            dukglue_register_property(ctx, &ScRideObject::secondVehicle_get, nullptr, "secondVehicle");
-            dukglue_register_property(ctx, &ScRideObject::rearVehicle_get, nullptr, "rearVehicle");
-            dukglue_register_property(ctx, &ScRideObject::thirdVehicle_get, nullptr, "thirdVehicle");
-            dukglue_register_property(ctx, &ScRideObject::vehicles_get, nullptr, "vehicles");
-            dukglue_register_property(ctx, &ScRideObject::excitementMultiplier_get, nullptr, "excitementMultiplier");
-            dukglue_register_property(ctx, &ScRideObject::intensityMultiplier_get, nullptr, "intensityMultiplier");
-            dukglue_register_property(ctx, &ScRideObject::nauseaMultiplier_get, nullptr, "nauseaMultiplier");
-            dukglue_register_property(ctx, &ScRideObject::maxHeight_get, nullptr, "maxHeight");
-            dukglue_register_property(ctx, &ScRideObject::shopItem_get, nullptr, "shopItem");
-            dukglue_register_property(ctx, &ScRideObject::shopItemSecondary_get, nullptr, "shopItemSecondary");
+            JSValue obj = ScObject::New(ctx, type, index);
+            AddFuncs(ctx, obj);
+            return obj;
         }
 
     private:
-        std::string description_get() const
+        static void AddFuncs(JSContext* ctx, JSValue obj)
         {
-            auto obj = GetObject();
-            if (obj != nullptr)
-            {
-                return obj->GetDescription();
-            }
-            return {};
+            static constexpr JSCFunctionListEntry funcs[] = {
+                JS_CGETSET_DEF("description", ScRideObject::description_get, nullptr),
+                JS_CGETSET_DEF("capacity", ScRideObject::capacity_get, nullptr),
+                JS_CGETSET_DEF("firstImageId", ScRideObject::firstImageId_get, nullptr),
+                JS_CGETSET_DEF("flags", ScRideObject::flags_get, nullptr),
+                JS_CGETSET_DEF("rideType", ScRideObject::rideType_get, nullptr),
+                JS_CGETSET_DEF("minCarsInTrain", ScRideObject::minCarsInTrain_get, nullptr),
+                JS_CGETSET_DEF("maxCarsInTrain", ScRideObject::maxCarsInTrain_get, nullptr),
+                JS_CGETSET_DEF("carsPerFlatRide", ScRideObject::carsPerFlatRide_get, nullptr),
+                JS_CGETSET_DEF("zeroCars", ScRideObject::zeroCars_get, nullptr),
+                JS_CGETSET_DEF("tabVehicle", ScRideObject::tabVehicle_get, nullptr),
+                JS_CGETSET_DEF("defaultVehicle", ScRideObject::defaultVehicle_get, nullptr),
+                JS_CGETSET_DEF("frontVehicle", ScRideObject::frontVehicle_get, nullptr),
+                JS_CGETSET_DEF("secondVehicle", ScRideObject::secondVehicle_get, nullptr),
+                JS_CGETSET_DEF("rearVehicle", ScRideObject::rearVehicle_get, nullptr),
+                JS_CGETSET_DEF("thirdVehicle", ScRideObject::thirdVehicle_get, nullptr),
+                JS_CGETSET_DEF("vehicles", ScRideObject::vehicles_get, nullptr),
+                JS_CGETSET_DEF("excitementMultiplier", ScRideObject::excitementMultiplier_get, nullptr),
+                JS_CGETSET_DEF("intensityMultiplier", ScRideObject::intensityMultiplier_get, nullptr),
+                JS_CGETSET_DEF("nauseaMultiplier", ScRideObject::nauseaMultiplier_get, nullptr),
+                JS_CGETSET_DEF("maxHeight", ScRideObject::maxHeight_get, nullptr),
+                JS_CGETSET_DEF("shopItem", ScRideObject::shopItem_get, nullptr),
+                JS_CGETSET_DEF("shopItemSecondary", ScRideObject::shopItemSecondary_get, nullptr),
+            };
+            JS_SetPropertyFunctionList(ctx, obj, funcs, std::size(funcs));
         }
 
-        std::string capacity_get() const
+        static JSValue description_get(JSContext* ctx, JSValue thisVal)
         {
-            auto obj = GetObject();
-            if (obj != nullptr)
-            {
-                return obj->GetCapacity();
-            }
-            return {};
+            auto obj = GetRideObject(thisVal);
+            return JSFromStdString(ctx, obj != nullptr ? obj->GetDescription() : "");
         }
 
-        uint32_t firstImageId_get() const
+        static JSValue capacity_get(JSContext* ctx, JSValue thisVal)
         {
-            auto rideEntry = GetEntry();
+            auto obj = GetRideObject(thisVal);
+            return JSFromStdString(ctx, obj != nullptr ? obj->GetCapacity() : "");
+        }
+
+        static JSValue firstImageId_get(JSContext* ctx, JSValue thisVal)
+        {
+            auto rideEntry = GetEntry(thisVal);
+            return JS_NewUint32(ctx, rideEntry != nullptr ? rideEntry->images_offset : 0);
+        }
+
+        static JSValue flags_get(JSContext* ctx, JSValue thisVal)
+        {
+            auto rideEntry = GetEntry(thisVal);
+            return JS_NewUint32(ctx, rideEntry != nullptr ? rideEntry->flags : 0);
+        }
+
+        static JSValue rideType_get(JSContext* ctx, JSValue thisVal)
+        {
+            JSValue result = JS_NewArray(ctx);
+            auto rideEntry = GetEntry(thisVal);
             if (rideEntry != nullptr)
             {
-                return rideEntry->images_offset;
-            }
-            return 0;
-        }
-
-        uint32_t flags_get() const
-        {
-            auto rideEntry = GetEntry();
-            if (rideEntry != nullptr)
-            {
-                return rideEntry->flags;
-            }
-            return 0;
-        }
-
-        std::vector<uint8_t> rideType_get() const
-        {
-            std::vector<uint8_t> result;
-            auto rideEntry = GetEntry();
-            if (rideEntry != nullptr)
-            {
+                int64_t index = 0;
                 for (auto rideType : rideEntry->ride_type)
                 {
-                    result.push_back(rideType);
+                    JS_SetPropertyInt64(ctx, result, index++, JS_NewUint32(ctx, rideType));
                 }
             }
             return result;
         }
 
-        uint8_t minCarsInTrain_get() const
+        static JSValue minCarsInTrain_get(JSContext* ctx, JSValue thisVal)
         {
-            auto rideEntry = GetEntry();
-            if (rideEntry != nullptr)
-            {
-                return rideEntry->min_cars_in_train;
-            }
-            return 0;
+            auto rideEntry = GetEntry(thisVal);
+            return JS_NewUint32(ctx, rideEntry != nullptr ? rideEntry->min_cars_in_train : 0);
         }
 
-        uint8_t maxCarsInTrain_get() const
+        static JSValue maxCarsInTrain_get(JSContext* ctx, JSValue thisVal)
         {
-            auto rideEntry = GetEntry();
-            if (rideEntry != nullptr)
-            {
-                return rideEntry->max_cars_in_train;
-            }
-            return 0;
+            auto rideEntry = GetEntry(thisVal);
+            return JS_NewUint32(ctx, rideEntry != nullptr ? rideEntry->max_cars_in_train : 0);
         }
 
-        uint8_t carsPerFlatRide_get() const
+        static JSValue carsPerFlatRide_get(JSContext* ctx, JSValue thisVal)
         {
-            auto rideEntry = GetEntry();
-            if (rideEntry != nullptr)
-            {
-                return rideEntry->cars_per_flat_ride;
-            }
-            return 0;
+            auto rideEntry = GetEntry(thisVal);
+            return JS_NewUint32(ctx, rideEntry != nullptr ? rideEntry->cars_per_flat_ride : 0);
         }
 
-        uint8_t zeroCars_get() const
+        static JSValue zeroCars_get(JSContext* ctx, JSValue thisVal)
         {
-            auto rideEntry = GetEntry();
-            if (rideEntry != nullptr)
-            {
-                return rideEntry->zero_cars;
-            }
-            return 0;
+            auto rideEntry = GetEntry(thisVal);
+            return JS_NewUint32(ctx, rideEntry != nullptr ? rideEntry->zero_cars : 0);
         }
 
-        uint8_t tabVehicle_get() const
+        static JSValue tabVehicle_get(JSContext* ctx, JSValue thisVal)
         {
-            auto rideEntry = GetEntry();
-            if (rideEntry != nullptr)
-            {
-                return rideEntry->TabCar;
-            }
-            return 0;
+            auto rideEntry = GetEntry(thisVal);
+            return JS_NewUint32(ctx, rideEntry != nullptr ? rideEntry->TabCar : 0);
         }
 
-        uint8_t defaultVehicle_get() const
+        static JSValue defaultVehicle_get(JSContext* ctx, JSValue thisVal)
         {
-            auto rideEntry = GetEntry();
-            if (rideEntry != nullptr)
-            {
-                return rideEntry->DefaultCar;
-            }
-            return 0;
+            auto rideEntry = GetEntry(thisVal);
+            return JS_NewUint32(ctx, rideEntry != nullptr ? rideEntry->DefaultCar : 0);
         }
 
-        uint8_t frontVehicle_get() const
+        static JSValue frontVehicle_get(JSContext* ctx, JSValue thisVal)
         {
-            auto rideEntry = GetEntry();
-            if (rideEntry != nullptr)
-            {
-                return rideEntry->FrontCar;
-            }
-            return 0;
+            auto rideEntry = GetEntry(thisVal);
+            return JS_NewUint32(ctx, rideEntry != nullptr ? rideEntry->FrontCar : 0);
         }
 
-        uint8_t secondVehicle_get() const
+        static JSValue secondVehicle_get(JSContext* ctx, JSValue thisVal)
         {
-            auto rideEntry = GetEntry();
-            if (rideEntry != nullptr)
-            {
-                return rideEntry->SecondCar;
-            }
-            return 0;
+            auto rideEntry = GetEntry(thisVal);
+            return JS_NewUint32(ctx, rideEntry != nullptr ? rideEntry->SecondCar : 0);
         }
 
-        uint8_t rearVehicle_get() const
+        static JSValue rearVehicle_get(JSContext* ctx, JSValue thisVal)
         {
-            auto rideEntry = GetEntry();
-            if (rideEntry != nullptr)
-            {
-                return rideEntry->RearCar;
-            }
-            return 0;
+            auto rideEntry = GetEntry(thisVal);
+            return JS_NewUint32(ctx, rideEntry != nullptr ? rideEntry->RearCar : 0);
         }
 
-        uint8_t thirdVehicle_get() const
+        static JSValue thirdVehicle_get(JSContext* ctx, JSValue thisVal)
         {
-            auto rideEntry = GetEntry();
-            if (rideEntry != nullptr)
-            {
-                return rideEntry->ThirdCar;
-            }
-            return 0;
+            auto rideEntry = GetEntry(thisVal);
+            return JS_NewUint32(ctx, rideEntry != nullptr ? rideEntry->ThirdCar : 0);
         }
 
-        std::vector<std::shared_ptr<ScRideObjectVehicle>> vehicles_get() const
+        static JSValue vehicles_get(JSContext* ctx, JSValue thisVal)
         {
-            std::vector<std::shared_ptr<ScRideObjectVehicle>> result;
-            auto rideEntry = GetEntry();
+            JSValue result = JS_NewArray(ctx);
+            auto rideEntry = GetEntry(thisVal);
             if (rideEntry != nullptr)
             {
+                ObjectData* data = GetObjectData(thisVal);
+                int64_t index = 0;
                 for (size_t i = 0; i < std::size(rideEntry->Cars); i++)
                 {
-                    result.push_back(std::make_shared<ScRideObjectVehicle>(_index, i));
+                    JS_SetPropertyInt64(ctx, result, index++, gScRideObjectVehicle.New(ctx, data->_index, i));
                 }
             }
             return result;
         }
 
-        int8_t excitementMultiplier_get() const
+        static JSValue excitementMultiplier_get(JSContext* ctx, JSValue thisVal)
         {
-            auto rideEntry = GetEntry();
-            if (rideEntry != nullptr)
-            {
-                return rideEntry->excitement_multiplier;
-            }
-            return 0;
+            auto rideEntry = GetEntry(thisVal);
+            return JS_NewInt32(ctx, rideEntry != nullptr ? rideEntry->excitement_multiplier : 0);
         }
 
-        int8_t intensityMultiplier_get() const
+        static JSValue intensityMultiplier_get(JSContext* ctx, JSValue thisVal)
         {
-            auto rideEntry = GetEntry();
-            if (rideEntry != nullptr)
-            {
-                return rideEntry->intensity_multiplier;
-            }
-            return 0;
+            auto rideEntry = GetEntry(thisVal);
+            return JS_NewInt32(ctx, rideEntry != nullptr ? rideEntry->intensity_multiplier : 0);
         }
 
-        int8_t nauseaMultiplier_get() const
+        static JSValue nauseaMultiplier_get(JSContext* ctx, JSValue thisVal)
         {
-            auto rideEntry = GetEntry();
-            if (rideEntry != nullptr)
-            {
-                return rideEntry->nausea_multiplier;
-            }
-            return 0;
+            auto rideEntry = GetEntry(thisVal);
+            return JS_NewInt32(ctx, rideEntry != nullptr ? rideEntry->nausea_multiplier : 0);
         }
 
-        uint8_t maxHeight_get() const
+        static JSValue maxHeight_get(JSContext* ctx, JSValue thisVal)
         {
-            auto rideEntry = GetEntry();
-            if (rideEntry != nullptr)
-            {
-                return rideEntry->maxHeight;
-            }
-            return 0;
+            auto rideEntry = GetEntry(thisVal);
+            return JS_NewUint32(ctx, rideEntry != nullptr ? rideEntry->maxHeight : 0);
         }
 
-        uint8_t shopItem_get() const
+        static JSValue shopItem_get(JSContext* ctx, JSValue thisVal)
         {
-            auto rideEntry = GetEntry();
-            if (rideEntry != nullptr)
-            {
-                return EnumValue(rideEntry->shop_item[0]);
-            }
-            return 0;
+            auto rideEntry = GetEntry(thisVal);
+            return JS_NewUint32(ctx, rideEntry != nullptr ? EnumValue(rideEntry->shop_item[0]) : 0);
         }
 
-        uint8_t shopItemSecondary_get() const
+        static JSValue shopItemSecondary_get(JSContext* ctx, JSValue thisVal)
         {
-            auto rideEntry = GetEntry();
-            if (rideEntry != nullptr)
-            {
-                return EnumValue(rideEntry->shop_item[1]);
-            }
-            return 0;
+            auto rideEntry = GetEntry(thisVal);
+            return JS_NewUint32(ctx, rideEntry != nullptr ? EnumValue(rideEntry->shop_item[1]) : 0);
         }
 
     protected:
-        RideObject* GetObject() const
+        static RideObject* GetRideObject(JSValue thisVal)
         {
-            return static_cast<RideObject*>(ScObject::GetObject());
+            return static_cast<RideObject*>(GetObject(thisVal));
         }
 
-        const RideObjectEntry* GetEntry() const
+        static const RideObjectEntry* GetEntry(JSValue thisVal)
         {
-            auto obj = GetObject();
+            auto obj = GetRideObject(thisVal);
             if (obj != nullptr)
             {
                 return &obj->GetEntry();
@@ -778,101 +641,94 @@ namespace OpenRCT2::Scripting
     class ScSceneryObject : public ScObject
     {
     public:
-        ScSceneryObject(ObjectType type, int32_t index)
-            : ScObject(type, index)
+        static JSValue New(JSContext* ctx, ObjectType type, int32_t index)
         {
-        }
-
-        static void Register(duk_context* ctx)
-        {
-            dukglue_set_base_class<ScObject, ScSceneryObject>(ctx);
-            dukglue_register_property(ctx, &ScSceneryObject::sceneryGroups_get, nullptr, "sceneryGroups");
+            JSValue obj = ScObject::New(ctx, type, index);
+            AddFuncs(ctx, obj);
+            return obj;
         }
 
     private:
-        std::vector<std::string> sceneryGroups_get() const
+        static void AddFuncs(JSContext* ctx, JSValue obj)
         {
-            std::vector<std::string> result;
-            auto obj = GetObject();
+            static constexpr JSCFunctionListEntry funcs[] = {
+                JS_CGETSET_DEF("sceneryGroups", ScSceneryObject::sceneryGroups_get, nullptr),
+            };
+            JS_SetPropertyFunctionList(ctx, obj, funcs, std::size(funcs));
+        }
+
+        static JSValue sceneryGroups_get(JSContext* ctx, JSValue thisVal)
+        {
+            JSValue result = JS_NewArray(ctx);
+            auto obj = GetSceneryObject(thisVal);
             if (obj != nullptr)
             {
                 auto& scgDescriptor = obj->GetPrimarySceneryGroup();
                 if (scgDescriptor.HasValue())
                 {
-                    result.push_back(scgDescriptor.ToString());
+                    JS_SetPropertyInt64(ctx, result, 0, JSFromStdString(ctx, scgDescriptor.ToString()));
                 }
             }
             return result;
         }
 
-        SceneryObject* GetObject() const
+    protected:
+        static SceneryObject* GetSceneryObject(JSValue thisVal)
         {
-            return static_cast<SceneryObject*>(ScObject::GetObject());
+            return static_cast<SceneryObject*>(GetObject(thisVal));
         }
     };
 
-    class ScSmallSceneryObject : public ScSceneryObject
+    class ScSmallSceneryObject final : public ScSceneryObject
     {
     public:
-        ScSmallSceneryObject(ObjectType type, int32_t index)
-            : ScSceneryObject(type, index)
+        static JSValue New(JSContext* ctx, ObjectType type, int32_t index)
         {
-        }
-
-        static void Register(duk_context* ctx)
-        {
-            dukglue_set_base_class<ScSceneryObject, ScSmallSceneryObject>(ctx);
-            dukglue_register_property(ctx, &ScSmallSceneryObject::flags_get, nullptr, "flags");
-            dukglue_register_property(ctx, &ScSmallSceneryObject::height_get, nullptr, "height");
-            dukglue_register_property(ctx, &ScSmallSceneryObject::price_get, nullptr, "price");
-            dukglue_register_property(ctx, &ScSmallSceneryObject::removalPrice_get, nullptr, "removalPrice");
+            JSValue obj = ScSceneryObject::New(ctx, type, index);
+            AddFuncs(ctx, obj);
+            return obj;
         }
 
     private:
-        uint32_t flags_get() const
+        static void AddFuncs(JSContext* ctx, JSValue obj)
         {
-            auto sceneryEntry = GetLegacyData();
-            if (sceneryEntry != nullptr)
-            {
-                return sceneryEntry->flags;
-            }
-            return 0;
+            static constexpr JSCFunctionListEntry funcs[] = {
+                JS_CGETSET_DEF("flags", ScSmallSceneryObject::flags_get, nullptr),
+                JS_CGETSET_DEF("height", ScSmallSceneryObject::height_get, nullptr),
+                JS_CGETSET_DEF("price", ScSmallSceneryObject::price_get, nullptr),
+                JS_CGETSET_DEF("removalPrice", ScSmallSceneryObject::removalPrice_get, nullptr),
+            };
+            JS_SetPropertyFunctionList(ctx, obj, funcs, std::size(funcs));
         }
 
-        uint8_t height_get() const
+        static JSValue flags_get(JSContext* ctx, JSValue thisVal)
         {
-            auto sceneryEntry = GetLegacyData();
-            if (sceneryEntry != nullptr)
-            {
-                return sceneryEntry->height;
-            }
-            return 0;
+            auto sceneryEntry = GetLegacyData(thisVal);
+            return JS_NewUint32(ctx, sceneryEntry != nullptr ? sceneryEntry->flags : 0);
         }
 
-        money64 price_get() const
+        static JSValue height_get(JSContext* ctx, JSValue thisVal)
         {
-            auto sceneryEntry = GetLegacyData();
-            if (sceneryEntry != nullptr)
-            {
-                return sceneryEntry->price;
-            }
-            return 0;
+            auto sceneryEntry = GetLegacyData(thisVal);
+            return JS_NewUint32(ctx, sceneryEntry != nullptr ? sceneryEntry->height : 0);
         }
 
-        money64 removalPrice_get() const
+        static JSValue price_get(JSContext* ctx, JSValue thisVal)
         {
-            auto sceneryEntry = GetLegacyData();
-            if (sceneryEntry != nullptr)
-            {
-                return sceneryEntry->removal_price;
-            }
-            return 0;
+            auto sceneryEntry = GetLegacyData(thisVal);
+            return JS_NewInt64(ctx, sceneryEntry != nullptr ? sceneryEntry->price : 0);
+        }
+
+        static JSValue removalPrice_get(JSContext* ctx, JSValue thisVal)
+        {
+            auto sceneryEntry = GetLegacyData(thisVal);
+            return JS_NewInt64(ctx, sceneryEntry != nullptr ? sceneryEntry->removal_price : 0);
         }
 
     protected:
-        SmallSceneryEntry* GetLegacyData() const
+        static SmallSceneryEntry* GetLegacyData(JSValue thisVal)
         {
-            auto obj = GetObject();
+            auto obj = GetSmallSceneryObject(thisVal);
             if (obj != nullptr)
             {
                 return static_cast<SmallSceneryEntry*>(obj->GetLegacyData());
@@ -880,106 +736,134 @@ namespace OpenRCT2::Scripting
             return nullptr;
         }
 
-        SmallSceneryObject* GetObject() const
+        static SmallSceneryObject* GetSmallSceneryObject(JSValue thisVal)
         {
-            return static_cast<SmallSceneryObject*>(ScObject::GetObject());
+            return static_cast<SmallSceneryObject*>(GetObject(thisVal));
         }
     };
 
-    class ScLargeSceneryObjectTile
+    class ScLargeSceneryObjectTile;
+    extern ScLargeSceneryObjectTile gScLargeSceneryObjectTile;
+
+    class ScLargeSceneryObjectTile final : public ScBase
     {
     private:
-        LargeSceneryTile _tile{};
+        struct TileData
+        {
+            LargeSceneryTile _tile{};
+        };
 
     public:
-        ScLargeSceneryObjectTile(const LargeSceneryTile& tile)
-            : _tile(tile)
+        void Register(JSContext* ctx)
         {
+            RegisterBaseStr(ctx, "LargeSceneryObjectTile", Finalize);
         }
 
-        static void Register(duk_context* ctx)
+        JSValue New(JSContext* ctx, const LargeSceneryTile& tile)
         {
-            dukglue_register_property(ctx, &ScLargeSceneryObjectTile::offset_get, nullptr, "offset");
-            dukglue_register_property(ctx, &ScLargeSceneryObjectTile::zClearance_get, nullptr, "zClearance");
-            dukglue_register_property(ctx, &ScLargeSceneryObjectTile::hasSupports_get, nullptr, "hasSupports");
-            dukglue_register_property(ctx, &ScLargeSceneryObjectTile::allowSupportsAbove_get, nullptr, "allowSupportsAbove");
-            dukglue_register_property(ctx, &ScLargeSceneryObjectTile::corners_get, nullptr, "corners");
-            dukglue_register_property(ctx, &ScLargeSceneryObjectTile::walls_get, nullptr, "walls");
+            static constexpr JSCFunctionListEntry funcs[] = {
+                JS_CGETSET_DEF("offset", ScLargeSceneryObjectTile::offset_get, nullptr),
+                JS_CGETSET_DEF("zClearance", ScLargeSceneryObjectTile::zClearance_get, nullptr),
+                JS_CGETSET_DEF("hasSupports", ScLargeSceneryObjectTile::hasSupports_get, nullptr),
+                JS_CGETSET_DEF("allowSupportsAbove", ScLargeSceneryObjectTile::allowSupportsAbove_get, nullptr),
+                JS_CGETSET_DEF("corners", ScLargeSceneryObjectTile::corners_get, nullptr),
+                JS_CGETSET_DEF("walls", ScLargeSceneryObjectTile::walls_get, nullptr),
+            };
+            return MakeWithOpaque(ctx, funcs, new TileData{ tile });
         }
 
     private:
-        DukValue offset_get() const
+        static void Finalize(JSRuntime* rt, JSValue thisVal)
         {
-            auto ctx = GetContext()->GetScriptEngine().GetContext();
-
-            auto start = _tile.offset;
-            return ToDuk(ctx, start);
+            TileData* data = GetObjectData(thisVal);
+            if (data)
+                delete data;
         }
 
-        int32_t zClearance_get() const
+        static JSValue offset_get(JSContext* ctx, JSValue thisVal)
         {
-            return _tile.zClearance;
+            TileData* data = GetObjectData(thisVal);
+            return ToJSValue(ctx, data->_tile.offset);
         }
 
-        bool hasSupports_get() const
+        static JSValue zClearance_get(JSContext* ctx, JSValue thisVal)
         {
-            return _tile.hasSupports;
+            TileData* data = GetObjectData(thisVal);
+            return JS_NewInt32(ctx, data->_tile.zClearance);
         }
 
-        bool allowSupportsAbove_get() const
+        static JSValue hasSupports_get(JSContext* ctx, JSValue thisVal)
         {
-            return _tile.allowSupportsAbove;
+            TileData* data = GetObjectData(thisVal);
+            return JS_NewBool(ctx, data->_tile.hasSupports);
         }
 
-        uint8_t corners_get() const
+        static JSValue allowSupportsAbove_get(JSContext* ctx, JSValue thisVal)
         {
-            return _tile.corners;
+            TileData* data = GetObjectData(thisVal);
+            return JS_NewBool(ctx, data->_tile.allowSupportsAbove);
         }
 
-        uint8_t walls_get() const
+        static JSValue corners_get(JSContext* ctx, JSValue thisVal)
         {
-            return _tile.walls;
+            TileData* data = GetObjectData(thisVal);
+            return JS_NewUint32(ctx, data->_tile.corners);
+        }
+
+        static JSValue walls_get(JSContext* ctx, JSValue thisVal)
+        {
+            TileData* data = GetObjectData(thisVal);
+            return JS_NewUint32(ctx, data->_tile.walls);
+        }
+
+        static TileData* GetObjectData(JSValue thisVal)
+        {
+            return gScLargeSceneryObjectTile.GetOpaque<TileData*>(thisVal);
         }
     };
 
-    class ScLargeSceneryObject : public ScSceneryObject
+    class ScLargeSceneryObject final : public ScSceneryObject
     {
     public:
-        ScLargeSceneryObject(ObjectType type, int32_t index)
-            : ScSceneryObject(type, index)
+        static JSValue New(JSContext* ctx, ObjectType type, int32_t index)
         {
-        }
-
-        static void Register(duk_context* ctx)
-        {
-            dukglue_set_base_class<ScSceneryObject, ScLargeSceneryObject>(ctx);
-
-            dukglue_register_property(ctx, &ScLargeSceneryObject::tiles_get, nullptr, "tiles");
+            JSValue obj = ScSceneryObject::New(ctx, type, index);
+            AddFuncs(ctx, obj);
+            return obj;
         }
 
     private:
-        std::vector<std::shared_ptr<ScLargeSceneryObjectTile>> tiles_get() const
+        static void AddFuncs(JSContext* ctx, JSValue obj)
         {
-            std::vector<std::shared_ptr<ScLargeSceneryObjectTile>> result;
-            auto entry = GetEntry();
+            static constexpr JSCFunctionListEntry funcs[] = {
+                JS_CGETSET_DEF("tiles", ScLargeSceneryObject::tiles_get, nullptr),
+            };
+            JS_SetPropertyFunctionList(ctx, obj, funcs, std::size(funcs));
+        }
+
+        static JSValue tiles_get(JSContext* ctx, JSValue thisVal)
+        {
+            JSValue result = JS_NewArray(ctx);
+            auto entry = GetEntry(thisVal);
             if (entry != nullptr)
             {
+                int64_t index = 0;
                 for (auto& tile : entry->tiles)
                 {
-                    result.push_back(std::make_shared<ScLargeSceneryObjectTile>(tile));
+                    JS_SetPropertyInt64(ctx, result, index++, gScLargeSceneryObjectTile.New(ctx, tile));
                 }
             }
             return result;
         }
 
-        LargeSceneryObject* GetObject() const
+        static LargeSceneryObject* GetLargeSceneryObject(JSValue thisVal)
         {
-            return static_cast<LargeSceneryObject*>(ScObject::GetObject());
+            return static_cast<LargeSceneryObject*>(GetObject(thisVal));
         }
 
-        const LargeSceneryEntry* GetEntry() const
+        static const LargeSceneryEntry* GetEntry(JSValue thisVal)
         {
-            auto obj = GetObject();
+            auto obj = GetLargeSceneryObject(thisVal);
             if (obj != nullptr)
             {
                 return static_cast<LargeSceneryEntry*>(obj->GetLegacyData());
@@ -988,82 +872,71 @@ namespace OpenRCT2::Scripting
         }
     };
 
-    class ScWallObject : public ScSceneryObject
+    class ScWallObject final : public ScSceneryObject
     {
     public:
-        ScWallObject(ObjectType type, int32_t index)
-            : ScSceneryObject(type, index)
+        static JSValue New(JSContext* ctx, ObjectType type, int32_t index)
         {
-        }
-
-        static void Register(duk_context* ctx)
-        {
-            dukglue_set_base_class<ScSceneryObject, ScWallObject>(ctx);
+            return ScSceneryObject::New(ctx, type, index);
         }
     };
 
-    class ScFootpathAdditionObject : public ScSceneryObject
+    class ScFootpathAdditionObject final : public ScSceneryObject
     {
     public:
-        ScFootpathAdditionObject(ObjectType type, int32_t index)
-            : ScSceneryObject(type, index)
+        static JSValue New(JSContext* ctx, ObjectType type, int32_t index)
         {
-        }
-
-        static void Register(duk_context* ctx)
-        {
-            dukglue_set_base_class<ScSceneryObject, ScFootpathAdditionObject>(ctx);
+            return ScSceneryObject::New(ctx, type, index);
         }
     };
 
-    class ScBannerObject : public ScSceneryObject
+    class ScBannerObject final : public ScSceneryObject
     {
     public:
-        ScBannerObject(ObjectType type, int32_t index)
-            : ScSceneryObject(type, index)
+        static JSValue New(JSContext* ctx, ObjectType type, int32_t index)
         {
-        }
-
-        static void Register(duk_context* ctx)
-        {
-            dukglue_set_base_class<ScSceneryObject, ScBannerObject>(ctx);
+            return ScSceneryObject::New(ctx, type, index);
         }
     };
 
-    class ScSceneryGroupObject : public ScObject
+    class ScSceneryGroupObject final : public ScObject
     {
     public:
-        ScSceneryGroupObject(ObjectType type, int32_t index)
-            : ScObject(type, index)
+        static JSValue New(JSContext* ctx, ObjectType type, int32_t index)
         {
-        }
-
-        static void Register(duk_context* ctx)
-        {
-            dukglue_set_base_class<ScObject, ScSceneryGroupObject>(ctx);
-            dukglue_register_property(ctx, &ScSceneryGroupObject::items_get, nullptr, "items");
+            JSValue obj = ScObject::New(ctx, type, index);
+            AddFuncs(ctx, obj);
+            return obj;
         }
 
     private:
-        std::vector<std::string> items_get() const
+        static void AddFuncs(JSContext* ctx, JSValue obj)
         {
-            std::vector<std::string> result;
-            auto obj = GetObject();
+            static constexpr JSCFunctionListEntry funcs[] = {
+                JS_CGETSET_DEF("items", ScSceneryGroupObject::items_get, nullptr),
+            };
+            JS_SetPropertyFunctionList(ctx, obj, funcs, std::size(funcs));
+        }
+
+        static JSValue items_get(JSContext* ctx, JSValue thisVal)
+        {
+            JSValue result = JS_NewArray(ctx);
+            auto obj = GetSceneryGroupObject(thisVal);
             if (obj != nullptr)
             {
                 auto& items = obj->GetItems();
+                int64_t index = 0;
                 for (const auto& item : items)
                 {
-                    result.push_back(item.ToString());
+                    JS_SetPropertyInt64(ctx, result, index++, JSFromStdString(ctx, item.ToString()));
                 }
             }
             return result;
         }
 
-    protected:
-        SceneryGroupObject* GetObject() const
+        static SceneryGroupObject* GetSceneryGroupObject(JSValue thisVal)
         {
-            return static_cast<SceneryGroupObject*>(ScObject::GetObject());
+            return static_cast<SceneryGroupObject*>(GetObject(thisVal));
         }
     };
 } // namespace OpenRCT2::Scripting

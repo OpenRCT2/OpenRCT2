@@ -22,17 +22,17 @@ namespace OpenRCT2::GameActions
     {
     }
 
-    std::string CustomAction::GetId() const
+    const std::string& CustomAction::GetId() const
     {
         return _id;
     }
 
-    std::string CustomAction::GetJson() const
+    const std::string& CustomAction::GetJson() const
     {
         return _json;
     }
 
-    std::string CustomAction::GetPluginName() const
+    const std::string& CustomAction::GetPluginName() const
     {
         return _pluginName;
     }

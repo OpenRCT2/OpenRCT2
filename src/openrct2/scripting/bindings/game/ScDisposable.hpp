@@ -11,34 +11,47 @@
 
 #ifdef ENABLE_SCRIPTING
 
-    #include "../../Duktape.hpp"
-
     #include <functional>
 
 namespace OpenRCT2::Scripting
 {
-    class ScDisposable
+    class ScDisposable;
+    extern ScDisposable gScDisposable;
+
+    class ScDisposable final : public ScBase
     {
-    private:
-        std::function<void()> _onDispose;
+        using OpaqueType = std::function<void()>;
 
     public:
-        ScDisposable(const std::function<void()>& onDispose)
-            : _onDispose(onDispose)
+        static JSValue dispose(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
-        }
-
-        void dispose() const
-        {
-            if (_onDispose)
+            OpaqueType* data = gScDisposable.GetOpaque<OpaqueType*>(thisVal);
+            if (data && *data)
             {
-                _onDispose();
+                (*data)();
             }
+            return JS_UNDEFINED;
         }
 
-        static void Register(duk_context* ctx)
+        JSValue New(JSContext* ctx, const std::function<void()>& f)
         {
-            dukglue_register_method(ctx, &ScDisposable::dispose, "dispose");
+            static constexpr JSCFunctionListEntry funcs[] = {
+                JS_CFUNC_DEF("dispose", 0, ScDisposable::dispose),
+            };
+
+            return MakeWithOpaque(ctx, funcs, f ? new OpaqueType(f) : nullptr);
+        }
+
+        void Register(JSContext* ctx)
+        {
+            RegisterBaseStr(ctx, "Disposable", Finalize);
+        }
+
+        static void Finalize(JSRuntime* rt, JSValue thisVal)
+        {
+            OpaqueType* data = gScDisposable.GetOpaque<OpaqueType*>(thisVal);
+            if (data)
+                delete data;
         }
     };
 } // namespace OpenRCT2::Scripting

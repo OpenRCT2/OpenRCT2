@@ -19,6 +19,7 @@ namespace OpenRCT2::Scripting
     {
     public:
         static void Extend(ScriptEngine& scriptEngine);
+        static void Unregister();
     };
 } // namespace OpenRCT2::Scripting
 

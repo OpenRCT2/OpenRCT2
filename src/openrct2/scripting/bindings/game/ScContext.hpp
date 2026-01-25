@@ -11,13 +11,13 @@
 
 #ifdef ENABLE_SCRIPTING
 
+    #include "../../../GameState.h"
     #include "../../../OpenRCT2.h"
     #include "../../../actions/GameAction.h"
     #include "../../../interface/Screenshot.h"
     #include "../../../localisation/Formatting.h"
     #include "../../../object/ObjectManager.h"
     #include "../../../scenario/Scenario.h"
-    #include "../../Duktape.hpp"
     #include "../../HookEngine.h"
     #include "../../IconNames.hpp"
     #include "../../ScriptEngine.h"
@@ -31,456 +31,443 @@
 
 namespace OpenRCT2::Scripting
 {
-    class ScContext
+    class ScContext;
+    extern ScContext gScContext;
+
+    class ScContext final : public ScBase
     {
     private:
-        ScriptExecutionInfo& _execInfo;
-        HookEngine& _hookEngine;
-
-    public:
-        ScContext(ScriptExecutionInfo& execInfo, HookEngine& hookEngine)
-            : _execInfo(execInfo)
-            , _hookEngine(hookEngine)
+        static JSValue apiVersion_get(JSContext* ctx, JSValue thisVal)
         {
+            return JS_NewInt32(ctx, kPluginApiVersion);
         }
 
-    private:
-        int32_t apiVersion_get()
+        static JSValue configuration_get(JSContext* ctx, JSValue thisVal)
         {
-            return kPluginApiVersion;
+            return gScConfiguration.New(ctx);
         }
 
-        std::shared_ptr<ScConfiguration> configuration_get()
+        static JSValue sharedStorage_get(JSContext* ctx, JSValue thisVal)
         {
-            return std::make_shared<ScConfiguration>();
+            return gScConfiguration.New(ctx, ScConfigurationKind::Shared);
         }
 
-        std::shared_ptr<ScConfiguration> sharedStorage_get()
+        static JSValue getParkStorage(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
+            JSValue jsPluginName = argv[0];
+
             auto& scriptEngine = GetContext()->GetScriptEngine();
-            return std::make_shared<ScConfiguration>(ScConfigurationKind::Shared, scriptEngine.GetSharedStorage());
-        }
 
-        std::shared_ptr<ScConfiguration> GetParkStorageForPlugin(std::string_view pluginName)
-        {
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            auto parkStore = scriptEngine.GetParkStorage();
-            auto pluginStore = parkStore[pluginName];
-
-            // Create if it doesn't exist
-            if (pluginStore.type() != DukValue::Type::OBJECT)
+            JSValue result = JS_UNDEFINED;
+            if (JS_IsString(jsPluginName))
             {
-                auto* ctx = scriptEngine.GetContext();
-                parkStore.push();
-                duk_push_object(ctx);
-                duk_put_prop_lstring(ctx, -2, pluginName.data(), pluginName.size());
-                duk_pop(ctx);
-
-                pluginStore = parkStore[pluginName];
-            }
-
-            return std::make_shared<ScConfiguration>(ScConfigurationKind::Park, pluginStore);
-        }
-
-        std::shared_ptr<ScConfiguration> getParkStorage(const DukValue& dukPluginName)
-        {
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-
-            std::shared_ptr<ScConfiguration> result;
-            if (dukPluginName.type() == DukValue::Type::STRING)
-            {
-                auto& pluginName = dukPluginName.as_string();
+                std::string pluginName = JSToStdString(ctx, jsPluginName);
                 if (pluginName.empty())
                 {
-                    duk_error(scriptEngine.GetContext(), DUK_ERR_ERROR, "Plugin name is empty");
+                    return JS_ThrowPlainError(ctx, "Plugin name is empty");
                 }
-                result = GetParkStorageForPlugin(pluginName);
+                result = gScConfiguration.New(ctx, ScConfigurationKind::Park, pluginName);
             }
-            else if (dukPluginName.type() == DukValue::Type::UNDEFINED)
+            else if (JS_IsUndefined(jsPluginName))
             {
-                auto plugin = _execInfo.GetCurrentPlugin();
+                const auto& plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
                 if (plugin == nullptr)
                 {
-                    duk_error(
-                        scriptEngine.GetContext(), DUK_ERR_ERROR, "Plugin name must be specified when used from console.");
+                    return JS_ThrowPlainError(ctx, "Plugin name must be specified when used from console.");
                 }
-                result = GetParkStorageForPlugin(plugin->GetMetadata().Name);
+                result = gScConfiguration.New(ctx, ScConfigurationKind::Park, plugin->GetMetadata().Name);
             }
             else
             {
-                duk_error(scriptEngine.GetContext(), DUK_ERR_ERROR, "Invalid plugin name.");
+                return JS_ThrowPlainError(ctx, "Invalid plugin name.");
             }
             return result;
         }
 
-        std::string mode_get()
+        static JSValue mode_get(JSContext* ctx, JSValue thisVal)
         {
             if (gLegacyScene == LegacyScene::titleSequence)
-                return "title";
+                return JSFromStdString(ctx, "title");
             else if (gLegacyScene == LegacyScene::scenarioEditor)
-                return "scenario_editor";
+                return JSFromStdString(ctx, "scenario_editor");
             else if (gLegacyScene == LegacyScene::trackDesigner)
-                return "track_designer";
+                return JSFromStdString(ctx, "track_designer");
             else if (gLegacyScene == LegacyScene::trackDesignsManager)
-                return "track_manager";
-            return "normal";
+                return JSFromStdString(ctx, "track_manager");
+            return JSFromStdString(ctx, "normal");
         }
 
-        bool paused_get()
+        static JSValue paused_get(JSContext* ctx, JSValue thisVal)
         {
-            return GameIsPaused();
+            return JS_NewBool(ctx, GameIsPaused());
         }
 
-        void paused_set(const bool& value)
+        static JSValue paused_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            ThrowIfGameStateNotMutable();
-            if (value != GameIsPaused())
+            JS_UNPACK_BOOL(valueBool, ctx, value)
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+
+            if (valueBool != GameIsPaused())
                 PauseToggle();
+
+            return JS_UNDEFINED;
         }
 
-        void captureImage(const DukValue& options)
+        static JSValue captureImage(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
-            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            JSValue options = argv[0];
             try
             {
-                CaptureOptions captureOptions;
-                captureOptions.Filename = fs::u8path(AsOrDefault(options["filename"], ""));
-                captureOptions.Rotation = options["rotation"].as_uint() & 3;
-                captureOptions.Zoom = ZoomLevel(options["zoom"].as_uint());
-                captureOptions.Transparent = AsOrDefault(options["transparent"], false);
-
-                auto dukPosition = options["position"];
-                if (dukPosition.type() == DukValue::Type::OBJECT)
+                auto rotation = JSToOptionalInt(ctx, options, "rotation");
+                auto zoom = JSToOptionalInt(ctx, options, "zoom");
+                if (!rotation.has_value() || !zoom.has_value())
                 {
+                    JS_ThrowPlainError(ctx, "Invalid options.");
+                    return JS_EXCEPTION;
+                }
+
+                CaptureOptions captureOptions;
+                captureOptions.Filename = fs::u8path(AsOrDefault(ctx, options, "filename", ""));
+                captureOptions.Rotation = rotation.value() & 3;
+                captureOptions.Zoom = ZoomLevel(zoom.value());
+                captureOptions.Transparent = AsOrDefault(ctx, options, "transparent", false);
+
+                JSValue jsPosition = JS_GetPropertyStr(ctx, options, "position");
+                if (JS_IsObject(jsPosition))
+                {
+                    auto width = JSToOptionalInt(ctx, options, "width");
+                    auto height = JSToOptionalInt(ctx, options, "height");
+                    auto x = JSToOptionalInt(ctx, jsPosition, "x");
+                    auto y = JSToOptionalInt(ctx, jsPosition, "y");
+
+                    if (!width.has_value() || !height.has_value() || !x.has_value() || !y.has_value())
+                    {
+                        JS_FreeValue(ctx, jsPosition);
+                        JS_ThrowPlainError(ctx, "Invalid options.");
+                        return JS_EXCEPTION;
+                    }
+
                     CaptureView view;
-                    view.Width = options["width"].as_int();
-                    view.Height = options["height"].as_int();
-                    view.Position.x = dukPosition["x"].as_int();
-                    view.Position.y = dukPosition["y"].as_int();
+                    view.Width = width.value();
+                    view.Height = height.value();
+                    view.Position.x = x.value();
+                    view.Position.y = y.value();
                     captureOptions.View = view;
                 }
+                JS_FreeValue(ctx, jsPosition);
 
                 CaptureImage(captureOptions);
             }
-            catch (const DukException&)
-            {
-                duk_error(ctx, DUK_ERR_ERROR, "Invalid options.");
-            }
             catch (const std::exception& ex)
             {
-                duk_error(ctx, DUK_ERR_ERROR, ex.what());
+                JS_ThrowPlainError(ctx, "%s", ex.what());
+                return JS_EXCEPTION;
             }
+
+            return JS_UNDEFINED;
         }
 
-        DukValue getObject(const std::string& typez, int32_t index) const
+        static JSValue getObject(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
             // deprecated function, moved to ObjectManager.getObject.
-            ScObjectManager objectManager;
-            return objectManager.getObject(typez, index);
+            return gScObjectManager.getObject(ctx, thisVal, argc, argv);
         }
 
-        std::vector<DukValue> getAllObjects(const std::string& typez) const
+        static JSValue getAllObjects(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
             // deprecated function, moved to ObjectManager.getAllObjects.
-            ScObjectManager objectManager;
-            return objectManager.getAllObjects(typez);
+            return gScObjectManager.getAllObjects(ctx, thisVal, argc, argv);
         }
 
-        DukValue getTrackSegment(uint16_t type)
+        static JSValue getTrackSegment(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
-            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            JS_UNPACK_INT32(type, ctx, argv[0])
+
             if (type >= EnumValue(TrackElemType::count))
             {
-                return ToDuk(ctx, nullptr);
+                return JS_NULL;
             }
             else
             {
-                return GetObjectAsDukValue(ctx, std::make_shared<ScTrackSegment>(static_cast<TrackElemType>(type)));
+                return gScTrackSegment.New(ctx, static_cast<TrackElemType>(type));
             }
         }
 
-        std::vector<DukValue> getAllTrackSegments()
+        static JSValue getAllTrackSegments(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
-            auto ctx = GetContext()->GetScriptEngine().GetContext();
-
-            std::vector<DukValue> result;
+            auto result = JS_NewArray(ctx);
+            int64_t index = 0;
             for (uint16_t type = 0; type < EnumValue(TrackElemType::count); type++)
             {
-                auto obj = std::make_shared<ScTrackSegment>(static_cast<TrackElemType>(type));
-                if (obj != nullptr)
-                {
-                    result.push_back(GetObjectAsDukValue(ctx, obj));
-                }
+                auto obj = gScTrackSegment.New(ctx, static_cast<TrackElemType>(type));
+                JS_GetPropertyInt64(ctx, obj, index);
             }
             return result;
         }
 
-        int32_t getRandom(int32_t min, int32_t max)
+        static JSValue getRandom(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
-            ThrowIfGameStateNotMutable();
+            JS_UNPACK_INT32(min, ctx, argv[0]);
+            JS_UNPACK_INT32(max, ctx, argv[1]);
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+
             if (min >= max)
-                return min;
+                return JS_NewInt32(ctx, min);
             int32_t range = max - min;
-            return min + ScenarioRandMax(range);
+            return JS_NewInt64(ctx, min + ScenarioRandMax(range));
         }
 
-        duk_ret_t formatString(duk_context* ctx)
+        static JSValue formatString(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
-            auto nargs = duk_get_top(ctx);
-            if (nargs >= 1)
+            if (argc >= 1)
             {
-                auto dukFmt = DukValue::copy_from_stack(ctx, 0);
-                if (dukFmt.type() == DukValue::Type::STRING)
+                const JSValue jsFmt = argv[0];
+                if (JS_IsString(jsFmt))
                 {
-                    FmtString fmt(dukFmt.as_string());
+                    FmtString fmt(JSToStdString(ctx, jsFmt));
 
                     std::vector<FormatArg_t> args;
-                    for (duk_idx_t i = 1; i < nargs; i++)
+                    for (int i = 1; i < argc; i++)
                     {
-                        auto dukArg = DukValue::copy_from_stack(ctx, i);
-                        switch (dukArg.type())
+                        const JSValue jsArg = argv[i];
+                        if (JS_IsNumber(jsArg))
                         {
-                            case DukValue::Type::NUMBER:
-                                args.push_back(dukArg.as_int());
-                                break;
-                            case DukValue::Type::STRING:
-                                args.push_back(dukArg.as_string());
-                                break;
-                            default:
-                                duk_error(ctx, DUK_ERR_ERROR, "Invalid format argument.");
-                                break;
+                            args.emplace_back(JSToInt(ctx, jsArg));
+                        }
+                        else if (JS_IsString(jsArg))
+                        {
+                            args.emplace_back(JSToStdString(ctx, jsArg));
+                        }
+                        else
+                        {
+                            JS_ThrowPlainError(ctx, "Invalid format argument.");
+                            return JS_EXCEPTION;
                         }
                     }
 
                     auto result = FormatStringAny(fmt, args);
-                    duk_push_lstring(ctx, result.c_str(), result.size());
+                    return JSFromStdString(ctx, result);
                 }
                 else
                 {
-                    duk_error(ctx, DUK_ERR_ERROR, "Invalid format string.");
+                    JS_ThrowPlainError(ctx, "Invalid format string.");
+                    return JS_EXCEPTION;
                 }
             }
-            else
-            {
-                duk_error(ctx, DUK_ERR_ERROR, "Invalid format string.");
-            }
-            return 1;
+            JS_ThrowPlainError(ctx, "Invalid format string.");
+            return JS_EXCEPTION;
         }
 
-    #ifdef _MSC_VER
-        // HACK workaround to resolve issue #14853
-        //      The exception thrown in duk_error was causing a crash when RAII kicked in for this lambda.
-        //      Only ensuring it was not in the same generated method fixed it.
-        __declspec(noinline)
-    #endif
-        std::shared_ptr<ScDisposable>
-            CreateSubscription(HookType hookType, const DukValue& callback)
+        static JSValue subscribe(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
-            auto owner = _execInfo.GetCurrentPlugin();
-            auto cookie = _hookEngine.Subscribe(hookType, owner, callback);
-            return std::make_shared<ScDisposable>([this, hookType, cookie]() { _hookEngine.Unsubscribe(hookType, cookie); });
-        }
+            JS_UNPACK_STR(hook, ctx, argv[0]);
+            JS_UNPACK_CALLBACK(callback, ctx, argv[1]);
 
-        std::shared_ptr<ScDisposable> subscribe(const std::string& hook, const DukValue& callback)
-        {
             auto& scriptEngine = GetContext()->GetScriptEngine();
-            auto ctx = scriptEngine.GetContext();
 
             auto hookType = GetHookType(hook);
             if (hookType == HookType::notDefined)
             {
-                duk_error(ctx, DUK_ERR_ERROR, "Unknown hook type");
+                JS_ThrowPlainError(ctx, "Unknown hook type");
+                return JS_EXCEPTION;
             }
 
-            if (!callback.is_function())
-            {
-                duk_error(ctx, DUK_ERR_ERROR, "Expected function for callback");
-            }
-
-            auto owner = _execInfo.GetCurrentPlugin();
+            auto owner = scriptEngine.GetExecInfo().GetCurrentPlugin();
             if (owner == nullptr)
             {
-                duk_error(ctx, DUK_ERR_ERROR, "Not in a plugin context");
+                JS_ThrowPlainError(ctx, "Not in a plugin context");
+                return JS_EXCEPTION;
             }
 
-            if (!_hookEngine.IsValidHookForPlugin(hookType, *owner))
+            auto& hookEngine = scriptEngine.GetHookEngine();
+            if (!hookEngine.IsValidHookForPlugin(hookType, *owner))
             {
-                duk_error(ctx, DUK_ERR_ERROR, "Hook type not available for this plugin type.");
+                JS_ThrowPlainError(ctx, "Hook type not available for this plugin type.");
+                return JS_EXCEPTION;
             }
 
-            return CreateSubscription(hookType, callback);
+            auto cookie = hookEngine.Subscribe(hookType, owner, callback);
+            return gScDisposable.New(ctx, [&hookEngine, hookType, cookie]() { hookEngine.Unsubscribe(hookType, cookie); });
         }
 
-        void queryAction(const std::string& action, const DukValue& args, const DukValue& callback)
+        static JSValue queryAction(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
-            QueryOrExecuteAction(action, args, callback, false);
+            JS_UNPACK_STR(action, ctx, argv[0]);
+            JS_UNPACK_OBJECT(args, ctx, argv[1]);
+
+            return QueryOrExecuteAction(ctx, action, args, JSCallback(ctx, argv[2]), false);
         }
 
-        void executeAction(const std::string& action, const DukValue& args, const DukValue& callback)
+        static JSValue executeAction(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
-            QueryOrExecuteAction(action, args, callback, true);
+            JS_UNPACK_STR(action, ctx, argv[0]);
+            JS_UNPACK_OBJECT(args, ctx, argv[1]);
+
+            return QueryOrExecuteAction(ctx, action, args, JSCallback(ctx, argv[2]), true);
         }
 
-        void QueryOrExecuteAction(const std::string& actionid, const DukValue& args, const DukValue& callback, bool isExecute)
+        static JSValue QueryOrExecuteAction(
+            JSContext* ctx, const std::string& actionid, JSValue args, const JSCallback& callback, bool isExecute)
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
-            auto ctx = scriptEngine.GetContext();
-            try
+            auto plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
+            auto pair = scriptEngine.CreateGameAction(ctx, actionid, args, plugin->GetMetadata().Name);
+
+            std::unique_ptr<GameActions::GameAction> action = std::move(pair.first);
+
+            if (pair.second)
+                return JS_ThrowPlainError(ctx, "Invalid action parameters.");
+
+            if (action != nullptr)
             {
-                auto plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
-                auto action = scriptEngine.CreateGameAction(actionid, args, plugin->GetMetadata().Name);
-                if (action != nullptr)
+                if (isExecute)
                 {
-                    if (isExecute)
-                    {
-                        action->SetCallback(
-                            [this, plugin,
-                             callback](const GameActions::GameAction* act, const GameActions::Result* res) -> void {
-                                HandleGameActionResult(plugin, *act, *res, callback);
-                            });
-                        GameActions::Execute(action.get(), getGameState());
-                    }
-                    else
-                    {
-                        auto res = GameActions::Query(action.get(), getGameState());
-                        HandleGameActionResult(plugin, *action, res, callback);
-                    }
+                    action->SetCallback(
+                        [plugin, callback](const GameActions::GameAction* act, const GameActions::Result* res) -> void {
+                            HandleGameActionResult(plugin, *act, *res, callback);
+                        });
+                    GameActions::Execute(action.get(), getGameState());
                 }
                 else
                 {
-                    duk_error(ctx, DUK_ERR_ERROR, "Unknown action.");
+                    auto res = GameActions::Query(action.get(), getGameState());
+                    HandleGameActionResult(plugin, *action, res, callback);
                 }
-            }
-            catch (DukException&)
-            {
-                duk_error(ctx, DUK_ERR_ERROR, "Invalid action parameters.");
-            }
-        }
-
-        void HandleGameActionResult(
-            const std::shared_ptr<Plugin>& plugin, const GameActions::GameAction& action, const GameActions::Result& res,
-            const DukValue& callback)
-        {
-            if (callback.is_function())
-            {
-                auto& scriptEngine = GetContext()->GetScriptEngine();
-                auto dukResult = scriptEngine.GameActionResultToDuk(action, res);
-                // Call the plugin callback and pass the result object
-                scriptEngine.ExecutePluginCall(plugin, callback, { dukResult }, false);
-            }
-        }
-
-        void registerAction(const std::string& action, const DukValue& query, const DukValue& execute)
-        {
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            auto plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
-            auto ctx = scriptEngine.GetContext();
-            if (!query.is_function())
-            {
-                duk_error(ctx, DUK_ERR_ERROR, "query was not a function.");
-            }
-            else if (!execute.is_function())
-            {
-                duk_error(ctx, DUK_ERR_ERROR, "execute was not a function.");
-            }
-            else if (!scriptEngine.RegisterCustomAction(plugin, action, query, execute))
-            {
-                duk_error(ctx, DUK_ERR_ERROR, "action has already been registered.");
-            }
-        }
-
-        int32_t SetIntervalOrTimeout(DukValue callback, int32_t delay, bool repeat)
-        {
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            auto ctx = scriptEngine.GetContext();
-            auto plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
-
-            int32_t handle = 0;
-            if (callback.is_function())
-            {
-                handle = scriptEngine.AddInterval(plugin, delay, repeat, std::move(callback));
             }
             else
             {
-                duk_error(ctx, DUK_ERR_ERROR, "callback was not a function.");
+                return JS_ThrowPlainError(ctx, "Unknown action.");
             }
-            return handle;
+            return JS_UNDEFINED;
         }
 
-        void ClearIntervalOrTimeout(int32_t handle)
+        static void HandleGameActionResult(
+            const std::shared_ptr<Plugin>& plugin, const GameActions::GameAction& action, const GameActions::Result& res,
+            const JSCallback& callback)
+        {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
+            JSContext* ctx = plugin ? plugin->GetContext() : scriptEngine.GetContext();
+            JSValue jsResult = scriptEngine.GameActionResultToJS(ctx, action, res);
+            // Call the plugin callback and pass the result object
+            scriptEngine.ExecutePluginCall(plugin, callback.callback, { jsResult }, false);
+        }
+
+        static JSValue registerAction(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
+        {
+            JS_UNPACK_STR(action, ctx, argv[0]);
+            JS_UNPACK_CALLBACK(query, ctx, argv[1]);
+            JS_UNPACK_CALLBACK(execute, ctx, argv[2]);
+
+            auto& scriptEngine = GetContext()->GetScriptEngine();
+            auto plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
+            if (!scriptEngine.RegisterCustomAction(plugin, action, query, execute))
+            {
+                JS_ThrowPlainError(ctx, "action has already been registered.");
+                return JS_EXCEPTION;
+            }
+
+            return JS_UNDEFINED;
+        }
+
+        static int32_t SetIntervalOrTimeout(const JSCallback& callback, int32_t delay, bool repeat)
+        {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
+            auto plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
+
+            return scriptEngine.AddInterval(plugin, delay, repeat, callback);
+        }
+
+        static void ClearIntervalOrTimeout(int32_t handle)
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
             auto plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
             scriptEngine.RemoveInterval(plugin, handle);
         }
 
-        int32_t setInterval(DukValue callback, int32_t delay)
+        static JSValue setInterval(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
-            return SetIntervalOrTimeout(callback, delay, true);
+            JS_UNPACK_CALLBACK(callback, ctx, argv[0]);
+            JS_UNPACK_INT32(delay, ctx, argv[1]);
+            return JS_NewInt32(ctx, SetIntervalOrTimeout(callback, delay, true));
         }
 
-        int32_t setTimeout(DukValue callback, int32_t delay)
+        static JSValue setTimeout(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
-            return SetIntervalOrTimeout(callback, delay, false);
+            JS_UNPACK_CALLBACK(callback, ctx, argv[0]);
+            JS_UNPACK_INT32(delay, ctx, argv[1]);
+            return JS_NewInt32(ctx, SetIntervalOrTimeout(callback, delay, false));
         }
 
-        void clearInterval(int32_t handle)
+        static JSValue clearInterval(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
+            JS_UNPACK_INT32(handle, ctx, argv[0]);
             ClearIntervalOrTimeout(handle);
+            return JS_UNDEFINED;
         }
 
-        void clearTimeout(int32_t handle)
+        static JSValue clearTimeout(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
+            JS_UNPACK_INT32(handle, ctx, argv[0]);
             ClearIntervalOrTimeout(handle);
+            return JS_UNDEFINED;
         }
 
-        int32_t getIcon(const std::string& iconName)
+        static JSValue getIcon(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
-            return GetIconByName(iconName);
+            JS_UNPACK_STR(iconName, ctx, argv[0]);
+            return JS_NewInt64(ctx, GetIconByName(iconName));
         }
 
     public:
-        static void Register(duk_context* ctx)
+        void Register(JSContext* ctx)
         {
-            dukglue_register_property(ctx, &ScContext::apiVersion_get, nullptr, "apiVersion");
-            dukglue_register_property(ctx, &ScContext::configuration_get, nullptr, "configuration");
-            dukglue_register_property(ctx, &ScContext::sharedStorage_get, nullptr, "sharedStorage");
-            dukglue_register_method(ctx, &ScContext::getParkStorage, "getParkStorage");
-            dukglue_register_property(ctx, &ScContext::mode_get, nullptr, "mode");
-            dukglue_register_property(ctx, &ScContext::paused_get, &ScContext::paused_set, "paused");
-            dukglue_register_method(ctx, &ScContext::captureImage, "captureImage");
-            dukglue_register_method(ctx, &ScContext::getObject, "getObject");
-            dukglue_register_method(ctx, &ScContext::getAllObjects, "getAllObjects");
-            dukglue_register_method(ctx, &ScContext::getTrackSegment, "getTrackSegment");
-            dukglue_register_method(ctx, &ScContext::getAllTrackSegments, "getAllTrackSegments");
-            dukglue_register_method(ctx, &ScContext::getRandom, "getRandom");
-            dukglue_register_method_varargs(ctx, &ScContext::formatString, "formatString");
-            dukglue_register_method(ctx, &ScContext::subscribe, "subscribe");
-            dukglue_register_method(ctx, &ScContext::queryAction, "queryAction");
-            dukglue_register_method(ctx, &ScContext::executeAction, "executeAction");
-            dukglue_register_method(ctx, &ScContext::registerAction, "registerAction");
-            dukglue_register_method(ctx, &ScContext::setInterval, "setInterval");
-            dukglue_register_method(ctx, &ScContext::setTimeout, "setTimeout");
-            dukglue_register_method(ctx, &ScContext::clearInterval, "clearInterval");
-            dukglue_register_method(ctx, &ScContext::clearTimeout, "clearTimeout");
-            dukglue_register_method(ctx, &ScContext::getIcon, "getIcon");
+            RegisterBaseStr(ctx, "Context");
+        }
+
+        JSValue New(JSContext* ctx)
+        {
+            static constexpr JSCFunctionListEntry funcs[] = {
+                JS_CGETSET_DEF("apiVersion", ScContext::apiVersion_get, nullptr),
+                JS_CGETSET_DEF("configuration", ScContext::configuration_get, nullptr),
+                JS_CGETSET_DEF("sharedStorage", ScContext::sharedStorage_get, nullptr),
+                JS_CFUNC_DEF("getParkStorage", 1, ScContext::getParkStorage),
+                JS_CGETSET_DEF("mode", ScContext::mode_get, nullptr),
+                JS_CGETSET_DEF("paused", ScContext::paused_get, &ScContext::paused_set),
+                JS_CFUNC_DEF("captureImage", 1, ScContext::captureImage),
+                JS_CFUNC_DEF("getObject", 2, ScContext::getObject),
+                JS_CFUNC_DEF("getAllObjects", 2, ScContext::getAllObjects),
+                JS_CFUNC_DEF("getTrackSegment", 1, ScContext::getTrackSegment),
+                JS_CFUNC_DEF("getAllTrackSegments", 0, ScContext::getAllTrackSegments),
+                JS_CFUNC_DEF("getRandom", 2, ScContext::getRandom),
+                JS_CFUNC_DEF("formatString", 0, ScContext::formatString),
+                JS_CFUNC_DEF("subscribe", 2, ScContext::subscribe),
+                JS_CFUNC_DEF("queryAction", 3, ScContext::queryAction),
+                JS_CFUNC_DEF("executeAction", 3, ScContext::executeAction),
+                JS_CFUNC_DEF("registerAction", 3, ScContext::registerAction),
+                JS_CFUNC_DEF("setInterval", 2, ScContext::setInterval),
+                JS_CFUNC_DEF("setTimeout", 2, ScContext::setTimeout),
+                JS_CFUNC_DEF("clearInterval", 1, ScContext::clearInterval),
+                JS_CFUNC_DEF("clearTimeout", 1, ScContext::clearTimeout),
+                JS_CFUNC_DEF("getIcon", 1, ScContext::getIcon),
+            };
+            return MakeWithOpaque(ctx, funcs, nullptr);
         }
     };
 
-    uint32_t ImageFromDuk(const DukValue& d)
+    inline uint32_t ImageFromJSValue(JSContext* ctx, JSValue value)
     {
         uint32_t img{};
-        if (d.type() == DukValue::Type::NUMBER)
+        if (JS_IsNumber(value))
         {
-            img = d.as_uint();
+            JS_ToUint32(ctx, &img, value);
             if (GetTargetAPIVersion() <= kApiVersionG2Reorder)
             {
-                img = NewIconIndex(d.as_uint());
+                img = NewIconIndex(img);
             }
         }
-        else if (d.type() == DukValue::Type::STRING)
+        else if (JS_IsString(value))
         {
-            img = GetIconByName(d.as_c_string());
+            img = GetIconByName(JSToStdString(ctx, value));
         }
         return img;
     }

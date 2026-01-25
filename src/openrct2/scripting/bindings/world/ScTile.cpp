@@ -21,7 +21,6 @@
     #include "../../../world/Map.h"
     #include "../../../world/Scenery.h"
     #include "../../../world/tile_element/LargeSceneryElement.h"
-    #include "../../Duktape.hpp"
     #include "../../ScriptEngine.h"
     #include "ScTileElement.hpp"
 
@@ -31,79 +30,80 @@
 
 namespace OpenRCT2::Scripting
 {
-    ScTile::ScTile(const CoordsXY& coords)
-        : _coords(coords)
+    using OpaqueTileData = struct
     {
+        CoordsXY coords;
+    };
+
+    JSValue ScTile::x_get(JSContext* ctx, JSValue thisValue)
+    {
+        auto coords = GetCoordinates(thisValue);
+        return JS_NewInt32(ctx, coords.x / kCoordsXYStep);
     }
 
-    int32_t ScTile::x_get() const
+    JSValue ScTile::y_get(JSContext* ctx, JSValue thisValue)
     {
-        return _coords.x / kCoordsXYStep;
+        auto coords = GetCoordinates(thisValue);
+        return JS_NewInt32(ctx, coords.y / kCoordsXYStep);
     }
 
-    int32_t ScTile::y_get() const
+    JSValue ScTile::numElements_get(JSContext* ctx, JSValue thisValue)
     {
-        return _coords.y / kCoordsXYStep;
+        auto first = GetFirstElement(thisValue);
+        return JS_NewUint32(ctx, GetNumElements(first));
     }
 
-    uint32_t ScTile::numElements_get() const
+    JSValue ScTile::elements_get(JSContext* ctx, JSValue thisValue)
     {
-        auto first = GetFirstElement();
-        return static_cast<int32_t>(GetNumElements(first));
-    }
-
-    std::vector<std::shared_ptr<ScTileElement>> ScTile::elements_get() const
-    {
-        std::vector<std::shared_ptr<ScTileElement>> result;
-        auto first = GetFirstElement();
+        auto array = JS_NewArray(ctx);
+        auto coords = GetCoordinates(thisValue);
+        auto first = MapGetFirstElementAt(coords);
         auto currentNumElements = GetNumElements(first);
         if (currentNumElements != 0)
         {
-            result.reserve(currentNumElements);
+            JS_SetLength(ctx, array, currentNumElements);
             for (size_t i = 0; i < currentNumElements; i++)
             {
-                result.push_back(std::make_shared<ScTileElement>(_coords, &first[i]));
+                JS_SetPropertyInt64(ctx, array, i, gScTileElement.New(ctx, &first[i], coords));
             }
         }
-        return result;
+        return array;
     }
 
-    DukValue ScTile::data_get() const
+    JSValue ScTile::data_get(JSContext* ctx, JSValue thisValue)
     {
-        auto ctx = GetDukContext();
-        auto first = MapGetFirstElementAt(_coords);
+        auto first = GetFirstElement(thisValue);
         auto dataLen = GetNumElements(first) * sizeof(TileElement);
-        auto data = duk_push_fixed_buffer(ctx, dataLen);
         if (first != nullptr)
         {
-            std::memcpy(data, first, dataLen);
+            return JS_NewUint8ArrayCopy(ctx, reinterpret_cast<const uint8_t*>(first), dataLen);
         }
-        duk_push_buffer_object(ctx, -1, 0, dataLen, DUK_BUFOBJ_UINT8ARRAY);
-        return DukValue::take_from_stack(ctx);
+        return JS_NewUint8ArrayCopy(ctx, nullptr, 0);
     }
 
-    void ScTile::data_set(DukValue value)
+    JSValue ScTile::data_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto ctx = value.context();
-        value.push();
-        if (duk_is_buffer_data(ctx, -1))
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        if (JS_GetTypedArrayType(jsValue) == JSTypedArrayEnum::JS_TYPED_ARRAY_UINT8)
         {
-            duk_size_t dataLen{};
-            auto data = duk_get_buffer_data(ctx, -1, &dataLen);
-            auto numElements = dataLen / sizeof(TileElement);
+            auto coords = GetCoordinates(thisValue);
+            int64_t dataLength{};
+            JS_GetLength(ctx, jsValue, &dataLength);
+            auto dataSize = static_cast<size_t>(dataLength);
+            auto* array = JS_GetUint8Array(ctx, &dataSize, jsValue);
+            auto numElements = dataLength / sizeof(TileElement);
             if (numElements == 0)
             {
-                MapSetTileElement(TileCoordsXY(_coords), nullptr);
+                MapSetTileElement(TileCoordsXY(coords), nullptr);
             }
             else
             {
-                auto first = GetFirstElement();
+                auto first = MapGetFirstElementAt(coords);
                 auto currentNumElements = GetNumElements(first);
                 if (numElements > currentNumElements)
                 {
                     // Allocate space for the extra tile elements (inefficient but works)
-                    auto pos = TileCoordsXYZ(TileCoordsXY(_coords), 0).ToCoordsXYZ();
+                    auto pos = TileCoordsXYZ(TileCoordsXY(coords), 0).ToCoordsXYZ();
                     auto numToInsert = numElements - currentNumElements;
                     for (size_t i = 0; i < numToInsert; i++)
                     {
@@ -111,112 +111,122 @@ namespace OpenRCT2::Scripting
                     }
 
                     // Copy data to element span
-                    first = MapGetFirstElementAt(_coords);
+                    first = MapGetFirstElementAt(coords);
                     currentNumElements = GetNumElements(first);
                     if (currentNumElements != 0)
                     {
-                        std::memcpy(first, data, currentNumElements * sizeof(TileElement));
+                        std::memcpy(first, array, currentNumElements * sizeof(TileElement));
                         // Safely force last tile flag for last element to avoid read overrun
                         first[numElements - 1].SetLastForTile(true);
                     }
                 }
                 else
                 {
-                    std::memcpy(first, data, numElements * sizeof(TileElement));
+                    std::memcpy(first, array, numElements * sizeof(TileElement));
                     // Safely force last tile flag for last element to avoid read overrun
                     first[numElements - 1].SetLastForTile(true);
                 }
             }
-            MapInvalidateTileFull(_coords);
+            MapInvalidateTileFull(coords);
         }
+        return JS_UNDEFINED;
     }
 
-    std::shared_ptr<ScTileElement> ScTile::getElement(uint32_t index) const
+    JSValue ScTile::getElement(JSContext* ctx, JSValue thisValue, int argc, JSValue* argv)
     {
-        auto first = GetFirstElement();
+        JS_UNPACK_UINT32(index, ctx, argv[0]);
+        auto coords = GetCoordinates(thisValue);
+        auto first = MapGetFirstElementAt(coords);
         if (static_cast<size_t>(index) < GetNumElements(first))
         {
-            return std::make_shared<ScTileElement>(_coords, &first[index]);
+            return gScTileElement.New(ctx, &first[index], coords);
         }
-        return {};
+        return JS_UNDEFINED;
     }
 
-    std::shared_ptr<ScTileElement> ScTile::insertElement(uint32_t index)
+    JSValue ScTile::insertElement(JSContext* ctx, JSValue thisValue, int argc, JSValue* argv)
     {
-        ThrowIfGameStateNotMutable();
-        std::shared_ptr<ScTileElement> result;
-        auto first = GetFirstElement();
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        JS_UNPACK_UINT32(index, ctx, argv[0]);
+        auto coords = GetCoordinates(thisValue);
+        auto first = MapGetFirstElementAt(coords);
         auto origNumElements = GetNumElements(first);
         if (index <= origNumElements)
         {
             std::vector<TileElement> data(first, first + origNumElements);
 
-            auto pos = TileCoordsXYZ(TileCoordsXY(_coords), 0).ToCoordsXYZ();
+            auto pos = TileCoordsXYZ(TileCoordsXY(coords), 0).ToCoordsXYZ();
             auto newElement = TileElementInsert(pos, 0, TileElementType::Surface);
             if (newElement == nullptr)
             {
-                auto ctx = GetDukContext();
-                duk_error(ctx, DUK_ERR_ERROR, "Unable to allocate element.");
+                JS_ThrowPlainError(ctx, "Unable to allocate element.");
+                return JS_EXCEPTION;
             }
-            else
+
+            // Inefficient, requires a dedicated method in tile element manager
+            first = MapGetFirstElementAt(coords);
+            // Copy elements before index
+            if (index > 0)
             {
-                // Inefficient, requires a dedicated method in tile element manager
-                first = GetFirstElement();
-                // Copy elements before index
-                if (index > 0)
-                {
-                    std::memcpy(first, &data[0], index * sizeof(TileElement));
-                }
-                // Zero new element
-                std::memset(first + index, 0, sizeof(TileElement));
-                // Copy elements after index
-                if (index < origNumElements)
-                {
-                    std::memcpy(first + index + 1, &data[index], (origNumElements - index) * sizeof(TileElement));
-                }
-                for (size_t i = 0; i < origNumElements; i++)
-                {
-                    first[i].SetLastForTile(false);
-                }
-                first[origNumElements].SetLastForTile(true);
-                MapInvalidateTileFull(_coords);
-                result = std::make_shared<ScTileElement>(_coords, &first[index]);
+                std::memcpy(first, &data[0], index * sizeof(TileElement));
             }
+            // Zero new element
+            std::memset(first + index, 0, sizeof(TileElement));
+            // Copy elements after index
+            if (index < origNumElements)
+            {
+                std::memcpy(first + index + 1, &data[index], (origNumElements - index) * sizeof(TileElement));
+            }
+            for (size_t i = 0; i < origNumElements; i++)
+            {
+                first[i].SetLastForTile(false);
+            }
+            first[origNumElements].SetLastForTile(true);
+            MapInvalidateTileFull(coords);
+            return gScTileElement.New(ctx, &first[index], coords);
         }
         else
         {
-            auto ctx = GetDukContext();
-            duk_error(ctx, DUK_ERR_RANGE_ERROR, "Index must be between zero and the number of elements on the tile.");
+            JS_ThrowPlainError(ctx, "Index must be between zero and the number of elements on the tile.");
+            return JS_EXCEPTION;
         }
-        return result;
     }
 
-    void ScTile::removeElement(uint32_t index)
+    JSValue ScTile::removeElement(JSContext* ctx, JSValue thisValue, int argc, JSValue* argv)
     {
-        ThrowIfGameStateNotMutable();
-        auto first = GetFirstElement();
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        JS_UNPACK_UINT32(index, ctx, argv[0]);
+        auto coords = GetCoordinates(thisValue);
+        auto first = MapGetFirstElementAt(coords);
         if (index < GetNumElements(first))
         {
             auto element = &first[index];
             if (element->GetType() != TileElementType::LargeScenery
                 || element->AsLargeScenery()->GetEntry()->scrolling_mode == kScrollingModeNone
-                || ScTileElement::GetOtherLargeSceneryElement(_coords, element->AsLargeScenery()) == nullptr)
+                || ScTileElement::GetOtherLargeSceneryElement(coords, element->AsLargeScenery()) == nullptr)
             {
                 element->RemoveBannerEntry();
             }
             TileElementRemove(&first[index]);
-            MapInvalidateTileFull(_coords);
+            MapInvalidateTileFull(coords);
         }
+        return JS_UNDEFINED;
     }
 
-    TileElement* ScTile::GetFirstElement() const
+    CoordsXY ScTile::GetCoordinates(JSValue thisValue)
     {
-        return MapGetFirstElementAt(_coords);
+        return gScTile.GetOpaque<OpaqueTileData*>(thisValue)->coords;
     }
 
-    size_t ScTile::GetNumElements(const TileElement* first)
+    TileElement* ScTile::GetFirstElement(JSValue thisValue)
     {
-        size_t count = 0;
+        auto coords = GetCoordinates(thisValue);
+        return MapGetFirstElementAt(coords);
+    }
+
+    uint32_t ScTile::GetNumElements(const TileElement* first)
+    {
+        uint32_t count = 0;
         if (first != nullptr)
         {
             auto element = first;
@@ -228,23 +238,29 @@ namespace OpenRCT2::Scripting
         return count;
     }
 
-    duk_context* ScTile::GetDukContext() const
+    JSValue ScTile::New(JSContext* ctx, CoordsXY& coords)
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto ctx = scriptEngine.GetContext();
-        return ctx;
+        static constexpr JSCFunctionListEntry funcs[] = { JS_CGETSET_DEF("x", ScTile::x_get, nullptr),
+                                                          JS_CGETSET_DEF("y", ScTile::y_get, nullptr),
+                                                          JS_CGETSET_DEF("elements", ScTile::elements_get, nullptr),
+                                                          JS_CGETSET_DEF("numElements", ScTile::numElements_get, nullptr),
+                                                          JS_CGETSET_DEF("data", ScTile::data_get, ScTile::data_set),
+                                                          JS_CFUNC_DEF("getElement", 1, ScTile::getElement),
+                                                          JS_CFUNC_DEF("insertElement", 1, ScTile::insertElement),
+                                                          JS_CFUNC_DEF("removeElement", 0, ScTile::removeElement) };
+        return MakeWithOpaque(ctx, funcs, new OpaqueTileData{ coords });
     }
 
-    void ScTile::Register(duk_context* ctx)
+    void ScTile::Register(JSContext* ctx)
     {
-        dukglue_register_property(ctx, &ScTile::x_get, nullptr, "x");
-        dukglue_register_property(ctx, &ScTile::y_get, nullptr, "y");
-        dukglue_register_property(ctx, &ScTile::elements_get, nullptr, "elements");
-        dukglue_register_property(ctx, &ScTile::numElements_get, nullptr, "numElements");
-        dukglue_register_property(ctx, &ScTile::data_get, &ScTile::data_set, "data");
-        dukglue_register_method(ctx, &ScTile::getElement, "getElement");
-        dukglue_register_method(ctx, &ScTile::insertElement, "insertElement");
-        dukglue_register_method(ctx, &ScTile::removeElement, "removeElement");
+        RegisterBaseStr(ctx, "Tile", Finalize);
+    }
+
+    void ScTile::Finalize(JSRuntime* rt, JSValue thisVal)
+    {
+        OpaqueTileData* data = gScTile.GetOpaque<OpaqueTileData*>(thisVal);
+        if (data)
+            delete data;
     }
 
 } // namespace OpenRCT2::Scripting

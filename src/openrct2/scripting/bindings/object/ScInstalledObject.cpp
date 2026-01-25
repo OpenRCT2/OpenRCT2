@@ -9,6 +9,8 @@
 
 #ifdef ENABLE_SCRIPTING
 
+    #include "../../../core/EnumMap.hpp"
+    #include "../../../object/ObjectTypes.h"
     #include "ScObject.hpp"
 
 namespace OpenRCT2::Scripting

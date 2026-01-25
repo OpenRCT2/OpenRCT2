@@ -13,39 +13,39 @@
 
     #include "../../../Context.h"
     #include "../../../ride/Ride.h"
-    #include "../../Duktape.hpp"
+    #include "../../ScriptEngine.h"
 
 namespace OpenRCT2::Scripting
 {
-    class ScRideStation
+    class ScRideStation;
+    extern ScRideStation gScRideStation;
+
+    class ScRideStation final : public ScBase
     {
     private:
-        RideId _rideId = RideId::GetNull();
-        StationIndex _stationIndex{};
+        struct RideStationData
+        {
+            RideId _rideId = RideId::GetNull();
+            StationIndex _stationIndex{};
+        };
 
     public:
-        ScRideStation(RideId rideId, StationIndex stationIndex);
-
-        static void Register(duk_context* ctx);
+        void Register(JSContext* ctx);
+        JSValue New(JSContext* ctx, RideId rideId, StationIndex stationIndex);
 
     private:
-        DukValue start_get() const;
+        static void Finalize(JSRuntime* rt, JSValue thisVal);
+        static RideStationData* GetRideStationData(JSValue thisVal);
+        static RideStation* GetRideStation(JSValue thisVal);
 
-        void start_set(const DukValue& value);
-
-        int32_t length_get() const;
-
-        void length_set(int32_t value);
-
-        DukValue entrance_get() const;
-
-        void entrance_set(const DukValue& value);
-
-        DukValue exit_get() const;
-
-        void exit_set(const DukValue& value);
-
-        RideStation* GetRideStation() const;
+        static JSValue start_get(JSContext* ctx, JSValue thisVal);
+        static JSValue start_set(JSContext* ctx, JSValue thisVal, JSValue value);
+        static JSValue length_get(JSContext* ctx, JSValue thisVal);
+        static JSValue length_set(JSContext* ctx, JSValue thisVal, JSValue value);
+        static JSValue entrance_get(JSContext* ctx, JSValue thisVal);
+        static JSValue entrance_set(JSContext* ctx, JSValue thisVal, JSValue value);
+        static JSValue exit_get(JSContext* ctx, JSValue thisVal);
+        static JSValue exit_set(JSContext* ctx, JSValue thisVal, JSValue value);
     };
 
 } // namespace OpenRCT2::Scripting

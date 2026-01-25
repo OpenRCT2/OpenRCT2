@@ -138,7 +138,7 @@ namespace OpenRCT2::Ui::Windows
     // LoadSave
     WindowBase* LoadsaveOpen(
         LoadSaveAction action, LoadSaveType type, std::string_view defaultPath,
-        std::function<void(ModalResult result, std::string_view)> callback, TrackDesign* trackDesign);
+        std::function<void(ModalResult result, std::string_view)> callback, bool isJsCallback, TrackDesign* trackDesign);
     void WindowLoadSaveInputKey(WindowBase* w, uint32_t keycode);
 
     // Main

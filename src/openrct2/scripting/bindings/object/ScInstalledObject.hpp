@@ -13,7 +13,6 @@
 
     #include "../../../Context.h"
     #include "../../../object/ObjectRepository.h"
-    #include "../../Duktape.hpp"
     #include "../../ScriptEngine.h"
 
     #include <optional>
@@ -34,137 +33,166 @@ namespace OpenRCT2::Scripting
         return values[EnumValue(sourceGame)];
     }
 
-    class ScInstalledObject
+    class ScInstalledObject;
+    extern ScInstalledObject gScInstalledObject;
+
+    class ScInstalledObject final : public ScBase
     {
-    protected:
-        size_t _index{};
+    private:
+        struct InstalledObjectData
+        {
+            size_t _index{};
+        };
 
     public:
-        ScInstalledObject(size_t index)
-            : _index(index)
+        void Register(JSContext* ctx)
         {
+            RegisterBaseStr(ctx, "InstalledObject", Finalize);
         }
 
-        static void Register(duk_context* ctx)
+        JSValue New(JSContext* ctx, size_t index)
         {
-            dukglue_register_property(ctx, &ScInstalledObject::path_get, nullptr, "path");
-            dukglue_register_property(ctx, &ScInstalledObject::generation_get, nullptr, "generation");
-            dukglue_register_property(ctx, &ScInstalledObject::identifier_get, nullptr, "identifier");
-            dukglue_register_property(ctx, &ScInstalledObject::type_get, nullptr, "type");
-            dukglue_register_property(ctx, &ScInstalledObject::sourceGames_get, nullptr, "sourceGames");
-            dukglue_register_property(ctx, &ScInstalledObject::legacyIdentifier_get, nullptr, "legacyIdentifier");
-            dukglue_register_property(ctx, &ScInstalledObject::authors_get, nullptr, "authors");
-            dukglue_register_property(ctx, &ScInstalledObject::name_get, nullptr, "name");
+            static constexpr JSCFunctionListEntry funcs[] = {
+                JS_CGETSET_DEF("path", ScInstalledObject::path_get, nullptr),
+                JS_CGETSET_DEF("generation", ScInstalledObject::generation_get, nullptr),
+                JS_CGETSET_DEF("identifier", ScInstalledObject::identifier_get, nullptr),
+                JS_CGETSET_DEF("type", ScInstalledObject::type_get, nullptr),
+                JS_CGETSET_DEF("sourceGames", ScInstalledObject::sourceGames_get, nullptr),
+                JS_CGETSET_DEF("legacyIdentifier", ScInstalledObject::legacyIdentifier_get, nullptr),
+                JS_CGETSET_DEF("authors", ScInstalledObject::authors_get, nullptr),
+                JS_CGETSET_DEF("name", ScInstalledObject::name_get, nullptr),
+            };
+            return MakeWithOpaque(ctx, funcs, new InstalledObjectData{ index });
         }
 
     private:
-        std::string path_get() const
+        static void Finalize(JSRuntime* rt, JSValue thisVal)
         {
-            auto installedObject = GetInstalledObject();
-            if (installedObject != nullptr)
-            {
-                return installedObject->Path;
-            }
-            return {};
+            InstalledObjectData* data = gScInstalledObject.GetOpaque<InstalledObjectData*>(thisVal);
+            if (data)
+                delete data;
         }
 
-        std::string generation_get() const
+        static JSValue path_get(JSContext* ctx, JSValue thisVal)
         {
-            auto installedObject = GetInstalledObject();
+            auto installedObject = GetInstalledObject(thisVal);
+            if (installedObject != nullptr)
+            {
+                return JSFromStdString(ctx, installedObject->Path);
+            }
+            return JSFromStdString(ctx, "");
+        }
+
+        static JSValue generation_get(JSContext* ctx, JSValue thisVal)
+        {
+            auto installedObject = GetInstalledObject(thisVal);
             if (installedObject != nullptr)
             {
                 if (installedObject->Generation == ObjectGeneration::DAT)
-                    return "dat";
+                    return JSFromStdString(ctx, "dat");
                 else
-                    return "json";
+                    return JSFromStdString(ctx, "json");
             }
-            return {};
+            return JSFromStdString(ctx, "");
         }
 
-        std::vector<std::string> sourceGames_get() const
+        static JSValue sourceGames_get(JSContext* ctx, JSValue thisVal)
         {
-            std::vector<std::string> result;
-            auto installedObject = GetInstalledObject();
+            auto installedObject = GetInstalledObject(thisVal);
+
+            JSValue array = JS_NewArray(ctx);
             if (installedObject != nullptr)
             {
+                int64_t index = 0;
                 for (const auto& sourceGame : installedObject->Sources)
                 {
-                    result.push_back(std::string(ObjectSourceGameToString(sourceGame)));
+                    JSValue sourceGameStr = JSFromStdString(ctx, std::string(ObjectSourceGameToString(sourceGame)));
+                    JS_SetPropertyInt64(ctx, array, index++, sourceGameStr);
                 }
             }
-            return result;
+            return array;
         }
 
-        std::string type_get() const
+        static JSValue type_get(JSContext* ctx, JSValue thisVal)
         {
-            auto installedObject = GetInstalledObject();
+            auto installedObject = GetInstalledObject(thisVal);
             if (installedObject != nullptr)
             {
-                return std::string(objectTypeToString(installedObject->Type));
+                return JSFromStdString(ctx, std::string(objectTypeToString(installedObject->Type)));
             }
-            return {};
+            return JSFromStdString(ctx, "");
         }
 
-        std::string identifier_get() const
+        static JSValue identifier_get(JSContext* ctx, JSValue thisVal)
         {
-            auto installedObject = GetInstalledObject();
+            auto installedObject = GetInstalledObject(thisVal);
             if (installedObject != nullptr)
             {
                 if (installedObject->Generation == ObjectGeneration::DAT)
                 {
-                    return ObjectEntryDescriptor(installedObject->ObjectEntry).ToString();
+                    return JSFromStdString(ctx, ObjectEntryDescriptor(installedObject->ObjectEntry).ToString());
                 }
                 else
                 {
-                    return installedObject->Identifier;
+                    return JSFromStdString(ctx, installedObject->Identifier);
                 }
             }
-            return {};
+            return JSFromStdString(ctx, "");
         }
 
-        DukValue legacyIdentifier_get() const
+        static JSValue legacyIdentifier_get(JSContext* ctx, JSValue thisVal)
         {
-            auto ctx = GetContext()->GetScriptEngine().GetContext();
-            auto installedObject = GetInstalledObject();
+            auto installedObject = GetInstalledObject(thisVal);
             if (installedObject != nullptr)
             {
                 if (!installedObject->ObjectEntry.IsEmpty())
                 {
-                    return ToDuk(ctx, installedObject->ObjectEntry.GetName());
+                    auto str = installedObject->ObjectEntry.GetName();
+                    if (str.find('\0') != std::string::npos)
+                        str = {};
+                    return JSFromStdString(ctx, str);
                 }
             }
-            return ToDuk(ctx, nullptr);
+            return JS_NULL;
         }
 
-        std::vector<std::string> authors_get() const
+        static JSValue authors_get(JSContext* ctx, JSValue thisVal)
         {
-            auto installedObject = GetInstalledObject();
+            auto installedObject = GetInstalledObject(thisVal);
+
+            JSValue array = JS_NewArray(ctx);
             if (installedObject != nullptr)
             {
-                return installedObject->Authors;
+                uint32_t index = 0;
+                for (const auto& author : installedObject->Authors)
+                {
+                    JSValue authorStr = JSFromStdString(ctx, author);
+                    JS_SetPropertyInt64(ctx, array, index++, authorStr);
+                }
             }
-            return {};
+            return array;
         }
 
-        std::string name_get() const
+        static JSValue name_get(JSContext* ctx, JSValue thisVal)
         {
-            auto installedObject = GetInstalledObject();
+            auto installedObject = GetInstalledObject(thisVal);
             if (installedObject != nullptr)
             {
-                return installedObject->Name;
+                return JSFromStdString(ctx, installedObject->Name);
             }
-            return {};
+            return JSFromStdString(ctx, "");
         }
 
-        const ObjectRepositoryItem* GetInstalledObject() const
+        static const ObjectRepositoryItem* GetInstalledObject(JSValue thisVal)
         {
+            size_t index = gScInstalledObject.GetOpaque<InstalledObjectData*>(thisVal)->_index;
             auto context = GetContext();
             auto& objectRepository = context->GetObjectRepository();
             auto numObjects = objectRepository.GetNumObjects();
-            if (_index < numObjects)
+            if (index < numObjects)
             {
                 auto* objects = objectRepository.GetObjects();
-                return &objects[_index];
+                return &objects[index];
             }
             return nullptr;
         }

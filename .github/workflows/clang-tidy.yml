@@ -19,3 +19,4 @@ jobs:
       with:
         build_dir: 'build'
         cmake_args: '-G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Debug -DDISABLE_DISCORD_RPC=ON'
+        file_filter: 'cpp,c,cc,cxx'

@@ -16,230 +16,320 @@
     #include <openrct2/drawing/Drawing.h>
     #include <openrct2/drawing/Rectangle.h>
     #include <openrct2/drawing/RenderTarget.h>
-    #include <openrct2/scripting/Duktape.hpp>
+    #include <openrct2/scripting/ScriptEngine.h>
+    #include <quickjs.h>
 
 using namespace OpenRCT2::Drawing;
 
 namespace OpenRCT2::Scripting
 {
-    class ScGraphicsContext
+    class ScGraphicsContext;
+    extern ScGraphicsContext gScGraphicsContext;
+    class ScGraphicsContext final : public ScBase
     {
     private:
-        duk_context* _ctx{};
-        RenderTarget _rt{};
+        struct GraphicsData
+        {
+            RenderTarget _rt{};
 
-        std::optional<colour_t> _colour{};
-        std::optional<colour_t> _secondaryColour{};
-        std::optional<colour_t> _tertiaryColour{};
-        std::optional<uint8_t> _paletteId{};
-        PaletteIndex _stroke{};
-        PaletteIndex _fill{};
+            std::optional<colour_t> _colour{};
+            std::optional<colour_t> _secondaryColour{};
+            std::optional<colour_t> _tertiaryColour{};
+            std::optional<uint8_t> _paletteId{};
+            PaletteIndex _stroke{};
+            PaletteIndex _fill{};
+        };
 
     public:
-        ScGraphicsContext(duk_context* ctx, const RenderTarget& rt)
-            : _ctx(ctx)
-            , _rt(rt)
+        void Register(JSContext* ctx)
         {
+            RegisterBaseStr(ctx, "GraphicsContext", Finalize);
         }
 
-        static void Register(duk_context* ctx)
+        static void Finalize(JSRuntime* rt, JSValue thisVal)
         {
-            dukglue_register_property(ctx, &ScGraphicsContext::colour_get, &ScGraphicsContext::colour_set, "colour");
-            dukglue_register_property(
-                ctx, &ScGraphicsContext::secondaryColour_get, &ScGraphicsContext::secondaryColour_set, "secondaryColour");
-            dukglue_register_property(
-                ctx, &ScGraphicsContext::tertiaryColour_get, &ScGraphicsContext::tertiaryColour_set, "ternaryColour");
-            dukglue_register_property(
-                ctx, &ScGraphicsContext::tertiaryColour_get, &ScGraphicsContext::tertiaryColour_set, "tertiaryColour");
-            dukglue_register_property(ctx, &ScGraphicsContext::paletteId_get, &ScGraphicsContext::paletteId_set, "paletteId");
-            dukglue_register_property(ctx, &ScGraphicsContext::fill_get, &ScGraphicsContext::fill_set, "fill");
-            dukglue_register_property(ctx, &ScGraphicsContext::stroke_get, &ScGraphicsContext::stroke_set, "stroke");
-            dukglue_register_property(ctx, &ScGraphicsContext::width_get, nullptr, "width");
-            dukglue_register_property(ctx, &ScGraphicsContext::height_get, nullptr, "height");
+            GraphicsData* data = gScGraphicsContext.GetOpaque<GraphicsData*>(thisVal);
+            if (data)
+                delete data;
+        }
 
-            dukglue_register_method(ctx, &ScGraphicsContext::getImage, "getImage");
-            dukglue_register_method(ctx, &ScGraphicsContext::measureText, "measureText");
+        JSValue New(JSContext* ctx, const RenderTarget& rt)
+        {
+            static constexpr JSCFunctionListEntry funcs[] = {
+                JS_CGETSET_DEF("colour", ScGraphicsContext::colour_get, ScGraphicsContext::colour_set),
+                JS_CGETSET_DEF(
+                    "secondaryColour", ScGraphicsContext::secondaryColour_get, ScGraphicsContext::secondaryColour_set),
+                JS_CGETSET_DEF("ternaryColour", ScGraphicsContext::tertiaryColour_get, ScGraphicsContext::tertiaryColour_set),
+                JS_CGETSET_DEF("tertiaryColour", ScGraphicsContext::tertiaryColour_get, ScGraphicsContext::tertiaryColour_set),
+                JS_CGETSET_DEF("paletteId", ScGraphicsContext::paletteId_get, ScGraphicsContext::paletteId_set),
+                JS_CGETSET_DEF("fill", ScGraphicsContext::fill_get, ScGraphicsContext::fill_set),
+                JS_CGETSET_DEF("stroke", ScGraphicsContext::stroke_get, ScGraphicsContext::stroke_set),
+                JS_CGETSET_DEF("width", ScGraphicsContext::width_get, nullptr),
+                JS_CGETSET_DEF("height", ScGraphicsContext::height_get, nullptr),
 
-            dukglue_register_method(ctx, &ScGraphicsContext::box, "box");
-            dukglue_register_method(ctx, &ScGraphicsContext::clear, "clear");
-            dukglue_register_method(ctx, &ScGraphicsContext::clip, "clip");
-            dukglue_register_method(ctx, &ScGraphicsContext::image, "image");
-            dukglue_register_method(ctx, &ScGraphicsContext::line, "line");
-            dukglue_register_method(ctx, &ScGraphicsContext::rect, "rect");
-            dukglue_register_method(ctx, &ScGraphicsContext::text, "text");
-            dukglue_register_method(ctx, &ScGraphicsContext::well, "well");
+                JS_CFUNC_DEF("getImage", 1, ScGraphicsContext::getImage),
+                JS_CFUNC_DEF("measureText", 1, ScGraphicsContext::measureText),
+
+                JS_CFUNC_DEF("box", 4, ScGraphicsContext::box),
+                JS_CFUNC_DEF("clear", 0, ScGraphicsContext::clear),
+                JS_CFUNC_DEF("clip", 4, ScGraphicsContext::clip),
+                JS_CFUNC_DEF("image", 3, ScGraphicsContext::image),
+                JS_CFUNC_DEF("line", 4, ScGraphicsContext::lineJS),
+                JS_CFUNC_DEF("rect", 4, ScGraphicsContext::rect),
+                JS_CFUNC_DEF("text", 3, ScGraphicsContext::text),
+                JS_CFUNC_DEF("well", 4, ScGraphicsContext::well),
+            };
+            return MakeWithOpaque(ctx, funcs, new GraphicsData{ rt });
         }
 
     private:
-        DukValue colour_get() const
+        static JSValue colour_get(JSContext* ctx, JSValue thisVal)
         {
-            return ToDuk(_ctx, _colour);
+            GraphicsData* data = gScGraphicsContext.GetOpaque<GraphicsData*>(thisVal);
+            return ToJSValue(ctx, data->_colour);
         }
 
-        void colour_set(DukValue value)
+        static JSValue colour_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            if (value.type() == DukValue::NUMBER)
-                _colour = static_cast<colour_t>(value.as_uint());
+            GraphicsData* data = gScGraphicsContext.GetOpaque<GraphicsData*>(thisVal);
+            if (JS_IsNumber(value))
+                data->_colour = static_cast<colour_t>(JSToInt(ctx, value));
             else
-                _colour = {};
+                data->_colour = {};
+            return JS_UNDEFINED;
         }
 
-        DukValue secondaryColour_get() const
+        static JSValue secondaryColour_get(JSContext* ctx, JSValue thisVal)
         {
-            return ToDuk(_ctx, _secondaryColour);
+            GraphicsData* data = gScGraphicsContext.GetOpaque<GraphicsData*>(thisVal);
+            return ToJSValue(ctx, data->_secondaryColour);
         }
 
-        void secondaryColour_set(DukValue value)
+        static JSValue secondaryColour_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            if (value.type() == DukValue::NUMBER)
-                _secondaryColour = static_cast<colour_t>(value.as_uint());
+            GraphicsData* data = gScGraphicsContext.GetOpaque<GraphicsData*>(thisVal);
+            if (JS_IsNumber(value))
+                data->_secondaryColour = static_cast<colour_t>(JSToInt(ctx, value));
             else
-                _secondaryColour = {};
+                data->_secondaryColour = {};
+            return JS_UNDEFINED;
         }
 
-        DukValue tertiaryColour_get() const
+        static JSValue tertiaryColour_get(JSContext* ctx, JSValue thisVal)
         {
-            return ToDuk(_ctx, _tertiaryColour);
+            GraphicsData* data = gScGraphicsContext.GetOpaque<GraphicsData*>(thisVal);
+            return ToJSValue(ctx, data->_tertiaryColour);
         }
 
-        void tertiaryColour_set(DukValue value)
+        static JSValue tertiaryColour_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            if (value.type() == DukValue::NUMBER)
-                _tertiaryColour = static_cast<colour_t>(value.as_uint());
+            GraphicsData* data = gScGraphicsContext.GetOpaque<GraphicsData*>(thisVal);
+            if (JS_IsNumber(value))
+                data->_tertiaryColour = static_cast<colour_t>(JSToInt(ctx, value));
             else
-                _tertiaryColour = {};
+                data->_tertiaryColour = {};
+            return JS_UNDEFINED;
         }
 
-        DukValue paletteId_get() const
+        static JSValue paletteId_get(JSContext* ctx, JSValue thisVal)
         {
-            return ToDuk(_ctx, _paletteId);
+            GraphicsData* data = gScGraphicsContext.GetOpaque<GraphicsData*>(thisVal);
+            return ToJSValue(ctx, data->_paletteId);
         }
 
-        void paletteId_set(DukValue value)
+        static JSValue paletteId_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            if (value.type() == DukValue::NUMBER)
-                _paletteId = static_cast<uint8_t>(value.as_uint());
+            GraphicsData* data = gScGraphicsContext.GetOpaque<GraphicsData*>(thisVal);
+            if (JS_IsNumber(value))
+                data->_paletteId = static_cast<uint8_t>(JSToInt(ctx, value));
             else
-                _paletteId = {};
+                data->_paletteId = {};
+            return JS_UNDEFINED;
         }
 
-        uint8_t fill_get() const
+        static JSValue fill_get(JSContext* ctx, JSValue thisVal)
         {
-            return EnumValue(_fill);
+            GraphicsData* data = gScGraphicsContext.GetOpaque<GraphicsData*>(thisVal);
+            return JS_NewInt32(ctx, EnumValue(data->_fill));
         }
 
-        void fill_set(uint8_t value)
+        static JSValue fill_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            _fill = static_cast<PaletteIndex>(value);
+            JS_UNPACK_INT32(valueInt, ctx, value)
+            GraphicsData* data = gScGraphicsContext.GetOpaque<GraphicsData*>(thisVal);
+            data->_fill = static_cast<PaletteIndex>(valueInt);
+            return JS_UNDEFINED;
         }
 
-        uint8_t stroke_get() const
+        static JSValue stroke_get(JSContext* ctx, JSValue thisVal)
         {
-            return EnumValue(_stroke);
+            GraphicsData* data = gScGraphicsContext.GetOpaque<GraphicsData*>(thisVal);
+            return JS_NewInt32(ctx, EnumValue(data->_stroke));
         }
 
-        void stroke_set(uint8_t value)
+        static JSValue stroke_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            _stroke = static_cast<PaletteIndex>(value);
+            JS_UNPACK_INT32(valueInt, ctx, value);
+            GraphicsData* data = gScGraphicsContext.GetOpaque<GraphicsData*>(thisVal);
+            data->_stroke = static_cast<PaletteIndex>(valueInt);
+            return JS_UNDEFINED;
         }
 
-        int32_t width_get() const
+        static JSValue width_get(JSContext* ctx, JSValue thisVal)
         {
-            return _rt.width;
+            GraphicsData* data = gScGraphicsContext.GetOpaque<GraphicsData*>(thisVal);
+            return JS_NewInt32(ctx, data->_rt.width);
         }
 
-        int32_t height_get() const
+        static JSValue height_get(JSContext* ctx, JSValue thisVal)
         {
-            return _rt.height;
+            GraphicsData* data = gScGraphicsContext.GetOpaque<GraphicsData*>(thisVal);
+            return JS_NewInt32(ctx, data->_rt.height);
         }
 
-        DukValue getImage(uint32_t id)
+        static JSValue getImage(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
-            return DukGetImageInfo(_ctx, id);
+            JS_UNPACK_UINT32(id, ctx, argv[0]);
+
+            return JSGetImageInfo(ctx, id);
         }
 
-        DukValue measureText(const std::string& text)
+        static JSValue measureText(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
+            JS_UNPACK_STR(text, ctx, argv[0])
+
             auto width = GfxGetStringWidth(text, FontStyle::medium);
             auto height = StringGetHeightRaw(text.c_str(), FontStyle::medium);
-            return ToDuk<ScreenSize>(_ctx, { width, height });
+            return ToJSValue(ctx, ScreenSize{ width, height });
         }
 
-        void box(int32_t x, int32_t y, int32_t width, int32_t height)
+        static JSValue box(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
-            Rectangle::fillInset(_rt, { x, y, x + width - 1, y + height - 1 }, { _colour.value_or(0) });
+            JS_UNPACK_INT32(x, ctx, argv[0]);
+            JS_UNPACK_INT32(y, ctx, argv[1]);
+            JS_UNPACK_INT32(width, ctx, argv[2]);
+            JS_UNPACK_INT32(height, ctx, argv[3]);
+            GraphicsData* data = gScGraphicsContext.GetOpaque<GraphicsData*>(thisVal);
+
+            Rectangle::fillInset(data->_rt, { x, y, x + width - 1, y + height - 1 }, { data->_colour.value_or(0) });
+            return JS_UNDEFINED;
         }
 
-        void well(int32_t x, int32_t y, int32_t width, int32_t height)
+        static JSValue well(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
+            JS_UNPACK_INT32(x, ctx, argv[0]);
+            JS_UNPACK_INT32(y, ctx, argv[1]);
+            JS_UNPACK_INT32(width, ctx, argv[2]);
+            JS_UNPACK_INT32(height, ctx, argv[3]);
+            GraphicsData* data = gScGraphicsContext.GetOpaque<GraphicsData*>(thisVal);
+
             Rectangle::fillInset(
-                _rt, { x, y, x + width - 1, y + height - 1 }, { _colour.value_or(0) }, Rectangle::BorderStyle::inset,
-                Rectangle::FillBrightness::light, Rectangle::FillMode::dontLightenWhenInset);
+                data->_rt, { x, y, x + width - 1, y + height - 1 }, { data->_colour.value_or(0) },
+                Rectangle::BorderStyle::inset, Rectangle::FillBrightness::light, Rectangle::FillMode::dontLightenWhenInset);
+            return JS_UNDEFINED;
         }
 
-        void clear()
+        static JSValue clear(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
-            GfxClear(_rt, _fill);
+            GraphicsData* data = gScGraphicsContext.GetOpaque<GraphicsData*>(thisVal);
+            GfxClear(data->_rt, data->_fill);
+            return JS_UNDEFINED;
         }
 
-        void clip(int32_t x, int32_t y, int32_t width, int32_t height)
+        static JSValue clip(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
+            JS_UNPACK_INT32(x, ctx, argv[0]);
+            JS_UNPACK_INT32(y, ctx, argv[1]);
+            JS_UNPACK_INT32(width, ctx, argv[2]);
+            JS_UNPACK_INT32(height, ctx, argv[3]);
+            GraphicsData* data = gScGraphicsContext.GetOpaque<GraphicsData*>(thisVal);
+
             RenderTarget newRT;
-            ClipRenderTarget(newRT, _rt, { x, y }, width, height);
-            _rt = newRT;
+            ClipRenderTarget(newRT, data->_rt, { x, y }, width, height);
+            data->_rt = newRT;
+            return JS_UNDEFINED;
         }
 
-        void image(uint32_t id, int32_t x, int32_t y)
+        static JSValue image(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
+            JS_UNPACK_UINT32(id, ctx, argv[0]);
+            JS_UNPACK_INT32(x, ctx, argv[1]);
+            JS_UNPACK_INT32(y, ctx, argv[2]);
+            GraphicsData* data = gScGraphicsContext.GetOpaque<GraphicsData*>(thisVal);
+
             ImageId img;
             img = img.WithIndex(id);
-            if (_paletteId)
+            if (data->_paletteId)
             {
-                img = img.WithRemap(*_paletteId);
+                img = img.WithRemap(*data->_paletteId);
             }
             else
             {
-                if (_colour)
+                if (data->_colour)
                 {
-                    img = img.WithPrimary(*_colour);
+                    img = img.WithPrimary(*data->_colour);
                 }
-                if (_secondaryColour)
+                if (data->_secondaryColour)
                 {
-                    img = img.WithSecondary(*_secondaryColour);
+                    img = img.WithSecondary(*data->_secondaryColour);
                 }
             }
 
-            GfxDrawSprite(_rt, img.WithTertiary(_tertiaryColour.value_or(0)), { x, y });
+            GfxDrawSprite(data->_rt, img.WithTertiary(data->_tertiaryColour.value_or(0)), { x, y });
+            return JS_UNDEFINED;
         }
 
-        void line(int32_t x1, int32_t y1, int32_t x2, int32_t y2)
+        static void line(GraphicsData* data, int32_t x1, int32_t y1, int32_t x2, int32_t y2)
         {
-            GfxDrawLine(_rt, { { x1, y1 }, { x2, y2 } }, _stroke);
+            GfxDrawLine(data->_rt, { { x1, y1 }, { x2, y2 } }, data->_stroke);
         }
 
-        void rect(int32_t x, int32_t y, int32_t width, int32_t height)
+        static JSValue lineJS(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
-            if (_stroke != PaletteIndex::transparent)
+            JS_UNPACK_INT32(x1, ctx, argv[0]);
+            JS_UNPACK_INT32(y1, ctx, argv[1]);
+            JS_UNPACK_INT32(x2, ctx, argv[2]);
+            JS_UNPACK_INT32(y2, ctx, argv[3]);
+            GraphicsData* data = gScGraphicsContext.GetOpaque<GraphicsData*>(thisVal);
+            line(data, x1, y1, x2, y2);
+            return JS_UNDEFINED;
+        }
+
+        static JSValue rect(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
+        {
+            JS_UNPACK_INT32(x, ctx, argv[0]);
+            JS_UNPACK_INT32(y, ctx, argv[1]);
+            JS_UNPACK_INT32(width, ctx, argv[2]);
+            JS_UNPACK_INT32(height, ctx, argv[3]);
+            GraphicsData* data = gScGraphicsContext.GetOpaque<GraphicsData*>(thisVal);
+
+            if (data->_stroke != PaletteIndex::transparent)
             {
-                line(x, y, x + width, y);
-                line(x + width - 1, y + 1, x + width - 1, y + height - 1);
-                line(x, y + height - 1, x + width, y + height - 1);
-                line(x, y + 1, x, y + height - 1);
+                line(data, x, y, x + width, y);
+                line(data, x + width - 1, y + 1, x + width - 1, y + height - 1);
+                line(data, x, y + height - 1, x + width, y + height - 1);
+                line(data, x, y + 1, x, y + height - 1);
 
                 x++;
                 y++;
                 width -= 2;
                 height -= 2;
             }
-            if (_fill != PaletteIndex::transparent)
+            if (data->_fill != PaletteIndex::transparent)
             {
-                Rectangle::fill(_rt, { x, y, x + width - 1, y + height - 1 }, _fill);
+                Rectangle::fill(data->_rt, { x, y, x + width - 1, y + height - 1 }, data->_fill);
             }
+            return JS_UNDEFINED;
         }
 
-        void text(const std::string& text, int32_t x, int32_t y)
+        static JSValue text(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
-            DrawText(_rt, { x, y }, { _colour.value_or(0) }, text.c_str());
+            JS_UNPACK_STR(text, ctx, argv[0]);
+            JS_UNPACK_INT32(x, ctx, argv[1]);
+            JS_UNPACK_INT32(y, ctx, argv[2]);
+            GraphicsData* data = gScGraphicsContext.GetOpaque<GraphicsData*>(thisVal);
+            DrawText(data->_rt, { x, y }, { data->_colour.value_or(0) }, text.c_str());
+            return JS_UNDEFINED;
         }
     };
 } // namespace OpenRCT2::Scripting

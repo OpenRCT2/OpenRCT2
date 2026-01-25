@@ -271,7 +271,7 @@ public:
                             callback(result, std::string(path).c_str());
                         }
                     },
-                    trackDesign);
+                    false, trackDesign);
                 return w;
             }
             case WindowClass::manageTrackDesign:
@@ -1109,6 +1109,12 @@ public:
         CloseByClass(WindowClass::footpath);
         CloseByClass(WindowClass::trackDesignList);
         CloseByClass(WindowClass::trackDesignPlace);
+    }
+
+    void Cleanup() override
+    {
+        CloseByCondition([](WindowBase* w) { return true; });
+        WindowCullDead();
     }
 
     /**

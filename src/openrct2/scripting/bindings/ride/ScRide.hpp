@@ -9,197 +9,143 @@
 
 #pragma once
 
-#ifdef ENABLE_SCRIPTING
+#include "../../../Context.h"
+#include "../../../ride/Ride.h"
+#include "../../ScriptEngine.h"
+#include "../object/ScObject.hpp"
+#include "ScRideStation.hpp"
 
-    #include "../../../Context.h"
-    #include "../../../ride/Ride.h"
-    #include "../../Duktape.hpp"
-    #include "../../ScriptEngine.h"
-    #include "../object/ScObject.hpp"
-    #include "ScRideStation.hpp"
+#ifdef ENABLE_SCRIPTING
 
 namespace OpenRCT2::Scripting
 {
-    template<>
-    inline DukValue ToDuk(duk_context* ctx, const TrackColour& value)
+
+    inline JSValue ToJSValue(JSContext* ctx, const VehicleColour& value)
     {
-        DukObject obj(ctx);
-        obj.Set("main", value.main);
-        obj.Set("additional", value.additional);
-        obj.Set("supports", value.supports);
-        return obj.Take();
+        JSValue obj = JS_NewObject(ctx);
+        JS_SetPropertyStr(ctx, obj, "body", JS_NewInt32(ctx, value.Body));
+        JS_SetPropertyStr(ctx, obj, "trim", JS_NewInt32(ctx, value.Trim));
+        JS_SetPropertyStr(ctx, obj, "ternary", JS_NewInt32(ctx, value.Tertiary)); // backwards compatible typo
+        JS_SetPropertyStr(ctx, obj, "tertiary", JS_NewInt32(ctx, value.Tertiary));
+        return obj;
     }
 
-    template<>
-    inline TrackColour FromDuk(const DukValue& s)
-    {
-        TrackColour result{};
-        result.main = AsOrDefault(s["main"], 0);
-        result.additional = AsOrDefault(s["additional"], 0);
-        result.supports = AsOrDefault(s["supports"], 0);
-        return result;
-    }
-
-    template<>
-    inline DukValue ToDuk(duk_context* ctx, const VehicleColour& value)
-    {
-        DukObject obj(ctx);
-        obj.Set("body", value.Body);
-        obj.Set("trim", value.Trim);
-        obj.Set("ternary", value.Tertiary);
-        obj.Set("tertiary", value.Tertiary);
-        return obj.Take();
-    }
-
-    template<>
-    inline VehicleColour FromDuk(const DukValue& s)
+    inline VehicleColour JSToVehicleColours(JSContext* ctx, JSValue val)
     {
         VehicleColour result{};
-        result.Body = AsOrDefault(s["body"], 0);
-        result.Trim = AsOrDefault(s["trim"], 0);
-        result.Tertiary = AsOrDefault(s["ternary"], 0);
-        result.Tertiary = AsOrDefault<int32_t>(s["tertiary"], result.Tertiary);
+        result.Body = AsOrDefault(ctx, val, "body", 0);
+        result.Trim = AsOrDefault(ctx, val, "trim", 0);
+        result.Tertiary = AsOrDefault(ctx, val, "ternary", 0); // backwards compatible typo
+        result.Tertiary = AsOrDefault(ctx, val, "tertiary", static_cast<uint32_t>(result.Tertiary));
         return result;
     }
 
-    class ScRide
+    inline JSValue ToJSValue(JSContext* ctx, const TrackColour& value)
+    {
+        JSValue obj = JS_NewObject(ctx);
+        JS_SetPropertyStr(ctx, obj, "main", JS_NewInt32(ctx, value.main));
+        JS_SetPropertyStr(ctx, obj, "additional", JS_NewInt32(ctx, value.additional));
+        JS_SetPropertyStr(ctx, obj, "supports", JS_NewInt32(ctx, value.supports));
+        return obj;
+    }
+
+    inline TrackColour JSToTrackColour(JSContext* ctx, JSValue val)
+    {
+        TrackColour result{};
+        result.main = AsOrDefault(ctx, val, "main", 0);
+        result.additional = AsOrDefault(ctx, val, "additional", 0);
+        result.supports = AsOrDefault(ctx, val, "supports", 0);
+        return result;
+    }
+
+    class ScRide;
+    extern ScRide gScRide;
+
+    class ScRide final : public ScBase
     {
     private:
-        RideId _rideId = RideId::GetNull();
+        struct RideData
+        {
+            RideId _rideId = RideId::GetNull();
+        };
 
     public:
-        ScRide(RideId rideId);
+        void Register(JSContext* ctx);
+        JSValue New(JSContext* ctx, RideId rideId);
 
     private:
-        int32_t id_get() const;
+        static void Finalize(JSRuntime* rt, JSValue thisVal);
+        static RideData* GetRideData(JSValue thisVal);
+        static Ride* GetRide(JSValue thisVal);
 
-        std::shared_ptr<ScRideObject> object_get();
-
-        int32_t type_get() const;
-
-        std::string classification_get() const;
-
-        std::string name_get() const;
-        void name_set(std::string value);
-
-        std::string status_get() const;
-
-        uint32_t lifecycleFlags_get() const;
-
-        void lifecycleFlags_set(uint32_t value);
-
-        uint8_t mode_get() const;
-
-        void mode_set(uint8_t value);
-
-        uint8_t departFlags_get() const;
-
-        void departFlags_set(uint8_t value);
-
-        uint8_t minimumWaitingTime_get() const;
-
-        void minimumWaitingTime_set(uint8_t value);
-
-        uint8_t maximumWaitingTime_get() const;
-
-        void maximumWaitingTime_set(uint8_t value);
-
-        std::vector<uint16_t> vehicles_get() const;
-
-        std::vector<DukValue> vehicleColours_get() const;
-
-        void vehicleColours_set(const std::vector<DukValue>& value);
-
-        std::vector<DukValue> colourSchemes_get() const;
-
-        void colourSchemes_set(const std::vector<DukValue>& value);
-
-        ObjectEntryIndex stationStyle_get() const;
-
-        void stationStyle_set(ObjectEntryIndex value);
-
-        ObjectEntryIndex music_get() const;
-
-        void music_set(ObjectEntryIndex value);
-
-        std::vector<std::shared_ptr<ScRideStation>> stations_get() const;
-
-        std::vector<int32_t> price_get() const;
-
-        void price_set(const std::vector<int32_t>& value);
-
-        int32_t excitement_get() const;
-        void excitement_set(int32_t value);
-
-        int32_t intensity_get() const;
-        void intensity_set(int32_t value);
-
-        int32_t nausea_get() const;
-        void nausea_set(int32_t value);
-
-        int32_t totalCustomers_get() const;
-        void totalCustomers_set(int32_t value);
-
-        int32_t buildDate_get() const;
-        void buildDate_set(int32_t value);
-
-        int32_t age_get() const;
-
-        money64 runningCost_get() const;
-        void runningCost_set(money64 value);
-
-        int32_t totalProfit_get() const;
-        void totalProfit_set(int32_t value);
-
-        uint8_t inspectionInterval_get() const;
-        void inspectionInterval_set(uint8_t value);
-
-        DukValue value_get() const;
-
-        void value_set(const DukValue& value);
-
-        uint8_t downtime_get() const;
-
-        uint8_t liftHillSpeed_get() const;
-        void lifthillSpeed_set(uint8_t value);
-
-        uint8_t maxLiftHillSpeed_get() const;
-        uint8_t minLiftHillSpeed_get() const;
-
-        uint8_t satisfaction_get() const;
-
-        double maxSpeed_get() const;
-
-        double averageSpeed_get() const;
-
-        int32_t rideTime_get() const;
-
-        double rideLength_get() const;
-
-        double maxPositiveVerticalGs_get() const;
-
-        double maxNegativeVerticalGs_get() const;
-
-        double maxLateralGs_get() const;
-
-        double totalAirTime_get() const;
-
-        uint8_t numDrops_get() const;
-
-        uint8_t numLiftHills_get() const;
-
-        double highestDropHeight_get() const;
-
-        Ride* GetRide() const;
-
-        void SetBreakdown(const std::string& breakDown);
-
-        void FixBreakdown();
-
-        std::string getBreakdown() const;
-
-    public:
-        static void Register(duk_context* ctx);
+        static JSValue id_get(JSContext* ctx, JSValue thisVal);
+        static JSValue object_get(JSContext* ctx, JSValue thisVal);
+        static JSValue type_get(JSContext* ctx, JSValue thisVal);
+        static JSValue classification_get(JSContext* ctx, JSValue thisVal);
+        static JSValue name_get(JSContext* ctx, JSValue thisVal);
+        static JSValue name_set(JSContext* ctx, JSValue thisVal, JSValue value);
+        static JSValue status_get(JSContext* ctx, JSValue thisVal);
+        static JSValue lifecycleFlags_get(JSContext* ctx, JSValue thisVal);
+        static JSValue lifecycleFlags_set(JSContext* ctx, JSValue thisVal, JSValue value);
+        static JSValue mode_get(JSContext* ctx, JSValue thisVal);
+        static JSValue mode_set(JSContext* ctx, JSValue thisVal, JSValue value);
+        static JSValue departFlags_get(JSContext* ctx, JSValue thisVal);
+        static JSValue departFlags_set(JSContext* ctx, JSValue thisVal, JSValue value);
+        static JSValue minimumWaitingTime_get(JSContext* ctx, JSValue thisVal);
+        static JSValue minimumWaitingTime_set(JSContext* ctx, JSValue thisVal, JSValue value);
+        static JSValue maximumWaitingTime_get(JSContext* ctx, JSValue thisVal);
+        static JSValue maximumWaitingTime_set(JSContext* ctx, JSValue thisVal, JSValue value);
+        static JSValue vehicles_get(JSContext* ctx, JSValue thisVal);
+        static JSValue vehicleColours_get(JSContext* ctx, JSValue thisVal);
+        static JSValue vehicleColours_set(JSContext* ctx, JSValue thisVal, JSValue value);
+        static JSValue colourSchemes_get(JSContext* ctx, JSValue thisVal);
+        static JSValue colourSchemes_set(JSContext* ctx, JSValue thisVal, JSValue value);
+        static JSValue stationStyle_get(JSContext* ctx, JSValue thisVal);
+        static JSValue stationStyle_set(JSContext* ctx, JSValue thisVal, JSValue value);
+        static JSValue music_get(JSContext* ctx, JSValue thisVal);
+        static JSValue music_set(JSContext* ctx, JSValue thisVal, JSValue value);
+        static JSValue stations_get(JSContext* ctx, JSValue thisVal);
+        static JSValue price_get(JSContext* ctx, JSValue thisVal);
+        static JSValue price_set(JSContext* ctx, JSValue thisVal, JSValue value);
+        static JSValue excitement_get(JSContext* ctx, JSValue thisVal);
+        static JSValue excitement_set(JSContext* ctx, JSValue thisVal, JSValue value);
+        static JSValue intensity_get(JSContext* ctx, JSValue thisVal);
+        static JSValue intensity_set(JSContext* ctx, JSValue thisVal, JSValue value);
+        static JSValue nausea_get(JSContext* ctx, JSValue thisVal);
+        static JSValue nausea_set(JSContext* ctx, JSValue thisVal, JSValue value);
+        static JSValue totalCustomers_get(JSContext* ctx, JSValue thisVal);
+        static JSValue totalCustomers_set(JSContext* ctx, JSValue thisVal, JSValue value);
+        static JSValue buildDate_get(JSContext* ctx, JSValue thisVal);
+        static JSValue buildDate_set(JSContext* ctx, JSValue thisVal, JSValue value);
+        static JSValue age_get(JSContext* ctx, JSValue thisVal);
+        static JSValue runningCost_get(JSContext* ctx, JSValue thisVal);
+        static JSValue runningCost_set(JSContext* ctx, JSValue thisVal, JSValue value);
+        static JSValue totalProfit_get(JSContext* ctx, JSValue thisVal);
+        static JSValue totalProfit_set(JSContext* ctx, JSValue thisVal, JSValue value);
+        static JSValue inspectionInterval_get(JSContext* ctx, JSValue thisVal);
+        static JSValue inspectionInterval_set(JSContext* ctx, JSValue thisVal, JSValue value);
+        static JSValue value_get(JSContext* ctx, JSValue thisVal);
+        static JSValue value_set(JSContext* ctx, JSValue thisVal, JSValue value);
+        static JSValue downtime_get(JSContext* ctx, JSValue thisVal);
+        static JSValue liftHillSpeed_get(JSContext* ctx, JSValue thisVal);
+        static JSValue liftHillSpeed_set(JSContext* ctx, JSValue thisVal, JSValue value);
+        static JSValue maxLiftHillSpeed_get(JSContext* ctx, JSValue thisVal);
+        static JSValue minLiftHillSpeed_get(JSContext* ctx, JSValue thisVal);
+        static JSValue satisfaction_get(JSContext* ctx, JSValue thisVal);
+        static JSValue maxSpeed_get(JSContext* ctx, JSValue thisVal);
+        static JSValue averageSpeed_get(JSContext* ctx, JSValue thisVal);
+        static JSValue rideTime_get(JSContext* ctx, JSValue thisVal);
+        static JSValue rideLength_get(JSContext* ctx, JSValue thisVal);
+        static JSValue maxPositiveVerticalGs_get(JSContext* ctx, JSValue thisVal);
+        static JSValue maxNegativeVerticalGs_get(JSContext* ctx, JSValue thisVal);
+        static JSValue maxLateralGs_get(JSContext* ctx, JSValue thisVal);
+        static JSValue totalAirTime_get(JSContext* ctx, JSValue thisVal);
+        static JSValue numDrops_get(JSContext* ctx, JSValue thisVal);
+        static JSValue numLiftHills_get(JSContext* ctx, JSValue thisVal);
+        static JSValue highestDropHeight_get(JSContext* ctx, JSValue thisVal);
+        static JSValue breakdown_get(JSContext* ctx, JSValue thisVal);
+        static JSValue setBreakdown(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
+        static JSValue fixBreakdown(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
     };
 } // namespace OpenRCT2::Scripting
 

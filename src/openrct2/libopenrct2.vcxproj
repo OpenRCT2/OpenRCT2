@@ -622,11 +622,11 @@
     <ClInclude Include="scripting\bindings\world\ScScenario.hpp" />
     <ClInclude Include="scripting\bindings\world\ScTile.hpp" />
     <ClInclude Include="scripting\bindings\world\ScTileElement.hpp" />
-    <ClInclude Include="scripting\Duktape.hpp" />
     <ClInclude Include="scripting\HookEngine.h" />
     <ClInclude Include="scripting\IconNames.hpp" />
     <ClInclude Include="scripting\Plugin.h" />
     <ClInclude Include="scripting\ScriptEngine.h" />
+    <ClInclude Include="scripting\ScriptUtil.hpp" />
     <ClInclude Include="scripting\SoundNames.hpp" />
     <ClInclude Include="SpriteIds.h" />
     <ClInclude Include="System.hpp" />
@@ -1139,6 +1139,7 @@
     <ClCompile Include="scenes\title\TitleSequence.cpp" />
     <ClCompile Include="scenes\title\TitleSequenceManager.cpp" />
     <ClCompile Include="scripting\bindings\entity\ScBalloon.cpp" />
+    <ClCompile Include="scripting\bindings\entity\ScEntity.cpp" />
     <ClCompile Include="scripting\bindings\entity\ScGuest.cpp" />
     <ClCompile Include="scripting\bindings\entity\ScLitter.cpp" />
     <ClCompile Include="scripting\bindings\entity\ScMoneyEffect.cpp" />
@@ -1201,12 +1202,6 @@
     <ClCompile Include="world\tile_element\TrackElement.cpp" />
     <ClCompile Include="world\tile_element\WallElement.cpp" />
     <ClCompile Include="world\Wall.cpp" />
-    <ClCompile Include="..\thirdparty\duktape\duktape.cpp">
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <ForcedIncludeFiles>
-      </ForcedIncludeFiles>
-      <WarningLevel>TurnOffAllWarnings</WarningLevel>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\openrct2-deps\openrct2-deps.vcxproj">

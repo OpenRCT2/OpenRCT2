@@ -22,7 +22,7 @@
 
 namespace OpenRCT2::Scripting
 {
-    static const DukEnumMap<PeepThoughtType> ThoughtTypeMap(
+    static const EnumMap<PeepThoughtType> ThoughtTypeMap(
         {
             { "cant_afford_ride", PeepThoughtType::CantAffordRide },
             { "spent_money", PeepThoughtType::SpentMoney },
@@ -151,419 +151,447 @@ namespace OpenRCT2::Scripting
             { "here_we_are", PeepThoughtType::HereWeAre },
         });
 
-    ScGuest::ScGuest(EntityId id)
-        : ScPeep(id)
+    JSValue ScGuest::New(JSContext* ctx, EntityId entityId)
     {
+        JSValue obj = ScPeep::New(ctx, entityId);
+        AddFuncs(ctx, obj);
+        return obj;
     }
 
-    void ScGuest::Register(duk_context* ctx)
+    void ScGuest::AddFuncs(JSContext* ctx, JSValue obj)
     {
-        dukglue_set_base_class<ScPeep, ScGuest>(ctx);
-        dukglue_register_property(ctx, &ScGuest::tshirtColour_get, &ScGuest::tshirtColour_set, "tshirtColour");
-        dukglue_register_property(ctx, &ScGuest::trousersColour_get, &ScGuest::trousersColour_set, "trousersColour");
-        dukglue_register_property(ctx, &ScGuest::balloonColour_get, &ScGuest::balloonColour_set, "balloonColour");
-        dukglue_register_property(ctx, &ScGuest::hatColour_get, &ScGuest::hatColour_set, "hatColour");
-        dukglue_register_property(ctx, &ScGuest::umbrellaColour_get, &ScGuest::umbrellaColour_set, "umbrellaColour");
-        dukglue_register_property(ctx, &ScGuest::happiness_get, &ScGuest::happiness_set, "happiness");
-        dukglue_register_property(ctx, &ScGuest::happinessTarget_get, &ScGuest::happinessTarget_set, "happinessTarget");
-        dukglue_register_property(ctx, &ScGuest::nausea_get, &ScGuest::nausea_set, "nausea");
-        dukglue_register_property(ctx, &ScGuest::nauseaTarget_get, &ScGuest::nauseaTarget_set, "nauseaTarget");
-        dukglue_register_property(ctx, &ScGuest::hunger_get, &ScGuest::hunger_set, "hunger");
-        dukglue_register_property(ctx, &ScGuest::thirst_get, &ScGuest::thirst_set, "thirst");
-        dukglue_register_property(ctx, &ScGuest::toilet_get, &ScGuest::toilet_set, "toilet");
-        dukglue_register_property(ctx, &ScGuest::mass_get, &ScGuest::mass_set, "mass");
-        dukglue_register_property(ctx, &ScGuest::minIntensity_get, &ScGuest::minIntensity_set, "minIntensity");
-        dukglue_register_property(ctx, &ScGuest::maxIntensity_get, &ScGuest::maxIntensity_set, "maxIntensity");
-        dukglue_register_property(ctx, &ScGuest::nauseaTolerance_get, &ScGuest::nauseaTolerance_set, "nauseaTolerance");
-        dukglue_register_property(ctx, &ScGuest::cash_get, &ScGuest::cash_set, "cash");
-        dukglue_register_property(ctx, &ScGuest::isInPark_get, nullptr, "isInPark");
-        dukglue_register_property(ctx, &ScGuest::isLost_get, nullptr, "isLost");
-        dukglue_register_property(ctx, &ScGuest::lostCountdown_get, &ScGuest::lostCountdown_set, "lostCountdown");
-        dukglue_register_property(ctx, &ScGuest::favouriteRide_get, &ScGuest::favouriteRide_set, "favouriteRide");
-        dukglue_register_property(ctx, &ScGuest::thoughts_get, nullptr, "thoughts");
-        dukglue_register_property(ctx, &ScGuest::items_get, nullptr, "items");
-        dukglue_register_property(ctx, &ScGuest::availableAnimations_get, nullptr, "availableAnimations");
-        dukglue_register_property(ctx, &ScGuest::animation_get, &ScGuest::animation_set, "animation");
-        dukglue_register_property(ctx, &ScGuest::animationOffset_get, &ScGuest::animationOffset_set, "animationOffset");
-        dukglue_register_property(ctx, &ScGuest::animationLength_get, nullptr, "animationLength");
-        dukglue_register_method(ctx, &ScGuest::getAnimationSpriteIds, "getAnimationSpriteIds");
-        dukglue_register_method(ctx, &ScGuest::has_item, "hasItem");
-        dukglue_register_method(ctx, &ScGuest::give_item, "giveItem");
-        dukglue_register_method(ctx, &ScGuest::remove_item, "removeItem");
-        dukglue_register_method(ctx, &ScGuest::remove_all_items, "removeAllItems");
+        static constexpr JSCFunctionListEntry funcs[] = {
+            JS_CGETSET_DEF("tshirtColour", &ScGuest::tshirtColour_get, &ScGuest::tshirtColour_set),
+            JS_CGETSET_DEF("trousersColour", &ScGuest::trousersColour_get, &ScGuest::trousersColour_set),
+            JS_CGETSET_DEF("balloonColour", &ScGuest::balloonColour_get, &ScGuest::balloonColour_set),
+            JS_CGETSET_DEF("hatColour", &ScGuest::hatColour_get, &ScGuest::hatColour_set),
+            JS_CGETSET_DEF("umbrellaColour", &ScGuest::umbrellaColour_get, &ScGuest::umbrellaColour_set),
+            JS_CGETSET_DEF("happiness", &ScGuest::happiness_get, &ScGuest::happiness_set),
+            JS_CGETSET_DEF("happinessTarget", &ScGuest::happinessTarget_get, &ScGuest::happinessTarget_set),
+            JS_CGETSET_DEF("nausea", &ScGuest::nausea_get, &ScGuest::nausea_set),
+            JS_CGETSET_DEF("nauseaTarget", &ScGuest::nauseaTarget_get, &ScGuest::nauseaTarget_set),
+            JS_CGETSET_DEF("hunger", &ScGuest::hunger_get, &ScGuest::hunger_set),
+            JS_CGETSET_DEF("thirst", &ScGuest::thirst_get, &ScGuest::thirst_set),
+            JS_CGETSET_DEF("toilet", &ScGuest::toilet_get, &ScGuest::toilet_set),
+            JS_CGETSET_DEF("mass", &ScGuest::mass_get, &ScGuest::mass_set),
+            JS_CGETSET_DEF("minIntensity", &ScGuest::minIntensity_get, &ScGuest::minIntensity_set),
+            JS_CGETSET_DEF("maxIntensity", &ScGuest::maxIntensity_get, &ScGuest::maxIntensity_set),
+            JS_CGETSET_DEF("nauseaTolerance", &ScGuest::nauseaTolerance_get, &ScGuest::nauseaTolerance_set),
+            JS_CGETSET_DEF("cash", &ScGuest::cash_get, &ScGuest::cash_set),
+            JS_CGETSET_DEF("isInPark", &ScGuest::isInPark_get, nullptr),
+            JS_CGETSET_DEF("isLost", &ScGuest::isLost_get, nullptr),
+            JS_CGETSET_DEF("lostCountdown", &ScGuest::lostCountdown_get, &ScGuest::lostCountdown_set),
+            JS_CGETSET_DEF("favouriteRide", &ScGuest::favouriteRide_get, &ScGuest::favouriteRide_set),
+            JS_CGETSET_DEF("thoughts", &ScGuest::thoughts_get, nullptr),
+            JS_CGETSET_DEF("items", &ScGuest::items_get, nullptr),
+            JS_CGETSET_DEF("availableAnimations", &ScGuest::availableAnimations_get, nullptr),
+            JS_CGETSET_DEF("animation", &ScGuest::animation_get, &ScGuest::animation_set),
+            JS_CGETSET_DEF("animationOffset", &ScGuest::animationOffset_get, &ScGuest::animationOffset_set),
+            JS_CGETSET_DEF("animationLength", &ScGuest::animationLength_get, nullptr),
+            JS_CFUNC_DEF("getAnimationSpriteIds", 2, &ScGuest::getAnimationSpriteIds),
+            JS_CFUNC_DEF("hasItem", 1, &ScGuest::has_item),
+            JS_CFUNC_DEF("giveItem", 1, &ScGuest::give_item),
+            JS_CFUNC_DEF("removeItem", 1, &ScGuest::remove_item),
+            JS_CFUNC_DEF("removeAllItems", 0, &ScGuest::remove_all_items),
+        };
+        JS_SetPropertyFunctionList(ctx, obj, funcs, std::size(funcs));
     }
 
-    Guest* ScGuest::GetGuest() const
+    Guest* ScGuest::GetGuest(JSValue thisVal)
     {
-        return getGameState().entities.GetEntity<Guest>(_id);
+        auto id = GetEntityId(thisVal);
+        return getGameState().entities.GetEntity<Guest>(id);
     }
 
-    uint8_t ScGuest::tshirtColour_get() const
+    JSValue ScGuest::tshirtColour_get(JSContext* ctx, JSValue thisVal)
     {
-        auto peep = GetGuest();
-        return peep != nullptr ? peep->TshirtColour : 0;
+        auto peep = GetGuest(thisVal);
+        return JS_NewUint32(ctx, peep != nullptr ? peep->TshirtColour : 0);
     }
-    void ScGuest::tshirtColour_set(uint8_t value)
+    JSValue ScGuest::tshirtColour_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto peep = GetGuest();
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto peep = GetGuest(thisVal);
         if (peep != nullptr)
         {
             peep->TshirtColour = value;
             peep->Invalidate();
         }
+        return JS_UNDEFINED;
     }
 
-    uint8_t ScGuest::trousersColour_get() const
+    JSValue ScGuest::trousersColour_get(JSContext* ctx, JSValue thisVal)
     {
-        auto peep = GetGuest();
-        return peep != nullptr ? peep->TrousersColour : 0;
+        auto peep = GetGuest(thisVal);
+        return JS_NewUint32(ctx, peep != nullptr ? peep->TrousersColour : 0);
     }
-    void ScGuest::trousersColour_set(uint8_t value)
+    JSValue ScGuest::trousersColour_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto peep = GetGuest();
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto peep = GetGuest(thisVal);
         if (peep != nullptr)
         {
             peep->TrousersColour = value;
             peep->Invalidate();
         }
+        return JS_UNDEFINED;
     }
 
-    uint8_t ScGuest::balloonColour_get() const
+    JSValue ScGuest::balloonColour_get(JSContext* ctx, JSValue thisVal)
     {
-        auto peep = GetGuest();
-        return peep != nullptr ? peep->BalloonColour : 0;
+        auto peep = GetGuest(thisVal);
+        return JS_NewUint32(ctx, peep != nullptr ? peep->BalloonColour : 0);
     }
-    void ScGuest::balloonColour_set(uint8_t value)
+    JSValue ScGuest::balloonColour_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto peep = GetGuest();
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto peep = GetGuest(thisVal);
         if (peep != nullptr)
         {
             peep->BalloonColour = value;
             peep->Invalidate();
         }
+        return JS_UNDEFINED;
     }
 
-    uint8_t ScGuest::hatColour_get() const
+    JSValue ScGuest::hatColour_get(JSContext* ctx, JSValue thisVal)
     {
-        auto peep = GetGuest();
-        return peep != nullptr ? peep->HatColour : 0;
+        auto peep = GetGuest(thisVal);
+        return JS_NewUint32(ctx, peep != nullptr ? peep->HatColour : 0);
     }
-    void ScGuest::hatColour_set(uint8_t value)
+    JSValue ScGuest::hatColour_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto peep = GetGuest();
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto peep = GetGuest(thisVal);
         if (peep != nullptr)
         {
             peep->HatColour = value;
             peep->Invalidate();
         }
+        return JS_UNDEFINED;
     }
 
-    uint8_t ScGuest::umbrellaColour_get() const
+    JSValue ScGuest::umbrellaColour_get(JSContext* ctx, JSValue thisVal)
     {
-        auto peep = GetGuest();
-        return peep != nullptr ? peep->UmbrellaColour : 0;
+        auto peep = GetGuest(thisVal);
+        return JS_NewUint32(ctx, peep != nullptr ? peep->UmbrellaColour : 0);
     }
-    void ScGuest::umbrellaColour_set(uint8_t value)
+    JSValue ScGuest::umbrellaColour_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto peep = GetGuest();
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto peep = GetGuest(thisVal);
         if (peep != nullptr)
         {
             peep->UmbrellaColour = value;
             peep->Invalidate();
         }
+        return JS_UNDEFINED;
     }
 
-    uint8_t ScGuest::happiness_get() const
+    JSValue ScGuest::happiness_get(JSContext* ctx, JSValue thisVal)
     {
-        auto peep = GetGuest();
-        return peep != nullptr ? peep->Happiness : 0;
+        auto peep = GetGuest(thisVal);
+        return JS_NewUint32(ctx, peep != nullptr ? peep->Happiness : 0);
     }
-    void ScGuest::happiness_set(uint8_t value)
+    JSValue ScGuest::happiness_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto peep = GetGuest();
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto peep = GetGuest(thisVal);
         if (peep != nullptr)
         {
             peep->Happiness = value;
         }
+        return JS_UNDEFINED;
     }
 
-    uint8_t ScGuest::happinessTarget_get() const
+    JSValue ScGuest::happinessTarget_get(JSContext* ctx, JSValue thisVal)
     {
-        auto peep = GetGuest();
-        return peep != nullptr ? peep->HappinessTarget : 0;
+        auto peep = GetGuest(thisVal);
+        return JS_NewUint32(ctx, peep != nullptr ? peep->HappinessTarget : 0);
     }
-    void ScGuest::happinessTarget_set(uint8_t value)
+    JSValue ScGuest::happinessTarget_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto peep = GetGuest();
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto peep = GetGuest(thisVal);
         if (peep != nullptr)
         {
             peep->HappinessTarget = value;
         }
+        return JS_UNDEFINED;
     }
 
-    uint8_t ScGuest::nausea_get() const
+    JSValue ScGuest::nausea_get(JSContext* ctx, JSValue thisVal)
     {
-        auto peep = GetGuest();
-        return peep != nullptr ? peep->Nausea : 0;
+        auto peep = GetGuest(thisVal);
+        return JS_NewUint32(ctx, peep != nullptr ? peep->Nausea : 0);
     }
-    void ScGuest::nausea_set(uint8_t value)
+    JSValue ScGuest::nausea_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto peep = GetGuest();
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto peep = GetGuest(thisVal);
         if (peep != nullptr)
         {
             peep->Nausea = value;
         }
+        return JS_UNDEFINED;
     }
 
-    uint8_t ScGuest::nauseaTarget_get() const
+    JSValue ScGuest::nauseaTarget_get(JSContext* ctx, JSValue thisVal)
     {
-        auto peep = GetGuest();
-        return peep != nullptr ? peep->NauseaTarget : 0;
+        auto peep = GetGuest(thisVal);
+        return JS_NewUint32(ctx, peep != nullptr ? peep->NauseaTarget : 0);
     }
-    void ScGuest::nauseaTarget_set(uint8_t value)
+    JSValue ScGuest::nauseaTarget_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto peep = GetGuest();
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto peep = GetGuest(thisVal);
         if (peep != nullptr)
         {
             peep->NauseaTarget = value;
         }
+        return JS_UNDEFINED;
     }
 
-    uint8_t ScGuest::hunger_get() const
+    JSValue ScGuest::hunger_get(JSContext* ctx, JSValue thisVal)
     {
-        auto peep = GetGuest();
-        return peep != nullptr ? peep->Hunger : 0;
+        auto peep = GetGuest(thisVal);
+        return JS_NewUint32(ctx, peep != nullptr ? peep->Hunger : 0);
     }
-    void ScGuest::hunger_set(uint8_t value)
+    JSValue ScGuest::hunger_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto peep = GetGuest();
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto peep = GetGuest(thisVal);
         if (peep != nullptr)
         {
             peep->Hunger = value;
         }
+        return JS_UNDEFINED;
     }
 
-    uint8_t ScGuest::thirst_get() const
+    JSValue ScGuest::thirst_get(JSContext* ctx, JSValue thisVal)
     {
-        auto peep = GetGuest();
-        return peep != nullptr ? peep->Thirst : 0;
+        auto peep = GetGuest(thisVal);
+        return JS_NewUint32(ctx, peep != nullptr ? peep->Thirst : 0);
     }
-    void ScGuest::thirst_set(uint8_t value)
+    JSValue ScGuest::thirst_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto peep = GetGuest();
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto peep = GetGuest(thisVal);
         if (peep != nullptr)
         {
             peep->Thirst = value;
         }
+        return JS_UNDEFINED;
     }
 
-    uint8_t ScGuest::toilet_get() const
+    JSValue ScGuest::toilet_get(JSContext* ctx, JSValue thisVal)
     {
-        auto peep = GetGuest();
-        return peep != nullptr ? peep->Toilet : 0;
+        auto peep = GetGuest(thisVal);
+        return JS_NewUint32(ctx, peep != nullptr ? peep->Toilet : 0);
     }
-    void ScGuest::toilet_set(uint8_t value)
+    JSValue ScGuest::toilet_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto peep = GetGuest();
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto peep = GetGuest(thisVal);
         if (peep != nullptr)
         {
             peep->Toilet = value;
         }
+        return JS_UNDEFINED;
     }
 
-    uint8_t ScGuest::mass_get() const
+    JSValue ScGuest::mass_get(JSContext* ctx, JSValue thisVal)
     {
-        auto peep = GetGuest();
-        return peep != nullptr ? peep->Mass : 0;
+        auto peep = GetGuest(thisVal);
+        return JS_NewUint32(ctx, peep != nullptr ? peep->Mass : 0);
     }
-    void ScGuest::mass_set(uint8_t value)
+    JSValue ScGuest::mass_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto peep = GetGuest();
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto peep = GetGuest(thisVal);
         if (peep != nullptr)
         {
             peep->Mass = value;
         }
+        return JS_UNDEFINED;
     }
 
-    uint8_t ScGuest::minIntensity_get() const
+    JSValue ScGuest::minIntensity_get(JSContext* ctx, JSValue thisVal)
     {
-        auto peep = GetGuest();
-        return peep != nullptr ? peep->Intensity.GetMinimum() : 0;
+        auto peep = GetGuest(thisVal);
+        return JS_NewUint32(ctx, peep != nullptr ? peep->Intensity.GetMinimum() : 0);
     }
-    void ScGuest::minIntensity_set(uint8_t value)
+    JSValue ScGuest::minIntensity_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto peep = GetGuest();
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto peep = GetGuest(thisVal);
         if (peep != nullptr)
         {
             peep->Intensity = peep->Intensity.WithMinimum(value);
         }
+        return JS_UNDEFINED;
     }
 
-    uint8_t ScGuest::maxIntensity_get() const
+    JSValue ScGuest::maxIntensity_get(JSContext* ctx, JSValue thisVal)
     {
-        auto peep = GetGuest();
-        return peep != nullptr ? peep->Intensity.GetMaximum() : 0;
+        auto peep = GetGuest(thisVal);
+        return JS_NewUint32(ctx, peep != nullptr ? peep->Intensity.GetMaximum() : 0);
     }
-    void ScGuest::maxIntensity_set(uint8_t value)
+    JSValue ScGuest::maxIntensity_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto peep = GetGuest();
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto peep = GetGuest(thisVal);
         if (peep != nullptr)
         {
             peep->Intensity = peep->Intensity.WithMaximum(value);
         }
+        return JS_UNDEFINED;
     }
 
-    uint8_t ScGuest::nauseaTolerance_get() const
+    JSValue ScGuest::nauseaTolerance_get(JSContext* ctx, JSValue thisVal)
     {
-        auto peep = GetGuest();
-        return peep != nullptr ? EnumValue(peep->NauseaTolerance) : 0;
+        auto peep = GetGuest(thisVal);
+        return JS_NewUint32(ctx, peep != nullptr ? EnumValue(peep->NauseaTolerance) : 0);
     }
-    void ScGuest::nauseaTolerance_set(uint8_t value)
+    JSValue ScGuest::nauseaTolerance_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto peep = GetGuest();
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto peep = GetGuest(thisVal);
         if (peep != nullptr)
         {
             peep->NauseaTolerance = static_cast<PeepNauseaTolerance>(std::min<uint8_t>(value, 3));
         }
+        return JS_UNDEFINED;
     }
 
-    int32_t ScGuest::cash_get() const
+    JSValue ScGuest::cash_get(JSContext* ctx, JSValue thisVal)
     {
-        auto peep = GetGuest();
-        return peep != nullptr ? peep->CashInPocket : 0;
+        auto peep = GetGuest(thisVal);
+        return JS_NewInt32(ctx, peep != nullptr ? peep->CashInPocket : 0);
     }
-    void ScGuest::cash_set(int32_t value)
+    JSValue ScGuest::cash_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto peep = GetGuest();
+        JS_UNPACK_INT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto peep = GetGuest(thisVal);
         if (peep != nullptr)
         {
             peep->CashInPocket = std::max(0, value);
         }
+        return JS_UNDEFINED;
     }
 
-    bool ScGuest::isInPark_get() const
+    JSValue ScGuest::isInPark_get(JSContext* ctx, JSValue thisVal)
     {
-        auto peep = GetGuest();
-        return (peep != nullptr && !peep->OutsideOfPark);
+        auto peep = GetGuest(thisVal);
+        return JS_NewBool(ctx, peep != nullptr && !peep->OutsideOfPark);
     }
 
-    bool ScGuest::isLost_get() const
+    JSValue ScGuest::isLost_get(JSContext* ctx, JSValue thisVal)
     {
-        auto peep = GetGuest();
-        return (peep != nullptr && peep->GuestIsLostCountdown < 90);
+        auto peep = GetGuest(thisVal);
+        return JS_NewBool(ctx, peep != nullptr && peep->GuestIsLostCountdown < 90);
     }
 
-    uint8_t ScGuest::lostCountdown_get() const
+    JSValue ScGuest::lostCountdown_get(JSContext* ctx, JSValue thisVal)
     {
-        auto peep = GetGuest();
-        return peep != nullptr ? peep->GuestIsLostCountdown : 0;
+        auto peep = GetGuest(thisVal);
+        return JS_NewUint32(ctx, peep != nullptr ? peep->GuestIsLostCountdown : 0);
     }
-    void ScGuest::lostCountdown_set(uint8_t value)
+    JSValue ScGuest::lostCountdown_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto peep = GetGuest();
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto peep = GetGuest(thisVal);
         if (peep != nullptr)
         {
             peep->GuestIsLostCountdown = value;
         }
+        return JS_UNDEFINED;
     }
 
-    DukValue ScGuest::favouriteRide_get() const
+    JSValue ScGuest::favouriteRide_get(JSContext* ctx, JSValue thisVal)
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
-        auto peep = GetGuest();
+        auto peep = GetGuest(thisVal);
         if (peep != nullptr)
         {
             if (peep->FavouriteRide != RideId::GetNull())
             {
-                duk_push_int(ctx, peep->FavouriteRide.ToUnderlying());
-            }
-            else
-            {
-                duk_push_null(ctx);
+                return JS_NewUint32(ctx, peep->FavouriteRide.ToUnderlying());
             }
         }
-        else
-        {
-            duk_push_null(ctx);
-        }
-        return DukValue::take_from_stack(ctx);
+        return JS_NULL;
     }
 
-    void ScGuest::favouriteRide_set(const DukValue& value)
+    JSValue ScGuest::favouriteRide_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto peep = GetGuest();
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto peep = GetGuest(thisVal);
         if (peep != nullptr)
         {
             auto& gameState = getGameState();
-            if (value.type() == DukValue::Type::NUMBER && value.as_uint() < gameState.rides.size()
-                && gameState.rides[value.as_uint()].type != kRideTypeNull)
-            {
-                peep->FavouriteRide = RideId::FromUnderlying(value.as_uint());
-            }
-            else
+            if (JS_IsNull(jsValue))
             {
                 peep->FavouriteRide = RideId::GetNull();
             }
+            else if (JS_IsNumber(jsValue))
+            {
+                JS_UNPACK_UINT32(rideId, ctx, jsValue);
+                if (rideId < gameState.rides.size() && gameState.rides[rideId].type != kRideTypeNull)
+                {
+                    peep->FavouriteRide = RideId::FromUnderlying(rideId);
+                }
+            }
         }
+        return JS_UNDEFINED;
     }
 
-    DukValue ScGuest::thoughts_get() const
+    JSValue ScGuest::thoughts_get(JSContext* ctx, JSValue thisVal)
     {
-        auto ctx = GetContext()->GetScriptEngine().GetContext();
+        auto array = JS_NewArray(ctx);
 
-        duk_push_array(ctx);
-
-        auto peep = GetGuest();
+        auto peep = GetGuest(thisVal);
         if (peep != nullptr)
         {
-            duk_uarridx_t index = 0;
+            auto index = 0;
             for (const auto& thought : peep->Thoughts)
             {
                 if (thought.type == PeepThoughtType::None)
                     break;
                 if (thought.freshness == 0)
                     continue;
-                auto scThoughtPtr = std::make_shared<ScThought>(thought);
-                auto dukThought = GetObjectAsDukValue(ctx, scThoughtPtr);
-                dukThought.push();
-                duk_put_prop_index(ctx, -2, index);
-                index++;
+                auto scThought = gScThought.New(ctx, thought);
+                JS_SetPropertyInt64(ctx, array, index++, scThought);
             }
         }
 
-        return DukValue::take_from_stack(ctx, -1);
+        return array;
     }
 
-    DukValue ScGuest::items_get() const
+    JSValue ScGuest::items_get(JSContext* ctx, JSValue thisVal)
     {
-        auto ctx = GetContext()->GetScriptEngine().GetContext();
+        auto array = JS_NewArray(ctx);
 
-        duk_push_array(ctx);
-
-        auto peep = GetGuest();
+        auto peep = GetGuest(thisVal);
         if (peep != nullptr)
         {
-            duk_uarridx_t index = 0;
+            auto index = 0;
             for (const auto& itemEnumPair : ShopItemMap)
             {
                 auto shopItem = itemEnumPair.second;
@@ -573,72 +601,74 @@ namespace OpenRCT2::Scripting
                 }
 
                 // GuestItem
-                auto obj = DukObject(ctx);
-                obj.Set("type", itemEnumPair.first);
+                auto obj = JS_NewObject(ctx);
+                JS_SetPropertyStr(ctx, obj, "type", JSFromStdString(ctx, itemEnumPair.first));
 
                 if (shopItem == ShopItem::voucher)
                 {
                     // Voucher
-                    obj.Set("voucherType", VoucherTypeMap[peep->VoucherType]);
+                    JS_SetPropertyStr(ctx, obj, "voucherType", JSFromStdString(ctx, VoucherTypeMap[peep->VoucherType]));
                     if (peep->VoucherType == VOUCHER_TYPE_RIDE_FREE)
                     {
                         // RideVoucher
-                        obj.Set("rideId", peep->VoucherRideId.ToUnderlying());
+                        JS_SetPropertyStr(ctx, obj, "rideId", JS_NewUint32(ctx, peep->VoucherRideId.ToUnderlying()));
                     }
                     else if (peep->VoucherType == VOUCHER_TYPE_FOOD_OR_DRINK_FREE)
                     {
                         // FoodDrinkVoucher
-                        obj.Set("item", ShopItemMap[peep->VoucherShopItem]);
+                        JS_SetPropertyStr(ctx, obj, "item", JSFromStdString(ctx, ShopItemMap[peep->VoucherShopItem]));
                     }
                 }
                 else if (GetShopItemDescriptor(shopItem).IsPhoto())
                 {
                     // GuestPhoto
+                    RideId rideId;
                     switch (shopItem)
                     {
                         case ShopItem::photo:
-                            obj.Set("rideId", peep->Photo1RideRef.ToUnderlying());
+                            rideId = peep->Photo1RideRef;
                             break;
                         case ShopItem::photo2:
-                            obj.Set("rideId", peep->Photo2RideRef.ToUnderlying());
+                            rideId = peep->Photo2RideRef;
                             break;
                         case ShopItem::photo3:
-                            obj.Set("rideId", peep->Photo3RideRef.ToUnderlying());
+                            rideId = peep->Photo3RideRef;
                             break;
                         case ShopItem::photo4:
-                            obj.Set("rideId", peep->Photo4RideRef.ToUnderlying());
+                            rideId = peep->Photo4RideRef;
                             break;
                         default:
                             // This should not be possible
-                            duk_error(ctx, DUK_ERR_TYPE_ERROR, "Item is photo without a ride ref.");
+                            JS_ThrowPlainError(ctx, "Item is photo without a ride ref.");
+                            return JS_EXCEPTION;
                     }
+
+                    JS_SetPropertyStr(ctx, obj, "rideId", JS_NewUint32(ctx, rideId.ToUnderlying()));
                 }
 
-                auto dukItem = obj.Take();
-                dukItem.push();
-                duk_put_prop_index(ctx, -2, index);
-                index++;
+                JS_SetPropertyInt64(ctx, array, index++, obj);
             }
         }
 
-        return DukValue::take_from_stack(ctx, -1);
+        return array;
     }
 
-    bool ScGuest::has_item(const DukValue& item) const
+    bool ScGuest::has_item(JSContext* ctx, JSValue thisVal, JSValue item)
     {
-        auto peep = GetGuest();
+        auto peep = GetGuest(thisVal);
         if (peep == nullptr)
         {
             return false;
         }
 
-        if (item["type"].type() != DukValue::Type::STRING)
+        auto type = JSToOptionalStdString(ctx, item, "type");
+        if (!type.has_value())
         {
             return false;
         }
 
         // GuestItem
-        auto shopItem = ShopItemMap.TryGet(item["type"].as_string());
+        auto shopItem = ShopItemMap.TryGet(type.value());
         if (!shopItem || !peep->HasItem(*shopItem))
         {
             return false;
@@ -646,10 +676,11 @@ namespace OpenRCT2::Scripting
 
         if (*shopItem == ShopItem::voucher)
         {
-            if (item["voucherType"].type() == DukValue::Type::STRING)
+            auto voucherType = JSToOptionalStdString(ctx, item, "voucherType");
+            if (voucherType.has_value())
             {
                 // Voucher
-                auto voucher = VoucherTypeMap.TryGet(item["voucherType"].as_string());
+                auto voucher = VoucherTypeMap.TryGet(voucherType.value());
                 if (!voucher || *voucher != peep->VoucherType)
                 {
                     return false;
@@ -657,10 +688,11 @@ namespace OpenRCT2::Scripting
 
                 if (*voucher == VOUCHER_TYPE_RIDE_FREE)
                 {
-                    if (item["rideId"].type() == DukValue::Type::NUMBER)
+                    auto rideId = JSToOptionalUint(ctx, item, "rideId");
+                    if (rideId.has_value())
                     {
                         // RideVoucher
-                        if (item["rideId"].as_uint() != peep->VoucherRideId.ToUnderlying())
+                        if (rideId.value() != peep->VoucherRideId.ToUnderlying())
                         {
                             return false;
                         }
@@ -668,10 +700,11 @@ namespace OpenRCT2::Scripting
                 }
                 else if (*voucher == VOUCHER_TYPE_FOOD_OR_DRINK_FREE)
                 {
-                    if (item["item"].type() == DukValue::Type::STRING)
+                    auto foodItem = JSToOptionalStdString(ctx, item, "item");
+                    if (foodItem.has_value())
                     {
                         // FoodDrinkVoucher
-                        auto voucherItem = ShopItemMap.TryGet(item["item"].as_string());
+                        auto voucherItem = ShopItemMap.TryGet(foodItem.value());
                         if (!voucherItem || *voucherItem != peep->VoucherShopItem)
                         {
                             return false;
@@ -683,30 +716,31 @@ namespace OpenRCT2::Scripting
         else if (GetShopItemDescriptor(*shopItem).IsPhoto())
         {
             // GuestPhoto
-            if (item["rideId"].type() == DukValue::Type::NUMBER)
+            auto rideId = JSToOptionalUint(ctx, item, "rideId");
+            if (rideId.has_value())
             {
                 switch (*shopItem)
                 {
                     case ShopItem::photo:
-                        if (item["rideId"].as_uint() != peep->Photo1RideRef.ToUnderlying())
+                        if (rideId.value() != peep->Photo1RideRef.ToUnderlying())
                         {
                             return false;
                         }
                         break;
                     case ShopItem::photo2:
-                        if (item["rideId"].as_uint() != peep->Photo2RideRef.ToUnderlying())
+                        if (rideId.value() != peep->Photo2RideRef.ToUnderlying())
                         {
                             return false;
                         }
                         break;
                     case ShopItem::photo3:
-                        if (item["rideId"].as_uint() != peep->Photo3RideRef.ToUnderlying())
+                        if (rideId.value() != peep->Photo3RideRef.ToUnderlying())
                         {
                             return false;
                         }
                         break;
                     case ShopItem::photo4:
-                        if (item["rideId"].as_uint() != peep->Photo4RideRef.ToUnderlying())
+                        if (rideId.value() != peep->Photo4RideRef.ToUnderlying())
                         {
                             return false;
                         }
@@ -716,74 +750,86 @@ namespace OpenRCT2::Scripting
                 }
             }
         }
-
         return true;
     }
 
-    void ScGuest::give_item(const DukValue& item) const
+    JSValue ScGuest::has_item(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
     {
-        ThrowIfGameStateNotMutable();
-        auto peep = GetGuest();
+        JS_UNPACK_OBJECT(item, ctx, argv[0]);
+        auto result = has_item(ctx, thisVal, item);
+        return JS_NewBool(ctx, result);
+    }
+
+    JSValue ScGuest::give_item(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
+    {
+        JS_UNPACK_OBJECT(item, ctx, argv[0]);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+
+        auto peep = GetGuest(thisVal);
         if (peep == nullptr)
         {
-            return;
+            return JS_UNDEFINED;
         }
 
         // GuestItem
-        if (item["type"].type() != DukValue::Type::STRING)
+        auto type = JSToOptionalStdString(ctx, item, "type");
+        if (!type.has_value())
         {
-            auto ctx = GetContext()->GetScriptEngine().GetContext();
-            duk_error(ctx, DUK_ERR_ERROR, "Invalid 'type'.");
+            JS_ThrowPlainError(ctx, "Invalid 'type'.");
+            return JS_EXCEPTION;
         }
 
-        auto shopItem = ShopItemMap.TryGet(item["type"].as_string());
+        auto shopItem = ShopItemMap.TryGet(type.value());
         if (!shopItem)
         {
-            auto ctx = GetContext()->GetScriptEngine().GetContext();
-            duk_error(ctx, DUK_ERR_ERROR, "Invalid 'type'.");
+            JS_ThrowPlainError(ctx, "Invalid 'type'.");
+            return JS_EXCEPTION;
         }
 
         if (*shopItem == ShopItem::voucher)
         {
             // Voucher
-            if (item["voucherType"].type() != DukValue::Type::STRING)
+            auto voucherTypeName = JSToOptionalStdString(ctx, item, "voucherType");
+            if (!voucherTypeName.has_value())
             {
-                auto ctx = GetContext()->GetScriptEngine().GetContext();
-                duk_error(ctx, DUK_ERR_ERROR, "Invalid 'voucherType'.");
+                JS_ThrowPlainError(ctx, "Invalid 'voucherType'.");
+                return JS_EXCEPTION;
             }
 
-            auto voucherType = VoucherTypeMap.TryGet(item["voucherType"].as_string());
+            auto voucherType = VoucherTypeMap.TryGet(voucherTypeName.value());
             if (!voucherType)
             {
-                auto ctx = GetContext()->GetScriptEngine().GetContext();
-                duk_error(ctx, DUK_ERR_ERROR, "Invalid 'voucherType'.");
+                JS_ThrowPlainError(ctx, "Invalid 'voucherType'.");
+                return JS_EXCEPTION;
             }
 
             if (*voucherType == VOUCHER_TYPE_RIDE_FREE)
             {
                 // RideVoucher
-                if (item["rideId"].type() != DukValue::Type::NUMBER)
+                auto rideId = JSToOptionalUint(ctx, item, "rideId");
+                if (!rideId.has_value())
                 {
-                    auto ctx = GetContext()->GetScriptEngine().GetContext();
-                    duk_error(ctx, DUK_ERR_ERROR, "Invalid 'rideId'.");
+                    JS_ThrowPlainError(ctx, "Invalid 'rideId'.");
+                    return JS_EXCEPTION;
                 }
 
-                peep->VoucherRideId = RideId::FromUnderlying(item["rideId"].as_uint());
+                peep->VoucherRideId = RideId::FromUnderlying(rideId.value());
             }
             else if (*voucherType == VOUCHER_TYPE_FOOD_OR_DRINK_FREE)
             {
                 // FoodDrinkVoucher
-                if (item["item"].type() != DukValue::Type::STRING)
+                auto itemName = JSToOptionalStdString(ctx, item, "item");
+                if (!itemName.has_value())
                 {
-                    auto ctx = GetContext()->GetScriptEngine().GetContext();
-                    duk_error(ctx, DUK_ERR_ERROR, "Invalid 'item' (for food/drink voucher).");
+                    JS_ThrowPlainError(ctx, "Invalid 'item' (for food/drink voucher).");
+                    return JS_EXCEPTION;
                 }
 
-                auto voucherItem = ShopItemMap.TryGet(item["item"].as_string());
+                auto voucherItem = ShopItemMap.TryGet(itemName.value());
                 if (!voucherItem)
                 {
-                    auto ctx = GetContext()->GetScriptEngine().GetContext();
-                    duk_error(ctx, DUK_ERR_ERROR, "Invalid 'item' (for food/drink voucher).");
+                    JS_ThrowPlainError(ctx, "Invalid 'item' (for food/drink voucher).");
+                    return JS_EXCEPTION;
                 }
 
                 peep->VoucherShopItem = *voucherItem;
@@ -794,71 +840,81 @@ namespace OpenRCT2::Scripting
         else if (GetShopItemDescriptor(*shopItem).IsPhoto())
         {
             // GuestPhoto
-            if (item["rideId"].type() != DukValue::Type::NUMBER)
+            auto rideId = JSToOptionalUint(ctx, item, "rideId");
+            if (!rideId.has_value())
             {
-                auto ctx = GetContext()->GetScriptEngine().GetContext();
-                duk_error(ctx, DUK_ERR_ERROR, "Invalid 'rideId'.");
+                JS_ThrowPlainError(ctx, "Invalid 'rideId'.");
+                return JS_EXCEPTION;
             }
 
             switch (*shopItem)
             {
                 case ShopItem::photo:
-                    peep->Photo1RideRef = RideId::FromUnderlying(item["rideId"].as_uint());
+                    peep->Photo1RideRef = RideId::FromUnderlying(rideId.value());
                     break;
                 case ShopItem::photo2:
-                    peep->Photo2RideRef = RideId::FromUnderlying(item["rideId"].as_uint());
+                    peep->Photo2RideRef = RideId::FromUnderlying(rideId.value());
                     break;
                 case ShopItem::photo3:
-                    peep->Photo3RideRef = RideId::FromUnderlying(item["rideId"].as_uint());
+                    peep->Photo3RideRef = RideId::FromUnderlying(rideId.value());
                     break;
                 case ShopItem::photo4:
-                    peep->Photo4RideRef = RideId::FromUnderlying(item["rideId"].as_uint());
+                    peep->Photo4RideRef = RideId::FromUnderlying(rideId.value());
                     break;
                 default:
-                    return;
+                    return JS_UNDEFINED;
             }
         }
 
         peep->GiveItem(*shopItem);
         peep->UpdateAnimationGroup();
+        return JS_UNDEFINED;
     }
 
-    void ScGuest::remove_item(const DukValue& item) const
+    JSValue ScGuest::remove_item(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
     {
-        ThrowIfGameStateNotMutable();
-        if (has_item(item))
+        JS_UNPACK_OBJECT(item, ctx, argv[0]);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        if (has_item(ctx, thisVal, item))
         {
+            auto type = JSToStdString(ctx, item, "type");
+
             // Since guests can only have one item of a type and this item matches, remove it.
-            auto peep = GetGuest();
-            peep->RemoveItem(ShopItemMap[item["type"].as_string()]);
+            auto peep = GetGuest(thisVal);
+            peep->RemoveItem(ShopItemMap[type]);
             peep->UpdateAnimationGroup();
         }
+        return JS_UNDEFINED;
     }
 
-    void ScGuest::remove_all_items() const
+    JSValue ScGuest::remove_all_items(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
     {
-        ThrowIfGameStateNotMutable();
-        auto peep = GetGuest();
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto peep = GetGuest(thisVal);
         if (peep != nullptr)
         {
             peep->RemoveAllItems();
             peep->UpdateAnimationGroup();
         }
+        return JS_UNDEFINED;
     }
 
-    std::vector<std::string> ScGuest::availableAnimations_get() const
+    JSValue ScGuest::availableAnimations_get(JSContext* ctx, JSValue thisVal)
     {
-        std::vector<std::string> availableAnimations{};
+        auto availableAnimations = JS_NewArray(ctx);
+        auto index = 0;
         for (auto& animation : getAnimationsByPeepType(AnimationPeepType::guest))
         {
-            availableAnimations.push_back(std::string(animation.first));
+            JS_SetPropertyInt64(ctx, availableAnimations, index++, JSFromStdString(ctx, animation.first));
         }
         return availableAnimations;
     }
 
-    std::vector<uint32_t> ScGuest::getAnimationSpriteIds(std::string groupKey, uint8_t rotation) const
+    JSValue ScGuest::getAnimationSpriteIds(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
     {
-        std::vector<uint32_t> spriteIds{};
+        JS_UNPACK_STR(groupKey, ctx, argv[0]);
+        JS_UNPACK_UINT32(rotation, ctx, argv[1]);
+        JSValue spriteIds = JS_NewArray(ctx);
 
         auto& availableGuestAnimations = getAnimationsByPeepType(AnimationPeepType::guest);
         auto animationType = availableGuestAnimations.TryGet(groupKey);
@@ -867,13 +923,14 @@ namespace OpenRCT2::Scripting
             return spriteIds;
         }
 
-        auto peep = GetPeep();
+        auto peep = GetPeep(thisVal);
         if (peep != nullptr)
         {
             auto& objManager = GetContext()->GetObjectManager();
             auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
 
             const auto& animationGroup = animObj->GetPeepAnimation(peep->AnimationGroup, *animationType);
+            auto idx = 0;
             for (auto frameOffset : animationGroup.frameOffsets)
             {
                 auto imageId = animationGroup.baseImage;
@@ -882,18 +939,18 @@ namespace OpenRCT2::Scripting
                 else
                     imageId += frameOffset;
 
-                spriteIds.push_back(imageId);
+                JS_SetPropertyInt64(ctx, spriteIds, idx++, JS_NewUint32(ctx, imageId));
             }
         }
         return spriteIds;
     }
 
-    std::string ScGuest::animation_get() const
+    JSValue ScGuest::animation_get(JSContext* ctx, JSValue thisVal)
     {
-        auto* peep = GetGuest();
+        auto* peep = GetGuest(thisVal);
         if (peep == nullptr)
         {
-            return nullptr;
+            return JS_NULL;
         }
 
         auto& availableGuestAnimations = getAnimationsByPeepType(AnimationPeepType::guest);
@@ -904,21 +961,23 @@ namespace OpenRCT2::Scripting
         if (peep->AnimationType == PeepAnimationType::walking && peep->State == PeepState::sitting)
             action = availableGuestAnimations[PeepAnimationType::sittingIdle];
 
-        return std::string(action);
+        return JSFromStdString(ctx, action);
     }
 
-    void ScGuest::animation_set(std::string groupKey)
+    JSValue ScGuest::animation_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
+        JS_UNPACK_STR(groupKey, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
 
         auto& availableGuestAnimations = getAnimationsByPeepType(AnimationPeepType::guest);
         auto newType = availableGuestAnimations.TryGet(groupKey);
         if (newType == std::nullopt)
         {
-            throw DukException() << "Invalid animation for this guest (" << groupKey << ")";
+            JS_ThrowPlainError(ctx, "Invalid animation for this guest (%s)", groupKey.data());
+            return JS_EXCEPTION;
         }
 
-        auto* peep = GetGuest();
+        auto* peep = GetGuest(thisVal);
         peep->AnimationType = peep->NextAnimationType = *newType;
 
         auto offset = 0;
@@ -935,27 +994,27 @@ namespace OpenRCT2::Scripting
         peep->Invalidate();
         peep->UpdateSpriteBoundingBox();
         peep->Invalidate();
+        return JS_UNDEFINED;
     }
 
-    uint8_t ScGuest::animationOffset_get() const
+    JSValue ScGuest::animationOffset_get(JSContext* ctx, JSValue thisVal)
     {
-        auto* peep = GetGuest();
+        auto* peep = GetGuest(thisVal);
         if (peep == nullptr)
         {
-            return 0;
+            return JS_NewUint32(ctx, 0);
         }
 
-        if (peep->IsActionWalking())
-            return peep->WalkingAnimationFrameNum;
-        else
-            return peep->AnimationFrameNum;
+        auto frame = peep->IsActionWalking() ? peep->WalkingAnimationFrameNum : peep->AnimationFrameNum;
+        return JS_NewUint32(ctx, frame);
     }
 
-    void ScGuest::animationOffset_set(uint8_t offset)
+    JSValue ScGuest::animationOffset_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
+        JS_UNPACK_UINT32(offset, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
 
-        auto* peep = GetGuest();
+        auto* peep = GetGuest(thisVal);
 
         auto& objManager = GetContext()->GetObjectManager();
         auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
@@ -971,63 +1030,91 @@ namespace OpenRCT2::Scripting
 
         peep->AnimationImageIdOffset = animationGroup.frameOffsets[offset];
         peep->UpdateSpriteBoundingBox();
+        return JS_UNDEFINED;
     }
 
-    uint8_t ScGuest::animationLength_get() const
+    JSValue ScGuest::animationLength_get(JSContext* ctx, JSValue thisVal)
     {
-        auto* peep = GetGuest();
+        auto* peep = GetGuest(thisVal);
         if (peep == nullptr)
         {
-            return 0;
+            return JS_NewUint32(ctx, 0);
         }
 
         auto& objManager = GetContext()->GetObjectManager();
         auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
 
         const auto& animationGroup = animObj->GetPeepAnimation(peep->AnimationGroup, peep->AnimationType);
-        return static_cast<uint8_t>(animationGroup.frameOffsets.size());
+        return JS_NewUint32(ctx, static_cast<uint32_t>(animationGroup.frameOffsets.size()));
     }
 
-    ScThought::ScThought(PeepThought backing)
-        : _backing(backing)
+    using OpaqueThoughtData = struct
     {
+        PeepThought thought;
+    };
+
+    JSValue ScThought::New(JSContext* ctx, PeepThought thought)
+    {
+        static constexpr JSCFunctionListEntry funcs[] = {
+            JS_CGETSET_DEF("type", &ScThought::type_get, nullptr),
+            JS_CGETSET_DEF("item", &ScThought::item_get, nullptr),
+            JS_CGETSET_DEF("freshness", &ScThought::freshness_get, nullptr),
+            JS_CGETSET_DEF("freshTimeout", &ScThought::freshTimeout_get, nullptr),
+            JS_CFUNC_DEF("toString", 0, &ScThought::toString),
+        };
+        return MakeWithOpaque(ctx, funcs, new OpaqueThoughtData{ thought });
     }
 
-    void ScThought::Register(duk_context* ctx)
+    void ScThought::Register(JSContext* ctx)
     {
-        dukglue_register_property(ctx, &ScThought::type_get, nullptr, "type");
-        dukglue_register_property(ctx, &ScThought::item_get, nullptr, "item");
-        dukglue_register_property(ctx, &ScThought::freshness_get, nullptr, "freshness");
-        dukglue_register_property(ctx, &ScThought::freshTimeout_get, nullptr, "freshTimeout");
-        dukglue_register_method(ctx, &ScThought::toString, "toString");
+        RegisterBaseStr(ctx, "Thought", Finalize);
     }
 
-    std::string ScThought::type_get() const
+    void ScThought::Finalize(JSRuntime* rt, JSValue thisVal)
     {
-        return std::string(ThoughtTypeMap[_backing.type]);
+        OpaqueThoughtData* data = gScThought.GetOpaque<OpaqueThoughtData*>(thisVal);
+        if (data)
+            delete data;
     }
 
-    uint16_t ScThought::item_get() const
+    PeepThought ScThought::GetThought(JSValue thisVal)
     {
-        return _backing.item;
+        OpaqueThoughtData* data = gScThought.GetOpaque<OpaqueThoughtData*>(thisVal);
+        return data->thought;
     }
 
-    uint8_t ScThought::freshness_get() const
+    JSValue ScThought::type_get(JSContext* ctx, JSValue thisVal)
     {
-        return _backing.freshness;
+        auto thought = GetThought(thisVal);
+        return JSFromStdString(ctx, ThoughtTypeMap[thought.type]);
     }
 
-    uint8_t ScThought::freshTimeout_get() const
+    JSValue ScThought::item_get(JSContext* ctx, JSValue thisVal)
     {
-        return _backing.fresh_timeout;
+        auto thought = GetThought(thisVal);
+        return JS_NewUint32(ctx, thought.item);
     }
 
-    std::string ScThought::toString() const
+    JSValue ScThought::freshness_get(JSContext* ctx, JSValue thisVal)
     {
+        auto thought = GetThought(thisVal);
+        return JS_NewUint32(ctx, thought.freshness);
+    }
+
+    JSValue ScThought::freshTimeout_get(JSContext* ctx, JSValue thisVal)
+    {
+        auto thought = GetThought(thisVal);
+        return JS_NewUint32(ctx, thought.fresh_timeout);
+    }
+
+    JSValue ScThought::toString(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
+    {
+        auto thought = GetThought(thisVal);
         // format string with arguments
         auto ft = Formatter();
-        PeepThoughtSetFormatArgs(&_backing, ft);
-        return FormatStringIDLegacy(STR_STRINGID, ft.Data());
+        PeepThoughtSetFormatArgs(&thought, ft);
+        auto result = FormatStringIDLegacy(STR_STRINGID, ft.Data());
+        return JSFromStdString(ctx, result);
     }
 
 } // namespace OpenRCT2::Scripting

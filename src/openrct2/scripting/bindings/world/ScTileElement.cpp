@@ -31,7 +31,6 @@
     #include "../../../world/tile_element/SurfaceElement.h"
     #include "../../../world/tile_element/TrackElement.h"
     #include "../../../world/tile_element/WallElement.h"
-    #include "../../Duktape.hpp"
     #include "../../ScriptEngine.h"
 
     #include <cstdio>
@@ -40,15 +39,9 @@
 
 namespace OpenRCT2::Scripting
 {
-    ScTileElement::ScTileElement(const CoordsXY& coords, TileElement* element)
-        : _coords(coords)
-        , _element(element)
+    static inline std::string TileElementTypeToString(const TileElement* element)
     {
-    }
-
-    std::string ScTileElement::type_get() const
-    {
-        switch (_element->GetType())
+        switch (element->GetType())
         {
             case TileElementType::Surface:
                 return "surface";
@@ -71,1809 +64,1964 @@ namespace OpenRCT2::Scripting
         }
     }
 
-    void ScTileElement::type_set(std::string value)
+    using OpaqueTileElementData = struct
     {
-        RemoveBannerEntryIfNeeded();
+        TileElement* element;
+        CoordsXY coords;
+    };
+
+    static inline void Invalidate(OpaqueTileElementData* data)
+    {
+        MapInvalidateTileFull(data->coords);
+    }
+
+    JSValue ScTileElement::type_get(JSContext* ctx, JSValue thisValue)
+    {
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto element = data->element;
+        auto type = TileElementTypeToString(element);
+        return JSFromStdString(ctx, type);
+    }
+
+    JSValue ScTileElement::type_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
+    {
+        JS_UNPACK_STR(value, ctx, jsValue);
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto element = data->element;
+        RemoveBannerEntryIfNeeded(element, data->coords);
         if (value == "surface")
-            _element->SetType(TileElementType::Surface);
+            element->SetType(TileElementType::Surface);
         else if (value == "footpath")
-            _element->SetType(TileElementType::Path);
+            element->SetType(TileElementType::Path);
         else if (value == "track")
-            _element->SetType(TileElementType::Track);
+            element->SetType(TileElementType::Track);
         else if (value == "small_scenery")
-            _element->SetType(TileElementType::SmallScenery);
+            element->SetType(TileElementType::SmallScenery);
         else if (value == "entrance")
-            _element->SetType(TileElementType::Entrance);
+            element->SetType(TileElementType::Entrance);
         else if (value == "wall")
-            _element->SetType(TileElementType::Wall);
+            element->SetType(TileElementType::Wall);
         else if (value == "large_scenery")
-            _element->SetType(TileElementType::LargeScenery);
+            element->SetType(TileElementType::LargeScenery);
         else if (value == "banner")
-            _element->SetType(TileElementType::Banner);
+            element->SetType(TileElementType::Banner);
         else
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
             scriptEngine.LogPluginInfo("Element type not recognised!");
-            return;
+            return JS_UNDEFINED;
         }
-        CreateBannerEntryIfNeeded();
-        Invalidate();
+        CreateBannerEntryIfNeeded(element, data->coords);
+        Invalidate(data);
+        return JS_UNDEFINED;
     }
 
-    uint8_t ScTileElement::baseHeight_get() const
+    JSValue ScTileElement::baseHeight_get(JSContext* ctx, JSValue thisValue)
     {
-        return _element->BaseHeight;
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto element = data->element;
+        return JS_NewUint32(ctx, element->BaseHeight);
     }
-    void ScTileElement::baseHeight_set(uint8_t newBaseHeight)
+    JSValue ScTileElement::baseHeight_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        _element->BaseHeight = newBaseHeight;
-        Invalidate();
-    }
-
-    uint16_t ScTileElement::baseZ_get() const
-    {
-        return _element->GetBaseZ();
-    }
-    void ScTileElement::baseZ_set(uint16_t value)
-    {
-        ThrowIfGameStateNotMutable();
-        _element->SetBaseZ(value);
-        Invalidate();
+        JS_UNPACK_UINT32(newBaseHeight, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        data->element->BaseHeight = newBaseHeight;
+        Invalidate(data);
+        return JS_UNDEFINED;
     }
 
-    uint8_t ScTileElement::clearanceHeight_get() const
+    JSValue ScTileElement::baseZ_get(JSContext* ctx, JSValue thisValue)
     {
-        return _element->ClearanceHeight;
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto element = data->element;
+        return JS_NewUint32(ctx, element->GetBaseZ());
     }
-    void ScTileElement::clearanceHeight_set(uint8_t newClearanceHeight)
+    JSValue ScTileElement::baseZ_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        _element->ClearanceHeight = newClearanceHeight;
-        Invalidate();
-    }
-
-    uint16_t ScTileElement::clearanceZ_get() const
-    {
-        return _element->GetClearanceZ();
-    }
-    void ScTileElement::clearanceZ_set(uint16_t value)
-    {
-        ThrowIfGameStateNotMutable();
-        _element->SetClearanceZ(value);
-        Invalidate();
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        data->element->SetBaseZ(value);
+        Invalidate(data);
+        return JS_UNDEFINED;
     }
 
-    DukValue ScTileElement::slope_get() const
+    JSValue ScTileElement::clearanceHeight_get(JSContext* ctx, JSValue thisValue)
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
-        switch (_element->GetType())
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto element = data->element;
+        return JS_NewUint32(ctx, element->ClearanceHeight);
+    }
+    JSValue ScTileElement::clearanceHeight_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
+    {
+        JS_UNPACK_UINT32(newClearanceHeight, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        data->element->ClearanceHeight = newClearanceHeight;
+        Invalidate(data);
+        return JS_UNDEFINED;
+    }
+
+    JSValue ScTileElement::clearanceZ_get(JSContext* ctx, JSValue thisValue)
+    {
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto element = data->element;
+        return JS_NewUint32(ctx, element->GetClearanceZ());
+    }
+    JSValue ScTileElement::clearanceZ_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
+    {
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        data->element->SetClearanceZ(value);
+        Invalidate(data);
+        return JS_UNDEFINED;
+    }
+
+    JSValue ScTileElement::slope_get(JSContext* ctx, JSValue thisValue)
+    {
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto element = data->element;
+        switch (element->GetType())
         {
             case TileElementType::Surface:
             {
-                auto* el = _element->AsSurface();
-                duk_push_int(ctx, el->GetSlope());
-                break;
+                auto* el = element->AsSurface();
+                return JS_NewUint32(ctx, el->GetSlope());
             }
             case TileElementType::Wall:
             {
-                auto* el = _element->AsWall();
-                duk_push_int(ctx, el->GetSlope());
-                break;
+                auto* el = element->AsWall();
+                return JS_NewUint32(ctx, el->GetSlope());
             }
             default:
             {
+                auto& scriptEngine = GetContext()->GetScriptEngine();
                 scriptEngine.LogPluginInfo(
                     "Cannot read 'slope' property, tile element is not a SurfaceElement or WallElement.");
-                duk_push_null(ctx);
-                break;
+                return JS_NULL;
             }
         }
-        return DukValue::take_from_stack(ctx);
     }
-    void ScTileElement::slope_set(uint8_t value)
+    JSValue ScTileElement::slope_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        const auto type = _element->GetType();
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto element = data->element;
+        const auto type = element->GetType();
 
         if (type == TileElementType::Surface)
         {
-            auto* el = _element->AsSurface();
+            auto* el = element->AsSurface();
             el->SetSlope(value);
-            Invalidate();
+            Invalidate(data);
         }
         else if (type == TileElementType::Wall)
         {
-            auto* el = _element->AsWall();
+            auto* el = element->AsWall();
             el->SetSlope(value);
-            Invalidate();
+            Invalidate(data);
         }
         else
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
             scriptEngine.LogPluginInfo("Cannot set 'slope' property, tile element is not a SurfaceElement or WallElement.");
         }
+        return JS_UNDEFINED;
     }
 
-    DukValue ScTileElement::waterHeight_get() const
+    JSValue ScTileElement::waterHeight_get(JSContext* ctx, JSValue thisValue)
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
-        auto* el = _element->AsSurface();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsSurface();
         if (el != nullptr)
         {
-            duk_push_int(ctx, el->GetWaterHeight());
+            return JS_NewInt32(ctx, el->GetWaterHeight());
         }
         else
         {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
             scriptEngine.LogPluginInfo("Cannot read 'waterHeight' property, tile element is not a SurfaceElement.");
-            duk_push_null(ctx);
+            return JS_NULL;
         }
-        return DukValue::take_from_stack(ctx);
     }
-    void ScTileElement::waterHeight_set(int32_t value)
+    JSValue ScTileElement::waterHeight_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto* el = _element->AsSurface();
+        JS_UNPACK_INT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsSurface();
         if (el == nullptr)
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
             scriptEngine.LogPluginInfo("Cannot set 'waterHeight' property, tile element is not a SurfaceElement.");
-            return;
+            return JS_UNDEFINED;
         }
 
         el->SetWaterHeight(value);
-        Invalidate();
+        Invalidate(data);
+        return JS_UNDEFINED;
     }
 
-    DukValue ScTileElement::surfaceStyle_get() const
+    JSValue ScTileElement::surfaceStyle_get(JSContext* ctx, JSValue thisValue)
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
-        auto* el = _element->AsSurface();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsSurface();
         if (el != nullptr)
         {
-            duk_push_int(ctx, el->GetSurfaceObjectIndex());
+            return JS_NewUint32(ctx, el->GetSurfaceObjectIndex());
         }
         else
         {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
             scriptEngine.LogPluginInfo("Cannot read 'surfaceStyle' property, tile element is not a SurfaceElement.");
-            duk_push_null(ctx);
+            return JS_NULL;
         }
-        return DukValue::take_from_stack(ctx);
     }
-    void ScTileElement::surfaceStyle_set(uint32_t value)
+    JSValue ScTileElement::surfaceStyle_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto* el = _element->AsSurface();
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsSurface();
         if (el == nullptr)
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
             scriptEngine.LogPluginInfo("Cannot set 'surfaceStyle' property, tile element is not a SurfaceElement.");
-            return;
+            return JS_UNDEFINED;
         }
 
         el->SetSurfaceObjectIndex(value);
-        Invalidate();
+        Invalidate(data);
+        return JS_UNDEFINED;
     }
 
-    DukValue ScTileElement::edgeStyle_get() const
+    JSValue ScTileElement::edgeStyle_get(JSContext* ctx, JSValue thisValue)
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
-        auto* el = _element->AsSurface();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsSurface();
         if (el != nullptr)
         {
-            duk_push_int(ctx, el->GetEdgeObjectIndex());
+            return JS_NewUint32(ctx, el->GetEdgeObjectIndex());
         }
         else
         {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
             scriptEngine.LogPluginInfo("Cannot read 'edgeStyle' property, tile element is not a SurfaceElement.");
-            duk_push_null(ctx);
+            return JS_NULL;
         }
-        return DukValue::take_from_stack(ctx);
     }
-    void ScTileElement::edgeStyle_set(uint32_t value)
+    JSValue ScTileElement::edgeStyle_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto* el = _element->AsSurface();
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsSurface();
         if (el == nullptr)
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
             scriptEngine.LogPluginInfo("Cannot set 'edgeStyle' property, tile element is not a SurfaceElement.");
-            return;
+            return JS_UNDEFINED;
         }
 
         el->SetEdgeObjectIndex(value);
-        Invalidate();
+        Invalidate(data);
+        return JS_UNDEFINED;
     }
 
-    DukValue ScTileElement::grassLength_get() const
+    JSValue ScTileElement::grassLength_get(JSContext* ctx, JSValue thisValue)
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
-        auto* el = _element->AsSurface();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsSurface();
         if (el != nullptr)
         {
-            duk_push_int(ctx, el->GetGrassLength());
+            return JS_NewUint32(ctx, el->GetGrassLength());
         }
         else
         {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
             scriptEngine.LogPluginInfo("Cannot read 'grassLength' property, tile element is not a SurfaceElement.");
-            duk_push_null(ctx);
+            return JS_NULL;
         }
-        return DukValue::take_from_stack(ctx);
     }
-    void ScTileElement::grassLength_set(uint8_t value)
+    JSValue ScTileElement::grassLength_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto* el = _element->AsSurface();
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsSurface();
         if (el == nullptr)
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
             scriptEngine.LogPluginInfo("Cannot set 'grassLength' property, tile element is not a SurfaceElement.");
-            return;
+            return JS_UNDEFINED;
         }
 
         // TODO: Give warning when value > GRASS_LENGTH_CLUMPS_2
-        el->SetGrassLengthAndInvalidate(value, _coords);
-        Invalidate();
+        el->SetGrassLengthAndInvalidate(value, data->coords);
+        Invalidate(data);
+        return JS_UNDEFINED;
     }
 
-    DukValue ScTileElement::hasOwnership_get() const
+    JSValue ScTileElement::hasOwnership_get(JSContext* ctx, JSValue thisValue)
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
-        auto* el = _element->AsSurface();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsSurface();
         if (el != nullptr)
         {
-            duk_push_boolean(ctx, el->GetOwnership() & OWNERSHIP_OWNED);
+            return JS_NewBool(ctx, el->GetOwnership() & OWNERSHIP_OWNED);
         }
         else
         {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
             scriptEngine.LogPluginInfo("Cannot read 'hasOwnership' property, tile element is not a SurfaceElement.");
-            duk_push_null(ctx);
+            return JS_NULL;
         }
-        return DukValue::take_from_stack(ctx);
     }
 
-    DukValue ScTileElement::hasConstructionRights_get()
+    JSValue ScTileElement::hasConstructionRights_get(JSContext* ctx, JSValue thisValue)
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
-        auto* el = _element->AsSurface();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsSurface();
         if (el != nullptr)
         {
             auto ownership = el->GetOwnership();
-            duk_push_boolean(ctx, (ownership & OWNERSHIP_OWNED) || (ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED));
+            return JS_NewBool(ctx, (ownership & OWNERSHIP_OWNED) || (ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED));
         }
         else
         {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
             scriptEngine.LogPluginInfo("Cannot read 'hasConstructionRights' property, tile element is not a SurfaceElement.");
-            duk_push_null(ctx);
+            return JS_NULL;
         }
-        return DukValue::take_from_stack(ctx);
     }
 
-    DukValue ScTileElement::ownership_get() const
+    JSValue ScTileElement::ownership_get(JSContext* ctx, JSValue thisValue)
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
-        auto* el = _element->AsSurface();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsSurface();
         if (el != nullptr)
         {
-            duk_push_int(ctx, el->GetOwnership());
+            return JS_NewUint32(ctx, el->GetOwnership());
         }
         else
         {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
             scriptEngine.LogPluginInfo("Cannot read 'ownership' property, tile element is not a SurfaceElement.");
-            duk_push_null(ctx);
+            return JS_NULL;
         }
-        return DukValue::take_from_stack(ctx);
     }
-    void ScTileElement::ownership_set(uint8_t value)
+    JSValue ScTileElement::ownership_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto* el = _element->AsSurface();
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsSurface();
         if (el == nullptr)
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
             scriptEngine.LogPluginInfo("Cannot set 'ownership' property, tile element is not a SurfaceElement.");
-            return;
+            return JS_UNDEFINED;
         }
 
         el->SetOwnership(value);
-        Invalidate();
+        Invalidate(data);
+        return JS_UNDEFINED;
     }
 
-    DukValue ScTileElement::parkFences_get() const
+    JSValue ScTileElement::parkFences_get(JSContext* ctx, JSValue thisValue)
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
-        auto* el = _element->AsSurface();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsSurface();
         if (el != nullptr)
         {
-            duk_push_int(ctx, el->GetParkFences());
+            return JS_NewUint32(ctx, el->GetParkFences());
         }
         else
         {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
             scriptEngine.LogPluginInfo("Cannot read 'parkFences' property, tile element is not a SurfaceElement.");
-            duk_push_null(ctx);
+            return JS_NULL;
         }
-        return DukValue::take_from_stack(ctx);
     }
-    void ScTileElement::parkFences_set(uint8_t value)
+    JSValue ScTileElement::parkFences_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto* el = _element->AsSurface();
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsSurface();
         if (el == nullptr)
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
             scriptEngine.LogPluginInfo("Cannot set 'parkFences' property, tile element is not a SurfaceElement.");
-            return;
+            return JS_UNDEFINED;
         }
 
         el->SetParkFences(value);
-        Invalidate();
+        return JS_UNDEFINED;
     }
 
-    DukValue ScTileElement::trackType_get() const
+    JSValue ScTileElement::trackType_get(JSContext* ctx, JSValue thisValue)
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
-        auto* el = _element->AsTrack();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsTrack();
         if (el != nullptr)
         {
-            duk_push_int(ctx, EnumValue(el->GetTrackType()));
+            return JS_NewUint32(ctx, EnumValue(el->GetTrackType()));
         }
         else
         {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
             scriptEngine.LogPluginInfo("Cannot read 'trackType' property, tile element is not a TrackElement.");
-            duk_push_null(ctx);
+            return JS_NULL;
         }
-        return DukValue::take_from_stack(ctx);
     }
-    void ScTileElement::trackType_set(uint16_t value)
+    JSValue ScTileElement::trackType_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto* el = _element->AsTrack();
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsTrack();
         if (el == nullptr)
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
             scriptEngine.LogPluginInfo("Cannot set 'trackType' property, tile element is not a TrackElement.");
-            return;
+            return JS_UNDEFINED;
         }
 
         el->SetTrackType(static_cast<TrackElemType>(value));
-        Invalidate();
+        Invalidate(data);
+        return JS_UNDEFINED;
     }
 
-    DukValue ScTileElement::rideType_get() const
+    JSValue ScTileElement::rideType_get(JSContext* ctx, JSValue thisValue)
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
-        auto* el = _element->AsTrack();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsTrack();
         if (el != nullptr)
         {
-            duk_push_int(ctx, el->GetRideType());
+            return JS_NewUint32(ctx, el->GetRideType());
         }
         else
         {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
             scriptEngine.LogPluginInfo("Cannot read 'rideType' property, tile element is not a TrackElement.");
-            duk_push_null(ctx);
+            return JS_NULL;
         }
-        return DukValue::take_from_stack(ctx);
     }
-    void ScTileElement::rideType_set(uint16_t value)
+    JSValue ScTileElement::rideType_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
 
-        try
-        {
-            if (value >= RIDE_TYPE_COUNT)
-                throw DukException() << "'rideType' value is invalid.";
-
-            auto* el = _element->AsTrack();
-            if (el == nullptr)
-                throw DukException() << "Cannot set 'rideType' property, tile element is not a TrackElement.";
-
-            el->SetRideType(value);
-            Invalidate();
-        }
-        catch (const DukException& e)
+        if (value >= RIDE_TYPE_COUNT)
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
-            scriptEngine.LogPluginInfo(e.what());
+            scriptEngine.LogPluginInfo("'rideType' value is invalid.");
+            return JS_UNDEFINED;
         }
+
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsTrack();
+        if (el == nullptr)
+        {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
+            scriptEngine.LogPluginInfo("Cannot set 'rideType' property, tile element is not a TrackElement.");
+            return JS_UNDEFINED;
+        }
+
+        el->SetRideType(value);
+        Invalidate(data);
+        return JS_UNDEFINED;
     }
 
-    DukValue ScTileElement::sequence_get() const
+    JSValue ScTileElement::sequence_get(JSContext* ctx, JSValue thisValue)
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
-        try
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto element = data->element;
+        switch (element->GetType())
         {
-            switch (_element->GetType())
+            case TileElementType::LargeScenery:
             {
-                case TileElementType::LargeScenery:
-                {
-                    auto* el = _element->AsLargeScenery();
-                    duk_push_int(ctx, el->GetSequenceIndex());
-                    break;
-                }
-                case TileElementType::Track:
-                {
-                    auto* el = _element->AsTrack();
-                    auto* ride = GetRide(el->GetRideIndex());
+                auto* el = element->AsLargeScenery();
+                return JS_NewUint32(ctx, el->GetSequenceIndex());
+            }
+            case TileElementType::Track:
+            {
+                auto* el = element->AsTrack();
+                auto* ride = GetRide(el->GetRideIndex());
 
-                    if (ride != nullptr)
+                if (ride != nullptr)
+                {
+                    const auto& rtd = ride->getRideTypeDescriptor();
+                    if (rtd.specialType == RtdSpecialType::maze)
                     {
-                        const auto& rtd = ride->getRideTypeDescriptor();
-                        if (rtd.specialType == RtdSpecialType::maze)
-                            throw DukException() << "Cannot read 'sequence' property, TrackElement belongs to a maze.";
+                        auto& scriptEngine = GetContext()->GetScriptEngine();
+                        scriptEngine.LogPluginInfo("Cannot read 'sequence' property, TrackElement belongs to a maze.");
+                        return JS_NULL;
                     }
+                }
 
-                    duk_push_int(ctx, el->GetSequenceIndex());
-                    break;
-                }
-                case TileElementType::Entrance:
-                {
-                    auto* el = _element->AsEntrance();
-                    duk_push_int(ctx, el->GetSequenceIndex());
-                    break;
-                }
-                default:
-                    throw DukException() << "Cannot read 'sequence' property, tile element is not a TrackElement, "
-                                            "LargeSceneryElement, or EntranceElement.";
+                return JS_NewUint32(ctx, el->GetSequenceIndex());
+            }
+            case TileElementType::Entrance:
+            {
+                auto* el = element->AsEntrance();
+                return JS_NewUint32(ctx, el->GetSequenceIndex());
+            }
+            default:
+            {
+                auto& scriptEngine = GetContext()->GetScriptEngine();
+                scriptEngine.LogPluginInfo(
+                    "Cannot read 'sequence' property, tile element is not a TrackElement, "
+                    "LargeSceneryElement, or EntranceElement.");
+                return JS_NULL;
             }
         }
-        catch (const DukException& e)
-        {
-            scriptEngine.LogPluginInfo(e.what());
-            duk_push_null(ctx);
-        }
-        return DukValue::take_from_stack(ctx);
     }
-    void ScTileElement::sequence_set(const DukValue& value)
+    JSValue ScTileElement::sequence_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto element = data->element;
 
-        try
+        switch (element->GetType())
         {
-            if (value.type() != DukValue::Type::NUMBER)
-                throw DukException() << "'sequence' must be a number.";
-
-            switch (_element->GetType())
+            case TileElementType::LargeScenery:
             {
-                case TileElementType::LargeScenery:
-                {
-                    RemoveBannerEntryIfNeeded();
-                    auto* el = _element->AsLargeScenery();
-                    el->SetSequenceIndex(value.as_uint());
-                    CreateBannerEntryIfNeeded();
-                    Invalidate();
-                    break;
-                }
-                case TileElementType::Track:
-                {
-                    auto* el = _element->AsTrack();
-                    auto ride = GetRide(el->GetRideIndex());
+                RemoveBannerEntryIfNeeded(element, data->coords);
+                auto* el = element->AsLargeScenery();
+                el->SetSequenceIndex(value);
+                CreateBannerEntryIfNeeded(element, data->coords);
+                Invalidate(data);
+                break;
+            }
+            case TileElementType::Track:
+            {
+                auto* el = element->AsTrack();
+                auto ride = GetRide(el->GetRideIndex());
 
-                    if (ride != nullptr)
+                if (ride != nullptr)
+                {
+                    const auto& rtd = ride->getRideTypeDescriptor();
+                    if (rtd.specialType == RtdSpecialType::maze)
                     {
-                        const auto& rtd = ride->getRideTypeDescriptor();
-                        if (rtd.specialType == RtdSpecialType::maze)
-                            throw DukException() << "Cannot set 'sequence' property, TrackElement belongs to a maze.";
+                        auto& scriptEngine = GetContext()->GetScriptEngine();
+                        scriptEngine.LogPluginInfo("Cannot read 'sequence' property, TrackElement belongs to a maze.");
+                        return JS_UNDEFINED;
                     }
+                }
 
-                    el->SetSequenceIndex(value.as_uint());
-                    Invalidate();
-                    break;
-                }
-                case TileElementType::Entrance:
-                {
-                    auto* el = _element->AsEntrance();
-                    el->SetSequenceIndex(value.as_uint());
-                    Invalidate();
-                    break;
-                }
-                default:
-                    throw DukException() << "Cannot set 'sequence' property, tile element is not a TrackElement, "
-                                            "LargeSceneryElement, or EntranceElement.";
+                el->SetSequenceIndex(value);
+                Invalidate(data);
+                break;
             }
-        }
-        catch (const DukException& e)
-        {
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            scriptEngine.LogPluginInfo(e.what());
-        }
-    }
-
-    DukValue ScTileElement::ride_get() const
-    {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
-        try
-        {
-            switch (_element->GetType())
+            case TileElementType::Entrance:
             {
-                case TileElementType::Path:
-                {
-                    auto* el = _element->AsPath();
-                    if (!el->IsQueue())
-                        throw DukException() << "Cannot read 'ride' property, path is not a queue.";
-
-                    if (!el->GetRideIndex().IsNull())
-                        duk_push_int(ctx, el->GetRideIndex().ToUnderlying());
-                    else
-                        duk_push_null(ctx);
-                    break;
-                }
-                case TileElementType::Track:
-                {
-                    auto* el = _element->AsTrack();
-                    duk_push_int(ctx, el->GetRideIndex().ToUnderlying());
-                    break;
-                }
-                case TileElementType::Entrance:
-                {
-                    auto* el = _element->AsEntrance();
-                    duk_push_int(ctx, el->GetRideIndex().ToUnderlying());
-                    break;
-                }
-                default:
-                    throw DukException()
-                        << "Cannot read 'ride' property, tile element is not PathElement, TrackElement, or EntranceElement";
+                auto* el = element->AsEntrance();
+                el->SetSequenceIndex(value);
+                Invalidate(data);
+                break;
             }
-        }
-        catch (const DukException& e)
-        {
-            scriptEngine.LogPluginInfo(e.what());
-            duk_push_null(ctx);
-        }
-        return DukValue::take_from_stack(ctx);
-    }
-    void ScTileElement::ride_set(const DukValue& value)
-    {
-        ThrowIfGameStateNotMutable();
-
-        try
-        {
-            switch (_element->GetType())
+            default:
             {
-                case TileElementType::Path:
-                {
-                    auto* el = _element->AsPath();
-                    if (!el->IsQueue())
-                        throw DukException() << "Cannot set ride property, path is not a queue.";
-
-                    if (value.type() == DukValue::Type::NUMBER)
-                        el->SetRideIndex(RideId::FromUnderlying(value.as_uint()));
-                    else if (value.type() == DukValue::Type::NULLREF)
-                        el->SetRideIndex(RideId::GetNull());
-                    else
-                        throw DukException() << "'ride' must be a number or null.";
-                    Invalidate();
-                    break;
-                }
-                case TileElementType::Track:
-                {
-                    if (value.type() != DukValue::Type::NUMBER)
-                        throw DukException() << "'ride' must be a number.";
-
-                    auto* el = _element->AsTrack();
-                    el->SetRideIndex(RideId::FromUnderlying(value.as_uint()));
-                    Invalidate();
-                    break;
-                }
-                case TileElementType::Entrance:
-                {
-                    if (value.type() != DukValue::Type::NUMBER)
-                        throw DukException() << "'ride' must be a number.";
-
-                    auto* el = _element->AsEntrance();
-                    el->SetRideIndex(RideId::FromUnderlying(value.as_uint()));
-                    Invalidate();
-                    break;
-                }
-                default:
-                    throw DukException()
-                        << "Cannot set 'ride' property, tile element is not PathElement, TrackElement, or EntranceElement";
+                auto& scriptEngine = GetContext()->GetScriptEngine();
+                scriptEngine.LogPluginInfo(
+                    "Cannot read 'sequence' property, tile element is not a TrackElement, "
+                    "LargeSceneryElement, or EntranceElement.");
+                break;
             }
         }
-        catch (const DukException& e)
-        {
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            scriptEngine.LogPluginInfo(e.what());
-        }
+        return JS_UNDEFINED;
     }
 
-    DukValue ScTileElement::station_get() const
+    JSValue ScTileElement::ride_get(JSContext* ctx, JSValue thisValue)
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
-        try
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto element = data->element;
+        switch (element->GetType())
         {
-            switch (_element->GetType())
+            case TileElementType::Path:
             {
-                case TileElementType::Path:
+                auto* el = element->AsPath();
+                if (!el->IsQueue())
                 {
-                    auto* el = _element->AsPath();
-                    if (!el->IsQueue())
-                        throw DukException() << "Cannot read 'station' property, path is not a queue.";
-
-                    if (el->GetRideIndex().IsNull())
-                        throw DukException() << "Cannot read 'station' property, queue is not linked to a ride.";
-
-                    if (!el->GetStationIndex().IsNull())
-                        duk_push_int(ctx, el->GetStationIndex().ToUnderlying());
-                    else
-                        duk_push_null(ctx);
-                    break;
+                    auto& scriptEngine = GetContext()->GetScriptEngine();
+                    scriptEngine.LogPluginInfo("Cannot read 'ride' property, path is not a queue.");
+                    return JS_NULL;
                 }
-                case TileElementType::Track:
-                {
-                    auto* el = _element->AsTrack();
-                    if (!el->IsStation())
-                        throw DukException() << "Cannot read 'station' property, track is not a station.";
 
-                    duk_push_int(ctx, el->GetStationIndex().ToUnderlying());
-                    break;
-                }
-                case TileElementType::Entrance:
-                {
-                    auto* el = _element->AsEntrance();
-                    duk_push_int(ctx, el->GetStationIndex().ToUnderlying());
-                    break;
-                }
-                default:
-                    throw DukException()
-                        << "Cannot read 'station' property, tile element is not PathElement, TrackElement, or EntranceElement";
+                if (!el->GetRideIndex().IsNull())
+                    return JS_NewUint32(ctx, el->GetRideIndex().ToUnderlying());
+
+                return JS_NULL;
             }
-        }
-        catch (const DukException& e)
-        {
-            scriptEngine.LogPluginInfo(e.what());
-            duk_push_null(ctx);
-        }
-        return DukValue::take_from_stack(ctx);
-    }
-    void ScTileElement::station_set(const DukValue& value)
-    {
-        ThrowIfGameStateNotMutable();
-
-        try
-        {
-            switch (_element->GetType())
+            case TileElementType::Track:
             {
-                case TileElementType::Path:
-                {
-                    auto* el = _element->AsPath();
-                    if (value.type() == DukValue::Type::NUMBER)
-                        el->SetStationIndex(StationIndex::FromUnderlying(value.as_uint()));
-                    else if (value.type() == DukValue::Type::NULLREF)
-                        el->SetStationIndex(StationIndex::GetNull());
-                    else
-                        throw DukException() << "'station' must be a number or null.";
-                    Invalidate();
-                    break;
-                }
-                case TileElementType::Track:
-                {
-                    if (value.type() != DukValue::Type::NUMBER)
-                        throw DukException() << "'station' must be a number.";
-
-                    auto* el = _element->AsTrack();
-                    el->SetStationIndex(StationIndex::FromUnderlying(value.as_uint()));
-                    Invalidate();
-                    break;
-                }
-                case TileElementType::Entrance:
-                {
-                    if (value.type() != DukValue::Type::NUMBER)
-                        throw DukException() << "'station' must be a number.";
-
-                    auto* el = _element->AsEntrance();
-                    el->SetStationIndex(StationIndex::FromUnderlying(value.as_uint()));
-                    Invalidate();
-                    break;
-                }
-                default:
-                    break;
+                auto* el = element->AsTrack();
+                return JS_NewUint32(ctx, el->GetRideIndex().ToUnderlying());
+            }
+            case TileElementType::Entrance:
+            {
+                auto* el = element->AsEntrance();
+                return JS_NewUint32(ctx, el->GetRideIndex().ToUnderlying());
+            }
+            default:
+            {
+                auto& scriptEngine = GetContext()->GetScriptEngine();
+                scriptEngine.LogPluginInfo(
+                    "Cannot read 'ride' property, tile element is not PathElement, TrackElement, or EntranceElement");
+                return JS_NULL;
             }
         }
-        catch (const DukException& e)
+    }
+    JSValue ScTileElement::ride_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
+    {
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto element = data->element;
+
+        switch (element->GetType())
         {
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            scriptEngine.LogPluginInfo(e.what());
+            case TileElementType::Path:
+            {
+                auto* el = element->AsPath();
+                if (!el->IsQueue())
+                {
+                    auto& scriptEngine = GetContext()->GetScriptEngine();
+                    scriptEngine.LogPluginInfo("Cannot set ride property, path is not a queue.");
+                    return JS_UNDEFINED;
+                }
+
+                if (JS_IsNumber(jsValue))
+                {
+                    JS_UNPACK_UINT32(value, ctx, jsValue);
+                    el->SetRideIndex(RideId::FromUnderlying(value));
+                }
+                else if (JS_IsNull(jsValue))
+                {
+                    el->SetRideIndex(RideId::GetNull());
+                }
+                else
+                {
+                    auto& scriptEngine = GetContext()->GetScriptEngine();
+                    scriptEngine.LogPluginInfo("'ride' must be a number or null.");
+                    return JS_UNDEFINED;
+                }
+                Invalidate(data);
+                break;
+            }
+            case TileElementType::Track:
+            {
+                if (!JS_IsNumber(jsValue))
+                {
+                    auto& scriptEngine = GetContext()->GetScriptEngine();
+                    scriptEngine.LogPluginInfo("'ride' must be a number.");
+                    return JS_UNDEFINED;
+                }
+
+                JS_UNPACK_UINT32(value, ctx, jsValue);
+                auto* el = element->AsTrack();
+                el->SetRideIndex(RideId::FromUnderlying(value));
+                Invalidate(data);
+                break;
+            }
+            case TileElementType::Entrance:
+            {
+                if (!JS_IsNumber(jsValue))
+                {
+                    auto& scriptEngine = GetContext()->GetScriptEngine();
+                    scriptEngine.LogPluginInfo("'ride' must be a number.");
+                    return JS_UNDEFINED;
+                }
+
+                JS_UNPACK_UINT32(value, ctx, jsValue);
+                auto* el = element->AsEntrance();
+                el->SetRideIndex(RideId::FromUnderlying(value));
+                Invalidate(data);
+                break;
+            }
+            default:
+            {
+                auto& scriptEngine = GetContext()->GetScriptEngine();
+                scriptEngine.LogPluginInfo(
+                    "Cannot set 'ride' property, tile element is not PathElement, TrackElement, or EntranceElement");
+                break;
+            }
         }
+        return JS_UNDEFINED;
     }
 
-    DukValue ScTileElement::hasChainLift_get() const
+    JSValue ScTileElement::station_get(JSContext* ctx, JSValue thisValue)
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
-        auto* el = _element->AsTrack();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto element = data->element;
+        switch (element->GetType())
+        {
+            case TileElementType::Path:
+            {
+                auto* el = element->AsPath();
+                if (!el->IsQueue())
+                {
+                    auto& scriptEngine = GetContext()->GetScriptEngine();
+                    scriptEngine.LogPluginInfo("Cannot read 'station' property, path is not a queue.");
+                    return JS_NULL;
+                }
+
+                if (el->GetRideIndex().IsNull())
+                {
+                    auto& scriptEngine = GetContext()->GetScriptEngine();
+                    scriptEngine.LogPluginInfo("Cannot read 'station' property, queue is not linked to a ride.");
+                    return JS_NULL;
+                }
+
+                if (!el->GetStationIndex().IsNull())
+                    return JS_NewUint32(ctx, el->GetStationIndex().ToUnderlying());
+
+                return JS_NULL;
+            }
+            case TileElementType::Track:
+            {
+                auto* el = element->AsTrack();
+                if (!el->IsStation())
+                {
+                    auto& scriptEngine = GetContext()->GetScriptEngine();
+                    scriptEngine.LogPluginInfo("Cannot read 'station' property, track is not a station.");
+                    return JS_NULL;
+                }
+
+                return JS_NewUint32(ctx, el->GetStationIndex().ToUnderlying());
+            }
+            case TileElementType::Entrance:
+            {
+                auto* el = element->AsEntrance();
+                return JS_NewUint32(ctx, el->GetStationIndex().ToUnderlying());
+            }
+            default:
+            {
+                auto& scriptEngine = GetContext()->GetScriptEngine();
+                scriptEngine.LogPluginInfo(
+                    "Cannot read 'station' property, tile element is not PathElement, TrackElement, or EntranceElement");
+                return JS_NULL;
+            }
+        }
+    }
+    JSValue ScTileElement::station_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
+    {
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto element = data->element;
+
+        switch (element->GetType())
+        {
+            case TileElementType::Path:
+            {
+                auto* el = element->AsPath();
+                if (JS_IsNumber(jsValue))
+                {
+                    JS_UNPACK_UINT32(value, ctx, jsValue);
+                    el->SetStationIndex(StationIndex::FromUnderlying(value));
+                }
+                else if (JS_IsNull(jsValue))
+                {
+                    el->SetStationIndex(StationIndex::GetNull());
+                }
+                else
+                {
+                    auto& scriptEngine = GetContext()->GetScriptEngine();
+                    scriptEngine.LogPluginInfo("'station' must be a number or null.");
+                    return JS_UNDEFINED;
+                }
+                Invalidate(data);
+                break;
+            }
+            case TileElementType::Track:
+            {
+                if (!JS_IsNumber(jsValue))
+                {
+                    auto& scriptEngine = GetContext()->GetScriptEngine();
+                    scriptEngine.LogPluginInfo("'station' must be a number.");
+                    return JS_UNDEFINED;
+                }
+
+                JS_UNPACK_UINT32(value, ctx, jsValue);
+                auto* el = element->AsTrack();
+                el->SetStationIndex(StationIndex::FromUnderlying(value));
+                Invalidate(data);
+                break;
+            }
+            case TileElementType::Entrance:
+            {
+                if (!JS_IsNumber(jsValue))
+                {
+                    auto& scriptEngine = GetContext()->GetScriptEngine();
+                    scriptEngine.LogPluginInfo("'station' must be a number.");
+                    return JS_UNDEFINED;
+                }
+
+                JS_UNPACK_UINT32(value, ctx, jsValue);
+                auto* el = element->AsEntrance();
+                el->SetStationIndex(StationIndex::FromUnderlying(value));
+                Invalidate(data);
+                break;
+            }
+            default:
+                break;
+        }
+        return JS_UNDEFINED;
+    }
+
+    JSValue ScTileElement::hasChainLift_get(JSContext* ctx, JSValue thisValue)
+    {
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsTrack();
         if (el != nullptr)
         {
-            duk_push_boolean(ctx, el->HasChain());
+            return JS_NewBool(ctx, el->HasChain());
         }
         else
         {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
             scriptEngine.LogPluginInfo("Cannot read 'hasChainLift' property, tile element is not a TrackElement.");
-            duk_push_null(ctx);
+            return JS_NULL;
         }
-        return DukValue::take_from_stack(ctx);
     }
-    void ScTileElement::hasChainLift_set(bool value)
+    JSValue ScTileElement::hasChainLift_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto* el = _element->AsTrack();
+        JS_UNPACK_BOOL(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsTrack();
         if (el == nullptr)
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
             scriptEngine.LogPluginInfo("Cannot set 'hasChainLift' property, tile element is not a TrackElement.");
-            return;
+            return JS_UNDEFINED;
         }
 
         el->SetHasChain(value);
-        Invalidate();
+        Invalidate(data);
+        return JS_UNDEFINED;
     }
 
-    DukValue ScTileElement::mazeEntry_get() const
+    JSValue ScTileElement::mazeEntry_get(JSContext* ctx, JSValue thisValue)
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
-        try
-        {
-            auto* el = _element->AsTrack();
-            if (el == nullptr)
-                throw DukException() << "Cannot read 'mazeEntry' property, element is not a TrackElement.";
-
-            Ride* ride = GetRide(el->GetRideIndex());
-            if (ride == nullptr)
-                throw DukException() << "Cannot read 'mazeEntry' property, ride is invalid.";
-
-            const auto& rtd = ride->getRideTypeDescriptor();
-            if (rtd.specialType != RtdSpecialType::maze)
-                throw DukException() << "Cannot read 'mazeEntry' property, ride is not a maze.";
-
-            duk_push_int(ctx, el->GetMazeEntry());
-        }
-        catch (const DukException& e)
-        {
-            scriptEngine.LogPluginInfo(e.what());
-            duk_push_null(ctx);
-        }
-        return DukValue::take_from_stack(ctx);
-    }
-    void ScTileElement::mazeEntry_set(const DukValue& value)
-    {
-        ThrowIfGameStateNotMutable();
-
-        try
-        {
-            if (value.type() != DukValue::Type::NUMBER)
-                throw DukException() << "'mazeEntry' property must be a number.";
-
-            auto* el = _element->AsTrack();
-            if (el == nullptr)
-                throw DukException() << "Cannot set 'mazeEntry' property, tile element is not a TrackElement.";
-
-            auto* ride = GetRide(el->GetRideIndex());
-            if (ride == nullptr)
-                throw DukException() << "Cannot set 'mazeEntry' property, ride is invalid.";
-
-            const auto& rtd = ride->getRideTypeDescriptor();
-            if (rtd.specialType != RtdSpecialType::maze)
-                throw DukException() << "Cannot set 'mazeEntry' property, ride is not a maze.";
-
-            el->SetMazeEntry(value.as_uint());
-            Invalidate();
-        }
-        catch (const DukException& e)
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsTrack();
+        if (el == nullptr)
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
-            scriptEngine.LogPluginInfo(e.what());
+            scriptEngine.LogPluginInfo("Cannot read 'mazeEntry' property, element is not a TrackElement.");
+            return JS_NULL;
         }
-    }
 
-    DukValue ScTileElement::colourScheme_get() const
-    {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
-        try
-        {
-            auto* el = _element->AsTrack();
-            if (el == nullptr)
-                throw DukException() << "Cannot read 'colourScheme' property, tile element is not a TrackElement.";
-
-            auto* ride = GetRide(el->GetRideIndex());
-            if (ride == nullptr)
-                throw DukException() << "Cannot read 'colourScheme' property, ride is invalid.";
-
-            const auto& rtd = ride->getRideTypeDescriptor();
-            if (rtd.specialType == RtdSpecialType::maze)
-                throw DukException() << "Cannot read 'colourScheme' property, TrackElement belongs to a maze.";
-
-            duk_push_int(ctx, el->GetColourScheme());
-        }
-        catch (const DukException& e)
-        {
-            scriptEngine.LogPluginInfo(e.what());
-            duk_push_null(ctx);
-        }
-        return DukValue::take_from_stack(ctx);
-    }
-    void ScTileElement::colourScheme_set(const DukValue& value)
-    {
-        ThrowIfGameStateNotMutable();
-
-        try
-        {
-            if (value.type() != DukValue::Type::NUMBER)
-                throw DukException() << "'colourScheme' must be a number.";
-
-            auto* el = _element->AsTrack();
-            if (el == nullptr)
-                throw DukException() << "Cannot set 'colourScheme' property, tile element is not a TrackElement.";
-
-            auto* ride = GetRide(el->GetRideIndex());
-            if (ride == nullptr)
-                throw DukException() << "Cannot set 'colourScheme', ride is invalid.";
-
-            const auto& rtd = ride->getRideTypeDescriptor();
-            if (rtd.specialType == RtdSpecialType::maze)
-                throw DukException() << "Cannot set 'colourScheme' property, TrackElement belongs to a maze.";
-
-            el->SetColourScheme(static_cast<RideColourScheme>(value.as_uint()));
-            Invalidate();
-        }
-        catch (const DukException& e)
+        Ride* ride = GetRide(el->GetRideIndex());
+        if (ride == nullptr)
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
-            scriptEngine.LogPluginInfo(e.what());
+            scriptEngine.LogPluginInfo("Cannot read 'mazeEntry' property, ride is invalid.");
+            return JS_NULL;
         }
-    }
 
-    DukValue ScTileElement::seatRotation_get() const
-    {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
-        try
-        {
-            auto* el = _element->AsTrack();
-            if (el == nullptr)
-                throw DukException() << "Cannot read 'seatRotation' property, tile element is not a TrackElement.";
-
-            auto* ride = GetRide(el->GetRideIndex());
-            if (ride == nullptr)
-                throw DukException() << "Cannot read 'seatRotation' property, ride is invalid.";
-
-            const auto& rtd = ride->getRideTypeDescriptor();
-            if (rtd.specialType == RtdSpecialType::maze)
-                throw DukException() << "Cannot read 'seatRotation' property, TrackElement belongs to a maze.";
-
-            duk_push_int(ctx, el->GetSeatRotation());
-        }
-        catch (const DukException& e)
-        {
-            scriptEngine.LogPluginInfo(e.what());
-            duk_push_null(ctx);
-        }
-        return DukValue::take_from_stack(ctx);
-    }
-    void ScTileElement::seatRotation_set(const DukValue& value)
-    {
-        ThrowIfGameStateNotMutable();
-
-        try
-        {
-            if (value.type() != DukValue::Type::NUMBER)
-                throw DukException() << "'seatRotation' must be a number.";
-
-            auto* el = _element->AsTrack();
-            if (el == nullptr)
-                throw DukException() << "Cannot set 'seatRotation' property, tile element is not a TrackElement.";
-
-            auto* ride = GetRide(el->GetRideIndex());
-            if (ride == nullptr)
-                throw DukException() << "Cannot set 'seatRotation' property, ride is invalid.";
-
-            const auto& rtd = ride->getRideTypeDescriptor();
-            if (rtd.specialType != RtdSpecialType::maze)
-                throw DukException() << "Cannot set 'seatRotation' property, TrackElement belongs to a maze.";
-
-            el->SetSeatRotation(value.as_uint());
-            Invalidate();
-        }
-        catch (const DukException& e)
+        const auto& rtd = ride->getRideTypeDescriptor();
+        if (rtd.specialType != RtdSpecialType::maze)
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
-            scriptEngine.LogPluginInfo(e.what());
+            scriptEngine.LogPluginInfo("Cannot read 'mazeEntry' property, ride is not a maze.");
+            return JS_NULL;
         }
+
+        return JS_NewUint32(ctx, el->GetMazeEntry());
     }
-
-    DukValue ScTileElement::brakeBoosterSpeed_get() const
+    JSValue ScTileElement::mazeEntry_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
-        try
-        {
-            auto* el = _element->AsTrack();
-            if (el == nullptr)
-                throw DukException() << "Cannot read 'brakeBoosterSpeed' property, tile element is not a TrackElement.";
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
 
-            if (!TrackTypeHasSpeedSetting(el->GetTrackType()))
-                throw DukException() << "Cannot read 'brakeBoosterSpeed' property, track element has no speed setting.";
-
-            duk_push_int(ctx, el->GetBrakeBoosterSpeed());
-        }
-        catch (const DukException& e)
-        {
-            scriptEngine.LogPluginInfo(e.what());
-            duk_push_null(ctx);
-        }
-        return DukValue::take_from_stack(ctx);
-    }
-    void ScTileElement::brakeBoosterSpeed_set(const DukValue& value)
-    {
-        ThrowIfGameStateNotMutable();
-
-        try
-        {
-            if (value.type() != DukValue::Type::NUMBER)
-                throw DukException() << "'brakeBoosterSpeed' must be a number.";
-
-            auto* el = _element->AsTrack();
-            if (el == nullptr)
-                throw DukException() << "Cannot set 'brakeBoosterSpeed' property, tile element is not a TrackElement.";
-
-            if (!TrackTypeHasSpeedSetting(el->GetTrackType()))
-                throw DukException() << "Cannot set 'brakeBoosterSpeed' property, track element has no speed setting.";
-
-            el->SetBrakeBoosterSpeed(value.as_uint());
-            Invalidate();
-        }
-        catch (const DukException& e)
+        if (!JS_IsNumber(jsValue))
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
-            scriptEngine.LogPluginInfo(e.what());
+            scriptEngine.LogPluginInfo("'mazeEntry' property must be a number.");
+            return JS_UNDEFINED;
         }
+
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsTrack();
+        if (el == nullptr)
+        {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
+            scriptEngine.LogPluginInfo("Cannot set 'mazeEntry' property, tile element is not a TrackElement.");
+            return JS_UNDEFINED;
+        }
+
+        auto* ride = GetRide(el->GetRideIndex());
+        if (ride == nullptr)
+        {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
+            scriptEngine.LogPluginInfo("Cannot set 'mazeEntry' property, ride is invalid.");
+            return JS_UNDEFINED;
+        }
+
+        const auto& rtd = ride->getRideTypeDescriptor();
+        if (rtd.specialType != RtdSpecialType::maze)
+        {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
+            scriptEngine.LogPluginInfo("Cannot set 'mazeEntry' property, ride is not a maze.");
+            return JS_UNDEFINED;
+        }
+
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        el->SetMazeEntry(value);
+        Invalidate(data);
+        return JS_UNDEFINED;
     }
 
-    DukValue ScTileElement::isInverted_get() const
+    JSValue ScTileElement::colourScheme_get(JSContext* ctx, JSValue thisValue)
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
-        auto* el = _element->AsTrack();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsTrack();
+        if (el == nullptr)
+        {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
+            scriptEngine.LogPluginInfo("Cannot read 'colourScheme' property, tile element is not a TrackElement.");
+            return JS_NULL;
+        }
+
+        auto* ride = GetRide(el->GetRideIndex());
+        if (ride == nullptr)
+        {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
+            scriptEngine.LogPluginInfo("Cannot read 'colourScheme' property, ride is invalid.");
+            return JS_NULL;
+        }
+
+        const auto& rtd = ride->getRideTypeDescriptor();
+        if (rtd.specialType == RtdSpecialType::maze)
+        {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
+            scriptEngine.LogPluginInfo("Cannot read 'colourScheme' property, TrackElement belongs to a maze.");
+            return JS_NULL;
+        }
+
+        return JS_NewUint32(ctx, el->GetColourScheme());
+    }
+    JSValue ScTileElement::colourScheme_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
+    {
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+
+        if (!JS_IsNumber(jsValue))
+        {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
+            scriptEngine.LogPluginInfo("'colourScheme' must be a number.");
+            return JS_UNDEFINED;
+        }
+
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsTrack();
+        if (el == nullptr)
+        {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
+            scriptEngine.LogPluginInfo("Cannot set 'colourScheme' property, tile element is not a TrackElement.");
+            return JS_UNDEFINED;
+        }
+
+        auto* ride = GetRide(el->GetRideIndex());
+        if (ride == nullptr)
+        {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
+            scriptEngine.LogPluginInfo("Cannot set 'colourScheme', ride is invalid.");
+            return JS_UNDEFINED;
+        }
+
+        const auto& rtd = ride->getRideTypeDescriptor();
+        if (rtd.specialType == RtdSpecialType::maze)
+        {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
+            scriptEngine.LogPluginInfo("Cannot set 'colourScheme' property, TrackElement belongs to a maze.");
+            return JS_UNDEFINED;
+        }
+
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        el->SetColourScheme(static_cast<RideColourScheme>(value));
+        Invalidate(data);
+        return JS_UNDEFINED;
+    }
+
+    JSValue ScTileElement::seatRotation_get(JSContext* ctx, JSValue thisValue)
+    {
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsTrack();
+        if (el == nullptr)
+        {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
+            scriptEngine.LogPluginInfo("Cannot read 'seatRotation' property, tile element is not a TrackElement.");
+            return JS_NULL;
+        }
+
+        auto* ride = GetRide(el->GetRideIndex());
+        if (ride == nullptr)
+        {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
+            scriptEngine.LogPluginInfo("Cannot read 'seatRotation' property, ride is invalid.");
+            return JS_NULL;
+        }
+
+        const auto& rtd = ride->getRideTypeDescriptor();
+        if (rtd.specialType == RtdSpecialType::maze)
+        {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
+            scriptEngine.LogPluginInfo("Cannot read 'seatRotation' property, TrackElement belongs to a maze.");
+            return JS_NULL;
+        }
+
+        return JS_NewUint32(ctx, el->GetSeatRotation());
+    }
+    JSValue ScTileElement::seatRotation_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
+    {
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+
+        if (!JS_IsNumber(jsValue))
+        {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
+            scriptEngine.LogPluginInfo("'seatRotation' must be a number.");
+            return JS_UNDEFINED;
+        }
+
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsTrack();
+        if (el == nullptr)
+        {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
+            scriptEngine.LogPluginInfo("Cannot set 'seatRotation' property, tile element is not a TrackElement.");
+            return JS_UNDEFINED;
+        }
+
+        auto* ride = GetRide(el->GetRideIndex());
+        if (ride == nullptr)
+        {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
+            scriptEngine.LogPluginInfo("Cannot set 'seatRotation' property, ride is invalid.");
+            return JS_UNDEFINED;
+        }
+
+        const auto& rtd = ride->getRideTypeDescriptor();
+        if (rtd.specialType != RtdSpecialType::maze)
+        {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
+            scriptEngine.LogPluginInfo("Cannot set 'seatRotation' property, TrackElement belongs to a maze.");
+            return JS_UNDEFINED;
+        }
+
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        el->SetSeatRotation(value);
+        Invalidate(data);
+        return JS_UNDEFINED;
+    }
+
+    JSValue ScTileElement::brakeBoosterSpeed_get(JSContext* ctx, JSValue thisValue)
+    {
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsTrack();
+        if (el == nullptr)
+        {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
+            scriptEngine.LogPluginInfo("Cannot read 'brakeBoosterSpeed' property, tile element is not a TrackElement.");
+            return JS_NULL;
+        }
+
+        if (!TrackTypeHasSpeedSetting(el->GetTrackType()))
+        {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
+            scriptEngine.LogPluginInfo("Cannot read 'brakeBoosterSpeed' property, track element has no speed setting.");
+            return JS_NULL;
+        }
+
+        return JS_NewUint32(ctx, el->GetBrakeBoosterSpeed());
+    }
+    JSValue ScTileElement::brakeBoosterSpeed_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
+    {
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+
+        if (!JS_IsNumber(jsValue))
+        {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
+            scriptEngine.LogPluginInfo("'brakeBoosterSpeed' must be a number.");
+            return JS_UNDEFINED;
+        }
+
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsTrack();
+        if (el == nullptr)
+        {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
+            scriptEngine.LogPluginInfo("Cannot set 'brakeBoosterSpeed' property, tile element is not a TrackElement.");
+            return JS_UNDEFINED;
+        }
+
+        if (!TrackTypeHasSpeedSetting(el->GetTrackType()))
+        {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
+            scriptEngine.LogPluginInfo("Cannot set 'brakeBoosterSpeed' property, track element has no speed setting.");
+            return JS_UNDEFINED;
+        }
+
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        el->SetBrakeBoosterSpeed(value);
+        Invalidate(data);
+        return JS_UNDEFINED;
+    }
+
+    JSValue ScTileElement::isInverted_get(JSContext* ctx, JSValue thisValue)
+    {
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsTrack();
         if (el != nullptr)
         {
-            duk_push_boolean(ctx, el->IsInverted());
+            return JS_NewBool(ctx, el->IsInverted());
         }
         else
         {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
             scriptEngine.LogPluginInfo("Cannot read 'isInverted' property, tile element is not a TrackElement.");
-            duk_push_null(ctx);
+            return JS_NULL;
         }
-        return DukValue::take_from_stack(ctx);
     }
-    void ScTileElement::isInverted_set(bool value)
+    JSValue ScTileElement::isInverted_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto* el = _element->AsTrack();
+        JS_UNPACK_BOOL(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsTrack();
         if (el == nullptr)
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
             scriptEngine.LogPluginInfo("Cannot set 'isInverted' property, tile element is not a TrackElement.");
-            return;
+            return JS_UNDEFINED;
         }
 
         el->SetInverted(value);
-        Invalidate();
+        Invalidate(data);
+        return JS_UNDEFINED;
     }
 
-    DukValue ScTileElement::hasCableLift_get() const
+    JSValue ScTileElement::hasCableLift_get(JSContext* ctx, JSValue thisValue)
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
-        auto* el = _element->AsTrack();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsTrack();
         if (el != nullptr)
         {
-            duk_push_boolean(ctx, el->HasCableLift());
+            return JS_NewBool(ctx, el->HasCableLift());
         }
         else
         {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
             scriptEngine.LogPluginInfo("Cannot read 'hasCableLift' property, tile element is not a TrackElement.");
-            duk_push_null(ctx);
+            return JS_NULL;
         }
-        return DukValue::take_from_stack(ctx);
     }
-    void ScTileElement::hasCableLift_set(bool value)
+    JSValue ScTileElement::hasCableLift_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto* el = _element->AsTrack();
+        JS_UNPACK_BOOL(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsTrack();
         if (el == nullptr)
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
             scriptEngine.LogPluginInfo("Cannot set 'hasCableLift' property, tile element is not a TrackElement.");
-            return;
+            return JS_UNDEFINED;
         }
 
         el->SetHasCableLift(value);
-        Invalidate();
+        Invalidate(data);
+        return JS_UNDEFINED;
     }
 
-    DukValue ScTileElement::isHighlighted_get() const
+    JSValue ScTileElement::isHighlighted_get(JSContext* ctx, JSValue thisValue)
     {
-        auto ctx = GetContext()->GetScriptEngine().GetContext();
-        auto el = _element->AsTrack();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto el = data->element->AsTrack();
         if (el != nullptr)
-            duk_push_boolean(ctx, el->IsHighlighted());
+            return JS_NewBool(ctx, el->IsHighlighted());
         else
-            duk_push_null(ctx);
-        return DukValue::take_from_stack(ctx);
+            return JS_NULL;
     }
-    void ScTileElement::isHighlighted_set(bool value)
+    JSValue ScTileElement::isHighlighted_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto el = _element->AsTrack();
+        JS_UNPACK_BOOL(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto el = data->element->AsTrack();
         if (el != nullptr)
         {
             el->SetHighlight(value);
-            Invalidate();
+            Invalidate(data);
         }
+        return JS_UNDEFINED;
     }
 
-    DukValue ScTileElement::object_get() const
+    JSValue ScTileElement::object_get(JSContext* ctx, JSValue thisValue)
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
-        switch (_element->GetType())
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto element = data->element;
+        switch (element->GetType())
         {
             case TileElementType::Path:
             {
-                auto* el = _element->AsPath();
+                auto* el = element->AsPath();
                 auto index = el->GetLegacyPathEntryIndex();
                 if (index != kObjectEntryIndexNull)
-                    duk_push_int(ctx, index);
-                else
-                    duk_push_null(ctx);
-                break;
+                    return JS_NewUint32(ctx, index);
+
+                return JS_NULL;
             }
             case TileElementType::SmallScenery:
             {
-                auto* el = _element->AsSmallScenery();
-                duk_push_int(ctx, el->GetEntryIndex());
-                break;
+                auto* el = element->AsSmallScenery();
+                return JS_NewUint32(ctx, el->GetEntryIndex());
             }
             case TileElementType::LargeScenery:
             {
-                auto* el = _element->AsLargeScenery();
-                duk_push_int(ctx, el->GetEntryIndex());
-                break;
+                auto* el = element->AsLargeScenery();
+                return JS_NewUint32(ctx, el->GetEntryIndex());
             }
             case TileElementType::Wall:
             {
-                auto* el = _element->AsWall();
-                duk_push_int(ctx, el->GetEntryIndex());
-                break;
+                auto* el = element->AsWall();
+                return JS_NewUint32(ctx, el->GetEntryIndex());
             }
             case TileElementType::Entrance:
             {
-                auto* el = _element->AsEntrance();
-                duk_push_int(ctx, el->GetEntranceType());
-                break;
+                auto* el = element->AsEntrance();
+                return JS_NewUint32(ctx, el->GetEntranceType());
             }
             case TileElementType::Banner:
             {
-                auto* el = _element->AsBanner();
-                duk_push_int(ctx, el->GetBanner()->type);
-                break;
+                auto* el = element->AsBanner();
+                return JS_NewUint32(ctx, el->GetBanner()->type);
             }
             default:
-            {
-                duk_push_null(ctx);
-                break;
-            }
+                return JS_NULL;
         }
-        return DukValue::take_from_stack(ctx);
     }
 
-    void ScTileElement::object_set(const DukValue& value)
+    JSValue ScTileElement::object_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto element = data->element;
 
-        auto index = FromDuk<ObjectEntryIndex>(value);
-        switch (_element->GetType())
+        switch (element->GetType())
         {
             case TileElementType::Path:
             {
-                if (value.type() == DukValue::Type::NUMBER)
+                if (JS_IsNumber(jsValue))
                 {
-                    auto* el = _element->AsPath();
+                    JS_UNPACK_UINT32(index, ctx, jsValue);
+                    auto* el = element->AsPath();
                     el->SetLegacyPathEntryIndex(index);
-                    Invalidate();
+                    Invalidate(data);
                 }
                 break;
             }
             case TileElementType::SmallScenery:
             {
-                auto* el = _element->AsSmallScenery();
+                JS_UNPACK_UINT32(index, ctx, jsValue);
+                auto* el = element->AsSmallScenery();
                 el->SetEntryIndex(index);
-                Invalidate();
+                Invalidate(data);
                 break;
             }
             case TileElementType::LargeScenery:
             {
-                RemoveBannerEntryIfNeeded();
-                auto* el = _element->AsLargeScenery();
+                JS_UNPACK_UINT32(index, ctx, jsValue);
+                RemoveBannerEntryIfNeeded(element, data->coords);
+                auto* el = element->AsLargeScenery();
                 el->SetEntryIndex(index);
-                CreateBannerEntryIfNeeded();
-                Invalidate();
+                CreateBannerEntryIfNeeded(element, data->coords);
+                Invalidate(data);
                 break;
             }
             case TileElementType::Wall:
             {
-                RemoveBannerEntryIfNeeded();
-                auto* el = _element->AsWall();
+                JS_UNPACK_UINT32(index, ctx, jsValue);
+                RemoveBannerEntryIfNeeded(element, data->coords);
+                auto* el = element->AsWall();
                 el->SetEntryIndex(index);
-                CreateBannerEntryIfNeeded();
-                Invalidate();
+                CreateBannerEntryIfNeeded(element, data->coords);
+                Invalidate(data);
                 break;
             }
             case TileElementType::Entrance:
             {
-                auto* el = _element->AsEntrance();
+                JS_UNPACK_UINT32(index, ctx, jsValue);
+                auto* el = element->AsEntrance();
                 el->SetEntranceType(index);
-                Invalidate();
+                Invalidate(data);
                 break;
             }
             case TileElementType::Banner:
             {
-                auto* el = _element->AsBanner();
+                JS_UNPACK_UINT32(index, ctx, jsValue);
+                auto* el = element->AsBanner();
                 el->GetBanner()->type = index;
-                Invalidate();
+                Invalidate(data);
                 break;
             }
             default:
                 break;
         }
+        return JS_UNDEFINED;
     }
 
-    bool ScTileElement::isHidden_get() const
+    JSValue ScTileElement::isHidden_get(JSContext* ctx, JSValue thisValue)
     {
-        return _element->IsInvisible();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        return JS_NewBool(ctx, data->element->IsInvisible());
     }
 
-    void ScTileElement::isHidden_set(bool hide)
+    JSValue ScTileElement::isHidden_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        _element->SetInvisible(hide);
-        Invalidate();
+        JS_UNPACK_BOOL(hide, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        data->element->SetInvisible(hide);
+        Invalidate(data);
+        return JS_UNDEFINED;
     }
 
-    DukValue ScTileElement::age_get() const
+    JSValue ScTileElement::age_get(JSContext* ctx, JSValue thisValue)
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
-        auto* el = _element->AsSmallScenery();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsSmallScenery();
         if (el != nullptr)
-            duk_push_int(ctx, el->GetAge());
+            return JS_NewUint32(ctx, el->GetAge());
         else
-            duk_push_null(ctx);
-        return DukValue::take_from_stack(ctx);
+            return JS_NULL;
     }
-    void ScTileElement::age_set(uint8_t value)
+    JSValue ScTileElement::age_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto* el = _element->AsSmallScenery();
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsSmallScenery();
         if (el != nullptr)
         {
             el->SetAge(value);
-            Invalidate();
+            Invalidate(data);
         }
+        return JS_UNDEFINED;
     }
 
-    DukValue ScTileElement::quadrant_get() const
+    JSValue ScTileElement::quadrant_get(JSContext* ctx, JSValue thisValue)
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
-        auto* el = _element->AsSmallScenery();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsSmallScenery();
         if (el != nullptr)
-            duk_push_int(ctx, el->GetSceneryQuadrant());
+            return JS_NewUint32(ctx, el->GetSceneryQuadrant());
         else
-            duk_push_null(ctx);
-        return DukValue::take_from_stack(ctx);
+            return JS_NULL;
     }
-    void ScTileElement::quadrant_set(uint8_t value)
+    JSValue ScTileElement::quadrant_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto* el = _element->AsSmallScenery();
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsSmallScenery();
         if (el != nullptr)
         {
             el->SetSceneryQuadrant(value);
-            Invalidate();
+            Invalidate(data);
         }
+        return JS_UNDEFINED;
     }
 
-    uint8_t ScTileElement::occupiedQuadrants_get() const
+    JSValue ScTileElement::occupiedQuadrants_get(JSContext* ctx, JSValue thisValue)
     {
-        return _element->GetOccupiedQuadrants();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        return JS_NewUint32(ctx, data->element->GetOccupiedQuadrants());
     }
-    void ScTileElement::occupiedQuadrants_set(uint8_t value)
+    JSValue ScTileElement::occupiedQuadrants_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        _element->SetOccupiedQuadrants(value);
-        Invalidate();
-    }
-
-    bool ScTileElement::isGhost_get() const
-    {
-        return _element->IsGhost();
-    }
-    void ScTileElement::isGhost_set(bool value)
-    {
-        ThrowIfGameStateNotMutable();
-        _element->SetGhost(value);
-        Invalidate();
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        data->element->SetOccupiedQuadrants(value);
+        Invalidate(data);
+        return JS_UNDEFINED;
     }
 
-    DukValue ScTileElement::primaryColour_get() const
+    JSValue ScTileElement::isGhost_get(JSContext* ctx, JSValue thisValue)
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
-        switch (_element->GetType())
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        return JS_NewBool(ctx, data->element->IsGhost());
+    }
+    JSValue ScTileElement::isGhost_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
+    {
+        JS_UNPACK_BOOL(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        data->element->SetGhost(value);
+        Invalidate(data);
+        return JS_UNDEFINED;
+    }
+
+    JSValue ScTileElement::primaryColour_get(JSContext* ctx, JSValue thisValue)
+    {
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto element = data->element;
+        switch (element->GetType())
         {
             case TileElementType::SmallScenery:
             {
-                auto* el = _element->AsSmallScenery();
-                duk_push_int(ctx, el->GetPrimaryColour());
-                break;
+                auto* el = element->AsSmallScenery();
+                return JS_NewUint32(ctx, el->GetPrimaryColour());
             }
             case TileElementType::LargeScenery:
             {
-                auto* el = _element->AsLargeScenery();
-                duk_push_int(ctx, el->GetPrimaryColour());
-                break;
+                auto* el = element->AsLargeScenery();
+                return JS_NewUint32(ctx, el->GetPrimaryColour());
             }
             case TileElementType::Wall:
             {
-                auto* el = _element->AsWall();
-                duk_push_int(ctx, el->GetPrimaryColour());
-                break;
+                auto* el = element->AsWall();
+                return JS_NewUint32(ctx, el->GetPrimaryColour());
             }
             case TileElementType::Banner:
             {
-                auto* el = _element->AsBanner();
-                duk_push_int(ctx, el->GetBanner()->colour);
-                break;
+                auto* el = element->AsBanner();
+                return JS_NewUint32(ctx, el->GetBanner()->colour);
             }
             default:
-            {
-                duk_push_null(ctx);
-                break;
-            }
+                return JS_NULL;
         }
-        return DukValue::take_from_stack(ctx);
     }
-    void ScTileElement::primaryColour_set(uint8_t value)
+    JSValue ScTileElement::primaryColour_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        switch (_element->GetType())
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto element = data->element;
+        switch (element->GetType())
         {
             case TileElementType::SmallScenery:
             {
-                auto* el = _element->AsSmallScenery();
+                auto* el = element->AsSmallScenery();
                 el->SetPrimaryColour(value);
-                Invalidate();
+                Invalidate(data);
                 break;
             }
             case TileElementType::LargeScenery:
             {
-                auto* el = _element->AsLargeScenery();
+                auto* el = element->AsLargeScenery();
                 el->SetPrimaryColour(value);
-                Invalidate();
+                Invalidate(data);
                 break;
             }
             case TileElementType::Wall:
             {
-                auto* el = _element->AsWall();
+                auto* el = element->AsWall();
                 el->SetPrimaryColour(value);
-                Invalidate();
+                Invalidate(data);
                 break;
             }
             case TileElementType::Banner:
             {
-                auto* el = _element->AsBanner();
+                auto* el = element->AsBanner();
                 el->GetBanner()->colour = value;
-                Invalidate();
+                Invalidate(data);
                 break;
             }
             default:
                 break;
         }
+        return JS_UNDEFINED;
     }
 
-    DukValue ScTileElement::secondaryColour_get() const
+    JSValue ScTileElement::secondaryColour_get(JSContext* ctx, JSValue thisValue)
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
-        switch (_element->GetType())
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto element = data->element;
+        switch (element->GetType())
         {
             case TileElementType::SmallScenery:
             {
-                auto* el = _element->AsSmallScenery();
-                duk_push_int(ctx, el->GetSecondaryColour());
-                break;
+                auto* el = element->AsSmallScenery();
+                return JS_NewUint32(ctx, el->GetSecondaryColour());
             }
             case TileElementType::LargeScenery:
             {
-                auto* el = _element->AsLargeScenery();
-                duk_push_int(ctx, el->GetSecondaryColour());
-                break;
+                auto* el = element->AsLargeScenery();
+                return JS_NewUint32(ctx, el->GetSecondaryColour());
             }
             case TileElementType::Wall:
             {
-                auto* el = _element->AsWall();
-                duk_push_int(ctx, el->GetSecondaryColour());
-                break;
+                auto* el = element->AsWall();
+                return JS_NewUint32(ctx, el->GetSecondaryColour());
             }
             case TileElementType::Banner:
             {
-                auto* el = _element->AsBanner();
-                duk_push_int(ctx, EnumValue(el->GetBanner()->textColour));
-                break;
+                auto* el = element->AsBanner();
+                return JS_NewUint32(ctx, EnumValue(el->GetBanner()->textColour));
             }
             default:
-            {
-                duk_push_null(ctx);
-                break;
-            }
+                return JS_NULL;
         }
-        return DukValue::take_from_stack(ctx);
     }
-    void ScTileElement::secondaryColour_set(uint8_t value)
+    JSValue ScTileElement::secondaryColour_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        switch (_element->GetType())
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto element = data->element;
+        switch (element->GetType())
         {
             case TileElementType::SmallScenery:
             {
-                auto* el = _element->AsSmallScenery();
+                auto* el = element->AsSmallScenery();
                 el->SetSecondaryColour(value);
-                Invalidate();
+                Invalidate(data);
                 break;
             }
             case TileElementType::LargeScenery:
             {
-                auto* el = _element->AsLargeScenery();
+                auto* el = element->AsLargeScenery();
                 el->SetSecondaryColour(value);
-                Invalidate();
+                Invalidate(data);
                 break;
             }
             case TileElementType::Wall:
             {
-                auto* el = _element->AsWall();
+                auto* el = element->AsWall();
                 el->SetSecondaryColour(value);
-                Invalidate();
+                Invalidate(data);
                 break;
             }
             case TileElementType::Banner:
             {
-                auto* el = _element->AsBanner();
+                auto* el = element->AsBanner();
                 el->GetBanner()->textColour = static_cast<Drawing::TextColour>(value);
-                Invalidate();
+                Invalidate(data);
                 break;
             }
             default:
                 break;
         }
+        return JS_UNDEFINED;
     }
 
-    DukValue ScTileElement::tertiaryColour_get() const
+    JSValue ScTileElement::tertiaryColour_get(JSContext* ctx, JSValue thisValue)
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
-        switch (_element->GetType())
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto element = data->element;
+        switch (element->GetType())
         {
             case TileElementType::SmallScenery:
             {
-                auto* el = _element->AsSmallScenery();
-                duk_push_int(ctx, el->GetTertiaryColour());
+                auto* el = element->AsSmallScenery();
+                return JS_NewUint32(ctx, el->GetTertiaryColour());
+            }
+            case TileElementType::LargeScenery:
+            {
+                auto* el = element->AsLargeScenery();
+                return JS_NewUint32(ctx, el->GetTertiaryColour());
+            }
+            case TileElementType::Wall:
+            {
+                auto* el = element->AsWall();
+                return JS_NewUint32(ctx, el->GetTertiaryColour());
+            }
+            default:
+                return JS_NULL;
+        }
+    }
+    JSValue ScTileElement::tertiaryColour_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
+    {
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto element = data->element;
+        switch (element->GetType())
+        {
+            case TileElementType::SmallScenery:
+            {
+                auto* el = element->AsSmallScenery();
+                el->SetTertiaryColour(value);
+                Invalidate(data);
                 break;
             }
             case TileElementType::LargeScenery:
             {
-                auto* el = _element->AsLargeScenery();
-                duk_push_int(ctx, el->GetTertiaryColour());
+                auto* el = element->AsLargeScenery();
+                el->SetTertiaryColour(value);
+                Invalidate(data);
                 break;
             }
             case TileElementType::Wall:
             {
-                auto* el = _element->AsWall();
-                duk_push_int(ctx, el->GetTertiaryColour());
-                break;
-            }
-            default:
-            {
-                duk_push_null(ctx);
-                break;
-            }
-        }
-        return DukValue::take_from_stack(ctx);
-    }
-    void ScTileElement::tertiaryColour_set(uint8_t value)
-    {
-        ThrowIfGameStateNotMutable();
-        switch (_element->GetType())
-        {
-            case TileElementType::SmallScenery:
-            {
-                auto* el = _element->AsSmallScenery();
+                auto* el = element->AsWall();
                 el->SetTertiaryColour(value);
-                Invalidate();
-                break;
-            }
-            case TileElementType::LargeScenery:
-            {
-                auto* el = _element->AsLargeScenery();
-                el->SetTertiaryColour(value);
-                Invalidate();
-                break;
-            }
-            case TileElementType::Wall:
-            {
-                auto* el = _element->AsWall();
-                el->SetTertiaryColour(value);
-                Invalidate();
+                Invalidate(data);
                 break;
             }
             default:
                 break;
         }
+        return JS_UNDEFINED;
     }
 
-    DukValue ScTileElement::bannerIndex_get() const
+    JSValue ScTileElement::bannerIndex_get(JSContext* ctx, JSValue thisValue)
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
-        BannerIndex idx = _element->GetBannerIndex();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        BannerIndex idx = data->element->GetBannerIndex();
         if (idx == BannerIndex::GetNull())
-            duk_push_null(ctx);
+            return JS_NULL;
         else
-            duk_push_int(ctx, idx.ToUnderlying());
-        return DukValue::take_from_stack(ctx);
+            return JS_NewUint32(ctx, idx.ToUnderlying());
     }
-    void ScTileElement::bannerIndex_set(const DukValue& value)
+    JSValue ScTileElement::bannerIndex_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        switch (_element->GetType())
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto element = data->element;
+        switch (element->GetType())
         {
             case TileElementType::LargeScenery:
             {
-                auto* el = _element->AsLargeScenery();
-                if (value.type() == DukValue::Type::NUMBER)
-                    el->SetBannerIndex(BannerIndex::FromUnderlying(value.as_uint()));
+                auto* el = element->AsLargeScenery();
+                if (JS_IsNumber(jsValue))
+                {
+                    JS_UNPACK_UINT32(value, ctx, jsValue);
+                    el->SetBannerIndex(BannerIndex::FromUnderlying(value));
+                }
                 else
                     el->SetBannerIndex(BannerIndex::GetNull());
-                Invalidate();
+                Invalidate(data);
                 break;
             }
             case TileElementType::Wall:
             {
-                auto* el = _element->AsWall();
-                if (value.type() == DukValue::Type::NUMBER)
-                    el->SetBannerIndex(BannerIndex::FromUnderlying(value.as_uint()));
+                auto* el = element->AsWall();
+                if (JS_IsNumber(jsValue))
+                {
+                    JS_UNPACK_UINT32(value, ctx, jsValue);
+                    el->SetBannerIndex(BannerIndex::FromUnderlying(value));
+                }
                 else
                     el->SetBannerIndex(BannerIndex::GetNull());
-                Invalidate();
+                Invalidate(data);
                 break;
             }
             case TileElementType::Banner:
             {
-                auto* el = _element->AsBanner();
-                if (value.type() == DukValue::Type::NUMBER)
-                    el->SetIndex(BannerIndex::FromUnderlying(value.as_uint()));
+                auto* el = element->AsBanner();
+                if (JS_IsNumber(jsValue))
+                {
+                    JS_UNPACK_UINT32(value, ctx, jsValue);
+                    el->SetIndex(BannerIndex::FromUnderlying(value));
+                }
                 else
                     el->SetIndex(BannerIndex::GetNull());
-                Invalidate();
+                Invalidate(data);
                 break;
             }
             default:
                 break;
         }
+        return JS_UNDEFINED;
     }
 
     // Deprecated in favor of separate 'edges' and 'corners' properties,
     // left here to maintain compatibility with older plugins.
-    /** @deprecated */
-    uint8_t ScTileElement::edgesAndCorners_get() const
+    JSValue ScTileElement::edgesAndCorners_get(JSContext* ctx, JSValue thisValue)
     {
-        auto* el = _element->AsPath();
-        return el != nullptr ? el->GetEdgesAndCorners() : 0;
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsPath();
+        return JS_NewUint32(ctx, el != nullptr ? el->GetEdgesAndCorners() : 0);
     }
-    /** @deprecated */
-    void ScTileElement::edgesAndCorners_set(uint8_t value)
+    JSValue ScTileElement::edgesAndCorners_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto* el = _element->AsPath();
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsPath();
         if (el != nullptr)
         {
             el->SetEdgesAndCorners(value);
-            Invalidate();
+            Invalidate(data);
         }
+        return JS_UNDEFINED;
     }
 
-    DukValue ScTileElement::edges_get() const
+    JSValue ScTileElement::edges_get(JSContext* ctx, JSValue thisValue)
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
-        auto* el = _element->AsPath();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsPath();
         if (el != nullptr)
-            duk_push_int(ctx, el->GetEdges());
+            return JS_NewUint32(ctx, el->GetEdges());
         else
-            duk_push_null(ctx);
-        return DukValue::take_from_stack(ctx);
+            return JS_NULL;
     }
-    void ScTileElement::edges_set(uint8_t value)
+    JSValue ScTileElement::edges_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto* el = _element->AsPath();
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsPath();
         if (el != nullptr)
         {
             el->SetEdges(value);
-            Invalidate();
+            Invalidate(data);
         }
+        return JS_UNDEFINED;
     }
 
-    DukValue ScTileElement::corners_get() const
+    JSValue ScTileElement::corners_get(JSContext* ctx, JSValue thisValue)
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
-        auto* el = _element->AsPath();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsPath();
         if (el != nullptr)
-            duk_push_int(ctx, el->GetCorners());
+            return JS_NewUint32(ctx, el->GetCorners());
         else
-            duk_push_null(ctx);
-        return DukValue::take_from_stack(ctx);
+            return JS_NULL;
     }
-    void ScTileElement::corners_set(uint8_t value)
+    JSValue ScTileElement::corners_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto* el = _element->AsPath();
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsPath();
         if (el != nullptr)
         {
             el->SetCorners(value);
-            Invalidate();
+            Invalidate(data);
         }
+        return JS_UNDEFINED;
     }
 
-    DukValue ScTileElement::slopeDirection_get() const
+    JSValue ScTileElement::slopeDirection_get(JSContext* ctx, JSValue thisValue)
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
-        auto* el = _element->AsPath();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsPath();
         if (el != nullptr && el->IsSloped())
-            duk_push_int(ctx, el->GetSlopeDirection());
+            return JS_NewUint32(ctx, el->GetSlopeDirection());
         else
-            duk_push_null(ctx);
-        return DukValue::take_from_stack(ctx);
+            return JS_NULL;
     }
-    void ScTileElement::slopeDirection_set(const DukValue& value)
+    JSValue ScTileElement::slopeDirection_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto* el = _element->AsPath();
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsPath();
         if (el != nullptr)
         {
-            if (value.type() == DukValue::Type::NUMBER)
+            if (JS_IsNumber(jsValue))
             {
+                JS_UNPACK_UINT32(value, ctx, jsValue);
                 el->SetSloped(true);
-                el->SetSlopeDirection(value.as_uint());
+                el->SetSlopeDirection(value);
             }
             else
             {
                 el->SetSloped(false);
                 el->SetSlopeDirection(0);
             }
-            Invalidate();
+            Invalidate(data);
         }
+        return JS_UNDEFINED;
     }
 
-    DukValue ScTileElement::isQueue_get() const
+    JSValue ScTileElement::isQueue_get(JSContext* ctx, JSValue thisValue)
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
-        auto* el = _element->AsPath();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsPath();
         if (el != nullptr)
-            duk_push_boolean(ctx, el->IsQueue());
+            return JS_NewBool(ctx, el->IsQueue());
         else
-            duk_push_null(ctx);
-        return DukValue::take_from_stack(ctx);
+            return JS_NULL;
     }
-    void ScTileElement::isQueue_set(bool value)
+    JSValue ScTileElement::isQueue_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto* el = _element->AsPath();
+        JS_UNPACK_BOOL(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsPath();
         if (el != nullptr)
         {
             el->SetIsQueue(value);
-            Invalidate();
+            Invalidate(data);
         }
+        return JS_UNDEFINED;
     }
 
-    DukValue ScTileElement::queueBannerDirection_get() const
+    JSValue ScTileElement::queueBannerDirection_get(JSContext* ctx, JSValue thisValue)
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
-        auto* el = _element->AsPath();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsPath();
         if (el != nullptr && el->HasQueueBanner())
-            duk_push_int(ctx, el->GetQueueBannerDirection());
+            return JS_NewUint32(ctx, el->GetQueueBannerDirection());
         else
-            duk_push_null(ctx);
-        return DukValue::take_from_stack(ctx);
+            return JS_NULL;
     }
-    void ScTileElement::queueBannerDirection_set(const DukValue& value)
+    JSValue ScTileElement::queueBannerDirection_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto* el = _element->AsPath();
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsPath();
         if (el != nullptr)
         {
-            if (value.type() == DukValue::Type::NUMBER)
+            if (JS_IsNumber(jsValue))
             {
+                JS_UNPACK_UINT32(value, ctx, jsValue);
                 el->SetHasQueueBanner(true);
-                el->SetQueueBannerDirection(value.as_uint());
+                el->SetQueueBannerDirection(value);
             }
             else
             {
                 el->SetHasQueueBanner(false);
                 el->SetQueueBannerDirection(0);
             }
-            Invalidate();
+            Invalidate(data);
         }
+        return JS_UNDEFINED;
     }
 
-    DukValue ScTileElement::isBlockedByVehicle_get() const
+    JSValue ScTileElement::isBlockedByVehicle_get(JSContext* ctx, JSValue thisValue)
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
-        auto* el = _element->AsPath();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsPath();
         if (el != nullptr)
-            duk_push_boolean(ctx, el->IsBlockedByVehicle());
+            return JS_NewBool(ctx, el->IsBlockedByVehicle());
         else
-            duk_push_null(ctx);
-        return DukValue::take_from_stack(ctx);
+            return JS_NULL;
     }
-    void ScTileElement::isBlockedByVehicle_set(bool value)
+    JSValue ScTileElement::isBlockedByVehicle_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto* el = _element->AsPath();
+        JS_UNPACK_BOOL(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsPath();
         if (el != nullptr)
         {
             el->SetIsBlockedByVehicle(value);
-            Invalidate();
+            Invalidate(data);
         }
+        return JS_UNDEFINED;
     }
 
-    DukValue ScTileElement::isWide_get() const
+    JSValue ScTileElement::isWide_get(JSContext* ctx, JSValue thisValue)
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
-        auto* el = _element->AsPath();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsPath();
         if (el != nullptr)
-            duk_push_boolean(ctx, el->IsWide());
+            return JS_NewBool(ctx, el->IsWide());
         else
-            duk_push_null(ctx);
-        return DukValue::take_from_stack(ctx);
+            return JS_NULL;
     }
-    void ScTileElement::isWide_set(bool value)
+    JSValue ScTileElement::isWide_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto* el = _element->AsPath();
+        JS_UNPACK_BOOL(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsPath();
         if (el != nullptr)
         {
             el->SetWide(value);
-            Invalidate();
+            Invalidate(data);
         }
+        return JS_UNDEFINED;
     }
 
-    DukValue ScTileElement::surfaceObject_get() const
+    JSValue ScTileElement::surfaceObject_get(JSContext* ctx, JSValue thisValue)
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
-        if (_element->GetType() == TileElementType::Path)
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto element = data->element;
+        if (element->GetType() == TileElementType::Path)
         {
-            auto* el = _element->AsPath();
+            auto* el = element->AsPath();
             auto index = el->GetSurfaceEntryIndex();
             if (index != kObjectEntryIndexNull)
             {
-                duk_push_int(ctx, index);
-            }
-            else
-            {
-                duk_push_null(ctx);
+                return JS_NewUint32(ctx, index);
             }
         }
-        else
-        {
-            duk_push_null(ctx);
-        }
-        return DukValue::take_from_stack(ctx);
+        return JS_NULL;
     }
 
-    void ScTileElement::surfaceObject_set(const DukValue& value)
+    JSValue ScTileElement::surfaceObject_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
     {
-        if (value.type() == DukValue::Type::NUMBER)
+        if (JS_IsNumber(jsValue))
         {
-            ThrowIfGameStateNotMutable();
-            if (_element->GetType() == TileElementType::Path)
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+            auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+            auto element = data->element;
+            if (element->GetType() == TileElementType::Path)
             {
-                auto* el = _element->AsPath();
-                el->SetSurfaceEntryIndex(FromDuk<ObjectEntryIndex>(value));
-                Invalidate();
+                JS_UNPACK_UINT32(value, ctx, jsValue);
+                auto* el = element->AsPath();
+                el->SetSurfaceEntryIndex(value);
+                Invalidate(data);
             }
         }
+        return JS_UNDEFINED;
     }
 
-    DukValue ScTileElement::railingsObject_get() const
+    JSValue ScTileElement::railingsObject_get(JSContext* ctx, JSValue thisValue)
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
-        if (_element->GetType() == TileElementType::Path)
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto element = data->element;
+        if (element->GetType() == TileElementType::Path)
         {
-            auto* el = _element->AsPath();
+            auto* el = element->AsPath();
             auto index = el->GetRailingsEntryIndex();
             if (index != kObjectEntryIndexNull)
             {
-                duk_push_int(ctx, index);
-            }
-            else
-            {
-                duk_push_null(ctx);
+                return JS_NewUint32(ctx, index);
             }
         }
-        else
-        {
-            duk_push_null(ctx);
-        }
-        return DukValue::take_from_stack(ctx);
+        return JS_NULL;
     }
 
-    void ScTileElement::railingsObject_set(const DukValue& value)
+    JSValue ScTileElement::railingsObject_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
     {
-        if (value.type() == DukValue::Type::NUMBER)
+        if (JS_IsNumber(jsValue))
         {
-            ThrowIfGameStateNotMutable();
-            if (_element->GetType() == TileElementType::Path)
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+            auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+            auto element = data->element;
+            if (element->GetType() == TileElementType::Path)
             {
-                auto* el = _element->AsPath();
-                el->SetRailingsEntryIndex(FromDuk<ObjectEntryIndex>(value));
-                Invalidate();
+                JS_UNPACK_UINT32(value, ctx, jsValue);
+                auto* el = element->AsPath();
+                el->SetRailingsEntryIndex(value);
+                Invalidate(data);
             }
         }
+        return JS_UNDEFINED;
     }
 
-    DukValue ScTileElement::addition_get() const
+    JSValue ScTileElement::addition_get(JSContext* ctx, JSValue thisValue)
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
-        auto* el = _element->AsPath();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsPath();
         if (el != nullptr && el->HasAddition())
-            duk_push_int(ctx, el->GetAdditionEntryIndex());
+            return JS_NewUint32(ctx, el->GetAdditionEntryIndex());
         else
-            duk_push_null(ctx);
-        return DukValue::take_from_stack(ctx);
+            return JS_NULL;
     }
-    void ScTileElement::addition_set(const DukValue& value)
+    JSValue ScTileElement::addition_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto* el = _element->AsPath();
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsPath();
         if (el != nullptr)
         {
-            if (value.type() == DukValue::Type::NUMBER)
+            if (JS_IsNumber(jsValue))
             {
-                auto addition = value.as_uint();
+                JS_UNPACK_UINT32(addition, ctx, jsValue);
                 if (addition <= 254)
                 {
                     el->SetAdditionEntryIndex(addition);
@@ -1883,197 +2031,190 @@ namespace OpenRCT2::Scripting
             {
                 el->SetAddition(0);
             }
-            Invalidate();
+            Invalidate(data);
         }
+        return JS_UNDEFINED;
     }
 
-    DukValue ScTileElement::additionStatus_get() const
+    JSValue ScTileElement::additionStatus_get(JSContext* ctx, JSValue thisValue)
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
-        auto* el = _element->AsPath();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsPath();
         if (el != nullptr && el->HasAddition() && !el->IsQueue())
-            duk_push_int(ctx, el->GetAdditionStatus());
+            return JS_NewUint32(ctx, el->GetAdditionStatus());
         else
-            duk_push_null(ctx);
-        return DukValue::take_from_stack(ctx);
+            return JS_NULL;
     }
-    void ScTileElement::additionStatus_set(const DukValue& value)
+    JSValue ScTileElement::additionStatus_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
     {
-        if (value.type() == DukValue::Type::NUMBER)
+        if (JS_IsNumber(jsValue))
         {
-            ThrowIfGameStateNotMutable();
-            auto* el = _element->AsPath();
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+            auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+            auto* el = data->element->AsPath();
             if (el != nullptr)
+            {
                 if (el->HasAddition() && !el->IsQueue())
                 {
-                    el->SetAdditionStatus(value.as_uint());
-                    Invalidate();
+                    JS_UNPACK_UINT32(value, ctx, jsValue);
+                    el->SetAdditionStatus(value);
+                    Invalidate(data);
                 }
-        }
-    }
-
-    DukValue ScTileElement::isAdditionBroken_get() const
-    {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
-        auto* el = _element->AsPath();
-        if (el != nullptr && el->HasAddition())
-            duk_push_boolean(ctx, el->IsBroken());
-        else
-            duk_push_null(ctx);
-        return DukValue::take_from_stack(ctx);
-    }
-    void ScTileElement::isAdditionBroken_set(const DukValue& value)
-    {
-        if (value.type() == DukValue::Type::BOOLEAN)
-        {
-            ThrowIfGameStateNotMutable();
-            auto* el = _element->AsPath();
-            if (el != nullptr)
-            {
-                el->SetIsBroken(value.as_bool());
-                Invalidate();
             }
         }
+        return JS_UNDEFINED;
     }
 
-    DukValue ScTileElement::isAdditionGhost_get() const
+    JSValue ScTileElement::isAdditionBroken_get(JSContext* ctx, JSValue thisValue)
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
-        auto* el = _element->AsPath();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsPath();
         if (el != nullptr && el->HasAddition())
-            duk_push_boolean(ctx, el->AdditionIsGhost());
+            return JS_NewBool(ctx, el->IsBroken());
         else
-            duk_push_null(ctx);
-        return DukValue::take_from_stack(ctx);
+            return JS_NULL;
     }
-    void ScTileElement::isAdditionGhost_set(const DukValue& value)
+    JSValue ScTileElement::isAdditionBroken_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
     {
-        if (value.type() == DukValue::Type::BOOLEAN)
+        if (JS_IsBool(jsValue))
         {
-            ThrowIfGameStateNotMutable();
-            auto* el = _element->AsPath();
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+            auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+            auto* el = data->element->AsPath();
             if (el != nullptr)
             {
-                el->SetAdditionIsGhost(value.as_bool());
-                Invalidate();
+                JS_UNPACK_BOOL(value, ctx, jsValue);
+                el->SetIsBroken(value);
+                Invalidate(data);
             }
         }
+        return JS_UNDEFINED;
     }
 
-    DukValue ScTileElement::footpathObject_get() const
+    JSValue ScTileElement::isAdditionGhost_get(JSContext* ctx, JSValue thisValue)
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
-        auto* el = _element->AsEntrance();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsPath();
+        if (el != nullptr && el->HasAddition())
+            return JS_NewBool(ctx, el->AdditionIsGhost());
+        else
+            return JS_NULL;
+    }
+    JSValue ScTileElement::isAdditionGhost_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
+    {
+        if (JS_IsBool(jsValue))
+        {
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+            auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+            auto* el = data->element->AsPath();
+            if (el != nullptr)
+            {
+                JS_UNPACK_BOOL(value, ctx, jsValue);
+                el->SetAdditionIsGhost(value);
+                Invalidate(data);
+            }
+        }
+        return JS_UNDEFINED;
+    }
+
+    JSValue ScTileElement::footpathObject_get(JSContext* ctx, JSValue thisValue)
+    {
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsEntrance();
         if (el != nullptr)
         {
             auto index = el->GetLegacyPathEntryIndex();
             if (index != kObjectEntryIndexNull)
             {
-                duk_push_int(ctx, index);
-            }
-            else
-            {
-                duk_push_null(ctx);
+                return JS_NewUint32(ctx, index);
             }
         }
-        else
-        {
-            duk_push_null(ctx);
-        }
-        return DukValue::take_from_stack(ctx);
+        return JS_NULL;
     }
-    void ScTileElement::footpathObject_set(const DukValue& value)
+    JSValue ScTileElement::footpathObject_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
     {
-        if (value.type() == DukValue::Type::NUMBER)
+        if (JS_IsNumber(jsValue))
         {
-            ThrowIfGameStateNotMutable();
-            auto* el = _element->AsEntrance();
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+            auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+            auto* el = data->element->AsEntrance();
             if (el != nullptr)
             {
-                el->SetLegacyPathEntryIndex(FromDuk<ObjectEntryIndex>(value));
-                Invalidate();
+                JS_UNPACK_UINT32(value, ctx, jsValue);
+                el->SetLegacyPathEntryIndex(value);
+                Invalidate(data);
             }
         }
+        return JS_UNDEFINED;
     }
 
-    DukValue ScTileElement::footpathSurfaceObject_get() const
+    JSValue ScTileElement::footpathSurfaceObject_get(JSContext* ctx, JSValue thisValue)
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
-        auto* el = _element->AsEntrance();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsEntrance();
         if (el != nullptr)
         {
             auto index = el->GetSurfaceEntryIndex();
             if (index != kObjectEntryIndexNull)
             {
-                duk_push_int(ctx, index);
-            }
-            else
-            {
-                duk_push_null(ctx);
+                return JS_NewUint32(ctx, index);
             }
         }
-        else
-        {
-            duk_push_null(ctx);
-        }
-        return DukValue::take_from_stack(ctx);
+        return JS_NULL;
     }
 
-    void ScTileElement::footpathSurfaceObject_set(const DukValue& value)
+    JSValue ScTileElement::footpathSurfaceObject_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
     {
-        if (value.type() == DukValue::Type::NUMBER)
+        if (JS_IsNumber(jsValue))
         {
-            ThrowIfGameStateNotMutable();
-            auto* el = _element->AsEntrance();
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+            auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+            auto* el = data->element->AsEntrance();
             if (el != nullptr)
             {
-                el->SetSurfaceEntryIndex(FromDuk<ObjectEntryIndex>(value));
-                Invalidate();
+                JS_UNPACK_UINT32(value, ctx, jsValue);
+                el->SetSurfaceEntryIndex(value);
+                Invalidate(data);
             }
         }
+        return JS_UNDEFINED;
     }
 
-    DukValue ScTileElement::direction_get() const
+    JSValue ScTileElement::direction_get(JSContext* ctx, JSValue thisValue)
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
-        switch (_element->GetType())
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto element = data->element;
+        switch (element->GetType())
         {
             case TileElementType::Banner:
             {
-                auto* el = _element->AsBanner();
-                duk_push_int(ctx, el->GetPosition());
-                break;
+                auto* el = element->AsBanner();
+                return JS_NewUint32(ctx, el->GetPosition());
             }
             case TileElementType::Path:
             case TileElementType::Surface:
             {
-                duk_push_null(ctx);
-                break;
+                return JS_NULL;
             }
             default:
             {
-                duk_push_int(ctx, _element->GetDirection());
-                break;
+                return JS_NewUint32(ctx, element->GetDirection());
             }
         }
-        return DukValue::take_from_stack(ctx);
     }
-    void ScTileElement::direction_set(uint8_t value)
+    JSValue ScTileElement::direction_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        switch (_element->GetType())
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto element = data->element;
+        switch (element->GetType())
         {
             case TileElementType::Banner:
             {
-                auto* el = _element->AsBanner();
+                auto* el = element->AsBanner();
                 el->SetPosition(value);
-                Invalidate();
+                Invalidate(data);
                 break;
             }
             case TileElementType::Path:
@@ -2083,32 +2224,34 @@ namespace OpenRCT2::Scripting
             }
             default:
             {
-                _element->SetDirection(value);
-                Invalidate();
+                element->SetDirection(value);
+                Invalidate(data);
             }
         }
+        return JS_UNDEFINED;
     }
 
-    DukValue ScTileElement::bannerText_get() const
+    JSValue ScTileElement::bannerText_get(JSContext* ctx, JSValue thisValue)
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
-        BannerIndex idx = _element->GetBannerIndex();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        BannerIndex idx = data->element->GetBannerIndex();
         if (idx == BannerIndex::GetNull())
-            duk_push_null(ctx);
+            return JS_NULL;
         else
-            duk_push_string(ctx, GetBanner(idx)->getText().c_str());
-        return DukValue::take_from_stack(ctx);
+            return JSFromStdString(ctx, GetBanner(idx)->getText());
     }
-    void ScTileElement::bannerText_set(std::string value)
+    JSValue ScTileElement::bannerText_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        BannerIndex idx = _element->GetBannerIndex();
+        JS_UNPACK_STR(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto element = data->element;
+        BannerIndex idx = element->GetBannerIndex();
         if (idx != BannerIndex::GetNull())
         {
             auto banner = GetBanner(idx);
             banner->text = value;
-            if (_element->GetType() != TileElementType::Banner)
+            if (element->GetType() != TileElementType::Banner)
             {
                 if (value.empty())
                     banner->rideIndex = BannerGetClosestRideIndex({ banner->position.ToCoordsXY(), 16 });
@@ -2118,33 +2261,30 @@ namespace OpenRCT2::Scripting
                 banner->flags.set(BannerFlag::linkedToRide, !banner->rideIndex.IsNull());
             }
         }
+        return JS_UNDEFINED;
     }
 
-    DukValue ScTileElement::isNoEntry_get() const
+    JSValue ScTileElement::isNoEntry_get(JSContext* ctx, JSValue thisValue)
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
-        auto* el = _element->AsBanner();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsBanner();
         if (el != nullptr)
-            duk_push_boolean(ctx, el->GetBanner()->flags.has(BannerFlag::noEntry));
+            return JS_NewBool(ctx, el->GetBanner()->flags.has(BannerFlag::noEntry));
         else
-            duk_push_null(ctx);
-        return DukValue::take_from_stack(ctx);
+            return JS_NULL;
     }
-    void ScTileElement::isNoEntry_set(bool value)
+    JSValue ScTileElement::isNoEntry_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto* el = _element->AsBanner();
+        JS_UNPACK_BOOL(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->AsBanner();
         if (el != nullptr)
         {
             el->GetBanner()->flags.set(BannerFlag::noEntry, value);
-            Invalidate();
+            Invalidate(data);
         }
-    }
-
-    void ScTileElement::Invalidate()
-    {
-        MapInvalidateTileFull(_coords);
+        return JS_UNDEFINED;
     }
 
     const LargeSceneryElement* ScTileElement::GetOtherLargeSceneryElement(
@@ -2193,39 +2333,39 @@ namespace OpenRCT2::Scripting
         return nullptr;
     }
 
-    void ScTileElement::RemoveBannerEntryIfNeeded()
+    void ScTileElement::RemoveBannerEntryIfNeeded(TileElement* element, CoordsXY& coords)
     {
         // check if other element still uses the banner entry
-        if (_element->GetType() == TileElementType::LargeScenery
-            && _element->AsLargeScenery()->GetEntry()->scrolling_mode != kScrollingModeNone
-            && GetOtherLargeSceneryElement(_coords, _element->AsLargeScenery()) != nullptr)
+        if (element->GetType() == TileElementType::LargeScenery
+            && element->AsLargeScenery()->GetEntry()->scrolling_mode != kScrollingModeNone
+            && GetOtherLargeSceneryElement(coords, element->AsLargeScenery()) != nullptr)
             return;
         // remove banner entry (if one exists)
-        _element->RemoveBannerEntry();
+        element->RemoveBannerEntry();
     }
 
-    void ScTileElement::CreateBannerEntryIfNeeded()
+    void ScTileElement::CreateBannerEntryIfNeeded(TileElement* element, CoordsXY& coords)
     {
         // check if creation is needed
-        switch (_element->GetType())
+        switch (element->GetType())
         {
             case TileElementType::Banner:
                 break;
             case TileElementType::Wall:
             {
-                auto wallEntry = _element->AsWall()->GetEntry();
+                auto wallEntry = element->AsWall()->GetEntry();
                 if (wallEntry == nullptr || wallEntry->scrolling_mode == kScrollingModeNone)
                     return;
                 break;
             }
             case TileElementType::LargeScenery:
             {
-                auto largeScenery = _element->AsLargeScenery();
+                auto largeScenery = element->AsLargeScenery();
                 auto largeSceneryEntry = largeScenery->GetEntry();
                 if (largeSceneryEntry == nullptr || largeSceneryEntry->scrolling_mode == kScrollingModeNone)
                     return;
 
-                auto otherElement = GetOtherLargeSceneryElement(_coords, largeScenery);
+                auto otherElement = GetOtherLargeSceneryElement(coords, largeScenery);
                 if (otherElement != nullptr)
                 {
                     largeScenery->SetBannerIndex(otherElement->GetBannerIndex());
@@ -2248,16 +2388,16 @@ namespace OpenRCT2::Scripting
             banner->colour = 0;
             banner->textColour = Drawing::TextColour::black;
             banner->flags = {};
-            if (_element->GetType() == TileElementType::Wall)
+            if (element->GetType() == TileElementType::Wall)
                 banner->flags.set(BannerFlag::isWall);
-            if (_element->GetType() == TileElementType::LargeScenery)
+            if (element->GetType() == TileElementType::LargeScenery)
                 banner->flags.set(BannerFlag::isLargeScenery);
             banner->type = 0;
-            banner->position = TileCoordsXY(_coords);
+            banner->position = TileCoordsXY(coords);
 
-            if (_element->GetType() == TileElementType::Wall || _element->GetType() == TileElementType::LargeScenery)
+            if (element->GetType() == TileElementType::Wall || element->GetType() == TileElementType::LargeScenery)
             {
-                RideId rideIndex = BannerGetClosestRideIndex({ _coords, _element->BaseHeight });
+                RideId rideIndex = BannerGetClosestRideIndex({ coords, element->BaseHeight });
                 if (!rideIndex.IsNull())
                 {
                     banner->rideIndex = rideIndex;
@@ -2265,115 +2405,122 @@ namespace OpenRCT2::Scripting
                 }
             }
 
-            _element->SetBannerIndex(banner->id);
+            element->SetBannerIndex(banner->id);
         }
     }
 
-    void ScTileElement::Register(duk_context* ctx)
+    TileElement* ScTileElement::GetTileElement(JSValue thisValue)
     {
-        // All
-        dukglue_register_property(ctx, &ScTileElement::type_get, &ScTileElement::type_set, "type");
-        dukglue_register_property(ctx, &ScTileElement::baseHeight_get, &ScTileElement::baseHeight_set, "baseHeight");
-        dukglue_register_property(ctx, &ScTileElement::baseZ_get, &ScTileElement::baseZ_set, "baseZ");
-        dukglue_register_property(
-            ctx, &ScTileElement::clearanceHeight_get, &ScTileElement::clearanceHeight_set, "clearanceHeight");
-        dukglue_register_property(ctx, &ScTileElement::clearanceZ_get, &ScTileElement::clearanceZ_set, "clearanceZ");
-        dukglue_register_property(
-            ctx, &ScTileElement::occupiedQuadrants_get, &ScTileElement::occupiedQuadrants_set, "occupiedQuadrants");
-        dukglue_register_property(ctx, &ScTileElement::isGhost_get, &ScTileElement::isGhost_set, "isGhost");
-        dukglue_register_property(ctx, &ScTileElement::isHidden_get, &ScTileElement::isHidden_set, "isHidden");
+        return gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue)->element;
+    }
 
-        // Track | Small Scenery | Wall | Entrance | Large Scenery | Banner
-        dukglue_register_property(ctx, &ScTileElement::direction_get, &ScTileElement::direction_set, "direction");
+    JSValue ScTileElement::New(JSContext* ctx, TileElement* element, CoordsXY& coords)
+    {
+        static constexpr JSCFunctionListEntry funcs[] = {
+            // All
+            JS_CGETSET_DEF("type", ScTileElement::type_get, ScTileElement::type_set),
+            JS_CGETSET_DEF("baseHeight", ScTileElement::baseHeight_get, ScTileElement::baseHeight_set),
+            JS_CGETSET_DEF("baseZ", ScTileElement::baseZ_get, ScTileElement::baseZ_set),
+            JS_CGETSET_DEF("clearanceHeight", ScTileElement::clearanceHeight_get, ScTileElement::clearanceHeight_set),
+            JS_CGETSET_DEF("clearanceZ", ScTileElement::clearanceZ_get, ScTileElement::clearanceZ_set),
+            JS_CGETSET_DEF("occupiedQuadrants", ScTileElement::occupiedQuadrants_get, ScTileElement::occupiedQuadrants_set),
+            JS_CGETSET_DEF("isGhost", ScTileElement::isGhost_get, ScTileElement::isGhost_set),
+            JS_CGETSET_DEF("isHidden", ScTileElement::isHidden_get, ScTileElement::isHidden_set),
 
-        // Path | Small Scenery | Wall | Entrance | Large Scenery | Banner
-        dukglue_register_property(ctx, &ScTileElement::object_get, &ScTileElement::object_set, "object");
+            // Track | Small Scenery | Wall | Entrance | Large Scenery | Banner
+            JS_CGETSET_DEF("direction", ScTileElement::direction_get, ScTileElement::direction_set),
 
-        // Small Scenery | Wall | Large Scenery | Banner
-        dukglue_register_property(ctx, &ScTileElement::primaryColour_get, &ScTileElement::primaryColour_set, "primaryColour");
-        dukglue_register_property(
-            ctx, &ScTileElement::secondaryColour_get, &ScTileElement::secondaryColour_set, "secondaryColour");
+            // Path | Small Scenery | Wall | Entrance | Large Scenery | Banner
+            JS_CGETSET_DEF("object", ScTileElement::object_get, ScTileElement::object_set),
 
-        // Small Scenery | Wall | Large Scenery
-        dukglue_register_property(
-            ctx, &ScTileElement::tertiaryColour_get, &ScTileElement::tertiaryColour_set, "tertiaryColour");
+            // Small Scenery | Wall | Large Scenery | Banner
+            JS_CGETSET_DEF("primaryColour", ScTileElement::primaryColour_get, ScTileElement::primaryColour_set),
+            JS_CGETSET_DEF("secondaryColour", ScTileElement::secondaryColour_get, ScTileElement::secondaryColour_set),
 
-        // Wall | Large Scenery | Banner
-        dukglue_register_property(ctx, &ScTileElement::bannerText_get, &ScTileElement::bannerText_set, "bannerText");
-        dukglue_register_property(ctx, &ScTileElement::bannerIndex_get, &ScTileElement::bannerIndex_set, "bannerIndex");
+            // Small Scenery | Wall | Large Scenery
+            JS_CGETSET_DEF("tertiaryColour", ScTileElement::tertiaryColour_get, ScTileElement::tertiaryColour_set),
 
-        // Path | Track | Entrance
-        dukglue_register_property(ctx, &ScTileElement::ride_get, &ScTileElement::ride_set, "ride");
-        dukglue_register_property(ctx, &ScTileElement::station_get, &ScTileElement::station_set, "station");
+            // Wall | Large Scenery | Banner
+            JS_CGETSET_DEF("bannerText", ScTileElement::bannerText_get, ScTileElement::bannerText_set),
+            JS_CGETSET_DEF("bannerIndex", ScTileElement::bannerIndex_get, ScTileElement::bannerIndex_set),
 
-        // Track | Entrance | Large Scenery
-        dukglue_register_property(ctx, &ScTileElement::sequence_get, &ScTileElement::sequence_set, "sequence");
+            // Path | Track | Entrance
+            JS_CGETSET_DEF("ride", ScTileElement::ride_get, ScTileElement::ride_set),
+            JS_CGETSET_DEF("station", ScTileElement::station_get, ScTileElement::station_set),
 
-        // Surface | Wall
-        dukglue_register_property(ctx, &ScTileElement::slope_get, &ScTileElement::slope_set, "slope");
+            // Track | Entrance | Large Scenery
+            JS_CGETSET_DEF("sequence", ScTileElement::sequence_get, ScTileElement::sequence_set),
 
-        // Surface only
-        dukglue_register_property(ctx, &ScTileElement::waterHeight_get, &ScTileElement::waterHeight_set, "waterHeight");
-        dukglue_register_property(ctx, &ScTileElement::surfaceStyle_get, &ScTileElement::surfaceStyle_set, "surfaceStyle");
-        dukglue_register_property(ctx, &ScTileElement::edgeStyle_get, &ScTileElement::edgeStyle_set, "edgeStyle");
-        dukglue_register_property(ctx, &ScTileElement::grassLength_get, &ScTileElement::grassLength_set, "grassLength");
-        dukglue_register_property(ctx, &ScTileElement::hasOwnership_get, nullptr, "hasOwnership");
-        dukglue_register_property(ctx, &ScTileElement::hasConstructionRights_get, nullptr, "hasConstructionRights");
-        dukglue_register_property(ctx, &ScTileElement::ownership_get, &ScTileElement::ownership_set, "ownership");
-        dukglue_register_property(ctx, &ScTileElement::parkFences_get, &ScTileElement::parkFences_set, "parkFences");
+            // Surface | Wall
+            JS_CGETSET_DEF("slope", ScTileElement::slope_get, ScTileElement::slope_set),
 
-        // Footpath only
-        dukglue_register_property(
-            ctx, &ScTileElement::edgesAndCorners_get, &ScTileElement::edgesAndCorners_set, "edgesAndCorners");
-        dukglue_register_property(ctx, &ScTileElement::edges_get, &ScTileElement::edges_set, "edges");
-        dukglue_register_property(ctx, &ScTileElement::corners_get, &ScTileElement::corners_set, "corners");
-        dukglue_register_property(
-            ctx, &ScTileElement::slopeDirection_get, &ScTileElement::slopeDirection_set, "slopeDirection");
-        dukglue_register_property(ctx, &ScTileElement::isQueue_get, &ScTileElement::isQueue_set, "isQueue");
-        dukglue_register_property(
-            ctx, &ScTileElement::queueBannerDirection_get, &ScTileElement::queueBannerDirection_set, "queueBannerDirection");
+            // Surface only
+            JS_CGETSET_DEF("waterHeight", ScTileElement::waterHeight_get, ScTileElement::waterHeight_set),
+            JS_CGETSET_DEF("surfaceStyle", ScTileElement::surfaceStyle_get, ScTileElement::surfaceStyle_set),
+            JS_CGETSET_DEF("edgeStyle", ScTileElement::edgeStyle_get, ScTileElement::edgeStyle_set),
+            JS_CGETSET_DEF("grassLength", ScTileElement::grassLength_get, ScTileElement::grassLength_set),
+            JS_CGETSET_DEF("hasOwnership", ScTileElement::hasOwnership_get, nullptr),
+            JS_CGETSET_DEF("hasConstructionRights", ScTileElement::hasConstructionRights_get, nullptr),
+            JS_CGETSET_DEF("ownership", ScTileElement::ownership_get, ScTileElement::ownership_set),
+            JS_CGETSET_DEF("parkFences", ScTileElement::parkFences_get, ScTileElement::parkFences_set),
 
-        dukglue_register_property(
-            ctx, &ScTileElement::isBlockedByVehicle_get, &ScTileElement::isBlockedByVehicle_set, "isBlockedByVehicle");
-        dukglue_register_property(ctx, &ScTileElement::isWide_get, &ScTileElement::isWide_set, "isWide");
+            // Footpath only
+            JS_CGETSET_DEF("edgesAndCorners", ScTileElement::edgesAndCorners_get, ScTileElement::edgesAndCorners_set),
+            JS_CGETSET_DEF("edges", ScTileElement::edges_get, ScTileElement::edges_set),
+            JS_CGETSET_DEF("corners", ScTileElement::corners_get, ScTileElement::corners_set),
+            JS_CGETSET_DEF("slopeDirection", ScTileElement::slopeDirection_get, ScTileElement::slopeDirection_set),
+            JS_CGETSET_DEF("isQueue", ScTileElement::isQueue_get, ScTileElement::isQueue_set),
+            JS_CGETSET_DEF(
+                "queueBannerDirection", ScTileElement::queueBannerDirection_get, ScTileElement::queueBannerDirection_set),
 
-        dukglue_register_property(ctx, &ScTileElement::surfaceObject_get, &ScTileElement::surfaceObject_set, "surfaceObject");
-        dukglue_register_property(
-            ctx, &ScTileElement::railingsObject_get, &ScTileElement::railingsObject_set, "railingsObject");
+            JS_CGETSET_DEF("isBlockedByVehicle", ScTileElement::isBlockedByVehicle_get, ScTileElement::isBlockedByVehicle_set),
+            JS_CGETSET_DEF("isWide", ScTileElement::isWide_get, ScTileElement::isWide_set),
 
-        dukglue_register_property(ctx, &ScTileElement::addition_get, &ScTileElement::addition_set, "addition");
-        dukglue_register_property(
-            ctx, &ScTileElement::additionStatus_get, &ScTileElement::additionStatus_set, "additionStatus");
-        dukglue_register_property(
-            ctx, &ScTileElement::isAdditionBroken_get, &ScTileElement::isAdditionBroken_set, "isAdditionBroken");
-        dukglue_register_property(
-            ctx, &ScTileElement::isAdditionGhost_get, &ScTileElement::isAdditionGhost_set, "isAdditionGhost");
+            JS_CGETSET_DEF("surfaceObject", ScTileElement::surfaceObject_get, ScTileElement::surfaceObject_set),
+            JS_CGETSET_DEF("railingsObject", ScTileElement::railingsObject_get, ScTileElement::railingsObject_set),
 
-        // Track only
-        dukglue_register_property(ctx, &ScTileElement::trackType_get, &ScTileElement::trackType_set, "trackType");
-        dukglue_register_property(ctx, &ScTileElement::rideType_get, &ScTileElement::rideType_set, "rideType");
-        dukglue_register_property(ctx, &ScTileElement::mazeEntry_get, &ScTileElement::mazeEntry_set, "mazeEntry");
-        dukglue_register_property(ctx, &ScTileElement::colourScheme_get, &ScTileElement::colourScheme_set, "colourScheme");
-        dukglue_register_property(ctx, &ScTileElement::seatRotation_get, &ScTileElement::seatRotation_set, "seatRotation");
-        dukglue_register_property(
-            ctx, &ScTileElement::brakeBoosterSpeed_get, &ScTileElement::brakeBoosterSpeed_set, "brakeBoosterSpeed");
-        dukglue_register_property(ctx, &ScTileElement::hasChainLift_get, &ScTileElement::hasChainLift_set, "hasChainLift");
-        dukglue_register_property(ctx, &ScTileElement::isInverted_get, &ScTileElement::isInverted_set, "isInverted");
-        dukglue_register_property(ctx, &ScTileElement::hasCableLift_get, &ScTileElement::hasCableLift_set, "hasCableLift");
-        dukglue_register_property(ctx, &ScTileElement::isHighlighted_get, &ScTileElement::isHighlighted_set, "isHighlighted");
+            JS_CGETSET_DEF("addition", ScTileElement::addition_get, ScTileElement::addition_set),
+            JS_CGETSET_DEF("additionStatus", ScTileElement::additionStatus_get, ScTileElement::additionStatus_set),
+            JS_CGETSET_DEF("isAdditionBroken", ScTileElement::isAdditionBroken_get, ScTileElement::isAdditionBroken_set),
+            JS_CGETSET_DEF("isAdditionGhost", ScTileElement::isAdditionGhost_get, ScTileElement::isAdditionGhost_set),
 
-        // Small Scenery only
-        dukglue_register_property(ctx, &ScTileElement::age_get, &ScTileElement::age_set, "age");
-        dukglue_register_property(ctx, &ScTileElement::quadrant_get, &ScTileElement::quadrant_set, "quadrant");
+            // Track only
+            JS_CGETSET_DEF("trackType", ScTileElement::trackType_get, ScTileElement::trackType_set),
+            JS_CGETSET_DEF("rideType", ScTileElement::rideType_get, ScTileElement::rideType_set),
+            JS_CGETSET_DEF("mazeEntry", ScTileElement::mazeEntry_get, ScTileElement::mazeEntry_set),
+            JS_CGETSET_DEF("colourScheme", ScTileElement::colourScheme_get, ScTileElement::colourScheme_set),
+            JS_CGETSET_DEF("seatRotation", ScTileElement::seatRotation_get, ScTileElement::seatRotation_set),
+            JS_CGETSET_DEF("brakeBoosterSpeed", ScTileElement::brakeBoosterSpeed_get, ScTileElement::brakeBoosterSpeed_set),
+            JS_CGETSET_DEF("hasChainLift", ScTileElement::hasChainLift_get, ScTileElement::hasChainLift_set),
+            JS_CGETSET_DEF("isInverted", ScTileElement::isInverted_get, ScTileElement::isInverted_set),
+            JS_CGETSET_DEF("hasCableLift", ScTileElement::hasCableLift_get, ScTileElement::hasCableLift_set),
+            JS_CGETSET_DEF("isHighlighted", ScTileElement::isHighlighted_get, ScTileElement::isHighlighted_set),
 
-        // Entrance only
-        dukglue_register_property(
-            ctx, &ScTileElement::footpathObject_get, &ScTileElement::footpathObject_set, "footpathObject");
-        dukglue_register_property(
-            ctx, &ScTileElement::footpathSurfaceObject_get, &ScTileElement::footpathSurfaceObject_set, "footpathSurfaceObject");
+            // Small Scenery only
+            JS_CGETSET_DEF("age", ScTileElement::age_get, ScTileElement::age_set),
+            JS_CGETSET_DEF("quadrant", ScTileElement::quadrant_get, ScTileElement::quadrant_set),
 
-        // Banner only
-        dukglue_register_property(ctx, &ScTileElement::isNoEntry_get, &ScTileElement::isNoEntry_set, "isNoEntry");
+            // Entrance only
+            JS_CGETSET_DEF("footpathObject", ScTileElement::footpathObject_get, ScTileElement::footpathObject_set),
+            JS_CGETSET_DEF(
+                "footpathSurfaceObject", ScTileElement::footpathSurfaceObject_get, ScTileElement::footpathSurfaceObject_set),
+
+            // Banner only
+            JS_CGETSET_DEF("isNoEntry", ScTileElement::isNoEntry_get, ScTileElement::isNoEntry_set)
+        };
+        return MakeWithOpaque(ctx, funcs, new OpaqueTileElementData{ element, coords });
+    }
+
+    void ScTileElement::Register(JSContext* ctx)
+    {
+        RegisterBaseStr(ctx, "TileElement", Finalize);
+    }
+
+    void ScTileElement::Finalize(JSRuntime* rt, JSValue thisVal)
+    {
+        OpaqueTileElementData* data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisVal);
+        if (data)
+            delete data;
     }
 
 } // namespace OpenRCT2::Scripting

@@ -604,6 +604,8 @@ namespace OpenRCT2::Ui::Windows
                 gGamePaused &= ~GAME_PAUSED_MODAL;
                 Audio::Resume();
             }
+
+            UnregisterJSCallback();
         }
 
         void onResize() override
@@ -1161,13 +1163,11 @@ namespace OpenRCT2::Ui::Windows
     };
 
     WindowBase* LoadsaveOpen(
-        LoadSaveAction action, LoadSaveType type, std::string_view defaultPath, LoadSaveCallback callback,
+        LoadSaveAction action, LoadSaveType type, std::string_view defaultPath, LoadSaveCallback callback, bool isJsCallback,
         TrackDesign* trackDesign)
     {
         _trackDesign = trackDesign;
         _defaultPath = defaultPath;
-
-        RegisterCallback(callback);
 
         auto* windowMgr = GetWindowManager();
         auto* w = static_cast<LoadSaveWindow*>(windowMgr->BringToFrontByClass(WindowClass::loadsave));
@@ -1183,6 +1183,8 @@ namespace OpenRCT2::Ui::Windows
             }
 
             ScreenSize windowSize = { config.fileBrowserWidth, config.fileBrowserHeight };
+
+            RegisterCallback(callback, isJsCallback);
 
             w = windowMgr->Create<LoadSaveWindow>(
                 WindowClass::loadsave, windowSize,
