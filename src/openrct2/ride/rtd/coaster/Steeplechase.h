@@ -62,7 +62,7 @@ constexpr RideTypeDescriptor SteeplechaseRTD =
         RatingsCalculationType::Normal,
         { RideRating::make(2, 70), RideRating::make(2, 40), RideRating::make(1, 80) },
         14,
-        -1,
+        kDynamicRideShelterRating,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },

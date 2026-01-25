@@ -65,7 +65,7 @@ constexpr RideTypeDescriptor LIMLaunchedRollerCoasterRTD =
         RatingsCalculationType::Normal,
         { RideRating::make(2, 90), RideRating::make(1, 50), RideRating::make(2, 20) },
         25,
-        -1,
+        kDynamicRideShelterRating,
         true,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },

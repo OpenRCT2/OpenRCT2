@@ -59,7 +59,7 @@ constexpr RideTypeDescriptor WoodenWildMouseRTD =
         RatingsCalculationType::Normal,
         { RideRating::make(2, 90), RideRating::make(2, 90), RideRating::make(2, 10) },
         14,
-        -1,
+        kDynamicRideShelterRating,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             873, 0, 0 },

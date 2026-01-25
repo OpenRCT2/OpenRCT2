@@ -58,7 +58,7 @@ constexpr RideTypeDescriptor MiniSuspendedCoasterRTD =
         RatingsCalculationType::Normal,
         { RideRating::make(2, 80), RideRating::make(2, 50), RideRating::make(2, 70) },
         15,
-        -1,
+        kDynamicRideShelterRating,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },

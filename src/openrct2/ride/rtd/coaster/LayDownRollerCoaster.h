@@ -71,7 +71,7 @@ constexpr RideTypeDescriptor LayDownRollerCoasterRTD =
         RatingsCalculationType::Normal,
         { RideRating::make(3, 85), RideRating::make(1, 15), RideRating::make(2, 75) },
         18,
-        -1,
+        kDynamicRideShelterRating,
         true,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
@@ -142,7 +142,7 @@ constexpr RideTypeDescriptor LayDownRollerCoasterAltRTD =
         RatingsCalculationType::Normal,
         { RideRating::make(3, 85), RideRating::make(1, 15), RideRating::make(2, 75) },
         18,
-        -1,
+        kDynamicRideShelterRating,
         true,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },

@@ -798,47 +798,7 @@ void Vehicle::UpdateMeasurements()
     // If vehicle above ground.
     if (surfaceElement != nullptr && surfaceElement->GetBaseZ() <= z)
     {
-        // Set tile_element to first element. Since elements aren't always ordered by base height,
-        // we must start at the first element and iterate through each tile element.
-        auto tileElement = MapGetFirstElementAt(CoordsXY{ x, y });
-        if (tileElement == nullptr)
-            return;
-
-        bool coverFound = false;
-        do
-        {
-            // If the tile_element is lower than the vehicle, continue (don't set flag)
-            if (tileElement->GetBaseZ() <= z)
-                continue;
-
-            if (tileElement->GetType() == TileElementType::LargeScenery)
-            {
-                coverFound = true;
-                break;
-            }
-
-            if (tileElement->GetType() == TileElementType::Path)
-            {
-                coverFound = true;
-                break;
-            }
-
-            if (tileElement->GetType() != TileElementType::SmallScenery)
-                continue;
-
-            auto* sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
-            if (sceneryEntry == nullptr)
-                continue;
-
-            if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE))
-            {
-                coverFound = true;
-                break;
-            }
-            // Iterate through each tile_element.
-        } while (!(tileElement++)->IsLastForTile());
-
-        if (!coverFound)
+        if (!TrackGetIsSheltered(CoordsXYZ{ x, y, z }))
         {
             curRide->testingFlags.unset(RideTestingFlag::sheltered);
             return;
