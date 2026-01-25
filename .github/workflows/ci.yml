@@ -164,13 +164,14 @@ jobs:
           path: OpenRCT2
       - name: Download gxc
         run: |
-          curl -Lo tools.tar.gz https://github.com/IntelOrca/libsawyer/releases/download/v1.3.0/libsawyer-tools-linux-x64.tar.gz
+          curl -Lo tools.tar.gz https://github.com/OpenRCT2/libsawyer/releases/download/v1.4.0/libsawyer-tools-linux-x64.tar.gz
           mkdir -p "$GITHUB_WORKSPACE/bin"
           tar -C "$GITHUB_WORKSPACE/bin" -xf tools.tar.gz
           echo "$GITHUB_WORKSPACE/bin" >> $GITHUB_PATH
       - name: Build graphics .dat files
         run: |
           gxc build g2.dat OpenRCT2/resources/g2/sprites.json
+          gxc build palettes.dat OpenRCT2/resources/palettes/sprites.json
           gxc build fonts.dat OpenRCT2/resources/fonts/sprites.json
           gxc build tracks.dat OpenRCT2/resources/tracks/sprites.json
       - name: Upload graphics .dat files
@@ -179,6 +180,7 @@ jobs:
           name: graphics-${{ needs.build_variables.outputs.name }}
           path: |
             g2.dat
+            palettes.dat
             fonts.dat
             tracks.dat
   windows:

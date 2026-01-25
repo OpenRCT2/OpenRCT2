@@ -20,6 +20,7 @@
     <G2InputFile Condition="'$(G2InputFile)' == ''">$(ResourcesPath)g2\sprites.json</G2InputFile>
     <FontsInputFile Condition="'$(FontsInputFile)' == ''">$(ResourcesPath)fonts\sprites.json</FontsInputFile>
     <TracksInputFile Condition="'$(TracksInputFile)' == ''">$(ResourcesPath)tracks\sprites.json</TracksInputFile>
+    <PalettesInputFile Condition="'$(PalettesInputFile)' == ''">$(ResourcesPath)palettes\sprites.json</PalettesInputFile>
     <DataOutputPath Condition="'$(DataOutputPath)' == ''">$(OutDir)data\</DataOutputPath>
   </PropertyGroup>
     
@@ -28,6 +29,7 @@
     <G2Input Include="$(G2InputFile)" />
     <FontsInput Include="$(FontsInputFile)" />
     <TracksInput Include="$(TracksInputFile)" />
+    <PalettesInput Include="$(PalettesInputFile)" />
     
     <LanguageFiles Include="$(DataLanguagePath)**\*"
                    Exclude="$(DataLanguagePath)*.bak;
@@ -162,4 +164,24 @@
            AlwaysCreate="true" />
   </Target>
   <Target Name="tracks" DependsOnTargets="BuildTracks" />
+  
+  <Target Name="BuildPalettes"
+        AfterTargets="Build"
+        Inputs="@(PalettesInput)"
+        Outputs="$(DataOutputPath)palettes.dat"
+        Condition="'$(TestConfig)' != 'true' and ('$(Platform)' != 'ARM64' or '$(PROCESSOR_ARCHITECTURE)' == 'ARM64')">
+
+    <MakeDir Directories="$(DataOutputPath)" />
+  
+    <Exec Command="&quot;$(GraphicsCLIPath)&quot; sprite build &quot;$(DataOutputPath)palettes.dat&quot; &quot;%(PalettesInput.FullPath)&quot;"
+          ConsoleToMSBuild="true"
+          IgnoreExitCode="false">
+      <Output TaskParameter="ConsoleOutput" PropertyName="PalettesBuildOutput" />
+    </Exec>
+
+    <Touch Files="$(DataOutputPath)palettes.dat"
+           ForceTouch="true"
+           AlwaysCreate="true" />
+  </Target>
+  <Target Name="palettes" DependsOnTargets="BuildPalettes" />
 </Project>
