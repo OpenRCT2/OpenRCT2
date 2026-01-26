@@ -220,8 +220,7 @@ namespace OpenRCT2
         {
             // This used to be hard-coded. JSON objects set this themselves.
             _presetColours.count = 1;
-            _presetColours.list[0] = { OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::brightRed,
-                                       OpenRCT2::Drawing::Colour::brightRed };
+            _presetColours.list[0] = { Drawing::Colour::brightRed, Drawing::Colour::brightRed, Drawing::Colour::brightRed };
 
             if (_legacyType.ride_type[0] == RIDE_TYPE_FOOD_STALL || _legacyType.ride_type[0] == RIDE_TYPE_DRINK_STALL)
             {

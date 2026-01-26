@@ -51,11 +51,11 @@ constexpr RideTypeDescriptor GigaCoasterRTD =
     .PhotoItem = ShopItem::photo,
     .BonusValue = 120,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::white },
-        { OpenRCT2::Drawing::Colour::white, OpenRCT2::Drawing::Colour::white, OpenRCT2::Drawing::Colour::yellow },
-        { OpenRCT2::Drawing::Colour::yellow, OpenRCT2::Drawing::Colour::yellow, OpenRCT2::Drawing::Colour::bordeauxRed },
-        { OpenRCT2::Drawing::Colour::lightBlue, OpenRCT2::Drawing::Colour::lightBlue, OpenRCT2::Drawing::Colour::black },
-        { OpenRCT2::Drawing::Colour::brightYellow, OpenRCT2::Drawing::Colour::yellow, OpenRCT2::Drawing::Colour::darkGreen }, // Mega-Lite / 蓝月飞车
+        { Drawing::Colour::brightRed, Drawing::Colour::brightRed, Drawing::Colour::white },
+        { Drawing::Colour::white, Drawing::Colour::white, Drawing::Colour::yellow },
+        { Drawing::Colour::yellow, Drawing::Colour::yellow, Drawing::Colour::bordeauxRed },
+        { Drawing::Colour::lightBlue, Drawing::Colour::lightBlue, Drawing::Colour::black },
+        { Drawing::Colour::brightYellow, Drawing::Colour::yellow, Drawing::Colour::darkGreen }, // Mega-Lite / 蓝月飞车
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_GIGA_RC, SPR_RIDE_DESIGN_PREVIEW_GIGA_RC_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

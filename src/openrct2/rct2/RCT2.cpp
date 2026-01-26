@@ -264,7 +264,7 @@ namespace OpenRCT2::RCT2
         return {};
     }
 
-    OpenRCT2::Drawing::Colour TD6SceneryElement::getTertiaryWallColour() const
+    Drawing::Colour TD6SceneryElement::getTertiaryWallColour() const
     {
         return static_cast<Drawing::Colour>((Flags & 0xFC) >> 2);
     }

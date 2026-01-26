@@ -579,7 +579,7 @@ namespace OpenRCT2::Ui::Windows
         int32_t defaultIndex = -1;
 
         const bool specialColoursEnabled = !alwaysHideSpecialColours && getGameState().cheats.allowSpecialColourSchemes;
-        auto numColours = specialColoursEnabled ? static_cast<uint8_t>(OpenRCT2::Drawing::kColourNumTotal) : kColourNumNormal;
+        auto numColours = specialColoursEnabled ? static_cast<uint8_t>(Drawing::kColourNumTotal) : kColourNumNormal;
         // Set items
         for (uint64_t i = 0; i < numColours; i++)
         {

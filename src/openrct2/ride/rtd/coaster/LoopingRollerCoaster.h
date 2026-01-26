@@ -50,14 +50,14 @@ constexpr RideTypeDescriptor LoopingRollerCoasterRTD =
     .PhotoItem = ShopItem::photo,
     .BonusValue = 95,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { OpenRCT2::Drawing::Colour::lightBrown, OpenRCT2::Drawing::Colour::lightBrown, OpenRCT2::Drawing::Colour::black },
-        { OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::black },
-        { OpenRCT2::Drawing::Colour::white, OpenRCT2::Drawing::Colour::white, OpenRCT2::Drawing::Colour::saturatedRed },
-        { OpenRCT2::Drawing::Colour::bordeauxRed, OpenRCT2::Drawing::Colour::bordeauxRed, OpenRCT2::Drawing::Colour::white },
-        { OpenRCT2::Drawing::Colour::lightPurple, OpenRCT2::Drawing::Colour::lightPurple, OpenRCT2::Drawing::Colour::darkGreen },
-        { OpenRCT2::Drawing::Colour::oliveGreen, OpenRCT2::Drawing::Colour::oliveGreen, OpenRCT2::Drawing::Colour::lightBrown },
-        { OpenRCT2::Drawing::Colour::grey, OpenRCT2::Drawing::Colour::lightOrange, OpenRCT2::Drawing::Colour::grey },
-        { OpenRCT2::Drawing::Colour::chartreuse, OpenRCT2::Drawing::Colour::limeGreen, OpenRCT2::Drawing::Colour::deepWater }, // Mindbender
+        { Drawing::Colour::lightBrown, Drawing::Colour::lightBrown, Drawing::Colour::black },
+        { Drawing::Colour::brightRed, Drawing::Colour::brightRed, Drawing::Colour::black },
+        { Drawing::Colour::white, Drawing::Colour::white, Drawing::Colour::saturatedRed },
+        { Drawing::Colour::bordeauxRed, Drawing::Colour::bordeauxRed, Drawing::Colour::white },
+        { Drawing::Colour::lightPurple, Drawing::Colour::lightPurple, Drawing::Colour::darkGreen },
+        { Drawing::Colour::oliveGreen, Drawing::Colour::oliveGreen, Drawing::Colour::lightBrown },
+        { Drawing::Colour::grey, Drawing::Colour::lightOrange, Drawing::Colour::grey },
+        { Drawing::Colour::chartreuse, Drawing::Colour::limeGreen, Drawing::Colour::deepWater }, // Mindbender
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_LOOPING_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_LOOPING_ROLLER_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

@@ -50,8 +50,8 @@ constexpr RideTypeDescriptor SpiralRollerCoasterRTD =
     .PhotoItem = ShopItem::photo,
     .BonusValue = 85,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { OpenRCT2::Drawing::Colour::bordeauxRed, OpenRCT2::Drawing::Colour::bordeauxRed, OpenRCT2::Drawing::Colour::darkGreen },
-        { OpenRCT2::Drawing::Colour::grey, OpenRCT2::Drawing::Colour::grey, OpenRCT2::Drawing::Colour::bordeauxRed },
+        { Drawing::Colour::bordeauxRed, Drawing::Colour::bordeauxRed, Drawing::Colour::darkGreen },
+        { Drawing::Colour::grey, Drawing::Colour::grey, Drawing::Colour::bordeauxRed },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_SPIRAL_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_SPIRAL_ROLLER_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

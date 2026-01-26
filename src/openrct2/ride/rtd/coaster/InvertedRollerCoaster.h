@@ -50,15 +50,15 @@ constexpr RideTypeDescriptor InvertedRollerCoasterRTD =
     .PhotoItem = ShopItem::photo2,
     .BonusValue = 100,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { OpenRCT2::Drawing::Colour::bordeauxRed, OpenRCT2::Drawing::Colour::bordeauxRed, OpenRCT2::Drawing::Colour::black },
-        { OpenRCT2::Drawing::Colour::white, OpenRCT2::Drawing::Colour::yellow, OpenRCT2::Drawing::Colour::white },
-        { OpenRCT2::Drawing::Colour::salmonPink, OpenRCT2::Drawing::Colour::salmonPink, OpenRCT2::Drawing::Colour::grey },
-        { OpenRCT2::Drawing::Colour::black, OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::black },
-        { OpenRCT2::Drawing::Colour::saturatedBrown, OpenRCT2::Drawing::Colour::white, OpenRCT2::Drawing::Colour::saturatedBrown },
-        { OpenRCT2::Drawing::Colour::yellow, OpenRCT2::Drawing::Colour::yellow, OpenRCT2::Drawing::Colour::black },
-        { OpenRCT2::Drawing::Colour::black, OpenRCT2::Drawing::Colour::black, OpenRCT2::Drawing::Colour::periwinkle }, // Great Bear
-        { OpenRCT2::Drawing::Colour::darkBlue, OpenRCT2::Drawing::Colour::darkBlue, OpenRCT2::Drawing::Colour::tan }, // Montu / Oziris
-        { OpenRCT2::Drawing::Colour::darkPink, OpenRCT2::Drawing::Colour::darkPink, OpenRCT2::Drawing::Colour::violet }, // Banshee (Renders)
+        { Drawing::Colour::bordeauxRed, Drawing::Colour::bordeauxRed, Drawing::Colour::black },
+        { Drawing::Colour::white, Drawing::Colour::yellow, Drawing::Colour::white },
+        { Drawing::Colour::salmonPink, Drawing::Colour::salmonPink, Drawing::Colour::grey },
+        { Drawing::Colour::black, Drawing::Colour::brightRed, Drawing::Colour::black },
+        { Drawing::Colour::saturatedBrown, Drawing::Colour::white, Drawing::Colour::saturatedBrown },
+        { Drawing::Colour::yellow, Drawing::Colour::yellow, Drawing::Colour::black },
+        { Drawing::Colour::black, Drawing::Colour::black, Drawing::Colour::periwinkle }, // Great Bear
+        { Drawing::Colour::darkBlue, Drawing::Colour::darkBlue, Drawing::Colour::tan }, // Montu / Oziris
+        { Drawing::Colour::darkPink, Drawing::Colour::darkPink, Drawing::Colour::violet }, // Banshee (Renders)
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_INVERTED_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_INVERTED_ROLLER_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

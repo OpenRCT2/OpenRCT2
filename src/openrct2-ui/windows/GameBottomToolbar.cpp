@@ -82,11 +82,11 @@ namespace OpenRCT2::Ui::Windows
     class GameBottomToolbar final : public Window
     {
     private:
-        OpenRCT2::Drawing::Colour GetHoverWidgetColour(WidgetIndex index)
+        Drawing::Colour GetHoverWidgetColour(WidgetIndex index)
         {
             return (
                 gHoverWidget.windowClassification == WindowClass::bottomToolbar && gHoverWidget.widgetIndex == index
-                    ? static_cast<OpenRCT2::Drawing::Colour>(OpenRCT2::Drawing::Colour::white)
+                    ? static_cast<Drawing::Colour>(Drawing::Colour::white)
                     : colours[0].colour);
         }
 
@@ -256,8 +256,8 @@ namespace OpenRCT2::Ui::Windows
             auto screenCoords = windowPos + ScreenCoordsXY{ middleOutsetWidget.midX(), middleOutsetWidget.top + 11 };
             int32_t itemWidth = middleOutsetWidget.width() - 63;
             DrawNewsTicker(
-                rt, screenCoords, itemWidth, OpenRCT2::Drawing::Colour::brightGreen, STR_BOTTOM_TOOLBAR_NEWS_TEXT,
-                newsItem->text, newsItem->ticks);
+                rt, screenCoords, itemWidth, Drawing::Colour::brightGreen, STR_BOTTOM_TOOLBAR_NEWS_TEXT, newsItem->text,
+                newsItem->ticks);
 
             const auto& newsSubjectWidget = widgets[WIDX_NEWS_SUBJECT];
             screenCoords = windowPos + ScreenCoordsXY{ newsSubjectWidget.left, newsSubjectWidget.top };

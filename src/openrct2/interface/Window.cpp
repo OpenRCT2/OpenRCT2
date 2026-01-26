@@ -44,7 +44,7 @@ namespace OpenRCT2
     WindowCloseModifier gLastCloseModifier = { { WindowClass::null, 0 }, CloseWindowModifier::none };
 
     uint32_t gWindowUpdateTicks;
-    OpenRCT2::Drawing::Colour gCurrentWindowColours[3];
+    Drawing::Colour gCurrentWindowColours[3];
 
     Tool gCurrentToolId;
     WidgetRef gCurrentToolWidget;

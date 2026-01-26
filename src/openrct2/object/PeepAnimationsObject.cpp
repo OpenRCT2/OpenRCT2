@@ -215,16 +215,16 @@ namespace OpenRCT2
 
         // Draw four cardinal directions around the inline sprite
         GfxDrawSprite(
-            rt, ImageId(_imageOffsetId + 4, OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::darkWater),
+            rt, ImageId(_imageOffsetId + 4, Drawing::Colour::brightRed, Drawing::Colour::darkWater),
             centre + ScreenCoordsXY{ -32, -24 });
         GfxDrawSprite(
-            rt, ImageId(_imageOffsetId + 2, OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::darkWater),
+            rt, ImageId(_imageOffsetId + 2, Drawing::Colour::brightRed, Drawing::Colour::darkWater),
             centre + ScreenCoordsXY{ +32, +32 });
         GfxDrawSprite(
-            rt, ImageId(_imageOffsetId + 1, OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::darkWater),
+            rt, ImageId(_imageOffsetId + 1, Drawing::Colour::brightRed, Drawing::Colour::darkWater),
             centre + ScreenCoordsXY{ +32, -24 });
         GfxDrawSprite(
-            rt, ImageId(_imageOffsetId + 3, OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::darkWater),
+            rt, ImageId(_imageOffsetId + 3, Drawing::Colour::brightRed, Drawing::Colour::darkWater),
             centre + ScreenCoordsXY{ -32, +32 });
     }
 

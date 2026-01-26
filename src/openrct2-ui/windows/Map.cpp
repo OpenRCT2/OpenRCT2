@@ -185,14 +185,14 @@ namespace OpenRCT2::Ui::Windows
     };
 
     static constexpr ColourPair kRideKeyColours[] = {
-        ColourPair(PaletteIndex::pi61),     // OpenRCT2::Drawing::Colour::keyRide
-        ColourPair(PaletteIndex::pi42),     // OpenRCT2::Drawing::Colour::keyFood
-        ColourPair(PaletteIndex::pi20),     // OpenRCT2::Drawing::Colour::keyDrink
-        ColourPair(PaletteIndex::hotPink7), // OpenRCT2::Drawing::Colour::keySouvenir
-        ColourPair(PaletteIndex::pi136),    // OpenRCT2::Drawing::Colour::keyKiosk
-        ColourPair(PaletteIndex::pi102),    // OpenRCT2::Drawing::Colour::keyFirstAid
-        ColourPair(PaletteIndex::yellow9),  // OpenRCT2::Drawing::Colour::keyCashMachine
-        ColourPair(PaletteIndex::pi161),    // OpenRCT2::Drawing::Colour::keyToilets
+        ColourPair(PaletteIndex::pi61),     // Drawing::Colour::keyRide
+        ColourPair(PaletteIndex::pi42),     // Drawing::Colour::keyFood
+        ColourPair(PaletteIndex::pi20),     // Drawing::Colour::keyDrink
+        ColourPair(PaletteIndex::hotPink7), // Drawing::Colour::keySouvenir
+        ColourPair(PaletteIndex::pi136),    // Drawing::Colour::keyKiosk
+        ColourPair(PaletteIndex::pi102),    // Drawing::Colour::keyFirstAid
+        ColourPair(PaletteIndex::yellow9),  // Drawing::Colour::keyCashMachine
+        ColourPair(PaletteIndex::pi161),    // Drawing::Colour::keyToilets
     };
 
     static constexpr PaletteIndex DefaultPeepMapColour = PaletteIndex::pi20;

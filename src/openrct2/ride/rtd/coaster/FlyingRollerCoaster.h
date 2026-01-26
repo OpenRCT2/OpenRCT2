@@ -56,13 +56,13 @@ constexpr RideTypeDescriptor FlyingRollerCoasterRTD =
     .PhotoItem = ShopItem::photo2,
     .BonusValue = 100,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { OpenRCT2::Drawing::Colour::oliveGreen, OpenRCT2::Drawing::Colour::oliveGreen, OpenRCT2::Drawing::Colour::darkWater },
-        { OpenRCT2::Drawing::Colour::darkWater, OpenRCT2::Drawing::Colour::darkWater, OpenRCT2::Drawing::Colour::bordeauxRed },
-        { OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::darkPurple },
-        { OpenRCT2::Drawing::Colour::viridian, OpenRCT2::Drawing::Colour::limeGreen, OpenRCT2::Drawing::Colour::deepWater },
-        { OpenRCT2::Drawing::Colour::maroon, OpenRCT2::Drawing::Colour::maroon, OpenRCT2::Drawing::Colour::saturatedBrown }, // FLY
-        { OpenRCT2::Drawing::Colour::lightBlue, OpenRCT2::Drawing::Colour::darkBlue, OpenRCT2::Drawing::Colour::icyBlue }, // Manta
-        { OpenRCT2::Drawing::Colour::yellow, OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::lightOrange } // Tatsu
+        { Drawing::Colour::oliveGreen, Drawing::Colour::oliveGreen, Drawing::Colour::darkWater },
+        { Drawing::Colour::darkWater, Drawing::Colour::darkWater, Drawing::Colour::bordeauxRed },
+        { Drawing::Colour::brightRed, Drawing::Colour::brightRed, Drawing::Colour::darkPurple },
+        { Drawing::Colour::viridian, Drawing::Colour::limeGreen, Drawing::Colour::deepWater },
+        { Drawing::Colour::maroon, Drawing::Colour::maroon, Drawing::Colour::saturatedBrown }, // FLY
+        { Drawing::Colour::lightBlue, Drawing::Colour::darkBlue, Drawing::Colour::icyBlue }, // Manta
+        { Drawing::Colour::yellow, Drawing::Colour::brightRed, Drawing::Colour::lightOrange } // Tatsu
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_FLYING_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_FLYING_ROLLER_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,
@@ -131,9 +131,9 @@ constexpr RideTypeDescriptor FlyingRollerCoasterAltRTD =
     .PhotoItem = ShopItem::photo2,
     .BonusValue = 100,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { OpenRCT2::Drawing::Colour::oliveGreen, OpenRCT2::Drawing::Colour::oliveGreen, OpenRCT2::Drawing::Colour::darkWater },
-        { OpenRCT2::Drawing::Colour::darkWater, OpenRCT2::Drawing::Colour::darkWater, OpenRCT2::Drawing::Colour::bordeauxRed },
-        { OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::darkPurple },
+        { Drawing::Colour::oliveGreen, Drawing::Colour::oliveGreen, Drawing::Colour::darkWater },
+        { Drawing::Colour::darkWater, Drawing::Colour::darkWater, Drawing::Colour::bordeauxRed },
+        { Drawing::Colour::brightRed, Drawing::Colour::brightRed, Drawing::Colour::darkPurple },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_FLYING_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_FLYING_ROLLER_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

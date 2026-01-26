@@ -50,8 +50,8 @@ constexpr RideTypeDescriptor LogFlumeRTD =
     .PhotoItem = ShopItem::photo4,
     .BonusValue = 65,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { OpenRCT2::Drawing::Colour::darkBrown, OpenRCT2::Drawing::Colour::darkBrown, OpenRCT2::Drawing::Colour::grey },
-        { OpenRCT2::Drawing::Colour::oliveGreen, OpenRCT2::Drawing::Colour::black, OpenRCT2::Drawing::Colour::grey },
+        { Drawing::Colour::darkBrown, Drawing::Colour::darkBrown, Drawing::Colour::grey },
+        { Drawing::Colour::oliveGreen, Drawing::Colour::black, Drawing::Colour::grey },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_LOG_FLUME_TRACK, SPR_RIDE_DESIGN_PREVIEW_LOG_FLUME_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

@@ -635,7 +635,7 @@ namespace OpenRCT2::Ui::Windows
             auto* animObj = findPeepAnimationsObjectForType(AnimationPeepType::guest);
             i += animObj->GetPeepAnimation(PeepAnimationGroup::normal).baseImage + 1;
             GfxDrawSprite(
-                rt, ImageId(i, OpenRCT2::Drawing::Colour::grey, OpenRCT2::Drawing::Colour::darkOliveGreen),
+                rt, ImageId(i, Drawing::Colour::grey, Drawing::Colour::darkOliveGreen),
                 windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_1].midX(), widgets[WIDX_TAB_1].bottom - 6 });
 
             // Tab 2 image

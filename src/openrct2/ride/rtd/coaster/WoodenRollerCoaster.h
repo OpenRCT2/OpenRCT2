@@ -49,14 +49,14 @@ constexpr RideTypeDescriptor WoodenRollerCoasterRTD =
     .PhotoItem = ShopItem::photo3,
     .BonusValue = 105,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { OpenRCT2::Drawing::Colour::bordeauxRed, OpenRCT2::Drawing::Colour::black, OpenRCT2::Drawing::Colour::white },
-        { OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::black, OpenRCT2::Drawing::Colour::grey },
-        { OpenRCT2::Drawing::Colour::yellow, OpenRCT2::Drawing::Colour::darkBrown, OpenRCT2::Drawing::Colour::darkBrown },
-        { OpenRCT2::Drawing::Colour::darkWater, OpenRCT2::Drawing::Colour::bordeauxRed, OpenRCT2::Drawing::Colour::white },
-        { OpenRCT2::Drawing::Colour::lightBlue, OpenRCT2::Drawing::Colour::black, OpenRCT2::Drawing::Colour::black },
-        { OpenRCT2::Drawing::Colour::lightBlue, OpenRCT2::Drawing::Colour::black, OpenRCT2::Drawing::Colour::darkBrown },
-        { OpenRCT2::Drawing::Colour::tan, OpenRCT2::Drawing::Colour::sepia, OpenRCT2::Drawing::Colour::lightBrown }, // Generic GCI 
-        { OpenRCT2::Drawing::Colour::sepia, OpenRCT2::Drawing::Colour::umber, OpenRCT2::Drawing::Colour::grey }, // The Voyage /* Change supports to "minetrain" if possible in the future. */
+        { Drawing::Colour::bordeauxRed, Drawing::Colour::black, Drawing::Colour::white },
+        { Drawing::Colour::brightRed, Drawing::Colour::black, Drawing::Colour::grey },
+        { Drawing::Colour::yellow, Drawing::Colour::darkBrown, Drawing::Colour::darkBrown },
+        { Drawing::Colour::darkWater, Drawing::Colour::bordeauxRed, Drawing::Colour::white },
+        { Drawing::Colour::lightBlue, Drawing::Colour::black, Drawing::Colour::black },
+        { Drawing::Colour::lightBlue, Drawing::Colour::black, Drawing::Colour::darkBrown },
+        { Drawing::Colour::tan, Drawing::Colour::sepia, Drawing::Colour::lightBrown }, // Generic GCI 
+        { Drawing::Colour::sepia, Drawing::Colour::umber, Drawing::Colour::grey }, // The Voyage /* Change supports to "minetrain" if possible in the future. */
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_WOODEN_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_WOODEN_ROLLER_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

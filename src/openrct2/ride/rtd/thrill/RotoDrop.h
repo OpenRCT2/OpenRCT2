@@ -48,8 +48,8 @@ constexpr RideTypeDescriptor RotoDropRTD =
     .PhotoItem = ShopItem::photo,
     .BonusValue = 45,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { OpenRCT2::Drawing::Colour::bordeauxRed, OpenRCT2::Drawing::Colour::yellow, OpenRCT2::Drawing::Colour::grey },
-        { OpenRCT2::Drawing::Colour::black, OpenRCT2::Drawing::Colour::lightBlue, OpenRCT2::Drawing::Colour::grey },
+        { Drawing::Colour::bordeauxRed, Drawing::Colour::yellow, Drawing::Colour::grey },
+        { Drawing::Colour::black, Drawing::Colour::lightBlue, Drawing::Colour::grey },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_ROTO_DROP_TRACK, SPR_RIDE_DESIGN_PREVIEW_ROTO_DROP_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

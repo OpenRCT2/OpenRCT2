@@ -232,7 +232,7 @@ namespace OpenRCT2::Ui::Windows
                     windowPos.x + listWidget.left + screenCoords.x + 2 - scrolls[0].contentOffsetX,
                     windowPos.y + listWidget.top + screenCoords.y + 2 - scrolls[0].contentOffsetY
                 };
-                WindowDropdownShowText(dropdownPos, 0, { OpenRCT2::Drawing::Colour::grey }, 0, dropdownItems);
+                WindowDropdownShowText(dropdownPos, 0, { Drawing::Colour::grey }, 0, dropdownItems);
             }
         }
 
@@ -311,7 +311,7 @@ namespace OpenRCT2::Ui::Windows
 
             DrawTextBasic(
                 rt, windowPos + ScreenCoordsXY{ 6, widgets[WIDX_PLAYER_NAME_INPUT].top }, STR_PLAYER_NAME, {},
-                { OpenRCT2::Drawing::Colour::white });
+                { Drawing::Colour::white });
 
             // Draw version number
             std::string version = Network::GetVersion();
@@ -319,12 +319,11 @@ namespace OpenRCT2::Ui::Windows
             ft.Add<const char*>(version.c_str());
             DrawTextBasic(
                 rt, windowPos + ScreenCoordsXY{ 324, widgets[WIDX_START_SERVER].top + 1 }, STR_NETWORK_VERSION, ft,
-                { OpenRCT2::Drawing::Colour::white });
+                { Drawing::Colour::white });
 
             ft = Formatter();
             ft.Add<uint32_t>(_numPlayersOnline);
-            DrawTextBasic(
-                rt, windowPos + ScreenCoordsXY{ 8, height - 15 }, _statusText, ft, { OpenRCT2::Drawing::Colour::white });
+            DrawTextBasic(rt, windowPos + ScreenCoordsXY{ 8, height - 15 }, _statusText, ft, { Drawing::Colour::white });
         }
 
         void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
@@ -357,11 +356,11 @@ namespace OpenRCT2::Ui::Windows
                 auto colour = colours[1];
                 if (serverDetails.Favourite)
                 {
-                    colour = OpenRCT2::Drawing::Colour::yellow;
+                    colour = Drawing::Colour::yellow;
                 }
                 else if (serverDetails.Local)
                 {
-                    colour = OpenRCT2::Drawing::Colour::mossGreen;
+                    colour = Drawing::Colour::mossGreen;
                 }
 
                 screenCoords.x = 3;

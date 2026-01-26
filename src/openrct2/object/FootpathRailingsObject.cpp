@@ -55,7 +55,7 @@ namespace OpenRCT2
         auto x = width / 2;
         auto y = height / 2;
         auto helper = ImageId(kImageIndexUndefined);
-        if (Colour != OpenRCT2::Drawing::kColourNull)
+        if (Colour != Drawing::kColourNull)
             helper = helper.WithPrimary(Colour);
 
         if (SupportType == RailingEntrySupportType::pole)

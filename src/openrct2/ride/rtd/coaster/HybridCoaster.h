@@ -49,14 +49,14 @@ constexpr RideTypeDescriptor HybridCoasterRTD =
     .PhotoItem = ShopItem::photo,
     .BonusValue = 120,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { OpenRCT2::Drawing::Colour::lightOrange, OpenRCT2::Drawing::Colour::lightOrange, OpenRCT2::Drawing::Colour::darkBrown }, // Medusa
-        { OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::saturatedBrown},
-        { OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::grey }, // Storm Chaser
-        { OpenRCT2::Drawing::Colour::lightBlue, OpenRCT2::Drawing::Colour::lightBlue, OpenRCT2::Drawing::Colour::white }, // Hakugei
-        { OpenRCT2::Drawing::Colour::maroon, OpenRCT2::Drawing::Colour::maroon, OpenRCT2::Drawing::Colour::darkBrown }, // Zadra
-        { OpenRCT2::Drawing::Colour::saturatedBrown, OpenRCT2::Drawing::Colour::saturatedBrown, OpenRCT2::Drawing::Colour::darkBrown }, // Untamed
-        { OpenRCT2::Drawing::Colour::violet, OpenRCT2::Drawing::Colour::violet, OpenRCT2::Drawing::Colour::saturatedBrown }, // Iron Gwazi
-        { OpenRCT2::Drawing::Colour::maroon, OpenRCT2::Drawing::Colour::maroon, OpenRCT2::Drawing::Colour::black }, // Wildcat's Revenge
+        { Drawing::Colour::lightOrange, Drawing::Colour::lightOrange, Drawing::Colour::darkBrown }, // Medusa
+        { Drawing::Colour::brightRed, Drawing::Colour::brightRed, Drawing::Colour::saturatedBrown},
+        { Drawing::Colour::brightRed, Drawing::Colour::brightRed, Drawing::Colour::grey }, // Storm Chaser
+        { Drawing::Colour::lightBlue, Drawing::Colour::lightBlue, Drawing::Colour::white }, // Hakugei
+        { Drawing::Colour::maroon, Drawing::Colour::maroon, Drawing::Colour::darkBrown }, // Zadra
+        { Drawing::Colour::saturatedBrown, Drawing::Colour::saturatedBrown, Drawing::Colour::darkBrown }, // Untamed
+        { Drawing::Colour::violet, Drawing::Colour::violet, Drawing::Colour::saturatedBrown }, // Iron Gwazi
+        { Drawing::Colour::maroon, Drawing::Colour::maroon, Drawing::Colour::black }, // Wildcat's Revenge
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_HYBRID_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_HYBRID_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

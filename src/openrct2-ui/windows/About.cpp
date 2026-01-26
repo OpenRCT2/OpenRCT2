@@ -165,7 +165,7 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<StringId>(STR_TITLE_SEQUENCE_OPENRCT2);
                 DrawTextWrapped(
                     rt, aboutOpenRCT2Coords, 87, STR_WINDOW_COLOUR_2_STRINGID, ft,
-                    { OpenRCT2::Drawing::Colour::lightWater, TextAlignment::centre });
+                    { Drawing::Colour::lightWater, TextAlignment::centre });
             }
             {
                 // TODO: this string shouldn't be reused for this tab
@@ -173,7 +173,7 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<StringId>(STR_TITLE_SEQUENCE_RCT2);
                 DrawTextWrapped(
                     rt, aboutRCT2Coords, 87, STR_WINDOW_COLOUR_2_STRINGID, ft,
-                    { OpenRCT2::Drawing::Colour::lightWater, TextAlignment::centre });
+                    { Drawing::Colour::lightWater, TextAlignment::centre });
             }
 
             int32_t newHeight = 0;

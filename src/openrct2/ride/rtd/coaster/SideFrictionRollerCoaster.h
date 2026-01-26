@@ -47,10 +47,10 @@ constexpr RideTypeDescriptor SideFrictionRollerCoasterRTD =
     .PhotoItem = ShopItem::photo3,
     .BonusValue = 65,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { OpenRCT2::Drawing::Colour::white, OpenRCT2::Drawing::Colour::darkBrown, OpenRCT2::Drawing::Colour::white },
-        { OpenRCT2::Drawing::Colour::saturatedBrown, OpenRCT2::Drawing::Colour::white, OpenRCT2::Drawing::Colour::saturatedBrown },
-        { OpenRCT2::Drawing::Colour::darkBrown, OpenRCT2::Drawing::Colour::lightBrown, OpenRCT2::Drawing::Colour::darkBrown },
-        { OpenRCT2::Drawing::Colour::white, OpenRCT2::Drawing::Colour::viridian, OpenRCT2::Drawing::Colour::white }, // Leap-The-Dips
+        { Drawing::Colour::white, Drawing::Colour::darkBrown, Drawing::Colour::white },
+        { Drawing::Colour::saturatedBrown, Drawing::Colour::white, Drawing::Colour::saturatedBrown },
+        { Drawing::Colour::darkBrown, Drawing::Colour::lightBrown, Drawing::Colour::darkBrown },
+        { Drawing::Colour::white, Drawing::Colour::viridian, Drawing::Colour::white }, // Leap-The-Dips
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_SIDE_FRICTION_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_SIDE_FRICTION_ROLLER_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

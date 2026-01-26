@@ -963,7 +963,7 @@ namespace OpenRCT2::RCT2
                 auto object = ObjectEntryGetObject(ObjectType::ride, dst->subtype);
                 if (object != nullptr && object->GetIdentifier() == "rct2.ride.icecr1")
                 {
-                    dst->trackColours[0].main = OpenRCT2::Drawing::Colour::lightBlue;
+                    dst->trackColours[0].main = Drawing::Colour::lightBlue;
                 }
             }
 

@@ -72,7 +72,7 @@ namespace OpenRCT2
         static bool isRideTypeShopOrFacility(ride_type_t rideType);
         static RideCategory ParseRideCategory(const std::string& s);
         static ShopItem ParseShopItem(const std::string& s);
-        static OpenRCT2::Drawing::Colour ParseColour(const std::string& s);
+        static Drawing::Colour ParseColour(const std::string& s);
 
         uint8_t GetDefaultClearance() const;
     };

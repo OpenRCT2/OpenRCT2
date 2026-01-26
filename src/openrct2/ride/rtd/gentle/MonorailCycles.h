@@ -50,8 +50,8 @@ constexpr RideTypeDescriptor MonorailCyclesRTD =
     .PhotoItem = ShopItem::photo,
     .BonusValue = 45,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { OpenRCT2::Drawing::Colour::darkBrown, OpenRCT2::Drawing::Colour::grey, OpenRCT2::Drawing::Colour::darkBrown },
-        { OpenRCT2::Drawing::Colour::grey, OpenRCT2::Drawing::Colour::black, OpenRCT2::Drawing::Colour::grey },
+        { Drawing::Colour::darkBrown, Drawing::Colour::grey, Drawing::Colour::darkBrown },
+        { Drawing::Colour::grey, Drawing::Colour::black, Drawing::Colour::grey },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_MONORAIL_CYCLES_TRACK, SPR_RIDE_DESIGN_PREVIEW_MONORAIL_CYCLES_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

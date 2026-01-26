@@ -79,9 +79,9 @@ namespace OpenRCT2::Ui::Windows
                 _parentWidget.window.number = 0;
                 _parentWidget.widgetIndex = 0;
 
-                colours[0] = OpenRCT2::Drawing::Colour::grey;
-                colours[1] = OpenRCT2::Drawing::Colour::grey;
-                colours[2] = OpenRCT2::Drawing::Colour::grey;
+                colours[0] = Drawing::Colour::grey;
+                colours[1] = Drawing::Colour::grey;
+                colours[2] = Drawing::Colour::grey;
             }
             else
             {

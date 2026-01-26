@@ -51,9 +51,9 @@ constexpr RideTypeDescriptor ChairliftRTD =
     .PhotoItem = ShopItem::photo,
     .BonusValue = 55,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { OpenRCT2::Drawing::Colour::bordeauxRed, OpenRCT2::Drawing::Colour::bordeauxRed, OpenRCT2::Drawing::Colour::grey },
-        { OpenRCT2::Drawing::Colour::white, OpenRCT2::Drawing::Colour::white, OpenRCT2::Drawing::Colour::oliveGreen },
-        { OpenRCT2::Drawing::Colour::lightBrown, OpenRCT2::Drawing::Colour::lightBrown, OpenRCT2::Drawing::Colour::white },
+        { Drawing::Colour::bordeauxRed, Drawing::Colour::bordeauxRed, Drawing::Colour::grey },
+        { Drawing::Colour::white, Drawing::Colour::white, Drawing::Colour::oliveGreen },
+        { Drawing::Colour::lightBrown, Drawing::Colour::lightBrown, Drawing::Colour::white },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_CHAIRLIFT_TRACK, SPR_RIDE_DESIGN_PREVIEW_CHAIRLIFT_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

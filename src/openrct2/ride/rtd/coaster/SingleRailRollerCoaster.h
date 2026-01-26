@@ -48,9 +48,9 @@ constexpr RideTypeDescriptor SingleRailRollerCoasterRTD =
     .PhotoItem = ShopItem::photo,
     .BonusValue = 80,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { OpenRCT2::Drawing::Colour::lightOrange, OpenRCT2::Drawing::Colour::lightOrange, OpenRCT2::Drawing::Colour::white },
-        { OpenRCT2::Drawing::Colour::yellow, OpenRCT2::Drawing::Colour::yellow, OpenRCT2::Drawing::Colour::black },
-        { OpenRCT2::Drawing::Colour::lightBlue, OpenRCT2::Drawing::Colour::lightBlue, OpenRCT2::Drawing::Colour::darkGreen }
+        { Drawing::Colour::lightOrange, Drawing::Colour::lightOrange, Drawing::Colour::white },
+        { Drawing::Colour::yellow, Drawing::Colour::yellow, Drawing::Colour::black },
+        { Drawing::Colour::lightBlue, Drawing::Colour::lightBlue, Drawing::Colour::darkGreen }
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_SINGLE_RAIL_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_SINGLE_RAIL_ROLLER_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

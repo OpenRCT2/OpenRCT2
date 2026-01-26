@@ -46,23 +46,23 @@ namespace OpenRCT2::Ui::Windows
 
     static std::array<LoaderVehicleStyle, 4> kVehicleStyles = { {
         {
-            ImageId{SPR_G2_LOADER_HYBRID_SUPPORTS, OpenRCT2::Drawing::Colour::lightOrange, OpenRCT2::Drawing::Colour::darkBrown },
-            ImageId{SPR_G2_LOADER_HYBRID_TRACK, OpenRCT2::Drawing::Colour::lightOrange, OpenRCT2::Drawing::Colour::lightOrange },
-            ImageId{SPR_G2_LOADER_HYBRID_VEHICLE, OpenRCT2::Drawing::Colour::oliveGreen, OpenRCT2::Drawing::Colour::oliveGreen, OpenRCT2::Drawing::Colour::brightRed }
+            ImageId{SPR_G2_LOADER_HYBRID_SUPPORTS, Drawing::Colour::lightOrange, Drawing::Colour::darkBrown },
+            ImageId{SPR_G2_LOADER_HYBRID_TRACK, Drawing::Colour::lightOrange, Drawing::Colour::lightOrange },
+            ImageId{SPR_G2_LOADER_HYBRID_VEHICLE, Drawing::Colour::oliveGreen, Drawing::Colour::oliveGreen, Drawing::Colour::brightRed }
         },
         {
-            ImageId{SPR_G2_LOADER_STEEL_SUPPORTS, OpenRCT2::Drawing::Colour::lightBrown, OpenRCT2::Drawing::Colour::black },
-            ImageId{SPR_G2_LOADER_STEEL_TRACK, OpenRCT2::Drawing::Colour::lightBrown, OpenRCT2::Drawing::Colour::lightBrown },
-            ImageId{SPR_G2_LOADER_STEEL_VEHICLE, OpenRCT2::Drawing::Colour::lightBlue, OpenRCT2::Drawing::Colour::white, OpenRCT2::Drawing::Colour::lightBlue }
+            ImageId{SPR_G2_LOADER_STEEL_SUPPORTS, Drawing::Colour::lightBrown, Drawing::Colour::black },
+            ImageId{SPR_G2_LOADER_STEEL_TRACK, Drawing::Colour::lightBrown, Drawing::Colour::lightBrown },
+            ImageId{SPR_G2_LOADER_STEEL_VEHICLE, Drawing::Colour::lightBlue, Drawing::Colour::white, Drawing::Colour::lightBlue }
         },
         {
-            ImageId{SPR_G2_LOADER_WOODEN_SUPPORTS, OpenRCT2::Drawing::Colour::black, OpenRCT2::Drawing::Colour::white },
-            ImageId{SPR_G2_LOADER_WOODEN_TRACK, OpenRCT2::Drawing::Colour::bordeauxRed, OpenRCT2::Drawing::Colour::black },
-            ImageId{SPR_G2_LOADER_WOODEN_VEHICLE, OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::saturatedBrown}
+            ImageId{SPR_G2_LOADER_WOODEN_SUPPORTS, Drawing::Colour::black, Drawing::Colour::white },
+            ImageId{SPR_G2_LOADER_WOODEN_TRACK, Drawing::Colour::bordeauxRed, Drawing::Colour::black },
+            ImageId{SPR_G2_LOADER_WOODEN_VEHICLE, Drawing::Colour::brightRed, Drawing::Colour::brightRed, Drawing::Colour::saturatedBrown}
         },
         {
-            ImageId{SPR_G2_LOADER_GO_KARTS_SUPPORTS, OpenRCT2::Drawing::Colour::darkBrown, OpenRCT2::Drawing::Colour::darkBrown },
-            ImageId{SPR_G2_LOADER_GO_KARTS_TRACK, OpenRCT2::Drawing::Colour::black, OpenRCT2::Drawing::Colour::black },
+            ImageId{SPR_G2_LOADER_GO_KARTS_SUPPORTS, Drawing::Colour::darkBrown, Drawing::Colour::darkBrown },
+            ImageId{SPR_G2_LOADER_GO_KARTS_TRACK, Drawing::Colour::black, Drawing::Colour::black },
             ImageId{SPR_G2_LOADER_GO_KARTS_VEHICLES }
         },
     } };

@@ -50,11 +50,11 @@ constexpr RideTypeDescriptor InvertedImpulseCoasterRTD =
     .PhotoItem = ShopItem::photo2,
     .BonusValue = 75,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::grey },
-        { OpenRCT2::Drawing::Colour::yellow, OpenRCT2::Drawing::Colour::yellow, OpenRCT2::Drawing::Colour::white },
-        { OpenRCT2::Drawing::Colour::brightPurple, OpenRCT2::Drawing::Colour::brightPurple, OpenRCT2::Drawing::Colour::bordeauxRed },
-        { OpenRCT2::Drawing::Colour::brightYellow, OpenRCT2::Drawing::Colour::brightYellow, OpenRCT2::Drawing::Colour::bordeauxRed }, // Volcano: The Blast Coaster
-        { OpenRCT2::Drawing::Colour::brightYellow, OpenRCT2::Drawing::Colour::brightYellow, OpenRCT2::Drawing::Colour::darkWater }, // Wicked Twister
+        { Drawing::Colour::brightRed, Drawing::Colour::brightRed, Drawing::Colour::grey },
+        { Drawing::Colour::yellow, Drawing::Colour::yellow, Drawing::Colour::white },
+        { Drawing::Colour::brightPurple, Drawing::Colour::brightPurple, Drawing::Colour::bordeauxRed },
+        { Drawing::Colour::brightYellow, Drawing::Colour::brightYellow, Drawing::Colour::bordeauxRed }, // Volcano: The Blast Coaster
+        { Drawing::Colour::brightYellow, Drawing::Colour::brightYellow, Drawing::Colour::darkWater }, // Wicked Twister
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_INVERTED_IMPULSE_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_INVERTED_IMPULSE_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

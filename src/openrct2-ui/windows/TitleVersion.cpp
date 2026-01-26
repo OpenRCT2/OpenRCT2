@@ -26,8 +26,7 @@ namespace OpenRCT2::Ui::Windows
         void onDraw(Drawing::RenderTarget& rt) override
         {
             // Write name and version information
-            const auto whiteOutline = ColourWithFlags{ OpenRCT2::Drawing::Colour::white }.withFlag(
-                ColourFlag::withOutline, true);
+            const auto whiteOutline = ColourWithFlags{ Drawing::Colour::white }.withFlag(ColourFlag::withOutline, true);
             DrawText(rt, windowPos, { whiteOutline }, gVersionInfoFull);
             width = GfxGetStringWidth(gVersionInfoFull, FontStyle::medium);
 

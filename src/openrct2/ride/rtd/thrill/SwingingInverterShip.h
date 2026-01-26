@@ -49,8 +49,8 @@ constexpr RideTypeDescriptor SwingingInverterShipRTD =
     .PhotoItem = ShopItem::photo,
     .BonusValue = 35,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { OpenRCT2::Drawing::Colour::bordeauxRed, OpenRCT2::Drawing::Colour::yellow, OpenRCT2::Drawing::Colour::black },
-        { OpenRCT2::Drawing::Colour::black, OpenRCT2::Drawing::Colour::saturatedBrown, OpenRCT2::Drawing::Colour::black },
+        { Drawing::Colour::bordeauxRed, Drawing::Colour::yellow, Drawing::Colour::black },
+        { Drawing::Colour::black, Drawing::Colour::saturatedBrown, Drawing::Colour::black },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_SWINGING_INVERTER_SHIP_TRACK, SPR_RIDE_DESIGN_PREVIEW_SWINGING_INVERTER_SHIP_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

@@ -321,8 +321,8 @@ namespace OpenRCT2::Ui::Windows
         makeWidget     ({289, 108}, { 24,  24}, WidgetType::flatBtn,      WindowColour::secondary, 0xFFFFFFFF,                STR_LOCATE_NEAREST_AVAILABLE_MECHANIC_TIP             ),
         makeWidget     ({265, 108}, { 24,  24}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_CONSTRUCTION), STR_REFURBISH_RIDE_TIP                                ),
         makeWidget     ({241, 108}, { 24,  24}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_NO_ENTRY),     STR_DEBUG_FORCE_BREAKDOWN_TIP                         ),
-        makeProgressBar({107,  47}, { 147, 10}, OpenRCT2::Drawing::Colour::brightGreen                                                                                                                 ),
-        makeProgressBar({107,  58}, { 147, 10}, OpenRCT2::Drawing::Colour::brightRed                                                                                                                   )
+        makeProgressBar({107,  47}, { 147, 10}, Drawing::Colour::brightGreen                                                                                                                 ),
+        makeProgressBar({107,  58}, { 147, 10}, Drawing::Colour::brightRed                                                                                                                   )
     );
 
     // 0x009AE2A4
@@ -1333,7 +1333,7 @@ namespace OpenRCT2::Ui::Windows
                 spriteIndex += animObj->GetPeepAnimation(PeepAnimationGroup::normal).baseImage + 1;
 
                 GfxDrawSprite(
-                    rt, ImageId(spriteIndex, OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::darkWater),
+                    rt, ImageId(spriteIndex, Drawing::Colour::brightRed, Drawing::Colour::darkWater),
                     windowPos + ScreenCoordsXY{ widget.midX(), widget.bottom - 6 });
             }
         }
@@ -3693,7 +3693,7 @@ namespace OpenRCT2::Ui::Windows
                 auto underWidget = ride->mode == RideMode::poweredLaunchBlockSectioned ? WIDX_MODE_TWEAK : WIDX_MODE;
                 DrawTextBasic(
                     rt, windowPos + ScreenCoordsXY{ 21, widgets[underWidget].bottom + 3 }, STR_BLOCK_SECTIONS, ft,
-                    { OpenRCT2::Drawing::Colour::black });
+                    { Drawing::Colour::black });
             }
         }
 
@@ -4026,7 +4026,7 @@ namespace OpenRCT2::Ui::Windows
             // Locate mechanic button image
             Widget* widget = &widgets[WIDX_LOCATE_MECHANIC];
             auto screenCoords = windowPos + ScreenCoordsXY{ widget->left, widget->top };
-            auto image = ImageId(SPR_MECHANIC, OpenRCT2::Drawing::Colour::black, getGameState().park.staffMechanicColour);
+            auto image = ImageId(SPR_MECHANIC, Drawing::Colour::black, getGameState().park.staffMechanicColour);
             GfxDrawSprite(rt, image, screenCoords);
 
             // Inspection label
@@ -6043,7 +6043,7 @@ namespace OpenRCT2::Ui::Windows
 
         void GraphsOnScrollDraw(RenderTarget& rt, int32_t scrollIndex)
         {
-            GfxClear(rt, getColourMap(OpenRCT2::Drawing::Colour::saturatedGreen).darker);
+            GfxClear(rt, getColourMap(Drawing::Colour::saturatedGreen).darker);
 
             auto widget = &widgets[WIDX_GRAPH];
             auto ride = GetRide(rideId);
@@ -6064,8 +6064,8 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Vertical grid lines
-            const auto lightColour = getColourMap(OpenRCT2::Drawing::Colour::saturatedGreen).midLight;
-            const auto darkColour = getColourMap(OpenRCT2::Drawing::Colour::saturatedGreen).midDark;
+            const auto lightColour = getColourMap(Drawing::Colour::saturatedGreen).midLight;
+            const auto darkColour = getColourMap(Drawing::Colour::saturatedGreen).midDark;
 
             int32_t time = 0;
             for (int32_t x = 0; x < rt.x + rt.width; x += 80)

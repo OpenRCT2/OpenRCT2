@@ -48,8 +48,8 @@ constexpr RideTypeDescriptor LaunchedFreefallRTD =
     .PhotoItem = ShopItem::photo,
     .BonusValue = 65,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { OpenRCT2::Drawing::Colour::white, OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::lightPurple },
-        { OpenRCT2::Drawing::Colour::darkGreen, OpenRCT2::Drawing::Colour::yellow, OpenRCT2::Drawing::Colour::white },
+        { Drawing::Colour::white, Drawing::Colour::brightRed, Drawing::Colour::lightPurple },
+        { Drawing::Colour::darkGreen, Drawing::Colour::yellow, Drawing::Colour::white },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_LAUNCHED_FREEFALL_TRACK, SPR_RIDE_DESIGN_PREVIEW_LAUNCHED_FREEFALL_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

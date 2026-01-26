@@ -48,7 +48,7 @@ constexpr RideTypeDescriptor CrookedHouseRTD =
     .PhotoItem = ShopItem::photo,
     .BonusValue = 22,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::black, OpenRCT2::Drawing::Colour::grey },
+        { Drawing::Colour::brightRed, Drawing::Colour::black, Drawing::Colour::grey },
     ),
     .ColourPreview = { 0, 0 },
     .ColourKey = RideColourKey::Ride,

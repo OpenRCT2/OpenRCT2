@@ -50,11 +50,11 @@ constexpr RideTypeDescriptor VerticalDropCoasterRTD =
     .PhotoItem = ShopItem::photo,
     .BonusValue = 95,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { OpenRCT2::Drawing::Colour::black, OpenRCT2::Drawing::Colour::grey, OpenRCT2::Drawing::Colour::black },
-        { OpenRCT2::Drawing::Colour::darkGreen, OpenRCT2::Drawing::Colour::darkGreen, OpenRCT2::Drawing::Colour::grey },
-        { OpenRCT2::Drawing::Colour::darkOrange, OpenRCT2::Drawing::Colour::darkOrange, OpenRCT2::Drawing::Colour::viridian }, // Yukon Striker
-        { OpenRCT2::Drawing::Colour::lightOrange, OpenRCT2::Drawing::Colour::darkOrange, OpenRCT2::Drawing::Colour::darkBlue }, // Valravn
-        { OpenRCT2::Drawing::Colour::grey, OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::yellow }, // Dr. Diabolical's Cliffhanger
+        { Drawing::Colour::black, Drawing::Colour::grey, Drawing::Colour::black },
+        { Drawing::Colour::darkGreen, Drawing::Colour::darkGreen, Drawing::Colour::grey },
+        { Drawing::Colour::darkOrange, Drawing::Colour::darkOrange, Drawing::Colour::viridian }, // Yukon Striker
+        { Drawing::Colour::lightOrange, Drawing::Colour::darkOrange, Drawing::Colour::darkBlue }, // Valravn
+        { Drawing::Colour::grey, Drawing::Colour::brightRed, Drawing::Colour::yellow }, // Dr. Diabolical's Cliffhanger
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_VERTICAL_DROP_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_VERTICAL_DROP_ROLLER_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

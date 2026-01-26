@@ -49,8 +49,8 @@ constexpr RideTypeDescriptor FerrisWheelRTD =
     .PhotoItem = ShopItem::photo,
     .BonusValue = 45,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { OpenRCT2::Drawing::Colour::black, OpenRCT2::Drawing::Colour::black, OpenRCT2::Drawing::Colour::black },
-        { OpenRCT2::Drawing::Colour::grey, OpenRCT2::Drawing::Colour::grey, OpenRCT2::Drawing::Colour::grey },
+        { Drawing::Colour::black, Drawing::Colour::black, Drawing::Colour::black },
+        { Drawing::Colour::grey, Drawing::Colour::grey, Drawing::Colour::grey },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_FERRIS_WHEEL_TRACK, 0 },
     .ColourKey = RideColourKey::Ride,

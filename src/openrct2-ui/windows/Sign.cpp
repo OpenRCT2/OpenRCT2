@@ -64,8 +64,8 @@ namespace OpenRCT2::Ui::Windows
     private:
         bool _isSmall = false;
         ObjectEntryIndex _sceneryEntry = kObjectEntryIndexNull;
-        OpenRCT2::Drawing::Colour _mainColour = {};
-        OpenRCT2::Drawing::Colour _textColour = {};
+        Drawing::Colour _mainColour = {};
+        Drawing::Colour _textColour = {};
 
         BannerIndex GetBannerIndex() const
         {

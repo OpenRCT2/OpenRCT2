@@ -51,13 +51,13 @@ constexpr RideTypeDescriptor TwisterRollerCoasterRTD =
     .PhotoItem = ShopItem::photo,
     .BonusValue = 120,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { OpenRCT2::Drawing::Colour::yellow, OpenRCT2::Drawing::Colour::yellow, OpenRCT2::Drawing::Colour::bordeauxRed },
-        { OpenRCT2::Drawing::Colour::lightWater, OpenRCT2::Drawing::Colour::lightWater, OpenRCT2::Drawing::Colour::darkPurple },
-        { OpenRCT2::Drawing::Colour::white, OpenRCT2::Drawing::Colour::white, OpenRCT2::Drawing::Colour::lightBlue },
-        { OpenRCT2::Drawing::Colour::darkGreen, OpenRCT2::Drawing::Colour::mossGreen, OpenRCT2::Drawing::Colour::darkBrown },
-        { OpenRCT2::Drawing::Colour::bordeauxRed, OpenRCT2::Drawing::Colour::lightOrange, OpenRCT2::Drawing::Colour::white },
-        { OpenRCT2::Drawing::Colour::lightBlue, OpenRCT2::Drawing::Colour::yellow, OpenRCT2::Drawing::Colour::darkPink }, // Scream
-        { OpenRCT2::Drawing::Colour::darkOrange, OpenRCT2::Drawing::Colour::darkOrange, OpenRCT2::Drawing::Colour::black }, // Rougarou
+        { Drawing::Colour::yellow, Drawing::Colour::yellow, Drawing::Colour::bordeauxRed },
+        { Drawing::Colour::lightWater, Drawing::Colour::lightWater, Drawing::Colour::darkPurple },
+        { Drawing::Colour::white, Drawing::Colour::white, Drawing::Colour::lightBlue },
+        { Drawing::Colour::darkGreen, Drawing::Colour::mossGreen, Drawing::Colour::darkBrown },
+        { Drawing::Colour::bordeauxRed, Drawing::Colour::lightOrange, Drawing::Colour::white },
+        { Drawing::Colour::lightBlue, Drawing::Colour::yellow, Drawing::Colour::darkPink }, // Scream
+        { Drawing::Colour::darkOrange, Drawing::Colour::darkOrange, Drawing::Colour::black }, // Rougarou
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_TWISTER_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_TWISTER_ROLLER_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

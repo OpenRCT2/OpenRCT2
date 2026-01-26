@@ -64,9 +64,9 @@ constexpr RideTypeDescriptor DinghySlideRTD =
     .PhotoItem = ShopItem::photo4,
     .BonusValue = 55,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { OpenRCT2::Drawing::Colour::darkGreen, OpenRCT2::Drawing::Colour::saturatedBrown, OpenRCT2::Drawing::Colour::darkGreen },
-        { OpenRCT2::Drawing::Colour::darkWater, OpenRCT2::Drawing::Colour::bordeauxRed, OpenRCT2::Drawing::Colour::darkWater },
-        { OpenRCT2::Drawing::Colour::brightRed, OpenRCT2::Drawing::Colour::grey, OpenRCT2::Drawing::Colour::saturatedRed },
+        { Drawing::Colour::darkGreen, Drawing::Colour::saturatedBrown, Drawing::Colour::darkGreen },
+        { Drawing::Colour::darkWater, Drawing::Colour::bordeauxRed, Drawing::Colour::darkWater },
+        { Drawing::Colour::brightRed, Drawing::Colour::grey, Drawing::Colour::saturatedRed },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_DINGHY_SLIDE_TRACK, SPR_RIDE_DESIGN_PREVIEW_DINGHY_SLIDE_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

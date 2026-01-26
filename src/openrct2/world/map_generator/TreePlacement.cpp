@@ -79,7 +79,7 @@ namespace OpenRCT2::World::MapGenerator
         sceneryElement->SetDirection(UtilRand() & 3);
         sceneryElement->SetEntryIndex(type);
         sceneryElement->SetAge(0);
-        sceneryElement->SetPrimaryColour(OpenRCT2::Drawing::Colour::yellow);
+        sceneryElement->SetPrimaryColour(Drawing::Colour::yellow);
     }
 
     static bool surfaceTakesGrassTrees(const TerrainSurfaceObject& surface)

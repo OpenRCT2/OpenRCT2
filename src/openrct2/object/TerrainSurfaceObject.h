@@ -56,7 +56,7 @@ namespace OpenRCT2
         std::vector<SpecialEntry> SpecialEntriesUnderground;
         std::vector<SpecialEntry> SpecialEntriesGrid;
 
-        OpenRCT2::Drawing::Colour Colour{};
+        Drawing::Colour Colour{};
         uint8_t Rotations{};
         money64 Price{};
         TerrainSurfaceFlags Flags{};

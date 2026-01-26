@@ -55,9 +55,9 @@ namespace OpenRCT2::Ui::Windows
             setWidgets(window_custom_currency_widgets);
             holdDownWidgets = (1uLL << WIDX_RATE_UP) | (1uLL << WIDX_RATE_DOWN);
             WindowInitScrollWidgets(*this);
-            colours[0] = OpenRCT2::Drawing::Colour::lightBrown;
-            colours[1] = OpenRCT2::Drawing::Colour::lightBrown;
-            colours[2] = OpenRCT2::Drawing::Colour::lightBrown;
+            colours[0] = Drawing::Colour::lightBrown;
+            colours[1] = Drawing::Colour::lightBrown;
+            colours[2] = Drawing::Colour::lightBrown;
         }
 
         void onMouseDown(WidgetIndex widgetIndex) override

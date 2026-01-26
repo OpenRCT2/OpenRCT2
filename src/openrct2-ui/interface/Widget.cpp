@@ -560,7 +560,7 @@ namespace OpenRCT2::Ui
             Rectangle::FillMode::dontLightenWhenInset);
 
         // Black caption bars look slightly green, this fixes that
-        if (colour.colour == OpenRCT2::Drawing::Colour::black)
+        if (colour.colour == Drawing::Colour::black)
             Rectangle::fill(
                 rt, { { topLeft + ScreenCoordsXY{ 1, 1 } }, { bottomRight - ScreenCoordsXY{ 1, 1 } } },
                 getColourMap(colour.colour).dark);
@@ -592,8 +592,7 @@ namespace OpenRCT2::Ui
 
         DrawTextEllipsised(
             rt, topLeft, width, widget->text, Formatter::Common(),
-            { ColourWithFlags{ OpenRCT2::Drawing::Colour::white }.withFlag(ColourFlag::withOutline, true),
-              TextAlignment::centre });
+            { ColourWithFlags{ Drawing::Colour::white }.withFlag(ColourFlag::withOutline, true), TextAlignment::centre });
     }
 
     /**
@@ -1259,9 +1258,9 @@ namespace OpenRCT2::Ui
         Rectangle::fillInset(rt, { topLeft, bottomRight }, w.colours[1], Rectangle::BorderStyle::inset);
     }
 
-    ImageId getColourButtonImage(OpenRCT2::Drawing::Colour colour)
+    ImageId getColourButtonImage(Drawing::Colour colour)
     {
-        if (colour == OpenRCT2::Drawing::Colour::invisible)
+        if (colour == Drawing::Colour::invisible)
         {
             return ImageId(SPR_G2_ICON_PALETTE_INVISIBLE, colour).WithBlended(false);
         }

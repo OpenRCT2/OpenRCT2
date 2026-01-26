@@ -143,17 +143,17 @@ namespace OpenRCT2::Ui::Windows
     static constexpr auto _guestWindowWidgetsStats = makeWidgets(
         kMainGuestWidgets,
         makeWidget     ({  3, (kListRowHeight * 0) + 4 + 43 }, { 62,  10 }, WidgetType::label,               WindowColour::secondary, STR_GUEST_STAT_HAPPINESS_LABEL),
-        makeProgressBar({ 65, (kListRowHeight * 0) + 4 + 43 }, { 119, 10 }, OpenRCT2::Drawing::Colour::brightGreen,             0,                       19),
+        makeProgressBar({ 65, (kListRowHeight * 0) + 4 + 43 }, { 119, 10 }, Drawing::Colour::brightGreen,             0,                       19),
         makeWidget     ({  3, (kListRowHeight * 1) + 4 + 43 }, { 62,  10 }, WidgetType::label,               WindowColour::secondary, STR_GUEST_STAT_ENERGY_LABEL),
-        makeProgressBar({ 65, (kListRowHeight * 1) + 4 + 43 }, { 119, 10 }, OpenRCT2::Drawing::Colour::brightGreen,             0,                       19),
+        makeProgressBar({ 65, (kListRowHeight * 1) + 4 + 43 }, { 119, 10 }, Drawing::Colour::brightGreen,             0,                       19),
         makeWidget     ({  3, (kListRowHeight * 2) + 4 + 43 }, { 62,  10 }, WidgetType::label,               WindowColour::secondary, STR_GUEST_STAT_HUNGER_LABEL),
-        makeProgressBar({ 65, (kListRowHeight * 2) + 4 + 43 }, { 119, 10 }, OpenRCT2::Drawing::Colour::brightRed,               67,                      100),
+        makeProgressBar({ 65, (kListRowHeight * 2) + 4 + 43 }, { 119, 10 }, Drawing::Colour::brightRed,               67,                      100),
         makeWidget     ({  3, (kListRowHeight * 3) + 4 + 43 }, { 62,  10 }, WidgetType::label,               WindowColour::secondary, STR_GUEST_STAT_THIRST_LABEL),
-        makeProgressBar({ 65, (kListRowHeight * 3) + 4 + 43 }, { 119, 10 }, OpenRCT2::Drawing::Colour::brightRed,               67,                      100),
+        makeProgressBar({ 65, (kListRowHeight * 3) + 4 + 43 }, { 119, 10 }, Drawing::Colour::brightRed,               67,                      100),
         makeWidget     ({  3, (kListRowHeight * 4) + 4 + 43 }, { 62,  10 }, WidgetType::label,               WindowColour::secondary, STR_GUEST_STAT_NAUSEA_LABEL),
-        makeProgressBar({ 65, (kListRowHeight * 4) + 4 + 43 }, { 119, 10 }, OpenRCT2::Drawing::Colour::brightRed,               47,                      100),
+        makeProgressBar({ 65, (kListRowHeight * 4) + 4 + 43 }, { 119, 10 }, Drawing::Colour::brightRed,               47,                      100),
         makeWidget     ({  3, (kListRowHeight * 5) + 4 + 43 }, { 62,  10 }, WidgetType::label,               WindowColour::secondary, STR_GUEST_STAT_TOILET_LABEL),
-        makeProgressBar({ 65, (kListRowHeight * 5) + 4 + 43 }, { 119, 10 }, OpenRCT2::Drawing::Colour::brightRed,               62,                      100),
+        makeProgressBar({ 65, (kListRowHeight * 5) + 4 + 43 }, { 119, 10 }, Drawing::Colour::brightRed,               62,                      100),
         makeWidget     ({  3, (kListRowHeight * 7) + 9 + 43 }, { 180, 2  }, WidgetType::horizontalSeparator, WindowColour::secondary)
     );
 

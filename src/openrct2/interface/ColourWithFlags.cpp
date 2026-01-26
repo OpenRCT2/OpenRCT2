@@ -36,7 +36,7 @@ namespace OpenRCT2
         return result;
     }
 
-    ColourWithFlags& ColourWithFlags::operator=(OpenRCT2::Drawing::Colour rhs)
+    ColourWithFlags& ColourWithFlags::operator=(Drawing::Colour rhs)
     {
         colour = rhs;
         flags = {};

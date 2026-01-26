@@ -50,7 +50,7 @@ constexpr RideTypeDescriptor SubmarineRideRTD =
     .PhotoItem = ShopItem::photo,
     .BonusValue = 40,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { OpenRCT2::Drawing::Colour::grey, OpenRCT2::Drawing::Colour::grey, OpenRCT2::Drawing::Colour::black },
+        { Drawing::Colour::grey, Drawing::Colour::grey, Drawing::Colour::black },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_SUBMARINE_RIDE_TRACK, SPR_RIDE_DESIGN_PREVIEW_SUBMARINE_RIDE_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

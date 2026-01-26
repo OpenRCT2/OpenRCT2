@@ -491,8 +491,7 @@ namespace OpenRCT2::Ui::Windows
                     auto ft = Formatter();
                     ft.Add<StringId>(DateDayNames[newsItem.day - 1]);
                     ft.Add<StringId>(DateGameMonthNames[DateGetMonth(newsItem.monthYear)]);
-                    DrawTextBasic(
-                        rt, { 2, y }, STR_NEWS_DATE_FORMAT, ft, { OpenRCT2::Drawing::Colour::white, FontStyle::small });
+                    DrawTextBasic(rt, { 2, y }, STR_NEWS_DATE_FORMAT, ft, { Drawing::Colour::white, FontStyle::small });
                 }
                 // Item text
                 {
@@ -500,7 +499,7 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<const char*>(newsItem.text.c_str());
                     DrawTextWrapped(
                         rt, { 2, y + lineHeight }, 325, STR_BOTTOM_TOOLBAR_NEWS_TEXT, ft,
-                        { OpenRCT2::Drawing::Colour::brightGreen, FontStyle::small });
+                        { Drawing::Colour::brightGreen, FontStyle::small });
                 }
                 // Subject button
                 if (newsItem.typeHasSubject() && !newsItem.hasButton())

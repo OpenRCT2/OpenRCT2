@@ -37,9 +37,9 @@ namespace OpenRCT2::Ui::Windows
         {
             setWidgets(_titleLogoWidgets);
             WindowInitScrollWidgets(*this);
-            colours[0] = ColourWithFlags{ OpenRCT2::Drawing::Colour::grey }.withFlag(ColourFlag::translucent, true);
-            colours[1] = ColourWithFlags{ OpenRCT2::Drawing::Colour::grey }.withFlag(ColourFlag::translucent, true);
-            colours[2] = ColourWithFlags{ OpenRCT2::Drawing::Colour::grey }.withFlag(ColourFlag::translucent, true);
+            colours[0] = ColourWithFlags{ Drawing::Colour::grey }.withFlag(ColourFlag::translucent, true);
+            colours[1] = ColourWithFlags{ Drawing::Colour::grey }.withFlag(ColourFlag::translucent, true);
+            colours[2] = ColourWithFlags{ Drawing::Colour::grey }.withFlag(ColourFlag::translucent, true);
         }
 
         void onMouseUp(WidgetIndex widgetIndex) override

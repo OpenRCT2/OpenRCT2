@@ -93,7 +93,7 @@ namespace OpenRCT2::GameActions
         switch (_type)
         {
             case BannerSetStyleType::PrimaryColour:
-                if (_parameter > OpenRCT2::Drawing::kColourNumTotal)
+                if (_parameter > Drawing::kColourNumTotal)
                 {
                     LOG_ERROR("Invalid primary colour %u", _parameter);
                     return Result(Status::invalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_INVALID_COLOUR);

@@ -17,7 +17,7 @@
 
 namespace OpenRCT2::Ui
 {
-    ImageId getColourButtonImage(OpenRCT2::Drawing::Colour colour);
+    ImageId getColourButtonImage(Drawing::Colour colour);
     Widget* getWidgetByIndex(WindowBase& w, WidgetIndex widgetIndex);
 
     constexpr uint32_t kWidgetContentEmpty = 0xFFFFFFFF;
