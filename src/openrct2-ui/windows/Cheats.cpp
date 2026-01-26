@@ -1012,7 +1012,7 @@ static StringId window_cheats_page_titles[] = {
                         fmt.Add<uint32_t>(weatherType.first);
                         fmt.Add<StringId>(weatherType.second);
 
-                        gDropdown.items[i] = Dropdown::PlainMenuLabel(StringId(7017), fmt);
+                        gDropdown.items[i] = Dropdown::PlainMenuLabel(STR_WEATHER_DROPDOWN_ITEM, fmt);
                         i++;
                     }
 
