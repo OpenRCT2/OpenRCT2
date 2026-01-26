@@ -59,7 +59,7 @@ struct PathRailingsDescriptor
     ImageIndex bridgeImage{};
     ImageIndex railingsImage{};
     RailingEntrySupportType supportType{};
-    OpenRCT2::Drawing::Colour supportColour = OpenRCT2::Drawing::Colour::null;
+    OpenRCT2::Drawing::Colour supportColour = OpenRCT2::Drawing::kColourNull;
     uint8_t flags{};
     uint8_t scrollingMode = kScrollingModeNone;
 };

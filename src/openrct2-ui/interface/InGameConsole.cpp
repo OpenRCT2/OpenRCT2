@@ -343,8 +343,7 @@ void InGameConsole::Draw(RenderTarget& rt) const
             if (textColour.colour == OpenRCT2::Drawing::Colour::black)
             {
                 DrawText(rt, screenCoords, { textColour, style }, "{BLACK}");
-                DrawText(
-                    rt, screenCoords, { OpenRCT2::Drawing::Colour::null, style }, _consoleLines[index].first.c_str(), true);
+                DrawText(rt, screenCoords, { OpenRCT2::Drawing::kColourNull, style }, _consoleLines[index].first.c_str(), true);
             }
             else
             {
@@ -355,7 +354,7 @@ void InGameConsole::Draw(RenderTarget& rt) const
         {
             std::string lineColour = FormatTokenToStringWithBraces(_consoleLines[index].second);
             DrawText(rt, screenCoords, { textColour, style }, lineColour.c_str());
-            DrawText(rt, screenCoords, { OpenRCT2::Drawing::Colour::null, style }, _consoleLines[index].first.c_str(), true);
+            DrawText(rt, screenCoords, { OpenRCT2::Drawing::kColourNull, style }, _consoleLines[index].first.c_str(), true);
         }
 
         screenCoords.y += lineHeight;
@@ -367,7 +366,7 @@ void InGameConsole::Draw(RenderTarget& rt) const
     if (textColour.colour == OpenRCT2::Drawing::Colour::black)
     {
         DrawText(rt, screenCoords, { textColour, style }, "{BLACK}");
-        DrawText(rt, screenCoords, { OpenRCT2::Drawing::Colour::null, style }, _consoleCurrentLine.c_str(), true);
+        DrawText(rt, screenCoords, { OpenRCT2::Drawing::kColourNull, style }, _consoleCurrentLine.c_str(), true);
     }
     else
     {

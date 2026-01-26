@@ -65,8 +65,8 @@ namespace OpenRCT2
 
         if (session.rt.zoom_level < ZoomLevel{ 2 } && vehicle->num_peeps > 0 && !vehicle->IsGhost())
         {
-            Drawing::Colour riding_peep_sprites[4] = { Drawing::Colour::null, Drawing::Colour::null, Drawing::Colour::null,
-                                                       Drawing::Colour::null };
+            Drawing::Colour riding_peep_sprites[4] = { Drawing::kColourNull, Drawing::kColourNull, Drawing::kColourNull,
+                                                       Drawing::kColourNull };
             for (int32_t i = 0; i < vehicle->num_peeps; i++)
             {
                 riding_peep_sprites[((ecx / 8) + i) & 3] = vehicle->peep_tshirt_colours[i];
@@ -74,7 +74,7 @@ namespace OpenRCT2
             int32_t draw_order[4] = { 0, 1, 3, 2 };
             for (auto i : draw_order)
             {
-                if (riding_peep_sprites[i] != Drawing::Colour::null)
+                if (riding_peep_sprites[i] != Drawing::kColourNull)
                 {
                     image_id = ImageId(baseImage_id + ((i + 1) * 72), riding_peep_sprites[i]);
                     PaintAddImageAsChild(session, image_id, { 0, 0, z }, bb);

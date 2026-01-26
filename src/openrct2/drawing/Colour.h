@@ -80,12 +80,12 @@ namespace OpenRCT2::Drawing
         beige,
         invisible,
         voidBackground,
-
-        null = 255,
     };
 
     constexpr uint8_t kColourNumNormal = 54;
     constexpr uint8_t kColourNumTotal = 56;
+
+    constexpr auto kColourNull = static_cast<Colour>(255);
 
     constexpr bool colourIsValid(Colour colour)
     {

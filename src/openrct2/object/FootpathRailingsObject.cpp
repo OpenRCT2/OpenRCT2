@@ -55,7 +55,7 @@ namespace OpenRCT2
         auto x = width / 2;
         auto y = height / 2;
         auto helper = ImageId(kImageIndexUndefined);
-        if (Colour != OpenRCT2::Drawing::Colour::null)
+        if (Colour != OpenRCT2::Drawing::kColourNull)
             helper = helper.WithPrimary(Colour);
 
         if (SupportType == RailingEntrySupportType::pole)
@@ -90,7 +90,7 @@ namespace OpenRCT2
         {
             SupportType = ParseSupportType(Json::GetString(properties["supportType"]));
             ScrollingMode = Json::GetNumber<uint8_t>(properties["scrollingMode"]);
-            Colour = Drawing::colourFromString(Json::GetString(properties["colour"]), Drawing::Colour::null);
+            Colour = Drawing::colourFromString(Json::GetString(properties["colour"]), Drawing::kColourNull);
             Flags = Json::GetFlags<uint8_t>(
                 properties,
                 {

@@ -242,7 +242,7 @@ static ImageId GetSurfacePattern(const TerrainSurfaceObject* surfaceObject, int3
     if (surfaceObject != nullptr)
     {
         image = ImageId(surfaceObject->PatternBaseImageId + offset);
-        if (surfaceObject->Colour != Colour::null)
+        if (surfaceObject->Colour != kColourNull)
         {
             image = image.WithPrimary(surfaceObject->Colour);
         }

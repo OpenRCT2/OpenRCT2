@@ -1047,7 +1047,7 @@ static void PathPaintPoleSupport(
         {
             // Only colour the supports if not already remapped (e.g. ghost remap)
             auto supportColour = pathPaintInfo.railings.supportColour;
-            if (supportColour != OpenRCT2::Drawing::Colour::null && !imageTemplate.IsRemap())
+            if (supportColour != OpenRCT2::Drawing::kColourNull && !imageTemplate.IsRemap())
             {
                 imageTemplate = ImageId().WithPrimary(supportColour);
             }

@@ -64,7 +64,7 @@ void LandTool::ShowSurfaceStyleDropdown(WindowBase* w, Widget* widget, ObjectEnt
         if (surfaceObj != nullptr && !surfaceObj->UsesFallbackImages())
         {
             auto imageId = ImageId(surfaceObj->IconImageId);
-            if (surfaceObj->Colour != Drawing::Colour::null)
+            if (surfaceObj->Colour != Drawing::kColourNull)
                 imageId = imageId.WithPrimary(surfaceObj->Colour);
 
             gDropdown.items[itemIndex] = Dropdown::ImageItem(imageId, surfaceObj->NameStringId);

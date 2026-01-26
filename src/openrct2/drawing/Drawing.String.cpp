@@ -331,7 +331,7 @@ void DrawStringCentredRaw(
     for (int32_t i = 0; i <= numLines; i++)
     {
         int32_t width = GfxGetStringWidth(text, fontStyle);
-        DrawText(rt, screenCoords - ScreenCoordsXY{ width / 2, 0 }, { OpenRCT2::Drawing::Colour::null, fontStyle }, text);
+        DrawText(rt, screenCoords - ScreenCoordsXY{ width / 2, 0 }, { OpenRCT2::Drawing::kColourNull, fontStyle }, text);
 
         const utf8* ch = text;
         const utf8* nextCh = nullptr;
@@ -462,7 +462,7 @@ void DrawNewsTicker(
         }
 
         screenCoords = { coords.x - halfWidth, lineY };
-        DrawText(rt, screenCoords, { OpenRCT2::Drawing::Colour::null, FontStyle::small }, buffer);
+        DrawText(rt, screenCoords, { OpenRCT2::Drawing::kColourNull, FontStyle::small }, buffer);
 
         if (numCharactersDrawn > numCharactersToDraw)
         {
@@ -749,7 +749,7 @@ static void TTFProcessString(RenderTarget& rt, std::string_view text, TextDrawIn
 
 static void TTFProcessInitialColour(ColourWithFlags colour, TextDrawInfo* info)
 {
-    if (colour.colour != OpenRCT2::Drawing::Colour::null)
+    if (colour.colour != OpenRCT2::Drawing::kColourNull)
     {
         info->colourFlags = colour.flags;
         if (!colour.flags.has(ColourFlag::inset))
