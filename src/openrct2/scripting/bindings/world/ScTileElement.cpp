@@ -2290,6 +2290,7 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScTileElement::object_get, &ScTileElement::object_set, "object");
 
         // Small Scenery | Wall | Large Scenery | Banner
+        dukglue_register_property(ctx, &ScTileElement::primaryColour_get, &ScTileElement::primaryColour_set, "primaryColour");
         dukglue_register_property(
             ctx, &ScTileElement::secondaryColour_get, &ScTileElement::secondaryColour_set, "secondaryColour");
 

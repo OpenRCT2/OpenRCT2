@@ -162,8 +162,7 @@ void VehicleCrashParticle::Serialise(DataSerialiser& stream)
     EntityBase::Serialise(stream);
     stream << frame;
     stream << time_to_live;
-    stream << colour[0];
-    stream << colour[1];
+    stream << colour;
     stream << crashed_sprite_base;
     stream << velocity_x;
     stream << velocity_y;

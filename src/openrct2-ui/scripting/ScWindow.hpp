@@ -256,10 +256,9 @@ namespace OpenRCT2::Scripting
                     auto c = ColourWithFlags{ Drawing::Colour::black };
                     if (i < colours.size())
                     {
-                        auto colour = static_cast<Drawing::Colour>(
-                            (colours[i] & ~kLegacyColourFlagTranslucent) % Drawing::kColourNumTotal);
+                        auto colour = (colours[i] & ~kLegacyColourFlagTranslucent) % Drawing::kColourNumTotal;
                         bool isTranslucent = (colours[i] & kLegacyColourFlagTranslucent);
-                        c.colour = colour;
+                        c.colour = static_cast<Drawing::Colour>(colour);
                         c.flags.set(ColourFlag::translucent, isTranslucent);
                     }
                     w->colours[i] = c;

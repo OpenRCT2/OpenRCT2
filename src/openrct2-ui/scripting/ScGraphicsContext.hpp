@@ -44,6 +44,7 @@ namespace OpenRCT2::Scripting
 
         static void Register(duk_context* ctx)
         {
+            dukglue_register_property(ctx, &ScGraphicsContext::colour_get, &ScGraphicsContext::colour_set, "colour");
             dukglue_register_property(
                 ctx, &ScGraphicsContext::secondaryColour_get, &ScGraphicsContext::secondaryColour_set, "secondaryColour");
             dukglue_register_property(

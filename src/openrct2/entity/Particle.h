@@ -9,13 +9,17 @@
 
 #pragma once
 
-#include "../drawing/Drawing.h"
 #include "EntityBase.h"
 
 class DataSerialiser;
 struct CoordsXYZ;
 struct PaintSession;
 struct VehicleColour;
+
+namespace OpenRCT2::Drawing
+{
+    enum class Colour : uint8_t;
+}
 
 constexpr int32_t kCrashedVehicleParticleFrameToSprite = 256;
 constexpr int32_t kCrashedVehicleParticleNumberSprites = 12;

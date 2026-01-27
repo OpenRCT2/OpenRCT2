@@ -851,8 +851,7 @@ private:
         uint8_t Colour3;     // 5
         uint8_t BannerIndex; // 5
     };
-    uint8_t Colour1;   // 6 0b_2221_1111 2 = colour_2 (uses Flags for rest of colour2), 1 =
-                       // colour_1
+    uint8_t Colour1;   // 6 0b_2221_1111 2 = colour_2 (uses Flags for rest of colour2), 1 = colour_1
     uint8_t Animation; // 7 0b_dfff_ft00 d = direction, f = frame num, t = across track flag (not used)
 public:
     RCT12ObjectEntryIndex GetEntryIndex() const;
