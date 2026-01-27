@@ -14,6 +14,7 @@
 - Fix: [#25850] Guests do not have their happiness penalised by low energy, low hunger, low thirst, high toilet. Ride nausea generation different compared to vanilla.
 - Fix: [#25854] When a guest is at 0 happiness or energy, the game draws too big of a bar in the guest stats window.
 - Fix: [#25862] Diagonal and inclined brakes are not counted when calculating upkeep cost.
+- Fix: [#25873] Repainting a banner in OpenRCT2-specific colours results in an error message.
 
 0.4.30 (2026-01-04)
 ------------------------------------------------------------------------
