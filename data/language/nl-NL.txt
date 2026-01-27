@@ -3838,3 +3838,8 @@ STR_7009    :Scripts ophalen…
 STR_7010    :Kon de replay niet starten, bestand ‘{STRING}’ bestaat niet of is ongeldig.
 STR_7011    :Kon de replay niet starten.
 STR_7012    :Poolse Złoty (PLN)
+STR_7013    :Voetpaden aanleggen door te slepen
+STR_7014    :Ik heb het spel op Steam, maar ik heb het nog niet geïnstalleerd.
+STR_7015    :Sluit Steam volledig af en klik daarna op ‘OK’.
+STR_7016    :OpenRCT2 heeft een download getriggerd in Steam. Start nu Steam op en wacht tot de download voltooid is. Klik daarna op ‘OK’.
+STR_7017    :Afsluiten

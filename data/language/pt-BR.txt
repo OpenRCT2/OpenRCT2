@@ -3839,3 +3839,8 @@ STR_7009    :Recebendo scripts…
 STR_7010    :Não foi possível iniciar o replay, o arquivo ‘{STRING}’ não existe ou é inválido
 STR_7011    :Não foi possível iniciar o replay
 STR_7012    :Złoty polonês (PLN)
+STR_7013    :Arrastar áreas de caminho
+STR_7014    :Tenho o jogo no Steam, mas ainda não o instalei.
+STR_7015    :Por favor, feche o Steam se ele estiver em execução e então clique ‘OK’.
+STR_7016    :O OpenRCT2 tentou iniciar a instalação no Steam. Por favor, abra o Steam e deixe-o baixar o jogo. Quando o Steam terminar, clique ‘OK’.
+STR_7017    :Sair
