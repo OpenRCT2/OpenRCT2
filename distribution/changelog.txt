@@ -5,7 +5,7 @@
 - Improved: [#25858] macOS now supports the onboarding menu.
 - Change: [#25018] Add upkeep cost to booster pieces.
 - Fix: [#4643, #25167] Many metal supports draw with a filled in top when they didn't in vanilla, causing some slight misalignment and glitching.
-- Fix: [#15009] Landscaping tools do not display estimates when the game is paused.
+- Fix: [#15009] Landscaping tools do not display estimates when the game is paused (original bug).
 - Fix: [#25221] When trying to cancel game file discovery, the prompt reappears.
 - Fix: [#25739] Game freezes when a tab in the New Ride window contains more than 384 items.
 - Fix: [#25745] Crash when a player connection is aborted early.
