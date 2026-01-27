@@ -335,6 +335,21 @@ namespace OpenRCT2::Ui::Windows
         }
 
     private:
+        static money64 executeGameAction(GameState_t& gameState, GameActions::GameAction* action, SelectionMode mode)
+        {
+            GameActions::Result res;
+            if (mode == SelectionMode::apply)
+            {
+                res = GameActions::Execute(action, gameState);
+            }
+            else
+            {
+                action->SetFlags({ CommandFlag::allowDuringPaused });
+                res = GameActions::Query(action, gameState);
+            }
+            return res.error == GameActions::Status::ok ? res.cost : kMoney64Undefined;
+        }
+
         /**
          *
          *  rct2: 0x006644DD
@@ -354,18 +369,14 @@ namespace OpenRCT2::Ui::Windows
                     { centreX, centreY },
                     { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
                     gMapSelectType, false);
-                auto res = (mode == SelectionMode::apply) ? GameActions::Execute(&landSmoothAction, gameState)
-                                                          : GameActions::Query(&landSmoothAction, gameState);
-                return res.error == GameActions::Status::ok ? res.cost : kMoney64Undefined;
+                return executeGameAction(gameState, &landSmoothAction, mode);
             }
 
             auto landRaiseAction = GameActions::LandRaiseAction(
                 { centreX, centreY },
                 { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y }, gMapSelectType);
-            auto res = (mode == SelectionMode::apply) ? GameActions::Execute(&landRaiseAction, gameState)
-                                                      : GameActions::Query(&landRaiseAction, gameState);
 
-            return res.error == GameActions::Status::ok ? res.cost : kMoney64Undefined;
+            return executeGameAction(gameState, &landRaiseAction, mode);
         }
 
         /**
@@ -387,18 +398,14 @@ namespace OpenRCT2::Ui::Windows
                     { centreX, centreY },
                     { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
                     gMapSelectType, true);
-                auto res = (mode == SelectionMode::apply) ? GameActions::Execute(&landSmoothAction, gameState)
-                                                          : GameActions::Query(&landSmoothAction, gameState);
-                return res.error == GameActions::Status::ok ? res.cost : kMoney64Undefined;
+                return executeGameAction(gameState, &landSmoothAction, mode);
             }
 
             auto landLowerAction = GameActions::LandLowerAction(
                 { centreX, centreY },
                 { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y }, gMapSelectType);
-            auto res = (mode == SelectionMode::apply) ? GameActions::Execute(&landLowerAction, gameState)
-                                                      : GameActions::Query(&landLowerAction, gameState);
 
-            return res.error == GameActions::Status::ok ? res.cost : kMoney64Undefined;
+            return executeGameAction(gameState, &landLowerAction, mode);
         }
 
         /**
