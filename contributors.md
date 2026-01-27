@@ -129,6 +129,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Harry Hopkinson (Harry-Hopkinson) - Added Cheat for guests ignoring price of rides and stalls.
 * Kendall Frey (kendfrey) - Add plugin API for spawning guests
 * Marino Rottier (rinode) - Plugin API & UI
+* (frozensnowy) - Guest pathfinding uses transport rides
 
 ## Bug fixes & Refactors
 * Claudio Tiecher (janclod)
