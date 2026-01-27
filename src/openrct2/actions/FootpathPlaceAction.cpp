@@ -537,7 +537,7 @@ namespace OpenRCT2::GameActions
                 continue;
             if (pathElement->IsSloped() != isSloped)
                 continue;
-            if (pathElement->GetSlopeDirection() != slope.direction)
+            if (isSloped && pathElement->GetSlopeDirection() != slope.direction)
                 continue;
             return pathElement;
         }
