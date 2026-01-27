@@ -126,6 +126,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * John Dolph (johnwdolph) - Ride music UI, misc.
 * Harry Hopkinson (Harry-Hopkinson) - Added Cheat for guests ignoring price of rides and stalls.
 * Kendall Frey (kendfrey) - Add plugin API for spawning guests
+* (J-PIE-314) - Flat ride clearance calculation.
 
 ## Bug fixes & Refactors
 * Claudio Tiecher (janclod)

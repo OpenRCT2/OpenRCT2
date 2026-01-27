@@ -15,6 +15,7 @@
 #include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
 #include "../../../ride/Vehicle.h"
+#include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
 #include "../../support/WoodenSupports.hpp"
@@ -184,7 +185,7 @@ static void PaintSpaceRings(
     }
     PaintUtilSetSegmentSupportHeight(session, cornerSegments, height + 2, 0x20);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll & ~cornerSegments, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48);
+    PaintUtilSetGeneralSupportHeight(session, height + trackElement.GetClearanceZ() - trackElement.GetBaseZ());
 }
 
 /**
