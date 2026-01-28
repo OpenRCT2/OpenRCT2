@@ -947,7 +947,16 @@ namespace OpenRCT2::Ui::Windows
 
             const std::optional<Focus> currentFocus = peep->State != PeepState::picked ? std::optional(Focus(peep->Id))
                                                                                        : std::nullopt;
-            if (focus != currentFocus)
+            // Check if guest is in a vehicle (on ride, entering, or leaving but still on vehicle)
+            auto isGuestInVehicle = [&peep]() {
+                return peep->State == PeepState::onRide || peep->State == PeepState::enteringRide
+                    || (peep->State == PeepState::leavingRide && peep->x == kLocationNull);
+            };
+
+            // Also update when guest is on a ride but viewport still points to the guest (not the vehicle)
+            bool viewportNeedsVehicleUpdate = isGuestInVehicle() && viewportTargetSprite == EntityId::FromUnderlying(number);
+
+            if (focus != currentFocus || viewportNeedsVehicleUpdate)
             {
                 onViewportRotate();
             }
