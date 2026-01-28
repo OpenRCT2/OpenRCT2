@@ -902,6 +902,8 @@ bool TrackBlockGetPrevious(const CoordsXYE& trackPos, TrackBeginEnd* outTrackBeg
 bool TrackBlockGetPreviousFromZero(
     const CoordsXYZ& startPos, const Ride& ride, uint8_t direction, TrackBeginEnd* outTrackBeginEnd);
 
+bool TrackSequenceGetNext(const CoordsXYE& input, CoordsXYE* output);
+
 void RideGetStartOfTrack(CoordsXYE* output);
 
 money64 RideEntranceExitPlaceGhost(

@@ -55,7 +55,7 @@ constexpr RideTypeDescriptor SpaceRingsRTD =
         RatingsCalculationType::FlatRide,
         { RideRating::make(1, 50), RideRating::make(2, 10), RideRating::make(6, 50) },
         7,
-        0,
+        kDynamicRideShelterRating,
         false,
         {
             { RatingsModifierType::BonusScenery,          0,                25098, 0, 0 },
