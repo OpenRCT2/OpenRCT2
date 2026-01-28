@@ -586,9 +586,9 @@ static StringId window_cheats_page_titles[] = {
             {
                 auto& weatherType = kWeatherTypes[EnumValue(gameState.weatherCurrent.weatherType)];
 
-                auto fmt = Formatter::Common();
-                fmt.Add<uint32_t>(weatherType.smallIcon);
-                fmt.Add<StringId>(weatherType.label);
+                auto ft = Formatter::Common();
+                ft.Add<uint32_t>(weatherType.smallIcon);
+                ft.Add<StringId>(weatherType.label);
             }
 
             // Staff speed
@@ -1024,12 +1024,12 @@ static StringId window_cheats_page_titles[] = {
                     auto i = 0u;
                     for (auto& weatherType : kWeatherTypes)
                     {
-                        Formatter fmt;
-                        fmt.Add<StringId>(itemLabel);
-                        fmt.Add<uint32_t>(isEnlarged ? weatherType.largeIcon : weatherType.smallIcon);
-                        fmt.Add<StringId>(weatherType.label);
+                        Formatter ft;
+                        ft.Add<StringId>(itemLabel);
+                        ft.Add<uint32_t>(isEnlarged ? weatherType.largeIcon : weatherType.smallIcon);
+                        ft.Add<StringId>(weatherType.label);
 
-                        gDropdown.items[i] = Dropdown::MenuLabel(STR_DROPDOWN_MENU_LABEL, fmt);
+                        gDropdown.items[i] = Dropdown::MenuLabel(STR_DROPDOWN_MENU_LABEL, ft);
                         i++;
                     }
 
