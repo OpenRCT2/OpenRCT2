@@ -1018,6 +1018,7 @@ static StringId window_cheats_page_titles[] = {
                     auto& dropdownWidget = widgets[widgetIndex - 1];
                     bool isEnlarged = Config::Get().interface.enlargedUi;
                     auto itemLabel = isEnlarged ? STR_WEATHER_DROPDOWN_ITEM_ENLARGED : STR_WEATHER_DROPDOWN_ITEM;
+                    auto itemWidth = dropdownWidget.width() + (isEnlarged ? 30 : 22) - 3;
                     auto itemHeight = isEnlarged ? 20 : 12; // !!! TTF?
 
                     auto i = 0u;
@@ -1034,8 +1035,7 @@ static StringId window_cheats_page_titles[] = {
 
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + dropdownWidget.left, windowPos.y + dropdownWidget.bottom }, 0, colours[1], itemHeight,
-                        Dropdown::Flag::CustomHeight | Dropdown::Flag::StayOpen, std::size(kWeatherTypes),
-                        dropdownWidget.width() - 3);
+                        Dropdown::Flag::CustomHeight | Dropdown::Flag::StayOpen, std::size(kWeatherTypes), itemWidth);
 
                     gDropdown.items[EnumValue(getGameState().weatherCurrent.weatherType)].setChecked(true);
                 }
