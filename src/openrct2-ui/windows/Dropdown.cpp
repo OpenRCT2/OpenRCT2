@@ -90,7 +90,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
         void drawTextItem(
-            RenderTarget& rt, ScreenCoordsXY screenCoords, int32_t width, const Dropdown::Item& item, bool highlighted,
+            RenderTarget& rt, ScreenCoordsXY screenCoords, int32_t ddWidth, const Dropdown::Item& item, bool highlighted,
             StringId format, Colour background)
         {
             ColourWithFlags colour = { background };
@@ -103,7 +103,7 @@ namespace OpenRCT2::Ui::Windows
             Formatter ft;
             ft.Add<const utf8*>(item.text);
 
-            DrawTextEllipsised(rt, { screenCoords.x + 2, screenCoords.y + yOffset }, width - 7, format, ft, { colour });
+            DrawTextEllipsised(rt, { screenCoords.x + 2, screenCoords.y + yOffset }, ddWidth - 7, format, ft, { colour });
         }
 
         void onDraw(RenderTarget& rt) override
