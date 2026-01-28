@@ -1793,7 +1793,7 @@ namespace OpenRCT2::Network
         }
 
         network.GetContext().SetProgress(
-            static_cast<uint32_t>(bytesReceived), static_cast<uint32_t>(bytesTotal), STR_STRING_M_OF_N_KIB);
+            static_cast<uint32_t>(bytesReceived / 1024), static_cast<uint32_t>(bytesTotal / 1024), STR_STRING_M_OF_N_KIB);
     }
 
     bool NetworkBase::ProcessConnection(Connection& connection)
