@@ -50,8 +50,8 @@ constexpr RideTypeDescriptor MonorailCyclesRTD =
     .PhotoItem = ShopItem::photo,
     .BonusValue = 45,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_DARK_BROWN, COLOUR_GREY, COLOUR_DARK_BROWN },
-        { COLOUR_GREY, COLOUR_BLACK, COLOUR_GREY },
+        { Drawing::Colour::darkBrown, Drawing::Colour::grey, Drawing::Colour::darkBrown },
+        { Drawing::Colour::grey, Drawing::Colour::black, Drawing::Colour::grey },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_MONORAIL_CYCLES_TRACK, SPR_RIDE_DESIGN_PREVIEW_MONORAIL_CYCLES_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

@@ -17,13 +17,13 @@ namespace OpenRCT2::GameActions
     {
     private:
         BannerIndex _bannerIndex{ BannerIndex::GetNull() };
-        uint8_t _mainColour{};
-        uint8_t _textColour{};
+        Drawing::Colour _mainColour{};
+        Drawing::Colour _textColour{};
         bool _isLarge{};
 
     public:
         SignSetStyleAction() = default;
-        SignSetStyleAction(BannerIndex bannerIndex, uint8_t mainColour, uint8_t textColour, bool isLarge);
+        SignSetStyleAction(BannerIndex bannerIndex, Drawing::Colour mainColour, Drawing::Colour textColour, bool isLarge);
 
         void AcceptParameters(GameActionParameterVisitor&) final;
 

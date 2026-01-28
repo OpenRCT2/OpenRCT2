@@ -63,7 +63,7 @@ namespace OpenRCT2::Ui::Windows
         ImageId Image;
         std::string Text;
         TextAlignment TextAlign{};
-        colour_t Colour{};
+        Drawing::Colour Colour{};
         std::string Tooltip;
         std::vector<std::string> Items;
         std::vector<ListViewItem> ListViewItems;
@@ -126,9 +126,9 @@ namespace OpenRCT2::Ui::Windows
             else if (result.Type == "colourpicker")
             {
                 auto colour = AsOrDefault(desc["colour"], 0);
-                if (colour < COLOUR_COUNT)
+                if (colour < kColourNumTotal)
                 {
-                    result.Colour = colour;
+                    result.Colour = static_cast<Drawing::Colour>(colour);
                 }
                 result.OnChange = desc["onChange"];
             }
@@ -220,15 +220,18 @@ namespace OpenRCT2::Ui::Windows
 
                 if (dukImage["primaryColour"].type() == DukValue::Type::NUMBER)
                 {
-                    result.imageFrameBase = result.imageFrameBase.WithPrimary(dukImage["primaryColour"].as_uint());
+                    result.imageFrameBase = result.imageFrameBase.WithPrimary(
+                        static_cast<Colour>(dukImage["primaryColour"].as_uint()));
 
                     if (dukImage["secondaryColour"].type() == DukValue::Type::NUMBER)
                     {
-                        result.imageFrameBase = result.imageFrameBase.WithSecondary(dukImage["secondaryColour"].as_uint());
+                        result.imageFrameBase = result.imageFrameBase.WithSecondary(
+                            static_cast<Colour>(dukImage["secondaryColour"].as_uint()));
 
                         if (dukImage["tertiaryColour"].type() == DukValue::Type::NUMBER)
                         {
-                            result.imageFrameBase = result.imageFrameBase.WithTertiary(dukImage["tertiaryColour"].as_uint());
+                            result.imageFrameBase = result.imageFrameBase.WithTertiary(
+                                static_cast<Colour>(dukImage["tertiaryColour"].as_uint()));
                         }
                     }
                 }
@@ -315,12 +318,12 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto dukColours = desc["colours"].as_array();
                 std::transform(dukColours.begin(), dukColours.end(), std::back_inserter(result.Colours), [](const DukValue& w) {
-                    ColourWithFlags c = { COLOUR_BLACK };
+                    ColourWithFlags c = { Colour::black };
                     if (w.type() == DukValue::Type::NUMBER)
                     {
-                        colour_t colour = w.as_uint() & ~kLegacyColourFlagTranslucent;
+                        uint8_t colour = (w.as_uint() & ~kLegacyColourFlagTranslucent) % kColourNumTotal;
                         bool isTranslucent = (w.as_uint() & kLegacyColourFlagTranslucent);
-                        c.colour = std::clamp<colour_t>(colour, COLOUR_BLACK, COLOUR_COUNT - 1);
+                        c.colour = static_cast<Colour>(colour);
                         c.flags.set(ColourFlag::translucent, isTranslucent);
                     }
                     return c;
@@ -413,9 +416,9 @@ namespace OpenRCT2::Ui::Windows
             page = _info.Desc.TabIndex.value_or(0);
 
             // Set window colours
-            colours[0] = COLOUR_GREY;
-            colours[1] = COLOUR_GREY;
-            colours[2] = COLOUR_GREY;
+            colours[0] = Colour::grey;
+            colours[1] = Colour::grey;
+            colours[2] = Colour::grey;
             auto numColours = std::min(std::size(colours), std::size(_info.Desc.Colours));
             for (size_t i = 0; i < numColours; i++)
             {
@@ -1228,7 +1231,7 @@ namespace OpenRCT2::Ui::Windows
         }
     }
 
-    void UpdateWidgetColour(WindowBase* w, WidgetIndex widgetIndex, colour_t colour)
+    void UpdateWidgetColour(WindowBase* w, WidgetIndex widgetIndex, Colour colour)
     {
         if (w->classification == WindowClass::custom)
         {
@@ -1239,7 +1242,7 @@ namespace OpenRCT2::Ui::Windows
                 auto& widget = w->widgets[widgetIndex];
 
                 auto lastColour = customWidgetInfo->Colour;
-                if (lastColour != colour && colour < COLOUR_COUNT)
+                if (lastColour != colour && colourIsValid(colour))
                 {
                     customWidgetInfo->Colour = colour;
                     widget.image = getColourButtonImage(colour);
@@ -1249,7 +1252,7 @@ namespace OpenRCT2::Ui::Windows
 
                     std::vector<DukValue> args;
                     auto ctx = customWidgetInfo->OnChange.context();
-                    duk_push_int(ctx, colour);
+                    duk_push_int(ctx, EnumValue(colour));
                     args.push_back(DukValue::take_from_stack(ctx));
                     InvokeEventHandler(customInfo.Owner, customWidgetInfo->OnChange, args);
                 }
@@ -1319,7 +1322,7 @@ namespace OpenRCT2::Ui::Windows
         return {};
     }
 
-    colour_t GetWidgetColour(WindowBase* w, WidgetIndex widgetIndex)
+    Colour GetWidgetColour(WindowBase* w, WidgetIndex widgetIndex)
     {
         if (w->classification == WindowClass::custom)
         {
@@ -1330,7 +1333,7 @@ namespace OpenRCT2::Ui::Windows
                 return customWidgetInfo->Colour;
             }
         }
-        return COLOUR_BLACK;
+        return Colour::black;
     }
 
     int32_t GetWidgetSelectedIndex(WindowBase* w, WidgetIndex widgetIndex)

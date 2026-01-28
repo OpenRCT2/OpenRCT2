@@ -50,12 +50,12 @@ constexpr RideTypeDescriptor LIMLaunchedRollerCoasterRTD =
     .PhotoItem = ShopItem::photo,
     .BonusValue = 55,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_BRIGHT_GREEN, COLOUR_BRIGHT_GREEN, COLOUR_WHITE },
-        { COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_DARK_BROWN },
-        { COLOUR_YELLOW, COLOUR_YELLOW, COLOUR_SATURATED_GREEN },
-        { COLOUR_BRIGHT_GREEN, COLOUR_SATURATED_GREEN_LIGHT, COLOUR_SATURATED_PURPLE_DARK}, // Joker's Jinx
-        { COLOUR_SATURATED_GREEN_LIGHT, COLOUR_GRASS_GREEN_LIGHT , COLOUR_DEEP_WATER}, // Poltergeist
-        { COLOUR_GREY, COLOUR_DARK_BROWN , COLOUR_BLACK}, // Flight of Fear
+        { Drawing::Colour::brightGreen, Drawing::Colour::brightGreen, Drawing::Colour::white },
+        { Drawing::Colour::brightRed, Drawing::Colour::brightRed, Drawing::Colour::darkBrown },
+        { Drawing::Colour::yellow, Drawing::Colour::yellow, Drawing::Colour::saturatedGreen },
+        { Drawing::Colour::brightGreen, Drawing::Colour::limeGreen, Drawing::Colour::violet}, // Joker's Jinx
+        { Drawing::Colour::limeGreen, Drawing::Colour::chartreuse , Drawing::Colour::deepWater}, // Poltergeist
+        { Drawing::Colour::grey, Drawing::Colour::darkBrown , Drawing::Colour::black}, // Flight of Fear
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_LIM_LAUNCHED_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_LIM_LAUNCHED_ROLLER_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

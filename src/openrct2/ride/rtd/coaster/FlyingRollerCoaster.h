@@ -56,13 +56,13 @@ constexpr RideTypeDescriptor FlyingRollerCoasterRTD =
     .PhotoItem = ShopItem::photo2,
     .BonusValue = 100,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_OLIVE_GREEN, COLOUR_OLIVE_GREEN, COLOUR_DARK_WATER },
-        { COLOUR_DARK_WATER, COLOUR_DARK_WATER, COLOUR_BORDEAUX_RED },
-        { COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_DARK_PURPLE },
-        { COLOUR_DULL_GREEN_DARK, COLOUR_SATURATED_GREEN_LIGHT, COLOUR_DEEP_WATER },
-        { COLOUR_BORDEAUX_RED_DARK, COLOUR_BORDEAUX_RED_DARK, COLOUR_SATURATED_BROWN }, // FLY
-        { COLOUR_LIGHT_BLUE, COLOUR_DARK_BLUE, COLOUR_ICY_BLUE }, // Manta
-        { COLOUR_YELLOW, COLOUR_BRIGHT_RED, COLOUR_LIGHT_ORANGE } // Tatsu
+        { Drawing::Colour::oliveGreen, Drawing::Colour::oliveGreen, Drawing::Colour::darkWater },
+        { Drawing::Colour::darkWater, Drawing::Colour::darkWater, Drawing::Colour::bordeauxRed },
+        { Drawing::Colour::brightRed, Drawing::Colour::brightRed, Drawing::Colour::darkPurple },
+        { Drawing::Colour::viridian, Drawing::Colour::limeGreen, Drawing::Colour::deepWater },
+        { Drawing::Colour::maroon, Drawing::Colour::maroon, Drawing::Colour::saturatedBrown }, // FLY
+        { Drawing::Colour::lightBlue, Drawing::Colour::darkBlue, Drawing::Colour::icyBlue }, // Manta
+        { Drawing::Colour::yellow, Drawing::Colour::brightRed, Drawing::Colour::lightOrange } // Tatsu
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_FLYING_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_FLYING_ROLLER_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,
@@ -131,9 +131,9 @@ constexpr RideTypeDescriptor FlyingRollerCoasterAltRTD =
     .PhotoItem = ShopItem::photo2,
     .BonusValue = 100,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_OLIVE_GREEN, COLOUR_OLIVE_GREEN, COLOUR_DARK_WATER },
-        { COLOUR_DARK_WATER, COLOUR_DARK_WATER, COLOUR_BORDEAUX_RED },
-        { COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_DARK_PURPLE },
+        { Drawing::Colour::oliveGreen, Drawing::Colour::oliveGreen, Drawing::Colour::darkWater },
+        { Drawing::Colour::darkWater, Drawing::Colour::darkWater, Drawing::Colour::bordeauxRed },
+        { Drawing::Colour::brightRed, Drawing::Colour::brightRed, Drawing::Colour::darkPurple },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_FLYING_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_FLYING_ROLLER_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

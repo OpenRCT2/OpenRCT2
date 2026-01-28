@@ -321,8 +321,8 @@ namespace OpenRCT2::Ui::Windows
         makeWidget     ({289, 108}, { 24,  24}, WidgetType::flatBtn,      WindowColour::secondary, 0xFFFFFFFF,                STR_LOCATE_NEAREST_AVAILABLE_MECHANIC_TIP             ),
         makeWidget     ({265, 108}, { 24,  24}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_CONSTRUCTION), STR_REFURBISH_RIDE_TIP                                ),
         makeWidget     ({241, 108}, { 24,  24}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_NO_ENTRY),     STR_DEBUG_FORCE_BREAKDOWN_TIP                         ),
-        makeProgressBar({107,  47}, { 147, 10}, COLOUR_BRIGHT_GREEN                                                                                                                 ),
-        makeProgressBar({107,  58}, { 147, 10}, COLOUR_BRIGHT_RED                                                                                                                   )
+        makeProgressBar({107,  47}, { 147, 10}, Drawing::Colour::brightGreen                                                                                                                 ),
+        makeProgressBar({107,  58}, { 147, 10}, Drawing::Colour::brightRed                                                                                                                   )
     );
 
     // 0x009AE2A4
@@ -1333,7 +1333,7 @@ namespace OpenRCT2::Ui::Windows
                 spriteIndex += animObj->GetPeepAnimation(PeepAnimationGroup::normal).baseImage + 1;
 
                 GfxDrawSprite(
-                    rt, ImageId(spriteIndex, COLOUR_BRIGHT_RED, COLOUR_DARK_WATER),
+                    rt, ImageId(spriteIndex, Drawing::Colour::brightRed, Drawing::Colour::darkWater),
                     windowPos + ScreenCoordsXY{ widget.midX(), widget.bottom - 6 });
             }
         }
@@ -3693,7 +3693,7 @@ namespace OpenRCT2::Ui::Windows
                 auto underWidget = ride->mode == RideMode::poweredLaunchBlockSectioned ? WIDX_MODE_TWEAK : WIDX_MODE;
                 DrawTextBasic(
                     rt, windowPos + ScreenCoordsXY{ 21, widgets[underWidget].bottom + 3 }, STR_BLOCK_SECTIONS, ft,
-                    { COLOUR_BLACK });
+                    { Drawing::Colour::black });
             }
         }
 
@@ -4026,7 +4026,7 @@ namespace OpenRCT2::Ui::Windows
             // Locate mechanic button image
             Widget* widget = &widgets[WIDX_LOCATE_MECHANIC];
             auto screenCoords = windowPos + ScreenCoordsXY{ widget->left, widget->top };
-            auto image = ImageId(SPR_MECHANIC, COLOUR_BLACK, getGameState().park.staffMechanicColour);
+            auto image = ImageId(SPR_MECHANIC, Drawing::Colour::black, getGameState().park.staffMechanicColour);
             GfxDrawSprite(rt, image, screenCoords);
 
             // Inspection label
@@ -4252,25 +4252,25 @@ namespace OpenRCT2::Ui::Windows
                     {
                         if (allowChangingBodyColour)
                         {
-                            colour_t colour = UtilRand() % kColourNumNormal;
+                            auto colour = static_cast<Colour>(UtilRand() % kColourNumNormal);
                             auto vehicleSetBodyColourAction = GameActions::RideSetAppearanceAction(
-                                rideId, GameActions::RideSetAppearanceType::VehicleColourBody, colour, i);
+                                rideId, GameActions::RideSetAppearanceType::VehicleColourBody, EnumValue(colour), i);
                             GameActions::Execute(&vehicleSetBodyColourAction, gameState);
                         }
 
                         if (allowChangingTrimColour)
                         {
-                            colour_t colour = UtilRand() % kColourNumNormal;
+                            auto colour = static_cast<Colour>(UtilRand() % kColourNumNormal);
                             auto vehicleSetTrimColourAction = GameActions::RideSetAppearanceAction(
-                                rideId, GameActions::RideSetAppearanceType::VehicleColourTrim, colour, i);
+                                rideId, GameActions::RideSetAppearanceType::VehicleColourTrim, EnumValue(colour), i);
                             GameActions::Execute(&vehicleSetTrimColourAction, gameState);
                         }
 
                         if (allowChangingTertiaryColour)
                         {
-                            colour_t colour = UtilRand() % kColourNumNormal;
+                            auto colour = static_cast<Colour>(UtilRand() % kColourNumNormal);
                             auto vehicleSetTertiaryColourAction = GameActions::RideSetAppearanceAction(
-                                rideId, GameActions::RideSetAppearanceType::VehicleColourTertiary, colour, i);
+                                rideId, GameActions::RideSetAppearanceType::VehicleColourTertiary, EnumValue(colour), i);
                             GameActions::Execute(&vehicleSetTertiaryColourAction, gameState);
                         }
                     }
@@ -4341,7 +4341,7 @@ namespace OpenRCT2::Ui::Windows
                         { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height(),
                         colours[1], 0, Dropdown::Flag::StayOpen, 4, widgets[widgetIndex].right - dropdownWidget->left);
 
-                    gDropdown.items[ride->trackColours[colourSchemeIndex].supports].setChecked(true);
+                    gDropdown.items[EnumValue(ride->trackColours[colourSchemeIndex].supports)].setChecked(true);
                     break;
                 }
                 case WIDX_ENTRANCE_STYLE_DROPDOWN:
@@ -4441,8 +4441,8 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_TRACK_MAIN_COLOUR:
                 {
                     auto rideSetAppearanceAction = GameActions::RideSetAppearanceAction(
-                        rideId, GameActions::RideSetAppearanceType::TrackColourMain, ColourDropDownIndexToColour(dropdownIndex),
-                        _rideColour);
+                        rideId, GameActions::RideSetAppearanceType::TrackColourMain,
+                        EnumValue(ColourDropDownIndexToColour(dropdownIndex)), _rideColour);
                     GameActions::Execute(&rideSetAppearanceAction, gameState);
                 }
                 break;
@@ -4450,7 +4450,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto rideSetAppearanceAction = GameActions::RideSetAppearanceAction(
                         rideId, GameActions::RideSetAppearanceType::TrackColourAdditional,
-                        ColourDropDownIndexToColour(dropdownIndex), _rideColour);
+                        EnumValue(ColourDropDownIndexToColour(dropdownIndex)), _rideColour);
                     GameActions::Execute(&rideSetAppearanceAction, gameState);
                 }
                 break;
@@ -4458,7 +4458,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto rideSetAppearanceAction = GameActions::RideSetAppearanceAction(
                         rideId, GameActions::RideSetAppearanceType::TrackColourSupports,
-                        ColourDropDownIndexToColour(dropdownIndex), _rideColour);
+                        EnumValue(ColourDropDownIndexToColour(dropdownIndex)), _rideColour);
                     GameActions::Execute(&rideSetAppearanceAction, gameState);
                 }
                 break;
@@ -4509,7 +4509,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto rideSetAppearanceAction = GameActions::RideSetAppearanceAction(
                         rideId, GameActions::RideSetAppearanceType::VehicleColourBody,
-                        ColourDropDownIndexToColour(dropdownIndex), _vehicleIndex);
+                        EnumValue(ColourDropDownIndexToColour(dropdownIndex)), _vehicleIndex);
                     GameActions::Execute(&rideSetAppearanceAction, gameState);
                 }
                 break;
@@ -4517,7 +4517,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto rideSetAppearanceAction = GameActions::RideSetAppearanceAction(
                         rideId, GameActions::RideSetAppearanceType::VehicleColourTrim,
-                        ColourDropDownIndexToColour(dropdownIndex), _vehicleIndex);
+                        EnumValue(ColourDropDownIndexToColour(dropdownIndex)), _vehicleIndex);
                     GameActions::Execute(&rideSetAppearanceAction, gameState);
                 }
                 break;
@@ -4525,7 +4525,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto rideSetAppearanceAction = GameActions::RideSetAppearanceAction(
                         rideId, GameActions::RideSetAppearanceType::VehicleColourTertiary,
-                        ColourDropDownIndexToColour(dropdownIndex), _vehicleIndex);
+                        EnumValue(ColourDropDownIndexToColour(dropdownIndex)), _vehicleIndex);
                     GameActions::Execute(&rideSetAppearanceAction, gameState);
                 }
                 break;
@@ -4582,7 +4582,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 widgets[WIDX_MAZE_STYLE].type = WidgetType::dropdownMenu;
                 widgets[WIDX_MAZE_STYLE_DROPDOWN].type = WidgetType::button;
-                widgets[WIDX_MAZE_STYLE].text = MazeOptions[trackColour.supports].text;
+                widgets[WIDX_MAZE_STYLE].text = MazeOptions[EnumValue(trackColour.supports)].text;
             }
             else
             {
@@ -4829,7 +4829,7 @@ namespace OpenRCT2::Ui::Windows
                 const auto& rtd = ride->getRideTypeDescriptor();
                 if (rtd.specialType == RtdSpecialType::maze)
                 {
-                    GfxDrawSprite(rt, ImageId(MazeOptions[trackColour.supports].sprite), screenCoords);
+                    GfxDrawSprite(rt, ImageId(MazeOptions[EnumValue(trackColour.supports)].sprite), screenCoords);
                 }
                 else
                 {
@@ -4858,7 +4858,7 @@ namespace OpenRCT2::Ui::Windows
                                                                               : rideEntry->shop_item[1];
                 if (ride->hasLifecycleFlag(RIDE_LIFECYCLE_RANDOM_SHOP_COLOURS))
                 {
-                    colour_t spriteColour = (getGameState().currentTicks / 32) % COLOUR_COUNT;
+                    auto spriteColour = static_cast<Colour>((getGameState().currentTicks / 32) % kColourNumTotal);
 
                     GfxDrawSprite(rt, ImageId(GetShopItemDescriptor(shopItem).Image, spriteColour), screenCoords);
                 }
@@ -6043,7 +6043,7 @@ namespace OpenRCT2::Ui::Windows
 
         void GraphsOnScrollDraw(RenderTarget& rt, int32_t scrollIndex)
         {
-            GfxClear(rt, getColourMap(COLOUR_SATURATED_GREEN).darker);
+            GfxClear(rt, getColourMap(Drawing::Colour::saturatedGreen).darker);
 
             auto widget = &widgets[WIDX_GRAPH];
             auto ride = GetRide(rideId);
@@ -6064,8 +6064,8 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Vertical grid lines
-            const auto lightColour = getColourMap(COLOUR_SATURATED_GREEN).midLight;
-            const auto darkColour = getColourMap(COLOUR_SATURATED_GREEN).midDark;
+            const auto lightColour = getColourMap(Drawing::Colour::saturatedGreen).midLight;
+            const auto darkColour = getColourMap(Drawing::Colour::saturatedGreen).midDark;
 
             int32_t time = 0;
             for (int32_t x = 0; x < rt.x + rt.width; x += 80)

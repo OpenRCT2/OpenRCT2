@@ -1421,7 +1421,7 @@ namespace OpenRCT2::Ui::Windows
                 // Draw an overlay if clearance checks are disabled
                 if (getGameState().cheats.disableClearanceChecks)
                 {
-                    auto colour = ColourWithFlags{ COLOUR_DARK_ORANGE }.withFlag(ColourFlag::withOutline, true);
+                    auto colour = ColourWithFlags{ Drawing::Colour::darkOrange }.withFlag(ColourFlag::withOutline, true);
                     DrawTextBasic(
                         rt, screenPos + ScreenCoordsXY{ 26, 2 }, STR_OVERLAY_CLEARANCE_CHECKS_DISABLED, {},
                         { colour, TextAlignment::right });
@@ -1487,7 +1487,7 @@ namespace OpenRCT2::Ui::Windows
                 // Draw number of players.
                 auto ft = Formatter();
                 ft.Add<int32_t>(Network::GetNumVisiblePlayers());
-                auto colour = ColourWithFlags{ COLOUR_WHITE }.withFlag(ColourFlag::withOutline, true);
+                auto colour = ColourWithFlags{ Drawing::Colour::white }.withFlag(ColourFlag::withOutline, true);
                 DrawTextBasic(rt, screenPos + ScreenCoordsXY{ 23, 1 }, STR_COMMA16, ft, { colour, TextAlignment::right });
             }
 

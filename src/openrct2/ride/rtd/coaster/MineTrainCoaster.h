@@ -48,8 +48,8 @@ constexpr RideTypeDescriptor MineTrainCoasterRTD =
     .PhotoItem = ShopItem::photo,
     .BonusValue = 85,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_DARK_BROWN, COLOUR_GREY, COLOUR_DARK_BROWN },
-        { COLOUR_DARK_BROWN, COLOUR_GREY, COLOUR_BLACK },
+        { Drawing::Colour::darkBrown, Drawing::Colour::grey, Drawing::Colour::darkBrown },
+        { Drawing::Colour::darkBrown, Drawing::Colour::grey, Drawing::Colour::black },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_MINE_TRAIN_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_MINE_TRAIN_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

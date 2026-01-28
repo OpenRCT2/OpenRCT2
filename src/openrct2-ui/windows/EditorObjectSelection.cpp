@@ -777,7 +777,7 @@ namespace OpenRCT2::Ui::Windows
                     auto bufferWithColour = strcpy(itemBuffer, highlighted ? "{WINDOW_COLOUR_2}" : "{BLACK}");
                     auto buffer = strchr(bufferWithColour, '\0');
 
-                    colour_t colour = COLOUR_BLACK;
+                    Drawing::Colour colour = Drawing::Colour::black;
                     auto darkness = TextDarkness::regular;
                     if (*listItem.flags & ObjectSelectionFlags::Flag6)
                     {
@@ -1276,7 +1276,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 screenPos.y += DrawTextWrapped(
                                    rt, screenPos, descriptionWidth, STR_OBJECT_SELECTION_COMPAT_OBJECT_DESCRIPTION, {},
-                                   { COLOUR_BRIGHT_RED })
+                                   { Drawing::Colour::brightRed })
                     + kListRowHeight;
             }
 
@@ -1366,7 +1366,8 @@ namespace OpenRCT2::Ui::Windows
             // Draw fallback image warning
             if (_loadedObject && _loadedObject->UsesFallbackImages())
             {
-                DrawTextBasic(rt, screenPos, STR_OBJECT_USES_FALLBACK_IMAGES, {}, { COLOUR_WHITE, TextAlignment::right });
+                DrawTextBasic(
+                    rt, screenPos, STR_OBJECT_USES_FALLBACK_IMAGES, {}, { Drawing::Colour::white, TextAlignment::right });
             }
             screenPos.y += kListRowHeight;
 
@@ -1374,7 +1375,7 @@ namespace OpenRCT2::Ui::Windows
             if (GetSelectedObjectType() == ObjectType::ride)
             {
                 auto stringId = GetRideTypeStringId(listItem->repositoryItem);
-                DrawTextBasic(rt, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::right });
+                DrawTextBasic(rt, screenPos, stringId, {}, { Drawing::Colour::white, TextAlignment::right });
             }
 
             // Draw peep animation object type
@@ -1382,14 +1383,14 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto* animObj = reinterpret_cast<PeepAnimationsObject*>(_loadedObject.get());
                 auto stringId = GetAnimationPeepTypeStringId(animObj->GetPeepType());
-                DrawTextBasic(rt, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::right });
+                DrawTextBasic(rt, screenPos, stringId, {}, { Drawing::Colour::white, TextAlignment::right });
             }
 
             screenPos.y += kListRowHeight;
 
             // Draw object source
             auto stringId = ObjectManagerGetSourceGameString(listItem->repositoryItem->GetFirstSourceGame());
-            DrawTextBasic(rt, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::right });
+            DrawTextBasic(rt, screenPos, stringId, {}, { Drawing::Colour::white, TextAlignment::right });
             screenPos.y += kListRowHeight;
 
             // Draw object filename
@@ -1400,7 +1401,7 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<const utf8*>(path.c_str());
                 DrawTextBasic(
                     rt, { windowPos.x + this->width - 5, screenPos.y }, STR_WINDOW_COLOUR_2_STRINGID, ft,
-                    { COLOUR_BLACK, TextAlignment::right });
+                    { Drawing::Colour::black, TextAlignment::right });
                 screenPos.y += kListRowHeight;
             }
 

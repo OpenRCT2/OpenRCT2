@@ -215,7 +215,8 @@ static void PaintLargeScenery3DText(
     if (text == nullptr)
         return;
 
-    auto textColour = isGhost ? static_cast<colour_t>(COLOUR_GREY) : tileElement.GetSecondaryColour();
+    auto textColour = isGhost ? static_cast<OpenRCT2::Drawing::Colour>(OpenRCT2::Drawing::Colour::grey)
+                              : tileElement.GetSecondaryColour();
     auto imageTemplate = ImageId().WithPrimary(textColour);
 
     char signString[256];
@@ -309,7 +310,8 @@ static void PaintLargeSceneryScrollingText(
 {
     PROFILED_FUNCTION();
 
-    auto textColour = isGhost ? static_cast<colour_t>(COLOUR_GREY) : tileElement.GetSecondaryColour();
+    auto textColour = isGhost ? static_cast<OpenRCT2::Drawing::Colour>(OpenRCT2::Drawing::Colour::grey)
+                              : tileElement.GetSecondaryColour();
     auto textPaletteIndex = direction == 0 ? getColourMap(textColour).midDark : getColourMap(textColour).light;
 
     auto banner = tileElement.GetBanner();
@@ -423,5 +425,5 @@ void PaintLargeScenery(PaintSession& session, uint8_t direction, uint16_t height
         }
     }
     PaintLargeScenerySupports(
-        session, direction, height, tileElement, isGhost ? imageTemplate : ImageId(0, COLOUR_BLACK), tile);
+        session, direction, height, tileElement, isGhost ? imageTemplate : ImageId(0, OpenRCT2::Drawing::Colour::black), tile);
 }

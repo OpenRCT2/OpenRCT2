@@ -189,7 +189,7 @@ namespace OpenRCT2::GameActions
             newPeep->PathfindGoal.z = 0xFF;
             newPeep->PathfindGoal.direction = kInvalidDirection;
 
-            uint8_t colour = StaffGetColour(static_cast<StaffType>(_staffType));
+            auto colour = StaffGetColour(static_cast<StaffType>(_staffType));
             newPeep->TshirtColour = colour;
             newPeep->TrousersColour = colour;
 

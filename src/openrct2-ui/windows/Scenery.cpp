@@ -137,9 +137,9 @@ namespace OpenRCT2::Ui::Windows
     static std::vector<ScenerySelection> _tabSelections;
 
     static bool _sceneryPaintEnabled;
-    static colour_t _sceneryPrimaryColour;
-    static colour_t _scenerySecondaryColour;
-    static colour_t _sceneryTertiaryColour;
+    static Colour _sceneryPrimaryColour;
+    static Colour _scenerySecondaryColour;
+    static Colour _sceneryTertiaryColour;
 
     uint8_t gWindowSceneryRotation;
     bool gWindowSceneryEyedropperEnabled;
@@ -938,8 +938,8 @@ namespace OpenRCT2::Ui::Windows
         }
 
         void setSelectedItem(
-            const ScenerySelection& scenery, const std::optional<colour_t> primary, const std::optional<colour_t> secondary,
-            const std::optional<colour_t> tertiary, const std::optional<colour_t> rotation)
+            const ScenerySelection& scenery, const std::optional<Colour> primary, const std::optional<Colour> secondary,
+            const std::optional<Colour> tertiary, const std::optional<uint8_t> rotation)
         {
             auto tabIndex = FindTabWithScenery(scenery);
             if (!tabIndex.has_value())
@@ -2080,8 +2080,8 @@ namespace OpenRCT2::Ui::Windows
          * on success places ghost scenery and returns cost to place proper
          */
         money64 TryPlaceGhostSmallScenery(
-            CoordsXYZD loc, uint8_t quadrant, ObjectEntryIndex entryIndex, colour_t primaryColour, colour_t secondaryColour,
-            colour_t tertiaryColour)
+            CoordsXYZD loc, uint8_t quadrant, ObjectEntryIndex entryIndex, Colour primaryColour, Colour secondaryColour,
+            Colour tertiaryColour)
         {
             SceneryRemoveGhostToolPlacement();
 
@@ -2139,8 +2139,8 @@ namespace OpenRCT2::Ui::Windows
         }
 
         money64 TryPlaceGhostWall(
-            CoordsXYZ loc, uint8_t edge, ObjectEntryIndex entryIndex, colour_t primaryColour, colour_t secondaryColour,
-            colour_t tertiaryColour)
+            CoordsXYZ loc, uint8_t edge, ObjectEntryIndex entryIndex, Colour primaryColour, Colour secondaryColour,
+            Colour tertiaryColour)
         {
             SceneryRemoveGhostToolPlacement();
 
@@ -2167,8 +2167,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
         money64 TryPlaceGhostLargeScenery(
-            CoordsXYZD loc, ObjectEntryIndex entryIndex, colour_t primaryColour, colour_t secondaryColour,
-            colour_t tertiaryColour)
+            CoordsXYZD loc, ObjectEntryIndex entryIndex, Colour primaryColour, Colour secondaryColour, Colour tertiaryColour)
         {
             SceneryRemoveGhostToolPlacement();
 
@@ -3424,8 +3423,8 @@ namespace OpenRCT2::Ui::Windows
     }
 
     void WindowScenerySetSelectedItem(
-        const ScenerySelection& scenery, const std::optional<colour_t> primary, const std::optional<colour_t> secondary,
-        const std::optional<colour_t> tertiary, const std::optional<colour_t> rotation)
+        const ScenerySelection& scenery, const std::optional<Colour> primary, const std::optional<Colour> secondary,
+        const std::optional<Colour> tertiary, const std::optional<uint8_t> rotation)
     {
         auto* windowMgr = GetWindowManager();
         auto* w = static_cast<SceneryWindow*>(windowMgr->BringToFrontByClass(WindowClass::scenery));
@@ -3456,9 +3455,9 @@ namespace OpenRCT2::Ui::Windows
     void WindowScenerySetDefaultPlacementConfiguration()
     {
         gWindowSceneryRotation = 3;
-        _sceneryPrimaryColour = COLOUR_BORDEAUX_RED;
-        _scenerySecondaryColour = COLOUR_YELLOW;
-        _sceneryTertiaryColour = COLOUR_DARK_BROWN;
+        _sceneryPrimaryColour = Colour::bordeauxRed;
+        _scenerySecondaryColour = Colour::yellow;
+        _sceneryTertiaryColour = Colour::darkBrown;
 
         WindowSceneryResetSelectedSceneryItems();
     }

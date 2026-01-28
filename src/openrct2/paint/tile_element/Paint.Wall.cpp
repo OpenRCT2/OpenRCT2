@@ -15,7 +15,6 @@
 #include "../../drawing/ColourMap.h"
 #include "../../drawing/Drawing.h"
 #include "../../drawing/ScrollingText.h"
-#include "../../interface/Colour.h"
 #include "../../interface/Viewport.h"
 #include "../../localisation/Formatter.h"
 #include "../../localisation/Formatting.h"
@@ -172,7 +171,8 @@ static void PaintWallScrollingText(
     if (banner == nullptr)
         return;
 
-    auto textColour = isGhost ? static_cast<colour_t>(COLOUR_GREY) : wallElement.GetSecondaryColour();
+    auto textColour = isGhost ? static_cast<OpenRCT2::Drawing::Colour>(OpenRCT2::Drawing::Colour::grey)
+                              : wallElement.GetSecondaryColour();
     auto textPaletteIndex = direction == 0 ? getColourMap(textColour).midDark : getColourMap(textColour).light;
 
     auto ft = Formatter();

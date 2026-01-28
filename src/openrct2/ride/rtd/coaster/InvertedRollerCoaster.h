@@ -50,15 +50,15 @@ constexpr RideTypeDescriptor InvertedRollerCoasterRTD =
     .PhotoItem = ShopItem::photo2,
     .BonusValue = 100,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_BORDEAUX_RED, COLOUR_BORDEAUX_RED, COLOUR_BLACK },
-        { COLOUR_WHITE, COLOUR_YELLOW, COLOUR_WHITE },
-        { COLOUR_SALMON_PINK, COLOUR_SALMON_PINK, COLOUR_GREY },
-        { COLOUR_BLACK, COLOUR_BRIGHT_RED, COLOUR_BLACK },
-        { COLOUR_SATURATED_BROWN, COLOUR_WHITE, COLOUR_SATURATED_BROWN },
-        { COLOUR_YELLOW, COLOUR_YELLOW, COLOUR_BLACK },
-        { COLOUR_BLACK, COLOUR_BLACK, COLOUR_DULL_PURPLE_LIGHT }, // Great Bear
-        { COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_SATURATED_BROWN_LIGHT }, // Montu / Oziris
-        { COLOUR_DARK_PINK, COLOUR_DARK_PINK, COLOUR_SATURATED_PURPLE_DARK }, // Banshee (Renders)
+        { Drawing::Colour::bordeauxRed, Drawing::Colour::bordeauxRed, Drawing::Colour::black },
+        { Drawing::Colour::white, Drawing::Colour::yellow, Drawing::Colour::white },
+        { Drawing::Colour::salmonPink, Drawing::Colour::salmonPink, Drawing::Colour::grey },
+        { Drawing::Colour::black, Drawing::Colour::brightRed, Drawing::Colour::black },
+        { Drawing::Colour::saturatedBrown, Drawing::Colour::white, Drawing::Colour::saturatedBrown },
+        { Drawing::Colour::yellow, Drawing::Colour::yellow, Drawing::Colour::black },
+        { Drawing::Colour::black, Drawing::Colour::black, Drawing::Colour::periwinkle }, // Great Bear
+        { Drawing::Colour::darkBlue, Drawing::Colour::darkBlue, Drawing::Colour::tan }, // Montu / Oziris
+        { Drawing::Colour::darkPink, Drawing::Colour::darkPink, Drawing::Colour::violet }, // Banshee (Renders)
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_INVERTED_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_INVERTED_ROLLER_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

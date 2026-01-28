@@ -24,9 +24,9 @@ namespace OpenRCT2::Scripting
     inline DukValue ToDuk(duk_context* ctx, const TrackColour& value)
     {
         DukObject obj(ctx);
-        obj.Set("main", value.main);
-        obj.Set("additional", value.additional);
-        obj.Set("supports", value.supports);
+        obj.Set("main", EnumValue(value.main));
+        obj.Set("additional", EnumValue(value.additional));
+        obj.Set("supports", EnumValue(value.supports));
         return obj.Take();
     }
 
@@ -34,9 +34,9 @@ namespace OpenRCT2::Scripting
     inline TrackColour FromDuk(const DukValue& s)
     {
         TrackColour result{};
-        result.main = AsOrDefault(s["main"], 0);
-        result.additional = AsOrDefault(s["additional"], 0);
-        result.supports = AsOrDefault(s["supports"], 0);
+        result.main = static_cast<Drawing::Colour>(AsOrDefault(s["main"], 0));
+        result.additional = static_cast<Drawing::Colour>(AsOrDefault(s["additional"], 0));
+        result.supports = static_cast<Drawing::Colour>(AsOrDefault(s["supports"], 0));
         return result;
     }
 
@@ -44,10 +44,10 @@ namespace OpenRCT2::Scripting
     inline DukValue ToDuk(duk_context* ctx, const VehicleColour& value)
     {
         DukObject obj(ctx);
-        obj.Set("body", value.Body);
-        obj.Set("trim", value.Trim);
-        obj.Set("ternary", value.Tertiary);
-        obj.Set("tertiary", value.Tertiary);
+        obj.Set("body", EnumValue(value.Body));
+        obj.Set("trim", EnumValue(value.Trim));
+        obj.Set("ternary", EnumValue(value.Tertiary));
+        obj.Set("tertiary", EnumValue(value.Tertiary));
         return obj.Take();
     }
 
@@ -55,10 +55,10 @@ namespace OpenRCT2::Scripting
     inline VehicleColour FromDuk(const DukValue& s)
     {
         VehicleColour result{};
-        result.Body = AsOrDefault(s["body"], 0);
-        result.Trim = AsOrDefault(s["trim"], 0);
-        result.Tertiary = AsOrDefault(s["ternary"], 0);
-        result.Tertiary = AsOrDefault<int32_t>(s["tertiary"], result.Tertiary);
+        result.Body = static_cast<Drawing::Colour>(AsOrDefault(s["body"], 0));
+        result.Trim = static_cast<Drawing::Colour>(AsOrDefault(s["trim"], 0));
+        result.Tertiary = static_cast<Drawing::Colour>(AsOrDefault(s["ternary"], 0));
+        result.Tertiary = static_cast<Drawing::Colour>(AsOrDefault<int32_t>(s["tertiary"], EnumValue(result.Tertiary)));
         return result;
     }
 

@@ -16,6 +16,7 @@
 #include "../core/EnumUtils.hpp"
 #include "../core/Guard.hpp"
 #include "../core/String.hpp"
+#include "../drawing/Colour.h"
 #include "../drawing/Drawing.h"
 #include "../entity/Duck.h"
 #include "../entity/EntityList.h"
@@ -696,12 +697,12 @@ namespace OpenRCT2::GameActions
                     break;
                 case OBJECT_BALLOON:
                     peep->GiveItem(ShopItem::balloon);
-                    peep->BalloonColour = ScenarioRandMax(kColourNumNormal);
+                    peep->BalloonColour = static_cast<Drawing::Colour>(ScenarioRandMax(Drawing::kColourNumNormal));
                     peep->UpdateAnimationGroup();
                     break;
                 case OBJECT_UMBRELLA:
                     peep->GiveItem(ShopItem::umbrella);
-                    peep->UmbrellaColour = ScenarioRandMax(kColourNumNormal);
+                    peep->UmbrellaColour = static_cast<Drawing::Colour>(ScenarioRandMax(Drawing::kColourNumNormal));
                     peep->UpdateAnimationGroup();
                     break;
             }

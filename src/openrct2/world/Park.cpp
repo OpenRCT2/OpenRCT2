@@ -22,7 +22,6 @@
 #include "../entity/Litter.h"
 #include "../entity/Peep.h"
 #include "../entity/Staff.h"
-#include "../interface/Colour.h"
 #include "../management/Award.h"
 #include "../management/Finance.h"
 #include "../management/Marketing.h"
@@ -272,9 +271,9 @@ namespace OpenRCT2::Park
 
         park.name = LanguageGetString(STR_UNNAMED_PARK);
         gameState.pluginStorage = {};
-        park.staffHandymanColour = COLOUR_BRIGHT_RED;
-        park.staffMechanicColour = COLOUR_LIGHT_BLUE;
-        park.staffSecurityColour = COLOUR_YELLOW;
+        park.staffHandymanColour = Drawing::Colour::brightRed;
+        park.staffMechanicColour = Drawing::Colour::lightBlue;
+        park.staffSecurityColour = Drawing::Colour::yellow;
         park.numGuestsInPark = 0;
         park.numGuestsInParkLastWeek = 0;
         park.numGuestsHeadingForPark = 0;

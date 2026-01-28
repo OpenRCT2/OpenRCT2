@@ -64,9 +64,9 @@ constexpr RideTypeDescriptor DinghySlideRTD =
     .PhotoItem = ShopItem::photo4,
     .BonusValue = 55,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_DARK_GREEN, COLOUR_SATURATED_BROWN, COLOUR_DARK_GREEN },
-        { COLOUR_DARK_WATER, COLOUR_BORDEAUX_RED, COLOUR_DARK_WATER },
-        { COLOUR_BRIGHT_RED, COLOUR_GREY, COLOUR_SATURATED_RED },
+        { Drawing::Colour::darkGreen, Drawing::Colour::saturatedBrown, Drawing::Colour::darkGreen },
+        { Drawing::Colour::darkWater, Drawing::Colour::bordeauxRed, Drawing::Colour::darkWater },
+        { Drawing::Colour::brightRed, Drawing::Colour::grey, Drawing::Colour::saturatedRed },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_DINGHY_SLIDE_TRACK, SPR_RIDE_DESIGN_PREVIEW_DINGHY_SLIDE_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

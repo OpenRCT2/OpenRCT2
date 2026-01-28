@@ -52,12 +52,12 @@ constexpr RideTypeDescriptor HyperTwisterRTD =
     .PhotoItem = ShopItem::photo,
     .BonusValue = 120,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_YELLOW, COLOUR_YELLOW, COLOUR_BORDEAUX_RED },
-        { COLOUR_LIGHT_WATER, COLOUR_LIGHT_WATER, COLOUR_DARK_PURPLE },
-        { COLOUR_WHITE, COLOUR_WHITE, COLOUR_LIGHT_BLUE },
-        { COLOUR_DARK_GREEN, COLOUR_MOSS_GREEN, COLOUR_DARK_BROWN },
-        { COLOUR_BORDEAUX_RED, COLOUR_LIGHT_ORANGE, COLOUR_WHITE },
-        { COLOUR_DARK_PURPLE, COLOUR_SATURATED_PURPLE_DARK, COLOUR_DEEP_WATER }, // Mako
+        { Drawing::Colour::yellow, Drawing::Colour::yellow, Drawing::Colour::bordeauxRed },
+        { Drawing::Colour::lightWater, Drawing::Colour::lightWater, Drawing::Colour::darkPurple },
+        { Drawing::Colour::white, Drawing::Colour::white, Drawing::Colour::lightBlue },
+        { Drawing::Colour::darkGreen, Drawing::Colour::mossGreen, Drawing::Colour::darkBrown },
+        { Drawing::Colour::bordeauxRed, Drawing::Colour::lightOrange, Drawing::Colour::white },
+        { Drawing::Colour::darkPurple, Drawing::Colour::violet, Drawing::Colour::deepWater }, // Mako
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_TWISTER_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_TWISTER_ROLLER_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

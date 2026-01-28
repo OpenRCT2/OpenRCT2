@@ -605,7 +605,7 @@ namespace OpenRCT2::Ui::Windows
             DrawTabImage(rt, WINDOW_STAFF_LIST_TAB_ENTERTAINERS, AnimationPeepType::entertainer);
         }
 
-        void DrawTabImage(RenderTarget& rt, int32_t tabIndex, AnimationPeepType type, colour_t colour) const
+        void DrawTabImage(RenderTarget& rt, int32_t tabIndex, AnimationPeepType type, Drawing::Colour colour) const
         {
             PeepAnimationsObject* animObj = findPeepAnimationsObjectForType(type);
             if (animObj == nullptr)

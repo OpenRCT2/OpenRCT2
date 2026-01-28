@@ -24,7 +24,7 @@ namespace OpenRCT2
         RailingEntrySupportType SupportType{};
         uint8_t Flags{};
         uint8_t ScrollingMode{};
-        colour_t Colour{};
+        Drawing::Colour Colour{};
         PathRailingsDescriptor _descriptor = {};
 
     public:

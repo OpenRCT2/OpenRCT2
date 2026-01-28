@@ -100,7 +100,7 @@ void Balloon::Pop(bool playSound)
     }
 }
 
-void Balloon::Create(const CoordsXYZ& balloonPos, int32_t colour, bool isPopped)
+void Balloon::Create(const CoordsXYZ& balloonPos, Drawing::Colour colour, bool isPopped)
 {
     auto* balloon = getGameState().entities.CreateEntity<Balloon>();
     if (balloon == nullptr)

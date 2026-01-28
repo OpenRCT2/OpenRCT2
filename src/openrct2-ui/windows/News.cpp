@@ -169,7 +169,7 @@ namespace OpenRCT2::Ui::Windows
 
                     Widget groupWidget = {
                         .type = WidgetType::groupbox,
-                        .colour = colours[1].colour,
+                        .colour = EnumValue(colours[1].colour),
                         .left = static_cast<int16_t>(baseCheckBox.left - 5),
                         .right = static_cast<int16_t>(baseCheckBox.right + 5),
                         .top = y,
@@ -185,7 +185,7 @@ namespace OpenRCT2::Ui::Windows
                 // Create checkbox widgets
                 Widget checkboxWidget = {
                     .type = WidgetType::checkbox,
-                    .colour = colours[1].colour,
+                    .colour = EnumValue(colours[1].colour),
                     .left = baseCheckBox.left,
                     .right = baseCheckBox.right,
                     .top = y,
@@ -491,7 +491,7 @@ namespace OpenRCT2::Ui::Windows
                     auto ft = Formatter();
                     ft.Add<StringId>(DateDayNames[newsItem.day - 1]);
                     ft.Add<StringId>(DateGameMonthNames[DateGetMonth(newsItem.monthYear)]);
-                    DrawTextBasic(rt, { 2, y }, STR_NEWS_DATE_FORMAT, ft, { COLOUR_WHITE, FontStyle::small });
+                    DrawTextBasic(rt, { 2, y }, STR_NEWS_DATE_FORMAT, ft, { Drawing::Colour::white, FontStyle::small });
                 }
                 // Item text
                 {
@@ -499,7 +499,7 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<const char*>(newsItem.text.c_str());
                     DrawTextWrapped(
                         rt, { 2, y + lineHeight }, 325, STR_BOTTOM_TOOLBAR_NEWS_TEXT, ft,
-                        { COLOUR_BRIGHT_GREEN, FontStyle::small });
+                        { Drawing::Colour::brightGreen, FontStyle::small });
                 }
                 // Subject button
                 if (newsItem.typeHasSubject() && !newsItem.hasButton())

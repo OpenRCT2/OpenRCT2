@@ -46,9 +46,9 @@ constexpr RideTypeDescriptor VirginiaReelRTD =
     .PhotoItem = ShopItem::photo3,
     .BonusValue = 50,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_SATURATED_BROWN, COLOUR_GREY, COLOUR_SATURATED_BROWN },
-        { COLOUR_BLACK, COLOUR_DARK_BROWN, COLOUR_DARK_BROWN },
-        { COLOUR_DARK_BROWN, COLOUR_BORDEAUX_RED, COLOUR_DARK_BROWN },
+        { Drawing::Colour::saturatedBrown, Drawing::Colour::grey, Drawing::Colour::saturatedBrown },
+        { Drawing::Colour::black, Drawing::Colour::darkBrown, Drawing::Colour::darkBrown },
+        { Drawing::Colour::darkBrown, Drawing::Colour::bordeauxRed, Drawing::Colour::darkBrown },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_VIRGINIA_REEL_TRACK, SPR_RIDE_DESIGN_PREVIEW_VIRGINIA_REEL_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

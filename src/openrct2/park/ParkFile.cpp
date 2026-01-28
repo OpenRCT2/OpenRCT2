@@ -1248,12 +1248,13 @@ namespace OpenRCT2
                                     auto* sceneryElement = it.element->AsSmallScenery();
                                     // Previous formats stored the needs supports flag in the primary colour
                                     // We have moved it into a flags field to support extended colour sets
-                                    bool needsSupports = sceneryElement->GetPrimaryColour()
+                                    bool needsSupports = EnumValue(sceneryElement->GetPrimaryColour())
                                         & kRCT12SmallSceneryElementNeedsSupportsFlag;
                                     if (needsSupports)
                                     {
-                                        sceneryElement->SetPrimaryColour(
-                                            sceneryElement->GetPrimaryColour() & ~kRCT12SmallSceneryElementNeedsSupportsFlag);
+                                        const auto valueWithoutFlag = EnumValue(sceneryElement->GetPrimaryColour())
+                                            & ~kRCT12SmallSceneryElementNeedsSupportsFlag;
+                                        sceneryElement->SetPrimaryColour(static_cast<Drawing::Colour>(valueWithoutFlag));
                                         sceneryElement->SetNeedsSupports();
                                     }
                                 }

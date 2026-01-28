@@ -28,7 +28,6 @@
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/entity/Peep.h>
-#include <openrct2/interface/Colour.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Language.h>
 #include <openrct2/localisation/Localisation.Date.h>

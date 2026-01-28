@@ -47,9 +47,9 @@ constexpr RideTypeDescriptor LiftRTD =
     .PhotoItem = ShopItem::photo,
     .BonusValue = 45,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_BORDEAUX_RED, COLOUR_BORDEAUX_RED, COLOUR_GREY },
-        { COLOUR_DARK_GREEN, COLOUR_DARK_GREEN, COLOUR_GREY },
-        { COLOUR_BLACK, COLOUR_BLACK, COLOUR_GREY },
+        { Drawing::Colour::bordeauxRed, Drawing::Colour::bordeauxRed, Drawing::Colour::grey },
+        { Drawing::Colour::darkGreen, Drawing::Colour::darkGreen, Drawing::Colour::grey },
+        { Drawing::Colour::black, Drawing::Colour::black, Drawing::Colour::grey },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_LIFT_TRACK, 0 },
     .ColourKey = RideColourKey::Ride,

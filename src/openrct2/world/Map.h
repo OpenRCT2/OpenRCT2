@@ -35,6 +35,11 @@ namespace OpenRCT2
     enum class TrackElemType : uint16_t;
 } // namespace OpenRCT2
 
+namespace OpenRCT2::Drawing
+{
+    enum class Colour : uint8_t;
+}
+
 extern const std::array<CoordsXY, 8> CoordsDirectionDelta;
 extern const TileCoordsXY TileDirectionDelta[];
 
@@ -137,7 +142,8 @@ void MapRemoveOutOfRangeElements();
 void MapExtendBoundarySurfaceX();
 void MapExtendBoundarySurfaceY();
 
-bool MapLargeScenerySignSetColour(const CoordsXYZD& signPos, int32_t sequence, uint8_t mainColour, uint8_t textColour);
+bool MapLargeScenerySignSetColour(
+    const CoordsXYZD& signPos, int32_t sequence, OpenRCT2::Drawing::Colour mainColour, OpenRCT2::Drawing::Colour textColour);
 
 void MapInvalidateTile(const CoordsXYRangedZ& tilePos);
 void MapInvalidateTileZoom1(const CoordsXYRangedZ& tilePos);

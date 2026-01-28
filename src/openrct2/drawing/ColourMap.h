@@ -11,10 +11,9 @@
 
 #include <cstdint>
 
-using colour_t = uint8_t;
-
 namespace OpenRCT2::Drawing
 {
+    enum class Colour : uint8_t;
     enum class PaletteIndex : uint8_t;
 
     struct ColourShadeMap
@@ -33,7 +32,7 @@ namespace OpenRCT2::Drawing
         PaletteIndex colour11;
     };
 
-    ColourShadeMap getColourMap(colour_t colour);
+    ColourShadeMap getColourMap(Colour colour);
 
     void initColourMaps();
 } // namespace OpenRCT2::Drawing

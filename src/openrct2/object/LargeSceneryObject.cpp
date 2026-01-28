@@ -149,11 +149,11 @@ namespace OpenRCT2
 
         auto image = ImageId(_legacyType.image);
         if (_legacyType.flags & LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR)
-            image = image.WithPrimary(COLOUR_BORDEAUX_RED);
+            image = image.WithPrimary(Drawing::Colour::bordeauxRed);
         if (_legacyType.flags & LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR)
-            image = image.WithSecondary(COLOUR_YELLOW);
+            image = image.WithSecondary(Drawing::Colour::yellow);
         if (_legacyType.flags & LARGE_SCENERY_FLAG_HAS_TERTIARY_COLOUR)
-            image = image.WithTertiary(COLOUR_DARK_BROWN);
+            image = image.WithTertiary(Drawing::Colour::darkBrown);
 
         GfxDrawSprite(rt, image, screenCoords);
     }

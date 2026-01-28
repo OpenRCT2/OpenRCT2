@@ -23,7 +23,8 @@
 
 namespace OpenRCT2::GameActions
 {
-    SignSetStyleAction::SignSetStyleAction(BannerIndex bannerIndex, uint8_t mainColour, uint8_t textColour, bool isLarge)
+    SignSetStyleAction::SignSetStyleAction(
+        BannerIndex bannerIndex, Drawing::Colour mainColour, Drawing::Colour textColour, bool isLarge)
         : _bannerIndex(bannerIndex)
         , _mainColour(mainColour)
         , _textColour(textColour)

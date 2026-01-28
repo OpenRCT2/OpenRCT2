@@ -517,8 +517,8 @@ static void ApplyEasterEggToNearbyGuests(Guest& guest)
 
 void Guest::GivePassingGuestPurpleClothes(Guest& passingPeep)
 {
-    passingPeep.TshirtColour = COLOUR_BRIGHT_PURPLE;
-    passingPeep.TrousersColour = COLOUR_BRIGHT_PURPLE;
+    passingPeep.TshirtColour = Drawing::Colour::brightPurple;
+    passingPeep.TrousersColour = Drawing::Colour::brightPurple;
     passingPeep.Invalidate();
 }
 
@@ -1672,16 +1672,21 @@ static bool GuestDecideAndBuyItem(Guest& guest, Ride& ride, const ShopItem shopI
     switch (shopItem)
     {
         case ShopItem::tShirt:
-            guest.TshirtColour = hasRandomShopColour ? ScenarioRandMax(kColourNumNormal) : ride.trackColours[0].main;
+            guest.TshirtColour = hasRandomShopColour ? static_cast<Drawing::Colour>(ScenarioRandMax(Drawing::kColourNumNormal))
+                                                     : ride.trackColours[0].main;
             break;
         case ShopItem::hat:
-            guest.HatColour = hasRandomShopColour ? ScenarioRandMax(kColourNumNormal) : ride.trackColours[0].main;
+            guest.HatColour = hasRandomShopColour ? static_cast<Drawing::Colour>(ScenarioRandMax(Drawing::kColourNumNormal))
+                                                  : ride.trackColours[0].main;
             break;
         case ShopItem::balloon:
-            guest.BalloonColour = hasRandomShopColour ? ScenarioRandMax(kColourNumNormal) : ride.trackColours[0].main;
+            guest.BalloonColour = hasRandomShopColour ? static_cast<Drawing::Colour>(ScenarioRandMax(Drawing::kColourNumNormal))
+                                                      : ride.trackColours[0].main;
             break;
         case ShopItem::umbrella:
-            guest.UmbrellaColour = hasRandomShopColour ? ScenarioRandMax(kColourNumNormal) : ride.trackColours[0].main;
+            guest.UmbrellaColour = hasRandomShopColour
+                ? static_cast<Drawing::Colour>(ScenarioRandMax(Drawing::kColourNumNormal))
+                : ride.trackColours[0].main;
             break;
         case ShopItem::map:
             guest.ResetPathfindGoal();
@@ -7125,95 +7130,95 @@ static constexpr PeepNauseaTolerance nausea_tolerance_distribution[] = {
 };
 
 /** rct2: 0x009823BC */
-static constexpr uint8_t kTrouserColours[] = {
-    COLOUR_BLACK,
-    COLOUR_GREY,
-    COLOUR_LIGHT_BROWN,
-    COLOUR_SATURATED_BROWN,
-    COLOUR_DARK_BROWN,
-    COLOUR_SALMON_PINK,
-    COLOUR_BLACK,
-    COLOUR_GREY,
-    COLOUR_LIGHT_BROWN,
-    COLOUR_SATURATED_BROWN,
-    COLOUR_DARK_BROWN,
-    COLOUR_SALMON_PINK,
-    COLOUR_BLACK,
-    COLOUR_GREY,
-    COLOUR_LIGHT_BROWN,
-    COLOUR_SATURATED_BROWN,
-    COLOUR_DARK_BROWN,
-    COLOUR_SALMON_PINK,
-    COLOUR_DARK_PURPLE,
-    COLOUR_LIGHT_PURPLE,
-    COLOUR_DARK_BLUE,
-    COLOUR_SATURATED_GREEN,
-    COLOUR_SATURATED_RED,
-    COLOUR_DARK_ORANGE,
-    COLOUR_BORDEAUX_RED,
-    COLOUR_DARK_OLIVE_DARK,
-    COLOUR_OLIVE_DARK,
-    COLOUR_DEEP_WATER,
-    COLOUR_DULL_BROWN_DARK,
+static constexpr Drawing::Colour kTrouserColours[] = {
+    Drawing::Colour::black,
+    Drawing::Colour::grey,
+    Drawing::Colour::lightBrown,
+    Drawing::Colour::saturatedBrown,
+    Drawing::Colour::darkBrown,
+    Drawing::Colour::salmonPink,
+    Drawing::Colour::black,
+    Drawing::Colour::grey,
+    Drawing::Colour::lightBrown,
+    Drawing::Colour::saturatedBrown,
+    Drawing::Colour::darkBrown,
+    Drawing::Colour::salmonPink,
+    Drawing::Colour::black,
+    Drawing::Colour::grey,
+    Drawing::Colour::lightBrown,
+    Drawing::Colour::saturatedBrown,
+    Drawing::Colour::darkBrown,
+    Drawing::Colour::salmonPink,
+    Drawing::Colour::darkPurple,
+    Drawing::Colour::lightPurple,
+    Drawing::Colour::darkBlue,
+    Drawing::Colour::saturatedGreen,
+    Drawing::Colour::saturatedRed,
+    Drawing::Colour::darkOrange,
+    Drawing::Colour::bordeauxRed,
+    Drawing::Colour::armyGreen,
+    Drawing::Colour::hunterGreen,
+    Drawing::Colour::deepWater,
+    Drawing::Colour::umber,
 };
 
 /** rct2: 0x009823D5 */
-static constexpr uint8_t kTshirtColours[] = {
-    COLOUR_BLACK,
-    COLOUR_GREY,
-    COLOUR_LIGHT_BROWN,
-    COLOUR_SATURATED_BROWN,
-    COLOUR_DARK_BROWN,
-    COLOUR_SALMON_PINK,
-    COLOUR_BLACK,
-    COLOUR_GREY,
-    COLOUR_LIGHT_BROWN,
-    COLOUR_SATURATED_BROWN,
-    COLOUR_DARK_BROWN,
-    COLOUR_SALMON_PINK,
-    COLOUR_DARK_PURPLE,
-    COLOUR_LIGHT_PURPLE,
-    COLOUR_DARK_BLUE,
-    COLOUR_SATURATED_GREEN,
-    COLOUR_SATURATED_RED,
-    COLOUR_DARK_ORANGE,
-    COLOUR_BORDEAUX_RED,
-    COLOUR_WHITE,
-    COLOUR_BRIGHT_PURPLE,
-    COLOUR_LIGHT_BLUE,
-    COLOUR_DARK_WATER,
-    COLOUR_DARK_GREEN,
-    COLOUR_MOSS_GREEN,
-    COLOUR_BRIGHT_GREEN,
-    COLOUR_OLIVE_GREEN,
-    COLOUR_DARK_OLIVE_GREEN,
-    COLOUR_YELLOW,
-    COLOUR_LIGHT_ORANGE,
-    COLOUR_BRIGHT_RED,
-    COLOUR_DARK_PINK,
-    COLOUR_BRIGHT_PINK,
-    COLOUR_DARK_OLIVE_DARK,
-    COLOUR_DARK_OLIVE_LIGHT,
-    COLOUR_SATURATED_BROWN_LIGHT,
-    COLOUR_BORDEAUX_RED_DARK,
-    COLOUR_BORDEAUX_RED_LIGHT,
-    COLOUR_GRASS_GREEN_DARK,
-    COLOUR_GRASS_GREEN_LIGHT,
-    COLOUR_OLIVE_DARK,
-    COLOUR_OLIVE_LIGHT,
-    COLOUR_SATURATED_GREEN_LIGHT,
-    COLOUR_TAN_DARK,
-    COLOUR_TAN_LIGHT,
-    COLOUR_DULL_PURPLE_LIGHT,
-    COLOUR_DULL_GREEN_DARK,
-    COLOUR_DULL_GREEN_LIGHT,
-    COLOUR_SATURATED_PURPLE_DARK,
-    COLOUR_SATURATED_PURPLE_LIGHT,
-    COLOUR_ORANGE_LIGHT,
-    COLOUR_DEEP_WATER,
-    COLOUR_MAGENTA_LIGHT,
-    COLOUR_DULL_BROWN_DARK,
-    COLOUR_DULL_BROWN_LIGHT,
+static constexpr Drawing::Colour kTshirtColours[] = {
+    Drawing::Colour::black,
+    Drawing::Colour::grey,
+    Drawing::Colour::lightBrown,
+    Drawing::Colour::saturatedBrown,
+    Drawing::Colour::darkBrown,
+    Drawing::Colour::salmonPink,
+    Drawing::Colour::black,
+    Drawing::Colour::grey,
+    Drawing::Colour::lightBrown,
+    Drawing::Colour::saturatedBrown,
+    Drawing::Colour::darkBrown,
+    Drawing::Colour::salmonPink,
+    Drawing::Colour::darkPurple,
+    Drawing::Colour::lightPurple,
+    Drawing::Colour::darkBlue,
+    Drawing::Colour::saturatedGreen,
+    Drawing::Colour::saturatedRed,
+    Drawing::Colour::darkOrange,
+    Drawing::Colour::bordeauxRed,
+    Drawing::Colour::white,
+    Drawing::Colour::brightPurple,
+    Drawing::Colour::lightBlue,
+    Drawing::Colour::darkWater,
+    Drawing::Colour::darkGreen,
+    Drawing::Colour::mossGreen,
+    Drawing::Colour::brightGreen,
+    Drawing::Colour::oliveGreen,
+    Drawing::Colour::darkOliveGreen,
+    Drawing::Colour::yellow,
+    Drawing::Colour::lightOrange,
+    Drawing::Colour::brightRed,
+    Drawing::Colour::darkPink,
+    Drawing::Colour::brightPink,
+    Drawing::Colour::armyGreen,
+    Drawing::Colour::honeyDew,
+    Drawing::Colour::tan,
+    Drawing::Colour::maroon,
+    Drawing::Colour::coralPink,
+    Drawing::Colour::forestGreen,
+    Drawing::Colour::chartreuse,
+    Drawing::Colour::hunterGreen,
+    Drawing::Colour::celadon,
+    Drawing::Colour::limeGreen,
+    Drawing::Colour::sepia,
+    Drawing::Colour::peach,
+    Drawing::Colour::periwinkle,
+    Drawing::Colour::viridian,
+    Drawing::Colour::seafoamGreen,
+    Drawing::Colour::violet,
+    Drawing::Colour::lavender,
+    Drawing::Colour::pastelOrange,
+    Drawing::Colour::deepWater,
+    Drawing::Colour::pastelPink,
+    Drawing::Colour::umber,
+    Drawing::Colour::beige,
 };
 // clang-format on
 

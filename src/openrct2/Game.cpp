@@ -37,7 +37,6 @@
 #include "entity/PatrolArea.h"
 #include "entity/Peep.h"
 #include "entity/Staff.h"
-#include "interface/Colour.h"
 #include "interface/Screenshot.h"
 #include "interface/Viewport.h"
 #include "interface/Window.h"

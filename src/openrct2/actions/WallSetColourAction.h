@@ -17,13 +17,15 @@ namespace OpenRCT2::GameActions
     {
     private:
         CoordsXYZD _loc;
-        int32_t _primaryColour{};
-        int32_t _secondaryColour{};
-        int32_t _tertiaryColour{};
+        Drawing::Colour _primaryColour{};
+        Drawing::Colour _secondaryColour{};
+        Drawing::Colour _tertiaryColour{};
 
     public:
         WallSetColourAction() = default;
-        WallSetColourAction(const CoordsXYZD& loc, int32_t primaryColour, int32_t secondaryColour, int32_t tertiaryColour);
+        WallSetColourAction(
+            const CoordsXYZD& loc, Drawing::Colour primaryColour, Drawing::Colour secondaryColour,
+            Drawing::Colour tertiaryColour);
 
         void AcceptParameters(GameActionParameterVisitor&) final;
 

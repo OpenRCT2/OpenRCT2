@@ -9,15 +9,18 @@
 
 #pragma once
 
-#include "../interface/Colour.h"
-
 #include <cstdint>
+
+namespace OpenRCT2::Drawing
+{
+    enum class Colour : uint8_t;
+}
 
 struct TrackColour
 {
-    colour_t main;
-    colour_t additional;
-    colour_t supports;
+    OpenRCT2::Drawing::Colour main;
+    OpenRCT2::Drawing::Colour additional;
+    OpenRCT2::Drawing::Colour supports;
 };
 
 enum class RideColourScheme : uint8_t

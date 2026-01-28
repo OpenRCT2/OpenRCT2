@@ -50,11 +50,11 @@ constexpr RideTypeDescriptor VerticalDropCoasterRTD =
     .PhotoItem = ShopItem::photo,
     .BonusValue = 95,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_BLACK, COLOUR_GREY, COLOUR_BLACK },
-        { COLOUR_DARK_GREEN, COLOUR_DARK_GREEN, COLOUR_GREY },
-        { COLOUR_DARK_ORANGE, COLOUR_DARK_ORANGE, COLOUR_DULL_GREEN_DARK }, // Yukon Striker
-        { COLOUR_LIGHT_ORANGE, COLOUR_DARK_ORANGE, COLOUR_DARK_BLUE }, // Valravn
-        { COLOUR_GREY, COLOUR_BRIGHT_RED, COLOUR_YELLOW }, // Dr. Diabolical's Cliffhanger
+        { Drawing::Colour::black, Drawing::Colour::grey, Drawing::Colour::black },
+        { Drawing::Colour::darkGreen, Drawing::Colour::darkGreen, Drawing::Colour::grey },
+        { Drawing::Colour::darkOrange, Drawing::Colour::darkOrange, Drawing::Colour::viridian }, // Yukon Striker
+        { Drawing::Colour::lightOrange, Drawing::Colour::darkOrange, Drawing::Colour::darkBlue }, // Valravn
+        { Drawing::Colour::grey, Drawing::Colour::brightRed, Drawing::Colour::yellow }, // Dr. Diabolical's Cliffhanger
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_VERTICAL_DROP_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_VERTICAL_DROP_ROLLER_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

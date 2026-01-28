@@ -51,8 +51,8 @@ constexpr RideTypeDescriptor MiniatureRailwayRTD =
     .PhotoItem = ShopItem::photo,
     .BonusValue = 50,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_LIGHT_BLUE, COLOUR_WHITE, COLOUR_DARK_BROWN },
-        { COLOUR_BRIGHT_RED, COLOUR_WHITE, COLOUR_BLACK },
+        { Drawing::Colour::lightBlue, Drawing::Colour::white, Drawing::Colour::darkBrown },
+        { Drawing::Colour::brightRed, Drawing::Colour::white, Drawing::Colour::black },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_MINIATURE_RAILWAY_TRACK, SPR_RIDE_DESIGN_PREVIEW_MINIATURE_RAILWAY_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

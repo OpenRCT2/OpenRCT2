@@ -93,7 +93,7 @@ namespace OpenRCT2::GameActions
         switch (_type)
         {
             case BannerSetStyleType::PrimaryColour:
-                if (_parameter > COLOUR_COUNT)
+                if (_parameter > Drawing::kColourNumTotal)
                 {
                     LOG_ERROR("Invalid primary colour %u", _parameter);
                     return Result(Status::invalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_INVALID_COLOUR);
@@ -147,7 +147,7 @@ namespace OpenRCT2::GameActions
         switch (_type)
         {
             case BannerSetStyleType::PrimaryColour:
-                banner->colour = _parameter;
+                banner->colour = static_cast<Drawing::Colour>(_parameter);
                 break;
             case BannerSetStyleType::TextColour:
                 banner->textColour = static_cast<Drawing::TextColour>(_parameter);

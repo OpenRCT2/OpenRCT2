@@ -26,7 +26,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    BannerPlaceAction::BannerPlaceAction(const CoordsXYZD& loc, ObjectEntryIndex bannerType, colour_t primaryColour)
+    BannerPlaceAction::BannerPlaceAction(const CoordsXYZD& loc, ObjectEntryIndex bannerType, Drawing::Colour primaryColour)
         : _loc(loc)
         , _bannerType(bannerType)
         , _primaryColour(primaryColour)

@@ -41,6 +41,11 @@ namespace OpenRCT2::GameActions
     class Result;
 }
 
+namespace OpenRCT2::Drawing
+{
+    enum class Colour : uint8_t;
+}
+
 enum class PeepState : uint8_t
 {
     falling = 0, // Drowning is part of falling
@@ -318,8 +323,8 @@ struct Peep : EntityBase
     };
     OpenRCT2::ObjectEntryIndex AnimationObjectIndex;
     PeepAnimationGroup AnimationGroup;
-    uint8_t TshirtColour;
-    uint8_t TrousersColour;
+    OpenRCT2::Drawing::Colour TshirtColour;
+    OpenRCT2::Drawing::Colour TrousersColour;
     union
     {
         uint16_t DestinationX;

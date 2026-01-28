@@ -50,9 +50,9 @@ constexpr RideTypeDescriptor ReverseFreefallCoasterRTD =
     .PhotoItem = ShopItem::photo,
     .BonusValue = 70,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_DARK_GREEN, COLOUR_YELLOW, COLOUR_DARK_GREEN },
-        { COLOUR_BORDEAUX_RED, COLOUR_BORDEAUX_RED, COLOUR_YELLOW },
-        { COLOUR_GREY, COLOUR_SALMON_PINK, COLOUR_GREY },
+        { Drawing::Colour::darkGreen, Drawing::Colour::yellow, Drawing::Colour::darkGreen },
+        { Drawing::Colour::bordeauxRed, Drawing::Colour::bordeauxRed, Drawing::Colour::yellow },
+        { Drawing::Colour::grey, Drawing::Colour::salmonPink, Drawing::Colour::grey },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_REVERSE_FREEFALL_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_REVERSE_FREEFALL_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

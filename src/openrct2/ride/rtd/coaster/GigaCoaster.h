@@ -51,11 +51,11 @@ constexpr RideTypeDescriptor GigaCoasterRTD =
     .PhotoItem = ShopItem::photo,
     .BonusValue = 120,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_WHITE },
-        { COLOUR_WHITE, COLOUR_WHITE, COLOUR_YELLOW },
-        { COLOUR_YELLOW, COLOUR_YELLOW, COLOUR_BORDEAUX_RED },
-        { COLOUR_LIGHT_BLUE, COLOUR_LIGHT_BLUE, COLOUR_BLACK },
-        { COLOUR_BRIGHT_YELLOW, COLOUR_YELLOW, COLOUR_DARK_GREEN }, // Mega-Lite / 蓝月飞车
+        { Drawing::Colour::brightRed, Drawing::Colour::brightRed, Drawing::Colour::white },
+        { Drawing::Colour::white, Drawing::Colour::white, Drawing::Colour::yellow },
+        { Drawing::Colour::yellow, Drawing::Colour::yellow, Drawing::Colour::bordeauxRed },
+        { Drawing::Colour::lightBlue, Drawing::Colour::lightBlue, Drawing::Colour::black },
+        { Drawing::Colour::brightYellow, Drawing::Colour::yellow, Drawing::Colour::darkGreen }, // Mega-Lite / 蓝月飞车
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_GIGA_RC, SPR_RIDE_DESIGN_PREVIEW_GIGA_RC_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

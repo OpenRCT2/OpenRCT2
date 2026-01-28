@@ -60,10 +60,10 @@ namespace OpenRCT2::Ui::Windows
     int32_t DropdownIndexFromPoint(const ScreenCoordsXY& loc, WindowBase* w);
 
     void WindowDropdownShowColour(
-        WindowBase* w, Widget* widget, ColourWithFlags dropdownColour, colour_t selectedColour,
+        WindowBase* w, Widget* widget, ColourWithFlags dropdownColour, Drawing::Colour selectedColour,
         bool alwaysHideSpecialColours = false);
 
-    colour_t ColourDropDownIndexToColour(uint8_t ddidx);
+    Drawing::Colour ColourDropDownIndexToColour(uint8_t ddidx);
 
     uint32_t DropdownGetAppropriateImageDropdownItemsPerRow(uint32_t numItems);
 } // namespace OpenRCT2::Ui::Windows

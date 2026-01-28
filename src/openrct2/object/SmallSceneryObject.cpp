@@ -103,15 +103,15 @@ namespace OpenRCT2
         auto imageId = ImageId(_legacyType.image);
         if (_legacyType.HasFlag(SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR))
         {
-            imageId = imageId.WithPrimary(COLOUR_BORDEAUX_RED);
+            imageId = imageId.WithPrimary(Drawing::Colour::bordeauxRed);
             if (_legacyType.HasFlag(SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR))
             {
-                imageId = imageId.WithSecondary(COLOUR_YELLOW);
+                imageId = imageId.WithSecondary(Drawing::Colour::yellow);
             }
         }
         if (_legacyType.HasFlag(SMALL_SCENERY_FLAG_HAS_TERTIARY_COLOUR))
         {
-            imageId = imageId.WithSecondary(COLOUR_DARK_BROWN);
+            imageId = imageId.WithSecondary(Drawing::Colour::darkBrown);
         }
 
         auto screenCoords = ScreenCoordsXY{ width / 2, (height / 2) + (_legacyType.height / 2) };
@@ -126,7 +126,7 @@ namespace OpenRCT2
 
         if (_legacyType.HasFlag(SMALL_SCENERY_FLAG_HAS_GLASS))
         {
-            imageId = ImageId(_legacyType.image + 4).WithTransparency(COLOUR_BORDEAUX_RED);
+            imageId = ImageId(_legacyType.image + 4).WithTransparency(Drawing::Colour::bordeauxRed);
             GfxDrawSprite(rt, imageId, screenCoords);
         }
 
@@ -135,7 +135,7 @@ namespace OpenRCT2
             imageId = ImageId(_legacyType.image + 4);
             if (_legacyType.HasFlag(SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR))
             {
-                imageId = imageId.WithSecondary(COLOUR_YELLOW);
+                imageId = imageId.WithSecondary(Drawing::Colour::yellow);
             }
             GfxDrawSprite(rt, imageId, screenCoords);
         }

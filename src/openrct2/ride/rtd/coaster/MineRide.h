@@ -47,8 +47,8 @@ constexpr RideTypeDescriptor MineRideRTD =
     .PhotoItem = ShopItem::photo,
     .BonusValue = 70,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_DARK_BROWN, COLOUR_DARK_BROWN, COLOUR_BLACK },
-        { COLOUR_BORDEAUX_RED, COLOUR_BORDEAUX_RED, COLOUR_DARK_BROWN },
+        { Drawing::Colour::darkBrown, Drawing::Colour::darkBrown, Drawing::Colour::black },
+        { Drawing::Colour::bordeauxRed, Drawing::Colour::bordeauxRed, Drawing::Colour::darkBrown },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_MINE_RIDE_TRACK, SPR_RIDE_DESIGN_PREVIEW_MINE_RIDE_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

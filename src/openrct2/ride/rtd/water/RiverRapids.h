@@ -51,7 +51,7 @@ constexpr RideTypeDescriptor RiverRapidsRTD =
     .PhotoItem = ShopItem::photo4,
     .BonusValue = 70,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_WHITE, COLOUR_BLACK, COLOUR_DARK_BROWN },
+        { Drawing::Colour::white, Drawing::Colour::black, Drawing::Colour::darkBrown },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_RIVER_RAPIDS_TRACK, SPR_RIDE_DESIGN_PREVIEW_RIVER_RAPIDS_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

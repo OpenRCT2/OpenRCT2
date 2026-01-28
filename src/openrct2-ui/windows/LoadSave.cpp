@@ -478,7 +478,8 @@ namespace OpenRCT2::Ui::Windows
 
                 DrawTextBasic(
                     rt, textPos, previewText, {},
-                    { ColourWithFlags{ COLOUR_WHITE }.withFlag(ColourFlag::withOutline, true), TextAlignment::centre });
+                    { ColourWithFlags{ Drawing::Colour::white }.withFlag(ColourFlag::withOutline, true),
+                      TextAlignment::centre });
                 return;
             }
 
@@ -774,7 +775,7 @@ namespace OpenRCT2::Ui::Windows
                     auto cRT = const_cast<const RenderTarget&>(rt);
                     DrawTextEllipsised(
                         cRT, windowPos + ScreenCoordsXY{ widget.left + 5, widget.top + 1 }, widget.width() - 1, strId, ft,
-                        { COLOUR_GREY });
+                        { Drawing::Colour::grey });
                 };
 
             auto& config = Config::Get().general;
@@ -794,7 +795,8 @@ namespace OpenRCT2::Ui::Windows
             if (action == LoadSaveAction::save)
             {
                 auto& widget = widgets[WIDX_FILENAME_TEXTBOX];
-                DrawTextBasic(rt, windowPos + ScreenCoordsXY{ 5, widget.top + 2 }, STR_FILENAME_LABEL, {}, { COLOUR_GREY });
+                DrawTextBasic(
+                    rt, windowPos + ScreenCoordsXY{ 5, widget.top + 2 }, STR_FILENAME_LABEL, {}, { Drawing::Colour::grey });
             }
         }
 

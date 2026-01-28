@@ -9,10 +9,14 @@
 
 #pragma once
 
-#include "../../interface/Colour.h"
 #include "../../object/ObjectTypes.h"
 #include "../../object/SmallSceneryEntry.h"
 #include "TileElementBase.h"
+
+namespace OpenRCT2::Drawing
+{
+    enum class Colour : uint8_t;
+}
 
 namespace OpenRCT2
 {
@@ -29,7 +33,7 @@ namespace OpenRCT2
     private:
         ObjectEntryIndex entryIndex; // 5
         uint8_t age;                 // 7
-        uint8_t Colour[3];           // 8
+        Drawing::Colour Colour[3];   // 8
         uint8_t Flags2;              // B
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
@@ -45,12 +49,12 @@ namespace OpenRCT2
         void IncreaseAge(const CoordsXY& sceneryPos);
         uint8_t GetSceneryQuadrant() const;
         void SetSceneryQuadrant(uint8_t newQuadrant);
-        colour_t GetPrimaryColour() const;
-        void SetPrimaryColour(colour_t colour);
-        colour_t GetSecondaryColour() const;
-        void SetSecondaryColour(colour_t colour);
-        colour_t GetTertiaryColour() const;
-        void SetTertiaryColour(colour_t colour);
+        Drawing::Colour GetPrimaryColour() const;
+        void SetPrimaryColour(Drawing::Colour colour);
+        Drawing::Colour GetSecondaryColour() const;
+        void SetSecondaryColour(Drawing::Colour colour);
+        Drawing::Colour GetTertiaryColour() const;
+        void SetTertiaryColour(Drawing::Colour colour);
         bool NeedsSupports() const;
         void SetNeedsSupports();
         void UpdateAge(const CoordsXY& sceneryPos);

@@ -169,7 +169,7 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
         uint8_t arrowRotation = (rotation + (gMapSelectArrowDirection & 3)) & 3;
 
         uint32_t imageIndex = arrowRotation + (gMapSelectArrowDirection & 0xFC) + PEEP_SPAWN_ARROW_0;
-        ImageId imageId = ImageId(imageIndex, COLOUR_YELLOW);
+        ImageId imageId = ImageId(imageIndex, OpenRCT2::Drawing::Colour::yellow);
         int32_t arrowZ = gMapSelectArrowPosition.z;
 
         session.SpritePosition.x = coords.x;

@@ -314,7 +314,7 @@ namespace OpenRCT2::Ui::Windows
 
                 // TODO: this parameter by itself produces very light text.
                 // It needs a {BLACK} token in the string to work properly.
-                ColourWithFlags colour = { COLOUR_BLACK };
+                ColourWithFlags colour = { Drawing::Colour::black };
                 FontStyle fontStyle = FontStyle::medium;
                 auto darkness = TextDarkness::regular;
 
@@ -607,7 +607,7 @@ namespace OpenRCT2::Ui::Windows
         void onOpen() override
         {
             setWidgets(_inventionListDragWidgets);
-            colours[1] = COLOUR_WHITE;
+            colours[1] = Drawing::Colour::white;
         }
 
         CursorID onCursor(const WidgetIndex widx, const ScreenCoordsXY& screenCoords, const CursorID defaultCursor) override
@@ -663,7 +663,7 @@ namespace OpenRCT2::Ui::Windows
 
             DrawResearchItem(
                 rt, _draggedItem, width, screenCoords, STR_WINDOW_COLOUR_2_STRINGID,
-                { ColourWithFlags{ COLOUR_BLACK }.withFlag(ColourFlag::withOutline, true) });
+                { ColourWithFlags{ Drawing::Colour::black }.withFlag(ColourFlag::withOutline, true) });
         }
 
         void init(ResearchItem& researchItem, const ScreenCoordsXY& editorPos, int objectSelectionScrollWidth)

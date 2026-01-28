@@ -65,8 +65,8 @@ namespace OpenRCT2::RCT2
         tempStream.WriteValue<uint8_t>(EnumValue(_trackDesign.appearance.vehicleColourSettings) | (2 << 2));
         for (auto i = 0; i < Limits::kMaxVehicleColours; i++)
         {
-            tempStream.WriteValue<uint8_t>(_trackDesign.appearance.vehicleColours[i].Body);
-            tempStream.WriteValue<uint8_t>(_trackDesign.appearance.vehicleColours[i].Trim);
+            tempStream.WriteValue<Drawing::Colour>(_trackDesign.appearance.vehicleColours[i].Body);
+            tempStream.WriteValue<Drawing::Colour>(_trackDesign.appearance.vehicleColours[i].Trim);
         }
         tempStream.WriteValue<uint8_t>(0);
         auto entranceStyle = GetStationStyleFromIdentifier(_trackDesign.appearance.stationObjectIdentifier);
@@ -106,15 +106,15 @@ namespace OpenRCT2::RCT2
         tempStream.WriteValue<money16>(ToMoney16(_trackDesign.statistics.upkeepCost));
         for (auto i = 0; i < Limits::kNumColourSchemes; i++)
         {
-            tempStream.WriteValue<uint8_t>(_trackDesign.appearance.trackColours[i].main);
+            tempStream.WriteValue<Drawing::Colour>(_trackDesign.appearance.trackColours[i].main);
         }
         for (auto i = 0; i < Limits::kNumColourSchemes; i++)
         {
-            tempStream.WriteValue<uint8_t>(_trackDesign.appearance.trackColours[i].additional);
+            tempStream.WriteValue<Drawing::Colour>(_trackDesign.appearance.trackColours[i].additional);
         }
         for (auto i = 0; i < Limits::kNumColourSchemes; i++)
         {
-            tempStream.WriteValue<uint8_t>(_trackDesign.appearance.trackColours[i].supports);
+            tempStream.WriteValue<Drawing::Colour>(_trackDesign.appearance.trackColours[i].supports);
         }
         tempStream.WriteValue<uint32_t>(0);
         tempStream.Write(&_trackDesign.trackAndVehicle.vehicleObject.Entry, sizeof(RCTObjectEntry));
@@ -122,7 +122,7 @@ namespace OpenRCT2::RCT2
         tempStream.WriteValue<uint8_t>(_trackDesign.statistics.spaceRequired.y);
         for (auto i = 0; i < Limits::kMaxVehicleColours; i++)
         {
-            tempStream.WriteValue<uint8_t>(_trackDesign.appearance.vehicleColours[i].Tertiary);
+            tempStream.WriteValue<Drawing::Colour>(_trackDesign.appearance.vehicleColours[i].Tertiary);
         }
         auto liftSpeed = std::min<uint8_t>(31, _trackDesign.operation.liftHillSpeed);
         auto numCircuits = std::min<uint8_t>(7, _trackDesign.operation.numCircuits);
@@ -183,7 +183,7 @@ namespace OpenRCT2::RCT2
             if (sceneryElement.sceneryObject.Entry.GetType() == ObjectType::walls)
             {
                 flags &= ~0xFC;
-                flags |= (sceneryElement.tertiaryColour << 2);
+                flags |= (EnumValue(sceneryElement.tertiaryColour) << 2);
             }
 
             tempStream.Write(&sceneryElement.sceneryObject.Entry, sizeof(RCTObjectEntry));
@@ -192,8 +192,8 @@ namespace OpenRCT2::RCT2
             tempStream.WriteValue<int8_t>(tileCoords.y);
             tempStream.WriteValue<int8_t>(tileCoords.z);
             tempStream.WriteValue<uint8_t>(flags);
-            tempStream.WriteValue<uint8_t>(sceneryElement.primaryColour);
-            tempStream.WriteValue<uint8_t>(sceneryElement.secondaryColour);
+            tempStream.WriteValue<Drawing::Colour>(sceneryElement.primaryColour);
+            tempStream.WriteValue<Drawing::Colour>(sceneryElement.secondaryColour);
         }
 
         tempStream.WriteValue<uint8_t>(0xFF);

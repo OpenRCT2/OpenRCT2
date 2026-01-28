@@ -46,8 +46,8 @@ constexpr RideTypeDescriptor MiniGolfRTD =
     .PhotoItem = ShopItem::photo,
     .BonusValue = 23,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_SATURATED_GREEN, COLOUR_DARK_BROWN, COLOUR_BLACK },
-        { COLOUR_MOSS_GREEN, COLOUR_BORDEAUX_RED, COLOUR_DARK_BROWN },
+        { Drawing::Colour::saturatedGreen, Drawing::Colour::darkBrown, Drawing::Colour::black },
+        { Drawing::Colour::mossGreen, Drawing::Colour::bordeauxRed, Drawing::Colour::darkBrown },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_MINI_GOLF_TRACK, SPR_RIDE_DESIGN_PREVIEW_MINI_GOLF_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

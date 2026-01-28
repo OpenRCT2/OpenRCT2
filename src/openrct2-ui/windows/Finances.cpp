@@ -599,7 +599,7 @@ namespace OpenRCT2::Ui::Windows
             // Expenditure / Income heading
             DrawTextBasic(
                 rt, screenCoords, STR_FINANCES_SUMMARY_EXPENDITURE_INCOME, {},
-                { COLOUR_BLACK, TextUnderline::on, TextAlignment::left });
+                { Drawing::Colour::black, TextUnderline::on, TextAlignment::left });
             screenCoords.y += 14;
 
             // Expenditure / Income row labels

@@ -11,7 +11,6 @@
 
 #include "../core/CallingConventions.h"
 #include "../core/StringTypes.h"
-#include "../interface/Colour.h"
 #include "../interface/ZoomLevel.h"
 #include "../world/Location.hpp"
 #include "ColourPalette.h"
@@ -231,7 +230,7 @@ extern OpenRCT2::Drawing::GamePalette gGamePalette;
 extern uint32_t gPaletteEffectFrame;
 
 extern OpenRCT2::Drawing::TextColours gTextPalette;
-extern const OpenRCT2::Drawing::TranslucentWindowPalette kTranslucentWindowPalettes[COLOUR_COUNT];
+extern const OpenRCT2::Drawing::TranslucentWindowPalette kTranslucentWindowPalettes[OpenRCT2::Drawing::kColourNumTotal];
 
 extern ImageId gPickupPeepImage;
 extern int32_t gPickupPeepX;
@@ -299,8 +298,8 @@ void GfxDrawStringLeftCentred(
 void DrawStringCentredRaw(
     OpenRCT2::Drawing::RenderTarget& rt, const ScreenCoordsXY& coords, int32_t numLines, const utf8* text, FontStyle fontStyle);
 void DrawNewsTicker(
-    OpenRCT2::Drawing::RenderTarget& rt, const ScreenCoordsXY& coords, int32_t width, colour_t colour, StringId format,
-    u8string_view args, int32_t ticks);
+    OpenRCT2::Drawing::RenderTarget& rt, const ScreenCoordsXY& coords, int32_t width, OpenRCT2::Drawing::Colour colour,
+    StringId format, u8string_view args, int32_t ticks);
 void GfxDrawStringWithYOffsets(
     OpenRCT2::Drawing::RenderTarget& rt, const utf8* text, ColourWithFlags colour, const ScreenCoordsXY& coords,
     const int8_t* yOffsets, bool forceSpriteFont, FontStyle fontStyle);

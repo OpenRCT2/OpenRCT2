@@ -26,32 +26,32 @@ namespace OpenRCT2
         Type |= (newSlope << 6);
     }
 
-    colour_t WallElement::GetPrimaryColour() const
+    Drawing::Colour WallElement::GetPrimaryColour() const
     {
         return colour_1;
     }
 
-    colour_t WallElement::GetSecondaryColour() const
+    Drawing::Colour WallElement::GetSecondaryColour() const
     {
         return colour_2;
     }
 
-    colour_t WallElement::GetTertiaryColour() const
+    Drawing::Colour WallElement::GetTertiaryColour() const
     {
         return colour_3;
     }
 
-    void WallElement::SetPrimaryColour(colour_t newColour)
+    void WallElement::SetPrimaryColour(Drawing::Colour newColour)
     {
         colour_1 = newColour;
     }
 
-    void WallElement::SetSecondaryColour(colour_t newColour)
+    void WallElement::SetSecondaryColour(Drawing::Colour newColour)
     {
         colour_2 = newColour;
     }
 
-    void WallElement::SetTertiaryColour(colour_t newColour)
+    void WallElement::SetTertiaryColour(Drawing::Colour newColour)
     {
         colour_3 = newColour;
     }

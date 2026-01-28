@@ -212,7 +212,7 @@ static void PaintRideEntranceExit(PaintSession& session, uint8_t direction, int3
     auto supportsImageTemplate = imageTemplate;
     if (!entranceEl.IsGhost())
     {
-        supportsImageTemplate = ImageId().WithPrimary(COLOUR_SATURATED_BROWN);
+        supportsImageTemplate = ImageId().WithPrimary(OpenRCT2::Drawing::Colour::saturatedBrown);
     }
     WoodenASupportsPaintSetupRotated(
         session, WoodenSupportType::truss, WoodenSupportSubType::neSw, direction, height, supportsImageTemplate);
@@ -341,7 +341,7 @@ static void PaintParkEntrance(PaintSession& session, uint8_t direction, int32_t 
     auto supportsImageTemplate = imageTemplate;
     if (!entranceEl.IsGhost())
     {
-        supportsImageTemplate = ImageId().WithPrimary(COLOUR_SATURATED_BROWN);
+        supportsImageTemplate = ImageId().WithPrimary(OpenRCT2::Drawing::Colour::saturatedBrown);
     }
     WoodenASupportsPaintSetupRotated(
         session, WoodenSupportType::truss, WoodenSupportSubType::neSw, direction, height, supportsImageTemplate);
@@ -363,7 +363,7 @@ static void PaintHeightMarkers(PaintSession& session, const EntranceElement& ent
             baseImageIndex += heightMarkerBaseZ / 16;
             baseImageIndex += GetHeightMarkerOffset();
             baseImageIndex -= kMapBaseZ;
-            auto imageId = ImageId(baseImageIndex, COLOUR_GREY);
+            auto imageId = ImageId(baseImageIndex, OpenRCT2::Drawing::Colour::grey);
             PaintAddImageAsParent(session, imageId, { 16, 16, height }, { { 31, 31, heightMarkerBaseZ + 64 }, { 1, 1, 0 } });
         }
     }

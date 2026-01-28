@@ -34,15 +34,15 @@ namespace OpenRCT2::GameActions
         ObjectEntryIndex _wallType{ kObjectEntryIndexNull };
         CoordsXYZ _loc;
         Direction _edge{ kInvalidDirection };
-        int32_t _primaryColour{ COLOUR_BLACK };
-        int32_t _secondaryColour{ COLOUR_BLACK };
-        int32_t _tertiaryColour{ COLOUR_BLACK };
+        Drawing::Colour _primaryColour{ Drawing::Colour::black };
+        Drawing::Colour _secondaryColour{ Drawing::Colour::black };
+        Drawing::Colour _tertiaryColour{ Drawing::Colour::black };
 
     public:
         WallPlaceAction() = default;
         WallPlaceAction(
-            ObjectEntryIndex wallType, const CoordsXYZ& loc, uint8_t edge, int32_t primaryColour, int32_t secondaryColour,
-            int32_t tertiaryColour);
+            ObjectEntryIndex wallType, const CoordsXYZ& loc, uint8_t edge, Drawing::Colour primaryColour,
+            Drawing::Colour secondaryColour, Drawing::Colour tertiaryColour);
 
         void AcceptParameters(GameActionParameterVisitor&) final;
 

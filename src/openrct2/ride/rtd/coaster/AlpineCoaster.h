@@ -50,7 +50,7 @@ constexpr RideTypeDescriptor AlpineCoasterRTD =
     .PhotoItem = ShopItem::photo,
     .BonusValue = 65,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_GREY, COLOUR_GREY, COLOUR_BLACK },
+        { Drawing::Colour::grey, Drawing::Colour::grey, Drawing::Colour::black },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_ALPINE_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_ALPINE_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

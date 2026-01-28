@@ -752,7 +752,7 @@ static void PaintHeightMarkers(PaintSession& session, const PathElement& pathEl)
         baseImageIndex += heightMarkerBaseZ / 16;
         baseImageIndex += GetHeightMarkerOffset();
         baseImageIndex -= kMapBaseZ;
-        auto imageId = ImageId(baseImageIndex, COLOUR_GREY);
+        auto imageId = ImageId(baseImageIndex, OpenRCT2::Drawing::Colour::grey);
         PaintAddImageAsParent(session, imageId, { 16, 16, heightMarkerBaseZ }, { 1, 1, 0 });
     }
 }
@@ -1047,7 +1047,7 @@ static void PathPaintPoleSupport(
         {
             // Only colour the supports if not already remapped (e.g. ghost remap)
             auto supportColour = pathPaintInfo.railings.supportColour;
-            if (supportColour != COLOUR_NULL && !imageTemplate.IsRemap())
+            if (supportColour != OpenRCT2::Drawing::kColourNull && !imageTemplate.IsRemap())
             {
                 imageTemplate = ImageId().WithPrimary(supportColour);
             }

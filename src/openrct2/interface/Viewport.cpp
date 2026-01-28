@@ -40,7 +40,6 @@
 #include "../world/tile_element/SmallSceneryElement.h"
 #include "../world/tile_element/TileElement.h"
 #include "../world/tile_element/WallElement.h"
-#include "Colour.h"
 #include "Window.h"
 #include "WindowBase.h"
 
@@ -1618,16 +1617,16 @@ namespace OpenRCT2
         if (imageId.HasPrimary() || imageId.IsRemap())
         {
             imageType = IMAGE_TYPE_REMAP;
-            uint8_t paletteIndex;
+            FilterPaletteID filterPaletteId;
             if (imageId.HasSecondary())
             {
-                paletteIndex = imageId.GetPrimary();
+                filterPaletteId = static_cast<FilterPaletteID>(imageId.GetPrimary());
             }
             else
             {
-                paletteIndex = imageId.GetRemap();
+                filterPaletteId = static_cast<FilterPaletteID>(imageId.GetRemap());
             }
-            if (auto pm = GetPaletteMapForColour(static_cast<FilterPaletteID>(paletteIndex)); pm.has_value())
+            if (auto pm = GetPaletteMapForColour(filterPaletteId); pm.has_value())
             {
                 paletteMap = pm.value();
             }

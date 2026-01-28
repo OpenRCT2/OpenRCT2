@@ -9,18 +9,18 @@
 
 #pragma once
 
+#include "../core/EnumUtils.hpp"
 #include "ImageIndexType.h"
 
 #include <cassert>
 #include <cstdint>
 #include <limits>
 
-using colour_t = uint8_t;
-
 namespace OpenRCT2::Drawing
 {
+    enum class Colour : uint8_t;
     enum class FilterPaletteID : int32_t;
-}
+} // namespace OpenRCT2::Drawing
 
 enum class ImageCatalogue
 {
@@ -32,7 +32,7 @@ enum class ImageCatalogue
     TEMPORARY,
 };
 
-OpenRCT2::Drawing::FilterPaletteID GetGlassPaletteId(colour_t);
+OpenRCT2::Drawing::FilterPaletteID GetGlassPaletteId(OpenRCT2::Drawing::Colour);
 
 /**
  * Represents a specific image from a catalogue such as G1, G2, CSG etc. with remap
@@ -74,17 +74,19 @@ public:
     {
     }
 
-    constexpr ImageId(uint32_t index, colour_t primaryColour)
+    constexpr ImageId(uint32_t index, OpenRCT2::Drawing::Colour primaryColour)
         : ImageId(ImageId(index).WithPrimary(primaryColour))
     {
     }
 
-    constexpr ImageId(uint32_t index, colour_t primaryColour, colour_t secondaryColour)
+    constexpr ImageId(uint32_t index, OpenRCT2::Drawing::Colour primaryColour, OpenRCT2::Drawing::Colour secondaryColour)
         : ImageId(ImageId(index).WithPrimary(primaryColour).WithSecondary(secondaryColour))
     {
     }
 
-    constexpr ImageId(uint32_t index, colour_t primaryColour, colour_t secondaryColour, colour_t tertiaryColour)
+    constexpr ImageId(
+        uint32_t index, OpenRCT2::Drawing::Colour primaryColour, OpenRCT2::Drawing::Colour secondaryColour,
+        OpenRCT2::Drawing::Colour tertiaryColour)
         : ImageId(ImageId(index).WithPrimary(primaryColour).WithSecondary(secondaryColour).WithTertiary(tertiaryColour))
     {
     }
@@ -129,19 +131,19 @@ public:
         return _primary;
     }
 
-    colour_t GetPrimary() const
+    OpenRCT2::Drawing::Colour GetPrimary() const
     {
-        return _primary;
+        return static_cast<OpenRCT2::Drawing::Colour>(_primary);
     }
 
-    colour_t GetSecondary() const
+    OpenRCT2::Drawing::Colour GetSecondary() const
     {
-        return _secondary;
+        return static_cast<OpenRCT2::Drawing::Colour>(_secondary);
     }
 
-    colour_t GetTertiary() const
+    OpenRCT2::Drawing::Colour GetTertiary() const
     {
-        return _tertiary;
+        return static_cast<OpenRCT2::Drawing::Colour>(_tertiary);
     }
 
     ImageCatalogue GetCatalogue() const;
@@ -176,18 +178,18 @@ public:
         return result;
     }
 
-    [[nodiscard]] constexpr ImageId WithPrimary(colour_t colour) const
+    [[nodiscard]] constexpr ImageId WithPrimary(OpenRCT2::Drawing::Colour colour) const
     {
         ImageId result = *this;
-        result._primary = colour;
+        result._primary = EnumValue(colour);
         result._flags |= kFlagPrimary;
         return result;
     }
 
-    [[nodiscard]] constexpr ImageId WithSecondary(colour_t colour) const
+    [[nodiscard]] constexpr ImageId WithSecondary(OpenRCT2::Drawing::Colour colour) const
     {
         ImageId result = *this;
-        result._secondary = colour;
+        result._secondary = EnumValue(colour);
         result._flags |= kFlagSecondary;
         return result;
     }
@@ -200,10 +202,10 @@ public:
         return result;
     }
 
-    [[nodiscard]] constexpr ImageId WithTertiary(colour_t tertiary) const
+    [[nodiscard]] constexpr ImageId WithTertiary(OpenRCT2::Drawing::Colour tertiary) const
     {
         ImageId result = *this;
-        result._tertiary = tertiary;
+        result._tertiary = EnumValue(tertiary);
         result._flags &= ~kFlagPrimary;
         result._flags |= kFlagSecondary;
         if (!(_flags & kFlagSecondary))
@@ -215,7 +217,7 @@ public:
         return result;
     }
 
-    [[nodiscard]] ImageId WithTransparency(colour_t colour) const
+    [[nodiscard]] ImageId WithTransparency(OpenRCT2::Drawing::Colour colour) const
     {
         return WithTransparency(GetGlassPaletteId(colour));
     }

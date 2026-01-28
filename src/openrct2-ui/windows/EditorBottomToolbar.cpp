@@ -357,11 +357,11 @@ namespace OpenRCT2::Ui::Windows
                 rt, ImageId(SPR_PREVIOUS),
                 windowPos + ScreenCoordsXY{ widgets[WIDX_PREVIOUS_IMAGE].left + 6, widgets[WIDX_PREVIOUS_IMAGE].top + 6 });
 
-            colour_t textColour = colours[1].colour;
+            Drawing::Colour textColour = colours[1].colour;
             if (gHoverWidget.windowClassification == WindowClass::bottomToolbar
                 && gHoverWidget.widgetIndex == WIDX_PREVIOUS_STEP_BUTTON)
             {
-                textColour = COLOUR_WHITE;
+                textColour = Drawing::Colour::white;
             }
 
             int16_t textX = (widgets[WIDX_PREVIOUS_IMAGE].left + 30 + widgets[WIDX_PREVIOUS_IMAGE].right) / 2 + windowPos.x;
@@ -397,12 +397,12 @@ namespace OpenRCT2::Ui::Windows
                 rt, ImageId(SPR_NEXT),
                 windowPos + ScreenCoordsXY{ widgets[WIDX_NEXT_IMAGE].right - 29, widgets[WIDX_NEXT_IMAGE].top + 6 });
 
-            colour_t textColour = colours[1].colour;
+            Drawing::Colour textColour = colours[1].colour;
 
             if (gHoverWidget.windowClassification == WindowClass::bottomToolbar
                 && gHoverWidget.widgetIndex == WIDX_NEXT_STEP_BUTTON)
             {
-                textColour = COLOUR_WHITE;
+                textColour = Drawing::Colour::white;
             }
 
             int16_t textX = (widgets[WIDX_NEXT_IMAGE].left + widgets[WIDX_NEXT_IMAGE].right - 30) / 2 + windowPos.x;

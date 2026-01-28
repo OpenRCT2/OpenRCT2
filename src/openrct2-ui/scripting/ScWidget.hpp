@@ -585,21 +585,21 @@ namespace OpenRCT2::Scripting
         }
 
     private:
-        colour_t colour_get() const
+        uint8_t colour_get() const
         {
             auto w = GetWindow();
             if (w != nullptr)
             {
-                return GetWidgetColour(w, _widgetIndex);
+                return EnumValue(GetWidgetColour(w, _widgetIndex));
             }
-            return COLOUR_BLACK;
+            return EnumValue(Drawing::Colour::black);
         }
-        void colour_set(colour_t value)
+        void colour_set(uint8_t value)
         {
             auto w = GetWindow();
             if (w != nullptr)
             {
-                UpdateWidgetColour(w, _widgetIndex, value);
+                UpdateWidgetColour(w, _widgetIndex, static_cast<Drawing::Colour>(value));
                 Invalidate();
             }
         }

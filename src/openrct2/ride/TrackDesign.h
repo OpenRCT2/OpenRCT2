@@ -13,6 +13,7 @@
 #include "../actions/CommandFlag.h"
 #include "../actions/GameActionResult.h"
 #include "../core/EnumUtils.hpp"
+#include "../drawing/Colour.h"
 #include "../object/Object.h"
 #include "../ride/RideColour.h"
 #include "../ride/Track.h"
@@ -64,9 +65,9 @@ struct TrackDesignSceneryElement
     OpenRCT2::ObjectEntryDescriptor sceneryObject{};
     CoordsXYZ loc{};
     uint8_t flags{};
-    colour_t primaryColour{};
-    colour_t secondaryColour{};
-    colour_t tertiaryColour = COLOUR_DARK_BROWN;
+    OpenRCT2::Drawing::Colour primaryColour{};
+    OpenRCT2::Drawing::Colour secondaryColour{};
+    OpenRCT2::Drawing::Colour tertiaryColour = OpenRCT2::Drawing::Colour::darkBrown;
 
     Direction getRotation() const;
     void setRotation(Direction rotation);

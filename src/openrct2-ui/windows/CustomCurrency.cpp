@@ -15,7 +15,6 @@
 #include <openrct2/core/EnumUtils.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Text.h>
-#include <openrct2/interface/Colour.h>
 #include <openrct2/localisation/Currency.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/ui/WindowManager.h>
@@ -56,9 +55,9 @@ namespace OpenRCT2::Ui::Windows
             setWidgets(window_custom_currency_widgets);
             holdDownWidgets = (1uLL << WIDX_RATE_UP) | (1uLL << WIDX_RATE_DOWN);
             WindowInitScrollWidgets(*this);
-            colours[0] = COLOUR_LIGHT_BROWN;
-            colours[1] = COLOUR_LIGHT_BROWN;
-            colours[2] = COLOUR_LIGHT_BROWN;
+            colours[0] = Drawing::Colour::lightBrown;
+            colours[1] = Drawing::Colour::lightBrown;
+            colours[2] = Drawing::Colour::lightBrown;
         }
 
         void onMouseDown(WidgetIndex widgetIndex) override

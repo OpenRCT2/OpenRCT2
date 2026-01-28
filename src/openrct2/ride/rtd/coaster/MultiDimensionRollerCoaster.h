@@ -56,12 +56,12 @@ constexpr RideTypeDescriptor MultiDimensionRollerCoasterRTD =
     .PhotoItem = ShopItem::photo2,
     .BonusValue = 100,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_BRIGHT_PINK, COLOUR_YELLOW, COLOUR_YELLOW }, // X
-        { COLOUR_LIGHT_PURPLE, COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED },
-        { COLOUR_BORDEAUX_RED, COLOUR_WHITE, COLOUR_WHITE },
-        { COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_BLACK }, // X2
-        { COLOUR_BORDEAUX_RED_DARK, COLOUR_DARK_YELLOW, COLOUR_OLIVE_DARK }, // Dinoconda
-        { COLOUR_BLACK, COLOUR_BLACK, COLOUR_GREY }, // Eejanaika
+        { Drawing::Colour::brightPink, Drawing::Colour::yellow, Drawing::Colour::yellow }, // X
+        { Drawing::Colour::lightPurple, Drawing::Colour::brightRed, Drawing::Colour::brightRed },
+        { Drawing::Colour::bordeauxRed, Drawing::Colour::white, Drawing::Colour::white },
+        { Drawing::Colour::brightRed, Drawing::Colour::brightRed, Drawing::Colour::black }, // X2
+        { Drawing::Colour::maroon, Drawing::Colour::darkYellow, Drawing::Colour::hunterGreen }, // Dinoconda
+        { Drawing::Colour::black, Drawing::Colour::black, Drawing::Colour::grey }, // Eejanaika
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_MULTI_DIMENSION_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_MULTI_DIMENSION_ROLLER_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,
@@ -130,9 +130,9 @@ constexpr RideTypeDescriptor MultiDimensionRollerCoasterAltRTD =
     .PhotoItem = ShopItem::photo2,
     .BonusValue = 100,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_BRIGHT_PINK, COLOUR_YELLOW, COLOUR_YELLOW },
-        { COLOUR_LIGHT_PURPLE, COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED },
-        { COLOUR_BORDEAUX_RED, COLOUR_WHITE, COLOUR_WHITE },
+        { Drawing::Colour::brightPink, Drawing::Colour::yellow, Drawing::Colour::yellow },
+        { Drawing::Colour::lightPurple, Drawing::Colour::brightRed, Drawing::Colour::brightRed },
+        { Drawing::Colour::bordeauxRed, Drawing::Colour::white, Drawing::Colour::white },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_MULTI_DIMENSION_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_MULTI_DIMENSION_ROLLER_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,

@@ -403,9 +403,9 @@ namespace OpenRCT2::Ui::Windows
             setWidgets(window_object_load_error_widgets);
 
             WindowInitScrollWidgets(*this);
-            colours[0] = COLOUR_LIGHT_BLUE;
-            colours[1] = COLOUR_LIGHT_BLUE;
-            colours[2] = COLOUR_LIGHT_BLUE;
+            colours[0] = Drawing::Colour::lightBlue;
+            colours[1] = Drawing::Colour::lightBlue;
+            colours[2] = Drawing::Colour::lightBlue;
         }
 
         void onClose() override
@@ -547,18 +547,19 @@ namespace OpenRCT2::Ui::Windows
                 auto name = entry.GetName();
                 char buffer[256];
                 String::set(buffer, sizeof(buffer), name.data(), name.size());
-                DrawText(rt, screenCoords, { COLOUR_DARK_GREEN }, buffer);
+                DrawText(rt, screenCoords, { Drawing::Colour::darkGreen }, buffer);
 
                 if (entry.Generation == ObjectGeneration::DAT)
                 {
                     // ... source game ...
                     const auto sourceStringId = ObjectManagerGetSourceGameString(entry.Entry.GetSourceGame());
-                    DrawTextBasic(rt, { kSourceColLeft - 3, screenCoords.y }, sourceStringId, {}, { COLOUR_DARK_GREEN });
+                    DrawTextBasic(
+                        rt, { kSourceColLeft - 3, screenCoords.y }, sourceStringId, {}, { Drawing::Colour::darkGreen });
                 }
 
                 // ... and type
                 const auto type = GetStringFromObjectType(entry.GetType());
-                DrawTextBasic(rt, { kTypeColLeft - 3, screenCoords.y }, type, {}, { COLOUR_DARK_GREEN });
+                DrawTextBasic(rt, { kTypeColLeft - 3, screenCoords.y }, type, {}, { Drawing::Colour::darkGreen });
             }
         }
 

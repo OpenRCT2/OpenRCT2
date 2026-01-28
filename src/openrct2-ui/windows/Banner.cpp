@@ -238,7 +238,7 @@ namespace OpenRCT2::Ui::Windows
 
                     auto bannerSetStyle = GameActions::BannerSetStyleAction(
                         GameActions::BannerSetStyleType::PrimaryColour, GetBannerIndex(),
-                        ColourDropDownIndexToColour(dropdownIndex));
+                        EnumValue(ColourDropDownIndexToColour(dropdownIndex)));
                     GameActions::Execute(&bannerSetStyle, gameState);
                     break;
                 }

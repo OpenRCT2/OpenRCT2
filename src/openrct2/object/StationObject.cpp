@@ -50,8 +50,8 @@ namespace OpenRCT2
     {
         auto screenCoords = ScreenCoordsXY{ width / 2, (height / 2) + 16 };
 
-        auto colour0 = COLOUR_LIGHT_BLUE;
-        auto colour1 = COLOUR_BORDEAUX_RED;
+        auto colour0 = Drawing::Colour::lightBlue;
+        auto colour1 = Drawing::Colour::bordeauxRed;
         auto tcolour0 = colour0;
 
         auto imageId = ImageId(BaseImageId);

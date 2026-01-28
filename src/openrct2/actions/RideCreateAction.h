@@ -19,8 +19,8 @@ namespace OpenRCT2::GameActions
         ride_type_t _rideType{ kRideTypeNull };
         ObjectEntryIndex _subType{ kObjectEntryIndexNull };
         ObjectEntryIndex _entranceObjectIndex{ kObjectEntryIndexNull };
-        uint8_t _trackColourPreset{ COLOUR_NULL };
-        uint8_t _vehicleColourPreset{ COLOUR_NULL };
+        uint8_t _trackColourPreset{ std::numeric_limits<uint8_t>::max() };
+        uint8_t _vehicleColourPreset{ std::numeric_limits<uint8_t>::max() };
         RideInspection _inspectionInterval{ RideInspection::every30Minutes };
 
     public:

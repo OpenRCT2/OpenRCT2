@@ -116,7 +116,7 @@ namespace OpenRCT2::Ui::Windows
             width = x;
             widgets[WIDX_NEW_VERSION].right = width;
             windowPos.x = (ContextGetWidth() - width) / 2;
-            colours[1] = ColourWithFlags{ COLOUR_LIGHT_ORANGE }.withFlag(ColourFlag::translucent, true);
+            colours[1] = ColourWithFlags{ Drawing::Colour::lightOrange }.withFlag(ColourFlag::translucent, true);
 
             initScrollWidgets();
         }

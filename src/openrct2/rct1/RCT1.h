@@ -253,12 +253,12 @@ namespace OpenRCT2::RCT1
         VehicleColourSettings vehicleColourSettings; // 0x005
         struct
         {
-            colour_t body;
-            colour_t trim;
+            uint8_t body;
+            uint8_t trim;
         } vehicleColours[Limits::kMaxTrainsPerRide];           // 0x006
-        colour_t trackPrimaryColour;                           // 0x01E
-        colour_t trackSecondaryColour;                         // 0x01F
-        colour_t trackSupportColour;                           // 0x020
+        uint8_t trackPrimaryColour;                            // 0x01E
+        uint8_t trackSecondaryColour;                          // 0x01F
+        uint8_t trackSupportColour;                            // 0x020
         uint8_t status;                                        // 0x021
         uint16_t name;                                         // 0x022
         uint16_t nameArgumentRide;                             // 0x024
@@ -387,9 +387,9 @@ namespace OpenRCT2::RCT1
         money32 incomePerHour;                          // 0x160
         money32 profit;                                 // 0x164
         uint8_t queueTime[Limits::kMaxStationsPerRide]; // 0x168
-        colour_t trackColourMain[4];                    // 0x16C
-        colour_t trackColourAdditional[4];              // 0x170
-        colour_t trackColourSupports[4];                // 0x174
+        uint8_t trackColourMain[4];                     // 0x16C
+        uint8_t trackColourAdditional[4];               // 0x170
+        uint8_t trackColourSupports[4];                 // 0x174
         uint8_t music;                                  // 0x178
         uint8_t entranceStyle;                          // 0x179
         uint8_t unk17A[230];                            // 0x17A
@@ -787,9 +787,9 @@ namespace OpenRCT2::RCT1
         money32 Expenditure[Limits::kExpenditureTableMonthCount][Limits::kExpenditureTypeCount];
         uint32_t GuestsInPark2;
         uint8_t Unk199024;
-        colour_t HandymanColour;
-        colour_t MechanicColour;
-        colour_t SecurityGuardColour;
+        uint8_t HandymanColour;
+        uint8_t MechanicColour;
+        uint8_t SecurityGuardColour;
         uint8_t AvailableScenery[128];
         uint16_t AvailableBanners;
         uint8_t Unk1990AA[94];
@@ -1278,11 +1278,8 @@ namespace OpenRCT2::RCT1
         AIR_POWERED_VERTICAL_COASTER_TRAIN_CAR = 107,
     };
 
-    enum
-    {
-        COPY_COLOUR_1 = -1,
-        COPY_COLOUR_2 = -2,
-    };
+    constexpr auto kCopyColour1 = static_cast<Drawing::Colour>(254);
+    constexpr auto kCopyColour2 = static_cast<Drawing::Colour>(253);
 
     enum
     {

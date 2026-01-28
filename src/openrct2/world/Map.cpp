@@ -1684,7 +1684,8 @@ std::optional<CoordsXYZ> MapLargeSceneryGetOrigin(
  *
  *  rct2: 0x006B9B05
  */
-bool MapLargeScenerySignSetColour(const CoordsXYZD& signPos, int32_t sequence, uint8_t mainColour, uint8_t textColour)
+bool MapLargeScenerySignSetColour(
+    const CoordsXYZD& signPos, int32_t sequence, Drawing::Colour mainColour, Drawing::Colour textColour)
 {
     LargeSceneryElement* tileElement;
 

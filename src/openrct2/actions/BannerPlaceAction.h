@@ -11,6 +11,11 @@
 
 #include "GameAction.h"
 
+namespace OpenRCT2::Drawing
+{
+    enum class Colour : uint8_t;
+}
+
 namespace OpenRCT2::GameActions
 {
     struct BannerPlaceActionResult
@@ -23,11 +28,11 @@ namespace OpenRCT2::GameActions
     private:
         CoordsXYZD _loc;
         ObjectEntryIndex _bannerType{ kBannerNull };
-        uint8_t _primaryColour{};
+        Drawing::Colour _primaryColour{};
 
     public:
         BannerPlaceAction() = default;
-        BannerPlaceAction(const CoordsXYZD& loc, ObjectEntryIndex bannerType, colour_t primaryColour);
+        BannerPlaceAction(const CoordsXYZD& loc, ObjectEntryIndex bannerType, Drawing::Colour primaryColour);
 
         void AcceptParameters(GameActionParameterVisitor&) final;
 

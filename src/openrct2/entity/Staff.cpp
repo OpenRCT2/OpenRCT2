@@ -958,7 +958,7 @@ int32_t Staff::GetHireDate() const
     return HireDate;
 }
 
-colour_t StaffGetColour(StaffType staffType)
+Drawing::Colour StaffGetColour(StaffType staffType)
 {
     const auto& park = getGameState().park;
     switch (staffType)
@@ -970,14 +970,14 @@ colour_t StaffGetColour(StaffType staffType)
         case StaffType::security:
             return park.staffSecurityColour;
         case StaffType::entertainer:
-            return 0;
+            return Drawing::Colour::black;
         default:
             assert(false);
-            return 0;
+            return Drawing::Colour::black;
     }
 }
 
-GameActions::Result StaffSetColour(StaffType staffType, colour_t value)
+GameActions::Result StaffSetColour(StaffType staffType, OpenRCT2::Drawing::Colour value)
 {
     auto& park = getGameState().park;
     switch (staffType)

@@ -513,7 +513,7 @@ namespace OpenRCT2::Ui
         const auto r = w.windowPos.x + widget.right;
         const auto b = w.windowPos.y + widget.bottom;
 
-        uint8_t colour = w.colours[widget.colour].colour;
+        auto colour = w.colours[widget.colour].colour;
 
         // Border left of text
         Rectangle::fill(rt, { { l, t }, { l + 4, t } }, getColourMap(colour).midDark);
@@ -560,7 +560,7 @@ namespace OpenRCT2::Ui
             Rectangle::FillMode::dontLightenWhenInset);
 
         // Black caption bars look slightly green, this fixes that
-        if (colour.colour == COLOUR_BLACK)
+        if (colour.colour == Drawing::Colour::black)
             Rectangle::fill(
                 rt, { { topLeft + ScreenCoordsXY{ 1, 1 } }, { bottomRight - ScreenCoordsXY{ 1, 1 } } },
                 getColourMap(colour.colour).dark);
@@ -592,7 +592,7 @@ namespace OpenRCT2::Ui
 
         DrawTextEllipsised(
             rt, topLeft, width, widget->text, Formatter::Common(),
-            { ColourWithFlags{ COLOUR_WHITE }.withFlag(ColourFlag::withOutline, true), TextAlignment::centre });
+            { ColourWithFlags{ Drawing::Colour::white }.withFlag(ColourFlag::withOutline, true), TextAlignment::centre });
     }
 
     /**
@@ -1243,9 +1243,10 @@ namespace OpenRCT2::Ui
         const int32_t fillSize = (barWidth * percentage) / 100;
         if (fillSize > 0)
         {
+            // Progress bar widgets have an actual colour saved in them, rather than an index to the window colours.
             Rectangle::fillInset(
                 rt, { topLeft + ScreenCoordsXY{ 1, 1 }, topLeft + ScreenCoordsXY{ fillSize + 1, widget.height() - 2 } },
-                { widget.colour });
+                { static_cast<Colour>(widget.colour) });
         }
     }
 
@@ -1257,9 +1258,9 @@ namespace OpenRCT2::Ui
         Rectangle::fillInset(rt, { topLeft, bottomRight }, w.colours[1], Rectangle::BorderStyle::inset);
     }
 
-    ImageId getColourButtonImage(colour_t colour)
+    ImageId getColourButtonImage(Drawing::Colour colour)
     {
-        if (colour == COLOUR_INVISIBLE)
+        if (colour == Drawing::Colour::invisible)
         {
             return ImageId(SPR_G2_ICON_PALETTE_INVISIBLE, colour).WithBlended(false);
         }

@@ -15,14 +15,19 @@ class DataSerialiser;
 struct CoordsXYZ;
 struct PaintSession;
 
+namespace OpenRCT2::Drawing
+{
+    enum class Colour : uint8_t;
+}
+
 struct Balloon : EntityBase
 {
     static constexpr auto cEntityType = EntityType::balloon;
     uint16_t frame;
     uint16_t popped;
     uint8_t time_to_move;
-    uint8_t colour;
-    static void Create(const CoordsXYZ& balloonPos, int32_t colour, bool isPopped);
+    OpenRCT2::Drawing::Colour colour;
+    static void Create(const CoordsXYZ& balloonPos, OpenRCT2::Drawing::Colour colour, bool isPopped);
     void Update();
     void Pop(bool playSound);
     void Press();

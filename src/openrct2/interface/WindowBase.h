@@ -10,7 +10,6 @@
 #pragma once
 
 #include "../localisation/Formatter.h"
-#include "Colour.h"
 #include "ColourWithFlags.h"
 #include "ScrollArea.h"
 #include "Window.h"

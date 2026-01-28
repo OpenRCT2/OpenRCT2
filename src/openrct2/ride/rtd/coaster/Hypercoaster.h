@@ -51,12 +51,12 @@ constexpr RideTypeDescriptor HypercoasterRTD =
     .PhotoItem = ShopItem::photo,
     .BonusValue = 100,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_BORDEAUX_RED, COLOUR_BORDEAUX_RED, COLOUR_BLACK },
-        { COLOUR_LIGHT_BLUE, COLOUR_LIGHT_BLUE, COLOUR_WHITE },
-        { COLOUR_BLACK, COLOUR_BORDEAUX_RED, COLOUR_BLACK },
-        { COLOUR_WHITE, COLOUR_WHITE, COLOUR_DARK_GREEN },
-        { COLOUR_DULL_GREEN_LIGHT, COLOUR_DULL_GREEN_LIGHT, COLOUR_BLACK }, // Phantom's Revenge (Old)
-        { COLOUR_SATURATED_PURPLE_DARK, COLOUR_SATURATED_PURPLE_DARK, COLOUR_BLACK }, // Phantom's Revenge (New)
+        { Drawing::Colour::bordeauxRed, Drawing::Colour::bordeauxRed, Drawing::Colour::black },
+        { Drawing::Colour::lightBlue, Drawing::Colour::lightBlue, Drawing::Colour::white },
+        { Drawing::Colour::black, Drawing::Colour::bordeauxRed, Drawing::Colour::black },
+        { Drawing::Colour::white, Drawing::Colour::white, Drawing::Colour::darkGreen },
+        { Drawing::Colour::seafoamGreen, Drawing::Colour::seafoamGreen, Drawing::Colour::black }, // Phantom's Revenge (Old)
+        { Drawing::Colour::violet, Drawing::Colour::violet, Drawing::Colour::black }, // Phantom's Revenge (New)
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_CORKSCREW_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_CORKSCREW_ROLLER_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,
