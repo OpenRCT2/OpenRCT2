@@ -1014,7 +1014,7 @@ void Guest::Tick128UpdateGuest(uint32_t index)
 
     if (State == PeepState::onRide || State == PeepState::enteringRide)
     {
-        GuestTimeOnRide = std::min(255, GuestTimeOnRide + 1);
+        GuestTimeOnRide = AddClamp<uint8_t>(GuestTimeOnRide, 1);
 
         if (PeepFlags & PEEP_FLAGS_WOW)
         {
@@ -2354,9 +2354,9 @@ void Guest::SpendMoney(money64& peep_expend_type, money64 amount, ExpenditureTyp
     assert(!(getGameState().park.flags & PARK_FLAGS_NO_MONEY));
 
     CashInPocket = std::max(0.00_GBP, CashInPocket - amount);
-    CashSpent += amount;
+    CashSpent = AddClamp(CashSpent, amount);
 
-    peep_expend_type += amount;
+    peep_expend_type = AddClamp(peep_expend_type, amount);
 
     auto* windowMgr = Ui::GetWindowManager();
     windowMgr->InvalidateByNumber(WindowClass::peep, Id);
