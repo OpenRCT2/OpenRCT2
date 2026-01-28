@@ -1021,10 +1021,11 @@ static StringId window_cheats_page_titles[] = {
                     for (auto& weatherType : kWeatherTypes)
                     {
                         Formatter fmt;
+                        fmt.Add<StringId>(itemLabel);
                         fmt.Add<uint32_t>(isEnlarged ? weatherType.largeIcon : weatherType.smallIcon);
                         fmt.Add<StringId>(weatherType.label);
 
-                        gDropdown.items[i] = Dropdown::MenuLabel(itemLabel, fmt);
+                        gDropdown.items[i] = Dropdown::MenuLabel(STR_DROPDOWN_MENU_LABEL, fmt);
                         i++;
                     }
 
