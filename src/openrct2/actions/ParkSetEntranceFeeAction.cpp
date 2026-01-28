@@ -43,7 +43,7 @@ namespace OpenRCT2::GameActions
 
     Result ParkSetEntranceFeeAction::Query(GameState_t& gameState) const
     {
-        if ((gameState.park.flags & PARK_FLAGS_NO_MONEY) != 0)
+        if ((getUpdatingPark(gameState).flags & PARK_FLAGS_NO_MONEY) != 0)
         {
             LOG_ERROR("Can't set park entrance fee because the park has no money");
             return Result(Status::disallowed, STR_ERR_CANT_CHANGE_PARK_ENTRANCE_FEE, kStringIdNone);
@@ -64,7 +64,7 @@ namespace OpenRCT2::GameActions
 
     Result ParkSetEntranceFeeAction::Execute(GameState_t& gameState) const
     {
-        gameState.park.entranceFee = _fee;
+        getUpdatingPark(gameState).entranceFee = _fee;
 
         auto* windowMgr = Ui::GetWindowManager();
         windowMgr->InvalidateByClass(WindowClass::parkInformation);

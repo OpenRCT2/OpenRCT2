@@ -354,7 +354,7 @@ namespace OpenRCT2::RCT2
             ImportEntities(gameState);
             ConvertPeepAnimationTypeToObjects(gameState);
 
-            auto& park = gameState.park;
+            auto& park = gameState.parks[0];
 
             gameState.scenarioOptions.initialCash = ToMoney64(_s6.InitialCash);
             park.bankLoan = ToMoney64(_s6.CurrentLoan);

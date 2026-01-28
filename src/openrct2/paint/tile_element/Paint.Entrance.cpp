@@ -234,11 +234,13 @@ static void PaintParkEntranceScrollingText(
     if (scrollingMode == kScrollingModeNone)
         return;
 
-    auto ft = Formatter();
     auto& gameState = getGameState();
-    if (gameState.park.flags & PARK_FLAGS_PARK_OPEN)
+    // TODO: use parkId (owner) from entrance element
+    const auto& park = getUpdatingPark(gameState);
+
+    auto ft = Formatter();
+    if (park.flags & PARK_FLAGS_PARK_OPEN)
     {
-        const auto& park = gameState.park;
         auto name = park.name.c_str();
         ft.Add<StringId>(STR_STRING);
         ft.Add<const char*>(name);

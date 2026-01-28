@@ -797,8 +797,10 @@ void Peep::UpdateFalling()
             News::AddItemToQueue(News::ItemType::blank, STR_NEWS_ITEM_GUEST_DROWNED, x | (y << 16), ft);
         }
 
+        // TODO: use park id/owner from peep
         auto& gameState = getGameState();
-        gameState.park.ratingCasualtyPenalty = std::min(gameState.park.ratingCasualtyPenalty + 25, 1000);
+        auto& park = getUpdatingPark(gameState);
+        park.ratingCasualtyPenalty = std::min(park.ratingCasualtyPenalty + 25, 1000);
         Remove();
         return;
     }
@@ -963,12 +965,14 @@ uint32_t Peep::GetStepsToTake() const
  */
 void PeepProblemWarningsUpdate()
 {
-    auto& gameState = getGameState();
-
     Ride* ride;
     uint32_t hungerCounter = 0, lostCounter = 0, noexitCounter = 0, thirstCounter = 0, litterCounter = 0, disgustCounter = 0,
              toiletCounter = 0, vandalismCounter = 0;
-    uint8_t* warningThrottle = gameState.park.peepWarningThrottle;
+
+    // TODO: use park id/owner from peep
+    auto& gameState = getGameState();
+    auto& park = getUpdatingPark(gameState);
+    uint8_t* warningThrottle = park.peepWarningThrottle;
 
     int32_t inQueueCounter = 0;
     int32_t tooLongQueueCounter = 0;
@@ -1048,7 +1052,7 @@ void PeepProblemWarningsUpdate()
     // could maybe be packed into a loop, would lose a lot of clarity though
     if (warningThrottle[0])
         --warningThrottle[0];
-    else if (hungerCounter >= kPeepHungerWarningThreshold && hungerCounter >= gameState.park.numGuestsInPark / 16)
+    else if (hungerCounter >= kPeepHungerWarningThreshold && hungerCounter >= getUpdatingPark(gameState).numGuestsInPark / 16)
     {
         warningThrottle[0] = 4;
         if (Config::Get().notifications.guestWarnings)
@@ -1060,7 +1064,7 @@ void PeepProblemWarningsUpdate()
 
     if (warningThrottle[1])
         --warningThrottle[1];
-    else if (thirstCounter >= kPeepThirstWarningThreshold && thirstCounter >= gameState.park.numGuestsInPark / 16)
+    else if (thirstCounter >= kPeepThirstWarningThreshold && thirstCounter >= getUpdatingPark(gameState).numGuestsInPark / 16)
     {
         warningThrottle[1] = 4;
         if (Config::Get().notifications.guestWarnings)
@@ -1072,7 +1076,7 @@ void PeepProblemWarningsUpdate()
 
     if (warningThrottle[2])
         --warningThrottle[2];
-    else if (toiletCounter >= kPeepToiletWarningThreshold && toiletCounter >= gameState.park.numGuestsInPark / 16)
+    else if (toiletCounter >= kPeepToiletWarningThreshold && toiletCounter >= getUpdatingPark(gameState).numGuestsInPark / 16)
     {
         warningThrottle[2] = 4;
         if (Config::Get().notifications.guestWarnings)
@@ -1084,7 +1088,7 @@ void PeepProblemWarningsUpdate()
 
     if (warningThrottle[3])
         --warningThrottle[3];
-    else if (litterCounter >= kPeepLitterWarningThreshold && litterCounter >= gameState.park.numGuestsInPark / 32)
+    else if (litterCounter >= kPeepLitterWarningThreshold && litterCounter >= getUpdatingPark(gameState).numGuestsInPark / 32)
     {
         warningThrottle[3] = 4;
         if (Config::Get().notifications.guestWarnings)
@@ -1096,7 +1100,8 @@ void PeepProblemWarningsUpdate()
 
     if (warningThrottle[4])
         --warningThrottle[4];
-    else if (disgustCounter >= kPeepDisgustWarningThreshold && disgustCounter >= gameState.park.numGuestsInPark / 32)
+    else if (
+        disgustCounter >= kPeepDisgustWarningThreshold && disgustCounter >= getUpdatingPark(gameState).numGuestsInPark / 32)
     {
         warningThrottle[4] = 4;
         if (Config::Get().notifications.guestWarnings)
@@ -1108,7 +1113,9 @@ void PeepProblemWarningsUpdate()
 
     if (warningThrottle[5])
         --warningThrottle[5];
-    else if (vandalismCounter >= kPeepVandalismWarningThreshold && vandalismCounter >= gameState.park.numGuestsInPark / 32)
+    else if (
+        vandalismCounter >= kPeepVandalismWarningThreshold
+        && vandalismCounter >= getUpdatingPark(gameState).numGuestsInPark / 32)
     {
         warningThrottle[5] = 4;
         if (Config::Get().notifications.guestWarnings)
@@ -1478,9 +1485,11 @@ void Peep::FormatNameTo(Formatter& ft) const
 {
     if (Name == nullptr)
     {
-        auto& gameState = getGameState();
-        const bool showGuestNames = gameState.park.flags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
-        const bool showStaffNames = gameState.park.flags & PARK_FLAGS_SHOW_REAL_STAFF_NAMES;
+        // TODO: use park id/owner from peep
+        const auto& gameState = getGameState();
+        const auto& park = getUpdatingPark(gameState);
+        const bool showGuestNames = park.flags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+        const bool showStaffNames = park.flags & PARK_FLAGS_SHOW_REAL_STAFF_NAMES;
 
         auto* staff = As<Staff>();
         const bool isStaff = staff != nullptr;
@@ -1762,7 +1771,10 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
             return true;
         }
 
+        // TODO: use park id/owner from peep
         auto& gameState = getGameState();
+        auto& park = getUpdatingPark(gameState);
+
         uint8_t entranceDirection = tile_element->GetDirection();
         if (entranceDirection != guest->PeepDirection)
         {
@@ -1782,7 +1794,7 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
             if (!(guest->PeepFlags & PEEP_FLAGS_LEAVING_PARK))
             {
                 // If the park is open and leaving flag isn't set return to centre
-                if (gameState.park.flags & PARK_FLAGS_PARK_OPEN)
+                if (park.flags & PARK_FLAGS_PARK_OPEN)
                 {
                     PeepReturnToCentreOfTile(guest);
                     return true;
@@ -1815,7 +1827,7 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
             return true;
         }
 
-        if (!(gameState.park.flags & PARK_FLAGS_PARK_OPEN))
+        if (!(park.flags & PARK_FLAGS_PARK_OPEN))
         {
             guest->State = PeepState::leavingPark;
             guest->Var37 = 1;
@@ -1826,10 +1838,9 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
         }
 
         bool found = false;
-        auto entrance = std::find_if(gameState.park.entrances.begin(), gameState.park.entrances.end(), [coords](const auto& e) {
-            return coords.ToTileStart() == e;
-        });
-        if (entrance != gameState.park.entrances.end())
+        auto entrance = std::find_if(
+            park.entrances.begin(), park.entrances.end(), [coords](const auto& e) { return coords.ToTileStart() == e; });
+        if (entrance != park.entrances.end())
         {
             int16_t z = entrance->z / 8;
             entranceDirection = entrance->direction;
@@ -1916,12 +1927,12 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
                 return true;
             }
 
-            gameState.park.totalIncomeFromAdmissions += entranceFee;
+            park.totalIncomeFromAdmissions += entranceFee;
             guest->SpendMoney(guest->PaidToEnter, entranceFee, ExpenditureType::parkEntranceTickets);
             guest->PeepFlags |= PEEP_FLAGS_HAS_PAID_FOR_PARK_ENTRY;
         }
 
-        getGameState().park.totalAdmissions++;
+        park.totalAdmissions++;
 
         auto* windowMgr = Ui::GetWindowManager();
         windowMgr->InvalidateByNumber(WindowClass::parkInformation, 0);
@@ -2284,8 +2295,9 @@ static bool PeepInteractWithShop(Peep* peep, const CoordsXYE& coords)
             return true;
         }
 
+        const auto& gameState = getGameState();
         auto cost = ride->price[0];
-        if (cost != 0 && !(getGameState().park.flags & PARK_FLAGS_NO_MONEY))
+        if (cost != 0 && !(getUpdatingPark(gameState).flags & PARK_FLAGS_NO_MONEY))
         {
             ride->totalProfit = AddClamp(ride->totalProfit, cost);
             ride->windowInvalidateFlags.set(RideInvalidateFlag::income);
@@ -2552,7 +2564,8 @@ int32_t PeepCompare(const EntityId sprite_index_a, const EntityId sprite_index_b
 
     if (peep_a->Name == nullptr && peep_b->Name == nullptr)
     {
-        if (getGameState().park.flags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
+        auto& gameState = getGameState();
+        if (getUpdatingPark(gameState).flags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
         {
             // Potentially could find a more optional way of sorting dynamic real names
         }
@@ -2582,18 +2595,20 @@ int32_t PeepCompare(const EntityId sprite_index_a, const EntityId sprite_index_b
  */
 void PeepUpdateNames()
 {
+    // TODO: pass park by ref
     auto& gameState = getGameState();
+    auto& park = getUpdatingPark(gameState);
     auto& config = Config::Get().general;
 
     if (config.showRealNamesOfGuests)
-        gameState.park.flags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+        park.flags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
     else
-        gameState.park.flags &= ~PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+        park.flags &= ~PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
 
     if (config.showRealNamesOfStaff)
-        gameState.park.flags |= PARK_FLAGS_SHOW_REAL_STAFF_NAMES;
+        park.flags |= PARK_FLAGS_SHOW_REAL_STAFF_NAMES;
     else
-        gameState.park.flags &= ~PARK_FLAGS_SHOW_REAL_STAFF_NAMES;
+        park.flags &= ~PARK_FLAGS_SHOW_REAL_STAFF_NAMES;
 
     auto intent = Intent(INTENT_ACTION_REFRESH_GUEST_LIST);
     ContextBroadcastIntent(&intent);
@@ -2602,10 +2617,13 @@ void PeepUpdateNames()
 
 void IncrementGuestsInPark()
 {
+    // TODO: pass park by ref
     auto& gameState = getGameState();
-    if (gameState.park.numGuestsInPark < UINT32_MAX)
+    auto& park = getUpdatingPark(gameState);
+
+    if (park.numGuestsInPark < UINT32_MAX)
     {
-        gameState.park.numGuestsInPark++;
+        park.numGuestsInPark++;
     }
     else
     {
@@ -2615,10 +2633,13 @@ void IncrementGuestsInPark()
 
 void IncrementGuestsHeadingForPark()
 {
+    // TODO: pass park by ref
     auto& gameState = getGameState();
-    if (gameState.park.numGuestsHeadingForPark < UINT32_MAX)
+    auto& park = getUpdatingPark(gameState);
+
+    if (park.numGuestsHeadingForPark < UINT32_MAX)
     {
-        gameState.park.numGuestsHeadingForPark++;
+        park.numGuestsHeadingForPark++;
     }
     else
     {
@@ -2628,10 +2649,13 @@ void IncrementGuestsHeadingForPark()
 
 void DecrementGuestsInPark()
 {
+    // TODO: pass park by ref
     auto& gameState = getGameState();
-    if (gameState.park.numGuestsInPark > 0)
+    auto& park = getUpdatingPark(gameState);
+
+    if (park.numGuestsInPark > 0)
     {
-        gameState.park.numGuestsInPark--;
+        park.numGuestsInPark--;
     }
     else
     {
@@ -2641,11 +2665,13 @@ void DecrementGuestsInPark()
 
 void DecrementGuestsHeadingForPark()
 {
+    // TODO: pass park by ref
     auto& gameState = getGameState();
+    auto& park = getUpdatingPark(gameState);
 
-    if (gameState.park.numGuestsHeadingForPark > 0)
+    if (park.numGuestsHeadingForPark > 0)
     {
-        gameState.park.numGuestsHeadingForPark--;
+        park.numGuestsHeadingForPark--;
     }
     else
     {

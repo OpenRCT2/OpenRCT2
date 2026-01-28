@@ -34,16 +34,17 @@ namespace OpenRCT2
 
     ParkPreview generatePreviewFromGameState(const GameState_t& gameState)
     {
+        const auto& park = getUpdatingPark(gameState);
         ParkPreview preview{
-            .parkName = gameState.park.name,
-            .parkRating = gameState.park.rating,
+            .parkName = park.name,
+            .parkRating = park.rating,
             .year = gameState.date.GetYear(),
             .month = gameState.date.GetMonth(),
             .day = gameState.date.GetDay(),
-            .parkUsesMoney = !(gameState.park.flags & PARK_FLAGS_NO_MONEY),
-            .cash = gameState.park.cash,
+            .parkUsesMoney = !(park.flags & PARK_FLAGS_NO_MONEY),
+            .cash = park.cash,
             .numRides = static_cast<uint16_t>(RideManager(gameState).size()),
-            .numGuests = static_cast<uint16_t>(gameState.park.numGuestsInPark),
+            .numGuests = static_cast<uint16_t>(park.numGuestsInPark),
         };
 
         if (auto image = generatePreviewMap(); image != std::nullopt)
@@ -182,9 +183,10 @@ namespace OpenRCT2
         if (gOpenRCT2NoGraphics)
             return std::nullopt;
 
-        const auto& gameState = getGameState();
         const auto mainWindow = WindowGetMain();
         const auto mainViewport = WindowGetViewport(mainWindow);
+
+        const auto& gameState = getGameState();
 
         CoordsXYZD mapPosXYZD{};
         if (mainViewport != nullptr)
@@ -194,9 +196,9 @@ namespace OpenRCT2
             const auto mapPos = ViewportPosToMapPos(centre, 24, mainViewport->rotation);
             mapPosXYZD = CoordsXYZD(mapPos.x, mapPos.y, int32_t{ TileElementHeight(mapPos) }, mainViewport->rotation);
         }
-        else if (!gameState.park.entrances.empty())
+        else if (!getUpdatingPark(gameState).entrances.empty())
         {
-            const auto& entrance = gameState.park.entrances[0];
+            const auto& entrance = getPlayerPark(gameState).entrances[0];
             mapPosXYZD = CoordsXYZD(entrance.x + 16, entrance.y + 16, entrance.z + 32, DirectionReverse(entrance.direction));
         }
         else

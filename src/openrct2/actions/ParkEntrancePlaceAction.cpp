@@ -81,7 +81,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::noFreeElements, STR_CANT_BUILD_THIS_HERE, STR_ERR_LANDSCAPE_DATA_AREA_FULL);
         }
 
-        if (gameState.park.entrances.size() >= Limits::kMaxParkEntrances)
+        if (getUpdatingPark(gameState).entrances.size() >= OpenRCT2::Limits::kMaxParkEntrances)
         {
             return Result(Status::invalidParameters, STR_CANT_BUILD_THIS_HERE, STR_ERR_TOO_MANY_PARK_ENTRANCES);
         }
@@ -126,7 +126,7 @@ namespace OpenRCT2::GameActions
 
         auto flags = GetFlags();
 
-        gameState.park.entrances.push_back(_loc);
+        getUpdatingPark(gameState).entrances.push_back(_loc);
 
         auto zLow = _loc.z;
         auto zHigh = zLow + ParkEntranceHeight;

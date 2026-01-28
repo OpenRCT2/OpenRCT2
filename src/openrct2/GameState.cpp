@@ -324,8 +324,8 @@ namespace OpenRCT2
 
         if (!isInEditorMode())
         {
-            auto& park = gameState.park;
-            Park::Update(park, gameState);
+            for (auto& park : gameState.parks)
+                Park::Update(park, gameState);
         }
 
         ResearchUpdate();
@@ -368,5 +368,47 @@ namespace OpenRCT2
 #endif
 
         gInUpdateCode = false;
+    }
+
+    const Park::ParkData& getPlayerPark(const GameState_t& gameState)
+    {
+        return gameState.parks[gameState.playerParkId.ToUnderlying()];
+    }
+
+    Park::ParkData& getPlayerPark(GameState_t& gameState)
+    {
+        return gameState.parks[gameState.playerParkId.ToUnderlying()];
+    }
+
+    ParkId getPlayerParkId(const GameState_t& gameState)
+    {
+        return gameState.playerParkId;
+    }
+
+    void setPlayerParkId(GameState_t& gameState, ParkId newParkId)
+    {
+        assert(newParkId.ToUnderlying() < gameState.parks.size());
+        gameState.playerParkId = newParkId;
+    }
+
+    const Park::ParkData& getUpdatingPark(const GameState_t& gameState)
+    {
+        return gameState.parks[gameState.updatingParkId.ToUnderlying()];
+    }
+
+    Park::ParkData& getUpdatingPark(GameState_t& gameState)
+    {
+        return gameState.parks[gameState.updatingParkId.ToUnderlying()];
+    }
+
+    ParkId getUpdatingParkId(const GameState_t& gameState)
+    {
+        return gameState.updatingParkId;
+    }
+
+    void setUpdatingParkId(GameState_t& gameState, ParkId newParkId)
+    {
+        assert(newParkId.ToUnderlying() < gameState.parks.size());
+        gameState.updatingParkId = newParkId;
     }
 } // namespace OpenRCT2

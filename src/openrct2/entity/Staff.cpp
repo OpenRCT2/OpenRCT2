@@ -960,7 +960,8 @@ int32_t Staff::GetHireDate() const
 
 colour_t StaffGetColour(StaffType staffType)
 {
-    const auto& park = getGameState().park;
+    const auto& gameState = getGameState();
+    const auto& park = getUpdatingPark(gameState);
     switch (staffType)
     {
         case StaffType::handyman:
@@ -979,7 +980,8 @@ colour_t StaffGetColour(StaffType staffType)
 
 GameActions::Result StaffSetColour(StaffType staffType, colour_t value)
 {
-    auto& park = getGameState().park;
+    auto& gameState = getGameState();
+    auto& park = getUpdatingPark(gameState);
     switch (staffType)
     {
         case StaffType::handyman:

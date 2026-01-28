@@ -294,7 +294,7 @@ namespace OpenRCT2::Scripting
             else if (value == "failed")
                 gameState.scenarioCompletedCompanyValue = kCompanyValueOnFailedObjective;
             else if (value == "completed")
-                gameState.scenarioCompletedCompanyValue = gameState.park.companyValue;
+                gameState.scenarioCompletedCompanyValue = getUpdatingPark(gameState).companyValue;
         }
 
         money64 companyValueRecord_get() const

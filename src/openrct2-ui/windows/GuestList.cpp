@@ -944,8 +944,9 @@ namespace OpenRCT2::Ui::Windows
 
         static GuestItem::CompareFunc GetGuestCompareFunc()
         {
-            return getGameState().park.flags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES ? CompareGuestItem<true>
-                                                                                : CompareGuestItem<false>;
+            const auto& gameState = getGameState();
+            const auto& park = getPlayerPark(gameState);
+            return park.flags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES ? CompareGuestItem<true> : CompareGuestItem<false>;
         }
     };
 

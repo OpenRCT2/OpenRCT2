@@ -56,7 +56,7 @@ namespace OpenRCT2::GameActions
     Result ParkSetNameAction::Execute(GameState_t& gameState) const
     {
         // Do a no-op if new name is the same as the current name is the same
-        auto& park = gameState.park;
+        auto& park = getUpdatingPark(gameState);
         if (_name != park.name)
         {
             park.name = _name;
