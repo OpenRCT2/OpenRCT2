@@ -349,7 +349,7 @@ static constexpr auto window_cheats_rides_widgets = makeWidgets(
 static constexpr auto window_cheats_weather_widgets = makeWidgets(
     kMainCheatWidgets,
     makeWidget        ({  5,  48}, {238,  50},       WidgetType::groupbox,     WindowColour::secondary, STR_CHEAT_WEATHER_GROUP                                      ), // Weather group
-    makeWidget        ({126,  62}, {111,  14},       WidgetType::dropdownMenu, WindowColour::secondary, kStringIdNone,                   STR_CHANGE_WEATHER_TOOLTIP  ), // Force weather
+    makeWidget        ({126,  62}, {111,  14},       WidgetType::dropdownMenu, WindowColour::secondary, STR_WEATHER_CAPTION,             STR_CHANGE_WEATHER_TOOLTIP  ), // Force weather
     makeWidget        ({225,  63}, { 11,  12},       WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,              STR_CHANGE_WEATHER_TOOLTIP  ), // Force weather
     makeWidget        ({ 11,  80}, kCheatCheckSize,  WidgetType::checkbox,     WindowColour::secondary, STR_CHEAT_FREEZE_WEATHER,        STR_CHEAT_FREEZE_WEATHER_TIP), // Freeze weather
     makeWidget        ({  5, 102}, {238,  37},       WidgetType::groupbox,     WindowColour::secondary, STR_FAUNA                                                    ), // Fauna group
@@ -585,7 +585,10 @@ static StringId window_cheats_page_titles[] = {
             if (page == WINDOW_CHEATS_PAGE_WEATHER)
             {
                 auto& weatherType = kWeatherTypes[EnumValue(gameState.weatherCurrent.weatherType)];
-                widgets[WIDX_WEATHER].text = weatherType.label;
+
+                auto fmt = Formatter::Common();
+                fmt.Add<uint32_t>(weatherType.smallIcon);
+                fmt.Add<StringId>(weatherType.label);
             }
 
             // Staff speed
