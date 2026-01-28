@@ -3847,4 +3847,7 @@ STR_7014    :I own the game on Steam, but I haven’t installed it yet.
 STR_7015    :Please close Steam if it’s running, then click ‘OK’.
 STR_7016    :OpenRCT2 has tried to trigger a download in Steam. Please open Steam and let it download the game. When Steam is finished, click ‘OK’.
 STR_7017	:Quit
-STR_7018    :{SPRITE}{NEWLINE_SMALLER}{MOVE_X}{26}{STRINGID}
+STR_7018    :{MOVE_X}{10}{SPRITE}{MOVE_X}{27}{STRINGID}
+STR_7019    :»{MOVE_X}{10}{SPRITE}{MOVE_X}{27}{STRINGID}
+STR_7020    :{MOVE_X}{10}{SPRITE}{NEWLINE_SMALLER}{MOVE_X}{34}{STRINGID}
+STR_7021    :»{MOVE_X}{10}{SPRITE}{NEWLINE_SMALLER}{MOVE_X}{34}{STRINGID}
