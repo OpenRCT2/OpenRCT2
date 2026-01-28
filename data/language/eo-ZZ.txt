@@ -3839,3 +3839,8 @@ STR_7009    :Ricevas skriptojn…
 STR_7010    :Ne povas komenci reludigon, la dosiero ‘{STRING}’ ne ekzistas aŭ ne validas
 STR_7011    :Ne povas komenci reludigon
 STR_7012    :Pola zloto (PLN)
+STR_7013    :Treni areojn de trotuaro
+STR_7014    :Mi posedas la ludon de Steam, sed mi ankoraŭ ne instalis ĝin.
+STR_7015    :Bonvolu fermi je Steam se ĝi rulas, tiam alklaki la ‘OK’ butonon.
+STR_7016    :OpenRCT2 provis ekagigi elŝutaĵon en Steam. Bonvolu malfermi je Steam kaj lasu ĝin elŝuti la ludon. Kiam Steam estas finita, alklaku la ‘OK’ butonon.
+STR_7017    :Forlasi
