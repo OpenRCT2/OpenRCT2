@@ -133,7 +133,7 @@ void CarEntrySetImageMaxSizes(CarEntry& carEntry, int32_t numImages)
 
     // Moved from object paint
 
-    if (carEntry.flags & CAR_ENTRY_FLAG_SPRITE_BOUNDS_INCLUDE_INVERTED_SET)
+    if (carEntry.flags.has(CarEntryFlag::spriteBoundsIncludeInvertedSet))
     {
         spriteHeightNegative += 16;
     }

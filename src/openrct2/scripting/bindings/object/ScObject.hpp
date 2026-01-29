@@ -285,12 +285,12 @@ namespace OpenRCT2::Scripting
             return 0;
         }
 
-        uint32_t flags_get() const
+        uint64_t flags_get() const
         {
             auto carEntry = GetEntry();
             if (carEntry != nullptr)
             {
-                return carEntry->flags;
+                return carEntry->flags.holder;
             }
             return 0;
         }
