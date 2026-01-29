@@ -527,7 +527,7 @@ STR_1139    :Select support structure colour
 STR_1140    :Select vehicle colour scheme option
 STR_1141    :Select which vehicle/train to modify
 STR_1142    :{MOVE_X}{10}{STRINGID}
-STR_1143    :»{MOVE_X}{10}{STRINGID}
+STR_1143    :{MOVE_X}{10}{STRINGID}{MOVE_X}{0}»
 STR_1144    :Can’t build/move entrance for this ride/attraction…
 STR_1145    :Can’t build/move exit for this ride/attraction…
 STR_1146    :Entrance not yet built
@@ -541,7 +541,7 @@ STR_1153    :Height Marks on Ride Tracks
 STR_1154    :Height Marks on Land
 STR_1155    :Height Marks on Paths
 STR_1156    :{MOVE_X}{10}{STRING}
-STR_1157    :✓{MOVE_X}{10}{STRING}
+STR_1157    :{MOVE_X}{10}{STRING}{MOVE_X}{0}✓
 STR_1158    :Can’t remove this…
 STR_1159    :Place scenery, gardens, and other accessories
 STR_1160    :Create/adjust lakes & water
@@ -1957,7 +1957,7 @@ STR_2774    :Fullscreen
 STR_2775    :Fullscreen (borderless window)
 STR_2776    :Language:
 STR_2777    :{MOVE_X}{10}{STRING}
-STR_2778    :»{MOVE_X}{10}{STRING}
+STR_2778    :{MOVE_X}{10}{STRING}{MOVE_X}{0}»
 STR_2779    :Viewport #{COMMA16}
 STR_2780    :Extra viewport
 # End of new strings
@@ -3825,7 +3825,7 @@ STR_6792    :Entrance Buildings
 STR_6793    :Guests and Staff
 STR_6794    :Scenery and Themes
 STR_6795    :{MOVE_X}{10}{STRINGID}
-STR_6796    :•{MOVE_X}{10}{STRINGID}
+STR_6796    :{MOVE_X}{10}{STRINGID}{MOVE_X}{0}•
 STR_6797    :No preview
 STR_6798    :Screenshot
 STR_6799    :Mini map
@@ -3847,3 +3847,6 @@ STR_7014    :I own the game on Steam, but I haven’t installed it yet.
 STR_7015    :Please close Steam if it’s running, then click ‘OK’.
 STR_7016    :OpenRCT2 has tried to trigger a download in Steam. Please open Steam and let it download the game. When Steam is finished, click ‘OK’.
 STR_7017	:Quit
+STR_7018    :{SPRITE}{MOVE_X}{17}{STRINGID}
+STR_7019    :{SPRITE}{MOVE_X}{27}{STRINGID}
+STR_7020    :{SPRITE}{NEWLINE_SMALLER}{MOVE_X}{36}{STRINGID}

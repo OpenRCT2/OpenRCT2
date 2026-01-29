@@ -64,6 +64,7 @@ namespace OpenRCT2::Ui::Windows
         int32_t NumRows;
         int32_t ItemWidth;
         int32_t ItemHeight;
+        int32_t ItemPadding;
         bool ListVertically;
 
     public:
@@ -88,8 +89,8 @@ namespace OpenRCT2::Ui::Windows
             return Config::Get().interface.enlargedUi ? 6 : 0;
         }
 
-        static void drawTextItem(
-            RenderTarget& rt, ScreenCoordsXY screenCoords, int32_t width, const Dropdown::Item& item, bool highlighted,
+        void drawTextItem(
+            RenderTarget& rt, ScreenCoordsXY screenCoords, int32_t ddWidth, const Dropdown::Item& item, bool highlighted,
             StringId format, Colour background)
         {
             ColourWithFlags colour = { background };
@@ -98,11 +99,11 @@ namespace OpenRCT2::Ui::Windows
             if (item.isDisabled())
                 colour = { background, { ColourFlag::inset } };
 
-            auto yOffset = GetAdditionalRowPadding();
+            auto yOffset = ItemPadding;
             Formatter ft;
             ft.Add<const utf8*>(item.text);
 
-            DrawTextEllipsised(rt, { screenCoords.x + 2, screenCoords.y + yOffset }, width - 7, format, ft, { colour });
+            DrawTextEllipsised(rt, { screenCoords.x + 2, screenCoords.y + yOffset }, ddWidth - 7, format, ft, { colour });
         }
 
         void onDraw(RenderTarget& rt) override
@@ -212,6 +213,7 @@ namespace OpenRCT2::Ui::Windows
         {
             // Set and calculate num items, rows and columns
             ItemHeight = (txtFlags & Dropdown::Flag::CustomHeight) ? customItemHeight : GetDefaultRowHeight();
+            ItemPadding = (txtFlags & Dropdown::Flag::CustomHeight) ? 0 : GetAdditionalRowPadding();
 
             gDropdown.numItems = static_cast<int32_t>(numItems);
             if (gDropdown.numItems > 1)

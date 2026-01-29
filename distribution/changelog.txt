@@ -1,6 +1,7 @@
 0.4.31 (in development)
 ------------------------------------------------------------------------
 - Feature: [#25844] The sprite builder now also supports adding JSON-based palettes.
+- Improved: [#25719] The weather change dropdown now shows icons next to the weather types for easier selection.
 - Improved: [#25765] The ‘View options’ and ‘Special track elements’ dropdowns no longer need click-and-hold.
 - Improved: [#25858] macOS now supports the onboarding menu.
 - Change: [#25018] Add upkeep cost to booster pieces.

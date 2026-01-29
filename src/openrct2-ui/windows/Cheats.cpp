@@ -20,6 +20,7 @@
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/CheatSetAction.h>
 #include <openrct2/actions/ParkSetDateAction.h>
+#include <openrct2/config/Config.h>
 #include <openrct2/core/EnumUtils.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Currency.h>
@@ -56,18 +57,24 @@ static StringId _staffSpeedNames[] =
     STR_FAST,
 };
 
-static constexpr StringId WeatherTypes[] =
+struct WeatherInfo
 {
-    STR_SUNNY,
-    STR_PARTIALLY_CLOUDY,
-    STR_CLOUDY,
-    STR_RAIN,
-    STR_HEAVY_RAIN,
-    STR_THUNDERSTORM,
-    STR_SNOW,
-    STR_HEAVY_SNOW,
-    STR_BLIZZARD,
+    ImageIndex smallIcon;
+    ImageIndex largeIcon;
+    StringId label;
 };
+
+static constexpr auto kWeatherTypes = std::to_array<WeatherInfo>({
+    { SPR_G2_WEATHER_SUN_SMALL, SPR_WEATHER_SUN, STR_SUNNY },
+    { SPR_G2_WEATHER_SUN_CLOUD_SMALL, SPR_WEATHER_SUN_CLOUD, STR_PARTIALLY_CLOUDY },
+    { SPR_G2_WEATHER_CLOUD_SMALL, SPR_WEATHER_CLOUD, STR_CLOUDY },
+    { SPR_G2_WEATHER_LIGHT_RAIN_SMALL, SPR_WEATHER_LIGHT_RAIN, STR_RAIN },
+    { SPR_G2_WEATHER_HEAVY_RAIN_SMALL, SPR_WEATHER_HEAVY_RAIN, STR_HEAVY_RAIN },
+    { SPR_G2_WEATHER_STORM_SMALL, SPR_WEATHER_STORM, STR_THUNDERSTORM },
+    { SPR_G2_WEATHER_SNOW_SMALL, SPR_G2_WEATHER_SNOW, STR_SNOW },
+    { SPR_G2_WEATHER_HEAVY_SNOW_SMALL, SPR_G2_WEATHER_HEAVY_SNOW, STR_HEAVY_SNOW },
+    { SPR_G2_WEATHER_BLIZZARD_SMALL, SPR_G2_WEATHER_BLIZZARD, STR_BLIZZARD },
+});
 
 enum WindowCheatsWidgetIdx
 {
@@ -342,7 +349,7 @@ static constexpr auto window_cheats_rides_widgets = makeWidgets(
 static constexpr auto window_cheats_weather_widgets = makeWidgets(
     kMainCheatWidgets,
     makeWidget        ({  5,  48}, {238,  50},       WidgetType::groupbox,     WindowColour::secondary, STR_CHEAT_WEATHER_GROUP                                      ), // Weather group
-    makeWidget        ({126,  62}, {111,  14},       WidgetType::dropdownMenu, WindowColour::secondary, kStringIdNone,                   STR_CHANGE_WEATHER_TOOLTIP  ), // Force weather
+    makeWidget        ({126,  62}, {111,  14},       WidgetType::dropdownMenu, WindowColour::secondary, STR_WEATHER_CAPTION,             STR_CHANGE_WEATHER_TOOLTIP  ), // Force weather
     makeWidget        ({225,  63}, { 11,  12},       WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,              STR_CHANGE_WEATHER_TOOLTIP  ), // Force weather
     makeWidget        ({ 11,  80}, kCheatCheckSize,  WidgetType::checkbox,     WindowColour::secondary, STR_CHEAT_FREEZE_WEATHER,        STR_CHEAT_FREEZE_WEATHER_TIP), // Freeze weather
     makeWidget        ({  5, 102}, {238,  37},       WidgetType::groupbox,     WindowColour::secondary, STR_FAUNA                                                    ), // Fauna group
@@ -577,7 +584,11 @@ static StringId window_cheats_page_titles[] = {
             // Current weather
             if (page == WINDOW_CHEATS_PAGE_WEATHER)
             {
-                widgets[WIDX_WEATHER].text = WeatherTypes[EnumValue(gameState.weatherCurrent.weatherType)];
+                auto& weatherType = kWeatherTypes[EnumValue(gameState.weatherCurrent.weatherType)];
+
+                auto ft = Formatter::Common();
+                ft.Add<uint32_t>(weatherType.smallIcon);
+                ft.Add<StringId>(weatherType.label);
             }
 
             // Staff speed
@@ -1000,26 +1011,33 @@ static StringId window_cheats_page_titles[] = {
 
         void onMouseDownWeather(WidgetIndex widgetIndex)
         {
-            auto* widget = &widgets[widgetIndex];
-            auto& gameState = getGameState();
             switch (widgetIndex)
             {
                 case WIDX_WEATHER_DROPDOWN_BUTTON:
                 {
-                    Widget* dropdownWidget = widget - 1;
+                    auto& dropdownWidget = widgets[widgetIndex - 1];
+                    bool isEnlarged = Config::Get().interface.enlargedUi;
+                    auto itemLabel = isEnlarged ? STR_WEATHER_DROPDOWN_ITEM_ENLARGED : STR_WEATHER_DROPDOWN_ITEM;
+                    auto itemWidth = dropdownWidget.width() + (isEnlarged ? 30 : 22) - 3;
+                    auto itemHeight = isEnlarged ? 20 : 12; // !!! TTF?
 
-                    for (size_t i = 0; i < std::size(WeatherTypes); i++)
+                    auto i = 0u;
+                    for (auto& weatherType : kWeatherTypes)
                     {
-                        gDropdown.items[i] = Dropdown::MenuLabel(WeatherTypes[i]);
+                        Formatter ft;
+                        ft.Add<StringId>(itemLabel);
+                        ft.Add<uint32_t>(isEnlarged ? weatherType.largeIcon : weatherType.smallIcon);
+                        ft.Add<StringId>(weatherType.label);
+
+                        gDropdown.items[i] = Dropdown::MenuLabel(STR_DROPDOWN_MENU_LABEL, ft);
+                        i++;
                     }
+
                     WindowDropdownShowTextCustomWidth(
-                        { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height(),
-                        colours[1], 0, Dropdown::Flag::StayOpen, std::size(WeatherTypes), dropdownWidget->width() - 4);
+                        { windowPos.x + dropdownWidget.left, windowPos.y + dropdownWidget.bottom }, 0, colours[1], itemHeight,
+                        Dropdown::Flag::CustomHeight | Dropdown::Flag::StayOpen, std::size(kWeatherTypes), itemWidth);
 
-                    auto currentWeather = gameState.weatherCurrent.weatherType;
-                    gDropdown.items[EnumValue(currentWeather)].setChecked(true);
-
-                    break;
+                    gDropdown.items[EnumValue(getGameState().weatherCurrent.weatherType)].setChecked(true);
                 }
             }
         }
