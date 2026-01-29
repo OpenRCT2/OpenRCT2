@@ -92,6 +92,7 @@ STR_0096    :Classic Wooden Roller Coaster
 STR_0097    :Classic Stand-up Roller Coaster
 STR_0098    :LSM Launched Roller Coaster
 STR_0099    :Classic Wooden Twister Roller Coaster
+STR_0100    :Spinning Roller Coaster
 STR_0512    :A compact roller coaster with a spiral lift hill and smooth, twisting drops.
 STR_0513    :A looping roller coaster where the riders ride in a standing position
 STR_0514    :Trains suspended beneath the roller coaster track swing out to the side around corners
@@ -178,6 +179,7 @@ STR_0606    :An older-style wooden roller coaster with a fast and rough ride, wi
 STR_0607    :An intense, older-style steel looping roller coaster where the riders ride in a standing position
 STR_0608    :Roller coaster trains are accelerated by linear synchronous motors, speeding through tight twists and turns
 STR_0609    :An older-style wooden roller coaster with a fast and rough ride featuring articulated trains, plenty of air-time and twisting track
+STR_0610    :A compact steel roller coaster with cars that spin around to disorientate the riders
 STR_0767    :Guest {INT32}
 STR_0768    :Handyman {INT32}
 STR_0769    :Mechanic {INT32}
@@ -3569,7 +3571,7 @@ STR_6538    :Shows regular paths in the queues dropdown of the Footpaths window.
 STR_6539    :Brake Closed
 STR_6540    :{WINDOW_COLOUR_2}Special thanks to the following companies for allowing their likeness:
 STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG, Intamin Amusement Rides Int. Corp. Est.
-STR_6542    :Contributors
+STR_6542    :{NEWLINE}{NEWLINE}{WINDOW_COLOUR_2}Rocky Mountain Construction Group{NEWLINE}Josef Wiegand GmbH & Co. KG{NEWLINE}Maurer Rides GmbH
 STR_6543    :Contributors…
 STR_6544    :Loan cannot be negative!
 STR_6545    :Use RCT1 interest calculation
