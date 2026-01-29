@@ -7,6 +7,7 @@
 - Fix: [#4643, #25167] Many metal supports draw with a filled in top when they didn't in vanilla, causing some slight misalignment and glitching.
 - Fix: [#15009] Landscaping tools do not display estimates when the game is paused (original bug).
 - Fix: [#18441] Replacing footpaths sometimes results in a spurious “Footpath in the way” error (original bug).
+- Fix: [#20620] In-game console caret does not update when pasting.
 - Fix: [#25221] When trying to cancel game file discovery, the prompt reappears.
 - Fix: [#25739] Game freezes when a tab in the New Ride window contains more than 384 items.
 - Fix: [#25745] Crash when a player connection is aborted early.
