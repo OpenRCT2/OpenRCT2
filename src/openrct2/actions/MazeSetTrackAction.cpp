@@ -25,6 +25,7 @@
 #include "../world/Map.h"
 #include "../world/Park.h"
 #include "../world/Wall.h"
+#include "../world/tile_element/Slope.h"
 #include "../world/tile_element/SurfaceElement.h"
 #include "../world/tile_element/TrackElement.h"
 
@@ -151,7 +152,9 @@ namespace OpenRCT2::GameActions
                 res.errorMessage = STR_INVALID_SELECTION_OF_OBJECTS;
                 return res;
             }
-            auto constructResult = MapCanConstructAt({ _loc.ToTileStart(), baseHeight, clearanceHeight }, { 0b1111, 0 });
+            auto constructResult = MapCanConstructWithClearAt(
+                { _loc.ToTileStart(), baseHeight, clearanceHeight }, MapPlaceNonSceneryClearFunc, { 0b1111, 0 }, GetFlags(),
+                kTileSlopeFlat);
             if (constructResult.error != Status::ok)
             {
                 constructResult.errorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
@@ -217,7 +220,19 @@ namespace OpenRCT2::GameActions
         auto tileElement = MapGetTrackElementAtOfTypeFromRide(_loc, TrackElemType::maze, _rideIndex);
         if (tileElement == nullptr)
         {
-            res.cost = MazeCalculateCost(0, *ride, _loc);
+            auto baseHeight = _loc.z;
+            auto clearanceHeight = _loc.z + kMazeClearanceHeight;
+
+            auto canBuild = MapCanConstructWithClearAt(
+                { _loc.ToTileStart(), baseHeight, clearanceHeight }, MapPlaceNonSceneryClearFunc, { 0b1111, 0 },
+                GetFlags().with(CommandFlag::apply), kTileSlopeFlat);
+            if (canBuild.error != Status::ok)
+            {
+                canBuild.errorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
+                return canBuild;
+            }
+
+            res.cost = MazeCalculateCost(canBuild.cost, *ride, _loc);
 
             auto startLoc = _loc.ToTileStart();
 
