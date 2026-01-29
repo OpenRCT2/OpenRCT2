@@ -10,6 +10,7 @@
 - Fix: [#25221] When trying to cancel game file discovery, the prompt reappears.
 - Fix: [#25739] Game freezes when a tab in the New Ride window contains more than 384 items.
 - Fix: [#25745] Crash when a player connection is aborted early.
+- Fix: [#25775] Network download sizes are in bytes instead of the listed kibibytes.
 - Fix: [#25799] The animated options tab icon of the news window does not always redraw.
 - Fix: [#25850] Guests do not have their happiness penalised by low energy, low hunger, low thirst, high toilet. Ride nausea generation different compared to vanilla.
 - Fix: [#25854] When a guest is at 0 happiness or energy, the game draws too big of a bar in the guest stats window.
