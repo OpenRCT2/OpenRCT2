@@ -186,35 +186,24 @@ namespace OpenRCT2::PathFinding
         }
 
         // Continuous circuit, find next valid station (handles index gaps)
+        // Early exit once it's checked all existing stations
         auto stations = ride.getStations();
-        for (uint8_t offset = 1; offset <= Limits::kMaxStationsPerRide; offset++)
+        uint8_t validStationsChecked = 0;
+        for (uint8_t offset = 1; offset <= Limits::kMaxStationsPerRide && validStationsChecked < ride.numStations; offset++)
         {
             uint8_t nextIdx = (curIdx + offset) % Limits::kMaxStationsPerRide;
             const auto& station = stations[nextIdx];
 
-            // Station is valid if it exists (Start not null) AND has an Exit
-            if (!station.Start.IsNull() && !station.Exit.IsNull())
+            if (station.Start.IsNull())
+                continue;
+
+            validStationsChecked++;
+
+            // Station is valid and has an exit. Destination found.
+            if (!station.Exit.IsNull())
                 return StationIndex::FromUnderlying(nextIdx);
         }
 
-        return std::nullopt;
-    }
-
-    /**
-     * Finds the station index for a given entrance location on a ride.
-     */
-    static std::optional<StationIndex> GetStationIndexFromEntrance(const Ride& ride, const TileCoordsXYZ& entranceLoc)
-    {
-        for (const auto& station : ride.getStations())
-        {
-            if (station.Start.IsNull())
-                continue;
-            if (station.Entrance.x == entranceLoc.x && station.Entrance.y == entranceLoc.y
-                && station.Entrance.z == entranceLoc.z)
-            {
-                return ride.getStationIndex(&station);
-            }
-        }
         return std::nullopt;
     }
 
@@ -928,6 +917,8 @@ namespace OpenRCT2::PathFinding
                 continue;
 
             RideId rideIndex = RideId::GetNull();
+            // Store the transport ride when it finds a usable transport entrance
+            Ride* transportRide = nullptr;
             switch (tileElement->getType())
             {
                 case TileElementType::Track:
@@ -971,6 +962,7 @@ namespace OpenRCT2::PathFinding
                                     if (ride != nullptr && IsUsableTransportRide(*ride))
                                     {
                                         searchResult = PathSearchResult::TransportRideEntrance;
+                                        transportRide = ride;
                                     }
                                     else
                                     {
@@ -1122,111 +1114,106 @@ namespace OpenRCT2::PathFinding
             /* Handle transport ride entrances specially. "teleport" the search to the exit station. */
             if (searchResult == PathSearchResult::TransportRideEntrance)
             {
-                auto* ride = GetRide(rideIndex);
-                if (ride != nullptr && state.usedTransportRideId != rideIndex)
+                // transportRide was set when I detected this entrance so let's use it directly
+                if (transportRide != nullptr && state.usedTransportRideId != rideIndex)
                 {
-                    // Find which station this entrance belongs to
-                    auto stationIdxOpt = GetStationIndexFromEntrance(*ride, loc);
-                    if (stationIdxOpt.has_value())
+                    // Get station index directly from the entrance tile element
+                    StationIndex entranceStationIdx = tileElement->AsEntrance()->GetStationIndex();
+                    auto nextStationOpt = GetNextStationForTransport(*transportRide, entranceStationIdx);
+
+                    if (nextStationOpt.has_value())
                     {
-                        StationIndex entranceStationIdx = stationIdxOpt.value();
-                        auto nextStationOpt = GetNextStationForTransport(*ride, entranceStationIdx);
+                        const auto& entranceStation = transportRide->getStation(entranceStationIdx);
+                        const auto& exitStation = transportRide->getStation(nextStationOpt.value());
 
-                        if (nextStationOpt.has_value())
+                        if (!exitStation.Exit.IsNull())
                         {
-                            const auto& entranceStation = ride->getStation(entranceStationIdx);
-                            const auto& exitStation = ride->getStation(nextStationOpt.value());
+                            // Calculate transport cost
+                            uint8_t transportCost = CalculateTransportCost(entranceStation, exitStation);
 
-                            if (!exitStation.Exit.IsNull())
+                            // Exit location (the tile the guest exits onto)
+                            TileCoordsXYZ exitLoc{ exitStation.Exit.x, exitStation.Exit.y, exitStation.Exit.z };
+
+                            // Mark this transport as used to prevent loops
+                            RideId savedTransportId = state.usedTransportRideId;
+                            state.usedTransportRideId = rideIndex;
+
+                            // Find the exit's direction (the way guests walk out)
+                            TileElement* exitEntranceElement = MapGetFirstElementAt(exitLoc);
+                            Direction exitFacingDir = 0;
+                            bool foundExitDirection = false;
+
+                            if (exitEntranceElement != nullptr)
                             {
-                                // Calculate transport cost
-                                uint8_t transportCost = CalculateTransportCost(entranceStation, exitStation);
+                                do
+                                {
+                                    if (exitEntranceElement->GetType() != TileElementType::Entrance)
+                                        continue;
+                                    if (exitEntranceElement->BaseHeight != exitLoc.z)
+                                        continue;
+                                    if (exitEntranceElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_EXIT)
+                                        continue;
 
-                                // Exit location (the tile the guest exits onto)
-                                TileCoordsXYZ exitLoc{ exitStation.Exit.x, exitStation.Exit.y, exitStation.Exit.z };
+                                    // Exit's stored direction points INTO the ride
+                                    // I actually need the OPPOSITE direction (where guests walk OUT to)
+                                    exitFacingDir = DirectionReverse(exitEntranceElement->GetDirection());
+                                    foundExitDirection = true;
+                                    break;
+                                } while (!(exitEntranceElement++)->IsLastForTile());
+                            }
 
-                                // Mark this transport as used to prevent loops
-                                RideId savedTransportId = state.usedTransportRideId;
-                                state.usedTransportRideId = rideIndex;
+                            if (foundExitDirection)
+                            {
+                                // The path is on the tile the exit faces toward
+                                TileCoordsXYZ pathLoc = exitLoc;
+                                pathLoc += TileDirectionDelta[exitFacingDir];
 
-                                // Find the exit's direction (the way guests walk out)
-                                TileElement* exitEntranceElement = MapGetFirstElementAt(exitLoc);
-                                Direction exitFacingDir = 0;
-                                bool foundExitDirection = false;
-
-                                if (exitEntranceElement != nullptr)
+                                // Find path element at the exit location
+                                TileElement* exitPathElement = MapGetFirstElementAt(pathLoc);
+                                if (exitPathElement != nullptr)
                                 {
                                     do
                                     {
-                                        if (exitEntranceElement->GetType() != TileElementType::Entrance)
-                                            continue;
-                                        if (exitEntranceElement->BaseHeight != exitLoc.z)
-                                            continue;
-                                        if (exitEntranceElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_EXIT)
+                                        if (exitPathElement->GetType() != TileElementType::Path)
                                             continue;
 
-                                        // Exit's stored direction points INTO the ride
-                                        // I actually need the OPPOSITE direction (where guests walk OUT to)
-                                        exitFacingDir = DirectionReverse(exitEntranceElement->GetDirection());
-                                        foundExitDirection = true;
-                                        break;
-                                    } while (!(exitEntranceElement++)->IsLastForTile());
-                                }
+                                        // Allow some height tolerance for sloped paths
+                                        if (std::abs(exitPathElement->BaseHeight - pathLoc.z) > kPathHeightTolerance)
+                                            continue;
 
-                                if (foundExitDirection)
-                                {
-                                    // The path is on the tile the exit faces toward
-                                    TileCoordsXYZ pathLoc = exitLoc;
-                                    pathLoc += TileDirectionDelta[exitFacingDir];
+                                        // Found the path - update z and continue search from here
+                                        pathLoc.z = exitPathElement->BaseHeight;
+                                        uint8_t exitEdges = exitPathElement->AsPath()->GetEdges();
 
-                                    // Find path element at the exit location
-                                    TileElement* exitPathElement = MapGetFirstElementAt(pathLoc);
-                                    if (exitPathElement != nullptr)
-                                    {
-                                        do
+                                        // Reset step count for teleport. The "teleportation" benefit is that
+                                        // we skip a large portion of the path network. Only count the transport
+                                        // cost plus whatever distance remains from the exit to the goal.
+                                        uint8_t postTeleportSteps = transportCost;
+
+                                        for (Direction exitDir = 0; exitDir < kNumOrthogonalDirections; exitDir++)
                                         {
-                                            if (exitPathElement->GetType() != TileElementType::Path)
+                                            if (!(exitEdges & (1 << exitDir)))
                                                 continue;
 
-                                            // Allow some height tolerance for sloped paths
-                                            if (std::abs(exitPathElement->BaseHeight - pathLoc.z) > kPathHeightTolerance)
-                                                continue;
+                                            // Recursively search from exit path location
+                                            // Use ONLY postTeleportSteps, the walk to entrance is "free" via a teleport!
+                                            PeepPathfindHeuristicSearch(
+                                                state, pathLoc, goal, peep, exitPathElement, inPatrolArea, postTeleportSteps,
+                                                endScore, exitDir, endJunctions, junctionList, directionList, endXYZ, endSteps);
+                                        }
 
-                                            // Found the path - update z and continue search from here
-                                            pathLoc.z = exitPathElement->BaseHeight;
-                                            uint8_t exitEdges = exitPathElement->AsPath()->GetEdges();
-
-                                            // Reset step count for teleport. The "teleportation" benefit is that
-                                            // we skip a large portion of the path network. Only count the transport
-                                            // cost plus whatever distance remains from the exit to the goal.
-                                            uint8_t postTeleportSteps = transportCost;
-
-                                            for (Direction exitDir = 0; exitDir < kNumOrthogonalDirections; exitDir++)
-                                            {
-                                                if (!(exitEdges & (1 << exitDir)))
-                                                    continue;
-
-                                                // Recursively search from exit path location
-                                                // Use ONLY postTeleportSteps, the walk to entrance is "free" via a teleport!
-                                                PeepPathfindHeuristicSearch(
-                                                    state, pathLoc, goal, peep, exitPathElement, inPatrolArea,
-                                                    postTeleportSteps, endScore, exitDir, endJunctions, junctionList,
-                                                    directionList, endXYZ, endSteps);
-                                            }
-
-                                            // Mark that this search path found a route via transport
-                                            if (*endScore < 65535)
-                                            {
-                                                state.foundPathViaTransport = true;
-                                            }
-                                            break;
-                                        } while (!(exitPathElement++)->IsLastForTile());
-                                    }
+                                        // Mark that this search path found a route via transport
+                                        if (*endScore < 65535)
+                                        {
+                                            state.foundPathViaTransport = true;
+                                        }
+                                        break;
+                                    } while (!(exitPathElement++)->IsLastForTile());
                                 }
-
-                                // Restore transport ID for other search branches
-                                state.usedTransportRideId = savedTransportId;
                             }
+
+                            // Restore transport ID for other search branches
+                            state.usedTransportRideId = savedTransportId;
                         }
                     }
                 }
