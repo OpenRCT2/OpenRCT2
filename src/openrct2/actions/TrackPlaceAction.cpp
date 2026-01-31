@@ -263,9 +263,11 @@ namespace OpenRCT2::GameActions
             auto crossingMode = (rtd.HasFlag(RtdFlag::supportsLevelCrossings) && _trackType == TrackElemType::flat)
                 ? CreateCrossingMode::trackOverPath
                 : CreateCrossingMode::none;
+            // When placing from a track design, ignore track elements from the same ride to allow it to intersect itself.
+            auto ignoreRideId = _fromTrackDesign ? _rideIndex : RideId::GetNull();
             auto canBuild = MapCanConstructWithClearAt(
                 { mapLoc, baseZ, clearanceZ }, MapPlaceNonSceneryClearFunc, quarterTile, GetFlags(), kTileSlopeFlat,
-                crossingMode);
+                crossingMode, false, ignoreRideId);
             if (canBuild.error != Status::ok)
             {
                 canBuild.errorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
@@ -467,9 +469,11 @@ namespace OpenRCT2::GameActions
             auto crossingMode = (rtd.HasFlag(RtdFlag::supportsLevelCrossings) && _trackType == TrackElemType::flat)
                 ? CreateCrossingMode::trackOverPath
                 : CreateCrossingMode::none;
+            // When placing from a track design, ignore track elements from the same ride to allow it to intersect itself.
+            auto ignoreRideId = _fromTrackDesign ? _rideIndex : RideId::GetNull();
             auto canBuild = MapCanConstructWithClearAt(
                 mapLocWithClearance, MapPlaceNonSceneryClearFunc, quarterTile, GetFlags().with(CommandFlag::apply),
-                kTileSlopeFlat, crossingMode);
+                kTileSlopeFlat, crossingMode, false, ignoreRideId);
             if (canBuild.error != Status::ok)
             {
                 canBuild.errorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;

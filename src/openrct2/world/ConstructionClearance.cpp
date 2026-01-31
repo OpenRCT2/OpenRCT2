@@ -182,7 +182,7 @@ static bool MapLoc68BABCShouldContinue(
  */
 GameActions::Result MapCanConstructWithClearAt(
     const CoordsXYRangedZ& pos, ClearingFunction clearFunc, const QuarterTile quarterTile, const CommandFlags flags,
-    const uint8_t slope, const CreateCrossingMode crossingMode, const bool isTree)
+    const uint8_t slope, const CreateCrossingMode crossingMode, const bool isTree, const RideId ignoreRideId)
 {
     auto res = GameActions::Result();
 
@@ -215,6 +215,13 @@ GameActions::Result MapCanConstructWithClearAt(
     {
         if (tileElement->GetType() != TileElementType::Surface)
         {
+            // Skip track elements belonging to the ride that's being ignored for rides that intersect themselves.
+            if (!ignoreRideId.IsNull() && tileElement->GetType() == TileElementType::Track
+                && tileElement->AsTrack()->GetRideIndex() == ignoreRideId)
+            {
+                continue;
+            }
+
             if (pos.baseZ < tileElement->GetClearanceZ() && pos.clearanceZ > tileElement->GetBaseZ()
                 && !(tileElement->IsGhost()))
             {
