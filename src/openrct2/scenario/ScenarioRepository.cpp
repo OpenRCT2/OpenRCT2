@@ -245,7 +245,8 @@ private:
             {
                 importer = ParkImporter::CreateS6(objRepository);
                 auto stream = GetStreamFromRCT2Scenario(path);
-                importer->LoadFromStream(stream.get(), true);
+                // Skip packed object extraction during scanning - they'll be extracted when actually loading
+                importer->LoadFromStream(stream.get(), true, true);
             }
 
             if (importer)

@@ -10,6 +10,7 @@
 - Fix: [#18441] Replacing footpaths sometimes results in a spurious “Footpath in the way” error (original bug).
 - Fix: [#20620] In-game console caret does not update when pasting.
 - Fix: [#25221] When trying to cancel game file discovery, the prompt reappears.
+- Fix: [#25703, #25889] Crash when scanning scenarios with packed objects in parallel.
 - Fix: [#25739] Game freezes when a tab in the New Ride window contains more than 384 items.
 - Fix: [#25745] Crash when a player connection is aborted early.
 - Fix: [#25775] Network download sizes are in bytes instead of the listed kibibytes.
