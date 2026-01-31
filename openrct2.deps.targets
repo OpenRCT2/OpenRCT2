@@ -218,8 +218,8 @@
     <LibsSha256 Condition="'$(Platform)'=='Win32'">490263b873dd02c13a043a04d26bb9837d2d378dacd8b2c8d29660fef44db3db</LibsSha256>
     <TitleSequencesUrl>https://github.com/OpenRCT2/title-sequences/releases/download/v0.4.26/title-sequences.zip</TitleSequencesUrl>
     <TitleSequencesSha256>dabb9787b1576342fca4dd9f64b3f8cfa04a7e6ce9c2bb9610f47b762905c858</TitleSequencesSha256>
-    <ObjectsUrl>https://github.com/OpenRCT2/objects/releases/download/v1.7.5/objects.zip</ObjectsUrl>
-    <ObjectsSha256>c8b9d3039a920f67caf15b09e8312cc4f80d59ed7fe0288625b9ccedef606797</ObjectsSha256>
+    <ObjectsUrl>https://github.com/OpenRCT2/objects/releases/download/v1.7.6/objects.zip</ObjectsUrl>
+    <ObjectsSha256>6aca2eb441fbe8c022ff84d59fb51ed7ea577756640970dc989eab685ff45696</ObjectsSha256>
     <OpenSFXUrl>https://github.com/OpenRCT2/OpenSoundEffects/releases/download/v1.0.6/opensound.zip</OpenSFXUrl>
     <OpenSFXSha256>06b90f3e19c216752df441d551b26a9e3e1ba7755bdd2102504b73bf993608be</OpenSFXSha256>
     <OpenMSXUrl>https://github.com/OpenRCT2/OpenMusic/releases/download/v1.6.1/openmusic.zip</OpenMSXUrl>

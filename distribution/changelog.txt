@@ -5,6 +5,7 @@
 - Improved: [#25765] The ‘View options’ and ‘Special track elements’ dropdowns no longer need click-and-hold.
 - Improved: [#25858] macOS now supports the onboarding menu.
 - Improved: [#25882] Maze construction now auto-removes trees.
+- Improved: [objects#421] The vehicle tab of some rides now shows more of the vehicle.
 - Change: [#25018] Add upkeep cost to booster pieces.
 - Fix: [#3788] Self-intersecting track designs cannot be placed.
 - Fix: [#4643, #25167] Many metal supports draw with a filled in top when they didn't in vanilla, causing some slight misalignment and glitching.
@@ -21,6 +22,9 @@
 - Fix: [#25854] When a guest is at 0 happiness or energy, the game draws too big of a bar in the guest stats window.
 - Fix: [#25862] Diagonal and inclined brakes are not counted when calculating upkeep cost.
 - Fix: [#25873] Repainting a banner in OpenRCT2-specific colours results in an error message. 
+- Fix: [objects#419] Alignment of RCT2 red, yellow and green queue previews is off.
+- Fix: [objects#424] Jet Aeroplane decor has a hole in it.
+- Fix: [objects#425] Capacity of ‘Blob from outer space ride’ is incorrectly listed.
 
 0.4.30 (2026-01-04)
 ------------------------------------------------------------------------
