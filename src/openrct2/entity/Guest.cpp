@@ -782,12 +782,12 @@ void Guest::UpdateMotivesIdle()
         HappinessTarget = std::max(HappinessTarget - 2, 0);
     }
 
-    if (Hunger < 10)
+    if (satiation < 10)
     {
         HappinessTarget = std::max(HappinessTarget - 1, 0);
     }
 
-    if (Thirst < 10)
+    if (hydration < 10)
     {
         HappinessTarget = std::max(HappinessTarget - 1, 0);
     }
@@ -826,12 +826,12 @@ void Guest::UpdateConsumptionMotives()
 
         if (HasDrink())
         {
-            Thirst = std::min(Thirst + 7, 255);
+            hydration = std::min(hydration + 7, 255);
         }
         else
         {
-            Hunger = std::min(Hunger + 7, 255);
-            Thirst = std::max(Thirst - 3, 0);
+            satiation = std::min(satiation + 7, 255);
+            hydration = std::max(hydration - 3, 0);
             Toilet = std::min(Toilet + 2, 255);
         }
 
@@ -963,8 +963,8 @@ void Guest::Tick128UpdateGuest(uint32_t index)
 
     if (PeepFlags & PEEP_FLAGS_HUNGER)
     {
-        if (Hunger >= 15)
-            Hunger -= 15;
+        if (satiation >= 15)
+            satiation -= 15;
     }
 
     if (PeepFlags & PEEP_FLAGS_TOILET)
@@ -1096,12 +1096,12 @@ void Guest::Tick128UpdateGuest(uint32_t index)
                     possible_thoughts[num_thoughts++] = PeepThoughtType::Tired;
                 }
 
-                if (Hunger <= 10 && !HasFoodOrDrink())
+                if (satiation <= 10 && !HasFoodOrDrink())
                 {
                     possible_thoughts[num_thoughts++] = PeepThoughtType::Hungry;
                 }
 
-                if (Thirst <= 25 && !HasFoodOrDrink())
+                if (hydration <= 25 && !HasFoodOrDrink())
                 {
                     possible_thoughts[num_thoughts++] = PeepThoughtType::Thirsty;
                 }
@@ -1182,9 +1182,9 @@ void Guest::Tick128UpdateGuest(uint32_t index)
             if (EnergyTarget <= 135)
                 EnergyTarget += 5;
 
-            if (Thirst >= 5)
+            if (hydration >= 5)
             {
-                Thirst -= 4;
+                hydration -= 4;
                 Toilet = std::min(255, Toilet + 3);
             }
 
@@ -1572,13 +1572,13 @@ static bool GuestDecideAndBuyItem(Guest& guest, Ride& ride, const ShopItem shopI
         return false;
     }
 
-    if (shopItemDescriptor.IsFood() && (guest.Hunger > 75))
+    if (shopItemDescriptor.IsFood() && (guest.satiation > 75))
     {
         guest.InsertNewThought(PeepThoughtType::NotHungry);
         return false;
     }
 
-    if (shopItemDescriptor.IsDrink() && (guest.Thirst > 75))
+    if (shopItemDescriptor.IsDrink() && (guest.hydration > 75))
     {
         guest.InsertNewThought(PeepThoughtType::NotThirsty);
         return false;
@@ -2896,7 +2896,7 @@ static void GuestUpdateRideNauseaGrowth(Guest& guest, const Ride& ride)
 {
     const auto nauseaMultiplier = std::clamp(256 - guest.HappinessTarget, 64, 200);
     const auto rideGeneratedNausea = (ride.ratings.nausea * nauseaMultiplier) / 512;
-    const auto hungerAdjustedNausea = ((rideGeneratedNausea * std::max<uint8_t>(128, guest.Hunger)) / 128) * 2;
+    const auto hungerAdjustedNausea = ((rideGeneratedNausea * std::max<uint8_t>(128, guest.satiation)) / 128) * 2;
     const auto nauseaGrowthRateChange = hungerAdjustedNausea >> (EnumValue(guest.NauseaTolerance) & 3);
     guest.NauseaTarget = static_cast<uint8_t>(std::min<int32_t>(guest.NauseaTarget + nauseaGrowthRateChange, 255));
 }
@@ -2915,9 +2915,9 @@ static bool GuestShouldGoOnRideAgain(Guest& guest, const Ride& ride)
         return false;
     if (guest.Nausea > 160)
         return false;
-    if (guest.Hunger < 30)
+    if (guest.satiation < 30)
         return false;
-    if (guest.Thirst < 20)
+    if (guest.hydration < 20)
         return false;
     if (guest.Toilet > 170)
         return false;
@@ -3084,9 +3084,9 @@ static PeepThoughtType GuestAssessSurroundings(int16_t centre_x, int16_t centre_
  */
 static void GuestUpdateHunger(Guest& guest)
 {
-    if (guest.Hunger >= 3)
+    if (guest.satiation >= 3)
     {
-        guest.Hunger -= 2;
+        guest.satiation -= 2;
 
         guest.EnergyTarget = std::min<uint16_t>(guest.EnergyTarget + 2, kPeepMaxEnergyTarget);
         guest.Toilet = std::min(guest.Toilet + 1, 255);
@@ -3106,9 +3106,9 @@ static void GuestDecideWhetherToLeavePark(Guest& guest)
         guest.EnergyTarget -= 2;
     }
 
-    if (getGameState().weatherCurrent.temperature >= 21 && guest.Thirst >= 5)
+    if (getGameState().weatherCurrent.temperature >= 21 && guest.hydration >= 5)
     {
-        guest.Thirst--;
+        guest.hydration--;
     }
 
     if (guest.OutsideOfPark)
@@ -6104,7 +6104,7 @@ bool Guest::ShouldFindBench()
 
     if (HasFoodOrDrink())
     {
-        if (Hunger < 128 || Happiness < 128)
+        if (satiation < 128 || Happiness < 128)
         {
             if (!GetNextIsSurface() && !GetNextIsSloped())
             {
@@ -7317,23 +7317,23 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
     peep->Nausea = 0;
     peep->NauseaTarget = 0;
 
-    /* Scenario editor limits initial guest hunger to between 37..253.
+    /* Scenario editor limits initial guest satiation to between 37..253.
      * To be on the safe side, assume the value could have been hacked
      * to any value 0..255. */
-    peep->Hunger = gameState.scenarioOptions.guestInitialHunger;
+    peep->satiation = gameState.scenarioOptions.guestInitialSatiation;
     /* Initial value will vary by -15..16 */
-    int8_t hungerDelta = (ScenarioRand() & 0x1F) - 15;
+    int8_t satiationDelta = (ScenarioRand() & 0x1F) - 15;
     /* Adjust by the delta, clamping at min=0 and max=255. */
-    peep->Hunger = std::clamp(peep->Hunger + hungerDelta, 0, kPeepMaxHunger);
+    peep->satiation = std::clamp(peep->satiation + satiationDelta, 0, kPeepMaxSatiation);
 
     /* Scenario editor limits initial guest thirst to between 37..253.
      * To be on the safe side, assume the value could have been hacked
      * to any value 0..255. */
-    peep->Thirst = gameState.scenarioOptions.guestInitialThirst;
+    peep->hydration = gameState.scenarioOptions.guestInitialHydration;
     /* Initial value will vary by -15..16 */
-    int8_t thirstDelta = (ScenarioRand() & 0x1F) - 15;
+    int8_t hydrationDelta = (ScenarioRand() & 0x1F) - 15;
     /* Adjust by the delta, clamping at min=0 and max=255. */
-    peep->Thirst = std::clamp(peep->Thirst + thirstDelta, 0, kPeepMaxThirst);
+    peep->hydration = std::clamp(peep->hydration + hydrationDelta, 0, kPeepMaxHydration);
 
     peep->Toilet = 0;
     peep->TimeToConsume = 0;
@@ -7776,7 +7776,7 @@ void Guest::RemoveRideFromMemory(RideId rideId)
 
 void Guest::ThrowUp()
 {
-    Hunger /= 2;
+    satiation /= 2;
     NauseaTarget /= 2;
 
     if (Nausea < 30)
@@ -7818,8 +7818,8 @@ void Guest::Serialise(DataSerialiser& stream)
     stream << HappinessTarget;
     stream << Nausea;
     stream << NauseaTarget;
-    stream << Hunger;
-    stream << Thirst;
+    stream << satiation;
+    stream << hydration;
     stream << Toilet;
     stream << TimeToConsume;
     stream << Intensity;

@@ -1836,10 +1836,10 @@ namespace OpenRCT2::Ui::Windows
                     invalidate();
                     break;
                 case WIDX_GUEST_INITIAL_HUNGER_INCREASE:
-                    if (scenarioOptions.guestInitialHunger > 40)
+                    if (scenarioOptions.guestInitialSatiation > 40)
                     {
                         auto scenarioSetSetting = GameActions::ScenarioSetSettingAction(
-                            GameActions::ScenarioSetSetting::GuestInitialHunger, scenarioOptions.guestInitialHunger - 4);
+                            GameActions::ScenarioSetSetting::guestInitialSatiation, scenarioOptions.guestInitialSatiation - 4);
                         GameActions::Execute(&scenarioSetSetting, gameState);
                     }
                     else
@@ -1849,10 +1849,10 @@ namespace OpenRCT2::Ui::Windows
                     invalidate();
                     break;
                 case WIDX_GUEST_INITIAL_HUNGER_DECREASE:
-                    if (scenarioOptions.guestInitialHunger < 250)
+                    if (scenarioOptions.guestInitialSatiation < 250)
                     {
                         auto scenarioSetSetting = GameActions::ScenarioSetSettingAction(
-                            GameActions::ScenarioSetSetting::GuestInitialHunger, scenarioOptions.guestInitialHunger + 4);
+                            GameActions::ScenarioSetSetting::guestInitialSatiation, scenarioOptions.guestInitialSatiation + 4);
                         GameActions::Execute(&scenarioSetSetting, gameState);
                     }
                     else
@@ -1862,10 +1862,10 @@ namespace OpenRCT2::Ui::Windows
                     invalidate();
                     break;
                 case WIDX_GUEST_INITIAL_THIRST_INCREASE:
-                    if (scenarioOptions.guestInitialThirst > 40)
+                    if (scenarioOptions.guestInitialHydration > 40)
                     {
                         auto scenarioSetSetting = GameActions::ScenarioSetSettingAction(
-                            GameActions::ScenarioSetSetting::GuestInitialThirst, scenarioOptions.guestInitialThirst - 4);
+                            GameActions::ScenarioSetSetting::guestInitialHydration, scenarioOptions.guestInitialHydration - 4);
                         GameActions::Execute(&scenarioSetSetting, gameState);
                     }
                     else
@@ -1875,10 +1875,10 @@ namespace OpenRCT2::Ui::Windows
                     invalidate();
                     break;
                 case WIDX_GUEST_INITIAL_THIRST_DECREASE:
-                    if (scenarioOptions.guestInitialThirst < 250)
+                    if (scenarioOptions.guestInitialHydration < 250)
                     {
                         auto scenarioSetSetting = GameActions::ScenarioSetSettingAction(
-                            GameActions::ScenarioSetSetting::GuestInitialThirst, scenarioOptions.guestInitialThirst + 4);
+                            GameActions::ScenarioSetSetting::guestInitialHydration, scenarioOptions.guestInitialHydration + 4);
                         GameActions::Execute(&scenarioSetSetting, gameState);
                     }
                     else
@@ -2003,14 +2003,14 @@ namespace OpenRCT2::Ui::Windows
             const auto& initialHungerWidget = widgets[WIDX_GUEST_INITIAL_HUNGER];
             screenCoords = windowPos + ScreenCoordsXY{ initialHungerWidget.left + 1, initialHungerWidget.top };
             ft = Formatter();
-            ft.Add<uint16_t>(((255 - gameState.scenarioOptions.guestInitialHunger) * 100) / 255);
+            ft.Add<uint16_t>(((255 - gameState.scenarioOptions.guestInitialSatiation) * 100) / 255);
             DrawTextBasic(rt, screenCoords, STR_PERCENT_FORMAT_LABEL, ft, colour);
 
             // Guest initial thirst value
             const auto& initialThirstWidget = widgets[WIDX_GUEST_INITIAL_THIRST];
             screenCoords = windowPos + ScreenCoordsXY{ initialThirstWidget.left + 1, initialThirstWidget.top };
             ft = Formatter();
-            ft.Add<uint16_t>(((255 - gameState.scenarioOptions.guestInitialThirst) * 100) / 255);
+            ft.Add<uint16_t>(((255 - gameState.scenarioOptions.guestInitialHydration) * 100) / 255);
             DrawTextBasic(rt, screenCoords, STR_PERCENT_FORMAT_LABEL, ft, colour);
 
             // Guests' intensity value

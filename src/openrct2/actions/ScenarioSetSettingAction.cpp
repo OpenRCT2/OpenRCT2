@@ -117,11 +117,11 @@ namespace OpenRCT2::GameActions
             case ScenarioSetSetting::GuestInitialHappiness:
                 gameState.scenarioOptions.guestInitialHappiness = std::clamp<uint8_t>(_value, 40, 250);
                 break;
-            case ScenarioSetSetting::GuestInitialHunger:
-                gameState.scenarioOptions.guestInitialHunger = std::clamp<uint8_t>(_value, 40, 250);
+            case ScenarioSetSetting::guestInitialSatiation:
+                gameState.scenarioOptions.guestInitialSatiation = std::clamp<uint8_t>(_value, 40, 250);
                 break;
-            case ScenarioSetSetting::GuestInitialThirst:
-                gameState.scenarioOptions.guestInitialThirst = std::clamp<uint8_t>(_value, 40, 250);
+            case ScenarioSetSetting::guestInitialHydration:
+                gameState.scenarioOptions.guestInitialHydration = std::clamp<uint8_t>(_value, 40, 250);
                 break;
             case ScenarioSetSetting::GuestsPreferLessIntenseRides:
                 if (_value != 0)

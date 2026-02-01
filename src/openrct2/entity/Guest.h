@@ -28,10 +28,10 @@ constexpr int8_t kPeepLostWarningThreshold = 8;
 constexpr int8_t kPeepTooLongQueueThreshold = 25;
 
 constexpr int kPeepMaxHappiness = 255;
-constexpr int kPeepMaxHunger = 255;
+constexpr int kPeepMaxSatiation = 255;
 constexpr int16_t kPeepMaxToilet = 255;
 constexpr int16_t kPeepMaxNausea = 255;
-constexpr int kPeepMaxThirst = 255;
+constexpr int kPeepMaxHydration = 255;
 
 enum class PeepThoughtType : uint8_t
 {
@@ -277,8 +277,8 @@ public:
     uint8_t HappinessTarget;
     uint8_t Nausea;
     uint8_t NauseaTarget;
-    uint8_t Hunger;
-    uint8_t Thirst;
+    uint8_t satiation;
+    uint8_t hydration;
     uint8_t Toilet;
     uint8_t TimeToConsume;
     IntensityRange Intensity{ 0 };

@@ -362,10 +362,10 @@ namespace OpenRCT2::GameActions
                                  { kPeepMinEnergy, kPeepMaxEnergy } };
                     case GUEST_PARAMETER_HUNGER:
                         return { { GUEST_PARAMETER_HAPPINESS, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY },
-                                 { 0, kPeepMaxHunger } };
+                                 { 0, kPeepMaxSatiation } };
                     case GUEST_PARAMETER_THIRST:
                         return { { GUEST_PARAMETER_HAPPINESS, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY },
-                                 { 0, kPeepMaxThirst } };
+                                 { 0, kPeepMaxHydration } };
                     case GUEST_PARAMETER_NAUSEA:
                         return { { GUEST_PARAMETER_HAPPINESS, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY },
                                  { 0, kPeepMaxNausea } };
@@ -660,10 +660,10 @@ namespace OpenRCT2::GameActions
                     peep->EnergyTarget = value;
                     break;
                 case GUEST_PARAMETER_HUNGER:
-                    peep->Hunger = value;
+                    peep->satiation = value;
                     break;
                 case GUEST_PARAMETER_THIRST:
-                    peep->Thirst = value;
+                    peep->hydration = value;
                     break;
                 case GUEST_PARAMETER_NAUSEA:
                     peep->Nausea = value;

@@ -341,7 +341,7 @@ namespace OpenRCT2::Scripting
     uint8_t ScGuest::hunger_get() const
     {
         auto peep = GetGuest();
-        return peep != nullptr ? peep->Hunger : 0;
+        return peep != nullptr ? peep->satiation : 0;
     }
     void ScGuest::hunger_set(uint8_t value)
     {
@@ -349,14 +349,14 @@ namespace OpenRCT2::Scripting
         auto peep = GetGuest();
         if (peep != nullptr)
         {
-            peep->Hunger = value;
+            peep->satiation = value;
         }
     }
 
     uint8_t ScGuest::thirst_get() const
     {
         auto peep = GetGuest();
-        return peep != nullptr ? peep->Thirst : 0;
+        return peep != nullptr ? peep->hydration : 0;
     }
     void ScGuest::thirst_set(uint8_t value)
     {
@@ -364,7 +364,7 @@ namespace OpenRCT2::Scripting
         auto peep = GetGuest();
         if (peep != nullptr)
         {
-            peep->Thirst = value;
+            peep->hydration = value;
         }
     }
 

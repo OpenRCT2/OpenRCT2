@@ -613,14 +613,14 @@ static void ConsoleCommandGet(InteractiveConsole& console, const arguments_t& ar
         else if (argv[0] == "guest_initial_hunger")
         {
             console.WriteFormatLine(
-                "guest_initial_hunger %d%%  (%d)", ((255 - gameState.scenarioOptions.guestInitialHunger) * 100) / 255,
-                gameState.scenarioOptions.guestInitialHunger);
+                "guest_initial_hunger %d%%  (%d)", ((255 - gameState.scenarioOptions.guestInitialSatiation) * 100) / 255,
+                gameState.scenarioOptions.guestInitialSatiation);
         }
         else if (argv[0] == "guest_initial_thirst")
         {
             console.WriteFormatLine(
-                "guest_initial_thirst %d%%  (%d)", ((255 - gameState.scenarioOptions.guestInitialThirst) * 100) / 255,
-                gameState.scenarioOptions.guestInitialThirst);
+                "guest_initial_thirst %d%%  (%d)", ((255 - gameState.scenarioOptions.guestInitialHydration) * 100) / 255,
+                gameState.scenarioOptions.guestInitialHydration);
         }
         else if (argv[0] == "guest_prefer_less_intense_rides")
         {
@@ -838,13 +838,13 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
         else if (varName == "guest_initial_hunger" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
             ConsoleSetVariableAction<GameActions::ScenarioSetSettingAction>(
-                console, varName, GameActions::ScenarioSetSetting::GuestInitialHunger,
+                console, varName, GameActions::ScenarioSetSetting::guestInitialSatiation,
                 (std::clamp(int_val[0], 1, 84) * 255 / 100 - 255) * -1);
         }
         else if (varName == "guest_initial_thirst" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
             ConsoleSetVariableAction<GameActions::ScenarioSetSettingAction>(
-                console, varName, GameActions::ScenarioSetSetting::GuestInitialThirst,
+                console, varName, GameActions::ScenarioSetSetting::guestInitialHydration,
                 (std::clamp(int_val[0], 1, 84) * 255 / 100 - 255) * -1);
         }
         else if (varName == "guest_prefer_less_intense_rides" && InvalidArguments(&invalidArgs, int_valid[0]))

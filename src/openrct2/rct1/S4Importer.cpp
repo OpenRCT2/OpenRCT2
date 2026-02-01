@@ -2291,8 +2291,8 @@ namespace OpenRCT2::RCT1
 
             // Initial guest status
             gameState.scenarioOptions.guestInitialCash = ToMoney64(_s4.GuestInitialCash);
-            gameState.scenarioOptions.guestInitialHunger = _s4.GuestInitialHunger;
-            gameState.scenarioOptions.guestInitialThirst = _s4.GuestInitialThirst;
+            gameState.scenarioOptions.guestInitialSatiation = _s4.guestInitialSatiation;
+            gameState.scenarioOptions.guestInitialHydration = _s4.guestInitialHydration;
             gameState.scenarioOptions.guestInitialHappiness = _s4.GuestInitialHappiness;
 
             park.guestGenerationProbability = _s4.GuestGenerationProbability;
@@ -2947,8 +2947,8 @@ namespace OpenRCT2::RCT1
         dst->HappinessTarget = src->HappinessTarget;
         dst->Nausea = src->Nausea;
         dst->NauseaTarget = src->NauseaTarget;
-        dst->Hunger = src->Hunger;
-        dst->Thirst = src->Thirst;
+        dst->satiation = src->Hunger;
+        dst->hydration = src->Thirst;
         dst->Toilet = src->Toilet;
         dst->LitterCount = src->LitterCount;
         dst->DisgustingCount = src->DisgustingCount;

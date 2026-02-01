@@ -1134,12 +1134,12 @@ namespace OpenRCT2::Ui::Windows
                 peep->Energy - kPeepMinEnergy, kPeepMaxEnergy - kPeepMinEnergy, 3);
             widgetProgressBarSetNewPercentage(widgets[WIDX_ENERGY_BAR], energyPercentage);
 
-            int32_t hungerPercentage = NormalizeGuestStatValue(peep->Hunger - 32, 158, 0);
-            hungerPercentage = 100 - hungerPercentage; // the bar should be longer when peep->Hunger is low
+            int32_t satiationPercentage = NormalizeGuestStatValue(peep->satiation - 32, 158, 0);
+            int32_t hungerPercentage = 100 - satiationPercentage;
             widgetProgressBarSetNewPercentage(widgets[WIDX_HUNGER_BAR], hungerPercentage);
 
-            int32_t thirstPercentage = NormalizeGuestStatValue(peep->Thirst - 32, 158, 0);
-            thirstPercentage = 100 - thirstPercentage; // the bar should be longer when peep->Thirst is low
+            int32_t hydrationPercentage = NormalizeGuestStatValue(peep->hydration - 32, 158, 0);
+            int32_t thirstPercentage = 100 - hydrationPercentage;
             widgetProgressBarSetNewPercentage(widgets[WIDX_THIRST_BAR], thirstPercentage);
 
             int32_t nauseaPercentage = NormalizeGuestStatValue(peep->Nausea - 32, 223, 0);

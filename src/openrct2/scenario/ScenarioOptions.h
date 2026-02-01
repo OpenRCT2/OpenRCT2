@@ -30,7 +30,7 @@ namespace OpenRCT2::Scenario
 
         money64 guestInitialCash;
         uint8_t guestInitialHappiness;
-        uint8_t guestInitialHunger;
-        uint8_t guestInitialThirst;
+        uint8_t guestInitialSatiation;
+        uint8_t guestInitialHydration;
     };
 } // namespace OpenRCT2::Scenario

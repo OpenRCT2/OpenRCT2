@@ -443,8 +443,8 @@ namespace OpenRCT2::RCT2
             park.totalRideValueForMoney = _s6.TotalRideValueForMoney;
             park.maxBankLoan = ToMoney64(_s6.MaximumLoan);
             gameState.scenarioOptions.guestInitialCash = ToMoney64(_s6.GuestInitialCash);
-            gameState.scenarioOptions.guestInitialHunger = _s6.GuestInitialHunger;
-            gameState.scenarioOptions.guestInitialThirst = _s6.GuestInitialThirst;
+            gameState.scenarioOptions.guestInitialSatiation = _s6.guestInitialSatiation;
+            gameState.scenarioOptions.guestInitialHydration = _s6.guestInitialHydration;
             gameState.scenarioOptions.objective.Type = _s6.ObjectiveType;
             gameState.scenarioOptions.objective.Year = _s6.ObjectiveYear;
             // Pad013580FA
@@ -2101,8 +2101,8 @@ namespace OpenRCT2::RCT2
         dst->HappinessTarget = src->HappinessTarget;
         dst->Nausea = src->Nausea;
         dst->NauseaTarget = src->NauseaTarget;
-        dst->Hunger = src->Hunger;
-        dst->Thirst = src->Thirst;
+        dst->satiation = src->Hunger;
+        dst->hydration = src->Thirst;
         dst->Toilet = src->Toilet;
         dst->TimeToConsume = src->TimeToConsume;
         dst->Intensity = static_cast<IntensityRange>(src->Intensity);

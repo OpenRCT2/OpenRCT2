@@ -613,8 +613,8 @@ namespace OpenRCT2
                 {
                     cs.readWrite(gameState.scenarioOptions.guestInitialCash);
                 }
-                cs.readWrite(gameState.scenarioOptions.guestInitialHunger);
-                cs.readWrite(gameState.scenarioOptions.guestInitialThirst);
+                cs.readWrite(gameState.scenarioOptions.guestInitialSatiation);
+                cs.readWrite(gameState.scenarioOptions.guestInitialHydration);
 
                 cs.readWrite(gameState.nextGuestNumber);
                 cs.readWriteVector(gameState.peepSpawns, [&cs](PeepSpawn& spawn) {
@@ -1866,8 +1866,8 @@ namespace OpenRCT2
                     cs.readWrite(guest->HappinessTarget);
                     cs.readWrite(guest->Nausea);
                     cs.readWrite(guest->NauseaTarget);
-                    cs.readWrite(guest->Hunger);
-                    cs.readWrite(guest->Thirst);
+                    cs.readWrite(guest->satiation);
+                    cs.readWrite(guest->hydration);
                     cs.readWrite(guest->Toilet);
                 }
                 else
@@ -2363,8 +2363,8 @@ namespace OpenRCT2
         cs.readWrite(guest.HappinessTarget);
         cs.readWrite(guest.Nausea);
         cs.readWrite(guest.NauseaTarget);
-        cs.readWrite(guest.Hunger);
-        cs.readWrite(guest.Thirst);
+        cs.readWrite(guest.satiation);
+        cs.readWrite(guest.hydration);
         cs.readWrite(guest.Toilet);
         cs.readWrite(guest.TimeToConsume);
         if (cs.getMode() == OrcaStream::Mode::reading)

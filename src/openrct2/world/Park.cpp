@@ -304,8 +304,8 @@ namespace OpenRCT2::Park
 
         gameState.scenarioOptions.guestInitialCash = 50.00_GBP;
         gameState.scenarioOptions.guestInitialHappiness = CalculateGuestInitialHappiness(50);
-        gameState.scenarioOptions.guestInitialHunger = 200;
-        gameState.scenarioOptions.guestInitialThirst = 200;
+        gameState.scenarioOptions.guestInitialSatiation = 200;
+        gameState.scenarioOptions.guestInitialHydration = 200;
         gameState.scenarioOptions.objective.Type = Scenario::ObjectiveType::guestsBy;
         gameState.scenarioOptions.objective.Year = 4;
         gameState.scenarioOptions.objective.NumGuests = 1000;

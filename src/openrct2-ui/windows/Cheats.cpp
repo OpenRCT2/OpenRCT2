@@ -1203,13 +1203,13 @@ static StringId window_cheats_page_titles[] = {
                     CheatsSet(CheatType::setGuestParameter, GUEST_PARAMETER_HUNGER, 0);
                     break;
                 case WIDX_GUEST_HUNGER_MIN:
-                    CheatsSet(CheatType::setGuestParameter, GUEST_PARAMETER_HUNGER, kPeepMaxHunger);
+                    CheatsSet(CheatType::setGuestParameter, GUEST_PARAMETER_HUNGER, kPeepMaxSatiation);
                     break;
                 case WIDX_GUEST_THIRST_MAX:
                     CheatsSet(CheatType::setGuestParameter, GUEST_PARAMETER_THIRST, 0);
                     break;
                 case WIDX_GUEST_THIRST_MIN:
-                    CheatsSet(CheatType::setGuestParameter, GUEST_PARAMETER_THIRST, kPeepMaxThirst);
+                    CheatsSet(CheatType::setGuestParameter, GUEST_PARAMETER_THIRST, kPeepMaxHydration);
                     break;
                 case WIDX_GUEST_NAUSEA_MAX:
                     CheatsSet(CheatType::setGuestParameter, GUEST_PARAMETER_NAUSEA, kPeepMaxNausea);

@@ -817,8 +817,8 @@ namespace OpenRCT2::RCT1
         money16 TotalRideValueForMoney;
         money32 MaxLoan;
         money16 GuestInitialCash;
-        uint8_t GuestInitialHunger;
-        uint8_t GuestInitialThirst;
+        uint8_t guestInitialSatiation;
+        uint8_t guestInitialHydration;
         Scenario::ObjectiveType ScenarioObjectiveType;
         uint8_t ScenarioObjectiveYears;
         uint16_t Unk199552;
