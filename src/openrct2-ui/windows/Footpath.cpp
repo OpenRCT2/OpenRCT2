@@ -66,6 +66,17 @@ namespace OpenRCT2::Ui::Windows
         }
     };
 
+    /**
+     * Stores terrain height information for a "slice" of tiles along the primary drag axis.
+     * Used by buildConnectedTileVector to determine path heights and slopes.
+     */
+    struct SliceInfo
+    {
+        int32_t primaryCoord;
+        int32_t baseZ;
+        int32_t maxZ;
+    };
+
     static money64 FootpathProvisionalSet(
         ObjectEntryIndex type, ObjectEntryIndex railingsType, const CoordsXY& footpathLocA, const CoordsXY& footpathLocB,
         int32_t startZ, std::span<const ProvisionalTile> tiles, PathConstructFlags constructFlags);
@@ -1111,6 +1122,208 @@ namespace OpenRCT2::Ui::Windows
             return tiles;
         }
 
+        /**
+         * Build a vector of path tiles that follow terrain naturally, creating
+         * a continuous connected path with appropriate slopes.
+         *
+         * Algorithm:
+         *
+         * Phase 1 - Gather terrain heights for each slice along the primary drag axis
+         * Phase 2 - Filter out obstacle spikes (isolated height jumps)
+         * Phase 3 - Build path tiles with slopes to bridge height differences
+         */
+        static std::vector<ProvisionalTile> buildConnectedTileVector(MapRange range, CoordsXY dragStart)
+        {
+            std::vector<ProvisionalTile> result;
+
+            int32_t dragWidth = range.GetX2() - range.GetX1();
+            int32_t dragHeight = range.GetY2() - range.GetY1();
+            CoordsXY startPos = dragStart.ToTileStart();
+
+            // Clamp start position to range
+            startPos.x = std::clamp(startPos.x, range.GetX1(), range.GetX2());
+            startPos.y = std::clamp(startPos.y, range.GetY1(), range.GetY2());
+
+            bool primaryIsX = dragWidth >= dragHeight;
+
+            // Determine direction along primary axis
+            int32_t primaryStart, primaryEnd, primaryStep;
+            int32_t secondaryStart, secondaryEnd;
+            Direction slopeDirection;
+
+            if (primaryIsX)
+            {
+                secondaryStart = range.GetY1();
+                secondaryEnd = range.GetY2();
+
+                if (startPos.x <= (range.GetX1() + range.GetX2()) / 2)
+                {
+                    primaryStart = range.GetX1();
+                    primaryEnd = range.GetX2();
+                    primaryStep = kCoordsXYStep;
+                    slopeDirection = TILE_ELEMENT_DIRECTION_EAST;
+                }
+                else
+                {
+                    primaryStart = range.GetX2();
+                    primaryEnd = range.GetX1();
+                    primaryStep = -kCoordsXYStep;
+                    slopeDirection = TILE_ELEMENT_DIRECTION_WEST;
+                }
+            }
+            else
+            {
+                secondaryStart = range.GetX1();
+                secondaryEnd = range.GetX2();
+
+                if (startPos.y <= (range.GetY1() + range.GetY2()) / 2)
+                {
+                    primaryStart = range.GetY1();
+                    primaryEnd = range.GetY2();
+                    primaryStep = kCoordsXYStep;
+                    slopeDirection = TILE_ELEMENT_DIRECTION_NORTH;
+                }
+                else
+                {
+                    primaryStart = range.GetY2();
+                    primaryEnd = range.GetY1();
+                    primaryStep = -kCoordsXYStep;
+                    slopeDirection = TILE_ELEMENT_DIRECTION_SOUTH;
+                }
+            }
+
+            // PHASE 1: Calculate terrain heights for each slice
+            // Track both baseZ (the ground level) and maxZ (the highest point including slopes)
+            // - maxZ is used for going UP, needed to reach the peak
+            // - baseZ is used for going DOWN, detects when ground drops
+            std::vector<SliceInfo> slices;
+
+            for (int32_t primary = primaryStart; primaryStep > 0 ? primary <= primaryEnd : primary >= primaryEnd;
+                 primary += primaryStep)
+            {
+                int32_t sliceBaseZ = INT32_MIN;
+                int32_t sliceMaxZ = INT32_MIN;
+
+                for (int32_t secondary = secondaryStart; secondary <= secondaryEnd; secondary += kCoordsXYStep)
+                {
+                    CoordsXY pos = primaryIsX ? CoordsXY{ primary, secondary } : CoordsXY{ secondary, primary };
+                    auto* surfaceElement = MapGetSurfaceElementAt(TileCoordsXY(pos));
+                    if (surfaceElement != nullptr)
+                    {
+                        int32_t base = surfaceElement->GetBaseZ();
+                        int32_t top = base;
+                        uint8_t slope = surfaceElement->GetSlope();
+
+                        // Add height for any raised corners
+                        if (slope & kTileSlopeRaisedCornersMask)
+                            top += kPathHeightStep;
+                        // Add another height step for steep diagonal slopes
+                        if (slope & kTileSlopeDiagonalFlag)
+                            top += kPathHeightStep;
+
+                        sliceBaseZ = std::max(sliceBaseZ, base);
+                        sliceMaxZ = std::max(sliceMaxZ, top);
+                    }
+                }
+
+                slices.push_back({ primary, sliceBaseZ, sliceMaxZ });
+            }
+
+            if (slices.empty())
+            {
+                return buildTileVector(range, 0);
+            }
+
+            // PHASE 2: Detect and filter out obstacles (sudden height spikes)
+            for (size_t i = 0; i < slices.size(); i++)
+            {
+                if (slices.size() == 1)
+                    continue;
+
+                int32_t prevZ = (i > 0) ? slices[i - 1].maxZ : slices[1].maxZ;
+                int32_t nextZ = (i + 1 < slices.size()) ? slices[i + 1].maxZ : slices[i - 1].maxZ;
+
+                bool spikeFromPrev = (slices[i].maxZ - prevZ) > kPathHeightStep;
+                bool spikeFromNext = (slices[i].maxZ - nextZ) > kPathHeightStep;
+
+                if (spikeFromPrev && spikeFromNext)
+                {
+                    int32_t newZ = std::min(prevZ, nextZ);
+                    slices[i].maxZ = newZ;
+                    slices[i].baseZ = std::min(slices[i].baseZ, newZ);
+                }
+            }
+
+            // PHASE 3: Build the path by bridging height differences
+            // I noticed that terrain slopes have maxZ > baseZ, flat raised areas have maxZ == baseZ
+            // Terrain slope: slope up ON the tile, it has raised corners
+            // Raised block: slope up BEFORE the tile. We look ahead
+            int32_t currentPathZ = slices[0].maxZ;
+
+            for (size_t i = 0; i < slices.size(); i++)
+            {
+                int32_t thisBaseZ = slices[i].baseZ;
+                int32_t thisMaxZ = slices[i].maxZ;
+                int32_t nextMaxZ = (i + 1 < slices.size()) ? slices[i + 1].maxZ : thisMaxZ;
+                int32_t nextBaseZ = (i + 1 < slices.size()) ? slices[i + 1].baseZ : thisBaseZ;
+
+                // Is current tile a terrain slope? Does it have raised corners?
+                bool thisIsSlope = (thisMaxZ > thisBaseZ);
+                // Is next tile a flat raised block? Does it have no slope, but higher base?
+                bool nextIsRaisedBlock = (nextMaxZ == nextBaseZ) && (nextBaseZ > currentPathZ);
+
+                int32_t useZ = currentPathZ;
+                FootpathSlope useSlope = { FootpathSlopeType::flat, 0 };
+
+                // Going UP logic
+                if (thisIsSlope && thisMaxZ > currentPathZ)
+                {
+                    // Current tile is a terrain slope above us, so we slope up HERE
+                    useSlope = { FootpathSlopeType::sloped, slopeDirection };
+                    currentPathZ += kPathHeightStep;
+                }
+                else if (nextIsRaisedBlock && (nextBaseZ - currentPathZ) >= kPathHeightStep)
+                {
+                    // Next tile is a raised block, so we slope up NOW but before the block
+                    useSlope = { FootpathSlopeType::sloped, slopeDirection };
+                    currentPathZ += kPathHeightStep;
+                }
+                // Going DOWN logic
+                // On terrain slopes (thisMaxZ > thisBaseZ) we go down ON the slope tile
+                // On flat raised blocks (thisMaxZ == thisBaseZ) we stay flat, go down AFTER
+                else if ((currentPathZ - nextMaxZ) >= kPathHeightStep)
+                {
+                    // Check if we should go down now or stay flat
+                    bool thisIsFlatBlock = (thisMaxZ == thisBaseZ) && (thisMaxZ >= currentPathZ);
+
+                    if (!thisIsFlatBlock)
+                    {
+                        // Either it's a slope tile OR we're above the terrain, so we go down NOW
+                        useZ = currentPathZ - kPathHeightStep;
+                        useSlope = { FootpathSlopeType::sloped, DirectionReverse(slopeDirection) };
+                        currentPathZ -= kPathHeightStep;
+                    }
+                    // else we stay flat on the raised block, that's handled by else clause below
+                }
+                else
+                {
+                    // Flat, match current terrain height
+                    useZ = thisMaxZ;
+                    currentPathZ = thisMaxZ;
+                }
+
+                // Add tiles for this slice
+                for (int32_t secondary = secondaryStart; secondary <= secondaryEnd; secondary += kCoordsXYStep)
+                {
+                    CoordsXY pos = primaryIsX ? CoordsXY{ slices[i].primaryCoord, secondary }
+                                              : CoordsXY{ secondary, slices[i].primaryCoord };
+                    result.push_back({ CoordsXYZ(pos.x, pos.y, useZ), useSlope });
+                }
+            }
+
+            return result;
+        }
+
         void WindowFootpathSetProvisionalPathDragArea(MapRange range, int32_t baseZ)
         {
             gMapSelectFlags.unset(MapSelectFlag::enableArrow);
@@ -1129,7 +1342,19 @@ namespace OpenRCT2::Ui::Windows
             FootpathUpdateProvisional();
 
             // Set provisional path
-            auto tiles = buildTileVector(range, baseZ);
+            // When no modifier keys are pressed (baseZ == 0), use the connected algorithm
+            // that automatically adds slopes to create a continuous path over terrain.
+            // When Shift or Ctrl is pressed, fall back to the original behavior.
+            std::vector<ProvisionalTile> tiles;
+            if (baseZ == 0 && !_footpathPlaceShiftState && !_footpathPlaceCtrlState)
+            {
+                tiles = buildConnectedTileVector(range, _dragStartPos);
+            }
+            else
+            {
+                tiles = buildTileVector(range, baseZ);
+            }
+
             auto pathType = gFootpathSelection.getSelectedSurface();
             auto constructFlags = FootpathCreateConstructFlags(pathType);
             const auto footpathCost = FootpathProvisionalSet(
