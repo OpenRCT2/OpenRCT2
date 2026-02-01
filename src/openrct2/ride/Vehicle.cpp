@@ -2938,10 +2938,7 @@ void Vehicle::UpdateArriving()
         }
     }
 
-    bool hasBrakesFailure = curRide->lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN
-        && curRide->breakdownReasonPending == BREAKDOWN_BRAKES_FAILURE;
-    if (hasBrakesFailure && curRide->inspectionStation == current_station
-        && curRide->mechanicStatus != MechanicStatus::hasFixedStationBrakes)
+    if (hasFailingBrakes(*curRide))
     {
         stationBrakesWork = false;
     }
@@ -5094,6 +5091,17 @@ void Vehicle::UpdateTrackMotionUpStopCheck() const
     }
 }
 
+bool Vehicle::hasFailingBrakes(const Ride& curRide)
+{
+    if (curRide.lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN && curRide.breakdownReasonPending == BREAKDOWN_BRAKES_FAILURE
+        && curRide.mechanicStatus != MechanicStatus::hasFixedStationBrakes)
+    {
+        return true;
+    }
+    return false;
+}
+
+
 /**
  * Modifies the train's velocity to match the block-brake fixed velocity.
  * This function must be called when the car is running through a non-stopping
@@ -6800,9 +6808,7 @@ bool Vehicle::UpdateTrackMotionForwards(const CarEntry* carEntry, const Ride& cu
         }
         else if (TrackTypeIsBrakes(trackType))
         {
-            bool hasBrakesFailure = curRide.lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN
-                && curRide.breakdownReasonPending == BREAKDOWN_BRAKES_FAILURE;
-            if (!hasBrakesFailure || curRide.mechanicStatus == MechanicStatus::hasFixedStationBrakes)
+            if (!hasFailingBrakes(curRide))
             {
                 auto brakeSpeed = ChooseBrakeSpeed() << kTrackSpeedShiftAmount;
 
