@@ -255,10 +255,12 @@ TEST_F(CodepointViewTest, CodepointView_iterate)
 
 TEST_F(StringTest, LogicalCompare)
 {
+    // Strings starting with digits come first, sorted numerically
+    // Then alphabetic strings sorted case-insensitively
     std::vector<std::string> expected = {
-        "1001 Troubles", "3D Cinema 1", "Aerial Cycles", "Batflyer",  "bpb",
-        "bpb.sv6",       "Drive-by",    "foo",           "foobar",    "Guest 10",
-        "Guest 99",      "Guest 100",   "John v2.0",     "John v2.1", "River of the Damned",
+        "3D Cinema 1",   "1001 Troubles", "Aerial Cycles", "Batflyer",  "bpb",
+        "bpb.sv6",       "Drive-by",      "foo",           "foobar",    "Guest 10",
+        "Guest 99",      "Guest 100",     "John v2.0",     "John v2.1", "River of the Damned",
         "Terror-dactyl",
     };
 
