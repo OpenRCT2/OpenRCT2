@@ -5101,7 +5101,6 @@ bool Vehicle::hasFailingBrakes(const Ride& curRide)
     return false;
 }
 
-
 /**
  * Modifies the train's velocity to match the block-brake fixed velocity.
  * This function must be called when the car is running through a non-stopping
