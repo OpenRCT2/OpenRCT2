@@ -5093,12 +5093,8 @@ void Vehicle::UpdateTrackMotionUpStopCheck() const
 
 bool Vehicle::hasFailingBrakes(const Ride& curRide)
 {
-    if (curRide.lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN && curRide.breakdownReasonPending == BREAKDOWN_BRAKES_FAILURE
-        && curRide.mechanicStatus != MechanicStatus::hasFixedStationBrakes)
-    {
-        return true;
-    }
-    return false;
+    return curRide.lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN && curRide.breakdownReasonPending == BREAKDOWN_BRAKES_FAILURE
+        && curRide.mechanicStatus != MechanicStatus::hasFixedStationBrakes;
 }
 
 /**
