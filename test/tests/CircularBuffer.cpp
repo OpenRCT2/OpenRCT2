@@ -6,9 +6,9 @@
  *
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
+#include <cstdint>
 #include <gtest/gtest.h>
 #include <openrct2/core/CircularBuffer.h>
-#include <stdint.h>
 #include <vector>
 
 // CircularBuffer capacity.

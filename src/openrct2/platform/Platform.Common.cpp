@@ -26,7 +26,6 @@
 #endif
 
 #include "../Context.h"
-#include "../Game.h"
 #include "../core/CallingConventions.h"
 #include "../core/File.h"
 #include "../core/Path.hpp"
@@ -38,8 +37,8 @@
 #include <array>
 #include <chrono>
 #include <cstring>
+#include <ctime>
 #include <thread>
-#include <time.h>
 
 #ifdef _WIN32
 static constexpr std::array _prohibitedCharacters = { '<', '>', '*', '\\', ':', '|', '?', '"', '/' };
