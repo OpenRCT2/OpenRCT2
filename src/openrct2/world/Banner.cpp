@@ -43,6 +43,13 @@
 
 using namespace OpenRCT2;
 
+std::string Banner::getTextWithColour() const
+{
+    Formatter ft;
+    formatTextWithColourTo(ft);
+    return FormatStringIDLegacy(STR_STRINGID, ft.Data());
+}
+
 std::string Banner::getText() const
 {
     Formatter ft;

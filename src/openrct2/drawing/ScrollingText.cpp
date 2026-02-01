@@ -9,6 +9,7 @@
 
 #include "ScrollingText.h"
 
+#include "../GameState.h"
 #include "../SpriteIds.h"
 #include "../config/Config.h"
 #include "../core/CodepointView.hpp"
@@ -31,8 +32,7 @@ namespace OpenRCT2::Drawing::ScrollingText
 {
     struct DrawScrollText
     {
-        StringId string_id;
-        uint8_t string_args[32];
+        u8string string;
         PaletteIndex colour;
         uint16_t position;
         uint16_t mode;
@@ -42,7 +42,7 @@ namespace OpenRCT2::Drawing::ScrollingText
 
     static DrawScrollText _drawScrollTextList[kMaxEntries];
     static uint8_t _characterBitmaps[SPR_FONTS_GLYPH_COUNT][8];
-    static uint32_t _drawSCrollNextIndex = 0;
+    static uint32_t _drawScrollNextIndex = 0;
     static std::mutex _mutex;
 
     static void setBitmapForSprite(
@@ -117,8 +117,7 @@ namespace OpenRCT2::Drawing::ScrollingText
         return _characterBitmaps[offset];
     }
 
-    static int32_t getMatchingOrOldest(
-        StringId stringId, Formatter& ft, uint16_t scroll, uint16_t scrollingMode, PaletteIndex colour)
+    static int32_t getMatchingOrOldest(u8string_view string, uint16_t scroll, uint16_t scrollingMode, PaletteIndex colour)
     {
         uint32_t oldestId = 0xFFFFFFFF;
         int32_t scrollIndex = -1;
@@ -132,27 +131,14 @@ namespace OpenRCT2::Drawing::ScrollingText
             }
 
             // If exact match return the matching index
-            if (scrollText->string_id == stringId
-                && std::memcmp(scrollText->string_args, ft.Buf(), sizeof(scrollText->string_args)) == 0
-                && scrollText->colour == colour && scrollText->position == scroll && scrollText->mode == scrollingMode)
+            if (scrollText->string == string && scrollText->colour == colour && scrollText->position == scroll
+                && scrollText->mode == scrollingMode)
             {
-                scrollText->id = _drawSCrollNextIndex;
+                scrollText->id = _drawScrollNextIndex;
                 return static_cast<int32_t>(i + SPR_SCROLLING_TEXT_START);
             }
         }
         return scrollIndex;
-    }
-
-    static void format(utf8* dst, size_t size, DrawScrollText* scrollText)
-    {
-        if (Config::Get().general.upperCaseBanners)
-        {
-            FormatStringToUpper(dst, size, scrollText->string_id, scrollText->string_args);
-        }
-        else
-        {
-            FormatStringLegacy(dst, size, scrollText->string_id, scrollText->string_args);
-        }
     }
 
     extern bool TempForScrollText;
@@ -1428,14 +1414,20 @@ static constexpr const int16_t* kScrollPositions[kMaxModes] = {
     {
         for (auto& scrollText : _drawScrollTextList)
         {
-            scrollText.string_id = 0;
-            std::memset(scrollText.string_args, 0, sizeof(scrollText.string_args));
+            scrollText.string.clear();
         }
     }
 
-    ImageId setup(
-        PaintSession& session, StringId stringId, Formatter& ft, uint16_t scroll, uint16_t scrollingMode, PaletteIndex colour)
+    ImageId setup(PaintSession& session, u8string_view string, uint16_t scrollingMode, PaletteIndex colour)
     {
+        u8string formattedString = FormatStringID(STR_BANNER_TEXT_FORMAT, string);
+        if (Config::Get().general.upperCaseBanners)
+        {
+            formattedString = String::toUpper(formattedString);
+        }
+        auto stringWidth = GfxGetStringWidth(formattedString, FontStyle::tiny);
+        auto scroll = stringWidth > 0 ? (getGameState().currentTicks / 2) % stringWidth : 0;
+
         std::scoped_lock<std::mutex> lock(_mutex);
 
         assert(scrollingMode < kMaxModes);
@@ -1443,35 +1435,29 @@ static constexpr const int16_t* kScrollPositions[kMaxModes] = {
         if (session.rt.zoom_level > ZoomLevel{ 0 })
             return ImageId(SPR_SCROLLING_TEXT_DEFAULT);
 
-        _drawSCrollNextIndex++;
-        ft.Rewind();
-        uint32_t scrollIndex = getMatchingOrOldest(stringId, ft, scroll, scrollingMode, colour);
+        _drawScrollNextIndex++;
+        uint32_t scrollIndex = getMatchingOrOldest(formattedString, scroll, scrollingMode, colour);
         if (scrollIndex >= SPR_SCROLLING_TEXT_START)
             return ImageId(scrollIndex);
 
         // Setup scrolling text
         auto scrollText = &_drawScrollTextList[scrollIndex];
-        scrollText->string_id = stringId;
-        std::memcpy(scrollText->string_args, ft.Buf(), sizeof(scrollText->string_args));
+        scrollText->string = formattedString;
         scrollText->colour = colour;
         scrollText->position = scroll;
         scrollText->mode = scrollingMode;
-        scrollText->id = _drawSCrollNextIndex;
-
-        // Create the string to draw
-        utf8 scrollString[256];
-        format(scrollString, 256, scrollText);
+        scrollText->id = _drawScrollNextIndex;
 
         const int16_t* scrollingModePositions = kScrollPositions[scrollingMode];
 
         std::fill_n(scrollText->bitmap, 320 * 8, PaletteIndex::transparent);
         if (LocalisationService_UseTrueTypeFont())
         {
-            setBitmapForTTF(scrollString, scroll, scrollText->bitmap, scrollingModePositions, colour);
+            setBitmapForTTF(scrollText->string, scroll, scrollText->bitmap, scrollingModePositions, colour);
         }
         else
         {
-            setBitmapForSprite(scrollString, scroll, scrollText->bitmap, scrollingModePositions, colour);
+            setBitmapForSprite(scrollText->string, scroll, scrollText->bitmap, scrollingModePositions, colour);
         }
 
         uint32_t imageId = SPR_SCROLLING_TEXT_START + scrollIndex;

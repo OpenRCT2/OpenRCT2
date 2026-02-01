@@ -53,36 +53,22 @@ static void PaintRideEntranceExitScrollingText(
     if (entranceEl.GetEntranceType() == ENTRANCE_TYPE_RIDE_EXIT)
         return;
 
-    auto ride = GetRide(entranceEl.GetRideIndex());
+    const auto* ride = GetRide(entranceEl.GetRideIndex());
     if (ride == nullptr)
         return;
 
-    auto ft = Formatter();
-    ft.Add<StringId>(STR_RIDE_ENTRANCE_NAME);
+    u8string bannerText;
     if (ride->status == RideStatus::open && !(ride->lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN))
     {
-        ride->formatNameTo(ft);
+        bannerText = ScrollingText::kRideBannerColourPrefix + ride->getName();
     }
     else
     {
-        ft.Add<StringId>(STR_RIDE_ENTRANCE_CLOSED);
+        bannerText = LanguageGetString(STR_RIDE_ENTRANCE_CLOSED);
     }
-
-    char text[256];
-    if (Config::Get().general.upperCaseBanners)
-    {
-        FormatStringToUpper(text, sizeof(text), STR_BANNER_TEXT_FORMAT, ft.Data());
-    }
-    else
-    {
-        FormatStringLegacy(text, sizeof(text), STR_BANNER_TEXT_FORMAT, ft.Data());
-    }
-    auto stringWidth = GfxGetStringWidth(text, FontStyle::tiny);
-    auto scroll = stringWidth > 0 ? (getGameState().currentTicks / 2) % stringWidth : 0;
 
     PaintAddImageAsChild(
-        session,
-        ScrollingText::setup(session, STR_BANNER_TEXT_FORMAT, ft, scroll, stationObj.ScrollingMode, PaletteIndex::transparent),
+        session, ScrollingText::setup(session, bannerText, stationObj.ScrollingMode, PaletteIndex::transparent),
         { 0, 0, height + stationObj.Height }, { { 2, 2, height + stationObj.Height }, { 28, 28, 51 } });
 }
 
@@ -235,35 +221,19 @@ static void PaintParkEntranceScrollingText(
     if (scrollingMode == kScrollingModeNone)
         return;
 
-    auto ft = Formatter();
     auto& gameState = getGameState();
+    u8string bannerText;
     if (gameState.park.flags & PARK_FLAGS_PARK_OPEN)
     {
         const auto& park = gameState.park;
-        auto name = park.name.c_str();
-        ft.Add<StringId>(STR_STRING);
-        ft.Add<const char*>(name);
+        bannerText = ScrollingText::kParkBannerColourPrefix + park.name;
     }
     else
     {
-        ft.Add<StringId>(STR_BANNER_TEXT_CLOSED);
-        ft.Add<uint32_t>(0);
+        bannerText = LanguageGetString(STR_BANNER_TEXT_CLOSED);
     }
 
-    char text[256];
-    if (Config::Get().general.upperCaseBanners)
-    {
-        FormatStringToUpper(text, sizeof(text), STR_BANNER_TEXT_FORMAT, ft.Data());
-    }
-    else
-    {
-        FormatStringLegacy(text, sizeof(text), STR_BANNER_TEXT_FORMAT, ft.Data());
-    }
-
-    auto stringWidth = GfxGetStringWidth(text, FontStyle::tiny);
-    auto scroll = stringWidth > 0 ? (gameState.currentTicks / 2) % stringWidth : 0;
-    auto imageIndex = ScrollingText::setup(
-        session, STR_BANNER_TEXT_FORMAT, ft, scroll, scrollingMode + direction / 2, PaletteIndex::transparent);
+    auto imageIndex = ScrollingText::setup(session, bannerText, scrollingMode + direction / 2, PaletteIndex::transparent);
     auto textHeight = height + entrance.GetTextHeight();
     PaintAddImageAsChild(session, imageIndex, { 0, 0, textHeight }, { { 2, 2, textHeight }, { 28, 28, 47 } });
 }

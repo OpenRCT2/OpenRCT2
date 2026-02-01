@@ -57,22 +57,8 @@ static void PaintBannerScrollingText(
         return;
     }
 
-    auto ft = Formatter();
-    banner.formatTextWithColourTo(ft);
-
-    char text[256];
-    if (Config::Get().general.upperCaseBanners)
-    {
-        FormatStringToUpper(text, sizeof(text), STR_BANNER_TEXT_FORMAT, ft.Data());
-    }
-    else
-    {
-        FormatStringLegacy(text, sizeof(text), STR_BANNER_TEXT_FORMAT, ft.Data());
-    }
-
-    auto stringWidth = GfxGetStringWidth(text, FontStyle::tiny);
-    auto scroll = stringWidth > 0 ? (getGameState().currentTicks / 2) % stringWidth : 0;
-    auto imageId = ScrollingText::setup(session, STR_BANNER_TEXT_FORMAT, ft, scroll, scrollingMode, PaletteIndex::transparent);
+    auto bannerText = banner.getTextWithColour();
+    auto imageId = ScrollingText::setup(session, bannerText, scrollingMode, PaletteIndex::transparent);
     PaintAddImageAsChild(session, imageId, { 0, 0, height + 22 }, { bbOffset, { 1, 1, 21 } });
 }
 
