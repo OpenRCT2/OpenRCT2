@@ -1042,10 +1042,10 @@ STR_1674    :Brake speed
 STR_1676    :Set speed limit for brakes
 STR_1677    :{WINDOW_COLOUR_2}Popularity: {BLACK}Unknown
 STR_1678    :{WINDOW_COLOUR_2}Popularity: {BLACK}{COMMA16}%
-STR_1679    :Helix up (left)
-STR_1680    :Helix up (right)
-STR_1681    :Helix down (left)
-STR_1682    :Helix down (right)
+STR_1679    :Quarter Helix up (left)
+STR_1680    :Quarter Helix up (right)
+STR_1681    :Quarter Helix down (left)
+STR_1682    :Quarter Helix down (right)
 STR_1683    :Base size 2 × 2
 STR_1684    :Base size 4 × 4
 STR_1685    :Base size 2 × 4
