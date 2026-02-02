@@ -3243,15 +3243,64 @@ namespace OpenRCT2::Ui::Windows
             }
 
             auto mapRange = getMapSelectRange();
-            bool anySuccessful = false;
             CoordsXYZ lastLocation = { mapRange.Point2, gSceneryPlaceZ };
+            auto& gameState = getGameState();
+
+            // First query all tiles to get total cost and check for errors
+            money64 totalCost = 0;
+            GameActions::Result lastError;
+            bool anyQueryFailed = false;
+
             for (const auto& tile : _provisionalTiles)
             {
                 auto wallPlaceAction = GameActions::WallPlaceAction(
                     selectedScenery, tile.location, tile.location.direction, _sceneryPrimaryColour, _scenerySecondaryColour,
                     _sceneryTertiaryColour);
 
-                auto& gameState = getGameState();
+                auto result = GameActions::Query(&wallPlaceAction, gameState);
+                totalCost += result.cost;
+                if (result.error != GameActions::Status::ok)
+                {
+                    anyQueryFailed = true;
+                    lastError = result;
+                }
+            }
+
+            // If any query failed, show a single combined error with total cost
+            if (anyQueryFailed)
+            {
+                Audio::Play3D(Audio::SoundId::error, lastLocation);
+
+                // Show error with accumulated cost for insufficient funds
+                auto* windowMgr = GetWindowManager();
+                if (lastError.error == GameActions::Status::insufficientFunds)
+                {
+                    Formatter ft;
+                    ft.Add<money64>(totalCost);
+                    windowMgr->ShowError(STR_CANT_BUILD_THIS_HERE, STR_NOT_ENOUGH_CASH_REQUIRES, ft);
+                }
+                else
+                {
+                    windowMgr->ShowError(lastError.getErrorTitle(), lastError.getErrorMessage());
+                }
+
+                _provisionalTiles.clear();
+                _inDragMode = false;
+                return;
+            }
+
+            // All queries passed, now execute
+            bool anySuccessful = false;
+
+            // Disable error sound during loop to prevent stacking sounds for each failed tile
+            gDisableErrorWindowSound = true;
+
+            for (const auto& tile : _provisionalTiles)
+            {
+                auto wallPlaceAction = GameActions::WallPlaceAction(
+                    selectedScenery, tile.location, tile.location.direction, _sceneryPrimaryColour, _scenerySecondaryColour,
+                    _sceneryTertiaryColour);
+
                 auto result = GameActions::Execute(&wallPlaceAction, gameState);
                 if (result.error == GameActions::Status::ok)
                 {
@@ -3260,12 +3309,19 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
+            gDisableErrorWindowSound = false;
+
             _provisionalTiles.clear();
             _inDragMode = false;
 
             if (anySuccessful)
             {
                 Audio::Play3D(Audio::SoundId::placeItem, lastLocation);
+            }
+            else
+            {
+                // Play error sound once for the entire failed operation
+                Audio::Play3D(Audio::SoundId::error, lastLocation);
             }
         }
 

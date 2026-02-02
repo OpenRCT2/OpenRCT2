@@ -11,6 +11,7 @@
 - Fix: [#25735] Ride synchronisation z-check works incorrectly.
 - Fix: [#25919] Path drag tool error sound stacks when placement fails.
 - Fix: [#25926] Path drag tool shows cost for single tile instead of total.
+- Fix: [#25927] Wall drag tool error sound stacks and shows wrong cost.
 - Fix: [#25962] Dropdown triangle glyphs are not optically centred.
 - Fix: [#25993] Toggling “allow arbitrary ride type changes” does not resize open ride windows.
 - Fix: [#26111] Vehicle colours tab can go out of bounds in certain edge cases.
