@@ -676,16 +676,23 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v7
         with:
-          merge-multiple: true
-      # Having multiple artifacts named the same might be confusing to the users. Drop the unsigned versions.
-      - name: Remove unsigned artifacts
+          merge-multiple: false
+      # Having multiple artifacts named the same might be confusing. Drop the unsigned versions.
+      - name: Remove unsigned artifacts and flatten
         run: |
-          rm -rf *unsigned*
+          ls -lR
+          find . -maxdepth 1 -name '*unsigned*' -type d -exec rm -rf {} + 2>/dev/null || true
+          echo "Unsigned artifacts removed"
+          # Flatten remaining artifact directories
+          find . -maxdepth 2 -type f \( -path './OpenRCT2-*/*' -o -path './graphics-*/*' \) -exec mv {} . \;
+          # Clean up empty directories
+          find . -maxdepth 1 -type d \( -name 'OpenRCT2-*' -o -name 'graphics-*' \) -empty -delete 2>/dev/null || true
+          ls -lR
       - name: Concatenate sha256 files
         run: |
           ls -lR
           pushd ${{ github.workspace }}
-          sha256sum OpenRCT2-* > OpenRCT2-${{ needs.build_variables.outputs.name }}-sha256sums.txt
+          find . -maxdepth 1 -type f -name 'OpenRCT2-*' -print0 | xargs -0 sha256sum > OpenRCT2-${{ needs.build_variables.outputs.name }}-sha256sums.txt
           popd
       - name: Create release notes
         run: |
