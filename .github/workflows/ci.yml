@@ -175,7 +175,7 @@ jobs:
           gxc build fonts.dat OpenRCT2/resources/fonts/sprites.json
           gxc build tracks.dat OpenRCT2/resources/tracks/sprites.json
       - name: Upload graphics .dat files
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: graphics-${{ needs.build_variables.outputs.name }}
           path: |
@@ -211,7 +211,7 @@ jobs:
         run: . scripts/setenv && build
       - name: Upload unsigned binaries
         id: upload-windows-binaries-unsigned
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: OpenRCT2-${{ needs.build_variables.outputs.name }}-windows-unsigned-${{ matrix.platform }}
           path: |
@@ -242,7 +242,7 @@ jobs:
           mv files-signed/openrct2.exe bin/openrct2.exe
       - name: Download graphics .dat files on ARM64
         if: matrix.platform == 'arm64'
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: graphics-${{ needs.build_variables.outputs.name }}
           path: bin/data
@@ -259,14 +259,14 @@ jobs:
           mv artifacts/openrct2-installer-*.exe artifacts/OpenRCT2-${{ needs.build_variables.outputs.name }}-windows-installer-$PLATFORM.exe
           mv artifacts/openrct2-symbols-*.zip artifacts/OpenRCT2-${{ needs.build_variables.outputs.name }}-windows-symbols-$PLATFORM.zip
       - name: Upload portable artifact (CI)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: OpenRCT2-${{ needs.build_variables.outputs.name }}-${{ runner.os }}-portable-${{ matrix.platform }}
           path: artifacts/OpenRCT2-${{ needs.build_variables.outputs.name }}-windows-portable-${{ matrix.platform }}.zip
           if-no-files-found: error
       - name: Upload unsigned installer artifact (CI)
         id: upload-windows-installer-unsigned
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: OpenRCT2-${{ needs.build_variables.outputs.name }}-${{ runner.os }}-installer-${{ matrix.platform }}-unsigned
           path: artifacts/OpenRCT2-${{ needs.build_variables.outputs.name }}-windows-installer-${{ matrix.platform }}.exe
@@ -290,13 +290,13 @@ jobs:
       - name: Upload signed installer artifact (CI)
         id: upload-windows-installer-signed
         if: ${{ needs.build_variables.outputs.sign == 'true' }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: OpenRCT2-${{ needs.build_variables.outputs.name }}-${{ runner.os }}-installer-${{ matrix.platform }}
           path: files-signed/OpenRCT2-${{ needs.build_variables.outputs.name }}-windows-installer-${{ matrix.platform }}.exe
           if-no-files-found: error
       - name: Upload symbols artifact (CI)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: OpenRCT2-${{ needs.build_variables.outputs.name }}-${{ runner.os }}-symbols-${{ matrix.platform }}
           path: artifacts/OpenRCT2-${{ needs.build_variables.outputs.name }}-windows-symbols-${{ matrix.platform }}.zip
@@ -348,7 +348,7 @@ jobs:
           ninja -k0
       - name: Upload artifacts (CI)
         if: matrix.platform == 'NT5.1'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: OpenRCT2-${{ needs.build_variables.outputs.name }}-Windows-mingw-${{ matrix.platform }}
           path: bin/openrct2.exe
@@ -395,7 +395,7 @@ jobs:
           cd artifacts
           zip -rqy openrct2-macos.zip OpenRCT2.app
       - name: Upload artifacts (CI)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: OpenRCT2-${{ runner.os }}-${{ matrix.arch }}-cmake
           path: artifacts/openrct2-macos.zip
@@ -416,12 +416,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: download x64 app bundle
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: OpenRCT2-${{ runner.os }}-x64-cmake
           path: macos_universal/x64
       - name: download arm64 app bundle
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: OpenRCT2-${{ runner.os }}-arm64-cmake
           path: macos_universal/arm64
@@ -441,7 +441,7 @@ jobs:
           cd artifacts
           zip -rqy OpenRCT2-${{ needs.build_variables.outputs.name }}-macos-universal.zip OpenRCT2.app
       - name: Upload artifacts (CI)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: OpenRCT2-${{ needs.build_variables.outputs.name }}-${{ runner.os }}-universal
           path: artifacts/OpenRCT2-${{ needs.build_variables.outputs.name }}-macos-universal.zip
@@ -488,7 +488,7 @@ jobs:
       - name: Build artifacts
         run: . scripts/setenv -q && build-portable artifacts/OpenRCT2-${{ needs.build_variables.outputs.name }}-${{ runner.os }}-${{ matrix.release }}-${{ matrix.platform }}.tar.gz bin/install/usr
       - name: Upload artifacts (CI)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: OpenRCT2-${{ needs.build_variables.outputs.name }}-${{ runner.os }}-${{ matrix.release }}-${{ matrix.platform }}
           path: artifacts
@@ -518,7 +518,7 @@ jobs:
           NO_STRIP: true # https://github.com/linuxdeploy/linuxdeploy/blob/d2557d616749c325a61058049e41a2d35ffce924/src/core/appdir.cpp#L248
         run: . scripts/setenv -q && build-appimage
       - name: Upload artifacts (CI)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: OpenRCT2-${{ needs.build_variables.outputs.name }}-AppImage
           path: artifacts
@@ -599,7 +599,7 @@ jobs:
           xz -1v coverage.json
           xz -1v OpenRCT2Tests
       - name: Upload artifacts (CI)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: OpenRCT2-${{ needs.build_variables.outputs.name }}-${{ runner.os }}-coverage
           path: |
@@ -635,7 +635,7 @@ jobs:
           mkdir -p artifacts
           mv src/openrct2-android/app/build/outputs/apk/release/app-release.apk artifacts/OpenRCT2-${{ needs.build_variables.outputs.name }}-android-arm.apk
       - name: Upload artifacts (CI)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: OpenRCT2-${{ needs.build_variables.outputs.name }}-Android
           path: artifacts
@@ -659,7 +659,7 @@ jobs:
           . scripts/setenv
           build-emscripten
       - name: Upload artifacts (CI)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           path: build/www
           name: OpenRCT2-${{ needs.build_variables.outputs.name }}-emscripten
@@ -674,7 +674,7 @@ jobs:
           sparse-checkout: |
             distribution/changelog.txt
       - name: Download artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           merge-multiple: true
       # Having multiple artifacts named the same might be confusing to the users. Drop the unsigned versions.
