@@ -7625,7 +7625,7 @@ namespace OpenRCT2::TrackMetadata
     };
 
     constexpr auto kTEDLeftQuarterBankedHelixLargeUp = TrackElementDescriptor{
-        .description = STR_HELIX_UP_LARGE,
+        .description = STR_QUARTER_HELIX_UP,
         .coordinates = { 0, 3, 0, 16, -64, -64 },
         .pieceLength = 124,
         .curveChain = { TrackElemType::leftQuarterBankedHelixLargeUp, TrackElemType::leftQuarterBankedHelixLargeUp },
@@ -7645,7 +7645,7 @@ namespace OpenRCT2::TrackMetadata
     };
 
     constexpr auto kTEDRightQuarterBankedHelixLargeUp = TrackElementDescriptor{
-        .description = STR_HELIX_UP_LARGE,
+        .description = STR_QUARTER_HELIX_UP,
         .coordinates = { 0, 1, 0, 16, -64, 64 },
         .pieceLength = 124,
         .curveChain = { TrackElemType::rightQuarterBankedHelixLargeUp, TrackElemType::rightQuarterBankedHelixLargeUp },
@@ -7665,7 +7665,7 @@ namespace OpenRCT2::TrackMetadata
     };
 
     constexpr auto kTEDLeftQuarterBankedHelixLargeDown = TrackElementDescriptor{
-        .description = STR_HELIX_DOWN_LARGE,
+        .description = STR_QUARTER_HELIX_DOWN,
         .coordinates = { 0, 3, 16, 0, -64, -64 },
         .pieceLength = 124,
         .curveChain = { TrackElemType::leftQuarterBankedHelixLargeDown, TrackElemType::leftQuarterBankedHelixLargeDown },
@@ -7685,7 +7685,7 @@ namespace OpenRCT2::TrackMetadata
     };
 
     constexpr auto kTEDRightQuarterBankedHelixLargeDown = TrackElementDescriptor{
-        .description = STR_HELIX_DOWN_LARGE,
+        .description = STR_QUARTER_HELIX_DOWN,
         .coordinates = { 0, 1, 16, 0, -64, 64 },
         .pieceLength = 124,
         .curveChain = { TrackElemType::rightQuarterBankedHelixLargeDown, TrackElemType::rightQuarterBankedHelixLargeDown },

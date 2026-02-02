@@ -3824,3 +3824,5 @@ STR_7024    :Makes the whole ride invisible
 STR_7025    :Make visible
 STR_7026    :Makes the whole ride visible
 STR_7027    :{MOVE_X}{29}{STRINGID}
+STR_7028    :Quarter Helix up
+STR_7029    :Quarter Helix down
