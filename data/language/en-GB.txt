@@ -830,10 +830,10 @@ STR_1460    :‘U’ shaped open track
 STR_1461    :‘O’ shaped enclosed track
 STR_1462    :Too steep for lift hill
 STR_1463    :Guests
-STR_1464    :Helix up (small)
-STR_1465    :Helix up (large)
-STR_1466    :Helix down (small)
-STR_1467    :Helix down (large)
+STR_1464    :Half Helix up (small)
+STR_1465    :Half Helix up (large)
+STR_1466    :Half Helix down (small)
+STR_1467    :Half Helix down (large)
 STR_1468    :Staff
 STR_1469    :Ride must start and end with stations
 STR_1470    :Station not long enough
