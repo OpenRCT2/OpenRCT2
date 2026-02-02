@@ -19,6 +19,7 @@ namespace OpenRCT2::GameActions
         NumCarsPerTrain,
         RideEntry,
         TrainsReversed,
+        LegacyBoosters,
         Count,
     };
 

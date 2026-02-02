@@ -32,6 +32,7 @@ namespace OpenRCT2::GameActions
         STR_RIDE_SET_VEHICLE_SET_NUM_CARS_PER_TRAIN_FAIL,
         STR_RIDE_SET_VEHICLE_TYPE_FAIL,
         STR_RIDE_SET_VEHICLE_REVERSED_FAIL,
+        STR_RIDE_SET_VEHICLE_LEGACY_BOOSTERS_FAIL,
     };
 
     RideSetVehicleAction::RideSetVehicleAction(RideId rideIndex, RideSetVehicleType type, uint16_t value, uint8_t colour)
@@ -91,6 +92,7 @@ namespace OpenRCT2::GameActions
             case RideSetVehicleType::NumTrains:
             case RideSetVehicleType::NumCarsPerTrain:
             case RideSetVehicleType::TrainsReversed:
+            case RideSetVehicleType::LegacyBoosters:
                 break;
             case RideSetVehicleType::RideEntry:
             {
@@ -195,6 +197,15 @@ namespace OpenRCT2::GameActions
                 ride->vehicleChangeTimeout = 100;
 
                 ride->setLifecycleFlag(RIDE_LIFECYCLE_REVERSED_TRAINS, _value);
+                break;
+            }
+            case RideSetVehicleType::LegacyBoosters:
+            {
+                RideClearForConstruction(*ride);
+                ride->removePeeps();
+                ride->vehicleChangeTimeout = 100;
+
+                ride->setLifecycleFlag(RIDE_LIFECYCLE_LEGACY_BOOSTERS, _value);
                 break;
             }
 

@@ -394,6 +394,7 @@ public:
     void setNumTrains(int32_t newNumTrains);
     void setNumCarsPerTrain(int32_t numCarsPerVehicle);
     void setReversedTrains(bool reversedTrains);
+    void setLegacyBoosters(bool legacyBoosters);
     void updateMaxVehicles();
     void updateNumberOfCircuits();
 
