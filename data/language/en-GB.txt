@@ -3853,3 +3853,7 @@ STR_7023    :Make invisible
 STR_7024    :Makes the whole ride invisible
 STR_7025    :Make visible
 STR_7026    :Makes the whole ride visible
+STR_8022    :Can’t make changes…
+STR_8023    :Experimental boosters
+STR_8024    :Developer testing of new booster system and related features
+STR_8025    :Ride behaviours subject to change during development. This ride may operate differently in the future

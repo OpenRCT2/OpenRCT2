@@ -144,6 +144,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_VEHICLE_TYPE = 14,
         WIDX_VEHICLE_TYPE_DROPDOWN,
         WIDX_VEHICLE_REVERSED_TRAINS_CHECKBOX,
+        WIDX_VEHICLE_LEGACY_BOOSTERS_CHECKBOX,
         WIDX_VEHICLE_TRAINS_PREVIEW,
         WIDX_VEHICLE_TRAINS,
         WIDX_VEHICLE_TRAINS_INCREASE,
@@ -291,6 +292,7 @@ namespace OpenRCT2::Ui::Windows
         makeWidget        ({  7,  50}, {302, 12}, WidgetType::dropdownMenu, WindowColour::secondary                                                          ),
         makeWidget        ({297,  51}, { 11, 10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH                                      ),
         makeWidget        ({  7, 137}, {302, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_OPTION_REVERSE_TRAINS, STR_OPTION_REVERSE_TRAINS_TIP),
+        makeWidget        ({164, 137}, {145, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_OPTION_EXPERIMENTAL_BOOSTERS, STR_OPTION_EXPERIMENTAL_BOOSTERS_TIP),
         makeWidget        ({  7, 154}, {302, 43}, WidgetType::scroll,       WindowColour::secondary, kStringIdEmpty                                          ),
         makeSpinnerWidgets({  7, 203}, {145, 12}, WidgetType::spinner,      WindowColour::secondary, STR_RIDE_VEHICLE_COUNT, STR_MAX_VEHICLES_TIP            ),
         makeSpinnerWidgets({164, 203}, {145, 12}, WidgetType::spinner,      WindowColour::secondary, STR_1_CAR_PER_TRAIN,    STR_MAX_CARS_PER_TRAIN_TIP      )
@@ -2684,6 +2686,16 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_VEHICLE_REVERSED_TRAINS_CHECKBOX:
                     ride->setReversedTrains(!ride->hasLifecycleFlag(RIDE_LIFECYCLE_REVERSED_TRAINS));
                     break;
+                case WIDX_VEHICLE_LEGACY_BOOSTERS_CHECKBOX:
+                    // During development, the legacy booster flag is shown to users as the "experimental boosters" option and
+                    // displayed the opposite polarity, to convince users to not enable it. Thus, disabling the flag should
+                    // trigger the warning.
+                    if (ride->hasLifecycleFlag(RIDE_LIFECYCLE_LEGACY_BOOSTERS))
+                    {
+                        ContextShowError(STR_WARNING_IN_CAPS, STR_EXPERIMENTAL_BOOSTERS_WARNING, {});
+                    }
+                    ride->setLegacyBoosters(!ride->hasLifecycleFlag(RIDE_LIFECYCLE_LEGACY_BOOSTERS));
+                    break;
                 case WIDX_VEHICLE_TRAINS_INCREASE:
                     if (ride->numTrains < Limits::kMaxTrainsPerRide)
                         ride->setNumTrains(ride->numTrains + 1);
@@ -2846,6 +2858,25 @@ namespace OpenRCT2::Ui::Windows
             else
             {
                 widgets[WIDX_VEHICLE_REVERSED_TRAINS_CHECKBOX].type = WidgetType::empty;
+            }
+
+            if (Config::Get().general.debuggingTools)
+            {
+                widgets[WIDX_VEHICLE_LEGACY_BOOSTERS_CHECKBOX].type = WidgetType::checkbox;
+                // During development, the legacy booster flag is shown to users as the "experimental boosters" option and
+                // displayed the opposite polarity, to convince users to not enable it.
+                if (!ride->hasLifecycleFlag(RIDE_LIFECYCLE_LEGACY_BOOSTERS))
+                {
+                    pressedWidgets |= (1uLL << WIDX_VEHICLE_LEGACY_BOOSTERS_CHECKBOX);
+                }
+                else
+                {
+                    pressedWidgets &= ~(1uLL << WIDX_VEHICLE_LEGACY_BOOSTERS_CHECKBOX);
+                }
+            }
+            else
+            {
+                widgets[WIDX_VEHICLE_LEGACY_BOOSTERS_CHECKBOX].type = WidgetType::empty;
             }
 
             auto ft = Formatter::Common();
