@@ -866,6 +866,7 @@ namespace OpenRCT2::RCT1
             {
                 dst->lifecycleFlags |= RIDE_LIFECYCLE_REVERSED_TRAINS;
             }
+            dst->setLifecycleFlag(RIDE_LIFECYCLE_LEGACY_BOOSTERS, true);
 
             // Station
             if (src->overallView.IsNull())

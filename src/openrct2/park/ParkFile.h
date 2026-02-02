@@ -21,10 +21,10 @@ namespace OpenRCT2
     struct ObjectRepositoryItem;
 
     // Current version that is saved.
-    constexpr uint32_t kParkFileCurrentVersion = 59;
+    constexpr uint32_t kParkFileCurrentVersion = 60;
 
     // The minimum version that is forwards compatible with the current version.
-    constexpr uint32_t kParkFileMinVersion = 57;
+    constexpr uint32_t kParkFileMinVersion = 60;
 
     // The minimum version that is backwards compatible with the current version.
     // If this is increased beyond 0, uncomment the checks in ParkFile.cpp and Context.cpp!
@@ -61,6 +61,7 @@ namespace OpenRCT2
     constexpr uint16_t kHigherInversionsHolesHelicesStatsVersion = 55;
     constexpr uint16_t kFixedObsoleteFootpathsVersion = 56;
     constexpr uint16_t kRevertToVanillaFairRidePriceCalculation = 58;
+    constexpr uint16_t kAddLegacyBoosterFlag = 60;
 
     class ParkFileExporter
     {

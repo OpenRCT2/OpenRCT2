@@ -992,6 +992,7 @@ namespace OpenRCT2::RCT2
             {
                 dst->vehicleColours[i].Tertiary = src->vehicleColoursExtended[i];
             }
+            dst->setLifecycleFlag(RIDE_LIFECYCLE_LEGACY_BOOSTERS, true);
 
             dst->totalAirTime = src->totalAirTime;
             dst->currentTestStation = StationIndex::FromUnderlying(src->currentTestStation);

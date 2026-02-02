@@ -528,6 +528,7 @@ enum
     RIDE_LIFECYCLE_FIXED_RATINGS = 1 << 20,        // When set, the ratings will not be updated (useful for hacked rides).
     RIDE_LIFECYCLE_RANDOM_SHOP_COLOURS = 1 << 21,
     RIDE_LIFECYCLE_REVERSED_TRAINS = 1 << 22,
+    RIDE_LIFECYCLE_LEGACY_BOOSTERS = 1 << 23, // Vehicles use legacy calculations for booster speed. Currently in development.
 };
 
 enum

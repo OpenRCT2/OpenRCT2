@@ -1430,6 +1430,10 @@ namespace OpenRCT2
                     cs.readWrite(ride.status);
                     cs.readWrite(ride.departFlags);
                     cs.readWrite(ride.lifecycleFlags);
+                    if (version < kAddLegacyBoosterFlag)
+                    {
+                        ride.setLifecycleFlag(RIDE_LIFECYCLE_LEGACY_BOOSTERS, true);
+                    }
 
                     // Meta
                     cs.readWrite(ride.customName);

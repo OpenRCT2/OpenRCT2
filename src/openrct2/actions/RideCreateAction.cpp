@@ -184,6 +184,7 @@ namespace OpenRCT2::GameActions
         ride->minWaitingTime = 10;
         ride->maxWaitingTime = 60;
         ride->departFlags = RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH | 3;
+        ride->setLifecycleFlag(RIDE_LIFECYCLE_LEGACY_BOOSTERS, true);
 
         const auto& rtd = ride->getRideTypeDescriptor();
         if (rtd.flags.has(RtdFlag::allowMusic))
