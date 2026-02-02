@@ -3853,3 +3853,7 @@ STR_7023    :Make invisible
 STR_7024    :Makes the whole ride invisible
 STR_7025    :Make visible
 STR_7026    :Makes the whole ride visible
+STR_8022    :Can’t change legacy physics…
+STR_8023    :Use legacy physics
+STR_8024    :Toggle new physics and legacy (old) physics on this ride's vehicles. Some features not available in legacy physics.
+STR_8025    :Changing this setting may change how vehicles perform during ride cycle

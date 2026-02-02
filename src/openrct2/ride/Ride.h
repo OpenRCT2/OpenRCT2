@@ -394,6 +394,7 @@ public:
     void setNumTrains(int32_t newNumTrains);
     void setNumCarsPerTrain(int32_t numCarsPerVehicle);
     void setReversedTrains(bool reversedTrains);
+    void setLegacyBehaviour(bool legacyBehaviour);
     void updateMaxVehicles();
     void updateNumberOfCircuits();
 
@@ -528,6 +529,7 @@ enum
     RIDE_LIFECYCLE_FIXED_RATINGS = 1 << 20,        // When set, the ratings will not be updated (useful for hacked rides).
     RIDE_LIFECYCLE_RANDOM_SHOP_COLOURS = 1 << 21,
     RIDE_LIFECYCLE_REVERSED_TRAINS = 1 << 22,
+    RIDE_LIFECYCLE_LEGACY_BEHAVIOUR = 1 << 23, // Vehicles use legacy calculations for booster speed. Currently in development.
 };
 
 enum

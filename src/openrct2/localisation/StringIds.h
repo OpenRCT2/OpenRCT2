@@ -1766,6 +1766,11 @@ enum : StringId
 
     STR_ACTION_PATH_DRAG_AREA = 7013,
 
+    STR_RIDE_SET_VEHICLE_LEGACY_PHYSICS_FAIL = 8022,
+    STR_OPTION_LEGACY_PHYSICS = 8023,
+    STR_OPTION_LEGACY_PHYSICS_TIP = 8024,
+    STR_LEGACY_PHYSICS_WARNING = 8025,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };

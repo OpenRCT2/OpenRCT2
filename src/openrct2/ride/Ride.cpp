@@ -5291,6 +5291,13 @@ void Ride::setReversedTrains(bool reverseTrains)
     GameActions::Execute(&rideSetVehicleAction, getGameState());
 }
 
+void Ride::setLegacyBehaviour(bool legacyBehaviour)
+{
+    auto rideSetVehicleAction = GameActions::RideSetSettingAction(
+        id, GameActions::RideSetSetting::LegacyBehaviour, legacyBehaviour);
+    GameActions::Execute(&rideSetVehicleAction, getGameState());
+}
+
 /**
  *
  *  rct2: 0x006B752C

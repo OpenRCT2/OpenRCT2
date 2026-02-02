@@ -179,6 +179,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_OPERATE_NUMBER_OF_CIRCUITS,
         WIDX_OPERATE_NUMBER_OF_CIRCUITS_INCREASE,
         WIDX_OPERATE_NUMBER_OF_CIRCUITS_DECREASE,
+        WIDX_VEHICLE_LEGACY_BEHAVIOUR_CHECKBOX,
 
         WIDX_INSPECTION_INTERVAL = 14,
         WIDX_INSPECTION_INTERVAL_DROPDOWN,
@@ -315,7 +316,8 @@ namespace OpenRCT2::Ui::Windows
         makeWidget        ({ 87, 109}, {222, 12}, WidgetType::dropdownMenu, WindowColour::secondary                                                                                      ),
         makeWidget        ({297, 110}, { 11, 10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH                                                                  ),
         makeWidget        ({ 21,  89}, {129, 12}, WidgetType::label,        WindowColour::secondary, STR_NUMBER_OF_CIRCUITS,                 STR_NUMBER_OF_CIRCUITS_TIP                  ),
-        makeSpinnerWidgets({157,  89}, {152, 12}, WidgetType::spinner,      WindowColour::secondary, STR_NUMBER_OF_CIRCUITS_VALUE                                                        )  // NB: 3 widgets
+        makeSpinnerWidgets({157,  89}, {152, 12}, WidgetType::spinner,      WindowColour::secondary, STR_NUMBER_OF_CIRCUITS_VALUE                                                        ),  // NB: 3 widgets
+        makeWidget        ({7, 184}, {302, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_OPTION_LEGACY_PHYSICS, STR_OPTION_LEGACY_PHYSICS_TIP)
     );
 
     // 0x009AE190
@@ -3209,12 +3211,16 @@ namespace OpenRCT2::Ui::Windows
                         rideId, GameActions::RideSetSetting::Departure,
                         ride->departFlags ^ RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS);
                     break;
+                case WIDX_VEHICLE_LEGACY_BEHAVIOUR_CHECKBOX:
+                    ContextShowError(STR_WARNING_IN_CAPS, STR_LEGACY_PHYSICS_WARNING, {});
+                    ride->setLegacyBehaviour(!ride->hasLifecycleFlag(RIDE_LIFECYCLE_LEGACY_BEHAVIOUR));
+                    break;
             }
         }
 
         void OperatingResize()
         {
-            auto bottom = widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].bottom + 6 - getTitleBarDiffNormal();
+            auto bottom = widgets[WIDX_VEHICLE_LEGACY_BEHAVIOUR_CHECKBOX].bottom + 6 - getTitleBarDiffNormal();
             WindowSetResize(*this, { kMinimumWindowWidth, bottom }, { kMinimumWindowWidth, bottom });
         }
 
@@ -3693,6 +3699,16 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_MODE_TWEAK].type = WidgetType::empty;
                 widgets[WIDX_MODE_TWEAK_INCREASE].type = WidgetType::empty;
                 widgets[WIDX_MODE_TWEAK_DECREASE].type = WidgetType::empty;
+            }
+
+            widgets[WIDX_VEHICLE_LEGACY_BEHAVIOUR_CHECKBOX].type = WidgetType::checkbox;
+            if (ride->hasLifecycleFlag(RIDE_LIFECYCLE_LEGACY_BEHAVIOUR))
+            {
+                pressedWidgets |= (1uLL << WIDX_VEHICLE_LEGACY_BEHAVIOUR_CHECKBOX);
+            }
+            else
+            {
+                pressedWidgets &= ~(1uLL << WIDX_VEHICLE_LEGACY_BEHAVIOUR_CHECKBOX);
             }
 
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);

@@ -147,6 +147,8 @@ namespace OpenRCT2::GameActions
                     return Result(Status::disallowed, STR_CANT_CHANGE_OPERATING_MODE, kStringIdNone);
                 }
                 break;
+            case RideSetSetting::LegacyBehaviour:
+                break;
             default:
                 LOG_ERROR("Invalid ride setting %u", static_cast<uint8_t>(_setting));
                 return Result(Status::invalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_ERR_VALUE_OUT_OF_RANGE);
@@ -233,6 +235,9 @@ namespace OpenRCT2::GameActions
                 ride->type = _value;
                 ride->updateRideTypeForAllPieces();
                 GfxInvalidateScreen();
+                break;
+            case RideSetSetting::LegacyBehaviour:
+                ride->setLifecycleFlag(RIDE_LIFECYCLE_LEGACY_BEHAVIOUR, _value);
                 break;
         }
 
