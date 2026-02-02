@@ -62,7 +62,7 @@ jobs:
     steps:
       # We need to fetch entire repo to get the tags and correctly run `describe`
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
       # We cannot use proudust/gh-describe, as it reports incorrect (too short) short-sha
@@ -119,7 +119,7 @@ jobs:
   #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   #   steps:
   #     - name: Checkout
-  #       uses: actions/checkout@v4
+  #       uses: actions/checkout@v6
   #       with:
   #         fetch-depth: 0
   #     - name: Lint Commit Messages
@@ -138,7 +138,7 @@ jobs:
         shell: sh
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - run: git config --global --add safe.directory $PWD
       - name: Run clang-format
         run: scripts/check-code-formatting
@@ -150,7 +150,7 @@ jobs:
         shell: bash
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Run check-changelog-formatting
         run: scripts/check-changelog-formatting
   g2dat:
@@ -159,7 +159,7 @@ jobs:
     needs: build_variables
     steps:
       - name: Checkout OpenRCT2
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           path: OpenRCT2
       - name: Download gxc
@@ -204,7 +204,7 @@ jobs:
              echo "CONFIGURATION=Release" >> "$GITHUB_ENV"
           fi
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Install MSVC problem matcher
         uses: ammaraskar/msvc-problem-matcher@master
       - name: Build OpenRCT2
@@ -223,7 +223,7 @@ jobs:
         env:
           SIGNPATH_API_TOKEN: ${{ secrets.SIGNPATH_API_TOKEN }}
         if: ${{ needs.build_variables.outputs.sign == 'true' }}
-        uses: signpath/github-action-submit-signing-request@v1
+        uses: signpath/github-action-submit-signing-request@v2
         with:
           api-token: '${{ secrets.SIGNPATH_API_TOKEN }}'
           organization-id: 645b821f-6283-45e1-8198-264997072801
@@ -274,7 +274,7 @@ jobs:
       - name: Sign installer
         id: sign-installer
         if: ${{ needs.build_variables.outputs.sign == 'true' }}
-        uses: signpath/github-action-submit-signing-request@v1
+        uses: signpath/github-action-submit-signing-request@v2
         with:
           api-token: '${{ secrets.SIGNPATH_API_TOKEN }}'
           organization-id: 645b821f-6283-45e1-8198-264997072801
@@ -333,9 +333,9 @@ jobs:
             build_flags: -DBUILD_SHARED_LIBS=ON -DENABLE_SCRIPTING=ON
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: ccache
-        uses: hendrikmuhs/ccache-action@v1.2.18
+        uses: hendrikmuhs/ccache-action@v1.2.20
         with:
           key: ${{ matrix.cache_key }}
       - name: Install GCC problem matcher
@@ -375,9 +375,9 @@ jobs:
             run_tests: true
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: ccache
-        uses: hendrikmuhs/ccache-action@v1.2.18
+        uses: hendrikmuhs/ccache-action@v1.2.20
         with:
           key: ${{ matrix.cache_key }}
       - name: Install GCC problem matcher
@@ -414,7 +414,7 @@ jobs:
     needs: [macos-cmake, build_variables]
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: download x64 app bundle
         uses: actions/download-artifact@v7
         with:
@@ -473,9 +473,9 @@ jobs:
             build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g1 -gz -fno-var-tracking-assignments" -DWITH_TESTS=off
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: ccache
-        uses: hendrikmuhs/ccache-action@v1.2.18
+        uses: hendrikmuhs/ccache-action@v1.2.20
         with:
           key: linux-${{ matrix.platform }}-${{ matrix.distro }}-${{ matrix.release }}
       - name: Get pre-reqs
@@ -502,9 +502,9 @@ jobs:
     container: openrct2/openrct2-build:24-jammy
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: ccache
-        uses: hendrikmuhs/ccache-action@v1.2.18
+        uses: hendrikmuhs/ccache-action@v1.2.20
         with:
           key: linux-appimage
       - name: Get pre-reqs
@@ -530,7 +530,7 @@ jobs:
     steps:
       - name: Checkout image
         if: github.repository == 'OpenRCT2/OpenRCT2' && github.ref == 'refs/heads/develop'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           repository: OpenRCT2/openrct2-docker
       - name: Build image
@@ -557,9 +557,9 @@ jobs:
     container: openrct2/openrct2-build:24-noble
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: ccache
-        uses: hendrikmuhs/ccache-action@v1.2.18
+        uses: hendrikmuhs/ccache-action@v1.2.20
         with:
           key: linux-clang
       - name: Install GCC problem matcher
@@ -573,9 +573,9 @@ jobs:
     container: openrct2/openrct2-build:24-noble
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: ccache
-        uses: hendrikmuhs/ccache-action@v1.2.18
+        uses: hendrikmuhs/ccache-action@v1.2.20
         with:
           key: linux-clang-tests
       - name: Install GCC problem matcher
@@ -614,9 +614,9 @@ jobs:
     container: openrct2/openrct2-build:24-android
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: ccache
-        uses: hendrikmuhs/ccache-action@v1.2.18
+        uses: hendrikmuhs/ccache-action@v1.2.20
         with:
           key: android
       - name: Setup keystore
@@ -647,9 +647,9 @@ jobs:
     container: openrct2/openrct2-build:24-emscripten
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: ccache
-        uses: hendrikmuhs/ccache-action@v1.2.18
+        uses: hendrikmuhs/ccache-action@v1.2.20
         with:
           key: emscripten
       - name: Install GCC problem matcher
@@ -669,7 +669,7 @@ jobs:
     needs: [build_variables, linux-portable, android, linux-appimage, macos-universal, windows]
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           sparse-checkout: |
             distribution/changelog.txt
@@ -715,7 +715,7 @@ jobs:
           tag_name: ${{ needs.build_variables.outputs.tag }}
       # The upload to binaries repository is done from develop only
       - name: Create tag for binaries repository
-        uses: actions/github-script@v5
+        uses: actions/github-script@v8
         if: ${{ needs.build_variables.outputs.push }}
         with:
           github-token: ${{ secrets.OPENRCT2_BINARIES_CI_UPLOAD }}
