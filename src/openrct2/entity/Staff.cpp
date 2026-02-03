@@ -8,7 +8,7 @@
  *****************************************************************************/
 
 #include "Staff.h"
-
+#include "../OpenRCT2.h"
 #include "../Context.h"
 #include "../Diagnostic.h"
 #include "../GameState.h"
@@ -43,8 +43,6 @@
 #include "../world/tile_element/TrackElement.h"
 #include "PatrolArea.h"
 #include "Peep.h"
-#include "../GameState.h"
-
 #include <cassert>
 #include <iterator>
 
@@ -2620,8 +2618,8 @@ money64 GetStaffWage(StaffType type)
         case StaffType::entertainer:
             return 55.00_GBP;
             
-        if (!(gameState.park.flags & PARK_FLAGS_RCT1_INTEREST))
-{
+        if (!(gameState.park.flags & PARK_FLAGS_RCT1_INTEREST))(
+
     switch (type)
     {
         default:
@@ -2635,9 +2633,6 @@ money64 GetStaffWage(StaffType type)
             return 40.00_GBP;
     }
    
-}
-
-    }
 }
 
 
