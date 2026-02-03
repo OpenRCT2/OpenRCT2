@@ -18,7 +18,7 @@ on:
     - cron: '23 */2 * * *'
 jobs:
   check:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     steps:
       - uses: z0al/dependent-issues@v1
         env:

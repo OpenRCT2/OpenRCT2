@@ -10,7 +10,7 @@ jobs:
       contents: read
       issues: write        # automatically creates labels
       pull-requests: write # assigning labels to PRs
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     if: github.repository == 'OpenRCT2/OpenRCT2'
     steps:
     - uses: actions/labeler@v6
