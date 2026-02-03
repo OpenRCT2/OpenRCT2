@@ -19,11 +19,10 @@
 #include <unordered_map>
 #include <vector>
 
-struct PaletteMap;
-
 namespace OpenRCT2::Drawing
 {
     enum class FilterPaletteID : int32_t;
+    struct PaletteMap;
     struct RenderTarget;
 } // namespace OpenRCT2::Drawing
 
@@ -208,7 +207,7 @@ namespace OpenRCT2::Ui
         ~TextureCache();
         void InvalidateImage(ImageIndex image);
         BasicTextureInfo GetOrLoadImageTexture(ImageId imageId);
-        BasicTextureInfo GetOrLoadGlyphTexture(ImageId imageId, const PaletteMap& paletteMap);
+        BasicTextureInfo GetOrLoadGlyphTexture(ImageId imageId, const Drawing::PaletteMap& paletteMap);
         BasicTextureInfo GetOrLoadBitmapTexture(ImageIndex image, const void* pixels, size_t width, size_t height);
 
         GLuint GetAtlasesTexture();
@@ -221,11 +220,11 @@ namespace OpenRCT2::Ui
         void GeneratePaletteTexture();
         void EnlargeAtlasesTexture(GLuint newEntries);
         AtlasTextureInfo LoadImageTexture(ImageId image);
-        AtlasTextureInfo LoadGlyphTexture(ImageId image, const PaletteMap& paletteMap);
+        AtlasTextureInfo LoadGlyphTexture(ImageId image, const Drawing::PaletteMap& paletteMap);
         AtlasTextureInfo AllocateImage(int32_t imageWidth, int32_t imageHeight);
         AtlasTextureInfo LoadBitmapTexture(ImageIndex image, const void* pixels, size_t width, size_t height);
         static Drawing::RenderTarget GetImageAsRT(ImageId imageId);
-        static Drawing::RenderTarget GetGlyphAsRT(ImageId imageId, const PaletteMap& paletteMap);
+        static Drawing::RenderTarget GetGlyphAsRT(ImageId imageId, const Drawing::PaletteMap& paletteMap);
         void FreeTextures();
 
         static Drawing::RenderTarget CreateRT(int32_t width, int32_t height);

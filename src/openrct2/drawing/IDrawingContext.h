@@ -14,12 +14,12 @@
 #include "PaletteIndex.h"
 #include "TTF.h"
 
-struct PaletteMap;
 struct TextDrawInfo;
 
 namespace OpenRCT2::Drawing
 {
     struct IDrawingEngine;
+    struct PaletteMap;
     struct RenderTarget;
 
     struct IDrawingContext
