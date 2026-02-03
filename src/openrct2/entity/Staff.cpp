@@ -2605,7 +2605,7 @@ void Staff::UpdateRideInspected(RideId rideIndex)
 }
 
 money64 GetStaffWage(StaffType type);
-auto& gameState = getGameState()
+auto& gameState = getGameState();
 {    
         if (gameState.park.flags & PARK_FLAGS_RCT1_INTEREST)             
         switch (type)
