@@ -2603,7 +2603,7 @@ void Staff::UpdateRideInspected(RideId rideIndex)
         ride->windowInvalidateFlags.set(RideInvalidateFlag::maintenance, RideInvalidateFlag::main, RideInvalidateFlag::list);
     }
 }
-static int & gameState = getGameState();
+const auto& gameState = getGameState();
 money64 GetStaffWage(StaffType type)
 {    
         if (gameState.park.flags & PARK_FLAGS_RCT1_INTEREST)
