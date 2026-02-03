@@ -2617,11 +2617,14 @@ money64 GetStaffWage(StaffType type)
             return 60.00_GBP;
         case StaffType::entertainer:
             return 55.00_GBP;
-            
-        if (!(gameState.park.flags & PARK_FLAGS_RCT1_INTEREST)){
+    }
+}
 
-    switch (type){
+{
+        if (!(gameState.park.flags & PARK_FLAGS_RCT1_INTEREST))
 
+    switch (type)
+    {
         default:
         case StaffType::handyman:
             return 35.00_GBP;
@@ -2632,10 +2635,8 @@ money64 GetStaffWage(StaffType type)
         case StaffType::entertainer:
             return 40.00_GBP;
     }
-   
 }
-
-
+   
 
 void Staff::Serialise(DataSerialiser& stream)
 {
