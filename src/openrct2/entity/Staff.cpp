@@ -2618,7 +2618,9 @@ money64 GetStaffWage(StaffType type)
         case StaffType::entertainer:
             return 55.00_GBP;
     }
+        money64 GetStaffWage(StaffType type)
         if (!(gameState::park::flags & PARK_FLAGS_RCT1_INTEREST))
+            
         {
         switch (type)
     {
