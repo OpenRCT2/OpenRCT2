@@ -803,8 +803,17 @@ namespace OpenRCT2
         int32_t baseZ = tileElement->GetBaseZ();
         int32_t lastPathDirection = direction;
 
+        // Prevent infinite loops from circular queues (possible with zero clearance checks)
+        auto& gameState = getGameState();
+        const int32_t maxIterations = gameState.mapSize.x * gameState.mapSize.y * 10;
+        int32_t iterations = 0;
+
         for (;;)
         {
+            if (++iterations > maxIterations)
+            {
+                break;
+            }
             if (tileElement->GetType() == TileElementType::Path)
             {
                 lastPathElement = tileElement;
