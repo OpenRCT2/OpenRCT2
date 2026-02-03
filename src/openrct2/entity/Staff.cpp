@@ -2604,11 +2604,11 @@ void Staff::UpdateRideInspected(RideId rideIndex)
     }
 }
 
-auto& gameState = getGameState();
-money64 GetStaffWage(StaffType type);
-
+money64 GetStaffWage(StaffType type)
 {    
-        if (gameState.park.flags & PARK_FLAGS_RCT1_INTEREST)             
+        if (gameState.park.flags & PARK_FLAGS_RCT1_INTEREST);
+        auto& gameState = getGameState();
+
         switch (type)
     {
         default:
