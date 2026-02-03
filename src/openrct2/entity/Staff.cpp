@@ -43,6 +43,7 @@
 #include "../world/tile_element/TrackElement.h"
 #include "PatrolArea.h"
 #include "Peep.h"
+#include <openrct2/GameState.h>
 
 #include <cassert>
 #include <iterator>
