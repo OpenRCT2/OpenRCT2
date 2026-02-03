@@ -44,7 +44,7 @@ concurrency:
 jobs:
   build_variables:
     name: Get version info
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest # This job is too heavy for ubuntu-slim. It takes almost a minute to checkout the code on slim vs 23s on ubuntu-latest.
     # We want to sign tagged releases with release certificates, but it is only allowed to be ran manually.
     # Disable automatic runs for tags and force release signing for tags.
     if: |
@@ -144,7 +144,7 @@ jobs:
         run: scripts/check-code-formatting
   check-changelog-formatting:
     name: Check changelog formatting
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     defaults:
       run:
         shell: bash
@@ -155,7 +155,7 @@ jobs:
         run: scripts/check-changelog-formatting
   g2dat:
     name: Graphics .dat files
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     needs: build_variables
     steps:
       - name: Checkout OpenRCT2
@@ -665,7 +665,7 @@ jobs:
           name: OpenRCT2-${{ needs.build_variables.outputs.name }}-emscripten
   release:
     name: Release
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     needs: [build_variables, linux-portable, android, linux-appimage, macos-universal, windows]
     steps:
       - name: Checkout
