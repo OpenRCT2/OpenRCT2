@@ -2619,7 +2619,6 @@ money64 GetStaffWage(StaffType type)
             return 55.00_GBP;
     }
         if (!(gameState::park::flags & PARK_FLAGS_RCT1_INTEREST))
-        switch (type)
     {
         default:
         case StaffType::handyman:
