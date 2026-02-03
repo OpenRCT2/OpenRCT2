@@ -123,7 +123,7 @@ namespace OpenRCT2::Ui::Windows
         void SelectFromList(int32_t listIndex)
         {
             Audio::Play(Audio::SoundId::click1, 0, this->windowPos.x + (this->width / 2));
-            if (!(gLegacyScene == LegacyScene::trackDesignsManager))
+            if (gLegacyScene != LegacyScene::trackDesignsManager)
             {
                 if (listIndex == 0)
                 {
@@ -171,7 +171,7 @@ namespace OpenRCT2::Ui::Windows
         int32_t GetListItemFromPosition(const ScreenCoordsXY& screenCoords)
         {
             size_t maxItems = _filteredTrackIds.size();
-            if (!(gLegacyScene == LegacyScene::trackDesignsManager))
+            if (gLegacyScene != LegacyScene::trackDesignsManager)
             {
                 // Extra item: custom design
                 maxItems++;
@@ -231,7 +231,7 @@ namespace OpenRCT2::Ui::Windows
             _reloadTrackDesigns = false;
             // Start with first track highlighted
             selectedListItem = 0;
-            if (_trackDesigns.size() != 0 && !(gLegacyScene == LegacyScene::trackDesignsManager))
+            if (_trackDesigns.size() != 0 && gLegacyScene != LegacyScene::trackDesignsManager)
             {
                 selectedListItem = 1;
             }
@@ -292,7 +292,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_BACK:
                     close();
-                    if (!(gLegacyScene == LegacyScene::trackDesignsManager))
+                    if (gLegacyScene != LegacyScene::trackDesignsManager)
                     {
                         ContextOpenWindow(WindowClass::constructRide);
                     }
@@ -329,7 +329,7 @@ namespace OpenRCT2::Ui::Windows
         ScreenSize onScrollGetSize(const int32_t scrollIndex) override
         {
             size_t numItems = _filteredTrackIds.size();
-            if (!(gLegacyScene == LegacyScene::trackDesignsManager))
+            if (gLegacyScene != LegacyScene::trackDesignsManager)
             {
                 // Extra item: custom design
                 numItems++;
@@ -521,8 +521,8 @@ namespace OpenRCT2::Ui::Windows
             screenPos.y = windowPos.y + tdWidget.bottom - 12;
 
             // Warnings
-            if ((_loadedTrackDesign->gameStateData.hasFlag(TrackDesignGameStateFlag::VehicleUnavailable))
-                && !(gLegacyScene == LegacyScene::trackDesignsManager))
+            if (_loadedTrackDesign->gameStateData.hasFlag(TrackDesignGameStateFlag::VehicleUnavailable)
+                && gLegacyScene != LegacyScene::trackDesignsManager)
             {
                 // Vehicle design not available
                 DrawTextEllipsised(rt, screenPos, 368, STR_VEHICLE_DESIGN_UNAVAILABLE, {}, { TextAlignment::centre });
