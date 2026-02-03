@@ -2606,19 +2606,6 @@ void Staff::UpdateRideInspected(RideId rideIndex)
 
 money64 GetStaffWage(StaffType type)
 {
-    switch (type)
-    {
-        default:
-        case StaffType::handyman:
-            return 50.00_GBP;
-        case StaffType::mechanic:
-            return 80.00_GBP;
-        case StaffType::security:
-            return 60.00_GBP;
-        case StaffType::entertainer:
-            return 55.00_GBP;
-    }
-        money64 GetStaffWage(StaffType type){
         if (!(gameState::park::flags & PARK_FLAGS_RCT1_INTEREST))         
         {
         switch (type)
@@ -2633,7 +2620,20 @@ money64 GetStaffWage(StaffType type)
         case StaffType::entertainer:
             return 40.00_GBP;
     }
+            else
 
+     switch (type)
+    {
+        default:
+        case StaffType::handyman:
+            return 50.00_GBP;
+        case StaffType::mechanic:
+            return 80.00_GBP;
+        case StaffType::security:
+            return 60.00_GBP;
+        case StaffType::entertainer:
+            return 55.00_GBP;
+    }
 }
 }
     
