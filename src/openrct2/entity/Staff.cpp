@@ -2620,6 +2620,22 @@ money64 GetStaffWage(StaffType type)
             return 55.00_GBP;
     }
 }
+if (!(gameState.park.flags & PARK_FLAGS_RCT1_INTEREST))
+     money64 GetStaffWage(StaffType type)
+{
+    switch (type)
+    {
+        default:
+        case StaffType::handyman:
+            return 35.00_GBP;
+        case StaffType::mechanic:
+            return 55.00_GBP;
+        case StaffType::security:
+            return 45.00_GBP;
+        case StaffType::entertainer:
+            return 40.00_GBP;
+    }
+}
 
 void Staff::Serialise(DataSerialiser& stream)
 {
