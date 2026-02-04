@@ -51,10 +51,10 @@ void CarEntrySetImageMaxSizes(CarEntry& carEntry, int32_t numImages)
     constexpr uint8_t kCentreX = kWidth / 2;
     constexpr uint8_t kCentreY = kHeight / 2;
 
-    uint8_t bitmap[kHeight][kWidth] = { 0 };
+    OpenRCT2::Drawing::PaletteIndex bitmap[kHeight][kWidth]{};
 
     OpenRCT2::Drawing::RenderTarget rt = {
-        .bits = reinterpret_cast<uint8_t*>(bitmap),
+        .bits = reinterpret_cast<OpenRCT2::Drawing::PaletteIndex*>(bitmap),
         .x = -(kWidth / 2),
         .y = -(kHeight / 2),
         .width = kWidth,
@@ -73,7 +73,7 @@ void CarEntrySetImageMaxSizes(CarEntry& carEntry, int32_t numImages)
     {
         for (int32_t j = 0; j < kWidth; j++)
         {
-            if (bitmap[j][kCentreX - i] != 0)
+            if (bitmap[j][kCentreX - i] != OpenRCT2::Drawing::PaletteIndex::transparent)
             {
                 spriteWidth = i;
                 break;
@@ -85,7 +85,7 @@ void CarEntrySetImageMaxSizes(CarEntry& carEntry, int32_t numImages)
 
         for (int32_t j = 0; j < kWidth; j++)
         {
-            if (bitmap[j][kCentreX + i] != 0)
+            if (bitmap[j][kCentreX + i] != OpenRCT2::Drawing::PaletteIndex::transparent)
             {
                 spriteWidth = i;
                 break;
@@ -102,7 +102,7 @@ void CarEntrySetImageMaxSizes(CarEntry& carEntry, int32_t numImages)
     {
         for (int32_t j = 0; j < kWidth; j++)
         {
-            if (bitmap[kCentreY - i][j] != 0)
+            if (bitmap[kCentreY - i][j] != OpenRCT2::Drawing::PaletteIndex::transparent)
             {
                 spriteHeightNegative = i;
                 break;
@@ -119,7 +119,7 @@ void CarEntrySetImageMaxSizes(CarEntry& carEntry, int32_t numImages)
     {
         for (int32_t j = 0; j < kWidth; j++)
         {
-            if (bitmap[kCentreY + i][j] != 0)
+            if (bitmap[kCentreY + i][j] != OpenRCT2::Drawing::PaletteIndex::transparent)
             {
                 spriteHeightPositive = i;
                 break;

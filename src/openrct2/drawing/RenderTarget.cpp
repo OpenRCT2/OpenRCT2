@@ -11,7 +11,7 @@
 
 namespace OpenRCT2::Drawing
 {
-    uint8_t* RenderTarget::GetBitsOffset(const ScreenCoordsXY& pos) const
+    PaletteIndex* RenderTarget::GetBitsOffset(const ScreenCoordsXY& pos) const
     {
         return bits + pos.x + pos.y * LineStride();
     }

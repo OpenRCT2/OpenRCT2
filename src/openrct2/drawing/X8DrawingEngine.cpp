@@ -59,7 +59,7 @@ void X8WeatherDrawer::Draw(
     uint32_t pixelOffset = rt.LineStride() * y + x;
     uint8_t patternYPos = patternStartYOffset % patternYSpace;
 
-    uint8_t* screenBits = rt.bits;
+    PaletteIndex* screenBits = rt.bits;
 
     // Stores the colours of changed pixels
     WeatherPixel* newPixels = &_weatherPixels[_weatherPixelsCount];
@@ -78,8 +78,8 @@ void X8WeatherDrawer::Draw(
                 auto patternPixel = pattern[patternYPos * 2 + 1];
                 for (; xPixelOffset < finalPixelOffset; xPixelOffset += patternXSpace)
                 {
-                    uint8_t current_pixel = screenBits[xPixelOffset];
-                    screenBits[xPixelOffset] = patternPixel;
+                    PaletteIndex current_pixel = screenBits[xPixelOffset];
+                    screenBits[xPixelOffset] = static_cast<PaletteIndex>(patternPixel);
                     _weatherPixelsCount++;
 
                     // Store colour and position
@@ -99,7 +99,7 @@ void X8WeatherDrawer::Restore(RenderTarget& rt)
     if (_weatherPixelsCount > 0)
     {
         uint32_t numPixels = rt.LineStride() * rt.height;
-        uint8_t* bits = rt.bits;
+        PaletteIndex* bits = rt.bits;
         for (uint32_t i = 0; i < _weatherPixelsCount; i++)
         {
             WeatherPixel weatherPixel = _weatherPixels[i];
@@ -226,8 +226,8 @@ void X8DrawingEngine::CopyRect(int32_t x, int32_t y, int32_t width, int32_t heig
     height += tmargin + bmargin;
 
     int32_t stride = _mainRT.LineStride();
-    uint8_t* to = _mainRT.bits + y * stride + x;
-    uint8_t* from = _mainRT.bits + (y - dy) * stride + x - dx;
+    PaletteIndex* to = _mainRT.bits + y * stride + x;
+    PaletteIndex* from = _mainRT.bits + (y - dy) * stride + x - dx;
 
     if (dy > 0)
     {
@@ -279,10 +279,10 @@ RenderTarget* X8DrawingEngine::getRT()
 void X8DrawingEngine::ConfigureBits(uint32_t width, uint32_t height, uint32_t pitch)
 {
     size_t newBitsSize = pitch * height;
-    uint8_t* newBits = new uint8_t[newBitsSize];
+    PaletteIndex* newBits = new PaletteIndex[newBitsSize];
     if (_bits == nullptr)
     {
-        std::fill_n(newBits, newBitsSize, 0);
+        std::fill_n(newBits, newBitsSize, PaletteIndex::transparent);
     }
     else
     {
@@ -292,8 +292,8 @@ void X8DrawingEngine::ConfigureBits(uint32_t width, uint32_t height, uint32_t pi
         }
         else
         {
-            uint8_t* src = _bits;
-            uint8_t* dst = newBits;
+            PaletteIndex* src = _bits;
+            PaletteIndex* dst = newBits;
 
             uint32_t minWidth = std::min(_width, width);
             uint32_t minHeight = std::min(_height, height);
@@ -302,7 +302,7 @@ void X8DrawingEngine::ConfigureBits(uint32_t width, uint32_t height, uint32_t pi
                 std::copy_n(src, minWidth, dst);
                 if (pitch - minWidth > 0)
                 {
-                    std::fill_n(dst + minWidth, pitch - minWidth, 0);
+                    std::fill_n(dst + minWidth, pitch - minWidth, PaletteIndex::transparent);
                 }
                 src += _pitch;
                 dst += pitch;
@@ -375,11 +375,11 @@ void X8DrawingContext::Clear(RenderTarget& rt, PaletteIndex paletteIndex)
 
     int32_t w = rt.width;
     int32_t h = rt.height;
-    uint8_t* ptr = rt.bits;
+    PaletteIndex* ptr = rt.bits;
 
     for (int32_t y = 0; y < h; y++)
     {
-        std::fill_n(ptr, w, EnumValue(paletteIndex));
+        std::fill_n(ptr, w, paletteIndex);
         ptr += w + rt.pitch;
     }
 }
@@ -437,10 +437,10 @@ void X8DrawingContext::FillRect(
     if (crossHatch)
     {
         // Cross hatching
-        uint8_t* dst = startY * rt.LineStride() + startX + rt.bits;
+        PaletteIndex* dst = startY * rt.LineStride() + startX + rt.bits;
         for (int32_t i = 0; i < height; i++)
         {
-            uint8_t* nextdst = dst + rt.LineStride();
+            PaletteIndex* nextdst = dst + rt.LineStride();
             uint32_t p = Numerics::ror32(crosskPattern, 1);
             p = (p & 0xFFFF0000) | width;
 
@@ -450,7 +450,7 @@ void X8DrawingContext::FillRect(
                 p = p ^ 0x80000000;
                 if (p & 0x80000000)
                 {
-                    *dst = EnumValue(paletteIndex);
+                    *dst = paletteIndex;
                 }
                 dst++;
             }
@@ -460,10 +460,10 @@ void X8DrawingContext::FillRect(
     }
     else
     {
-        uint8_t* dst = startY * rt.LineStride() + startX + rt.bits;
+        PaletteIndex* dst = startY * rt.LineStride() + startX + rt.bits;
         for (int32_t i = 0; i < height; i++)
         {
-            std::fill_n(dst, width, EnumValue(paletteIndex));
+            std::fill_n(dst, width, paletteIndex);
             dst += rt.LineStride();
         }
     }

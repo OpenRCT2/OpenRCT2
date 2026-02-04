@@ -55,7 +55,7 @@ uint8_t gScreenshotCountdown = 0;
 
 static bool WriteRTToFile(std::string_view path, const RenderTarget& rt, const GamePalette& palette)
 {
-    auto const pixels8 = rt.bits;
+    auto const pixels8 = reinterpret_cast<uint8_t*>(rt.bits);
     auto const pixelsLen = rt.LineStride() * rt.height;
     try
     {
@@ -233,7 +233,7 @@ static RenderTarget CreateRT(const Viewport& viewport)
     RenderTarget rt;
     rt.width = viewport.width;
     rt.height = viewport.height;
-    rt.bits = new (std::nothrow) uint8_t[rt.width * rt.height];
+    rt.bits = new (std::nothrow) PaletteIndex[rt.width * rt.height];
     if (rt.bits == nullptr)
     {
         throw std::runtime_error("Giant screenshot failed, unable to allocate memory for image.");

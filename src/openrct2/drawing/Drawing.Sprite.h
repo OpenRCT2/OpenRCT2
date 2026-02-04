@@ -58,11 +58,11 @@ struct DrawSpriteArgs
     int32_t SrcY;
     int32_t Width;
     int32_t Height;
-    uint8_t* DestinationBits;
+    OpenRCT2::Drawing::PaletteIndex* DestinationBits;
 
     DrawSpriteArgs(
         ImageId image, const OpenRCT2::Drawing::PaletteMap& palMap, const OpenRCT2::G1Element& sourceImage, int32_t srcX,
-        int32_t srcY, int32_t width, int32_t height, uint8_t* destinationBits)
+        int32_t srcY, int32_t width, int32_t height, OpenRCT2::Drawing::PaletteIndex* destinationBits)
         : Image(image)
         , PalMap(palMap)
         , SourceImage(sourceImage)
@@ -180,5 +180,5 @@ void FASTCALL GfxDrawSpriteRawMaskedSoftware(
 size_t G1CalculateDataSize(const OpenRCT2::G1Element* g1);
 
 void MaskScalar(
-    int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,
-    int32_t maskWrap, int32_t colourWrap, int32_t dstWrap);
+    int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc,
+    OpenRCT2::Drawing::PaletteIndex* RESTRICT dst, int32_t maskWrap, int32_t colourWrap, int32_t dstWrap);

@@ -83,7 +83,7 @@ namespace OpenRCT2::Ui::Windows
         std::vector<uint16_t> _filteredTrackIds;
         uint16_t _loadedTrackDesignIndex;
         std::unique_ptr<TrackDesign> _loadedTrackDesign;
-        std::vector<uint8_t> _trackDesignPreviewPixels;
+        TrackDesignPreviewBuffer _trackDesignPreviewPixels{};
         bool _selectedItemIsBeingUpdated;
         bool _reloadTrackDesigns;
 
@@ -206,7 +206,7 @@ namespace OpenRCT2::Ui::Windows
             _loadedTrackDesign = TrackDesignImport(path.c_str());
             if (_loadedTrackDesign != nullptr)
             {
-                TrackDesignDrawPreview(*_loadedTrackDesign, _trackDesignPreviewPixels.data(), !gTrackDesignSceneryToggle);
+                TrackDesignDrawPreview(*_loadedTrackDesign, _trackDesignPreviewPixels, !gTrackDesignSceneryToggle);
                 return true;
             }
             return false;
@@ -238,7 +238,7 @@ namespace OpenRCT2::Ui::Windows
             gTrackDesignSceneryToggle = false;
             WindowPushOthersRight(*this);
             _currentTrackPieceDirection = 2;
-            _trackDesignPreviewPixels.resize(4 * kTrackPreviewImageSize);
+            std::fill(_trackDesignPreviewPixels.begin(), _trackDesignPreviewPixels.end(), PaletteIndex::transparent);
 
             _loadedTrackDesign = nullptr;
             _loadedTrackDesignIndex = kTrackDesignIndexUnloaded;
@@ -256,8 +256,6 @@ namespace OpenRCT2::Ui::Windows
         {
             // Dispose track design and preview
             _loadedTrackDesign = nullptr;
-            _trackDesignPreviewPixels.clear();
-            _trackDesignPreviewPixels.shrink_to_fit();
 
             // Dispose track list
             _trackDesigns.clear();
@@ -510,7 +508,8 @@ namespace OpenRCT2::Ui::Windows
             screenPos = windowPos + ScreenCoordsXY{ tdWidget.midX(), tdWidget.midY() };
 
             G1Element g1temp = {};
-            g1temp.offset = _trackDesignPreviewPixels.data() + (_currentTrackPieceDirection * kTrackPreviewImageSize);
+            g1temp.offset = reinterpret_cast<uint8_t*>(
+                _trackDesignPreviewPixels.data() + (_currentTrackPieceDirection * kTrackPreviewImageSize));
             g1temp.width = 370;
             g1temp.height = 217;
             g1temp.flags = { G1Flag::hasTransparency };
