@@ -790,7 +790,7 @@ namespace OpenRCT2::Network
                 }
             }
 
-            if (colours.size() == 0 || (colours.size() == 1 && colours[0] == "{WHITE}"))
+            if (colours.empty() || (colours.size() == 1 && colours[0] == "{WHITE}"))
             {
                 formatted += "{BABYBLUE}";
                 formatted += fromPlayer->Name;
@@ -1677,7 +1677,7 @@ namespace OpenRCT2::Network
     {
         json_t jsonObj = {
             { "name", Config::Get().network.serverName },
-            { "requiresPassword", _password.size() > 0 },
+            { "requiresPassword", !_password.empty() },
             { "version", GetVersion() },
             { "players", GetNumVisiblePlayers() },
             { "maxPlayers", Config::Get().network.maxplayers },

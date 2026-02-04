@@ -178,7 +178,7 @@ struct DataSerializerTraitsT<std::string>
     static void log(OpenRCT2::IStream* stream, const std::string& str)
     {
         stream->Write("\"", 1);
-        if (str.size() != 0)
+        if (!str.empty())
         {
             stream->Write(str.data(), str.size());
         }

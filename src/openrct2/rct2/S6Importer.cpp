@@ -1292,7 +1292,7 @@ namespace OpenRCT2::RCT2
                     }
 
                     // Set last element flag in case the original last element was never added
-                    if (tileElements.size() > 0)
+                    if (!tileElements.empty())
                     {
                         tileElements.back().SetLastForTile(true);
                     }

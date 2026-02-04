@@ -464,7 +464,7 @@ void DeleteBanner(BannerIndex id)
 void TrimBanners()
 {
     auto& gameState = getGameState();
-    if (gameState.banners.size() > 0)
+    if (!gameState.banners.empty())
     {
         auto lastBannerId = gameState.banners.size() - 1;
         while (lastBannerId != std::numeric_limits<size_t>::max() && gameState.banners[lastBannerId].isNull())

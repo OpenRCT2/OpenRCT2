@@ -959,7 +959,7 @@ void ScriptEngine::CheckAndStartPlugins()
 
 void ScriptEngine::ProcessREPL()
 {
-    while (_evalQueue.size() > 0)
+    while (!_evalQueue.empty())
     {
         auto item = std::move(_evalQueue.front());
         _evalQueue.pop();

@@ -124,7 +124,7 @@ namespace OpenRCT2
             Console::WriteLine("ObjectType: %s, Number of Objects: %d", typeToName[EnumValue(objType)], list.size());
             for (auto& obj : list)
             {
-                if (obj.Generation == ObjectGeneration::JSON && obj.Identifier.size() == 0)
+                if (obj.Generation == ObjectGeneration::JSON && obj.Identifier.empty())
                 {
                     // Empty object slot don't output anything
                     continue;

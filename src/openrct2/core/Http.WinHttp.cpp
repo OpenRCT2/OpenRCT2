@@ -90,7 +90,7 @@ namespace OpenRCT2::Http
             {
                 // Ignore first header as that is the HTTP version which
                 // we don't really count as a header.
-                if (index != 0 && wKey.size() != 0)
+                if (index != 0 && !wKey.empty())
                 {
                     auto key = String::toUtf8(wKey);
                     auto value = String::toUtf8(wValue);

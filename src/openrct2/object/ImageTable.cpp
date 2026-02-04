@@ -244,7 +244,7 @@ namespace OpenRCT2
                 }
             }
 
-            if (range.size() > 0)
+            if (!range.empty())
             {
                 size_t placeHoldersAdded = 0;
                 for (auto i : range)

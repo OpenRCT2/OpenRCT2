@@ -1097,7 +1097,7 @@ static int32_t FootpathIsConnectedToMapEdgeHelper(CoordsXYZ footpathPos, int32_t
     // Loads the next tile to visit into our variables
     auto LoadNextTileElement = [&tiles, &numPendingTiles](TileState& t_currentTile) -> void {
         // Do not continue if there are no tiles in the list
-        if (tiles.size() == 0)
+        if (tiles.empty())
             return;
 
         // Find the next unprocessed tile

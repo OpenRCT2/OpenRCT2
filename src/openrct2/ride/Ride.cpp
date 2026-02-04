@@ -2246,7 +2246,7 @@ int32_t RideGetUnusedPresetVehicleColour(ObjectEntryIndex subType)
     }
 
     // If all presets have been used, just go with a random preset
-    if (unused.size() == 0)
+    if (unused.empty())
         return UtilRand() % colourPresets->count;
 
     // Choose a random preset from the list of unused presets
@@ -4326,7 +4326,7 @@ int32_t RideGetRandomColourPresetIndex(ride_type_t rideType)
     }
 
     // If all presets have been used, just go with a random preset
-    if (unused.size() == 0)
+    if (unused.empty())
         return UtilRand() % colourPresets.count;
 
     // Choose a random preset from the list of unused presets
@@ -5557,7 +5557,7 @@ ObjectEntryIndex RideGetEntryIndex(ride_type_t rideType, ObjectEntryIndex rideSu
     {
         auto& objManager = GetContext()->GetObjectManager();
         auto& rideEntries = objManager.GetAllRideEntries(rideType);
-        if (rideEntries.size() > 0)
+        if (!rideEntries.empty())
         {
             subType = rideEntries[0];
             for (auto rideEntryIndex : rideEntries)

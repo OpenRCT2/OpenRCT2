@@ -194,7 +194,7 @@ namespace OpenRCT2
 
     bool MusicObject::SupportsRideType(ride_type_t rideType, bool onlyAllowIfExplicitlyListed)
     {
-        if (_rideTypes.size() == 0)
+        if (_rideTypes.empty())
         {
             // Some rides, like the merry-go-round, need music objects to explicitly list them.
             return !onlyAllowIfExplicitlyListed;
