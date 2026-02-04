@@ -2150,10 +2150,10 @@ static uint64_t PageDisabledWidgets[] = {
                   && windowTileInspectorSelectedIndex < windowTileInspectorElementCount - 1));
 
             // Move Down button
-            setWidgetDisabledAndInvalidate(WIDX_BUTTON_MOVE_DOWN, !(windowTileInspectorSelectedIndex > 0));
+            setWidgetDisabledAndInvalidate(WIDX_BUTTON_MOVE_DOWN, windowTileInspectorSelectedIndex <= 0);
 
             // Copy button
-            setWidgetDisabledAndInvalidate(WIDX_BUTTON_COPY, !(windowTileInspectorSelectedIndex >= 0));
+            setWidgetDisabledAndInvalidate(WIDX_BUTTON_COPY, windowTileInspectorSelectedIndex < 0);
 
             // Paste button
             setWidgetDisabledAndInvalidate(WIDX_BUTTON_PASTE, !(_tileSelected && _elementCopied));
@@ -2362,7 +2362,7 @@ static uint64_t PageDisabledWidgets[] = {
                     widgets[WIDX_ENTRANCE_BUTTON_MAKE_USABLE].bottom = GBBB(propertiesAnchor, 1);
                     setWidgetDisabled(
                         WIDX_ENTRANCE_BUTTON_MAKE_USABLE,
-                        !(tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE));
+                        tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE);
                     break;
 
                 case TileElementType::Wall:

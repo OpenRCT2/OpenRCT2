@@ -155,35 +155,19 @@ static void PathPaintQueueBanner(
         uint16_t scrollingMode = railings.scrollingMode;
         scrollingMode += direction;
 
-        auto ft = Formatter();
-
+        u8string bannerText;
         if (ride->status == RideStatus::open && !(ride->lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN))
         {
-            ft.Add<StringId>(STR_RIDE_ENTRANCE_NAME);
-            ride->formatNameTo(ft);
+            bannerText = ScrollingText::kRideBannerColourPrefix + ride->getName();
         }
         else
         {
-            ft.Add<StringId>(STR_RIDE_ENTRANCE_CLOSED);
+            bannerText = LanguageGetString(STR_RIDE_ENTRANCE_CLOSED);
         }
-
-        utf8 bannerBuffer[512]{};
-        if (Config::Get().general.upperCaseBanners)
-        {
-            FormatStringToUpper(bannerBuffer, sizeof(bannerBuffer), STR_BANNER_TEXT_FORMAT, ft.Data());
-        }
-        else
-        {
-            FormatStringLegacy(bannerBuffer, sizeof(bannerBuffer), STR_BANNER_TEXT_FORMAT, ft.Data());
-        }
-
-        uint16_t stringWidth = GfxGetStringWidth(bannerBuffer, FontStyle::tiny);
-        uint16_t scroll = stringWidth > 0 ? (getGameState().currentTicks / 2) % stringWidth : 0;
 
         PaintAddImageAsChild(
-            session,
-            ScrollingText::setup(session, STR_BANNER_TEXT_FORMAT, ft, scroll, scrollingMode, PaletteIndex::transparent),
-            { 0, 0, height + 7 }, { boundBoxOffsets, { 1, 1, 21 } });
+            session, ScrollingText::setup(session, bannerText, scrollingMode, PaletteIndex::transparent), { 0, 0, height + 7 },
+            { boundBoxOffsets, { 1, 1, 21 } });
     }
 
     session.InteractionType = ViewportInteractionItem::footpath;

@@ -58,6 +58,7 @@ struct Banner
         return type == kBannerNull;
     }
 
+    std::string getTextWithColour() const;
     std::string getText() const;
     void formatTextWithColourTo(OpenRCT2::Formatter&) const;
     void formatTextTo(OpenRCT2::Formatter&) const;

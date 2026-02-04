@@ -28,8 +28,6 @@ constexpr uint8_t kPeepMaxEnergyTarget = 255; // Oddly, this differs from max en
 
 constexpr auto kPeepClearanceHeight = 4 * kCoordsZStep;
 
-struct PaintSession;
-
 namespace OpenRCT2
 {
     class Formatter;
@@ -421,7 +419,6 @@ public: // Peep
     [[nodiscard]] CoordsXY GetDestination() const;
 
     void Serialise(class DataSerialiser& stream);
-    void Paint(PaintSession& session, int32_t imageDirection) const;
 
     // TODO: Make these private again when done refactoring
 public: // Peep

@@ -319,23 +319,9 @@ static void PaintLargeSceneryScrollingText(
     if (banner == nullptr)
         return;
 
-    auto ft = Formatter();
-    banner->formatTextTo(ft);
-
-    char text[256];
-    if (Config::Get().general.upperCaseBanners)
-    {
-        FormatStringToUpper(text, sizeof(text), STR_SCROLLING_SIGN_TEXT, ft.Data());
-    }
-    else
-    {
-        FormatStringLegacy(text, sizeof(text), STR_SCROLLING_SIGN_TEXT, ft.Data());
-    }
-
+    auto bannerText = banner->getText();
     auto scrollMode = sceneryEntry.scrolling_mode + ((direction + 1) & 3);
-    auto stringWidth = GfxGetStringWidth(text, FontStyle::tiny);
-    auto scroll = stringWidth > 0 ? (getGameState().currentTicks / 2) % stringWidth : 0;
-    auto imageId = ScrollingText::setup(session, STR_SCROLLING_SIGN_TEXT, ft, scroll, scrollMode, textPaletteIndex);
+    auto imageId = ScrollingText::setup(session, bannerText, scrollMode, textPaletteIndex);
     PaintAddImageAsChild(session, imageId, { 0, 0, height + 25 }, { bbOffset, { 1, 1, 21 } });
 }
 

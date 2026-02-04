@@ -113,7 +113,7 @@
 
     <MakeDir Directories="$(DataOutputPath)" />
     
-    <Exec Command="&quot;$(GraphicsCLIPath)&quot; sprite build &quot;$(DataOutputPath)g2.dat&quot; &quot;%(G2Input.FullPath)&quot;"
+    <Exec Command="&quot;$(GraphicsCLIPath)&quot; sprite build &quot;$(DataOutputPath)g2.dat&quot; &quot;%(G2Input.FullPath)&quot; silent"
           ConsoleToMSBuild="true"
           IgnoreExitCode="false">
       <Output TaskParameter="ConsoleOutput" PropertyName="G2BuildOutput" />
@@ -133,7 +133,7 @@
   
       <MakeDir Directories="$(DataOutputPath)" />
       
-      <Exec Command="&quot;$(GraphicsCLIPath)&quot; sprite build &quot;$(DataOutputPath)fonts.dat&quot; &quot;%(FontsInput.FullPath)&quot;"
+      <Exec Command="&quot;$(GraphicsCLIPath)&quot; sprite build &quot;$(DataOutputPath)fonts.dat&quot; &quot;%(FontsInput.FullPath)&quot; silent"
             ConsoleToMSBuild="true"
             IgnoreExitCode="false">
         <Output TaskParameter="ConsoleOutput" PropertyName="FontsBuildOutput" />
@@ -153,7 +153,7 @@
 
     <MakeDir Directories="$(DataOutputPath)" />
     
-    <Exec Command="&quot;$(GraphicsCLIPath)&quot; sprite build &quot;$(DataOutputPath)tracks.dat&quot; &quot;%(TracksInput.FullPath)&quot;"
+    <Exec Command="&quot;$(GraphicsCLIPath)&quot; sprite build &quot;$(DataOutputPath)tracks.dat&quot; &quot;%(TracksInput.FullPath)&quot; silent"
           ConsoleToMSBuild="true"
           IgnoreExitCode="false">
       <Output TaskParameter="ConsoleOutput" PropertyName="TracksBuildOutput" />
@@ -173,7 +173,7 @@
 
     <MakeDir Directories="$(DataOutputPath)" />
   
-    <Exec Command="&quot;$(GraphicsCLIPath)&quot; sprite build &quot;$(DataOutputPath)palettes.dat&quot; &quot;%(PalettesInput.FullPath)&quot;"
+    <Exec Command="&quot;$(GraphicsCLIPath)&quot; sprite build &quot;$(DataOutputPath)palettes.dat&quot; &quot;%(PalettesInput.FullPath)&quot; silent"
           ConsoleToMSBuild="true"
           IgnoreExitCode="false">
       <Output TaskParameter="ConsoleOutput" PropertyName="PalettesBuildOutput" />

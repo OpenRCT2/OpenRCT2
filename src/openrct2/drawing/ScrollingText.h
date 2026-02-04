@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include "../core/StringTypes.h"
+
 #include <cstdint>
 
 struct ImageId;
@@ -32,9 +34,10 @@ namespace OpenRCT2::Drawing::ScrollingText
     static auto constexpr kMaxLegacyEntries = 32;
     static auto constexpr kMaxEntries = 256;
     constexpr int8_t kMaxModes = 38;
+    constexpr auto kParkBannerColourPrefix = "{WHITE}";
+    constexpr auto kRideBannerColourPrefix = "{YELLOW}";
 
     void initialiseBitmaps();
     void invalidate();
-    ImageId setup(
-        PaintSession& session, StringId stringId, Formatter& ft, uint16_t scroll, uint16_t scrollingMode, PaletteIndex colour);
+    ImageId setup(PaintSession& session, u8string_view string, uint16_t scrollingMode, PaletteIndex colour);
 } // namespace OpenRCT2::Drawing::ScrollingText
