@@ -1274,7 +1274,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             FootpathUpdateProvisional();
-            if (_provisionalFootpath.tiles.size() == 0)
+            if (_provisionalFootpath.tiles.empty())
                 return;
 
             // Try and place path
@@ -1946,7 +1946,7 @@ namespace OpenRCT2::Ui::Windows
         FootpathRemoveProvisional();
 
         GameActions::Result res;
-        std::vector<ProvisionalTile> succesfulTiles{};
+        std::vector<ProvisionalTile> successfulTiles{};
         money64 cost = 0;
         for (const auto& tile : tiles)
         {
@@ -1958,20 +1958,20 @@ namespace OpenRCT2::Ui::Windows
             // from glitching through the existing path.
             if (res.error == GameActions::Status::ok || res.error == GameActions::Status::itemAlreadyPlaced)
             {
-                succesfulTiles.emplace_back(tile);
+                successfulTiles.emplace_back(tile);
                 cost += res.cost;
             }
         }
 
-        bool anySuccesful = succesfulTiles.size() > 0;
-        if (anySuccesful)
+        bool anySuccessful = (!successfulTiles.empty());
+        if (anySuccessful)
         {
             _provisionalFootpath.surfaceIndex = type;
             _provisionalFootpath.railingsIndex = railingsType;
             _provisionalFootpath.positionA = footpathLocA;
             _provisionalFootpath.positionB = footpathLocB;
             _provisionalFootpath.startZ = startZ;
-            _provisionalFootpath.tiles = succesfulTiles;
+            _provisionalFootpath.tiles = successfulTiles;
             _provisionalFootpath.constructFlags = constructFlags;
             _provisionalFootpath.flags.set(ProvisionalPathFlag::placed);
 
@@ -1987,26 +1987,26 @@ namespace OpenRCT2::Ui::Windows
 
         if (!isToolActive(WindowClass::scenery))
         {
-            if (succesfulTiles.size() == 0)
+            if (successfulTiles.empty())
             {
                 // If we can't build this, don't show a virtual floor.
                 VirtualFloorSetHeight(0);
             }
             else if (
-                succesfulTiles[0].slope.type == FootpathSlopeType::flat
-                || succesfulTiles[0].position.z < _footpathConstructFromPosition.z)
+                successfulTiles[0].slope.type == FootpathSlopeType::flat
+                || successfulTiles[0].position.z < _footpathConstructFromPosition.z)
             {
                 // Going either straight on, or down.
-                VirtualFloorSetHeight(succesfulTiles[0].position.z);
+                VirtualFloorSetHeight(successfulTiles[0].position.z);
             }
             else
             {
                 // Going up in the world!
-                VirtualFloorSetHeight(succesfulTiles[0].position.z + kLandHeightStep);
+                VirtualFloorSetHeight(successfulTiles[0].position.z + kLandHeightStep);
             }
         }
 
-        return anySuccesful ? cost : kMoney64Undefined;
+        return anySuccessful ? cost : kMoney64Undefined;
     }
 
     /**

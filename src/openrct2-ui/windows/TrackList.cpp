@@ -231,7 +231,7 @@ namespace OpenRCT2::Ui::Windows
             _reloadTrackDesigns = false;
             // Start with first track highlighted
             selectedListItem = 0;
-            if (_trackDesigns.size() != 0 && !(gLegacyScene == LegacyScene::trackDesignsManager))
+            if (!_trackDesigns.empty() && gLegacyScene != LegacyScene::trackDesignsManager)
             {
                 selectedListItem = 1;
             }

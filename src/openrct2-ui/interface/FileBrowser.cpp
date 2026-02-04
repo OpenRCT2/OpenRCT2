@@ -202,7 +202,7 @@ namespace OpenRCT2::Ui::FileBrowser
 
     u8string RemovePatternWildcard(u8string_view pattern)
     {
-        while (pattern.length() >= 1 && pattern.front() == '*')
+        while (!pattern.empty() && pattern.front() == '*')
         {
             pattern.remove_prefix(1);
         }

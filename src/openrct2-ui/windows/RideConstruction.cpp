@@ -2846,7 +2846,7 @@ namespace OpenRCT2::Ui::Windows
             auto& objManager = GetContext()->GetObjectManager();
             auto& rideEntries = objManager.GetAllRideEntries(rideType);
             // If there are no vehicles for this ride type, enable all the track pieces.
-            if (rideEntries.size() == 0)
+            if (rideEntries.empty())
             {
                 disabledGroups.reset();
             }
