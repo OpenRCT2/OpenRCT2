@@ -1346,7 +1346,8 @@ namespace OpenRCT2::Ui::Windows
             // that automatically adds slopes to create a continuous path over terrain.
             // When Shift or Ctrl is pressed, fall back to the original behavior.
             std::vector<ProvisionalTile> tiles;
-            if (baseZ == 0 && !_footpathPlaceShiftState && !_footpathPlaceCtrlState)
+            bool isSingleTile = (range.Point1 == range.Point2);
+            if (baseZ == 0 && !_footpathPlaceShiftState && !_footpathPlaceCtrlState && !isSingleTile)
             {
                 tiles = buildConnectedTileVector(range, _dragStartPos);
             }
