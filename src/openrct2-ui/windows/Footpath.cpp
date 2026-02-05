@@ -1258,7 +1258,12 @@ namespace OpenRCT2::Ui::Windows
             // I noticed that terrain slopes have maxZ > baseZ, flat raised areas have maxZ == baseZ
             // Terrain slope: slope up ON the tile, it has raised corners
             // Raised block: slope up BEFORE the tile. We look ahead
-            int32_t currentPathZ = slices[0].maxZ;
+
+            // Determine initial height based on first tile and its immediate neighbor only.
+            // When the first tile is a slope and we're heading upward, start at baseZ to detect it.
+            bool firstTileIsSlope = (slices[0].maxZ - slices[0].baseZ) >= kPathHeightStep;
+            bool nextTileIsHigher = (slices.size() > 1) && (slices[1].maxZ > slices[0].maxZ);
+            int32_t currentPathZ = (firstTileIsSlope && nextTileIsHigher) ? slices[0].baseZ : slices[0].maxZ;
 
             for (size_t i = 0; i < slices.size(); i++)
             {
@@ -1267,13 +1272,15 @@ namespace OpenRCT2::Ui::Windows
                 int32_t nextMaxZ = (i + 1 < slices.size()) ? slices[i + 1].maxZ : thisMaxZ;
                 int32_t nextBaseZ = (i + 1 < slices.size()) ? slices[i + 1].baseZ : thisBaseZ;
 
-                // Is current tile a terrain slope? Does it have raised corners?
-                bool thisIsSlope = (thisMaxZ > thisBaseZ);
+                // Is current tile a terrain slope? Requires at least one height step difference.
+                bool thisIsSlope = (thisMaxZ - thisBaseZ) >= kPathHeightStep;
                 // Is next tile a flat raised block? Does it have no slope, but higher base?
                 bool nextIsRaisedBlock = (nextMaxZ == nextBaseZ) && (nextBaseZ > currentPathZ);
 
                 int32_t useZ = currentPathZ;
                 FootpathSlope useSlope = { FootpathSlopeType::flat, 0 };
+
+                bool isLastTile = (i == slices.size() - 1);
 
                 // Going UP logic
                 if (thisIsSlope && thisMaxZ > currentPathZ)
@@ -1294,7 +1301,7 @@ namespace OpenRCT2::Ui::Windows
                 else if ((currentPathZ - nextMaxZ) >= kPathHeightStep)
                 {
                     // Check if we should go down now or stay flat
-                    bool thisIsFlatBlock = (thisMaxZ == thisBaseZ) && (thisMaxZ >= currentPathZ);
+                    bool thisIsFlatBlock = !thisIsSlope && (thisMaxZ >= currentPathZ);
 
                     if (!thisIsFlatBlock)
                     {
@@ -1304,6 +1311,14 @@ namespace OpenRCT2::Ui::Windows
                         currentPathZ -= kPathHeightStep;
                     }
                     // else we stay flat on the raised block, that's handled by else clause below
+                }
+                // Last tile slope handling: if we're ending on a slope and need to come down
+                else if (isLastTile && thisIsSlope && (currentPathZ - thisBaseZ) >= kPathHeightStep)
+                {
+                    // We're on the last tile, it's a slope, and we're significantly above the base
+                    useZ = currentPathZ - kPathHeightStep;
+                    useSlope = { FootpathSlopeType::sloped, DirectionReverse(slopeDirection) };
+                    currentPathZ -= kPathHeightStep;
                 }
                 else
                 {
