@@ -5774,9 +5774,7 @@ TrackPaintFunction GetTrackPaintFunctionJuniorRCTemplate(TrackElemType trackType
         case TrackElemType::flat:
             return JuniorRCPaintTrackFlat<TSubType>;
         case TrackElemType::endStation:
-            return JuniorRCPaintStation<TSubType>;
         case TrackElemType::beginStation:
-            return JuniorRCPaintStation<TSubType>;
         case TrackElemType::middleStation:
             return JuniorRCPaintStation<TSubType>;
         case TrackElemType::up25:

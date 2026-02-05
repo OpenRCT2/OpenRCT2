@@ -1292,19 +1292,9 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_LEVEL:
                     RideConstructionInvalidateCurrentTrack();
-                    if (_rideConstructionState == RideConstructionState::Front && _previousTrackPitchEnd == TrackPitch::down25)
-                    {
-                        if (_currentlySelectedTrack == TrackCurve::leftSmall)
-                        {
-                            _currentTrackRollEnd = TrackRoll::left;
-                        }
-                        else if (_currentlySelectedTrack == TrackCurve::rightSmall)
-                        {
-                            _currentTrackRollEnd = TrackRoll::right;
-                        }
-                    }
-                    else if (
-                        _rideConstructionState == RideConstructionState::Back && _previousTrackPitchEnd == TrackPitch::up25)
+                    if ((_rideConstructionState == RideConstructionState::Front && _previousTrackPitchEnd == TrackPitch::down25)
+                        || (_rideConstructionState == RideConstructionState::Back
+                            && _previousTrackPitchEnd == TrackPitch::up25))
                     {
                         if (_currentlySelectedTrack == TrackCurve::leftSmall)
                         {

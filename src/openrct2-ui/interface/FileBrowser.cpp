@@ -473,11 +473,7 @@ namespace OpenRCT2::Ui::FileBrowser
         switch (type)
         {
             case LoadSaveType::park:
-                return u8".park";
-
             case LoadSaveType::landscape:
-                return u8".park";
-
             case LoadSaveType::scenario:
                 return u8".park";
 

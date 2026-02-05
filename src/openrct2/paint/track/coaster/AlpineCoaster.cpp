@@ -4359,8 +4359,6 @@ namespace OpenRCT2::AlpineRC
                 PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
-                break;
             case 2:
                 PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
@@ -4466,8 +4464,6 @@ namespace OpenRCT2::AlpineRC
                 PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
-                break;
             case 2:
                 PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
@@ -6789,8 +6785,6 @@ namespace OpenRCT2::AlpineRC
                 PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
-                break;
             case 2:
                 PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
@@ -6900,8 +6894,6 @@ namespace OpenRCT2::AlpineRC
                 PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
-                break;
             case 2:
                 PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
@@ -7006,8 +6998,6 @@ namespace OpenRCT2::AlpineRC
                 PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
-                break;
             case 2:
                 PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;

@@ -748,10 +748,11 @@ namespace OpenRCT2::Ui::Windows
         void WindowFootpathShowFootpathTypesDialog(Widget* widget, bool showQueues)
         {
             auto& objManager = GetContext()->GetObjectManager();
+            auto& activeCheats = getGameState().cheats;
 
             uint32_t numPathTypes = 0;
             // If the game is in sandbox mode, also show paths that are normally restricted to the scenario editor
-            bool showEditorPaths = (gLegacyScene == LegacyScene::scenarioEditor || getGameState().cheats.sandboxMode);
+            bool showEditorPaths = (gLegacyScene == LegacyScene::scenarioEditor || activeCheats.sandboxMode);
 
             _dropdownEntries.clear();
             std::optional<size_t> defaultIndex;
@@ -768,15 +769,13 @@ namespace OpenRCT2::Ui::Windows
                 }
                 // If regular paths can be used as queue, only hide the path if we’re _not_ looking at a queue,
                 // but the path surface is one.
-                if (getGameState().cheats.allowRegularPathAsQueue && !showQueues
-                    && ((pathType->Flags & FOOTPATH_ENTRY_FLAG_IS_QUEUE) != 0))
+                if (activeCheats.allowRegularPathAsQueue && !showQueues && (pathType->Flags & FOOTPATH_ENTRY_FLAG_IS_QUEUE))
                 {
                     continue;
                 }
                 // If the cheat is disabled, hide queues from the regular path view and vice versa.
-                else if (
-                    !getGameState().cheats.allowRegularPathAsQueue
-                    && showQueues != ((pathType->Flags & FOOTPATH_ENTRY_FLAG_IS_QUEUE) != 0))
+                if (!activeCheats.allowRegularPathAsQueue
+                    && showQueues != static_cast<bool>(pathType->Flags & FOOTPATH_ENTRY_FLAG_IS_QUEUE))
                 {
                     continue;
                 }

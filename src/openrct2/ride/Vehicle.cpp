@@ -647,12 +647,8 @@ void Vehicle::UpdateMeasurements()
 
         const auto& ted = GetTrackElementDescriptor(trackElemType);
         auto testingFlags = curRide->testingFlags;
-        if (testingFlags.has(RideTestingFlag::turnLeft) && ted.flags.has(TrackElementFlag::turnLeft))
-        {
-            // 0x800 as this is masked to kCurrentTurnCountMask
-            curRide->turnCountDefault += 0x800;
-        }
-        else if (testingFlags.has(RideTestingFlag::turnRight) && ted.flags.has(TrackElementFlag::turnRight))
+        if ((testingFlags.has(RideTestingFlag::turnLeft) && ted.flags.has(TrackElementFlag::turnLeft))
+            || (testingFlags.has(RideTestingFlag::turnRight) && ted.flags.has(TrackElementFlag::turnRight)))
         {
             // 0x800 as this is masked to kCurrentTurnCountMask
             curRide->turnCountDefault += 0x800;

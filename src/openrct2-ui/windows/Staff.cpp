@@ -885,9 +885,7 @@ namespace OpenRCT2::Ui::Windows
                     widgets[WIDX_COSTUME_BTN].type = WidgetType::empty;
                     OptionsSetCheckboxValues();
                     break;
-                case StaffType::security:
-                    // Security guards don't have an options screen.
-                    break;
+                case StaffType::security: // Security guards don't have an options screen.
                 case StaffType::count:
                     break;
             }

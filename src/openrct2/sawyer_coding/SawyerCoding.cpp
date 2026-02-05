@@ -168,12 +168,11 @@ namespace OpenRCT2::SawyerCoding
 
         if (checksum - 0x1D4C1 == file_checksum)
             return 1; // .TD6
-        else if (checksum - 0x1A67C == file_checksum)
+        if (checksum - 0x1A67C == file_checksum)
             return 1; // .TD4
-        else if (checksum - 0x1A650 == file_checksum)
+        if (checksum - 0x1A650 == file_checksum)
             return 1; // .TD4
-        else
-            return 0;
+        return 0;
     }
 
 #pragma region Decoding

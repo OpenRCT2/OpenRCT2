@@ -183,7 +183,6 @@ namespace OpenRCT2::Scripting
                         getGameState().entities.EntityRemove(entity);
                         break;
                     case EntityType::null:
-                        break;
                     default:
                         break;
                 }

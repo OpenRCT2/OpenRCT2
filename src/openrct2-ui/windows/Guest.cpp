@@ -1085,8 +1085,6 @@ namespace OpenRCT2::Ui::Windows
                         imageId += (currentFrame / 4) & 0xF;
                         break;
                     case SPR_PEEP_LARGE_FACE_VERY_SICK_0:
-                        imageId += (currentFrame / 8) & 0x3;
-                        break;
                     case SPR_PEEP_LARGE_FACE_ANGRY_0:
                         imageId += (currentFrame / 8) & 0x3;
                         break;

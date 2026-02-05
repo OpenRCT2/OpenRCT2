@@ -310,11 +310,7 @@ size_t Ride::getNumPrices() const
         auto rideEntry = getRideEntry();
         if (rideEntry != nullptr)
         {
-            if (lifecycleFlags & RIDE_LIFECYCLE_ON_RIDE_PHOTO)
-            {
-                result++;
-            }
-            else if (rideEntry->shop_item[1] != ShopItem::none)
+            if ((lifecycleFlags & RIDE_LIFECYCLE_ON_RIDE_PHOTO) || rideEntry->shop_item[1] != ShopItem::none)
             {
                 result++;
             }

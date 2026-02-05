@@ -1508,10 +1508,9 @@ static money64 getItemValue(const ShopItemDescriptor& shopItemDescriptor)
 
     if (gameState.weatherCurrent.temperature >= thresholds.warm)
         return shopItemDescriptor.HotValue;
-    else if (gameState.weatherCurrent.temperature <= thresholds.cold)
+    if (gameState.weatherCurrent.temperature <= thresholds.cold)
         return shopItemDescriptor.ColdValue;
-    else
-        return shopItemDescriptor.BaseValue;
+    return shopItemDescriptor.BaseValue;
 }
 
 /** Main logic to decide whether a peep should buy an item in question
@@ -2878,7 +2877,6 @@ static int16_t GuestCalculateRideIntensityNauseaSatisfaction(Guest& guest, const
                 case 1:
                     return -50;
                 case 2:
-                    return -60;
                 case 3:
                     return -60;
             }
@@ -5348,8 +5346,6 @@ void Guest::Update()
                 UpdatePicked();
                 break;
             case PeepState::queuingFront:
-                UpdateRide();
-                break;
             case PeepState::leavingRide:
                 UpdateRide();
                 break;

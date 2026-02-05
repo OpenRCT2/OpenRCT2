@@ -1894,11 +1894,11 @@ static bool TrackDesignPlacePreview(
 
     auto& gameState = getGameState();
     auto& objManager = GetContext()->GetObjectManager();
-    auto entry_index = objManager.GetLoadedObjectEntryIndex(td.trackAndVehicle.vehicleObject);
+    auto entryIndex = objManager.GetLoadedObjectEntryIndex(td.trackAndVehicle.vehicleObject);
 
     RideId rideIndex;
     CommandFlags rideCreateFlags = { CommandFlag::apply, CommandFlag::allowDuringPaused, CommandFlag::noSpend };
-    if (TrackDesignCreateRide(td.trackAndVehicle.rtdIndex, entry_index, rideCreateFlags, &rideIndex) == kMoney64Undefined)
+    if (TrackDesignCreateRide(td.trackAndVehicle.rtdIndex, entryIndex, rideCreateFlags, &rideIndex) == kMoney64Undefined)
     {
         return false;
     }
@@ -1958,11 +1958,7 @@ static bool TrackDesignPlacePreview(
 
     if (res.error == GameActions::Status::ok)
     {
-        if (entry_index == kObjectEntryIndexNull)
-        {
-            gameStateData.setFlag(TrackDesignGameStateFlag::VehicleUnavailable, true);
-        }
-        else if (!RideEntryIsInvented(entry_index) && !getGameState().cheats.ignoreResearchStatus)
+        if (entryIndex == kObjectEntryIndexNull || (!RideEntryIsInvented(entryIndex) && !gameState.cheats.ignoreResearchStatus))
         {
             gameStateData.setFlag(TrackDesignGameStateFlag::VehicleUnavailable, true);
         }

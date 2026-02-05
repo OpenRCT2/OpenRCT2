@@ -169,7 +169,6 @@ static TunnelType GetTunnelDoorsImageStraightFlat(const TrackElement& trackEleme
         case 0:
             return kDoorOpeningInwardsToImage[trackElement.GetDoorAState()];
         case 1:
-            return kDoorOpeningOutwardsToImage[trackElement.GetDoorBState()];
         case 2:
             return kDoorOpeningOutwardsToImage[trackElement.GetDoorBState()];
         case 3:

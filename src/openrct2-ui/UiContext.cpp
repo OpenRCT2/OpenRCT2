@@ -575,8 +575,6 @@ public:
                     }
                     break;
                 case SDL_TEXTEDITING:
-                    _textComposition.HandleMessage(&e);
-                    break;
                 case SDL_TEXTINPUT:
                     _textComposition.HandleMessage(&e);
                     break;

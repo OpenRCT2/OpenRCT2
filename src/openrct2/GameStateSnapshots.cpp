@@ -157,7 +157,6 @@ struct GameStateSnapshot_t
                     reinterpret_cast<SteamParticle&>(sprite).Serialise(ds);
                     break;
                 case EntityType::null:
-                    break;
                 default:
                     break;
             }
@@ -620,7 +619,6 @@ struct GameStateSnapshots final : public IGameStateSnapshots
                         static_cast<const Duck&>(spriteBase.base), static_cast<const Duck&>(spriteCmp.base), changeData);
                     break;
                 case EntityType::null:
-                    break;
                 default:
                     break;
             }

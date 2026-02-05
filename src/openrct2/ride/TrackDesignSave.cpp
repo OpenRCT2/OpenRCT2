@@ -619,9 +619,7 @@ static void TrackDesignSaveShouldSelectNearbySceneryForTile(RideId rideIndex, in
                 switch (tileElement->GetType())
                 {
                     case TileElementType::Path:
-                        if (!tileElement->AsPath()->IsQueue())
-                            interactionType = ViewportInteractionItem::footpath;
-                        else if (tileElement->AsPath()->GetRideIndex() == rideIndex)
+                        if (!tileElement->AsPath()->IsQueue() || tileElement->AsPath()->GetRideIndex() == rideIndex)
                             interactionType = ViewportInteractionItem::footpath;
                         break;
                     case TileElementType::SmallScenery:

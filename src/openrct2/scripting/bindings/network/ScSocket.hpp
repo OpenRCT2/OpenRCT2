@@ -352,12 +352,10 @@ namespace OpenRCT2::Scripting
                         case Network::ReadPacket::success:
                             RaiseOnData(std::string(buffer, bytesRead));
                             break;
-                        case Network::ReadPacket::noData:
-                            break;
-                        case Network::ReadPacket::moreData:
-                            break;
                         case Network::ReadPacket::disconnected:
                             CloseSocket();
+                            break;
+                        default:
                             break;
                     }
                 }

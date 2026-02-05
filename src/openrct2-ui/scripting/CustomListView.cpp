@@ -597,12 +597,7 @@ void CustomListView::Paint(WindowBase* w, RenderTarget& rt, const ScrollArea* sc
                 auto isStriped = IsStriped && (i & 1);
                 auto isHighlighted = (HighlightedCell && itemIndex == HighlightedCell->Row);
                 auto isSelected = (SelectedCell && itemIndex == SelectedCell->Row);
-                if (isSelected)
-                {
-                    Rectangle::filter(
-                        rt, { { rt.x, y }, { rt.x + rt.width, y + (kListRowHeight - 1) } }, FilterPaletteID::paletteDarken2);
-                }
-                else if (isHighlighted)
+                if (isSelected || isHighlighted)
                 {
                     Rectangle::filter(
                         rt, { { rt.x, y }, { rt.x + rt.width, y + (kListRowHeight - 1) } }, FilterPaletteID::paletteDarken2);

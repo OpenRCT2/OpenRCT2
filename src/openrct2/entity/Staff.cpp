@@ -1786,8 +1786,6 @@ void Staff::Update()
                 UpdateAnswering();
                 break;
             case PeepState::fixing:
-                UpdateFixing(stepsToTake);
-                break;
             case PeepState::inspecting:
                 UpdateFixing(stepsToTake);
                 break;

@@ -361,12 +361,18 @@ namespace OpenRCT2
         {
             ReplayRecordData* data = nullptr;
 
-            if (_mode == ReplayMode::PLAYING)
-                data = _currentReplay.get();
-            else if (_mode == ReplayMode::RECORDING)
-                data = _currentRecording.get();
-            else if (_mode == ReplayMode::NORMALISATION)
-                data = _currentRecording.get();
+            switch (_mode)
+            {
+                case ReplayMode::PLAYING:
+                    data = _currentReplay.get();
+                    break;
+                case ReplayMode::RECORDING:
+                case ReplayMode::NORMALISATION:
+                    data = _currentRecording.get();
+                    break;
+                default:
+                    break;
+            }
 
             if (data == nullptr)
                 return false;

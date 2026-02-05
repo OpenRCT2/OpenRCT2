@@ -3325,13 +3325,13 @@ namespace OpenRCT2::TrackMetaData
             case TrackElemType::beginStation:
             case TrackElemType::middleStation:
             case TrackElemType::up25:
-            case TrackElemType::up60: //
+            case TrackElemType::up60:
             case TrackElemType::down25:
-            case TrackElemType::down60: //
+            case TrackElemType::down60:
             case TrackElemType::flatToLeftBank:
             case TrackElemType::flatToRightBank:
             case TrackElemType::leftBankToFlat:
-            case TrackElemType::rightBankToFlat: //
+            case TrackElemType::rightBankToFlat:
             case TrackElemType::leftBank:
             case TrackElemType::rightBank:
             case TrackElemType::towerBase:
@@ -3390,9 +3390,8 @@ namespace OpenRCT2::TrackMetaData
             case TrackElemType::rightQuarterTurn1TileUp90:
             case TrackElemType::leftQuarterTurn1TileDown90:
             case TrackElemType::rightQuarterTurn1TileDown90:
-                return EvaluatorConst<0>;
-            case TrackElemType::flatToUp25:   //
-            case TrackElemType::down25ToFlat: //
+            case TrackElemType::flatToUp25:
+            case TrackElemType::down25ToFlat:
             case TrackElemType::leftBankToUp25:
             case TrackElemType::rightBankToUp25:
             case TrackElemType::down25ToLeftBank:
@@ -3435,9 +3434,8 @@ namespace OpenRCT2::TrackMetaData
             case TrackElemType::diagUp25RightBanked:
             case TrackElemType::diagDown25LeftBanked:
             case TrackElemType::diagDown25RightBanked:
-                return EvaluatorConst<0>;
-            case TrackElemType::up25ToFlat:   //
-            case TrackElemType::flatToDown25: //
+            case TrackElemType::up25ToFlat:
+            case TrackElemType::flatToDown25:
             case TrackElemType::up25ToLeftBank:
             case TrackElemType::up25ToRightBank:
             case TrackElemType::leftBankToDown25:
@@ -3453,18 +3451,16 @@ namespace OpenRCT2::TrackMetaData
             case TrackElemType::rightBankedUp25ToFlat:
             case TrackElemType::flatToLeftBankedDown25:
             case TrackElemType::flatToRightBankedDown25:
-                return EvaluatorConst<0>;
-            case TrackElemType::up25ToUp60:     //
-            case TrackElemType::down60ToDown25: //
+            case TrackElemType::up25ToUp60:
+            case TrackElemType::down60ToDown25:
             case TrackElemType::up25ToUp60Covered:
             case TrackElemType::down60ToDown25Covered:
-                return EvaluatorConst<0>;
-            case TrackElemType::up60ToUp25:     //
-            case TrackElemType::down25ToDown60: //
+            case TrackElemType::up60ToUp25:
+            case TrackElemType::down25ToDown60:
             case TrackElemType::up60ToUp25Covered:
             case TrackElemType::down25ToDown60Covered:
                 return EvaluatorConst<0>;
-            case TrackElemType::leftQuarterTurn5Tiles: //
+            case TrackElemType::leftQuarterTurn5Tiles:
             case TrackElemType::leftQuarterTurn5TilesUp25:
             case TrackElemType::leftQuarterTurn5TilesDown25:
             case TrackElemType::leftTwistDownToUp:
@@ -3476,7 +3472,7 @@ namespace OpenRCT2::TrackMetaData
             case TrackElemType::leftFlyerTwistDown:
             case TrackElemType::leftHeartLineRoll:
                 return EvaluatorConst<98>;
-            case TrackElemType::rightQuarterTurn5Tiles: //
+            case TrackElemType::rightQuarterTurn5Tiles:
             case TrackElemType::rightQuarterTurn5TilesUp25:
             case TrackElemType::rightQuarterTurn5TilesDown25:
             case TrackElemType::rightTwistDownToUp:
@@ -3536,7 +3532,6 @@ namespace OpenRCT2::TrackMetaData
             case TrackElemType::halfLoopUp:
             case TrackElemType::flyerHalfLoopUninvertedUp:
             case TrackElemType::flyerHalfLoopInvertedUp:
-                return EvaluatorConst<0>;
             case TrackElemType::halfLoopDown:
             case TrackElemType::flyerHalfLoopInvertedDown:
             case TrackElemType::flyerHalfLoopUninvertedDown:
@@ -3559,7 +3554,6 @@ namespace OpenRCT2::TrackMetaData
                 return EvaluatorConst<-70>;
             case TrackElemType::flatToUp60:
             case TrackElemType::down60ToFlat:
-                return EvaluatorConst<0>;
             case TrackElemType::up60ToFlat:
             case TrackElemType::flatToDown60:
             case TrackElemType::brakeForDrop:
@@ -3571,23 +3565,18 @@ namespace OpenRCT2::TrackMetaData
             case TrackElemType::rightQuarterTurn1TileDown60:
                 return EvaluatorConst<-88>;
             case TrackElemType::watersplash:
-                return EvaluatorConst<0>;
             case TrackElemType::flatToUp60LongBase:
             case TrackElemType::down60ToFlatLongBase:
             case TrackElemType::diagFlatToUp60LongBase:
             case TrackElemType::diagDown60ToFlatLongBase:
-                return EvaluatorConst<0>;
             case TrackElemType::up60ToFlatLongBase:
             case TrackElemType::flatToDown60LongBase:
             case TrackElemType::diagUp60ToFlatLongBase:
             case TrackElemType::diagFlatToDown60LongBase:
-                return EvaluatorConst<0>;
             case TrackElemType::reverseFreefallSlope:
             case TrackElemType::airThrustVerticalDownToLevel:
-                return EvaluatorConst<0>;
             case TrackElemType::up60ToUp90:
             case TrackElemType::down90ToDown60:
-                return EvaluatorConst<0>;
             case TrackElemType::up90ToUp60:
             case TrackElemType::down60ToDown90:
                 return EvaluatorConst<0>;
@@ -3625,23 +3614,18 @@ namespace OpenRCT2::TrackMetaData
             case TrackElemType::diagRightBankToUp25:
             case TrackElemType::diagDown25ToLeftBank:
             case TrackElemType::diagDown25ToRightBank:
-                return EvaluatorConst<0>;
             case TrackElemType::diagUp25ToFlat:
             case TrackElemType::diagFlatToDown25:
             case TrackElemType::diagUp25ToLeftBank:
             case TrackElemType::diagUp25ToRightBank:
             case TrackElemType::diagLeftBankToDown25:
             case TrackElemType::diagRightBankToDown25:
-                return EvaluatorConst<0>;
             case TrackElemType::diagUp25ToUp60:
             case TrackElemType::diagDown60ToDown25:
-                return EvaluatorConst<0>;
             case TrackElemType::diagUp60ToUp25:
             case TrackElemType::diagDown25ToDown60:
-                return EvaluatorConst<0>;
             case TrackElemType::diagFlatToUp60:
             case TrackElemType::diagDown60ToFlat:
-                return EvaluatorConst<0>;
             case TrackElemType::diagUp60ToFlat:
             case TrackElemType::diagFlatToDown60:
                 return EvaluatorConst<0>;
@@ -3685,22 +3669,16 @@ namespace OpenRCT2::TrackMetaData
                 return EvaluatorConst<-90>;
             case TrackElemType::leftLargeHalfLoopUp:
             case TrackElemType::rightLargeHalfLoopUp:
-                return EvaluatorConst<0>;
             case TrackElemType::leftLargeHalfLoopDown:
             case TrackElemType::rightLargeHalfLoopDown:
-                return EvaluatorConst<0>;
             case TrackElemType::heartLineTransferUp:
-                return EvaluatorConst<0>;
             case TrackElemType::heartLineTransferDown:
-                return EvaluatorConst<0>;
             case TrackElemType::multiDimInvertedFlatToDown90QuarterLoop:
             case TrackElemType::invertedFlatToDown90QuarterLoop:
             case TrackElemType::multiDimFlatToDown90QuarterLoop:
-                return EvaluatorConst<0>;
             case TrackElemType::up90ToInvertedFlatQuarterLoop:
             case TrackElemType::multiDimUp90ToInvertedFlatQuarterLoop:
             case TrackElemType::multiDimInvertedUp90ToFlatQuarterLoop:
-                return EvaluatorConst<0>;
             case TrackElemType::airThrustTopCap:
                 return EvaluatorConst<0>;
             case TrackElemType::leftBankedQuarterTurn3TileUp25:
@@ -3729,13 +3707,13 @@ namespace OpenRCT2::TrackMetaData
             case TrackElemType::beginStation:
             case TrackElemType::middleStation:
             case TrackElemType::up25:
-            case TrackElemType::up60: //
+            case TrackElemType::up60:
             case TrackElemType::down25:
-            case TrackElemType::down60: //
+            case TrackElemType::down60:
             case TrackElemType::flatToLeftBank:
             case TrackElemType::flatToRightBank:
             case TrackElemType::leftBankToFlat:
-            case TrackElemType::rightBankToFlat: //
+            case TrackElemType::rightBankToFlat:
             case TrackElemType::leftBank:
             case TrackElemType::rightBank:
             case TrackElemType::towerBase:
@@ -3815,8 +3793,8 @@ namespace OpenRCT2::TrackMetaData
             case TrackElemType::diagDown25LeftBanked:
             case TrackElemType::diagDown25RightBanked:
                 return EvaluatorConst<0>;
-            case TrackElemType::flatToUp25:   //
-            case TrackElemType::down25ToFlat: //
+            case TrackElemType::flatToUp25:
+            case TrackElemType::down25ToFlat:
             case TrackElemType::leftBankToUp25:
             case TrackElemType::rightBankToUp25:
             case TrackElemType::down25ToLeftBank:
@@ -3832,8 +3810,8 @@ namespace OpenRCT2::TrackMetaData
             case TrackElemType::leftBankedDown25ToFlat:
             case TrackElemType::rightBankedDown25ToFlat:
                 return EvaluatorConst<103>;
-            case TrackElemType::up25ToFlat:   //
-            case TrackElemType::flatToDown25: //
+            case TrackElemType::up25ToFlat:
+            case TrackElemType::flatToDown25:
             case TrackElemType::up25ToLeftBank:
             case TrackElemType::up25ToRightBank:
             case TrackElemType::leftBankToDown25:
@@ -3850,17 +3828,17 @@ namespace OpenRCT2::TrackMetaData
             case TrackElemType::flatToLeftBankedDown25:
             case TrackElemType::flatToRightBankedDown25:
                 return EvaluatorConst<-103>;
-            case TrackElemType::up25ToUp60:     //
-            case TrackElemType::down60ToDown25: //
+            case TrackElemType::up25ToUp60:
+            case TrackElemType::down60ToDown25:
             case TrackElemType::up25ToUp60Covered:
             case TrackElemType::down60ToDown25Covered:
                 return EvaluatorConst<82>;
-            case TrackElemType::up60ToUp25:     //
-            case TrackElemType::down25ToDown60: //
+            case TrackElemType::up60ToUp25:
+            case TrackElemType::down25ToDown60:
             case TrackElemType::up60ToUp25Covered:
             case TrackElemType::down25ToDown60Covered:
                 return EvaluatorConst<-82>;
-            case TrackElemType::leftQuarterTurn5Tiles: //
+            case TrackElemType::leftQuarterTurn5Tiles:
             case TrackElemType::leftQuarterTurn5TilesUp25:
             case TrackElemType::leftQuarterTurn5TilesDown25:
             case TrackElemType::leftTwistDownToUp:
@@ -3871,8 +3849,7 @@ namespace OpenRCT2::TrackMetaData
             case TrackElemType::leftFlyerTwistUp:
             case TrackElemType::leftFlyerTwistDown:
             case TrackElemType::leftHeartLineRoll:
-                return EvaluatorConst<0>;
-            case TrackElemType::rightQuarterTurn5Tiles: //
+            case TrackElemType::rightQuarterTurn5Tiles:
             case TrackElemType::rightQuarterTurn5TilesUp25:
             case TrackElemType::rightQuarterTurn5TilesDown25:
             case TrackElemType::rightTwistDownToUp:
@@ -3889,7 +3866,6 @@ namespace OpenRCT2::TrackMetaData
             case TrackElemType::leftHalfBankedHelixDownLarge:
             case TrackElemType::leftQuarterBankedHelixLargeUp:
             case TrackElemType::leftQuarterBankedHelixLargeDown:
-                return EvaluatorConst<200>;
             case TrackElemType::bankedRightQuarterTurn5Tiles:
             case TrackElemType::rightHalfBankedHelixUpLarge:
             case TrackElemType::rightHalfBankedHelixDownLarge:
@@ -3898,7 +3874,6 @@ namespace OpenRCT2::TrackMetaData
                 return EvaluatorConst<200>;
             case TrackElemType::sBendLeft:
             case TrackElemType::sBendLeftCovered:
-                return EvaluatorConst<0>;
             case TrackElemType::sBendRight:
             case TrackElemType::sBendRightCovered:
                 return EvaluatorConst<0>;
@@ -3910,7 +3885,6 @@ namespace OpenRCT2::TrackMetaData
             case TrackElemType::leftQuarterTurn3TilesDown25:
             case TrackElemType::leftQuarterTurn3TilesCovered:
             case TrackElemType::leftCurvedLiftHill:
-                return EvaluatorConst<0>;
             case TrackElemType::rightQuarterTurn3Tiles:
             case TrackElemType::rightQuarterTurn3TilesUp25:
             case TrackElemType::rightQuarterTurn3TilesDown25:
@@ -3920,13 +3894,11 @@ namespace OpenRCT2::TrackMetaData
             case TrackElemType::leftBankedQuarterTurn3Tiles:
             case TrackElemType::leftHalfBankedHelixUpSmall:
             case TrackElemType::leftHalfBankedHelixDownSmall:
-                return EvaluatorConst<100>;
             case TrackElemType::rightBankedQuarterTurn3Tiles:
             case TrackElemType::rightHalfBankedHelixUpSmall:
             case TrackElemType::rightHalfBankedHelixDownSmall:
                 return EvaluatorConst<100>;
             case TrackElemType::leftQuarterTurn1Tile:
-                return EvaluatorConst<0>;
             case TrackElemType::rightQuarterTurn1Tile:
                 return EvaluatorConst<0>;
             case TrackElemType::halfLoopUp:
@@ -3939,7 +3911,6 @@ namespace OpenRCT2::TrackMetaData
                 return EvaluatorHalfLoopDown;
             case TrackElemType::leftLargeCorkscrewUp:
             case TrackElemType::rightLargeCorkscrewDown:
-                return EvaluatorConst<89>;
             case TrackElemType::rightLargeCorkscrewUp:
             case TrackElemType::leftLargeCorkscrewDown:
                 return EvaluatorConst<89>;
@@ -3947,7 +3918,6 @@ namespace OpenRCT2::TrackMetaData
             case TrackElemType::rightCorkscrewDown:
             case TrackElemType::leftFlyerCorkscrewUp:
             case TrackElemType::rightFlyerCorkscrewDown:
-                return EvaluatorConst<52>;
             case TrackElemType::rightCorkscrewUp:
             case TrackElemType::leftCorkscrewDown:
             case TrackElemType::rightFlyerCorkscrewUp:
@@ -3962,7 +3932,6 @@ namespace OpenRCT2::TrackMetaData
                 return EvaluatorConst<-56>;
             case TrackElemType::leftQuarterTurn1TileUp60:
             case TrackElemType::leftQuarterTurn1TileDown60:
-                return EvaluatorConst<0>;
             case TrackElemType::rightQuarterTurn1TileUp60:
             case TrackElemType::rightQuarterTurn1TileDown60:
                 return EvaluatorConst<0>;
@@ -3991,7 +3960,6 @@ namespace OpenRCT2::TrackMetaData
                 return EvaluatorConst<-110>;
             case TrackElemType::leftEighthToDiag:
             case TrackElemType::leftEighthToOrthogonal:
-                return EvaluatorConst<0>;
             case TrackElemType::rightEighthToDiag:
             case TrackElemType::rightEighthToOrthogonal:
                 return EvaluatorConst<0>;
@@ -4001,7 +3969,6 @@ namespace OpenRCT2::TrackMetaData
             case TrackElemType::leftEighthBankToDiagDown25:
             case TrackElemType::leftEighthBankToOrthogonalUp25:
             case TrackElemType::leftEighthBankToOrthogonalDown25:
-                return EvaluatorConst<270>;
             case TrackElemType::rightEighthBankToDiag:
             case TrackElemType::rightEighthBankToOrthogonal:
             case TrackElemType::rightEighthBankToDiagUp25:
@@ -4053,13 +4020,11 @@ namespace OpenRCT2::TrackMetaData
                 return EvaluatorConst<-60>;
             case TrackElemType::leftBarrelRollUpToDown:
             case TrackElemType::leftBarrelRollDownToUp:
-                return EvaluatorConst<170>;
             case TrackElemType::rightBarrelRollUpToDown:
             case TrackElemType::rightBarrelRollDownToUp:
                 return EvaluatorConst<170>;
             case TrackElemType::leftZeroGRollUp:
             case TrackElemType::rightZeroGRollUp:
-                return EvaluatorConst<250>;
             case TrackElemType::leftZeroGRollDown:
             case TrackElemType::rightZeroGRollDown:
                 return EvaluatorConst<250>;
@@ -4116,13 +4081,10 @@ namespace OpenRCT2::TrackMetaData
                 return EvaluatorConst<-60>;
             case TrackElemType::leftBankedQuarterTurn3TileUp25:
             case TrackElemType::leftBankedQuarterTurn3TileDown25:
-                return EvaluatorConst<200>;
             case TrackElemType::rightBankedQuarterTurn3TileUp25:
             case TrackElemType::rightBankedQuarterTurn3TileDown25:
-                return EvaluatorConst<200>;
             case TrackElemType::leftBankedQuarterTurn5TileUp25:
             case TrackElemType::leftBankedQuarterTurn5TileDown25:
-                return EvaluatorConst<200>;
             case TrackElemType::rightBankedQuarterTurn5TileUp25:
             case TrackElemType::rightBankedQuarterTurn5TileDown25:
                 return EvaluatorConst<200>;

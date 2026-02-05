@@ -167,15 +167,8 @@ namespace OpenRCT2::GameActions
             auto invalidate = false;
             auto rideEntry = GetRideEntryByIndex(ride.subtype);
             const auto& rtd = ride.getRideTypeDescriptor();
-            if (rtd.specialType == RtdSpecialType::toilet && shopItem == ShopItem::admission)
-            {
-                if (ride.price[0] != _price)
-                {
-                    ride.price[0] = _price;
-                    invalidate = true;
-                }
-            }
-            else if (rideEntry != nullptr && rideEntry->shop_item[0] == shopItem)
+            if ((rtd.specialType == RtdSpecialType::toilet && shopItem == ShopItem::admission)
+                || (rideEntry != nullptr && rideEntry->shop_item[0] == shopItem))
             {
                 if (ride.price[0] != _price)
                 {
