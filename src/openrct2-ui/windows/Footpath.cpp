@@ -67,6 +67,38 @@ namespace OpenRCT2::Ui::Windows
     };
 
     /**
+     * Calculate the maximum height of a surface element, including any raised corners
+     * and steep diagonal slopes. Used for path placement on irregular terrain.
+     */
+    static int32_t GetMaxSurfaceHeight(const SurfaceElement& surface)
+    {
+        int32_t z = surface.GetBaseZ();
+        uint8_t slope = surface.GetSlope();
+        if (slope & kTileSlopeRaisedCornersMask)
+            z += kPathHeightStep;
+        if (slope & kTileSlopeDiagonalFlag)
+            z += kPathHeightStep;
+        return z;
+    }
+
+    /**
+     * Resolve an irregular slope placement (e.g., corner-raised terrain) by calculating the
+     * max surface height and treating it as a flat path. This allows placement on uneven terrain.
+     */
+    static void ResolveIrregularPlacement(FootpathPlacementResult& placement, const TileCoordsXY& location)
+    {
+        if (placement.slope.type != FootpathSlopeType::irregular)
+            return;
+
+        auto* surfaceElement = MapGetSurfaceElementAt(location);
+        if (surfaceElement != nullptr)
+        {
+            placement.baseZ = GetMaxSurfaceHeight(*surfaceElement);
+            placement.slope = { FootpathSlopeType::flat, 0 };
+        }
+    }
+
+    /**
      * Stores terrain height information for a "slice" of tiles along the primary drag axis.
      * Used by buildConnectedTileVector to determine path heights and slopes.
      */
@@ -1063,7 +1095,14 @@ namespace OpenRCT2::Ui::Windows
             // Get current map pos and handle key modifier state
             auto mapPos = FootpathGetPlacePositionFromScreenPosition(screenCoords);
             if (!mapPos)
+            {
+                // Cursor is over invalid area (e.g., ride track), clear provisional path
+                // to prevent placing at the last valid position when clicking
+                gMapSelectFlags.unset(MapSelectFlag::enable);
+                FootpathUpdateProvisional();
+                _provisionalFootpath.tiles.clear();
                 return;
+            }
 
             // Check for change
             if (_provisionalFootpath.flags.has(ProvisionalPathFlag::placed) && _provisionalFootpath.positionA == mapPos
@@ -1085,8 +1124,11 @@ namespace OpenRCT2::Ui::Windows
             {
                 gMapSelectFlags.unset(MapSelectFlag::enable);
                 FootpathUpdateProvisional();
+                _provisionalFootpath.tiles.clear();
                 return;
             }
+
+            ResolveIrregularPlacement(placement, TileCoordsXY(*mapPos));
 
             // Set provisional path
             auto pathType = gFootpathSelection.getSelectedSurface();
@@ -1112,7 +1154,10 @@ namespace OpenRCT2::Ui::Windows
                 {
                     FootpathPlacementResult placement = { baseZ, {} };
                     if (baseZ == 0)
+                    {
                         placement = FootpathGetOnTerrainPlacement(TileCoordsXY(CoordsXY(x, y)));
+                        ResolveIrregularPlacement(placement, TileCoordsXY(CoordsXY(x, y)));
+                    }
 
                     auto calculatedLocation = CoordsXYZ(x, y, placement.baseZ);
                     tiles.push_back({ calculatedLocation, placement.slope });
@@ -1211,20 +1256,16 @@ namespace OpenRCT2::Ui::Windows
                     if (surfaceElement != nullptr)
                     {
                         int32_t base = surfaceElement->GetBaseZ();
-                        int32_t top = base;
-                        uint8_t slope = surfaceElement->GetSlope();
-
-                        // Add height for any raised corners
-                        if (slope & kTileSlopeRaisedCornersMask)
-                            top += kPathHeightStep;
-                        // Add another height step for steep diagonal slopes
-                        if (slope & kTileSlopeDiagonalFlag)
-                            top += kPathHeightStep;
+                        int32_t top = GetMaxSurfaceHeight(*surfaceElement);
 
                         sliceBaseZ = std::max(sliceBaseZ, base);
                         sliceMaxZ = std::max(sliceMaxZ, top);
                     }
                 }
+
+                // Skip slices where no valid surface was found
+                if (sliceBaseZ == INT32_MIN)
+                    continue;
 
                 slices.push_back({ primary, sliceBaseZ, sliceMaxZ });
             }
@@ -1235,22 +1276,22 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // PHASE 2: Detect and filter out obstacles (sudden height spikes)
-            for (size_t i = 0; i < slices.size(); i++)
+            if (slices.size() > 1)
             {
-                if (slices.size() == 1)
-                    continue;
-
-                int32_t prevZ = (i > 0) ? slices[i - 1].maxZ : slices[1].maxZ;
-                int32_t nextZ = (i + 1 < slices.size()) ? slices[i + 1].maxZ : slices[i - 1].maxZ;
-
-                bool spikeFromPrev = (slices[i].maxZ - prevZ) > kPathHeightStep;
-                bool spikeFromNext = (slices[i].maxZ - nextZ) > kPathHeightStep;
-
-                if (spikeFromPrev && spikeFromNext)
+                for (size_t i = 0; i < slices.size(); i++)
                 {
-                    int32_t newZ = std::min(prevZ, nextZ);
-                    slices[i].maxZ = newZ;
-                    slices[i].baseZ = std::min(slices[i].baseZ, newZ);
+                    int32_t prevZ = (i > 0) ? slices[i - 1].maxZ : slices[1].maxZ;
+                    int32_t nextZ = (i + 1 < slices.size()) ? slices[i + 1].maxZ : slices[i - 1].maxZ;
+
+                    bool spikeFromPrev = (slices[i].maxZ - prevZ) > kPathHeightStep;
+                    bool spikeFromNext = (slices[i].maxZ - nextZ) > kPathHeightStep;
+
+                    if (spikeFromPrev && spikeFromNext)
+                    {
+                        int32_t newZ = std::min(prevZ, nextZ);
+                        slices[i].maxZ = newZ;
+                        slices[i].baseZ = std::min(slices[i].baseZ, newZ);
+                    }
                 }
             }
 
@@ -1258,12 +1299,26 @@ namespace OpenRCT2::Ui::Windows
             // I noticed that terrain slopes have maxZ > baseZ, flat raised areas have maxZ == baseZ
             // Terrain slope: slope up ON the tile, it has raised corners
             // Raised block: slope up BEFORE the tile. We look ahead
+            int32_t secondaryCount = (secondaryEnd - secondaryStart) / kCoordsXYStep + 1;
+            result.reserve(slices.size() * secondaryCount);
 
             // Determine initial height based on first tile and its immediate neighbor only.
             // When the first tile is a slope and we're heading upward, start at baseZ to detect it.
+            // For steep diagonal slopes (2 height steps), start at the midpoint since a path
+            // can only slope one step at a time.
             bool firstTileIsSlope = (slices[0].maxZ - slices[0].baseZ) >= kPathHeightStep;
-            bool nextTileIsHigher = (slices.size() > 1) && (slices[1].maxZ > slices[0].maxZ);
-            int32_t currentPathZ = (firstTileIsSlope && nextTileIsHigher) ? slices[0].baseZ : slices[0].maxZ;
+            bool firstTileIsSteep = (slices[0].maxZ - slices[0].baseZ) >= 2 * kPathHeightStep;
+            bool nextTileIsHigher = (slices.size() > 1) && (slices[1].maxZ >= slices[0].maxZ);
+            int32_t currentPathZ;
+            if (firstTileIsSlope && nextTileIsHigher)
+                currentPathZ = firstTileIsSteep ? slices[0].baseZ + kPathHeightStep : slices[0].baseZ;
+            else
+                currentPathZ = slices[0].maxZ;
+
+            // Track if we just went up/down a slope (to distinguish landing from going down,
+            // and to continue descent on diagonal hill edges)
+            bool justWentUp = false;
+            bool justWentDown = false;
 
             for (size_t i = 0; i < slices.size(); i++)
             {
@@ -1288,12 +1343,16 @@ namespace OpenRCT2::Ui::Windows
                     // Current tile is a terrain slope above us, so we slope up HERE
                     useSlope = { FootpathSlopeType::sloped, slopeDirection };
                     currentPathZ += kPathHeightStep;
+                    justWentUp = true;
+                    justWentDown = false;
                 }
                 else if (nextIsRaisedBlock && (nextBaseZ - currentPathZ) >= kPathHeightStep)
                 {
                     // Next tile is a raised block, so we slope up NOW but before the block
                     useSlope = { FootpathSlopeType::sloped, slopeDirection };
                     currentPathZ += kPathHeightStep;
+                    justWentUp = true;
+                    justWentDown = false;
                 }
                 // Going DOWN logic
                 // On terrain slopes (thisMaxZ > thisBaseZ) we go down ON the slope tile
@@ -1309,22 +1368,91 @@ namespace OpenRCT2::Ui::Windows
                         useZ = currentPathZ - kPathHeightStep;
                         useSlope = { FootpathSlopeType::sloped, DirectionReverse(slopeDirection) };
                         currentPathZ -= kPathHeightStep;
+                        justWentDown = true;
                     }
-                    // else we stay flat on the raised block, that's handled by else clause below
+                    else
+                    {
+                        justWentDown = false;
+                    }
+                    justWentUp = false;
                 }
                 // Last tile slope handling: if we're ending on a slope and need to come down
-                else if (isLastTile && thisIsSlope && (currentPathZ - thisBaseZ) >= kPathHeightStep)
+                // Only go down if we didn't just come UP (which would mean this is a landing tile)
+                // Use terrain slope direction check OR continuation of a descent (justWentDown)
+                else if (isLastTile && thisIsSlope && !justWentUp && currentPathZ >= thisMaxZ)
                 {
-                    // We're on the last tile, it's a slope, and we're significantly above the base
-                    useZ = currentPathZ - kPathHeightStep;
-                    useSlope = { FootpathSlopeType::sloped, DirectionReverse(slopeDirection) };
-                    currentPathZ -= kPathHeightStep;
+                    bool shouldSlopeDown = false;
+
+                    // If we were already descending, continue the descent
+                    // This handles diagonal hill edges where terrain slope direction is oblique
+                    if (justWentDown)
+                    {
+                        shouldSlopeDown = true;
+                    }
+                    else
+                    {
+                        // Check terrain slope direction for cases where descent starts on the last tile
+                        CoordsXY tilePos = primaryIsX ? CoordsXY{ slices[i].primaryCoord, secondaryStart }
+                                                      : CoordsXY{ secondaryStart, slices[i].primaryCoord };
+                        auto* surfaceElement = MapGetSurfaceElementAt(TileCoordsXY(tilePos));
+
+                        if (surfaceElement != nullptr)
+                        {
+                            uint8_t slope = surfaceElement->GetSlope();
+                            uint8_t corners = slope & kTileSlopeRaisedCornersMask;
+                            bool isDiagonal = (slope & kTileSlopeDiagonalFlag) != 0;
+
+                            if (isDiagonal)
+                            {
+                                // Diagonal slope: 3 corners up, 1 corner down
+                                // The down corner indicates the direction the slope descends toward
+                                Direction downDirection = TILE_ELEMENT_DIRECTION_WEST;
+                                if (corners == kTileSlopeNCornerDown)
+                                    downDirection = TILE_ELEMENT_DIRECTION_NORTH;
+                                else if (corners == kTileSlopeECornerDown)
+                                    downDirection = TILE_ELEMENT_DIRECTION_EAST;
+                                else if (corners == kTileSlopeSCornerDown)
+                                    downDirection = TILE_ELEMENT_DIRECTION_SOUTH;
+                                else if (corners == kTileSlopeWCornerDown)
+                                    downDirection = TILE_ELEMENT_DIRECTION_WEST;
+
+                                // If traveling in the down direction, we're going down
+                                if (downDirection == slopeDirection)
+                                    shouldSlopeDown = true;
+                            }
+                            else
+                            {
+                                // Regular slope: use FootpathGetOnTerrainPlacement
+                                auto terrainPlacement = FootpathGetOnTerrainPlacement(*surfaceElement);
+                                // Terrain slopes UP in terrainPlacement.slope.direction
+                                // If terrain slopes UP opposite to our travel, we're going DOWN
+                                if (terrainPlacement.slope.type == FootpathSlopeType::sloped
+                                    && terrainPlacement.slope.direction == DirectionReverse(slopeDirection))
+                                {
+                                    shouldSlopeDown = true;
+                                }
+                            }
+                        }
+                    }
+
+                    if (shouldSlopeDown)
+                    {
+                        useZ = currentPathZ - kPathHeightStep;
+                        useSlope = { FootpathSlopeType::sloped, DirectionReverse(slopeDirection) };
+                        currentPathZ -= kPathHeightStep;
+                    }
+                    // Otherwise: terrain slopes in our direction (we climbed up) or perpendicular (edge)
+                    // Stay flat in these cases
+                    justWentUp = false;
+                    justWentDown = false;
                 }
                 else
                 {
                     // Flat, match current terrain height
                     useZ = thisMaxZ;
                     currentPathZ = thisMaxZ;
+                    justWentUp = false;
+                    justWentDown = false;
                 }
 
                 // Add tiles for this slice
@@ -1343,9 +1471,15 @@ namespace OpenRCT2::Ui::Windows
         {
             gMapSelectFlags.unset(MapSelectFlag::enableArrow);
 
+            // Calculate expected tile count based on range
+            int32_t rangeXTiles = (range.GetX2() - range.GetX1()) / kCoordsXYStep + 1;
+            int32_t rangeYTiles = (range.GetY2() - range.GetY1()) / kCoordsXYStep + 1;
+            size_t expectedTileCount = static_cast<size_t>(rangeXTiles * rangeYTiles);
+
             // Check for change
             if (_provisionalFootpath.flags.has(ProvisionalPathFlag::placed) && range.Point1 == _provisionalFootpath.positionA
-                && range.Point2 == _provisionalFootpath.positionB && baseZ == _provisionalFootpath.startZ)
+                && range.Point2 == _provisionalFootpath.positionB && baseZ == _provisionalFootpath.startZ
+                && _provisionalFootpath.tiles.size() == expectedTileCount)
             {
                 return;
             }
@@ -1362,6 +1496,7 @@ namespace OpenRCT2::Ui::Windows
             // When Shift or Ctrl is pressed, fall back to the original behavior.
             std::vector<ProvisionalTile> tiles;
             bool isSingleTile = (range.Point1 == range.Point2);
+
             if (baseZ == 0 && !_footpathPlaceShiftState && !_footpathPlaceCtrlState && !isSingleTile)
             {
                 tiles = buildConnectedTileVector(range, _dragStartPos);
@@ -1491,7 +1626,8 @@ namespace OpenRCT2::Ui::Windows
             }
 
             setMapSelectRange({ _dragStartPos, correctedPos });
-            WindowFootpathSetProvisionalPathDragArea(getMapSelectRange(), _footpathPlaceZ);
+            auto actualRange = getMapSelectRange();
+            WindowFootpathSetProvisionalPathDragArea(actualRange, _footpathPlaceZ);
         }
 
         void WindowFootpathPlaceDragAreaHover(const ScreenCoordsXY& screenCoords)
@@ -2262,6 +2398,12 @@ namespace OpenRCT2::Ui::Windows
             {
                 ViewportSetVisibility(ViewportVisibility::undergroundViewOff);
             }
+        }
+        else
+        {
+            // Clear stale tile data to prevent placing paths at old positions
+            // when clicking on invalid locations (e.g., blocked by clearances)
+            _provisionalFootpath.tiles.clear();
         }
 
         if (!isToolActive(WindowClass::scenery))
