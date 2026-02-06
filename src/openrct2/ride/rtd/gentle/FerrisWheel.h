@@ -60,7 +60,7 @@ constexpr RideTypeDescriptor FerrisWheelRTD =
         RatingsCalculationType::FlatRide,
         { RideRating::make(0, 60), RideRating::make(0, 25), RideRating::make(0, 30) },
         16,
-        0,
+        kDynamicRideShelterRating,
         false,
         {
             { RatingsModifierType::BonusRotations,        0,                25, 25, 25 },
