@@ -41300,14 +41300,14 @@
     },
     {
         "path": "track/bm_invert/barrel_roll_left_1_1.png",
-        "x": -7,
-        "y": 12,
+        "x": -4,
+        "y": 13,
         "palette": "keep"
     },
     {
         "path": "track/bm_invert/barrel_roll_left_1_2.png",
         "x": -24,
-        "y": 4,
+        "y": 5,
         "palette": "keep"
     },
     {
@@ -41319,7 +41319,7 @@
     {
         "path": "track/bm_invert/barrel_roll_left_1_4.png",
         "x": -34,
-        "y": -1,
+        "y": -2,
         "palette": "keep"
     },
     {
@@ -41444,26 +41444,26 @@
     },
     {
         "path": "track/bm_invert/barrel_roll_right_1_1.png",
-        "x": -8,
-        "y": -10,
+        "x": -19,
+        "y": -11,
         "palette": "keep"
     },
     {
         "path": "track/bm_invert/barrel_roll_right_1_2.png",
         "x": -26,
-        "y": -11,
+        "y": -10,
         "palette": "keep"
     },
     {
         "path": "track/bm_invert/barrel_roll_right_1_3.png",
-        "x": -27,
+        "x": -24,
         "y": -14,
         "palette": "keep"
     },
     {
         "path": "track/bm_invert/barrel_roll_right_1_4.png",
         "x": -28,
-        "y": -14,
+        "y": -13,
         "palette": "keep"
     },
     {
@@ -41691,7 +41691,7 @@
     {
         "path": "track/bm_invert/steep_to_flat_1_2.png",
         "x": -26,
-        "y": -29,
+        "y": -28,
         "palette": "keep"
     },
     {
@@ -41702,8 +41702,8 @@
     },
     {
         "path": "track/bm_invert/steep_to_flat_1_4.png",
-        "x": -27,
-        "y": -14,
+        "x": -26,
+        "y": -13,
         "palette": "keep"
     },
     {
@@ -41840,14 +41840,14 @@
     },
     {
         "path": "track/bm_invert/flat_to_steep_diag_4_2.png",
-        "x": -12,
+        "x": -13,
         "y": -48,
         "palette": "keep"
     },
     {
         "path": "track/bm_invert/flat_to_steep_diag_4_3.png",
-        "x": -12,
-        "y": -84,
+        "x": -13,
+        "y": -83,
         "palette": "keep"
     },
     {
@@ -41906,13 +41906,13 @@
     },
     {
         "path": "track/bm_invert/steep_to_flat_diag_4_1.png",
-        "x": -12,
+        "x": -13,
         "y": -32,
         "palette": "keep"
     },
     {
         "path": "track/bm_invert/steep_to_flat_diag_4_2.png",
-        "x": -12,
+        "x": -13,
         "y": -72,
         "palette": "keep"
     },
@@ -42122,14 +42122,14 @@
     },
     {
         "path": "track/bm_invert/large_corkscrew_right_1_2.png",
-        "x": -26,
-        "y": -23,
+        "x": -25,
+        "y": -22,
         "palette": "keep"
     },
     {
         "path": "track/bm_invert/large_corkscrew_right_1_3.png",
         "x": -22,
-        "y": -7,
+        "y": -6,
         "palette": "keep"
     },
     {
@@ -43047,12 +43047,12 @@
     {
         "path": "track/bm_invert/dive_loop_45_left_2_2.png",
         "x": -10,
-        "y": -24,
+        "y": -23,
         "palette": "keep"
     },
     {
         "path": "track/bm_invert/dive_loop_45_left_2_3.png",
-        "x": -20,
+        "x": -22,
         "y": -10,
         "palette": "keep"
     },
@@ -43142,8 +43142,8 @@
     },
     {
         "path": "track/bm_invert/dive_loop_45_right_2_2.png",
-        "x": -31,
-        "y": -24,
+        "x": -28,
+        "y": -23,
         "palette": "keep"
     },
     {
@@ -43184,7 +43184,7 @@
     },
     {
         "path": "track/bm_invert/dive_loop_45_right_4_1.png",
-        "x": -12,
+        "x": -13,
         "y": -32,
         "palette": "keep"
     },
@@ -43245,7 +43245,7 @@
     {
         "path": "track/bm_invert/small_steep_to_flat_1.png",
         "x": -26,
-        "y": -30,
+        "y": -29,
         "palette": "keep"
     },
     {
@@ -43298,8 +43298,8 @@
     },
     {
         "path": "track/bm_invert/small_flat_to_steep_diag_4.png",
-        "x": -12,
-        "y": -28,
+        "x": -13,
+        "y": -27,
         "palette": "keep"
     },
     {
@@ -43322,7 +43322,7 @@
     },
     {
         "path": "track/bm_invert/small_steep_to_flat_diag_4.png",
-        "x": -12,
+        "x": -13,
         "y": -36,
         "palette": "keep"
     },
