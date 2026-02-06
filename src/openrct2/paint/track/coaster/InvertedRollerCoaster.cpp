@@ -16168,10 +16168,10 @@ static void InvertedRCTrackLeftLargeZeroGRollUp(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BM_INVERT_LARGE_ZERO_G_ROLL + 1)),
-                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 4, height }, { 32, 2, 92 } });
+                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 4, height + 11 }, { 26, 2, 81 }});
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BM_INVERT_LARGE_ZERO_G_ROLL + 2)),
-                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 4, height }, { 32, 2, 92 } });
+                        { 0, 0, height + kInvertedSpriteOffset }, {  { 0, 4, height + 93}, { 26, 20, 1 } });
 
                     break;
                 case 1:
