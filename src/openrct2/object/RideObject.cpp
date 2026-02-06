@@ -873,9 +873,6 @@ namespace OpenRCT2
                 { "isWaterRide", CarEntryFlag::isWaterRide },
                 { "isGoKart", CarEntryFlag::isGoKart },
                 { "useDodgemCarPlacement", CarEntryFlag::useDodgemCarPlacement },
-
-                // Obsolete flag, only used on Boat Hire. Remaining usages have not yet been updated as of 2022-07-11.
-                // TODO: Is this comment outdated?
                 { "VEHICLE_ENTRY_FLAG_11", CarEntryFlag::use16RotationFrames },
             });
         if (Json::GetBoolean(jCar["hasBaseColour"], true))
