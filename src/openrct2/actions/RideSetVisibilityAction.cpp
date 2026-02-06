@@ -57,11 +57,13 @@ namespace OpenRCT2::GameActions
         {
             for (int32_t x = 1; x <= gameState.mapSize.x; x++)
             {
-                for (auto* trackElement : TileElementsView<TrackElement>(TileCoordsXY{ x, y }))
+                const TileCoordsXY tileCoords{ x, y };
+                for (auto* trackElement : TileElementsView<TrackElement>(tileCoords))
                 {
                     if (trackElement->GetRideIndex() == _rideIndex)
                     {
                         trackElement->SetInvisible(_visibility == RideSetVisibilityType::invisible);
+                        MapInvalidateTileFull(tileCoords.ToCoordsXY());
                     }
                 }
             }
