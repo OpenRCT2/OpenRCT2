@@ -6772,7 +6772,7 @@ static void InvertedRCTrackLeftEighthDiveLoopUpToOrthogonal(
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BM_INVERT_DIVE_LOOP + 12)),
-                        { -16, -16, height + kInvertedSpriteOffset }, { { 0, 0, height + 88 }, { 32, 32, 1 } });
+                        { -16, -16, height + kInvertedSpriteOffset }, { { 0, 0, height + 88 }, { 10, 10, 1 } });
                     break;
             }
 
@@ -15562,7 +15562,7 @@ static void InvertedRCTrackLeftMediumHalfLoopUp(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_MEDIUM_HALF_LOOP + 14),
-                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 0, height + 32 }, { 30, 14, 2 } });
+                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 20, height + 32 + 10 }, { 30, 10, 2 } });
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::centre, 15, height + kInvertedSpriteOffset, session.SupportColours);
                     break;
