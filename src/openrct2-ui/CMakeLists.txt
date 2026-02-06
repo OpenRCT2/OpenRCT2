@@ -235,14 +235,12 @@ if(MACOS_BUNDLE)
     set(OBJECTS_DIR ${CMAKE_BINARY_DIR}/object)
     set(TITLE_SEQUENCE_DIR ${CMAKE_BINARY_DIR}/sequence)
     download_openrct2_zip(
-        ZIP_VERSION ${OBJECTS_VERSION}
         DOWNLOAD_DIR ${OBJECTS_DIR}
         ZIP_URL ${OBJECTS_URL}
         SHA256 ${OBJECTS_SHA256}
     )
 
     download_openrct2_zip(
-        ZIP_VERSION ${TITLE_SEQUENCE_VERSION}
         DOWNLOAD_DIR ${TITLE_SEQUENCE_DIR}
         ZIP_URL ${TITLE_SEQUENCE_URL}
         SHA256 ${TITLE_SEQUENCE_SHA256}
@@ -251,13 +249,11 @@ if(MACOS_BUNDLE)
     # Download opensfx and openmsx
     set(ASSET_PACK_DIR ${CMAKE_BINARY_DIR}/assetpack)
     download_openrct2_zip(
-        ZIP_VERSION ${OPENSFX_VERSION}
         DOWNLOAD_DIR ${CMAKE_BINARY_DIR}
         ZIP_URL ${OPENSFX_URL}
         SHA256 ${OPENSFX_SHA256}
     )
     download_openrct2_zip(
-        ZIP_VERSION ${OPENMSX_VERSION}
         DOWNLOAD_DIR ${CMAKE_BINARY_DIR}
         ZIP_URL ${OPENMSX_URL}
         SHA256 ${OPENMSX_SHA256}
