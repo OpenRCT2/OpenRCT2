@@ -20010,6 +20010,87 @@ TrackPaintFunction GetTrackPaintFunctionInvertedRC(TrackElemType trackType)
         case TrackElemType::rightBankedDown25ToFlat:
             return InvertedRCTrackRightBanked25DegDownToFlat;
 
+        case TrackElemType::up90:
+            return InvertedRCTrack90DegUp;
+        case TrackElemType::down90:
+            return InvertedRCTrack90DegDown;
+        case TrackElemType::up60ToUp90:
+            return InvertedRCTrack60DegUpTo90DegUp;
+        case TrackElemType::down90ToDown60:
+            return InvertedRCTrack90DegDownTo60DegDown;
+        case TrackElemType::up90ToUp60:
+            return InvertedRCTrack90DegUpTo60DegUp;
+        case TrackElemType::down60ToDown90:
+            return InvertedRCTrack60DegDownTo90DegDown;
+
+        case TrackElemType::leftBarrelRollUpToDown:
+            return InvertedRCTrackLeftBarrelRollUpToDown;
+        case TrackElemType::rightBarrelRollUpToDown:
+            return InvertedRCTrackRightBarrelRollUpToDown;
+        case TrackElemType::leftBarrelRollDownToUp:
+            return InvertedRCTrackLeftBarrelRollDownToUp;
+        case TrackElemType::rightBarrelRollDownToUp:
+            return InvertedRCTrackRightBarrelRollDownToUp;
+
+        case TrackElemType::invertedFlatToDown90QuarterLoop:
+            return InvertedRCTrackInvertedFlatTo90DegQuarterLoopDown;
+        case TrackElemType::up90ToInvertedFlatQuarterLoop:
+            return InvertedRCTrack90DegToInvertedFlatQuarterLoopUp;
+
+        case TrackElemType::leftBankToLeftQuarterTurn3TilesUp25:
+            return InvertedRCTrackLeftBankToLeftQuarterTurn3Tile25DegUp;
+        case TrackElemType::rightBankToRightQuarterTurn3TilesUp25:
+            return InvertedRCTrackRightBankToRightQuarterTurn3Tile25DegUp;
+        case TrackElemType::leftQuarterTurn3TilesDown25ToLeftBank:
+            return InvertedRCTrackLeftQuarterTurn3Tile25DegDownToLeftBank;
+        case TrackElemType::rightQuarterTurn3TilesDown25ToRightBank:
+            return InvertedRCTrackRightQuarterTurn3Tile25DegDownToRightBank;
+
+        case TrackElemType::flatToUp60LongBase:
+            return InvertedRCTrackFlatTo60DegUpLongBase;
+        case TrackElemType::up60ToFlatLongBase:
+            return InvertedRCTrack60DegUpToFlatLongBase;
+        case TrackElemType::down60ToFlatLongBase:
+            return InvertedRCTrack60DegDownToFlatLongBase;
+        case TrackElemType::flatToDown60LongBase:
+            return InvertedRCTrackFlatTo60DegDownLongBase;
+
+        case TrackElemType::diagFlatToUp60LongBase:
+            return InvertedRCTrackDiagFlatTo60DegUpLongBase;
+        case TrackElemType::diagUp60ToFlatLongBase:
+            return InvertedRCTrackDiag60DegUpToFlatLongBase;
+        case TrackElemType::diagFlatToDown60LongBase:
+            return InvertedRCTrackDiagFlatTo60DegDownLongBase;
+        case TrackElemType::diagDown60ToFlatLongBase:
+            return InvertedRCTrackDiag60DegDownToFlatLongBase;
+
+        case TrackElemType::flatToUp60:
+            return InvertedRCTrackFlatTo60DegUp;
+        case TrackElemType::up60ToFlat:
+            return InvertedRCTrack60DegUpToFlat;
+        case TrackElemType::flatToDown60:
+            return InvertedRCTrackFlatTo60DegDown;
+        case TrackElemType::down60ToFlat:
+            return InvertedRCTrack60DegDownToFlat;
+        case TrackElemType::diagFlatToUp60:
+            return InvertedRCTrackDiagFlatTo60DegUp;
+        case TrackElemType::diagUp60ToFlat:
+            return InvertedRCTrackDiag60DegUpToFlat;
+        case TrackElemType::diagFlatToDown60:
+            return InvertedRCTrackDiagFlatTo60DegDown;
+        case TrackElemType::diagDown60ToFlat:
+            return InvertedRCTrackDiag60DegDownToFlat;
+
+        // Medium half loops
+        case TrackElemType::leftMediumHalfLoopUp:
+            return InvertedRCTrackLeftMediumHalfLoopUp;
+        case TrackElemType::rightMediumHalfLoopUp:
+            return InvertedRCTrackRightMediumHalfLoopUp;
+        case TrackElemType::leftMediumHalfLoopDown:
+            return InvertedRCTrackLeftMediumHalfLoopDown;
+        case TrackElemType::rightMediumHalfLoopDown:
+            return InvertedRCTrackRightMediumHalfLoopDown;
+
         case TrackElemType::diagBrakes:
         case TrackElemType::diagBlockBrakes:
             return InvertedRCTrackDiagBrakes;
