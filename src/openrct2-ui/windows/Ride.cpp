@@ -3049,7 +3049,8 @@ namespace OpenRCT2::Ui::Windows
                     y -= (carEntry.spacing / 2) / 17432;
                 }
 
-                if (ride->getRideTypeDescriptor().flags.has(RtdFlag::layeredVehiclePreview))
+                if (ride->getRideTypeDescriptor().flags.has(RtdFlag::layeredVehiclePreview)
+                    && (nextSpriteToDraw - trainCarImages) >= 2)
                 {
                     VehicleDrawInfo tmp = *(nextSpriteToDraw - 1);
                     *(nextSpriteToDraw - 1) = *(nextSpriteToDraw - 2);

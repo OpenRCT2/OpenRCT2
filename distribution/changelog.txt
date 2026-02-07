@@ -1012,6 +1012,7 @@
 - Fix: [#20099] Some scrollbar is glitched or have incorrect size when open window for the first time.
 - Fix: [#20104] [Plugin] Some network APIs use player index and group index.
 - Fix: [#20134] Grass length being updated for tiles in the void, causing unneccesary drawing operations.
+- Fix: [#25961] Fix crash when rendering malformed vehicles in the ride window.
 
 0.4.4 (2023-03-28)
 ------------------------------------------------------------------------
