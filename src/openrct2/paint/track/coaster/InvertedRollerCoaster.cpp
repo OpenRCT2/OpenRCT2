@@ -11867,7 +11867,7 @@ static void InvertedRCTrackLeftMediumHalfLoopUp(
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_MEDIUM_HALF_LOOP + 8),
-                        { 0, 0, height + kInvertedSpriteOffset }, { { 15, 1, height + 100 }, { 30, 1, 50 } });
+                        { 0, 0, height + kInvertedSpriteOffset }, { { 1, 1, height + 100 }, { 30, 1, 50 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -12066,7 +12066,7 @@ static void InvertedRCTrackRightMediumHalfLoopUp(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_MEDIUM_HALF_LOOP + 33),
-                        { 0, 0, height + kInvertedSpriteOffset }, { { -16, -16, height + 100 }, { 30, 1, 50 } });
+                        { 0, 0, height + kInvertedSpriteOffset }, { { 1, 1, height + 100 }, { 30, 1, 50 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -12111,7 +12111,8 @@ static void InvertedRCTrackRightMediumHalfLoopUp(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_MEDIUM_HALF_LOOP + 34),
-                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 16, height + 38 }, { 30, 15, 2 } });
+                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 16, height + 32 }, { 30, 14, 2 }});
+                        
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::centre, 15, height + 24, session.SupportColours);
                     break;
