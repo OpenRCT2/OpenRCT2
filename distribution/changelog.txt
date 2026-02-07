@@ -4,6 +4,7 @@
 - Improved: [#25941] The command line sprite build command is now faster.
 - Fix: [#25237] Wrong colours on the Knight costume.
 - Fix: [#25910] Folders starting with numbers are sorted incorrectly (e.g. 1, 10, 2 instead of 1, 2, 10).
+- Fix: [#25954] Guests display hats, balloons, and umbrellas while puking.
 
 0.4.31 (2026-02-01)
 ------------------------------------------------------------------------

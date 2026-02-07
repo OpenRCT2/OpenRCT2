@@ -44,8 +44,9 @@ void PaintGuest(PaintSession& session, const Guest& guest, int32_t orientation)
 void PaintGuestAccesories(
     PaintSession& session, const Guest& guest, uint8_t imageOffset, PeepAnimationType actionAnimationGroup, Direction direction)
 {
-    // Can't display any accessories whilst drowning or clapping
-    if (guest.Action == PeepActionType::drowning || guest.Action == PeepActionType::clap)
+    // Can't display any accessories whilst drowning, clapping, or throwing up
+    if (guest.Action == PeepActionType::drowning || guest.Action == PeepActionType::clap
+        || guest.Action == PeepActionType::throwUp)
         return;
 
     // There are only 6 walking frames available for each item,
