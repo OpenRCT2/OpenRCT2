@@ -6,7 +6,7 @@
 - Fix: [#25712, #25727] Crash during startup from window list race condition.
 - Fix: [#25910] Folders starting with numbers are sorted incorrectly (e.g. 1, 10, 2 instead of 1, 2, 10).
 - Fix: [#25954] Guests display hats, balloons, and umbrellas while puking.
-- Fix: [#25978] Frozen peeps start clapping when the scenario is won
+- Fix: [#25978] Frozen peeps start clapping when the scenario is won.
 
 0.4.31 (2026-02-01)
 ------------------------------------------------------------------------
