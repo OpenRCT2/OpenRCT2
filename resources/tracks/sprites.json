@@ -41336,7 +41336,7 @@
     },
     {
         "path": "track/bm_invert/barrel_roll_left_4_1.png",
-        "x": -14,
+        "x": -4,
         "y": -11,
         "palette": "keep"
     },
@@ -41384,7 +41384,7 @@
     },
     {
         "path": "track/bm_invert/barrel_roll_right_1_3.png",
-        "x": -24,
+        "x": -25,
         "y": -14,
         "palette": "keep"
     },
@@ -41703,7 +41703,7 @@
     {
         "path": "track/bm_invert/large_corkscrew_right_3_2.png",
         "x": -16,
-        "y": -12,
+        "y": -13,
         "palette": "keep"
     },
     {
@@ -41889,7 +41889,7 @@
     {
         "path": "track/bm_invert/medium_half_loop_right_1_3.png",
         "x": -20,
-        "y": -26,
+        "y": -25,
         "palette": "keep"
     },
     {
@@ -41996,7 +41996,7 @@
     },
     {
         "path": "track/bm_invert/zero_g_roll_left_1_1.png",
-        "x": -1,
+        "x": -9,
         "y": -8,
         "palette": "keep"
     },
@@ -42062,7 +42062,7 @@
     },
     {
         "path": "track/bm_invert/zero_g_roll_left_3_4.png",
-        "x": -19,
+        "x": -20,
         "y": -8,
         "palette": "keep"
     },
@@ -42194,7 +42194,7 @@
     },
     {
         "path": "track/bm_invert/large_zero_g_roll_left_1_2.png",
-        "x": -14,
+        "x": -16,
         "y": -45,
         "palette": "keep"
     },
@@ -42375,7 +42375,7 @@
     {
         "path": "track/bm_invert/large_zero_g_roll_right_3_1.png",
         "x": -17,
-        "y": -38,
+        "y": -39,
         "palette": "keep"
     },
     {
@@ -42477,7 +42477,7 @@
     {
         "path": "track/bm_invert/dive_loop_45_left_3_1.png",
         "x": 0,
-        "y": -34,
+        "y": -35,
         "palette": "keep"
     },
     {
@@ -42525,7 +42525,7 @@
     {
         "path": "track/bm_invert/dive_loop_45_right_1_1.png",
         "x": -32,
-        "y": -34,
+        "y": -35,
         "palette": "keep"
     },
     {
