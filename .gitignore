@@ -33,6 +33,9 @@ data/assetpack
 test/tests/testdata/replays
 test/tests/testdata/sprites/result.dat
 
+# rctgen files 
+resources/tracks/sprites_old.json
+
 #################
 ## Eclipse
 #################
