@@ -12572,7 +12572,7 @@ static void InvertedRCTrackRightZeroGRollUp(
                         PaintSegment::centre, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 70 + 16 + 8);
+            PaintUtilSetGeneralSupportHeight(session, height + 48 + 16 + 8);
             break;
         case 2:
             switch (direction)
