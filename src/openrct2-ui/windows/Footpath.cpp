@@ -160,6 +160,11 @@ namespace OpenRCT2::Ui::Windows
         ObjectEntryIndex railingsIndex{};
         PathConstructFlags constructFlags{};
         std::vector<ProvisionalTile> tiles{};
+        /**
+         * Stores the last error from provisional path placement, so it can be shown
+         * when the user tries to place paths but all tiles failed.
+         */
+        GameActions::Result lastError{};
     };
 
     static ProvisionalFootpath _provisionalFootpath;
@@ -1306,9 +1311,26 @@ namespace OpenRCT2::Ui::Windows
             // When the first tile is a slope and we're heading upward, start at baseZ to detect it.
             // For steep diagonal slopes (2 height steps), start at the midpoint since a path
             // can only slope one step at a time.
-            bool firstTileIsSlope = (slices[0].maxZ - slices[0].baseZ) >= kPathHeightStep;
+            // BUT NOT: 3 corner up things, because they are NOT TRAVERSABLE so always start at maxZ.
+            // WTF so many edge cases!?
+            bool firstTileIsRaiseType = false;
+            {
+                CoordsXY firstPos = primaryIsX ? CoordsXY{ slices[0].primaryCoord, secondaryStart }
+                                               : CoordsXY{ secondaryStart, slices[0].primaryCoord };
+                auto* firstSurf = MapGetSurfaceElementAt(TileCoordsXY(firstPos));
+                if (firstSurf != nullptr)
+                {
+                    uint8_t slope = firstSurf->GetSlope();
+                    uint8_t corners = slope & kTileSlopeRaisedCornersMask;
+                    bool isDiag = (slope & kTileSlopeDiagonalFlag) != 0;
+                    firstTileIsRaiseType = !isDiag
+                        && (corners == 0b0111 || corners == 0b1011 || corners == 0b1101 || corners == 0b1110);
+                }
+            }
+            bool firstTileIsSlope = (slices[0].maxZ - slices[0].baseZ) >= kPathHeightStep && !firstTileIsRaiseType;
             bool firstTileIsSteep = (slices[0].maxZ - slices[0].baseZ) >= 2 * kPathHeightStep;
-            bool nextTileIsHigher = (slices.size() > 1) && (slices[1].maxZ >= slices[0].maxZ);
+            // > not >= because if the next tile is at SAME height, stay flat at top instead of sloping up.
+            bool nextTileIsHigher = (slices.size() > 1) && (slices[1].maxZ > slices[0].maxZ);
             int32_t currentPathZ;
             if (firstTileIsSlope && nextTileIsHigher)
                 currentPathZ = firstTileIsSteep ? slices[0].baseZ + kPathHeightStep : slices[0].baseZ;
@@ -1460,7 +1482,35 @@ namespace OpenRCT2::Ui::Windows
                 {
                     CoordsXY pos = primaryIsX ? CoordsXY{ slices[i].primaryCoord, secondary }
                                               : CoordsXY{ secondary, slices[i].primaryCoord };
-                    result.push_back({ CoordsXYZ(pos.x, pos.y, useZ), useSlope });
+
+                    int32_t tileZ = useZ;
+                    FootpathSlope tileSlope = useSlope;
+
+                    // Check if this specific tile has terrain that can't support slopes
+                    auto* surfaceElement = MapGetSurfaceElementAt(TileCoordsXY(pos));
+                    if (surfaceElement != nullptr)
+                    {
+                        auto terrainPlacement = FootpathGetOnTerrainPlacement(*surfaceElement);
+
+                        // Check for raise type tiles the ones with the 3 corners up, no diagonal flag.
+                        uint8_t rawSlope = surfaceElement->GetSlope();
+                        uint8_t corners = rawSlope & kTileSlopeRaisedCornersMask;
+                        bool isDiagonal = (rawSlope & kTileSlopeDiagonalFlag) != 0;
+                        bool isRaiseType = !isDiagonal
+                            && (corners == 0b0111 || corners == 0b1011 || corners == 0b1101 || corners == 0b1110);
+
+                        // Only convert to flat for the 3 corners up tiles
+                        // ALSO: Only apply this if:
+                        // 1. The terrain height is at or above the path height
+                        // 2. The path is already FLAT... DON'T interrupt sloped paths going down.
+                        if (isRaiseType && tileSlope.type == FootpathSlopeType::flat && terrainPlacement.baseZ > tileZ)
+                        {
+                            // Adjust flat path height to match raise-type terrain
+                            tileZ = terrainPlacement.baseZ;
+                        }
+                    }
+
+                    result.push_back({ CoordsXYZ(pos.x, pos.y, tileZ), tileSlope });
                 }
             }
 
@@ -1648,7 +1698,17 @@ namespace OpenRCT2::Ui::Windows
 
             FootpathUpdateProvisional();
             if (_provisionalFootpath.tiles.empty())
+            {
+                // Show the error from the last failed provisional placement
+                if (_provisionalFootpath.lastError.error != GameActions::Status::ok)
+                {
+                    auto windowManager = Ui::GetWindowManager();
+                    windowManager->ShowError(
+                        _provisionalFootpath.lastError.getErrorTitle(), _provisionalFootpath.lastError.getErrorMessage());
+                }
+                _footpathErrorOccured = true;
                 return;
+            }
 
             // Try and place path
             auto selectedType = gFootpathSelection.getSelectedSurface();
@@ -2404,6 +2464,8 @@ namespace OpenRCT2::Ui::Windows
             // Clear stale tile data to prevent placing paths at old positions
             // when clicking on invalid locations (e.g., blocked by clearances)
             _provisionalFootpath.tiles.clear();
+            // Store the last error so it can be shown when the user tries to place paths
+            _provisionalFootpath.lastError = res;
         }
 
         if (!isToolActive(WindowClass::scenery))
