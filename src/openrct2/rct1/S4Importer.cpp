@@ -1245,6 +1245,9 @@ namespace OpenRCT2::RCT1
         {
             for (int i = 0; i < Limits::kMaxEntities; i++)
             {
+                // Make sure the EntityIndex matches the array position to handle corrupted saves where duplicate or invalid
+                // indices would cause CreateEntityAt to fail
+                _s4.Entities[i].Unknown.EntityIndex = static_cast<uint16_t>(i);
                 ImportEntity(gameState, _s4.Entities[i].Unknown);
             }
         }
