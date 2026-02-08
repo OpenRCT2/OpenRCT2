@@ -1246,7 +1246,8 @@ void PeepApplause()
 {
     for (auto peep : EntityList<Guest>())
     {
-        if (peep->OutsideOfPark)
+        if (peep->OutsideOfPark || peep->PeepFlags & PEEP_FLAGS_POSITION_FROZEN
+            || peep->PeepFlags & PEEP_FLAGS_ANIMATION_FROZEN)
             continue;
 
         // Release balloon
