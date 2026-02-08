@@ -15,6 +15,7 @@
 #include "../core/EnumUtils.hpp"
 #include "../drawing/Colour.h"
 #include "../object/Object.h"
+#include "../rct12/TD46.h"
 #include "../ride/RideColour.h"
 #include "../ride/Track.h"
 #include "RideRatings.h"
@@ -22,6 +23,10 @@
 
 #include <memory>
 
+namespace OpenRCT2::RCT12
+{
+    enum class TD46Version : uint8_t;
+}
 struct Ride;
 struct ResultWithMessage;
 enum class ViewportInteractionItem : uint8_t;
@@ -205,6 +210,7 @@ struct TrackDesign
     std::vector<TrackDesignSceneryElement> sceneryElements;
 
     TrackDesignGameStateData gameStateData{};
+    OpenRCT2::RCT12::TD46Version version = OpenRCT2::RCT12::TD46Version::td6;
 
 public:
     ResultWithMessage CreateTrackDesign(TrackDesignState& tds, const Ride& ride);
@@ -256,4 +262,5 @@ void TrackDesignSaveSelectTileElement(
 bool TrackDesignAreEntranceAndExitPlaced();
 
 extern std::vector<TrackDesignSceneryElement> _trackSavedTileElementsDesc;
-extern std::vector<const OpenRCT2::TileElement*> _trackSavedTileElements;
+
+u8string trackDesignGetExtension(OpenRCT2::RCT12::TD46Version version);

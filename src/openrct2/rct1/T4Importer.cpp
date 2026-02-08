@@ -79,6 +79,7 @@ namespace OpenRCT2::RCT1
             {
                 throw IOException("Version number incorrect.");
             }
+            td->version = version;
             _stream.SetPosition(0);
 
             if (version == TD46Version::td4AA)
@@ -114,7 +115,7 @@ namespace OpenRCT2::RCT1
                 _stream.Read(&t4TrackElement, sizeof(TD46TrackElement));
                 TrackDesignTrackElement trackElement{};
                 trackElement.type = RCT1TrackTypeToOpenRCT2(t4TrackElement.type, td.trackAndVehicle.rtdIndex);
-                RCT12::convertFromTD46Flags(trackElement, t4TrackElement.flags);
+                RCT12::convertFromTD46Flags(trackElement, t4TrackElement.flags, td.version);
                 td.trackElements.push_back(trackElement);
             }
         }

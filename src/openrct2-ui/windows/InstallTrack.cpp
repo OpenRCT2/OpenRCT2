@@ -374,7 +374,8 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            destPath = Path::Combine(destPath, _trackName + u8".td6");
+            auto extension = trackDesignGetExtension(_trackDesign->version);
+            destPath = Path::Combine(destPath, _trackName + extension);
 
             if (File::Exists(destPath))
             {

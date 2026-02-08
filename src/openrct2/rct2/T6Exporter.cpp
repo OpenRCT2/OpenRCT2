@@ -64,7 +64,7 @@ namespace OpenRCT2::RCT2
         tempStream.WriteValue<uint32_t>(0);
         tempStream.WriteValue<uint8_t>(static_cast<uint8_t>(_trackDesign.operation.rideMode));
         tempStream.WriteValue<uint8_t>(
-            EnumValue(_trackDesign.appearance.vehicleColourSettings) | (EnumValue(RCT12::TD46Version::td6) << 2));
+            EnumValue(_trackDesign.appearance.vehicleColourSettings) | (EnumValue(_trackDesign.version) << 2));
         for (auto i = 0; i < Limits::kMaxVehicleColours; i++)
         {
             tempStream.WriteValue<Drawing::Colour>(_trackDesign.appearance.vehicleColours[i].Body);
@@ -136,7 +136,11 @@ namespace OpenRCT2::RCT2
         }
         else
         {
-            exportTrackElements(tempStream);
+            if (_trackDesign.version == RCT12::TD46Version::td7)
+                exportTrackElementsTD7(tempStream);
+            else
+                exportTrackElements(tempStream);
+
             exportEntranceElements(tempStream);
         }
 
@@ -178,11 +182,23 @@ namespace OpenRCT2::RCT2
                 trackType = RCT12::TrackElemType::invertedUp90ToFlatQuarterLoopAlias;
             }
             tempStream.WriteValue<uint8_t>(static_cast<uint8_t>(trackType));
-            auto flags = RCT12::convertToTD46Flags(trackElement);
+            auto flags = RCT12::convertToTD46Flags(trackElement, _trackDesign.version);
             tempStream.WriteValue<uint8_t>(flags);
         }
 
         tempStream.WriteValue<uint8_t>(0xFF);
+    }
+
+    void T6Exporter::exportTrackElementsTD7(IStream& tempStream) const
+    {
+        for (const auto& trackElement : _trackDesign.trackElements)
+        {
+            auto flags = RCT12::convertToTD46Flags(trackElement, _trackDesign.version);
+            TD7TrackElement element = { trackElement.type, flags };
+            tempStream.WriteValue<TD7TrackElement>(element);
+        }
+
+        tempStream.WriteValue<uint16_t>(0xFFFF);
     }
 
     void T6Exporter::exportEntranceElements(IStream& tempStream) const

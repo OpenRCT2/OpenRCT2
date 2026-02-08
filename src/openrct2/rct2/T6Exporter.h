@@ -36,6 +36,7 @@ namespace OpenRCT2::RCT2
 
         void exportMazeElements(IStream& tempStream) const;
         void exportTrackElements(IStream& tempStream) const;
+        void exportTrackElementsTD7(IStream& tempStream) const;
         void exportEntranceElements(IStream& tempStream) const;
         void exportSceneryElements(IStream& tempStream) const;
     };

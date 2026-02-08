@@ -220,6 +220,8 @@ FileExtension GetFileExtensionType(u8string_view path)
         return FileExtension::SV6;
     if (String::iequals(extension, ".td6"))
         return FileExtension::TD6;
+    if (String::iequals(extension, ".td7"))
+        return FileExtension::TD6;
     if (String::iequals(extension, ".park"))
         return FileExtension::PARK;
     return FileExtension::Unknown;

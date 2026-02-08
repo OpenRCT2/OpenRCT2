@@ -82,7 +82,21 @@ namespace OpenRCT2::RCT2
                 }
 
                 trackElement.type = trackType;
-                RCT12::convertFromTD46Flags(trackElement, t6TrackElement.flags);
+                RCT12::convertFromTD46Flags(trackElement, t6TrackElement.flags, td.version);
+                td.trackElements.push_back(trackElement);
+            }
+        }
+
+        void importTrackElementsTD7(TrackDesign& td)
+        {
+            TD7TrackElement t7TrackElement{};
+            for (uint16_t endFlag = _stream.ReadValue<uint16_t>(); endFlag != 0xFFFF; endFlag = _stream.ReadValue<uint16_t>())
+            {
+                _stream.SetPosition(_stream.GetPosition() - 2);
+                _stream.Read(&t7TrackElement, sizeof(TD7TrackElement));
+                TrackDesignTrackElement trackElement{};
+                trackElement.type = t7TrackElement.type;
+                RCT12::convertFromTD46Flags(trackElement, t7TrackElement.flags, td.version);
                 td.trackElements.push_back(trackElement);
             }
         }
@@ -132,7 +146,7 @@ namespace OpenRCT2::RCT2
         bool Load(const utf8* path) override
         {
             const auto extension = Path::GetExtension(path);
-            if (String::iequals(extension, ".td6"))
+            if (String::iequals(extension, ".td6") || String::iequals(extension, ".td7"))
             {
                 _name = GetNameFromTrackPath(path);
                 auto fs = FileStream(path, FileMode::open);
@@ -207,11 +221,12 @@ namespace OpenRCT2::RCT2
             td->operation.numCircuits = td6.LiftHillSpeedNumCircuits >> 5;
 
             auto version = static_cast<TD46Version>(td6.VersionAndColourScheme >> 2);
-            if (version != TD46Version::td6)
+            if (version != TD46Version::td6 && version != TD46Version::td7)
             {
                 LOG_ERROR("Unsupported track design.");
                 return nullptr;
             }
+            td->version = version;
 
             td->operation.operationSetting = std::min(
                 td->operation.operationSetting, GetRideTypeDescriptor(td->trackAndVehicle.rtdIndex).OperatingSettings.MaxValue);
@@ -223,7 +238,11 @@ namespace OpenRCT2::RCT2
             }
             else
             {
-                importTrackElements(*td);
+                if (version == TD46Version::td7)
+                    importTrackElementsTD7(*td);
+                else
+                    importTrackElements(*td);
+
                 importEntranceElements(*td);
             }
 

@@ -25,6 +25,7 @@ namespace OpenRCT2::RCT12
         td4,
         td4AA,
         td6,
+        td7,
         unknown
     };
 
@@ -78,7 +79,7 @@ namespace OpenRCT2::RCT12
     static_assert(sizeof(TD46TrackElement) == 0x02);
 #pragma pack(pop)
 
-    void convertFromTD46Flags(TrackDesignTrackElement& target, uint8_t flags);
-    uint8_t convertToTD46Flags(const TrackDesignTrackElement& source);
+    void convertFromTD46Flags(TrackDesignTrackElement& target, uint8_t flags, TD46Version version);
+    uint8_t convertToTD46Flags(const TrackDesignTrackElement& source, TD46Version version);
     void importMazeElement(TrackDesign& td, const TD46MazeElement& td46MazeElement);
 } // namespace OpenRCT2::RCT12

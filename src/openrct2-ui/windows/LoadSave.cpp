@@ -893,8 +893,13 @@ namespace OpenRCT2::Ui::Windows
 
                 case WIDX_SAVE:
                 {
-                    const u8string path = Path::WithExtension(
-                        Path::Combine(_directory, _currentFilename), RemovePatternWildcard(_extensionPattern));
+                    u8string extension;
+                    if (_trackDesign != nullptr)
+                        extension = trackDesignGetExtension(_trackDesign->version);
+                    else
+                        extension = RemovePatternWildcard(_extensionPattern);
+
+                    const u8string path = Path::WithExtension(Path::Combine(_directory, _currentFilename), extension);
 
                     if (File::Exists(path))
                         WindowOverwritePromptOpen(_currentFilename, path, action, type, _trackDesign);

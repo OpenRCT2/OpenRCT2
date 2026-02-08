@@ -188,7 +188,7 @@ namespace OpenRCT2::Ui::FileBrowser
                 return isSave ? "*.park" : "*.park;*.sc6;*.sc4";
 
             case LoadSaveType::track:
-                return isSave ? "*.td6" : "*.td6;*.td4";
+                return isSave ? "*.td6;*.td7" : "*.td6;*.td4;*.td7";
 
             case LoadSaveType::heightmap:
                 return "*.bmp;*.png";
@@ -412,9 +412,10 @@ namespace OpenRCT2::Ui::FileBrowser
                     }
                     case LoadSaveType::track:
                     {
+                        auto extension = trackDesignGetExtension(trackDesignPtr->version);
                         SetAndSaveConfigPath(Config::Get().general.lastSaveTrackDirectory, pathBuffer);
 
-                        const auto withExtension = Path::WithExtension(pathBuffer, ".td6");
+                        const auto withExtension = Path::WithExtension(pathBuffer, extension);
                         String::set(pathBuffer, sizeof(pathBuffer), withExtension.c_str());
 
                         RCT2::T6Exporter t6Export{ *trackDesignPtr };
