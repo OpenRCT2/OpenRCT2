@@ -1605,7 +1605,7 @@ STR_2261    :Minimuma financado
 STR_2262    :Normala financado
 STR_2263    :Maksimuma financado
 STR_2264    :Financado de esplorado
-STR_2265    :{WINDOW_COLOUR_2}Kosto: {BLACK}po {CURRENCY} por mono
+STR_2265    :{WINDOW_COLOUR_2}Kosto: {BLACK}po {CURRENCY} por monato
 STR_2266    :Prioritatoj de esplorado
 STR_2267    :Nune disvolvata
 STR_2268    :Pasinta disvolvado

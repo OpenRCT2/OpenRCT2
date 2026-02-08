@@ -35,7 +35,7 @@ namespace OpenRCT2
             struct WeatherPixel
             {
                 uint32_t Position;
-                uint8_t Colour;
+                PaletteIndex Colour;
             };
 
             static constexpr uint32_t kMaxWeatherPixels = 0xFFFE;
@@ -64,7 +64,7 @@ namespace OpenRCT2
             uint32_t _height = 0;
             uint32_t _pitch = 0;
             size_t _bitsSize = 0;
-            uint8_t* _bits = nullptr;
+            PaletteIndex* _bits = nullptr;
 
             RenderTarget _mainRT = {};
 

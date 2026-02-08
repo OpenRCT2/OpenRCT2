@@ -213,7 +213,7 @@ void TextureCache::GeneratePaletteTexture()
     // Init no-op palette
     for (int i = 0; i < width; ++i)
     {
-        rt.bits[i] = i;
+        rt.bits[i] = static_cast<PaletteIndex>(i);
     }
 
     for (int i = 0; i < kPaletteTotalOffsets; ++i)
@@ -390,8 +390,8 @@ void TextureCache::FreeTextures()
 RenderTarget TextureCache::CreateRT(int32_t width, int32_t height)
 {
     size_t numPixels = width * height;
-    auto pixels8 = new uint8_t[numPixels];
-    std::fill_n(pixels8, numPixels, 0);
+    auto pixels8 = new PaletteIndex[numPixels];
+    std::fill_n(pixels8, numPixels, PaletteIndex::transparent);
 
     RenderTarget rt;
     rt.bits = pixels8;

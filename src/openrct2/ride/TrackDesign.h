@@ -28,6 +28,11 @@ enum class ViewportInteractionItem : uint8_t;
 
 constexpr uint32_t kTrackPreviewImageSize = 370 * 217;
 
+namespace OpenRCT2::Drawing
+{
+    enum class PaletteIndex : uint8_t;
+}
+
 enum class TrackPlaceOperation : uint8_t
 {
     drawOutlines,
@@ -249,7 +254,8 @@ int32_t TrackDesignGetZPlacement(const TrackDesign& td, Ride& ride, const Coords
 ///////////////////////////////////////////////////////////////////////////////
 // Track design preview
 ///////////////////////////////////////////////////////////////////////////////
-void TrackDesignDrawPreview(TrackDesign& td, uint8_t* pixels, bool placeScenery);
+using TrackDesignPreviewBuffer = std::array<OpenRCT2::Drawing::PaletteIndex, kTrackPreviewImageSize * kNumOrthogonalDirections>;
+void TrackDesignDrawPreview(TrackDesign& td, TrackDesignPreviewBuffer& pixels, bool placeScenery);
 
 ///////////////////////////////////////////////////////////////////////////////
 // Track design saving

@@ -49,7 +49,11 @@ struct VehicleInfo
     }
 };
 
-struct SoundIdVolume;
+struct SoundIdVolume
+{
+    OpenRCT2::Audio::SoundId id;
+    uint8_t volume;
+};
 
 static constexpr uint16_t kVehicleTrackDirectionMask = 0b0000000000000011;
 static constexpr uint16_t kVehicleTrackTypeMask = 0b1111111111111100;
@@ -554,6 +558,7 @@ constexpr uint8_t kVehicleSeatNumMask = 0x7F;
 Vehicle* TryGetVehicle(EntityId spriteIndex);
 void VehicleUpdateAll();
 void VehicleSoundsUpdate();
+std::optional<uint32_t> ride_get_train_index_from_vehicle(const Ride& ride, EntityId spriteIndex);
 uint16_t VehicleGetMoveInfoSize(VehicleTrackSubposition trackSubposition, OpenRCT2::TrackElemType type, uint8_t direction);
 
 void RideUpdateMeasurementsSpecialElements_Default(Ride& ride, OpenRCT2::TrackElemType trackType);
@@ -561,6 +566,7 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, OpenRCT2::TrackE
 void RideUpdateMeasurementsSpecialElements_WaterCoaster(Ride& ride, OpenRCT2::TrackElemType trackType);
 
 extern Vehicle* gCurrentVehicle;
+extern uint8_t _vehicleBreakdown;
 extern StationIndex _vehicleStationIndex;
 extern uint32_t _vehicleMotionTrackFlags;
 extern int32_t _vehicleVelocityF64E08;

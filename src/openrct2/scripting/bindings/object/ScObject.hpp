@@ -565,7 +565,7 @@ namespace OpenRCT2::Scripting
             auto rideEntry = GetEntry();
             if (rideEntry != nullptr)
             {
-                return rideEntry->flags;
+                return rideEntry->flags.holder;
             }
             return 0;
         }

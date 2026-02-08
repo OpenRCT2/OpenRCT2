@@ -2069,7 +2069,7 @@ bool TrackDesignSceneryElement::operator!=(const TrackDesignSceneryElement& rhs)
  *
  *  rct2: 0x006D1EF0
  */
-void TrackDesignDrawPreview(TrackDesign& td, uint8_t* pixels, bool placeScenery)
+void TrackDesignDrawPreview(TrackDesign& td, TrackDesignPreviewBuffer& pixels, bool placeScenery)
 {
     StashMap();
     TrackDesignPreviewClearMap();
@@ -2085,7 +2085,7 @@ void TrackDesignDrawPreview(TrackDesign& td, uint8_t* pixels, bool placeScenery)
     TrackDesignGameStateData updatedGameStateData = td.gameStateData;
     if (!TrackDesignPlacePreview(tds, td, &ride, updatedGameStateData, placeScenery))
     {
-        std::fill_n(pixels, kTrackPreviewImageSize * 4, 0x00);
+        std::fill(std::begin(pixels), std::end(pixels), PaletteIndex::transparent);
         UnstashMap();
         return;
     }
@@ -2138,7 +2138,7 @@ void TrackDesignDrawPreview(TrackDesign& td, uint8_t* pixels, bool placeScenery)
     rt.width = 370;
     rt.height = 217;
     rt.pitch = 0;
-    rt.bits = pixels;
+    rt.bits = pixels.data();
 
     auto drawingEngine = std::make_unique<X8DrawingEngine>(GetContext()->GetUiContext());
     rt.DrawingEngine = drawingEngine.get();
@@ -2146,10 +2146,10 @@ void TrackDesignDrawPreview(TrackDesign& td, uint8_t* pixels, bool placeScenery)
     drawingEngine->BeginDraw();
 
     const ScreenCoordsXY offset = { size_x / 2, size_y / 2 };
-    for (uint8_t i = 0; i < 4; i++)
+    for (Direction direction = 0; direction < kNumOrthogonalDirections; direction++)
     {
-        view.viewPos = Translate3DTo2DWithZ(i, centre) - offset;
-        view.rotation = i;
+        view.viewPos = Translate3DTo2DWithZ(direction, centre) - offset;
+        view.rotation = direction;
         ViewportRender(rt, &view);
 
         rt.bits += kTrackPreviewImageSize;

@@ -71,7 +71,7 @@ namespace OpenRCT2::Ui::Windows
         std::unique_ptr<TrackDesign> _trackDesign;
         std::string _trackPath;
         std::string _trackName;
-        std::vector<uint8_t> _trackDesignPreviewPixels;
+        TrackDesignPreviewBuffer _trackDesignPreviewPixels{};
 
     public:
         void setupTrack(const utf8* path, std::unique_ptr<TrackDesign> trackDesign)
@@ -79,7 +79,7 @@ namespace OpenRCT2::Ui::Windows
             _trackDesign = std::move(trackDesign);
             _trackPath = path;
             _trackName = GetNameFromTrackPath(path);
-            _trackDesignPreviewPixels.resize(4 * kTrackPreviewImageSize);
+            std::fill(_trackDesignPreviewPixels.begin(), _trackDesignPreviewPixels.end(), PaletteIndex::transparent);
 
             UpdatePreview();
             invalidate();
@@ -97,8 +97,6 @@ namespace OpenRCT2::Ui::Windows
         {
             _trackPath.clear();
             _trackName.clear();
-            _trackDesignPreviewPixels.clear();
-            _trackDesignPreviewPixels.shrink_to_fit();
             _trackDesign = nullptr;
         }
 
@@ -162,7 +160,8 @@ namespace OpenRCT2::Ui::Windows
             Rectangle::fill(rt, { screenPos, screenPos + ScreenCoordsXY{ 369, 216 } }, colour);
 
             G1Element g1temp = {};
-            g1temp.offset = _trackDesignPreviewPixels.data() + (_currentTrackPieceDirection * kTrackPreviewImageSize);
+            g1temp.offset = reinterpret_cast<uint8_t*>(
+                _trackDesignPreviewPixels.data() + (_currentTrackPieceDirection * kTrackPreviewImageSize));
             g1temp.width = 370;
             g1temp.height = 217;
             g1temp.flags = { G1Flag::hasTransparency };
@@ -361,7 +360,7 @@ namespace OpenRCT2::Ui::Windows
     private:
         void UpdatePreview()
         {
-            TrackDesignDrawPreview(*_trackDesign, _trackDesignPreviewPixels.data(), !gTrackDesignSceneryToggle);
+            TrackDesignDrawPreview(*_trackDesign, _trackDesignPreviewPixels, !gTrackDesignSceneryToggle);
         }
 
         void InstallTrackDesign()

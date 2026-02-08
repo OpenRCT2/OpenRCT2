@@ -231,7 +231,7 @@ namespace OpenRCT2
         drawingEngine->BeginDraw();
 
         Drawing::RenderTarget rt{
-            .bits = reinterpret_cast<uint8_t*>(image.pixels),
+            .bits = image.pixels,
             .x = 0,
             .y = 0,
             .width = image.width,

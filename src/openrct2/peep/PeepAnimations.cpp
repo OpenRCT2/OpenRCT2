@@ -287,10 +287,10 @@ namespace OpenRCT2
         constexpr uint8_t kCentreX = kWidth / 2;
         constexpr uint8_t kCentreY = kHeight / 2;
 
-        uint8_t bitmap[kHeight][kWidth] = { 0 };
+        Drawing::PaletteIndex bitmap[kHeight][kWidth]{};
 
         Drawing::RenderTarget rt = {
-            .bits = reinterpret_cast<uint8_t*>(bitmap),
+            .bits = reinterpret_cast<Drawing::PaletteIndex*>(bitmap),
             .x = -(kWidth / 2),
             .y = -(kHeight / 2),
             .width = kWidth,
@@ -310,7 +310,7 @@ namespace OpenRCT2
         {
             for (int32_t j = 0; j < kWidth; j++)
             {
-                if (bitmap[j][kCentreX - i] != 0)
+                if (bitmap[j][kCentreX - i] != Drawing::PaletteIndex::transparent)
                 {
                     spriteWidth = i;
                     break;
@@ -322,7 +322,7 @@ namespace OpenRCT2
 
             for (int32_t j = 0; j < kWidth; j++)
             {
-                if (bitmap[j][kCentreX + i] != 0)
+                if (bitmap[j][kCentreX + i] != Drawing::PaletteIndex::transparent)
                 {
                     spriteWidth = i;
                     break;
@@ -339,7 +339,7 @@ namespace OpenRCT2
         {
             for (int32_t j = 0; j < kWidth; j++)
             {
-                if (bitmap[kCentreY - i][j] != 0)
+                if (bitmap[kCentreY - i][j] != Drawing::PaletteIndex::transparent)
                 {
                     spriteHeightNegative = i;
                     break;
@@ -356,7 +356,7 @@ namespace OpenRCT2
         {
             for (int32_t j = 0; j < kWidth; j++)
             {
-                if (bitmap[kCentreY + i][j] != 0)
+                if (bitmap[kCentreY + i][j] != Drawing::PaletteIndex::transparent)
                 {
                     spriteHeightPositive = i;
                     break;

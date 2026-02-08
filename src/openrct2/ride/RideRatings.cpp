@@ -1276,7 +1276,7 @@ static void RideRatingsApplyAdjustments(const Ride& ride, RideRating::Tuple& rat
     if (ride.getRideTypeDescriptor().flags.has(RtdFlag::hasAirTime))
     {
         uint16_t totalAirTime = ride.totalAirTime;
-        if (rideEntry->flags & RIDE_ENTRY_FLAG_LIMIT_AIRTIME_BONUS)
+        if (rideEntry->flags.has(RideEntryFlag::limitAirTimeBonus))
         {
             if (totalAirTime >= 96)
             {
@@ -1295,7 +1295,7 @@ static void RideRatingsApplyAdjustments(const Ride& ride, RideRating::Tuple& rat
     if (ride.getRideTypeDescriptor().flags.has(RtdFlag::hasAirTime))
     {
         int32_t excitementModifier;
-        if (rideEntry->flags & RIDE_ENTRY_FLAG_LIMIT_AIRTIME_BONUS)
+        if (rideEntry->flags.has(RideEntryFlag::limitAirTimeBonus))
         {
             // Limit airtime bonus for heartline twister coaster (see issues #2031 and #2064)
             excitementModifier = std::min<uint16_t>(ride.totalAirTime, 96) / 8;
@@ -1436,7 +1436,7 @@ static ShelteredEights GetNumOfShelteredEighths(const Ride& ride)
     {
         return { 0, 0 };
     }
-    if (rideType->flags & RIDE_ENTRY_FLAG_COVERED_RIDE)
+    if (rideType->flags.has(RideEntryFlag::isACoveredRide))
         numShelteredEighths = 7;
 
     return { trackShelteredEighths, numShelteredEighths };
