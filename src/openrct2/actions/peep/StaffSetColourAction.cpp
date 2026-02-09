@@ -9,15 +9,15 @@
 
 #include "StaffSetColourAction.h"
 
-#include "../Context.h"
-#include "../Diagnostic.h"
-#include "../core/MemoryStream.h"
-#include "../drawing/Drawing.h"
-#include "../entity/EntityList.h"
-#include "../entity/Staff.h"
-#include "../localisation/StringIds.h"
-#include "../ui/WindowManager.h"
-#include "../windows/Intent.h"
+#include "../../Context.h"
+#include "../../Diagnostic.h"
+#include "../../core/MemoryStream.h"
+#include "../../drawing/Drawing.h"
+#include "../../entity/EntityList.h"
+#include "../../entity/Staff.h"
+#include "../../localisation/StringIds.h"
+#include "../../ui/WindowManager.h"
+#include "../../windows/Intent.h"
 
 namespace OpenRCT2::GameActions
 {

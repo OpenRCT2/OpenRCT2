@@ -20,7 +20,7 @@
 #include <openrct2/Input.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/GameActionRunner.h>
-#include <openrct2/actions/TileModifyAction.h>
+#include <openrct2/actions/general/TileModifyAction.h>
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>

@@ -9,14 +9,14 @@
 
 #include "StaffSetOrdersAction.h"
 
-#include "../Context.h"
-#include "../Diagnostic.h"
-#include "../GameState.h"
-#include "../entity/EntityRegistry.h"
-#include "../entity/Staff.h"
-#include "../localisation/StringIds.h"
-#include "../ui/WindowManager.h"
-#include "../windows/Intent.h"
+#include "../../Context.h"
+#include "../../Diagnostic.h"
+#include "../../GameState.h"
+#include "../../entity/EntityRegistry.h"
+#include "../../entity/Staff.h"
+#include "../../localisation/StringIds.h"
+#include "../../ui/WindowManager.h"
+#include "../../windows/Intent.h"
 
 namespace OpenRCT2::GameActions
 {

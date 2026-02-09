@@ -23,11 +23,11 @@
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
-#include <openrct2/actions/CheatSetAction.h>
 #include <openrct2/actions/GameActionRunner.h>
-#include <openrct2/actions/LoadOrQuitAction.h>
-#include <openrct2/actions/PauseToggleAction.h>
-#include <openrct2/actions/TileModifyAction.h>
+#include <openrct2/actions/cheats/CheatSetAction.h>
+#include <openrct2/actions/general/LoadOrQuitAction.h>
+#include <openrct2/actions/general/PauseToggleAction.h>
+#include <openrct2/actions/general/TileModifyAction.h>
 #include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/EnumUtils.hpp>

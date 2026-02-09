@@ -9,12 +9,12 @@
 
 #include "ParkSetParameterAction.h"
 
-#include "../Diagnostic.h"
-#include "../GameState.h"
-#include "../core/EnumUtils.hpp"
-#include "../ride/ShopItem.h"
-#include "../ui/WindowManager.h"
-#include "../world/Park.h"
+#include "../../Diagnostic.h"
+#include "../../GameState.h"
+#include "../../core/EnumUtils.hpp"
+#include "../../ride/ShopItem.h"
+#include "../../ui/WindowManager.h"
+#include "../../world/Park.h"
 
 namespace OpenRCT2::GameActions
 {

@@ -14,7 +14,7 @@
 #include "../Editor.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
-#include "../actions/RideSetStatusAction.h"
+#include "../actions/ride/RideSetStatusAction.h"
 #include "../audio/Audio.h"
 #include "../config/Config.h"
 #include "../core/EnumUtils.hpp"

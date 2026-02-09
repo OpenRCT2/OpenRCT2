@@ -11,7 +11,7 @@
 
 #ifdef ENABLE_SCRIPTING
 
-    #include "GameAction.hpp"
+    #include "../GameAction.hpp"
 
 namespace OpenRCT2::GameActions
 {

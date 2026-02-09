@@ -10,9 +10,9 @@
 #include "Cheats.h"
 
 #include "GameState.h"
-#include "actions/CheatSetAction.h"
 #include "actions/GameActionRunner.h"
-#include "actions/ParkSetLoanAction.h"
+#include "actions/cheats/CheatSetAction.h"
+#include "actions/park/ParkSetLoanAction.h"
 #include "core/DataSerialiser.h"
 #include "network/Network.h"
 #include "ride/Ride.h"

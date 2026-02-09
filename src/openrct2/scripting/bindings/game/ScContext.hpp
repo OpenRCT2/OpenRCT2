@@ -11,6 +11,7 @@
 
 #ifdef ENABLE_SCRIPTING
 
+    #include "../../../Game.h"
     #include "../../../OpenRCT2.h"
     #include "../../../actions/GameActionRunner.h"
     #include "../../../interface/Screenshot.h"

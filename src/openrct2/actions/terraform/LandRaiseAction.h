@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "GameAction.hpp"
+#include "../GameAction.hpp"
 
 enum class MapSelectType : uint8_t;
 

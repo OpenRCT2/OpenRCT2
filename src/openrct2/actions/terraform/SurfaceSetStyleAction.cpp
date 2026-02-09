@@ -9,18 +9,18 @@
 
 #include "SurfaceSetStyleAction.h"
 
-#include "../Context.h"
-#include "../Diagnostic.h"
-#include "../GameState.h"
-#include "../OpenRCT2.h"
-#include "../management/Finance.h"
-#include "../object/ObjectManager.h"
-#include "../object/TerrainEdgeObject.h"
-#include "../object/TerrainSurfaceObject.h"
-#include "../world/Footpath.h"
-#include "../world/Map.h"
-#include "../world/Park.h"
-#include "../world/tile_element/SurfaceElement.h"
+#include "../../Context.h"
+#include "../../Diagnostic.h"
+#include "../../GameState.h"
+#include "../../OpenRCT2.h"
+#include "../../management/Finance.h"
+#include "../../object/ObjectManager.h"
+#include "../../object/TerrainEdgeObject.h"
+#include "../../object/TerrainSurfaceObject.h"
+#include "../../world/Footpath.h"
+#include "../../world/Map.h"
+#include "../../world/Park.h"
+#include "../../world/tile_element/SurfaceElement.h"
 
 namespace OpenRCT2::GameActions
 {

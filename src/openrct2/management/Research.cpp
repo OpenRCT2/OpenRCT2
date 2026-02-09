@@ -16,7 +16,7 @@
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../actions/GameActionRunner.h"
-#include "../actions/ParkSetResearchFundingAction.h"
+#include "../actions/park/ParkSetResearchFundingAction.h"
 #include "../config/Config.h"
 #include "../core/BitSet.hpp"
 #include "../core/EnumUtils.hpp"

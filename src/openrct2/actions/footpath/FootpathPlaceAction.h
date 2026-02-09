@@ -9,8 +9,8 @@
 
 #pragma once
 
-#include "../world/Footpath.h"
-#include "GameAction.hpp"
+#include "../../world/Footpath.h"
+#include "../GameAction.hpp"
 
 namespace OpenRCT2::GameActions
 {

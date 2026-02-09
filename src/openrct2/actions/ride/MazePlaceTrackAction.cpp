@@ -6,22 +6,23 @@
  *
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
+
 #include "MazePlaceTrackAction.h"
 
-#include "../Diagnostic.h"
-#include "../GameState.h"
-#include "../core/Guard.hpp"
-#include "../management/Finance.h"
-#include "../ride/MazeCost.h"
-#include "../ride/RideData.h"
-#include "../ride/TrackData.h"
-#include "../world/ConstructionClearance.h"
-#include "../world/Footpath.h"
-#include "../world/Map.h"
-#include "../world/Wall.h"
-#include "../world/tile_element/Slope.h"
-#include "../world/tile_element/SurfaceElement.h"
-#include "../world/tile_element/TrackElement.h"
+#include "../../Diagnostic.h"
+#include "../../GameState.h"
+#include "../../core/Guard.hpp"
+#include "../../management/Finance.h"
+#include "../../ride/MazeCost.h"
+#include "../../ride/RideData.h"
+#include "../../ride/TrackData.h"
+#include "../../world/ConstructionClearance.h"
+#include "../../world/Footpath.h"
+#include "../../world/Map.h"
+#include "../../world/Wall.h"
+#include "../../world/tile_element/Slope.h"
+#include "../../world/tile_element/SurfaceElement.h"
+#include "../../world/tile_element/TrackElement.h"
 
 namespace OpenRCT2::GameActions
 {

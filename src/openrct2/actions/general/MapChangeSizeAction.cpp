@@ -9,14 +9,14 @@
 
 #include "MapChangeSizeAction.h"
 
-#include "../Context.h"
-#include "../GameState.h"
-#include "../drawing/Drawing.h"
-#include "../ui/UiContext.h"
-#include "../ui/WindowManager.h"
-#include "../windows/Intent.h"
-#include "../world/Map.h"
-#include "../world/Park.h"
+#include "../../Context.h"
+#include "../../GameState.h"
+#include "../../drawing/Drawing.h"
+#include "../../ui/UiContext.h"
+#include "../../ui/WindowManager.h"
+#include "../../windows/Intent.h"
+#include "../../world/Map.h"
+#include "../../world/Park.h"
 
 namespace OpenRCT2::GameActions
 {

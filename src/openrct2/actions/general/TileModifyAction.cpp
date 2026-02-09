@@ -9,11 +9,11 @@
 
 #include "TileModifyAction.h"
 
-#include "../Context.h"
-#include "../Diagnostic.h"
-#include "../windows/Intent.h"
-#include "../world/Map.h"
-#include "../world/TileInspector.h"
+#include "../../Context.h"
+#include "../../Diagnostic.h"
+#include "../../windows/Intent.h"
+#include "../../world/Map.h"
+#include "../../world/TileInspector.h"
 
 namespace OpenRCT2::GameActions
 {

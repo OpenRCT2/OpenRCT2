@@ -9,17 +9,17 @@
 
 #include "SignSetStyleAction.h"
 
-#include "../Context.h"
-#include "../Diagnostic.h"
-#include "../core/MemoryStream.h"
-#include "../drawing/Drawing.h"
-#include "../localisation/StringIds.h"
-#include "../windows/Intent.h"
-#include "../world/Banner.h"
-#include "../world/Map.h"
-#include "../world/Scenery.h"
-#include "../world/tile_element/LargeSceneryElement.h"
-#include "../world/tile_element/WallElement.h"
+#include "../../Context.h"
+#include "../../Diagnostic.h"
+#include "../../core/MemoryStream.h"
+#include "../../drawing/Drawing.h"
+#include "../../localisation/StringIds.h"
+#include "../../windows/Intent.h"
+#include "../../world/Banner.h"
+#include "../../world/Map.h"
+#include "../../world/Scenery.h"
+#include "../../world/tile_element/LargeSceneryElement.h"
+#include "../../world/tile_element/WallElement.h"
 
 namespace OpenRCT2::GameActions
 {

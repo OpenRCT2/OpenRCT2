@@ -9,14 +9,14 @@
 
 #include "BannerSetColourAction.h"
 
-#include "../Context.h"
-#include "../Diagnostic.h"
-#include "../management/Finance.h"
-#include "../windows/Intent.h"
-#include "../world/Banner.h"
-#include "../world/Map.h"
-#include "../world/tile_element/BannerElement.h"
-#include "GameAction.hpp"
+#include "../../Context.h"
+#include "../../Diagnostic.h"
+#include "../../management/Finance.h"
+#include "../../windows/Intent.h"
+#include "../../world/Banner.h"
+#include "../../world/Map.h"
+#include "../../world/tile_element/BannerElement.h"
+#include "../GameAction.hpp"
 
 namespace OpenRCT2::GameActions
 {

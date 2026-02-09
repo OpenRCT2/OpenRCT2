@@ -9,12 +9,12 @@
 
 #include "StaffFireAction.h"
 
-#include "../Diagnostic.h"
-#include "../GameState.h"
-#include "../drawing/Drawing.h"
-#include "../entity/EntityRegistry.h"
-#include "../entity/Staff.h"
-#include "../ui/WindowManager.h"
+#include "../../Diagnostic.h"
+#include "../../GameState.h"
+#include "../../drawing/Drawing.h"
+#include "../../entity/EntityRegistry.h"
+#include "../../entity/Staff.h"
+#include "../../ui/WindowManager.h"
 
 namespace OpenRCT2::GameActions
 {

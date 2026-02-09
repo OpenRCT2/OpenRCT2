@@ -9,10 +9,10 @@
 
 #include "GameSetSpeedAction.h"
 
-#include "../Diagnostic.h"
-#include "../Game.h"
-#include "../config/Config.h"
-#include "../ui/WindowManager.h"
+#include "../../Diagnostic.h"
+#include "../../Game.h"
+#include "../../config/Config.h"
+#include "../../ui/WindowManager.h"
 
 namespace OpenRCT2::GameActions
 {

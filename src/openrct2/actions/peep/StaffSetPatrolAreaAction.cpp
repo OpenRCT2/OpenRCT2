@@ -9,14 +9,14 @@
 
 #include "StaffSetPatrolAreaAction.h"
 
-#include "../Diagnostic.h"
-#include "../GameState.h"
-#include "../drawing/Drawing.h"
-#include "../entity/EntityRegistry.h"
-#include "../entity/PatrolArea.h"
-#include "../entity/Peep.h"
-#include "../entity/Staff.h"
-#include "../world/Map.h"
+#include "../../Diagnostic.h"
+#include "../../GameState.h"
+#include "../../drawing/Drawing.h"
+#include "../../entity/EntityRegistry.h"
+#include "../../entity/PatrolArea.h"
+#include "../../entity/Peep.h"
+#include "../../entity/Staff.h"
+#include "../../world/Map.h"
 
 namespace OpenRCT2::GameActions
 {

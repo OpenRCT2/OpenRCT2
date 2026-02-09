@@ -9,17 +9,17 @@
 
 #include "WallSetColourAction.h"
 
-#include "../Diagnostic.h"
-#include "../GameState.h"
-#include "../OpenRCT2.h"
-#include "../management/Finance.h"
-#include "../object/WallSceneryEntry.h"
-#include "../ride/Track.h"
-#include "../ride/TrackData.h"
-#include "../world/Banner.h"
-#include "../world/Map.h"
-#include "../world/Scenery.h"
-#include "../world/tile_element/WallElement.h"
+#include "../../Diagnostic.h"
+#include "../../GameState.h"
+#include "../../OpenRCT2.h"
+#include "../../management/Finance.h"
+#include "../../object/WallSceneryEntry.h"
+#include "../../ride/Track.h"
+#include "../../ride/TrackData.h"
+#include "../../world/Banner.h"
+#include "../../world/Map.h"
+#include "../../world/Scenery.h"
+#include "../../world/tile_element/WallElement.h"
 
 namespace OpenRCT2::GameActions
 {

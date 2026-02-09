@@ -14,7 +14,7 @@
 #include <openrct2/GameState.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/GameActionRunner.h>
-#include <openrct2/actions/ParkSetLoanAction.h>
+#include <openrct2/actions/park/ParkSetLoanAction.h>
 #include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>

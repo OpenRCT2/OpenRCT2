@@ -21,8 +21,8 @@
 #include <openrct2/Input.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/GameActionRunner.h>
-#include <openrct2/actions/ParkSetEntranceFeeAction.h>
-#include <openrct2/actions/ParkSetNameAction.h>
+#include <openrct2/actions/park/ParkSetEntranceFeeAction.h>
+#include <openrct2/actions/park/ParkSetNameAction.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/UnitConversion.h>
 #include <openrct2/drawing/Drawing.h>

@@ -9,17 +9,16 @@
 
 #include "BannerSetStyleAction.h"
 
-#include "../Context.h"
-#include "../Diagnostic.h"
-#include "../drawing/Drawing.h"
-#include "../drawing/ScrollingText.h"
-#include "../localisation/StringIdType.h"
-#include "../management/Finance.h"
-#include "../windows/Intent.h"
-#include "../world/Banner.h"
-#include "../world/Map.h"
-#include "../world/tile_element/BannerElement.h"
-#include "GameAction.hpp"
+#include "../../Context.h"
+#include "../../Diagnostic.h"
+#include "../../drawing/Drawing.h"
+#include "../../drawing/ScrollingText.h"
+#include "../../localisation/StringIdType.h"
+#include "../../management/Finance.h"
+#include "../../windows/Intent.h"
+#include "../../world/Banner.h"
+#include "../../world/Map.h"
+#include "../../world/tile_element/BannerElement.h"
 
 namespace OpenRCT2::GameActions
 {

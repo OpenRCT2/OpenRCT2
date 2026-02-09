@@ -14,7 +14,7 @@
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/actions/GameActionRunner.h>
-#include <openrct2/actions/ParkMarketingAction.h>
+#include <openrct2/actions/park/ParkMarketingAction.h>
 #include <openrct2/core/BitSet.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>

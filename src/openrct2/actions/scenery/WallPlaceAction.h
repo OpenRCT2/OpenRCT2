@@ -9,11 +9,11 @@
 
 #pragma once
 
-#include "../ride/RideData.h"
-#include "../ride/TrackData.h"
-#include "../world/Banner.h"
-#include "../world/Scenery.h"
-#include "GameAction.hpp"
+// #include "../../../ride/RideData.h"
+// #include "../../../ride/TrackData.h"
+// #include "../../../world/Banner.h"
+// #include "../../../world/Scenery.h"
+#include "../GameAction.hpp"
 
 namespace OpenRCT2
 {

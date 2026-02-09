@@ -9,13 +9,13 @@
 
 #include "PeepPickupAction.h"
 
-#include "../Diagnostic.h"
-#include "../GameState.h"
-#include "../Input.h"
-#include "../entity/EntityRegistry.h"
-#include "../entity/Peep.h"
-#include "../network/Network.h"
-#include "GameActionRunner.h"
+#include "../../Diagnostic.h"
+#include "../../GameState.h"
+#include "../../Input.h"
+#include "../../entity/EntityRegistry.h"
+#include "../../entity/Peep.h"
+#include "../../network/Network.h"
+#include "../GameActionRunner.h"
 
 namespace OpenRCT2::GameActions
 {

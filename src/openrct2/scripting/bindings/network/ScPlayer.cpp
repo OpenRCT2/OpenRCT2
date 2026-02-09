@@ -14,7 +14,7 @@
     #include "../../../Context.h"
     #include "../../../GameState.h"
     #include "../../../actions/GameActionRunner.h"
-    #include "../../../actions/PlayerSetGroupAction.h"
+    #include "../../../actions/network/PlayerSetGroupAction.h"
     #include "../../../network/Network.h"
     #include "../../../network/NetworkAction.h"
 

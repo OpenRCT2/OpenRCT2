@@ -20,9 +20,9 @@
 #include <openrct2/Input.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/GameActionRunner.h>
-#include <openrct2/actions/GuestSetFlagsAction.h>
-#include <openrct2/actions/GuestSetNameAction.h>
-#include <openrct2/actions/PeepPickupAction.h>
+#include <openrct2/actions/peep/GuestSetFlagsAction.h>
+#include <openrct2/actions/peep/GuestSetNameAction.h>
+#include <openrct2/actions/peep/PeepPickupAction.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/EnumUtils.hpp>
 #include <openrct2/core/String.hpp>

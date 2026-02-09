@@ -9,16 +9,16 @@
 
 #include "GuestSetNameAction.h"
 
-#include "../Cheats.h"
-#include "../Context.h"
-#include "../Diagnostic.h"
-#include "../GameState.h"
-#include "../core/MemoryStream.h"
-#include "../drawing/Drawing.h"
-#include "../entity/EntityRegistry.h"
-#include "../localisation/StringIds.h"
-#include "../windows/Intent.h"
-#include "../world/Park.h"
+#include "../../Cheats.h"
+#include "../../Context.h"
+#include "../../Diagnostic.h"
+#include "../../GameState.h"
+#include "../../core/MemoryStream.h"
+#include "../../drawing/Drawing.h"
+#include "../../entity/EntityRegistry.h"
+#include "../../localisation/StringIds.h"
+#include "../../windows/Intent.h"
+#include "../../world/Park.h"
 
 namespace OpenRCT2::GameActions
 {

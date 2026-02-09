@@ -9,8 +9,8 @@
 
 #pragma once
 
-#include "../Identifiers.h"
-#include "GameAction.hpp"
+#include "../../Identifiers.h"
+#include "../GameAction.hpp"
 
 namespace OpenRCT2::GameActions
 {

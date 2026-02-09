@@ -9,13 +9,13 @@
 
 #include "WaterRaiseAction.h"
 
-#include "../GameState.h"
-#include "../OpenRCT2.h"
-#include "../audio/Audio.h"
-#include "../ride/RideConstruction.h"
-#include "../world/Map.h"
-#include "../world/tile_element/SurfaceElement.h"
-#include "GameActionRunner.h"
+#include "../../GameState.h"
+#include "../../OpenRCT2.h"
+#include "../../audio/Audio.h"
+#include "../../ride/RideConstruction.h"
+#include "../../world/Map.h"
+#include "../../world/tile_element/SurfaceElement.h"
+#include "../GameActionRunner.h"
 #include "WaterSetHeightAction.h"
 
 namespace OpenRCT2::GameActions

@@ -9,11 +9,11 @@
 
 #include "BalloonPressAction.h"
 
-#include "../Diagnostic.h"
-#include "../GameState.h"
-#include "../entity/Balloon.h"
-#include "../entity/EntityRegistry.h"
-#include "GameAction.hpp"
+#include "../../Diagnostic.h"
+#include "../../GameState.h"
+#include "../../entity/Balloon.h"
+#include "../../entity/EntityRegistry.h"
+#include "../GameAction.hpp"
 
 namespace OpenRCT2::GameActions
 {

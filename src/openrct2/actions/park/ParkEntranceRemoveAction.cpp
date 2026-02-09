@@ -9,14 +9,14 @@
 
 #include "ParkEntranceRemoveAction.h"
 
-#include "../Diagnostic.h"
-#include "../GameState.h"
-#include "../OpenRCT2.h"
-#include "../management/Finance.h"
-#include "../world/Entrance.h"
-#include "../world/Map.h"
-#include "../world/Park.h"
-#include "../world/tile_element/EntranceElement.h"
+#include "../../Diagnostic.h"
+#include "../../GameState.h"
+#include "../../OpenRCT2.h"
+#include "../../management/Finance.h"
+#include "../../world/Entrance.h"
+#include "../../world/Map.h"
+#include "../../world/Park.h"
+#include "../../world/tile_element/EntranceElement.h"
 
 namespace OpenRCT2::GameActions
 {

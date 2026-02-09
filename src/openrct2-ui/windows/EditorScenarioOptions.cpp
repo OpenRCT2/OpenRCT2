@@ -20,8 +20,8 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/GameActionRunner.h>
-#include <openrct2/actions/ParkSetNameAction.h>
-#include <openrct2/actions/ScenarioSetSettingAction.h>
+#include <openrct2/actions/general/ScenarioSetSettingAction.h>
+#include <openrct2/actions/park/ParkSetNameAction.h>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>

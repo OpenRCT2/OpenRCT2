@@ -9,13 +9,13 @@
 
 #include "ParkSetLoanAction.h"
 
-#include "../Context.h"
-#include "../GameState.h"
-#include "../core/MemoryStream.h"
-#include "../localisation/StringIds.h"
-#include "../management/Finance.h"
-#include "../ui/WindowManager.h"
-#include "../windows/Intent.h"
+#include "../../Context.h"
+#include "../../GameState.h"
+#include "../../core/MemoryStream.h"
+#include "../../localisation/StringIds.h"
+#include "../../management/Finance.h"
+#include "../../ui/WindowManager.h"
+#include "../../windows/Intent.h"
 
 namespace OpenRCT2::GameActions
 {

@@ -9,8 +9,8 @@
 
 #pragma once
 
-#include "../world/Location.hpp"
-#include "GameAction.hpp"
+#include "../../world/Location.hpp"
+#include "../GameAction.hpp"
 
 namespace OpenRCT2::GameActions
 {

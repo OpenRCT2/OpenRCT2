@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../Game.h"
 #include "GameAction.hpp"
 
 namespace OpenRCT2

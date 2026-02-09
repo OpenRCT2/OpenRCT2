@@ -9,7 +9,7 @@
 
 #include "NetworkModifyGroupAction.h"
 
-#include "../network/Network.h"
+#include "../../network/Network.h"
 
 namespace OpenRCT2::GameActions
 {

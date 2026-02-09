@@ -9,16 +9,16 @@
 
 #include "WallRemoveAction.h"
 
-#include "../Cheats.h"
-#include "../GameState.h"
-#include "../OpenRCT2.h"
-#include "../core/MemoryStream.h"
-#include "../localisation/StringIds.h"
-#include "../management/Finance.h"
-#include "../world/Location.hpp"
-#include "../world/Map.h"
-#include "../world/TileElementsView.h"
-#include "../world/tile_element/WallElement.h"
+#include "../../Cheats.h"
+#include "../../GameState.h"
+#include "../../OpenRCT2.h"
+#include "../../core/MemoryStream.h"
+#include "../../localisation/StringIds.h"
+#include "../../management/Finance.h"
+#include "../../world/Location.hpp"
+#include "../../world/Map.h"
+#include "../../world/TileElementsView.h"
+#include "../../world/tile_element/WallElement.h"
 
 namespace OpenRCT2::GameActions
 {

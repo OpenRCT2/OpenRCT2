@@ -9,15 +9,15 @@
 
 #include "StaffSetCostumeAction.h"
 
-#include "../Context.h"
-#include "../Diagnostic.h"
-#include "../GameState.h"
-#include "../entity/EntityRegistry.h"
-#include "../localisation/StringIds.h"
-#include "../object/ObjectManager.h"
-#include "../object/PeepAnimationsObject.h"
-#include "../ui/WindowManager.h"
-#include "../windows/Intent.h"
+#include "../../Context.h"
+#include "../../Diagnostic.h"
+#include "../../GameState.h"
+#include "../../entity/EntityRegistry.h"
+#include "../../localisation/StringIds.h"
+#include "../../object/ObjectManager.h"
+#include "../../object/PeepAnimationsObject.h"
+#include "../../ui/WindowManager.h"
+#include "../../windows/Intent.h"
 
 namespace OpenRCT2::GameActions
 {

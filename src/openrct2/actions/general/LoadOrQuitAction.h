@@ -9,8 +9,8 @@
 
 #pragma once
 
-#include "../interface/Window.h"
-#include "GameAction.hpp"
+#include "../../interface/Window.h"
+#include "../GameAction.hpp"
 
 namespace OpenRCT2::GameActions
 {

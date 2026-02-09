@@ -9,16 +9,16 @@
 
 #include "WaterSetHeightAction.h"
 
-#include "../Diagnostic.h"
-#include "../GameState.h"
-#include "../OpenRCT2.h"
-#include "../management/Finance.h"
-#include "../world/ConstructionClearance.h"
-#include "../world/Footpath.h"
-#include "../world/Map.h"
-#include "../world/Park.h"
-#include "../world/Wall.h"
-#include "../world/tile_element/SurfaceElement.h"
+#include "../../Diagnostic.h"
+#include "../../GameState.h"
+#include "../../OpenRCT2.h"
+#include "../../management/Finance.h"
+#include "../../world/ConstructionClearance.h"
+#include "../../world/Footpath.h"
+#include "../../world/Map.h"
+#include "../../world/Park.h"
+#include "../../world/Wall.h"
+#include "../../world/tile_element/SurfaceElement.h"
 
 namespace OpenRCT2::GameActions
 {

@@ -9,11 +9,11 @@
 
 #include "GuestSetFlagsAction.h"
 
-#include "../Context.h"
-#include "../Diagnostic.h"
-#include "../GameState.h"
-#include "../OpenRCT2.h"
-#include "../entity/EntityRegistry.h"
+#include "../../Context.h"
+#include "../../Diagnostic.h"
+#include "../../GameState.h"
+#include "../../OpenRCT2.h"
+#include "../../entity/EntityRegistry.h"
 
 namespace OpenRCT2::GameActions
 {

@@ -9,7 +9,7 @@
 
 #include "PauseToggleAction.h"
 
-#include "../Game.h"
+#include "../../Game.h"
 
 namespace OpenRCT2::GameActions
 {

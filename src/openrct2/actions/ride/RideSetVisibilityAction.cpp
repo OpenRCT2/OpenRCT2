@@ -9,11 +9,11 @@
 
 #include "RideSetVisibilityAction.h"
 
-#include "../Diagnostic.h"
-#include "../GameState.h"
-#include "../world/TileElementsView.h"
-#include "../world/tile_element/TrackElement.h"
-#include "GameAction.hpp"
+#include "../../Diagnostic.h"
+#include "../../GameState.h"
+#include "../../world/TileElementsView.h"
+#include "../../world/tile_element/TrackElement.h"
+#include "../GameAction.hpp"
 
 namespace OpenRCT2::GameActions
 {

@@ -9,10 +9,10 @@
 
 #include "LoadOrQuitAction.h"
 
-#include "../Context.h"
-#include "../Game.h"
-#include "../OpenRCT2.h"
-#include "../ui/WindowManager.h"
+#include "../../Context.h"
+#include "../../Game.h"
+#include "../../OpenRCT2.h"
+#include "../../ui/WindowManager.h"
 
 namespace OpenRCT2::GameActions
 {

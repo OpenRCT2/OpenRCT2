@@ -9,9 +9,9 @@
 
 #pragma once
 
-#include "../OpenRCT2.h"
-#include "../management/Finance.h"
-#include "GameAction.hpp"
+#include "../../OpenRCT2.h"
+#include "../../management/Finance.h"
+#include "../GameAction.hpp"
 
 namespace OpenRCT2::GameActions
 {

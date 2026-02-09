@@ -19,11 +19,11 @@
 #include <openrct2/Input.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/GameActionRunner.h>
-#include <openrct2/actions/PeepPickupAction.h>
-#include <openrct2/actions/StaffSetCostumeAction.h>
-#include <openrct2/actions/StaffSetNameAction.h>
-#include <openrct2/actions/StaffSetOrdersAction.h>
-#include <openrct2/actions/StaffSetPatrolAreaAction.h>
+#include <openrct2/actions/peep/PeepPickupAction.h>
+#include <openrct2/actions/peep/StaffSetCostumeAction.h>
+#include <openrct2/actions/peep/StaffSetNameAction.h>
+#include <openrct2/actions/peep/StaffSetOrdersAction.h>
+#include <openrct2/actions/peep/StaffSetPatrolAreaAction.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/entity/EntityRegistry.h>

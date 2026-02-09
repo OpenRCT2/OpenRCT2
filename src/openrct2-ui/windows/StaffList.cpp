@@ -21,10 +21,10 @@
 #include <openrct2/Input.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/GameActionRunner.h>
-#include <openrct2/actions/PeepPickupAction.h>
-#include <openrct2/actions/StaffFireAction.h>
-#include <openrct2/actions/StaffHireNewAction.h>
-#include <openrct2/actions/StaffSetColourAction.h>
+#include <openrct2/actions/peep/PeepPickupAction.h>
+#include <openrct2/actions/peep/StaffFireAction.h>
+#include <openrct2/actions/peep/StaffHireNewAction.h>
+#include <openrct2/actions/peep/StaffSetColourAction.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/EnumUtils.hpp>
 #include <openrct2/core/String.hpp>
