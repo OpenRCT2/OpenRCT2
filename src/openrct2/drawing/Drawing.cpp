@@ -454,7 +454,7 @@ const TranslucentWindowPalette kTranslucentWindowPalettes[kColourNumTotal] = {
 ImageCatalogue ImageId::GetCatalogue() const
 {
     auto index = GetIndex();
-    if (index == SPR_TEMP)
+    if (index >= SPR_TEMP_BEGIN && index < SPR_TEMP_END)
     {
         return ImageCatalogue::TEMPORARY;
     }

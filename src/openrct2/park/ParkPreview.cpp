@@ -255,9 +255,9 @@ namespace OpenRCT2
         g1temp.width = image.width;
         g1temp.height = image.height;
 
-        GfxSetG1Element(SPR_TEMP, &g1temp);
-        DrawingEngineInvalidateImage(SPR_TEMP);
-        GfxDrawSprite(rt, ImageId(SPR_TEMP), screenPos);
+        GfxSetG1Element(SPR_TEMP_PARK_PREVIEW, &g1temp);
+        DrawingEngineInvalidateImage(SPR_TEMP_PARK_PREVIEW);
+        GfxDrawSprite(rt, ImageId(SPR_TEMP_PARK_PREVIEW), screenPos);
     }
 
 } // namespace OpenRCT2

@@ -445,7 +445,7 @@ static Gx _csg = {};
 static G1Element _scrollingText[ScrollingText::kMaxEntries]{};
 static bool _csgLoaded = false;
 
-static G1Element _g1Temp = {};
+static G1Element _g1Temp[kTempSpriteCount] = {};
 static std::vector<G1Element> _imageListElements;
 
 /**
@@ -1044,9 +1044,9 @@ const G1Element* GfxGetG1Element(ImageIndex image_id)
         return nullptr;
     }
 
-    if (offset == SPR_TEMP)
+    if (offset >= SPR_TEMP_BEGIN && offset < SPR_TEMP_END)
     {
-        return &_g1Temp;
+        return &_g1Temp[offset - SPR_TEMP_BEGIN];
     }
 
     if (offset < SPR_RCTC_G1_END)
@@ -1139,7 +1139,7 @@ const G1Palette* GfxGetG1Palette(ImageIndex imageId)
 
 void GfxSetG1Element(ImageIndex imageId, const G1Element* g1)
 {
-    bool isTemp = imageId == SPR_TEMP;
+    bool isTemp = (imageId >= SPR_TEMP_BEGIN && imageId < SPR_TEMP_END);
     bool isValid = (imageId >= SPR_IMAGE_LIST_BEGIN && imageId < SPR_IMAGE_LIST_END)
         || (imageId >= SPR_SCROLLING_TEXT_START && imageId < SPR_SCROLLING_TEXT_END);
 
@@ -1153,7 +1153,7 @@ void GfxSetG1Element(ImageIndex imageId, const G1Element* g1)
     {
         if (isTemp)
         {
-            _g1Temp = *g1;
+            _g1Temp[imageId - SPR_TEMP_BEGIN] = *g1;
         }
         else if (isValid)
         {

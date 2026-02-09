@@ -165,9 +165,9 @@ namespace OpenRCT2::Ui::Windows
             g1temp.width = 370;
             g1temp.height = 217;
             g1temp.flags = { G1Flag::hasTransparency };
-            GfxSetG1Element(SPR_TEMP, &g1temp);
-            DrawingEngineInvalidateImage(SPR_TEMP);
-            GfxDrawSprite(rt, ImageId(SPR_TEMP), screenPos);
+            GfxSetG1Element(SPR_TEMP_INSTALL_TRACK, &g1temp);
+            DrawingEngineInvalidateImage(SPR_TEMP_INSTALL_TRACK);
+            GfxDrawSprite(rt, ImageId(SPR_TEMP_INSTALL_TRACK), screenPos);
 
             screenPos = windowPos + ScreenCoordsXY{ widget->midX(), widget->bottom - 12 };
 

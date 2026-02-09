@@ -587,9 +587,9 @@ namespace OpenRCT2::Ui::Windows
             g1temp.offset = reinterpret_cast<uint8_t*>(_mapImageData.data());
             g1temp.width = getMiniMapWidth();
             g1temp.height = getMiniMapWidth();
-            GfxSetG1Element(SPR_TEMP, &g1temp);
-            DrawingEngineInvalidateImage(SPR_TEMP);
-            GfxDrawSprite(rt, ImageId(SPR_TEMP), screenOffset);
+            GfxSetG1Element(SPR_TEMP_MAP, &g1temp);
+            DrawingEngineInvalidateImage(SPR_TEMP_MAP);
+            GfxDrawSprite(rt, ImageId(SPR_TEMP_MAP), screenOffset);
 
             if (selectedTab == PAGE_PEEPS)
             {

@@ -2,6 +2,7 @@
 ------------------------------------------------------------------------
 - Feature: [#22704] Rides can be made invisible more easily.
 - Improved: [#25941] The command line sprite build command is now faster.
+- Fix: [#14686, #23996, #25981] Preview images from different windows overwrite each other when using OpenGL.
 - Fix: [#25237] Wrong colours on the Knight costume.
 - Fix: [#25712, #25727] Crash during startup from window list race condition.
 - Fix: [#25910] Folders starting with numbers are sorted incorrectly (e.g. 1, 10, 2 instead of 1, 2, 10).

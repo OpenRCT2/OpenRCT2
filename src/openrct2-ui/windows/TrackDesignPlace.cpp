@@ -373,9 +373,9 @@ namespace OpenRCT2::Ui::Windows
                 g1temp.offset = reinterpret_cast<uint8_t*>(_miniPreview.data());
                 g1temp.width = kTrackMiniPreviewSize.width;
                 g1temp.height = kTrackMiniPreviewSize.height;
-                GfxSetG1Element(SPR_TEMP, &g1temp);
-                DrawingEngineInvalidateImage(SPR_TEMP);
-                GfxDrawSprite(clippedRT, ImageId(SPR_TEMP, this->colours[0].colour), { 0, 0 });
+                GfxSetG1Element(SPR_TEMP_TRACK_PLACE, &g1temp);
+                DrawingEngineInvalidateImage(SPR_TEMP_TRACK_PLACE);
+                GfxDrawSprite(clippedRT, ImageId(SPR_TEMP_TRACK_PLACE, this->colours[0].colour), { 0, 0 });
             }
 
             // Price
