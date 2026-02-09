@@ -14,7 +14,7 @@
 #include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ParkImporter.h>
-#include <openrct2/core/MemoryStream.h>
+#include <openrct2/core/FileStream.h>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/entity/Guest.h>
 #include <openrct2/object/ObjectManager.h>
@@ -42,24 +42,6 @@ protected:
     }
 };
 
-static bool LoadFileToBuffer(MemoryStream& stream, const std::string& filePath)
-{
-    FILE* fp = fopen(filePath.c_str(), "rb");
-    EXPECT_NE(fp, nullptr) << "Failed to open file: " << filePath;
-    if (fp == nullptr)
-        return false;
-
-    uint8_t buf[1024];
-    size_t bytesRead = fread(buf, 1, sizeof(buf), fp);
-    while (bytesRead > 0)
-    {
-        stream.Write(buf, bytesRead);
-        bytesRead = fread(buf, 1, sizeof(buf), fp);
-    }
-    fclose(fp);
-    return true;
-}
-
 // This here tests that CreateEntityAt returns nullptr when trying to create an entity at an index that's already occupied.
 // This behavior is what caused crashes before, corrupted saves had duplicate EntityIndex values that caused CreateEntityAt to
 // return nullptr, which was then dereferenced.
@@ -81,14 +63,12 @@ TEST_F(EntityImportTests, CreateEntityAtDuplicateIndexReturnsNull)
 // This test verifies that corrupted S6 files with duplicate EntityIndex values can be loaded without crashing.
 TEST_F(EntityImportTests, S6ImportCorruptedDuplicateEntityIndicesDoesNotCrash)
 {
-    MemoryStream buffer;
     std::string testParkPath = TestData::GetParkPath("corrupted_duplicate_entity_indices.sv6");
-    ASSERT_TRUE(LoadFileToBuffer(buffer, testParkPath));
+    auto fs = FileStream(testParkPath, FileMode::open);
 
-    buffer.SetPosition(0);
     auto& objManager = context->GetObjectManager();
     auto importer = ParkImporter::CreateS6(context->GetObjectRepository());
-    auto loadResult = importer->LoadFromStream(&buffer, false);
+    auto loadResult = importer->LoadFromStream(&fs, false);
     objManager.LoadObjects(loadResult.RequiredObjects);
 
     MapAnimations::ClearAll();
