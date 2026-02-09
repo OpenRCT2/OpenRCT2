@@ -1,29 +1,29 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdk 36
-    buildToolsVersion "36.0.0"
-    ndkVersion "27.3.13750724" // Latest r27d (LTS), to be synced with CI container image
-    namespace "io.openrct2"
+    compileSdk = 36
+    buildToolsVersion = "36.0.0" // to be synced with CI container image
+    ndkVersion = "27.3.13750724" // Latest r27d (LTS), to be synced with CI container image
+    namespace = "io.openrct2"
 
     signingConfigs {
         release {
             if (System.getenv('OPENRCT2_KEYSTORE_FILE') && System.getenv('OPENRCT2_KEYSTORE_PASSWORD')) {
-                storeFile file(System.getenv('OPENRCT2_KEYSTORE_FILE'))
-                storePassword System.getenv('OPENRCT2_KEYSTORE_PASSWORD')
-                keyAlias "openrct2"
-                keyPassword System.getenv('OPENRCT2_KEYSTORE_PASSWORD')  // Same as keystore password in PKCS12
+                storeFile = file(System.getenv('OPENRCT2_KEYSTORE_FILE'))
+                storePassword = System.getenv('OPENRCT2_KEYSTORE_PASSWORD')
+                keyAlias = "openrct2"
+                keyPassword = System.getenv('OPENRCT2_KEYSTORE_PASSWORD')  // Same as keystore password in PKCS12
             }
         }
     }
 
     defaultConfig {
-        applicationId 'io.openrct2'
-        minSdkVersion 24
-        targetSdkVersion 36
+        applicationId = 'io.openrct2'
+        minSdkVersion = 24
+        targetSdkVersion = 36
 
-        versionCode 18
-        versionName '0.4.31'
+        versionCode = 18
+        versionName = '0.4.31'
         externalNativeBuild {
             cmake {
                 arguments '-DANDROID_STL=c++_shared', '-DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON'
@@ -36,29 +36,29 @@ android {
     buildTypes {
         release {
             if (System.getenv('OPENRCT2_KEYSTORE_FILE') && System.getenv('OPENRCT2_KEYSTORE_PASSWORD')) {
-                signingConfig signingConfigs.release
+                signingConfig = signingConfigs.release
             } else {
                 // Fallback to ephemeral debug signing when keystore is not available
-                signingConfig signingConfigs.debug
+                signingConfig = signingConfigs.debug
             }
         }
     }
 
     sourceSets.main {
-        jniLibs.srcDir 'libs'
+        jniLibs.srcDir('libs')
         java {
-            srcDir 'src/main/java'
+            srcDir('src/main/java')
         }
     }
     externalNativeBuild {
         cmake {
-            version "4.0.3"
-            path 'src/main/CMakeLists.txt'
+            version = "4.0.3"
+            path = 'src/main/CMakeLists.txt'
         }
     }
 
     lintOptions {
-        abortOnError false
+        abortOnError = false
     }
 }
 
