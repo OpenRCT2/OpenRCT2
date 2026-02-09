@@ -816,7 +816,11 @@ private:
         _window = SDL_CreateWindow(OPENRCT2_NAME, windowPos.x, windowPos.y, width, height, flags);
         if (_window == nullptr)
         {
-            SDLException::Throw("SDL_CreateWindow(...)");
+            const char* error = SDL_GetError();
+            std::string errorMessage = String::stdFormat(
+                "SDL_CreateWindow(" OPENRCT2_NAME ", %d, %d, %d, %d, %d) failed: %s", windowPos.x, windowPos.y, width, height,
+                flags, error);
+            SDLException::Throw(errorMessage.c_str());
         }
 
         ApplyScreenSaverLockSetting();
