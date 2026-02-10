@@ -2344,7 +2344,8 @@ namespace OpenRCT2::Ui::Windows
                     {
                         WindowScenerySetSelectedItem(
                             { SCENERY_TYPE_LARGE, entryIndex }, info.Element->AsLargeScenery()->GetPrimaryColour(),
-                            info.Element->AsLargeScenery()->GetSecondaryColour(), std::nullopt,
+                            info.Element->AsLargeScenery()->GetSecondaryColour(),
+                            info.Element->AsLargeScenery()->GetTertiaryColour(),
                             (GetCurrentRotation() + info.Element->GetDirection()) & 3);
                     }
                     break;
