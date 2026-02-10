@@ -36,6 +36,7 @@ constexpr RideTypeDescriptor RiverRaftsRTD =
                      RtdFlag::showInTrackDesigner, RtdFlag::slightlyInterestingToLookAt),
     .RideModes = EnumsToFlags(RideMode::continuousCircuit),
     .DefaultMode = RideMode::continuousCircuit,
+    .OperatingSettings = { 5, 27 },
     .Naming = { STR_RIDE_NAME_RIVER_RAFTS, STR_RIDE_DESCRIPTION_RIVER_RAFTS },
     .NameConvention = { RideComponentType::Boat, RideComponentType::Track, RideComponentType::Station },
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
@@ -55,7 +56,7 @@ constexpr RideTypeDescriptor RiverRaftsRTD =
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_RIVER_RAFTS_TRACK, SPR_RIDE_DESIGN_PREVIEW_RIVER_RAFTS_SUPPORTS },
     .ColourKey = RideColourKey::Ride,
     .Name = "river_rafts",
-    .RatingsData = 
+    .RatingsData =
     {
         RatingsCalculationType::Normal,
         { RideRating::make(1, 45), RideRating::make(0, 25), RideRating::make(0, 34) },

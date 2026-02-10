@@ -33,6 +33,7 @@ constexpr RideTypeDescriptor ClassicWoodenTwisterRollerCoasterRTD =
                     RtdFlag::allowMultipleCircuits, RtdFlag::allowReversedTrains),
    .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned),
    .DefaultMode = RideMode::continuousCircuit,
+   .OperatingSettings = { 7, 27 },
    .BoosterSettings = { 0, 68 },
    .LegacyBoosterSettings = { 0, 68 },
    .Naming = { STR_RIDE_NAME_CLASSIC_WOODEN_TWISTER_ROLLER_COASTER, STR_RIDE_DESCRIPTION_CLASSIC_WOODEN_TWISTER_ROLLER_COASTER },
@@ -58,7 +59,7 @@ constexpr RideTypeDescriptor ClassicWoodenTwisterRollerCoasterRTD =
    .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_WOODEN_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_WOODEN_ROLLER_COASTER_SUPPORTS },
    .ColourKey = RideColourKey::Ride,
    .Name = "classic_wooden_twister_rc",
-    .RatingsData = 
+    .RatingsData =
     {
         RatingsCalculationType::Normal,
         { RideRating::make(3, 20), RideRating::make(2, 60), RideRating::make(2, 00) },

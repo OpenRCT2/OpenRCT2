@@ -33,10 +33,11 @@ constexpr RideTypeDescriptor MonsterTrucksRTD =
                      RtdFlag::hasDataLogging, RtdFlag::hasLoadOptions, RtdFlag::guestsWillRideAgain,
                      RtdFlag::hasVehicleColours, RtdFlag::hasTrack, RtdFlag::supportsMultipleColourSchemes,
                      RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit,
-                     RtdFlag::allowMoreVehiclesThanStationFits, RtdFlag::showInTrackDesigner, 
+                     RtdFlag::allowMoreVehiclesThanStationFits, RtdFlag::showInTrackDesigner,
                      RtdFlag::slightlyInterestingToLookAt),
     .RideModes = (1uLL << static_cast<uint8_t>(RideMode::continuousCircuit)),
     .DefaultMode = RideMode::continuousCircuit,
+    .OperatingSettings = { 5, 18 },
     .Naming = { STR_RIDE_NAME_MONSTER_TRUCKS, STR_RIDE_DESCRIPTION_MONSTER_TRUCKS },
     .NameConvention = { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station },
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
@@ -59,7 +60,7 @@ constexpr RideTypeDescriptor MonsterTrucksRTD =
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_CAR_RIDE_TRACK, SPR_RIDE_DESIGN_PREVIEW_CAR_RIDE_SUPPORTS },
     .ColourKey = RideColourKey::Ride,
     .Name = "monster_trucks",
-        .RatingsData = 
+        .RatingsData =
     {
         RatingsCalculationType::Normal,
         { RideRating::make(2, 00), RideRating::make(0, 50), RideRating::make(0, 00) },

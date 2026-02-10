@@ -28,11 +28,12 @@ constexpr RideTypeDescriptor WoodenWildMouseRTD =
         .extraTrackGroups = {},
     }),
     .InvertedTrackPaintFunctions = {},
-    .flags = kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt | 
-        RtdFlags(RtdFlag::hasTrackColourMain, RtdFlag::hasTrackColourSupports, 
+    .flags = kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt |
+        RtdFlags(RtdFlag::hasTrackColourMain, RtdFlag::hasTrackColourSupports,
                      RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::allowDoorsOnTrack, RtdFlag::checkGForces),
     .RideModes = EnumsToFlags(RideMode::continuousCircuit),
     .DefaultMode = RideMode::continuousCircuit,
+    .OperatingSettings = { 5, 18 },
     .Naming = { STR_RIDE_NAME_WOODEN_WILD_MOUSE, STR_RIDE_DESCRIPTION_WOODEN_WILD_MOUSE },
     .NameConvention = { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station },
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),
@@ -54,7 +55,7 @@ constexpr RideTypeDescriptor WoodenWildMouseRTD =
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_WOODEN_WILD_MOUSE_TRACK, SPR_RIDE_DESIGN_PREVIEW_WOODEN_WILD_MOUSE_SUPPORTS },
     .ColourKey = RideColourKey::Ride,
     .Name = "wooden_wild_mouse",
-    .RatingsData = 
+    .RatingsData =
     {
         RatingsCalculationType::Normal,
         { RideRating::make(2, 90), RideRating::make(2, 90), RideRating::make(2, 10) },
