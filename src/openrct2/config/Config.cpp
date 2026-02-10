@@ -735,6 +735,15 @@ namespace OpenRCT2::Config
             }
         }
 
+        const auto extractLocations = GetContext()->GetPlatformEnvironment().getRCT1ExtractPaths();
+        for (const auto& location : extractLocations)
+        {
+            if (RCT1DataPresentAtLocation(location))
+            {
+                return location;
+            }
+        }
+
         auto steamPaths = Platform::GetSteamPaths();
         if (steamPaths.isSteamPresent())
         {
@@ -809,6 +818,15 @@ namespace OpenRCT2::Config
         static std::vector<u8string> searchLocations = Platform::GetSearchablePathsRCT2();
 
         for (const auto& location : searchLocations)
+        {
+            if (Platform::OriginalGameDataExists(location))
+            {
+                return location;
+            }
+        }
+
+        const auto extractLocations = GetContext()->GetPlatformEnvironment().getRCT2ExtractPaths();
+        for (const auto& location : extractLocations)
         {
             if (Platform::OriginalGameDataExists(location))
             {
