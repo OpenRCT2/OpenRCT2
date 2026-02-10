@@ -371,24 +371,27 @@ void Vehicle::UpdateHandleWaterSplash() const
     const auto* rideEntry = GetRideEntry();
     auto trackType = GetTrackType();
 
-    if (!rideEntry->flags.has(RideEntryFlag::playSplashSound) && rideEntry->flags.has(RideEntryFlag::playSplashSoundSlide))
+    if (!rideEntry->flags.has(RideEntryFlag::playSplashSound))
     {
-        if (IsHead())
+        if (rideEntry->flags.has(RideEntryFlag::playSplashSoundSlide))
         {
-            if (IsOnCoveredTrack())
+            if (IsHead())
             {
-                Vehicle* nextVehicle = getGameState().entities.GetEntity<Vehicle>(next_vehicle_on_ride);
-                if (nextVehicle == nullptr)
-                    return;
-
-                Vehicle* nextNextVehicle = getGameState().entities.GetEntity<Vehicle>(nextVehicle->next_vehicle_on_ride);
-                if (nextNextVehicle == nullptr)
-                    return;
-                if (!nextNextVehicle->IsOnCoveredTrack())
+                if (IsOnCoveredTrack())
                 {
-                    if (track_progress == 4)
+                    Vehicle* nextVehicle = getGameState().entities.GetEntity<Vehicle>(next_vehicle_on_ride);
+                    if (nextVehicle == nullptr)
+                        return;
+
+                    Vehicle* nextNextVehicle = getGameState().entities.GetEntity<Vehicle>(nextVehicle->next_vehicle_on_ride);
+                    if (nextNextVehicle == nullptr)
+                        return;
+                    if (!nextNextVehicle->IsOnCoveredTrack())
                     {
-                        vehicle_update_play_water_splash_sound();
+                        if (track_progress == 4)
+                        {
+                            vehicle_update_play_water_splash_sound();
+                        }
                     }
                 }
             }
