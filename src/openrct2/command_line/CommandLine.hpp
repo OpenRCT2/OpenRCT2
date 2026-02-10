@@ -120,5 +120,6 @@ namespace OpenRCT2
 
         ExitCode HandleCommandUri(CommandLineArgEnumerator* enumerator);
         ExitCode HandleCommandTriggerSteamDownload(CommandLineArgEnumerator* enumerator);
+        ExitCode HandleCommandExtractGOGBin(CommandLineArgEnumerator* enumerator);
     } // namespace CommandLine
 } // namespace OpenRCT2

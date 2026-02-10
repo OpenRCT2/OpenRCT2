@@ -22,6 +22,7 @@
 #include "../park/ParkFile.h"
 #include "../platform/Crash.h"
 #include "../platform/Platform.h"
+#include "../platform/oobe/GOG.h"
 #include "../scripting/ScriptEngine.h"
 #include "CommandLine.hpp"
 
@@ -135,6 +136,7 @@ namespace OpenRCT2
         DefineCommand("scan-objects", "<path>",             kStandardOptions, HandleCommandScanObjects),
         DefineCommand("handle-uri", "openrct2://.../",      kStandardOptions, HandleCommandUri),
         DefineCommand("trigger-steam-download", "",         kStandardOptions, HandleCommandTriggerSteamDownload),
+        DefineCommand("extract-gog-bin", "<path to bin file>",         kStandardOptions, HandleCommandExtractGOGBin),
 
     #if defined(_WIN32)
         DefineCommand("register-shell", "", RegisterShellOptions, HandleCommandRegisterShell),
@@ -503,5 +505,33 @@ namespace OpenRCT2
         }
 
         return ExitCode::ok;
+    }
+
+    ExitCode CommandLine::HandleCommandExtractGOGBin(CommandLineArgEnumerator* enumerator)
+    {
+        // Get the path that was passed
+        const utf8* rawPath;
+        if (!enumerator->TryPopString(&rawPath))
+        {
+            Console::Error::WriteLine("Expected a path.");
+            return ExitCode::fail;
+        }
+
+        auto env = CreatePlatformEnvironment();
+        if (Platform::OOBE::GOG::isRCT2BinFile(rawPath))
+        {
+            const auto target = env->getRCT2ExtractPaths()[0];
+            const auto success = Platform::OOBE::GOG::extractRCT2Files(rawPath, target);
+            return success ? ExitCode::ok : ExitCode::fail;
+        }
+        if (Platform::OOBE::GOG::isRCT1BinFile(rawPath))
+        {
+            const auto target = env->getRCT1ExtractPaths()[0];
+            const auto success = Platform::OOBE::GOG::extractRCT1Files(rawPath, target);
+            return success ? ExitCode::ok : ExitCode::fail;
+        }
+
+        Console::Error::WriteLine("This file is not a recognised GOG installer bin file.");
+        return ExitCode::fail;
     }
 } // namespace OpenRCT2
