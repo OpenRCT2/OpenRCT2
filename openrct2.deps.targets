@@ -13,8 +13,8 @@
       <ObjectsSha256          Required="false" ParameterType="System.String" Output="true" />
       <OpenSFXUrl             Required="false" ParameterType="System.String" Output="true" />
       <OpenSFXSha256          Required="false" ParameterType="System.String" Output="true" />
-      <OpenMSXUrl             Required="false" ParameterType="System.String" Output="true" />
-      <OpenMSXSha256          Required="false" ParameterType="System.String" Output="true" />
+      <OpenMusicUrl           Required="false" ParameterType="System.String" Output="true" />
+      <OpenMusicSha256        Required="false" ParameterType="System.String" Output="true" />
       <ReplaysUrl             Required="false" ParameterType="System.String" Output="true" />
       <ReplaysSha256          Required="false" ParameterType="System.String" Output="true" />
     </ParameterGroup>
@@ -52,8 +52,8 @@
                       OpenSFXUrl = GetAssetProperty(root, "opensfx", "url");
                       OpenSFXSha256 = GetAssetProperty(root, "opensfx", "sha256");
 
-                      OpenMSXUrl = GetAssetProperty(root, "openmsx", "url");
-                      OpenMSXSha256 = GetAssetProperty(root, "openmsx", "sha256");
+                      OpenMusicUrl = GetAssetProperty(root, "openmusic", "url");
+                      OpenMusicSha256 = GetAssetProperty(root, "openmusic", "sha256");
 
                       ReplaysUrl = GetAssetProperty(root, "replays", "url");
                       ReplaysSha256 = GetAssetProperty(root, "replays", "sha256");
@@ -314,8 +314,8 @@
       <Output TaskParameter="ObjectsSha256" PropertyName="ObjectsSha256" />
       <Output TaskParameter="OpenSFXUrl" PropertyName="OpenSFXUrl" />
       <Output TaskParameter="OpenSFXSha256" PropertyName="OpenSFXSha256" />
-      <Output TaskParameter="OpenMSXUrl" PropertyName="OpenMSXUrl" />
-      <Output TaskParameter="OpenMSXSha256" PropertyName="OpenMSXSha256" />
+      <Output TaskParameter="OpenMusicUrl" PropertyName="OpenMusicUrl" />
+      <Output TaskParameter="OpenMusicSha256" PropertyName="OpenMusicSha256" />
       <Output TaskParameter="ReplaysUrl" PropertyName="ReplaysUrl" />
       <Output TaskParameter="ReplaysSha256" PropertyName="ReplaysSha256" />
     </ReadAssetsJson>
@@ -324,7 +324,7 @@
   <!-- Unified Dependency Target -->
   <Target Name="DownloadAllDependencies"
           BeforeTargets="PrepareForBuild"
-          DependsOnTargets="LoadAssetsJson;DownloadLibs;DownloadTitleSequences;DownloadObjects;DownloadOpenSFX;DownloadOpenMSX;DownloadReplays">
+          DependsOnTargets="LoadAssetsJson;DownloadLibs;DownloadTitleSequences;DownloadObjects;DownloadOpenSFX;DownloadOpenMusic;DownloadReplays">
 
     <!-- Add completion marker -->
     <Touch Files="$(DependenciesCheckFile)" AlwaysCreate="true" />
@@ -368,11 +368,11 @@
                         OutputDirectory="$(TargetDir)data" />
   </Target>
 
-  <!-- Target to download OpenMSX -->
-  <Target Name="DownloadOpenMSX">
-    <DownloadDependency Name="OpenMSX"
-                        Url="$(OpenMSXUrl)"
-                        Sha256="$(OpenMSXSha256)"
+  <!-- Target to download OpenMusic -->
+  <Target Name="DownloadOpenMusic">
+    <DownloadDependency Name="OpenMusic"
+                        Url="$(OpenMusicUrl)"
+                        Sha256="$(OpenMusicSha256)"
                         CheckFile="$(DependenciesCheckFile)"
                         OutputDirectory="$(TargetDir)data" />
   </Target>

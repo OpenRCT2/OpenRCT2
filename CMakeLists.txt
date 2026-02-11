@@ -77,8 +77,8 @@ string(JSON OBJECTS_SHA256 GET "${ASSETS_JSON}" objects sha256)
 string(JSON OPENSFX_URL GET "${ASSETS_JSON}" opensfx url)
 string(JSON OPENSFX_SHA256 GET "${ASSETS_JSON}" opensfx sha256)
 
-string(JSON OPENMSX_URL GET "${ASSETS_JSON}" openmsx url)
-string(JSON OPENMSX_SHA256 GET "${ASSETS_JSON}" openmsx sha256)
+string(JSON OPENMUSIC_URL GET "${ASSETS_JSON}" openmusic url)
+string(JSON OPENMUSIC_SHA256 GET "${ASSETS_JSON}" openmusic sha256)
 
 string(JSON REPLAYS_URL GET "${ASSETS_JSON}" replays url)
 string(JSON REPLAYS_SHA256 GET "${ASSETS_JSON}" replays sha256)
@@ -90,7 +90,7 @@ option(APPIMAGE "Create an appimage build (-rpath=$ORIGIN/../lib)" OFF)
 option(DOWNLOAD_TITLE_SEQUENCES "Download title sequences during installation." ON)
 option(DOWNLOAD_OBJECTS "Download objects during installation." ON)
 option(DOWNLOAD_OPENSFX "Download OpenSoundEffects during installation." ON)
-option(DOWNLOAD_OPENMSX "Download OpenMusic during installation." ON)
+option(DOWNLOAD_OPENMUSIC "Download OpenMusic during installation." ON)
 CMAKE_DEPENDENT_OPTION(DOWNLOAD_REPLAYS "Download replays during installation." ON
     "WITH_TESTS" OFF)
 CMAKE_DEPENDENT_OPTION(MACOS_USE_DEPENDENCIES "Use OpenRCT2 dependencies instead of system libraries" ON
@@ -474,14 +474,14 @@ if (NOT MACOS_BUNDLE OR (MACOS_BUNDLE AND WITH_TESTS))
                 SHA256 ${OPENSFX_SHA256}
             )")
     endif ()
-    if (DOWNLOAD_OPENMSX)
+    if (DOWNLOAD_OPENMUSIC)
         install(CODE "
             include(${ROOT_DIR}/cmake/download.cmake)
             download_openrct2_zip(
                 SKIP_IF_EXISTS ${CMAKE_SOURCE_DIR}/data/assetpack/openrct2.music.alternative.parkap
                 DOWNLOAD_DIR \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/openrct2/
-                ZIP_URL ${OPENMSX_URL}
-                SHA256 ${OPENMSX_SHA256}
+                ZIP_URL ${OPENMUSIC_URL}
+                SHA256 ${OPENMUSIC_SHA256}
             )")
     endif ()
     if (DOWNLOAD_REPLAYS)

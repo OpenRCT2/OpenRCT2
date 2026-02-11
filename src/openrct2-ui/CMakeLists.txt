@@ -246,7 +246,7 @@ if(MACOS_BUNDLE)
         SHA256 ${TITLE_SEQUENCE_SHA256}
     )
 
-    # Download opensfx and openmsx
+    # Download opensfx and openmusic
     set(ASSET_PACK_DIR ${CMAKE_BINARY_DIR}/assetpack)
     download_openrct2_zip(
         DOWNLOAD_DIR ${CMAKE_BINARY_DIR}
@@ -255,8 +255,8 @@ if(MACOS_BUNDLE)
     )
     download_openrct2_zip(
         DOWNLOAD_DIR ${CMAKE_BINARY_DIR}
-        ZIP_URL ${OPENMSX_URL}
-        SHA256 ${OPENMSX_SHA256}
+        ZIP_URL ${OPENMUSIC_URL}
+        SHA256 ${OPENMUSIC_SHA256}
     )
 
     # Copy downloaded data
