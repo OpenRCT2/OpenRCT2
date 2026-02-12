@@ -51,7 +51,7 @@ constexpr RideTypeDescriptor CircusRTD =
     .ColourPreview = { 0, 0 },
     .ColourKey = RideColourKey::Ride,
     .Name = "circus",
-    .RatingsData = 
+    .RatingsData =
     {
         RatingsCalculationType::FlatRide,
         { RideRating::make(2, 10), RideRating::make(0, 30), RideRating::make(0, 0) },

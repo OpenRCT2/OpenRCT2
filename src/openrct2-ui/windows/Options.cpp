@@ -22,7 +22,8 @@
 #include <openrct2/GameState.h>
 #include <openrct2/PlatformEnvironment.h>
 #include <openrct2/SpriteIds.h>
-#include <openrct2/actions/ScenarioSetSettingAction.h>
+#include <openrct2/actions/GameActionRunner.h>
+#include <openrct2/actions/general/ScenarioSetSettingAction.h>
 #include <openrct2/audio/Audio.h>
 #include <openrct2/audio/AudioContext.h>
 #include <openrct2/audio/AudioMixer.h>

@@ -13,6 +13,7 @@
 #include "../Context.h"
 #include "../Diagnostic.h"
 #include "../Editor.h"
+#include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../ParkImporter.h"

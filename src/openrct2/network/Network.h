@@ -9,9 +9,10 @@
 
 #pragma once
 
-#include "../Game.h"
+#include "../actions/GameCommand.h"
 #include "../core/JsonFwd.hpp"
 #include "../core/Money.hpp"
+#include "../core/StringTypes.h"
 #include "../localisation/StringIds.h"
 #include "NetworkTypes.h"
 

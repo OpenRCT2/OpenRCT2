@@ -1,0 +1,39 @@
+/*****************************************************************************
+ * Copyright (c) 2014-2026 OpenRCT2 developers
+ *
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
+ *****************************************************************************/
+
+#pragma once
+
+#include "../GameAction.hpp"
+
+namespace OpenRCT2::GameActions
+{
+    class ParkMarketingAction final : public GameActionBase<GameCommand::StartMarketingCampaign>
+    {
+    private:
+        int32_t _type{};
+        int32_t _item{};
+        int32_t _numWeeks{};
+
+    public:
+        ParkMarketingAction() = default;
+        ParkMarketingAction(int32_t type, int32_t item, int32_t numWeeks);
+
+        void AcceptParameters(GameActionParameterVisitor&) final;
+
+        uint16_t GetActionFlags() const override;
+
+        void Serialise(DataSerialiser& stream) override;
+        Result Query(GameState_t& gameState) const override;
+        Result Execute(GameState_t& gameState) const override;
+
+    private:
+        Result CreateResult() const;
+        money64 CalculatePrice() const;
+    };
+} // namespace OpenRCT2::GameActions

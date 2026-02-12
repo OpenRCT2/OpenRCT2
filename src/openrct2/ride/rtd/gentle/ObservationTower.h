@@ -34,6 +34,7 @@ constexpr RideTypeDescriptor ObservationTowerRTD =
                      RtdFlag::showInTrackDesigner, RtdFlag::slightlyInterestingToLookAt),
     .RideModes = EnumsToFlags(RideMode::rotatingLift),
     .DefaultMode = RideMode::rotatingLift,
+    .OperatingSettings = { 5, 27 },
     .Naming = { STR_RIDE_NAME_OBSERVATION_TOWER, STR_RIDE_DESCRIPTION_OBSERVATION_TOWER },
     .NameConvention = { RideComponentType::Cabin, RideComponentType::Track, RideComponentType::Station },
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
@@ -55,7 +56,7 @@ constexpr RideTypeDescriptor ObservationTowerRTD =
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_OBSERVATION_TOWER_TRACK, SPR_RIDE_DESIGN_PREVIEW_OBSERVATION_TOWER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,
     .Name = "observation_tower",
-    .RatingsData = 
+    .RatingsData =
     {
         RatingsCalculationType::Normal,
         { RideRating::make(1, 50), RideRating::make(0, 00), RideRating::make(0, 10) },

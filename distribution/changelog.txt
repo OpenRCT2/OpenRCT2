@@ -1,11 +1,16 @@
 0.4.32 (in development)
 ------------------------------------------------------------------------
 - Feature: [#22704] Rides can be made invisible more easily.
+- Improved: [#21753] Tracked rides with cheated powered launch mode can change powered launch speed without extra cheats.
 - Improved: [#25941] The command line sprite build command is now faster.
+- Fix: [#14686, #23996, #25981] Preview images from different windows overwrite each other when using OpenGL.
 - Fix: [#15128, #15626, #16331, #17443, #18626, #21597, #24175, #24971, #25963] Crash when loading corrupted RCT2/RCT1 save files with duplicate entity indices.
 - Fix: [#25237] Wrong colours on the Knight costume.
+- Fix: [#25712, #25727] Crash during startup from window list race condition.
 - Fix: [#25910] Folders starting with numbers are sorted incorrectly (e.g. 1, 10, 2 instead of 1, 2, 10).
 - Fix: [#25954] Guests display hats, balloons, and umbrellas while puking.
+- Fix: [#25978] Frozen peeps start clapping when the scenario is won.
+- Fix: [#25999] Scenery picker tool does not pick the tertiary colour of large scenery correctly.
 
 0.4.31 (2026-02-01)
 ------------------------------------------------------------------------

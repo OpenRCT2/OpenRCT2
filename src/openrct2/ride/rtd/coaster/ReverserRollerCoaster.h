@@ -33,6 +33,7 @@ constexpr RideTypeDescriptor ReverserRollerCoasterRTD =
                               RtdFlag::checkGForces, RtdFlag::layeredVehiclePreview),
     .RideModes = EnumsToFlags(RideMode::continuousCircuit),
     .DefaultMode = RideMode::continuousCircuit,
+    .OperatingSettings = { 5, 18 },
     .Naming = { STR_RIDE_NAME_REVERSER_ROLLER_COASTER, STR_RIDE_DESCRIPTION_REVERSER_ROLLER_COASTER },
     .NameConvention = { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station },
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),
@@ -53,7 +54,7 @@ constexpr RideTypeDescriptor ReverserRollerCoasterRTD =
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_REVERSER_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_REVERSER_ROLLER_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,
     .Name = "reverser_rc",
-    .RatingsData = 
+    .RatingsData =
     {
         RatingsCalculationType::Normal,
         { RideRating::make(2, 40), RideRating::make(1, 80), RideRating::make(1, 70) },

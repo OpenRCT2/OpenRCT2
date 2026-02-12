@@ -520,14 +520,6 @@ struct RCT12xy8
 };
 static_assert(sizeof(RCT12xy8) == 2);
 
-/* Track Element entry  size: 0x02 */
-struct TD46TrackElement
-{
-    OpenRCT2::RCT12::TrackElemType Type; // 0x00
-    uint8_t Flags;                       // 0x01
-};
-static_assert(sizeof(TD46TrackElement) == 0x02);
-
 struct RCT12Award
 {
     uint16_t Time;

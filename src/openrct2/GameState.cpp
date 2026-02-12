@@ -14,7 +14,7 @@
 #include "Input.h"
 #include "OpenRCT2.h"
 #include "ReplayManager.h"
-#include "actions/GameAction.h"
+#include "actions/GameActionRunner.h"
 #include "config/Config.h"
 #include "drawing/Drawing.h"
 #include "entity/EntityTweener.h"

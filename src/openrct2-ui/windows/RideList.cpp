@@ -16,8 +16,9 @@
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/SpriteIds.h>
-#include <openrct2/actions/RideDemolishAction.h>
-#include <openrct2/actions/RideSetStatusAction.h>
+#include <openrct2/actions/GameActionRunner.h>
+#include <openrct2/actions/ride/RideDemolishAction.h>
+#include <openrct2/actions/ride/RideSetStatusAction.h>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>

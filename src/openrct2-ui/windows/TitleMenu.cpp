@@ -18,7 +18,8 @@
 #include <openrct2/ParkImporter.h>
 #include <openrct2/PlatformEnvironment.h>
 #include <openrct2/SpriteIds.h>
-#include <openrct2/actions/LoadOrQuitAction.h>
+#include <openrct2/actions/GameActionRunner.h>
+#include <openrct2/actions/general/LoadOrQuitAction.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/interface/ColourWithFlags.h>
 #include <openrct2/ui/UiContext.h>

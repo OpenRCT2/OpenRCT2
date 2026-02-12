@@ -12,7 +12,7 @@
 #include "../Context.h"
 #include "../Diagnostic.h"
 #include "../GameState.h"
-#include "../actions/StaffSetOrdersAction.h"
+#include "../actions/peep/StaffSetOrdersAction.h"
 #include "../audio/Audio.h"
 #include "../core/DataSerialiser.h"
 #include "../entity/EntityList.h"

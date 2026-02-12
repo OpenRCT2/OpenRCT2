@@ -33,6 +33,7 @@ constexpr RideTypeDescriptor InvertedHairpinCoasterRTD =
                      RtdFlag::isSuspended),
     .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned),
     .DefaultMode = RideMode::continuousCircuit,
+    .OperatingSettings = { 5, 18 },
     .Naming = { STR_RIDE_NAME_INVERTED_HAIRPIN_COASTER, STR_RIDE_DESCRIPTION_INVERTED_HAIRPIN_COASTER },
     .NameConvention = { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station },
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),
@@ -54,7 +55,7 @@ constexpr RideTypeDescriptor InvertedHairpinCoasterRTD =
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_INVERTED_HAIRPIN_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_INVERTED_HAIRPIN_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,
     .Name = "inverted_hairpin_rc",
-    .RatingsData = 
+    .RatingsData =
     {
         RatingsCalculationType::Normal,
         { RideRating::make(3, 00), RideRating::make(2, 65), RideRating::make(2, 25) },

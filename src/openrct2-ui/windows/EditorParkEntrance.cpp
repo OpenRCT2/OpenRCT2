@@ -15,7 +15,8 @@
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/SpriteIds.h>
-#include <openrct2/actions/ParkEntrancePlaceAction.h>
+#include <openrct2/actions/GameActionRunner.h>
+#include <openrct2/actions/park/ParkEntrancePlaceAction.h>
 #include <openrct2/audio/Audio.h>
 #include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>

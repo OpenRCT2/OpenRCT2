@@ -30,6 +30,7 @@
 #include <functional>
 
 using OpenRCT2::RCT12::TD46MazeElementType;
+using OpenRCT2::RCT12::TD46TrackElement;
 using OpenRCT2::SawyerCoding::SawyerChunkWriter;
 
 namespace OpenRCT2::RCT2
@@ -62,7 +63,8 @@ namespace OpenRCT2::RCT2
         tempStream.WriteValue<uint8_t>(0);
         tempStream.WriteValue<uint32_t>(0);
         tempStream.WriteValue<uint8_t>(static_cast<uint8_t>(_trackDesign.operation.rideMode));
-        tempStream.WriteValue<uint8_t>(EnumValue(_trackDesign.appearance.vehicleColourSettings) | (2 << 2));
+        tempStream.WriteValue<uint8_t>(
+            EnumValue(_trackDesign.appearance.vehicleColourSettings) | (EnumValue(RCT12::TD46Version::td6) << 2));
         for (auto i = 0; i < Limits::kMaxVehicleColours; i++)
         {
             tempStream.WriteValue<Drawing::Colour>(_trackDesign.appearance.vehicleColours[i].Body);
@@ -130,53 +132,76 @@ namespace OpenRCT2::RCT2
 
         if (rtd.specialType == RtdSpecialType::maze)
         {
-            for (const auto& mazeElement : _trackDesign.mazeElements)
-            {
-                tempStream.WriteValue<int8_t>(mazeElement.location.x);
-                tempStream.WriteValue<int8_t>(mazeElement.location.y);
-                tempStream.WriteValue<uint16_t>(mazeElement.mazeEntry);
-            }
-
-            for (const auto& entranceElement : _trackDesign.entranceElements)
-            {
-                tempStream.WriteValue<int8_t>(entranceElement.location.x);
-                tempStream.WriteValue<int8_t>(entranceElement.location.y);
-                tempStream.WriteValue<int8_t>(entranceElement.location.direction);
-                tempStream.WriteValue<int8_t>(
-                    EnumValue(entranceElement.isExit ? TD46MazeElementType::exit : TD46MazeElementType::entrance));
-            }
-
-            tempStream.WriteValue<uint32_t>(0);
+            exportMazeElements(tempStream);
         }
         else
         {
-            for (const auto& trackElement : _trackDesign.trackElements)
-            {
-                auto trackType = OpenRCT2TrackTypeToRCT2(trackElement.type);
-                if (trackElement.type == TrackElemType::multiDimInvertedUp90ToFlatQuarterLoop)
-                {
-                    trackType = RCT12::TrackElemType::invertedUp90ToFlatQuarterLoopAlias;
-                }
-                tempStream.WriteValue<uint8_t>(static_cast<uint8_t>(trackType));
-                auto flags = RCT12::convertToTD46Flags(trackElement);
-                tempStream.WriteValue<uint8_t>(flags);
-            }
-
-            tempStream.WriteValue<uint8_t>(0xFF);
-
-            for (const auto& entranceElement : _trackDesign.entranceElements)
-            {
-                tempStream.WriteValue<uint8_t>(
-                    entranceElement.location.z == -1 ? static_cast<uint8_t>(0x80) : entranceElement.location.z);
-                tempStream.WriteValue<uint8_t>(entranceElement.location.direction | (entranceElement.isExit << 7));
-                auto xy = entranceElement.location.ToCoordsXY();
-                tempStream.WriteValue<int16_t>(xy.x);
-                tempStream.WriteValue<int16_t>(xy.y);
-            }
-
-            tempStream.WriteValue<uint8_t>(0xFF);
+            exportTrackElements(tempStream);
+            exportEntranceElements(tempStream);
         }
 
+        exportSceneryElements(tempStream);
+
+        SawyerChunkWriter sawyerCoding(stream);
+        sawyerCoding.WriteChunkTrack(tempStream.GetData(), tempStream.GetLength());
+        return true;
+    }
+
+    void T6Exporter::exportMazeElements(IStream& tempStream) const
+    {
+        for (const auto& mazeElement : _trackDesign.mazeElements)
+        {
+            tempStream.WriteValue<int8_t>(mazeElement.location.x);
+            tempStream.WriteValue<int8_t>(mazeElement.location.y);
+            tempStream.WriteValue<uint16_t>(mazeElement.mazeEntry);
+        }
+
+        for (const auto& entranceElement : _trackDesign.entranceElements)
+        {
+            tempStream.WriteValue<int8_t>(entranceElement.location.x);
+            tempStream.WriteValue<int8_t>(entranceElement.location.y);
+            tempStream.WriteValue<int8_t>(entranceElement.location.direction);
+            tempStream.WriteValue<int8_t>(
+                EnumValue(entranceElement.isExit ? TD46MazeElementType::exit : TD46MazeElementType::entrance));
+        }
+
+        tempStream.WriteValue<uint32_t>(0);
+    }
+
+    void T6Exporter::exportTrackElements(IStream& tempStream) const
+    {
+        for (const auto& trackElement : _trackDesign.trackElements)
+        {
+            auto trackType = OpenRCT2TrackTypeToRCT2(trackElement.type);
+            if (trackElement.type == TrackElemType::multiDimInvertedUp90ToFlatQuarterLoop)
+            {
+                trackType = RCT12::TrackElemType::invertedUp90ToFlatQuarterLoopAlias;
+            }
+            tempStream.WriteValue<uint8_t>(static_cast<uint8_t>(trackType));
+            auto flags = RCT12::convertToTD46Flags(trackElement);
+            tempStream.WriteValue<uint8_t>(flags);
+        }
+
+        tempStream.WriteValue<uint8_t>(0xFF);
+    }
+
+    void T6Exporter::exportEntranceElements(IStream& tempStream) const
+    {
+        for (const auto& entranceElement : _trackDesign.entranceElements)
+        {
+            tempStream.WriteValue<uint8_t>(
+                entranceElement.location.z == -1 ? static_cast<uint8_t>(0x80) : entranceElement.location.z);
+            tempStream.WriteValue<uint8_t>(entranceElement.location.direction | (entranceElement.isExit << 7));
+            auto xy = entranceElement.location.ToCoordsXY();
+            tempStream.WriteValue<int16_t>(xy.x);
+            tempStream.WriteValue<int16_t>(xy.y);
+        }
+
+        tempStream.WriteValue<uint8_t>(0xFF);
+    }
+
+    void T6Exporter::exportSceneryElements(IStream& tempStream) const
+    {
         for (const auto& sceneryElement : _trackDesign.sceneryElements)
         {
             auto flags = sceneryElement.flags;
@@ -197,9 +222,5 @@ namespace OpenRCT2::RCT2
         }
 
         tempStream.WriteValue<uint8_t>(0xFF);
-
-        SawyerChunkWriter sawyerCoding(stream);
-        sawyerCoding.WriteChunkTrack(tempStream.GetData(), tempStream.GetLength());
-        return true;
     }
 } // namespace OpenRCT2::RCT2

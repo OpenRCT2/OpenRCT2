@@ -14,17 +14,26 @@
 
 namespace OpenRCT2::RCT12
 {
+    namespace TD46Flags
+    {
+        constexpr uint8_t stationIdMask = 0b00000011;
+        constexpr uint8_t speedOrSeatRotationMask = 0b00001111;
+        constexpr uint8_t colourSchemeMask = 0b00110000;
+        constexpr uint8_t isInverted = 0b01000000;
+        constexpr uint8_t hasChain = 0b10000000;
+    } // namespace TD46Flags
+
     void convertFromTD46Flags(TrackDesignTrackElement& target, uint8_t flags)
     {
         target.brakeBoosterSpeed = kRCT2DefaultBlockBrakeSpeed;
         if (::TrackTypeIsStation(target.type))
         {
-            auto stationIndex = flags & EnumValue(TD46Flags::stationId);
+            auto stationIndex = flags & TD46Flags::stationIdMask;
             target.stationIndex = StationIndex::FromUnderlying(stationIndex);
         }
         else
         {
-            auto speedOrSeatRotation = flags & EnumValue(TD46Flags::speedOrSeatRotation);
+            auto speedOrSeatRotation = flags & TD46Flags::speedOrSeatRotationMask;
             if (::TrackTypeHasSpeedSetting(target.type) && target.type != OpenRCT2::TrackElemType::blockBrakes)
             {
                 target.brakeBoosterSpeed = speedOrSeatRotation << 1;
@@ -35,11 +44,11 @@ namespace OpenRCT2::RCT12
             }
         }
 
-        target.colourScheme = (flags & EnumValue(TD46Flags::colourScheme)) >> 4;
-        if (flags & EnumValue(TD46Flags::isInverted))
-            target.SetFlag(TrackDesignTrackElementFlag::isInverted);
-        if (flags & EnumValue(TD46Flags::hasChain))
-            target.SetFlag(TrackDesignTrackElementFlag::hasChain);
+        target.colourScheme = (flags & TD46Flags::colourSchemeMask) >> 4;
+        if (flags & TD46Flags::isInverted)
+            target.flags.set(TrackDesignTrackElementFlag::isInverted);
+        if (flags & TD46Flags::hasChain)
+            target.flags.set(TrackDesignTrackElementFlag::hasChain);
     }
 
     uint8_t convertToTD46Flags(const TrackDesignTrackElement& source)
@@ -47,7 +56,7 @@ namespace OpenRCT2::RCT12
         uint8_t trackFlags = 0;
         if (::TrackTypeIsStation(source.type))
         {
-            trackFlags = (source.stationIndex.ToUnderlying() & EnumValue(TD46Flags::stationId));
+            trackFlags = source.stationIndex.ToUnderlying() & TD46Flags::stationIdMask;
         }
         else if (::TrackTypeHasSpeedSetting(source.type) && source.type != OpenRCT2::TrackElemType::blockBrakes)
         {
@@ -60,10 +69,10 @@ namespace OpenRCT2::RCT12
 
         trackFlags |= source.colourScheme << 4;
 
-        if (source.HasFlag(TrackDesignTrackElementFlag::hasChain))
-            trackFlags |= EnumValue(TD46Flags::hasChain);
-        if (source.HasFlag(TrackDesignTrackElementFlag::isInverted))
-            trackFlags |= EnumValue(TD46Flags::isInverted);
+        if (source.flags.has(TrackDesignTrackElementFlag::hasChain))
+            trackFlags |= TD46Flags::hasChain;
+        if (source.flags.has(TrackDesignTrackElementFlag::isInverted))
+            trackFlags |= TD46Flags::isInverted;
 
         return trackFlags;
     }

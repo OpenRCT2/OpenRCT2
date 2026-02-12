@@ -16,8 +16,9 @@
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/SpriteIds.h>
-#include <openrct2/actions/WaterLowerAction.h>
-#include <openrct2/actions/WaterRaiseAction.h>
+#include <openrct2/actions/GameActionRunner.h>
+#include <openrct2/actions/terraform/WaterLowerAction.h>
+#include <openrct2/actions/terraform/WaterRaiseAction.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/ui/WindowManager.h>

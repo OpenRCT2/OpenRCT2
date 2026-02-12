@@ -33,6 +33,7 @@ constexpr RideTypeDescriptor BoatHireRTD =
                      RtdFlag::hasTrack, RtdFlag::supportsMultipleColourSchemes, RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit),
     .RideModes = EnumsToFlags(RideMode::boatHire),
     .DefaultMode = RideMode::boatHire,
+    .OperatingSettings = { 5, 18 },
     .Naming = { STR_RIDE_NAME_BOAT_HIRE, STR_RIDE_DESCRIPTION_BOAT_HIRE },
     .NameConvention = { RideComponentType::Boat, RideComponentType::DockingPlatform, RideComponentType::DockingPlatform },
     .AvailableBreakdowns = (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
@@ -61,7 +62,7 @@ constexpr RideTypeDescriptor BoatHireRTD =
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_BOAT_HIRE_TRACK, SPR_RIDE_DESIGN_PREVIEW_BOAT_HIRE_SUPPORTS },
     .ColourKey = RideColourKey::Ride,
     .Name = "boat_hire",
-    .RatingsData = 
+    .RatingsData =
     {
         RatingsCalculationType::Normal,
         { RideRating::make(1, 90), RideRating::make(0, 80), RideRating::make(0, 90) },

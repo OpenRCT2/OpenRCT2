@@ -18,21 +18,14 @@ struct TrackDesignTrackElement;
 
 namespace OpenRCT2::RCT12
 {
+    enum class TrackElemType : uint8_t;
+
     enum class TD46Version : uint8_t
     {
         td4,
         td4AA,
         td6,
         unknown
-    };
-
-    enum class TD46Flags : uint8_t
-    {
-        stationId = 0b00000011,
-        speedOrSeatRotation = 0b00001111,
-        colourScheme = 0b00110000,
-        isInverted = 0b01000000,
-        hasChain = 0b10000000,
     };
 
 #pragma pack(push, 1)
@@ -75,6 +68,14 @@ namespace OpenRCT2::RCT12
         }
     };
     static_assert(sizeof(TD46MazeElement) == 0x04);
+
+    /* Track Element entry  size: 0x02 */
+    struct TD46TrackElement
+    {
+        TrackElemType type; // 0x00
+        uint8_t flags;      // 0x01
+    };
+    static_assert(sizeof(TD46TrackElement) == 0x02);
 #pragma pack(pop)
 
     void convertFromTD46Flags(TrackDesignTrackElement& target, uint8_t flags);

@@ -893,7 +893,7 @@ namespace OpenRCT2::Scripting
         auto* peep = GetGuest();
         if (peep == nullptr)
         {
-            return nullptr;
+            return "";
         }
 
         auto& availableGuestAnimations = getAnimationsByPeepType(AnimationPeepType::guest);

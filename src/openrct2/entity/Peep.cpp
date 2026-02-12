@@ -17,7 +17,7 @@
 #include "../Input.h"
 #include "../OpenRCT2.h"
 #include "../SpriteIds.h"
-#include "../actions/GameAction.h"
+#include "../actions/GameAction.hpp"
 #include "../audio/Audio.h"
 #include "../audio/AudioChannel.h"
 #include "../audio/AudioMixer.h"
@@ -1246,7 +1246,8 @@ void PeepApplause()
 {
     for (auto peep : EntityList<Guest>())
     {
-        if (peep->OutsideOfPark)
+        if (peep->OutsideOfPark || peep->PeepFlags & PEEP_FLAGS_POSITION_FROZEN
+            || peep->PeepFlags & PEEP_FLAGS_ANIMATION_FROZEN)
             continue;
 
         // Release balloon

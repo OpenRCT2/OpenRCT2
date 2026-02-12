@@ -16,21 +16,22 @@
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../TrackImporter.h"
-#include "../actions/FootpathLayoutPlaceAction.h"
-#include "../actions/FootpathRemoveAction.h"
-#include "../actions/LargeSceneryPlaceAction.h"
-#include "../actions/LargeSceneryRemoveAction.h"
-#include "../actions/MazePlaceTrackAction.h"
+#include "../actions/GameActionRunner.h"
 #include "../actions/ResultWithMessage.h"
-#include "../actions/RideCreateAction.h"
-#include "../actions/RideDemolishAction.h"
-#include "../actions/RideEntranceExitPlaceAction.h"
-#include "../actions/SmallSceneryPlaceAction.h"
-#include "../actions/SmallSceneryRemoveAction.h"
-#include "../actions/TrackPlaceAction.h"
-#include "../actions/TrackRemoveAction.h"
-#include "../actions/WallPlaceAction.h"
-#include "../actions/WallRemoveAction.h"
+#include "../actions/footpath/FootpathLayoutPlaceAction.h"
+#include "../actions/footpath/FootpathRemoveAction.h"
+#include "../actions/ride/MazePlaceTrackAction.h"
+#include "../actions/ride/RideCreateAction.h"
+#include "../actions/ride/RideDemolishAction.h"
+#include "../actions/ride/RideEntranceExitPlaceAction.h"
+#include "../actions/scenery/LargeSceneryPlaceAction.h"
+#include "../actions/scenery/LargeSceneryRemoveAction.h"
+#include "../actions/scenery/SmallSceneryPlaceAction.h"
+#include "../actions/scenery/SmallSceneryRemoveAction.h"
+#include "../actions/scenery/WallPlaceAction.h"
+#include "../actions/scenery/WallRemoveAction.h"
+#include "../actions/track/TrackPlaceAction.h"
+#include "../actions/track/TrackRemoveAction.h"
 #include "../audio/Audio.h"
 #include "../config/Config.h"
 #include "../core/DataSerialiser.h"
@@ -245,11 +246,11 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
         }
 
         if (element->HasChain())
-            track.SetFlag(TrackDesignTrackElementFlag::hasChain);
+            track.flags.set(TrackDesignTrackElementFlag::hasChain);
 
         if (ride.getRideTypeDescriptor().flags.has(RtdFlag::hasInvertedVariant) && element->IsInverted())
         {
-            track.SetFlag(TrackDesignTrackElementFlag::isInverted);
+            track.flags.set(TrackDesignTrackElementFlag::isInverted);
         }
 
         trackElements.push_back(track);
@@ -394,7 +395,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, cons
                 _saveDirection = tileElement->GetDirection();
                 mazeElements.push_back(maze);
 
-                if (mazeElements.size() >= 2000)
+                if (mazeElements.size() >= RCT2::Limits::kTD6MaxMazeElements)
                 {
                     return { false, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY };
                 }
@@ -1614,11 +1615,11 @@ static GameActions::Result TrackDesignPlaceRide(
                 int16_t tempZ = newCoords.z - trackCoordinates->zBegin;
 
                 SelectedLiftAndInverted liftHillAndAlternativeState{};
-                if (track.HasFlag(TrackDesignTrackElementFlag::hasChain))
+                if (track.flags.has(TrackDesignTrackElementFlag::hasChain))
                 {
                     liftHillAndAlternativeState.set(LiftHillAndInverted::liftHill);
                 }
-                if (track.HasFlag(TrackDesignTrackElementFlag::isInverted))
+                if (track.flags.has(TrackDesignTrackElementFlag::isInverted))
                 {
                     liftHillAndAlternativeState.set(LiftHillAndInverted::inverted);
                 }

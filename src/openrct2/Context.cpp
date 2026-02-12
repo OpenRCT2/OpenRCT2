@@ -25,7 +25,7 @@
 #include "PlatformEnvironment.h"
 #include "ReplayManager.h"
 #include "Version.h"
-#include "actions/GameAction.h"
+#include "actions/GameActionRunner.h"
 #include "audio/Audio.h"
 #include "audio/AudioContext.h"
 #include "config/Config.h"

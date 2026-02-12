@@ -100,34 +100,20 @@ struct TrackDesignSceneryElement
 
 enum class TrackDesignTrackElementFlag : uint8_t
 {
-    hasChain = (1 << 0),
-    isInverted = (1 << 1),
-    isCovered = (1 << 2), // Reserved
+    hasChain,
+    isInverted,
+    isCovered, // Reserved
 };
+using TrackDesignTrackElementFlags = FlagHolder<uint8_t, TrackDesignTrackElementFlag>;
 
 struct TrackDesignTrackElement
 {
     OpenRCT2::TrackElemType type = OpenRCT2::TrackElemType::flat;
-    uint8_t flags = 0;
+    TrackDesignTrackElementFlags flags = {};
     uint8_t colourScheme = 0;
     ::StationIndex stationIndex = StationIndex::FromUnderlying(0);
     uint8_t brakeBoosterSpeed = 0;
     uint8_t seatRotation = 4;
-
-    constexpr bool HasFlag(const TrackDesignTrackElementFlag flag) const
-    {
-        return flags & EnumValue(flag);
-    }
-
-    constexpr void SetFlag(const TrackDesignTrackElementFlag flag)
-    {
-        flags |= EnumValue(flag);
-    }
-
-    constexpr void ClearFlag(const TrackDesignTrackElementFlag flag)
-    {
-        flags &= ~EnumValue(flag);
-    }
 };
 
 struct TrackDesignMazeElement

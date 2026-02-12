@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../System.hpp"
-#include "../actions/GameAction.h"
+#include "../actions/GameAction.hpp"
 #include "../scenario/Scenario.h"
 #include "NetworkConnection.h"
 #include "NetworkGroup.h"

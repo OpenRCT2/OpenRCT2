@@ -29,6 +29,7 @@ using namespace OpenRCT2;
 using namespace OpenRCT2::SawyerCoding;
 
 using OpenRCT2::RCT12::TD46MazeElement;
+using OpenRCT2::RCT12::TD46TrackElement;
 using OpenRCT2::RCT12::TD46Version;
 
 namespace OpenRCT2::RCT2
@@ -43,6 +44,85 @@ namespace OpenRCT2::RCT2
     private:
         MemoryStream _stream;
         std::string _name;
+
+        void importMazeElements(TrackDesign& td)
+        {
+            TD46MazeElement t6MazeElement;
+            while (true)
+            {
+                _stream.Read(&t6MazeElement, sizeof(TD46MazeElement));
+                if (t6MazeElement.all == 0)
+                {
+                    break;
+                }
+
+                importMazeElement(td, t6MazeElement);
+            }
+        }
+
+        void importTrackElements(TrackDesign& td)
+        {
+            TD46TrackElement t6TrackElement{};
+            for (uint8_t endFlag = _stream.ReadValue<uint8_t>(); endFlag != 0xFF; endFlag = _stream.ReadValue<uint8_t>())
+            {
+                _stream.SetPosition(_stream.GetPosition() - 1);
+                _stream.Read(&t6TrackElement, sizeof(TD46TrackElement));
+                TrackDesignTrackElement trackElement{};
+
+                TrackElemType trackType;
+                if (t6TrackElement.type == RCT12::TrackElemType::invertedUp90ToFlatQuarterLoopAlias)
+                {
+                    trackType = TrackElemType::multiDimInvertedUp90ToFlatQuarterLoop;
+                }
+                else
+                {
+                    auto rideType = td.trackAndVehicle.rtdIndex;
+                    const bool isFlatRide = GetRideTypeDescriptor(rideType).flags.has(RtdFlag::isFlatRide);
+                    trackType = RCT2TrackTypeToOpenRCT2(t6TrackElement.type, rideType, isFlatRide);
+                }
+
+                trackElement.type = trackType;
+                RCT12::convertFromTD46Flags(trackElement, t6TrackElement.flags);
+                td.trackElements.push_back(trackElement);
+            }
+        }
+
+        void importEntranceElements(TrackDesign& td)
+        {
+            TD6EntranceElement t6EntranceElement{};
+            for (uint8_t endFlag = _stream.ReadValue<uint8_t>(); endFlag != 0xFF; endFlag = _stream.ReadValue<uint8_t>())
+            {
+                _stream.SetPosition(_stream.GetPosition() - 1);
+                _stream.Read(&t6EntranceElement, sizeof(TD6EntranceElement));
+                TrackDesignEntranceElement entranceElement{};
+                auto xy = CoordsXY(t6EntranceElement.x, t6EntranceElement.y);
+                auto z = (t6EntranceElement.z == -128) ? -1 : t6EntranceElement.z;
+                entranceElement.location = TileCoordsXYZD(TileCoordsXY(xy), z, t6EntranceElement.GetDirection());
+                entranceElement.isExit = t6EntranceElement.IsExit();
+                td.entranceElements.push_back(entranceElement);
+            }
+        }
+
+        void importSceneryElements(TrackDesign& td)
+        {
+            for (uint8_t endFlag = _stream.ReadValue<uint8_t>(); endFlag != 0xFF; endFlag = _stream.ReadValue<uint8_t>())
+            {
+                _stream.SetPosition(_stream.GetPosition() - 1);
+                TD6SceneryElement t6SceneryElement{};
+                _stream.Read(&t6SceneryElement, sizeof(TD6SceneryElement));
+                TrackDesignSceneryElement sceneryElement{};
+                sceneryElement.sceneryObject = ObjectEntryDescriptor(t6SceneryElement.SceneryObject);
+                TileCoordsXYZ tileCoords = { t6SceneryElement.x, t6SceneryElement.y, t6SceneryElement.z };
+                sceneryElement.loc = tileCoords.ToCoordsXYZ();
+                sceneryElement.flags = t6SceneryElement.Flags;
+                sceneryElement.primaryColour = t6SceneryElement.PrimaryColour;
+                sceneryElement.secondaryColour = t6SceneryElement.SecondaryColour;
+                if (t6SceneryElement.SceneryObject.GetType() == ObjectType::walls)
+                    sceneryElement.tertiaryColour = t6SceneryElement.getTertiaryWallColour();
+
+                td.sceneryElements.push_back(std::move(sceneryElement));
+            }
+        }
 
     public:
         TD6Importer()
@@ -126,7 +206,7 @@ namespace OpenRCT2::RCT2
             td->operation.liftHillSpeed = td6.LiftHillSpeedNumCircuits & 0b00011111;
             td->operation.numCircuits = td6.LiftHillSpeedNumCircuits >> 5;
 
-            auto version = static_cast<TD46Version>((td6.VersionAndColourScheme >> 2) & 3);
+            auto version = static_cast<TD46Version>(td6.VersionAndColourScheme >> 2);
             if (version != TD46Version::td6)
             {
                 LOG_ERROR("Unsupported track design.");
@@ -139,75 +219,15 @@ namespace OpenRCT2::RCT2
             const auto& rtd = GetRideTypeDescriptor(td->trackAndVehicle.rtdIndex);
             if (rtd.specialType == RtdSpecialType::maze)
             {
-                TD46MazeElement t6MazeElement;
-                while (true)
-                {
-                    _stream.Read(&t6MazeElement, sizeof(TD46MazeElement));
-                    if (t6MazeElement.all == 0)
-                    {
-                        break;
-                    }
-
-                    importMazeElement(*td, t6MazeElement);
-                }
+                importMazeElements(*td);
             }
             else
             {
-                TD46TrackElement t6TrackElement{};
-                for (uint8_t endFlag = _stream.ReadValue<uint8_t>(); endFlag != 0xFF; endFlag = _stream.ReadValue<uint8_t>())
-                {
-                    _stream.SetPosition(_stream.GetPosition() - 1);
-                    _stream.Read(&t6TrackElement, sizeof(TD46TrackElement));
-                    TrackDesignTrackElement trackElement{};
-
-                    TrackElemType trackType;
-                    if (t6TrackElement.Type == RCT12::TrackElemType::invertedUp90ToFlatQuarterLoopAlias)
-                    {
-                        trackType = TrackElemType::multiDimInvertedUp90ToFlatQuarterLoop;
-                    }
-                    else
-                    {
-                        auto rideType = td->trackAndVehicle.rtdIndex;
-                        const bool isFlatRide = GetRideTypeDescriptor(rideType).flags.has(RtdFlag::isFlatRide);
-                        trackType = RCT2TrackTypeToOpenRCT2(t6TrackElement.Type, rideType, isFlatRide);
-                    }
-
-                    trackElement.type = trackType;
-                    RCT12::convertFromTD46Flags(trackElement, t6TrackElement.Flags);
-                    td->trackElements.push_back(trackElement);
-                }
-
-                TD6EntranceElement t6EntranceElement{};
-                for (uint8_t endFlag = _stream.ReadValue<uint8_t>(); endFlag != 0xFF; endFlag = _stream.ReadValue<uint8_t>())
-                {
-                    _stream.SetPosition(_stream.GetPosition() - 1);
-                    _stream.Read(&t6EntranceElement, sizeof(TD6EntranceElement));
-                    TrackDesignEntranceElement entranceElement{};
-                    auto xy = CoordsXY(t6EntranceElement.x, t6EntranceElement.y);
-                    auto z = (t6EntranceElement.z == -128) ? -1 : t6EntranceElement.z;
-                    entranceElement.location = TileCoordsXYZD(TileCoordsXY(xy), z, t6EntranceElement.GetDirection());
-                    entranceElement.isExit = t6EntranceElement.IsExit();
-                    td->entranceElements.push_back(entranceElement);
-                }
+                importTrackElements(*td);
+                importEntranceElements(*td);
             }
 
-            for (uint8_t endFlag = _stream.ReadValue<uint8_t>(); endFlag != 0xFF; endFlag = _stream.ReadValue<uint8_t>())
-            {
-                _stream.SetPosition(_stream.GetPosition() - 1);
-                TD6SceneryElement t6SceneryElement{};
-                _stream.Read(&t6SceneryElement, sizeof(TD6SceneryElement));
-                TrackDesignSceneryElement sceneryElement{};
-                sceneryElement.sceneryObject = ObjectEntryDescriptor(t6SceneryElement.SceneryObject);
-                TileCoordsXYZ tileCoords = { t6SceneryElement.x, t6SceneryElement.y, t6SceneryElement.z };
-                sceneryElement.loc = tileCoords.ToCoordsXYZ();
-                sceneryElement.flags = t6SceneryElement.Flags;
-                sceneryElement.primaryColour = t6SceneryElement.PrimaryColour;
-                sceneryElement.secondaryColour = t6SceneryElement.SecondaryColour;
-                if (t6SceneryElement.SceneryObject.GetType() == ObjectType::walls)
-                    sceneryElement.tertiaryColour = t6SceneryElement.getTertiaryWallColour();
-
-                td->sceneryElements.push_back(std::move(sceneryElement));
-            }
+            importSceneryElements(*td);
 
             td->gameStateData.name = _name;
 

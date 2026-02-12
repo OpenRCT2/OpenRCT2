@@ -38,6 +38,7 @@ constexpr RideTypeDescriptor GhostTrainRTD =
                      RtdFlag::hasLandscapeDoors),
     .RideModes = EnumsToFlags(RideMode::continuousCircuit),
     .DefaultMode = RideMode::continuousCircuit,
+    .OperatingSettings = { 5, 18 },
     .Naming = { STR_RIDE_NAME_GHOST_TRAIN, STR_RIDE_DESCRIPTION_GHOST_TRAIN },
     .NameConvention = { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station },
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
@@ -60,7 +61,7 @@ constexpr RideTypeDescriptor GhostTrainRTD =
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_GHOST_TRAIN_TRACK, SPR_RIDE_DESIGN_PREVIEW_GHOST_TRAIN_SUPPORTS },
     .ColourKey = RideColourKey::Ride,
     .Name = "ghost_train",
-    .RatingsData = 
+    .RatingsData =
     {
         RatingsCalculationType::Normal,
         { RideRating::make(2, 00), RideRating::make(0, 20), RideRating::make(0, 03) },

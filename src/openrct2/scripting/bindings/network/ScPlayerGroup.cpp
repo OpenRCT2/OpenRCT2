@@ -13,8 +13,9 @@
 
     #include "../../../Context.h"
     #include "../../../GameState.h"
-    #include "../../../actions/NetworkModifyGroupAction.h"
-    #include "../../../actions/PlayerSetGroupAction.h"
+    #include "../../../actions/GameActionRunner.h"
+    #include "../../../actions/network/NetworkModifyGroupAction.h"
+    #include "../../../actions/network/PlayerSetGroupAction.h"
     #include "../../../core/String.hpp"
     #include "../../../network/Network.h"
     #include "../../../network/NetworkAction.h"
