@@ -214,7 +214,7 @@ void Vehicle::MoveRelativeDistance(int32_t distance)
     remaining_distance += distance;
 
     flags.set(VehicleFlag::moveSingleCar, VehicleFlag::collisionDisabled);
-    UpdateTrackMotion(nullptr);
+    updateTrackMotionTrain(nullptr);
     flags.unset(VehicleFlag::moveSingleCar, VehicleFlag::collisionDisabled);
 }
 
@@ -1132,7 +1132,7 @@ void Vehicle::UpdateTravellingCableLift()
     {
         acceleration = 4398;
     }
-    int32_t curFlags = UpdateTrackMotion(nullptr);
+    int32_t curFlags = updateTrackMotionTrain(nullptr);
 
     if (curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_11)
     {

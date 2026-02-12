@@ -55,7 +55,7 @@ constexpr int16_t kVehicleMinSpinSpeedWaterRide = -kVehicleMaxSpinSpeedWaterRide
  *
  *  rct2: 0x006DAB90
  */
-void Vehicle::UpdateTrackMotionUpStopCheck() const
+void Vehicle::upstopCheck() const
 {
     const auto* carEntry = Entry();
     if (carEntry == nullptr)
@@ -128,7 +128,7 @@ void Vehicle::UpdateTrackMotionUpStopCheck() const
  * merely as a velocity regulator, in a closed state. When the brake is open, it
  * boosts the train to the speed limit
  */
-void Vehicle::ApplyNonStopBlockBrake()
+void Vehicle::applyNonstopBlockBrake()
 {
     if (velocity >= 0)
     {
@@ -151,7 +151,7 @@ void Vehicle::ApplyNonStopBlockBrake()
  *
  * Modifies the train's velocity influenced by a block brake
  */
-void Vehicle::ApplyStopBlockBrake()
+void Vehicle::applyStopBlockBrake()
 {
     // Slow it down till completely stop the car
     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_BLOCK_BRAKE;
@@ -167,7 +167,7 @@ void Vehicle::ApplyStopBlockBrake()
     }
 }
 
-void Vehicle::ApplyCableLiftBlockBrake(bool brakeClosed)
+void Vehicle::applyCableLiftBlockBrake(bool brakeClosed)
 {
     // If we are already on the cable lift, ignore the brake
     if (status == Status::travellingCableLift)
@@ -201,7 +201,7 @@ void Vehicle::ApplyCableLiftBlockBrake(bool brakeClosed)
  *
  *  rct2: 0x006DAC43
  */
-void Vehicle::CheckAndApplyBlockSectionStopSite()
+void Vehicle::handleBlockBrake()
 {
     auto curRide = GetRide();
     if (curRide == nullptr)
@@ -239,16 +239,16 @@ void Vehicle::CheckAndApplyBlockSectionStopSite()
                 if (trackBlockGetNextFromZero(TrackLocation, *curRide, GetTrackDirection(), &track, &zUnused, &direction, false)
                     && track.element != nullptr && track.element->AsTrack()->HasCableLift())
                 {
-                    ApplyCableLiftBlockBrake(curRide->isBlockSectioned() && trackElement->AsTrack()->IsBrakeClosed());
+                    applyCableLiftBlockBrake(curRide->isBlockSectioned() && trackElement->AsTrack()->IsBrakeClosed());
                     break;
                 }
             }
             [[fallthrough]];
         case TrackElemType::diagBlockBrakes:
             if (curRide->isBlockSectioned() && trackElement->AsTrack()->IsBrakeClosed())
-                ApplyStopBlockBrake();
+                applyStopBlockBrake();
             else
-                ApplyNonStopBlockBrake();
+                applyNonstopBlockBrake();
 
             break;
         case TrackElemType::endStation:
@@ -267,7 +267,7 @@ void Vehicle::CheckAndApplyBlockSectionStopSite()
                 {
                     if (trackElement->AsTrack()->IsBrakeClosed())
                     {
-                        ApplyStopBlockBrake();
+                        applyStopBlockBrake();
                     }
                 }
             }
@@ -281,7 +281,7 @@ void Vehicle::CheckAndApplyBlockSectionStopSite()
  *
  *  rct2: 0x006DADAE
  */
-void Vehicle::UpdateVelocity()
+void Vehicle::updateVelocity()
 {
     int32_t nextVelocity = acceleration + velocity;
     if (flags.has(VehicleFlag::stoppedBySafetyCutout))
@@ -303,7 +303,7 @@ void Vehicle::UpdateVelocity()
     _vehicleRemainingDistance = (nextVelocity >> 10) * 42;
 }
 
-static void BlockBrakesOpenPreviousSection(const Ride& ride, const CoordsXYZ& vehicleTrackLocation, TileElement* tileElement)
+static void blockBrakesOpenPreviousSection(const Ride& ride, const CoordsXYZ& vehicleTrackLocation, TileElement* tileElement)
 {
     CoordsXYZ location = vehicleTrackLocation;
     TrackElement* trackElement = trackGetPreviousBlock(location, tileElement);
@@ -325,7 +325,7 @@ static void BlockBrakesOpenPreviousSection(const Ride& ride, const CoordsXYZ& ve
     }
 }
 
-void Vehicle::UpdateGoKartAttemptSwitchLanes()
+void Vehicle::goKartAttemptLaneSwitch()
 {
     uint16_t probability = 0x8000;
     if (flags.has(VehicleFlag::currentlyColliding))
@@ -343,7 +343,7 @@ void Vehicle::UpdateGoKartAttemptSwitchLanes()
     }
 }
 
-static void vehicle_update_play_water_splash_sound()
+static void playSplashSound()
 {
     if (_vehicleVelocity <= kBlockBrakeBaseSpeed)
     {
@@ -357,7 +357,7 @@ static void vehicle_update_play_water_splash_sound()
  *
  *  rct2: 0x006DB59E
  */
-void Vehicle::UpdateHandleWaterSplash() const
+void Vehicle::handleWaterSplash() const
 {
     const auto* rideEntry = GetRideEntry();
     auto trackType = GetTrackType();
@@ -381,7 +381,7 @@ void Vehicle::UpdateHandleWaterSplash() const
                     {
                         if (track_progress == 4)
                         {
-                            vehicle_update_play_water_splash_sound();
+                            playSplashSound();
                         }
                     }
                 }
@@ -394,7 +394,7 @@ void Vehicle::UpdateHandleWaterSplash() const
         {
             if (track_progress == 12)
             {
-                vehicle_update_play_water_splash_sound();
+                playSplashSound();
             }
         }
     }
@@ -404,7 +404,7 @@ void Vehicle::UpdateHandleWaterSplash() const
         {
             if (track_progress == 48)
             {
-                vehicle_update_play_water_splash_sound();
+                playSplashSound();
             }
         }
     }
@@ -414,7 +414,7 @@ void Vehicle::UpdateHandleWaterSplash() const
  *
  *  rct2: 0x006DBF3E
  */
-void Vehicle::Sub6DBF3E()
+void Vehicle::findStationStopPoint()
 {
     const auto* carEntry = Entry();
 
@@ -508,7 +508,7 @@ void Vehicle::Sub6DBF3E()
  * Determine whether to use block brake speed or brake speed. If block brake is closed or no block brake present, use the
  * brake's speed; if block brake is open, use maximum of brake speed or block brake speed.
  */
-uint8_t Vehicle::ChooseBrakeSpeed() const
+uint8_t Vehicle::chooseBrakeSpeed() const
 {
     if (!trackTypeIsBrakes(GetTrackType()))
         return brake_speed;
@@ -526,7 +526,7 @@ uint8_t Vehicle::ChooseBrakeSpeed() const
 /**
  * Populate the vehicle's brake_speed and BlockBrakeSpeed values.
  */
-void Vehicle::PopulateBrakeSpeed(const CoordsXYZ& vehicleTrackLocation, TrackElement& brake)
+void Vehicle::populateBrakeSpeed(const CoordsXYZ& vehicleTrackLocation, TrackElement& brake)
 {
     auto trackSpeed = brake.GetBrakeBoosterSpeed();
     brake_speed = trackSpeed;
@@ -562,8 +562,7 @@ void Vehicle::PopulateBrakeSpeed(const CoordsXYZ& vehicleTrackLocation, TrackEle
  *
  *  rct2: 0x006DB08C
  */
-bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(
-    TrackElemType trackType, const Ride& curRide, const RideObjectEntry& rideEntry)
+bool Vehicle::trackMotionForwardsGetNewTrack(TrackElemType trackType, const Ride& curRide, const RideObjectEntry& rideEntry)
 {
     CoordsXYZD location = {};
 
@@ -593,7 +592,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(
                 }
             }
             MapInvalidateElement(TrackLocation, tileElement);
-            BlockBrakesOpenPreviousSection(curRide, TrackLocation, tileElement);
+            blockBrakesOpenPreviousSection(curRide, TrackLocation, tileElement);
             if (trackTypeIsBlockBrakes(trackType))
             {
                 BlockBrakeSetLinkedBrakesClosed(TrackLocation, *tileElement->AsTrack(), true);
@@ -703,7 +702,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(
             || trackType == TrackElemType::sBendLeft || trackType == TrackElemType::sBendRight
             || (curRide.flags.has(RideFlag::passStationNoStopping) && tileElement->AsTrack()->IsStation()))
         {
-            UpdateGoKartAttemptSwitchLanes();
+            goKartAttemptLaneSwitch();
         }
     }
 
@@ -737,7 +736,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(
     }
     SetTrackDirection(location.direction);
     SetTrackType(trackType);
-    PopulateBrakeSpeed(TrackLocation, *tileElement->AsTrack());
+    populateBrakeSpeed(TrackLocation, *tileElement->AsTrack());
     if (flags.has(VehicleFlag::stoppedOnHoldingBrake) && vertical_drop_countdown <= 0)
     {
         flags.unset(VehicleFlag::stoppedOnHoldingBrake);
@@ -762,7 +761,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(
  *
  *  rct2: 0x006DAEB9
  */
-bool Vehicle::UpdateTrackMotionForwards(const CarEntry* carEntry, const Ride& curRide, const RideObjectEntry& rideEntry)
+bool Vehicle::trackMotionForwards(const CarEntry* carEntry, const Ride& curRide, const RideObjectEntry& rideEntry)
 {
     EntityId otherVehicleIndex = EntityId::GetNull();
     while (true)
@@ -788,7 +787,7 @@ bool Vehicle::UpdateTrackMotionForwards(const CarEntry* carEntry, const Ride& cu
         {
             if (!curRide.hasFailingBrakes())
             {
-                auto brakeSpeed = ChooseBrakeSpeed() << kTrackSpeedShiftAmount;
+                auto brakeSpeed = chooseBrakeSpeed() << kTrackSpeedShiftAmount;
 
                 if ((brakeSpeed) < _vehicleVelocity)
                 {
@@ -866,7 +865,7 @@ bool Vehicle::UpdateTrackMotionForwards(const CarEntry* carEntry, const Ride& cu
         {
             UpdateCrossings();
 
-            if (!UpdateTrackMotionForwardsGetNewTrack(trackType, curRide, rideEntry))
+            if (!trackMotionForwardsGetNewTrack(trackType, curRide, rideEntry))
             {
                 _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
                 _vehicleRemainingDistance -= remaining_distance + 1;
@@ -877,7 +876,7 @@ bool Vehicle::UpdateTrackMotionForwards(const CarEntry* carEntry, const Ride& cu
         }
 
         track_progress = newTrackProgress;
-        UpdateHandleWaterSplash();
+        handleWaterSplash();
 
         // Loc6DB706
         const auto moveInfo = GetMoveInfo();
@@ -979,7 +978,7 @@ bool Vehicle::UpdateTrackMotionForwards(const CarEntry* carEntry, const Ride& cu
     }
 }
 
-static PitchAndRoll PitchAndRollEnd(
+static PitchAndRoll getPitchAndRollEnd(
     const Ride& curRide, bool useInvertedSprites, TrackElemType trackType, TileElement* tileElement)
 {
     bool isInverted = useInvertedSprites ^ tileElement->AsTrack()->IsInverted();
@@ -991,7 +990,7 @@ static PitchAndRoll PitchAndRollEnd(
  *
  *  rct2: 0x006DBAA6
  */
-bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(TrackElemType trackType, const Ride& curRide, uint16_t* progress)
+bool Vehicle::trackMotionBackwardsGetNewTrack(TrackElemType trackType, const Ride& curRide, uint16_t* progress)
 {
     auto pitchAndRollStart = TrackPitchAndRollStart(trackType);
     TileElement* tileElement = MapGetTrackElementAtOfTypeSeq(TrackLocation, trackType, 0);
@@ -1040,7 +1039,7 @@ bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(TrackElemType trackType, con
             return false;
         }
 
-        if (PitchAndRollEnd(curRide, flags.has(VehicleFlag::carIsInverted), trackType, tileElement) != pitchAndRollStart)
+        if (getPitchAndRollEnd(curRide, flags.has(VehicleFlag::carIsInverted), trackType, tileElement) != pitchAndRollStart)
         {
             return false;
         }
@@ -1138,7 +1137,7 @@ bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(TrackElemType trackType, con
     direction &= 3;
     SetTrackType(trackType);
     SetTrackDirection(direction);
-    PopulateBrakeSpeed(TrackLocation, *tileElement->AsTrack());
+    populateBrakeSpeed(TrackLocation, *tileElement->AsTrack());
     if (flags.has(VehicleFlag::stoppedOnHoldingBrake) && vertical_drop_countdown <= 0)
     {
         flags.unset(VehicleFlag::stoppedOnHoldingBrake);
@@ -1153,7 +1152,7 @@ bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(TrackElemType trackType, con
  *
  *  rct2: 0x006DBA33
  */
-bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& curRide, const RideObjectEntry& rideEntry)
+bool Vehicle::trackMotionBackwards(const CarEntry* carEntry, const Ride& curRide, const RideObjectEntry& rideEntry)
 {
     EntityId otherVehicleIndex = EntityId::GetNull();
 
@@ -1172,7 +1171,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
 
         if (trackTypeIsBrakes(trackType))
         {
-            auto brakeSpeed = ChooseBrakeSpeed();
+            auto brakeSpeed = chooseBrakeSpeed();
 
             if (-(brakeSpeed << kTrackSpeedShiftAmount) > _vehicleVelocity)
             {
@@ -1185,7 +1184,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
         {
             UpdateCrossings();
 
-            if (!UpdateTrackMotionBackwardsGetNewTrack(trackType, curRide, &newTrackProgress))
+            if (!trackMotionBackwardsGetNewTrack(trackType, curRide, &newTrackProgress))
             {
                 _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
                 _vehicleRemainingDistance -= remaining_distance - 0x368A;
@@ -1277,7 +1276,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
  *
  *  rct2: 0x006DC1E4
  */
-static uint8_t modified_speed(TrackElemType trackType, VehicleTrackSubposition trackSubposition, uint8_t speed)
+static uint8_t getGoKartTurnSpeed(TrackElemType trackType, VehicleTrackSubposition trackSubposition, uint8_t speed)
 {
     enum
     {
@@ -1307,8 +1306,7 @@ static uint8_t modified_speed(TrackElemType trackType, VehicleTrackSubposition t
     return speed;
 }
 
-int32_t Vehicle::UpdateTrackMotionPoweredRideAcceleration(
-    const CarEntry* carEntry, uint32_t totalMass, const int32_t curAcceleration)
+int32_t Vehicle::getPoweredCarAcceleration(const CarEntry* carEntry, uint32_t totalMass, const int32_t curAcceleration)
 {
     if (carEntry->flags.has(CarEntryFlag::isPoweredRideWithUnrestrictedGravity))
     {
@@ -1322,7 +1320,7 @@ int32_t Vehicle::UpdateTrackMotionPoweredRideAcceleration(
             return curAcceleration;
         }
     }
-    uint8_t modifiedSpeed = modified_speed(GetTrackType(), TrackSubposition, speed);
+    uint8_t modifiedSpeed = getGoKartTurnSpeed(GetTrackType(), TrackSubposition, speed);
     int32_t poweredAcceleration = modifiedSpeed << 14;
     int32_t quarterForce = (modifiedSpeed * totalMass) >> 2;
     if (flags.has(VehicleFlag::poweredCarInReverse))
@@ -1380,7 +1378,7 @@ int32_t Vehicle::UpdateTrackMotionPoweredRideAcceleration(
     return curAcceleration + poweredAcceleration;
 }
 
-void Vehicle::UpdateTrackMotionPreUpdate(
+void Vehicle::updateTrackMotionCar(
     Vehicle& car, const Ride& curRide, const RideObjectEntry& rideEntry, const CarEntry* carEntry)
 {
     if (carEntry->flags.has(CarEntryFlag::hasSwinging))
@@ -1414,7 +1412,7 @@ void Vehicle::UpdateTrackMotionPreUpdate(
         if (car.remaining_distance < 0)
         {
             // Backward loop
-            if (car.UpdateTrackMotionBackwards(carEntry, curRide, rideEntry))
+            if (car.trackMotionBackwards(carEntry, curRide, rideEntry))
             {
                 break;
             }
@@ -1432,7 +1430,7 @@ void Vehicle::UpdateTrackMotionPreUpdate(
             // Location found
             return;
         }
-        if (car.UpdateTrackMotionForwards(carEntry, curRide, rideEntry))
+        if (car.trackMotionForwards(carEntry, curRide, rideEntry))
         {
             break;
         }
@@ -1452,7 +1450,7 @@ void Vehicle::UpdateTrackMotionPreUpdate(
  *
  *  rct2: 0x006DAB4C
  */
-int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
+int32_t Vehicle::updateTrackMotionTrain(int32_t* outStation)
 {
     auto curRide = GetRide();
     if (curRide == nullptr)
@@ -1476,9 +1474,9 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
     _vehicleMotionTrackFlags = 0;
     _vehicleStationIndex = StationIndex::GetNull();
 
-    UpdateTrackMotionUpStopCheck();
-    CheckAndApplyBlockSectionStopSite();
-    UpdateVelocity();
+    upstopCheck();
+    handleBlockBrake();
+    updateVelocity();
 
     Vehicle* vehicle = this;
     if (_vehicleVelocity < 0 && !vehicle->flags.has(VehicleFlag::moveSingleCar))
@@ -1500,10 +1498,10 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
         carEntry = car->Entry();
         if (carEntry != nullptr)
         {
-            UpdateTrackMotionPreUpdate(*car, *curRide, *rideEntry, carEntry);
+            updateTrackMotionCar(*car, *curRide, *rideEntry, carEntry);
         }
 
-        car->Sub6DBF3E();
+        car->findStationStopPoint();
 
         // Loc6DC0F7
         if (car->flags.has(VehicleFlag::onLiftHill))
@@ -1561,7 +1559,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
 
     if (carEntry->flags.has(CarEntryFlag::isPowered))
     {
-        curAcceleration = vehicle->UpdateTrackMotionPoweredRideAcceleration(carEntry, totalMass, curAcceleration);
+        curAcceleration = vehicle->getPoweredCarAcceleration(carEntry, totalMass, curAcceleration);
     }
     else if (curAcceleration <= 0 && curAcceleration >= -500)
     {
