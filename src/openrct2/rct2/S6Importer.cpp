@@ -2077,7 +2077,7 @@ namespace OpenRCT2::RCT2
         dst->target_seat_rotation = src->TargetSeatRotation;
         if (src->Flags & RCT12_ENTITY_FLAGS_IS_CRASHED_VEHICLE_ENTITY)
         {
-            dst->SetFlag(VehicleFlags::Crashed);
+            dst->SetFlag(VehicleFlag::Crashed);
         }
         dst->BlockBrakeSpeed = kRCT2DefaultBlockBrakeSpeed;
     }

@@ -2170,7 +2170,7 @@ bool Staff::UpdateFixingFixVehicle(bool firstRun, const Ride& ride)
         return true;
     }
 
-    vehicle->ClearFlag(VehicleFlags::CarIsBroken);
+    vehicle->ClearFlag(VehicleFlag::CarIsBroken);
 
     return false;
 }
@@ -2211,7 +2211,7 @@ bool Staff::UpdateFixingFixVehicleMalfunction(bool firstRun, const Ride& ride)
         return true;
     }
 
-    vehicle->ClearFlag(VehicleFlags::TrainIsBroken);
+    vehicle->ClearFlag(VehicleFlag::TrainIsBroken);
 
     return false;
 }

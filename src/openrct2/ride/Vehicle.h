@@ -11,6 +11,7 @@
 
 #include "../Identifiers.h"
 #include "../audio/Audio.h"
+#include "../core/FlagHolder.hpp"
 #include "../entity/EntityBase.h"
 #include "../ride/RideTypes.h"
 #include "../world/Location.hpp"
@@ -460,7 +461,7 @@ enum BoatHireSubState : uint8_t
     EnteringReturnPosition,
 };
 
-namespace OpenRCT2::VehicleFlags
+namespace OpenRCT2::VehicleFlag
 {
     constexpr uint32_t OnLiftHill = (1 << 0);
     constexpr uint32_t CollisionDisabled = (1 << 1);

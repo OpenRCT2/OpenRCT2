@@ -2912,13 +2912,13 @@ namespace OpenRCT2::RCT1
         dst->next_free_seat = src->NextFreeSeat;
         if (src->Flags & RCT12_ENTITY_FLAGS_IS_CRASHED_VEHICLE_ENTITY)
         {
-            dst->SetFlag(VehicleFlags::Crashed);
+            dst->SetFlag(VehicleFlag::Crashed);
         }
         dst->BlockBrakeSpeed = kRCT2DefaultBlockBrakeSpeed;
 
         if (VehicleTypeIsReversed(rct1Ride.vehicleType))
         {
-            dst->SetFlag(VehicleFlags::CarIsReversed);
+            dst->SetFlag(VehicleFlag::CarIsReversed);
         }
     }
 

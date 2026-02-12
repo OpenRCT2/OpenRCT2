@@ -2305,7 +2305,7 @@ namespace OpenRCT2
             cs.readWrite(isCrashedVehicle);
             if (isCrashedVehicle)
             {
-                entity.SetFlag(VehicleFlags::Crashed);
+                entity.SetFlag(VehicleFlag::Crashed);
             }
         }
         if (cs.getMode() == OrcaStream::Mode::reading && os.getHeader().targetVersion < kBlockBrakeImprovementsVersion)

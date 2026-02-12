@@ -3824,7 +3824,7 @@ void Guest::UpdateRideAdvanceThroughEntrance()
     }
 
     auto destination = GetDestination();
-    auto loadPositionWithReversal = (vehicle->HasFlag(VehicleFlags::CarIsReversed)) ? -load_position : load_position;
+    auto loadPositionWithReversal = (vehicle->HasFlag(VehicleFlag::CarIsReversed)) ? -load_position : load_position;
     switch (vehicle->Orientation / 8)
     {
         case 0:
@@ -4082,7 +4082,7 @@ void Guest::UpdateRideFreeVehicleCheck()
     {
         return;
     }
-    if (ride->status == RideStatus::open && ++RejoinQueueTimeout != 0 && !currentTrain->HasFlag(VehicleFlags::ReadyToDepart))
+    if (ride->status == RideStatus::open && ++RejoinQueueTimeout != 0 && !currentTrain->HasFlag(VehicleFlag::ReadyToDepart))
     {
         return;
     }

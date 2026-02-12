@@ -1591,7 +1591,7 @@ void RidePrepareBreakdown(Ride& ride, int32_t breakdownReason)
                 }
                 if (vehicle != nullptr)
                 {
-                    vehicle->SetFlag(VehicleFlags::CarIsBroken);
+                    vehicle->SetFlag(VehicleFlag::CarIsBroken);
                 }
             }
             break;
@@ -1604,7 +1604,7 @@ void RidePrepareBreakdown(Ride& ride, int32_t breakdownReason)
             vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[ride.brokenTrain]);
             if (vehicle != nullptr)
             {
-                vehicle->SetFlag(VehicleFlags::TrainIsBroken);
+                vehicle->SetFlag(VehicleFlag::TrainIsBroken);
             }
             break;
         case BREAKDOWN_BRAKES_FAILURE:
@@ -3425,12 +3425,12 @@ static Vehicle* VehicleCreateCar(
         {
             vehicle->track_progress = 15;
         }
-        vehicle->Flags = VehicleFlags::CollisionDisabled;
+        vehicle->Flags = VehicleFlag::CollisionDisabled;
         if (carEntry.flags.has(CarEntryFlag::hasInvertedSpriteSet))
         {
             if (trackElement->IsInverted())
             {
-                vehicle->SetFlag(VehicleFlags::CarIsInverted);
+                vehicle->SetFlag(VehicleFlag::CarIsInverted);
             }
         }
         vehicle->SetState(Vehicle::Status::movingToEndOfStation);
@@ -3438,7 +3438,7 @@ static Vehicle* VehicleCreateCar(
         if (ride.hasLifecycleFlag(RIDE_LIFECYCLE_REVERSED_TRAINS))
         {
             vehicle->SubType = carIndex == (ride.numCarsPerTrain - 1) ? Vehicle::Type::head : Vehicle::Type::tail;
-            vehicle->SetFlag(VehicleFlags::CarIsReversed);
+            vehicle->SetFlag(VehicleFlag::CarIsReversed);
         }
     }
 
@@ -3781,7 +3781,7 @@ void Ride::moveTrainsToBlockBrakes(const CoordsXYZ& firstBlockPosition, TrackEle
         }
         for (Vehicle* car = train; car != nullptr; car = getGameState().entities.GetEntity<Vehicle>(car->next_vehicle_on_train))
         {
-            car->ClearFlag(VehicleFlags::CollisionDisabled);
+            car->ClearFlag(VehicleFlag::CollisionDisabled);
             car->SetState(Vehicle::Status::travelling, car->sub_state);
             if ((car->GetTrackType()) == TrackElemType::endStation)
             {
@@ -4686,7 +4686,7 @@ void InvalidateTestResults(Ride& ride)
             Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[i]);
             if (vehicle != nullptr)
             {
-                vehicle->ClearFlag(VehicleFlags::Testing);
+                vehicle->ClearFlag(VehicleFlag::Testing);
             }
         }
     }
@@ -4716,9 +4716,9 @@ void RideFixBreakdown(Ride& ride, int32_t reliabilityIncreaseFactor)
             for (Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[i]); vehicle != nullptr;
                  vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
             {
-                vehicle->ClearFlag(VehicleFlags::StoppedBySafetyCutOut);
-                vehicle->ClearFlag(VehicleFlags::CarIsBroken);
-                vehicle->ClearFlag(VehicleFlags::TrainIsBroken);
+                vehicle->ClearFlag(VehicleFlag::StoppedBySafetyCutOut);
+                vehicle->ClearFlag(VehicleFlag::CarIsBroken);
+                vehicle->ClearFlag(VehicleFlag::TrainIsBroken);
             }
         }
     }
@@ -4756,7 +4756,7 @@ void RideUpdateVehicleColours(const Ride& ride)
                     colours = ride.vehicleColours[i];
                     break;
                 case VehicleColourSettings::perCar:
-                    if (vehicle->HasFlag(VehicleFlags::CarIsReversed))
+                    if (vehicle->HasFlag(VehicleFlag::CarIsReversed))
                     {
                         colours = ride.vehicleColours[std::min(
                             (ride.numCarsPerTrain - 1) - carIndex, Limits::kMaxCarsPerTrain - 1)];
