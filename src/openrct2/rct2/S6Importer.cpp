@@ -2026,7 +2026,7 @@ namespace OpenRCT2::RCT2
         dst->next_vehicle_on_ride = EntityId::FromUnderlying(src->NextVehicleOnRide);
         dst->var_44 = src->Var44;
         dst->mass = src->Mass;
-        dst->Flags = src->UpdateFlags;
+        dst->flags.holder = src->UpdateFlags;
         dst->SwingSprite = src->SwingSprite;
         dst->current_station = StationIndex::FromUnderlying(src->CurrentStation);
         dst->current_time = src->CurrentTime;
@@ -2077,7 +2077,7 @@ namespace OpenRCT2::RCT2
         dst->target_seat_rotation = src->TargetSeatRotation;
         if (src->Flags & RCT12_ENTITY_FLAGS_IS_CRASHED_VEHICLE_ENTITY)
         {
-            dst->SetFlag(VehicleFlag::crashed);
+            dst->flags.set(VehicleFlag::crashed);
         }
         dst->BlockBrakeSpeed = kRCT2DefaultBlockBrakeSpeed;
     }

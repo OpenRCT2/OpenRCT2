@@ -115,7 +115,7 @@ static bool try_add_synchronised_station(const CoordsXYZ& coords)
         {
             continue;
         }
-        if (!vehicle->HasFlag(VehicleFlag::waitingOnAdjacentStation))
+        if (!vehicle->flags.has(VehicleFlag::waitingOnAdjacentStation))
         {
             continue;
         }
@@ -324,7 +324,7 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
         auto v = getGameState().entities.GetEntity<Vehicle>(sv->vehicle_id);
         if (v != nullptr)
         {
-            v->ClearFlag(VehicleFlag::waitingOnAdjacentStation);
+            v->flags.unset(VehicleFlag::waitingOnAdjacentStation);
         }
     }
 
@@ -464,7 +464,7 @@ void Vehicle::TrainReadyToDepart(uint8_t num_peeps_on_train, uint8_t num_used_se
         return;
 
     if (curRide->status == RideStatus::open && !(curRide->lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN)
-        && !HasFlag(VehicleFlag::readyToDepart))
+        && !flags.has(VehicleFlag::readyToDepart))
     {
         return;
     }
@@ -553,7 +553,7 @@ void Vehicle::UpdateWaitingForPassengers()
         if (time_waiting != 0xFFFF)
             time_waiting++;
 
-        ClearFlag(VehicleFlag::readyToDepart);
+        flags.unset(VehicleFlag::readyToDepart);
 
         // 0xF64E31, 0xF64E32, 0xF64E33
         uint8_t num_peeps_on_train = 0, num_used_seats_on_train = 0, num_seats_on_train = 0;
@@ -599,7 +599,7 @@ void Vehicle::UpdateWaitingForPassengers()
             {
                 if (curRide->maxWaitingTime * 32 < time_waiting)
                 {
-                    SetFlag(VehicleFlag::readyToDepart);
+                    flags.set(VehicleFlag::readyToDepart);
                     TrainReadyToDepart(num_peeps_on_train, num_used_seats_on_train);
                     return;
                 }
@@ -621,7 +621,7 @@ void Vehicle::UpdateWaitingForPassengers()
                 {
                     if (train->current_station == current_station)
                     {
-                        SetFlag(VehicleFlag::readyToDepart);
+                        flags.set(VehicleFlag::readyToDepart);
                         TrainReadyToDepart(num_peeps_on_train, num_used_seats_on_train);
                         return;
                     }
@@ -634,7 +634,7 @@ void Vehicle::UpdateWaitingForPassengers()
         {
             if (num_peeps_on_train == num_seats_on_train)
             {
-                SetFlag(VehicleFlag::readyToDepart);
+                flags.set(VehicleFlag::readyToDepart);
                 TrainReadyToDepart(num_peeps_on_train, num_used_seats_on_train);
                 return;
             }
@@ -651,13 +651,13 @@ void Vehicle::UpdateWaitingForPassengers()
                 peepTarget = 1;
 
             if (num_peeps_on_train >= peepTarget)
-                SetFlag(VehicleFlag::readyToDepart);
+                flags.set(VehicleFlag::readyToDepart);
 
             TrainReadyToDepart(num_peeps_on_train, num_used_seats_on_train);
             return;
         }
 
-        SetFlag(VehicleFlag::readyToDepart);
+        flags.set(VehicleFlag::readyToDepart);
         TrainReadyToDepart(num_peeps_on_train, num_used_seats_on_train);
         return;
     }
@@ -666,11 +666,11 @@ void Vehicle::UpdateWaitingForPassengers()
         return;
 
     velocity = 0;
-    ClearFlag(VehicleFlag::waitingOnAdjacentStation);
+    flags.unset(VehicleFlag::waitingOnAdjacentStation);
 
     if (curRide->departFlags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS)
     {
-        SetFlag(VehicleFlag::waitingOnAdjacentStation);
+        flags.set(VehicleFlag::waitingOnAdjacentStation);
     }
 
     SetState(Status::waitingToDepart);
@@ -754,7 +754,7 @@ void Vehicle::UpdateWaitingToDepart()
     {
         if (curRide->departFlags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS)
         {
-            if (HasFlag(VehicleFlag::waitingOnAdjacentStation))
+            if (flags.has(VehicleFlag::waitingOnAdjacentStation))
             {
                 if (!CanDepartSynchronised())
                 {
@@ -954,7 +954,7 @@ void Vehicle::UpdateUnloadingPassengers()
             if (sub_state != 1)
                 return;
 
-            if (!(curRide->lifecycleFlags & RIDE_LIFECYCLE_TESTED) && HasFlag(VehicleFlag::testing)
+            if (!(curRide->lifecycleFlags & RIDE_LIFECYCLE_TESTED) && flags.has(VehicleFlag::testing)
                 && curRide->currentTestSegment + 1 >= curRide->numStations)
             {
                 UpdateTestFinish();
@@ -995,7 +995,7 @@ void Vehicle::UpdateUnloadingPassengers()
             return;
     }
 
-    if (!(curRide->lifecycleFlags & RIDE_LIFECYCLE_TESTED) && HasFlag(VehicleFlag::testing)
+    if (!(curRide->lifecycleFlags & RIDE_LIFECYCLE_TESTED) && flags.has(VehicleFlag::testing)
         && curRide->currentTestSegment + 1 >= curRide->numStations)
     {
         UpdateTestFinish();
@@ -1019,7 +1019,7 @@ void Vehicle::UpdateDeparting()
 
     if (sub_state == 0)
     {
-        if (HasFlag(VehicleFlag::trainIsBroken))
+        if (flags.has(VehicleFlag::trainIsBroken))
         {
             if (curRide->lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN)
                 return;
@@ -1052,7 +1052,7 @@ void Vehicle::UpdateDeparting()
 
         if (!(curRide->lifecycleFlags & RIDE_LIFECYCLE_TESTED))
         {
-            if (HasFlag(VehicleFlag::testing))
+            if (flags.has(VehicleFlag::testing))
             {
                 if (curRide->currentTestSegment + 1 < curRide->numStations)
                 {
@@ -1142,7 +1142,7 @@ void Vehicle::UpdateDeparting()
         }
         if (curRide->mode == RideMode::shuttle)
         {
-            Flags ^= VehicleFlag::poweredCarInReverse;
+            flags.flip(VehicleFlag::poweredCarInReverse);
             velocity = 0;
 
             // We have turned, so treat it like entering a new tile
@@ -1163,12 +1163,12 @@ void Vehicle::UpdateDeparting()
                 {
                     if (_vehicleBreakdown == BREAKDOWN_SAFETY_CUT_OUT)
                     {
-                        SetFlag(VehicleFlag::stoppedBySafetyCutout);
-                        ClearFlag(VehicleFlag::collisionDisabled);
+                        flags.set(VehicleFlag::stoppedBySafetyCutout);
+                        flags.unset(VehicleFlag::collisionDisabled);
                     }
                 }
                 else
-                    ClearFlag(VehicleFlag::collisionDisabled);
+                    flags.unset(VehicleFlag::collisionDisabled);
             }
         }
         else
@@ -1181,12 +1181,12 @@ void Vehicle::UpdateDeparting()
                 {
                     if (_vehicleBreakdown == BREAKDOWN_SAFETY_CUT_OUT)
                     {
-                        SetFlag(VehicleFlag::stoppedBySafetyCutout);
-                        ClearFlag(VehicleFlag::collisionDisabled);
+                        flags.set(VehicleFlag::stoppedBySafetyCutout);
+                        flags.unset(VehicleFlag::collisionDisabled);
                     }
                 }
                 else
-                    ClearFlag(VehicleFlag::collisionDisabled);
+                    flags.unset(VehicleFlag::collisionDisabled);
             }
         }
     }
@@ -1405,7 +1405,7 @@ void Vehicle::UpdateTravelling()
             }
             if (curRide->mode == RideMode::shuttle)
             {
-                Flags ^= VehicleFlag::poweredCarInReverse;
+                flags.flip(VehicleFlag::poweredCarInReverse);
                 velocity = 0;
             }
             else
@@ -1454,7 +1454,7 @@ void Vehicle::UpdateTravelling()
                 if (velocity != 0)
                     sound2_flags |= VEHICLE_SOUND2_FLAGS_LIFT_HILL;
 
-                if (!HasFlag(VehicleFlag::reverseInclineCompletedLap))
+                if (!flags.has(VehicleFlag::reverseInclineCompletedLap))
                 {
                     if (velocity >= curRide->liftHillSpeed * -31079)
                     {
@@ -1463,7 +1463,7 @@ void Vehicle::UpdateTravelling()
                         if (_vehicleBreakdown == 0)
                         {
                             sound2_flags &= ~VEHICLE_SOUND2_FLAGS_LIFT_HILL;
-                            SetFlag(VehicleFlag::stoppedBySafetyCutout);
+                            flags.set(VehicleFlag::stoppedBySafetyCutout);
                         }
                     }
                 }
@@ -1479,7 +1479,7 @@ void Vehicle::UpdateTravelling()
                 {
                     if (_vehicleBreakdown == 0)
                     {
-                        SetFlag(VehicleFlag::stoppedBySafetyCutout);
+                        flags.set(VehicleFlag::stoppedBySafetyCutout);
                         sound2_flags &= ~VEHICLE_SOUND2_FLAGS_LIFT_HILL;
                     }
                 }
@@ -1495,7 +1495,7 @@ void Vehicle::UpdateTravelling()
         return;
 
     if (curRide->mode == RideMode::reverseInclineLaunchedShuttle && velocity >= 0
-        && !HasFlag(VehicleFlag::reverseInclineCompletedLap))
+        && !flags.has(VehicleFlag::reverseInclineCompletedLap))
     {
         return;
     }
@@ -1584,7 +1584,7 @@ void Vehicle::UpdateArrivingPassThroughStation(const Ride& curRide, const CarEnt
         if (GetRideTypeDescriptor(curRide.type).flags.has(RtdFlag::allowMultipleCircuits) && curRide.mode != RideMode::shuttle
             && curRide.mode != RideMode::poweredLaunch)
         {
-            SetFlag(VehicleFlag::reverseInclineCompletedLap);
+            flags.set(VehicleFlag::reverseInclineCompletedLap);
         }
         else
         {
@@ -1625,7 +1625,7 @@ void Vehicle::UpdateArriving()
         case RideMode::spaceRings:
         case RideMode::hauntedHouse:
         case RideMode::crookedHouse:
-            ClearFlag(VehicleFlag::reverseInclineCompletedLap);
+            flags.unset(VehicleFlag::reverseInclineCompletedLap);
             velocity = 0;
             acceleration = 0;
             SetState(Status::unloadingPassengers);
@@ -1696,7 +1696,7 @@ void Vehicle::UpdateArriving()
             return;
         }
 
-        if (NumLaps == curRide->numCircuits && HasFlag(VehicleFlag::reverseInclineCompletedLap))
+        if (NumLaps == curRide->numCircuits && flags.has(VehicleFlag::reverseInclineCompletedLap))
         {
             SetState(Status::departing, 1);
             return;
@@ -1724,7 +1724,7 @@ void Vehicle::UpdateArriving()
         return;
     }
 
-    ClearFlag(VehicleFlag::reverseInclineCompletedLap);
+    flags.unset(VehicleFlag::reverseInclineCompletedLap);
     velocity = 0;
     acceleration = 0;
     SetState(Status::unloadingPassengers);

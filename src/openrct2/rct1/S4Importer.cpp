@@ -2899,7 +2899,7 @@ namespace OpenRCT2::RCT1
         dst->track_progress = src->TrackProgress;
         dst->vertical_drop_countdown = src->VerticalDropCountdown;
         dst->sub_state = src->SubState;
-        dst->Flags = src->UpdateFlags;
+        dst->flags.holder = src->UpdateFlags;
 
         SetVehicleColours(dst, src);
 
@@ -2912,13 +2912,13 @@ namespace OpenRCT2::RCT1
         dst->next_free_seat = src->NextFreeSeat;
         if (src->Flags & RCT12_ENTITY_FLAGS_IS_CRASHED_VEHICLE_ENTITY)
         {
-            dst->SetFlag(VehicleFlag::crashed);
+            dst->flags.set(VehicleFlag::crashed);
         }
         dst->BlockBrakeSpeed = kRCT2DefaultBlockBrakeSpeed;
 
         if (VehicleTypeIsReversed(rct1Ride.vehicleType))
         {
-            dst->SetFlag(VehicleFlag::carIsReversed);
+            dst->flags.set(VehicleFlag::carIsReversed);
         }
     }
 

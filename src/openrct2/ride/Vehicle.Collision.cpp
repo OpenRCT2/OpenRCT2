@@ -51,7 +51,7 @@ void Vehicle::UpdateReverserCarBogies()
  */
 bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, EntityId* otherVehicleIndex)
 {
-    if (HasFlag(VehicleFlag::collisionDisabled))
+    if (flags.has(VehicleFlag::collisionDisabled))
         return false;
 
     auto carEntry = Entry();
@@ -203,7 +203,7 @@ bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, EntityId* oth
     CollisionDetectionTimer++;
     if (CollisionDetectionTimer < 200)
     {
-        SetFlag(VehicleFlag::currentlyColliding);
+        flags.set(VehicleFlag::currentlyColliding);
         if (otherVehicleIndex != nullptr)
             *otherVehicleIndex = collideVehicle->Id;
         return true;
@@ -246,7 +246,7 @@ bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, EntityId* oth
         return false;
     }
 
-    SetFlag(VehicleFlag::currentlyColliding);
+    flags.set(VehicleFlag::currentlyColliding);
     if (otherVehicleIndex != nullptr)
         *otherVehicleIndex = collideVehicle->Id;
     return true;

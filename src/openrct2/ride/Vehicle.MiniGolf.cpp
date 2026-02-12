@@ -288,7 +288,7 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
                 }
             }
 
-            ClearFlag(VehicleFlag::onLiftHill);
+            flags.unset(VehicleFlag::onLiftHill);
             SetTrackType(tileElement->AsTrack()->GetTrackType());
             SetTrackDirection(direction);
             brake_speed = tileElement->AsTrack()->GetBrakeBoosterSpeed();
@@ -463,9 +463,9 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
 
             TrackLocation = trackPos;
 
-            if (HasFlag(VehicleFlag::onLiftHill))
+            if (flags.has(VehicleFlag::onLiftHill))
             {
-                ClearFlag(VehicleFlag::onLiftHill);
+                flags.unset(VehicleFlag::onLiftHill);
                 if (next_vehicle_on_train.IsNull())
                 {
                     if (_vehicleVelocityF64E08 < 0)
@@ -553,7 +553,7 @@ void Vehicle::UpdateTrackMotionMiniGolfVehicle(const Ride& curRide, const RideOb
 {
     _vehicleUnkF64E10 = 1;
     acceleration = Geometry::getAccelerationFromPitch(pitch);
-    if (!HasFlag(VehicleFlag::moveSingleCar))
+    if (!flags.has(VehicleFlag::moveSingleCar))
     {
         remaining_distance = _vehicleVelocityF64E0C + remaining_distance;
     }
@@ -681,7 +681,7 @@ int32_t Vehicle::UpdateTrackMotionMiniGolfCalculateAcceleration(const CarEntry& 
     {
         int32_t poweredAcceleration = speed << 14;
         int32_t quarterForce = (speed * totalMass) >> 2;
-        if (HasFlag(VehicleFlag::poweredCarInReverse))
+        if (flags.has(VehicleFlag::poweredCarInReverse))
         {
             poweredAcceleration = -poweredAcceleration;
         }
@@ -722,11 +722,11 @@ int32_t Vehicle::UpdateTrackMotionMiniGolf(int32_t* outStation)
     for (Vehicle* vehicle = _vehicleFrontVehicle; vehicle != nullptr;)
     {
         vehicle->UpdateTrackMotionMiniGolfVehicle(*curRide, *rideEntry, carEntry);
-        if (vehicle->HasFlag(VehicleFlag::onLiftHill))
+        if (vehicle->flags.has(VehicleFlag::onLiftHill))
         {
             _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_ON_LIFT_HILL;
         }
-        if (vehicle->HasFlag(VehicleFlag::moveSingleCar))
+        if (vehicle->flags.has(VehicleFlag::moveSingleCar))
         {
             if (outStation != nullptr)
                 *outStation = _vehicleStationIndex.ToUnderlying();

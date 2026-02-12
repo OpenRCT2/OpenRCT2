@@ -350,14 +350,14 @@ namespace OpenRCT2::Scripting
         }
     }
 
-    template<uint32_t flag>
+    template<VehicleFlag flag>
     bool ScVehicle::flag_get() const
     {
         auto vehicle = GetVehicle();
-        return vehicle != nullptr ? vehicle->HasFlag(flag) : false;
+        return vehicle != nullptr ? vehicle->flags.has(static_cast<VehicleFlag>(flag)) : false;
     }
 
-    template<uint32_t flag>
+    template<VehicleFlag flag>
     void ScVehicle::flag_set(bool value)
     {
         ThrowIfGameStateNotMutable();
@@ -366,11 +366,11 @@ namespace OpenRCT2::Scripting
         {
             if (value)
             {
-                vehicle->SetFlag(flag);
+                vehicle->flags.set(static_cast<VehicleFlag>(flag));
             }
             else
             {
-                vehicle->ClearFlag(flag);
+                vehicle->flags.unset(static_cast<VehicleFlag>(flag));
             }
             vehicle->Invalidate();
         }

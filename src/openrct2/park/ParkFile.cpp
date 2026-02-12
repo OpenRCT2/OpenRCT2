@@ -2230,11 +2230,11 @@ namespace OpenRCT2
         {
             uint16_t updateFlags = 0;
             cs.readWrite(updateFlags);
-            entity.Flags = updateFlags;
+            entity.flags.holder = updateFlags;
         }
         else
         {
-            cs.readWrite(entity.Flags);
+            cs.readWrite(entity.flags.holder);
         }
         cs.readWrite(entity.SwingSprite);
         cs.readWrite(entity.current_station);
@@ -2305,7 +2305,7 @@ namespace OpenRCT2
             cs.readWrite(isCrashedVehicle);
             if (isCrashedVehicle)
             {
-                entity.SetFlag(VehicleFlag::crashed);
+                entity.flags.set(VehicleFlag::crashed);
             }
         }
         if (cs.getMode() == OrcaStream::Mode::reading && os.getHeader().targetVersion < kBlockBrakeImprovementsVersion)

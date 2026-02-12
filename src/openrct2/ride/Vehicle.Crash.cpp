@@ -134,7 +134,7 @@ void Vehicle::UpdateCollisionSetup()
             VehicleCrashParticle::Create(train->colours, trainLoc);
         }
 
-        train->SetFlag(VehicleFlag::crashed);
+        train->flags.set(VehicleFlag::crashed);
         train->animationState = ScenarioRand() & 0xFFFF;
 
         train->animation_frame = ScenarioRand() & 0x7;
@@ -412,7 +412,7 @@ void Vehicle::CrashOnLand()
     while (numParticles-- != 0)
         VehicleCrashParticle::Create(colours, curLoc);
 
-    SetFlag(VehicleFlag::crashed);
+    flags.set(VehicleFlag::crashed);
     animation_frame = 0;
     animationState = 0;
     SpriteData.Width = 13;
@@ -481,7 +481,7 @@ void Vehicle::CrashOnWater()
     for (int32_t i = 0; i < 10; ++i)
         VehicleCrashParticle::Create(colours, curLoc + CoordsXYZ{ -4, 8, 0 });
 
-    SetFlag(VehicleFlag::crashed);
+    flags.set(VehicleFlag::crashed);
     animation_frame = 0;
     animationState = 0;
     SpriteData.Width = 13;
