@@ -24,9 +24,9 @@ using namespace OpenRCT2::RideVehicle;
 
 // External globals from Vehicle.cpp
 extern uint32_t _vehicleMotionTrackFlags;
-extern int32_t _vehicleVelocityF64E08;
-extern int32_t _vehicleVelocityF64E0C;
-extern int32_t _vehicleUnkF64E10;
+extern int32_t _vehicleVelocity;
+extern int32_t _vehicleRemainingDistance;
+extern int32_t _vehicleSubpositionsMoved;
 extern CoordsXYZ _vehicleCurPosition;
 
 struct DodgemsTrackSize
@@ -124,9 +124,9 @@ int32_t Vehicle::UpdateMotionDodgems()
     }
     velocity = nextVelocity;
 
-    _vehicleVelocityF64E08 = nextVelocity;
-    _vehicleVelocityF64E0C = (nextVelocity / 1024) * 42;
-    _vehicleUnkF64E10 = 1;
+    _vehicleVelocity = nextVelocity;
+    _vehicleRemainingDistance = (nextVelocity / 1024) * 42;
+    _vehicleSubpositionsMoved = 1;
 
     acceleration = 0;
     if (!curRide->flags.hasAny(RideFlag::breakdownPending, RideFlag::brokenDown)
@@ -177,7 +177,7 @@ int32_t Vehicle::UpdateMotionDodgems()
         }
     }
 
-    remaining_distance += _vehicleVelocityF64E0C;
+    remaining_distance += _vehicleRemainingDistance;
 
     if (remaining_distance >= 13962)
     {
@@ -208,7 +208,7 @@ int32_t Vehicle::UpdateMotionDodgems()
             {
                 break;
             }
-            _vehicleUnkF64E10++;
+            _vehicleSubpositionsMoved++;
         }
 
         if (remaining_distance >= 13962)
