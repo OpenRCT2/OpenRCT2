@@ -51,6 +51,14 @@ constexpr uint8_t kBoosterAccelerationShiftAmount = 16;
 constexpr int16_t kVehicleMaxSpinSpeedWaterRide = 512;
 constexpr int16_t kVehicleMinSpinSpeedWaterRide = -kVehicleMaxSpinSpeedWaterRide;
 
+static PitchAndRoll getPitchAndRollEnd(
+    const Ride& curRide, bool useInvertedSprites, TrackElemType trackType, TileElement* tileElement)
+{
+    bool isInverted = useInvertedSprites ^ tileElement->AsTrack()->IsInverted();
+    const auto& ted = GetTrackElementDescriptor(trackType);
+    return { ted.definition.pitchEnd, TrackGetActualBank2(curRide.type, isInverted, ted.definition.rollEnd) };
+}
+
 /**
  *
  *  rct2: 0x006DAB90
@@ -277,32 +285,6 @@ void Vehicle::handleBlockBrake()
     }
 }
 
-/**
- *
- *  rct2: 0x006DADAE
- */
-void Vehicle::updateVelocity()
-{
-    int32_t nextVelocity = acceleration + velocity;
-    if (flags.has(VehicleFlag::stoppedBySafetyCutout))
-    {
-        nextVelocity = 0;
-    }
-    if (flags.has(VehicleFlag::stoppedOnHoldingBrake))
-    {
-        if (vertical_drop_countdown > 0)
-        {
-            nextVelocity = 0;
-            acceleration = 0;
-            vertical_drop_countdown--;
-        }
-    }
-    velocity = nextVelocity;
-
-    _vehicleVelocity = nextVelocity;
-    _vehicleRemainingDistance = (nextVelocity >> 10) * 42;
-}
-
 static void blockBrakesOpenPreviousSection(const Ride& ride, const CoordsXYZ& vehicleTrackLocation, TileElement* tileElement)
 {
     CoordsXYZ location = vehicleTrackLocation;
@@ -406,100 +388,6 @@ void Vehicle::handleWaterSplash() const
             {
                 playSplashSound();
             }
-        }
-    }
-}
-
-/**
- *
- *  rct2: 0x006DBF3E
- */
-void Vehicle::findStationStopPoint()
-{
-    const auto* carEntry = Entry();
-
-    acceleration /= _vehicleSubpositionsMoved;
-    if (TrackSubposition == VehicleTrackSubposition::ChairliftGoingBack)
-    {
-        return;
-    }
-
-    auto trackType = GetTrackType();
-    const auto& ted = GetTrackElementDescriptor(trackType);
-    if (!ted.sequenceData.sequences[0].flags.has(SequenceFlag::trackOrigin))
-    {
-        return;
-    }
-
-    _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_3;
-
-    TileElement* tileElement = nullptr;
-    if (MapIsLocationValid(TrackLocation))
-    {
-        tileElement = MapGetTrackElementAtOfTypeSeq(TrackLocation, trackType, 0);
-    }
-
-    if (tileElement == nullptr)
-    {
-        return;
-    }
-
-    if (_vehicleStationIndex.IsNull())
-    {
-        _vehicleStationIndex = tileElement->AsTrack()->GetStationIndex();
-    }
-
-    if (trackType == TrackElemType::towerBase && this == gCurrentVehicle)
-    {
-        if (track_progress > 3 && !flags.has(VehicleFlag::poweredCarInReverse))
-        {
-            CoordsXYE output;
-            int32_t outputZ, outputDirection;
-
-            CoordsXYE input = { TrackLocation, tileElement };
-            if (!trackBlockGetNext(&input, &output, &outputZ, &outputDirection))
-            {
-                _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_12;
-            }
-        }
-
-        if (track_progress <= 3)
-        {
-            _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION;
-        }
-    }
-
-    if (trackType != TrackElemType::endStation || this != gCurrentVehicle)
-    {
-        return;
-    }
-
-    uint16_t ax = track_progress;
-    if (_vehicleVelocity < 0)
-    {
-        if (ax <= 22)
-        {
-            _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION;
-        }
-    }
-    else
-    {
-        uint16_t cx = 17;
-        if (carEntry->flags.has(CarEntryFlag::isChairlift))
-        {
-            cx = 6;
-        }
-        if (carEntry->flags.has(CarEntryFlag::isGoKart))
-        {
-            // Determine the stop positions for the karts. If in left lane it's further along the track than the right lane.
-            // Since it's not possible to overtake when the race has ended, this does not check for overtake states (7 and
-            // 8).
-            cx = TrackSubposition == VehicleTrackSubposition::GoKartsRightLane ? 18 : 20;
-        }
-
-        if (ax > cx)
-        {
-            _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION;
         }
     }
 }
@@ -978,14 +866,6 @@ bool Vehicle::trackMotionForwards(const CarEntry* carEntry, const Ride& curRide,
     }
 }
 
-static PitchAndRoll getPitchAndRollEnd(
-    const Ride& curRide, bool useInvertedSprites, TrackElemType trackType, TileElement* tileElement)
-{
-    bool isInverted = useInvertedSprites ^ tileElement->AsTrack()->IsInverted();
-    const auto& ted = GetTrackElementDescriptor(trackType);
-    return { ted.definition.pitchEnd, TrackGetActualBank2(curRide.type, isInverted, ted.definition.rollEnd) };
-}
-
 /**
  *
  *  rct2: 0x006DBAA6
@@ -1376,6 +1256,126 @@ int32_t Vehicle::getPoweredCarAcceleration(const CarEntry* carEntry, uint32_t to
     }
 
     return curAcceleration + poweredAcceleration;
+}
+
+/**
+ *
+ *  rct2: 0x006DADAE
+ */
+void Vehicle::updateVelocity()
+{
+    int32_t nextVelocity = acceleration + velocity;
+    if (flags.has(VehicleFlag::stoppedOnHoldingBrake))
+    {
+        nextVelocity = 0;
+    }
+    if (flags.has(VehicleFlag::stoppedOnHoldingBrake))
+    {
+        if (vertical_drop_countdown > 0)
+        {
+            nextVelocity = 0;
+            acceleration = 0;
+            vertical_drop_countdown--;
+        }
+    }
+    velocity = nextVelocity;
+
+    _vehicleVelocity = nextVelocity;
+    _vehicleRemainingDistance = (nextVelocity >> 10) * 42;
+}
+
+/**
+ *
+ *  rct2: 0x006DBF3E
+ */
+void Vehicle::findStationStopPoint()
+{
+    const auto* carEntry = Entry();
+
+    acceleration /= _vehicleSubpositionsMoved;
+    if (TrackSubposition == VehicleTrackSubposition::ChairliftGoingBack)
+    {
+        return;
+    }
+
+    auto trackType = GetTrackType();
+    const auto& ted = GetTrackElementDescriptor(trackType);
+    if (!ted.sequenceData.sequences[0].flags.has(SequenceFlag::trackOrigin))
+    {
+        return;
+    }
+
+    _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_3;
+
+    TileElement* tileElement = nullptr;
+    if (MapIsLocationValid(TrackLocation))
+    {
+        tileElement = MapGetTrackElementAtOfTypeSeq(TrackLocation, trackType, 0);
+    }
+
+    if (tileElement == nullptr)
+    {
+        return;
+    }
+
+    if (_vehicleStationIndex.IsNull())
+    {
+        _vehicleStationIndex = tileElement->AsTrack()->GetStationIndex();
+    }
+
+    if (trackType == TrackElemType::towerBase && this == gCurrentVehicle)
+    {
+        if (track_progress > 3 && !flags.has(VehicleFlag::poweredCarInReverse))
+        {
+            CoordsXYE output;
+            int32_t outputZ, outputDirection;
+
+            CoordsXYE input = { TrackLocation, tileElement };
+            if (!trackBlockGetNext(&input, &output, &outputZ, &outputDirection))
+            {
+                _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_12;
+            }
+        }
+
+        if (track_progress <= 3)
+        {
+            _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION;
+        }
+    }
+
+    if (trackType != TrackElemType::endStation || this != gCurrentVehicle)
+    {
+        return;
+    }
+
+    uint16_t ax = track_progress;
+    if (_vehicleVelocity < 0)
+    {
+        if (ax <= 22)
+        {
+            _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION;
+        }
+    }
+    else
+    {
+        uint16_t cx = 17;
+        if (carEntry->flags.has(CarEntryFlag::isChairlift))
+        {
+            cx = 6;
+        }
+        if (carEntry->flags.has(CarEntryFlag::isGoKart))
+        {
+            // Determine the stop positions for the karts. If in left lane it's further along the track than the right lane.
+            // Since it's not possible to overtake when the race has ended, this does not check for overtake states (7 and
+            // 8).
+            cx = TrackSubposition == VehicleTrackSubposition::GoKartsRightLane ? 18 : 20;
+        }
+
+        if (ax > cx)
+        {
+            _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION;
+        }
+    }
 }
 
 void Vehicle::updateTrackMotionCar(
