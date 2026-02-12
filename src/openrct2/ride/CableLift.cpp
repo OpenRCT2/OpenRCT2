@@ -78,7 +78,7 @@ Vehicle* CableLiftSegmentCreate(
     current->SetTrackType(TrackElemType::cableLiftHill);
     current->SetTrackDirection(current->Orientation >> 3);
     current->track_progress = 164;
-    current->Flags = VehicleFlag::CollisionDisabled;
+    current->Flags = VehicleFlag::collisionDisabled;
     current->SetState(Vehicle::Status::movingToEndOfStation, 0);
     current->num_peeps = 0;
     current->next_free_seat = 0;
@@ -211,7 +211,7 @@ void Vehicle::CableLiftUpdateTravelling()
 
     velocity = std::min(passengerVehicle->velocity, 439800);
     acceleration = 0;
-    if (passengerVehicle->HasFlag(VehicleFlag::TrainIsBroken))
+    if (passengerVehicle->HasFlag(VehicleFlag::trainIsBroken))
         return;
 
     if (!(CableLiftUpdateTrackMotion() & VEHICLE_UPDATE_MOTION_TRACK_FLAG_1))

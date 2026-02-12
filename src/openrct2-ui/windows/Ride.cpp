@@ -3917,8 +3917,8 @@ namespace OpenRCT2::Ui::Windows
                                          vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
                                     {
                                         vehicle->ClearFlag(
-                                            VehicleFlag::CarIsBroken | VehicleFlag::StoppedBySafetyCutOut
-                                            | VehicleFlag::TrainIsBroken);
+                                            VehicleFlag::carIsBroken | VehicleFlag::stoppedBySafetyCutout
+                                            | VehicleFlag::trainIsBroken);
                                     }
                                 }
                                 break;
@@ -3929,14 +3929,14 @@ namespace OpenRCT2::Ui::Windows
                                 vehicle = getGameState().entities.GetEntity<Vehicle>(ride->vehicles[ride->brokenTrain]);
                                 if (vehicle != nullptr)
                                 {
-                                    vehicle->ClearFlag(VehicleFlag::CarIsBroken);
+                                    vehicle->ClearFlag(VehicleFlag::carIsBroken);
                                 }
                                 break;
                             case BREAKDOWN_VEHICLE_MALFUNCTION:
                                 vehicle = getGameState().entities.GetEntity<Vehicle>(ride->vehicles[ride->brokenTrain]);
                                 if (vehicle != nullptr)
                                 {
-                                    vehicle->ClearFlag(VehicleFlag::TrainIsBroken);
+                                    vehicle->ClearFlag(VehicleFlag::trainIsBroken);
                                 }
                                 break;
                         }

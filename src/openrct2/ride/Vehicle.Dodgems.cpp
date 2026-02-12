@@ -246,7 +246,7 @@ int32_t Vehicle::UpdateMotionDodgems()
 
     int32_t momentum = (speed * mass) >> 2;
     int32_t _eax = speed << 14;
-    if (HasFlag(VehicleFlag::PoweredCarInReverse))
+    if (HasFlag(VehicleFlag::poweredCarInReverse))
     {
         _eax = -_eax;
     }

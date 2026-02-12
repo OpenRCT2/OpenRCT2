@@ -366,7 +366,7 @@ void Vehicle::UpdateMotionBoatHire()
         {
             eax = speed << 14;
             int32_t ebx = (speed * curMass) >> 2;
-            if (HasFlag(VehicleFlag::PoweredCarInReverse))
+            if (HasFlag(VehicleFlag::poweredCarInReverse))
             {
                 eax = -eax;
             }

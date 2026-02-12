@@ -79,10 +79,10 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScVehicle::velocity_get, &ScVehicle::velocity_set, "velocity");
         dukglue_register_property(ctx, &ScVehicle::bankRotation_get, &ScVehicle::bankRotation_set, "bankRotation");
         dukglue_register_property(
-            ctx, &ScVehicle::flag_get<VehicleFlag::CarIsReversed>, &ScVehicle::flag_set<VehicleFlag::CarIsReversed>,
+            ctx, &ScVehicle::flag_get<VehicleFlag::carIsReversed>, &ScVehicle::flag_set<VehicleFlag::carIsReversed>,
             "isReversed");
         dukglue_register_property(
-            ctx, &ScVehicle::flag_get<VehicleFlag::Crashed>, &ScVehicle::flag_set<VehicleFlag::Crashed>, "isCrashed");
+            ctx, &ScVehicle::flag_get<VehicleFlag::crashed>, &ScVehicle::flag_set<VehicleFlag::crashed>, "isCrashed");
         dukglue_register_property(ctx, &ScVehicle::colours_get, &ScVehicle::colours_set, "colours");
         dukglue_register_property(ctx, &ScVehicle::trackLocation_get, nullptr, "trackLocation");
         dukglue_register_property(ctx, &ScVehicle::trackProgress_get, nullptr, "trackProgress");

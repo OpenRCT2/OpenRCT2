@@ -186,9 +186,9 @@ void Vehicle::MoveRelativeDistance(int32_t distance)
 {
     remaining_distance += distance;
 
-    SetFlag(VehicleFlag::MoveSingleCar | VehicleFlag::CollisionDisabled);
+    SetFlag(VehicleFlag::moveSingleCar | VehicleFlag::collisionDisabled);
     UpdateTrackMotion(nullptr);
-    ClearFlag(VehicleFlag::MoveSingleCar | VehicleFlag::CollisionDisabled);
+    ClearFlag(VehicleFlag::moveSingleCar | VehicleFlag::collisionDisabled);
 }
 
 void Vehicle::UpdateTrackChange()
@@ -249,7 +249,7 @@ bool Vehicle::CloseRestraints()
     for (Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(Id); vehicle != nullptr;
          vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
     {
-        if (vehicle->HasFlag(VehicleFlag::CarIsBroken) && vehicle->restraints_position != 0
+        if (vehicle->HasFlag(VehicleFlag::carIsBroken) && vehicle->restraints_position != 0
             && (curRide->breakdownReasonPending == BREAKDOWN_RESTRAINTS_STUCK_OPEN
                 || curRide->breakdownReasonPending == BREAKDOWN_DOORS_STUCK_OPEN))
         {
@@ -365,7 +365,7 @@ bool Vehicle::OpenRestraints()
             continue;
         }
 
-        if (vehicle->HasFlag(VehicleFlag::CarIsBroken) && vehicle->restraints_position != 0xFF
+        if (vehicle->HasFlag(VehicleFlag::carIsBroken) && vehicle->restraints_position != 0xFF
             && (curRide->breakdownReasonPending == BREAKDOWN_RESTRAINTS_STUCK_CLOSED
                 || curRide->breakdownReasonPending == BREAKDOWN_DOORS_STUCK_CLOSED))
         {
@@ -437,7 +437,7 @@ void Vehicle::UpdateMeasurements()
         curRide->lifecycleFlags |= RIDE_LIFECYCLE_TESTED;
         curRide->lifecycleFlags |= RIDE_LIFECYCLE_NO_RAW_STATS;
         curRide->lifecycleFlags &= ~RIDE_LIFECYCLE_TEST_IN_PROGRESS;
-        ClearFlag(VehicleFlag::Testing);
+        ClearFlag(VehicleFlag::testing);
 
         auto* windowMgr = Ui::GetWindowManager();
         windowMgr->InvalidateByNumber(WindowClass::ride, ride.ToUnderlying());
@@ -512,7 +512,7 @@ void Vehicle::UpdateMeasurements()
             return;
 
         auto trackElemType = GetTrackType();
-        if (trackElemType == TrackElemType::poweredLift || HasFlag(VehicleFlag::OnLiftHill))
+        if (trackElemType == TrackElemType::poweredLift || HasFlag(VehicleFlag::onLiftHill))
         {
             if (!curRide->testingFlags.has(RideTestingFlag::poweredLift))
             {
@@ -763,7 +763,7 @@ void Vehicle::Update()
     if (curRide->type >= RIDE_TYPE_COUNT)
         return;
 
-    if (HasFlag(VehicleFlag::Testing))
+    if (HasFlag(VehicleFlag::testing))
         UpdateMeasurements();
 
     _vehicleBreakdown = 255;
@@ -775,7 +775,7 @@ void Vehicle::Update()
         {
             if (!carEntry->flags.has(CarEntryFlag::isWaterRide) || (pitch == VehiclePitch::up25 && velocity <= 2.0_mph))
             {
-                SetFlag(VehicleFlag::StoppedBySafetyCutOut);
+                SetFlag(VehicleFlag::stoppedBySafetyCutout);
             }
         }
     }
@@ -941,7 +941,7 @@ void Vehicle::UpdateTestFinish()
     if (curRide == nullptr)
         return;
     test_finish(*curRide);
-    ClearFlag(VehicleFlag::Testing);
+    ClearFlag(VehicleFlag::testing);
 }
 
 /**
@@ -991,7 +991,7 @@ static void test_reset(Ride& ride, StationIndex curStation)
 
 void Vehicle::TestReset()
 {
-    SetFlag(VehicleFlag::Testing);
+    SetFlag(VehicleFlag::testing);
     auto curRide = GetRide();
     if (curRide == nullptr)
         return;
@@ -1062,7 +1062,7 @@ void Vehicle::UpdateTravellingCableLift()
 
     if (sub_state == 0)
     {
-        if (HasFlag(VehicleFlag::TrainIsBroken))
+        if (HasFlag(VehicleFlag::trainIsBroken))
         {
             if (curRide->lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN)
                 return;
@@ -1083,7 +1083,7 @@ void Vehicle::UpdateTravellingCableLift()
         PeepEasterEggHereWeAre();
         if (!(curRide->lifecycleFlags & RIDE_LIFECYCLE_TESTED))
         {
-            if (HasFlag(VehicleFlag::Testing))
+            if (HasFlag(VehicleFlag::testing))
             {
                 if (curRide->currentTestSegment + 1 < curRide->numStations)
                 {
@@ -1316,7 +1316,7 @@ void Vehicle::UpdateCrossings() const
     const Vehicle* frontVehicle{};
     const Vehicle* backVehicle{};
 
-    bool travellingForwards = !HasFlag(VehicleFlag::PoweredCarInReverse);
+    bool travellingForwards = !HasFlag(VehicleFlag::poweredCarInReverse);
 
     if (travellingForwards)
     {
@@ -1479,7 +1479,7 @@ void Vehicle::EnableCollisionsForTrain()
     for (auto vehicle = this; vehicle != nullptr;
          vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
     {
-        vehicle->ClearFlag(VehicleFlag::CollisionDisabled);
+        vehicle->ClearFlag(VehicleFlag::collisionDisabled);
     }
 }
 

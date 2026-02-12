@@ -658,7 +658,7 @@ static uint8_t GetSwingSprite(int16_t swingPosition)
 void Vehicle::UpdateSwingingCar()
 {
     int32_t dword_F64E08 = abs(_vehicleVelocityF64E08);
-    if (HasFlag(VehicleFlag::CarIsReversed))
+    if (HasFlag(VehicleFlag::carIsReversed))
     {
         dword_F64E08 *= -1;
     }
@@ -719,7 +719,7 @@ void Vehicle::UpdateSwingingCar()
             cx = 0;
         }
 
-        if (HasFlag(VehicleFlag::OnLiftHill))
+        if (HasFlag(VehicleFlag::onLiftHill))
         {
             dx = 0;
             cx = 0;
@@ -755,7 +755,7 @@ void Vehicle::UpdateSwingingCar()
  */
 void Vehicle::UpdateSpinningCar()
 {
-    if (HasFlag(VehicleFlag::SpinningIsLocked))
+    if (HasFlag(VehicleFlag::spinningIsLocked))
     {
         spin_speed = 0;
         return;
