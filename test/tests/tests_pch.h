@@ -6,6 +6,6 @@
 #include <gtest/gtest.h>
 
 // Standard library headers
+#include <memory>
 #include <string>
 #include <vector>
-#include <memory>

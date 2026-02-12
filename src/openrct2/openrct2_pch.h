@@ -12,10 +12,10 @@
 #include <vector>
 
 // Core project headers with high compile cost and wide usage
-#include "core/StringTypes.h"
-#include "core/FileSystem.hpp"
 #include "core/DataSerialiser.h"
 #include "core/DataSerialiserTraits.h"
+#include "core/FileSystem.hpp"
+#include "core/StringTypes.h"
 
 // Key project headers used across many files
 #include "Context.h"
