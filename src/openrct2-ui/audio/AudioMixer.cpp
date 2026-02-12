@@ -13,7 +13,6 @@
 #include <iterator>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/config/Config.h>
-#include <speex/speex_resampler.h>
 
 using namespace OpenRCT2::Audio;
 
@@ -260,24 +259,45 @@ void AudioMixer::MixChannel(ISDLAudioChannel* channel, uint8_t* data, size_t len
 size_t AudioMixer::ApplyResample(
     ISDLAudioChannel* channel, const void* srcBuffer, int32_t srcSamples, int32_t dstSamples, int32_t inRate, int32_t outRate)
 {
-    int32_t outputByteRate = _outputFormat.GetByteRate();
+    const int channels = _outputFormat.channels;
+    const int bytesPerFrame = channels * sizeof(int16_t);
 
-    // Create resampler
-    SpeexResamplerState* resampler = channel->GetResampler();
-    if (resampler == nullptr)
+    const int16_t* src = static_cast<const int16_t*>(srcBuffer);
+    int16_t* dst = reinterpret_cast<int16_t*>(_effectBuffer.data());
+
+    double ratio = static_cast<double>(inRate) / static_cast<double>(outRate);
+
+    for (int32_t i = 0; i < dstSamples; ++i)
     {
-        resampler = speex_resampler_init(_outputFormat.channels, _outputFormat.freq, _outputFormat.freq, 0, nullptr);
-        channel->SetResampler(resampler);
+        double srcPos = i * ratio;
+        int32_t index = static_cast<int32_t>(srcPos);
+        double frac = srcPos - index;
+
+        // Clamp to avoid reading past end
+        if (index >= srcSamples - 1)
+            index = srcSamples - 2;
+
+        for (int ch = 0; ch < channels; ++ch)
+        {
+            int32_t baseIndex = index * channels + ch;
+
+            int16_t s1 = src[baseIndex];
+            int16_t s2 = src[baseIndex + channels];
+
+            // Linear interpolation
+            double sample = (1.0 - frac) * s1 + frac * s2;
+
+            // Clamp to int16 range
+            if (sample > 32767.0)
+                sample = 32767.0;
+            if (sample < -32768.0)
+                sample = -32768.0;
+
+            dst[i * channels + ch] = static_cast<int16_t>(sample);
+        }
     }
-    speex_resampler_set_rate(resampler, inRate, outRate);
 
-    uint32_t inLen = srcSamples;
-    uint32_t outLen = dstSamples;
-    speex_resampler_process_interleaved_int(
-        resampler, static_cast<const spx_int16_t*>(srcBuffer), &inLen, reinterpret_cast<spx_int16_t*>(_effectBuffer.data()),
-        &outLen);
-
-    return outLen * outputByteRate;
+    return dstSamples * bytesPerFrame;
 }
 
 void AudioMixer::ApplyPan(const IAudioChannel* channel, void* buffer, size_t len, size_t sampleSize)
