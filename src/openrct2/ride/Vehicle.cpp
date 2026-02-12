@@ -55,10 +55,10 @@ namespace OpenRCT2
     Breakdown _vehicleBreakdown;
     StationIndex _vehicleStationIndex;
     uint32_t _vehicleMotionTrackFlags;
-    int32_t _vehicleVelocityF64E08;
-    int32_t _vehicleVelocityF64E0C;
-    int32_t _vehicleUnkF64E10;
-    uint8_t _vehicleF64E2C;
+    int32_t _vehicleVelocity;
+    int32_t _vehicleRemainingDistance;
+    int32_t _vehicleSubpositionsMoved;
+    uint8_t _vehicleBrakeSoundTimeout;
     Vehicle* _vehicleFrontVehicle;
     CoordsXYZ _vehicleCurPosition;
 
