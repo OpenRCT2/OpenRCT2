@@ -2071,7 +2071,7 @@ namespace OpenRCT2::RCT2
         dst->vertical_drop_countdown = src->VerticalDropCountdown;
         dst->var_D3 = src->VarD3;
         dst->mini_golf_current_animation = MiniGolfAnimation(src->MiniGolfCurrentAnimation);
-        dst->mini_golf_flags = src->MiniGolfFlags;
+        dst->miniGolfFlags.holder = src->MiniGolfFlags;
         dst->ride_subtype = RCTEntryIndexToOpenRCT2EntryIndex(src->RideSubtype);
         dst->seat_rotation = src->SeatRotation;
         dst->target_seat_rotation = src->TargetSeatRotation;

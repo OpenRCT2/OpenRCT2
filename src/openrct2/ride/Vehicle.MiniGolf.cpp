@@ -67,7 +67,7 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
         return UpdateMiniGolfSubroutineStatus::restart;
     }
 
-    if (mini_golf_flags & MiniGolfFlag::Flag2)
+    if (miniGolfFlags.has(MiniGolfFlag::Flag2))
     {
         uint8_t nextFrame = animation_frame + 1;
         if (nextFrame < kMiniGolfPeepAnimationLengths[EnumValue(mini_golf_current_animation)])
@@ -88,10 +88,10 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
             _vehicleUnkF64E10++;
             return UpdateMiniGolfSubroutineStatus::restart;
         }
-        mini_golf_flags &= ~MiniGolfFlag::Flag2;
+        miniGolfFlags.unset(MiniGolfFlag::Flag2);
     }
 
-    if (mini_golf_flags & MiniGolfFlag::Flag0)
+    if (miniGolfFlags.has(MiniGolfFlag::Flag0))
     {
         auto vehicleIdx = IsHead() ? next_vehicle_on_ride : prev_vehicle_on_ride;
         Vehicle* vEDI = getGameState().entities.GetEntity<Vehicle>(vehicleIdx);
@@ -99,7 +99,7 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
         {
             return UpdateMiniGolfSubroutineStatus::stop;
         }
-        if (!(vEDI->mini_golf_flags & MiniGolfFlag::Flag0) || (vEDI->mini_golf_flags & MiniGolfFlag::Flag2))
+        if (!vEDI->miniGolfFlags.has(MiniGolfFlag::Flag0) || vEDI->miniGolfFlags.has(MiniGolfFlag::Flag2))
         {
             remaining_distance -= 0x368A;
             if (remaining_distance < 0)
@@ -133,11 +133,11 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
             _vehicleUnkF64E10++;
             return UpdateMiniGolfSubroutineStatus::restart;
         }
-        vEDI->mini_golf_flags &= ~MiniGolfFlag::Flag0;
-        mini_golf_flags &= ~MiniGolfFlag::Flag0;
+        vEDI->miniGolfFlags.unset(MiniGolfFlag::Flag0);
+        miniGolfFlags.unset(MiniGolfFlag::Flag0);
     }
 
-    if (mini_golf_flags & MiniGolfFlag::Flag1)
+    if (miniGolfFlags.has(MiniGolfFlag::Flag1))
     {
         auto vehicleIdx = IsHead() ? next_vehicle_on_ride : prev_vehicle_on_ride;
         Vehicle* vEDI = getGameState().entities.GetEntity<Vehicle>(vehicleIdx);
@@ -145,7 +145,7 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
         {
             return UpdateMiniGolfSubroutineStatus::stop;
         }
-        if (!(vEDI->mini_golf_flags & MiniGolfFlag::Flag1) || (vEDI->mini_golf_flags & MiniGolfFlag::Flag2))
+        if (!vEDI->miniGolfFlags.has(MiniGolfFlag::Flag1) || vEDI->miniGolfFlags.has(MiniGolfFlag::Flag2))
         {
             remaining_distance -= 0x368A;
             if (remaining_distance < 0)
@@ -179,11 +179,11 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
             _vehicleUnkF64E10++;
             return UpdateMiniGolfSubroutineStatus::restart;
         }
-        vEDI->mini_golf_flags &= ~MiniGolfFlag::Flag1;
-        mini_golf_flags &= ~MiniGolfFlag::Flag1;
+        vEDI->miniGolfFlags.unset(MiniGolfFlag::Flag1);
+        miniGolfFlags.unset(MiniGolfFlag::Flag1);
     }
 
-    if (mini_golf_flags & MiniGolfFlag::Flag3)
+    if (miniGolfFlags.has(MiniGolfFlag::Flag3))
     {
         Vehicle* vEDI = this;
 
@@ -196,7 +196,7 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
             }
             if (vEDI->IsHead())
                 continue;
-            if (!(vEDI->mini_golf_flags & MiniGolfFlag::Flag4))
+            if (!vEDI->miniGolfFlags.has(MiniGolfFlag::Flag4))
                 continue;
             if (vEDI->TrackLocation != TrackLocation)
                 continue;
@@ -216,8 +216,8 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
             return UpdateMiniGolfSubroutineStatus::restart;
         }
 
-        mini_golf_flags |= MiniGolfFlag::Flag4;
-        mini_golf_flags &= ~MiniGolfFlag::Flag3;
+        miniGolfFlags.set(MiniGolfFlag::Flag4);
+        miniGolfFlags.unset(MiniGolfFlag::Flag3);
     }
 
     return UpdateMiniGolfSubroutineStatus::carryOn;
@@ -320,7 +320,7 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
                 case MiniGolfState::Unk0: // Loc6DC7B4
                     if (!IsHead())
                     {
-                        mini_golf_flags |= MiniGolfFlag::Flag3;
+                        miniGolfFlags.set(MiniGolfFlag::Flag3);
                     }
                     else
                     {
@@ -345,11 +345,11 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
                     track_progress++;
                     break;
                 case MiniGolfState::Unk2: // Loc6DC800
-                    mini_golf_flags |= MiniGolfFlag::Flag0;
+                    miniGolfFlags.set(MiniGolfFlag::Flag0);
                     track_progress++;
                     break;
                 case MiniGolfState::Unk3: // Loc6DC810
-                    mini_golf_flags |= MiniGolfFlag::Flag1;
+                    miniGolfFlags.set(MiniGolfFlag::Flag1);
                     track_progress++;
                     break;
                 case MiniGolfState::Unk4: // Loc6DC820
@@ -382,12 +382,12 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
                     break;
                 }
                 case MiniGolfState::Unk5: // Loc6DC87A
-                    mini_golf_flags |= MiniGolfFlag::Flag2;
+                    miniGolfFlags.set(MiniGolfFlag::Flag2);
                     track_progress++;
                     break;
                 case MiniGolfState::Unk6: // Loc6DC88A
-                    mini_golf_flags &= ~MiniGolfFlag::Flag4;
-                    mini_golf_flags |= MiniGolfFlag::Flag5;
+                    miniGolfFlags.unset(MiniGolfFlag::Flag4);
+                    miniGolfFlags.set(MiniGolfFlag::Flag5);
                     track_progress++;
                     break;
                 default:

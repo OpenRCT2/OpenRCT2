@@ -2904,7 +2904,7 @@ namespace OpenRCT2::RCT1
         SetVehicleColours(dst, src);
 
         dst->mini_golf_current_animation = MiniGolfAnimation(src->MiniGolfCurrentAnimation);
-        dst->mini_golf_flags = src->MiniGolfFlags;
+        dst->miniGolfFlags.holder = src->MiniGolfFlags;
 
         dst->MoveTo({ src->x, src->y, src->z });
 

@@ -3367,7 +3367,7 @@ static Vehicle* VehicleCreateCar(
             subposition = VehicleTrackSubposition::MiniGolfStart9;
             vehicle->var_D3 = 0;
             vehicle->mini_golf_current_animation = MiniGolfAnimation::Walk;
-            vehicle->mini_golf_flags = 0;
+            vehicle->miniGolfFlags.clearAll();
         }
         if (carEntry.flags.has(CarEntryFlag::isReverserCoasterBogie))
         {

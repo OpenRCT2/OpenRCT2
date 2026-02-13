@@ -455,7 +455,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Vehicle, vertical_drop_countdown);
         COMPARE_FIELD(Vehicle, var_D3);
         COMPARE_FIELD(Vehicle, mini_golf_current_animation);
-        COMPARE_FIELD(Vehicle, mini_golf_flags);
+        COMPARE_FIELD(Vehicle, miniGolfFlags.holder);
         COMPARE_FIELD(Vehicle, ride_subtype);
         COMPARE_FIELD(Vehicle, seat_rotation);
         COMPARE_FIELD(Vehicle, target_seat_rotation);

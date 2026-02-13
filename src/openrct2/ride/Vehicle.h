@@ -60,6 +60,18 @@ static constexpr uint16_t kVehicleTrackTypeMask = 0b1111111111111100;
 
 enum class MiniGolfAnimation : uint8_t;
 
+enum MiniGolfFlag: uint8_t
+{
+    Flag0,
+    Flag1,
+    Flag2,
+    Flag3,
+    Flag4,
+    Flag5, // transitioning between hole
+};
+
+using MiniGolfFlags = FlagHolder<uint8_t, MiniGolfFlag>;
+
 struct Vehicle : EntityBase
 {
     static constexpr auto cEntityType = EntityType::vehicle;
@@ -214,7 +226,7 @@ struct Vehicle : EntityBase
     int8_t vertical_drop_countdown;
     uint8_t var_D3;
     MiniGolfAnimation mini_golf_current_animation;
-    uint8_t mini_golf_flags;
+    MiniGolfFlags miniGolfFlags;
     OpenRCT2::ObjectEntryIndex ride_subtype;
     uint8_t seat_rotation;
     uint8_t target_seat_rotation;
@@ -419,16 +431,6 @@ struct TrainReference
     Vehicle* head;
     Vehicle* tail;
 };
-
-namespace OpenRCT2::MiniGolfFlag
-{
-    constexpr uint8_t Flag0 = (1 << 0);
-    constexpr uint8_t Flag1 = (1 << 1);
-    constexpr uint8_t Flag2 = (1 << 2);
-    constexpr uint8_t Flag3 = (1 << 3);
-    constexpr uint8_t Flag4 = (1 << 4);
-    constexpr uint8_t Flag5 = (1 << 5); // transitioning between hole
-} // namespace OpenRCT2::MiniGolfFlag
 
 enum class MiniGolfState : int16_t
 {

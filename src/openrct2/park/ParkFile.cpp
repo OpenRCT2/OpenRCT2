@@ -2294,7 +2294,7 @@ namespace OpenRCT2
         cs.readWrite(entity.vertical_drop_countdown);
         cs.readWrite(entity.var_D3);
         cs.readWrite(entity.mini_golf_current_animation);
-        cs.readWrite(entity.mini_golf_flags);
+        cs.readWrite(entity.miniGolfFlags.holder);
         cs.readWrite(entity.ride_subtype);
         cs.readWrite(entity.colours.Tertiary);
         cs.readWrite(entity.seat_rotation);

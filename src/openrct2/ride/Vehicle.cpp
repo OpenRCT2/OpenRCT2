@@ -1538,7 +1538,7 @@ void Vehicle::Serialise(DataSerialiser& stream)
     stream << vertical_drop_countdown;
     stream << var_D3;
     stream << mini_golf_current_animation;
-    stream << mini_golf_flags;
+    stream << miniGolfFlags.holder;
     stream << ride_subtype;
     stream << seat_rotation;
     stream << target_seat_rotation;
