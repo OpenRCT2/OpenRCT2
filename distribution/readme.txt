@@ -147,7 +147,6 @@ libcURL          | MIT (or Modified BSD-style) licence.
 libicu           | Unicode licence.
 libpng           | libpng licence.
 libzip           | BSD 3 clause licence.
-miniaudio        | Public domain or MIT-0 licence.
 nlohmann-json    | MIT licence.
 OpenSSL          | OpenSSL licence.
 SDL2             | zlib licence.
