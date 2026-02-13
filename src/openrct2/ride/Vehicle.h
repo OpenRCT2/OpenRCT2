@@ -60,7 +60,7 @@ static constexpr uint16_t kVehicleTrackTypeMask = 0b1111111111111100;
 
 enum class MiniGolfAnimation : uint8_t;
 
-enum MiniGolfFlag: uint8_t
+enum MiniGolfFlag : uint8_t
 {
     Flag0,
     Flag1,
