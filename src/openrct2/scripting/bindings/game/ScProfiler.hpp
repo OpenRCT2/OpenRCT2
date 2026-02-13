@@ -30,19 +30,20 @@ namespace OpenRCT2::Scripting
     private:
         DukValue getData()
         {
-            const auto& data = Profiling::GetData();
+            const auto& data = Profiling::getData();
             duk_push_array(_ctx);
             duk_uarridx_t index = 0;
             for (const auto& f : data)
             {
                 DukObject obj(_ctx);
-                obj.Set("name", f->GetName());
-                obj.Set("callCount", f->GetCallCount());
-                obj.Set("minTime", f->GetMinTime());
-                obj.Set("maxTime", f->GetMaxTime());
+                obj.Set("name", f->getName());
+                obj.Set("callCount", f->getCallCount());
+                obj.Set("minTime", f->getMinTime());
+                obj.Set("maxTime", f->getMaxTime());
                 obj.Set("totalTime", f->getTotalTime());
-                obj.Set("parents", GetFunctionIndexArray(data, f->GetParents()));
-                obj.Set("children", GetFunctionIndexArray(data, f->GetChildren()));
+                obj.Set("averageTime", f->getAverageTime());
+                obj.Set("parents", GetFunctionIndexArray(data, f->getParents()));
+                obj.Set("children", GetFunctionIndexArray(data, f->getChildren()));
                 obj.Take().push();
                 duk_put_prop_index(_ctx, /* duk stack index */ -2, index);
                 index++;
@@ -71,22 +72,22 @@ namespace OpenRCT2::Scripting
 
         void start()
         {
-            Profiling::Enable();
+            Profiling::enable();
         }
 
         void stop()
         {
-            Profiling::Disable();
+            Profiling::disable();
         }
 
         void reset()
         {
-            Profiling::ResetData();
+            Profiling::resetData();
         }
 
         bool enabled_get() const
         {
-            return Profiling::IsEnabled();
+            return Profiling::isEnabled();
         }
 
     public:

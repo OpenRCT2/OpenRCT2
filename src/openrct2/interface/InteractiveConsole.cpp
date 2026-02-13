@@ -1687,42 +1687,71 @@ static void ConsoleCommandAddNewsItem([[maybe_unused]] InteractiveConsole& conso
 
 static void ConsoleCommandProfilerReset([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
-    Profiling::ResetData();
-}
-static void ConsoleCommandProfilerStart([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
-{
-    if (!Profiling::IsEnabled())
-        console.WriteLine("Started profiler");
-    Profiling::Enable();
+    Profiling::resetData();
+    console.WriteLine("Profiler data reset");
 }
 
-static void ConsoleCommandProfilerExportCSV(
-    [[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
+static void ConsoleCommandProfilerStatus([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
+{
+    const auto& data = Profiling::getData();
+    console.WriteFormatLine("Profiler status: %s", Profiling::isEnabled() ? "ENABLED" : "DISABLED");
+    console.WriteFormatLine("Registered functions: %zu", data.size());
+
+    if (!data.empty())
+    {
+        uint64_t totalCalls = 0;
+        double totalTimeUs = 0.0;
+        size_t functionsWithData = 0;
+
+        for (const auto& f : data)
+        {
+            auto calls = f->getCallCount();
+            totalCalls += calls;
+            totalTimeUs += f->getTotalTime();
+            if (calls > 0)
+                functionsWithData++;
+        }
+
+        console.WriteFormatLine("Functions with data: %zu / %zu", functionsWithData, data.size());
+        console.WriteFormatLine("Total recorded calls: %llu", static_cast<unsigned long long>(totalCalls));
+        console.WriteFormatLine("Total recorded time: %.3f ms", totalTimeUs / 1000.0);
+    }
+}
+
+static void ConsoleCommandProfilerStart([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
+{
+    if (!Profiling::isEnabled())
+        console.WriteLine("Started profiler");
+    Profiling::enable();
+}
+
+static void ConsoleCommandProfilerExport([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
     if (argv.empty())
     {
         console.WriteLineError("Missing argument: <file path>");
+        return;
     }
 
-    const auto& csvFilePath = argv[0];
-    if (!Profiling::ExportCSV(csvFilePath))
+    const auto& filePath = argv[0];
+    if (!Profiling::exportData(filePath))
     {
-        console.WriteFormatLine("Unable to export CSV file to %s", csvFilePath.c_str());
+        console.WriteFormatLine("Unable to export profiler data to %s", filePath.c_str());
+        return;
     }
 
-    console.WriteFormatLine("Wrote file CSV file: \"%s\"", csvFilePath.c_str());
+    console.WriteFormatLine("Wrote profiler data: \"%s\"", filePath.c_str());
 }
 
 static void ConsoleCommandProfilerStop([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
-    if (Profiling::IsEnabled())
+    if (Profiling::isEnabled())
         console.WriteLine("Stopped profiler");
-    Profiling::Disable();
+    Profiling::disable();
 
-    // Export to CSV if argument is provided.
     if (!argv.empty())
     {
-        return ConsoleCommandProfilerExportCSV(console, argv);
+        return ConsoleCommandProfilerExport(console, argv);
     }
 }
 
@@ -1849,9 +1878,11 @@ static constexpr ConsoleCommand console_command_table[] = {
       "ConsoleCommandMpDesync [desync_type, 0 = Random t-shirt color on random guest, 1 = Remove random guest ]" },
     { "profiler_reset", ConsoleCommandProfilerReset, "Resets the profiler data.", "profiler_reset" },
     { "profiler_start", ConsoleCommandProfilerStart, "Starts the profiler.", "profiler_start" },
-    { "profiler_stop", ConsoleCommandProfilerStop, "Stops the profiler.", "profiler_stop [<output file>]" },
-    { "profiler_exportcsv", ConsoleCommandProfilerExportCSV, "Exports the current profiler data.",
-      "profiler_exportcsv <output file>" },
+    { "profiler_status", ConsoleCommandProfilerStatus, "Shows profiler status and statistics.", "profiler_status" },
+    { "profiler_stop", ConsoleCommandProfilerStop, "Stops the profiler and optionally exports data.",
+      "profiler_stop [<file.csv|file.json>]" },
+    { "profiler_export", ConsoleCommandProfilerExport, "Exports profiler data (format from extension, default CSV).",
+      "profiler_export <file.csv|file.json>" },
 };
 
 static void ConsoleCommandWindows(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
