@@ -3425,7 +3425,7 @@ static Vehicle* VehicleCreateCar(
         {
             vehicle->track_progress = 15;
         }
-        vehicle->flags = {VehicleFlag::collisionDisabled};
+        vehicle->flags = { VehicleFlag::collisionDisabled };
         if (carEntry.flags.has(CarEntryFlag::hasInvertedSpriteSet))
         {
             if (trackElement->IsInverted())
