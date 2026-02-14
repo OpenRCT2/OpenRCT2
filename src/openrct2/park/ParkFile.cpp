@@ -176,6 +176,10 @@ namespace OpenRCT2
             {
                 UpdateTrackElementsRideType();
             }
+            if (os.getHeader().targetVersion < kVehicleLegacyBehaviour)
+            {
+                UpdateVehiclePhysics(gameState);
+            }
 
             // Initial cash will eventually be removed
             gameState.scenarioOptions.initialCash = gameState.park.cash;
@@ -2321,11 +2325,7 @@ namespace OpenRCT2
         {
             cs.readWrite(entity.blockBrakeSpeed);
         }
-        if (cs.getMode() == OrcaStream::Mode::reading && os.getHeader().targetVersion < kVehicleLegacyBehaviour)
-        {
-            entity.brakeBoosterMode = ();
-        }
-        else
+        if (os.getHeader().targetVersion >= kVehicleLegacyBehaviour)
         {
             cs.readWrite(entity.brakeBoosterMode);
         }

@@ -216,6 +216,8 @@ namespace OpenRCT2::RCT1
             CheatsReset();
             ClearRestrictedScenery();
             RestrictAllMiscScenery();
+
+            UpdateVehiclePhysics(gameState);
         }
 
         bool PopulateIndexEntry(ScenarioIndexEntry* dst) override

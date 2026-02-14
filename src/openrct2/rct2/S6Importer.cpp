@@ -603,6 +603,8 @@ namespace OpenRCT2::RCT2
 
             CheatsReset();
             ClearRestrictedScenery();
+
+            UpdateVehiclePhysics(gameState);
         }
 
         void AddDefaultEntries()

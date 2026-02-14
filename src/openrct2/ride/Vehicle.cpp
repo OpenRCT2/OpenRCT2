@@ -1544,6 +1544,7 @@ void Vehicle::Serialise(DataSerialiser& stream)
     stream << target_seat_rotation;
     stream << BoatLocation;
     stream << blockBrakeSpeed;
+    stream << brakeBoosterMode;
 }
 
 bool Vehicle::IsOnCoveredTrack() const
