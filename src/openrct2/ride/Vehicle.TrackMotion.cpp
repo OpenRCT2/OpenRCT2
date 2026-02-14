@@ -48,6 +48,7 @@ constexpr uint8_t kTrackSpeedShiftAmount = 16;
 constexpr uint8_t kBoosterAccelerationShiftAmount = 16;
 constexpr int16_t kVehicleMaxSpinSpeedWaterRide = 512;
 constexpr int16_t kVehicleMinSpinSpeedWaterRide = -kVehicleMaxSpinSpeedWaterRide;
+constexpr uint8_t kLSMBrakeTargetSpeed = 8;
 
 /**
  *
@@ -529,7 +530,7 @@ uint8_t Vehicle::ChooseBrakeSpeed() const
         else
             return std::max<uint8_t>(brakeSpeed, blockBrakeSpeed);
     }
-    return brake_speed;
+    return brakeSpeed;
 }
 
 /**
@@ -799,9 +800,9 @@ bool Vehicle::UpdateTrackMotionForwards(const CarEntry* carEntry, const Ride& cu
                 && curRide.breakdownReasonPending == BREAKDOWN_BRAKES_FAILURE;
             if (!hasBrakesFailure || curRide.mechanicStatus == MechanicStatus::hasFixedStationBrakes)
             {
-                auto brakeSpeed = ChooseBrakeSpeed() << kTrackSpeedShiftAmount;
+                auto targetSpeed = ChooseBrakeSpeed() << kTrackSpeedShiftAmount;
 
-                if ((brakeSpeed) < _vehicleVelocityF64E08)
+                if ((targetSpeed) < _vehicleVelocityF64E08)
                 {
                     acceleration = -_vehicleVelocityF64E08 * 16;
                 }
@@ -817,8 +818,8 @@ bool Vehicle::UpdateTrackMotionForwards(const CarEntry* carEntry, const Ride& cu
         }
         else if (TrackTypeIsBooster(trackType))
         {
-            auto boosterSpeed = GetUnifiedBoosterSpeed(curRide.type, brakeSpeed) << kTrackSpeedShiftAmount;
-            if (boosterSpeed > _vehicleVelocityF64E08)
+            auto targetSpeed = GetUnifiedBoosterSpeed(curRide.type, brakeSpeed) << kTrackSpeedShiftAmount;
+            if (targetSpeed > _vehicleVelocityF64E08)
             {
                 acceleration = GetRideTypeDescriptor(curRide.type).LegacyBoosterSettings.boosterPower
                     << kBoosterAccelerationShiftAmount;
@@ -1173,19 +1174,17 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
         auto trackType = GetTrackType();
         if (trackType == TrackElemType::flat && curRide.getRideTypeDescriptor().flags.has(RtdFlag::hasLsmBehaviourOnFlat))
         {
-            int32_t unkVelocity = _vehicleVelocityF64E08;
-            if (unkVelocity < -524288)
+            if (-(kLSMBrakeTargetSpeed << kTrackSpeedShiftAmount) > _vehicleVelocityF64E08)
             {
-                unkVelocity = abs(unkVelocity);
-                acceleration = unkVelocity * 2;
+                acceleration = _vehicleVelocityF64E08 * -2;
             }
         }
 
         if (TrackTypeIsBrakes(trackType))
         {
-            auto brakeSpeed = ChooseBrakeSpeed();
+            auto targetSpeed = ChooseBrakeSpeed();
 
-            if (-(brakeSpeed << kTrackSpeedShiftAmount) > _vehicleVelocityF64E08)
+            if (-(targetSpeed << kTrackSpeedShiftAmount) > _vehicleVelocityF64E08)
             {
                 acceleration = _vehicleVelocityF64E08 * -16;
             }
