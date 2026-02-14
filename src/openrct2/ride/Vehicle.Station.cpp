@@ -1086,7 +1086,7 @@ void Vehicle::UpdateDeparting()
         case RideMode::upwardLaunch:
             if ((curRide->launchSpeed << 16) > velocity)
             {
-                acceleration = curRide->launchSpeed << rtd.LegacyBoosterSettings.AccelerationFactor;
+                acceleration = curRide->launchSpeed << rtd.LegacyBoosterSettings.poweredLaunchModeFactor;
             }
             break;
         case RideMode::downwardLaunch:
