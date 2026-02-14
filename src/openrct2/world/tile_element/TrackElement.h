@@ -14,6 +14,7 @@
 
 using ride_type_t = uint16_t;
 enum class RideColourScheme : uint8_t;
+enum class BrakeBoosterMode : uint8_t;
 
 namespace OpenRCT2
 {
@@ -47,6 +48,10 @@ namespace OpenRCT2
     constexpr int32_t kLandEdgeDoorFrameEnd = 6;
     constexpr int32_t kLandEdgeDoorFrameCount = 8;
 
+    constexpr uint16_t kRideIndexMask = 0x03FF;
+    constexpr uint16_t kBrakeBoosterModeMask = 0xF000;
+    constexpr uint8_t kBrakeBoosterModeShift = 4;
+
 #pragma pack(push, 1)
 
     struct TrackElement : TileElementBase
@@ -78,7 +83,11 @@ namespace OpenRCT2
             } UMaze;
         };
         uint8_t Flags2;
-        RideId RideIndex;
+        union
+        {
+            RideId RideIndex;
+            BrakeBoosterMode brakeBoosterMode;
+        };
         ride_type_t RideType;
 
     public:
@@ -147,6 +156,9 @@ namespace OpenRCT2
 
         bool IsStation() const;
         bool IsBlockStart() const;
+
+        BrakeBoosterMode GetBoosterMode() const;
+        void SetBoosterMode(BrakeBoosterMode newBoosterMode);
     };
     static_assert(sizeof(TrackElement) == kTileElementSize);
 

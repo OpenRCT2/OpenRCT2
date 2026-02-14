@@ -10,6 +10,7 @@
 #include "TrackElement.h"
 
 #include "../../GameState.h"
+#include "../../ride/BrakeBoosterMode.h"
 #include "../../ride/RideData.h"
 #include "../../ride/Track.h"
 
@@ -185,12 +186,12 @@ namespace OpenRCT2
 
     RideId TrackElement::GetRideIndex() const
     {
-        return RideIndex;
+        return RideId::FromUnderlying(RideIndex.ToUnderlying() & kRideIndexMask);
     }
 
     void TrackElement::SetRideIndex(RideId newRideIndex)
     {
-        RideIndex = newRideIndex;
+        RideIndex = RideId::FromUnderlying((RideIndex.ToUnderlying() & ~kRideIndexMask) | newRideIndex.ToUnderlying());
     }
 
     uint8_t TrackElement::GetColourScheme() const
@@ -301,5 +302,16 @@ namespace OpenRCT2
         Flags2 &= ~TRACK_ELEMENT_FLAGS2_HIGHLIGHT;
         if (on)
             Flags2 |= TRACK_ELEMENT_FLAGS2_HIGHLIGHT;
+    }
+
+    BrakeBoosterMode TrackElement::GetBoosterMode() const
+    {
+        return static_cast<BrakeBoosterMode>(static_cast<uint16_t>(brakeBoosterMode) >> kBrakeBoosterModeShift);
+    }
+
+    void TrackElement::SetBoosterMode(BrakeBoosterMode newBoosterMode)
+    {
+        brakeBoosterMode = static_cast<BrakeBoosterMode>(
+            (static_cast<uint16_t>(brakeBoosterMode) & ~kBrakeBoosterModeMask) | static_cast<uint16_t>(newBoosterMode));
     }
 } // namespace OpenRCT2

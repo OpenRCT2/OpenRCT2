@@ -31,6 +31,7 @@
 #include "../world/tile_element/SmallSceneryElement.h"
 #include "../world/tile_element/TileElement.h"
 #include "../world/tile_element/TrackElement.h"
+#include "BrakeBoosterMode.h"
 #include "Ride.h"
 #include "RideData.h"
 #include "RideRatings.h"

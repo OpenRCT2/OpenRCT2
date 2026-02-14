@@ -20,6 +20,7 @@
 #include "../world/MapAnimation.h"
 #include "../world/tile_element/TileElement.h"
 #include "../world/tile_element/TrackElement.h"
+#include "BrakeBoosterMode.h"
 #include "Ride.h"
 #include "RideData.h"
 #include "Track.h"

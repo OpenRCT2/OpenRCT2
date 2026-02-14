@@ -37,6 +37,8 @@ namespace OpenRCT2
 } // namespace OpenRCT2
 
 struct ResultWithMessage;
+struct RideTypeDescriptor;
+enum class BrakeBoosterMode : uint8_t;
 
 enum class TrackRoll : uint8_t
 {

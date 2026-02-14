@@ -28,6 +28,27 @@ struct CarEntry;
 class DataSerialiser;
 struct PaintSession;
 
+enum class DirectionalBoosterMode : uint8_t
+{
+    none,
+    brake,
+    booster,
+};
+
+struct SpeedPowerMode
+{
+    union
+    {
+        struct
+        {
+            uint16_t speed;
+            uint8_t power;
+            DirectionalBoosterMode mode;
+        };
+        uint32_t holder;
+    };
+};
+
 struct GForces
 {
     int32_t verticalG{};
