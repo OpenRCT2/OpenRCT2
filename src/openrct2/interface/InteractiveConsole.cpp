@@ -30,6 +30,7 @@
 #include "../actions/ride/RideSetSettingAction.h"
 #include "../config/Config.h"
 #include "../core/Console.hpp"
+#include "../core/EnumMap.hpp"
 #include "../core/EnumUtils.hpp"
 #include "../core/Guard.hpp"
 #include "../core/Path.hpp"
@@ -94,6 +95,35 @@ static void ConsoleWriteAllCommands(InteractiveConsole& console);
 static void ConsoleCommandVariables(InteractiveConsole& console, const arguments_t& argv);
 static void ConsoleCommandWindows(InteractiveConsole& console, const arguments_t& argv);
 static void ConsoleCommandHelp(InteractiveConsole& console, const arguments_t& argv);
+
+static EnumMap<EntityType> entityTypeNameMap = {
+    { "vehicle", EntityType::vehicle },
+    { "guest", EntityType::guest },
+    { "staff", EntityType::staff },
+    { "steamParticle", EntityType::steamParticle },
+    { "moneyEffect", EntityType::moneyEffect },
+    { "crashedVehicleParticle", EntityType::crashedVehicleParticle },
+    { "explosion_cloud", EntityType::explosionCloud },
+    { "crash_splash", EntityType::crashSplash },
+    { "explosionFlare", EntityType::explosionFlare },
+    { "balloon", EntityType::balloon },
+    { "duck", EntityType::duck },
+    { "jumpingFountain", EntityType::jumpingFountain },
+    { "litter", EntityType::litter },
+};
+static_assert(static_cast<uint8_t>(EntityType::count) == 13, "Add new entity type to entityTypeNameMap");
+
+inline std::string_view nameFromEntityType(EntityType type)
+{
+    for (auto& i : entityTypeNameMap)
+    {
+        if (i.second == type)
+        {
+            return i.first;
+        }
+    }
+    return "null";
+}
 
 static bool InvalidArguments(bool* invalid, bool arguments);
 
@@ -1742,6 +1772,140 @@ static void ConsoleSpawnBalloon(InteractiveConsole& console, const arguments_t& 
     Balloon::Create({ x, y, z }, colour, false);
 }
 
+static EntityType GetEntityTypeFromString(std::string input)
+{
+    transform(input.begin(), input.end(), input.begin(), ::tolower);
+
+    auto result = entityTypeNameMap.find(input);
+    if (result != entityTypeNameMap.end())
+        return result->second;
+    return EntityType::null;
+}
+
+static void ConsoleCommandGoToEntity(InteractiveConsole& console, const arguments_t& argv)
+{
+    if (argv.size() < 1)
+    {
+        console.WriteLineWarning("Too few arguments");
+        console.WriteLine("get_entity <entity ID> [entity type] [quiet = suppress camera");
+        return;
+    }
+
+    auto& gameState = getGameState();
+    bool quiet = false;
+
+    auto entityId = EntityId::FromUnderlying(atoi(argv[0].c_str()));
+    if (entityId.ToUnderlying() > kMaxEntities)
+    {
+        console.WriteFormatLine("Entity number higher than max entities. Highest index %d", kMaxEntities - 1);
+        return;
+    }
+    EntityBase* entity;
+
+    if (argv.size() >= 2)
+    {
+        if (argv[1] != "qiuet")
+        {
+            auto entityType = GetEntityTypeFromString(argv[1]);
+            if (entityType == EntityType::null)
+            {
+                console.WriteLine("Invalid entity type. Entity types are:");
+                for (auto entityNameTuple : entityTypeNameMap)
+                {
+                    std::string name {entityNameTuple.first};
+                    console.WriteFormatLine("    %s", name.c_str());
+                }
+                return;
+            }
+            auto entityList = gameState.entities.GetEntityList(entityType);
+            if (entityId.ToUnderlying() >= entityList.size())
+            {
+                console.WriteFormatLine("Entity number out of bounds for type. Highest index %d", entityList.size() - 1);
+                return;
+            }
+            auto front = entityList.begin();
+            std::advance(front, entityId.ToUnderlying());
+            entityId = *front;
+            entity = gameState.entities.TryGetEntity(entityId);
+            quiet = argv.size() >= 3;
+        }
+        else
+        {
+            quiet = true;
+        }
+    }
+    entity = gameState.entities.TryGetEntity(entityId);
+
+    if (entity == nullptr || entity->Type == EntityType::null)
+    {
+        console.WriteFormatLine("Could not find entity with Id %d", entityId);
+        return;
+    }
+    CoordsXYZ entityLocation = entity->GetLocation();
+    CoordsXYZ majorGrid = { entityLocation.x / 32, entityLocation.y / 32, entityLocation.z / 8 };
+    CoordsXYZ minorGrid = { entityLocation.x % 32, entityLocation.y % 32, entityLocation.z % 8 };
+
+    char vehicleExtraInfo[128] = "";
+    if (entity->Type == EntityType::vehicle)
+    {
+        auto* vehicle = entity->As<Vehicle>();
+        auto* ride = vehicle->GetRide();
+        // train and car numbers are 1-index ot match UI
+        uint8_t trainNumber = 1;
+        uint16_t carNumber = 1;
+        EntityId trainHeadId = vehicle->GetHead()->Id;
+        for (const EntityId& id : ride->vehicles)
+        {
+            if (id == trainHeadId)
+            {
+                break;
+            }
+            trainNumber++;
+        }
+        EntityId currentVehicleId = trainHeadId;
+        while (currentVehicleId != EntityId::GetNull())
+        {
+            if (currentVehicleId == entity->Id)
+            {
+                snprintf(
+                    vehicleExtraInfo, sizeof(vehicleExtraInfo), "; Ride name: %s; Train: %d; Car: %d", ride->customName.c_str(),
+                    trainNumber, carNumber);
+                break;
+            }
+            vehicle = gameState.entities.TryGetEntity<Vehicle>(currentVehicleId);
+            if (vehicle == nullptr)
+            {
+                break;
+            }
+            currentVehicleId = vehicle->next_vehicle_on_train;
+            carNumber++;
+        }
+    }
+    std::string entityTypeName{ nameFromEntityType(entity->Type) };
+    console.WriteFormatLine(
+        "Found entity: Type: %s; Id: %d; Orientation: %d; Location: (%02d.%02d, %02d.%02d, %02d.%02d)%s",
+        entityTypeName.c_str(), entity->Id.ToUnderlying(), entity->Orientation, majorGrid.x, minorGrid.x, majorGrid.y,
+        minorGrid.y, majorGrid.z, minorGrid.z, vehicleExtraInfo);
+    if (!quiet)
+    {
+        WindowScrollToLocation(*WindowGetMain(), entityLocation);
+        if (entity->Type == EntityType::vehicle)
+        {
+
+            auto intent = Intent(WindowDetail::vehicle);
+            intent.PutExtra(INTENT_EXTRA_VEHICLE, entity);
+            ContextOpenIntent(&intent);
+
+        }
+        if (entity->Type == EntityType::guest || entity->Type == EntityType::staff)
+        {
+            auto intent = Intent(WindowClass::peep);
+            intent.PutExtra(INTENT_EXTRA_PEEP, entity);
+            ContextOpenIntent(&intent);
+        }
+    }
+}
+
 using console_command_func = void (*)(InteractiveConsole& console, const arguments_t& argv);
 struct ConsoleCommand
 {
@@ -1852,6 +2016,8 @@ static constexpr ConsoleCommand console_command_table[] = {
     { "profiler_stop", ConsoleCommandProfilerStop, "Stops the profiler.", "profiler_stop [<output file>]" },
     { "profiler_exportcsv", ConsoleCommandProfilerExportCSV, "Exports the current profiler data.",
       "profiler_exportcsv <output file>" },
+    { "find_entity", ConsoleCommandGoToEntity, "Finds an entity by index, or type and index.",
+      "find_entity <entity ID> [entity type] [quiet = suppress camera]" },
 };
 
 static void ConsoleCommandWindows(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
