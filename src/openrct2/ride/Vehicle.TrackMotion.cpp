@@ -748,6 +748,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(
     }
     SetTrackDirection(location.direction);
     SetTrackType(trackType);
+    brakeBoosterMode = brakeBoosterModeFromTrackType(trackType, curRide.getRideTypeDescriptor());
     PopulateBrakeSpeed(TrackLocation, *tileElement->AsTrack());
     if (flags.has(VehicleFlag::stoppedOnHoldingBrake) && vertical_drop_countdown <= 0)
     {
@@ -1151,6 +1152,7 @@ bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(TrackElemType trackType, con
     direction &= 3;
     SetTrackType(trackType);
     SetTrackDirection(direction);
+    brakeBoosterMode = brakeBoosterModeFromTrackType(trackType, curRide.getRideTypeDescriptor());
     PopulateBrakeSpeed(TrackLocation, *tileElement->AsTrack());
     if (flags.has(VehicleFlag::stoppedOnHoldingBrake) && vertical_drop_countdown <= 0)
     {
