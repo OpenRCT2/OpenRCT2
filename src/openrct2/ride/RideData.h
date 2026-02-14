@@ -215,19 +215,15 @@ struct RideTrackSpeedSettings
 
 struct RideBoosterSettings
 {
+    // power stat for powered lift and reverse-freefall launch
     uint8_t PoweredLiftAcceleration = 0;
+    // power stat for booster track elements
     uint8_t BoosterAcceleration = 0;
-    uint8_t AccelerationFactor = 12; // the amount to right-shift the launch speed for powered launch from a station
-};
-
-struct RideLegacyBoosterSettings
-// These values that must be kept for backwards compatibility. New ride types should set the acceleration values equal to
-// BoosterSettings' and leave BoosterSpeedFactor at default.
-{
-    uint8_t PoweredLiftAcceleration = 0; // PoweredLiftAcceleration value before unified-speed update
-    uint8_t BoosterAcceleration = 0;     // BoosterAcceleration value before unified-speed update
-    int8_t BoosterSpeedFactor = 2; // Multiplier representing how much to multiply booster speed by, scaled to 2x the final
-                                   // multiplier.
+    // the amount to right-shift the launch speed for powered launch from a station
+    uint8_t AccelerationFactor = 12;
+    // Multiplier representing how much to multiply booster speed by, scaled to 2x the final multiplier. Leave at default for
+    // all new work.
+    int8_t BoosterSpeedFactor = 2;
 };
 
 struct RatingsModifier
@@ -506,7 +502,7 @@ struct RideTypeDescriptor
     RideOperatingSettings OperatingSettings{};
     RideTrackSpeedSettings TrackSpeedSettings{};
     RideBoosterSettings BoosterSettings{};
-    RideLegacyBoosterSettings LegacyBoosterSettings{};
+    RideBoosterSettings LegacyBoosterSettings{};
     RideNaming Naming{};
     RideNameConvention NameConvention{};
     uint8_t AvailableBreakdowns{};
