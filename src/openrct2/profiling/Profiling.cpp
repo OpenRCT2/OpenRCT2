@@ -84,6 +84,44 @@ namespace OpenRCT2::Profiling
             _callStack.push_back({ parent, &func, entryTime });
         }
 
+        bool FunctionInternal::tryAddParent(FunctionInternal* parent)
+        {
+            std::scoped_lock lock(Mutex);
+            if (std::find(Parents.begin(), Parents.end(), parent) == Parents.end())
+            {
+                Parents.push_back(parent);
+                return true;
+            }
+            return false;
+        }
+
+        bool FunctionInternal::tryAddChild(FunctionInternal* child)
+        {
+            std::scoped_lock lock(Mutex);
+            if (std::find(Children.begin(), Children.end(), child) == Children.end())
+            {
+                Children.push_back(child);
+                return true;
+            }
+            return false;
+        }
+
+        std::vector<double> FunctionInternal::getTimeSamples() const
+        {
+            const size_t totalSamples = SampleIndex.load(std::memory_order_relaxed);
+            const size_t count = std::min(totalSamples, MaxSamplesSize);
+            std::vector<double> result;
+            result.reserve(count);
+
+            const size_t startIdx = (totalSamples > MaxSamplesSize) ? (totalSamples % MaxSamplesSize) : 0;
+            for (size_t i = 0; i < count; ++i)
+            {
+                const size_t idx = (startIdx + i) % MaxSamplesSize;
+                result.push_back(static_cast<double>(Samples[idx].load(std::memory_order_relaxed)) / 1000.0);
+            }
+            return result;
+        }
+
         void functionExit(FunctionInternal& func)
         {
             const auto exitTime = Clock::now();
@@ -168,17 +206,17 @@ namespace OpenRCT2::Profiling
                 return false;
 
             out << std::setprecision(12);
-            out << "function_name;calls;min_microseconds;max_microseconds;average_microseconds;total_microseconds\n";
+            out << "function_name,calls,min_microseconds,max_microseconds,average_microseconds,total_microseconds\n";
 
             std::scoped_lock lock(Detail::getRegistryMutex());
 
             for (const auto* func : Detail::getRegistry())
             {
-                out << "\"" << func->getName() << "\";";
-                out << func->getCallCount() << ";";
-                out << func->getMinTime() << ";";
-                out << func->getMaxTime() << ";";
-                out << func->getAverageTime() << ";";
+                out << "\"" << func->getName() << "\",";
+                out << func->getCallCount() << ",";
+                out << func->getMinTime() << ",";
+                out << func->getMaxTime() << ",";
+                out << func->getAverageTime() << ",";
                 out << func->getTotalTime() << "\n";
             }
 

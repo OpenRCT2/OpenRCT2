@@ -10,7 +10,6 @@
 
 #include "ProfilingMacros.hpp"
 
-#include <algorithm>
 #include <array>
 #include <atomic>
 #include <cstdint>
@@ -106,48 +105,15 @@ namespace OpenRCT2::Profiling
                 }
             }
 
-            bool tryAddParent(FunctionInternal* parent)
-            {
-                std::scoped_lock lock(Mutex);
-                if (std::find(Parents.begin(), Parents.end(), parent) == Parents.end())
-                {
-                    Parents.push_back(parent);
-                    return true;
-                }
-                return false;
-            }
-
-            bool tryAddChild(FunctionInternal* child)
-            {
-                std::scoped_lock lock(Mutex);
-                if (std::find(Children.begin(), Children.end(), child) == Children.end())
-                {
-                    Children.push_back(child);
-                    return true;
-                }
-                return false;
-            }
+            bool tryAddParent(FunctionInternal* parent);
+            bool tryAddChild(FunctionInternal* child);
 
             uint64_t getCallCount() const noexcept override
             {
                 return CallCount.load(std::memory_order_relaxed);
             }
 
-            std::vector<double> getTimeSamples() const override
-            {
-                const size_t totalSamples = SampleIndex.load(std::memory_order_relaxed);
-                const size_t count = std::min(totalSamples, MaxSamplesSize);
-                std::vector<double> result;
-                result.reserve(count);
-
-                const size_t startIdx = (totalSamples > MaxSamplesSize) ? (totalSamples % MaxSamplesSize) : 0;
-                for (size_t i = 0; i < count; ++i)
-                {
-                    const size_t idx = (startIdx + i) % MaxSamplesSize;
-                    result.push_back(static_cast<double>(Samples[idx].load(std::memory_order_relaxed)) / 1000.0);
-                }
-                return result;
-            }
+            std::vector<double> getTimeSamples() const override;
 
             double getTotalTime() const override
             {
