@@ -2915,7 +2915,7 @@ namespace OpenRCT2::RCT1
         {
             dst->flags.set(VehicleFlag::crashed);
         }
-        dst->BlockBrakeSpeed = kRCT2DefaultBlockBrakeSpeed;
+        dst->blockBrakeSpeed = kRCT2DefaultBlockBrakeSpeed;
 
         if (VehicleTypeIsReversed(rct1Ride.vehicleType))
         {

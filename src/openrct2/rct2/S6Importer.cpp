@@ -2080,7 +2080,7 @@ namespace OpenRCT2::RCT2
         {
             dst->flags.set(VehicleFlag::crashed);
         }
-        dst->BlockBrakeSpeed = kRCT2DefaultBlockBrakeSpeed;
+        dst->blockBrakeSpeed = kRCT2DefaultBlockBrakeSpeed;
     }
 
     static uint32_t AdjustScenarioToCurrentTicks(const S6Data& s6, uint32_t tick)

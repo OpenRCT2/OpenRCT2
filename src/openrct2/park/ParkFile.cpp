@@ -2314,11 +2314,11 @@ namespace OpenRCT2
         }
         if (cs.getMode() == OrcaStream::Mode::reading && os.getHeader().targetVersion < kBlockBrakeImprovementsVersion)
         {
-            entity.BlockBrakeSpeed = kRCT2DefaultBlockBrakeSpeed;
+            entity.blockBrakeSpeed = kRCT2DefaultBlockBrakeSpeed;
         }
         else
         {
-            cs.readWrite(entity.BlockBrakeSpeed);
+            cs.readWrite(entity.blockBrakeSpeed);
         }
     }
 
