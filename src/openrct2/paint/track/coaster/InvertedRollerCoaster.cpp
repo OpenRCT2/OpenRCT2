@@ -11796,7 +11796,7 @@ static void InvertedRCTrackRightEighthDiveLoopUpToOrthogonal(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BM_INVERT_DIVE_LOOP + 25)),
-                        { -16, -16, height + kInvertedSpriteOffset }, { { 0, -1, height + 33 }, { 1, 1, 64 } });
+                        { -16, -16, height + kInvertedSpriteOffset }, { { 0, -1, height + 33 }, { 1, 32, 64 } });
 
                     break;
                 case 3:
@@ -12086,7 +12086,7 @@ static void InvertedRCTrackLeftMediumHalfLoopUp(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_MEDIUM_HALF_LOOP + 14),
-                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 20, height + 32 + 10 }, { 30, 10, 2 } });
+                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 4, height + 32 + 10 }, { 30, 24, 2 } });
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::centre, 15, height + kInvertedSpriteOffset,
                         session.SupportColours);
@@ -13211,7 +13211,7 @@ static void InvertedRCTrackLeftBarrelRollUpToDown(
                         { 0, 0, height + kInvertedSpriteOffset },
                         { { 0, 6, height + +kInvertedSpriteOffset + 2 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::centre, 0, height + kInvertedSpriteOffset + 2,
+                        session, supportType.metal, MetalSupportPlace::centre, 0, height + kInvertedSpriteOffset + 3,
                         session.SupportColours);
 
                     break;
@@ -13225,7 +13225,7 @@ static void InvertedRCTrackLeftBarrelRollUpToDown(
                         { 0, 0, height + kInvertedSpriteOffset },
                         { { 0, 6, height + +kInvertedSpriteOffset + 2 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::centre, 0, height + kInvertedSpriteOffset + 2,
+                        session, supportType.metal, MetalSupportPlace::centre, 0, height + kInvertedSpriteOffset + 3,
                         session.SupportColours);
 
                     break;
@@ -13376,7 +13376,7 @@ static void InvertedRCTrackRightBarrelRollUpToDown(
                         { 0, 0, height + kInvertedSpriteOffset },
                         { { 0, 6, height + kInvertedSpriteOffset + 2 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::centre, 0, height + kInvertedSpriteOffset + 2,
+                        session, supportType.metal, MetalSupportPlace::centre, 0, height + kInvertedSpriteOffset + 3,
                         session.SupportColours);
                     break;
                 case 1:
@@ -13389,7 +13389,7 @@ static void InvertedRCTrackRightBarrelRollUpToDown(
                         { 0, 0, height + kInvertedSpriteOffset },
                         { { 0, 6, height + kInvertedSpriteOffset + 2 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::centre, 0, height + kInvertedSpriteOffset + 2,
+                        session, supportType.metal, MetalSupportPlace::centre, 0, height + kInvertedSpriteOffset + 3,
                         session.SupportColours);
                     break;
                 case 2:
@@ -13530,7 +13530,7 @@ static void InvertedRCTrackLeftLargeCorkscrewUp(
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BM_INVERT_LARGE_CORKSCREW + 16)),
-                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 6, height + 40 }, { 32, 20, 3 } });
+                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 6, height + 50 }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 50, session.SupportColours);
                     break;
@@ -13559,7 +13559,7 @@ static void InvertedRCTrackLeftLargeCorkscrewUp(
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BM_INVERT_LARGE_CORKSCREW + 17)),
-                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 28, height + 43 }, { 30, 2, 32 } });
+                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 40, height + 43 }, { 30, 1, 30 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -13719,7 +13719,7 @@ static void InvertedRCTrackRightLargeCorkscrewUp(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BM_INVERT_LARGE_CORKSCREW + 21)),
-                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 6, height + 40 }, { 32, 20, 3 } });
+                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 6, height + 50 }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 50, session.SupportColours);
                     break;
