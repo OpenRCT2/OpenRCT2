@@ -259,6 +259,10 @@ void AudioMixer::MixChannel(ISDLAudioChannel* channel, uint8_t* data, size_t len
 size_t AudioMixer::ApplyResample(
     ISDLAudioChannel* channel, const void* srcBuffer, int32_t srcSamples, int32_t dstSamples, int32_t inRate, int32_t outRate)
 {
+    // Prevent buffer underread in inner loop
+    if (srcSamples < 2)
+        return 0;
+
     const int channels = _outputFormat.channels;
     const int bytesPerFrame = channels * sizeof(int16_t);
 
@@ -275,7 +279,10 @@ size_t AudioMixer::ApplyResample(
 
         // Clamp to avoid reading past end
         if (index >= srcSamples - 1)
+        {
             index = srcSamples - 2;
+            frac = 1.0;
+        }
 
         for (int ch = 0; ch < channels; ++ch)
         {
