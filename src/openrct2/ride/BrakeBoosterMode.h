@@ -25,6 +25,5 @@ enum class BrakeBoosterMode : uint8_t
 
 using TrackPieceBehaviourPair = std::tuple<SpeedPowerMode, SpeedPowerMode>;
 
-BrakeBoosterMode BrakeBoosterModeFromTrackType(OpenRCT2::TrackElemType trackType, const RideTypeDescriptor& rtd);
-
-TrackPieceBehaviourPair SpeedPowerModeFromBoosterMode(uint8_t trackSpeed, BrakeBoosterMode mode, const RideTypeDescriptor& rtd);
+BrakeBoosterMode brakeBoosterModeFromTrackType(OpenRCT2::TrackElemType trackType, const RideTypeDescriptor& rtd);
+TrackPieceBehaviourPair trackBehaviourPairFromBrakeBoosterMode(uint8_t trackSpeed, BrakeBoosterMode mode, const RideTypeDescriptor& rtd);

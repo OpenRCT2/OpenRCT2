@@ -19,7 +19,7 @@ constexpr uint16_t kLSMLaunchBrakeSpeed = 8;
 constexpr uint16_t kLSMLaunchBrakePower = 2;
 constexpr uint16_t kStandardBrakePower = 16;
 
-BrakeBoosterMode BrakeBoosterModeFromTrackType(const TrackElemType trackType, const RideTypeDescriptor& rtd)
+BrakeBoosterMode brakeBoosterModeFromTrackType(const TrackElemType trackType, const RideTypeDescriptor& rtd)
 {
     if (TrackTypeIsBooster(trackType))
     {
@@ -40,7 +40,7 @@ BrakeBoosterMode BrakeBoosterModeFromTrackType(const TrackElemType trackType, co
     return BrakeBoosterMode::none;
 }
 
-TrackPieceBehaviourPair SpeedPowerModeFromBoosterMode(uint8_t trackSpeed, BrakeBoosterMode mode, const RideTypeDescriptor& rtd)
+TrackPieceBehaviourPair trackBehaviourPairFromBrakeBoosterMode(uint8_t trackSpeed, BrakeBoosterMode mode, const RideTypeDescriptor& rtd)
 {
     SpeedPowerMode forwards{};
     SpeedPowerMode backwards{};

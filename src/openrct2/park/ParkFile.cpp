@@ -47,6 +47,7 @@
 #include "../object/ObjectRepository.h"
 #include "../peep/RideUseSystem.h"
 #include "../rct2/RCT2.h"
+#include "../ride/BrakeBoosterMode.h"
 #include "../ride/RideManager.hpp"
 #include "../ride/ShopItem.h"
 #include "../ride/Vehicle.h"
@@ -2319,6 +2320,14 @@ namespace OpenRCT2
         else
         {
             cs.readWrite(entity.blockBrakeSpeed);
+        }
+        if (cs.getMode() == OrcaStream::Mode::reading && os.getHeader().targetVersion < kVehicleLegacyBehaviour)
+        {
+            entity.brakeBoosterMode = ();
+        }
+        else
+        {
+            cs.readWrite(entity.brakeBoosterMode);
         }
     }
 

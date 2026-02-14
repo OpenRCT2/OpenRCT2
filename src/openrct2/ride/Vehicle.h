@@ -281,6 +281,7 @@ struct Vehicle : EntityBase
     uint8_t target_seat_rotation;
     CoordsXY BoatLocation;
     uint8_t blockBrakeSpeed;
+    BrakeBoosterMode brakeBoosterMode;
 
     constexpr bool IsHead() const
     {
