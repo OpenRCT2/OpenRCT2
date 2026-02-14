@@ -6516,7 +6516,7 @@ namespace OpenRCT2::TrackMetaData
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixUpSmallSeq2 = {
-        .clearance = { -32, 0, 0, 4, { 0b0010, 0 }, 0 },
+        .clearance = { -32, 0, 0, 8, { 0b0010, 0 }, 0 },
         .allowedWallEdges = 0b0011,
         .blockedSegments = { {
             EnumsToFlags(PS::left, PS::centre, PS::topLeft, PS::bottomLeft), // narrow
@@ -6526,7 +6526,7 @@ namespace OpenRCT2::TrackMetaData
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixUpSmallSeq3 = {
-        .clearance = { -32, -32, 0, 4, { 0b0111, 0 }, 0 },
+        .clearance = { -32, -32, 0, 8, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
         .woodenSupports = { WoodenSupportSubType::corner3 },
         .metalSupports = { MetalSupportPlace::centre },
@@ -6563,7 +6563,7 @@ namespace OpenRCT2::TrackMetaData
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixUpSmallSeq6 = {
-        .clearance = { -32, -96, 8, 4, { 0b0001, 0 }, 0 },
+        .clearance = { -32, -96, 8, 8, { 0b0001, 0 }, 0 },
         .allowedWallEdges = 0b1001,
         .blockedSegments = { {
             EnumsToFlags(PS::bottom, PS::centre, PS::bottomLeft, PS::bottomRight), // narrow
@@ -6573,7 +6573,7 @@ namespace OpenRCT2::TrackMetaData
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixUpSmallSeq7 = {
-        .clearance = { 0, -96, 8, 4, { 0b1011, 0 }, 0 },
+        .clearance = { 0, -96, 8, 8, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b1000,
         .flags = { SequenceFlag::hasHeightMarker },
         .woodenSupports = { WoodenSupportSubType::corner2 },
@@ -6603,13 +6603,13 @@ namespace OpenRCT2::TrackMetaData
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixUpSmallSeq2 = {
-        .clearance = { -32, 0, 0, 4, { 0b0001, 0 }, 0 },
+        .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, 0 },
         .allowedWallEdges = 0b1001,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftHalfBankedHelixUpSmallSeq2.blockedSegments),
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixUpSmallSeq3 = {
-        .clearance = { -32, 32, 0, 4, { 0b1011, 0 }, 0 },
+        .clearance = { -32, 32, 0, 8, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b0001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
         .metalSupports = { MetalSupportPlace::centre },
@@ -6634,13 +6634,13 @@ namespace OpenRCT2::TrackMetaData
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixUpSmallSeq6 = {
-        .clearance = { -32, 96, 8, 4, { 0b0010, 0 }, 0 },
+        .clearance = { -32, 96, 8, 8, { 0b0010, 0 }, 0 },
         .allowedWallEdges = 0b0011,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftHalfBankedHelixUpSmallSeq6.blockedSegments),
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixUpSmallSeq7 = {
-        .clearance = { 0, 96, 8, 4, { 0b0111, 0 }, 0 },
+        .clearance = { 0, 96, 8, 8, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
         .flags = { SequenceFlag::hasHeightMarker },
         .woodenSupports = { WoodenSupportSubType::corner3 },
@@ -6650,7 +6650,7 @@ namespace OpenRCT2::TrackMetaData
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixDownSmallSeq0 = {
-        .clearance = { 0, 0, 8, 4, { 0b0111, 0 }, 0 },
+        .clearance = { 0, 0, 8, 8, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
         .flags = { SequenceFlag::hasHeightMarker },
         .woodenSupports = { WoodenSupportSubType::corner2 },
@@ -6659,7 +6659,7 @@ namespace OpenRCT2::TrackMetaData
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixDownSmallSeq1 = {
-        .clearance = { 0, -32, 8, 4, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .clearance = { 0, -32, 8, 8, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1100,
         .woodenSupports = { WoodenSupportSubType::corner0 },
         .blockedSegments = kLeftHalfBankedHelixUpSmallSeq1.blockedSegments,
@@ -6681,7 +6681,7 @@ namespace OpenRCT2::TrackMetaData
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixDownSmallSeq4 = {
-        .clearance = { -32, -64, 0, 4, { 0b1011, 0 }, 0 },
+        .clearance = { -32, -64, 0, 8, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b0001,
         .woodenSupports = { WoodenSupportSubType::corner3 },
         .metalSupports = { MetalSupportPlace::centre },
@@ -6690,7 +6690,7 @@ namespace OpenRCT2::TrackMetaData
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixDownSmallSeq5 = {
-        .clearance = { 0, -64, 0, 4, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .clearance = { 0, -64, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner1 },
         .blockedSegments = kLeftHalfBankedHelixUpSmallSeq5.blockedSegments,
@@ -6713,7 +6713,7 @@ namespace OpenRCT2::TrackMetaData
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixDownSmallSeq0 = {
-        .clearance = { 0, 0, 8, 4, { 0b1011, 0 }, 0 },
+        .clearance = { 0, 0, 8, 8, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b1000,
         .flags = { SequenceFlag::hasHeightMarker },
         .woodenSupports = { WoodenSupportSubType::corner3 },
@@ -6722,7 +6722,7 @@ namespace OpenRCT2::TrackMetaData
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixDownSmallSeq1 = {
-        .clearance = { 0, 32, 8, 4, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .clearance = { 0, 32, 8, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner1 },
         .blockedSegments = kRightHalfBankedHelixUpSmallSeq1.blockedSegments,
@@ -6744,7 +6744,7 @@ namespace OpenRCT2::TrackMetaData
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixDownSmallSeq4 = {
-        .clearance = { -32, 64, 0, 4, { 0b0111, 0 }, 0 },
+        .clearance = { -32, 64, 0, 8, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
         .metalSupports = { MetalSupportPlace::centre },
@@ -6753,7 +6753,7 @@ namespace OpenRCT2::TrackMetaData
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixDownSmallSeq5 = {
-        .clearance = { 0, 64, 0, 4, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .clearance = { 0, 64, 0, 8, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1100,
         .woodenSupports = { WoodenSupportSubType::corner0 },
         .blockedSegments = kRightHalfBankedHelixUpSmallSeq5.blockedSegments,
@@ -6822,7 +6822,7 @@ namespace OpenRCT2::TrackMetaData
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixUpLargeSeq4 = {
-        .clearance = { -32, -64, 0, 4, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .clearance = { -32, -64, 0, 8, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1100,
         .blockedSegments = { {
             kSegmentsNone,                                          // narrow
@@ -6832,7 +6832,7 @@ namespace OpenRCT2::TrackMetaData
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixUpLargeSeq5 = {
-        .clearance = { -64, -32, 0, 4, { 0b0111, 0 }, 0 },
+        .clearance = { -64, -32, 0, 8, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0011,
         .woodenSupports = { WoodenSupportSubType::corner3 },
         .blockedSegments = { {
@@ -6843,7 +6843,7 @@ namespace OpenRCT2::TrackMetaData
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixUpLargeSeq6 = {
-        .clearance = { -64, -64, 0, 4, { 0b1111, 0 }, 0 },
+        .clearance = { -64, -64, 0, 8, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
         .woodenSupports = { WoodenSupportSubType::nwSe },
         .metalSupports = { MetalSupportPlace::centre },
@@ -6902,7 +6902,7 @@ namespace OpenRCT2::TrackMetaData
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixUpLargeSeq11 = {
-        .clearance = { 0, -128, 8, 4, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .clearance = { 0, -128, 8, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .blockedSegments = { {
             kSegmentsNone,                                    // narrow
@@ -6912,7 +6912,7 @@ namespace OpenRCT2::TrackMetaData
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixUpLargeSeq12 = {
-        .clearance = { -32, -160, 8, 4, { 0b1011, 0 }, 0 },
+        .clearance = { -32, -160, 8, 8, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
         .blockedSegments = { {
@@ -6923,7 +6923,7 @@ namespace OpenRCT2::TrackMetaData
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixUpLargeSeq13 = {
-        .clearance = { 0, -160, 8, 4, { 0b1111, 0 }, 0 },
+        .clearance = { 0, -160, 8, 8, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1000,
         .flags = { SequenceFlag::hasHeightMarker },
         .woodenSupports = { WoodenSupportSubType::neSw },
@@ -6965,20 +6965,20 @@ namespace OpenRCT2::TrackMetaData
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixUpLargeSeq4 = {
-        .clearance = { -32, 64, 0, 4, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .clearance = { -32, 64, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftHalfBankedHelixUpLargeSeq4.blockedSegments),
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixUpLargeSeq5 = {
-        .clearance = { -64, 32, 0, 4, { 0b1011, 0 }, 0 },
+        .clearance = { -64, 32, 0, 8, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftHalfBankedHelixUpLargeSeq5.blockedSegments),
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixUpLargeSeq6 = {
-        .clearance = { -64, 64, 0, 4, { 0b1111, 0 }, 0 },
+        .clearance = { -64, 64, 0, 8, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
         .woodenSupports = { WoodenSupportSubType::nwSe },
         .metalSupports = { MetalSupportPlace::centre },
@@ -7015,20 +7015,20 @@ namespace OpenRCT2::TrackMetaData
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixUpLargeSeq11 = {
-        .clearance = { 0, 128, 8, 4, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .clearance = { 0, 128, 8, 8, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1100,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftHalfBankedHelixUpLargeSeq11.blockedSegments),
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixUpLargeSeq12 = {
-        .clearance = { -32, 160, 8, 4, { 0b0111, 0 }, 0 },
+        .clearance = { -32, 160, 8, 8, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0011,
         .woodenSupports = { WoodenSupportSubType::corner3 },
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftHalfBankedHelixUpLargeSeq12.blockedSegments),
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixUpLargeSeq13 = {
-        .clearance = { 0, 160, 8, 4, { 0b1111, 0 }, 0 },
+        .clearance = { 0, 160, 8, 8, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
         .flags = { SequenceFlag::hasHeightMarker },
         .woodenSupports = { WoodenSupportSubType::neSw },
@@ -7038,7 +7038,7 @@ namespace OpenRCT2::TrackMetaData
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixDownLargeSeq0 = {
-        .clearance = { 0, 0, 8, 4, { 0b1111, 0 }, 0 },
+        .clearance = { 0, 0, 8, 8, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
         .flags = { SequenceFlag::hasHeightMarker },
         .woodenSupports = { WoodenSupportSubType::neSw },
@@ -7047,13 +7047,13 @@ namespace OpenRCT2::TrackMetaData
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixDownLargeSeq1 = {
-        .clearance = { 0, -32, 8, 4, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .clearance = { 0, -32, 8, 8, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1100,
         .blockedSegments = kLeftHalfBankedHelixUpLargeSeq1.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixDownLargeSeq2 = {
-        .clearance = { -32, 0, 8, 4, { 0b0111, 0 }, 0 },
+        .clearance = { -32, 0, 8, 8, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0011,
         .woodenSupports = { WoodenSupportSubType::corner2 },
         .blockedSegments = kLeftHalfBankedHelixUpLargeSeq2.blockedSegments,
@@ -7088,7 +7088,7 @@ namespace OpenRCT2::TrackMetaData
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixDownLargeSeq7 = {
-        .clearance = { -64, -96, 0, 4, { 0b1111, 0 }, 0 },
+        .clearance = { -64, -96, 0, 8, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
         .woodenSupports = { WoodenSupportSubType::nwSe },
         .metalSupports = { MetalSupportPlace::centre },
@@ -7097,13 +7097,13 @@ namespace OpenRCT2::TrackMetaData
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixDownLargeSeq8 = {
-        .clearance = { -32, -96, 0, 4, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .clearance = { -32, -96, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .blockedSegments = kLeftHalfBankedHelixUpLargeSeq8.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixDownLargeSeq9 = {
-        .clearance = { -64, -128, 0, 4, { 0b1011, 0 }, 0 },
+        .clearance = { -64, -128, 0, 8, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner3 },
         .blockedSegments = kLeftHalfBankedHelixUpLargeSeq9.blockedSegments,
@@ -7139,7 +7139,7 @@ namespace OpenRCT2::TrackMetaData
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixDownLargeSeq0 = {
-        .clearance = { 0, 0, 8, 4, { 0b1111, 0 }, 0 },
+        .clearance = { 0, 0, 8, 8, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1000,
         .flags = { SequenceFlag::hasHeightMarker },
         .woodenSupports = { WoodenSupportSubType::neSw },
@@ -7148,13 +7148,13 @@ namespace OpenRCT2::TrackMetaData
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixDownLargeSeq1 = {
-        .clearance = { 0, 32, 8, 4, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .clearance = { 0, 32, 8, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .blockedSegments = kRightHalfBankedHelixUpLargeSeq1.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixDownLargeSeq2 = {
-        .clearance = { -32, 0, 8, 4, { 0b1011, 0 }, 0 },
+        .clearance = { -32, 0, 8, 8, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner3 },
         .blockedSegments = kRightHalfBankedHelixUpLargeSeq2.blockedSegments,
@@ -7189,7 +7189,7 @@ namespace OpenRCT2::TrackMetaData
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixDownLargeSeq7 = {
-        .clearance = { -64, 96, 0, 4, { 0b1111, 0 }, 0 },
+        .clearance = { -64, 96, 0, 8, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
         .woodenSupports = { WoodenSupportSubType::nwSe },
         .metalSupports = { MetalSupportPlace::centre },
@@ -7198,13 +7198,13 @@ namespace OpenRCT2::TrackMetaData
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixDownLargeSeq8 = {
-        .clearance = { -32, 96, 0, 4, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .clearance = { -32, 96, 0, 8, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1100,
         .blockedSegments = kRightHalfBankedHelixUpLargeSeq8.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixDownLargeSeq9 = {
-        .clearance = { -64, 128, 0, 4, { 0b0111, 0 }, 0 },
+        .clearance = { -64, 128, 0, 8, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0011,
         .woodenSupports = { WoodenSupportSubType::corner2 },
         .blockedSegments = kRightHalfBankedHelixUpLargeSeq9.blockedSegments,
