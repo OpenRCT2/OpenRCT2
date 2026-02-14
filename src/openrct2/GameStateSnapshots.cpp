@@ -450,7 +450,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Vehicle, scream_sound_id);
         COMPARE_FIELD(Vehicle, TrackSubposition);
         COMPARE_FIELD(Vehicle, NumLaps);
-        COMPARE_FIELD(Vehicle, brake_speed);
+        COMPARE_FIELD(Vehicle, brakeSpeed);
         COMPARE_FIELD(Vehicle, lost_time_out);
         COMPARE_FIELD(Vehicle, vertical_drop_countdown);
         COMPARE_FIELD(Vehicle, var_D3);

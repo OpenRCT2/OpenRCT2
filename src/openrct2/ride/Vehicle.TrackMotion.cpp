@@ -137,7 +137,7 @@ void Vehicle::ApplyNonStopBlockBrake()
             velocity = kBlockBrakeBaseSpeed;
             acceleration = 0;
         }
-        else if (velocity > (brake_speed << kTrackSpeedShiftAmount) + kBlockBrakeSpeedOffset)
+        else if (velocity > (brakeSpeed << kTrackSpeedShiftAmount) + kBlockBrakeSpeedOffset)
         {
             velocity -= velocity >> 4;
             acceleration = 0;
@@ -520,25 +520,25 @@ void Vehicle::Sub6DBF3E()
 uint8_t Vehicle::ChooseBrakeSpeed() const
 {
     if (!TrackTypeIsBrakes(GetTrackType()))
-        return brake_speed;
+        return brakeSpeed;
     auto trackElement = MapGetTrackElementAtOfTypeSeq(TrackLocation, GetTrackType(), 0);
     if (trackElement != nullptr)
     {
         if (trackElement->AsTrack()->IsBrakeClosed())
-            return brake_speed;
+            return brakeSpeed;
         else
-            return std::max<uint8_t>(brake_speed, BlockBrakeSpeed);
+            return std::max<uint8_t>(brakeSpeed, BlockBrakeSpeed);
     }
     return brake_speed;
 }
 
 /**
- * Populate the vehicle's brake_speed and BlockBrakeSpeed values.
+ * Populate the vehicle's brakeSpeed and BlockBrakeSpeed values.
  */
 void Vehicle::PopulateBrakeSpeed(const CoordsXYZ& vehicleTrackLocation, TrackElement& brake)
 {
     auto trackSpeed = brake.GetBrakeBoosterSpeed();
-    brake_speed = trackSpeed;
+    brakeSpeed = trackSpeed;
     if (!TrackTypeIsBrakes(brake.GetTrackType()))
     {
         BlockBrakeSpeed = trackSpeed;
@@ -817,7 +817,7 @@ bool Vehicle::UpdateTrackMotionForwards(const CarEntry* carEntry, const Ride& cu
         }
         else if (TrackTypeIsBooster(trackType))
         {
-            auto boosterSpeed = GetUnifiedBoosterSpeed(curRide.type, brake_speed) << kTrackSpeedShiftAmount;
+            auto boosterSpeed = GetUnifiedBoosterSpeed(curRide.type, brakeSpeed) << kTrackSpeedShiftAmount;
             if (boosterSpeed > _vehicleVelocityF64E08)
             {
                 acceleration = GetRideTypeDescriptor(curRide.type).LegacyBoosterSettings.boosterPower

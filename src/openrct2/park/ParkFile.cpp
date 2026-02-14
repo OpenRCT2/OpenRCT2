@@ -2288,11 +2288,11 @@ namespace OpenRCT2
             cs.readWrite(brakeSpeed);
             if (entity.GetTrackType() == TrackElemType::blockBrakes)
                 brakeSpeed = kRCT2DefaultBlockBrakeSpeed;
-            entity.brake_speed = brakeSpeed;
+            entity.brakeSpeed = brakeSpeed;
         }
         else
         {
-            cs.readWrite(entity.brake_speed);
+            cs.readWrite(entity.brakeSpeed);
         }
         cs.readWrite(entity.lost_time_out);
         cs.readWrite(entity.vertical_drop_countdown);

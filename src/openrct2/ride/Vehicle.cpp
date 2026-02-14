@@ -1533,7 +1533,7 @@ void Vehicle::Serialise(DataSerialiser& stream)
     stream << scream_sound_id;
     stream << TrackSubposition;
     stream << NumLaps;
-    stream << brake_speed;
+    stream << brakeSpeed;
     stream << lost_time_out;
     stream << vertical_drop_countdown;
     stream << var_D3;

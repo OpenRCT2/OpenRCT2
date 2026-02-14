@@ -291,7 +291,7 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
             flags.unset(VehicleFlag::onLiftHill);
             SetTrackType(tileElement->AsTrack()->GetTrackType());
             SetTrackDirection(direction);
-            brake_speed = tileElement->AsTrack()->GetBrakeBoosterSpeed();
+            brakeSpeed = tileElement->AsTrack()->GetBrakeBoosterSpeed();
             track_progress = 0;
         }
         else
@@ -477,7 +477,7 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
 
             SetTrackType(tileElement->AsTrack()->GetTrackType());
             SetTrackDirection(direction);
-            brake_speed = tileElement->AsTrack()->GetBrakeBoosterSpeed();
+            brakeSpeed = tileElement->AsTrack()->GetBrakeBoosterSpeed();
 
             // There are two bytes before the move info list
             track_progress = GetTrackProgress();

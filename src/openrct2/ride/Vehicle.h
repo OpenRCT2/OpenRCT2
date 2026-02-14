@@ -249,7 +249,7 @@ struct Vehicle : EntityBase
         uint8_t NumRotations;
         uint8_t TimeActive;
     };
-    uint8_t brake_speed;
+    uint8_t brakeSpeed;
     uint16_t lost_time_out;
     int8_t vertical_drop_countdown;
     uint8_t var_D3;

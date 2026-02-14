@@ -2012,7 +2012,7 @@ namespace OpenRCT2::RCT2
             }
             else if (src->GetTrackType() == RCT12::TrackElemType::blockBrakes)
             {
-                dst->brake_speed = kRCT2DefaultBlockBrakeSpeed;
+                dst->brakeSpeed = kRCT2DefaultBlockBrakeSpeed;
             }
         }
         else
@@ -2067,7 +2067,7 @@ namespace OpenRCT2::RCT2
         dst->scream_sound_id = static_cast<Audio::SoundId>(src->ScreamSoundId);
         dst->TrackSubposition = VehicleTrackSubposition{ src->TrackSubposition };
         dst->NumLaps = src->NumLaps;
-        dst->brake_speed = src->BrakeSpeed;
+        dst->brakeSpeed = src->BrakeSpeed;
         dst->lost_time_out = src->LostTimeOut;
         dst->vertical_drop_countdown = src->VerticalDropCountdown;
         dst->var_D3 = src->VarD3;

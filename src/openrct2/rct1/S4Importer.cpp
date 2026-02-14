@@ -2832,7 +2832,7 @@ namespace OpenRCT2::RCT1
         dst->num_seats = src->NumSeats;
         dst->speed = src->Speed;
         dst->powered_acceleration = src->PoweredAcceleration;
-        dst->brake_speed = src->BrakeSpeed;
+        dst->brakeSpeed = src->BrakeSpeed;
 
         dst->velocity = src->Velocity;
         dst->acceleration = src->Acceleration;
