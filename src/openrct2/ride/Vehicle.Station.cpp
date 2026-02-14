@@ -1072,7 +1072,7 @@ void Vehicle::UpdateDeparting()
     }
 
     const auto& carEntry = rideEntry->Cars[vehicle_type];
-    const auto& rtd = curRide->getRideTypeDescriptor();
+    const auto& boosterSettings = curRide->getBoosterSettings();
     switch (curRide->mode)
     {
         case RideMode::reverseInclineLaunchedShuttle:
@@ -1086,7 +1086,7 @@ void Vehicle::UpdateDeparting()
         case RideMode::upwardLaunch:
             if ((curRide->launchSpeed << 16) > velocity)
             {
-                acceleration = curRide->launchSpeed << rtd.LegacyBoosterSettings.poweredLaunchModeFactor;
+                acceleration = curRide->launchSpeed << boosterSettings.poweredLaunchModeFactor;
             }
             break;
         case RideMode::downwardLaunch:

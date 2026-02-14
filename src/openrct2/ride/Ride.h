@@ -35,6 +35,7 @@ struct Staff;
 struct Vehicle;
 struct RideObjectEntry;
 struct ResultWithMessage;
+struct RideBoosterSettings;
 
 namespace OpenRCT2
 {
@@ -475,6 +476,8 @@ public:
     bool hasStation() const;
 
     bool findTrackGap(const CoordsXYE& input, CoordsXYE* output) const;
+
+    RideBoosterSettings getBoosterSettings() const;
 
     // TO-DO: those friend functions are temporary, find a way to not access the private fields
     friend void updateSpiralSlide(Ride& ride);

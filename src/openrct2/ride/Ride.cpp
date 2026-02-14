@@ -6060,3 +6060,13 @@ RideMode RideModeGetBlockSectionedCounterpart(RideMode originalMode)
     assert(originalMode < RideMode::count);
     return kRideModeBlockSectionedCounterpart[EnumValue(originalMode)];
 }
+
+RideBoosterSettings Ride::getBoosterSettings() const
+{
+    const auto rtd = getRideTypeDescriptor();
+    if (lifecycleFlags & RIDE_LIFECYCLE_LEGACY_BEHAVIOUR)
+    {
+        return rtd.LegacyBoosterSettings;
+    }
+    return rtd.BoosterSettings;
+}
