@@ -855,6 +855,8 @@ namespace OpenRCT2::TileInspector
                 {
                     nextTrackElement->AsTrack()->SetHasChain(setChain);
                 }
+
+                MapInvalidateTileFull(elem);
             }
         }
 
