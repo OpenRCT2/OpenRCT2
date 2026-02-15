@@ -769,6 +769,8 @@ namespace OpenRCT2::TileInspector
 
                 nextTrackElement->BaseHeight += offset;
                 nextTrackElement->ClearanceHeight += offset;
+
+                MapInvalidateTileFull(elem);
             }
         }
 
