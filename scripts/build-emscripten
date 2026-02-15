@@ -6,7 +6,6 @@ mkdir -p build
 cd build
 
 START_DIR=$(pwd)
-SPEEXDSP_ROOT=/ext/speexdsp
 ICU_ROOT=/ext/icu/icu4c/source
 LIBZIP_ROOT=/ext/libzip
 ZSTD_ROOT=/ext/zstd
@@ -22,8 +21,6 @@ emcmake cmake ../ \
 	-DDISABLE_DISCORD_RPC=ON \
 	-DCMAKE_SYSTEM_NAME=Emscripten \
 	-DCMAKE_BUILD_TYPE=Release \
-	-DSPEEXDSP_INCLUDE_DIR="$SPEEXDSP_ROOT/include/" \
-	-DSPEEXDSP_LIBRARY="$SPEEXDSP_ROOT/libspeexdsp/.libs/libspeexdsp.a" \
 	-DICU_INCLUDE_DIR="$ICU_ROOT/common" \
 	-DICU_DATA_LIBRARIES=$ICU_ROOT/lib/libicuuc.so \
 	-DICU_DT_LIBRARY_RELEASE="$ICU_ROOT/stubdata/libicudata.so" \
