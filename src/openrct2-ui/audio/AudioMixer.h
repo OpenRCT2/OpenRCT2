@@ -69,9 +69,7 @@ namespace OpenRCT2::Audio
          * Resample the given buffer into _effectBuffer.
          * Assumes that srcBuffer is the same format as _outputFormat.
          */
-        size_t ApplyResample(
-            ISDLAudioChannel* channel, const void* srcBuffer, int32_t srcSamples, int32_t dstSamples, int32_t inRate,
-            int32_t outRate);
+        size_t ApplyResample(const void* srcBuffer, int32_t srcSamples, int32_t dstSamples, int32_t inRate, int32_t outRate);
         void ApplyPan(const IAudioChannel* channel, void* buffer, size_t len, size_t sampleSize);
         int32_t ApplyVolume(const IAudioChannel* channel, void* buffer, size_t len);
         static void EffectPanS16(const IAudioChannel* channel, int16_t* data, int32_t length);
