@@ -798,7 +798,7 @@ bool Vehicle::UpdateTrackMotionForwards(const CarEntry* carEntry, const Ride& cu
                 acceleration = 0x50000;
             }
         }
-        else if (TrackTypeIsBrakes(trackType))
+        else if (brakeBoosterMode == BrakeBoosterMode::forwardsBrakeBackwardsBrake)
         {
             bool hasBrakesFailure = curRide.lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN
                 && curRide.breakdownReasonPending == BREAKDOWN_BRAKES_FAILURE;
@@ -820,7 +820,7 @@ bool Vehicle::UpdateTrackMotionForwards(const CarEntry* carEntry, const Ride& cu
                 }
             }
         }
-        else if (TrackTypeIsBooster(trackType))
+        else if (brakeBoosterMode == BrakeBoosterMode::forwardsBoosterBackwardsNone)
         {
             auto targetSpeed = GetUnifiedBoosterSpeed(curRide.type, brakeSpeed) << kTrackSpeedShiftAmount;
             if (targetSpeed > _vehicleVelocityF64E08)
@@ -834,8 +834,8 @@ bool Vehicle::UpdateTrackMotionForwards(const CarEntry* carEntry, const Ride& cu
             acceleration += CalculateRiderBraking();
         }
 
-        if ((trackType == TrackElemType::flat && curRide.getRideTypeDescriptor().flags.has(RtdFlag::hasLsmBehaviourOnFlat))
-            || (trackType == TrackElemType::poweredLift))
+        if ((brakeBoosterMode == BrakeBoosterMode::forwardsLSMBackwardsBrake)
+            || (brakeBoosterMode == BrakeBoosterMode::forwardsLSMBackwardsNone))
         {
             acceleration = GetRideTypeDescriptor(curRide.type).LegacyBoosterSettings.lsmLaunchPower
                 << kBoosterAccelerationShiftAmount;
@@ -1177,7 +1177,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
     while (true)
     {
         auto trackType = GetTrackType();
-        if (trackType == TrackElemType::flat && curRide.getRideTypeDescriptor().flags.has(RtdFlag::hasLsmBehaviourOnFlat))
+        if (brakeBoosterMode == BrakeBoosterMode::forwardsLSMBackwardsBrake)
         {
             if (-(kLSMBrakeTargetSpeed << kTrackSpeedShiftAmount) > _vehicleVelocityF64E08)
             {
@@ -1185,7 +1185,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
             }
         }
 
-        if (TrackTypeIsBrakes(trackType))
+        if (brakeBoosterMode == BrakeBoosterMode::forwardsBrakeBackwardsBrake)
         {
             auto targetSpeed = ChooseBrakeSpeed();
 
