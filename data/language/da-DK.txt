@@ -1252,8 +1252,8 @@ STR_1891    :Ingen {STRINGID} i parken endnu!
 STR_1894    :{WINDOW_COLOUR_2}{STRINGID} solgt: {BLACK}{COMMA32}
 STR_1895    :Byg en ny forlystelse
 STR_1896    :{WINDOW_COLOUR_2}Udgifter/indtægter
-STR_1897    :{WINDOW_COLOUR_2}Forlystelse konstruktion
-STR_1898    :{WINDOW_COLOUR_2}Forlystelse driftsomkostninger
+STR_1897    :{WINDOW_COLOUR_2}Konstruktion
+STR_1898    :{WINDOW_COLOUR_2}Drift (forlystelser)
 STR_1899    :{WINDOW_COLOUR_2}Landopkøb
 STR_1900    :{WINDOW_COLOUR_2}Ændring af landskab
 STR_1901    :{WINDOW_COLOUR_2}Entrébilletter
