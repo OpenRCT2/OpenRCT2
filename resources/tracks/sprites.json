@@ -42698,18 +42698,24 @@
     },
     {
         "path": "track/bm_invert/vertical_twist_left_2_1.png",
-        "x": -12,
-        "y": -87,
+        "x": -8,
+        "y": -77,
         "palette": "keep"
     },
     {
         "path": "track/bm_invert/vertical_twist_left_2_2.png",
         "x": -12,
-        "y": -38,
+        "y": -87,
         "palette": "keep"
     },
     {
-        "path": "track/bm_invert/vertical_twist_left_3.png",
+        "path": "track/bm_invert/vertical_twist_left_3_1.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm_invert/vertical_twist_left_3_2.png",
         "x": -12,
         "y": -88,
         "palette": "keep"
@@ -42717,29 +42723,35 @@
     {
         "path": "track/bm_invert/vertical_twist_left_4_1.png",
         "x": -9,
-        "y": -37,
+        "y": -88,
         "palette": "keep"
     },
     {
         "path": "track/bm_invert/vertical_twist_left_4_2.png",
         "x": -9,
-        "y": -88,
+        "y": -86,
         "palette": "keep"
     },
     {
         "path": "track/bm_invert/vertical_twist_right_1_1.png",
-        "x": -12,
-        "y": -37,
+        "x": -9,
+        "y": -88,
         "palette": "keep"
     },
     {
         "path": "track/bm_invert/vertical_twist_right_1_2.png",
         "x": -12,
-        "y": -88,
+        "y": -86,
         "palette": "keep"
     },
     {
-        "path": "track/bm_invert/vertical_twist_right_2.png",
+        "path": "track/bm_invert/vertical_twist_right_2_1.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm_invert/vertical_twist_right_2_2.png",
         "x": -12,
         "y": -88,
         "palette": "keep"
@@ -42747,13 +42759,13 @@
     {
         "path": "track/bm_invert/vertical_twist_right_3_1.png",
         "x": -9,
-        "y": -87,
+        "y": -77,
         "palette": "keep"
     },
     {
         "path": "track/bm_invert/vertical_twist_right_3_2.png",
         "x": -9,
-        "y": -38,
+        "y": -87,
         "palette": "keep"
     },
     {

@@ -13898,6 +13898,32 @@ static void InvertedRCTrackFlatTo60DegUp(
     const TrackElement& trackElement, SupportType supportType)
 {
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    {
+        switch (direction)
+        {
+            case 0:
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + kSupportHeight + 18,
+                    session.SupportColours);
+                break;
+            case 1:
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + kSupportHeight + 18,
+                    session.SupportColours);
+                break;
+            case 2:
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + kSupportHeight + 18,
+                    session.SupportColours);
+                break;
+            case 3:
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + kSupportHeight + 18,
+                    session.SupportColours);
+                break;
+        }
+    }
     switch (direction)
     {
         case 0:
@@ -13927,8 +13953,7 @@ static void InvertedRCTrackFlatTo60DegUp(
                 { 0, 0, height + kInvertedSpriteOffset }, { { 0, 2, height + kInvertedSpriteOffset + 16 }, { 32, 27, 4 } });
             break;
     }
-    MetalASupportsPaintSetup(
-        session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight + 14, session.SupportColours);
+
     if (direction == 0 || direction == 3)
     {
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -13946,6 +13971,32 @@ static void InvertedRCTrack60DegUpToFlat(
     const TrackElement& trackElement, SupportType supportType)
 {
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    {
+        switch (direction)
+        {
+            case 0:
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + kSupportHeight + 18,
+                    session.SupportColours);
+                break;
+            case 1:
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + kSupportHeight + 18,
+                    session.SupportColours);
+                break;
+            case 2:
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + kSupportHeight + 18,
+                    session.SupportColours);
+                break;
+            case 3:
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + kSupportHeight + 18,
+                    session.SupportColours);
+                break;
+        }
+    }
     switch (direction)
     {
         case 0:
@@ -13975,8 +14026,7 @@ static void InvertedRCTrack60DegUpToFlat(
                 { 0, 0, height + kInvertedSpriteOffset }, { { 0, 2, height + kInvertedSpriteOffset + 16 }, { 32, 27, 4 } });
             break;
     }
-    MetalASupportsPaintSetup(
-        session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight + 18, session.SupportColours);
+
     if (direction == 0 || direction == 3)
     {
         PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -16353,56 +16403,6 @@ static void InvertedRCTrackRightQuarterTurn3Tile25DegDownToRightBank(
     }
 }
 
-static void InvertedRCTrack90DegUp(
-    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement, SupportType supportType)
-{
-    switch (trackSequence)
-    {
-        case 0:
-
-        {
-            switch (direction)
-            {
-                case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_VERTICAL + 8),
-                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 6, height + 61 }, { 32, 20, 3 } });
-                    break;
-                case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_VERTICAL + 9),
-                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 4, height + 11 }, { 32, 2, 31 } });
-                    break;
-                case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_VERTICAL + 10),
-                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 4, height + 11 }, { 32, 2, 31 } });
-                    break;
-                case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_VERTICAL + 11),
-                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 6, height + 61 }, { 32, 20, 3 } });
-                    break;
-            }
-        }
-            PaintUtilSetVerticalTunnel(session, height + 32);
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
-            break;
-        case 1:
-            break;
-    }
-}
-
-static void InvertedRCTrack90DegDown(
-    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement, SupportType supportType)
-{
-    InvertedRCTrack90DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
-}
-
 static void InvertedRCTrack60DegUpTo90DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
@@ -16624,6 +16624,56 @@ static void InvertedRCTrack60DegDownTo90DegDown(
     }
 }
 
+static void InvertedRCTrack90DegUp(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    switch (trackSequence)
+    {
+        case 0:
+
+        {
+            switch (direction)
+            {
+                case 0:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_VERTICAL + 8),
+                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 6, height + 61 }, { 32, 20, 3 } });
+                    break;
+                case 1:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_VERTICAL + 9),
+                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 4, height + 11 }, { 32, 2, 31 } });
+                    break;
+                case 2:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_VERTICAL + 10),
+                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 4, height + 11 }, { 32, 2, 31 } });
+                    break;
+                case 3:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_VERTICAL + 11),
+                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 6, height + 61 }, { 32, 20, 3 } });
+                    break;
+            }
+        }
+            PaintUtilSetVerticalTunnel(session, height + 32);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            break;
+        case 1:
+            break;
+    }
+}
+
+static void InvertedRCTrack90DegDown(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    InvertedRCTrack90DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
+}
+
 static void InvertedRCTrackLeftQuarterTurn1TileUp90(
     PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
     const TrackElement& trackElement, const SupportType supportType)
@@ -16635,31 +16685,31 @@ static void InvertedRCTrackLeftQuarterTurn1TileUp90(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_VERTICAL + 7),
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_VERTICAL + 12),
                         { 0, 0, height + 29 }, { { 0, 6, height + 125 }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_VERTICAL + 8),
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_VERTICAL + 13),
                         { 0, 0, height + 29 }, { { 4, 0, height + 11 }, { 2, 32, 31 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_VERTICAL + 9),
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_VERTICAL + 14),
                         { 0, 0, height + 29 }, { { 0, 6, height + 125 }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_VERTICAL + 10),
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_VERTICAL + 15),
                         { 0, 0, height + 29 }, { { 0, 6, height + 125 }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_VERTICAL + 11),
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_VERTICAL + 16),
                         { 0, 0, height + 29 }, { { 0, 4, height + 11 }, { 32, 2, 31 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_VERTICAL + 12),
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_VERTICAL + 17),
                         { 0, 0, height + 29 }, { { 0, 4, height + 11 }, { 32, 2, 31 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_VERTICAL + 13),
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_VERTICAL + 18),
                         { 0, 0, height + 29 }, { { 0, 6, height + 125 }, { 32, 20, 3 } });
                     break;
             }
@@ -16684,31 +16734,31 @@ static void InvertedRCTrackRightQuarterTurn1TileUp90(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_VERTICAL + 14),
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_VERTICAL + 19),
                         { 0, 0, height + 29 }, { { 0, 4, height + 11 }, { 32, 2, 31 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_VERTICAL + 15),
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_VERTICAL + 20),
                         { 0, 0, height + 29 }, { { 0, 6, height + 125 }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_VERTICAL + 16),
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_VERTICAL + 21),
                         { 0, 0, height + 29 }, { { 0, 6, height + 125 }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_VERTICAL + 17),
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_VERTICAL + 22),
                         { 0, 0, height + 29 }, { { 0, 4, height + 11 }, { 32, 2, 31 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_VERTICAL + 18),
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_VERTICAL + 23),
                         { 0, 0, height + 29 }, { { 0, 4, height + 11 }, { 32, 2, 31 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_VERTICAL + 19),
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_VERTICAL + 24),
                         { 0, 0, height + 29 }, { { 0, 6, height + 125 }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_VERTICAL + 20),
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_VERTICAL + 25),
                         { 0, 0, height + 29 }, { { 0, 6, height + 125 }, { 32, 20, 3 } });
                     break;
             }
