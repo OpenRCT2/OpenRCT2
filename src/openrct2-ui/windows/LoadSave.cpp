@@ -577,7 +577,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Populate file list
-            const char* pattern = GetFilterPatternByType(type, isSave);
+            auto pattern = GetFilterPatternByType(type, isSave, _trackDesign);
             const auto path = GetDir(type);
             PopulateList(path, pattern);
             numListItems = static_cast<uint16_t>(_listItems.size());
@@ -824,7 +824,7 @@ namespace OpenRCT2::Ui::Windows
 
                 case WIDX_SYSTEM_BROWSER:
                 {
-                    u8string path = OpenSystemFileBrowser(isSave, type, _directory, _defaultPath);
+                    u8string path = OpenSystemFileBrowser(isSave, type, _directory, _defaultPath, _trackDesign);
                     if (!path.empty())
                     {
                         Select(path.c_str(), action, type, _trackDesign);
@@ -893,13 +893,8 @@ namespace OpenRCT2::Ui::Windows
 
                 case WIDX_SAVE:
                 {
-                    u8string extension;
-                    if (_trackDesign != nullptr)
-                        extension = trackDesignGetExtension(_trackDesign->version);
-                    else
-                        extension = RemovePatternWildcard(_extensionPattern);
-
-                    const u8string path = Path::WithExtension(Path::Combine(_directory, _currentFilename), extension);
+                    const u8string path = Path::WithExtension(
+                        Path::Combine(_directory, _currentFilename), RemovePatternWildcard(_extensionPattern));
 
                     if (File::Exists(path))
                         WindowOverwritePromptOpen(_currentFilename, path, action, type, _trackDesign);

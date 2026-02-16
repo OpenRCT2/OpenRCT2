@@ -55,14 +55,15 @@ namespace OpenRCT2::Ui::FileBrowser
     bool IsValidPath(const char* path);
     u8string GetLastDirectoryByType(LoadSaveType type);
     u8string GetInitialDirectoryByType(LoadSaveType type);
-    const char* GetFilterPatternByType(LoadSaveType type, bool isSave);
+    u8string GetFilterPatternByType(LoadSaveType type, bool isSave, const TrackDesign* trackDesign = nullptr);
     u8string RemovePatternWildcard(u8string_view pattern);
     u8string GetDir(LoadSaveType type);
     void RegisterCallback(LoadSaveCallback callback);
     void InvokeCallback(ModalResult result, const utf8* path);
     void Select(const char* path, LoadSaveAction action, LoadSaveType type, TrackDesign* trackDesignPtr);
     StringId GetTitleStringId(LoadSaveType type, bool isSave);
-    u8string OpenSystemFileBrowser(bool isSave, LoadSaveType type, u8string defaultDirectory, u8string defaultPath);
+    u8string OpenSystemFileBrowser(
+        bool isSave, LoadSaveType type, u8string defaultDirectory, u8string defaultPath, const TrackDesign* trackDesign);
     WindowBase* OpenPreferred(
         LoadSaveAction action, LoadSaveType type, u8string defaultPath, LoadSaveCallback callback, TrackDesign* trackDesign);
 } // namespace OpenRCT2::Ui::FileBrowser

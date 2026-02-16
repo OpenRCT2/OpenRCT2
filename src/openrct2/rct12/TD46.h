@@ -16,6 +16,20 @@
 struct TrackDesign;
 struct TrackDesignTrackElement;
 
+namespace OpenRCT2
+{
+    enum class TrackElemType : uint16_t;
+
+#pragma pack(push, 1)
+    struct TD7TrackElement
+    {
+        TrackElemType type; // 0x00
+        uint8_t flags;      // 0x02
+    };
+#pragma pack(pop)
+    static_assert(sizeof(TD7TrackElement) == 0x03);
+} // namespace OpenRCT2
+
 namespace OpenRCT2::RCT12
 {
     enum class TrackElemType : uint8_t;

@@ -1091,15 +1091,6 @@ namespace OpenRCT2::RCT2
         "rct1ll.terrain_edge.green",        "rct1ll.terrain_edge.stone_brown",  "rct1ll.terrain_edge.stone_grey",
         "rct1ll.terrain_edge.skyscraper_a", "rct1ll.terrain_edge.skyscraper_b",
     };
-
-#pragma pack(push, 1)
-    struct TD7TrackElement
-    {
-        OpenRCT2::TrackElemType type; // 0x00
-        uint8_t flags;                // 0x02
-    };
-#pragma pack(pop)
-    static_assert(sizeof(TD7TrackElement) == 0x03);
 } // namespace OpenRCT2::RCT2
 
 std::vector<uint8_t> DecryptSea(const fs::path& path);
