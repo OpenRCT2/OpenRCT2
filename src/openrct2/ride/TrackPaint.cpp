@@ -85,17 +85,6 @@ static constexpr uint32_t trackSpritesGhostTrainSpinningTunnel[2][2][4] = {
     },
 };
 
-enum
-{
-    SPR_STATION_COVER_OFFSET_NE_SW_BACK_0 = 0,
-    SPR_STATION_COVER_OFFSET_NE_SW_BACK_1,
-    SPR_STATION_COVER_OFFSET_NE_SW_FRONT,
-    SPR_STATION_COVER_OFFSET_SE_NW_BACK_0,
-    SPR_STATION_COVER_OFFSET_SE_NW_BACK_1,
-    SPR_STATION_COVER_OFFSET_SE_NW_FRONT,
-    SPR_STATION_COVER_OFFSET_TALL
-};
-
 bool TrackPaintUtilHasFence(
     enum edge_t edge, const CoordsXY& position, const TrackElement& trackElement, const Ride& ride, uint8_t rotation)
 {
@@ -670,8 +659,8 @@ bool TrackPaintUtilDrawStationCovers2(
         return false;
     }
 
-    auto baseImageIndex = stationObject->ShelterImageId;
-    if (baseImageIndex == kImageIndexUndefined)
+    auto shelterImageIndex = stationObject->shelterIndex;
+    if (shelterImageIndex == kImageIndexUndefined)
         return false;
 
     static constexpr int16_t heights[][2] = {
@@ -708,10 +697,10 @@ bool TrackPaintUtilDrawStationCovers2(
         imageOffset += SPR_STATION_COVER_OFFSET_TALL;
     }
 
-    auto imageId = session.TrackColours.WithIndex(baseImageIndex + imageOffset);
+    auto imageId = session.TrackColours.WithIndex(shelterImageIndex + imageOffset);
     if (!session.TrackColours.IsRemap())
     {
-        imageId = ImageId(baseImageIndex + imageOffset);
+        imageId = ImageId(shelterImageIndex + imageOffset);
         if (stationObject->Flags & StationObjectFlags::hasPrimaryColour)
             imageId = imageId.WithPrimary(session.TrackColours.GetPrimary());
         if (stationObject->Flags & StationObjectFlags::hasSecondaryColour)
@@ -723,7 +712,8 @@ bool TrackPaintUtilDrawStationCovers2(
     // Glass
     if (colour == TrackStationColour && (stationObject->Flags & StationObjectFlags::isTransparent))
     {
-        imageId = ImageId(baseImageIndex + imageOffset + 12).WithTransparency(session.TrackColours.GetPrimary());
+        auto shelterGlassImageIndex = stationObject->shelterGlassIndex;
+        imageId = ImageId(shelterGlassImageIndex + imageOffset).WithTransparency(session.TrackColours.GetPrimary());
         PaintAddImageAsChild(session, imageId, offset, boundBox);
     }
     return true;
@@ -737,6 +727,7 @@ bool TrackPaintUtilDrawNarrowStationPlatform(
     const auto* stationObj = ride.getStationObject();
     if (stationObj != nullptr && stationObj->Flags & StationObjectFlags::noPlatforms)
         return false;
+
     auto colour = GetStationColourScheme(session, trackElement);
     if (direction & 1)
     {

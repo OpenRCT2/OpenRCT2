@@ -119,7 +119,7 @@ static void PaintRideEntranceExit(PaintSession& session, uint8_t direction, int3
     }
 
     auto stationObj = ride->getStationObject();
-    if (stationObj == nullptr || stationObj->BaseImageId == kImageIndexUndefined)
+    if (stationObj == nullptr || stationObj->baseImageIndex == kImageIndexUndefined)
     {
         return;
     }
@@ -167,8 +167,8 @@ static void PaintRideEntranceExit(PaintSession& session, uint8_t direction, int3
     auto isExit = entranceEl.GetEntranceType() == ENTRANCE_TYPE_RIDE_EXIT;
 
     // Back
-    ImageIndex imageIndex = isExit ? stationObj->BaseImageId + direction + 8 : stationObj->BaseImageId + direction;
-    ImageIndex glassImageIndex = isExit ? stationObj->BaseImageId + direction + 24 : stationObj->BaseImageId + direction + 16;
+    ImageIndex imageIndex = (isExit ? stationObj->exitBackIndex : stationObj->entranceBackIndex) + direction;
+    ImageIndex glassImageIndex = (isExit ? stationObj->exitBackGlassIndex : stationObj->entranceBackGlassIndex) + direction;
     PaintAddImageAsParentRotated(
         session, direction, imageTemplate.WithIndex(imageIndex), { 0, 0, height }, { { 2, 2, height }, { 28, 8, 30 } });
     if (hasGlass)
@@ -180,12 +180,12 @@ static void PaintRideEntranceExit(PaintSession& session, uint8_t direction, int3
 
     // Front
     const auto frontBoundBoxZ = isExit ? 1 : 17;
-    imageIndex += 4;
+    imageIndex += kNumOrthogonalDirections;
     PaintAddImageAsParent(
         session, imageTemplate.WithIndex(imageIndex), { 0, 0, height }, { { 2, 2, height + 30 }, { 28, 28, frontBoundBoxZ } });
     if (hasGlass)
     {
-        glassImageIndex += 4;
+        glassImageIndex += kNumOrthogonalDirections;
         PaintAddImageAsChild(
             session, glassImageTemplate.WithIndex(glassImageIndex), { 0, 0, height },
             { { 2, 2, height + 30 }, { 28, 28, frontBoundBoxZ } });
