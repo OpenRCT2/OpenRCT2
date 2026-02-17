@@ -4981,13 +4981,14 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             auto trackColour = ride->trackColours[0];
-            auto imageId = ImageId(stationObj->entranceBackIndex, trackColour.main, trackColour.additional);
 
             // Back
-            GfxDrawSprite(rt, imageId, { 34, 20 });
+            auto backImageId = ImageId(stationObj->entranceBackIndex, trackColour.main, trackColour.additional);
+            GfxDrawSprite(rt, backImageId, { 34, 20 });
 
             // Front
-            GfxDrawSprite(rt, imageId.WithIndexOffset(kNumOrthogonalDirections), { 34, 20 });
+            auto frontImageId = ImageId(stationObj->entranceFrontIndex, trackColour.main, trackColour.additional);
+            GfxDrawSprite(rt, frontImageId, { 34, 20 });
 
             // Glass
             if (stationObj->Flags & StationObjectFlags::isTransparent)

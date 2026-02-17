@@ -69,29 +69,22 @@ namespace OpenRCT2
         auto colour1 = Drawing::Colour::bordeauxRed;
         auto tcolour0 = colour0;
 
-        auto imageId = ImageId(entranceBackIndex);
-        auto tImageId = ImageId(entranceBackGlassIndex).WithTransparency(tcolour0);
-        if (Flags & StationObjectFlags::hasPrimaryColour)
-        {
-            imageId = imageId.WithPrimary(colour0);
-        }
-        if (Flags & StationObjectFlags::hasSecondaryColour)
-        {
-            imageId = imageId.WithSecondary(colour1);
-        }
-
         // Draw back sprite
-        GfxDrawSprite(rt, imageId, screenCoords);
+        auto backImageId = ImageId(entranceBackIndex, colour0, colour1);
+        GfxDrawSprite(rt, backImageId, screenCoords);
         if (Flags & StationObjectFlags::isTransparent)
         {
+            auto tImageId = ImageId(entranceBackGlassIndex).WithTransparency(tcolour0);
             GfxDrawSprite(rt, tImageId, screenCoords);
         }
 
         // Draw front sprite
-        GfxDrawSprite(rt, imageId.WithIndexOffset(kNumOrthogonalDirections), screenCoords);
+        auto frontImageId = ImageId(entranceFrontIndex, colour0, colour1);
+        GfxDrawSprite(rt, frontImageId, screenCoords);
         if (Flags & StationObjectFlags::isTransparent)
         {
-            GfxDrawSprite(rt, tImageId.WithIndexOffset(kNumOrthogonalDirections), screenCoords);
+            auto frontGlassImageId = ImageId(entranceFrontGlassIndex).WithTransparency(tcolour0);
+            GfxDrawSprite(rt, frontGlassImageId, screenCoords);
         }
     }
 
