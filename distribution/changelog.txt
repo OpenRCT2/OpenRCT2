@@ -6,6 +6,7 @@
 - Improved: [#25941] The command line sprite build command is now faster.
 - Improved: [#26002] Rides with newer track elements (like the zero G roll or diagonal brakes) can now be saved as track designs.
 - Change: [#26011] Audio resampling no longer depends on the third-party library libspeexdsp.
+- Change: [#26049] Increase the threshold for the guest generation penalty for having a high guest count from 7000 to 52000.
 - Fix: [#14686, #23996, #25981] Preview images from different windows overwrite each other when using OpenGL.
 - Fix: [#15128, #15626, #16331, #17443, #18626, #21597, #24175, #24971, #25963] Crash when loading corrupted RCT2/RCT1 save files with duplicate entity indices.
 - Fix: [#25237] Wrong colours on the Knight costume.
