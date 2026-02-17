@@ -186,8 +186,8 @@ namespace OpenRCT2::Park
             }
         }
 
-        // Reduces chance for any more than 7000 guests
-        if (numGuests > 7000)
+        // Reduces chance for any more than 52000 guests
+        if (numGuests > 52000)
         {
             probability /= 4;
         }
