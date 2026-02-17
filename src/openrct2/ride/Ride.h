@@ -408,6 +408,7 @@ public:
     bool isBlockSectioned() const;
     bool canHaveMultipleCircuits() const;
     bool supportsStatus(RideStatus s) const;
+    bool hasFailingBrakes() const;
 
     void stopGuestsQueuing();
     void validateStations();

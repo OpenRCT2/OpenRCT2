@@ -2905,7 +2905,7 @@ void Vehicle::UpdateArriving()
     if (curRide == nullptr)
         return;
 
-    bool stationBrakesWork = true;
+    auto stationBrakesWork = curRide->hasFailingBrakes();
     uint32_t curFlags = 0;
 
     switch (curRide->mode)
@@ -2936,11 +2936,6 @@ void Vehicle::UpdateArriving()
             // This is workaround for multiple compilation errors of type "enumeration value ‘RIDE_MODE_*' not handled
             // in switch [-Werror=switch]"
         }
-    }
-
-    if (hasFailingBrakes(*curRide))
-    {
-        stationBrakesWork = false;
     }
 
     const auto* rideEntry = GetRideEntry();
@@ -5091,12 +5086,6 @@ void Vehicle::UpdateTrackMotionUpStopCheck() const
     }
 }
 
-bool Vehicle::hasFailingBrakes(const Ride& curRide)
-{
-    return curRide.lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN && curRide.breakdownReasonPending == BREAKDOWN_BRAKES_FAILURE
-        && curRide.mechanicStatus != MechanicStatus::hasFixedStationBrakes;
-}
-
 /**
  * Modifies the train's velocity to match the block-brake fixed velocity.
  * This function must be called when the car is running through a non-stopping
@@ -6782,6 +6771,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(
 bool Vehicle::UpdateTrackMotionForwards(const CarEntry* carEntry, const Ride& curRide, const RideObjectEntry& rideEntry)
 {
     EntityId otherVehicleIndex = EntityId::GetNull();
+    auto brakesWork = !curRide.hasFailingBrakes();
     while (true)
     {
         auto trackType = GetTrackType();
@@ -6803,7 +6793,7 @@ bool Vehicle::UpdateTrackMotionForwards(const CarEntry* carEntry, const Ride& cu
         }
         else if (TrackTypeIsBrakes(trackType))
         {
-            if (!hasFailingBrakes(curRide))
+            if (brakesWork)
             {
                 auto brakeSpeed = ChooseBrakeSpeed() << kTrackSpeedShiftAmount;
 

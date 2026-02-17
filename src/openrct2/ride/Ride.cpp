@@ -952,6 +952,12 @@ bool Ride::supportsStatus(RideStatus s) const
     return false;
 }
 
+bool Ride::hasFailingBrakes() const
+{
+    return lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN && breakdownReasonPending == BREAKDOWN_BRAKES_FAILURE
+        && mechanicStatus != MechanicStatus::hasFixedStationBrakes;
+}
+
 #pragma region Initialisation functions
 
 /**

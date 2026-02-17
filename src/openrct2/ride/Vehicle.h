@@ -353,7 +353,6 @@ private:
     void UpdateHandleWaterSplash() const;
     void Claxon() const;
     void UpdateTrackMotionUpStopCheck() const;
-    bool hasFailingBrakes(const Ride& curRide);
     void ApplyNonStopBlockBrake();
     void ApplyStopBlockBrake();
     void ApplyCableLiftBlockBrake(bool brakeClosed);
