@@ -24,31 +24,31 @@ namespace OpenRCT2
         NameStringId = LanguageAllocateObjectString(GetName());
 
         auto numImages = GetImageTable().GetCount();
-        if (numImages != 0)
+        if (numImages == 0)
+            return;
+
+        baseImageIndex = LoadImages();
+
+        entranceBackIndex = baseImageIndex;
+        entranceFrontIndex = baseImageIndex + 4;
+
+        exitBackIndex = baseImageIndex + 8;
+        exitFrontIndex = baseImageIndex + 12;
+
+        if (!(Flags & StationObjectFlags::isTransparent))
         {
-            baseImageIndex = LoadImages();
-
-            entranceBackIndex = baseImageIndex;
-            entranceFrontIndex = baseImageIndex + 4;
-
-            exitBackIndex = baseImageIndex + 8;
-            exitFrontIndex = baseImageIndex + 12;
-
-            if (!(Flags & StationObjectFlags::isTransparent))
-            {
-                shelterIndex = baseImageIndex + 16;
-                return;
-            }
-
-            entranceBackGlassIndex = baseImageIndex + 16;
-            entranceFrontGlassIndex = baseImageIndex + 20;
-
-            exitBackGlassIndex = baseImageIndex + 24;
-            exitFrontGlassIndex = baseImageIndex + 28;
-
-            shelterIndex = baseImageIndex + 32;
-            shelterGlassIndex = baseImageIndex + 44;
+            shelterIndex = baseImageIndex + 16;
+            return;
         }
+
+        entranceBackGlassIndex = baseImageIndex + 16;
+        entranceFrontGlassIndex = baseImageIndex + 20;
+
+        exitBackGlassIndex = baseImageIndex + 24;
+        exitFrontGlassIndex = baseImageIndex + 28;
+
+        shelterIndex = baseImageIndex + 32;
+        shelterGlassIndex = baseImageIndex + 44;
     }
 
     void StationObject::Unload()
