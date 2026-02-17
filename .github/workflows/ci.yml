@@ -695,12 +695,17 @@ jobs:
         uses: actions/download-artifact@v7
         with:
           merge-multiple: false
-      # Having multiple artifacts named the same might be confusing. Drop the unsigned versions.
+      # Only remove unsigned artifacts if signing is enabled, otherwise we might end up with no artifacts at all
       - name: Remove unsigned artifacts and flatten
         run: |
           ls -lR
-          find . -maxdepth 1 -name '*unsigned*' -type d -exec rm -rf {} + 2>/dev/null || true
-          echo "Unsigned artifacts removed"
+          if [[ "${{ needs.build_variables.outputs.sign }}" == "true" ]]; then
+             echo "Signing enabled, removing unsigned artifacts"
+             find . -maxdepth 1 -name '*unsigned*' -type d -exec rm -rf {} + 2>/dev/null || true
+             echo "Unsigned artifacts removed"
+           else
+             echo "Signing not enabled, keeping unsigned artifacts"
+          fi
           # Flatten remaining artifact directories
           find . -maxdepth 2 -type f \( -path './OpenRCT2-*/*' -o -path './graphics-*/*' \) -exec mv {} . \;
           # Clean up empty directories
