@@ -1,0 +1,24 @@
+services:
+  openrct2-dev:
+    build:
+      context: ../..
+      dockerfile: docker/dev/Dockerfile
+      args:
+        USER_UID: ${USER_UID:-1000}
+        USER_GID: ${USER_GID:-1000}
+    working_dir: /workspaces/OpenRCT2
+    volumes:
+      - ../..:/workspaces/OpenRCT2
+      - openrct2-ccache:/home/dev/.ccache
+      - ${RCT2_DATA_PATH:-/tmp/rct2-data}:/opt/rct2-data:ro
+      - ${OPENRCT2_USER_PATH:-/tmp/openrct2-user}:/home/dev/.config/OpenRCT2
+    environment:
+      CCACHE_DIR: /home/dev/.ccache
+      RCT2_DATA_PATH: /opt/rct2-data
+      OPENRCT2_USER_PATH: /home/dev/.config/OpenRCT2
+      DISPLAY: ${DISPLAY:-}
+    stdin_open: true
+    tty: true
+
+volumes:
+  openrct2-ccache:

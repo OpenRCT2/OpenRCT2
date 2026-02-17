@@ -107,41 +107,22 @@
 
     Module.FS.writeFile("/OpenRCT2/changelog.txt", changelog);
 
-    document.getElementById("loadingWebassembly").remove();
-
-    let filesFound = fileExists("/RCT/Data/ch.dat");
+    let filesFound = fileExists("/RCT/Data/ch.dat") && fileExists("/RCT/ObjData/BALLN.DAT");
 
     if (!filesFound)
     {
-        document.getElementById("beforeLoad").style.display = "";
-        await new Promise(res =>
+        document.getElementById("loadingWebassembly").innerText = "Downloading rct2-content.zip...";
+        await extractDefaultRct2Data();
+        filesFound = fileExists("/RCT/Data/ch.dat");
+        if (!filesFound)
         {
-            document.getElementById("selectFile").addEventListener("change", async (e) =>
-            {
-                if (await extractZip(e.target.files[0], (zip) =>
-                {
-                    if (zip !== null)
-                    {
-                        if (zip.file("Data/ch.dat"))
-                        {
-                            document.getElementById("beforeLoad").remove();
-                            return "/RCT/";
-                        }
-                        else if (zip.file("RCT/Data/ch.dat"))
-                        {
-                            document.getElementById("beforeLoad").remove();
-                            return "/";
-                        }
-                    }
-                    document.getElementById("statusMsg").innerText = "That doesn't look right. Your file should be a zip file containing Data/ch.dat. Please select your OpenRCT2 contents (zip file):";
-                    return false;
-                }))
-                {
-                    res();
-                }
-            });
-        });
+            document.getElementById("loadingWebassembly").innerText =
+                "Error! Could not auto-load RCT2 data. Place rct2-content.zip (containing Data/ch.dat and ObjData) next to index.html.";
+            return;
+        }
     }
+
+    document.getElementById("loadingWebassembly").remove();
     Module.canvas.style.display = "";
     Module.callMain(["--user-data-path=/persistent/", "--openrct2-data-path=/OpenRCT2/"]);
 })();
@@ -160,6 +141,17 @@ async function updateAssets() {
     } catch(e) {
         console.warn("Could not call 'GetVersion'! Is it added to EXPORTED_FUNCTIONS? Is ccall added to EXPORTED_RUNTIME_METHODS?");
     };
+
+    // If key files are missing, force a refresh even when version matches.
+    const hasRequiredAssets = fileExists("/OpenRCT2/language/en-US.txt")
+        && fileExists("/OpenRCT2/g2.dat")
+        && fileExists("/OpenRCT2/object/official/footpath_surface/openrct2.footpath_surface.invisible.json")
+        && fileExists("/OpenRCT2/sequence/openrct2.parkseq");
+    if (!hasRequiredAssets)
+    {
+        console.warn("OpenRCT2 data files are incomplete, forcing an asset refresh.");
+        currentVersion = "";
+    }
 
     //Always pull assets on a debug build
     if (currentVersion !== assetsVersion || assetsVersion.includes("DEBUG"))
@@ -187,6 +179,34 @@ async function updateAssets() {
         Module.FS.writeFile("/OpenRCT2/version", assetsVersion.toString());
     }
     return true;
+}
+
+async function extractDefaultRct2Data() {
+    try {
+        const response = await fetch("rct2-content.zip");
+        if (!response.ok) {
+            console.warn(`Failed to fetch rct2-content.zip (status: ${response.status})`);
+            return false;
+        }
+        return await extractZip(await response.blob(), (zip) => {
+            if (zip !== null)
+            {
+                if (zip.file("Data/ch.dat") && zip.file("ObjData/BALLN.DAT"))
+                {
+                    return "/RCT/";
+                }
+                if (zip.file("RCT/Data/ch.dat") && zip.file("RCT/ObjData/BALLN.DAT"))
+                {
+                    return "/";
+                }
+            }
+            console.warn("rct2-content.zip must contain Data/ch.dat and ObjData/BALLN.DAT");
+            return false;
+        });
+    } catch (e) {
+        console.warn("Failed to auto-load rct2-content.zip", e);
+        return false;
+    }
 }
 
 async function extractZip(data, checkZip) {
