@@ -391,7 +391,7 @@
     <ClInclude Include="object\WaterEntry.h" />
     <ClInclude Include="object\WaterObject.h" />
     <ClInclude Include="OpenRCT2.h" />
-    <ClInclude Include="openrct2_pch.h" Condition="'$(UsePCH)'=='true'" />
+    <ClInclude Include="openrct2_pch.h"/>
     <ClInclude Include="paint\Boundbox.h" />
     <ClInclude Include="paint\Paint.Entity.h" />
     <ClInclude Include="paint\Paint.h" />

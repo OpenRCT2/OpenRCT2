@@ -55,11 +55,16 @@ file(GLOB_RECURSE OPENRCT2_UI_HEADERS
 if (APPLE)
     file(GLOB_RECURSE OPENRCT2_UI_MM_SOURCES "${CMAKE_CURRENT_LIST_DIR}/*.mm")
     set_source_files_properties(${OPENRCT2_UI_MM_SOURCES} PROPERTIES COMPILE_FLAGS "-x objective-c++ -fmodules")
+    # Disable PCH for Objective-C++ files to avoid language mismatch
+    set_source_files_properties(${OPENRCT2_UI_MM_SOURCES} PROPERTIES SKIP_PRECOMPILE_HEADERS ON)
 endif ()
 
 # Outputs
 add_executable(openrct2 ${OPENRCT2_UI_SOURCES} ${OPENRCT2_UI_MM_SOURCES})
 add_executable(OpenRCT2::openrct2 ALIAS openrct2)
+
+# Enable precompiled headers
+target_precompile_headers(openrct2 PRIVATE "${CMAKE_CURRENT_LIST_DIR}/openrct2ui_pch.h")
 
 SET_CHECK_CXX_FLAGS(openrct2)
 ipo_set_target_properties(openrct2)

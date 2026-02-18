@@ -5,6 +5,8 @@ file(GLOB_RECURSE OPENRCT2_CORE_HEADERS "${CMAKE_CURRENT_LIST_DIR}/*.h"
 if (APPLE)
     file(GLOB_RECURSE OPENRCT2_CORE_MM_SOURCES "${CMAKE_CURRENT_LIST_DIR}/*.mm")
     set_source_files_properties(${OPENRCT2_CORE_MM_SOURCES} PROPERTIES COMPILE_FLAGS "-x objective-c++ -fmodules")
+    # Disable PCH for Objective-C++ files to avoid language mismatch
+    set_source_files_properties(${OPENRCT2_CORE_MM_SOURCES} PROPERTIES SKIP_PRECOMPILE_HEADERS ON)
 endif ()
 
 if (ENABLE_SCRIPTING)
@@ -31,12 +33,21 @@ endif()
 add_library(libopenrct2 ${LIBOPENRCT2_LINKAGE} ${OPENRCT2_CORE_SOURCES} ${OPENRCT2_CORE_MM_SOURCES} ${OPENRCT2_DUKTAPE_SOURCES})
 add_library(OpenRCT2::libopenrct2 ALIAS libopenrct2)
 
+# Enable precompiled headers
+target_precompile_headers(libopenrct2 PRIVATE "${CMAKE_CURRENT_LIST_DIR}/openrct2_pch.h")
+
 if (CMAKE_COMPILER_IS_GNUCXX AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS "13")
 	message(WARNING "Buggy GCC 12 detected! Disabling some warnings")
 	set_source_files_properties("${CMAKE_CURRENT_LIST_DIR}/localisation/FormatCodes.cpp" PROPERTIES COMPILE_FLAGS "-Wno-restrict")
 	set_source_files_properties("${CMAKE_CURRENT_LIST_DIR}/platform/Platform.Posix.cpp" PROPERTIES COMPILE_FLAGS "-Wno-restrict")
 	set_source_files_properties("${CMAKE_CURRENT_LIST_DIR}/ride/Ride.cpp" PROPERTIES COMPILE_FLAGS "-Wno-null-dereference")
 	set_source_files_properties("${CMAKE_CURRENT_LIST_DIR}/scenario/Scenario.cpp" PROPERTIES COMPILE_FLAGS "-Wno-restrict")
+endif()
+if (CMAKE_COMPILER_IS_GNUCXX AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL "13")
+	message(WARNING "GCC 13+ detected! Disabling stringop-overflow false positives")
+	set_source_files_properties("${CMAKE_CURRENT_LIST_DIR}/localisation/FormatCodes.cpp" PROPERTIES COMPILE_FLAGS "-Wno-stringop-overflow")
+	set_source_files_properties("${CMAKE_CURRENT_LIST_DIR}/platform/Platform.Posix.cpp" PROPERTIES COMPILE_FLAGS "-Wno-stringop-overflow")
+	set_source_files_properties("${CMAKE_CURRENT_LIST_DIR}/scenario/Scenario.cpp" PROPERTIES COMPILE_FLAGS "-Wno-stringop-overflow")
 endif()
 if (APPLE)
     target_link_platform_libraries(libopenrct2)
@@ -276,6 +287,9 @@ endif()
 if((X86 OR X86_64) AND NOT MSVC AND NOT EMSCRIPTEN)
     set_source_files_properties(${CMAKE_CURRENT_LIST_DIR}/drawing/SSE41Drawing.cpp PROPERTIES COMPILE_FLAGS -msse4.1)
     set_source_files_properties(${CMAKE_CURRENT_LIST_DIR}/drawing/AVX2Drawing.cpp PROPERTIES COMPILE_FLAGS -mavx2)
+    # Disable PCH for SIMD files to avoid CPU flag mismatch with PCH AST
+    set_source_files_properties(${CMAKE_CURRENT_LIST_DIR}/drawing/SSE41Drawing.cpp PROPERTIES SKIP_PRECOMPILE_HEADERS ON)
+    set_source_files_properties(${CMAKE_CURRENT_LIST_DIR}/drawing/AVX2Drawing.cpp PROPERTIES SKIP_PRECOMPILE_HEADERS ON)
 endif()
 
 # Add headers check to verify all headers carry their dependencies.
