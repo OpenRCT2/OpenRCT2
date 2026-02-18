@@ -2905,7 +2905,6 @@ void Vehicle::UpdateArriving()
     if (curRide == nullptr)
         return;
 
-    auto stationBrakesWork = curRide->hasFailingBrakes();
     uint32_t curFlags = 0;
 
     switch (curRide->mode)
@@ -2937,6 +2936,8 @@ void Vehicle::UpdateArriving()
             // in switch [-Werror=switch]"
         }
     }
+
+    auto stationBrakesWork = curRide->hasFailingBrakes();
 
     const auto* rideEntry = GetRideEntry();
     const auto& carEntry = rideEntry->Cars[vehicle_type];
@@ -6771,7 +6772,6 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(
 bool Vehicle::UpdateTrackMotionForwards(const CarEntry* carEntry, const Ride& curRide, const RideObjectEntry& rideEntry)
 {
     EntityId otherVehicleIndex = EntityId::GetNull();
-    auto brakesWork = !curRide.hasFailingBrakes();
     while (true)
     {
         auto trackType = GetTrackType();
@@ -6793,7 +6793,7 @@ bool Vehicle::UpdateTrackMotionForwards(const CarEntry* carEntry, const Ride& cu
         }
         else if (TrackTypeIsBrakes(trackType))
         {
-            if (brakesWork)
+            if (!curRide.hasFailingBrakes())
             {
                 auto brakeSpeed = ChooseBrakeSpeed() << kTrackSpeedShiftAmount;
 
