@@ -847,7 +847,7 @@ declare global {
         /** 0 if flat, 1 if sloped */
         slopeType: number; // 
         /** direction if sloped, otherwise ignored */
-        slopeDirection: number;
+        slopeDirection: Direction;
         constructFlags: number;
     }
 
