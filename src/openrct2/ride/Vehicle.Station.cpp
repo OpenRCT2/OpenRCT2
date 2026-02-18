@@ -1604,7 +1604,6 @@ void Vehicle::UpdateArriving()
     if (curRide == nullptr)
         return;
 
-    bool stationBrakesWork = true;
     uint32_t curFlags = 0;
 
     switch (curRide->mode)
@@ -1637,13 +1636,7 @@ void Vehicle::UpdateArriving()
         }
     }
 
-    bool hasBrakesFailure = curRide->lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN
-        && curRide->breakdownReasonPending == BREAKDOWN_BRAKES_FAILURE;
-    if (hasBrakesFailure && curRide->inspectionStation == current_station
-        && curRide->mechanicStatus != MechanicStatus::hasFixedStationBrakes)
-    {
-        stationBrakesWork = false;
-    }
+    auto stationBrakesWork = !curRide->hasFailingBrakes();
 
     const auto* rideEntry = GetRideEntry();
     const auto& carEntry = rideEntry->Cars[vehicle_type];

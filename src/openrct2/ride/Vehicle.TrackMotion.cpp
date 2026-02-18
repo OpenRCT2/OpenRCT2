@@ -795,9 +795,7 @@ bool Vehicle::UpdateTrackMotionForwards(const CarEntry* carEntry, const Ride& cu
         }
         else if (TrackTypeIsBrakes(trackType))
         {
-            bool hasBrakesFailure = curRide.lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN
-                && curRide.breakdownReasonPending == BREAKDOWN_BRAKES_FAILURE;
-            if (!hasBrakesFailure || curRide.mechanicStatus == MechanicStatus::hasFixedStationBrakes)
+            if (!curRide.hasFailingBrakes())
             {
                 auto brakeSpeed = ChooseBrakeSpeed() << kTrackSpeedShiftAmount;
 
