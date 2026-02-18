@@ -383,7 +383,7 @@ static void ride_ratings_update_state_2(RideRating::UpdateState& state)
         if (tileElement->AsTrack()->GetRideIndex() != ride->id)
         {
             // Only check that the track belongs to the same ride if ride does not have buildable track
-            if (!ride->getRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
+            if (!ride->getRideTypeDescriptor().flags.has(RtdFlag::hasTrack))
                 continue;
         }
 
@@ -488,7 +488,7 @@ static void ride_ratings_update_state_5(RideRating::UpdateState& state)
         if (tileElement->AsTrack()->GetRideIndex() != ride->id)
         {
             // Only check that the track belongs to the same ride if ride does not have buildable track
-            if (!ride->getRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
+            if (!ride->getRideTypeDescriptor().flags.has(RtdFlag::hasTrack))
                 continue;
         }
 
@@ -1273,10 +1273,10 @@ static void RideRatingsApplyAdjustments(const Ride& ride, RideRating::Tuple& rat
 
     // Apply total air time
 #ifdef ORIGINAL_RATINGS
-    if (ride.getRideTypeDescriptor().HasFlag(RtdFlag::hasAirTime))
+    if (ride.getRideTypeDescriptor().flags.has(RtdFlag::hasAirTime))
     {
         uint16_t totalAirTime = ride.totalAirTime;
-        if (rideEntry->flags & RIDE_ENTRY_FLAG_LIMIT_AIRTIME_BONUS)
+        if (rideEntry->flags.has(RideEntryFlag::limitAirTimeBonus))
         {
             if (totalAirTime >= 96)
             {
@@ -1292,10 +1292,10 @@ static void RideRatingsApplyAdjustments(const Ride& ride, RideRating::Tuple& rat
         }
     }
 #else
-    if (ride.getRideTypeDescriptor().HasFlag(RtdFlag::hasAirTime))
+    if (ride.getRideTypeDescriptor().flags.has(RtdFlag::hasAirTime))
     {
         int32_t excitementModifier;
-        if (rideEntry->flags & RIDE_ENTRY_FLAG_LIMIT_AIRTIME_BONUS)
+        if (rideEntry->flags.has(RideEntryFlag::limitAirTimeBonus))
         {
             // Limit airtime bonus for heartline twister coaster (see issues #2031 and #2064)
             excitementModifier = std::min<uint16_t>(ride.totalAirTime, 96) / 8;
@@ -1337,15 +1337,15 @@ static void SetUnreliabilityFactor(Ride& ride)
 {
     const auto& rtd = ride.getRideTypeDescriptor();
     // Special unreliability for a few ride types
-    if (rtd.HasFlag(RtdFlag::reverseInclineLaunchAffectsReliability) && ride.mode == RideMode::reverseInclineLaunchedShuttle)
+    if (rtd.flags.has(RtdFlag::reverseInclineLaunchAffectsReliability) && ride.mode == RideMode::reverseInclineLaunchedShuttle)
     {
         ride.unreliabilityFactor += 10;
     }
-    else if (rtd.HasFlag(RtdFlag::poweredLaunchAffectsReliability) && ride.isPoweredLaunched())
+    else if (rtd.flags.has(RtdFlag::poweredLaunchAffectsReliability) && ride.isPoweredLaunched())
     {
         ride.unreliabilityFactor += 5;
     }
-    else if (rtd.HasFlag(RtdFlag::runningSpeedAffectsReliability))
+    else if (rtd.flags.has(RtdFlag::runningSpeedAffectsReliability))
     {
         ride.unreliabilityFactor += (ride.speed * 2);
     }
@@ -1436,7 +1436,7 @@ static ShelteredEights GetNumOfShelteredEighths(const Ride& ride)
     {
         return { 0, 0 };
     }
-    if (rideType->flags & RIDE_ENTRY_FLAG_COVERED_RIDE)
+    if (rideType->flags.has(RideEntryFlag::isACoveredRide))
         numShelteredEighths = 7;
 
     return { trackShelteredEighths, numShelteredEighths };

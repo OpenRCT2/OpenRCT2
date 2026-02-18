@@ -661,7 +661,7 @@ namespace OpenRCT2::RCT2
                 auto subtype = RCTEntryIndexToOpenRCT2EntryIndex(src->subtype);
                 auto* rideEntry = GetRideEntryByIndex(subtype);
                 // If the ride is tracked, we don’t need to check the vehicle any more.
-                if (!GetRideTypeDescriptor(src->type).HasFlag(RtdFlag::isFlatRide))
+                if (!GetRideTypeDescriptor(src->type).flags.has(RtdFlag::isFlatRide))
                 {
                     _isFlatRide[index] = false;
                     continue;
@@ -674,7 +674,7 @@ namespace OpenRCT2::RCT2
                 {
                     originalRideType = rideEntry->GetFirstNonNullRideType();
                 }
-                const auto isFlatRide = GetRideTypeDescriptor(originalRideType).HasFlag(RtdFlag::isFlatRide);
+                const auto isFlatRide = GetRideTypeDescriptor(originalRideType).flags.has(RtdFlag::isFlatRide);
                 _isFlatRide.set(static_cast<size_t>(index), isFlatRide);
             }
         }
@@ -968,7 +968,7 @@ namespace OpenRCT2::RCT2
             }
 
             auto musicStyle = kObjectEntryIndexNull;
-            if (GetRideTypeDescriptor(dst->type).HasFlag(RtdFlag::allowMusic))
+            if (GetRideTypeDescriptor(dst->type).flags.has(RtdFlag::allowMusic))
             {
                 musicStyle = src->music;
             }
@@ -1292,7 +1292,7 @@ namespace OpenRCT2::RCT2
                     }
 
                     // Set last element flag in case the original last element was never added
-                    if (tileElements.size() > 0)
+                    if (!tileElements.empty())
                     {
                         tileElements.back().SetLastForTile(true);
                     }
@@ -1651,6 +1651,9 @@ namespace OpenRCT2::RCT2
         {
             for (int32_t i = 0; i < GetMaxEntities(); i++)
             {
+                // Make sure the EntityIndex matches the array position to handle corrupted saves where duplicate or invalid
+                // indices would cause CreateEntityAt to fail
+                _s6.Entities[i].Unknown.EntityIndex = static_cast<uint16_t>(i);
                 ImportEntity(gameState, _s6.Entities[i].Unknown);
             }
         }
@@ -2023,7 +2026,7 @@ namespace OpenRCT2::RCT2
         dst->next_vehicle_on_ride = EntityId::FromUnderlying(src->NextVehicleOnRide);
         dst->var_44 = src->Var44;
         dst->mass = src->Mass;
-        dst->Flags = src->UpdateFlags;
+        dst->flags.holder = src->UpdateFlags;
         dst->SwingSprite = src->SwingSprite;
         dst->current_station = StationIndex::FromUnderlying(src->CurrentStation);
         dst->current_time = src->CurrentTime;
@@ -2068,13 +2071,13 @@ namespace OpenRCT2::RCT2
         dst->vertical_drop_countdown = src->VerticalDropCountdown;
         dst->var_D3 = src->VarD3;
         dst->mini_golf_current_animation = MiniGolfAnimation(src->MiniGolfCurrentAnimation);
-        dst->mini_golf_flags = src->MiniGolfFlags;
+        dst->miniGolfFlags.holder = src->MiniGolfFlags;
         dst->ride_subtype = RCTEntryIndexToOpenRCT2EntryIndex(src->RideSubtype);
         dst->seat_rotation = src->SeatRotation;
         dst->target_seat_rotation = src->TargetSeatRotation;
         if (src->Flags & RCT12_ENTITY_FLAGS_IS_CRASHED_VEHICLE_ENTITY)
         {
-            dst->SetFlag(VehicleFlags::Crashed);
+            dst->flags.set(VehicleFlag::crashed);
         }
         dst->BlockBrakeSpeed = kRCT2DefaultBlockBrakeSpeed;
     }

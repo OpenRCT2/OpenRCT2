@@ -613,7 +613,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (item.Type < 0x80)
             {
-                if (GetRideTypeDescriptor(item.Type).HasFlag(RtdFlag::listVehiclesSeparately))
+                if (GetRideTypeDescriptor(item.Type).flags.has(RtdFlag::listVehiclesSeparately))
                 {
                     entryName = GetRideEntryName(item.EntryIndex);
                 }
@@ -628,7 +628,7 @@ namespace OpenRCT2::Ui::Windows
         void UpdateVehicleAvailability(ride_type_t rideType)
         {
             _vehicleAvailability.clear();
-            if (GetRideTypeDescriptor(rideType).HasFlag(RtdFlag::listVehiclesSeparately))
+            if (GetRideTypeDescriptor(rideType).flags.has(RtdFlag::listVehiclesSeparately))
             {
                 return;
             }
@@ -712,7 +712,7 @@ namespace OpenRCT2::Ui::Windows
 
                 // Skip if the vehicle isn't the preferred vehicle for this generic track type
                 if (!Config::Get().interface.listRideVehiclesSeparately
-                    && !GetRideTypeDescriptor(rideType).HasFlag(RtdFlag::listVehiclesSeparately)
+                    && !GetRideTypeDescriptor(rideType).flags.has(RtdFlag::listVehiclesSeparately)
                     && highestVehiclePriority > rideObj->GetEntry().BuildMenuPriority)
                 {
                     continue;
@@ -727,7 +727,7 @@ namespace OpenRCT2::Ui::Windows
 
                 // Determines how and where to draw a button for this ride type/vehicle.
                 if (Config::Get().interface.listRideVehiclesSeparately
-                    || GetRideTypeDescriptor(rideType).HasFlag(RtdFlag::listVehiclesSeparately))
+                    || GetRideTypeDescriptor(rideType).flags.has(RtdFlag::listVehiclesSeparately))
                 {
                     // Separate, draw apart
                     allowDrawingOverLastButton = false;
@@ -997,7 +997,7 @@ namespace OpenRCT2::Ui::Windows
 
                 //
                 StringId stringId = STR_NEW_RIDE_COST;
-                if (GetRideTypeDescriptor(item.Type).HasFlag(RtdFlag::hasTrack))
+                if (GetRideTypeDescriptor(item.Type).flags.has(RtdFlag::hasTrack))
                     stringId = STR_NEW_RIDE_COST_FROM;
 
                 ft = Formatter();

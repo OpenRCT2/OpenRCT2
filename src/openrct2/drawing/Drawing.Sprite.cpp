@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "Drawing.h"
+#include "Drawing.Sprite.h"
 
 #include "../Context.h"
 #include "../Diagnostic.h"
@@ -22,6 +22,7 @@
 #include "../platform/Platform.h"
 #include "../rct1/Csg.h"
 #include "../ui/UiContext.h"
+#include "Drawing.h"
 #include "ScrollingText.h"
 
 #include <cassert>
@@ -391,15 +392,15 @@ static void ReadAndConvertGxDat(IStream* stream, size_t count, bool is_rctc, G1E
 }
 
 void MaskScalar(
-    int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,
-    int32_t maskWrap, int32_t colourWrap, int32_t dstWrap)
+    int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc,
+    PaletteIndex* RESTRICT dst, int32_t maskWrap, int32_t colourWrap, int32_t dstWrap)
 {
     for (int32_t yy = 0; yy < height; yy++)
     {
         for (int32_t xx = 0; xx < width; xx++)
         {
-            uint8_t colour = (*colourSrc) & (*maskSrc);
-            if (colour != 0)
+            auto colour = static_cast<PaletteIndex>((*colourSrc) & (*maskSrc));
+            if (colour != PaletteIndex::transparent)
             {
                 *dst = colour;
             }
@@ -416,7 +417,7 @@ void MaskScalar(
 
 static void MaskMagnify(
     const ZoomLevel zoom, int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc,
-    uint8_t* RESTRICT dst, int32_t maskStride, int32_t colourStride, int32_t dstStride, int32_t srcX, int32_t srcY)
+    PaletteIndex* RESTRICT dst, int32_t maskStride, int32_t colourStride, int32_t dstStride, int32_t srcX, int32_t srcY)
 {
     for (int32_t y = 0; y < height; y++)
     {
@@ -425,8 +426,8 @@ static void MaskMagnify(
         {
             auto srcMask = maskSrc + (maskStride * zoom.ApplyTo(srcY + y) + zoom.ApplyTo(srcX + x));
             auto srcColour = colourSrc + (colourStride * zoom.ApplyTo(srcY + y) + zoom.ApplyTo(srcX + x));
-            const uint8_t colour = (*srcColour) & (*srcMask);
-            if (colour != 0)
+            const auto colour = static_cast<PaletteIndex>((*srcColour) & (*srcMask));
+            if (colour != PaletteIndex::transparent)
             {
                 *dst = colour;
             }
@@ -444,7 +445,7 @@ static Gx _csg = {};
 static G1Element _scrollingText[ScrollingText::kMaxEntries]{};
 static bool _csgLoaded = false;
 
-static G1Element _g1Temp = {};
+static G1Element _g1Temp[kTempSpriteCount] = {};
 static std::vector<G1Element> _imageListElements;
 
 /**
@@ -823,7 +824,7 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
         const int32_t offsetY = rt.y - spriteTopLeft.y;
         const int32_t srcX = std::max(0, offsetX);
         const int32_t srcY = std::max(0, offsetY);
-        uint8_t* dst = rt.bits + std::max(0, -offsetX) + std::max(0, -offsetY) * rt.LineStride();
+        PaletteIndex* dst = rt.bits + std::max(0, -offsetX) + std::max(0, -offsetY) * rt.LineStride();
 
         DrawSpriteArgs args(imageId, paletteMap, *g1, srcX, srcY, width, height, dst);
         GfxSpriteToBuffer(rt, args);
@@ -940,7 +941,7 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
 
     dest_start_x = zoomLevel.ApplyInversedTo(dest_start_x);
 
-    uint8_t* dest_pointer = rt.bits;
+    PaletteIndex* dest_pointer = rt.bits;
     // Move the pointer to the start point of the destination
     dest_pointer += (zoomLevel.ApplyInversedTo(rt.WorldWidth()) + rt.pitch) * dest_start_y + dest_start_x;
 
@@ -1007,7 +1008,7 @@ void FASTCALL GfxDrawSpriteRawMaskedSoftware(
     if (width < 0 || height < 0)
         return;
 
-    uint8_t* dst = rt.bits + (left - rt.x) + ((top - rt.y) * rt.LineStride());
+    PaletteIndex* dst = rt.bits + (left - rt.x) + ((top - rt.y) * rt.LineStride());
     int32_t skipX = left - offsetCoords.x;
     int32_t skipY = top - offsetCoords.y;
     if (zoom < ZoomLevel{ 0 })
@@ -1043,9 +1044,9 @@ const G1Element* GfxGetG1Element(ImageIndex image_id)
         return nullptr;
     }
 
-    if (offset == SPR_TEMP)
+    if (offset >= SPR_TEMP_BEGIN && offset < SPR_TEMP_END)
     {
-        return &_g1Temp;
+        return &_g1Temp[offset - SPR_TEMP_BEGIN];
     }
 
     if (offset < SPR_RCTC_G1_END)
@@ -1138,7 +1139,7 @@ const G1Palette* GfxGetG1Palette(ImageIndex imageId)
 
 void GfxSetG1Element(ImageIndex imageId, const G1Element* g1)
 {
-    bool isTemp = imageId == SPR_TEMP;
+    bool isTemp = (imageId >= SPR_TEMP_BEGIN && imageId < SPR_TEMP_END);
     bool isValid = (imageId >= SPR_IMAGE_LIST_BEGIN && imageId < SPR_IMAGE_LIST_END)
         || (imageId >= SPR_SCROLLING_TEXT_START && imageId < SPR_SCROLLING_TEXT_END);
 
@@ -1152,7 +1153,7 @@ void GfxSetG1Element(ImageIndex imageId, const G1Element* g1)
     {
         if (isTemp)
         {
-            _g1Temp = *g1;
+            _g1Temp[imageId - SPR_TEMP_BEGIN] = *g1;
         }
         else if (isValid)
         {

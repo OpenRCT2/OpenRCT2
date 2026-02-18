@@ -556,7 +556,6 @@ STR_1168    :Options
 STR_1169    :(Aucun)
 STR_1170    :{STRING}
 STR_1171    :{RED}Fermé
-STR_1172    :{YELLOW}{STRINGID}
 STR_1173    :Construire des allées et des files d’attentes
 STR_1174    :Panneau d’affichage sur le passage
 STR_1175    :Impossible de construire ceci sur une allée en pente
@@ -1114,7 +1113,6 @@ STR_1727    :Les droits de construction ne sont pas à vendre !
 STR_1728    :Impossible d’acheter les droits de construction ici…
 STR_1729    :Ce terrain n’appartient pas au parc !
 STR_1730    :{RED}Fermé
-STR_1731    :{WHITE}{STRINGID} - - 
 STR_1732    :Construction
 STR_1733    :Mode
 STR_1734    :{WINDOW_COLOUR_2}Nombre de tours :
@@ -1155,7 +1153,6 @@ STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COM
 STR_1773    :Une seule section photo sur le vif autorisée par attraction
 STR_1774    :Une seule remontée à chaîne autorisée par attraction
 STR_1777    :Musique de l’attraction
-STR_1778    :{STRINGID} - - 
 STR_1790    :Sélectionnez la couleur de l’uniforme pour ce type d’employé
 STR_1791    :{WINDOW_COLOUR_2}Couleur d’uniforme :
 STR_1792    :Va réparer {STRINGID}

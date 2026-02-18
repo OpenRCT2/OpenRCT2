@@ -27,6 +27,7 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::SawyerCoding;
 using OpenRCT2::RCT12::TD46MazeElement;
+using OpenRCT2::RCT12::TD46TrackElement;
 using OpenRCT2::RCT12::TD46Version;
 
 namespace OpenRCT2::RCT1
@@ -78,6 +79,7 @@ namespace OpenRCT2::RCT1
             {
                 throw IOException("Version number incorrect.");
             }
+            td->version = version;
             _stream.SetPosition(0);
 
             if (version == TD46Version::td4AA)
@@ -89,6 +91,35 @@ namespace OpenRCT2::RCT1
         }
 
     private:
+        void importMazeElements(TrackDesign& td)
+        {
+            TD46MazeElement t4MazeElement;
+            while (true)
+            {
+                _stream.Read(&t4MazeElement, sizeof(TD46MazeElement));
+                if (t4MazeElement.all == 0)
+                {
+                    break;
+                }
+
+                importMazeElement(td, t4MazeElement);
+            }
+        }
+
+        void importTrackElements(TrackDesign& td)
+        {
+            TD46TrackElement t4TrackElement{};
+            for (uint8_t endFlag = _stream.ReadValue<uint8_t>(); endFlag != 0xFF; endFlag = _stream.ReadValue<uint8_t>())
+            {
+                _stream.SetPosition(_stream.GetPosition() - 1);
+                _stream.Read(&t4TrackElement, sizeof(TD46TrackElement));
+                TrackDesignTrackElement trackElement{};
+                trackElement.type = RCT1TrackTypeToOpenRCT2(t4TrackElement.type, td.trackAndVehicle.rtdIndex);
+                RCT12::convertFromTD46Flags(trackElement, t4TrackElement.flags, td.version);
+                td.trackElements.push_back(trackElement);
+            }
+        }
+
         std::unique_ptr<TrackDesign> ImportAA()
         {
             std::unique_ptr<TrackDesign> td = std::make_unique<TrackDesign>();
@@ -247,30 +278,11 @@ namespace OpenRCT2::RCT1
             const auto& rtd = GetRideTypeDescriptor(td->trackAndVehicle.rtdIndex);
             if (rtd.specialType == RtdSpecialType::maze)
             {
-                TD46MazeElement t4MazeElement;
-                while (true)
-                {
-                    _stream.Read(&t4MazeElement, sizeof(TD46MazeElement));
-                    if (t4MazeElement.all == 0)
-                    {
-                        break;
-                    }
-
-                    importMazeElement(*td, t4MazeElement);
-                }
+                importMazeElements(*td);
             }
             else
             {
-                TD46TrackElement t4TrackElement{};
-                for (uint8_t endFlag = _stream.ReadValue<uint8_t>(); endFlag != 0xFF; endFlag = _stream.ReadValue<uint8_t>())
-                {
-                    _stream.SetPosition(_stream.GetPosition() - 1);
-                    _stream.Read(&t4TrackElement, sizeof(TD46TrackElement));
-                    TrackDesignTrackElement trackElement{};
-                    trackElement.type = RCT1TrackTypeToOpenRCT2(t4TrackElement.Type, td->trackAndVehicle.rtdIndex);
-                    RCT12::convertFromTD46Flags(trackElement, t4TrackElement.Flags);
-                    td->trackElements.push_back(trackElement);
-                }
+                importTrackElements(*td);
             }
 
             td->gameStateData.name = _name;

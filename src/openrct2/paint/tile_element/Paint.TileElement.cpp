@@ -30,8 +30,14 @@
 #include "../Paint.SessionFlags.h"
 #include "../Paint.h"
 #include "../VirtualFloor.h"
+#include "Paint.Banner.h"
+#include "Paint.Entrance.h"
+#include "Paint.LargeScenery.h"
 #include "Paint.Path.h"
+#include "Paint.SmallScenery.h"
 #include "Paint.Surface.h"
+#include "Paint.Track.h"
+#include "Paint.Wall.h"
 #include "Segment.h"
 
 using namespace OpenRCT2;

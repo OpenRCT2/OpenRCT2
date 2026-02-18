@@ -28,11 +28,12 @@ constexpr RideTypeDescriptor MiniRollerCoasterRTD =
         .extraTrackGroups = {TrackGroup::booster, TrackGroup::liftHillCurved},
     }),
     .InvertedTrackPaintFunctions = {},
-    .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt | 
-        EnumsToFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::checkGForces, 
+    .flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt |
+        RtdFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::checkGForces,
                      RtdFlag::allowMultipleCircuits, RtdFlag::allowReversedTrains),
     .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned),
     .DefaultMode = RideMode::continuousCircuit,
+    .OperatingSettings = { 5, 27 },
     .BoosterSettings = { 0, 68 },
     .LegacyBoosterSettings = { 0, 68, 4 },
     .Naming = { STR_RIDE_NAME_MINI_ROLLER_COASTER, STR_RIDE_DESCRIPTION_MINI_ROLLER_COASTER },
@@ -56,7 +57,7 @@ constexpr RideTypeDescriptor MiniRollerCoasterRTD =
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_MINI_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_MINI_ROLLER_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,
     .Name = "mini_rc",
-    .RatingsData = 
+    .RatingsData =
     {
         RatingsCalculationType::Normal,
         { RideRating::make(2, 55), RideRating::make(2, 40), RideRating::make(1, 85) },

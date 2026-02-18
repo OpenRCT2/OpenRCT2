@@ -556,7 +556,6 @@ STR_1168    :选项
 STR_1169    :（无）
 STR_1170    :{STRING}
 STR_1171    :{RED}已关闭
-STR_1172    :{YELLOW}{STRINGID}
 STR_1173    :建造道路和队列线
 STR_1174    :被横幅挡住了
 STR_1175    :不能在倾斜的小径上建造这个
@@ -1113,7 +1112,6 @@ STR_1727    :建筑权不供购买！
 STR_1728    :不能在此购买建权……
 STR_1729    :非游乐园所属地块！
 STR_1730    :{RED}已关闭
-STR_1731    :{WHITE}{STRINGID}——- 
 STR_1732    :建造
 STR_1733    :模式
 STR_1734    :{WINDOW_COLOUR_2}圈数：
@@ -1154,7 +1152,6 @@ STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COM
 STR_1773    :每个游乐设施只能建造一个照相区域
 STR_1774    :每个游乐设施只能建造一个牵引轨道
 STR_1777    :设施音乐
-STR_1778    :{STRINGID} - - 
 STR_1790    :选择这种员工的制服颜色
 STR_1791    :{WINDOW_COLOUR_2}制服的颜色：
 STR_1792    :正在回应{STRINGID}的故障呼叫

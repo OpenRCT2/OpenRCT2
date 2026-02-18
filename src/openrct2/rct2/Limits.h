@@ -31,6 +31,8 @@ namespace OpenRCT2::RCT2::Limits
     constexpr uint16_t kMaxResearchItems = 500;
 
     constexpr uint16_t kTD6MaxTrackElements = 8192;
+    constexpr uint16_t kTD6MaxMazeElements = 2000;
+    constexpr uint16_t kTD6MaxSceneryElements = 1500;
 
     constexpr uint8_t kMaxSmallSceneryObjects = 252;
     constexpr uint8_t kMaxLargeSceneryObjects = 128;

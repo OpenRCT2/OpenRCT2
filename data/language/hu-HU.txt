@@ -556,7 +556,6 @@ STR_1168    :Beállítások
 STR_1169    :(semmi)
 STR_1170    :{STRING}
 STR_1171    :{RED}Zárva
-STR_1172    :{YELLOW}{STRINGID}
 STR_1173    :Utak és várósorok építése
 STR_1174    :Egy hirdetőtábla útban van
 STR_1175    :Nem építhető lejtős úton
@@ -1113,7 +1112,6 @@ STR_1727    :Az építési jogok nem eladóak!
 STR_1728    :Itt nem lehet építési jogokat vásárolni…
 STR_1729    :A terület nem a park tulajdona!
 STR_1730    :{RED}Zárva
-STR_1731    :{WHITE}{STRINGID} - - 
 STR_1732    :Építés
 STR_1733    :Mód
 STR_1734    :{WINDOW_COLOUR_2}Körök száma:
@@ -1154,7 +1152,6 @@ STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COM
 STR_1773    :Csak egy élményfotó-szakasz engedélyezett játékonként
 STR_1774    :Csak egy kábeles felvonószakasz engedélyezett játékonként
 STR_1777    :Játékok zenéje
-STR_1778    :{STRINGID} - - 
 STR_1790    :A választott típusú alkalmazottak által viselt egyenruha színének kiválasztása
 STR_1791    :{WINDOW_COLOUR_2}Egyenruha színe:
 STR_1792    :{STRINGID} segélykérésére válaszol

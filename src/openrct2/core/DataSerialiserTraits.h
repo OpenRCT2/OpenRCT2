@@ -178,7 +178,7 @@ struct DataSerializerTraitsT<std::string>
     static void log(OpenRCT2::IStream* stream, const std::string& str)
     {
         stream->Write("\"", 1);
-        if (str.size() != 0)
+        if (!str.empty())
         {
             stream->Write(str.data(), str.size());
         }
@@ -703,7 +703,7 @@ struct DataSerializerTraitsT<TrackDesignTrackElement>
     static void log(OpenRCT2::IStream* stream, const TrackDesignTrackElement& val)
     {
         char msg[128] = {};
-        snprintf(msg, sizeof(msg), "TrackDesignTrackElement(type = %d, flags = %d)", EnumValue(val.type), val.flags);
+        snprintf(msg, sizeof(msg), "TrackDesignTrackElement(type = %d, flags = %d)", EnumValue(val.type), val.flags.holder);
         stream->Write(msg, strlen(msg));
     }
 };

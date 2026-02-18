@@ -1,3 +1,36 @@
+openrct2 (0.4.31-develop-1) unstable; urgency=medium
+
+ * Feature: [#25844] The sprite builder now also supports adding JSON-based palettes.
+ * Improved: [#3788] Self-intersecting track designs can now be placed.
+ * Improved: [#25719] The weather change dropdown now shows icons next to the weather types for easier selection.
+ * Improved: [#25765] The ‘View options’ and ‘Special track elements’ dropdowns no longer need click-and-hold.
+ * Improved: [#25858] macOS now supports the onboarding menu.
+ * Improved: [#25882] Maze construction now auto-removes trees.
+ * Improved: [objects#421] The vehicle tab of some rides now shows more of the vehicle.
+ * Change: [#25018] Add upkeep cost to booster pieces.
+ * Fix: [#4643, #25167] Many metal supports draw with a filled in top when they didn’t in vanilla, causing some slight misalignment and glitching.
+ * Fix: [#15009] Landscaping tools do not display estimates when the game is paused (original bug).
+ * Fix: [#18441] Replacing footpaths sometimes results in a spurious “Footpath in the way” error (original bug).
+ * Fix: [#20620] In-game console caret does not update when pasting.
+ * Fix: [#20652] Twister Roller Coaster design ‘u(0241)’ has no preview and cannot be built (bug in track design).
+ * Fix: [#23859] Wrong banner text displayed after loading a different park.
+ * Fix: [#25221] When trying to cancel game file discovery, the prompt reappears.
+ * Fix: [#25703, #25889] Crash when scanning scenarios with packed objects in parallel.
+ * Fix: [#25739] Game freezes when a tab in the New Ride window contains more than 384 items.
+ * Fix: [#25745] Crash when a player connection is aborted early.
+ * Fix: [#25775] Network download sizes are in bytes instead of the listed kibibytes.
+ * Fix: [#25799] The animated options tab icon of the news window does not always redraw.
+ * Fix: [#25850] Guests do not have their happiness penalised by low energy, high hunger, high thirst, high toilet.
+ * Fix: [#25850] Ride nausea generation is different compared to vanilla.
+ * Fix: [#25854] When a guest is at 0 happiness or energy, the game draws too big of a bar in the guest stats window.
+ * Fix: [#25862] Diagonal and inclined brakes are not counted when calculating upkeep cost.
+ * Fix: [#25873] Repainting a banner in OpenRCT2-specific colours results in an error message.
+ * Fix: [#25879] Guest window viewport doesn’t follow vehicle when they board a ride.
+ * Fix: [#25908] Crash from use-after-free in banner text formatting during multithreaded rendering.
+ * Fix: [objects#419] Alignment of RCT2 red, yellow and green queue previews is off.
+ * Fix: [objects#424] Jet Aeroplane decor has a hole in it.
+ * Fix: [objects#425] Capacity of ‘Blob from outer space ride’ is incorrectly listed.
+
 openrct2 (0.4.30-develop-1) unstable; urgency=medium
 
  * Improved: [#24912] Staff now use an appropriate standing animation while waiting at level crossings.

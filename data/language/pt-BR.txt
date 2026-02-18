@@ -556,7 +556,6 @@ STR_1168    :Opções
 STR_1169    :(Nenhum)
 STR_1170    :{STRING}
 STR_1171    :{RED}Fechado 
-STR_1172    :{YELLOW}{STRINGID} 
 STR_1173    :Construir calçadas e filas de espera
 STR_1174    :Banner está no caminho
 STR_1175    :Impossível construir isto na calçada inclinada
@@ -1113,7 +1112,6 @@ STR_1727    :Direitos de construção não está à venda!
 STR_1728    :Não pode comprar os direitos de construção aqui…
 STR_1729    :Os terrenos não são propriedade do parque!
 STR_1730    :{RED}Fechado 
-STR_1731    :{WHITE}{STRINGID} - - 
 STR_1732    :Construir
 STR_1733    :Modo
 STR_1734    :{WINDOW_COLOUR_2}Número de voltas:
@@ -1154,7 +1152,6 @@ STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COM
 STR_1773    :Somente uma seção de fotos é permitida por atração
 STR_1774    :Somente uma subida com cabo de elevação é permitida por atração
 STR_1777    :Música da atração
-STR_1778    :{STRINGID} - - 
 STR_1790    :Selecione a cor do uniforme para este tipo de funcionário
 STR_1791    :{WINDOW_COLOUR_2}Cor do uniforme:
 STR_1792    :Respondendo a chamada de quebra da {STRINGID}

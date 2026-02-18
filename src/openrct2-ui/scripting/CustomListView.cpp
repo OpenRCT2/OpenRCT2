@@ -615,9 +615,9 @@ void CustomListView::Paint(WindowBase* w, RenderTarget& rt, const ScrollArea* sc
                 }
 
                 // Columns
-                if (Columns.size() == 0)
+                if (Columns.empty())
                 {
-                    if (item.Cells.size() != 0)
+                    if (!item.Cells.empty())
                     {
                         const auto& text = item.Cells[0];
                         if (!text.empty())
@@ -804,7 +804,7 @@ std::optional<RowColumn> CustomListView::GetItemIndexAt(const ScreenCoordsXY& po
         }
 
         // Check what column we pressed if there are any
-        if (result && Columns.size() > 0)
+        if (result && !Columns.empty())
         {
             bool found = false;
             int32_t x = 0;

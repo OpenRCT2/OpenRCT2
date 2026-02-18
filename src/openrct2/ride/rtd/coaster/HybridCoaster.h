@@ -27,12 +27,13 @@ constexpr RideTypeDescriptor HybridCoasterRTD =
         .extraTrackGroups = {TrackGroup::booster},
     }),
     .InvertedTrackPaintFunctions = {},
-    .Flags = kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt | 
-        EnumsToFlags(RtdFlag::hasTrackColourMain, RtdFlag::hasTrackColourSupports, 
-                     RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::checkGForces, 
+    .flags = kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt |
+        RtdFlags(RtdFlag::hasTrackColourMain, RtdFlag::hasTrackColourSupports,
+                     RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::checkGForces,
                      RtdFlag::allowMultipleCircuits, RtdFlag::allowReversedTrains),
     .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned),
     .DefaultMode = RideMode::continuousCircuit,
+    .OperatingSettings = { 10, 27 },
     .BoosterSettings = { 15, 52 },
     .LegacyBoosterSettings = { 15, 52 },
     .Naming = { STR_RIDE_NAME_HYBRID_COASTER, STR_RIDE_DESCRIPTION_HYBRID_COASTER },
@@ -61,7 +62,7 @@ constexpr RideTypeDescriptor HybridCoasterRTD =
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_HYBRID_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_HYBRID_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,
     .Name = "hybrid_rc",
-    .RatingsData = 
+    .RatingsData =
     {
         RatingsCalculationType::Normal,
         { RideRating::make(3, 80), RideRating::make(1, 00), RideRating::make(0, 45) },

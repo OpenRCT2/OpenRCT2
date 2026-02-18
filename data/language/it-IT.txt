@@ -555,7 +555,6 @@ STR_1168    :Opzioni
 STR_1169    :(Nessuno)
 STR_1170    :{STRING}
 STR_1171    :{RED}Chiuso
-STR_1172    :{YELLOW}{STRINGID}
 STR_1173    :Costruisci sentieri e corsie d’attesa
 STR_1174    :Un’insegna è d’intralcio
 STR_1175    :Impossibile costruirlo su un sentiero in pendenza
@@ -1112,7 +1111,6 @@ STR_1727    :I diritti di costruzione non sono in vendita!
 STR_1728    :Impossibile comprare i diritti di costruzione qui…
 STR_1729    :Questo terreno non è di proprietà del parco!
 STR_1730    :{RED}Chiuso
-STR_1731    :{WHITE}{STRINGID} - - 
 STR_1732    :Costruisci
 STR_1733    :Modalità
 STR_1734    :{WINDOW_COLOUR_2}Numero di giri:
@@ -1153,7 +1151,6 @@ STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COM
 STR_1773    :Può esserci soltanto una sezione di foto-in-corsa per attrazione
 STR_1774    :Può esserci soltanto una salita per il traino con cavo per attrazione
 STR_1777    :Musica attrazioni
-STR_1778    :{STRINGID} - - 
 STR_1790    :Scegli il colore dell’uniforme per questo tipo di dipendente
 STR_1791    :{WINDOW_COLOUR_2}Colore dell’uniforme:
 STR_1792    :Sta accorrendo al guasto di {STRINGID}

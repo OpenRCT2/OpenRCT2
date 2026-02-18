@@ -25,6 +25,7 @@
 #include "../../world/Scenery.h"
 #include "../../world/TileInspector.h"
 #include "../../world/tile_element/BannerElement.h"
+#include "Paint.Banner.h"
 #include "Paint.TileElement.h"
 
 using namespace OpenRCT2;
@@ -32,7 +33,7 @@ using namespace OpenRCT2::Drawing;
 
 // kBannerBoundBoxes[rotation][0] is for the pole in the back
 // kBannerBoundBoxes[rotation][1] is for the pole and the banner in the front
-constexpr CoordsXY kBannerBoundBoxes[][2] = {
+const CoordsXY kBannerBoundBoxes[][2] = {
     { { 1, 2 }, { 1, 29 } },
     { { 2, 32 }, { 29, 32 } },
     { { 32, 2 }, { 32, 29 } },
@@ -56,22 +57,8 @@ static void PaintBannerScrollingText(
         return;
     }
 
-    auto ft = Formatter();
-    banner.formatTextWithColourTo(ft);
-
-    char text[256];
-    if (Config::Get().general.upperCaseBanners)
-    {
-        FormatStringToUpper(text, sizeof(text), STR_BANNER_TEXT_FORMAT, ft.Data());
-    }
-    else
-    {
-        FormatStringLegacy(text, sizeof(text), STR_BANNER_TEXT_FORMAT, ft.Data());
-    }
-
-    auto stringWidth = GfxGetStringWidth(text, FontStyle::tiny);
-    auto scroll = stringWidth > 0 ? (getGameState().currentTicks / 2) % stringWidth : 0;
-    auto imageId = ScrollingText::setup(session, STR_BANNER_TEXT_FORMAT, ft, scroll, scrollingMode, PaletteIndex::transparent);
+    auto bannerText = banner.getTextWithColour();
+    auto imageId = ScrollingText::setup(session, bannerText, scrollingMode, PaletteIndex::transparent);
     PaintAddImageAsChild(session, imageId, { 0, 0, height + 22 }, { bbOffset, { 1, 1, 21 } });
 }
 

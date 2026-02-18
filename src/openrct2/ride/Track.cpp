@@ -128,7 +128,7 @@ ResultWithMessage TrackAddStationElement(CoordsXYZD loc, RideId rideIndex, Comma
     CoordsXY stationFrontLoc = loc;
     int32_t stationLength = 1;
 
-    if (ride->getRideTypeDescriptor().HasFlag(RtdFlag::hasSinglePieceStation))
+    if (ride->getRideTypeDescriptor().flags.has(RtdFlag::hasSinglePieceStation))
     {
         if (ride->numStations >= Limits::kMaxStationsPerRide)
         {
@@ -280,7 +280,7 @@ ResultWithMessage TrackRemoveStationElement(const CoordsXYZD& loc, RideId rideIn
     int32_t stationLength = 0;
     int32_t ByteF441D1 = -1;
 
-    if (ride->getRideTypeDescriptor().HasFlag(RtdFlag::hasSinglePieceStation))
+    if (ride->getRideTypeDescriptor().flags.has(RtdFlag::hasSinglePieceStation))
     {
         TileElement* tileElement = MapGetTrackElementAtWithDirectionFromRide(loc, rideIndex);
         if (tileElement != nullptr)
@@ -590,7 +590,7 @@ TrackRoll TrackGetActualBank(TileElement* tileElement, TrackRoll bank)
 
 TrackRoll TrackGetActualBank2(ride_type_t rideType, bool isInverted, TrackRoll bank)
 {
-    if (GetRideTypeDescriptor(rideType).HasFlag(RtdFlag::hasInvertedVariant))
+    if (GetRideTypeDescriptor(rideType).flags.has(RtdFlag::hasInvertedVariant))
     {
         if (isInverted)
         {

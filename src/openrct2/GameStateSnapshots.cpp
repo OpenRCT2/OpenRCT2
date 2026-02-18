@@ -410,7 +410,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Vehicle, next_vehicle_on_ride);
         COMPARE_FIELD(Vehicle, var_44);
         COMPARE_FIELD(Vehicle, mass);
-        COMPARE_FIELD(Vehicle, Flags);
+        COMPARE_FIELD(Vehicle, flags.holder);
         COMPARE_FIELD(Vehicle, SwingSprite);
         COMPARE_FIELD(Vehicle, current_station);
         COMPARE_FIELD(Vehicle, SwingPosition);
@@ -455,7 +455,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Vehicle, vertical_drop_countdown);
         COMPARE_FIELD(Vehicle, var_D3);
         COMPARE_FIELD(Vehicle, mini_golf_current_animation);
-        COMPARE_FIELD(Vehicle, mini_golf_flags);
+        COMPARE_FIELD(Vehicle, miniGolfFlags.holder);
         COMPARE_FIELD(Vehicle, ride_subtype);
         COMPARE_FIELD(Vehicle, seat_rotation);
         COMPARE_FIELD(Vehicle, target_seat_rotation);
@@ -668,7 +668,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
             else
             {
                 CompareSpriteData(spriteBase, spriteCmp, changeData);
-                if (changeData.diffs.size() == 0)
+                if (changeData.diffs.empty())
                 {
                     changeData.changeType = GameStateSpriteChange::EQUAL;
                 }

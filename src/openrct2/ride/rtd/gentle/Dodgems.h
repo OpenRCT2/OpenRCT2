@@ -28,7 +28,7 @@ constexpr RideTypeDescriptor DodgemsRTD =
         .extraTrackGroups = {},
     }),
     .InvertedTrackPaintFunctions = {},
-    .Flags = kRtdFlagsHasThreeColours | EnumsToFlags(RtdFlag::hasSinglePieceStation,
+    .flags = kRtdFlagsHasThreeColours | RtdFlags(RtdFlag::hasSinglePieceStation,
                      RtdFlag::cannotHaveGaps, RtdFlag::noTestMode, RtdFlag::noWallsAroundTrack,
                      RtdFlag::isFlatRide, RtdFlag::hasVehicleColours, RtdFlag::hasMusicByDefault,
                      RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit,

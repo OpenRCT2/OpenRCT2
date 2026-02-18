@@ -28,11 +28,12 @@ constexpr RideTypeDescriptor JuniorRollerCoasterRTD =
         .extraTrackGroups = { TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::onridePhoto, TrackGroup::diagSlopeSteepUp, TrackGroup::diagSlopeSteepDown },
     }),
     .InvertedTrackPaintFunctions = {},
-    .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt |
-        EnumsToFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::allowDoorsOnTrack,
+    .flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt |
+        RtdFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::allowDoorsOnTrack,
                      RtdFlag::checkGForces, RtdFlag::allowMultipleCircuits, RtdFlag::allowReversedTrains),
     .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned),
     .DefaultMode = RideMode::continuousCircuit,
+    .OperatingSettings = { 5, 18 },
     .TrackSpeedSettings = { 30, 15 },
     .BoosterSettings = { 17, 16 },
     .LegacyBoosterSettings = { 17, 16, 1 },
@@ -59,7 +60,7 @@ constexpr RideTypeDescriptor JuniorRollerCoasterRTD =
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_JUNIOR_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_JUNIOR_ROLLER_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,
     .Name = "junior_rc",
-    .RatingsData = 
+    .RatingsData =
     {
         RatingsCalculationType::Normal,
         { RideRating::make(2, 40), RideRating::make(2, 50), RideRating::make(1, 80) },

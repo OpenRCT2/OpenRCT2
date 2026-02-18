@@ -556,7 +556,6 @@ STR_1168    :Options
 STR_1169    :(None)
 STR_1170    :{STRING}
 STR_1171    :{RED}Closed
-STR_1172    :{YELLOW}{STRINGID}
 STR_1173    :Build footpaths and queue lines
 STR_1174    :Banner sign in the way
 STR_1175    :Can’t build this on sloped footpath
@@ -1113,7 +1112,6 @@ STR_1727    :Construction rights not for sale!
 STR_1728    :Can’t buy construction rights here…
 STR_1729    :Land not owned by park!
 STR_1730    :{RED}Closed
-STR_1731    :{WHITE}{STRINGID} - - 
 STR_1732    :Build
 STR_1733    :Mode
 STR_1734    :{WINDOW_COLOUR_2}Number of laps:
@@ -1154,7 +1152,6 @@ STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COM
 STR_1773    :Only one on-ride photo section allowed per ride
 STR_1774    :Only one cable lift hill allowed per ride
 STR_1777    :Ride music
-STR_1778    :{STRINGID} - - 
 STR_1790    :Select uniform colour for this type of staff
 STR_1791    :{WINDOW_COLOUR_2}Uniform colour:
 STR_1792    :Responding to {STRINGID} breakdown call
@@ -3851,3 +3848,8 @@ STR_7018    :{SPRITE}{MOVE_X}{17}{STRINGID}
 STR_7019    :{SPRITE}{MOVE_X}{27}{STRINGID}
 STR_7020    :{MOVE_X}{10}{SPRITE}{NEWLINE_SMALLER}{MOVE_X}{36}{STRINGID}
 STR_7021    :{MOVE_X}{10}{SPRITE}{NEWLINE_SMALLER}»{MOVE_X}{36}{STRINGID}
+STR_7022    :{STRING} - - 
+STR_7023    :Make invisible
+STR_7024    :Makes the whole ride invisible
+STR_7025    :Make visible
+STR_7026    :Makes the whole ride visible

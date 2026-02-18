@@ -27,7 +27,7 @@ constexpr RideTypeDescriptor SpiralSlideRTD =
         .extraTrackGroups = {},
     }),
     .InvertedTrackPaintFunctions = {},
-    .Flags = kRtdFlagsHasThreeColours | EnumsToFlags(RtdFlag::hasSinglePieceStation,
+    .flags = kRtdFlagsHasThreeColours | RtdFlags(RtdFlag::hasSinglePieceStation,
                      RtdFlag::cannotHaveGaps, RtdFlag::noTestMode, RtdFlag::noVehicles,
                      RtdFlag::noWallsAroundTrack, RtdFlag::isFlatRide, RtdFlag::allowMusic,
                      RtdFlag::hasEntranceAndExit, RtdFlag::interestingToLookAt,

@@ -15,7 +15,8 @@
 #include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
-#include "../actions/ParkSetParameterAction.h"
+#include "../actions/GameActionRunner.h"
+#include "../actions/park/ParkSetParameterAction.h"
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
 #include "../entity/EntityList.h"
@@ -129,9 +130,9 @@ namespace OpenRCT2::Park
             {
                 if (!(ride.lifecycleFlags & RIDE_LIFECYCLE_TESTED))
                     continue;
-                if (!ride.getRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
+                if (!ride.getRideTypeDescriptor().flags.has(RtdFlag::hasTrack))
                     continue;
-                if (!ride.getRideTypeDescriptor().HasFlag(RtdFlag::hasDataLogging))
+                if (!ride.getRideTypeDescriptor().flags.has(RtdFlag::hasDataLogging))
                     continue;
                 if (ride.getStation().SegmentLength < (600 << 16))
                     continue;

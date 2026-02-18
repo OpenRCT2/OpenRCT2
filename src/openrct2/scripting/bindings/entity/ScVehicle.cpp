@@ -79,10 +79,10 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScVehicle::velocity_get, &ScVehicle::velocity_set, "velocity");
         dukglue_register_property(ctx, &ScVehicle::bankRotation_get, &ScVehicle::bankRotation_set, "bankRotation");
         dukglue_register_property(
-            ctx, &ScVehicle::flag_get<VehicleFlags::CarIsReversed>, &ScVehicle::flag_set<VehicleFlags::CarIsReversed>,
+            ctx, &ScVehicle::flag_get<VehicleFlag::carIsReversed>, &ScVehicle::flag_set<VehicleFlag::carIsReversed>,
             "isReversed");
         dukglue_register_property(
-            ctx, &ScVehicle::flag_get<VehicleFlags::Crashed>, &ScVehicle::flag_set<VehicleFlags::Crashed>, "isCrashed");
+            ctx, &ScVehicle::flag_get<VehicleFlag::crashed>, &ScVehicle::flag_set<VehicleFlag::crashed>, "isCrashed");
         dukglue_register_property(ctx, &ScVehicle::colours_get, &ScVehicle::colours_set, "colours");
         dukglue_register_property(ctx, &ScVehicle::trackLocation_get, nullptr, "trackLocation");
         dukglue_register_property(ctx, &ScVehicle::trackProgress_get, nullptr, "trackProgress");
@@ -350,14 +350,14 @@ namespace OpenRCT2::Scripting
         }
     }
 
-    template<uint32_t flag>
+    template<VehicleFlag flag>
     bool ScVehicle::flag_get() const
     {
         auto vehicle = GetVehicle();
-        return vehicle != nullptr ? vehicle->HasFlag(flag) : false;
+        return vehicle != nullptr ? vehicle->flags.has(static_cast<VehicleFlag>(flag)) : false;
     }
 
-    template<uint32_t flag>
+    template<VehicleFlag flag>
     void ScVehicle::flag_set(bool value)
     {
         ThrowIfGameStateNotMutable();
@@ -366,11 +366,11 @@ namespace OpenRCT2::Scripting
         {
             if (value)
             {
-                vehicle->SetFlag(flag);
+                vehicle->flags.set(static_cast<VehicleFlag>(flag));
             }
             else
             {
-                vehicle->ClearFlag(flag);
+                vehicle->flags.unset(static_cast<VehicleFlag>(flag));
             }
             vehicle->Invalidate();
         }

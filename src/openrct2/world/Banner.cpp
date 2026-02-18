@@ -43,6 +43,13 @@
 
 using namespace OpenRCT2;
 
+std::string Banner::getTextWithColour() const
+{
+    Formatter ft;
+    formatTextWithColourTo(ft);
+    return FormatStringIDLegacy(STR_STRINGID, ft.Data());
+}
+
 std::string Banner::getText() const
 {
     Formatter ft;
@@ -52,6 +59,11 @@ std::string Banner::getText() const
 
 void Banner::formatTextWithColourTo(Formatter& ft) const
 {
+    // Use thread_local buffer to avoid race conditions during multithreaded rendering.
+    // Multiple threads can call this on the same Banner simultaneously when rendering
+    // different viewport columns in parallel.
+    thread_local std::string formattedTextBuffer;
+
     auto formatToken = FormatTokenFromTextColour(textColour);
     formattedTextBuffer = FormatTokenToStringWithBraces(formatToken);
     ft.Add<StringId>(STR_STRING_STRINGID);
@@ -105,7 +117,7 @@ static RideId BannerGetRideIndexAt(const CoordsXYZ& bannerCoords)
 
         RideId rideIndex = tileElement->AsTrack()->GetRideIndex();
         auto ride = GetRide(rideIndex);
-        if (ride == nullptr || ride->getRideTypeDescriptor().HasFlag(RtdFlag::isShopOrFacility))
+        if (ride == nullptr || ride->getRideTypeDescriptor().flags.has(RtdFlag::isShopOrFacility))
             continue;
 
         if ((tileElement->GetClearanceZ()) + (4 * kCoordsZStep) <= bannerCoords.z)
@@ -228,7 +240,7 @@ RideId BannerGetClosestRideIndex(const CoordsXYZ& mapPos)
     auto& gameState = getGameState();
     for (auto& ride : RideManager(gameState))
     {
-        if (ride.getRideTypeDescriptor().HasFlag(RtdFlag::isShopOrFacility))
+        if (ride.getRideTypeDescriptor().flags.has(RtdFlag::isShopOrFacility))
             continue;
 
         auto rideCoords = ride.overallView;
@@ -459,7 +471,7 @@ void DeleteBanner(BannerIndex id)
 void TrimBanners()
 {
     auto& gameState = getGameState();
-    if (gameState.banners.size() > 0)
+    if (!gameState.banners.empty())
     {
         auto lastBannerId = gameState.banners.size() - 1;
         while (lastBannerId != std::numeric_limits<size_t>::max() && gameState.banners[lastBannerId].isNull())

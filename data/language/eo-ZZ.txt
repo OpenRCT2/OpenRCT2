@@ -556,7 +556,6 @@ STR_1168    :Agordoj
 STR_1169    :(Neniu)
 STR_1170    :{STRING}
 STR_1171    :{RED}Fermita
-STR_1172    :{YELLOW}{STRINGID}
 STR_1173    :Konstrui trotuarojn kaj atendovicojn
 STR_1174    :Rubando obstrukcas
 STR_1175    :Ne eblas konstrui ĉi tion sur dekliva trotuaro
@@ -1113,7 +1112,6 @@ STR_1727    :Konstruado-rajtoj ne estas aĉeteblaj!
 STR_1728    :Ne eblas aĉeti konstruado-rajtojn ĉi tie…
 STR_1729    :Bieno ne estas posedata de parko!
 STR_1730    :{RED}Fermita
-STR_1731    :{WHITE}{STRINGID} - - 
 STR_1732    :Konstrui
 STR_1733    :Reĝimo
 STR_1734    :{WINDOW_COLOUR_2}Nombro de etapoj:
@@ -1154,7 +1152,6 @@ STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COM
 STR_1773    :Nur unu sur-atrakcia fotoparto estas permesita po atrakcio
 STR_1774    :Nur unu kablolifta monteto estas permesita po atrakcio
 STR_1777    :Muziko de atrakcio
-STR_1778    :{STRINGID} - - 
 STR_1790    :Elekti uniformkoloron de tiaj dungitoj
 STR_1791    :{WINDOW_COLOUR_2}Uniformkoloro:
 STR_1792    :Reagas al paneovoko de {STRINGID}
@@ -1608,7 +1605,7 @@ STR_2261    :Minimuma financado
 STR_2262    :Normala financado
 STR_2263    :Maksimuma financado
 STR_2264    :Financado de esplorado
-STR_2265    :{WINDOW_COLOUR_2}Kosto: {BLACK}po {CURRENCY} por mono
+STR_2265    :{WINDOW_COLOUR_2}Kosto: {BLACK}po {CURRENCY} por monato
 STR_2266    :Prioritatoj de esplorado
 STR_2267    :Nune disvolvata
 STR_2268    :Pasinta disvolvado

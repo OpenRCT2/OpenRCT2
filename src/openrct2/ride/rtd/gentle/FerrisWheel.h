@@ -27,7 +27,7 @@ constexpr RideTypeDescriptor FerrisWheelRTD =
         .extraTrackGroups = {},
     }),
     .InvertedTrackPaintFunctions = {},
-    .Flags = EnumsToFlags(RtdFlag::hasTrackColourMain, RtdFlag::hasSinglePieceStation,
+    .flags = RtdFlags(RtdFlag::hasTrackColourMain, RtdFlag::hasSinglePieceStation,
                      RtdFlag::cannotHaveGaps, RtdFlag::vehicleIsIntegral, RtdFlag::noWallsAroundTrack,
                      RtdFlag::isFlatRide, RtdFlag::hasVehicleColours, RtdFlag::allowMusic,
                      RtdFlag::hasEntranceAndExit, RtdFlag::singleSession,

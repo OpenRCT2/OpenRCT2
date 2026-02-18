@@ -17,9 +17,10 @@
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
 #include "../Version.h"
-#include "../actions/LoadOrQuitAction.h"
-#include "../actions/NetworkModifyGroupAction.h"
-#include "../actions/PeepPickupAction.h"
+#include "../actions/GameActionRunner.h"
+#include "../actions/general/LoadOrQuitAction.h"
+#include "../actions/network/NetworkModifyGroupAction.h"
+#include "../actions/peep/PeepPickupAction.h"
 #include "../core/File.h"
 #include "../core/Guard.hpp"
 #include "../core/Json.hpp"
@@ -47,7 +48,7 @@
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
 
-constexpr uint8_t kStreamVersion = 2;
+constexpr uint8_t kStreamVersion = 1;
 
 const std::string kStreamID = std::string(kOpenRCT2Version) + "-" + std::to_string(kStreamVersion);
 
@@ -67,7 +68,7 @@ static constexpr uint32_t kMaxPacketsPerTick = 100;
     #include "../Cheats.h"
     #include "../ParkImporter.h"
     #include "../Version.h"
-    #include "../actions/GameAction.h"
+    #include "../actions/GameAction.hpp"
     #include "../config/Config.h"
     #include "../core/Console.hpp"
     #include "../core/EnumUtils.hpp"
@@ -790,7 +791,7 @@ namespace OpenRCT2::Network
                 }
             }
 
-            if (colours.size() == 0 || (colours.size() == 1 && colours[0] == "{WHITE}"))
+            if (colours.empty() || (colours.size() == 1 && colours[0] == "{WHITE}"))
             {
                 formatted += "{BABYBLUE}";
                 formatted += fromPlayer->Name;
@@ -1677,7 +1678,7 @@ namespace OpenRCT2::Network
     {
         json_t jsonObj = {
             { "name", Config::Get().network.serverName },
-            { "requiresPassword", _password.size() > 0 },
+            { "requiresPassword", !_password.empty() },
             { "version", GetVersion() },
             { "players", GetNumVisiblePlayers() },
             { "maxPlayers", Config::Get().network.maxplayers },

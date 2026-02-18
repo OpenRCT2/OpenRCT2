@@ -28,7 +28,7 @@ constexpr RideTypeDescriptor AirPoweredVerticalCoasterRTD =
         .extraTrackGroups = {TrackGroup::booster},
     }),
     .InvertedTrackPaintFunctions = {},
-    .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt | EnumsToFlags(RtdFlag::checkGForces),
+    .flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt | RtdFlags(RtdFlag::checkGForces),
     .RideModes = EnumsToFlags(RideMode::poweredLaunchPasstrough, RideMode::poweredLaunch),
     .DefaultMode = RideMode::poweredLaunchPasstrough,
     .OperatingSettings = { 30, 50 },

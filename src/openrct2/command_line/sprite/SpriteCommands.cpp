@@ -126,7 +126,7 @@ namespace OpenRCT2::CommandLine::Sprite
     bool SpriteImageExport(const G1Element& spriteElement, u8string_view outPath)
     {
         const size_t pixelBufferSize = static_cast<size_t>(spriteElement.width) * spriteElement.height;
-        auto pixelBuffer = std::make_unique<uint8_t[]>(pixelBufferSize);
+        auto pixelBuffer = std::make_unique<PaletteIndex[]>(pixelBufferSize);
         auto pixels = pixelBuffer.get();
 
         RenderTarget rt;
@@ -142,7 +142,7 @@ namespace OpenRCT2::CommandLine::Sprite
             ImageId(), PaletteMap::GetDefault(), spriteElement, 0, 0, spriteElement.width, spriteElement.height, pixels);
         GfxSpriteToBuffer(rt, args);
 
-        auto const pixels8 = rt.bits;
+        auto const pixels8 = reinterpret_cast<uint8_t*>(rt.bits);
         auto const pixelsLen = rt.LineStride() * rt.WorldHeight();
         try
         {

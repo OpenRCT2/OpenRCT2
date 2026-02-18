@@ -7,91 +7,93 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "GameActionRegistry.h"
+
 #include "../core/Guard.hpp"
-#include "BalloonPressAction.h"
-#include "BannerPlaceAction.h"
-#include "BannerRemoveAction.h"
-#include "BannerSetColourAction.h"
-#include "BannerSetNameAction.h"
-#include "BannerSetStyleAction.h"
-#include "CheatSetAction.h"
-#include "ClearAction.h"
-#include "CustomAction.h"
-#include "FootpathAdditionPlaceAction.h"
-#include "FootpathAdditionRemoveAction.h"
-#include "FootpathLayoutPlaceAction.h"
-#include "FootpathPlaceAction.h"
-#include "FootpathRemoveAction.h"
-#include "GameAction.h"
-#include "GameSetSpeedAction.h"
-#include "GuestSetFlagsAction.h"
-#include "GuestSetNameAction.h"
-#include "LandBuyRightsAction.h"
-#include "LandLowerAction.h"
-#include "LandRaiseAction.h"
-#include "LandSetHeightAction.h"
-#include "LandSetRightsAction.h"
-#include "LandSmoothAction.h"
-#include "LargeSceneryPlaceAction.h"
-#include "LargeSceneryRemoveAction.h"
-#include "LargeScenerySetColourAction.h"
-#include "LoadOrQuitAction.h"
-#include "MapChangeSizeAction.h"
-#include "MazePlaceTrackAction.h"
-#include "MazeSetTrackAction.h"
-#include "NetworkModifyGroupAction.h"
-#include "ParkEntrancePlaceAction.h"
-#include "ParkEntranceRemoveAction.h"
-#include "ParkMarketingAction.h"
-#include "ParkSetDateAction.h"
-#include "ParkSetEntranceFeeAction.h"
-#include "ParkSetLoanAction.h"
-#include "ParkSetNameAction.h"
-#include "ParkSetParameterAction.h"
-#include "ParkSetResearchFundingAction.h"
-#include "PauseToggleAction.h"
-#include "PeepPickupAction.h"
-#include "PeepSpawnPlaceAction.h"
-#include "PlayerKickAction.h"
-#include "PlayerSetGroupAction.h"
-#include "RideCreateAction.h"
-#include "RideDemolishAction.h"
-#include "RideEntranceExitPlaceAction.h"
-#include "RideEntranceExitRemoveAction.h"
-#include "RideFreezeRatingAction.h"
-#include "RideSetAppearanceAction.h"
-#include "RideSetColourSchemeAction.h"
-#include "RideSetNameAction.h"
-#include "RideSetPriceAction.h"
-#include "RideSetSettingAction.h"
-#include "RideSetStatusAction.h"
-#include "RideSetVehicleAction.h"
-#include "ScenarioSetSettingAction.h"
-#include "ScenerySetRestrictedAction.h"
-#include "SignSetNameAction.h"
-#include "SignSetStyleAction.h"
-#include "SmallSceneryPlaceAction.h"
-#include "SmallSceneryRemoveAction.h"
-#include "SmallScenerySetColourAction.h"
-#include "StaffFireAction.h"
-#include "StaffHireNewAction.h"
-#include "StaffSetColourAction.h"
-#include "StaffSetCostumeAction.h"
-#include "StaffSetNameAction.h"
-#include "StaffSetOrdersAction.h"
-#include "StaffSetPatrolAreaAction.h"
-#include "SurfaceSetStyleAction.h"
-#include "TileModifyAction.h"
-#include "TrackDesignAction.h"
-#include "TrackPlaceAction.h"
-#include "TrackRemoveAction.h"
-#include "TrackSetBrakeSpeedAction.h"
-#include "WallPlaceAction.h"
-#include "WallRemoveAction.h"
-#include "WallSetColourAction.h"
-#include "WaterLowerAction.h"
-#include "WaterRaiseAction.h"
-#include "WaterSetHeightAction.h"
+#include "cheats/CheatSetAction.h"
+#include "footpath/FootpathAdditionPlaceAction.h"
+#include "footpath/FootpathAdditionRemoveAction.h"
+#include "footpath/FootpathLayoutPlaceAction.h"
+#include "footpath/FootpathPlaceAction.h"
+#include "footpath/FootpathRemoveAction.h"
+#include "general/BalloonPressAction.h"
+#include "general/CustomAction.h"
+#include "general/GameSetSpeedAction.h"
+#include "general/LoadOrQuitAction.h"
+#include "general/MapChangeSizeAction.h"
+#include "general/PauseToggleAction.h"
+#include "general/ScenarioSetSettingAction.h"
+#include "general/TileModifyAction.h"
+#include "network/NetworkModifyGroupAction.h"
+#include "network/PlayerKickAction.h"
+#include "network/PlayerSetGroupAction.h"
+#include "park/LandBuyRightsAction.h"
+#include "park/LandSetRightsAction.h"
+#include "park/ParkEntrancePlaceAction.h"
+#include "park/ParkEntranceRemoveAction.h"
+#include "park/ParkMarketingAction.h"
+#include "park/ParkSetDateAction.h"
+#include "park/ParkSetEntranceFeeAction.h"
+#include "park/ParkSetLoanAction.h"
+#include "park/ParkSetNameAction.h"
+#include "park/ParkSetParameterAction.h"
+#include "park/ParkSetResearchFundingAction.h"
+#include "peep/GuestSetFlagsAction.h"
+#include "peep/GuestSetNameAction.h"
+#include "peep/PeepPickupAction.h"
+#include "peep/PeepSpawnPlaceAction.h"
+#include "peep/StaffFireAction.h"
+#include "peep/StaffHireNewAction.h"
+#include "peep/StaffSetColourAction.h"
+#include "peep/StaffSetCostumeAction.h"
+#include "peep/StaffSetNameAction.h"
+#include "peep/StaffSetOrdersAction.h"
+#include "peep/StaffSetPatrolAreaAction.h"
+#include "ride/MazePlaceTrackAction.h"
+#include "ride/MazeSetTrackAction.h"
+#include "ride/RideCreateAction.h"
+#include "ride/RideDemolishAction.h"
+#include "ride/RideEntranceExitPlaceAction.h"
+#include "ride/RideEntranceExitRemoveAction.h"
+#include "ride/RideFreezeRatingAction.h"
+#include "ride/RideSetAppearanceAction.h"
+#include "ride/RideSetColourSchemeAction.h"
+#include "ride/RideSetNameAction.h"
+#include "ride/RideSetPriceAction.h"
+#include "ride/RideSetSettingAction.h"
+#include "ride/RideSetStatusAction.h"
+#include "ride/RideSetVehicleAction.h"
+#include "ride/RideSetVisibilityAction.h"
+#include "scenery/BannerPlaceAction.h"
+#include "scenery/BannerRemoveAction.h"
+#include "scenery/BannerSetColourAction.h"
+#include "scenery/BannerSetNameAction.h"
+#include "scenery/BannerSetStyleAction.h"
+#include "scenery/LargeSceneryPlaceAction.h"
+#include "scenery/LargeSceneryRemoveAction.h"
+#include "scenery/LargeScenerySetColourAction.h"
+#include "scenery/ScenerySetRestrictedAction.h"
+#include "scenery/SignSetNameAction.h"
+#include "scenery/SignSetStyleAction.h"
+#include "scenery/SmallSceneryPlaceAction.h"
+#include "scenery/SmallSceneryRemoveAction.h"
+#include "scenery/SmallScenerySetColourAction.h"
+#include "scenery/WallPlaceAction.h"
+#include "scenery/WallRemoveAction.h"
+#include "scenery/WallSetColourAction.h"
+#include "terraform/ClearAction.h"
+#include "terraform/LandLowerAction.h"
+#include "terraform/LandRaiseAction.h"
+#include "terraform/LandSetHeightAction.h"
+#include "terraform/LandSmoothAction.h"
+#include "terraform/SurfaceSetStyleAction.h"
+#include "terraform/WaterLowerAction.h"
+#include "terraform/WaterRaiseAction.h"
+#include "terraform/WaterSetHeightAction.h"
+#include "track/TrackDesignAction.h"
+#include "track/TrackPlaceAction.h"
+#include "track/TrackRemoveAction.h"
+#include "track/TrackSetBrakeSpeedAction.h"
 
 #include <array>
 
@@ -210,6 +212,7 @@ namespace OpenRCT2::GameActions
         REGISTER_ACTION(MapChangeSizeAction);
         REGISTER_ACTION(GameSetSpeedAction);
         REGISTER_ACTION(ScenerySetRestrictedAction);
+        REGISTER_ACTION(RideSetVisibilityAction);
 #ifdef ENABLE_SCRIPTING
         REGISTER_ACTION(CustomAction);
 #endif
@@ -221,29 +224,22 @@ namespace OpenRCT2::GameActions
 
     static constexpr GameActionRegistry _registry = BuildRegistry();
 
+    std::optional<GameActionFactory> getFactory(GameCommand id)
+    {
+        const auto idx = static_cast<size_t>(id);
+        if (idx < std::size(_registry))
+        {
+            return _registry[idx].factory;
+        }
+        return std::nullopt;
+    }
+
     const char* GetName(GameCommand id)
     {
         const auto idx = static_cast<size_t>(id);
         Guard::IndexInRange(idx, _registry);
 
         return _registry[idx].name;
-    }
-
-    std::unique_ptr<GameAction> Create(GameCommand id)
-    {
-        const auto idx = static_cast<size_t>(id);
-
-        GameAction* result = nullptr;
-        if (idx < std::size(_registry))
-        {
-            GameActionFactory factory = _registry[idx].factory;
-            if (factory != nullptr)
-            {
-                result = factory();
-            }
-        }
-        Guard::ArgumentNotNull(result, "Attempting to create unregistered game action: %u", id);
-        return std::unique_ptr<GameAction>(result);
     }
 
     bool IsValidId(uint32_t id)

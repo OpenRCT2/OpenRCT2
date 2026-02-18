@@ -23,6 +23,7 @@
 #include "../paint/support/MetalSupports.h"
 #include "../paint/support/WoodenSupports.h"
 #include "../paint/tile_element/Paint.TileElement.h"
+#include "../paint/tile_element/Paint.Track.h"
 #include "../paint/tile_element/Segment.h"
 #include "../paint/track/Segment.h"
 #include "../paint/track/Support.h"
@@ -2011,7 +2012,7 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
             const auto* originElement = ride->getOriginElement(StationIndex::FromUnderlying(0));
             if (originElement != nullptr && originElement->GetTrackType() == TrackElemType::flatTrack1x1B)
                 LightFx::AddKioskLights(session.MapPosition, height, zOffset);
-            else if (kRideTypeDescriptors[ride->type].HasFlag(RtdFlag::isShopOrFacility))
+            else if (kRideTypeDescriptors[ride->type].flags.has(RtdFlag::isShopOrFacility))
                 LightFx::AddShopLights(session.MapPosition, trackElement.GetDirection(), height, zOffset);
         }
 
@@ -2033,7 +2034,7 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
         }
 
         const auto& rtd = GetRideTypeDescriptor(trackElement.GetRideType());
-        bool isInverted = trackElement.IsInverted() && rtd.HasFlag(RtdFlag::hasInvertedVariant);
+        bool isInverted = trackElement.IsInverted() && rtd.flags.has(RtdFlag::hasInvertedVariant);
         const auto trackDrawerEntry = getTrackDrawerEntry(rtd, isInverted, TrackElementIsCovered(trackType));
 
         trackType = UncoverTrackElement(trackType);

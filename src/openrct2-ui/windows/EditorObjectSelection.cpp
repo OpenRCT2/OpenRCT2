@@ -21,8 +21,8 @@
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/SpriteIds.h>
-#include <openrct2/actions/LoadOrQuitAction.h>
 #include <openrct2/actions/ResultWithMessage.h>
+#include <openrct2/actions/general/LoadOrQuitAction.h>
 #include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/EnumUtils.hpp>
@@ -524,7 +524,7 @@ namespace OpenRCT2::Ui::Windows
 
                     // Track designs manager cannot select multiple, so only show selection filters if not in track designs
                     // manager
-                    if (!(gLegacyScene == LegacyScene::trackDesignsManager))
+                    if (gLegacyScene != LegacyScene::trackDesignsManager)
                     {
                         numSelectionItems = 3;
                         gDropdown.items[DDIX_FILTER_SEPARATOR] = Dropdown::Separator();
@@ -546,7 +546,7 @@ namespace OpenRCT2::Ui::Windows
                         }
                     }
 
-                    if (!(gLegacyScene == LegacyScene::trackDesignsManager))
+                    if (gLegacyScene != LegacyScene::trackDesignsManager)
                     {
                         gDropdown.items[DDIX_FILTER_SELECTED].setChecked(IsFilterActive(FILTER_SELECTED));
                         gDropdown.items[DDIX_FILTER_NONSELECTED].setChecked(IsFilterActive(FILTER_NONSELECTED));
@@ -743,7 +743,7 @@ namespace OpenRCT2::Ui::Windows
                 if (screenCoords.y + kScrollableRowHeight >= rt.y && screenCoords.y <= rt.y + rt.height)
                 {
                     // Draw checkbox
-                    if (!(gLegacyScene == LegacyScene::trackDesignsManager) && !(*listItem.flags & 0x20))
+                    if (gLegacyScene != LegacyScene::trackDesignsManager && !(*listItem.flags & 0x20))
                         Rectangle::fillInset(
                             rt, { { 2, screenCoords.y }, { 11, screenCoords.y + 10 } }, colours[1],
                             Rectangle::BorderStyle::inset, Rectangle::FillBrightness::dark,
@@ -759,8 +759,7 @@ namespace OpenRCT2::Ui::Windows
                     }
 
                     // Draw checkmark
-                    if (!(gLegacyScene == LegacyScene::trackDesignsManager)
-                        && (*listItem.flags & ObjectSelectionFlags::Selected))
+                    if (gLegacyScene != LegacyScene::trackDesignsManager && (*listItem.flags & ObjectSelectionFlags::Selected))
                     {
                         screenCoords.x = 2;
                         auto darkness = highlighted ? TextDarkness::extraDark : TextDarkness::dark;
@@ -1071,7 +1070,7 @@ namespace OpenRCT2::Ui::Windows
                 getColourMap(colours[1].colour).darkest);
 
             // Draw number of selected items
-            if (!(gLegacyScene == LegacyScene::trackDesignsManager))
+            if (gLegacyScene != LegacyScene::trackDesignsManager)
             {
                 auto screenPos = windowPos + ScreenCoordsXY{ 3, height - 13 };
 

@@ -27,7 +27,7 @@ constexpr RideTypeDescriptor MiniGolfRTD =
         .extraTrackGroups = {},
     }),
     .InvertedTrackPaintFunctions = {},
-    .Flags = kRtdFlagsHasThreeColours | EnumsToFlags(RtdFlag::noTestMode, RtdFlag::hasTrack, RtdFlag::hasOneStation,
+    .flags = kRtdFlagsHasThreeColours | RtdFlags(RtdFlag::noTestMode, RtdFlag::hasTrack, RtdFlag::hasOneStation,
                      RtdFlag::supportsMultipleColourSchemes, RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit,
                      RtdFlag::slightlyInterestingToLookAt),
     .RideModes = EnumsToFlags(RideMode::continuousCircuit),

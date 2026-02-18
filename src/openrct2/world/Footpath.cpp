@@ -14,9 +14,10 @@
 #include "../GameState.h"
 #include "../Identifiers.h"
 #include "../OpenRCT2.h"
-#include "../actions/FootpathPlaceAction.h"
-#include "../actions/FootpathRemoveAction.h"
-#include "../actions/LandSetRightsAction.h"
+#include "../actions/GameActionRunner.h"
+#include "../actions/footpath/FootpathPlaceAction.h"
+#include "../actions/footpath/FootpathRemoveAction.h"
+#include "../actions/park/LandSetRightsAction.h"
 #include "../core/Guard.hpp"
 #include "../entity/EntityList.h"
 #include "../entity/EntityRegistry.h"
@@ -588,7 +589,7 @@ static void Loc6A6D7E(
                             continue;
                         }
 
-                        if (!ride->getRideTypeDescriptor().HasFlag(RtdFlag::isFlatRide))
+                        if (!ride->getRideTypeDescriptor().flags.has(RtdFlag::isFlatRide))
                         {
                             continue;
                         }
@@ -674,7 +675,7 @@ static void Loc6A6C85(
             return;
         }
 
-        if (!ride->getRideTypeDescriptor().HasFlag(RtdFlag::isFlatRide))
+        if (!ride->getRideTypeDescriptor().flags.has(RtdFlag::isFlatRide))
         {
             return;
         }
@@ -1097,7 +1098,7 @@ static int32_t FootpathIsConnectedToMapEdgeHelper(CoordsXYZ footpathPos, int32_t
     // Loads the next tile to visit into our variables
     auto LoadNextTileElement = [&tiles, &numPendingTiles](TileState& t_currentTile) -> void {
         // Do not continue if there are no tiles in the list
-        if (tiles.size() == 0)
+        if (tiles.empty())
             return;
 
         // Find the next unprocessed tile
@@ -1685,7 +1686,7 @@ bool TileElementWantsPathConnectionTowards(const TileCoordsXYZD& coords, const T
                     if (ride == nullptr)
                         continue;
 
-                    if (!ride->getRideTypeDescriptor().HasFlag(RtdFlag::isFlatRide))
+                    if (!ride->getRideTypeDescriptor().flags.has(RtdFlag::isFlatRide))
                         break;
 
                     const auto trackType = tileElement->AsTrack()->GetTrackType();
@@ -1736,7 +1737,7 @@ void FootpathRemoveEdgesAt(const CoordsXY& footpathPos, TileElement* tileElement
         if (ride == nullptr)
             return;
 
-        if (!ride->getRideTypeDescriptor().HasFlag(RtdFlag::isFlatRide))
+        if (!ride->getRideTypeDescriptor().flags.has(RtdFlag::isFlatRide))
             return;
     }
 
@@ -1864,7 +1865,7 @@ bool PathElement::IsLevelCrossing(const CoordsXY& coords) const
         return false;
     }
 
-    return ride->getRideTypeDescriptor().HasFlag(RtdFlag::supportsLevelCrossings);
+    return ride->getRideTypeDescriptor().flags.has(RtdFlag::supportsLevelCrossings);
 }
 
 bool FootpathIsZAndDirectionValid(const PathElement& pathElement, int32_t currentZ, int32_t currentDirection)

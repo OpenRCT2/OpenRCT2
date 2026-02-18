@@ -551,7 +551,6 @@ STR_1168    :الإعدادات
 STR_1169    :(لا شئ)
 STR_1170    :{STRING}
 STR_1171    :{RED} مغلق 
-STR_1172    :{YELLOW}{STRINGID} 
 STR_1173    : ابني ممشي وخطوط إنتظار
 STR_1174    :Banner sign in the way
 STR_1175    :Can’t build this on sloped footpath
@@ -1108,7 +1107,6 @@ STR_1727    :حقوق الإنشاء ليست للبيع!
 STR_1728    :لا يمكنك شراء حقوق البناء هُنا
 STR_1729    :الأرض ليست مملوكة للحديقة!
 STR_1730    :{RED}مغلقة 
-STR_1731    :{WHITE}{STRINGID} - - 
 STR_1732    :بناء
 STR_1733    :الوضع
 STR_1734    :{WINDOW_COLOUR_2}عدد اللفات:
@@ -1149,7 +1147,6 @@ STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COM
 STR_1773    :Only one on-ride photo section allowed per ride
 STR_1774    :Only one cable lift hill allowed per ride
 STR_1777    :موسيقي الرحلة
-STR_1778    :{STRINGID} - - 
 STR_1790    :Select uniform colour for this type of staff
 STR_1791    :{WINDOW_COLOUR_2}Uniform colour:
 STR_1792    :Responding to {STRINGID} breakdown call

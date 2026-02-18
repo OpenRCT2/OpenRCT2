@@ -9,14 +9,11 @@
 
 #pragma once
 
-#include "../core/EnumUtils.hpp"
+#include "../core/FlagHolder.hpp"
 #include "../core/Imaging.h"
 #include "../core/JsonFwd.hpp"
 #include "../drawing/G1Element.h"
 #include "../world/Location.hpp"
-
-#include <string_view>
-#include <tuple>
 
 struct Image;
 
@@ -29,11 +26,12 @@ namespace OpenRCT2::Drawing
         Dithering,
     };
 
-    enum class ImportFlags : uint8_t
+    enum class ImportFlag : uint8_t
     {
-        RLE,
-        NoDrawOnZoom,
+        rle,
+        noDrawOnZoom,
     };
+    using ImportFlags = FlagHolder<uint8_t, ImportFlag>;
 
     enum class Palette : uint8_t
     {
@@ -45,7 +43,7 @@ namespace OpenRCT2::Drawing
     {
         ScreenCoordsXY offset{};
         Palette palette = Palette::OpenRCT2;
-        uint8_t importFlags = EnumToFlag(ImportFlags::RLE);
+        ImportFlags importFlags = { ImportFlag::rle };
         ImportMode importMode = ImportMode::Default;
         ScreenCoordsXY srcOffset{};
         ScreenSize srcSize{};

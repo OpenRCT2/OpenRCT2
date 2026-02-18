@@ -28,11 +28,12 @@ constexpr RideTypeDescriptor ClassicMiniRollerCoasterRTD =
         .extraTrackGroups = {TrackGroup::onridePhoto},
     }),
     .InvertedTrackPaintFunctions = {},
-    .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt |
-        EnumsToFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::allowDoorsOnTrack, 
+    .flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt |
+        RtdFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::allowDoorsOnTrack,
                      RtdFlag::checkGForces, RtdFlag::allowMultipleCircuits, RtdFlag::allowReversedTrains),
     .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned, RideMode::reverseInclineLaunchedShuttle),
     .DefaultMode = RideMode::continuousCircuit,
+   .OperatingSettings = { 5, 27 },
     .BoosterSettings = { 17, 16 },
     .LegacyBoosterSettings = { 17, 16, 1 },
     .Naming = { STR_RIDE_NAME_CLASSIC_MINI_ROLLER_COASTER, STR_RIDE_DESCRIPTION_CLASSIC_MINI_COASTER },
@@ -58,7 +59,7 @@ constexpr RideTypeDescriptor ClassicMiniRollerCoasterRTD =
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_JUNIOR_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_JUNIOR_ROLLER_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,
     .Name = "classic_mini_rc",
-    .RatingsData = 
+    .RatingsData =
     {
         RatingsCalculationType::Normal,
         { RideRating::make(2, 40), RideRating::make(2, 80), RideRating::make(1, 90) },

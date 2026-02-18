@@ -29,8 +29,8 @@ constexpr RideTypeDescriptor HyperTwisterRTD =
         .extraTrackGroups = { TrackGroup::liftHillSteep, TrackGroup::brakeForDrop, TrackGroup::booster, TrackGroup::poweredLift, TrackGroup::verticalLoop, TrackGroup::halfLoop, TrackGroup::corkscrew, TrackGroup::barrelRoll, TrackGroup::halfLoopLarge, TrackGroup::quarterLoop, TrackGroup::twist, TrackGroup::corkscrewLarge, TrackGroup::halfLoopMedium, TrackGroup::zeroGRoll, TrackGroup::zeroGRollLarge, TrackGroup::diveLoop },
     }),
     .InvertedTrackPaintFunctions = {},
-    .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt | 
-        EnumsToFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::checkGForces, 
+    .flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt | 
+        RtdFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::checkGForces, 
                      RtdFlag::allowMultipleCircuits, RtdFlag::allowReversedTrains),
     .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned),
     .DefaultMode = RideMode::continuousCircuit,

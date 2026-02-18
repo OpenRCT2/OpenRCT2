@@ -15,10 +15,21 @@
 
 #include <cstddef>
 
+// Number of temp sprite slots available for dynamic on-demand drawing
+constexpr size_t kTempSpriteCount = 5;
+
 enum : ImageIndex
 {
     // Used for on-demand drawing of dynamic memory
-    SPR_TEMP = 0x7FFFE,
+    // Each window that uses temporary sprites gets its own slot to avoid conflicts
+    // when multiple windows are open simultaneously (especially in OpenGL mode)
+    SPR_TEMP_BEGIN = 0x7FFFA,
+    SPR_TEMP_MAP = SPR_TEMP_BEGIN + 0,           // Map.cpp minimap
+    SPR_TEMP_TRACK_LIST = SPR_TEMP_BEGIN + 1,    // TrackList.cpp track design preview
+    SPR_TEMP_TRACK_PLACE = SPR_TEMP_BEGIN + 2,   // TrackDesignPlace.cpp placement preview
+    SPR_TEMP_PARK_PREVIEW = SPR_TEMP_BEGIN + 3,  // ParkPreview.cpp scenario/save preview
+    SPR_TEMP_INSTALL_TRACK = SPR_TEMP_BEGIN + 4, // InstallTrack.cpp track install preview
+    SPR_TEMP_END = SPR_TEMP_BEGIN + kTempSpriteCount,
 
     // Unused, listed for documentation purposes only
     SPR_G1_PALETTE_DEFAULT = 1532,

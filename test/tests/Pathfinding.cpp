@@ -104,7 +104,7 @@ protected:
         // elapsed. Each step, check that the tile they are standing on is not marked as forbidden in the test data
         // (red neon ground type).
         int step = 0;
-        while (!(*pos == goal) && step < expectedSteps)
+        while (*pos != goal && step < expectedSteps)
         {
             peep->PerformNextAction();
             ++step;

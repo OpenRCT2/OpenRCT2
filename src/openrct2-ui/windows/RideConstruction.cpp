@@ -24,14 +24,15 @@
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/SpriteIds.h>
-#include <openrct2/actions/MazeSetTrackAction.h>
+#include <openrct2/actions/GameActionRunner.h>
 #include <openrct2/actions/ResultWithMessage.h>
-#include <openrct2/actions/RideDemolishAction.h>
-#include <openrct2/actions/RideEntranceExitPlaceAction.h>
-#include <openrct2/actions/RideSetStatusAction.h>
-#include <openrct2/actions/TrackPlaceAction.h>
-#include <openrct2/actions/TrackRemoveAction.h>
-#include <openrct2/actions/TrackSetBrakeSpeedAction.h>
+#include <openrct2/actions/ride/MazeSetTrackAction.h>
+#include <openrct2/actions/ride/RideDemolishAction.h>
+#include <openrct2/actions/ride/RideEntranceExitPlaceAction.h>
+#include <openrct2/actions/ride/RideSetStatusAction.h>
+#include <openrct2/actions/track/TrackPlaceAction.h>
+#include <openrct2/actions/track/TrackRemoveAction.h>
+#include <openrct2/actions/track/TrackSetBrakeSpeedAction.h>
 #include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/Numerics.hpp>
@@ -269,7 +270,7 @@ namespace OpenRCT2::Ui::Windows
             _currentTrackHasLiftHill = false;
             _currentTrackAlternative.clearAll();
 
-            if (currentRide->getRideTypeDescriptor().HasFlag(RtdFlag::startConstructionInverted))
+            if (currentRide->getRideTypeDescriptor().flags.has(RtdFlag::startConstructionInverted))
                 _currentTrackAlternative.set(AlternativeTrackFlag::inverted);
 
             _previousTrackRollEnd = TrackRoll::none;
@@ -447,7 +448,7 @@ namespace OpenRCT2::Ui::Windows
                     newDisabledWidgets |= (1uLL << WIDX_SLOPE_DOWN) | (1uLL << WIDX_SLOPE_UP);
                 }
             }
-            if (currentRide->getRideTypeDescriptor().HasFlag(RtdFlag::upInclineRequiresLift)
+            if (currentRide->getRideTypeDescriptor().flags.has(RtdFlag::upInclineRequiresLift)
                 && !getGameState().cheats.enableAllDrawableTrackPieces)
             {
                 // Disable lift hill toggle and banking if current track piece is uphill
@@ -932,7 +933,7 @@ namespace OpenRCT2::Ui::Windows
                     if (_currentlySelectedTrack == TrackCurve::leftSmall || _currentlySelectedTrack == TrackCurve::rightSmall)
                     {
                         if (_currentTrackPitchEnd == TrackPitch::none && _previousTrackRollEnd != TrackRoll::none
-                            && (!currentRide->getRideTypeDescriptor().HasFlag(RtdFlag::upInclineRequiresLift)
+                            && (!currentRide->getRideTypeDescriptor().flags.has(RtdFlag::upInclineRequiresLift)
                                 || getGameState().cheats.enableAllDrawableTrackPieces))
                         {
                             newDisabledWidgets &= ~(1uLL << WIDX_SLOPE_UP);
@@ -1743,7 +1744,7 @@ namespace OpenRCT2::Ui::Windows
 
             holdDownWidgets = (1u << WIDX_CONSTRUCT) | (1u << WIDX_DEMOLISH) | (1u << WIDX_NEXT_SECTION)
                 | (1u << WIDX_PREVIOUS_SECTION);
-            if (rtd.HasFlag(RtdFlag::isShopOrFacility) || !currentRide->hasStation())
+            if (rtd.flags.has(RtdFlag::isShopOrFacility) || !currentRide->hasStation())
             {
                 widgets[WIDX_ENTRANCE_EXIT_GROUPBOX].type = WidgetType::empty;
                 widgets[WIDX_ENTRANCE].type = WidgetType::empty;
@@ -1861,7 +1862,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             const auto& gameState = getGameState();
-            if (currentRide->getRideTypeDescriptor().HasFlag(RtdFlag::upInclineRequiresLift)
+            if (currentRide->getRideTypeDescriptor().flags.has(RtdFlag::upInclineRequiresLift)
                 && (_currentTrackPitchEnd == TrackPitch::up25 || _currentTrackPitchEnd == TrackPitch::up60)
                 && !gameState.cheats.enableAllDrawableTrackPieces)
             {
@@ -1870,7 +1871,7 @@ namespace OpenRCT2::Ui::Windows
 
             if ((IsTrackEnabled(TrackGroup::liftHill) && !_currentlySelectedTrack.isTrackType)
                 || (gameState.cheats.enableChainLiftOnAllTrack
-                    && currentRide->getRideTypeDescriptor().HasFlag(RtdFlag::hasTrack)))
+                    && currentRide->getRideTypeDescriptor().flags.has(RtdFlag::hasTrack)))
             {
                 widgets[WIDX_CHAIN_LIFT].type = WidgetType::flatBtn;
             }
@@ -1996,7 +1997,7 @@ namespace OpenRCT2::Ui::Windows
                 || _currentlySelectedTrack == TrackElemType::blockBrakes || _selectedTrackType > TrackElemType::highestAlias
                 || _currentlySelectedTrack.trackType > TrackElemType::highestAlias;
 
-            bool rideHasSeatRotation = rtd.HasFlag(RtdFlag::hasSeatRotation);
+            bool rideHasSeatRotation = rtd.flags.has(RtdFlag::hasSeatRotation);
 
             if (!trackHasSpeedSetting)
             {
@@ -2089,7 +2090,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_CONSTRUCT].type = WidgetType::empty;
             widgets[WIDX_DEMOLISH].type = WidgetType::flatBtn;
             widgets[WIDX_ROTATE].type = WidgetType::empty;
-            if (rtd.HasFlag(RtdFlag::cannotHaveGaps))
+            if (rtd.flags.has(RtdFlag::cannotHaveGaps))
             {
                 widgets[WIDX_PREVIOUS_SECTION].type = WidgetType::empty;
                 widgets[WIDX_NEXT_SECTION].type = WidgetType::empty;
@@ -2473,7 +2474,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         // When flat rides are deleted, the window should be reset so the currentRide can be placed again.
                         const auto& rtd = currentRide->getRideTypeDescriptor();
-                        if (rtd.HasFlag(RtdFlag::isFlatRide) && !rtd.HasFlag(RtdFlag::isShopOrFacility))
+                        if (rtd.flags.has(RtdFlag::isFlatRide) && !rtd.flags.has(RtdFlag::isShopOrFacility))
                         {
                             RideInitialiseConstructionWindow(*currentRide);
                         }
@@ -2678,7 +2679,7 @@ namespace OpenRCT2::Ui::Windows
                     if (currentRide != nullptr && RideAreAllPossibleEntrancesAndExitsBuilt(*currentRide).Successful)
                     {
                         ToolCancel();
-                        if (!currentRide->getRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
+                        if (!currentRide->getRideTypeDescriptor().flags.has(RtdFlag::hasTrack))
                         {
                             windowMgr->CloseByClass(WindowClass::rideConstruction);
                         }
@@ -2837,7 +2838,7 @@ namespace OpenRCT2::Ui::Windows
     {
         RideTrackGroups disabledGroups{};
         const auto& rtd = GetRideTypeDescriptor(rideType);
-        if (rtd.HasFlag(RtdFlag::hasTrack))
+        if (rtd.flags.has(RtdFlag::hasTrack))
         {
             // Set all pieces as “disabled”. When looping over the ride entries,
             // pieces will be re-enabled as soon as a single entry supports it.
@@ -2846,7 +2847,7 @@ namespace OpenRCT2::Ui::Windows
             auto& objManager = GetContext()->GetObjectManager();
             auto& rideEntries = objManager.GetAllRideEntries(rideType);
             // If there are no vehicles for this ride type, enable all the track pieces.
-            if (rideEntries.size() == 0)
+            if (rideEntries.empty())
             {
                 disabledGroups.reset();
             }
@@ -3492,7 +3493,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
         if (_autoRotatingShop && _rideConstructionState == RideConstructionState::Place
-            && ride->getRideTypeDescriptor().HasFlag(RtdFlag::isShopOrFacility))
+            && ride->getRideTypeDescriptor().flags.has(RtdFlag::isShopOrFacility))
         {
             PathElement* pathsByDir[kNumOrthogonalDirections];
 
@@ -4787,7 +4788,7 @@ namespace OpenRCT2::Ui::Windows
         int16_t zBegin{}, zEnd{};
         const auto& ted = GetTrackElementDescriptor(trackType);
         const TrackCoordinates& coords = ted.coordinates;
-        if (ride->getRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
+        if (ride->getRideTypeDescriptor().flags.has(RtdFlag::hasTrack))
         {
             zBegin = coords.zBegin;
             zEnd = coords.zEnd;

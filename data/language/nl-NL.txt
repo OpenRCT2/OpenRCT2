@@ -554,7 +554,6 @@ STR_1168    :Opties
 STR_1169    :(Geen)
 STR_1170    :{STRING}
 STR_1171    :{RED}Gesloten
-STR_1172    :{YELLOW}{STRINGID}
 STR_1173    :Voetpaden en wachtrijen aanleggen
 STR_1174    :Lichtkrant in de weg
 STR_1175    :Kan dit niet op hellend voetpad neerzetten
@@ -1112,7 +1111,6 @@ STR_1727    :Voor dit land zijn geen bouwrechten te koop!
 STR_1728    :Kan hier geen bouwrechten kopen…
 STR_1729    :Land is geen eigendom van het park!
 STR_1730    :{RED}Gesloten
-STR_1731    :{WHITE}{STRINGID} - - 
 STR_1732    :Bouwen
 STR_1733    :Modus
 STR_1734    :{WINDOW_COLOUR_2}Aantal rondes:
@@ -1153,7 +1151,6 @@ STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COM
 STR_1773    :Een attractie mag maar één actiefotogedeelte hebben
 STR_1774    :Een attractie mag maar één kabellift hebben
 STR_1777    :Attractiemuziek
-STR_1778    :{STRINGID} - - 
 STR_1790    :Selecteer de uniformkleur voor dit type werknemer
 STR_1791    :{WINDOW_COLOUR_2}Uniformkleur:
 STR_1792    :Gaat {STRINGID} repareren

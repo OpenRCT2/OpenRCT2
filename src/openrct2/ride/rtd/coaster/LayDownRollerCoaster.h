@@ -37,8 +37,8 @@ constexpr RideTypeDescriptor LayDownRollerCoasterRTD =
             .extraTrackGroups = { TrackGroup::flyingHalfLoopInvertedUp, TrackGroup::stationEnd, TrackGroup::liftHill },
         }
     ),
-    .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt | 
-        EnumsToFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::hasInvertedVariant,
+    .flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt | 
+        RtdFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::hasInvertedVariant,
                      RtdFlag::checkGForces, RtdFlag::allowMultipleCircuits),
     .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned),
     .DefaultMode = RideMode::continuousCircuit,
@@ -109,8 +109,8 @@ constexpr RideTypeDescriptor LayDownRollerCoasterAltRTD =
         .enabledTrackGroups = {  },
         .extraTrackGroups = {  },
     }),
-    .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | 
-        EnumsToFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation),
+    .flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | 
+        RtdFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::isDummyType),
     .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned),
     .DefaultMode = RideMode::continuousCircuit,
     .OperatingSettings = { 10, 27 },

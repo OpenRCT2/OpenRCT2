@@ -285,7 +285,7 @@ static void RideRaceInitVehicleSpeeds(const Ride& ride)
         if (vehicle == nullptr)
             continue;
 
-        vehicle->ClearFlag(VehicleFlags::CurrentlyColliding);
+        vehicle->flags.unset(VehicleFlag::currentlyColliding);
 
         const auto* rideEntry = vehicle->GetRideEntry();
 

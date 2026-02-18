@@ -80,15 +80,13 @@ namespace OpenRCT2::CommandLine::Sprite
         // New image will have its data inserted after previous image
         uint8_t* newElementOffset = reinterpret_cast<uint8_t*>(static_cast<uintptr_t>(Header.totalSize));
         Header.totalSize += static_cast<uint32_t>(image.Buffer.size());
-        Entries.reserve(Header.numEntries);
 
         {
             ScopedRelativeSpriteFile scopedRelative(*this);
-            Data.reserve(Header.totalSize);
             Entries.push_back(image.Element);
             Entries.back().offset = newElementOffset;
             const auto& buffer = image.Buffer;
-            std::copy(buffer.begin(), buffer.end(), std::back_inserter(Data));
+            Data.insert(Data.end(), buffer.begin(), buffer.end());
         }
     }
 

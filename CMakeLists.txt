@@ -66,25 +66,22 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(ROOT_DIR "${CMAKE_CURRENT_LIST_DIR}")
 
-set(TITLE_SEQUENCE_VERSION "0.4.26")
-set(TITLE_SEQUENCE_URL     "https://github.com/OpenRCT2/title-sequences/releases/download/v${TITLE_SEQUENCE_VERSION}/title-sequences.zip")
-set(TITLE_SEQUENCE_SHA256  "dabb9787b1576342fca4dd9f64b3f8cfa04a7e6ce9c2bb9610f47b762905c858")
+file(READ "${CMAKE_CURRENT_SOURCE_DIR}/assets.json" ASSETS_JSON)
 
-set(OBJECTS_VERSION "1.7.6")
-set(OBJECTS_URL     "https://github.com/OpenRCT2/objects/releases/download/v${OBJECTS_VERSION}/objects.zip")
-set(OBJECTS_SHA256  "6aca2eb441fbe8c022ff84d59fb51ed7ea577756640970dc989eab685ff45696")
+string(JSON TITLE_SEQUENCE_URL GET "${ASSETS_JSON}" "title-sequences" url)
+string(JSON TITLE_SEQUENCE_SHA256 GET "${ASSETS_JSON}" "title-sequences" sha256)
 
-set(OPENSFX_VERSION "1.0.6")
-set(OPENSFX_URL     "https://github.com/OpenRCT2/OpenSoundEffects/releases/download/v${OPENSFX_VERSION}/opensound.zip")
-set(OPENSFX_SHA256  "06b90f3e19c216752df441d551b26a9e3e1ba7755bdd2102504b73bf993608be")
+string(JSON OBJECTS_URL GET "${ASSETS_JSON}" objects url)
+string(JSON OBJECTS_SHA256 GET "${ASSETS_JSON}" objects sha256)
 
-set(OPENMSX_VERSION "1.6.1")
-set(OPENMSX_URL     "https://github.com/OpenRCT2/OpenMusic/releases/download/v${OPENMSX_VERSION}/openmusic.zip")
-set(OPENMSX_SHA256  "994b350d3b180ee1cb9619fe27f7ebae3a1a5232840c4bd47a89f33fa89de1a1")
+string(JSON OPENSFX_URL GET "${ASSETS_JSON}" opensfx url)
+string(JSON OPENSFX_SHA256 GET "${ASSETS_JSON}" opensfx sha256)
 
-set(REPLAYS_VERSION "0.0.92")
-set(REPLAYS_URL     "https://github.com/OpenRCT2/replays/releases/download/v${REPLAYS_VERSION}/replays.zip")
-set(REPLAYS_SHA256  "455a19172a8df81b935a942bbbda20167b4740b34653fdb74127740686bf4cbe")
+string(JSON OPENMUSIC_URL GET "${ASSETS_JSON}" openmusic url)
+string(JSON OPENMUSIC_SHA256 GET "${ASSETS_JSON}" openmusic sha256)
+
+string(JSON REPLAYS_URL GET "${ASSETS_JSON}" replays url)
+string(JSON REPLAYS_SHA256 GET "${ASSETS_JSON}" replays sha256)
 
 option(FORCE32 "Force 32-bit build. It will add `-m32` to compiler flags.")
 option(WITH_TESTS "Build tests")
@@ -93,7 +90,7 @@ option(APPIMAGE "Create an appimage build (-rpath=$ORIGIN/../lib)" OFF)
 option(DOWNLOAD_TITLE_SEQUENCES "Download title sequences during installation." ON)
 option(DOWNLOAD_OBJECTS "Download objects during installation." ON)
 option(DOWNLOAD_OPENSFX "Download OpenSoundEffects during installation." ON)
-option(DOWNLOAD_OPENMSX "Download OpenMusic during installation." ON)
+option(DOWNLOAD_OPENMUSIC "Download OpenMusic during installation." ON)
 CMAKE_DEPENDENT_OPTION(DOWNLOAD_REPLAYS "Download replays during installation." ON
     "WITH_TESTS" OFF)
 CMAKE_DEPENDENT_OPTION(MACOS_USE_DEPENDENCIES "Use OpenRCT2 dependencies instead of system libraries" ON
@@ -149,7 +146,6 @@ if (MACOS_USE_DEPENDENCIES)
     set(MACOS_DYLIBS_URL "https://github.com/OpenRCT2/Dependencies/releases/download/v${MACOS_DYLIBS_VERSION}/${MACOS_DYLIBS_ZIPFILE}")
 
     download_openrct2_zip(
-        ZIP_VERSION ${MACOS_DYLIBS_VERSION}
         DOWNLOAD_DIR ${MACOS_DYLIBS_DIR}
         ZIP_URL ${MACOS_DYLIBS_URL}
         SHA256 ${MACOS_DYLIBS_SHA256}
@@ -406,7 +402,7 @@ if (NOT CMAKE_CROSSCOMPILING)
         file(GLOB_RECURSE dependent_files CONFIGURE_DEPENDS "${ROOT_DIR}/resources/${graphics_file}/*")
         add_custom_command(
             OUTPUT ${output_file}
-            COMMAND ./openrct2-cli sprite build "${CMAKE_BINARY_DIR}/${output_file}" "${json_file}"
+            COMMAND ./openrct2-cli sprite build "${CMAKE_BINARY_DIR}/${output_file}" "${json_file}" silent
             WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
             DEPENDS ${dependent_files}
         )
@@ -449,7 +445,6 @@ if (NOT MACOS_BUNDLE OR (MACOS_BUNDLE AND WITH_TESTS))
         install(CODE "
             include(${ROOT_DIR}/cmake/download.cmake)
             download_openrct2_zip(
-                ZIP_VERSION ${TITLE_SEQUENCE_VERSION}
                 DOWNLOAD_DIR \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/openrct2/sequence/
                 SKIP_IF_EXISTS ${CMAKE_SOURCE_DIR}/data/sequence/
                 ZIP_URL ${TITLE_SEQUENCE_URL}
@@ -463,7 +458,6 @@ if (NOT MACOS_BUNDLE OR (MACOS_BUNDLE AND WITH_TESTS))
         install(CODE "
             include(${ROOT_DIR}/cmake/download.cmake)
             download_openrct2_zip(
-                ZIP_VERSION ${OBJECTS_VERSION}
                 DOWNLOAD_DIR \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/openrct2/object/
                 SKIP_IF_EXISTS ${CMAKE_SOURCE_DIR}/data/object/
                 ZIP_URL ${OBJECTS_URL}
@@ -474,22 +468,20 @@ if (NOT MACOS_BUNDLE OR (MACOS_BUNDLE AND WITH_TESTS))
         install(CODE "
             include(${ROOT_DIR}/cmake/download.cmake)
             download_openrct2_zip(
-                ZIP_VERSION ${OPENSFX_VERSION}
                 SKIP_IF_EXISTS ${CMAKE_SOURCE_DIR}/data/assetpack/openrct2.sound.parkap
                 DOWNLOAD_DIR \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/openrct2/
                 ZIP_URL ${OPENSFX_URL}
                 SHA256 ${OPENSFX_SHA256}
             )")
     endif ()
-    if (DOWNLOAD_OPENMSX)
+    if (DOWNLOAD_OPENMUSIC)
         install(CODE "
             include(${ROOT_DIR}/cmake/download.cmake)
             download_openrct2_zip(
-                ZIP_VERSION ${OPENMSX_VERSION}
                 SKIP_IF_EXISTS ${CMAKE_SOURCE_DIR}/data/assetpack/openrct2.music.alternative.parkap
                 DOWNLOAD_DIR \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/openrct2/
-                ZIP_URL ${OPENMSX_URL}
-                SHA256 ${OPENMSX_SHA256}
+                ZIP_URL ${OPENMUSIC_URL}
+                SHA256 ${OPENMUSIC_SHA256}
             )")
     endif ()
     if (DOWNLOAD_REPLAYS)
@@ -497,7 +489,6 @@ if (NOT MACOS_BUNDLE OR (MACOS_BUNDLE AND WITH_TESTS))
         install(CODE "
             include(${ROOT_DIR}/cmake/download.cmake)
             download_openrct2_zip(
-                ZIP_VERSION ${REPLAYS_VERSION}
                 DOWNLOAD_DIR \${CMAKE_CURRENT_BINARY_DIR}/testdata/replays/
                 ZIP_URL ${REPLAYS_URL}
                 SHA256 ${REPLAYS_SHA256}

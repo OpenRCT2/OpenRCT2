@@ -361,11 +361,6 @@ constexpr RideTypeDescriptor kRideTypeDescriptors[RIDE_TYPE_COUNT] = {
     /* RIDE_TYPE_CLASSIC_WOODEN_TWISTER_ROLLER_COASTER */ ClassicWoodenTwisterRollerCoasterRTD,
 };
 
-bool RideTypeDescriptor::HasFlag(RtdFlag flag) const
-{
-    return ::HasFlag(Flags, flag);
-}
-
 bool RideTypeDescriptor::SupportsTrackGroup(const TrackGroup trackGroup) const
 {
     return TrackPaintFunctions.Regular.SupportsTrackGroup(trackGroup);

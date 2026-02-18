@@ -300,7 +300,7 @@ static bool AwardIsDeservedBestFood(GameState_t& gameState, int32_t activeAwardT
     {
         if (ride.status != RideStatus::open)
             continue;
-        if (!ride.getRideTypeDescriptor().HasFlag(RtdFlag::sellsFood))
+        if (!ride.getRideTypeDescriptor().flags.has(RtdFlag::sellsFood))
             continue;
 
         shops++;
@@ -345,7 +345,7 @@ static bool AwardIsDeservedWorstFood(GameState_t& gameState, int32_t activeAward
     {
         if (ride.status != RideStatus::open)
             continue;
-        if (!ride.getRideTypeDescriptor().HasFlag(RtdFlag::sellsFood))
+        if (!ride.getRideTypeDescriptor().flags.has(RtdFlag::sellsFood))
             continue;
 
         shops++;
@@ -473,7 +473,7 @@ static bool AwardIsDeservedBestCustomDesignedRides(GameState_t& gameState, int32
     auto customDesignedRides = 0;
     for (const auto& ride : RideManager(gameState))
     {
-        if (!ride.getRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
+        if (!ride.getRideTypeDescriptor().flags.has(RtdFlag::hasTrack))
             continue;
         if (ride.lifecycleFlags & RIDE_LIFECYCLE_NOT_CUSTOM_DESIGN)
             continue;
@@ -505,7 +505,7 @@ static bool AwardIsDeservedMostDazzlingRideColours(GameState_t& gameState, int32
     auto colourfulRides = 0;
     for (const auto& ride : RideManager(gameState))
     {
-        if (!ride.getRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
+        if (!ride.getRideTypeDescriptor().flags.has(RtdFlag::hasTrack))
             continue;
 
         countedRides++;

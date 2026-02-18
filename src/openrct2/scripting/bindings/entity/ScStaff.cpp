@@ -314,7 +314,7 @@ namespace OpenRCT2::Scripting
         auto* peep = GetStaff();
         if (peep == nullptr)
         {
-            return nullptr;
+            return "";
         }
 
         auto& animationGroups = animationsByStaffType(peep->AssignedStaffType);

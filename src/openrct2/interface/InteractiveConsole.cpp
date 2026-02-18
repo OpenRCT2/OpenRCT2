@@ -18,15 +18,16 @@
 #include "../PlatformEnvironment.h"
 #include "../ReplayManager.h"
 #include "../Version.h"
-#include "../actions/CheatSetAction.h"
-#include "../actions/GameSetSpeedAction.h"
-#include "../actions/ParkSetDateAction.h"
-#include "../actions/ParkSetParameterAction.h"
-#include "../actions/RideFreezeRatingAction.h"
-#include "../actions/RideSetPriceAction.h"
-#include "../actions/RideSetSettingAction.h"
-#include "../actions/ScenarioSetSettingAction.h"
-#include "../actions/StaffSetCostumeAction.h"
+#include "../actions/GameActionRunner.h"
+#include "../actions/cheats/CheatSetAction.h"
+#include "../actions/general/GameSetSpeedAction.h"
+#include "../actions/general/ScenarioSetSettingAction.h"
+#include "../actions/park/ParkSetDateAction.h"
+#include "../actions/park/ParkSetParameterAction.h"
+#include "../actions/peep/StaffSetCostumeAction.h"
+#include "../actions/ride/RideFreezeRatingAction.h"
+#include "../actions/ride/RideSetPriceAction.h"
+#include "../actions/ride/RideSetSettingAction.h"
 #include "../config/Config.h"
 #include "../core/Console.hpp"
 #include "../core/EnumUtils.hpp"
@@ -1273,7 +1274,7 @@ static void ConsoleCommandForceDate([[maybe_unused]] InteractiveConsole& console
     int32_t year = 0;
     int32_t month = 0;
     int32_t day = 0;
-    if (argv.size() < 1 || argv.size() > 3)
+    if (argv.empty() || argv.size() > 3)
     {
         return;
     }
@@ -1327,7 +1328,7 @@ static void ConsoleCommandForceDate([[maybe_unused]] InteractiveConsole& console
 
 static void ConsoleCommandLoadPark([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
-    if (argv.size() < 1)
+    if (argv.empty())
     {
         console.WriteLine("Parameters required <filename>");
         return;
@@ -1362,7 +1363,7 @@ static void ConsoleCommandLoadPark([[maybe_unused]] InteractiveConsole& console,
 
 static void ConsoleCommandSavePark([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
-    if (argv.size() < 1)
+    if (argv.empty())
     {
         SaveGameCmd();
     }
@@ -1398,7 +1399,7 @@ static void ConsoleCommandReplayStartRecord(InteractiveConsole& console, const a
         return;
     }
 
-    if (argv.size() < 1)
+    if (argv.empty())
     {
         console.WriteFormatLine("Parameters required <replay_name> [<max_ticks = 0xFFFFFFFF>]");
         return;
@@ -1471,7 +1472,7 @@ static void ConsoleCommandReplayStart(InteractiveConsole& console, const argumen
         return;
     }
 
-    if (argv.size() < 1)
+    if (argv.empty())
     {
         console.WriteFormatLine("Parameters required <replay_name>");
         return;
@@ -1556,7 +1557,7 @@ static void ConsoleCommandReplayNormalise(InteractiveConsole& console, const arg
 static void ConsoleCommandMpDesync(InteractiveConsole& console, const arguments_t& argv)
 {
     int32_t desyncType = 0;
-    if (argv.size() >= 1)
+    if (!argv.empty())
     {
         desyncType = atoi(argv[0].c_str());
     }
@@ -1698,7 +1699,7 @@ static void ConsoleCommandProfilerStart([[maybe_unused]] InteractiveConsole& con
 static void ConsoleCommandProfilerExportCSV(
     [[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
-    if (argv.size() < 1)
+    if (argv.empty())
     {
         console.WriteLineError("Missing argument: <file path>");
     }
@@ -1719,7 +1720,7 @@ static void ConsoleCommandProfilerStop([[maybe_unused]] InteractiveConsole& cons
     Profiling::Disable();
 
     // Export to CSV if argument is provided.
-    if (argv.size() >= 1)
+    if (!argv.empty())
     {
         return ConsoleCommandProfilerExportCSV(console, argv);
     }

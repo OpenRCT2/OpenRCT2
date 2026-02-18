@@ -26,7 +26,8 @@ namespace OpenRCT2
 namespace OpenRCT2::Drawing
 {
     struct RenderTarget;
-}
+    enum class PaletteIndex : uint8_t;
+} // namespace OpenRCT2::Drawing
 
 namespace OpenRCT2::Drawing::LightFx
 {
@@ -72,7 +73,7 @@ namespace OpenRCT2::Drawing::LightFx
 
     void ApplyPaletteFilter(uint8_t i, uint8_t* r, uint8_t* g, uint8_t* b);
     void RenderToTexture(
-        const Viewport& vp, void* dstPixels, uint32_t dstPitch, uint8_t* bits, uint32_t width, uint32_t height,
+        const Viewport& vp, void* dstPixels, uint32_t dstPitch, Drawing::PaletteIndex* bits, uint32_t width, uint32_t height,
         const uint32_t* palette, const uint32_t* lightPalette);
 
 } // namespace OpenRCT2::Drawing::LightFx

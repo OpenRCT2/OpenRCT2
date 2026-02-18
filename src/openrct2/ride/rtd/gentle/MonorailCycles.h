@@ -29,13 +29,14 @@ constexpr RideTypeDescriptor MonorailCyclesRTD =
         .extraTrackGroups = {},
     }),
     .InvertedTrackPaintFunctions = {},
-    .Flags = kRtdFlagsHasThreeColours | EnumsToFlags(RtdFlag::canSynchroniseWithAdjacentStations,
+    .flags = kRtdFlagsHasThreeColours | RtdFlags(RtdFlag::canSynchroniseWithAdjacentStations,
                      RtdFlag::hasDataLogging, RtdFlag::noTestMode, RtdFlag::hasLoadOptions,
                      RtdFlag::guestsWillRideAgain, RtdFlag::hasVehicleColours, RtdFlag::hasTrack,
                      RtdFlag::supportsMultipleColourSchemes, RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit,
                      RtdFlag::slightlyInterestingToLookAt),
     .RideModes = EnumsToFlags(RideMode::continuousCircuit),
     .DefaultMode = RideMode::continuousCircuit,
+    .OperatingSettings = { 5, 18 },
     .Naming = { STR_RIDE_NAME_MONORAIL_CYCLES, STR_RIDE_DESCRIPTION_MONORAIL_CYCLES },
     .NameConvention = { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station },
     .AvailableBreakdowns = (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
@@ -56,7 +57,7 @@ constexpr RideTypeDescriptor MonorailCyclesRTD =
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_MONORAIL_CYCLES_TRACK, SPR_RIDE_DESIGN_PREVIEW_MONORAIL_CYCLES_SUPPORTS },
     .ColourKey = RideColourKey::Ride,
     .Name = "monorail_cycles",
-    .RatingsData = 
+    .RatingsData =
     {
         RatingsCalculationType::Normal,
         { RideRating::make(1, 40), RideRating::make(0, 20), RideRating::make(0, 00) },

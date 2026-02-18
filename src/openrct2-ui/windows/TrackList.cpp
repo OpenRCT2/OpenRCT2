@@ -83,7 +83,7 @@ namespace OpenRCT2::Ui::Windows
         std::vector<uint16_t> _filteredTrackIds;
         uint16_t _loadedTrackDesignIndex;
         std::unique_ptr<TrackDesign> _loadedTrackDesign;
-        std::vector<uint8_t> _trackDesignPreviewPixels;
+        TrackDesignPreviewBuffer _trackDesignPreviewPixels{};
         bool _selectedItemIsBeingUpdated;
         bool _reloadTrackDesigns;
 
@@ -123,7 +123,7 @@ namespace OpenRCT2::Ui::Windows
         void SelectFromList(int32_t listIndex)
         {
             Audio::Play(Audio::SoundId::click1, 0, this->windowPos.x + (this->width / 2));
-            if (!(gLegacyScene == LegacyScene::trackDesignsManager))
+            if (gLegacyScene != LegacyScene::trackDesignsManager)
             {
                 if (listIndex == 0)
                 {
@@ -171,7 +171,7 @@ namespace OpenRCT2::Ui::Windows
         int32_t GetListItemFromPosition(const ScreenCoordsXY& screenCoords)
         {
             size_t maxItems = _filteredTrackIds.size();
-            if (!(gLegacyScene == LegacyScene::trackDesignsManager))
+            if (gLegacyScene != LegacyScene::trackDesignsManager)
             {
                 // Extra item: custom design
                 maxItems++;
@@ -191,7 +191,7 @@ namespace OpenRCT2::Ui::Windows
             std::string entryName;
             if (item.Type < 0x80)
             {
-                if (GetRideTypeDescriptor(item.Type).HasFlag(RtdFlag::listVehiclesSeparately))
+                if (GetRideTypeDescriptor(item.Type).flags.has(RtdFlag::listVehiclesSeparately))
                 {
                     entryName = GetRideEntryName(item.EntryIndex);
                 }
@@ -206,7 +206,7 @@ namespace OpenRCT2::Ui::Windows
             _loadedTrackDesign = TrackDesignImport(path.c_str());
             if (_loadedTrackDesign != nullptr)
             {
-                TrackDesignDrawPreview(*_loadedTrackDesign, _trackDesignPreviewPixels.data(), !gTrackDesignSceneryToggle);
+                TrackDesignDrawPreview(*_loadedTrackDesign, _trackDesignPreviewPixels, !gTrackDesignSceneryToggle);
                 return true;
             }
             return false;
@@ -231,14 +231,14 @@ namespace OpenRCT2::Ui::Windows
             _reloadTrackDesigns = false;
             // Start with first track highlighted
             selectedListItem = 0;
-            if (_trackDesigns.size() != 0 && !(gLegacyScene == LegacyScene::trackDesignsManager))
+            if (!_trackDesigns.empty() && gLegacyScene != LegacyScene::trackDesignsManager)
             {
                 selectedListItem = 1;
             }
             gTrackDesignSceneryToggle = false;
             WindowPushOthersRight(*this);
             _currentTrackPieceDirection = 2;
-            _trackDesignPreviewPixels.resize(4 * kTrackPreviewImageSize);
+            std::fill(_trackDesignPreviewPixels.begin(), _trackDesignPreviewPixels.end(), PaletteIndex::transparent);
 
             _loadedTrackDesign = nullptr;
             _loadedTrackDesignIndex = kTrackDesignIndexUnloaded;
@@ -256,8 +256,6 @@ namespace OpenRCT2::Ui::Windows
         {
             // Dispose track design and preview
             _loadedTrackDesign = nullptr;
-            _trackDesignPreviewPixels.clear();
-            _trackDesignPreviewPixels.shrink_to_fit();
 
             // Dispose track list
             _trackDesigns.clear();
@@ -292,7 +290,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_BACK:
                     close();
-                    if (!(gLegacyScene == LegacyScene::trackDesignsManager))
+                    if (gLegacyScene != LegacyScene::trackDesignsManager)
                     {
                         ContextOpenWindow(WindowClass::constructRide);
                     }
@@ -329,7 +327,7 @@ namespace OpenRCT2::Ui::Windows
         ScreenSize onScrollGetSize(const int32_t scrollIndex) override
         {
             size_t numItems = _filteredTrackIds.size();
-            if (!(gLegacyScene == LegacyScene::trackDesignsManager))
+            if (gLegacyScene != LegacyScene::trackDesignsManager)
             {
                 // Extra item: custom design
                 numItems++;
@@ -510,19 +508,20 @@ namespace OpenRCT2::Ui::Windows
             screenPos = windowPos + ScreenCoordsXY{ tdWidget.midX(), tdWidget.midY() };
 
             G1Element g1temp = {};
-            g1temp.offset = _trackDesignPreviewPixels.data() + (_currentTrackPieceDirection * kTrackPreviewImageSize);
+            g1temp.offset = reinterpret_cast<uint8_t*>(
+                _trackDesignPreviewPixels.data() + (_currentTrackPieceDirection * kTrackPreviewImageSize));
             g1temp.width = 370;
             g1temp.height = 217;
             g1temp.flags = { G1Flag::hasTransparency };
-            GfxSetG1Element(SPR_TEMP, &g1temp);
-            DrawingEngineInvalidateImage(SPR_TEMP);
-            GfxDrawSprite(rt, ImageId(SPR_TEMP), trackPreview);
+            GfxSetG1Element(SPR_TEMP_TRACK_LIST, &g1temp);
+            DrawingEngineInvalidateImage(SPR_TEMP_TRACK_LIST);
+            GfxDrawSprite(rt, ImageId(SPR_TEMP_TRACK_LIST), trackPreview);
 
             screenPos.y = windowPos.y + tdWidget.bottom - 12;
 
             // Warnings
-            if ((_loadedTrackDesign->gameStateData.hasFlag(TrackDesignGameStateFlag::VehicleUnavailable))
-                && !(gLegacyScene == LegacyScene::trackDesignsManager))
+            if (_loadedTrackDesign->gameStateData.hasFlag(TrackDesignGameStateFlag::VehicleUnavailable)
+                && gLegacyScene != LegacyScene::trackDesignsManager)
             {
                 // Vehicle design not available
                 DrawTextEllipsised(rt, screenPos, 368, STR_VEHICLE_DESIGN_UNAVAILABLE, {}, { TextAlignment::centre });
@@ -565,7 +564,7 @@ namespace OpenRCT2::Ui::Windows
             screenPos.y += kListRowHeight + 4;
 
             // Information for tracked rides.
-            if (GetRideTypeDescriptor(_loadedTrackDesign->trackAndVehicle.rtdIndex).HasFlag(RtdFlag::hasTrack))
+            if (GetRideTypeDescriptor(_loadedTrackDesign->trackAndVehicle.rtdIndex).flags.has(RtdFlag::hasTrack))
             {
                 const auto& rtd = GetRideTypeDescriptor(_loadedTrackDesign->trackAndVehicle.rtdIndex);
                 if (rtd.specialType != RtdSpecialType::maze)
@@ -601,7 +600,7 @@ namespace OpenRCT2::Ui::Windows
                     screenPos.y += kListRowHeight;
                 }
 
-                if (GetRideTypeDescriptor(_loadedTrackDesign->trackAndVehicle.rtdIndex).HasFlag(RtdFlag::hasGForces))
+                if (GetRideTypeDescriptor(_loadedTrackDesign->trackAndVehicle.rtdIndex).flags.has(RtdFlag::hasGForces))
                 {
                     // Maximum positive vertical Gs
                     ft = Formatter();
@@ -631,7 +630,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                 }
 
-                if (GetRideTypeDescriptor(_loadedTrackDesign->trackAndVehicle.rtdIndex).HasFlag(RtdFlag::hasDrops))
+                if (GetRideTypeDescriptor(_loadedTrackDesign->trackAndVehicle.rtdIndex).flags.has(RtdFlag::hasDrops))
                 {
                     // Drops
                     ft = Formatter();

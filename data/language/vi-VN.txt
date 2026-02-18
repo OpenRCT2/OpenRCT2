@@ -556,7 +556,6 @@ STR_1168    :Tùy chọn
 STR_1169    :(Không có)
 STR_1170    :{STRING}
 STR_1171    :{RED}Đã đóng
-STR_1172    :{YELLOW}{STRINGID}
 STR_1173    :Xây dựng đường đi bộ và hàng chờ
 STR_1174    :Biển hiệu biểu ngữ bị cản trở
 STR_1175    :Không thể xây dựng cái này trên đường đi bộ dốc
@@ -1063,7 +1062,6 @@ STR_1727    :Quyền xây dựng không rao bán!
 STR_1728    :Không thể mua quyền xây dựng ở đây…
 STR_1729    :Đất không thuộc sở hữu của công viên!
 STR_1730    :{RED}Đã đóng
-STR_1731    :{WHITE}{STRINGID} - -
 STR_1732    :Xây dựng
 STR_1733    :Chế độ
 STR_1734    :{WINDOW_COLOUR_2}Số vòng:
@@ -1104,7 +1102,6 @@ STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COM
 STR_1773    :Chỉ cho phép một phần chụp ảnh trên trò chơi mỗi trò chơi
 STR_1774    :Chỉ cho phép một đồi nâng dây cáp mỗi trò chơi
 STR_1777    :Nhạc trò chơi
-STR_1778    :{STRINGID} - -
 STR_1790    :Chọn màu đồng phục cho loại nhân viên này
 STR_1791    :{WINDOW_COLOUR_2}Màu đồng phục:
 STR_1792    :Đang phản hồi cuộc gọi hỏng hóc {STRINGID}

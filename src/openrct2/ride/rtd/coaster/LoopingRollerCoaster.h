@@ -28,8 +28,8 @@ constexpr RideTypeDescriptor LoopingRollerCoasterRTD =
         .extraTrackGroups = {TrackGroup::slopeVertical, TrackGroup::twist, TrackGroup::corkscrew, TrackGroup::curveVertical, TrackGroup::quarterLoop, TrackGroup::flatToSteepSlope, TrackGroup::barrelRoll, TrackGroup::halfLoop, TrackGroup::halfLoopMedium, TrackGroup::halfLoopLarge,TrackGroup::corkscrewLarge, TrackGroup::zeroGRoll, TrackGroup::zeroGRollLarge},
     }),
     .InvertedTrackPaintFunctions = {},
-    .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt | 
-        EnumsToFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::checkGForces, 
+    .flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt | 
+        RtdFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::checkGForces, 
                      RtdFlag::allowMultipleCircuits, RtdFlag::allowReversedTrains, RtdFlag::poweredLaunchAffectsReliability),
     .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned, RideMode::reverseInclineLaunchedShuttle, RideMode::poweredLaunchPasstrough, RideMode::poweredLaunch),
     .DefaultMode = RideMode::continuousCircuit,

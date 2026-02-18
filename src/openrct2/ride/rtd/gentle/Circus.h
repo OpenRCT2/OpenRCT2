@@ -27,7 +27,7 @@ constexpr RideTypeDescriptor CircusRTD =
         .extraTrackGroups = {},
     }),
     .InvertedTrackPaintFunctions = {},
-    .Flags = EnumsToFlags(RtdFlag::hasSinglePieceStation, RtdFlag::cannotHaveGaps,
+    .flags = RtdFlags(RtdFlag::hasSinglePieceStation, RtdFlag::cannotHaveGaps,
                      RtdFlag::hasLoadOptions, RtdFlag::vehicleIsIntegral, RtdFlag::noWallsAroundTrack,
                      RtdFlag::isFlatRide, RtdFlag::describeAsInside, RtdFlag::hasVehicleColours,
                      RtdFlag::hasMusicByDefault, RtdFlag::hasEntranceAndExit, RtdFlag::singleSession,
@@ -51,7 +51,7 @@ constexpr RideTypeDescriptor CircusRTD =
     .ColourPreview = { 0, 0 },
     .ColourKey = RideColourKey::Ride,
     .Name = "circus",
-    .RatingsData = 
+    .RatingsData =
     {
         RatingsCalculationType::FlatRide,
         { RideRating::make(2, 10), RideRating::make(0, 30), RideRating::make(0, 0) },

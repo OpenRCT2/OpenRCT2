@@ -50,7 +50,7 @@ namespace OpenRCT2::CommandLine::Sprite
             }
         }
 
-        constexpr uint8_t importFlags = EnumToFlag(ImportFlags::RLE);
+        constexpr ImportFlags importFlags = { ImportFlag::rle };
         ImageImportMeta meta = { { xOffset, yOffset }, Palette::OpenRCT2, importFlags, spriteMode };
         const auto image = SpriteImageLoad(imagePath, meta);
         if (!image.has_value())

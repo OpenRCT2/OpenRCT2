@@ -1100,7 +1100,6 @@ STR_1727    :İnşa hakkı satılmıyor!
 STR_1728    :Burada inşa hakkı alınamıyor…
 STR_1729    :Bu alan parka ait değil
 STR_1730    :{RED}Kapalı - -
-STR_1731    :{WHITE}{STRINGID} - -
 STR_1732    :İnşa et
 STR_1733    :Mod
 STR_1734    :{WINDOW_COLOUR_2}Tur sayısı:
@@ -1141,7 +1140,6 @@ STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COM
 STR_1773    :Alet başı bir tane fotoğraf alanı inşa edilebilir
 STR_1774    :Alet başı bir tane asansörlü tırmanma zinciri inşa edilebilir
 STR_1777    :{WINDOW_COLOUR_2}Alet müziği
-STR_1778    :{STRINGID} - -
 STR_1790    :Bu işçinin üniforma{NEWLINE}rengini seçiniz
 STR_1791    :{WINDOW_COLOUR_2}Üniforma rengi:
 STR_1792    :{STRINGID} aletinin tamirine gidiyor

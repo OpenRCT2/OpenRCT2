@@ -28,11 +28,12 @@ constexpr RideTypeDescriptor WoodenRollerCoasterRTD =
         .extraTrackGroups = {TrackGroup::booster},
     }),
     .InvertedTrackPaintFunctions = {},
-    .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt | 
-        EnumsToFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::checkGForces, 
+    .flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt |
+        RtdFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::checkGForces,
                      RtdFlag::allowMultipleCircuits, RtdFlag::allowReversedTrains),
     .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned, RideMode::reverseInclineLaunchedShuttle),
     .DefaultMode = RideMode::continuousCircuit,
+    .OperatingSettings = { 7, 27 },
     .BoosterSettings = { 0, 68 },
     .LegacyBoosterSettings = { 0, 68 },
     .Naming = { STR_RIDE_NAME_WOODEN_ROLLER_COASTER, STR_RIDE_DESCRIPTION_WOODEN_ROLLER_COASTER },
@@ -55,13 +56,13 @@ constexpr RideTypeDescriptor WoodenRollerCoasterRTD =
         { Drawing::Colour::darkWater, Drawing::Colour::bordeauxRed, Drawing::Colour::white },
         { Drawing::Colour::lightBlue, Drawing::Colour::black, Drawing::Colour::black },
         { Drawing::Colour::lightBlue, Drawing::Colour::black, Drawing::Colour::darkBrown },
-        { Drawing::Colour::tan, Drawing::Colour::sepia, Drawing::Colour::lightBrown }, // Generic GCI 
+        { Drawing::Colour::tan, Drawing::Colour::sepia, Drawing::Colour::lightBrown }, // Generic GCI
         { Drawing::Colour::sepia, Drawing::Colour::umber, Drawing::Colour::grey }, // The Voyage /* Change supports to "minetrain" if possible in the future. */
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_WOODEN_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_WOODEN_ROLLER_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,
     .Name = "wooden_rc",
-    .RatingsData = 
+    .RatingsData =
     {
         RatingsCalculationType::Normal,
         { RideRating::make(3, 20), RideRating::make(2, 60), RideRating::make(2, 00) },

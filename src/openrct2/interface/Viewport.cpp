@@ -1381,7 +1381,7 @@ namespace OpenRCT2
                                     break;
 
                                 auto ride = vehicle->GetRide();
-                                if (ride != nullptr && !ride->getRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
+                                if (ride != nullptr && !ride->getRideTypeDescriptor().flags.has(RtdFlag::hasTrack))
                                 {
                                     return (viewFlags & VIEWPORT_FLAG_INVISIBLE_RIDES) ? VisibilityKind::hidden
                                                                                        : VisibilityKind::partial;

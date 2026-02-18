@@ -322,7 +322,7 @@ namespace OpenRCT2::Scripting
                 auto importMode = getImportModeFromPalette(pixelData.Palette);
                 auto pngData = DukGetDataFromBufferLikeObject(pixelData.Data);
                 auto image = Imaging::ReadFromBuffer(pngData, imageFormat);
-                constexpr uint8_t flags = EnumToFlag(ImportFlags::RLE);
+                constexpr ImportFlags flags = { ImportFlag::rle };
                 ImageImportMeta meta = { { 0, 0 }, palette, flags, importMode };
 
                 ImageImporter importer;
@@ -449,7 +449,7 @@ namespace OpenRCT2::Scripting
         if (createNewImage)
         {
             auto bufferSize = size.width * size.height;
-            rt.bits = new uint8_t[bufferSize];
+            rt.bits = new PaletteIndex[bufferSize];
             std::memset(rt.bits, 0, bufferSize);
 
             drawingEngine->BeginDraw();
@@ -461,7 +461,7 @@ namespace OpenRCT2::Scripting
         }
         else
         {
-            rt.bits = g1->offset;
+            rt.bits = reinterpret_cast<PaletteIndex*>(g1->offset);
         }
 
         auto dukG = GetObjectAsDukValue(ctx, std::make_shared<ScGraphicsContext>(ctx, rt));
@@ -477,7 +477,7 @@ namespace OpenRCT2::Scripting
                 delete[] g1->offset;
                 newg1 = *g1;
             }
-            newg1.offset = rt.bits;
+            newg1.offset = reinterpret_cast<uint8_t*>(rt.bits);
             newg1.width = size.width;
             newg1.height = size.height;
             newg1.flags = {};

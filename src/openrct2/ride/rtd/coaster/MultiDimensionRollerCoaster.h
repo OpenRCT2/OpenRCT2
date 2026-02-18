@@ -33,8 +33,8 @@ constexpr RideTypeDescriptor MultiDimensionRollerCoasterRTD =
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::brakes, TrackGroup::onridePhoto, TrackGroup::slopeVertical, TrackGroup::blockBrakes, TrackGroup::inlineTwistInverted, TrackGroup::quarterLoopInvertedUp, TrackGroup::quarterLoopInvertedDown, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes, TrackGroup::diagSlope, TrackGroup::diagSlopeSteepUp, TrackGroup::diagSlopeSteepDown},
         .extraTrackGroups = {},
     }),
-    .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt | 
-        EnumsToFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::hasInvertedVariant, 
+    .flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt | 
+        RtdFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::hasInvertedVariant, 
                      RtdFlag::checkGForces, RtdFlag::allowMultipleCircuits, RtdFlag::hasSeatRotation,
                      RtdFlag::allowReversedTrains),
     .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned),
@@ -109,8 +109,8 @@ constexpr RideTypeDescriptor MultiDimensionRollerCoasterAltRTD =
         .enabledTrackGroups = {  },
         .extraTrackGroups = {  },
     }),
-    .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | 
-        EnumsToFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::hasSeatRotation),
+    .flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | 
+        RtdFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::hasSeatRotation, RtdFlag::isDummyType),
     .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned),
     .DefaultMode = RideMode::continuousCircuit,
     .OperatingSettings = { 10, 27 },

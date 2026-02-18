@@ -114,7 +114,7 @@ namespace OpenRCT2::Ui::Windows
         int16_t columnSplitOffset = width / 2;
 
         if (researchItem.type == Research::EntryType::ride
-            && !GetRideTypeDescriptor(researchItem.baseRideType).HasFlag(RtdFlag::listVehiclesSeparately))
+            && !GetRideTypeDescriptor(researchItem.baseRideType).flags.has(RtdFlag::listVehiclesSeparately))
         {
             const StringId rideTypeName = GetRideNaming(researchItem.baseRideType, GetRideEntryByIndex(researchItem.entryIndex))
                                               .Name;
@@ -421,7 +421,7 @@ namespace OpenRCT2::Ui::Windows
             auto ft = Formatter();
 
             if (researchItem->type == Research::EntryType::ride
-                && !GetRideTypeDescriptor(researchItem->baseRideType).HasFlag(RtdFlag::listVehiclesSeparately))
+                && !GetRideTypeDescriptor(researchItem->baseRideType).flags.has(RtdFlag::listVehiclesSeparately))
             {
                 drawString = STR_WINDOW_COLOUR_2_STRINGID_STRINGID;
                 StringId rideTypeName = GetRideNaming(researchItem->baseRideType, GetRideEntryByIndex(researchItem->entryIndex))

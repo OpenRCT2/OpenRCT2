@@ -550,7 +550,6 @@ STR_1168    :Valg
 STR_1169    :(Ingenting)
 STR_1170    :{STRING}
 STR_1171    :{RED}Stengt
-STR_1172    :{YELLOW}{STRINGID}
 STR_1173    :Bygg gangstier og køer
 STR_1174    :Banner i veien
 STR_1175    :Kan ikke bygges på hellende gangsti
@@ -1107,7 +1106,6 @@ STR_1727    :Byggerettigheter ikke til salgs!
 STR_1728    :Kan ikke kjøpe byggerettigheter her…
 STR_1729    :Land ikke eid av parken!
 STR_1730    :{RED}Lukket
-STR_1731    :{WHITE}{STRINGID} - - 
 STR_1732    :Bygg
 STR_1733    :Modus
 STR_1734    :{WINDOW_COLOUR_2}Antall runder:
@@ -1148,7 +1146,6 @@ STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COM
 STR_1773    :Kun én fotoseksjon tillatt per bane
 STR_1774    :Kun ett kabeltrekk tillatt per bane
 STR_1777    :Attraksjonsmusikk
-STR_1778    :{STRINGID} - - 
 STR_1790    :Velg uniform-farge for denne typen personale
 STR_1791    :{WINDOW_COLOUR_2}Uniform-farge:
 STR_1792    :Svarer på {STRINGID} beskjed om sammenbrudd

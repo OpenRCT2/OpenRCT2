@@ -556,7 +556,6 @@ STR_1168    :Opcje
 STR_1169    :(Brak)
 STR_1170    :{STRING}
 STR_1171    :{RED}Zamknięte
-STR_1172    :{YELLOW}{STRINGID}
 STR_1173    :Buduj dróżki i kolejki
 STR_1174    :Baner blokuje
 STR_1175    :Nie można tego postawić na nierównej ścieżce
@@ -1113,7 +1112,6 @@ STR_1727    :Prawa do budowy nie są na sprzedaż!
 STR_1728    :Nie można tu kupić praw do budowy…
 STR_1729    :Teren nie należy do parku!
 STR_1730    :{RED}Zamknięte 
-STR_1731    :{WHITE}{STRINGID} - - 
 STR_1732    :Buduj
 STR_1733    :Tryb
 STR_1734    :{WINDOW_COLOUR_2}Liczba okrążeń:
@@ -1154,7 +1152,6 @@ STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COM
 STR_1773    :Tylko jedna sekcja fotograficzna dostępna na atrakcję
 STR_1774    :Tylko jedna wyciągarka dostępna na atrakcję
 STR_1777    :{WINDOW_COLOUR_2}Muzyka atrakcji
-STR_1778    :{STRINGID} - - 
 STR_1790    :Wybierz kolor uniformu dla tego typu pracownika
 STR_1791    :{WINDOW_COLOUR_2}Kolor uniformu:
 STR_1792    :Zmierza naprawić {STRINGID}

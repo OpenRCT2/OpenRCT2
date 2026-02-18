@@ -424,7 +424,7 @@ namespace OpenRCT2::PathFinding
                         continue;
                     RideId rideIndex = tileElement->AsTrack()->GetRideIndex();
                     auto ride = GetRide(rideIndex);
-                    if (ride != nullptr && ride->getRideTypeDescriptor().HasFlag(RtdFlag::isShopOrFacility))
+                    if (ride != nullptr && ride->getRideTypeDescriptor().flags.has(RtdFlag::isShopOrFacility))
                     {
                         *outRideIndex = rideIndex;
                         return PathSearchResult::ShopEntrance;
@@ -793,7 +793,7 @@ namespace OpenRCT2::PathFinding
                      * tile. */
                     rideIndex = tileElement->AsTrack()->GetRideIndex();
                     auto ride = GetRide(rideIndex);
-                    if (ride == nullptr || !ride->getRideTypeDescriptor().HasFlag(RtdFlag::isShopOrFacility))
+                    if (ride == nullptr || !ride->getRideTypeDescriptor().flags.has(RtdFlag::isShopOrFacility))
                         continue;
 
                     found = true;

@@ -184,14 +184,14 @@ void OpenGLFramebuffer::GetPixels(Drawing::RenderTarget& rt) const
 {
     assert(rt.width == _width && rt.height == _height);
 
-    auto pixels = std::make_unique<uint8_t[]>(_width * _height);
+    auto pixels = std::make_unique<Drawing::PaletteIndex[]>(_width * _height);
     glCall(glBindTexture, GL_TEXTURE_2D, _texture);
     glCall(glPixelStorei, GL_PACK_ALIGNMENT, 1);
     glCall(glGetTexImage, GL_TEXTURE_2D, 0, GL_RED_INTEGER, GL_UNSIGNED_BYTE, pixels.get());
 
     // Flip pixels vertically on copy
-    uint8_t* src = pixels.get() + ((_height - 1) * _width);
-    uint8_t* dst = rt.bits;
+    Drawing::PaletteIndex* src = pixels.get() + ((_height - 1) * _width);
+    Drawing::PaletteIndex* dst = rt.bits;
     for (int32_t y = 0; y < _height; y++)
     {
         std::copy_n(src, _width, dst);
@@ -204,10 +204,10 @@ void OpenGLFramebuffer::SetPixels(const Drawing::RenderTarget& rt)
 {
     assert(rt.width == _width && rt.height == _height);
 
-    auto pixels = std::make_unique<uint8_t[]>(_width * _height);
+    auto pixels = std::make_unique<Drawing::PaletteIndex[]>(_width * _height);
     // Flip pixels vertically on copy
-    uint8_t* dst = pixels.get() + ((_height - 1) * _width);
-    uint8_t* src = rt.bits;
+    Drawing::PaletteIndex* dst = pixels.get() + ((_height - 1) * _width);
+    Drawing::PaletteIndex* src = rt.bits;
     for (int32_t y = 0; y < _height; y++)
     {
         std::copy_n(src, _width, dst);

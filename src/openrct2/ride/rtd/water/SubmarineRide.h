@@ -29,7 +29,7 @@ constexpr RideTypeDescriptor SubmarineRideRTD =
         .extraTrackGroups = {},
     }),
     .InvertedTrackPaintFunctions = {},
-    .Flags = kRtdFlagsHasThreeColours | EnumsToFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation,
+    .flags = kRtdFlagsHasThreeColours | RtdFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation,
                      RtdFlag::trackMustBeOnWater, RtdFlag::hasLoadOptions, RtdFlag::guestsWillRideAgain,
                      RtdFlag::hasVehicleColours, RtdFlag::hasTrack, RtdFlag::supportsMultipleColourSchemes,
                      RtdFlag::allowMusic, RtdFlag::checkGForces, RtdFlag::hasEntranceAndExit, 

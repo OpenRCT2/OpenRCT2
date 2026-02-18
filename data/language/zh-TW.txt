@@ -557,7 +557,6 @@ STR_1168    :選項
 STR_1169    :(無)
 STR_1170    :{STRING}
 STR_1171    :{RED}已關閉
-STR_1172    :{YELLOW}{STRINGID}
 STR_1173    :建造道路及‘輪候區’道路
 STR_1174    :橫額擋在路上
 STR_1175    :不能在斜路上建造此物件
@@ -1115,7 +1114,6 @@ STR_1727    :建造權不供購買!
 STR_1728    :不能在此購買建造權…
 STR_1729    :土地並非由樂園所擁有!
 STR_1730    :{RED}已關閉
-STR_1731    :{WHITE}{STRINGID} - - 
 STR_1732    :建造
 STR_1733    :模式
 STR_1734    :{WINDOW_COLOUR_2}圈數:
@@ -1156,7 +1154,6 @@ STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COM
 STR_1773    :每個遊樂設施只可建造一個即時照相區域
 STR_1774    :每個遊樂設施只可建造一個纜索坡道
 STR_1777    :音樂
-STR_1778    :{STRINGID} - - 
 STR_1790    :選擇這種員工的制服色彩
 STR_1791    :{WINDOW_COLOUR_2}制服的色彩:
 STR_1792    :回應{STRINGID}的故障呼叫中

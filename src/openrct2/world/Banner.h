@@ -48,7 +48,6 @@ struct Banner
     OpenRCT2::ObjectEntryIndex type = kBannerNull;
     BannerFlags flags{};
     std::string text;
-    mutable std::string formattedTextBuffer;
     OpenRCT2::Drawing::Colour colour{};
     RideId rideIndex{};
     OpenRCT2::Drawing::TextColour textColour{};
@@ -59,6 +58,7 @@ struct Banner
         return type == kBannerNull;
     }
 
+    std::string getTextWithColour() const;
     std::string getText() const;
     void formatTextWithColourTo(OpenRCT2::Formatter&) const;
     void formatTextTo(OpenRCT2::Formatter&) const;

@@ -556,7 +556,6 @@ STR_1168    :Opcións
 STR_1169    :(Ningún)
 STR_1170    :{STRING}
 STR_1171    :{RED}Pechado
-STR_1172    :{YELLOW}{STRINGID}
 STR_1173    :Construír sendeiros e filas de espera
 STR_1174    :Letreiro no medio
 STR_1175    :Non se pode construír isto nun sendeiro inclinado
@@ -1113,7 +1112,6 @@ STR_1727    :Os dereitos de construción non están á venda!
 STR_1728    :Non se poden mercar dereitos de construción aquí…
 STR_1729    :O terreo non é propiedade do parque!
 STR_1730    :{RED}Pechado
-STR_1731    :{WHITE}{STRINGID} - -
 STR_1732    :Construír
 STR_1733    :Modo
 STR_1734    :{WINDOW_COLOUR_2}Número de voltas:
@@ -1154,7 +1152,6 @@ STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COM
 STR_1773    :Só se permite unha sección de fotos por atracción.
 STR_1774    :Só se permite unha subida con cable por atracción
 STR_1777    :Música de atracción
-STR_1778    :{STRINGID} - -
 STR_1790    :Seleccione a cor do uniforme para este tipo de persoal
 STR_1791    :{WINDOW_COLOUR_2}Cor do uniforme:
 STR_1792    :Respondendo á avaría de {STRINGID}

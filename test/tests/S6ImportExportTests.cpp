@@ -30,7 +30,6 @@
 #include <openrct2/ride/Ride.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/world/MapAnimation.h>
-#include <stdio.h>
 #include <string>
 
 using namespace OpenRCT2;

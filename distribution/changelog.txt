@@ -1,4 +1,21 @@
-0.4.31 (in development)
+0.4.32 (in development)
+------------------------------------------------------------------------
+- Feature: [#22704] Rides can be made invisible more easily.
+- Improved: [#21753] Tracked rides with cheated powered launch mode can change powered launch speed without extra cheats.
+- Improved: [#25526] When a shop item cannot be recoloured, show a preview of the building instead.
+- Improved: [#25941] The command line sprite build command is now faster.
+- Improved: [#26002] Rides with newer track elements (like the zero G roll or diagonal brakes) can now be saved as track designs.
+- Change: [#26011] Audio resampling no longer depends on the third-party library libspeexdsp.
+- Fix: [#14686, #23996, #25981] Preview images from different windows overwrite each other when using OpenGL.
+- Fix: [#15128, #15626, #16331, #17443, #18626, #21597, #24175, #24971, #25963] Crash when loading corrupted RCT2/RCT1 save files with duplicate entity indices.
+- Fix: [#25237] Wrong colours on the Knight costume.
+- Fix: [#25712, #25727] Crash during startup from window list race condition.
+- Fix: [#25910] Folders starting with numbers are sorted incorrectly (e.g. 1, 10, 2 instead of 1, 2, 10).
+- Fix: [#25954] Guests display hats, balloons, and umbrellas while puking.
+- Fix: [#25978] Frozen peeps start clapping when the scenario is won.
+- Fix: [#25999] Scenery picker tool does not pick the tertiary colour of large scenery correctly.
+
+0.4.31 (2026-02-01)
 ------------------------------------------------------------------------
 - Feature: [#25844] The sprite builder now also supports adding JSON-based palettes.
 - Improved: [#3788] Self-intersecting track designs can now be placed.
@@ -13,6 +30,7 @@
 - Fix: [#18441] Replacing footpaths sometimes results in a spurious “Footpath in the way” error (original bug).
 - Fix: [#20620] In-game console caret does not update when pasting.
 - Fix: [#20652] Twister Roller Coaster design ‘u(0241)’ has no preview and cannot be built (bug in track design).
+- Fix: [#23859] Wrong banner text displayed after loading a different park.
 - Fix: [#25221] When trying to cancel game file discovery, the prompt reappears.
 - Fix: [#25703, #25889] Crash when scanning scenarios with packed objects in parallel.
 - Fix: [#25739] Game freezes when a tab in the New Ride window contains more than 384 items.
@@ -24,7 +42,8 @@
 - Fix: [#25854] When a guest is at 0 happiness or energy, the game draws too big of a bar in the guest stats window.
 - Fix: [#25862] Diagonal and inclined brakes are not counted when calculating upkeep cost.
 - Fix: [#25873] Repainting a banner in OpenRCT2-specific colours results in an error message.
-- Fix: [#25879] Guest window viewport doesn’t follow vehicle when they board a ride. 
+- Fix: [#25879] Guest window viewport doesn’t follow vehicle when they board a ride.
+- Fix: [#25908] Crash from use-after-free in banner text formatting during multithreaded rendering.
 - Fix: [objects#419] Alignment of RCT2 red, yellow and green queue previews is off.
 - Fix: [objects#424] Jet Aeroplane decor has a hole in it.
 - Fix: [objects#425] Capacity of ‘Blob from outer space ride’ is incorrectly listed.

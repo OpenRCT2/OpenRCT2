@@ -17,7 +17,7 @@
 #include "../Input.h"
 #include "../OpenRCT2.h"
 #include "../SpriteIds.h"
-#include "../actions/GameAction.h"
+#include "../actions/GameAction.hpp"
 #include "../audio/Audio.h"
 #include "../audio/AudioChannel.h"
 #include "../audio/AudioMixer.h"
@@ -26,7 +26,6 @@
 #include "../core/Guard.hpp"
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
-#include "../drawing/LightFX.h"
 #include "../entity/Balloon.h"
 #include "../entity/EntityList.h"
 #include "../entity/EntityRegistry.h"
@@ -41,9 +40,7 @@
 #include "../network/Network.h"
 #include "../object/ObjectManager.h"
 #include "../object/PeepAnimationsObject.h"
-#include "../paint/Paint.h"
 #include "../peep/GuestPathfinding.h"
-#include "../peep/PeepSpriteIds.h"
 #include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
@@ -78,8 +75,6 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
 using namespace OpenRCT2::Drawing;
-
-using OpenRCT2::Drawing::LightFx::LightType;
 
 static uint8_t _backupAnimationImageIdOffset;
 static TileElement* _peepRideEntranceExitElement;
@@ -998,7 +993,7 @@ void PeepProblemWarningsUpdate()
                     break;
                 }
                 ride = GetRide(peep->GuestHeadingToRideId);
-                if (ride != nullptr && !ride->getRideTypeDescriptor().HasFlag(RtdFlag::sellsFood))
+                if (ride != nullptr && !ride->getRideTypeDescriptor().flags.has(RtdFlag::sellsFood))
                     hungerCounter++;
                 break;
 
@@ -1009,7 +1004,7 @@ void PeepProblemWarningsUpdate()
                     break;
                 }
                 ride = GetRide(peep->GuestHeadingToRideId);
-                if (ride != nullptr && !ride->getRideTypeDescriptor().HasFlag(RtdFlag::sellsDrinks))
+                if (ride != nullptr && !ride->getRideTypeDescriptor().flags.has(RtdFlag::sellsDrinks))
                     thirstCounter++;
                 break;
 
@@ -1251,7 +1246,8 @@ void PeepApplause()
 {
     for (auto peep : EntityList<Guest>())
     {
-        if (peep->OutsideOfPark)
+        if (peep->OutsideOfPark || peep->PeepFlags & PEEP_FLAGS_POSITION_FROZEN
+            || peep->PeepFlags & PEEP_FLAGS_ANIMATION_FROZEN)
             continue;
 
         // Release balloon
@@ -1303,7 +1299,8 @@ void Peep::FormatActionTo(Formatter& ft) const
             auto ride = GetRide(CurrentRide);
             if (ride != nullptr)
             {
-                ft.Add<StringId>(ride->getRideTypeDescriptor().HasFlag(RtdFlag::describeAsInside) ? STR_IN_RIDE : STR_ON_RIDE);
+                ft.Add<StringId>(
+                    ride->getRideTypeDescriptor().flags.has(RtdFlag::describeAsInside) ? STR_IN_RIDE : STR_ON_RIDE);
                 ride->formatNameTo(ft);
             }
             else
@@ -2236,7 +2233,7 @@ static bool PeepInteractWithShop(Peep* peep, const CoordsXYE& coords)
 {
     RideId rideIndex = coords.element->AsTrack()->GetRideIndex();
     auto ride = GetRide(rideIndex);
-    if (ride == nullptr || !ride->getRideTypeDescriptor().HasFlag(RtdFlag::isShopOrFacility))
+    if (ride == nullptr || !ride->getRideTypeDescriptor().flags.has(RtdFlag::isShopOrFacility))
         return false;
 
     auto* guest = peep->As<Guest>();
@@ -2273,7 +2270,7 @@ static bool PeepInteractWithShop(Peep* peep, const CoordsXYE& coords)
         return true;
     }
 
-    if (ride->getRideTypeDescriptor().HasFlag(RtdFlag::guestsShouldGoInsideFacility))
+    if (ride->getRideTypeDescriptor().flags.has(RtdFlag::guestsShouldGoInsideFacility))
     {
         guest->TimeLost = 0;
         if (!guest->ShouldGoOnRide(*ride, StationIndex::FromUnderlying(0), false, false))
@@ -2303,7 +2300,7 @@ static bool PeepInteractWithShop(Peep* peep, const CoordsXYE& coords)
             auto ft = Formatter();
             guest->FormatNameTo(ft);
             ride->formatNameTo(ft);
-            StringId string_id = ride->getRideTypeDescriptor().HasFlag(RtdFlag::describeAsInside)
+            StringId string_id = ride->getRideTypeDescriptor().flags.has(RtdFlag::describeAsInside)
                 ? STR_PEEP_TRACKING_PEEP_IS_IN_X
                 : STR_PEEP_TRACKING_PEEP_IS_ON_X;
             if (Config::Get().notifications.guestUsedFacility)
@@ -2739,111 +2736,6 @@ void Peep::Serialise(DataSerialiser& stream)
     stream << PathfindHistory;
     stream << WalkingAnimationFrameNum;
     stream << PeepFlags;
-}
-
-void Peep::Paint(PaintSession& session, int32_t imageDirection) const
-{
-    PROFILED_FUNCTION();
-
-    if (LightFx::IsAvailable())
-    {
-        if (Is<Staff>())
-        {
-            auto loc = GetLocation();
-            switch (Orientation)
-            {
-                case 0:
-                    loc.x -= 10;
-                    break;
-                case 8:
-                    loc.y += 10;
-                    break;
-                case 16:
-                    loc.x += 10;
-                    break;
-                case 24:
-                    loc.y -= 10;
-                    break;
-                default:
-                    return;
-            }
-
-            LightFx::Add3DLight(*this, 0, loc, LightType::Spot1);
-        }
-    }
-
-    if (session.rt.zoom_level > ZoomLevel{ 2 })
-    {
-        return;
-    }
-
-    PeepAnimationType actionAnimationGroup = AnimationType;
-    uint8_t imageOffset = AnimationImageIdOffset;
-
-    if (Action == PeepActionType::idle)
-    {
-        actionAnimationGroup = NextAnimationType;
-        imageOffset = 0;
-    }
-
-    auto& objManager = GetContext()->GetObjectManager();
-    auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(AnimationObjectIndex);
-
-    uint32_t baseImageId = animObj->GetPeepAnimation(AnimationGroup, actionAnimationGroup).baseImage;
-
-    // Offset frame onto the base image, using rotation except for the 'picked up' state
-    if (actionAnimationGroup != PeepAnimationType::hanging)
-        baseImageId += (imageDirection >> 3) + imageOffset * 4;
-    else
-        baseImageId += imageOffset;
-
-    auto imageId = ImageId(baseImageId, TshirtColour, TrousersColour);
-
-    // In the following 4 calls to PaintAddImageAsParent/PaintAddImageAsChild, we add 5 (instead of 3) to the
-    // bound_box_offset_z to make sure peeps are drawn on top of railways
-    auto bb = BoundBoxXYZ{ { 0, 0, z + 5 }, { 1, 1, 11 } };
-    auto offset = CoordsXYZ{ 0, 0, z };
-    PaintAddImageAsParent(session, imageId, { 0, 0, z }, bb);
-
-    auto* guest = As<Guest>();
-    if (guest == nullptr)
-        return;
-
-    // Can't display any accessories whilst drowning or clapping
-    if (Action == PeepActionType::drowning || Action == PeepActionType::clap)
-        return;
-
-    // There are only 6 walking frames available for each item,
-    // as well as 1 sprite for sitting and 1 for standing still.
-    auto itemFrame = imageOffset % 6;
-    if (actionAnimationGroup == PeepAnimationType::watchRide)
-        itemFrame = 6;
-    else if (actionAnimationGroup == PeepAnimationType::sittingIdle)
-        itemFrame = 7;
-
-    if (AnimationGroup == PeepAnimationGroup::hat)
-    {
-        auto itemOffset = kPeepSpriteHatItemStart;
-        imageId = ImageId(itemOffset + (imageDirection >> 3) + itemFrame * 4, guest->HatColour);
-        PaintAddImageAsChild(session, imageId, offset, bb);
-        return;
-    }
-
-    if (AnimationGroup == PeepAnimationGroup::balloon)
-    {
-        auto itemOffset = kPeepSpriteBalloonItemStart;
-        imageId = ImageId(itemOffset + (imageDirection >> 3) + itemFrame * 4, guest->BalloonColour);
-        PaintAddImageAsChild(session, imageId, offset, bb);
-        return;
-    }
-
-    if (AnimationGroup == PeepAnimationGroup::umbrella)
-    {
-        auto itemOffset = kPeepSpriteUmbrellaItemStart;
-        imageId = ImageId(itemOffset + (imageDirection >> 3) + itemFrame * 4, guest->UmbrellaColour);
-        PaintAddImageAsChild(session, imageId, offset, bb);
-        return;
-    }
 }
 
 /**

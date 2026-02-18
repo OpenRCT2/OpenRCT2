@@ -454,7 +454,7 @@ const TranslucentWindowPalette kTranslucentWindowPalettes[kColourNumTotal] = {
 ImageCatalogue ImageId::GetCatalogue() const
 {
     auto index = GetIndex();
-    if (index == SPR_TEMP)
+    if (index >= SPR_TEMP_BEGIN && index < SPR_TEMP_END)
     {
         return ImageCatalogue::TEMPORARY;
     }
@@ -499,8 +499,8 @@ static auto GetMaskFunction()
 static const auto MaskFunc = GetMaskFunction();
 
 void MaskFn(
-    int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,
-    int32_t maskWrap, int32_t colourWrap, int32_t dstWrap)
+    int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc,
+    PaletteIndex* RESTRICT dst, int32_t maskWrap, int32_t colourWrap, int32_t dstWrap)
 {
     MaskFunc(width, height, maskSrc, colourSrc, dst, maskWrap, colourWrap, dstWrap);
 }

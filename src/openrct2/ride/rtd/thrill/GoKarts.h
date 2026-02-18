@@ -29,7 +29,7 @@ constexpr RideTypeDescriptor GoKartsRTD =
         .extraTrackGroups = {TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeSteepLong, TrackGroup::diagSlopeSteepUp, TrackGroup::diagSlopeSteepDown},
     }),
     .InvertedTrackPaintFunctions = {},
-    .Flags = EnumsToFlags(RtdFlag::hasTrackColourMain, RtdFlag::hasTrackColourSupports, RtdFlag::noTestMode, RtdFlag::hasOneStation,
+    .flags = RtdFlags(RtdFlag::hasTrackColourMain, RtdFlag::hasTrackColourSupports, RtdFlag::noTestMode, RtdFlag::hasOneStation,
                      RtdFlag::noWallsAroundTrack, RtdFlag::guestsWillRideAgain, RtdFlag::hasVehicleColours, RtdFlag::hasTrack,
                      RtdFlag::supportsMultipleColourSchemes, RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit, RtdFlag::interestingToLookAt),
     .RideModes = EnumsToFlags(RideMode::race, RideMode::continuousCircuit),

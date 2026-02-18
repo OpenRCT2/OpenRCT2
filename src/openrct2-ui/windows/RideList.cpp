@@ -16,8 +16,9 @@
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/SpriteIds.h>
-#include <openrct2/actions/RideDemolishAction.h>
-#include <openrct2/actions/RideSetStatusAction.h>
+#include <openrct2/actions/GameActionRunner.h>
+#include <openrct2/actions/ride/RideDemolishAction.h>
+#include <openrct2/actions/ride/RideSetStatusAction.h>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
@@ -552,7 +553,7 @@ namespace OpenRCT2::Ui::Windows
                 const auto& rideManager = RideManager(gameState);
                 auto allClosed = true;
                 auto allOpen = false;
-                if (_rideList.size() > 0 && std::size(rideManager) != 0)
+                if (!_rideList.empty() && std::size(rideManager) != 0)
                 {
                     auto c = static_cast<RideClassification>(page);
                     allClosed = std::none_of(rideManager.begin(), rideManager.end(), [c](const Ride& rideRef) {

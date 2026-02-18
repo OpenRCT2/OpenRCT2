@@ -57,7 +57,7 @@ class TrackDesignFileIndex final : public FileIndex<TrackRepositoryItem>
 private:
     static constexpr uint32_t kMagicNumber = 0x58444954; // TIDX
     static constexpr uint16_t kVersion = 5;
-    static constexpr auto kPattern = "*.td4;*.td6";
+    static constexpr auto kPattern = "*.td4;*.td6;*.td7";
 
 public:
     explicit TrackDesignFileIndex(const IPlatformEnvironment& env)
@@ -150,7 +150,7 @@ public:
             {
                 const ObjectRepositoryItem* ori = repo.FindObjectLegacy(item.ObjectEntry.c_str());
 
-                if (ori == nullptr || !GetRideTypeDescriptor(rideType).HasFlag(RtdFlag::listVehiclesSeparately))
+                if (ori == nullptr || !GetRideTypeDescriptor(rideType).flags.has(RtdFlag::listVehiclesSeparately))
                     entryIsNotSeparate = true;
             }
 
@@ -184,7 +184,7 @@ public:
             {
                 const ObjectRepositoryItem* ori = repo.FindObjectLegacy(item.ObjectEntry.c_str());
 
-                if (ori == nullptr || !GetRideTypeDescriptor(rideType).HasFlag(RtdFlag::listVehiclesSeparately))
+                if (ori == nullptr || !GetRideTypeDescriptor(rideType).flags.has(RtdFlag::listVehiclesSeparately))
                     entryIsNotSeparate = true;
             }
 

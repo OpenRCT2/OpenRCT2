@@ -15,6 +15,7 @@
 #include "../core/EnumUtils.hpp"
 #include "../drawing/Colour.h"
 #include "../object/Object.h"
+#include "../rct12/TD46.h"
 #include "../ride/RideColour.h"
 #include "../ride/Track.h"
 #include "RideRatings.h"
@@ -22,11 +23,20 @@
 
 #include <memory>
 
+namespace OpenRCT2::RCT12
+{
+    enum class TD46Version : uint8_t;
+}
 struct Ride;
 struct ResultWithMessage;
 enum class ViewportInteractionItem : uint8_t;
 
 constexpr uint32_t kTrackPreviewImageSize = 370 * 217;
+
+namespace OpenRCT2::Drawing
+{
+    enum class PaletteIndex : uint8_t;
+}
 
 enum class TrackPlaceOperation : uint8_t
 {
@@ -95,34 +105,20 @@ struct TrackDesignSceneryElement
 
 enum class TrackDesignTrackElementFlag : uint8_t
 {
-    hasChain = (1 << 0),
-    isInverted = (1 << 1),
-    isCovered = (1 << 2), // Reserved
+    hasChain,
+    isInverted,
+    isCovered, // Reserved
 };
+using TrackDesignTrackElementFlags = FlagHolder<uint8_t, TrackDesignTrackElementFlag>;
 
 struct TrackDesignTrackElement
 {
     OpenRCT2::TrackElemType type = OpenRCT2::TrackElemType::flat;
-    uint8_t flags = 0;
+    TrackDesignTrackElementFlags flags = {};
     uint8_t colourScheme = 0;
     ::StationIndex stationIndex = StationIndex::FromUnderlying(0);
     uint8_t brakeBoosterSpeed = 0;
     uint8_t seatRotation = 4;
-
-    constexpr bool HasFlag(const TrackDesignTrackElementFlag flag) const
-    {
-        return flags & EnumValue(flag);
-    }
-
-    constexpr void SetFlag(const TrackDesignTrackElementFlag flag)
-    {
-        flags |= EnumValue(flag);
-    }
-
-    constexpr void ClearFlag(const TrackDesignTrackElementFlag flag)
-    {
-        flags &= ~EnumValue(flag);
-    }
 };
 
 struct TrackDesignMazeElement
@@ -214,6 +210,7 @@ struct TrackDesign
     std::vector<TrackDesignSceneryElement> sceneryElements;
 
     TrackDesignGameStateData gameStateData{};
+    OpenRCT2::RCT12::TD46Version version = OpenRCT2::RCT12::TD46Version::td6;
 
 public:
     ResultWithMessage CreateTrackDesign(TrackDesignState& tds, const Ride& ride);
@@ -249,7 +246,8 @@ int32_t TrackDesignGetZPlacement(const TrackDesign& td, Ride& ride, const Coords
 ///////////////////////////////////////////////////////////////////////////////
 // Track design preview
 ///////////////////////////////////////////////////////////////////////////////
-void TrackDesignDrawPreview(TrackDesign& td, uint8_t* pixels, bool placeScenery);
+using TrackDesignPreviewBuffer = std::array<OpenRCT2::Drawing::PaletteIndex, kTrackPreviewImageSize * kNumOrthogonalDirections>;
+void TrackDesignDrawPreview(TrackDesign& td, TrackDesignPreviewBuffer& pixels, bool placeScenery);
 
 ///////////////////////////////////////////////////////////////////////////////
 // Track design saving
@@ -264,4 +262,5 @@ void TrackDesignSaveSelectTileElement(
 bool TrackDesignAreEntranceAndExitPlaced();
 
 extern std::vector<TrackDesignSceneryElement> _trackSavedTileElementsDesc;
-extern std::vector<const OpenRCT2::TileElement*> _trackSavedTileElements;
+
+u8string trackDesignGetExtension(OpenRCT2::RCT12::TD46Version version);

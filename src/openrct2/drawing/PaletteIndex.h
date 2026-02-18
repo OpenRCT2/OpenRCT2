@@ -16,6 +16,7 @@ namespace OpenRCT2::Drawing
     enum class PaletteIndex : uint8_t
     {
         transparent = 0,
+        fontFill = 1,
 
         pi10 = 10, // Black (0-dark), Dark grey (0)
         pi11 = 11, // Black (middark)

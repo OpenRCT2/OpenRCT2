@@ -557,7 +557,6 @@ STR_1168    :Nastavení
 STR_1169    :(None)
 STR_1170    :{STRING}
 STR_1171    :{RED}Zavřeno
-STR_1172    :{YELLOW}{STRINGID}
 STR_1173    :Nástroj pro cesty a fronty
 STR_1174    :Banner v cestě
 STR_1175    :Toto nelze postavit na strmé cestě
@@ -1116,7 +1115,6 @@ STR_1727    :Stavební práva nejsou na prodej!
 STR_1728    :Tyto stavební práva nelze zakoupit…
 STR_1729    :Pozemek není ve vlastnictví parku!
 STR_1730    :{RED}Zavřeno
-STR_1731    :{WHITE}{STRINGID} - - 
 STR_1732    :Stavět
 STR_1733    :Mód
 STR_1734    :{WINDOW_COLOUR_2}Počet kol:
@@ -1157,7 +1155,6 @@ STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COM
 STR_1773    :Je povolena jen jedna fotobuňka na atrakci
 STR_1774    :Je povolen pouze jeden výtah na atrakci
 STR_1777    :Hudba atrakcí
-STR_1778    :{STRINGID} - - 
 STR_1790    :Vybrat barvu uniformy těchto zaměstnanců
 STR_1791    :{WINDOW_COLOUR_2}Barva uniformy:
 STR_1792    :Reaguje na poruchu {STRINGID}

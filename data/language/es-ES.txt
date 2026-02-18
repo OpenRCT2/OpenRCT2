@@ -557,7 +557,6 @@ STR_1168    :Opciones
 STR_1169    :(Ninguno)
 STR_1170    :{STRING}
 STR_1171    :{RED}Cerrada
-STR_1172    :{YELLOW}{STRINGID}
 STR_1173    :Construir senderos
 STR_1174    :Cartel de señal interfiere
 STR_1175    :No se puede construir esto sobre una pendiente
@@ -1114,7 +1113,6 @@ STR_1727    :¡Derechos de construcción no a la venta!
 STR_1728    :No puedes comprar derechos de construcción aquí…
 STR_1729    :¡El terreno no es propiedad del parque!
 STR_1730    :{RED}Cerrado
-STR_1731    :{WHITE}{STRINGID} - - 
 STR_1732    :Construir
 STR_1733    :Modo
 STR_1734    :{WINDOW_COLOUR_2}Numero de vueltas:
@@ -1155,7 +1153,6 @@ STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COM
 STR_1773    :Sólo se permite una sección de fotos por atracción.
 STR_1774    :Sólo un cable de elevación por atracción.
 STR_1777    :Música de atracción
-STR_1778    :{STRINGID} - - 
 STR_1790    :Selecciona el color del uniforme para este tipo de empleados
 STR_1791    :{WINDOW_COLOUR_2}Color del uniforme:
 STR_1792    :Dirigiéndose a {STRINGID}
@@ -3834,3 +3831,6 @@ STR_7000    :o
 STR_7001    :Nombre de Atracción
 STR_7002    :{STRINGID} {STRINGID}
 STR_7003    :El archivo de audio ‘{STRING}’ está truncado. Se esperaban {INT32} muestras, pero solo están disponibles {INT32}. Considere reinstalar RCT2.
+STR_7004    :Forzar redibujado
+STR_7005    :Arrastrar un área de sendero
+STR_7006    :Dibujar borde alrededor de los botones con imágenes

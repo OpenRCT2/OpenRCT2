@@ -11,6 +11,7 @@
 
 #include "../Identifiers.h"
 #include "../audio/Audio.h"
+#include "../core/FlagHolder.hpp"
 #include "../entity/EntityBase.h"
 #include "../ride/RideTypes.h"
 #include "../world/Location.hpp"
@@ -49,12 +50,55 @@ struct VehicleInfo
     }
 };
 
-struct SoundIdVolume;
+struct SoundIdVolume
+{
+    OpenRCT2::Audio::SoundId id;
+    uint8_t volume;
+};
 
 static constexpr uint16_t kVehicleTrackDirectionMask = 0b0000000000000011;
 static constexpr uint16_t kVehicleTrackTypeMask = 0b1111111111111100;
 
+enum class VehicleFlag : uint8_t
+{
+    onLiftHill,
+    collisionDisabled,
+    waitingOnAdjacentStation,
+    poweredCarInReverse,
+    readyToDepart,
+    testing,
+    // When go-karts are colliding, they have a higher chance of changing lanes
+    currentlyColliding,
+    // Used on vehicles when a safety cut-out stops them, such as RCs on a lift hill and powered rides
+    stoppedBySafetyCutout,
+    carIsBroken,
+    trainIsBroken,
+    stoppedOnHoldingBrake,
+    // Used on vehicles that can run inverted for extended periods of time, i.e. the Flying, Lay-down and Multi-Dimension trains
+    carIsInverted,
+    // Set when the vehicle travels backwards through the station for the first time
+    reverseInclineCompletedLap,
+    spinningIsLocked, // After passing a rotation toggle track piece this will enable
+    // OpenRCT2 Flag: Used to override UpdateMotion to move the position of an individual car on a train
+    moveSingleCar,
+    crashed,       // Car displays as smoke plume
+    carIsReversed, // Car is displayed running backwards
+};
+using VehicleFlags = FlagHolder<uint32_t, VehicleFlag>;
+
 enum class MiniGolfAnimation : uint8_t;
+
+enum class MiniGolfFlag : uint8_t
+{
+    flag0,
+    flag1,
+    flag2,
+    flag3,
+    flag4,
+    flag5, // transitioning between hole
+};
+
+using MiniGolfFlags = FlagHolder<uint8_t, MiniGolfFlag>;
 
 struct Vehicle : EntityBase
 {
@@ -139,7 +183,7 @@ struct Vehicle : EntityBase
 
     uint16_t var_44;
     uint16_t mass;
-    uint32_t Flags;
+    VehicleFlags flags;
     uint8_t SwingSprite;
     StationIndex current_station;
     union
@@ -210,7 +254,7 @@ struct Vehicle : EntityBase
     int8_t vertical_drop_countdown;
     uint8_t var_D3;
     MiniGolfAnimation mini_golf_current_animation;
-    uint8_t mini_golf_flags;
+    MiniGolfFlags miniGolfFlags;
     OpenRCT2::ObjectEntryIndex ride_subtype;
     uint8_t seat_rotation;
     uint8_t target_seat_rotation;
@@ -266,18 +310,6 @@ struct Vehicle : EntityBase
         // set the lower 2 bits only
         TrackTypeAndDirection &= ~kVehicleTrackDirectionMask;
         TrackTypeAndDirection |= trackDirection & kVehicleTrackDirectionMask;
-    }
-    bool HasFlag(uint32_t flag) const
-    {
-        return (Flags & flag) != 0;
-    }
-    void ClearFlag(uint32_t flag)
-    {
-        Flags &= ~flag;
-    }
-    void SetFlag(uint32_t flag)
-    {
-        Flags |= flag;
     }
     void ApplyMass(int16_t appliedMass);
     void Serialise(DataSerialiser& stream);
@@ -416,16 +448,6 @@ struct TrainReference
     Vehicle* tail;
 };
 
-namespace OpenRCT2::MiniGolfFlag
-{
-    constexpr uint8_t Flag0 = (1 << 0);
-    constexpr uint8_t Flag1 = (1 << 1);
-    constexpr uint8_t Flag2 = (1 << 2);
-    constexpr uint8_t Flag3 = (1 << 3);
-    constexpr uint8_t Flag4 = (1 << 4);
-    constexpr uint8_t Flag5 = (1 << 5); // transitioning between hole
-} // namespace OpenRCT2::MiniGolfFlag
-
 enum class MiniGolfState : int16_t
 {
     Unk0,
@@ -455,32 +477,6 @@ enum BoatHireSubState : uint8_t
     Normal,
     EnteringReturnPosition,
 };
-
-namespace OpenRCT2::VehicleFlags
-{
-    constexpr uint32_t OnLiftHill = (1 << 0);
-    constexpr uint32_t CollisionDisabled = (1 << 1);
-    constexpr uint32_t WaitingOnAdjacentStation = (1 << 2);
-    constexpr uint32_t PoweredCarInReverse = (1 << 3);
-    constexpr uint32_t ReadyToDepart = (1 << 4);
-    constexpr uint32_t Testing = (1 << 5);
-    // When go-karts are colliding, they have a higher chance of changing lanes
-    constexpr uint32_t CurrentlyColliding = (1 << 6);
-    // Used on vehicles when a safety cut-out stops them, such as RCs on a lift hill and powered rides
-    constexpr uint32_t StoppedBySafetyCutOut = (1 << 7);
-    constexpr uint32_t CarIsBroken = (1 << 8);
-    constexpr uint32_t TrainIsBroken = (1 << 9);
-    constexpr uint32_t StoppedOnHoldingBrake = (1 << 10);
-    // Used on vehicles that can run inverted for extended periods of time, i.e. the Flying, Lay-down and Multi-Dimension trains
-    constexpr uint32_t CarIsInverted = (1 << 11);
-    // Set when the vehicle travels backwards through the station for the first time
-    constexpr uint32_t ReverseInclineCompletedLap = (1 << 12);
-    constexpr uint32_t SpinningIsLocked = (1 << 13); // After passing a rotation toggle track piece this will enable
-    // OpenRCT2 Flag: Used to override UpdateMotion to move the position of an individual car on a train
-    constexpr uint32_t MoveSingleCar = (1 << 14);
-    constexpr uint32_t Crashed = (1 << 15);       // Car displays as smoke plume
-    constexpr uint32_t CarIsReversed = (1 << 16); // Car is displayed running backwards
-} // namespace OpenRCT2::VehicleFlags
 
 enum
 {
@@ -554,6 +550,7 @@ constexpr uint8_t kVehicleSeatNumMask = 0x7F;
 Vehicle* TryGetVehicle(EntityId spriteIndex);
 void VehicleUpdateAll();
 void VehicleSoundsUpdate();
+std::optional<uint32_t> ride_get_train_index_from_vehicle(const Ride& ride, EntityId spriteIndex);
 uint16_t VehicleGetMoveInfoSize(VehicleTrackSubposition trackSubposition, OpenRCT2::TrackElemType type, uint8_t direction);
 
 void RideUpdateMeasurementsSpecialElements_Default(Ride& ride, OpenRCT2::TrackElemType trackType);
@@ -561,6 +558,7 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, OpenRCT2::TrackE
 void RideUpdateMeasurementsSpecialElements_WaterCoaster(Ride& ride, OpenRCT2::TrackElemType trackType);
 
 extern Vehicle* gCurrentVehicle;
+extern uint8_t _vehicleBreakdown;
 extern StationIndex _vehicleStationIndex;
 extern uint32_t _vehicleMotionTrackFlags;
 extern int32_t _vehicleVelocityF64E08;

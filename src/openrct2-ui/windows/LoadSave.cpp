@@ -577,7 +577,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Populate file list
-            const char* pattern = GetFilterPatternByType(type, isSave);
+            auto pattern = GetFilterPatternByType(type, isSave, _trackDesign);
             const auto path = GetDir(type);
             PopulateList(path, pattern);
             numListItems = static_cast<uint16_t>(_listItems.size());
@@ -824,7 +824,7 @@ namespace OpenRCT2::Ui::Windows
 
                 case WIDX_SYSTEM_BROWSER:
                 {
-                    u8string path = OpenSystemFileBrowser(isSave, type, _directory, _defaultPath);
+                    u8string path = OpenSystemFileBrowser(isSave, type, _directory, _defaultPath, _trackDesign);
                     if (!path.empty())
                     {
                         Select(path.c_str(), action, type, _trackDesign);

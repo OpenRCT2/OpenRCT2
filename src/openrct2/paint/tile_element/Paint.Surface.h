@@ -12,7 +12,15 @@
 #include "../../SpriteIds.h"
 #include "../../world/Location.hpp"
 
+#include <cstdint>
 #include <optional>
+
+struct PaintSession;
+
+namespace OpenRCT2
+{
+    struct SurfaceElement;
+}
 
 namespace OpenRCT2::Drawing
 {
@@ -111,3 +119,5 @@ enum
 };
 
 std::optional<OpenRCT2::Drawing::Colour> GetPatrolAreaTileColour(const CoordsXY& pos);
+
+void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, const OpenRCT2::SurfaceElement& tileElement);

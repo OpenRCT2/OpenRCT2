@@ -445,7 +445,10 @@ enum class RtdFlag : uint8_t
     runningSpeedAffectsReliability,
     poweredLaunchAffectsReliability,
     reverseInclineLaunchAffectsReliability,
+
+    isDummyType,
 };
+using RtdFlags = FlagHolder<uint64_t, RtdFlag>;
 
 /**
  * Some rides are so different from others that they need some special code.
@@ -469,16 +472,24 @@ enum class RtdSpecialType
 };
 
 // Set on ride types that have a main colour, additional colour and support colour.
-constexpr uint64_t kRtdFlagsHasThreeColours = EnumsToFlags(
-    RtdFlag::hasTrackColourMain, RtdFlag::hasTrackColourAdditional, RtdFlag::hasTrackColourSupports);
+constexpr RtdFlags kRtdFlagsHasThreeColours = { RtdFlag::hasTrackColourMain, RtdFlag::hasTrackColourAdditional,
+                                                RtdFlag::hasTrackColourSupports };
 // Set on _all_ roller coaster ride types, including the _ALT types used for constructing upside down.
-constexpr uint64_t kRtdFlagsCommonCoaster = EnumsToFlags(
-    RtdFlag::hasGForces, RtdFlag::hasDataLogging, RtdFlag::hasDrops, RtdFlag::hasLoadOptions, RtdFlag::guestsWillRideAgain,
-    RtdFlag::hasVehicleColours, RtdFlag::checkForStalling, RtdFlag::hasTrack, RtdFlag::supportsMultipleColourSchemes,
-    RtdFlag::allowMusic, RtdFlag::interestingToLookAt, RtdFlag::canSynchroniseWithAdjacentStations);
+constexpr RtdFlags kRtdFlagsCommonCoaster = { RtdFlag::hasGForces,
+                                              RtdFlag::hasDataLogging,
+                                              RtdFlag::hasDrops,
+                                              RtdFlag::hasLoadOptions,
+                                              RtdFlag::guestsWillRideAgain,
+                                              RtdFlag::hasVehicleColours,
+                                              RtdFlag::checkForStalling,
+                                              RtdFlag::hasTrack,
+                                              RtdFlag::supportsMultipleColourSchemes,
+                                              RtdFlag::allowMusic,
+                                              RtdFlag::interestingToLookAt,
+                                              RtdFlag::canSynchroniseWithAdjacentStations };
 // Set on all roller coaster ride types, excluding the _ALT types used for constructing upside down.
-constexpr uint64_t kRtdFlagsCommonCoasterNonAlt = EnumsToFlags(
-    RtdFlag::showInTrackDesigner, RtdFlag::hasAirTime, RtdFlag::hasEntranceAndExit);
+constexpr RtdFlags kRtdFlagsCommonCoasterNonAlt = { RtdFlag::showInTrackDesigner, RtdFlag::hasAirTime,
+                                                    RtdFlag::hasEntranceAndExit };
 
 struct RideTypeDescriptor
 {
@@ -487,7 +498,7 @@ struct RideTypeDescriptor
     OpenRCT2::TrackElemType StartTrackPiece{};
     TrackDrawerDescriptor TrackPaintFunctions{};
     TrackDrawerDescriptor InvertedTrackPaintFunctions{};
-    uint64_t Flags{};
+    RtdFlags flags{};
     /** rct2: 0x0097C8AC */
     uint64_t RideModes{};
     RideMode DefaultMode{};
@@ -549,7 +560,6 @@ struct RideTypeDescriptor
     UpdateRideApproachVehicleWaypointsFunction UpdateRideApproachVehicleWaypoints = UpdateRideApproachVehicleWaypointsDefault;
     RtdSpecialType specialType = RtdSpecialType::none;
 
-    bool HasFlag(RtdFlag flag) const;
     /** @deprecated */
     bool SupportsTrackGroup(TrackGroup trackGroup) const;
     ResearchCategory GetResearchCategory() const;
@@ -627,7 +637,7 @@ constexpr RideTypeDescriptor kDummyRTD =
     .StartTrackPiece = OpenRCT2::TrackElemType::endStation,
     .TrackPaintFunctions = {},
     .InvertedTrackPaintFunctions = {},
-    .Flags = 0,
+    .flags = { RtdFlag::isDummyType },
     .RideModes = EnumsToFlags(RideMode::continuousCircuit),
     .DefaultMode = RideMode::continuousCircuit,
     .OperatingSettings = {},

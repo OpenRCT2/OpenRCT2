@@ -20,17 +20,18 @@
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/SpriteIds.h>
-#include <openrct2/actions/BannerPlaceAction.h>
-#include <openrct2/actions/BannerSetColourAction.h>
-#include <openrct2/actions/FootpathAdditionPlaceAction.h>
-#include <openrct2/actions/LargeSceneryPlaceAction.h>
-#include <openrct2/actions/LargeScenerySetColourAction.h>
-#include <openrct2/actions/ScenerySetRestrictedAction.h>
-#include <openrct2/actions/SmallSceneryPlaceAction.h>
-#include <openrct2/actions/SmallScenerySetColourAction.h>
-#include <openrct2/actions/WallPlaceAction.h>
-#include <openrct2/actions/WallRemoveAction.h>
-#include <openrct2/actions/WallSetColourAction.h>
+#include <openrct2/actions/GameActionRunner.h>
+#include <openrct2/actions/footpath/FootpathAdditionPlaceAction.h>
+#include <openrct2/actions/scenery/BannerPlaceAction.h>
+#include <openrct2/actions/scenery/BannerSetColourAction.h>
+#include <openrct2/actions/scenery/LargeSceneryPlaceAction.h>
+#include <openrct2/actions/scenery/LargeScenerySetColourAction.h>
+#include <openrct2/actions/scenery/ScenerySetRestrictedAction.h>
+#include <openrct2/actions/scenery/SmallSceneryPlaceAction.h>
+#include <openrct2/actions/scenery/SmallScenerySetColourAction.h>
+#include <openrct2/actions/scenery/WallPlaceAction.h>
+#include <openrct2/actions/scenery/WallRemoveAction.h>
+#include <openrct2/actions/scenery/WallSetColourAction.h>
 #include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/Guard.hpp>
@@ -825,7 +826,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             auto windowWidth = width;
-            if (_tabEntries.size() > 0)
+            if (!_tabEntries.empty())
             {
                 const auto lastTabIndex = GetMaxTabCountInARow() == kMaxTabsPerRow ? kMaxTabsPerRow - 1
                                                                                    : _tabEntries.size() - 1;
@@ -916,7 +917,7 @@ namespace OpenRCT2::Ui::Windows
                 auto sceneryObjectType = GetObjectTypeFromSceneryType(selectedSceneryEntry.SceneryType);
                 auto& objManager = GetContext()->GetObjectManager();
                 auto sceneryObject = objManager.GetLoadedObject(sceneryObjectType, selectedSceneryEntry.EntryIndex);
-                if (sceneryObject != nullptr && sceneryObject->GetAuthors().size() > 0)
+                if (sceneryObject != nullptr && !sceneryObject->GetAuthors().empty())
                 {
                     std::string authorsString;
                     const auto& authors = sceneryObject->GetAuthors();
@@ -1007,7 +1008,7 @@ namespace OpenRCT2::Ui::Windows
                             tabInfo.AddEntryToBack(sceneryEntry);
                         }
                     }
-                    if (tabInfo.Entries.size() > 0)
+                    if (!tabInfo.Entries.empty())
                     {
                         _tabEntries.push_back(std::move(tabInfo));
                     }
@@ -2343,7 +2344,8 @@ namespace OpenRCT2::Ui::Windows
                     {
                         WindowScenerySetSelectedItem(
                             { SCENERY_TYPE_LARGE, entryIndex }, info.Element->AsLargeScenery()->GetPrimaryColour(),
-                            info.Element->AsLargeScenery()->GetSecondaryColour(), std::nullopt,
+                            info.Element->AsLargeScenery()->GetSecondaryColour(),
+                            info.Element->AsLargeScenery()->GetTertiaryColour(),
                             (GetCurrentRotation() + info.Element->GetDirection()) & 3);
                     }
                     break;
