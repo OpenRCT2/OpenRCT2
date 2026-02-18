@@ -208,4 +208,33 @@ namespace OpenRCT2::TrackMetadata
         .sequenceData = { 4,
                           { kSBendRightCoveredSeq0, kSBendRightCoveredSeq1, kSBendRightCoveredSeq2, kSBendRightCoveredSeq3 } },
     };
+
+    constexpr auto kTEDBankedSBendLeft = TrackElementDescriptor{
+        .description = STR_S_BEND_LEFT,
+        .coordinates = { 0, 0, 0, 0, -64, -32 },
+        .pieceLength = 96,
+        .curveChain = { TrackCurve::none, TrackCurve::none },
+        .priceModifier = 229376, // TODO
+        .mirrorElement = TrackElemType::bankedSBendRight,
+        .flags = {},
+        .definition = { TrackGroup::bankedSBend, TrackPitch::none, TrackPitch::none, TrackRoll::right, TrackRoll::left, 0 },
+        .spinFunction = SpinFunction::lr,
+        .lateralFactor = EvaluatorSBendLeft, // TODO
+        .sequenceData = { 4, { kSBendLeftSeq0, kSBendLeftSeq1, kSBendLeftSeq2, kSBendLeftSeq3 } },
+    };
+
+    constexpr auto kTEDBankedSBendRight = TrackElementDescriptor{
+        .description = STR_S_BEND_RIGHT,
+        .coordinates = { 0, 0, 0, 0, -64, 32 },
+        .pieceLength = 96,
+        .curveChain = { TrackCurve::none, TrackCurve::none },
+        .priceModifier = 229376, // TODO
+        .mirrorElement = TrackElemType::bankedSBendLeft,
+        .flags = {},
+        .definition = { TrackGroup::bankedSBend, TrackPitch::none, TrackPitch::none, TrackRoll::left, TrackRoll::right, 0 },
+        .spinFunction = SpinFunction::rl,
+        .lateralFactor = EvaluatorSBendRight, // TODO
+        .sequenceData = { 4, { kSBendRightSeq0, kSBendRightSeq1, kSBendRightSeq2, kSBendRightSeq3 } },
+    };
+
 } // namespace OpenRCT2::TrackMetadata

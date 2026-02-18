@@ -67,7 +67,7 @@ struct TrackDescriptor
 };
 
 // clang-format off
-static constexpr TrackDescriptor kNextSelectedPiece[186] = {
+static constexpr TrackDescriptor kNextSelectedPiece[214] = {
     {   true,   TrackPitch::down60,     TrackRoll::none,    TrackCurve::none,             TrackPitch::down60,   TrackRoll::none,    TrackElemType::diagDown60                              },
     {   true,   TrackPitch::down60,     TrackRoll::none,    TrackCurve::none,             TrackPitch::down25,   TrackRoll::none,    TrackElemType::diagDown60ToDown25                      },
     {   true,   TrackPitch::down60,     TrackRoll::none,    TrackCurve::none,             TrackPitch::none,     TrackRoll::none,    TrackElemType::diagDown60ToFlat                        },
@@ -254,6 +254,34 @@ static constexpr TrackDescriptor kNextSelectedPiece[186] = {
     {   true,   TrackPitch::up25,       TrackRoll::right,   TrackCurve::rightLarge,       TrackPitch::up25,     TrackRoll::right,   TrackElemType::rightEighthBankToOrthogonalUp25         },
     {   true,   TrackPitch::down25,     TrackRoll::left,    TrackCurve::leftLarge,        TrackPitch::down25,   TrackRoll::left,    TrackElemType::leftEighthBankToOrthogonalDown25        },
     {   true,   TrackPitch::down25,     TrackRoll::right,   TrackCurve::rightLarge,       TrackPitch::down25,   TrackRoll::right,   TrackElemType::rightEighthBankToOrthogonalDown25       },
+    {   false,  TrackPitch::up25,       TrackRoll::left,    TrackCurve::none,             TrackPitch::up60,     TrackRoll::none,    TrackElemType::leftBankedUp25ToUp60                    },
+    {   false,  TrackPitch::up25,       TrackRoll::right,   TrackCurve::none,             TrackPitch::up60,     TrackRoll::none,    TrackElemType::rightBankedUp25ToUp60                   },
+    {   false,  TrackPitch::up60,       TrackRoll::none,    TrackCurve::none,             TrackPitch::up25,     TrackRoll::left,    TrackElemType::up60ToLeftBankedUp25                    },
+    {   false,  TrackPitch::up60,       TrackRoll::none,    TrackCurve::none,             TrackPitch::up25,     TrackRoll::right,   TrackElemType::up60ToRightBankedUp25                   },
+    {   false,  TrackPitch::down25,     TrackRoll::left,    TrackCurve::none,             TrackPitch::down60,   TrackRoll::none,    TrackElemType::leftBankedDown25ToDown60                },
+    {   false,  TrackPitch::down25,     TrackRoll::right,   TrackCurve::none,             TrackPitch::down60,   TrackRoll::none,    TrackElemType::rightBankedDown25ToDown60               },
+    {   false,  TrackPitch::down60,     TrackRoll::none,    TrackCurve::none,             TrackPitch::down25,   TrackRoll::left,    TrackElemType::down60ToLeftBankedDown25                },
+    {   false,  TrackPitch::down60,     TrackRoll::none,    TrackCurve::none,             TrackPitch::down25,   TrackRoll::right,   TrackElemType::down60ToRightBankedDown25               },
+    {   true,   TrackPitch::up25,       TrackRoll::left,    TrackCurve::none,             TrackPitch::up60,     TrackRoll::none,    TrackElemType::diagLeftBankedUp25ToUp60                },
+    {   true,   TrackPitch::up25,       TrackRoll::right,   TrackCurve::none,             TrackPitch::up60,     TrackRoll::none,    TrackElemType::diagRightBankedUp25ToUp60               },
+    {   true,   TrackPitch::up60,        TrackRoll::none,   TrackCurve::none,             TrackPitch::up25,     TrackRoll::left,    TrackElemType::diagUp60ToLeftBankedUp25                },
+    {   true,   TrackPitch::up60,        TrackRoll::none,   TrackCurve::none,             TrackPitch::up25,     TrackRoll::right,   TrackElemType::diagUp60ToRightBankedUp25               },
+    {   true,   TrackPitch::down25,     TrackRoll::left,    TrackCurve::none,             TrackPitch::down60,   TrackRoll::none,    TrackElemType::diagLeftBankedDown25ToDown60            },
+    {   true,   TrackPitch::down25,     TrackRoll::right,   TrackCurve::none,             TrackPitch::down60,   TrackRoll::none,    TrackElemType::diagRightBankedDown25ToDown60           },
+    {   true,   TrackPitch::down60,     TrackRoll::none,    TrackCurve::none,             TrackPitch::down25,   TrackRoll::left,    TrackElemType::diagLeftBankedDown60ToDown25            },
+    {   true,   TrackPitch::down60,     TrackRoll::none,    TrackCurve::none,             TrackPitch::down25,   TrackRoll::right,   TrackElemType::diagRightBankedDown60ToDown25           },
+    {   false,  TrackPitch::up60,       TrackRoll::none,    TrackCurve::left,             TrackPitch::up60,     TrackRoll::none,    TrackElemType::leftQuarterTurn3TilesUp60                },
+    {   false,  TrackPitch::up60,       TrackRoll::none,    TrackCurve::right,            TrackPitch::up60,     TrackRoll::none,    TrackElemType::rightQuarterTurn3TilesUp60               },
+    {   false,  TrackPitch::down60,     TrackRoll::none,    TrackCurve::left,             TrackPitch::down60,   TrackRoll::none,    TrackElemType::leftQuarterTurn3TilesDown60              },
+    {   false,  TrackPitch::down60,     TrackRoll::none,    TrackCurve::right,            TrackPitch::down60,   TrackRoll::none,    TrackElemType::rightQuarterTurn3TilesDown60             },
+    {   false,  TrackPitch::up60,       TrackRoll::none,    TrackCurve::leftLarge,        TrackPitch::up60,     TrackRoll::none,    TrackElemType::leftEighthToDiagUp60                    },
+    {   false,  TrackPitch::up60,       TrackRoll::none,    TrackCurve::rightLarge,       TrackPitch::up60,     TrackRoll::none,    TrackElemType::rightEighthToDiagUp60                   },
+    {   false,  TrackPitch::down60,     TrackRoll::none,    TrackCurve::leftLarge,        TrackPitch::down60,   TrackRoll::none,    TrackElemType::leftEighthToDiagDown60                  },
+    {   false,  TrackPitch::down60,     TrackRoll::none,    TrackCurve::rightLarge,       TrackPitch::down60,   TrackRoll::none,    TrackElemType::rightEighthToDiagDown60                 },
+    {   true,   TrackPitch::up60,       TrackRoll::none,    TrackCurve::leftLarge,        TrackPitch::up60,     TrackRoll::none,    TrackElemType::leftEighthToOrthogonalUp60              },
+    {   true,   TrackPitch::up60,       TrackRoll::none,    TrackCurve::rightLarge,       TrackPitch::up60,     TrackRoll::none,    TrackElemType::rightEighthToOrthogonalUp60             },
+    {   true,   TrackPitch::down60,     TrackRoll::none,    TrackCurve::leftLarge,        TrackPitch::down60,   TrackRoll::none,    TrackElemType::leftEighthToOrthogonalDown60            },
+    {   true,   TrackPitch::down60,     TrackRoll::none,    TrackCurve::rightLarge,       TrackPitch::down60,   TrackRoll::none,    TrackElemType::rightEighthToOrthogonalDown60           },
 };
 // clang-format on
 

@@ -4690,7 +4690,20 @@ BitSet<EnumValue(TrackGroup::count)> RideEntryGetSupportedTrackPieces(const Ride
         { SpriteGroupType::Slopes25, SpritePrecision::sprites8, SpriteGroupType::Slopes42, SpritePrecision::sprites8,
           SpriteGroupType::Slopes50, SpritePrecision::sprites4 }, // TrackGroup::diagSlopeSteepUp
         { SpriteGroupType::Slopes25, SpritePrecision::sprites8, SpriteGroupType::Slopes42, SpritePrecision::sprites8,
-          SpriteGroupType::Slopes50, SpritePrecision::sprites4 }, // TrackGroup::diagSlopeSteepDown
+          SpriteGroupType::Slopes50, SpritePrecision::sprites4 },   // TrackGroup::diagSlopeSteepDown
+        { SpriteGroupType::SlopeFlat, SpritePrecision::sprites16 }, // TrackGroup::sBend //TODO fix
+        { SpriteGroupType::Slopes60, SpritePrecision::sprites4 },   // TrackGroup::steepToBank //TODO fix
+        { SpriteGroupType::Slopes60, SpritePrecision::sprites16 },  // TrackGroup::slopeCurveSteepLarge,
+        { SpriteGroupType::FlatBanked22, SpritePrecision::sprites4, SpriteGroupType::FlatBanked45, SpritePrecision::sprites4,
+          SpriteGroupType::InlineTwists, SpritePrecision::sprites4, SpriteGroupType::SlopeInverted,
+          SpritePrecision::sprites4 }, // TrackGroup::twistBanked,
+        { SpriteGroupType::FlatBanked22, SpritePrecision::sprites4, SpriteGroupType::FlatBanked45, SpritePrecision::sprites4,
+          SpriteGroupType::InlineTwists, SpritePrecision::sprites4, SpriteGroupType::SlopeInverted,
+          SpritePrecision::sprites4 }, // TrackGroup::barrelRollBanked,
+        { SpriteGroupType::Slopes25, SpritePrecision::sprites4, SpriteGroupType::Slopes12Banked22, SpritePrecision::sprites4,
+          SpriteGroupType::Slopes25Banked22, SpritePrecision::sprites4, SpriteGroupType::Slopes25Banked45,
+          SpritePrecision::sprites4, SpriteGroupType::InlineTwists, SpritePrecision::sprites4, SpriteGroupType::SlopeInverted,
+          SpritePrecision::sprites4 } // TrackGroup::zeroGRollBanked,
     };
 
     static_assert(std::size(trackPieceRequiredSprites) == EnumValue(TrackGroup::count));

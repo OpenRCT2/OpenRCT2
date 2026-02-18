@@ -89,7 +89,9 @@ namespace OpenRCT2
 
         // S-Bends
         TrackElemType::sBendLeft,
+        TrackElemType::bankedSBendLeft,
         TrackElemType::sBendRight,
+        TrackElemType::bankedSBendRight,
         kSeparator,
 
         // Helixes
@@ -191,9 +193,13 @@ namespace OpenRCT2
 
         // Zero-G Rolls, Dive Loops
         TrackElemType::leftZeroGRollUp,
+        TrackElemType::leftZeroGRollUpBanked,
         TrackElemType::leftZeroGRollDown,
+        TrackElemType::leftZeroGRollDownBanked,
         TrackElemType::rightZeroGRollUp,
+        TrackElemType::rightZeroGRollUpBanked,
         TrackElemType::rightZeroGRollDown,
+        TrackElemType::rightZeroGRollDownBanked,
         TrackElemType::leftLargeZeroGRollUp,
         TrackElemType::leftLargeZeroGRollDown,
         TrackElemType::rightLargeZeroGRollUp,
@@ -206,16 +212,24 @@ namespace OpenRCT2
 
         // Barrel Rolls
         TrackElemType::leftBarrelRollUpToDown,
+        TrackElemType::leftBarrelRollUpToDownBanked,
         TrackElemType::leftBarrelRollDownToUp,
+        TrackElemType::leftBarrelRollDownToUpBanked,
         TrackElemType::rightBarrelRollUpToDown,
+        TrackElemType::rightBarrelRollUpToDownBanked,
         TrackElemType::rightBarrelRollDownToUp,
+        TrackElemType::rightBarrelRollDownToUpBanked,
         kSeparator,
 
         // Twists
         TrackElemType::leftTwistDownToUp,
+        TrackElemType::leftTwistDownToUpBanked,
         TrackElemType::leftTwistUpToDown,
+        TrackElemType::leftTwistUpToDownBanked,
         TrackElemType::rightTwistDownToUp,
+        TrackElemType::rightTwistDownToUpBanked,
         TrackElemType::rightTwistUpToDown,
+        TrackElemType::rightTwistUpToDownBanked,
         TrackElemType::leftFlyerTwistUp,
         TrackElemType::leftFlyerTwistDown,
         TrackElemType::rightFlyerTwistUp,
@@ -223,7 +237,7 @@ namespace OpenRCT2
     };
 
     // Update the magic number with the current number of track elements to silence
-    static_assert(EnumValue(TrackElemType::count) == 350, "Reminder to add new track element to special dropdown list");
+    static_assert(EnumValue(TrackElemType::count) == 392, "Reminder to add new track element to special dropdown list");
 
     /**
      *

@@ -116,6 +116,13 @@ namespace OpenRCT2
         diagSlopeSteepUp,
         diagSlopeSteepDown,
 
+        bankedSBend,
+        steepToBank,
+        slopeCurveSteepLarge,
+        twistBanked,
+        barrelRollBanked,
+        zeroGRollBanked,
+
         count,
     };
 } // namespace OpenRCT2
