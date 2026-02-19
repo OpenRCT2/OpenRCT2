@@ -55,7 +55,7 @@
   - changed-files:
     - any-glob-to-any-file:
       - 'src/openrct2/platform/*'
-'android':
+'Android (OS)':
   - changed-files:
     - any-glob-to-any-file:
       - 'src/openrct2-android/*'
