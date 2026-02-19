@@ -167,27 +167,30 @@ static void PaintRideEntranceExit(PaintSession& session, uint8_t direction, int3
     auto isExit = entranceEl.GetEntranceType() == ENTRANCE_TYPE_RIDE_EXIT;
 
     // Back
-    ImageIndex imageIndex = (isExit ? stationObj->exitBackIndex : stationObj->entranceBackIndex) + direction;
-    ImageIndex glassImageIndex = (isExit ? stationObj->exitBackGlassIndex : stationObj->entranceBackGlassIndex) + direction;
+    ImageIndex backImageIndex = (isExit ? stationObj->exitBackIndex : stationObj->entranceBackIndex) + direction;
     PaintAddImageAsParentRotated(
-        session, direction, imageTemplate.WithIndex(imageIndex), { 0, 0, height }, { { 2, 2, height }, { 28, 8, 30 } });
+        session, direction, imageTemplate.WithIndex(backImageIndex), { 0, 0, height }, { { 2, 2, height }, { 28, 8, 30 } });
     if (hasGlass)
     {
+        ImageIndex backGlassImageIndex = (isExit ? stationObj->exitBackGlassIndex : stationObj->entranceBackGlassIndex)
+            + direction;
         PaintAddImageAsChildRotated(
-            session, direction, glassImageTemplate.WithIndex(glassImageIndex), { 0, 0, height },
+            session, direction, glassImageTemplate.WithIndex(backGlassImageIndex), { 0, 0, height },
             { { 2, 2, height }, { 28, 8, 30 } });
     }
 
     // Front
     const auto frontBoundBoxZ = isExit ? 1 : 17;
-    imageIndex += kNumOrthogonalDirections;
+    ImageIndex frontImageIndex = (isExit ? stationObj->exitFrontIndex : stationObj->entranceFrontIndex) + direction;
     PaintAddImageAsParent(
-        session, imageTemplate.WithIndex(imageIndex), { 0, 0, height }, { { 2, 2, height + 30 }, { 28, 28, frontBoundBoxZ } });
+        session, imageTemplate.WithIndex(frontImageIndex), { 0, 0, height },
+        { { 2, 2, height + 30 }, { 28, 28, frontBoundBoxZ } });
     if (hasGlass)
     {
-        glassImageIndex += kNumOrthogonalDirections;
+        ImageIndex frontGlassImageIndex = (isExit ? stationObj->exitFrontGlassIndex : stationObj->entranceFrontGlassIndex)
+            + direction;
         PaintAddImageAsChild(
-            session, glassImageTemplate.WithIndex(glassImageIndex), { 0, 0, height },
+            session, glassImageTemplate.WithIndex(frontGlassImageIndex), { 0, 0, height },
             { { 2, 2, height + 30 }, { 28, 28, frontBoundBoxZ } });
     }
 
