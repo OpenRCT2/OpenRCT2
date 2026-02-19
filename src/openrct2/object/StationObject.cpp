@@ -58,7 +58,19 @@ namespace OpenRCT2
 
         NameStringId = 0;
         baseImageIndex = kImageIndexUndefined;
+
+        entranceBackIndex = kImageIndexUndefined;
+        entranceFrontIndex = kImageIndexUndefined;
+        exitBackIndex = kImageIndexUndefined;
+        exitFrontIndex = kImageIndexUndefined;
+
+        entranceBackGlassIndex = kImageIndexUndefined;
+        entranceFrontGlassIndex = kImageIndexUndefined;
+        exitBackGlassIndex = kImageIndexUndefined;
+        exitFrontGlassIndex = kImageIndexUndefined;
+
         shelterIndex = kImageIndexUndefined;
+        shelterGlassIndex = kImageIndexUndefined;
     }
 
     void StationObject::DrawPreview(Drawing::RenderTarget& rt, int32_t width, int32_t height) const
