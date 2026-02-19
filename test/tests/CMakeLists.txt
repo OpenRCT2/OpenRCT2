@@ -39,9 +39,6 @@ set(test_files
 add_executable(OpenRCT2Tests ${test_files})
 add_executable(OpenRCT2::OpenRCT2Tests ALIAS OpenRCT2Tests)
 
-# Enable precompiled headers
-target_precompile_headers(OpenRCT2Tests PRIVATE "${CMAKE_CURRENT_LIST_DIR}/tests_pch.h")
-
 target_link_libraries(OpenRCT2Tests GTest::gtest GTest::gtest_main libopenrct2)
 target_include_directories(OpenRCT2Tests PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../../src")
 set_target_properties(OpenRCT2Tests PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
