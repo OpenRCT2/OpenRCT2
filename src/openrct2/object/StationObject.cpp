@@ -37,7 +37,9 @@ namespace OpenRCT2
 
         if (!(Flags & StationObjectFlags::isTransparent))
         {
-            shelterIndex = baseImageIndex + 16;
+            if (numImages > 16)
+                shelterIndex = baseImageIndex + 16;
+
             return;
         }
 
@@ -47,8 +49,11 @@ namespace OpenRCT2
         exitBackGlassIndex = baseImageIndex + 24;
         exitFrontGlassIndex = baseImageIndex + 28;
 
-        shelterIndex = baseImageIndex + 32;
-        shelterGlassIndex = baseImageIndex + 44;
+        if (numImages > 32)
+        {
+            shelterIndex = baseImageIndex + 32;
+            shelterGlassIndex = baseImageIndex + 44;
+        }
     }
 
     void StationObject::Unload()
