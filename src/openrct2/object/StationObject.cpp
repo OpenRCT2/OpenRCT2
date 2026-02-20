@@ -50,10 +50,10 @@ namespace OpenRCT2
         exitFrontGlassIndex = entranceBackIndex + 28;
 
         if (numImages > 32)
-        {
             shelterIndex = entranceBackIndex + 32;
+
+        if (numImages > 44)
             shelterGlassIndex = entranceBackIndex + 44;
-        }
     }
 
     void StationObject::Unload()
