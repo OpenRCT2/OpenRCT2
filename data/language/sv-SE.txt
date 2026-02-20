@@ -557,7 +557,6 @@ STR_1168    :Inställningar
 STR_1169    :(Inga)
 STR_1170    :{STRING}
 STR_1171    :{RED}Stängd
-STR_1172    :{YELLOW}{STRINGID}
 STR_1173    :Bygg gångvägar och köer
 STR_1174    :En skylt är i vägen
 STR_1175    :Kan inte bygga på en sluttande gångväg
@@ -1114,7 +1113,6 @@ STR_1727    :Bygglov är inte till salu!
 STR_1728    :Kan inte få bygglov här…
 STR_1729    :Marken ägs inte av parken!
 STR_1730    :{RED}Stängd
-STR_1731    :{WHITE}{STRINGID} - - 
 STR_1732    :Bygg
 STR_1733    :Läge
 STR_1734    :{WINDOW_COLOUR_2}Antal varv:
@@ -1155,7 +1153,6 @@ STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COM
 STR_1773    :Bara en fotosektion tillåten per åktur
 STR_1774    :Bara en uppskjutskulle tillåten per åktur
 STR_1777    :Musik för åkturer
-STR_1778    :{STRINGID} - - 
 STR_1790    :Välj uniformfärg för den här sortens personal
 STR_1791    :{WINDOW_COLOUR_2}Uniformfärg:
 STR_1792    :Svarar på radioanrop om {STRINGID}

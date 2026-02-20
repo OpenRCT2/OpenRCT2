@@ -311,14 +311,14 @@ uint8_t RCT12SmallSceneryElement::GetSceneryQuadrant() const
     return (this->Type & kTileElementQuadrantMask) >> 6;
 }
 
-colour_t RCT12SmallSceneryElement::GetPrimaryColour() const
+Drawing::Colour RCT12SmallSceneryElement::GetPrimaryColour() const
 {
-    return Colour1 & kRCT12TileElementColourMask;
+    return static_cast<Drawing::Colour>(Colour1 & kRCT12TileElementColourMask);
 }
 
-colour_t RCT12SmallSceneryElement::GetSecondaryColour() const
+Drawing::Colour RCT12SmallSceneryElement::GetSecondaryColour() const
 {
-    return Colour2 & kRCT12TileElementColourMask;
+    return static_cast<Drawing::Colour>(Colour2 & kRCT12TileElementColourMask);
 }
 
 bool RCT12SmallSceneryElement::NeedsSupports() const
@@ -335,14 +335,14 @@ uint16_t RCT12LargeSceneryElement::GetSequenceIndex() const
 {
     return (EntryIndex >> 10);
 }
-colour_t RCT12LargeSceneryElement::GetPrimaryColour() const
+Drawing::Colour RCT12LargeSceneryElement::GetPrimaryColour() const
 {
-    return Colour[0] & kRCT12TileElementColourMask;
+    return static_cast<Drawing::Colour>(Colour[0] & kRCT12TileElementColourMask);
 }
 
-colour_t RCT12LargeSceneryElement::GetSecondaryColour() const
+Drawing::Colour RCT12LargeSceneryElement::GetSecondaryColour() const
 {
-    return Colour[1] & kRCT12TileElementColourMask;
+    return static_cast<Drawing::Colour>(Colour[1] & kRCT12TileElementColourMask);
 }
 
 uint8_t RCT12LargeSceneryElement::GetBannerIndex() const
@@ -361,21 +361,21 @@ uint8_t RCT12WallElement::GetSlope() const
     return (Type & kTileElementQuadrantMask) >> 6;
 }
 
-colour_t RCT12WallElement::GetPrimaryColour() const
+Drawing::Colour RCT12WallElement::GetPrimaryColour() const
 {
-    return Colour1 & kRCT12TileElementColourMask;
+    return static_cast<Drawing::Colour>(Colour1 & kRCT12TileElementColourMask);
 }
 
-colour_t RCT12WallElement::GetSecondaryColour() const
+Drawing::Colour RCT12WallElement::GetSecondaryColour() const
 {
     uint8_t secondaryColour = (Colour1 & ~kRCT12TileElementColourMask) >> 5;
     secondaryColour |= (Flags & 0x60) >> 2;
-    return secondaryColour;
+    return static_cast<Drawing::Colour>(secondaryColour);
 }
 
-colour_t RCT12WallElement::GetTertiaryColour() const
+Drawing::Colour RCT12WallElement::GetTertiaryColour() const
 {
-    return Colour3 & kRCT12TileElementColourMask;
+    return static_cast<Drawing::Colour>(Colour3 & kRCT12TileElementColourMask);
 }
 
 uint8_t RCT12WallElement::GetAnimationFrame() const
@@ -421,9 +421,9 @@ int32_t RCT12WallElement::GetRCT1WallType(int32_t edge) const
     return -1;
 }
 
-colour_t RCT12WallElement::GetRCT1WallColour() const
+Drawing::Colour RCT12WallElement::GetRCT1WallColour() const
 {
-    return ((Type & 0xC0) >> 3) | ((EntryIndex & 0xE0) >> 5);
+    return static_cast<Drawing::Colour>(((Type & 0xC0) >> 3) | ((EntryIndex & 0xE0) >> 5));
 }
 
 uint8_t RCT12WallElement::GetRCT1Slope() const

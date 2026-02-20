@@ -15,14 +15,14 @@
 #include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
-#include "../actions/ParkSetParameterAction.h"
+#include "../actions/GameActionRunner.h"
+#include "../actions/park/ParkSetParameterAction.h"
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
 #include "../entity/EntityList.h"
 #include "../entity/Litter.h"
 #include "../entity/Peep.h"
 #include "../entity/Staff.h"
-#include "../interface/Colour.h"
 #include "../management/Award.h"
 #include "../management/Finance.h"
 #include "../management/Marketing.h"
@@ -130,9 +130,9 @@ namespace OpenRCT2::Park
             {
                 if (!(ride.lifecycleFlags & RIDE_LIFECYCLE_TESTED))
                     continue;
-                if (!ride.getRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
+                if (!ride.getRideTypeDescriptor().flags.has(RtdFlag::hasTrack))
                     continue;
-                if (!ride.getRideTypeDescriptor().HasFlag(RtdFlag::hasDataLogging))
+                if (!ride.getRideTypeDescriptor().flags.has(RtdFlag::hasDataLogging))
                     continue;
                 if (ride.getStation().SegmentLength < (600 << 16))
                     continue;
@@ -272,9 +272,9 @@ namespace OpenRCT2::Park
 
         park.name = LanguageGetString(STR_UNNAMED_PARK);
         gameState.pluginStorage = {};
-        park.staffHandymanColour = COLOUR_BRIGHT_RED;
-        park.staffMechanicColour = COLOUR_LIGHT_BLUE;
-        park.staffSecurityColour = COLOUR_YELLOW;
+        park.staffHandymanColour = Drawing::Colour::brightRed;
+        park.staffMechanicColour = Drawing::Colour::lightBlue;
+        park.staffSecurityColour = Drawing::Colour::yellow;
         park.numGuestsInPark = 0;
         park.numGuestsInParkLastWeek = 0;
         park.numGuestsHeadingForPark = 0;

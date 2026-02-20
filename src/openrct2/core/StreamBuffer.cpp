@@ -16,7 +16,7 @@ namespace OpenRCT2
 {
     StreamReadBuffer::StreamReadBuffer(IStream& stream, uint64_t length, size_t bufferLength)
     {
-        OpenRCT2::Guard::Assert(bufferLength > 0);
+        Guard::Assert(bufferLength > 0);
 
         _remaining = length;
         if (length <= std::numeric_limits<size_t>::max())
@@ -35,7 +35,7 @@ namespace OpenRCT2
     StreamReadBuffer::~StreamReadBuffer()
     {
         if (_bufferLength > 0)
-            OpenRCT2::Memory::Free(_buffer);
+            Memory::Free(_buffer);
 
         _buffer = nullptr;
         _bufferLength = 0;
@@ -87,7 +87,7 @@ namespace OpenRCT2
 
     StreamWriteBuffer::StreamWriteBuffer(IStream& stream, uint64_t length, size_t bufferLength)
     {
-        OpenRCT2::Guard::Assert(bufferLength > 0);
+        Guard::Assert(bufferLength > 0);
 
         _remaining = length;
         if (length <= std::numeric_limits<size_t>::max())
@@ -103,7 +103,7 @@ namespace OpenRCT2
     StreamWriteBuffer::~StreamWriteBuffer()
     {
         if (_bufferLength > 0)
-            OpenRCT2::Memory::Free(_buffer);
+            Memory::Free(_buffer);
 
         _buffer = nullptr;
         _bufferLength = 0;

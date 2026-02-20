@@ -39,7 +39,7 @@ namespace OpenRCT2::RCT2
                     return RIDE_TYPE_MONSTER_TRUCKS;
                 return RIDE_TYPE_CAR_RIDE;
             case RIDE_TYPE_TWISTER_ROLLER_COASTER:
-                if (rideEntry.flags & RIDE_ENTRY_FLAG_NO_INVERSIONS)
+                if (rideEntry.flags.has(RideEntryFlag::noInversions))
                     return RIDE_TYPE_HYPER_TWISTER;
                 return RIDE_TYPE_TWISTER_ROLLER_COASTER;
             case RIDE_TYPE_STEEL_WILD_MOUSE:
@@ -264,8 +264,8 @@ namespace OpenRCT2::RCT2
         return {};
     }
 
-    colour_t TD6SceneryElement::getTertiaryWallColour() const
+    Drawing::Colour TD6SceneryElement::getTertiaryWallColour() const
     {
-        return (Flags & 0xFC) >> 2;
+        return static_cast<Drawing::Colour>((Flags & 0xFC) >> 2);
     }
 } // namespace OpenRCT2::RCT2

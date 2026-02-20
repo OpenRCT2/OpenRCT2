@@ -313,9 +313,9 @@ public:
     uint8_t Angriness;
     uint8_t TimeLost; // the time the peep has been lost when it reaches 254 generates the lost thought
     uint8_t DaysInQueue;
-    uint8_t BalloonColour;
-    uint8_t UmbrellaColour;
-    uint8_t HatColour;
+    OpenRCT2::Drawing::Colour BalloonColour;
+    OpenRCT2::Drawing::Colour UmbrellaColour;
+    OpenRCT2::Drawing::Colour HatColour;
     RideId FavouriteRide;
     uint8_t FavouriteRideRating;
     uint64_t ItemFlags;

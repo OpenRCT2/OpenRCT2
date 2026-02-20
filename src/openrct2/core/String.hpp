@@ -185,7 +185,7 @@ namespace OpenRCT2::String
      */
     constexpr std::optional<int> utf8GetCodePointSize(std::string_view v)
     {
-        if (v.size() >= 1 && !(v[0] & 0x80))
+        if (!v.empty() && !(v[0] & 0x80))
         {
             return { 1 };
         }

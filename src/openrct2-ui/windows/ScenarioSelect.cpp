@@ -20,6 +20,7 @@
 #include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/FileStream.h>
+#include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/interface/ColourWithFlags.h>
@@ -267,7 +268,7 @@ namespace OpenRCT2::Ui::Windows
             invalidate();
         }
 
-        ScreenCoordsXY DrawPreview(Drawing::RenderTarget& rt, ScreenCoordsXY screenPos)
+        ScreenCoordsXY DrawPreview(RenderTarget& rt, ScreenCoordsXY screenPos)
         {
             auto targetImageType = PreviewImageType::miniMap;
             if (Config::Get().interface.scenarioPreviewScreenshots)
@@ -302,7 +303,7 @@ namespace OpenRCT2::Ui::Windows
             return frameEndPos;
         }
 
-        void onDraw(Drawing::RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             drawWidgets(rt);
 
@@ -326,7 +327,8 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<StringId>(kScenarioOriginStringIds[i]);
 
                 auto stringCoords = windowPos + ScreenCoordsXY{ widget.midX(), widget.midY() - 3 };
-                DrawTextWrapped(rt, stringCoords, 87, format, ft, { COLOUR_AQUAMARINE, fontStyle, TextAlignment::centre });
+                DrawTextWrapped(
+                    rt, stringCoords, 87, format, ft, { Drawing::Colour::lightWater, fontStyle, TextAlignment::centre });
             }
 
             auto previewPaneWidth = GetPreviewPaneWidth();
@@ -525,7 +527,7 @@ namespace OpenRCT2::Ui::Windows
                         mutableScreenCoords.y -= scenarioItemHeight;
                         if (mutableScreenCoords.y < 0 && !listItem.scenario.is_locked)
                         {
-                            OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::click1, 0, windowPos.x + (width / 2));
+                            OpenRCT2::Audio::Play(Audio::SoundId::click1, 0, windowPos.x + (width / 2));
                             gFirstTimeSaving = true;
                             // Callback will likely close this window! So should always return after it.
                             _callback(listItem.scenario.scenario->Path);
@@ -540,9 +542,9 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onScrollDraw(int32_t scrollIndex, Drawing::RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
-            auto paletteIndex = ColourMapA[colours[1].colour].mid_light;
+            auto paletteIndex = getColourMap(colours[1].colour).midLight;
             GfxClear(rt, paletteIndex);
 
             StringId highlighted_format = STR_WINDOW_COLOUR_2_STRINGID;
@@ -599,7 +601,7 @@ namespace OpenRCT2::Ui::Windows
                         ft.Add<StringId>(STR_STRING);
                         ft.Add<const char*>(scenario->Name.c_str());
                         auto colour = isDisabled ? colours[1].withFlag(ColourFlag::inset, true)
-                                                 : ColourWithFlags{ COLOUR_BLACK };
+                                                 : ColourWithFlags{ Drawing::Colour::black };
                         auto darkness = isDisabled ? TextDarkness::dark : TextDarkness::regular;
                         const auto scrollCentre = widgets[WIDX_SCENARIOLIST].width() / 2;
 
@@ -636,11 +638,11 @@ namespace OpenRCT2::Ui::Windows
         }
 
     private:
-        void DrawCategoryHeading(Drawing::RenderTarget& rt, int32_t left, int32_t right, int32_t y, StringId stringId) const
+        void DrawCategoryHeading(RenderTarget& rt, int32_t left, int32_t right, int32_t y, StringId stringId) const
         {
             auto baseColour = colours[1];
-            auto lightColour = ColourMapA[baseColour.colour].lighter;
-            auto darkColour = ColourMapA[baseColour.colour].mid_dark;
+            auto lightColour = getColourMap(baseColour.colour).lighter;
+            auto darkColour = getColourMap(baseColour.colour).midDark;
 
             // Draw string
             int32_t centreX = (left + right) / 2;
@@ -649,7 +651,7 @@ namespace OpenRCT2::Ui::Windows
             // Get string dimensions
             utf8 buffer[512];
             auto bufferPtr = buffer;
-            OpenRCT2::FormatStringLegacy(bufferPtr, sizeof(buffer), stringId, nullptr);
+            FormatStringLegacy(bufferPtr, sizeof(buffer), stringId, nullptr);
             int32_t categoryStringHalfWidth = (GfxGetStringWidth(bufferPtr, FontStyle::medium) / 2) + 4;
             int32_t strLeft = centreX - categoryStringHalfWidth;
             int32_t strRight = centreX + categoryStringHalfWidth;

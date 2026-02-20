@@ -147,7 +147,7 @@ static const TrackElement* ChairliftPaintUtilMapGetTrackElementAtFromRideFuzzy(
     } while (!(tileElement++)->IsLastForTile());
 
     return nullptr;
-};
+}
 
 static bool ChairliftPaintUtilIsFirstTrack(
     const Ride& ride, const TrackElement& trackElement, const CoordsXY& pos, TrackElemType trackType)

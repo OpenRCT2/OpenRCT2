@@ -13,7 +13,8 @@
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
-#include <openrct2/actions/ParkMarketingAction.h>
+#include <openrct2/actions/GameActionRunner.h>
+#include <openrct2/actions/park/ParkMarketingAction.h>
 #include <openrct2/core/BitSet.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
@@ -149,11 +150,11 @@ namespace OpenRCT2::Ui::Windows
                 if (curRide.status == RideStatus::open)
                 {
                     const auto& rtd = curRide.getRideTypeDescriptor();
-                    if (rtd.HasFlag(RtdFlag::isShopOrFacility))
+                    if (rtd.flags.has(RtdFlag::isShopOrFacility))
                         continue;
-                    if (rtd.HasFlag(RtdFlag::sellsFood))
+                    if (rtd.flags.has(RtdFlag::sellsFood))
                         continue;
-                    if (rtd.HasFlag(RtdFlag::sellsDrinks))
+                    if (rtd.flags.has(RtdFlag::sellsDrinks))
                         continue;
                     if (rtd.specialType == RtdSpecialType::toilet)
                         continue;
@@ -270,7 +271,7 @@ namespace OpenRCT2::Ui::Windows
                     gameAction.SetCallback([](const GameActions::GameAction* ga, const GameActions::Result* result) {
                         if (result->error == GameActions::Status::ok)
                         {
-                            auto* windowMgr = Ui::GetWindowManager();
+                            auto* windowMgr = GetWindowManager();
                             windowMgr->CloseByClass(WindowClass::newCampaign);
                         }
                     });

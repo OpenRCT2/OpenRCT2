@@ -300,7 +300,7 @@ static bool AwardIsDeservedBestFood(GameState_t& gameState, int32_t activeAwardT
     {
         if (ride.status != RideStatus::open)
             continue;
-        if (!ride.getRideTypeDescriptor().HasFlag(RtdFlag::sellsFood))
+        if (!ride.getRideTypeDescriptor().flags.has(RtdFlag::sellsFood))
             continue;
 
         shops++;
@@ -345,7 +345,7 @@ static bool AwardIsDeservedWorstFood(GameState_t& gameState, int32_t activeAward
     {
         if (ride.status != RideStatus::open)
             continue;
-        if (!ride.getRideTypeDescriptor().HasFlag(RtdFlag::sellsFood))
+        if (!ride.getRideTypeDescriptor().flags.has(RtdFlag::sellsFood))
             continue;
 
         shops++;
@@ -473,7 +473,7 @@ static bool AwardIsDeservedBestCustomDesignedRides(GameState_t& gameState, int32
     auto customDesignedRides = 0;
     for (const auto& ride : RideManager(gameState))
     {
-        if (!ride.getRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
+        if (!ride.getRideTypeDescriptor().flags.has(RtdFlag::hasTrack))
             continue;
         if (ride.lifecycleFlags & RIDE_LIFECYCLE_NOT_CUSTOM_DESIGN)
             continue;
@@ -491,11 +491,11 @@ static bool AwardIsDeservedBestCustomDesignedRides(GameState_t& gameState, int32
 static bool AwardIsDeservedMostDazzlingRideColours(GameState_t& gameState, int32_t activeAwardTypes)
 {
     /** At least 5 colourful rides and more than half of the rides are colourful. */
-    static constexpr colour_t dazzling_ride_colours[] = {
-        COLOUR_BRIGHT_PURPLE,
-        COLOUR_BRIGHT_GREEN,
-        COLOUR_LIGHT_ORANGE,
-        COLOUR_BRIGHT_PINK,
+    static constexpr OpenRCT2::Drawing::Colour dazzling_ride_colours[] = {
+        OpenRCT2::Drawing::Colour::brightPurple,
+        OpenRCT2::Drawing::Colour::brightGreen,
+        OpenRCT2::Drawing::Colour::lightOrange,
+        OpenRCT2::Drawing::Colour::brightPink,
     };
 
     if (activeAwardTypes & EnumToFlag(AwardType::mostDisappointing))
@@ -505,7 +505,7 @@ static bool AwardIsDeservedMostDazzlingRideColours(GameState_t& gameState, int32
     auto colourfulRides = 0;
     for (const auto& ride : RideManager(gameState))
     {
-        if (!ride.getRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
+        if (!ride.getRideTypeDescriptor().flags.has(RtdFlag::hasTrack))
             continue;
 
         countedRides++;

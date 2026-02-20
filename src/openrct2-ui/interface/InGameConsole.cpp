@@ -19,9 +19,9 @@
 #include <openrct2/Version.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/UTF8.h>
+#include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
-#include <openrct2/interface/Colour.h>
 #include <openrct2/interface/ColourWithFlags.h>
 #include <openrct2/interface/Viewport.h>
 #include <openrct2/interface/Window.h>
@@ -340,10 +340,10 @@ void InGameConsole::Draw(RenderTarget& rt) const
         {
             // This is something of a hack to ensure the text is actually black
             // as opposed to a desaturated grey
-            if (textColour.colour == COLOUR_BLACK)
+            if (textColour.colour == OpenRCT2::Drawing::Colour::black)
             {
                 DrawText(rt, screenCoords, { textColour, style }, "{BLACK}");
-                DrawText(rt, screenCoords, { kTextColour255, style }, _consoleLines[index].first.c_str(), true);
+                DrawText(rt, screenCoords, { OpenRCT2::Drawing::kColourNull, style }, _consoleLines[index].first.c_str(), true);
             }
             else
             {
@@ -354,7 +354,7 @@ void InGameConsole::Draw(RenderTarget& rt) const
         {
             std::string lineColour = FormatTokenToStringWithBraces(_consoleLines[index].second);
             DrawText(rt, screenCoords, { textColour, style }, lineColour.c_str());
-            DrawText(rt, screenCoords, { kTextColour255, style }, _consoleLines[index].first.c_str(), true);
+            DrawText(rt, screenCoords, { OpenRCT2::Drawing::kColourNull, style }, _consoleLines[index].first.c_str(), true);
         }
 
         screenCoords.y += lineHeight;
@@ -363,10 +363,10 @@ void InGameConsole::Draw(RenderTarget& rt) const
     screenCoords.y = _consoleBottomRight.y - lineHeight - kConsoleEdgePadding - 1;
 
     // Draw current line
-    if (textColour.colour == COLOUR_BLACK)
+    if (textColour.colour == OpenRCT2::Drawing::Colour::black)
     {
         DrawText(rt, screenCoords, { textColour, style }, "{BLACK}");
-        DrawText(rt, screenCoords, { kTextColour255, style }, _consoleCurrentLine.c_str(), true);
+        DrawText(rt, screenCoords, { OpenRCT2::Drawing::kColourNull, style }, _consoleCurrentLine.c_str(), true);
     }
     else
     {
@@ -377,13 +377,13 @@ void InGameConsole::Draw(RenderTarget& rt) const
     if (_consoleCaretTicks < kConsoleCaretFlashThreshold)
     {
         auto caret = screenCoords + ScreenCoordsXY{ _caretScreenPosX, lineHeight };
-        auto caretColour = ColourMapA[textColour.colour].lightest;
+        auto caretColour = getColourMap(textColour.colour).lightest;
         Rectangle::fill(rt, { caret, caret + ScreenCoordsXY{ kConsoleCaretWidth, 1 } }, caretColour);
     }
 
     // What about border colours?
-    auto borderColour1 = ColourMapA[backgroundColour.colour].light;
-    auto borderColour2 = ColourMapA[backgroundColour.colour].mid_dark;
+    auto borderColour1 = getColourMap(backgroundColour.colour).light;
+    auto borderColour2 = getColourMap(backgroundColour.colour).midDark;
 
     // Input area top border
     Rectangle::fill(

@@ -21,13 +21,14 @@
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
-#include <openrct2/actions/BalloonPressAction.h>
-#include <openrct2/actions/FootpathAdditionRemoveAction.h>
-#include <openrct2/actions/FootpathRemoveAction.h>
-#include <openrct2/actions/LargeSceneryRemoveAction.h>
-#include <openrct2/actions/ParkEntranceRemoveAction.h>
-#include <openrct2/actions/SmallSceneryRemoveAction.h>
-#include <openrct2/actions/WallRemoveAction.h>
+#include <openrct2/actions/GameActionRunner.h>
+#include <openrct2/actions/footpath/FootpathAdditionRemoveAction.h>
+#include <openrct2/actions/footpath/FootpathRemoveAction.h>
+#include <openrct2/actions/general/BalloonPressAction.h>
+#include <openrct2/actions/park/ParkEntranceRemoveAction.h>
+#include <openrct2/actions/scenery/LargeSceneryRemoveAction.h>
+#include <openrct2/actions/scenery/SmallSceneryRemoveAction.h>
+#include <openrct2/actions/scenery/WallRemoveAction.h>
 #include <openrct2/entity/Balloon.h>
 #include <openrct2/entity/Duck.h>
 #include <openrct2/entity/EntityList.h>
@@ -268,7 +269,6 @@ namespace OpenRCT2::Ui
     static InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoords)
     {
         Ride* ride;
-        int32_t i;
         InteractionInfo info{};
         // No click input for title screen or track manager
         if (gLegacyScene == LegacyScene::titleSequence || gLegacyScene == LegacyScene::trackDesignsManager)
@@ -400,7 +400,7 @@ namespace OpenRCT2::Ui
                 else
                     stationIndex = tileElement->AsTrack()->GetStationIndex().ToUnderlying();
 
-                for (i = stationIndex; i >= 0; i--)
+                for (int32_t i = stationIndex; i >= 0; i--)
                     if (ride->getStations()[i].Start.IsNull())
                         stationIndex--;
                 stationIndex++;

@@ -14,11 +14,12 @@
 #include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
-#include "../actions/BannerRemoveAction.h"
-#include "../actions/FootpathAdditionRemoveAction.h"
-#include "../actions/LargeSceneryRemoveAction.h"
-#include "../actions/SmallSceneryRemoveAction.h"
-#include "../actions/WallRemoveAction.h"
+#include "../actions/GameActionRunner.h"
+#include "../actions/footpath/FootpathAdditionRemoveAction.h"
+#include "../actions/scenery/BannerRemoveAction.h"
+#include "../actions/scenery/LargeSceneryRemoveAction.h"
+#include "../actions/scenery/SmallSceneryRemoveAction.h"
+#include "../actions/scenery/WallRemoveAction.h"
 #include "../core/CodepointView.hpp"
 #include "../entity/Fountain.h"
 #include "../network/Network.h"
@@ -126,9 +127,7 @@ int32_t LargeSceneryText::MeasureHeight(std::string_view text) const
 
 void SceneryUpdateTile(const CoordsXY& sceneryPos)
 {
-    TileElement* tileElement;
-
-    tileElement = MapGetFirstElementAt(sceneryPos);
+    TileElement* tileElement = MapGetFirstElementAt(sceneryPos);
     if (tileElement == nullptr)
         return;
     do

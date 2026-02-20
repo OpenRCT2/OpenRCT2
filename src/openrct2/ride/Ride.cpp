@@ -16,10 +16,11 @@
 #include "../GameState.h"
 #include "../Input.h"
 #include "../OpenRCT2.h"
+#include "../actions/GameActionRunner.h"
 #include "../actions/ResultWithMessage.h"
-#include "../actions/RideSetSettingAction.h"
-#include "../actions/RideSetStatusAction.h"
-#include "../actions/RideSetVehicleAction.h"
+#include "../actions/ride/RideSetSettingAction.h"
+#include "../actions/ride/RideSetStatusAction.h"
+#include "../actions/ride/RideSetVehicleAction.h"
 #include "../audio/Audio.h"
 #include "../config/Config.h"
 #include "../core/BitSet.hpp"
@@ -847,7 +848,7 @@ void Ride::formatStatusTo(Formatter& ft) const
     }
     else if (status == RideStatus::closed)
     {
-        if (!getRideTypeDescriptor().HasFlag(RtdFlag::isShopOrFacility))
+        if (!getRideTypeDescriptor().flags.has(RtdFlag::isShopOrFacility))
         {
             if (numRiders != 0)
             {
@@ -886,7 +887,7 @@ void Ride::formatStatusTo(Formatter& ft) const
             ft.Add<StringId>(kStringIdNone);
         }
     }
-    else if (!getRideTypeDescriptor().HasFlag(RtdFlag::isShopOrFacility))
+    else if (!getRideTypeDescriptor().flags.has(RtdFlag::isShopOrFacility))
     {
         ft.Add<StringId>(numRiders == 1 ? STR_PERSON_ON_RIDE : STR_PEOPLE_ON_RIDE);
         ft.Add<uint16_t>(numRiders);
@@ -899,23 +900,23 @@ void Ride::formatStatusTo(Formatter& ft) const
 
 int32_t Ride::getTotalLength() const
 {
-    int32_t i, totalLength = 0;
-    for (i = 0; i < numStations; i++)
+    int32_t totalLength = 0;
+    for (int32_t i = 0; i < numStations; i++)
         totalLength += stations[i].SegmentLength;
     return totalLength;
 }
 
 int32_t Ride::getTotalTime() const
 {
-    int32_t i, totalTime = 0;
-    for (i = 0; i < numStations; i++)
+    int32_t totalTime = 0;
+    for (int32_t i = 0; i < numStations; i++)
         totalTime += stations[i].SegmentTime;
     return totalTime;
 }
 
 bool Ride::canHaveMultipleCircuits() const
 {
-    if (!getRideTypeDescriptor().HasFlag(RtdFlag::allowMultipleCircuits))
+    if (!getRideTypeDescriptor().flags.has(RtdFlag::allowMultipleCircuits))
         return false;
 
     // Only allow circuit or launch modes
@@ -942,9 +943,9 @@ bool Ride::supportsStatus(RideStatus s) const
         case RideStatus::open:
             return true;
         case RideStatus::simulating:
-            return (!rtd.HasFlag(RtdFlag::noTestMode) && rtd.HasFlag(RtdFlag::hasTrack));
+            return (!rtd.flags.has(RtdFlag::noTestMode) && rtd.flags.has(RtdFlag::hasTrack));
         case RideStatus::testing:
-            return !rtd.HasFlag(RtdFlag::noTestMode);
+            return !rtd.flags.has(RtdFlag::noTestMode);
         case RideStatus::count: // Meaningless but necessary to satisfy -Wswitch
             return false;
     }
@@ -1522,7 +1523,7 @@ bool Ride::canBreakDown() const
     }
 
     const auto* entry = getRideEntry();
-    return entry != nullptr && !(entry->flags & RIDE_ENTRY_FLAG_CANNOT_BREAK_DOWN);
+    return entry != nullptr && !entry->flags.has(RideEntryFlag::cannotBreakDown);
 }
 
 static void ChooseRandomTrainToBreakdownSafe(Ride& ride)
@@ -1590,7 +1591,7 @@ void RidePrepareBreakdown(Ride& ride, int32_t breakdownReason)
                 }
                 if (vehicle != nullptr)
                 {
-                    vehicle->SetFlag(VehicleFlags::CarIsBroken);
+                    vehicle->flags.set(VehicleFlag::carIsBroken);
                 }
             }
             break;
@@ -1603,7 +1604,7 @@ void RidePrepareBreakdown(Ride& ride, int32_t breakdownReason)
             vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[ride.brokenTrain]);
             if (vehicle != nullptr)
             {
-                vehicle->SetFlag(VehicleFlags::TrainIsBroken);
+                vehicle->flags.set(VehicleFlag::trainIsBroken);
             }
             break;
         case BREAKDOWN_BRAKES_FAILURE:
@@ -1996,7 +1997,7 @@ static void RideMusicUpdate(Ride& ride)
 {
     const auto& rtd = ride.getRideTypeDescriptor();
 
-    if (!rtd.HasFlag(RtdFlag::hasMusicByDefault) && !rtd.HasFlag(RtdFlag::allowMusic))
+    if (!rtd.flags.hasAny(RtdFlag::hasMusicByDefault, RtdFlag::allowMusic))
         return;
     rtd.MusicUpdateFunction(ride);
 }
@@ -2167,7 +2168,7 @@ std::pair<RideMeasurement*, OpenRCT2String> Ride::getMeasurement()
     const auto& rtd = getRideTypeDescriptor();
 
     // Check if ride type supports data logging
-    if (!rtd.HasFlag(RtdFlag::hasDataLogging))
+    if (!rtd.flags.has(RtdFlag::hasDataLogging))
     {
         return { nullptr, { STR_DATA_LOGGING_NOT_AVAILABLE_FOR_THIS_TYPE_OF_RIDE, {} } };
     }
@@ -2176,7 +2177,7 @@ std::pair<RideMeasurement*, OpenRCT2String> Ride::getMeasurement()
     if (measurement == nullptr)
     {
         measurement = std::make_unique<RideMeasurement>();
-        if (rtd.HasFlag(RtdFlag::hasGForces))
+        if (rtd.flags.has(RtdFlag::hasGForces))
         {
             measurement->flags.set(RideMeasurementFlag::gForces);
         }
@@ -2246,7 +2247,7 @@ int32_t RideGetUnusedPresetVehicleColour(ObjectEntryIndex subType)
     }
 
     // If all presets have been used, just go with a random preset
-    if (unused.size() == 0)
+    if (unused.empty())
         return UtilRand() % colourPresets->count;
 
     // Choose a random preset from the list of unused presets
@@ -2300,7 +2301,7 @@ void RideCheckAllReachable()
         if (ride.status != RideStatus::open || ride.connectedMessageThrottle != 0)
             continue;
 
-        if (ride.getRideTypeDescriptor().HasFlag(RtdFlag::isShopOrFacility))
+        if (ride.getRideTypeDescriptor().flags.has(RtdFlag::isShopOrFacility))
             RideShopConnected(ride);
         else
             RideEntranceExitConnected(ride);
@@ -2610,7 +2611,7 @@ static ResultWithMessage RideModeCheckValidStationNumbers(const Ride& ride)
     }
 
     const auto& rtd = ride.getRideTypeDescriptor();
-    if (rtd.HasFlag(RtdFlag::hasOneStation) && numStations > 1)
+    if (rtd.flags.has(RtdFlag::hasOneStation) && numStations > 1)
         return { false, STR_UNABLE_TO_OPERATE_WITH_MORE_THAN_ONE_STATION_IN_THIS_MODE };
 
     return { true };
@@ -2627,7 +2628,7 @@ static StationIndexWithMessage RideModeCheckStationPresent(const Ride& ride)
     if (stationIndex.IsNull())
     {
         const auto& rtd = ride.getRideTypeDescriptor();
-        if (!rtd.HasFlag(RtdFlag::hasTrack))
+        if (!rtd.flags.has(RtdFlag::hasTrack))
             return { StationIndex::GetNull(), STR_NOT_YET_CONSTRUCTED };
 
         if (rtd.specialType == RtdSpecialType::maze)
@@ -2649,7 +2650,7 @@ static ResultWithMessage RideCheckForEntranceExit(RideId rideIndex)
     if (ride == nullptr)
         return { false };
 
-    if (ride->getRideTypeDescriptor().HasFlag(RtdFlag::isShopOrFacility))
+    if (ride->getRideTypeDescriptor().flags.has(RtdFlag::isShopOrFacility))
         return { true };
 
     uint8_t entrance = 0;
@@ -3271,7 +3272,7 @@ static Vehicle* VehicleCreateCar(
     *remainingDistance -= halfSpacing;
     vehicle->remaining_distance = *remainingDistance;
 
-    if (!(carEntry.flags & CAR_ENTRY_FLAG_GO_KART))
+    if (!carEntry.flags.has(CarEntryFlag::isGoKart))
     {
         *remainingDistance -= halfSpacing;
     }
@@ -3310,7 +3311,7 @@ static Vehicle* VehicleCreateCar(
     }
 
     const auto& rtd = ride.getRideTypeDescriptor();
-    if (carEntry.flags & CAR_ENTRY_FLAG_DODGEM_CAR_PLACEMENT)
+    if (carEntry.flags.has(CarEntryFlag::useDodgemCarPlacement))
     {
         // Loc6DDCA4:
         vehicle->TrackSubposition = VehicleTrackSubposition::Default;
@@ -3325,7 +3326,7 @@ static Vehicle* VehicleCreateCar(
         vehicle->SetTrackType(trackElement->GetTrackType());
         vehicle->track_progress = 0;
         vehicle->SetState(Vehicle::Status::movingToEndOfStation);
-        vehicle->Flags = 0;
+        vehicle->flags.clearAll();
 
         CoordsXY chosenLoc;
         auto numAttempts = 0;
@@ -3347,12 +3348,12 @@ static Vehicle* VehicleCreateCar(
     else
     {
         VehicleTrackSubposition subposition = VehicleTrackSubposition::Default;
-        if (carEntry.flags & CAR_ENTRY_FLAG_CHAIRLIFT)
+        if (carEntry.flags.has(CarEntryFlag::isChairlift))
         {
             subposition = VehicleTrackSubposition::ChairliftGoingOut;
         }
 
-        if (carEntry.flags & CAR_ENTRY_FLAG_GO_KART)
+        if (carEntry.flags.has(CarEntryFlag::isGoKart))
         {
             // Choose which lane Go Kart should start in
             subposition = VehicleTrackSubposition::GoKartsLeftLane;
@@ -3361,21 +3362,21 @@ static Vehicle* VehicleCreateCar(
                 subposition = VehicleTrackSubposition::GoKartsRightLane;
             }
         }
-        if (carEntry.flags & CAR_ENTRY_FLAG_MINI_GOLF)
+        if (carEntry.flags.has(CarEntryFlag::isMiniGolf))
         {
             subposition = VehicleTrackSubposition::MiniGolfStart9;
             vehicle->var_D3 = 0;
             vehicle->mini_golf_current_animation = MiniGolfAnimation::Walk;
-            vehicle->mini_golf_flags = 0;
+            vehicle->miniGolfFlags.clearAll();
         }
-        if (carEntry.flags & CAR_ENTRY_FLAG_REVERSER_BOGIE)
+        if (carEntry.flags.has(CarEntryFlag::isReverserCoasterBogie))
         {
             if (vehicle->IsHead())
             {
                 subposition = VehicleTrackSubposition::ReverserRCFrontBogie;
             }
         }
-        if (carEntry.flags & CAR_ENTRY_FLAG_REVERSER_PASSENGER_CAR)
+        if (carEntry.flags.has(CarEntryFlag::isReverserCoasterPassengerCar))
         {
             subposition = VehicleTrackSubposition::ReverserRCRearBogie;
         }
@@ -3393,7 +3394,7 @@ static Vehicle* VehicleCreateCar(
         }
         else
         {
-            if (rtd.HasFlag(RtdFlag::vehicleIsIntegral))
+            if (rtd.flags.has(RtdFlag::vehicleIsIntegral))
             {
                 if (rtd.StartTrackPiece != TrackElemType::flatTrack1x4B)
                 {
@@ -3420,16 +3421,16 @@ static Vehicle* VehicleCreateCar(
         vehicle->SetTrackType(trackElement->GetTrackType());
         vehicle->SetTrackDirection(vehicle->Orientation >> 3);
         vehicle->track_progress = 31;
-        if (carEntry.flags & CAR_ENTRY_FLAG_MINI_GOLF)
+        if (carEntry.flags.has(CarEntryFlag::isMiniGolf))
         {
             vehicle->track_progress = 15;
         }
-        vehicle->Flags = VehicleFlags::CollisionDisabled;
-        if (carEntry.flags & CAR_ENTRY_FLAG_HAS_INVERTED_SPRITE_SET)
+        vehicle->flags = { VehicleFlag::collisionDisabled };
+        if (carEntry.flags.has(CarEntryFlag::hasInvertedSpriteSet))
         {
             if (trackElement->IsInverted())
             {
-                vehicle->SetFlag(VehicleFlags::CarIsInverted);
+                vehicle->flags.set(VehicleFlag::carIsInverted);
             }
         }
         vehicle->SetState(Vehicle::Status::movingToEndOfStation);
@@ -3437,7 +3438,7 @@ static Vehicle* VehicleCreateCar(
         if (ride.hasLifecycleFlag(RIDE_LIFECYCLE_REVERSED_TRAINS))
         {
             vehicle->SubType = carIndex == (ride.numCarsPerTrain - 1) ? Vehicle::Type::head : Vehicle::Type::tail;
-            vehicle->SetFlag(VehicleFlags::CarIsReversed);
+            vehicle->flags.set(VehicleFlag::carIsReversed);
         }
     }
 
@@ -3668,7 +3669,7 @@ ResultWithMessage Ride::createVehicles(const CoordsXYE& element, bool isApplying
     }
 
     const auto& rtd = getRideTypeDescriptor();
-    if (rtd.specialType != RtdSpecialType::spaceRings && !rtd.HasFlag(RtdFlag::vehicleIsIntegral))
+    if (rtd.specialType != RtdSpecialType::spaceRings && !rtd.flags.has(RtdFlag::vehicleIsIntegral))
     {
         if (isBlockSectioned() && !isSimulating)
         {
@@ -3689,7 +3690,7 @@ ResultWithMessage Ride::createVehicles(const CoordsXYE& element, bool isApplying
 
                 auto carEntry = vehicle->Entry();
 
-                if (!(carEntry->flags & CAR_ENTRY_FLAG_DODGEM_CAR_PLACEMENT))
+                if (!carEntry->flags.has(CarEntryFlag::useDodgemCarPlacement))
                 {
                     vehicle->UpdateTrackMotion(nullptr);
                 }
@@ -3780,7 +3781,7 @@ void Ride::moveTrainsToBlockBrakes(const CoordsXYZ& firstBlockPosition, TrackEle
         }
         for (Vehicle* car = train; car != nullptr; car = getGameState().entities.GetEntity<Vehicle>(car->next_vehicle_on_train))
         {
-            car->ClearFlag(VehicleFlags::CollisionDisabled);
+            car->flags.unset(VehicleFlag::collisionDisabled);
             car->SetState(Vehicle::Status::travelling, car->sub_state);
             if ((car->GetTrackType()) == TrackElemType::endStation)
             {
@@ -4326,7 +4327,7 @@ int32_t RideGetRandomColourPresetIndex(ride_type_t rideType)
     }
 
     // If all presets have been used, just go with a random preset
-    if (unused.size() == 0)
+    if (unused.empty())
         return UtilRand() % colourPresets.count;
 
     // Choose a random preset from the list of unused presets
@@ -4341,7 +4342,8 @@ int32_t RideGetRandomColourPresetIndex(ride_type_t rideType)
 void Ride::setColourPreset(uint8_t trackColourPreset, uint8_t vehicleColourPreset)
 {
     const TrackColourPresetList* colourPresets = &getRideTypeDescriptor().ColourPresets;
-    TrackColour colours = { COLOUR_BLACK, COLOUR_BLACK, COLOUR_BLACK };
+    TrackColour colours = { OpenRCT2::Drawing::Colour::black, OpenRCT2::Drawing::Colour::black,
+                            OpenRCT2::Drawing::Colour::black };
     // Stalls save their default colour in the vehicle settings (since they share a common ride type)
     if (!isRide())
     {
@@ -4404,7 +4406,7 @@ void Ride::setNameToDefault()
 RideNaming GetRideNaming(const ride_type_t rideType, const RideObjectEntry* rideEntry)
 {
     const auto& rtd = GetRideTypeDescriptor(rideType);
-    if (rtd.HasFlag(RtdFlag::listVehiclesSeparately) && rideEntry != nullptr)
+    if (rtd.flags.has(RtdFlag::listVehiclesSeparately) && rideEntry != nullptr)
     {
         return rideEntry->naming;
     }
@@ -4684,7 +4686,7 @@ void InvalidateTestResults(Ride& ride)
             Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[i]);
             if (vehicle != nullptr)
             {
-                vehicle->ClearFlag(VehicleFlags::Testing);
+                vehicle->flags.unset(VehicleFlag::testing);
             }
         }
     }
@@ -4714,9 +4716,7 @@ void RideFixBreakdown(Ride& ride, int32_t reliabilityIncreaseFactor)
             for (Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[i]); vehicle != nullptr;
                  vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
             {
-                vehicle->ClearFlag(VehicleFlags::StoppedBySafetyCutOut);
-                vehicle->ClearFlag(VehicleFlags::CarIsBroken);
-                vehicle->ClearFlag(VehicleFlags::TrainIsBroken);
+                vehicle->flags.unset(VehicleFlag::stoppedBySafetyCutout, VehicleFlag::carIsBroken, VehicleFlag::trainIsBroken);
             }
         }
     }
@@ -4732,7 +4732,7 @@ void RideFixBreakdown(Ride& ride, int32_t reliabilityIncreaseFactor)
 void RideUpdateVehicleColours(const Ride& ride)
 {
     const auto& rtd = ride.getRideTypeDescriptor();
-    if (rtd.specialType == RtdSpecialType::spaceRings || rtd.HasFlag(RtdFlag::vehicleIsIntegral))
+    if (rtd.specialType == RtdSpecialType::spaceRings || rtd.flags.has(RtdFlag::vehicleIsIntegral))
     {
         GfxInvalidateScreen();
     }
@@ -4754,7 +4754,7 @@ void RideUpdateVehicleColours(const Ride& ride)
                     colours = ride.vehicleColours[i];
                     break;
                 case VehicleColourSettings::perCar:
-                    if (vehicle->HasFlag(VehicleFlags::CarIsReversed))
+                    if (vehicle->flags.has(VehicleFlag::carIsReversed))
                     {
                         colours = ride.vehicleColours[std::min(
                             (ride.numCarsPerTrain - 1) - carIndex, Limits::kMaxCarsPerTrain - 1)];
@@ -5190,7 +5190,7 @@ void Ride::updateMaxVehicles()
                 } while (totalLength <= stationLength);
 
                 if ((mode != RideMode::stationToStation && mode != RideMode::continuousCircuit)
-                    || !rtd.HasFlag(RtdFlag::allowMoreVehiclesThanStationFits))
+                    || !rtd.flags.has(RtdFlag::allowMoreVehiclesThanStationFits))
                 {
                     maxNumTrains = std::min(maxNumTrains, int32_t(Limits::kMaxTrainsPerRide));
                 }
@@ -5555,7 +5555,7 @@ ObjectEntryIndex RideGetEntryIndex(ride_type_t rideType, ObjectEntryIndex rideSu
     {
         auto& objManager = GetContext()->GetObjectManager();
         auto& rideEntries = objManager.GetAllRideEntries(rideType);
-        if (rideEntries.size() > 0)
+        if (!rideEntries.empty())
         {
             subType = rideEntries[0];
             for (auto rideEntryIndex : rideEntries)
@@ -5572,7 +5572,7 @@ ObjectEntryIndex RideGetEntryIndex(ride_type_t rideType, ObjectEntryIndex rideSu
                     continue;
                 }
 
-                if (!GetRideTypeDescriptor(rideType).HasFlag(RtdFlag::listVehiclesSeparately))
+                if (!GetRideTypeDescriptor(rideType).flags.has(RtdFlag::listVehiclesSeparately))
                 {
                     subType = rideEntryIndex;
                     break;
@@ -5980,7 +5980,7 @@ ResultWithMessage Ride::changeStatusCheckTrackValidity(const CoordsXYE& trackEle
         {
             return { false, STR_UNKNOWN_RIDE };
         }
-        if (rideEntry->flags & RIDE_ENTRY_FLAG_NO_INVERSIONS)
+        if (rideEntry->flags.has(RideEntryFlag::noInversions))
         {
             if (RideCheckTrackContainsInversions(trackElement, &problematicTrackElement))
             {
@@ -5988,7 +5988,7 @@ ResultWithMessage Ride::changeStatusCheckTrackValidity(const CoordsXYE& trackEle
                 return { false, STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN };
             }
         }
-        if (rideEntry->flags & RIDE_ENTRY_FLAG_NO_BANKED_TRACK)
+        if (rideEntry->flags.has(RideEntryFlag::noBankedTrack))
         {
             if (RideCheckTrackContainsBanked(trackElement, &problematicTrackElement))
             {
@@ -6027,7 +6027,7 @@ ResultWithMessage Ride::changeStatusCreateVehicles(bool isApplying, const Coords
         RideSetStartFinishPoints(id, trackElement);
 
     const auto& rtd = getRideTypeDescriptor();
-    if (!rtd.HasFlag(RtdFlag::noVehicles) && !(lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK))
+    if (!rtd.flags.has(RtdFlag::noVehicles) && !(lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK))
     {
         const auto createVehicleResult = createVehicles(trackElement, isApplying, isSimulating);
         if (!createVehicleResult.Successful)
@@ -6036,7 +6036,7 @@ ResultWithMessage Ride::changeStatusCreateVehicles(bool isApplying, const Coords
         }
     }
 
-    if (rtd.HasFlag(RtdFlag::allowCableLiftHill) && (lifecycleFlags & RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED)
+    if (rtd.flags.has(RtdFlag::allowCableLiftHill) && (lifecycleFlags & RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED)
         && !(lifecycleFlags & RIDE_LIFECYCLE_CABLE_LIFT))
     {
         const auto createCableLiftResult = RideCreateCableLift(id, isApplying);

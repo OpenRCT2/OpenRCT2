@@ -45,7 +45,7 @@ namespace OpenRCT2::Title
     struct TitleSequenceParkHandle
     {
         std::string HintPath;
-        std::unique_ptr<OpenRCT2::IStream> Stream;
+        std::unique_ptr<IStream> Stream;
     };
 
     constexpr const utf8* TITLE_SEQUENCE_EXTENSION = ".parkseq";

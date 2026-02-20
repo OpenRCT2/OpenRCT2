@@ -45,10 +45,10 @@ namespace OpenRCT2::SawyerCoding
     class SawyerChunkReader final
     {
     private:
-        OpenRCT2::IStream* const _stream = nullptr;
+        IStream* const _stream = nullptr;
 
     public:
-        explicit SawyerChunkReader(OpenRCT2::IStream* stream);
+        explicit SawyerChunkReader(IStream* stream);
 
         /**
          * Skips the next chunk in the stream without decoding or reading its data

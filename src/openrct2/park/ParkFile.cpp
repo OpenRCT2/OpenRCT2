@@ -13,6 +13,7 @@
 #include "../Context.h"
 #include "../Diagnostic.h"
 #include "../Editor.h"
+#include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../ParkImporter.h"
@@ -101,7 +102,7 @@ namespace OpenRCT2
         constexpr uint32_t PREVIEW              = 0x39;
         constexpr uint32_t PACKED_OBJECTS       = 0x80;
         // clang-format on
-    }; // namespace ParkFileChunkType
+    } // namespace ParkFileChunkType
 
     class ParkFile
     {
@@ -263,7 +264,7 @@ namespace OpenRCT2
                     cs.readWrite(image.type);
                     cs.readWrite(image.width);
                     cs.readWrite(image.height);
-                    cs.readWriteArray(image.pixels, [&cs](OpenRCT2::Drawing::PaletteIndex& pixel) {
+                    cs.readWriteArray(image.pixels, [&cs](Drawing::PaletteIndex& pixel) {
                         cs.readWrite(pixel);
                         return true;
                     });
@@ -531,7 +532,7 @@ namespace OpenRCT2
         void ReadWritePreviewChunk(GameState_t& gameState, OrcaStream& os)
         {
             os.readWriteChunk(ParkFileChunkType::PREVIEW, [&gameState](OrcaStream::ChunkStream& cs) {
-                auto preview = OpenRCT2::generatePreviewFromGameState(gameState);
+                auto preview = generatePreviewFromGameState(gameState);
 
                 cs.readWrite(preview.parkName);
                 cs.readWrite(preview.parkRating);
@@ -547,7 +548,7 @@ namespace OpenRCT2
                     cs.readWrite(image.type);
                     cs.readWrite(image.width);
                     cs.readWrite(image.height);
-                    cs.readWriteArray(image.pixels, [&cs](OpenRCT2::Drawing::PaletteIndex& pixel) {
+                    cs.readWriteArray(image.pixels, [&cs](Drawing::PaletteIndex& pixel) {
                         cs.readWrite(pixel);
                         return true;
                     });
@@ -644,7 +645,7 @@ namespace OpenRCT2
                 auto& rideRatings = gameState.rideRatingUpdateStates;
                 if (os.getHeader().targetVersion >= 21)
                 {
-                    cs.readWriteArray(rideRatings, [this, &cs](OpenRCT2::RideRating::UpdateState& calcData) {
+                    cs.readWriteArray(rideRatings, [this, &cs](RideRating::UpdateState& calcData) {
                         ReadWriteRideRatingCalculationData(cs, calcData);
                         return true;
                     });
@@ -655,7 +656,7 @@ namespace OpenRCT2
                     if (os.getMode() == OrcaStream::Mode::reading)
                     {
                         // Since we read only one state ensure the rest is reset.
-                        OpenRCT2::RideRating::ResetUpdateStates();
+                        RideRating::ResetUpdateStates();
                     }
                     auto& rideRatingUpdateState = rideRatings[0];
                     ReadWriteRideRatingCalculationData(cs, rideRatingUpdateState);
@@ -672,7 +673,7 @@ namespace OpenRCT2
             }
         }
 
-        void ReadWriteRideRatingCalculationData(OrcaStream::ChunkStream& cs, OpenRCT2::RideRating::UpdateState& calcData)
+        void ReadWriteRideRatingCalculationData(OrcaStream::ChunkStream& cs, RideRating::UpdateState& calcData)
         {
             cs.readWrite(calcData.AmountOfBrakes);
             cs.readWrite(calcData.Proximity);
@@ -775,7 +776,7 @@ namespace OpenRCT2
             static constexpr uint8_t DESCRIPTOR_DAT = 0;
             static constexpr uint8_t DESCRIPTOR_PARKOBJ = 1;
 
-            if (os.getMode() == OrcaStream::Mode::writing && ExportObjectsList.size() == 0)
+            if (os.getMode() == OrcaStream::Mode::writing && ExportObjectsList.empty())
             {
                 // Do not emit chunk if there are no packed objects
                 return;
@@ -1248,12 +1249,13 @@ namespace OpenRCT2
                                     auto* sceneryElement = it.element->AsSmallScenery();
                                     // Previous formats stored the needs supports flag in the primary colour
                                     // We have moved it into a flags field to support extended colour sets
-                                    bool needsSupports = sceneryElement->GetPrimaryColour()
+                                    bool needsSupports = EnumValue(sceneryElement->GetPrimaryColour())
                                         & kRCT12SmallSceneryElementNeedsSupportsFlag;
                                     if (needsSupports)
                                     {
-                                        sceneryElement->SetPrimaryColour(
-                                            sceneryElement->GetPrimaryColour() & ~kRCT12SmallSceneryElementNeedsSupportsFlag);
+                                        const auto valueWithoutFlag = EnumValue(sceneryElement->GetPrimaryColour())
+                                            & ~kRCT12SmallSceneryElementNeedsSupportsFlag;
+                                        sceneryElement->SetPrimaryColour(static_cast<Drawing::Colour>(valueWithoutFlag));
                                         sceneryElement->SetNeedsSupports();
                                     }
                                 }
@@ -1931,7 +1933,7 @@ namespace OpenRCT2
                         cs.readWrite(rideType);
                         return true;
                     });
-                    OpenRCT2::RideUse::GetTypeHistory().Set(guest->Id, LegacyGetRideTypesBeenOn(rideTypeBeenOn));
+                    RideUse::GetTypeHistory().Set(guest->Id, LegacyGetRideTypesBeenOn(rideTypeBeenOn));
                     cs.readWrite(guest->ItemFlags);
                     cs.readWrite(guest->Photo2RideRef);
                     cs.readWrite(guest->Photo3RideRef);
@@ -1990,7 +1992,7 @@ namespace OpenRCT2
                         cs.readWrite(rideType);
                         return true;
                     });
-                    OpenRCT2::RideUse::GetHistory().Set(guest->Id, LegacyGetRidesBeenOn(ridesBeenOn));
+                    RideUse::GetHistory().Set(guest->Id, LegacyGetRidesBeenOn(ridesBeenOn));
                 }
                 else
                 {
@@ -2187,7 +2189,7 @@ namespace OpenRCT2
                 {
                     value = std::get<1>(*fr);
                 }
-                else if (table.size() > 0)
+                else if (!table.empty())
                 {
                     value = std::get<1>(table[0]);
                 }
@@ -2228,11 +2230,11 @@ namespace OpenRCT2
         {
             uint16_t updateFlags = 0;
             cs.readWrite(updateFlags);
-            entity.Flags = updateFlags;
+            entity.flags.holder = updateFlags;
         }
         else
         {
-            cs.readWrite(entity.Flags);
+            cs.readWrite(entity.flags.holder);
         }
         cs.readWrite(entity.SwingSprite);
         cs.readWrite(entity.current_station);
@@ -2292,7 +2294,7 @@ namespace OpenRCT2
         cs.readWrite(entity.vertical_drop_countdown);
         cs.readWrite(entity.var_D3);
         cs.readWrite(entity.mini_golf_current_animation);
-        cs.readWrite(entity.mini_golf_flags);
+        cs.readWrite(entity.miniGolfFlags.holder);
         cs.readWrite(entity.ride_subtype);
         cs.readWrite(entity.colours.Tertiary);
         cs.readWrite(entity.seat_rotation);
@@ -2303,7 +2305,7 @@ namespace OpenRCT2
             cs.readWrite(isCrashedVehicle);
             if (isCrashedVehicle)
             {
-                entity.SetFlag(VehicleFlags::Crashed);
+                entity.flags.set(VehicleFlag::crashed);
             }
         }
         if (cs.getMode() == OrcaStream::Mode::reading && os.getHeader().targetVersion < kBlockBrakeImprovementsVersion)
@@ -2383,7 +2385,7 @@ namespace OpenRCT2
                 cs.readWrite(rideType);
                 return true;
             });
-            OpenRCT2::RideUse::GetTypeHistory().Set(guest.Id, LegacyGetRideTypesBeenOn(rideTypeBeenOn));
+            RideUse::GetTypeHistory().Set(guest.Id, LegacyGetRideTypesBeenOn(rideTypeBeenOn));
         }
 
         cs.readWrite(guest.TimeInQueue);
@@ -2394,7 +2396,7 @@ namespace OpenRCT2
                 cs.readWrite(rideType);
                 return true;
             });
-            OpenRCT2::RideUse::GetHistory().Set(guest.Id, LegacyGetRidesBeenOn(ridesBeenOn));
+            RideUse::GetHistory().Set(guest.Id, LegacyGetRidesBeenOn(ridesBeenOn));
         }
         else
         {
@@ -2402,14 +2404,14 @@ namespace OpenRCT2
             {
                 std::vector<RideId> rideUse;
                 cs.readWriteVector(rideUse, [&cs](RideId& rideId) { cs.readWrite(rideId); });
-                OpenRCT2::RideUse::GetHistory().Set(guest.Id, std::move(rideUse));
+                RideUse::GetHistory().Set(guest.Id, std::move(rideUse));
                 std::vector<ObjectEntryIndex> rideTypeUse;
                 cs.readWriteVector(rideTypeUse, [&cs](ObjectEntryIndex& rideType) { cs.readWrite(rideType); });
-                OpenRCT2::RideUse::GetTypeHistory().Set(guest.Id, std::move(rideTypeUse));
+                RideUse::GetTypeHistory().Set(guest.Id, std::move(rideTypeUse));
             }
             else
             {
-                auto* rideUse = OpenRCT2::RideUse::GetHistory().GetAll(guest.Id);
+                auto* rideUse = RideUse::GetHistory().GetAll(guest.Id);
                 if (rideUse == nullptr)
                 {
                     std::vector<RideId> empty;
@@ -2419,7 +2421,7 @@ namespace OpenRCT2
                 {
                     cs.readWriteVector(*rideUse, [&cs](RideId& rideId) { cs.readWrite(rideId); });
                 }
-                auto* rideTypeUse = OpenRCT2::RideUse::GetTypeHistory().GetAll(guest.Id);
+                auto* rideTypeUse = RideUse::GetTypeHistory().GetAll(guest.Id);
                 if (rideTypeUse == nullptr)
                 {
                     std::vector<ObjectEntryIndex> empty;
@@ -2639,10 +2641,19 @@ namespace OpenRCT2
     template<typename T>
     void ParkFile::WriteEntitiesOfType(GameState_t& gameState, OrcaStream& os, OrcaStream::ChunkStream& cs)
     {
-        uint16_t count = gameState.entities.GetEntityListCount(T::cEntityType);
+        const auto entityList = EntityList<T>();
+        // We do not rely on GetEntityListCount as there is a potential issue (#23636) that needs investigating.
+        const auto count = [&]() -> uint16_t {
+            uint16_t res = 0;
+            for ([[maybe_unused]] auto* _ : entityList)
+            {
+                res++;
+            }
+            return res;
+        }();
         cs.write(T::cEntityType);
         cs.write(count);
-        for (auto* ent : EntityList<T>())
+        for (auto* ent : entityList)
         {
             cs.write(ent->Id);
             ReadWriteEntity(os, cs, *ent);
@@ -2714,13 +2725,13 @@ namespace OpenRCT2
 
     void ParkFileExporter::Export(GameState_t& gameState, std::string_view path, int16_t compressionLevel)
     {
-        auto parkFile = std::make_unique<OpenRCT2::ParkFile>();
+        auto parkFile = std::make_unique<ParkFile>();
         parkFile->Save(gameState, path, compressionLevel);
     }
 
     void ParkFileExporter::Export(GameState_t& gameState, IStream& stream, int16_t compressionLevel)
     {
-        auto parkFile = std::make_unique<OpenRCT2::ParkFile>();
+        auto parkFile = std::make_unique<ParkFile>();
         parkFile->ExportObjectsList = ExportObjectsList;
         parkFile->Save(gameState, stream, compressionLevel);
     }
@@ -2754,12 +2765,12 @@ int32_t ScenarioSave(GameState_t& gameState, u8string_view path, int32_t flags)
     PrepareMapForSave();
 
     bool result = false;
-    auto parkFile = std::make_unique<OpenRCT2::ParkFile>();
+    auto parkFile = std::make_unique<ParkFile>();
     try
     {
         if (flags & S6_SAVE_FLAG_EXPORT)
         {
-            auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+            auto& objManager = GetContext()->GetObjectManager();
             parkFile->ExportObjectsList = objManager.GetPackableObjects();
         }
         parkFile->OmitTracklessRides = true;
@@ -2800,7 +2811,7 @@ private:
     [[maybe_unused]]
 #endif
     const IObjectRepository& _objectRepository;
-    std::unique_ptr<OpenRCT2::ParkFile> _parkFile;
+    std::unique_ptr<ParkFile> _parkFile;
 
 public:
     ParkFileImporter(IObjectRepository& objectRepository)
@@ -2810,7 +2821,7 @@ public:
 
     ParkLoadResult Load(const u8string& path, const bool skipObjectCheck) override
     {
-        _parkFile = std::make_unique<OpenRCT2::ParkFile>();
+        _parkFile = std::make_unique<ParkFile>();
         _parkFile->Load(path, skipObjectCheck);
 
         auto result = ParkLoadResult(std::move(_parkFile->RequiredObjects));
@@ -2829,9 +2840,9 @@ public:
     }
 
     ParkLoadResult LoadFromStream(
-        OpenRCT2::IStream* stream, bool isScenario, bool skipObjectCheck = false, const u8string& path = {}) override
+        IStream* stream, bool isScenario, bool skipObjectCheck = false, const u8string& path = {}) override
     {
-        _parkFile = std::make_unique<OpenRCT2::ParkFile>();
+        _parkFile = std::make_unique<ParkFile>();
         _parkFile->Load(*stream, skipObjectCheck);
 
         auto result = ParkLoadResult(std::move(_parkFile->RequiredObjects));

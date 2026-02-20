@@ -18,11 +18,12 @@
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/SpriteIds.h>
-#include <openrct2/actions/PeepPickupAction.h>
-#include <openrct2/actions/StaffSetCostumeAction.h>
-#include <openrct2/actions/StaffSetNameAction.h>
-#include <openrct2/actions/StaffSetOrdersAction.h>
-#include <openrct2/actions/StaffSetPatrolAreaAction.h>
+#include <openrct2/actions/GameActionRunner.h>
+#include <openrct2/actions/peep/PeepPickupAction.h>
+#include <openrct2/actions/peep/StaffSetCostumeAction.h>
+#include <openrct2/actions/peep/StaffSetNameAction.h>
+#include <openrct2/actions/peep/StaffSetOrdersAction.h>
+#include <openrct2/actions/peep/StaffSetPatrolAreaAction.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/entity/EntityRegistry.h>
@@ -39,8 +40,6 @@
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/MapSelection.h>
 #include <openrct2/world/Park.h>
-
-using namespace OpenRCT2::Numerics;
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -483,7 +482,7 @@ namespace OpenRCT2::Ui::Windows
                             return;
                         }
 
-                        auto* windowMgr = Ui::GetWindowManager();
+                        auto* windowMgr = GetWindowManager();
                         windowMgr->CloseByClass(WindowClass::patrolArea);
 
                         auto staffSetPatrolAreaAction = GameActions::StaffSetPatrolAreaAction(
@@ -495,7 +494,7 @@ namespace OpenRCT2::Ui::Windows
                         auto staffId = EntityId::FromUnderlying(number);
                         if (WindowPatrolAreaGetCurrentStaffId() == staffId)
                         {
-                            auto* windowMgr = Ui::GetWindowManager();
+                            auto* windowMgr = GetWindowManager();
                             windowMgr->CloseByClass(WindowClass::patrolArea);
                         }
                         else

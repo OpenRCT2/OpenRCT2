@@ -24,7 +24,6 @@
 #include "../GameState.h"
 #include "../SpriteIds.h"
 #include "../audio/Audio.h"
-#include "../interface/Colour.h"
 #include "../management/Research.h"
 #include "Ride.h"
 #include "ShopItem.h"
@@ -139,7 +138,7 @@ const CarEntry kCableLiftVehicle = {
     .spriteHeightNegative = 0,
     .spriteHeightPositive = 0,
     .animation = CarEntryAnimation::None,
-    .flags = 0,
+    .flags = {},
     .base_num_frames = 1,
     .base_image_id = 29110,
     .SpriteGroups = {
@@ -361,11 +360,6 @@ constexpr RideTypeDescriptor kRideTypeDescriptors[RIDE_TYPE_COUNT] = {
     /* RIDE_TYPE_LSM_LAUNCHED_ROLLER_COASTER        */ LSMLaunchedRollerCoasterRTD,
     /* RIDE_TYPE_CLASSIC_WOODEN_TWISTER_ROLLER_COASTER */ ClassicWoodenTwisterRollerCoasterRTD,
 };
-
-bool RideTypeDescriptor::HasFlag(RtdFlag flag) const
-{
-    return ::HasFlag(Flags, flag);
-}
 
 bool RideTypeDescriptor::SupportsTrackGroup(const TrackGroup trackGroup) const
 {

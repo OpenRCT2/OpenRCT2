@@ -41,19 +41,19 @@ CoordsXY gClipSelectionA = { 0, 0 };
 CoordsXY gClipSelectionB = { kMaximumTileStartXY, kMaximumTileStartXY };
 
 static constexpr PaletteIndex kBoundBoxDebugColours[] = {
-    PaletteIndex::pi0,   // NONE
-    PaletteIndex::pi102, // TERRAIN
-    PaletteIndex::pi114, // SPRITE
-    PaletteIndex::pi229, // RIDE
-    PaletteIndex::pi126, // WATER
-    PaletteIndex::pi138, // SCENERY
-    PaletteIndex::pi150, // FOOTPATH
-    PaletteIndex::pi162, // FOOTPATH_ITEM
-    PaletteIndex::pi174, // PARK
-    PaletteIndex::pi186, // WALL
-    PaletteIndex::pi198, // LARGE_SCENERY
-    PaletteIndex::pi210, // LABEL
-    PaletteIndex::pi222, // BANNER
+    PaletteIndex::transparent, // NONE
+    PaletteIndex::pi102,       // TERRAIN
+    PaletteIndex::pi114,       // SPRITE
+    PaletteIndex::pi229,       // RIDE
+    PaletteIndex::pi126,       // WATER
+    PaletteIndex::pi138,       // SCENERY
+    PaletteIndex::pi150,       // FOOTPATH
+    PaletteIndex::pi162,       // FOOTPATH_ITEM
+    PaletteIndex::pi174,       // PARK
+    PaletteIndex::pi186,       // WALL
+    PaletteIndex::pi198,       // LARGE_SCENERY
+    PaletteIndex::hotPink8,    // LABEL
+    PaletteIndex::pi222,       // BANNER
 };
 
 bool gShowDirtyVisuals;
@@ -1099,7 +1099,7 @@ void PaintDrawMoneyStructs(RenderTarget& rt, PaintStringStruct* ps)
         }
 
         GfxDrawStringWithYOffsets(
-            rt, buffer, { COLOUR_BLACK }, ps->ScreenPos, reinterpret_cast<int8_t*>(ps->y_offsets), forceSpriteFont,
+            rt, buffer, { Drawing::Colour::black }, ps->ScreenPos, reinterpret_cast<int8_t*>(ps->y_offsets), forceSpriteFont,
             FontStyle::medium);
     } while ((ps = ps->NextEntry) != nullptr);
 }

@@ -40,7 +40,6 @@
 #include "../world/tile_element/SmallSceneryElement.h"
 #include "../world/tile_element/TileElement.h"
 #include "../world/tile_element/WallElement.h"
-#include "Colour.h"
 #include "Window.h"
 #include "WindowBase.h"
 
@@ -117,9 +116,9 @@ namespace OpenRCT2
         return std::visit(
             [](auto&& arg) {
                 using T = std::decay_t<decltype(arg)>;
-                if constexpr (std::is_same_v<T, Focus::CoordinateFocus>)
+                if constexpr (std::is_same_v<T, CoordinateFocus>)
                     return arg;
-                else if constexpr (std::is_same_v<T, Focus::EntityFocus>)
+                else if constexpr (std::is_same_v<T, EntityFocus>)
                 {
                     auto* centreEntity = getGameState().entities.GetEntity(arg);
                     if (centreEntity != nullptr)
@@ -855,7 +854,7 @@ namespace OpenRCT2
             PaletteIndex colour = PaletteIndex::pi10;
             if (session.ViewFlags & VIEWPORT_FLAG_HIDE_ENTITIES)
             {
-                colour = PaletteIndex::pi0;
+                colour = PaletteIndex::transparent;
             }
             GfxClear(session.rt, colour);
         }
@@ -1382,7 +1381,7 @@ namespace OpenRCT2
                                     break;
 
                                 auto ride = vehicle->GetRide();
-                                if (ride != nullptr && !ride->getRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
+                                if (ride != nullptr && !ride->getRideTypeDescriptor().flags.has(RtdFlag::hasTrack))
                                 {
                                     return (viewFlags & VIEWPORT_FLAG_INVISIBLE_RIDES) ? VisibilityKind::hidden
                                                                                        : VisibilityKind::partial;
@@ -1504,7 +1503,7 @@ namespace OpenRCT2
 
         if (imageType & IMAGE_TYPE_REMAP)
         {
-            return paletteMap[*index] != PaletteIndex::pi0;
+            return paletteMap[*index] != PaletteIndex::transparent;
         }
 
         if (imageType & IMAGE_TYPE_TRANSPARENT)
@@ -1618,16 +1617,16 @@ namespace OpenRCT2
         if (imageId.HasPrimary() || imageId.IsRemap())
         {
             imageType = IMAGE_TYPE_REMAP;
-            uint8_t paletteIndex;
+            FilterPaletteID filterPaletteId;
             if (imageId.HasSecondary())
             {
-                paletteIndex = imageId.GetPrimary();
+                filterPaletteId = static_cast<FilterPaletteID>(imageId.GetPrimary());
             }
             else
             {
-                paletteIndex = imageId.GetRemap();
+                filterPaletteId = static_cast<FilterPaletteID>(imageId.GetRemap());
             }
-            if (auto pm = GetPaletteMapForColour(static_cast<FilterPaletteID>(paletteIndex)); pm.has_value())
+            if (auto pm = GetPaletteMapForColour(filterPaletteId); pm.has_value())
             {
                 paletteMap = pm.value();
             }

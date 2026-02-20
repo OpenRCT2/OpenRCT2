@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../Identifiers.h"
 #include "../actions/CommandFlag.h"
 #include "../actions/GameActionResult.h"
 #include "Location.hpp"
@@ -56,7 +57,8 @@ struct ConstructClearResult
 
 [[nodiscard]] OpenRCT2::GameActions::Result MapCanConstructWithClearAt(
     const CoordsXYRangedZ& pos, ClearingFunction clearFunc, QuarterTile quarterTile, OpenRCT2::GameActions::CommandFlags flags,
-    uint8_t slope, CreateCrossingMode crossingMode = CreateCrossingMode::none, bool isTree = false);
+    uint8_t slope, CreateCrossingMode crossingMode = CreateCrossingMode::none, bool isTree = false,
+    RideId ignoreRideId = RideId::GetNull());
 
 [[nodiscard]] OpenRCT2::GameActions::Result MapCanConstructAt(const CoordsXYRangedZ& pos, QuarterTile bl);
 

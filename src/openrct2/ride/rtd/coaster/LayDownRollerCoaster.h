@@ -37,8 +37,8 @@ constexpr RideTypeDescriptor LayDownRollerCoasterRTD =
             .extraTrackGroups = { TrackGroup::flyingHalfLoopInvertedUp, TrackGroup::stationEnd, TrackGroup::liftHill },
         }
     ),
-    .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt | 
-        EnumsToFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::hasInvertedVariant,
+    .flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt | 
+        RtdFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::hasInvertedVariant,
                      RtdFlag::checkGForces, RtdFlag::allowMultipleCircuits),
     .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned),
     .DefaultMode = RideMode::continuousCircuit,
@@ -59,9 +59,9 @@ constexpr RideTypeDescriptor LayDownRollerCoasterRTD =
     .PhotoItem = ShopItem::photo2,
     .BonusValue = 100,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_YELLOW },
-        { COLOUR_DARK_PURPLE, COLOUR_DARK_PURPLE, COLOUR_YELLOW },
-        { COLOUR_YELLOW, COLOUR_YELLOW, COLOUR_DARK_GREEN },
+        { Drawing::Colour::brightRed, Drawing::Colour::brightRed, Drawing::Colour::yellow },
+        { Drawing::Colour::darkPurple, Drawing::Colour::darkPurple, Drawing::Colour::yellow },
+        { Drawing::Colour::yellow, Drawing::Colour::yellow, Drawing::Colour::darkGreen },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_LAY_DOWN_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_LAY_DOWN_ROLLER_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,
@@ -71,7 +71,7 @@ constexpr RideTypeDescriptor LayDownRollerCoasterRTD =
         RatingsCalculationType::Normal,
         { RideRating::make(3, 85), RideRating::make(1, 15), RideRating::make(2, 75) },
         18,
-        -1,
+        kDynamicRideShelterRating,
         true,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
@@ -109,8 +109,8 @@ constexpr RideTypeDescriptor LayDownRollerCoasterAltRTD =
         .enabledTrackGroups = {  },
         .extraTrackGroups = {  },
     }),
-    .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | 
-        EnumsToFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation),
+    .flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | 
+        RtdFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::isDummyType),
     .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned),
     .DefaultMode = RideMode::continuousCircuit,
     .OperatingSettings = { 10, 27 },
@@ -130,9 +130,9 @@ constexpr RideTypeDescriptor LayDownRollerCoasterAltRTD =
     .PhotoItem = ShopItem::photo2,
     .BonusValue = 100,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_YELLOW },
-        { COLOUR_DARK_PURPLE, COLOUR_DARK_PURPLE, COLOUR_YELLOW },
-        { COLOUR_YELLOW, COLOUR_YELLOW, COLOUR_DARK_GREEN },
+        { Drawing::Colour::brightRed, Drawing::Colour::brightRed, Drawing::Colour::yellow },
+        { Drawing::Colour::darkPurple, Drawing::Colour::darkPurple, Drawing::Colour::yellow },
+        { Drawing::Colour::yellow, Drawing::Colour::yellow, Drawing::Colour::darkGreen },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_LAY_DOWN_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_LAY_DOWN_ROLLER_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,
@@ -142,7 +142,7 @@ constexpr RideTypeDescriptor LayDownRollerCoasterAltRTD =
         RatingsCalculationType::Normal,
         { RideRating::make(3, 85), RideRating::make(1, 15), RideRating::make(2, 75) },
         18,
-        -1,
+        kDynamicRideShelterRating,
         true,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },

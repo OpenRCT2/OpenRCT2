@@ -347,6 +347,7 @@ namespace OpenRCT2::Platform
         SetUpFileAssociation(".sea", "RCTC Saved Game (.sea)", "Play", "\"%1\"", 0);
         SetUpFileAssociation(".td4", "RCT1 Track Design (.td4)", "Install", "\"%1\"", 0);
         SetUpFileAssociation(".td6", "RCT2 Track Design (.td6)", "Install", "\"%1\"", 0);
+        SetUpFileAssociation(".td7", "OpenRCT2 Track Design (.td7)", "Install", "\"%1\"", 0);
 
         // Refresh explorer
         SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, nullptr, nullptr);
@@ -478,6 +479,7 @@ namespace OpenRCT2::Platform
         RemoveFileAssociation(".sea");
         RemoveFileAssociation(".td4");
         RemoveFileAssociation(".td6");
+        RemoveFileAssociation(".td7");
 
         // Refresh explorer
         SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, nullptr, nullptr);
@@ -630,10 +632,10 @@ namespace OpenRCT2::Platform
         wchar_t currCode[9];
         if (GetLocaleInfoEx(LOCALE_NAME_USER_DEFAULT, LOCALE_SINTLSYMBOL, currCode, static_cast<int>(std::size(currCode))) == 0)
         {
-            return Platform::GetCurrencyValue(nullptr);
+            return GetCurrencyValue(nullptr);
         }
 
-        return Platform::GetCurrencyValue(String::toUtf8(currCode).c_str());
+        return GetCurrencyValue(String::toUtf8(currCode).c_str());
     }
 
     MeasurementFormat GetLocaleMeasurementFormat()

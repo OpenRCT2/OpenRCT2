@@ -25,6 +25,7 @@ libversion
 # Downloaded or built data files
 data/g2.dat
 data/fonts.dat
+data/palettes.dat
 data/tracks.dat
 data/sequence
 data/object
@@ -302,6 +303,12 @@ discord-rpc
 ## JetBrains ##
 ###############
 .idea/
+
+##########
+## Kate ##
+##########
+.*.kate-swp
+.swp.*
 
 #########################
 ## Visual Studio Code

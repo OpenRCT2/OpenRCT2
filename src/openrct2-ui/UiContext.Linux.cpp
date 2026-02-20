@@ -337,7 +337,7 @@ namespace OpenRCT2::Ui
 
             // zenity and kdialog don't support automatic scaling, this is an approximation
             int width = (longest_string + 1) * 8;
-            int height = (options.size() + 1) * 8;
+            int height = 350;
 
             switch (dtype)
             {
@@ -394,7 +394,7 @@ namespace OpenRCT2::Ui
                 }
             }
 
-            return options.size();
+            return -1;
         }
 
     private:

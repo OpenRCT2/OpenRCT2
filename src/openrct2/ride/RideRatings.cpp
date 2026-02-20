@@ -164,7 +164,7 @@ static void RideRatingsApplyPenaltyLateralGs(RideRating::Tuple& ratings, const R
 
 void RideRating::ResetUpdateStates()
 {
-    RideRating::UpdateState nullState{};
+    UpdateState nullState{};
     nullState.State = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
 
     auto& updateStates = getGameState().rideRatingUpdateStates;
@@ -179,9 +179,9 @@ void RideRating::ResetUpdateStates()
  */
 void RideRating::UpdateRide(const Ride& ride)
 {
-    RideRating::UpdateState state;
     if (ride.status != RideStatus::closed)
     {
+        UpdateState state;
         state.CurrentRide = ride.id;
         state.State = RIDE_RATINGS_STATE_INITIALISE;
         while (state.State != RIDE_RATINGS_STATE_FIND_NEXT_RIDE)
@@ -342,6 +342,7 @@ static void ride_ratings_update_state_1(RideRating::UpdateState& state)
         state.ProximityScores[i] = 0;
     }
     state.AmountOfBrakes = 0;
+    state.amountOfBoosters = 0;
     state.AmountOfReversers = 0;
     state.State = RIDE_RATINGS_STATE_2;
     state.StationFlags = 0;
@@ -382,7 +383,7 @@ static void ride_ratings_update_state_2(RideRating::UpdateState& state)
         if (tileElement->AsTrack()->GetRideIndex() != ride->id)
         {
             // Only check that the track belongs to the same ride if ride does not have buildable track
-            if (!ride->getRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
+            if (!ride->getRideTypeDescriptor().flags.has(RtdFlag::hasTrack))
                 continue;
         }
 
@@ -487,7 +488,7 @@ static void ride_ratings_update_state_5(RideRating::UpdateState& state)
         if (tileElement->AsTrack()->GetRideIndex() != ride->id)
         {
             // Only check that the track belongs to the same ride if ride does not have buildable track
-            if (!ride->getRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
+            if (!ride->getRideTypeDescriptor().flags.has(RtdFlag::hasTrack))
                 continue;
         }
 
@@ -864,18 +865,12 @@ static void ride_ratings_score_close_proximity(RideRating::UpdateState& state, T
     ride_ratings_score_close_proximity_in_direction(state, inputTileElement, (direction - 1) & 3);
     ride_ratings_score_close_proximity_loops(state, inputTileElement);
 
-    switch (state.ProximityTrackType)
-    {
-        case TrackElemType::brakes:
-            state.AmountOfBrakes++;
-            break;
-        case TrackElemType::leftReverser:
-        case TrackElemType::rightReverser:
-            state.AmountOfReversers++;
-            break;
-        default:
-            break;
-    }
+    if (TrackTypeIsBrakes(state.ProximityTrackType))
+        state.AmountOfBrakes++;
+    else if (TrackTypeIsBooster(state.ProximityTrackType))
+        state.amountOfBoosters++;
+    else if (TrackTypeIsReverser(state.ProximityTrackType))
+        state.AmountOfReversers++;
 }
 
 static void RideRatingsCalculate(RideRating::UpdateState& state, Ride& ride)
@@ -903,7 +898,8 @@ static void RideRatingsCalculate(RideRating::UpdateState& state, Ride& ride)
     SetUnreliabilityFactor(ride);
 
     const auto shelteredEighths = GetNumOfShelteredEighths(ride);
-    ride.shelteredEighths = (rrd.RideShelter == -1) ? shelteredEighths.TotalShelteredEighths : rrd.RideShelter;
+    ride.shelteredEighths = (rrd.RideShelter == kDynamicRideShelterRating) ? shelteredEighths.TotalShelteredEighths
+                                                                           : rrd.RideShelter;
 
     RideRating::Tuple ratings = rrd.BaseRatings;
     // Apply Modifiers
@@ -1213,6 +1209,9 @@ static money64 RideComputeUpkeep(RideRating::UpdateState& state, const Ride& rid
     // Add maintenance cost for brake track pieces
     upkeep += 20 * state.AmountOfBrakes;
 
+    // Add maintenance cost for booster track pieces
+    upkeep += 80 * state.amountOfBoosters;
+
     // these seem to be adhoc adjustments to a ride's upkeep/cost, times
     // various variables set on the ride itself.
 
@@ -1274,10 +1273,10 @@ static void RideRatingsApplyAdjustments(const Ride& ride, RideRating::Tuple& rat
 
     // Apply total air time
 #ifdef ORIGINAL_RATINGS
-    if (ride.getRideTypeDescriptor().HasFlag(RtdFlag::hasAirTime))
+    if (ride.getRideTypeDescriptor().flags.has(RtdFlag::hasAirTime))
     {
         uint16_t totalAirTime = ride.totalAirTime;
-        if (rideEntry->flags & RIDE_ENTRY_FLAG_LIMIT_AIRTIME_BONUS)
+        if (rideEntry->flags.has(RideEntryFlag::limitAirTimeBonus))
         {
             if (totalAirTime >= 96)
             {
@@ -1293,10 +1292,10 @@ static void RideRatingsApplyAdjustments(const Ride& ride, RideRating::Tuple& rat
         }
     }
 #else
-    if (ride.getRideTypeDescriptor().HasFlag(RtdFlag::hasAirTime))
+    if (ride.getRideTypeDescriptor().flags.has(RtdFlag::hasAirTime))
     {
         int32_t excitementModifier;
-        if (rideEntry->flags & RIDE_ENTRY_FLAG_LIMIT_AIRTIME_BONUS)
+        if (rideEntry->flags.has(RideEntryFlag::limitAirTimeBonus))
         {
             // Limit airtime bonus for heartline twister coaster (see issues #2031 and #2064)
             excitementModifier = std::min<uint16_t>(ride.totalAirTime, 96) / 8;
@@ -1338,15 +1337,15 @@ static void SetUnreliabilityFactor(Ride& ride)
 {
     const auto& rtd = ride.getRideTypeDescriptor();
     // Special unreliability for a few ride types
-    if (rtd.HasFlag(RtdFlag::reverseInclineLaunchAffectsReliability) && ride.mode == RideMode::reverseInclineLaunchedShuttle)
+    if (rtd.flags.has(RtdFlag::reverseInclineLaunchAffectsReliability) && ride.mode == RideMode::reverseInclineLaunchedShuttle)
     {
         ride.unreliabilityFactor += 10;
     }
-    else if (rtd.HasFlag(RtdFlag::poweredLaunchAffectsReliability) && ride.isPoweredLaunched())
+    else if (rtd.flags.has(RtdFlag::poweredLaunchAffectsReliability) && ride.isPoweredLaunched())
     {
         ride.unreliabilityFactor += 5;
     }
-    else if (rtd.HasFlag(RtdFlag::runningSpeedAffectsReliability))
+    else if (rtd.flags.has(RtdFlag::runningSpeedAffectsReliability))
     {
         ride.unreliabilityFactor += (ride.speed * 2);
     }
@@ -1437,7 +1436,7 @@ static ShelteredEights GetNumOfShelteredEighths(const Ride& ride)
     {
         return { 0, 0 };
     }
-    if (rideType->flags & RIDE_ENTRY_FLAG_COVERED_RIDE)
+    if (rideType->flags.has(RideEntryFlag::isACoveredRide))
         numShelteredEighths = 7;
 
     return { trackShelteredEighths, numShelteredEighths };

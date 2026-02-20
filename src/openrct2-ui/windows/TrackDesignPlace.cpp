@@ -19,7 +19,8 @@
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/SpriteIds.h>
-#include <openrct2/actions/TrackDesignAction.h>
+#include <openrct2/actions/GameActionRunner.h>
+#include <openrct2/actions/track/TrackDesignAction.h>
 #include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
@@ -52,10 +53,10 @@ namespace OpenRCT2::Ui::Windows
     static constexpr ScreenSize kWindowSize = { 200, 124 };
     static constexpr ScreenSize kTrackMiniPreviewSize = { 168, 78 };
 
-    static constexpr auto kPaletteIndexColourEntrance = PaletteIndex::pi20; // White
-    static constexpr auto kPaletteIndexColourExit = PaletteIndex::pi10;     // Black
-    static constexpr auto kPaletteIndexColourTrack = PaletteIndex::pi248;   // Grey (dark)
-    static constexpr auto kPaletteIndexColourStation = PaletteIndex::pi252; // Grey (light)
+    static constexpr auto kPaletteIndexColourEntrance = PaletteIndex::pi20;         // White
+    static constexpr auto kPaletteIndexColourExit = PaletteIndex::pi10;             // Black
+    static constexpr auto kPaletteIndexColourTrack = PaletteIndex::primaryRemap5;   // Grey (dark)
+    static constexpr auto kPaletteIndexColourStation = PaletteIndex::primaryRemap9; // Grey (light)
 
     enum
     {
@@ -316,7 +317,7 @@ namespace OpenRCT2::Ui::Windows
                 auto getRide = GetRide(rideId);
                 if (getRide != nullptr)
                 {
-                    auto* windowMgr = Ui::GetWindowManager();
+                    auto* windowMgr = GetWindowManager();
                     windowMgr->CloseByClass(WindowClass::error);
 
                     Audio::Play3D(Audio::SoundId::placeItem, trackLoc);
@@ -373,9 +374,9 @@ namespace OpenRCT2::Ui::Windows
                 g1temp.offset = reinterpret_cast<uint8_t*>(_miniPreview.data());
                 g1temp.width = kTrackMiniPreviewSize.width;
                 g1temp.height = kTrackMiniPreviewSize.height;
-                GfxSetG1Element(SPR_TEMP, &g1temp);
-                DrawingEngineInvalidateImage(SPR_TEMP);
-                GfxDrawSprite(clippedRT, ImageId(SPR_TEMP, this->colours[0].colour), { 0, 0 });
+                GfxSetG1Element(SPR_TEMP_TRACK_PLACE, &g1temp);
+                DrawingEngineInvalidateImage(SPR_TEMP_TRACK_PLACE);
+                GfxDrawSprite(clippedRT, ImageId(SPR_TEMP_TRACK_PLACE, this->colours[0].colour), { 0, 0 });
             }
 
             // Price
@@ -453,7 +454,7 @@ namespace OpenRCT2::Ui::Windows
         void ClearMiniPreview()
         {
             // Fill with transparent colour.
-            std::fill(_miniPreview.begin(), _miniPreview.end(), PaletteIndex::pi0);
+            std::fill(_miniPreview.begin(), _miniPreview.end(), PaletteIndex::transparent);
         }
 
     private:
@@ -779,7 +780,7 @@ namespace OpenRCT2::Ui::Windows
             return nullptr;
         }
 
-        auto* windowMgr = Ui::GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         windowMgr->CloseConstructionWindows();
 
         auto* window = windowMgr->FocusOrCreate<TrackDesignPlaceWindow>(WindowClass::trackDesignPlace, kWindowSize, {});

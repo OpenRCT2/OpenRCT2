@@ -266,7 +266,7 @@ namespace OpenRCT2::TitleSequenceManager
 
     static bool IsNameReserved(const std::string& name)
     {
-        for (const auto& pseq : TitleSequenceManager::PredefinedSequences)
+        for (const auto& pseq : PredefinedSequences)
         {
             if (String::iequals(name, pseq.ConfigId))
             {

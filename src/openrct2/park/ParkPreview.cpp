@@ -59,7 +59,7 @@ namespace OpenRCT2
 
     static PaletteIndex getPreviewColourByTilePos(const TileCoordsXY& pos)
     {
-        PaletteIndex paletteIndex = PaletteIndex::pi0;
+        PaletteIndex paletteIndex = PaletteIndex::transparent;
 
         auto tileElement = MapGetFirstElementAt(pos);
         if (tileElement == nullptr)
@@ -76,7 +76,7 @@ namespace OpenRCT2
                     auto* surfaceElement = tileElement->AsSurface();
                     if (surfaceElement == nullptr)
                     {
-                        surfaceColour = paletteIndex = PaletteIndex::pi0;
+                        surfaceColour = paletteIndex = PaletteIndex::transparent;
                         break;
                     }
 
@@ -231,7 +231,7 @@ namespace OpenRCT2
         drawingEngine->BeginDraw();
 
         Drawing::RenderTarget rt{
-            .bits = reinterpret_cast<uint8_t*>(image.pixels),
+            .bits = image.pixels,
             .x = 0,
             .y = 0,
             .width = image.width,
@@ -255,9 +255,9 @@ namespace OpenRCT2
         g1temp.width = image.width;
         g1temp.height = image.height;
 
-        GfxSetG1Element(SPR_TEMP, &g1temp);
-        DrawingEngineInvalidateImage(SPR_TEMP);
-        GfxDrawSprite(rt, ImageId(SPR_TEMP), screenPos);
+        GfxSetG1Element(SPR_TEMP_PARK_PREVIEW, &g1temp);
+        DrawingEngineInvalidateImage(SPR_TEMP_PARK_PREVIEW);
+        GfxDrawSprite(rt, ImageId(SPR_TEMP_PARK_PREVIEW), screenPos);
     }
 
 } // namespace OpenRCT2

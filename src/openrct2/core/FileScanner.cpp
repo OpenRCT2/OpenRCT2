@@ -337,7 +337,7 @@ std::unique_ptr<IFileScanner> Path::ScanDirectory(const std::string& pattern, bo
 
 void Path::QueryDirectory(QueryDirectoryResult* result, const std::string& pattern)
 {
-    auto scanner = Path::ScanDirectory(pattern, true);
+    auto scanner = ScanDirectory(pattern, true);
     while (scanner->Next())
     {
         const FileScanner::FileInfo& fileInfo = scanner->GetFileInfo();

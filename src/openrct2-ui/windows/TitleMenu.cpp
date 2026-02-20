@@ -18,7 +18,8 @@
 #include <openrct2/ParkImporter.h>
 #include <openrct2/PlatformEnvironment.h>
 #include <openrct2/SpriteIds.h>
-#include <openrct2/actions/LoadOrQuitAction.h>
+#include <openrct2/actions/GameActionRunner.h>
+#include <openrct2/actions/general/LoadOrQuitAction.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/interface/ColourWithFlags.h>
 #include <openrct2/ui/UiContext.h>
@@ -116,7 +117,7 @@ namespace OpenRCT2::Ui::Windows
             width = x;
             widgets[WIDX_NEW_VERSION].right = width;
             windowPos.x = (ContextGetWidth() - width) / 2;
-            colours[1] = ColourWithFlags{ COLOUR_LIGHT_ORANGE }.withFlag(ColourFlag::translucent, true);
+            colours[1] = ColourWithFlags{ Drawing::Colour::lightOrange }.withFlag(ColourFlag::translucent, true);
 
             initScrollWidgets();
         }

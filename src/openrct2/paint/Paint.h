@@ -13,7 +13,6 @@
 #include "../drawing/FilterPaletteIds.h"
 #include "../drawing/ImageId.hpp"
 #include "../drawing/RenderTarget.h"
-#include "../interface/Colour.h"
 #include "../localisation/StringIdType.h"
 #include "../world/Location.hpp"
 #include "../world/MapLimits.h"
@@ -243,8 +242,8 @@ extern CoordsXY gClipSelectionB;
 /** rct2: 0x00993CC4. The white ghost that indicates not-yet-built elements. */
 constexpr ImageId ConstructionMarker = ImageId(0).WithRemap(OpenRCT2::Drawing::FilterPaletteID::paletteGhost);
 constexpr ImageId HighlightMarker = ImageId(0).WithRemap(OpenRCT2::Drawing::FilterPaletteID::paletteGhost);
-constexpr ImageId TrackStationColour = ImageId(0, COLOUR_BLACK);
-constexpr ImageId ShopSupportColour = ImageId(0, COLOUR_DARK_BROWN);
+constexpr ImageId TrackStationColour = ImageId(0, OpenRCT2::Drawing::Colour::black);
+constexpr ImageId ShopSupportColour = ImageId(0, OpenRCT2::Drawing::Colour::darkBrown);
 
 extern bool gShowDirtyVisuals;
 extern bool gPaintBoundingBoxes;

@@ -20,6 +20,7 @@
 #include <openrct2/core/File.h>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/UnitConversion.h>
+#include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/localisation/Formatter.h>
@@ -70,7 +71,7 @@ namespace OpenRCT2::Ui::Windows
         std::unique_ptr<TrackDesign> _trackDesign;
         std::string _trackPath;
         std::string _trackName;
-        std::vector<uint8_t> _trackDesignPreviewPixels;
+        TrackDesignPreviewBuffer _trackDesignPreviewPixels{};
 
     public:
         void setupTrack(const utf8* path, std::unique_ptr<TrackDesign> trackDesign)
@@ -78,7 +79,7 @@ namespace OpenRCT2::Ui::Windows
             _trackDesign = std::move(trackDesign);
             _trackPath = path;
             _trackName = GetNameFromTrackPath(path);
-            _trackDesignPreviewPixels.resize(4 * kTrackPreviewImageSize);
+            std::fill(_trackDesignPreviewPixels.begin(), _trackDesignPreviewPixels.end(), PaletteIndex::transparent);
 
             UpdatePreview();
             invalidate();
@@ -96,8 +97,6 @@ namespace OpenRCT2::Ui::Windows
         {
             _trackPath.clear();
             _trackName.clear();
-            _trackDesignPreviewPixels.clear();
-            _trackDesignPreviewPixels.shrink_to_fit();
             _trackDesign = nullptr;
         }
 
@@ -150,24 +149,25 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onDraw(Drawing::RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             drawWidgets(rt);
 
             // Track preview
             Widget* widget = &widgets[WIDX_TRACK_PREVIEW];
             auto screenPos = windowPos + ScreenCoordsXY{ widget->left + 1, widget->top + 1 };
-            auto colour = ColourMapA[colours[0].colour].darkest;
+            auto colour = getColourMap(colours[0].colour).darkest;
             Rectangle::fill(rt, { screenPos, screenPos + ScreenCoordsXY{ 369, 216 } }, colour);
 
             G1Element g1temp = {};
-            g1temp.offset = _trackDesignPreviewPixels.data() + (_currentTrackPieceDirection * kTrackPreviewImageSize);
+            g1temp.offset = reinterpret_cast<uint8_t*>(
+                _trackDesignPreviewPixels.data() + (_currentTrackPieceDirection * kTrackPreviewImageSize));
             g1temp.width = 370;
             g1temp.height = 217;
             g1temp.flags = { G1Flag::hasTransparency };
-            GfxSetG1Element(SPR_TEMP, &g1temp);
-            DrawingEngineInvalidateImage(SPR_TEMP);
-            GfxDrawSprite(rt, ImageId(SPR_TEMP), screenPos);
+            GfxSetG1Element(SPR_TEMP_INSTALL_TRACK, &g1temp);
+            DrawingEngineInvalidateImage(SPR_TEMP_INSTALL_TRACK);
+            GfxDrawSprite(rt, ImageId(SPR_TEMP_INSTALL_TRACK), screenPos);
 
             screenPos = windowPos + ScreenCoordsXY{ widget->midX(), widget->bottom - 12 };
 
@@ -280,7 +280,7 @@ namespace OpenRCT2::Ui::Windows
                 screenPos.y += kListRowHeight;
             }
 
-            if (GetRideTypeDescriptor(td.trackAndVehicle.rtdIndex).HasFlag(RtdFlag::hasGForces))
+            if (GetRideTypeDescriptor(td.trackAndVehicle.rtdIndex).flags.has(RtdFlag::hasGForces))
             {
                 // Maximum positive vertical Gs
                 {
@@ -316,7 +316,7 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            if (GetRideTypeDescriptor(td.trackAndVehicle.rtdIndex).HasFlag(RtdFlag::hasDrops))
+            if (GetRideTypeDescriptor(td.trackAndVehicle.rtdIndex).flags.has(RtdFlag::hasDrops))
             {
                 auto ft = Formatter();
                 ft.Add<uint16_t>(td.statistics.drops);
@@ -360,13 +360,13 @@ namespace OpenRCT2::Ui::Windows
     private:
         void UpdatePreview()
         {
-            TrackDesignDrawPreview(*_trackDesign, _trackDesignPreviewPixels.data(), !gTrackDesignSceneryToggle);
+            TrackDesignDrawPreview(*_trackDesign, _trackDesignPreviewPixels, !gTrackDesignSceneryToggle);
         }
 
         void InstallTrackDesign()
         {
-            auto& env = OpenRCT2::GetContext()->GetPlatformEnvironment();
-            auto destPath = env.GetDirectoryPath(OpenRCT2::DirBase::user, OpenRCT2::DirId::trackDesigns);
+            auto& env = GetContext()->GetPlatformEnvironment();
+            auto destPath = env.GetDirectoryPath(DirBase::user, DirId::trackDesigns);
             if (!Path::CreateDirectory(destPath))
             {
                 LOG_ERROR("Unable to create directory '%s'", destPath.c_str());
@@ -374,7 +374,8 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            destPath = Path::Combine(destPath, _trackName + u8".td6");
+            auto extension = trackDesignGetExtension(_trackDesign->version);
+            destPath = Path::Combine(destPath, _trackName + extension);
 
             if (File::Exists(destPath))
             {
@@ -419,7 +420,7 @@ namespace OpenRCT2::Ui::Windows
             return nullptr;
         }
 
-        auto* windowMgr = Ui::GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         windowMgr->ForceClose(WindowClass::editorObjectSelection);
         windowMgr->CloseConstructionWindows();
 

@@ -183,7 +183,7 @@ public:
         {
             for (int32_t i = 0; i < 256; i++)
             {
-                _paletteHWMapped[i] = SDL_MapRGB(_screenTextureFormat, palette[i].Red, palette[i].Green, palette[i].Blue);
+                _paletteHWMapped[i] = SDL_MapRGB(_screenTextureFormat, palette[i].red, palette[i].green, palette[i].blue);
             }
 
             if (Config::Get().general.enableLightFx)
@@ -192,7 +192,7 @@ public:
                 for (int32_t i = 0; i < 256; i++)
                 {
                     const auto& src = lightPalette[i];
-                    _lightPaletteHWMapped[i] = SDL_MapRGBA(_screenTextureFormat, src.Red, src.Green, src.Blue, src.Alpha);
+                    _lightPaletteHWMapped[i] = SDL_MapRGBA(_screenTextureFormat, src.red, src.green, src.blue, src.alpha);
                 }
             }
         }
@@ -272,7 +272,7 @@ private:
         SDL_RenderPresent(_sdlRenderer);
     }
 
-    void CopyBitsToTexture(SDL_Texture* texture, uint8_t* src, int32_t width, int32_t height, const uint32_t* palette)
+    void CopyBitsToTexture(SDL_Texture* texture, PaletteIndex* src, int32_t width, int32_t height, const uint32_t* palette)
     {
         void* pixels;
         int32_t pitch;
@@ -284,7 +284,7 @@ private:
                 uint32_t* dst = static_cast<uint32_t*>(pixels);
                 for (int32_t i = width * height; i > 0; i--)
                 {
-                    *dst++ = palette[*src++];
+                    *dst++ = palette[EnumValue(*src++)];
                 }
             }
             else
@@ -296,8 +296,8 @@ private:
                     {
                         for (int32_t x = width; x > 0; x--)
                         {
-                            const uint8_t lower = *reinterpret_cast<const uint8_t*>(&palette[*src++]);
-                            const uint8_t upper = *reinterpret_cast<const uint8_t*>(&palette[*src++]);
+                            const uint8_t lower = *reinterpret_cast<const uint8_t*>(&palette[EnumValue(*src++)]);
+                            const uint8_t upper = *reinterpret_cast<const uint8_t*>(&palette[EnumValue(*src++)]);
                             *dst++ = (lower << 8) | upper;
                         }
                         dst = reinterpret_cast<uint16_t*>(reinterpret_cast<uint8_t*>(dst) + padding);
@@ -310,7 +310,7 @@ private:
                     {
                         for (int32_t x = width; x > 0; x--)
                         {
-                            *dst++ = *reinterpret_cast<const uint8_t*>(&palette[*src++]);
+                            *dst++ = *reinterpret_cast<const uint8_t*>(&palette[EnumValue(*src++)]);
                         }
                         dst += padding;
                     }

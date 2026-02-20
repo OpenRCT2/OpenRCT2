@@ -108,7 +108,7 @@ namespace OpenRCT2::Ui::Windows
                 Audio::StopAll();
             }
 
-            auto* windowMgr = Ui::GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             windowMgr->InvalidateByClass(WindowClass::topToolbar);
 
             if (canSave)
@@ -136,7 +136,7 @@ namespace OpenRCT2::Ui::Windows
                 Audio::Resume();
             }
 
-            auto* windowMgr = Ui::GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             windowMgr->InvalidateByClass(WindowClass::topToolbar);
         }
 

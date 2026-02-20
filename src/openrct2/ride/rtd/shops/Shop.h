@@ -26,7 +26,7 @@ constexpr RideTypeDescriptor ShopRTD =
         .extraTrackGroups = {},
     }),
     .InvertedTrackPaintFunctions = {},
-    .Flags = EnumsToFlags(RtdFlag::hasTrackColourMain, RtdFlag::hasSinglePieceStation,
+    .flags = RtdFlags(RtdFlag::hasTrackColourMain, RtdFlag::hasSinglePieceStation,
                      RtdFlag::cannotHaveGaps, RtdFlag::noTestMode, RtdFlag::noVehicles,
                      RtdFlag::isShopOrFacility, RtdFlag::noWallsAroundTrack, RtdFlag::isFlatRide,
                      RtdFlag::listVehiclesSeparately),
@@ -54,7 +54,7 @@ constexpr RideTypeDescriptor ShopRTD =
         RatingsCalculationType::Stall,
         { 1, 1, 1 },
         1,
-        -1,
+        kDynamicRideShelterRating,
         false,
         { { RatingsModifierType::NoModifier, 0, 0, 0, 0 } }
     },

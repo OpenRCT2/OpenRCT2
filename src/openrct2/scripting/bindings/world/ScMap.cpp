@@ -225,8 +225,7 @@ namespace OpenRCT2::Scripting
         return result;
     }
 
-    std::vector<DukValue> OpenRCT2::Scripting::ScMap::getAllEntitiesOnTile(
-        const std::string& type, const DukValue& tilePos) const
+    std::vector<DukValue> ScMap::getAllEntitiesOnTile(const std::string& type, const DukValue& tilePos) const
     {
         // Get the tile position
         const auto pos = FromDuk<CoordsXY>(tilePos);
@@ -357,10 +356,10 @@ namespace OpenRCT2::Scripting
                 entity->MoveTo(entityPos);
 
                 // Reset some important vehicle vars to their null values
-                entity->sound1_id = OpenRCT2::Audio::SoundId::null;
-                entity->sound2_id = OpenRCT2::Audio::SoundId::null;
+                entity->sound1_id = Audio::SoundId::null;
+                entity->sound2_id = Audio::SoundId::null;
                 entity->next_vehicle_on_train = EntityId::GetNull();
-                entity->scream_sound_id = OpenRCT2::Audio::SoundId::null;
+                entity->scream_sound_id = Audio::SoundId::null;
                 for (size_t i = 0; i < std::size(entity->peep); i++)
                 {
                     entity->peep[i] = EntityId::GetNull();

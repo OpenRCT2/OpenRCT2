@@ -517,8 +517,8 @@ static void ApplyEasterEggToNearbyGuests(Guest& guest)
 
 void Guest::GivePassingGuestPurpleClothes(Guest& passingPeep)
 {
-    passingPeep.TshirtColour = COLOUR_BRIGHT_PURPLE;
-    passingPeep.TrousersColour = COLOUR_BRIGHT_PURPLE;
+    passingPeep.TshirtColour = Drawing::Colour::brightPurple;
+    passingPeep.TrousersColour = Drawing::Colour::brightPurple;
     passingPeep.Invalidate();
 }
 
@@ -779,22 +779,22 @@ void Guest::UpdateMotivesIdle()
 
     if (Energy <= 50)
     {
-        Energy = std::max(Energy - 2, 0);
+        HappinessTarget = std::max(HappinessTarget - 2, 0);
     }
 
     if (Hunger < 10)
     {
-        Hunger = std::max(Hunger - 1, 0);
+        HappinessTarget = std::max(HappinessTarget - 1, 0);
     }
 
     if (Thirst < 10)
     {
-        Thirst = std::max(Thirst - 1, 0);
+        HappinessTarget = std::max(HappinessTarget - 1, 0);
     }
 
     if (Toilet >= 195)
     {
-        Toilet--;
+        HappinessTarget = std::max(HappinessTarget - 1, 0);
     }
 
     if (State == PeepState::walking && NauseaTarget >= 128)
@@ -1014,7 +1014,7 @@ void Guest::Tick128UpdateGuest(uint32_t index)
 
     if (State == PeepState::onRide || State == PeepState::enteringRide)
     {
-        GuestTimeOnRide = std::min(255, GuestTimeOnRide + 1);
+        GuestTimeOnRide = AddClamp<uint8_t>(GuestTimeOnRide, 1);
 
         if (PeepFlags & PEEP_FLAGS_WOW)
         {
@@ -1030,7 +1030,7 @@ void Guest::Tick128UpdateGuest(uint32_t index)
                 auto ride = GetRide(CurrentRide);
                 if (ride != nullptr)
                 {
-                    PeepThoughtType thought_type = ride->getRideTypeDescriptor().HasFlag(RtdFlag::describeAsInside)
+                    PeepThoughtType thought_type = ride->getRideTypeDescriptor().flags.has(RtdFlag::describeAsInside)
                         ? PeepThoughtType::GetOut
                         : PeepThoughtType::GetOff;
 
@@ -1229,6 +1229,8 @@ void Guest::Tick128UpdateGuest(uint32_t index)
                     if (HappinessTarget < 90)
                         HappinessTarget = 90;
 
+                    // This is +2 as UpdateMotivesIdle (that is called later in the function)
+                    // will -1. We want to gradually increase happiness to 165
                     if (HappinessTarget < 165)
                         HappinessTarget += 2;
                 }
@@ -1377,7 +1379,6 @@ void Guest::UpdateSitting()
         AnimationFrameNum = 0;
         AnimationImageIdOffset = 0;
         UpdateCurrentAnimationType();
-        return;
     }
 }
 
@@ -1671,16 +1672,21 @@ static bool GuestDecideAndBuyItem(Guest& guest, Ride& ride, const ShopItem shopI
     switch (shopItem)
     {
         case ShopItem::tShirt:
-            guest.TshirtColour = hasRandomShopColour ? ScenarioRandMax(kColourNumNormal) : ride.trackColours[0].main;
+            guest.TshirtColour = hasRandomShopColour ? static_cast<Drawing::Colour>(ScenarioRandMax(Drawing::kColourNumNormal))
+                                                     : ride.trackColours[0].main;
             break;
         case ShopItem::hat:
-            guest.HatColour = hasRandomShopColour ? ScenarioRandMax(kColourNumNormal) : ride.trackColours[0].main;
+            guest.HatColour = hasRandomShopColour ? static_cast<Drawing::Colour>(ScenarioRandMax(Drawing::kColourNumNormal))
+                                                  : ride.trackColours[0].main;
             break;
         case ShopItem::balloon:
-            guest.BalloonColour = hasRandomShopColour ? ScenarioRandMax(kColourNumNormal) : ride.trackColours[0].main;
+            guest.BalloonColour = hasRandomShopColour ? static_cast<Drawing::Colour>(ScenarioRandMax(Drawing::kColourNumNormal))
+                                                      : ride.trackColours[0].main;
             break;
         case ShopItem::umbrella:
-            guest.UmbrellaColour = hasRandomShopColour ? ScenarioRandMax(kColourNumNormal) : ride.trackColours[0].main;
+            guest.UmbrellaColour = hasRandomShopColour
+                ? static_cast<Drawing::Colour>(ScenarioRandMax(Drawing::kColourNumNormal))
+                : ride.trackColours[0].main;
             break;
         case ShopItem::map:
             guest.ResetPathfindGoal();
@@ -1978,7 +1984,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
     {
         // Peeps that are leaving the park will refuse to go on any rides, with the exception of free transport rides.
         assert(ride.type < std::size(kRideTypeDescriptors));
-        if (!ride.getRideTypeDescriptor().HasFlag(RtdFlag::isTransportRide) || ride.value == kRideValueUndefined
+        if (!ride.getRideTypeDescriptor().flags.has(RtdFlag::isTransportRide) || ride.value == kRideValueUndefined
             || RideGetPrice(ride) != 0)
         {
             if (PeepFlags & PEEP_FLAGS_LEAVING_PARK)
@@ -1988,7 +1994,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
             }
         }
 
-        if (ride.getRideTypeDescriptor().HasFlag(RtdFlag::isShopOrFacility))
+        if (ride.getRideTypeDescriptor().flags.has(RtdFlag::isShopOrFacility))
         {
             return GuestShouldGoToShop(*this, ride, peepAtRide);
         }
@@ -2039,7 +2045,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
         // Assuming the queue conditions are met, peeps will always go on free transport rides.
         // Ride ratings, recent crashes and weather will all be ignored.
         auto ridePrice = RideGetPrice(ride);
-        if (!ride.getRideTypeDescriptor().HasFlag(RtdFlag::isTransportRide) || ride.value == kRideValueUndefined
+        if (!ride.getRideTypeDescriptor().flags.has(RtdFlag::isTransportRide) || ride.value == kRideValueUndefined
             || ridePrice != 0)
         {
             if (PreviousRide == ride.id)
@@ -2177,7 +2183,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
 
             // If the ride has not yet been rated and is capable of having g-forces,
             // there's a 90% chance that the peep will ignore it.
-            if (!RideHasRatings(ride) && ride.getRideTypeDescriptor().HasFlag(RtdFlag::checkGForces))
+            if (!RideHasRatings(ride) && ride.getRideTypeDescriptor().flags.has(RtdFlag::checkGForces))
             {
                 if ((ScenarioRand() & 0xFFFF) > 0x1999u)
                 {
@@ -2348,9 +2354,9 @@ void Guest::SpendMoney(money64& peep_expend_type, money64 amount, ExpenditureTyp
     assert(!(getGameState().park.flags & PARK_FLAGS_NO_MONEY));
 
     CashInPocket = std::max(0.00_GBP, CashInPocket - amount);
-    CashSpent += amount;
+    CashSpent = AddClamp(CashSpent, amount);
 
-    peep_expend_type += amount;
+    peep_expend_type = AddClamp(peep_expend_type, amount);
 
     auto* windowMgr = Ui::GetWindowManager();
     windowMgr->InvalidateByNumber(WindowClass::peep, Id);
@@ -2404,7 +2410,7 @@ static bool GuestShouldRideWhileRaining(Guest& guest, const Ride& ride)
     }
 
     // Peeps with umbrellas will go on rides where they can use their umbrella on it (like the Maze) 50% of the time
-    if (guest.HasItem(ShopItem::umbrella) && ride.getRideTypeDescriptor().HasFlag(RtdFlag::guestsCanUseUmbrella)
+    if (guest.HasItem(ShopItem::umbrella) && ride.getRideTypeDescriptor().flags.has(RtdFlag::guestsCanUseUmbrella)
         && (ScenarioRand() & 2) == 0)
     {
         return true;
@@ -2487,7 +2493,7 @@ static void GuestRideIsTooIntense(Guest& guest, Ride& ride, bool peepAtRide)
 static Vehicle* PeepChooseCarFromRide(Guest& guest, const Ride& ride, std::span<const uint8_t> carArray)
 {
     uint8_t chosen_car = ScenarioRand();
-    if (ride.getRideTypeDescriptor().HasFlag(RtdFlag::hasGForces) && ((chosen_car & 0xC) != 0xC))
+    if (ride.getRideTypeDescriptor().flags.has(RtdFlag::hasGForces) && ((chosen_car & 0xC) != 0xC))
     {
         chosen_car = (ScenarioRand() & 1) ? 0 : static_cast<uint8_t>(carArray.size()) - 1;
     }
@@ -2554,8 +2560,8 @@ void Guest::GoToRideEntrance(const Ride& ride)
     const auto* rideEntry = GetRideEntryByIndex(ride.subtype);
     if (rideEntry != nullptr)
     {
-        if (rideEntry->Cars[rideEntry->DefaultCar].flags & CAR_ENTRY_FLAG_MINI_GOLF
-            || rideEntry->Cars[rideEntry->DefaultCar].flags & (CAR_ENTRY_FLAG_CHAIRLIFT | CAR_ENTRY_FLAG_GO_KART))
+        if (rideEntry->Cars[rideEntry->DefaultCar].flags.hasAny(
+                CarEntryFlag::isMiniGolf, CarEntryFlag::isChairlift, CarEntryFlag::isGoKart))
         {
             shift_multiplier = 32;
         }
@@ -2888,16 +2894,16 @@ static int16_t GuestCalculateRideIntensityNauseaSatisfaction(Guest& guest, const
  */
 static void GuestUpdateRideNauseaGrowth(Guest& guest, const Ride& ride)
 {
-    uint32_t nauseaMultiplier = std::clamp(256 - guest.HappinessTarget, 64, 200);
-    uint32_t nauseaGrowthRateChange = (ride.ratings.nausea * nauseaMultiplier) / 512;
-    nauseaGrowthRateChange *= std::max(static_cast<uint8_t>(128), guest.Hunger) / 64;
-    nauseaGrowthRateChange >>= (EnumValue(guest.NauseaTolerance) & 3);
-    guest.NauseaTarget = static_cast<uint8_t>(std::min(guest.NauseaTarget + nauseaGrowthRateChange, 255u));
+    const auto nauseaMultiplier = std::clamp(256 - guest.HappinessTarget, 64, 200);
+    const auto rideGeneratedNausea = (ride.ratings.nausea * nauseaMultiplier) / 512;
+    const auto hungerAdjustedNausea = ((rideGeneratedNausea * std::max<uint8_t>(128, guest.Hunger)) / 128) * 2;
+    const auto nauseaGrowthRateChange = hungerAdjustedNausea >> (EnumValue(guest.NauseaTolerance) & 3);
+    guest.NauseaTarget = static_cast<uint8_t>(std::min<int32_t>(guest.NauseaTarget + nauseaGrowthRateChange, 255));
 }
 
 static bool GuestShouldGoOnRideAgain(Guest& guest, const Ride& ride)
 {
-    if (!ride.getRideTypeDescriptor().HasFlag(RtdFlag::guestsWillRideAgain))
+    if (!ride.getRideTypeDescriptor().flags.has(RtdFlag::guestsWillRideAgain))
         return false;
     if (!RideHasRatings(ride))
         return false;
@@ -3284,7 +3290,7 @@ static void PeepHeadForNearestRide(Guest& guest, bool considerOnlyCloseRides, T 
 static void GuestHeadForNearestRideWithFlag(Guest& guest, bool considerOnlyCloseRides, RtdFlag rtdFlag)
 {
     PeepHeadForNearestRide(
-        guest, considerOnlyCloseRides, [rtdFlag](const Ride& ride) { return ride.getRideTypeDescriptor().HasFlag(rtdFlag); });
+        guest, considerOnlyCloseRides, [rtdFlag](const Ride& ride) { return ride.getRideTypeDescriptor().flags.has(rtdFlag); });
 }
 
 static void GuestHeadForNearestRideWithSpecialType(Guest& guest, bool considerOnlyCloseRides, RtdSpecialType specialType)
@@ -3310,10 +3316,10 @@ static void GuestStopPurchaseThought(Guest& guest, ride_type_t rideType)
     auto thoughtType = PeepThoughtType::Hungry;
 
     const auto& rtd = GetRideTypeDescriptor(rideType);
-    if (!rtd.HasFlag(RtdFlag::sellsFood))
+    if (!rtd.flags.has(RtdFlag::sellsFood))
     {
         thoughtType = PeepThoughtType::Thirsty;
-        if (!rtd.HasFlag(RtdFlag::sellsDrinks))
+        if (!rtd.flags.has(RtdFlag::sellsDrinks))
         {
             thoughtType = PeepThoughtType::RunningOut;
             if (rtd.specialType != RtdSpecialType::cashMachine)
@@ -3531,7 +3537,7 @@ void Guest::UpdateRideAtEntrance()
 
     sfl::static_vector<uint8_t, Limits::kMaxTrainsPerRide> carArray;
 
-    if (ride->getRideTypeDescriptor().HasFlag(RtdFlag::noVehicles))
+    if (ride->getRideTypeDescriptor().flags.has(RtdFlag::noVehicles))
     {
         if (ride->numRiders >= ride->operationOption)
             return;
@@ -3558,7 +3564,7 @@ void Guest::UpdateRideAtEntrance()
             return;
     }
 
-    if (!ride->getRideTypeDescriptor().HasFlag(RtdFlag::noVehicles))
+    if (!ride->getRideTypeDescriptor().flags.has(RtdFlag::noVehicles))
     {
         Vehicle* vehicle = PeepChooseCarFromRide(*this, *ride, carArray);
         PeepChooseSeatFromCar(this, *ride, vehicle);
@@ -3727,8 +3733,8 @@ void Guest::UpdateRideAdvanceThroughEntrance()
         if (rideEntry != nullptr)
         {
             uint8_t vehicle = rideEntry->DefaultCar;
-            if (rideEntry->Cars[vehicle].flags & CAR_ENTRY_FLAG_MINI_GOLF
-                || rideEntry->Cars[vehicle].flags & (CAR_ENTRY_FLAG_CHAIRLIFT | CAR_ENTRY_FLAG_GO_KART))
+            if (rideEntry->Cars[vehicle].flags.hasAny(
+                    CarEntryFlag::isMiniGolf, CarEntryFlag::isChairlift, CarEntryFlag::isGoKart))
             {
                 distanceThreshold = 28;
             }
@@ -3757,7 +3763,7 @@ void Guest::UpdateRideAdvanceThroughEntrance()
         return;
     }
 
-    if (ride->getRideTypeDescriptor().HasFlag(RtdFlag::noVehicles))
+    if (ride->getRideTypeDescriptor().flags.has(RtdFlag::noVehicles))
     {
         const auto& station = ride->getStation(CurrentRideStation);
         auto entranceLocation = station.Entrance.ToCoordsXYZD();
@@ -3791,13 +3797,13 @@ void Guest::UpdateRideAdvanceThroughEntrance()
 
     const auto* vehicle_type = &rideEntry->Cars[vehicle->vehicle_type];
 
-    if (vehicle_type->flags & CAR_ENTRY_FLAG_LOADING_WAYPOINTS)
+    if (vehicle_type->flags.has(CarEntryFlag::loadingWaypoints))
     {
         UpdateRideLeaveEntranceWaypoints(*ride);
         return;
     }
 
-    if (vehicle_type->flags & CAR_ENTRY_FLAG_DODGEM_CAR_PLACEMENT)
+    if (vehicle_type->flags.has(CarEntryFlag::useDodgemCarPlacement))
     {
         SetDestination(vehicle->GetLocation(), 15);
         RideSubState = PeepRideSubState::approachVehicle;
@@ -3818,7 +3824,7 @@ void Guest::UpdateRideAdvanceThroughEntrance()
     }
 
     auto destination = GetDestination();
-    auto loadPositionWithReversal = (vehicle->HasFlag(VehicleFlags::CarIsReversed)) ? -load_position : load_position;
+    auto loadPositionWithReversal = (vehicle->flags.has(VehicleFlag::carIsReversed)) ? -load_position : load_position;
     switch (vehicle->Orientation / 8)
     {
         case 0:
@@ -3875,7 +3881,7 @@ static void PeepGoToRideExit(Guest& guest, const Ride& ride, int16_t x, int16_t 
     if (rideEntry != nullptr)
     {
         const CarEntry& carEntry = rideEntry->Cars[rideEntry->DefaultCar];
-        if (carEntry.flags & CAR_ENTRY_FLAG_MINI_GOLF || carEntry.flags & (CAR_ENTRY_FLAG_CHAIRLIFT | CAR_ENTRY_FLAG_GO_KART))
+        if (carEntry.flags.hasAny(CarEntryFlag::isMiniGolf, CarEntryFlag::isChairlift, CarEntryFlag::isGoKart))
         {
             shift_multiplier = 32;
         }
@@ -3936,7 +3942,7 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride& ride)
         ride.formatNameTo(ft);
 
         StringId msg_string;
-        if (ride.getRideTypeDescriptor().HasFlag(RtdFlag::describeAsInside))
+        if (ride.getRideTypeDescriptor().flags.has(RtdFlag::describeAsInside))
             msg_string = STR_PEEP_TRACKING_PEEP_IS_IN_X;
         else
             msg_string = STR_PEEP_TRACKING_PEEP_IS_ON_X;
@@ -3994,7 +4000,7 @@ void Guest::UpdateRideFreeVehicleCheck()
     if (ride == nullptr)
         return;
 
-    if (ride->getRideTypeDescriptor().HasFlag(RtdFlag::noVehicles))
+    if (ride->getRideTypeDescriptor().flags.has(RtdFlag::noVehicles))
     {
         if (ride->status != RideStatus::open || ride->vehicleChangeTimeout != 0 || (++RejoinQueueTimeout) == 0)
         {
@@ -4023,9 +4029,9 @@ void Guest::UpdateRideFreeVehicleCheck()
         return;
     }
 
-    if (rideEntry->Cars[0].flags & CAR_ENTRY_FLAG_MINI_GOLF)
+    if (rideEntry->Cars[0].flags.has(CarEntryFlag::isMiniGolf))
     {
-        vehicle->mini_golf_flags &= ~MiniGolfFlag::Flag5;
+        vehicle->miniGolfFlags.unset(MiniGolfFlag::flag5);
 
         for (size_t i = 0; i < ride->numTrains; ++i)
         {
@@ -4040,7 +4046,7 @@ void Guest::UpdateRideFreeVehicleCheck()
             if (second_vehicle->num_peeps == 0)
                 continue;
 
-            if (second_vehicle->mini_golf_flags & MiniGolfFlag::Flag5)
+            if (second_vehicle->miniGolfFlags.has(MiniGolfFlag::flag5))
                 continue;
 
             return;
@@ -4076,7 +4082,7 @@ void Guest::UpdateRideFreeVehicleCheck()
     {
         return;
     }
-    if (ride->status == RideStatus::open && ++RejoinQueueTimeout != 0 && !currentTrain->HasFlag(VehicleFlags::ReadyToDepart))
+    if (ride->status == RideStatus::open && ++RejoinQueueTimeout != 0 && !currentTrain->flags.has(VehicleFlag::readyToDepart))
     {
         return;
     }
@@ -4222,7 +4228,7 @@ void Guest::UpdateRideLeaveVehicle()
     assert(CurrentRideStation.ToUnderlying() < Limits::kMaxStationsPerRide);
     auto& station = ride->getStation(CurrentRideStation);
 
-    if (!(carEntry->flags & CAR_ENTRY_FLAG_LOADING_WAYPOINTS))
+    if (!carEntry->flags.has(CarEntryFlag::loadingWaypoints))
     {
         TileCoordsXYZD exitLocation = station.Exit;
         CoordsXYZD platformLocation;
@@ -4230,7 +4236,7 @@ void Guest::UpdateRideLeaveVehicle()
 
         platformLocation.direction = DirectionReverse(exitLocation.direction);
 
-        if (!ride->getRideTypeDescriptor().HasFlag(RtdFlag::vehicleIsIntegral))
+        if (!ride->getRideTypeDescriptor().flags.has(RtdFlag::vehicleIsIntegral))
         {
             for (; vehicle != nullptr && !vehicle->IsHead();
                  vehicle = gameState.entities.GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride))
@@ -4269,12 +4275,12 @@ void Guest::UpdateRideLeaveVehicle()
             {
                 carEntry = &rideEntry->Cars[rideEntry->DefaultCar];
 
-                if (carEntry->flags & CAR_ENTRY_FLAG_GO_KART)
+                if (carEntry->flags.has(CarEntryFlag::isGoKart))
                 {
                     shiftMultiplier = 9;
                 }
 
-                if (carEntry->flags & (CAR_ENTRY_FLAG_CHAIRLIFT | CAR_ENTRY_FLAG_GO_KART))
+                if (carEntry->flags.hasAny(CarEntryFlag::isChairlift, CarEntryFlag::isGoKart))
                 {
                     specialDirection = ((vehicle->Orientation + 3) / 8) + 1;
                     specialDirection &= 3;
@@ -4356,10 +4362,9 @@ void Guest::UpdateRideLeaveVehicle()
         return;
     }
 
-    CoordsXYZ waypointLoc;
     const auto& rtd = ride->getRideTypeDescriptor();
-    waypointLoc = { rtd.GetGuestWaypointLocation(*vehicle, *ride, CurrentRideStation),
-                    exitLocation.z + ride->getRideTypeDescriptor().Heights.PlatformHeight };
+    CoordsXYZ waypointLoc = { rtd.GetGuestWaypointLocation(*vehicle, *ride, CurrentRideStation),
+                              exitLocation.z + ride->getRideTypeDescriptor().Heights.PlatformHeight };
 
     rideEntry = vehicle->GetRideEntry();
     carEntry = &rideEntry->Cars[vehicle->vehicle_type];
@@ -4422,7 +4427,7 @@ void Guest::UpdateRidePrepareForExit()
     if (rideEntry != nullptr)
     {
         const auto& carEntry = rideEntry->Cars[rideEntry->DefaultCar];
-        if (carEntry.flags & (CAR_ENTRY_FLAG_CHAIRLIFT | CAR_ENTRY_FLAG_GO_KART))
+        if (carEntry.flags.hasAny(CarEntryFlag::isChairlift, CarEntryFlag::isGoKart))
         {
             shiftMultiplier = 32;
         }
@@ -4560,10 +4565,9 @@ void Guest::UpdateRideApproachVehicleWaypoints()
 
 void UpdateRideApproachVehicleWaypointsMotionSimulator(Guest& guest, const CoordsXY& loc, int16_t& xy_distance)
 {
-    int16_t actionZ;
     auto ride = GetRide(guest.CurrentRide);
-    // Motion simulators have steps this moves the peeps up the steps
-    actionZ = ride->getStation(guest.CurrentRideStation).GetBaseZ() + 2;
+    // Motion simulators have steps. This moves the peeps up the steps.
+    int16_t actionZ = ride->getStation(guest.CurrentRideStation).GetBaseZ() + 2;
 
     uint8_t waypoint = guest.Var37 & 3;
     if (waypoint == 2)
@@ -4674,7 +4678,7 @@ void Guest::UpdateRideApproachExitWaypoints()
     if (rideEntry != nullptr)
     {
         auto carEntry = &rideEntry->Cars[rideEntry->DefaultCar];
-        if (carEntry->flags & (CAR_ENTRY_FLAG_CHAIRLIFT | CAR_ENTRY_FLAG_GO_KART))
+        if (carEntry->flags.hasAny(CarEntryFlag::isChairlift, CarEntryFlag::isGoKart))
         {
             shift_multiplier = 32;
         }
@@ -5066,7 +5070,6 @@ void Guest::UpdateRideMazePathfinding()
     if (auto loc = UpdateAction(); loc.has_value())
     {
         MoveTo({ loc.value(), z });
-        return;
     }
 }
 
@@ -5645,7 +5648,7 @@ void Guest::UpdateWalking()
 
     uint8_t chosen_edge = ScenarioRand() & 0x3;
 
-    for (; !(edges & (1 << chosen_edge));)
+    while (!(edges & (1 << chosen_edge)))
         chosen_edge = (chosen_edge + 1) & 3;
 
     RideId ride_to_view;
@@ -5673,7 +5676,7 @@ void Guest::UpdateWalking()
 
     uint8_t chosen_position = ScenarioRand() & 0x3;
 
-    for (; !(positions_free & (1 << chosen_position));)
+    while (!(positions_free & (1 << chosen_position)))
         chosen_position = (chosen_position + 1) & 3;
 
     CurrentRide = ride_to_view;
@@ -6163,7 +6166,7 @@ bool Guest::UpdateWalkingFindBench()
         return false;
     uint8_t chosen_edge = ScenarioRand() & 0x3;
 
-    for (; !(edges & (1 << chosen_edge));)
+    while (!(edges & (1 << chosen_edge)))
         chosen_edge = (chosen_edge + 1) & 0x3;
 
     uint8_t free_edge = 3;
@@ -6418,14 +6421,14 @@ static bool PeepShouldWatchRide(TileElement* tileElement)
         return true;
     }
 
-    if (ride->getRideTypeDescriptor().HasFlag(RtdFlag::interestingToLookAt))
+    if (ride->getRideTypeDescriptor().flags.has(RtdFlag::interestingToLookAt))
     {
         if ((ScenarioRand() & 0xFFFF) > 0x3333)
         {
             return false;
         }
     }
-    else if (ride->getRideTypeDescriptor().HasFlag(RtdFlag::slightlyInterestingToLookAt))
+    else if (ride->getRideTypeDescriptor().flags.has(RtdFlag::slightlyInterestingToLookAt))
     {
         if ((ScenarioRand() & 0xFFFF) > 0x1000)
         {
@@ -6489,11 +6492,8 @@ bool Loc690FD0(Guest& guest, RideId* rideToView, uint8_t* rideSeatToView, TileEl
  */
 static bool GuestFindRideToLookAt(Guest& guest, uint8_t edge, RideId* rideToView, uint8_t* rideSeatToView)
 {
-    TileElement* tileElement;
-
     auto surfaceElement = MapGetSurfaceElementAt(guest.NextLoc);
-
-    tileElement = reinterpret_cast<TileElement*>(surfaceElement);
+    TileElement* tileElement = reinterpret_cast<TileElement*>(surfaceElement);
     if (tileElement == nullptr)
     {
         return false;
@@ -7130,95 +7130,95 @@ static constexpr PeepNauseaTolerance nausea_tolerance_distribution[] = {
 };
 
 /** rct2: 0x009823BC */
-static constexpr uint8_t kTrouserColours[] = {
-    COLOUR_BLACK,
-    COLOUR_GREY,
-    COLOUR_LIGHT_BROWN,
-    COLOUR_SATURATED_BROWN,
-    COLOUR_DARK_BROWN,
-    COLOUR_SALMON_PINK,
-    COLOUR_BLACK,
-    COLOUR_GREY,
-    COLOUR_LIGHT_BROWN,
-    COLOUR_SATURATED_BROWN,
-    COLOUR_DARK_BROWN,
-    COLOUR_SALMON_PINK,
-    COLOUR_BLACK,
-    COLOUR_GREY,
-    COLOUR_LIGHT_BROWN,
-    COLOUR_SATURATED_BROWN,
-    COLOUR_DARK_BROWN,
-    COLOUR_SALMON_PINK,
-    COLOUR_DARK_PURPLE,
-    COLOUR_LIGHT_PURPLE,
-    COLOUR_DARK_BLUE,
-    COLOUR_SATURATED_GREEN,
-    COLOUR_SATURATED_RED,
-    COLOUR_DARK_ORANGE,
-    COLOUR_BORDEAUX_RED,
-    COLOUR_DARK_OLIVE_DARK,
-    COLOUR_OLIVE_DARK,
-    COLOUR_AQUA_DARK,
-    COLOUR_DULL_BROWN_DARK,
+static constexpr Drawing::Colour kTrouserColours[] = {
+    Drawing::Colour::black,
+    Drawing::Colour::grey,
+    Drawing::Colour::lightBrown,
+    Drawing::Colour::saturatedBrown,
+    Drawing::Colour::darkBrown,
+    Drawing::Colour::salmonPink,
+    Drawing::Colour::black,
+    Drawing::Colour::grey,
+    Drawing::Colour::lightBrown,
+    Drawing::Colour::saturatedBrown,
+    Drawing::Colour::darkBrown,
+    Drawing::Colour::salmonPink,
+    Drawing::Colour::black,
+    Drawing::Colour::grey,
+    Drawing::Colour::lightBrown,
+    Drawing::Colour::saturatedBrown,
+    Drawing::Colour::darkBrown,
+    Drawing::Colour::salmonPink,
+    Drawing::Colour::darkPurple,
+    Drawing::Colour::lightPurple,
+    Drawing::Colour::darkBlue,
+    Drawing::Colour::saturatedGreen,
+    Drawing::Colour::saturatedRed,
+    Drawing::Colour::darkOrange,
+    Drawing::Colour::bordeauxRed,
+    Drawing::Colour::armyGreen,
+    Drawing::Colour::hunterGreen,
+    Drawing::Colour::deepWater,
+    Drawing::Colour::umber,
 };
 
 /** rct2: 0x009823D5 */
-static constexpr uint8_t kTshirtColours[] = {
-    COLOUR_BLACK,
-    COLOUR_GREY,
-    COLOUR_LIGHT_BROWN,
-    COLOUR_SATURATED_BROWN,
-    COLOUR_DARK_BROWN,
-    COLOUR_SALMON_PINK,
-    COLOUR_BLACK,
-    COLOUR_GREY,
-    COLOUR_LIGHT_BROWN,
-    COLOUR_SATURATED_BROWN,
-    COLOUR_DARK_BROWN,
-    COLOUR_SALMON_PINK,
-    COLOUR_DARK_PURPLE,
-    COLOUR_LIGHT_PURPLE,
-    COLOUR_DARK_BLUE,
-    COLOUR_SATURATED_GREEN,
-    COLOUR_SATURATED_RED,
-    COLOUR_DARK_ORANGE,
-    COLOUR_BORDEAUX_RED,
-    COLOUR_WHITE,
-    COLOUR_BRIGHT_PURPLE,
-    COLOUR_LIGHT_BLUE,
-    COLOUR_TEAL,
-    COLOUR_DARK_GREEN,
-    COLOUR_MOSS_GREEN,
-    COLOUR_BRIGHT_GREEN,
-    COLOUR_OLIVE_GREEN,
-    COLOUR_DARK_OLIVE_GREEN,
-    COLOUR_YELLOW,
-    COLOUR_LIGHT_ORANGE,
-    COLOUR_BRIGHT_RED,
-    COLOUR_DARK_PINK,
-    COLOUR_BRIGHT_PINK,
-    COLOUR_DARK_OLIVE_DARK,
-    COLOUR_DARK_OLIVE_LIGHT,
-    COLOUR_SATURATED_BROWN_LIGHT,
-    COLOUR_BORDEAUX_RED_DARK,
-    COLOUR_BORDEAUX_RED_LIGHT,
-    COLOUR_GRASS_GREEN_DARK,
-    COLOUR_GRASS_GREEN_LIGHT,
-    COLOUR_OLIVE_DARK,
-    COLOUR_OLIVE_LIGHT,
-    COLOUR_SATURATED_GREEN_LIGHT,
-    COLOUR_TAN_DARK,
-    COLOUR_TAN_LIGHT,
-    COLOUR_DULL_PURPLE_LIGHT,
-    COLOUR_DULL_GREEN_DARK,
-    COLOUR_DULL_GREEN_LIGHT,
-    COLOUR_SATURATED_PURPLE_DARK,
-    COLOUR_SATURATED_PURPLE_LIGHT,
-    COLOUR_ORANGE_LIGHT,
-    COLOUR_AQUA_DARK,
-    COLOUR_MAGENTA_LIGHT,
-    COLOUR_DULL_BROWN_DARK,
-    COLOUR_DULL_BROWN_LIGHT,
+static constexpr Drawing::Colour kTshirtColours[] = {
+    Drawing::Colour::black,
+    Drawing::Colour::grey,
+    Drawing::Colour::lightBrown,
+    Drawing::Colour::saturatedBrown,
+    Drawing::Colour::darkBrown,
+    Drawing::Colour::salmonPink,
+    Drawing::Colour::black,
+    Drawing::Colour::grey,
+    Drawing::Colour::lightBrown,
+    Drawing::Colour::saturatedBrown,
+    Drawing::Colour::darkBrown,
+    Drawing::Colour::salmonPink,
+    Drawing::Colour::darkPurple,
+    Drawing::Colour::lightPurple,
+    Drawing::Colour::darkBlue,
+    Drawing::Colour::saturatedGreen,
+    Drawing::Colour::saturatedRed,
+    Drawing::Colour::darkOrange,
+    Drawing::Colour::bordeauxRed,
+    Drawing::Colour::white,
+    Drawing::Colour::brightPurple,
+    Drawing::Colour::lightBlue,
+    Drawing::Colour::darkWater,
+    Drawing::Colour::darkGreen,
+    Drawing::Colour::mossGreen,
+    Drawing::Colour::brightGreen,
+    Drawing::Colour::oliveGreen,
+    Drawing::Colour::darkOliveGreen,
+    Drawing::Colour::yellow,
+    Drawing::Colour::lightOrange,
+    Drawing::Colour::brightRed,
+    Drawing::Colour::darkPink,
+    Drawing::Colour::brightPink,
+    Drawing::Colour::armyGreen,
+    Drawing::Colour::honeyDew,
+    Drawing::Colour::tan,
+    Drawing::Colour::maroon,
+    Drawing::Colour::coralPink,
+    Drawing::Colour::forestGreen,
+    Drawing::Colour::chartreuse,
+    Drawing::Colour::hunterGreen,
+    Drawing::Colour::celadon,
+    Drawing::Colour::limeGreen,
+    Drawing::Colour::sepia,
+    Drawing::Colour::peach,
+    Drawing::Colour::periwinkle,
+    Drawing::Colour::viridian,
+    Drawing::Colour::seafoamGreen,
+    Drawing::Colour::violet,
+    Drawing::Colour::lavender,
+    Drawing::Colour::pastelOrange,
+    Drawing::Colour::deepWater,
+    Drawing::Colour::pastelPink,
+    Drawing::Colour::umber,
+    Drawing::Colour::beige,
 };
 // clang-format on
 

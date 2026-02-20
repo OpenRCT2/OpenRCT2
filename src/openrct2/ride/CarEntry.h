@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../core/EnumUtils.hpp"
+#include "../core/FlagHolder.hpp"
 #include "../entity/Yaw.hpp"
 #include "../world/Location.hpp"
 
@@ -38,59 +39,78 @@ enum class CarEntryAnimation : uint8_t
     Count,
 };
 
-enum : uint64_t
+enum class CarEntryFlag : uint8_t
 {
-    CAR_ENTRY_FLAG_POWERED_RIDE_UNRESTRICTED_GRAVITY = 1
-        << 0, // Set on powered vehicles that do not slow down when going down a hill.
-    CAR_ENTRY_FLAG_NO_UPSTOP_WHEELS = 1 << 1,
-    CAR_ENTRY_FLAG_NO_UPSTOP_BOBSLEIGH = 1 << 2,
-    CAR_ENTRY_FLAG_MINI_GOLF = 1 << 3,
-    CAR_ENTRY_FLAG_REVERSER_BOGIE = 1 << 4,
-    CAR_ENTRY_FLAG_REVERSER_PASSENGER_CAR = 1 << 5,
-    CAR_ENTRY_FLAG_HAS_INVERTED_SPRITE_SET = 1 << 6, // Set on vehicles that support running inverted for extended periods
-    // of time, i.e. the Flying, Lay-down and Multi-dimension RCs.
-    CAR_ENTRY_FLAG_DODGEM_INUSE_LIGHTS = 1
-        << 7, // When set the vehicle has an additional frame for when in use. Used only by dodgems.
-    CAR_ENTRY_FLAG_ALLOW_DOORS_DEPRECATED = 1 << 8, // Not used any more - every vehicle will now work with doors.
-    CAR_ENTRY_FLAG_ENABLE_TERTIARY_COLOUR = 1 << 9,
-    CAR_ENTRY_FLAG_RECALCULATE_SPRITE_BOUNDS = 1 << 10, // Only used during loading of the objects.
-    CAR_ENTRY_FLAG_USE_16_ROTATION_FRAMES = 1
-        << 11, // Instead of the default 32 rotation frames. Only used for boat hire and works only for non sloped sprites.
-    CAR_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES = 1
-        << 12, // Setting this will cause the game to set carEntry->num_vertical_frames to
-    // carEntry->num_vertical_frames_override, rather than determining it itself.
-    CAR_ENTRY_FLAG_SPRITE_BOUNDS_INCLUDE_INVERTED_SET = 1
-        << 13, // Used together with HAS_INVERTED_SPRITE_SET and RECALCULATE_SPRITE_BOUNDS and includes the inverted sprites
-    // into the function that recalculates the sprite bounds.
-    CAR_ENTRY_FLAG_SPINNING_COMBINED_WITH_NONSPINNING = 1
-        << 14, // If the vehicle combines the spinning carriage and non-spinning undercarriage in the same sprite.
-    CAR_ENTRY_FLAG_LIFT = 1 << 15,
-    CAR_ENTRY_FLAG_ENABLE_TRIM_COLOUR = 1 << 16,
-    CAR_ENTRY_FLAG_SWINGING = 1 << 17,
-    CAR_ENTRY_FLAG_SPINNING = 1 << 18,
-    CAR_ENTRY_FLAG_POWERED = 1 << 19,
-    CAR_ENTRY_FLAG_RIDERS_SCREAM = 1 << 20,   // Only valid for front/default car of train
-    CAR_ENTRY_FLAG_SUSPENDED_SWING = 1 << 21, // Suspended swinging coaster, or bobsleigh if SLIDE_SWING is also enabled.
-    CAR_ENTRY_FLAG_BOAT_HIRE_COLLISION_DETECTION = 1 << 22,
-    CAR_ENTRY_FLAG_VEHICLE_ANIMATION = 1 << 23, // Set on animated vehicles like the Multi-dimension coaster trains,
-    // Miniature Railway locomotives and Helicycles.
-    CAR_ENTRY_FLAG_RIDER_ANIMATION = 1 << 24, // Set when the animation updates rider sprite positions.
-    CAR_ENTRY_FLAG_WOODEN_WILD_MOUSE_SWING = 1 << 25,
-    CAR_ENTRY_FLAG_LOADING_WAYPOINTS = 1
-        << 26, // Peep loading positions have x and y coordinates. Normal rides just have offsets.
-    CAR_ENTRY_FLAG_SLIDE_SWING = 1
-        << 27, // Set on dingy slides. They have there own swing value calculations and have a different amount of images.
-    // Also set on bobsleighs together with the SUSPENDED_SWING flag.
-    CAR_ENTRY_FLAG_CHAIRLIFT = 1 << 28,
-    CAR_ENTRY_FLAG_WATER_RIDE = 1 << 29, // Set on rides where water would provide continuous propulsion.
-    CAR_ENTRY_FLAG_GO_KART = 1 << 30,
-    CAR_ENTRY_FLAG_DODGEM_CAR_PLACEMENT = 1u << 31,
-    CAR_ENTRY_FLAG_ENABLE_BODY_COLOUR = 1uLL << 32,
+    /*
+     * Set on powered vehicles that freely accelerate downhill, like the ghost train and log flume. When unset, powered
+     * vehicles apply brakes when going downhill.
+     */
+    isPoweredRideWithUnrestrictedGravity,
+    hasNoUpstopWheels,
+    hasNoUpstopWheelsBobsleigh,
+    isMiniGolf,
+    isReverserCoasterBogie,
+    isReverserCoasterPassengerCar,
+    /*
+     * Set on vehicles that support running inverted for extended periods of time,i.e. the Flying,
+     * Lay-down and Multi-dimension RCs
+     */
+    hasInvertedSpriteSet,
+    // When set the vehicle has an additional frame for when in use. Used only by dodgems.
+    hasDodgemInUseLights,
+    // Not used anymore - every vehicle works with doors in OpenRCT2
+    allowDoorsDeprecated,
+    enableTertiaryColour,
+    // Only used during loading of the objects
+    recalculateSpriteBounds,
+    // Instead of the default 32 rotation frames. Only used for boat hire and works only for non sloped sprites.
+    use16RotationFrames,
+    /*
+     * Setting this will cause the game to set carEntry->num_vertical_frames to carEntry->num_vertical_frames_override,
+     * rather than determining it itself
+     */
+    overrideNumberOfVerticalFrames,
+    /*
+     * Used together with hasInvertedSpriteSet and recalculateSpriteBounds, includes the inverted sprites into the function
+     * that recalculates the sprite bounds if the vehicle combines the spinning carriage and non-spinning undercarriage
+     * in the same sprite.
+     */
+    spriteBoundsIncludeInvertedSet,
+    hasSpinningCombinedWithNonSpinning,
+    isLift,
+    enableTrimColour,
+    hasSwinging,
+    hasSpinning,
+    isPowered,
+    // Only valid for front/default car of train
+    hasScreamingRiders,
+    // Suspended swinging coaster, or bobsleigh if useSlideSwing flag is also enabled
+    useSuspendedSwing,
+    useBoatHireCollisionDetection,
+    // Set on animated vehicles like the Multi-dimension coaster trains, Miniature Railway locomotives and Helicycles
+    hasVehicleAnimation,
+    // Set when the animation updates rider sprite positions
+    hasRiderAnimation,
+    useWoodenWildMouseSwing,
+    // Peep loading positions have x and y coordinates. Normal rides just have offsets.
+    loadingWaypoints,
+    /*
+     * Set on dinghy slides. They have their own swing value calculations and have a different amount of images.
+     * Also set on bobsleighs together with the suspendedSwing flag.
+     */
+    useSlideSwing,
+    isChairlift,
+    // Set on rides where water would provide continuous propulsion
+    isWaterRide,
+    isGoKart,
+    useDodgemCarPlacement,
+    enableBodyColour,
 };
+using CarEntryFlags = FlagHolder<uint64_t, CarEntryFlag>;
 
 /*
  * When adding a sprite group, add multiplier to SpriteGroupMultiplier in RideObject.cpp and add sprite group data to cable
- * lifthill vehicle in RideData.cpp and update the SpriteGroups interface in distribution/openrct2.d.ts
+ * lift hill vehicle in RideData.cpp and update the SpriteGroups interface in distribution/openrct2.d.ts
  */
 enum class SpriteGroupType : uint8_t
 {
@@ -183,7 +203,7 @@ struct CarEntry
     uint8_t spriteHeightNegative;
     uint8_t spriteHeightPositive;
     CarEntryAnimation animation;
-    uint64_t flags;
+    CarEntryFlags flags;
     uint16_t base_num_frames; // The number of sprites of animation or swinging per rotation frame
     uint32_t base_image_id;
     VehicleSpriteGroup SpriteGroups[EnumValue(SpriteGroupType::Count)];
@@ -201,7 +221,7 @@ struct CarEntry
     uint8_t effect_visual;
     uint8_t draw_order;
     uint8_t num_vertical_frames_override; // A custom number that can be used rather than letting RCT2 determine it.
-    // Needs the CAR_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES flag to be set.
+    // Needs the overrideNumberOfVerticalFrames CarEntryFlag to be set.
     uint8_t peep_loading_waypoint_segments;
     uint16_t AnimationSpeed;
     uint8_t AnimationFrames;

@@ -12,7 +12,7 @@
 #include "../Context.h"
 #include "../Diagnostic.h"
 #include "../GameState.h"
-#include "../actions/StaffSetOrdersAction.h"
+#include "../actions/peep/StaffSetOrdersAction.h"
 #include "../audio/Audio.h"
 #include "../core/DataSerialiser.h"
 #include "../entity/EntityList.h"
@@ -958,7 +958,7 @@ int32_t Staff::GetHireDate() const
     return HireDate;
 }
 
-colour_t StaffGetColour(StaffType staffType)
+Drawing::Colour StaffGetColour(StaffType staffType)
 {
     const auto& park = getGameState().park;
     switch (staffType)
@@ -970,14 +970,14 @@ colour_t StaffGetColour(StaffType staffType)
         case StaffType::security:
             return park.staffSecurityColour;
         case StaffType::entertainer:
-            return 0;
+            return Drawing::Colour::black;
         default:
             assert(false);
-            return 0;
+            return Drawing::Colour::black;
     }
 }
 
-GameActions::Result StaffSetColour(StaffType staffType, colour_t value)
+GameActions::Result StaffSetColour(StaffType staffType, OpenRCT2::Drawing::Colour value)
 {
     auto& park = getGameState().park;
     switch (staffType)
@@ -2170,7 +2170,7 @@ bool Staff::UpdateFixingFixVehicle(bool firstRun, const Ride& ride)
         return true;
     }
 
-    vehicle->ClearFlag(VehicleFlags::CarIsBroken);
+    vehicle->flags.unset(VehicleFlag::carIsBroken);
 
     return false;
 }
@@ -2211,7 +2211,7 @@ bool Staff::UpdateFixingFixVehicleMalfunction(bool firstRun, const Ride& ride)
         return true;
     }
 
-    vehicle->ClearFlag(VehicleFlags::TrainIsBroken);
+    vehicle->flags.unset(VehicleFlag::trainIsBroken);
 
     return false;
 }
@@ -2234,8 +2234,8 @@ bool Staff::UpdateFixingMoveToStationEnd(bool firstRun, const Ride& ride)
 {
     if (!firstRun)
     {
-        if (ride.getRideTypeDescriptor().HasFlag(RtdFlag::hasSinglePieceStation)
-            || !ride.getRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
+        if (ride.getRideTypeDescriptor().flags.has(RtdFlag::hasSinglePieceStation)
+            || !ride.getRideTypeDescriptor().flags.has(RtdFlag::hasTrack))
         {
             return true;
         }
@@ -2321,8 +2321,8 @@ bool Staff::UpdateFixingMoveToStationStart(bool firstRun, const Ride& ride)
 {
     if (!firstRun)
     {
-        if (ride.getRideTypeDescriptor().HasFlag(RtdFlag::hasSinglePieceStation)
-            || !ride.getRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
+        if (ride.getRideTypeDescriptor().flags.has(RtdFlag::hasSinglePieceStation)
+            || !ride.getRideTypeDescriptor().flags.has(RtdFlag::hasTrack))
         {
             return true;
         }
@@ -2398,8 +2398,8 @@ bool Staff::UpdateFixingFixStationStart(bool firstRun, const Ride& ride)
 {
     if (!firstRun)
     {
-        if (ride.getRideTypeDescriptor().HasFlag(RtdFlag::hasSinglePieceStation)
-            || !ride.getRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
+        if (ride.getRideTypeDescriptor().flags.has(RtdFlag::hasSinglePieceStation)
+            || !ride.getRideTypeDescriptor().flags.has(RtdFlag::hasTrack))
         {
             return true;
         }

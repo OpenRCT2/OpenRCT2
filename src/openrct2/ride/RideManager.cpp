@@ -31,16 +31,16 @@ namespace OpenRCT2
 
     RideManager::Iterator RideManager::begin()
     {
-        return RideManager::Iterator(*this, 0u, _gameState.ridesEndOfUsedRange);
+        return Iterator(*this, 0u, _gameState.ridesEndOfUsedRange);
     }
 
     RideManager::Iterator RideManager::end()
     {
-        return RideManager::Iterator(*this, _gameState.ridesEndOfUsedRange, _gameState.ridesEndOfUsedRange);
+        return Iterator(*this, _gameState.ridesEndOfUsedRange, _gameState.ridesEndOfUsedRange);
     }
 
     RideManager::Iterator RideManager::get(RideId rideId)
     {
-        return RideManager::Iterator(*this, rideId.ToUnderlying(), _gameState.ridesEndOfUsedRange);
+        return Iterator(*this, rideId.ToUnderlying(), _gameState.ridesEndOfUsedRange);
     }
 } // namespace OpenRCT2

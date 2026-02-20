@@ -21,13 +21,14 @@
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/SpriteIds.h>
-#include <openrct2/actions/LoadOrQuitAction.h>
 #include <openrct2/actions/ResultWithMessage.h>
+#include <openrct2/actions/general/LoadOrQuitAction.h>
 #include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/EnumUtils.hpp>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
+#include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/localisation/Formatter.h>
@@ -382,7 +383,7 @@ namespace OpenRCT2::Ui::Windows
                     if (gLegacyScene != LegacyScene::trackDesignsManager && !EditorObjectSelectionWindowCheck())
                         return;
 
-                    auto* windowMgr = Ui::GetWindowManager();
+                    auto* windowMgr = GetWindowManager();
                     windowMgr->CloseByClass(WindowClass::editorObjectSelection);
 
                     if (isInEditorMode())
@@ -394,7 +395,7 @@ namespace OpenRCT2::Ui::Windows
                         GameNotifyMapChange();
                         GameUnloadScripts();
 
-                        auto* context = OpenRCT2::GetContext();
+                        auto* context = GetContext();
                         context->SetActiveScene(context->GetTitleScene());
                     }
                     break;
@@ -523,7 +524,7 @@ namespace OpenRCT2::Ui::Windows
 
                     // Track designs manager cannot select multiple, so only show selection filters if not in track designs
                     // manager
-                    if (!(gLegacyScene == LegacyScene::trackDesignsManager))
+                    if (gLegacyScene != LegacyScene::trackDesignsManager)
                     {
                         numSelectionItems = 3;
                         gDropdown.items[DDIX_FILTER_SEPARATOR] = Dropdown::Separator();
@@ -545,7 +546,7 @@ namespace OpenRCT2::Ui::Windows
                         }
                     }
 
-                    if (!(gLegacyScene == LegacyScene::trackDesignsManager))
+                    if (gLegacyScene != LegacyScene::trackDesignsManager)
                     {
                         gDropdown.items[DDIX_FILTER_SELECTED].setChecked(IsFilterActive(FILTER_SELECTED));
                         gDropdown.items[DDIX_FILTER_NONSELECTED].setChecked(IsFilterActive(FILTER_NONSELECTED));
@@ -605,7 +606,7 @@ namespace OpenRCT2::Ui::Windows
         {
             // Used for in-game object selection cheat to prevent crashing the game
             // when windows attempt to draw objects that don't exist any more
-            auto* windowMgr = Ui::GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             windowMgr->CloseAllExceptClass(WindowClass::editorObjectSelection);
 
             int32_t selected_object = GetObjectFromObjectSelection(GetSelectedObjectType(), screenCoords.y);
@@ -726,13 +727,13 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onScrollDraw(int32_t scrollIndex, Drawing::RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             // ScrollPaint
             ScreenCoordsXY screenCoords;
             bool ridePage = (GetSelectedObjectType() == ObjectType::ride);
 
-            auto paletteIndex = ColourMapA[colours[1].colour].mid_light;
+            auto paletteIndex = getColourMap(colours[1].colour).midLight;
             GfxClear(rt, paletteIndex);
 
             screenCoords.y = 0;
@@ -742,7 +743,7 @@ namespace OpenRCT2::Ui::Windows
                 if (screenCoords.y + kScrollableRowHeight >= rt.y && screenCoords.y <= rt.y + rt.height)
                 {
                     // Draw checkbox
-                    if (!(gLegacyScene == LegacyScene::trackDesignsManager) && !(*listItem.flags & 0x20))
+                    if (gLegacyScene != LegacyScene::trackDesignsManager && !(*listItem.flags & 0x20))
                         Rectangle::fillInset(
                             rt, { { 2, screenCoords.y }, { 11, screenCoords.y + 10 } }, colours[1],
                             Rectangle::BorderStyle::inset, Rectangle::FillBrightness::dark,
@@ -758,8 +759,7 @@ namespace OpenRCT2::Ui::Windows
                     }
 
                     // Draw checkmark
-                    if (!(gLegacyScene == LegacyScene::trackDesignsManager)
-                        && (*listItem.flags & ObjectSelectionFlags::Selected))
+                    if (gLegacyScene != LegacyScene::trackDesignsManager && (*listItem.flags & ObjectSelectionFlags::Selected))
                     {
                         screenCoords.x = 2;
                         auto darkness = highlighted ? TextDarkness::extraDark : TextDarkness::dark;
@@ -776,7 +776,7 @@ namespace OpenRCT2::Ui::Windows
                     auto bufferWithColour = strcpy(itemBuffer, highlighted ? "{WINDOW_COLOUR_2}" : "{BLACK}");
                     auto buffer = strchr(bufferWithColour, '\0');
 
-                    colour_t colour = COLOUR_BLACK;
+                    Drawing::Colour colour = Drawing::Colour::black;
                     auto darkness = TextDarkness::regular;
                     if (*listItem.flags & ObjectSelectionFlags::Flag6)
                     {
@@ -1009,7 +1009,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_PREVIEW].right = widgets[WIDX_PREVIEW].left + kPreviewSize;
         }
 
-        void onDraw(Drawing::RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             drawWidgets(rt);
 
@@ -1067,10 +1067,10 @@ namespace OpenRCT2::Ui::Windows
                 rt,
                 { windowPos + ScreenCoordsXY{ previewWidget.left + 1, previewWidget.top + 1 },
                   windowPos + ScreenCoordsXY{ previewWidget.right - 1, previewWidget.bottom - 1 } },
-                ColourMapA[colours[1].colour].darkest);
+                getColourMap(colours[1].colour).darkest);
 
             // Draw number of selected items
-            if (!(gLegacyScene == LegacyScene::trackDesignsManager))
+            if (gLegacyScene != LegacyScene::trackDesignsManager)
             {
                 auto screenPos = windowPos + ScreenCoordsXY{ 3, height - 13 };
 
@@ -1249,7 +1249,7 @@ namespace OpenRCT2::Ui::Windows
             _listItems.shrink_to_fit();
         }
 
-        void DrawDescriptions(Drawing::RenderTarget& rt)
+        void DrawDescriptions(RenderTarget& rt)
         {
             auto screenPos = windowPos + ScreenCoordsXY{ widgets[WIDX_PREVIEW].midX(), widgets[WIDX_PREVIEW].bottom + 3 };
             auto descriptionWidth = width - widgets[WIDX_LIST].right - 12;
@@ -1275,7 +1275,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 screenPos.y += DrawTextWrapped(
                                    rt, screenPos, descriptionWidth, STR_OBJECT_SELECTION_COMPAT_OBJECT_DESCRIPTION, {},
-                                   { COLOUR_BRIGHT_RED })
+                                   { Drawing::Colour::brightRed })
                     + kListRowHeight;
             }
 
@@ -1357,7 +1357,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawDebugData(Drawing::RenderTarget& rt)
+        void DrawDebugData(RenderTarget& rt)
         {
             ObjectListItem* listItem = &_listItems[selectedListItem];
             auto screenPos = windowPos + ScreenCoordsXY{ width - 5, height - (kListRowHeight * 6) };
@@ -1365,7 +1365,8 @@ namespace OpenRCT2::Ui::Windows
             // Draw fallback image warning
             if (_loadedObject && _loadedObject->UsesFallbackImages())
             {
-                DrawTextBasic(rt, screenPos, STR_OBJECT_USES_FALLBACK_IMAGES, {}, { COLOUR_WHITE, TextAlignment::right });
+                DrawTextBasic(
+                    rt, screenPos, STR_OBJECT_USES_FALLBACK_IMAGES, {}, { Drawing::Colour::white, TextAlignment::right });
             }
             screenPos.y += kListRowHeight;
 
@@ -1373,7 +1374,7 @@ namespace OpenRCT2::Ui::Windows
             if (GetSelectedObjectType() == ObjectType::ride)
             {
                 auto stringId = GetRideTypeStringId(listItem->repositoryItem);
-                DrawTextBasic(rt, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::right });
+                DrawTextBasic(rt, screenPos, stringId, {}, { Drawing::Colour::white, TextAlignment::right });
             }
 
             // Draw peep animation object type
@@ -1381,14 +1382,14 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto* animObj = reinterpret_cast<PeepAnimationsObject*>(_loadedObject.get());
                 auto stringId = GetAnimationPeepTypeStringId(animObj->GetPeepType());
-                DrawTextBasic(rt, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::right });
+                DrawTextBasic(rt, screenPos, stringId, {}, { Drawing::Colour::white, TextAlignment::right });
             }
 
             screenPos.y += kListRowHeight;
 
             // Draw object source
             auto stringId = ObjectManagerGetSourceGameString(listItem->repositoryItem->GetFirstSourceGame());
-            DrawTextBasic(rt, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::right });
+            DrawTextBasic(rt, screenPos, stringId, {}, { Drawing::Colour::white, TextAlignment::right });
             screenPos.y += kListRowHeight;
 
             // Draw object filename
@@ -1399,7 +1400,7 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<const utf8*>(path.c_str());
                 DrawTextBasic(
                     rt, { windowPos.x + this->width - 5, screenPos.y }, STR_WINDOW_COLOUR_2_STRINGID, ft,
-                    { COLOUR_BLACK, TextAlignment::right });
+                    { Drawing::Colour::black, TextAlignment::right });
                 screenPos.y += kListRowHeight;
             }
 
@@ -1751,7 +1752,7 @@ namespace OpenRCT2::Ui::Windows
 
         ContextShowError(STR_INVALID_SELECTION_OF_OBJECTS, errorString, {});
 
-        auto* windowMgr = Ui::GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         WindowBase* w = windowMgr->FindByClass(WindowClass::editorObjectSelection);
         if (w != nullptr)
         {

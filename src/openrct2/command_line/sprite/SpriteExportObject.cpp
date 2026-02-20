@@ -34,7 +34,7 @@ namespace OpenRCT2::CommandLine::Sprite
         auto context = CreateContext();
         context->Initialise();
 
-        std::unique_ptr<Object> metaObject = OpenRCT2::ObjectFactory::CreateObjectFromFile(objectPath, true);
+        std::unique_ptr<Object> metaObject = ObjectFactory::CreateObjectFromFile(objectPath, true);
         if (metaObject == nullptr)
         {
             fprintf(stderr, "Could not load the object.\n");

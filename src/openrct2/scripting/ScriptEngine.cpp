@@ -12,13 +12,13 @@
     #include "ScriptEngine.h"
 
     #include "../PlatformEnvironment.h"
-    #include "../actions/BannerPlaceAction.h"
-    #include "../actions/CustomAction.h"
-    #include "../actions/GameAction.h"
-    #include "../actions/LargeSceneryPlaceAction.h"
-    #include "../actions/RideCreateAction.h"
-    #include "../actions/StaffHireNewAction.h"
-    #include "../actions/WallPlaceAction.h"
+    #include "../actions/GameAction.hpp"
+    #include "../actions/general/CustomAction.h"
+    #include "../actions/peep/StaffHireNewAction.h"
+    #include "../actions/ride/RideCreateAction.h"
+    #include "../actions/scenery/BannerPlaceAction.h"
+    #include "../actions/scenery/LargeSceneryPlaceAction.h"
+    #include "../actions/scenery/WallPlaceAction.h"
     #include "../config/Config.h"
     #include "../core/EnumMap.hpp"
     #include "../core/File.h"
@@ -358,7 +358,7 @@ private:
 
     // Taken from http://en.cppreference.com/w/cpp/types/numeric_limits/epsilon
     template<class T>
-    static typename std::enable_if<!std::numeric_limits<T>::is_integer, bool>::type AlmostEqual(T x, T y, int32_t ulp = 20)
+    static std::enable_if<!std::numeric_limits<T>::is_integer, bool>::type AlmostEqual(T x, T y, int32_t ulp = 20)
     {
         // the machine epsilon has to be scaled to the magnitude of the values used
         // and multiplied by the desired precision in ULPs (units in the last place)
@@ -959,7 +959,7 @@ void ScriptEngine::CheckAndStartPlugins()
 
 void ScriptEngine::ProcessREPL()
 {
-    while (_evalQueue.size() > 0)
+    while (!_evalQueue.empty())
     {
         auto item = std::move(_evalQueue.front());
         _evalQueue.pop();
@@ -1802,19 +1802,19 @@ void ScriptEngine::RemoveSockets(const std::shared_ptr<Plugin>& plugin)
     #endif
 }
 
-std::string OpenRCT2::Scripting::Stringify(const DukValue& val)
+std::string Scripting::Stringify(const DukValue& val)
 {
     return ExpressionStringifier::StringifyExpression(val);
 }
 
-std::string OpenRCT2::Scripting::ProcessString(const DukValue& value)
+std::string Scripting::ProcessString(const DukValue& value)
 {
     if (value.type() == DukValue::Type::STRING)
         return value.as_string();
     return {};
 }
 
-bool OpenRCT2::Scripting::IsGameStateMutable()
+bool Scripting::IsGameStateMutable()
 {
     // Allow single player to alter game state anywhere
     if (Network::GetMode() == Network::Mode::none)
@@ -1827,7 +1827,7 @@ bool OpenRCT2::Scripting::IsGameStateMutable()
     return execInfo.IsGameStateMutable();
 }
 
-void OpenRCT2::Scripting::ThrowIfGameStateNotMutable()
+void Scripting::ThrowIfGameStateNotMutable()
 {
     // Allow single player to alter game state anywhere
     if (Network::GetMode() != Network::Mode::none)
@@ -1842,7 +1842,7 @@ void OpenRCT2::Scripting::ThrowIfGameStateNotMutable()
     }
 }
 
-int32_t OpenRCT2::Scripting::GetTargetAPIVersion()
+int32_t Scripting::GetTargetAPIVersion()
 {
     auto& scriptEngine = GetContext()->GetScriptEngine();
     auto& execInfo = scriptEngine.GetExecInfo();

@@ -553,7 +553,6 @@ STR_1168    :Asetukset
 STR_1169    :(Ei mitään)
 STR_1170    :{STRING}
 STR_1171    :{RED}Suljettu - - 
-STR_1172    :{YELLOW}{STRINGID}
 STR_1173    :Rakenna polkuja ja jonotusalueita
 STR_1174    :Banneri on tiellä
 STR_1175    :Tätä ei voi rakentaa kaltevalle polulle
@@ -1113,7 +1112,6 @@ STR_1727    :Rakennusluvat eivät ole myytävänä!
 STR_1728    :Rakennuslupia ei voi ostaa tähän…
 STR_1729    :Maa ei ole puiston omistuksessa!
 STR_1730    :{RED}Suljettu - - 
-STR_1731    :{WHITE}{STRINGID} - - 
 STR_1732    :Rakenna
 STR_1733    :Tila
 STR_1734    :{WINDOW_COLOUR_2}Kierrosten määrä:
@@ -1154,7 +1152,6 @@ STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COM
 STR_1773    :Vain yksi valokuvaosio sallittu per laite
 STR_1774    :Vain yksi nostomäki sallittu per laite
 STR_1777    :{WINDOW_COLOUR_2}Musiikki
-STR_1778    :{STRINGID} - - 
 STR_1790    :Valitse virka-asun väri tälle henkilöstötyypille
 STR_1791    :{WINDOW_COLOUR_2}Virka-asun väri:
 STR_1792    :Matkalla korjaamaan laitetta {STRINGID}

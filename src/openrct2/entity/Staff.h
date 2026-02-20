@@ -22,11 +22,14 @@ namespace OpenRCT2
     struct PathElement;
 } // namespace OpenRCT2
 
+namespace OpenRCT2::Drawing
+{
+    enum class Colour : uint8_t;
+}
+
 class DataSerialiser;
 class PatrolArea;
 struct Ride;
-
-using colour_t = uint8_t;
 
 enum class StaffType : uint8_t
 {
@@ -163,8 +166,8 @@ enum class EntertainerCostume : uint8_t
     Count
 };
 
-colour_t StaffGetColour(StaffType staffType);
-OpenRCT2::GameActions::Result StaffSetColour(StaffType staffType, colour_t value);
+OpenRCT2::Drawing::Colour StaffGetColour(StaffType staffType);
+OpenRCT2::GameActions::Result StaffSetColour(StaffType staffType, OpenRCT2::Drawing::Colour value);
 
 money64 GetStaffWage(StaffType type);
 

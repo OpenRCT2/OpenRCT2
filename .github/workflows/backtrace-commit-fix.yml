@@ -5,7 +5,7 @@ on:
       - opened
 jobs:
   backtrace_commit_correction:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       ISSUE: ${{ github.event.issue.html_url }}

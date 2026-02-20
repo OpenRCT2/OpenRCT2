@@ -95,7 +95,7 @@ static bool landSlopeFitsUnderTrack(int32_t baseZ, uint8_t slope, const TrackEle
     const auto [slopeNorthZ, slopeEastZ, slopeSouthZ, slopeWestZ] = GetSlopeCornerHeights(baseZ, slope);
 
     const TrackElemType trackElemType = trackElement.GetTrackType();
-    const auto& ted = OpenRCT2::TrackMetaData::GetTrackElementDescriptor(trackElemType);
+    const auto& ted = TrackMetaData::GetTrackElementDescriptor(trackElemType);
     const uint8_t sequenceIndex = trackElemType == TrackElemType::maze ? 0 : trackElement.GetSequenceIndex();
     const auto& trackClearances = ted.sequences[sequenceIndex].clearance;
     const auto trackQuarters = trackClearances.quarterTile.Rotate(trackElement.GetDirection());
@@ -161,7 +161,7 @@ static bool MapLoc68BABCShouldContinue(
         && tileElement->AsTrack()->GetTrackType() == TrackElemType::flat)
     {
         auto ride = GetRide(tileElement->AsTrack()->GetRideIndex());
-        if (ride != nullptr && ride->getRideTypeDescriptor().HasFlag(RtdFlag::supportsLevelCrossings))
+        if (ride != nullptr && ride->getRideTypeDescriptor().flags.has(RtdFlag::supportsLevelCrossings))
         {
             return true;
         }
@@ -182,7 +182,7 @@ static bool MapLoc68BABCShouldContinue(
  */
 GameActions::Result MapCanConstructWithClearAt(
     const CoordsXYRangedZ& pos, ClearingFunction clearFunc, const QuarterTile quarterTile, const CommandFlags flags,
-    const uint8_t slope, const CreateCrossingMode crossingMode, const bool isTree)
+    const uint8_t slope, const CreateCrossingMode crossingMode, const bool isTree, const RideId ignoreRideId)
 {
     auto res = GameActions::Result();
 
@@ -215,6 +215,13 @@ GameActions::Result MapCanConstructWithClearAt(
     {
         if (tileElement->GetType() != TileElementType::Surface)
         {
+            // Skip track elements belonging to the ride that's being ignored for rides that intersect themselves.
+            if (!ignoreRideId.IsNull() && tileElement->GetType() == TileElementType::Track
+                && tileElement->AsTrack()->GetRideIndex() == ignoreRideId)
+            {
+                continue;
+            }
+
             if (pos.baseZ < tileElement->GetClearanceZ() && pos.clearanceZ > tileElement->GetBaseZ()
                 && !(tileElement->IsGhost()))
             {
@@ -310,8 +317,8 @@ GameActions::Result MapCanConstructWithClearAt(
 }
 
 static bool dummyClearFunc(
-    [[maybe_unused]] OpenRCT2::TileElement** tile_element, [[maybe_unused]] const CoordsXY& coords,
-    [[maybe_unused]] CommandFlags flags, [[maybe_unused]] money64* price)
+    [[maybe_unused]] TileElement** tile_element, [[maybe_unused]] const CoordsXY& coords, [[maybe_unused]] CommandFlags flags,
+    [[maybe_unused]] money64* price)
 {
     return false;
 }

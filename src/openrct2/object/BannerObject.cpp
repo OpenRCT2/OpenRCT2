@@ -20,14 +20,14 @@
 
 namespace OpenRCT2
 {
-    void BannerObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream)
+    void BannerObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     {
-        stream->Seek(6, OpenRCT2::STREAM_SEEK_CURRENT);
+        stream->Seek(6, STREAM_SEEK_CURRENT);
         _legacyType.scrolling_mode = stream->ReadValue<uint8_t>();
         _legacyType.flags = stream->ReadValue<uint8_t>();
         _legacyType.price = stream->ReadValue<money16>();
         _legacyType.scenery_tab_id = kObjectEntryIndexNull;
-        stream->Seek(2, OpenRCT2::STREAM_SEEK_CURRENT);
+        stream->Seek(2, STREAM_SEEK_CURRENT);
 
         GetStringTable().Read(context, stream, ObjectStringID::name);
 
@@ -47,7 +47,7 @@ namespace OpenRCT2
         auto firstSourceGame = GetFirstSourceGame();
         if (firstSourceGame == ObjectSourceGame::custom)
         {
-            auto scgPathX = Object::GetScgPathXHeader();
+            auto scgPathX = GetScgPathXHeader();
             SetPrimarySceneryGroup(scgPathX);
         }
     }
@@ -72,8 +72,8 @@ namespace OpenRCT2
     {
         auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
 
-        auto image0 = ImageId(_legacyType.image, COLOUR_BORDEAUX_RED);
-        auto image1 = ImageId(_legacyType.image + 1, COLOUR_BORDEAUX_RED);
+        auto image0 = ImageId(_legacyType.image, Drawing::Colour::bordeauxRed);
+        auto image1 = ImageId(_legacyType.image + 1, Drawing::Colour::bordeauxRed);
 
         GfxDrawSprite(rt, image0, screenCoords + ScreenCoordsXY{ -12, 8 });
         GfxDrawSprite(rt, image1, screenCoords + ScreenCoordsXY{ -12, 8 });

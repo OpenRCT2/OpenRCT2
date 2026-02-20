@@ -24,7 +24,7 @@ namespace OpenRCT2::Network
     namespace TickFlags
     {
         constexpr uint16_t kChecksums = 1 << 0;
-    };
+    }
 
     enum class Mode : int32_t
     {
@@ -36,7 +36,7 @@ namespace OpenRCT2::Network
     namespace PlayerFlags
     {
         constexpr uint16_t kIsServer = 1 << 0;
-    };
+    }
 
     enum class Status : int32_t
     {

@@ -18,15 +18,16 @@
 #include "../PlatformEnvironment.h"
 #include "../ReplayManager.h"
 #include "../Version.h"
-#include "../actions/CheatSetAction.h"
-#include "../actions/GameSetSpeedAction.h"
-#include "../actions/ParkSetDateAction.h"
-#include "../actions/ParkSetParameterAction.h"
-#include "../actions/RideFreezeRatingAction.h"
-#include "../actions/RideSetPriceAction.h"
-#include "../actions/RideSetSettingAction.h"
-#include "../actions/ScenarioSetSettingAction.h"
-#include "../actions/StaffSetCostumeAction.h"
+#include "../actions/GameActionRunner.h"
+#include "../actions/cheats/CheatSetAction.h"
+#include "../actions/general/GameSetSpeedAction.h"
+#include "../actions/general/ScenarioSetSettingAction.h"
+#include "../actions/park/ParkSetDateAction.h"
+#include "../actions/park/ParkSetParameterAction.h"
+#include "../actions/peep/StaffSetCostumeAction.h"
+#include "../actions/ride/RideFreezeRatingAction.h"
+#include "../actions/ride/RideSetPriceAction.h"
+#include "../actions/ride/RideSetSettingAction.h"
 #include "../config/Config.h"
 #include "../core/Console.hpp"
 #include "../core/EnumUtils.hpp"
@@ -41,7 +42,6 @@
 #include "../entity/EntityRegistry.h"
 #include "../entity/Staff.h"
 #include "../interface/Chat.h"
-#include "../interface/Colour.h"
 #include "../interface/Viewport.h"
 #include "../interface/WindowBase.h"
 #include "../localisation/Formatting.h"
@@ -108,8 +108,7 @@ static bool InvalidArguments(bool* invalid, bool arguments);
 static int32_t ConsoleParseInt(const std::string& src, bool* valid)
 {
     utf8* end;
-    int32_t value;
-    value = static_cast<int32_t>(strtol(src.c_str(), &end, 10));
+    int32_t value = static_cast<int32_t>(strtol(src.c_str(), &end, 10));
     *valid = (*end == '\0');
     return value;
 }
@@ -117,8 +116,7 @@ static int32_t ConsoleParseInt(const std::string& src, bool* valid)
 static double ConsoleParseDouble(const std::string& src, bool* valid)
 {
     utf8* end;
-    double value;
-    value = strtod(src.c_str(), &end);
+    double value = strtod(src.c_str(), &end);
     *valid = (*end == '\0');
     return value;
 }
@@ -1276,7 +1274,7 @@ static void ConsoleCommandForceDate([[maybe_unused]] InteractiveConsole& console
     int32_t year = 0;
     int32_t month = 0;
     int32_t day = 0;
-    if (argv.size() < 1 || argv.size() > 3)
+    if (argv.empty() || argv.size() > 3)
     {
         return;
     }
@@ -1330,7 +1328,7 @@ static void ConsoleCommandForceDate([[maybe_unused]] InteractiveConsole& console
 
 static void ConsoleCommandLoadPark([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
-    if (argv.size() < 1)
+    if (argv.empty())
     {
         console.WriteLine("Parameters required <filename>");
         return;
@@ -1365,7 +1363,7 @@ static void ConsoleCommandLoadPark([[maybe_unused]] InteractiveConsole& console,
 
 static void ConsoleCommandSavePark([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
-    if (argv.size() < 1)
+    if (argv.empty())
     {
         SaveGameCmd();
     }
@@ -1401,7 +1399,7 @@ static void ConsoleCommandReplayStartRecord(InteractiveConsole& console, const a
         return;
     }
 
-    if (argv.size() < 1)
+    if (argv.empty())
     {
         console.WriteFormatLine("Parameters required <replay_name> [<max_ticks = 0xFFFFFFFF>]");
         return;
@@ -1474,7 +1472,7 @@ static void ConsoleCommandReplayStart(InteractiveConsole& console, const argumen
         return;
     }
 
-    if (argv.size() < 1)
+    if (argv.empty())
     {
         console.WriteFormatLine("Parameters required <replay_name>");
         return;
@@ -1559,7 +1557,7 @@ static void ConsoleCommandReplayNormalise(InteractiveConsole& console, const arg
 static void ConsoleCommandMpDesync(InteractiveConsole& console, const arguments_t& argv)
 {
     int32_t desyncType = 0;
-    if (argv.size() >= 1)
+    if (!argv.empty())
     {
         desyncType = atoi(argv[0].c_str());
     }
@@ -1584,7 +1582,7 @@ static void ConsoleCommandMpDesync(InteractiveConsole& console, const arguments_
                 auto* guest = guests[0];
                 if (guests.size() > 1)
                     guest = guests[UtilRand() % guests.size() - 1];
-                guest->TshirtColour = UtilRand() & 0xFF;
+                guest->TshirtColour = static_cast<Drawing::Colour>(UtilRand() % Drawing::kColourNumNormal);
                 guest->Invalidate();
             }
             break;
@@ -1701,7 +1699,7 @@ static void ConsoleCommandProfilerStart([[maybe_unused]] InteractiveConsole& con
 static void ConsoleCommandProfilerExportCSV(
     [[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
-    if (argv.size() < 1)
+    if (argv.empty())
     {
         console.WriteLineError("Missing argument: <file path>");
     }
@@ -1722,7 +1720,7 @@ static void ConsoleCommandProfilerStop([[maybe_unused]] InteractiveConsole& cons
     Profiling::Disable();
 
     // Export to CSV if argument is provided.
-    if (argv.size() >= 1)
+    if (!argv.empty())
     {
         return ConsoleCommandProfilerExportCSV(console, argv);
     }
@@ -1738,10 +1736,10 @@ static void ConsoleSpawnBalloon(InteractiveConsole& console, const arguments_t& 
     int32_t x = kCoordsXYStep * atof(argv[0].c_str());
     int32_t y = kCoordsXYStep * atof(argv[1].c_str());
     int32_t z = kCoordsZStep * atof(argv[2].c_str());
-    int32_t col = 28;
+    Drawing::Colour colour = Drawing::Colour::brightRed;
     if (argv.size() > 3)
-        col = atoi(argv[3].c_str());
-    Balloon::Create({ x, y, z }, col, false);
+        colour = static_cast<Drawing::Colour>(atoi(argv[3].c_str()) % Drawing::kColourNumNormal);
+    Balloon::Create({ x, y, z }, colour, false);
 }
 
 using console_command_func = void (*)(InteractiveConsole& console, const arguments_t& argv);

@@ -64,7 +64,7 @@ namespace OpenRCT2
     uint8_t TrackElement::GetSeatRotation() const
     {
         const auto* ride = GetRide(GetRideIndex());
-        if (ride != nullptr && ride->getRideTypeDescriptor().HasFlag(RtdFlag::hasLandscapeDoors))
+        if (ride != nullptr && ride->getRideTypeDescriptor().flags.has(RtdFlag::hasLandscapeDoors))
             return kDefaultSeatRotation;
 
         return URide.ColourScheme >> 4;

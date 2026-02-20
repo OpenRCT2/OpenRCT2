@@ -103,7 +103,7 @@ public:
         return this;
     }
 
-    typename TBase::Result Finish() override
+    TBase::Result Finish() override
     {
         typename TBase::Result result;
         auto status = BCryptFinishHash(_hHash, result.data(), static_cast<ULONG>(result.size()), 0);
@@ -664,7 +664,7 @@ public:
 private:
     static std::tuple<DWORD, PBYTE> HashData(const void* data, size_t dataLen)
     {
-        auto hash = OpenRCT2::Crypt::SHA256(data, dataLen);
+        auto hash = SHA256(data, dataLen);
         return ToHeap(hash.data(), hash.size());
     }
 

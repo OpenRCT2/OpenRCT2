@@ -70,7 +70,7 @@ namespace OpenRCT2::Config
 
         // Localisation
         int32_t language;
-        OpenRCT2::MeasurementFormat measurementFormat;
+        MeasurementFormat measurementFormat;
         TemperatureUnit temperatureFormat;
         bool showHeightAsUnits;
         int32_t dateFormat;

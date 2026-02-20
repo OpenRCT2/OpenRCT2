@@ -40,7 +40,7 @@ namespace OpenRCT2::SawyerCoding
     class SawyerChunk final
     {
     private:
-        OpenRCT2::MemoryStream _data;
+        MemoryStream _data;
         ChunkEncoding _encoding = ChunkEncoding::none;
 
     public:
@@ -57,6 +57,6 @@ namespace OpenRCT2::SawyerCoding
             return _encoding;
         }
 
-        SawyerChunk(ChunkEncoding encoding, OpenRCT2::MemoryStream&& data);
+        SawyerChunk(ChunkEncoding encoding, MemoryStream&& data);
     };
 } // namespace OpenRCT2::SawyerCoding

@@ -556,7 +556,6 @@ STR_1168    :Opcións
 STR_1169    :(Ningún)
 STR_1170    :{STRING}
 STR_1171    :{RED}Pechado
-STR_1172    :{YELLOW}{STRINGID}
 STR_1173    :Construír sendeiros e filas de espera
 STR_1174    :Letreiro no medio
 STR_1175    :Non se pode construír isto nun sendeiro inclinado
@@ -1113,7 +1112,6 @@ STR_1727    :Os dereitos de construción non están á venda!
 STR_1728    :Non se poden mercar dereitos de construción aquí…
 STR_1729    :O terreo non é propiedade do parque!
 STR_1730    :{RED}Pechado
-STR_1731    :{WHITE}{STRINGID} - -
 STR_1732    :Construír
 STR_1733    :Modo
 STR_1734    :{WINDOW_COLOUR_2}Número de voltas:
@@ -1154,7 +1152,6 @@ STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COM
 STR_1773    :Só se permite unha sección de fotos por atracción.
 STR_1774    :Só se permite unha subida con cable por atracción
 STR_1777    :Música de atracción
-STR_1778    :{STRINGID} - -
 STR_1790    :Seleccione a cor do uniforme para este tipo de persoal
 STR_1791    :{WINDOW_COLOUR_2}Cor do uniforme:
 STR_1792    :Respondendo á avaría de {STRINGID}
@@ -3835,3 +3832,12 @@ STR_7005    :Arrastra unha área de camiño
 STR_7006    :Debuxa un bordo arredor dos botóns de imaxe
 STR_7007    :Tipo de atracción
 STR_7008    :Tipo de atracción descoñecida ({INT32})
+STR_7009    :Recibindo scripts…
+STR_7010    :Non se puido iniciar a repetición, o ficheiro ‘{STRING}’ non existe ou non é válido
+STR_7011    :Non se puido iniciar a repetición
+STR_7012    :Zloti polaco (PLN)
+STR_7013    :Arrastrar áreas de camiño
+STR_7014    :Teño o xogo en Steam, pero aínda non o instalei.
+STR_7015    :Pecha Steam se está en execución e logo preme en "Aceptar".
+STR_7016    :OpenRCT2 tentou iniciar unha descarga en Steam. Abre Steam e deixa que se descargue o xogo. Cando Steam remate, preme en "Aceptar".
+STR_7017    :Saír

@@ -75,7 +75,7 @@ namespace OpenRCT2
     bool ObjectEntryDescriptor::HasValue() const
     {
         return Generation != ObjectGeneration::JSON || !Identifier.empty();
-    };
+    }
 
     ObjectType ObjectEntryDescriptor::GetType() const
     {
@@ -152,7 +152,7 @@ namespace OpenRCT2
         throw std::runtime_error("Not supported.");
     }
 
-    void Object::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream)
+    void Object::ReadLegacy(IReadObjectContext* context, IStream* stream)
     {
         throw std::runtime_error("Not supported.");
     }
@@ -194,7 +194,7 @@ namespace OpenRCT2
 
     ObjectSourceGame Object::GetFirstSourceGame() const
     {
-        if (_sourceGames.size() == 0)
+        if (_sourceGames.empty())
             return ObjectSourceGame::custom;
 
         return _sourceGames[0];
@@ -423,7 +423,7 @@ namespace OpenRCT2
         {
             LOG_WARNING("%i fields found in version string '%s', expected X.Y.Z", nums.size(), version);
         }
-        if (nums.size() == 0)
+        if (nums.empty())
         {
             LOG_WARNING("No fields found in version string '%s', expected X.Y.Z", version);
             return std::make_tuple(0, 0, 0);

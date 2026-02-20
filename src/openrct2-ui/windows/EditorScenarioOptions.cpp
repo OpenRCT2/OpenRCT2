@@ -19,15 +19,16 @@
 #include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/SpriteIds.h>
-#include <openrct2/actions/ParkSetNameAction.h>
-#include <openrct2/actions/ScenarioSetSettingAction.h>
+#include <openrct2/actions/GameActionRunner.h>
+#include <openrct2/actions/general/ScenarioSetSettingAction.h>
+#include <openrct2/actions/park/ParkSetNameAction.h>
 #include <openrct2/core/String.hpp>
+#include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Font.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/entity/Peep.h>
-#include <openrct2/interface/Colour.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Language.h>
 #include <openrct2/localisation/Localisation.Date.h>
@@ -584,8 +585,7 @@ namespace OpenRCT2::Ui::Windows
 
         void SetPressedTab()
         {
-            int32_t i;
-            for (i = 0; i < WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_COUNT; i++)
+            for (int32_t i = 0; i < WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_COUNT; i++)
                 setWidgetPressed(WIDX_TAB_1 + i, false);
             setWidgetPressed(WIDX_TAB_1 + page, true);
         }
@@ -2339,7 +2339,7 @@ namespace OpenRCT2::Ui::Windows
          */
         void RidesOnScrollDraw(RenderTarget& rt, int32_t scrollIndex)
         {
-            auto colour = ColourMapA[colours[1].colour].mid_light;
+            auto colour = getColourMap(colours[1].colour).midLight;
             Rectangle::fill(rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } }, colour);
 
             for (int32_t i = 0; i < static_cast<int32_t>(_rideableRides.size()); i++)

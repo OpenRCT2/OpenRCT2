@@ -17,12 +17,12 @@
 #include "OpenRCT2.h"
 #include "ParkImporter.h"
 #include "PlatformEnvironment.h"
-#include "actions/CheatSetAction.h"
-#include "actions/FootpathPlaceAction.h"
-#include "actions/GameAction.h"
-#include "actions/RideEntranceExitPlaceAction.h"
-#include "actions/TileModifyAction.h"
-#include "actions/TrackPlaceAction.h"
+#include "actions/GameActionRunner.h"
+#include "actions/cheats/CheatSetAction.h"
+#include "actions/footpath/FootpathPlaceAction.h"
+#include "actions/general/TileModifyAction.h"
+#include "actions/ride/RideEntranceExitPlaceAction.h"
+#include "actions/track/TrackPlaceAction.h"
 #include "config/Config.h"
 #include "core/Compression.h"
 #include "core/DataSerialiser.h"
@@ -196,7 +196,6 @@ namespace OpenRCT2
                 if (currentTicks >= _currentRecording->tickEnd)
                 {
                     StopRecording();
-                    return;
                 }
             }
             else if (_mode == ReplayMode::PLAYING)
@@ -215,7 +214,6 @@ namespace OpenRCT2
                 if (currentTicks >= _currentReplay->tickEnd)
                 {
                     StopPlayback();
-                    return;
                 }
             }
             else if (_mode == ReplayMode::NORMALISATION)
@@ -230,7 +228,6 @@ namespace OpenRCT2
 
                     // Reset mode, in normalisation nothing will set it.
                     _mode = ReplayMode::NONE;
-                    return;
                 }
             }
         }

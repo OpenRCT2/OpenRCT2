@@ -11,9 +11,9 @@
 
 #include "../Identifiers.h"
 #include "../actions/CommandFlag.h"
+#include "../drawing/Colour.h"
 #include "../drawing/ImageIndexType.h"
 #include "../drawing/ScrollingText.h"
-#include "../interface/Colour.h"
 #include "../localisation/StringIdType.h"
 #include "../object/ObjectTypes.h"
 #include "Location.hpp"
@@ -59,7 +59,7 @@ struct PathRailingsDescriptor
     ImageIndex bridgeImage{};
     ImageIndex railingsImage{};
     RailingEntrySupportType supportType{};
-    colour_t supportColour = COLOUR_NULL;
+    OpenRCT2::Drawing::Colour supportColour = OpenRCT2::Drawing::kColourNull;
     uint8_t flags{};
     uint8_t scrollingMode = kScrollingModeNone;
 };

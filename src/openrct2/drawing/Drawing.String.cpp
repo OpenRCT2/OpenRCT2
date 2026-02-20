@@ -16,6 +16,7 @@
 #include "../core/String.hpp"
 #include "../core/UTF8.h"
 #include "../core/UnicodeChar.h"
+#include "../drawing/ColourMap.h"
 #include "../drawing/Drawing.h"
 #include "../drawing/IDrawingContext.h"
 #include "../drawing/IDrawingEngine.h"
@@ -276,14 +277,14 @@ void GfxDrawStringLeftCentred(
 /**
  * Changes the palette so that the next character changes colour
  */
-static void ColourCharacter(Drawing::TextColour colour, bool withOutline, Drawing::TextColours& textPalette)
+static void ColourCharacter(TextColour colour, bool withOutline, TextColours& textPalette)
 {
-    auto mapping = Drawing::getTextColourMapping(colour);
+    auto mapping = getTextColourMapping(colour);
 
     if (!withOutline)
     {
-        mapping.sunnyOutline = PaletteIndex::pi0;
-        mapping.shadowOutline = PaletteIndex::pi0;
+        mapping.sunnyOutline = PaletteIndex::transparent;
+        mapping.shadowOutline = PaletteIndex::transparent;
     }
 
     textPalette = mapping;
@@ -293,12 +294,12 @@ static void ColourCharacter(Drawing::TextColour colour, bool withOutline, Drawin
  * Changes the palette so that the next character changes colour
  * This is specific to changing to a predefined window related colour
  */
-static void ColourCharacterWindow(colour_t colour, bool withOutline, Drawing::TextColours& textPalette)
+static void ColourCharacterWindow(OpenRCT2::Drawing::Colour colour, bool withOutline, TextColours& textPalette)
 {
-    Drawing::TextColours mapping = {
-        ColourMapA[colour].colour_11,
-        PaletteIndex::pi0,
-        PaletteIndex::pi0,
+    TextColours mapping = {
+        getColourMap(colour).colour11,
+        PaletteIndex::transparent,
+        PaletteIndex::transparent,
     };
 
     if (withOutline)
@@ -324,13 +325,13 @@ void DrawStringCentredRaw(
     RenderTarget& rt, const ScreenCoordsXY& coords, int32_t numLines, const utf8* text, FontStyle fontStyle)
 {
     ScreenCoordsXY screenCoords(rt.x, rt.y);
-    DrawText(rt, screenCoords, { COLOUR_BLACK, fontStyle }, "");
+    DrawText(rt, screenCoords, { OpenRCT2::Drawing::Colour::black, fontStyle }, "");
     screenCoords = coords;
 
     for (int32_t i = 0; i <= numLines; i++)
     {
         int32_t width = GfxGetStringWidth(text, fontStyle);
-        DrawText(rt, screenCoords - ScreenCoordsXY{ width / 2, 0 }, { kTextColour254, fontStyle }, text);
+        DrawText(rt, screenCoords - ScreenCoordsXY{ width / 2, 0 }, { OpenRCT2::Drawing::kColourNull, fontStyle }, text);
 
         const utf8* ch = text;
         const utf8* nextCh = nullptr;
@@ -416,8 +417,8 @@ int32_t StringGetHeightRaw(std::string_view text, FontStyle fontStyle)
  * ticks    : ebp >> 16
  */
 void DrawNewsTicker(
-    RenderTarget& rt, const ScreenCoordsXY& coords, int32_t width, colour_t colour, StringId format, u8string_view args,
-    int32_t ticks)
+    RenderTarget& rt, const ScreenCoordsXY& coords, int32_t width, OpenRCT2::Drawing::Colour colour, StringId format,
+    u8string_view args, int32_t ticks)
 {
     int32_t numLines, lineHeight, lineY;
     ScreenCoordsXY screenCoords(rt.x, rt.y);
@@ -461,7 +462,7 @@ void DrawNewsTicker(
         }
 
         screenCoords = { coords.x - halfWidth, lineY };
-        DrawText(rt, screenCoords, { kTextColour254, FontStyle::small }, buffer);
+        DrawText(rt, screenCoords, { OpenRCT2::Drawing::kColourNull, FontStyle::small }, buffer);
 
         if (numCharactersDrawn > numCharactersToDraw)
         {
@@ -537,7 +538,7 @@ static void TTFDrawStringRawTTF(RenderTarget& rt, std::string_view text, TextDra
         int32_t drawX = info->x + fontDesc->offset_x;
         int32_t drawY = info->y + fontDesc->offset_y;
         uint8_t hintThresh = Config::Get().fonts.enableHinting ? fontDesc->hinting_threshold : 0;
-        OpenRCT2::Drawing::IDrawingContext* dc = drawingEngine->GetDrawingContext();
+        IDrawingContext* dc = drawingEngine->GetDrawingContext();
         dc->DrawTTFBitmap(rt, info, surface, drawX, drawY, hintThresh);
     }
     info->x += surface->w;
@@ -748,7 +749,7 @@ static void TTFProcessString(RenderTarget& rt, std::string_view text, TextDrawIn
 
 static void TTFProcessInitialColour(ColourWithFlags colour, TextDrawInfo* info)
 {
-    if (colour.colour != kTextColour254 && colour.colour != kTextColour255)
+    if (colour.colour != OpenRCT2::Drawing::kColourNull)
     {
         info->colourFlags = colour.flags;
         if (!colour.flags.has(ColourFlag::inset))
@@ -757,22 +758,22 @@ static void TTFProcessInitialColour(ColourWithFlags colour, TextDrawInfo* info)
         }
         else
         {
-            Drawing::TextColours newPalette = {};
+            TextColours newPalette = {};
             switch (info->darkness)
             {
                 case TextDarkness::extraDark:
-                    newPalette.fill = ColourMapA[colour.colour].dark;
-                    newPalette.shadowOutline = ColourMapA[colour.colour].mid_light;
+                    newPalette.fill = getColourMap(colour.colour).dark;
+                    newPalette.shadowOutline = getColourMap(colour.colour).midLight;
                     break;
 
                 case TextDarkness::dark:
-                    newPalette.fill = ColourMapA[colour.colour].mid_dark;
-                    newPalette.shadowOutline = ColourMapA[colour.colour].light;
+                    newPalette.fill = getColourMap(colour.colour).midDark;
+                    newPalette.shadowOutline = getColourMap(colour.colour).light;
                     break;
 
                 case TextDarkness::regular:
-                    newPalette.fill = ColourMapA[colour.colour].mid_light;
-                    newPalette.shadowOutline = ColourMapA[colour.colour].lighter;
+                    newPalette.fill = getColourMap(colour.colour).midLight;
+                    newPalette.shadowOutline = getColourMap(colour.colour).lighter;
                     break;
             }
 

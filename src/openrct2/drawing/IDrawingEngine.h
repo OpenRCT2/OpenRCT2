@@ -81,8 +81,7 @@ namespace OpenRCT2::Drawing
         virtual ~IDrawingEngineFactory()
         {
         }
-        [[nodiscard]] virtual std::unique_ptr<IDrawingEngine> Create(DrawingEngine type, OpenRCT2::Ui::IUiContext& uiContext)
-            = 0;
+        [[nodiscard]] virtual std::unique_ptr<IDrawingEngine> Create(DrawingEngine type, Ui::IUiContext& uiContext) = 0;
     };
 
     struct IWeatherDrawer

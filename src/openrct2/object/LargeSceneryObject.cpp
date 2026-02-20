@@ -24,7 +24,7 @@
 
 namespace OpenRCT2
 {
-    static RCTLargeSceneryText ReadLegacy3DFont(OpenRCT2::IStream& stream)
+    static RCTLargeSceneryText ReadLegacy3DFont(IStream& stream)
     {
         RCTLargeSceneryText _3dFontLegacy = {};
         _3dFontLegacy.offset[0].x = stream.ReadValue<int16_t>();
@@ -52,17 +52,17 @@ namespace OpenRCT2
         return _3dFontLegacy;
     }
 
-    void LargeSceneryObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream)
+    void LargeSceneryObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     {
-        stream->Seek(6, OpenRCT2::STREAM_SEEK_CURRENT);
+        stream->Seek(6, STREAM_SEEK_CURRENT);
         _legacyType.tool_id = static_cast<CursorID>(stream->ReadValue<uint8_t>());
         _legacyType.flags = stream->ReadValue<uint8_t>();
         _legacyType.price = stream->ReadValue<int16_t>() * 10;
         _legacyType.removal_price = stream->ReadValue<int16_t>() * 10;
-        stream->Seek(5, OpenRCT2::STREAM_SEEK_CURRENT);
+        stream->Seek(5, STREAM_SEEK_CURRENT);
         _legacyType.scenery_tab_id = kObjectEntryIndexNull;
         _legacyType.scrolling_mode = stream->ReadValue<uint8_t>();
-        stream->Seek(4, OpenRCT2::STREAM_SEEK_CURRENT);
+        stream->Seek(4, STREAM_SEEK_CURRENT);
 
         GetStringTable().Read(context, stream, ObjectStringID::name);
 
@@ -149,11 +149,11 @@ namespace OpenRCT2
 
         auto image = ImageId(_legacyType.image);
         if (_legacyType.flags & LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR)
-            image = image.WithPrimary(COLOUR_BORDEAUX_RED);
+            image = image.WithPrimary(Drawing::Colour::bordeauxRed);
         if (_legacyType.flags & LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR)
-            image = image.WithSecondary(COLOUR_YELLOW);
+            image = image.WithSecondary(Drawing::Colour::yellow);
         if (_legacyType.flags & LARGE_SCENERY_FLAG_HAS_TERTIARY_COLOUR)
-            image = image.WithTertiary(COLOUR_DARK_BROWN);
+            image = image.WithTertiary(Drawing::Colour::darkBrown);
 
         GfxDrawSprite(rt, image, screenCoords);
     }
@@ -164,7 +164,7 @@ namespace OpenRCT2
         LARGE_SCENERY_TILE_FLAG_ALLOW_SUPPORTS_ABOVE = 0x40,
     };
 
-    std::vector<LargeSceneryTile> LargeSceneryObject::ReadTiles(OpenRCT2::IStream* stream)
+    std::vector<LargeSceneryTile> LargeSceneryObject::ReadTiles(IStream* stream)
     {
         auto tiles = std::vector<LargeSceneryTile>();
 
@@ -184,7 +184,7 @@ namespace OpenRCT2
 
         while (stream->ReadValue<uint16_t>() != 0xFFFF)
         {
-            stream->Seek(-2, OpenRCT2::STREAM_SEEK_CURRENT);
+            stream->Seek(-2, STREAM_SEEK_CURRENT);
             tiles.push_back(ReadLegacyTile());
         }
         uint8_t index = 0;

@@ -1,11 +1,52 @@
-0.4.31 (in development)
+0.4.32 (in development)
 ------------------------------------------------------------------------
+- Feature: [#22704] Rides can be made invisible more easily.
+- Improved: [#21753] Tracked rides with cheated powered launch mode can change powered launch speed without extra cheats.
+- Improved: [#25526] When a shop item cannot be recoloured, show a preview of the building instead.
+- Improved: [#25941] The command line sprite build command is now faster.
+- Improved: [#26002] Rides with newer track elements (like the zero G roll or diagonal brakes) can now be saved as track designs.
+- Change: [#26011] Audio resampling no longer depends on the third-party library libspeexdsp.
+- Fix: [#14686, #23996, #25981] Preview images from different windows overwrite each other when using OpenGL.
+- Fix: [#15128, #15626, #16331, #17443, #18626, #21597, #24175, #24971, #25963] Crash when loading corrupted RCT2/RCT1 save files with duplicate entity indices.
+- Fix: [#25237] Wrong colours on the Knight costume.
+- Fix: [#25712, #25727] Crash during startup from window list race condition.
+- Fix: [#25910] Folders starting with numbers are sorted incorrectly (e.g. 1, 10, 2 instead of 1, 2, 10).
+- Fix: [#25954] Guests display hats, balloons, and umbrellas while puking.
+- Fix: [#25978] Frozen peeps start clapping when the scenario is won.
+- Fix: [#25999] Scenery picker tool does not pick the tertiary colour of large scenery correctly.
+
+0.4.31 (2026-02-01)
+------------------------------------------------------------------------
+- Feature: [#25844] The sprite builder now also supports adding JSON-based palettes.
+- Improved: [#3788] Self-intersecting track designs can now be placed.
+- Improved: [#25719] The weather change dropdown now shows icons next to the weather types for easier selection.
 - Improved: [#25765] The ‘View options’ and ‘Special track elements’ dropdowns no longer need click-and-hold.
-- Fix: [#4643, #25167] Many metal supports draw with a filled in top when they didn't in vanilla, causing some slight misalignment and glitching.
-- Fix: [#25735] Ride synchronisation z-check works incorrectly.
+- Improved: [#25858] macOS now supports the onboarding menu.
+- Improved: [#25882] Maze construction now auto-removes trees.
+- Improved: [objects#421] The vehicle tab of some rides now shows more of the vehicle.
+- Change: [#25018] Add upkeep cost to booster pieces.
+- Fix: [#4643, #25167] Many metal supports draw with a filled in top when they didn’t in vanilla, causing some slight misalignment and glitching.
+- Fix: [#15009] Landscaping tools do not display estimates when the game is paused (original bug).
+- Fix: [#18441] Replacing footpaths sometimes results in a spurious “Footpath in the way” error (original bug).
+- Fix: [#20620] In-game console caret does not update when pasting.
+- Fix: [#20652] Twister Roller Coaster design ‘u(0241)’ has no preview and cannot be built (bug in track design).
+- Fix: [#23859] Wrong banner text displayed after loading a different park.
+- Fix: [#25221] When trying to cancel game file discovery, the prompt reappears.
+- Fix: [#25703, #25889] Crash when scanning scenarios with packed objects in parallel.
 - Fix: [#25739] Game freezes when a tab in the New Ride window contains more than 384 items.
 - Fix: [#25745] Crash when a player connection is aborted early.
+- Fix: [#25775] Network download sizes are in bytes instead of the listed kibibytes.
 - Fix: [#25799] The animated options tab icon of the news window does not always redraw.
+- Fix: [#25850] Guests do not have their happiness penalised by low energy, high hunger, high thirst, high toilet.
+- Fix: [#25850] Ride nausea generation is different compared to vanilla.
+- Fix: [#25854] When a guest is at 0 happiness or energy, the game draws too big of a bar in the guest stats window.
+- Fix: [#25862] Diagonal and inclined brakes are not counted when calculating upkeep cost.
+- Fix: [#25873] Repainting a banner in OpenRCT2-specific colours results in an error message.
+- Fix: [#25879] Guest window viewport doesn’t follow vehicle when they board a ride.
+- Fix: [#25908] Crash from use-after-free in banner text formatting during multithreaded rendering.
+- Fix: [objects#419] Alignment of RCT2 red, yellow and green queue previews is off.
+- Fix: [objects#424] Jet Aeroplane decor has a hole in it.
+- Fix: [objects#425] Capacity of ‘Blob from outer space ride’ is incorrectly listed.
 
 0.4.30 (2026-01-04)
 ------------------------------------------------------------------------
@@ -18,7 +59,7 @@
 - Improved: [#25625] Renewing and refurbishing rides now also resets the downtime.
 - Improved: [#25662] The sprite build command is faster when building sprites from the same image file.
 - Change: [#21912] Toilet income is now categorised as shop sales instead of ride tickets.
-- Change: [#25403] Guests will not slide down the Spiral Slide if it's broken, even if they have already entered the ride structure.
+- Change: [#25403] Guests will not slide down the Spiral Slide if it’s broken, even if they have already entered the ride structure.
 - Change: [#25485] Make the enlarged pressed swatch sprite more pronounced.
 - Change: [#25544] The default game window size is now 1280×720px instead of 640×480px.
 - Fix: [#9895] Stand-up coaster gets wrong intensity boost from the synchronisation bonus.
@@ -124,7 +165,7 @@
 - Change: [#25266] Lightning and thunder have less chance of occurring during blizzards.
 - Removed: [#25225] `sprite exportalldat`, replaced with `sprite exportobject`.
 - Fix: [#24513] Ride/track designs can now be shifted underground as well.
-- Fix: [#24682] The scenery window isn't high enough to accommodate all tool buttons when there are multiple rows of groups/tabs.
+- Fix: [#24682] The scenery window isn’t high enough to accommodate all tool buttons when there are multiple rows of groups/tabs.
 - Fix: [#24882] Guests are shown with hats and umbrellas whilst clapping.
 - Fix: [#24998] Some custom small scenery objects do not load.
 - Fix: [#25131] The Reverse Freefall Coaster On-ride photo section track has incorrectly coloured ties.
@@ -290,7 +331,7 @@
 - Fix: [#24464] Window and viewport visibility is not calculated correctly causing minor performance issues.
 - Fix: [#24488] Objects are not always redrawn immediately when they are reloaded from the Object Selection window.
 - Fix: [#24544] RCT1 Maze designs with wooden walls are not imported correctly.
-- Fix: [#24567] Long flat-to-steep wooden mine support sprites don't connect to flat supports exactly.
+- Fix: [#24567] Long flat-to-steep wooden mine support sprites don’t connect to flat supports exactly.
 
 0.4.22 (2025-05-04)
 ------------------------------------------------------------------------
@@ -340,7 +381,7 @@
 - Change: [#24059] The ‘select other ride’ button is now available in the track designs manager.
 - Change: [#24067] [Plugin] Registered menu items are now listed alphabetically.
 - Change: [#24070] Footpath selection menus now show object names on hover using a tooltip.
-- Change: [#24101] Frozen peeps are no longer removed when using the 'remove all guests' cheat.
+- Change: [#24101] Frozen peeps are no longer removed when using the “remove all guests” cheat.
 - Fix: [#4225] Ride Construction window offers non-existent banked sloped to level curve (original bug).
 - Fix: [#5281] Missing supports on miniature railways built backwards.
 - Fix: [#7222] Transparent pixels in sloped path tunnels (original bug).

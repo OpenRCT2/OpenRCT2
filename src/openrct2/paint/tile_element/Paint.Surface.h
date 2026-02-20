@@ -10,10 +10,22 @@
 #pragma once
 
 #include "../../SpriteIds.h"
-#include "../../interface/Colour.h"
 #include "../../world/Location.hpp"
 
+#include <cstdint>
 #include <optional>
+
+struct PaintSession;
+
+namespace OpenRCT2
+{
+    struct SurfaceElement;
+}
+
+namespace OpenRCT2::Drawing
+{
+    enum class Colour : uint8_t;
+}
 
 enum
 {
@@ -106,4 +118,6 @@ enum
     SPR_RCT1_WATER_OVERLAY = SPR_CSG_BEGIN + 46792,
 };
 
-std::optional<colour_t> GetPatrolAreaTileColour(const CoordsXY& pos);
+std::optional<OpenRCT2::Drawing::Colour> GetPatrolAreaTileColour(const CoordsXY& pos);
+
+void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, const OpenRCT2::SurfaceElement& tileElement);

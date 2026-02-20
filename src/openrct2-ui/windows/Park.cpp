@@ -20,8 +20,9 @@
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/SpriteIds.h>
-#include <openrct2/actions/ParkSetEntranceFeeAction.h>
-#include <openrct2/actions/ParkSetNameAction.h>
+#include <openrct2/actions/GameActionRunner.h>
+#include <openrct2/actions/park/ParkSetEntranceFeeAction.h>
+#include <openrct2/actions/park/ParkSetNameAction.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/UnitConversion.h>
 #include <openrct2/drawing/Drawing.h>
@@ -1244,7 +1245,8 @@ namespace OpenRCT2::Ui::Windows
 
                 auto* animObj = findPeepAnimationsObjectForType(AnimationPeepType::guest);
                 ImageId peepImage(
-                    animObj->GetPeepAnimation(PeepAnimationGroup::normal).baseImage + 1, COLOUR_BRIGHT_RED, COLOUR_TEAL);
+                    animObj->GetPeepAnimation(PeepAnimationGroup::normal).baseImage + 1, Drawing::Colour::brightRed,
+                    Drawing::Colour::darkWater);
                 if (page == WINDOW_PARK_PAGE_GUESTS)
                     peepImage = peepImage.WithIndexOffset(_peepAnimationFrame & 0xFFFFFFFC);
 

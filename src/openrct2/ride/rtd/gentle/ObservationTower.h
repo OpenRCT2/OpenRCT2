@@ -28,12 +28,13 @@ constexpr RideTypeDescriptor ObservationTowerRTD =
         .extraTrackGroups = {},
     }),
     .InvertedTrackPaintFunctions = {},
-    .Flags = kRtdFlagsHasThreeColours | EnumsToFlags(RtdFlag::hasSinglePieceStation, RtdFlag::cannotHaveGaps,
+    .flags = kRtdFlagsHasThreeColours | RtdFlags(RtdFlag::hasSinglePieceStation, RtdFlag::cannotHaveGaps,
                      RtdFlag::hasLoadOptions, RtdFlag::noWallsAroundTrack, RtdFlag::hasVehicleColours, RtdFlag::hasTrack,
                      RtdFlag::supportsMultipleColourSchemes, RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit,
                      RtdFlag::showInTrackDesigner, RtdFlag::slightlyInterestingToLookAt),
     .RideModes = EnumsToFlags(RideMode::rotatingLift),
     .DefaultMode = RideMode::rotatingLift,
+    .OperatingSettings = { 5, 27 },
     .Naming = { STR_RIDE_NAME_OBSERVATION_TOWER, STR_RIDE_DESCRIPTION_OBSERVATION_TOWER },
     .NameConvention = { RideComponentType::Cabin, RideComponentType::Track, RideComponentType::Station },
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
@@ -48,14 +49,14 @@ constexpr RideTypeDescriptor ObservationTowerRTD =
     .PhotoItem = ShopItem::photo,
     .BonusValue = 45,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_BRIGHT_RED, COLOUR_BLACK, COLOUR_GREY },
-        { COLOUR_LIGHT_BLUE, COLOUR_YELLOW, COLOUR_GREY },
-        { COLOUR_WHITE, COLOUR_YELLOW, COLOUR_GREY },
+        { Drawing::Colour::brightRed, Drawing::Colour::black, Drawing::Colour::grey },
+        { Drawing::Colour::lightBlue, Drawing::Colour::yellow, Drawing::Colour::grey },
+        { Drawing::Colour::white, Drawing::Colour::yellow, Drawing::Colour::grey },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_OBSERVATION_TOWER_TRACK, SPR_RIDE_DESIGN_PREVIEW_OBSERVATION_TOWER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,
     .Name = "observation_tower",
-    .RatingsData = 
+    .RatingsData =
     {
         RatingsCalculationType::Normal,
         { RideRating::make(1, 50), RideRating::make(0, 00), RideRating::make(0, 10) },

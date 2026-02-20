@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "Drawing.h"
+#include "Drawing.Sprite.h"
 
 #include <cassert>
 #include <cstring>

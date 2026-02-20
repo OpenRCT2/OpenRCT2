@@ -89,7 +89,7 @@ static void SetupTrackManagerObjects()
 
             for (auto rideType : item->RideInfo.RideType)
             {
-                if (GetRideTypeDescriptor(rideType).HasFlag(RtdFlag::hasTrack))
+                if (GetRideTypeDescriptor(rideType).flags.has(RtdFlag::hasTrack))
                 {
                     *selectionFlags &= ~ObjectSelectionFlags::Flag6;
                     break;
@@ -120,7 +120,7 @@ static void SetupTrackDesignerObjects()
             {
                 if (rideType != kRideTypeNull)
                 {
-                    if (GetRideTypeDescriptor(rideType).HasFlag(RtdFlag::showInTrackDesigner))
+                    if (GetRideTypeDescriptor(rideType).flags.has(RtdFlag::showInTrackDesigner))
                     {
                         *selectionFlags &= ~ObjectSelectionFlags::Flag6;
                         break;

@@ -550,7 +550,6 @@ STR_1168    :Параметри
 STR_1169    :(Немає)
 STR_1170    :{STRING}
 STR_1171    :{RED}Зачинено
-STR_1172    :{YELLOW}{STRINGID}
 STR_1173    :Побудова пішохідних доріжок та ліній черги
 STR_1174    :Знак банеру на шляху
 STR_1175    :Неможливо побудувати це на похилій доріжці
@@ -1107,7 +1106,6 @@ STR_1727    :Права на будівництво не продаються!
 STR_1728    :Не вдалося купити права на будівництво…
 STR_1729    :Ділянка не належить парку!
 STR_1730    :{RED}Зачинено
-STR_1731    :{WHITE}{STRINGID} - -
 STR_1732    :Build
 STR_1733    :Режим
 STR_1734    :{WINDOW_COLOUR_2}Кількість кіл:
@@ -1148,7 +1146,6 @@ STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COM
 STR_1773    :Only one on-ride photo section allowed per ride
 STR_1774    :Only one cable lift hill allowed per ride
 STR_1777    :Музика в атракціонах
-STR_1778    :{STRINGID} - -
 STR_1790    :Вибрати колір уніформи для цього типу працівників
 STR_1791    :{WINDOW_COLOUR_2}Колір уніформи:
 STR_1792    :Відповідає на {STRINGING} виклик про поломку

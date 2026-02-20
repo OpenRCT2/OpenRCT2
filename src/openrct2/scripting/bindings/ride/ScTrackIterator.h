@@ -23,14 +23,14 @@ namespace OpenRCT2::Scripting
     {
     private:
         CoordsXYZD _position;
-        OpenRCT2::TrackElemType _type;
+        TrackElemType _type;
         [[maybe_unused]] RideId _ride;
 
     public:
         static std::shared_ptr<ScTrackIterator> FromElement(const CoordsXY& position, int32_t elementIndex);
         static void Register(duk_context* ctx);
 
-        ScTrackIterator(const CoordsXYZD& position, OpenRCT2::TrackElemType type, RideId ride);
+        ScTrackIterator(const CoordsXYZD& position, TrackElemType type, RideId ride);
 
     private:
         DukValue position_get() const;

@@ -28,8 +28,8 @@ constexpr RideTypeDescriptor LSMLaunchedRollerCoasterRTD =
         .extraTrackGroups = {TrackGroup::liftHill, TrackGroup::liftHillCable},
         }),
     .InvertedTrackPaintFunctions = {},
-    .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt |
-                 EnumsToFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::checkGForces, 
+    .flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt |
+                 RtdFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::checkGForces, 
                               RtdFlag::allowMultipleCircuits, RtdFlag::allowCableLiftHill, RtdFlag::allowReversedTrains),
     .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned, RideMode::poweredLaunch, RideMode::poweredLaunchBlockSectioned),
     .DefaultMode = RideMode::continuousCircuit,
@@ -51,10 +51,10 @@ constexpr RideTypeDescriptor LSMLaunchedRollerCoasterRTD =
     .PhotoItem = ShopItem::photo,
     .BonusValue = 120,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_LIGHT_BLUE, COLOUR_LIGHT_BLUE, COLOUR_BLACK}, // Taiga
-        { COLOUR_BRIGHT_GREEN, COLOUR_BRIGHT_GREEN, COLOUR_YELLOW}, // Cheetah Hunt
-        { COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_DULL_BROWN_LIGHT}, // Maverick
-        { COLOUR_BLACK, COLOUR_BLACK, COLOUR_DULL_BROWN_DARK}, // Taron
+        { Drawing::Colour::lightBlue, Drawing::Colour::lightBlue, Drawing::Colour::black}, // Taiga
+        { Drawing::Colour::brightGreen, Drawing::Colour::brightGreen, Drawing::Colour::yellow}, // Cheetah Hunt
+        { Drawing::Colour::brightRed, Drawing::Colour::brightRed, Drawing::Colour::beige}, // Maverick
+        { Drawing::Colour::black, Drawing::Colour::black, Drawing::Colour::umber}, // Taron
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_GIGA_RC, SPR_RIDE_DESIGN_PREVIEW_GIGA_RC_SUPPORTS },
     .ColourKey = RideColourKey::Ride,
@@ -64,7 +64,7 @@ constexpr RideTypeDescriptor LSMLaunchedRollerCoasterRTD =
         RatingsCalculationType::Normal,
         { RideRating::make(3, 85), RideRating::make(0, 40), RideRating::make(0, 35) },
         14,
-        -1,
+        kDynamicRideShelterRating,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },

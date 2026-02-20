@@ -376,9 +376,8 @@ namespace OpenRCT2::SawyerCoding
 
     static void EncodeChunkRotate(uint8_t* buffer, size_t length)
     {
-        size_t i;
         uint8_t code = 1;
-        for (i = 0; i < length; i++)
+        for (size_t i = 0; i < length; i++)
         {
             buffer[i] = Numerics::rol8(buffer[i], code);
             code = (code + 2) % 8;
@@ -394,13 +393,11 @@ namespace OpenRCT2::SawyerCoding
             throw std::length_error("Stream is (nearly) empty!");
         }
 
-        size_t i;
-
         // Currently can't detect TD4, as the checksum is the same as SC4 (need alternative method)
 
         uint32_t checksum = *(reinterpret_cast<const uint32_t*>(&src[length - 4]));
         uint32_t actualChecksum = 0;
-        for (i = 0; i < length - 4; i++)
+        for (size_t i = 0; i < length - 4; i++)
         {
             actualChecksum = (actualChecksum & 0xFFFFFF00) | (((actualChecksum & 0xFF) + static_cast<uint8_t>(src[i])) & 0xFF);
             actualChecksum = Numerics::rol32(actualChecksum, 3);

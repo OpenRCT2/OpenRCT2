@@ -66,27 +66,27 @@ namespace OpenRCT2::Ui
             return _instances.at(idx);
         }
 
-        typename std::vector<T>::iterator begin() // NOLINT(readability-identifier-naming)
+        std::vector<T>::iterator begin() // NOLINT(readability-identifier-naming)
         {
             return _instances.begin();
         }
-        typename std::vector<T>::const_iterator begin() const // NOLINT(readability-identifier-naming)
+        std::vector<T>::const_iterator begin() const // NOLINT(readability-identifier-naming)
         {
             return _instances.cbegin();
         }
-        typename std::vector<T>::const_iterator cbegin() const // NOLINT(readability-identifier-naming)
+        std::vector<T>::const_iterator cbegin() const // NOLINT(readability-identifier-naming)
         {
             return _instances.cbegin();
         }
-        typename std::vector<T>::iterator end() // NOLINT(readability-identifier-naming)
+        std::vector<T>::iterator end() // NOLINT(readability-identifier-naming)
         {
             return _instances.begin() + _numInstances;
         }
-        typename std::vector<T>::const_iterator end() const // NOLINT(readability-identifier-naming)
+        std::vector<T>::const_iterator end() const // NOLINT(readability-identifier-naming)
         {
             return _instances.cbegin() + _numInstances;
         }
-        typename std::vector<T>::const_iterator cend() const // NOLINT(readability-identifier-naming)
+        std::vector<T>::const_iterator cend() const // NOLINT(readability-identifier-naming)
         {
             return _instances.cbegin() + _numInstances;
         }

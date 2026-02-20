@@ -381,7 +381,7 @@ static void ScenarioUpdateDayNightCycle()
     // Only update palette if day / night cycle has changed
     if (gDayNightCycle != currentDayNightCycle)
     {
-        UpdatePalette(gGamePalette, OpenRCT2::Drawing::PaletteIndex::pi10, 236);
+        UpdatePalette(gGamePalette, Drawing::PaletteIndex::pi10, 236);
     }
 }
 
@@ -489,7 +489,7 @@ bool ScenarioCreateDucks()
 const random_engine_t::state_type& ScenarioRandState()
 {
     return getGameState().scenarioRand.state();
-};
+}
 
 void ScenarioRandSeed(random_engine_t::result_type s0, random_engine_t::result_type s1)
 {

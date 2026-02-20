@@ -12,7 +12,8 @@
 #include "../interface/Viewport.h"
 
 #include <openrct2/GameState.h>
-#include <openrct2/actions/RideCreateAction.h>
+#include <openrct2/actions/GameActionRunner.h>
+#include <openrct2/actions/ride/RideCreateAction.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideConstruction.h>
@@ -281,7 +282,7 @@ namespace OpenRCT2
 
             // Additional tower bases can only be built if the ride allows for it (elevator)
             if (trackType == TrackElemType::towerBase
-                && !currentRide.getRideTypeDescriptor().HasFlag(RtdFlag::allowExtraTowerBases))
+                && !currentRide.getRideTypeDescriptor().flags.has(RtdFlag::allowExtraTowerBases))
                 entryIsDisabled = true;
 
             // Check if a previous element exists, to collate entries if possible

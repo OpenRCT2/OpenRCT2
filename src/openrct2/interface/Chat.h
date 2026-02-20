@@ -10,7 +10,6 @@
 #pragma once
 
 #include "../core/StringTypes.h"
-#include "Colour.h"
 
 #include <string_view>
 

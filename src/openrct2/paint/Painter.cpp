@@ -95,7 +95,7 @@ void Painter::PaintReplayNotice(RenderTarget& rt, const char* text)
     screenCoords.x = screenCoords.x - stringWidth;
 
     if (((getGameState().currentTicks >> 1) & 0xF) > 4)
-        DrawText(rt, screenCoords, { COLOUR_SATURATED_RED }, buffer);
+        DrawText(rt, screenCoords, { OpenRCT2::Drawing::Colour::saturatedRed }, buffer);
 
     // Make area dirty so the text doesn't get drawn over the last
     GfxSetDirtyBlocks({ screenCoords, screenCoords + ScreenCoordsXY{ stringWidth, 16 } });
@@ -132,7 +132,7 @@ void Painter::PaintFPS(RenderTarget& rt)
         screenCoords.y = kTopToolbarHeight + 3;
     }
 
-    DrawText(rt, screenCoords, { COLOUR_WHITE }, buffer);
+    DrawText(rt, screenCoords, { OpenRCT2::Drawing::Colour::white }, buffer);
 
     // Make area dirty so the text doesn't get drawn over the last
     GfxSetDirtyBlocks({ { screenCoords - ScreenCoordsXY{ 16, 4 } }, { rt.lastStringPos.x + 16, screenCoords.y + 16 } });

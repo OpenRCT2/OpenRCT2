@@ -62,8 +62,8 @@ namespace OpenRCT2::Ui::Windows
             initScrollWidgets();
             WindowPushOthersBelow(*this);
 
-            colours[0] = ColourWithFlags{ COLOUR_BLACK }.withFlag(ColourFlag::translucent, true);
-            colours[1] = COLOUR_GREY;
+            colours[0] = ColourWithFlags{ Drawing::Colour::black }.withFlag(ColourFlag::translucent, true);
+            colours[1] = Drawing::Colour::grey;
 
             ResizeLanguage = LANGUAGE_UNDEFINED;
         }
@@ -111,7 +111,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onPrepareDraw() override
         {
-            const auto& ls = OpenRCT2::GetContext()->GetLocalisationService();
+            const auto& ls = GetContext()->GetLocalisationService();
             const auto currentLanguage = ls.GetCurrentLanguage();
             if (ResizeLanguage != currentLanguage)
             {

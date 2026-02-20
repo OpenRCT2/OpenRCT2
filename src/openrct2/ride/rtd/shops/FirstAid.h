@@ -26,7 +26,7 @@ constexpr RideTypeDescriptor FirstAidRTD =
         .extraTrackGroups = {},
     }),
     .InvertedTrackPaintFunctions = {},
-    .Flags = EnumsToFlags(RtdFlag::hasSinglePieceStation, RtdFlag::cannotHaveGaps, RtdFlag::noTestMode,
+    .flags = RtdFlags(RtdFlag::hasSinglePieceStation, RtdFlag::cannotHaveGaps, RtdFlag::noTestMode,
                      RtdFlag::noVehicles, RtdFlag::isShopOrFacility, RtdFlag::noWallsAroundTrack,
                      RtdFlag::isFlatRide, RtdFlag::guestsShouldGoInsideFacility,
                      RtdFlag::describeAsInside, RtdFlag::listVehiclesSeparately),
@@ -55,7 +55,7 @@ constexpr RideTypeDescriptor FirstAidRTD =
         RatingsCalculationType::Stall,
         { 1, 1, 1 },
         1,
-        -1,
+        kDynamicRideShelterRating,
         false,
         { { RatingsModifierType::NoModifier, 0, 0, 0, 0 } }
     },

@@ -13,8 +13,9 @@
 
     #include "../../../Context.h"
     #include "../../../GameState.h"
-    #include "../../../actions/NetworkModifyGroupAction.h"
-    #include "../../../actions/PlayerKickAction.h"
+    #include "../../../actions/GameActionRunner.h"
+    #include "../../../actions/network/NetworkModifyGroupAction.h"
+    #include "../../../actions/network/PlayerKickAction.h"
     #include "../../../network/Network.h"
     #include "../../../network/NetworkAction.h"
 
@@ -143,7 +144,7 @@ namespace OpenRCT2::Scripting
     DukValue ScNetwork::stats_get() const
     {
     #ifndef DISABLE_NETWORK
-        auto obj = OpenRCT2::Scripting::DukObject(_context);
+        auto obj = DukObject(_context);
         auto networkStats = Network::GetStats();
         {
             duk_push_array(_context);

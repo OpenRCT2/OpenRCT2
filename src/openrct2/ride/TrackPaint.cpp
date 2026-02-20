@@ -23,6 +23,7 @@
 #include "../paint/support/MetalSupports.h"
 #include "../paint/support/WoodenSupports.h"
 #include "../paint/tile_element/Paint.TileElement.h"
+#include "../paint/tile_element/Paint.Track.h"
 #include "../paint/tile_element/Segment.h"
 #include "../paint/track/Segment.h"
 #include "../paint/track/Support.h"
@@ -1795,7 +1796,7 @@ void TrackPaintUtilSpinningTunnelPaint(PaintSession& session, int8_t thickness, 
 
 void TrackPaintUtilOnridePhotoPlatformPaintBase(PaintSession& session, int32_t height)
 {
-    auto image = ImageId(SPR_STATION_BASE_BORDERLESS, COLOUR_BLACK);
+    auto image = ImageId(SPR_STATION_BASE_BORDERLESS, OpenRCT2::Drawing::Colour::black);
     if (session.TrackColours == ConstructionMarker)
         image = session.TrackColours.WithIndex(SPR_STATION_BASE_BORDERLESS);
     PaintAddImageAsParent(session, image, { 0, 0, height }, { 32, 32, 1 });
@@ -1993,7 +1994,8 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
                 // 0x1689 represents 0 height there are -127 to 128 heights above and below it
                 // There are 3 arrays of 256 heights (units, m, ft) chosen with the GetHeightMarkerOffset()
                 auto heightNum = (height + 8) / 16 - kMapBaseZ;
-                auto imageId = ImageId(SPR_HEIGHT_MARKER_BASE + GetHeightMarkerOffset() + heightNum, COLOUR_LIGHT_BLUE);
+                auto imageId = ImageId(
+                    SPR_HEIGHT_MARKER_BASE + GetHeightMarkerOffset() + heightNum, OpenRCT2::Drawing::Colour::lightBlue);
 
                 PaintAddImageAsParent(session, imageId, { 16, 16, height + ax + 3 }, { { 1000, 1000, 2047 }, { 1, 1, 0 } });
             }
@@ -2010,7 +2012,7 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
             const auto* originElement = ride->getOriginElement(StationIndex::FromUnderlying(0));
             if (originElement != nullptr && originElement->GetTrackType() == TrackElemType::flatTrack1x1B)
                 LightFx::AddKioskLights(session.MapPosition, height, zOffset);
-            else if (kRideTypeDescriptors[ride->type].HasFlag(RtdFlag::isShopOrFacility))
+            else if (kRideTypeDescriptors[ride->type].flags.has(RtdFlag::isShopOrFacility))
                 LightFx::AddShopLights(session.MapPosition, trackElement.GetDirection(), height, zOffset);
         }
 
@@ -2032,7 +2034,7 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
         }
 
         const auto& rtd = GetRideTypeDescriptor(trackElement.GetRideType());
-        bool isInverted = trackElement.IsInverted() && rtd.HasFlag(RtdFlag::hasInvertedVariant);
+        bool isInverted = trackElement.IsInverted() && rtd.flags.has(RtdFlag::hasInvertedVariant);
         const auto trackDrawerEntry = getTrackDrawerEntry(rtd, isInverted, TrackElementIsCovered(trackType));
 
         trackType = UncoverTrackElement(trackType);

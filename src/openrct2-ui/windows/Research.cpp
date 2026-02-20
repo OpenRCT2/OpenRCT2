@@ -14,7 +14,8 @@
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/SpriteIds.h>
-#include <openrct2/actions/ParkSetResearchFundingAction.h>
+#include <openrct2/actions/GameActionRunner.h>
+#include <openrct2/actions/park/ParkSetResearchFundingAction.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.Date.h>
@@ -384,7 +385,7 @@ namespace OpenRCT2::Ui::Windows
             else if (gameState.researchNextItem->type == Research::EntryType::ride)
             {
                 const auto& rtd = GetRideTypeDescriptor(gameState.researchNextItem->baseRideType);
-                if (rtd.HasFlag(RtdFlag::listVehiclesSeparately))
+                if (rtd.flags.has(RtdFlag::listVehiclesSeparately))
                 {
                     ft.Add<StringId>(gameState.researchNextItem->GetName());
                 }
@@ -444,7 +445,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 lastDevelopmentFormat = STR_RESEARCH_RIDE_LABEL;
                 const auto& rtd = GetRideTypeDescriptor(gameState.researchLastItem->baseRideType);
-                if (rtd.HasFlag(RtdFlag::listVehiclesSeparately))
+                if (rtd.flags.has(RtdFlag::listVehiclesSeparately))
                 {
                     ft.Add<StringId>(gameState.researchLastItem->GetName());
                 }

@@ -20,6 +20,7 @@
 #include <openrct2/SpriteIds.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/BitSet.hpp>
+#include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/interface/ColourWithFlags.h>
@@ -63,6 +64,7 @@ namespace OpenRCT2::Ui::Windows
         int32_t NumRows;
         int32_t ItemWidth;
         int32_t ItemHeight;
+        int32_t ItemPadding;
         bool ListVertically;
 
     public:
@@ -87,24 +89,24 @@ namespace OpenRCT2::Ui::Windows
             return Config::Get().interface.enlargedUi ? 6 : 0;
         }
 
-        static void drawTextItem(
-            RenderTarget& rt, ScreenCoordsXY screenCoords, int32_t width, const Dropdown::Item& item, bool highlighted,
-            StringId format, colour_t background)
+        void drawTextItem(
+            RenderTarget& rt, ScreenCoordsXY screenCoords, int32_t ddWidth, const Dropdown::Item& item, bool highlighted,
+            StringId format, Colour background)
         {
             ColourWithFlags colour = { background };
             if (highlighted)
-                colour.colour = COLOUR_WHITE;
+                colour.colour = Colour::white;
             if (item.isDisabled())
                 colour = { background, { ColourFlag::inset } };
 
-            auto yOffset = GetAdditionalRowPadding();
+            auto yOffset = ItemPadding;
             Formatter ft;
             ft.Add<const utf8*>(item.text);
 
-            DrawTextEllipsised(rt, { screenCoords.x + 2, screenCoords.y + yOffset }, width - 7, format, ft, { colour });
+            DrawTextEllipsised(rt, { screenCoords.x + 2, screenCoords.y + yOffset }, ddWidth - 7, format, ft, { colour });
         }
 
-        void onDraw(Drawing::RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             drawWidgets(rt);
 
@@ -128,15 +130,16 @@ namespace OpenRCT2::Ui::Windows
 
                     if (colours[0].flags.has(ColourFlag::translucent))
                     {
-                        TranslucentWindowPalette palette = kTranslucentWindowPalettes[colours[0].colour];
+                        TranslucentWindowPalette palette = kTranslucentWindowPalettes[EnumValue(colours[0].colour)];
                         Rectangle::filter(rt, { leftTop, rightBottom }, palette.highlight);
                         Rectangle::filter(rt, { leftTop + shadowOffset, rightBottom + shadowOffset }, palette.shadow);
                     }
                     else
                     {
-                        Rectangle::fill(rt, { leftTop, rightBottom }, ColourMapA[colours[0].colour].mid_dark);
+                        Rectangle::fill(rt, { leftTop, rightBottom }, getColourMap(colours[0].colour).midDark);
                         Rectangle::fill(
-                            rt, { leftTop + shadowOffset, rightBottom + shadowOffset }, ColourMapA[colours[0].colour].lightest);
+                            rt, { leftTop + shadowOffset, rightBottom + shadowOffset },
+                            getColourMap(colours[0].colour).lightest);
                     }
                 }
                 else
@@ -210,6 +213,7 @@ namespace OpenRCT2::Ui::Windows
         {
             // Set and calculate num items, rows and columns
             ItemHeight = (txtFlags & Dropdown::Flag::CustomHeight) ? customItemHeight : GetDefaultRowHeight();
+            ItemPadding = (txtFlags & Dropdown::Flag::CustomHeight) ? 0 : GetAdditionalRowPadding();
 
             gDropdown.numItems = static_cast<int32_t>(numItems);
             if (gDropdown.numItems > 1)
@@ -451,7 +455,7 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowDropdownClose()
     {
-        auto* windowMgr = Ui::GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         windowMgr->CloseByClass(WindowClass::dropdown);
     }
 
@@ -469,70 +473,33 @@ namespace OpenRCT2::Ui::Windows
         return -1;
     }
 
-    // colour_t ordered for use in colour dropdown
-    static constexpr colour_t kColoursDropdownOrder[] = {
-        COLOUR_BLACK,
-        COLOUR_SATURATED_RED,
-        COLOUR_DARK_ORANGE,
-        COLOUR_DARK_YELLOW,
-        COLOUR_GRASS_GREEN_DARK,
-        COLOUR_SATURATED_GREEN,
-        COLOUR_AQUA_DARK,
-        COLOUR_DARK_BLUE,
-        COLOUR_SATURATED_PURPLE_DARK,
+    // Colour ordered for use in colour dropdown
+    static constexpr Colour kColoursDropdownOrder[] = {
+        Colour::black,          Colour::saturatedRed,   Colour::darkOrange,   Colour::darkYellow,
+        Colour::forestGreen,    Colour::saturatedGreen, Colour::deepWater,    Colour::darkBlue,
+        Colour::violet,
 
-        COLOUR_GREY,
-        COLOUR_BRIGHT_RED,
-        COLOUR_LIGHT_ORANGE,
-        COLOUR_YELLOW,
-        COLOUR_MOSS_GREEN,
-        COLOUR_BRIGHT_GREEN,
-        COLOUR_TEAL,
-        COLOUR_LIGHT_BLUE,
-        COLOUR_BRIGHT_PURPLE,
+        Colour::grey,           Colour::brightRed,      Colour::lightOrange,  Colour::yellow,
+        Colour::mossGreen,      Colour::brightGreen,    Colour::darkWater,    Colour::lightBlue,
+        Colour::brightPurple,
 
-        COLOUR_WHITE,
-        COLOUR_LIGHT_PINK,
-        COLOUR_ORANGE_LIGHT,
-        COLOUR_BRIGHT_YELLOW,
-        COLOUR_GRASS_GREEN_LIGHT,
-        COLOUR_SATURATED_GREEN_LIGHT,
-        COLOUR_AQUAMARINE,
-        COLOUR_ICY_BLUE,
-        COLOUR_SATURATED_PURPLE_LIGHT,
+        Colour::white,          Colour::lightPink,      Colour::pastelOrange, Colour::brightYellow,
+        Colour::chartreuse,     Colour::limeGreen,      Colour::lightWater,   Colour::icyBlue,
+        Colour::lavender,
 
-        COLOUR_DULL_BROWN_DARK,
-        COLOUR_BORDEAUX_RED_DARK,
-        COLOUR_TAN_DARK,
-        COLOUR_SATURATED_BROWN,
-        COLOUR_DARK_OLIVE_DARK,
-        COLOUR_OLIVE_DARK,
-        COLOUR_DULL_GREEN_DARK,
-        COLOUR_DARK_PURPLE,
-        COLOUR_DARK_PINK,
+        Colour::umber,          Colour::maroon,         Colour::sepia,        Colour::saturatedBrown,
+        Colour::armyGreen,      Colour::hunterGreen,    Colour::viridian,     Colour::darkPurple,
+        Colour::darkPink,
 
-        COLOUR_DARK_BROWN,
-        COLOUR_BORDEAUX_RED,
-        COLOUR_SALMON_PINK,
-        COLOUR_LIGHT_BROWN,
-        COLOUR_DARK_OLIVE_GREEN,
-        COLOUR_OLIVE_GREEN,
-        COLOUR_DARK_GREEN,
-        COLOUR_LIGHT_PURPLE,
-        COLOUR_BRIGHT_PINK,
+        Colour::darkBrown,      Colour::bordeauxRed,    Colour::salmonPink,   Colour::lightBrown,
+        Colour::darkOliveGreen, Colour::oliveGreen,     Colour::darkGreen,    Colour::lightPurple,
+        Colour::brightPink,
 
-        COLOUR_DULL_BROWN_LIGHT,
-        COLOUR_BORDEAUX_RED_LIGHT,
-        COLOUR_TAN_LIGHT,
-        COLOUR_SATURATED_BROWN_LIGHT,
-        COLOUR_DARK_OLIVE_LIGHT,
-        COLOUR_OLIVE_LIGHT,
-        COLOUR_DULL_GREEN_LIGHT,
-        COLOUR_DULL_PURPLE_LIGHT,
-        COLOUR_MAGENTA_LIGHT,
+        Colour::beige,          Colour::coralPink,      Colour::peach,        Colour::tan,
+        Colour::honeyDew,       Colour::celadon,        Colour::seafoamGreen, Colour::periwinkle,
+        Colour::pastelPink,
 
-        COLOUR_INVISIBLE,
-        COLOUR_VOID,
+        Colour::invisible,      Colour::voidBackground,
     };
 
     constexpr std::array kColourTooltips = {
@@ -542,7 +509,7 @@ namespace OpenRCT2::Ui::Windows
         STR_COLOUR_DARK_YELLOW_TIP,
         STR_COLOUR_GRASS_GREEN_DARK_TIP,
         STR_COLOUR_SATURATED_GREEN_TIP,
-        STR_COLOUR_AQUA_DARK_TIP,
+        STR_COLOUR_DEEP_WATER_TIP,
         STR_COLOUR_DARK_BLUE_TIP,
         STR_COLOUR_SATURATED_PURPLE_DARK_TIP,
 
@@ -552,7 +519,7 @@ namespace OpenRCT2::Ui::Windows
         STR_COLOUR_YELLOW_TIP,
         STR_COLOUR_MOSS_GREEN_TIP,
         STR_COLOUR_BRIGHT_GREEN_TIP,
-        STR_COLOUR_TEAL_TIP,
+        STR_COLOUR_DARK_WATER_TIP,
         STR_COLOUR_LIGHT_BLUE_TIP,
         STR_COLOUR_BRIGHT_PURPLE_TIP,
 
@@ -562,7 +529,7 @@ namespace OpenRCT2::Ui::Windows
         STR_COLOUR_BRIGHT_YELLOW_TIP,
         STR_COLOUR_GRASS_GREEN_LIGHT_TIP,
         STR_COLOUR_SATURATED_GREEN_LIGHT_TIP,
-        STR_COLOUR_AQUAMARINE_TIP,
+        STR_COLOUR_LIGHT_WATER_TIP,
         STR_COLOUR_ICY_BLUE_TIP,
         STR_COLOUR_SATURATED_PURPLE_LIGHT_TIP,
 
@@ -600,7 +567,7 @@ namespace OpenRCT2::Ui::Windows
         STR_COLOUR_VOID_TIP,
     };
 
-    colour_t ColourDropDownIndexToColour(uint8_t ddidx)
+    Colour ColourDropDownIndexToColour(uint8_t ddidx)
     {
         return kColoursDropdownOrder[ddidx];
     }
@@ -609,12 +576,12 @@ namespace OpenRCT2::Ui::Windows
      *  rct2: 0x006ED43D
      */
     void WindowDropdownShowColour(
-        WindowBase* w, Widget* widget, ColourWithFlags dropdownColour, colour_t selectedColour, bool alwaysHideSpecialColours)
+        WindowBase* w, Widget* widget, ColourWithFlags dropdownColour, Colour selectedColour, bool alwaysHideSpecialColours)
     {
         int32_t defaultIndex = -1;
 
         const bool specialColoursEnabled = !alwaysHideSpecialColours && getGameState().cheats.allowSpecialColourSchemes;
-        auto numColours = specialColoursEnabled ? static_cast<uint8_t>(COLOUR_COUNT) : kColourNumNormal;
+        auto numColours = specialColoursEnabled ? static_cast<uint8_t>(Drawing::kColourNumTotal) : kColourNumNormal;
         // Set items
         for (uint64_t i = 0; i < numColours; i++)
         {
@@ -625,13 +592,13 @@ namespace OpenRCT2::Ui::Windows
             ImageId imageId;
             if (Config::Get().interface.enlargedUi)
             {
-                imageId = (orderedColour == COLOUR_INVISIBLE) ? ImageId(SPR_G2_ICON_PALETTE_INVISIBLE_LARGE, COLOUR_WHITE)
-                                                              : ImageId(SPR_G2_ICON_PALETTE_LARGE, orderedColour);
+                imageId = (orderedColour == Colour::invisible) ? ImageId(SPR_G2_ICON_PALETTE_INVISIBLE_LARGE, Colour::white)
+                                                               : ImageId(SPR_G2_ICON_PALETTE_LARGE, orderedColour);
             }
             else
             {
-                imageId = (orderedColour == COLOUR_INVISIBLE) ? ImageId(SPR_G2_ICON_PALETTE_INVISIBLE, COLOUR_WHITE)
-                                                              : ImageId(SPR_PALETTE_BTN, orderedColour);
+                imageId = (orderedColour == Colour::invisible) ? ImageId(SPR_G2_ICON_PALETTE_INVISIBLE, Colour::white)
+                                                               : ImageId(SPR_PALETTE_BTN, orderedColour);
             }
 
             gDropdown.items[i] = { .type = Dropdown::ItemType::colour, .image = imageId, .tooltip = kColourTooltips[i] };
@@ -703,6 +670,12 @@ namespace OpenRCT2::Dropdown
     Item PlainMenuLabel(StringId stringId)
     {
         return StringItem(ItemType::plain, LanguageGetString(stringId));
+    }
+
+    Item PlainMenuLabel(StringId format, const Formatter& ft)
+    {
+        auto string = FormatStringIDLegacy(format, ft.Data());
+        return StringItem(ItemType::plain, string.c_str());
     }
 
     Item ToggleOption(StringId stringId)

@@ -133,8 +133,6 @@ static void PaintSwingingInverterShip(
     const TrackElement& trackElement, SupportType supportType)
 {
     uint8_t relativeTrackSequence = kTrackMap1x4[direction][trackSequence];
-    ImageId imageId;
-
     const StationObject* stationObject = ride.getStationObject();
 
     if (relativeTrackSequence != 1 && relativeTrackSequence != 3)
@@ -143,7 +141,7 @@ static void PaintSwingingInverterShip(
 
         if (stationObject != nullptr && !(stationObject->Flags & StationObjectFlags::noPlatforms))
         {
-            imageId = session.SupportColours.WithIndex(SPR_STATION_BASE_BORDERLESS);
+            ImageId imageId = session.SupportColours.WithIndex(SPR_STATION_BASE_BORDERLESS);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 });
 
             switch (direction)

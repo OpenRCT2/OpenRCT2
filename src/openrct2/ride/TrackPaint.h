@@ -646,15 +646,15 @@ TrackPaintFunction GetTrackPaintFunctionTwisterRC(OpenRCT2::TrackElemType trackT
 TrackPaintFunction GetTrackPaintFunctionCorkscrewRC(OpenRCT2::TrackElemType trackType);
 namespace OpenRCT2::HybridRC
 {
-    TrackPaintFunction GetTrackPaintFunction(OpenRCT2::TrackElemType trackType);
+    TrackPaintFunction GetTrackPaintFunction(TrackElemType trackType);
 }
 namespace OpenRCT2::SingleRailRC
 {
-    TrackPaintFunction GetTrackPaintFunction(OpenRCT2::TrackElemType trackType);
+    TrackPaintFunction GetTrackPaintFunction(TrackElemType trackType);
 }
 namespace OpenRCT2::AlpineRC
 {
-    TrackPaintFunction GetTrackPaintFunction(OpenRCT2::TrackElemType trackType);
+    TrackPaintFunction GetTrackPaintFunction(TrackElemType trackType);
 }
 TrackPaintFunction GetTrackPaintFunctionClassicWoodenRC(OpenRCT2::TrackElemType trackType);
 TrackPaintFunction GetTrackPaintFunctionClassicStandUpRC(OpenRCT2::TrackElemType trackType);

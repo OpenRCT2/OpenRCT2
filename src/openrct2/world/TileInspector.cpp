@@ -10,7 +10,7 @@
 #include "TileInspector.h"
 
 #include "../Diagnostic.h"
-#include "../actions/GameAction.h"
+#include "../actions/GameAction.hpp"
 #include "../core/Guard.hpp"
 #include "../object/LargeSceneryEntry.h"
 #include "../ride/Station.h"

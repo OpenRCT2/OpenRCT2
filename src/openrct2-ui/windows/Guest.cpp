@@ -19,12 +19,14 @@
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/SpriteIds.h>
-#include <openrct2/actions/GuestSetFlagsAction.h>
-#include <openrct2/actions/GuestSetNameAction.h>
-#include <openrct2/actions/PeepPickupAction.h>
+#include <openrct2/actions/GameActionRunner.h>
+#include <openrct2/actions/peep/GuestSetFlagsAction.h>
+#include <openrct2/actions/peep/GuestSetNameAction.h>
+#include <openrct2/actions/peep/PeepPickupAction.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/EnumUtils.hpp>
 #include <openrct2/core/String.hpp>
+#include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/entity/Guest.h>
@@ -142,17 +144,17 @@ namespace OpenRCT2::Ui::Windows
     static constexpr auto _guestWindowWidgetsStats = makeWidgets(
         kMainGuestWidgets,
         makeWidget     ({  3, (kListRowHeight * 0) + 4 + 43 }, { 62,  10 }, WidgetType::label,               WindowColour::secondary, STR_GUEST_STAT_HAPPINESS_LABEL),
-        makeProgressBar({ 65, (kListRowHeight * 0) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_GREEN,             0,                       19),
+        makeProgressBar({ 65, (kListRowHeight * 0) + 4 + 43 }, { 119, 10 }, Drawing::Colour::brightGreen,             0,                       19),
         makeWidget     ({  3, (kListRowHeight * 1) + 4 + 43 }, { 62,  10 }, WidgetType::label,               WindowColour::secondary, STR_GUEST_STAT_ENERGY_LABEL),
-        makeProgressBar({ 65, (kListRowHeight * 1) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_GREEN,             0,                       19),
+        makeProgressBar({ 65, (kListRowHeight * 1) + 4 + 43 }, { 119, 10 }, Drawing::Colour::brightGreen,             0,                       19),
         makeWidget     ({  3, (kListRowHeight * 2) + 4 + 43 }, { 62,  10 }, WidgetType::label,               WindowColour::secondary, STR_GUEST_STAT_HUNGER_LABEL),
-        makeProgressBar({ 65, (kListRowHeight * 2) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_RED,               67,                      100),
+        makeProgressBar({ 65, (kListRowHeight * 2) + 4 + 43 }, { 119, 10 }, Drawing::Colour::brightRed,               67,                      100),
         makeWidget     ({  3, (kListRowHeight * 3) + 4 + 43 }, { 62,  10 }, WidgetType::label,               WindowColour::secondary, STR_GUEST_STAT_THIRST_LABEL),
-        makeProgressBar({ 65, (kListRowHeight * 3) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_RED,               67,                      100),
+        makeProgressBar({ 65, (kListRowHeight * 3) + 4 + 43 }, { 119, 10 }, Drawing::Colour::brightRed,               67,                      100),
         makeWidget     ({  3, (kListRowHeight * 4) + 4 + 43 }, { 62,  10 }, WidgetType::label,               WindowColour::secondary, STR_GUEST_STAT_NAUSEA_LABEL),
-        makeProgressBar({ 65, (kListRowHeight * 4) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_RED,               47,                      100),
+        makeProgressBar({ 65, (kListRowHeight * 4) + 4 + 43 }, { 119, 10 }, Drawing::Colour::brightRed,               47,                      100),
         makeWidget     ({  3, (kListRowHeight * 5) + 4 + 43 }, { 62,  10 }, WidgetType::label,               WindowColour::secondary, STR_GUEST_STAT_TOILET_LABEL),
-        makeProgressBar({ 65, (kListRowHeight * 5) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_RED,               62,                      100),
+        makeProgressBar({ 65, (kListRowHeight * 5) + 4 + 43 }, { 119, 10 }, Drawing::Colour::brightRed,               62,                      100),
         makeWidget     ({  3, (kListRowHeight * 7) + 9 + 43 }, { 180, 2  }, WidgetType::horizontalSeparator, WindowColour::secondary)
     );
 
@@ -946,7 +948,16 @@ namespace OpenRCT2::Ui::Windows
 
             const std::optional<Focus> currentFocus = peep->State != PeepState::picked ? std::optional(Focus(peep->Id))
                                                                                        : std::nullopt;
-            if (focus != currentFocus)
+            // Check if guest is in a vehicle (on ride, entering, or leaving but still on vehicle)
+            auto isGuestInVehicle = [&peep]() {
+                return peep->State == PeepState::onRide || peep->State == PeepState::enteringRide
+                    || (peep->State == PeepState::leavingRide && peep->x == kLocationNull);
+            };
+
+            // Also update when guest is on a ride but viewport still points to the guest (not the vehicle)
+            bool viewportNeedsVehicleUpdate = isGuestInVehicle() && viewportTargetSprite == EntityId::FromUnderlying(number);
+
+            if (focus != currentFocus || viewportNeedsVehicleUpdate)
             {
                 onViewportRotate();
             }
@@ -1117,11 +1128,11 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            int32_t happinessPercentage = NormalizeGuestStatValue(peep->Happiness, kPeepMaxHappiness, 10);
+            int32_t happinessPercentage = NormalizeGuestStatValue(peep->Happiness, kPeepMaxHappiness, 3);
             widgetProgressBarSetNewPercentage(widgets[WIDX_HAPPINESS_BAR], happinessPercentage);
 
             int32_t energyPercentage = NormalizeGuestStatValue(
-                peep->Energy - kPeepMinEnergy, kPeepMaxEnergy - kPeepMinEnergy, 10);
+                peep->Energy - kPeepMinEnergy, kPeepMaxEnergy - kPeepMinEnergy, 3);
             widgetProgressBarSetNewPercentage(widgets[WIDX_ENERGY_BAR], energyPercentage);
 
             int32_t hungerPercentage = NormalizeGuestStatValue(peep->Hunger - 32, 158, 0);
@@ -1355,7 +1366,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onScrollDrawRides(int32_t scrollIndex, RenderTarget& rt)
         {
-            auto colour = ColourMapA[colours[1].colour].mid_light;
+            auto colour = getColourMap(colours[1].colour).midLight;
             Rectangle::fill(rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } }, colour);
 
             for (int32_t listIndex = 0; listIndex < static_cast<int32_t>(_riddenRides.size()); listIndex++)

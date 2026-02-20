@@ -12,9 +12,9 @@
 #include "../../Game.h"
 #include "../../GameState.h"
 #include "../../config/Config.h"
+#include "../../drawing/ColourMap.h"
 #include "../../drawing/Drawing.h"
 #include "../../drawing/ScrollingText.h"
-#include "../../interface/Colour.h"
 #include "../../interface/Viewport.h"
 #include "../../localisation/Formatter.h"
 #include "../../localisation/Formatting.h"
@@ -27,6 +27,7 @@
 #include "../../world/TileInspector.h"
 #include "../../world/tile_element/WallElement.h"
 #include "Paint.TileElement.h"
+#include "Paint.Wall.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
@@ -171,24 +172,12 @@ static void PaintWallScrollingText(
     if (banner == nullptr)
         return;
 
-    auto textColour = isGhost ? static_cast<colour_t>(COLOUR_GREY) : wallElement.GetSecondaryColour();
-    auto textPaletteIndex = direction == 0 ? ColourMapA[textColour].mid_dark : ColourMapA[textColour].light;
+    auto textColour = isGhost ? static_cast<OpenRCT2::Drawing::Colour>(OpenRCT2::Drawing::Colour::grey)
+                              : wallElement.GetSecondaryColour();
+    auto textPaletteIndex = direction == 0 ? getColourMap(textColour).midDark : getColourMap(textColour).light;
 
-    auto ft = Formatter();
-    banner->formatTextTo(ft);
-    char signString[256];
-    if (Config::Get().general.upperCaseBanners)
-    {
-        FormatStringToUpper(signString, sizeof(signString), STR_SCROLLING_SIGN_TEXT, ft.Data());
-    }
-    else
-    {
-        FormatStringLegacy(signString, sizeof(signString), STR_SCROLLING_SIGN_TEXT, ft.Data());
-    }
-
-    auto stringWidth = GfxGetStringWidth(signString, FontStyle::tiny);
-    auto scroll = stringWidth > 0 ? (getGameState().currentTicks / 2) % stringWidth : 0;
-    auto imageId = ScrollingText::setup(session, STR_SCROLLING_SIGN_TEXT, ft, scroll, scrollingMode, textPaletteIndex);
+    auto bannerText = banner->getText();
+    auto imageId = ScrollingText::setup(session, bannerText, scrollingMode, textPaletteIndex);
     PaintAddImageAsChild(session, imageId, { 0, 0, height + 8 }, { boundsOffset, { 1, 1, 13 } });
 }
 

@@ -14,6 +14,7 @@
 #include <openrct2/SpriteIds.h>
 #include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/entity/EntityRegistry.h>
@@ -168,7 +169,7 @@ namespace OpenRCT2::Ui::Windows
 
                     Widget groupWidget = {
                         .type = WidgetType::groupbox,
-                        .colour = colours[1].colour,
+                        .colour = EnumValue(colours[1].colour),
                         .left = static_cast<int16_t>(baseCheckBox.left - 5),
                         .right = static_cast<int16_t>(baseCheckBox.right + 5),
                         .top = y,
@@ -184,7 +185,7 @@ namespace OpenRCT2::Ui::Windows
                 // Create checkbox widgets
                 Widget checkboxWidget = {
                     .type = WidgetType::checkbox,
-                    .colour = colours[1].colour,
+                    .colour = EnumValue(colours[1].colour),
                     .left = baseCheckBox.left,
                     .right = baseCheckBox.right,
                     .top = y,
@@ -260,7 +261,7 @@ namespace OpenRCT2::Ui::Windows
             setWidgetPressed(WIDX_TAB_OPTIONS, page == optionsTab);
         }
 
-        void DrawTabImages(Drawing::RenderTarget& rt)
+        void DrawTabImages(RenderTarget& rt)
         {
             if (!isWidgetDisabled(WIDX_TAB_NEWS))
             {
@@ -308,7 +309,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onDraw(Drawing::RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             drawWidgets(rt);
             DrawTabImages(rt);
@@ -455,14 +456,14 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onScrollDraw(int32_t scrollIndex, Drawing::RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             int32_t lineHeight = FontGetLineHeight(FontStyle::small);
             int32_t itemHeight = CalculateNewsItemHeight();
             int32_t y = 0;
             int32_t i = 0;
 
-            const auto backgroundPaletteIndex = ColourMapA[colours[3].colour].light;
+            const auto backgroundPaletteIndex = getColourMap(colours[3].colour).light;
             // Fill the scrollbar gap if no scrollbar is visible
             const bool scrollbarVisible = scrolls[0].contentHeight > widgets[WIDX_SCROLL].height() - 1;
             const auto scrollbarFill = scrollbarVisible ? 0 : kScrollBarWidth;
@@ -490,7 +491,7 @@ namespace OpenRCT2::Ui::Windows
                     auto ft = Formatter();
                     ft.Add<StringId>(DateDayNames[newsItem.day - 1]);
                     ft.Add<StringId>(DateGameMonthNames[DateGetMonth(newsItem.monthYear)]);
-                    DrawTextBasic(rt, { 2, y }, STR_NEWS_DATE_FORMAT, ft, { COLOUR_WHITE, FontStyle::small });
+                    DrawTextBasic(rt, { 2, y }, STR_NEWS_DATE_FORMAT, ft, { Drawing::Colour::white, FontStyle::small });
                 }
                 // Item text
                 {
@@ -498,10 +499,10 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<const char*>(newsItem.text.c_str());
                     DrawTextWrapped(
                         rt, { 2, y + lineHeight }, 325, STR_BOTTOM_TOOLBAR_NEWS_TEXT, ft,
-                        { COLOUR_BRIGHT_GREEN, FontStyle::small });
+                        { Drawing::Colour::brightGreen, FontStyle::small });
                 }
                 // Subject button
-                if ((newsItem.typeHasSubject()) && !(newsItem.hasButton()))
+                if (newsItem.typeHasSubject() && !newsItem.hasButton())
                 {
                     auto screenCoords = ScreenCoordsXY{ 328 + scrollbarFill, y + lineHeight + 4 };
 
@@ -583,7 +584,7 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 // Location button
-                if ((newsItem.typeHasLocation()) && !(newsItem.hasButton()))
+                if (newsItem.typeHasLocation() && !newsItem.hasButton())
                 {
                     auto screenCoords = ScreenCoordsXY{ 352 + scrollbarFill, y + lineHeight + 4 };
 

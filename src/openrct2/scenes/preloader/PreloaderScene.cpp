@@ -49,14 +49,19 @@ void PreloaderScene::Tick()
 {
     gInUpdateCode = true;
 
-    ContextHandleInput();
+    // Avoid race condition with background jobs modifying gWindowList.
+    const bool jobsRunning = _jobs.IsBusy();
 
-    auto* windowMgr = Ui::GetWindowManager();
-    windowMgr->InvalidateAll();
+    if (!jobsRunning)
+    {
+        ContextHandleInput();
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->InvalidateAll();
+    }
 
     gInUpdateCode = false;
 
-    if (!_jobs.IsBusy())
+    if (!jobsRunning)
     {
         // Make sure the job is fully completed.
         _jobs.Join();

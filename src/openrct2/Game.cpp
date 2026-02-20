@@ -21,8 +21,9 @@
 #include "ParkImporter.h"
 #include "PlatformEnvironment.h"
 #include "ReplayManager.h"
-#include "actions/GameSetSpeedAction.h"
-#include "actions/LoadOrQuitAction.h"
+#include "actions/GameActionRunner.h"
+#include "actions/general/GameSetSpeedAction.h"
+#include "actions/general/LoadOrQuitAction.h"
 #include "audio/Audio.h"
 #include "config/Config.h"
 #include "core/Console.hpp"
@@ -32,12 +33,12 @@
 #include "core/Path.hpp"
 #include "core/String.hpp"
 #include "drawing/Drawing.h"
+#include "drawing/ScrollingText.h"
 #include "entity/EntityList.h"
 #include "entity/EntityRegistry.h"
 #include "entity/PatrolArea.h"
 #include "entity/Peep.h"
 #include "entity/Staff.h"
-#include "interface/Colour.h"
 #include "interface/Screenshot.h"
 #include "interface/Viewport.h"
 #include "interface/Window.h"
@@ -362,6 +363,10 @@ void GameLoadInit()
     snapshots->Reset();
 
     context->SetActiveScene(context->GetGameScene());
+
+    // Invalidate scrolling text cache to prevent stale text from previous park
+    // being displayed due to pointer value reuse in the cache matching logic
+    Drawing::ScrollingText::invalidate();
 
     if (!gLoadKeepWindowsOpen)
     {

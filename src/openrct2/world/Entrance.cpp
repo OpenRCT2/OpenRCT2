@@ -14,9 +14,10 @@
 #include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
-#include "../actions/ParkEntranceRemoveAction.h"
-#include "../actions/RideEntranceExitPlaceAction.h"
-#include "../actions/RideEntranceExitRemoveAction.h"
+#include "../actions/GameActionRunner.h"
+#include "../actions/park/ParkEntranceRemoveAction.h"
+#include "../actions/ride/RideEntranceExitPlaceAction.h"
+#include "../actions/ride/RideEntranceExitRemoveAction.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../network/Network.h"
@@ -211,7 +212,7 @@ void MazeEntranceHedgeRemoval(const CoordsXYE& entrance)
     } while (!(tileElement++)->IsLastForTile());
 }
 
-void ParkEntranceFixLocations(void)
+void ParkEntranceFixLocations()
 {
     auto& park = getGameState().park;
     // Fix ParkEntrance locations for which the tile_element no longer exists

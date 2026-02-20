@@ -27,12 +27,13 @@ constexpr RideTypeDescriptor HybridCoasterRTD =
         .extraTrackGroups = {TrackGroup::booster},
     }),
     .InvertedTrackPaintFunctions = {},
-    .Flags = kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt | 
-        EnumsToFlags(RtdFlag::hasTrackColourMain, RtdFlag::hasTrackColourSupports, 
-                     RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::checkGForces, 
+    .flags = kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt |
+        RtdFlags(RtdFlag::hasTrackColourMain, RtdFlag::hasTrackColourSupports,
+                     RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::checkGForces,
                      RtdFlag::allowMultipleCircuits, RtdFlag::allowReversedTrains),
     .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned),
     .DefaultMode = RideMode::continuousCircuit,
+    .OperatingSettings = { 10, 27 },
     .BoosterSettings = { 15, 52 },
     .LegacyBoosterSettings = { 15, 52 },
     .Naming = { STR_RIDE_NAME_HYBRID_COASTER, STR_RIDE_DESCRIPTION_HYBRID_COASTER },
@@ -49,24 +50,24 @@ constexpr RideTypeDescriptor HybridCoasterRTD =
     .PhotoItem = ShopItem::photo,
     .BonusValue = 120,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_LIGHT_ORANGE, COLOUR_LIGHT_ORANGE, COLOUR_DARK_BROWN }, // Medusa
-        { COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_SATURATED_BROWN},
-        { COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_GREY }, // Storm Chaser
-        { COLOUR_LIGHT_BLUE, COLOUR_LIGHT_BLUE, COLOUR_WHITE }, // Hakugei
-        { COLOUR_BORDEAUX_RED_DARK, COLOUR_BORDEAUX_RED_DARK, COLOUR_DARK_BROWN }, // Zadra
-        { COLOUR_SATURATED_BROWN, COLOUR_SATURATED_BROWN, COLOUR_DARK_BROWN }, // Untamed
-        { COLOUR_SATURATED_PURPLE_DARK, COLOUR_SATURATED_PURPLE_DARK, COLOUR_SATURATED_BROWN }, // Iron Gwazi
-        { COLOUR_BORDEAUX_RED_DARK, COLOUR_BORDEAUX_RED_DARK, COLOUR_BLACK }, // Wildcat's Revenge
+        { Drawing::Colour::lightOrange, Drawing::Colour::lightOrange, Drawing::Colour::darkBrown }, // Medusa
+        { Drawing::Colour::brightRed, Drawing::Colour::brightRed, Drawing::Colour::saturatedBrown},
+        { Drawing::Colour::brightRed, Drawing::Colour::brightRed, Drawing::Colour::grey }, // Storm Chaser
+        { Drawing::Colour::lightBlue, Drawing::Colour::lightBlue, Drawing::Colour::white }, // Hakugei
+        { Drawing::Colour::maroon, Drawing::Colour::maroon, Drawing::Colour::darkBrown }, // Zadra
+        { Drawing::Colour::saturatedBrown, Drawing::Colour::saturatedBrown, Drawing::Colour::darkBrown }, // Untamed
+        { Drawing::Colour::violet, Drawing::Colour::violet, Drawing::Colour::saturatedBrown }, // Iron Gwazi
+        { Drawing::Colour::maroon, Drawing::Colour::maroon, Drawing::Colour::black }, // Wildcat's Revenge
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_HYBRID_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_HYBRID_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,
     .Name = "hybrid_rc",
-    .RatingsData = 
+    .RatingsData =
     {
         RatingsCalculationType::Normal,
         { RideRating::make(3, 80), RideRating::make(1, 00), RideRating::make(0, 45) },
         16,
-        -1,
+        kDynamicRideShelterRating,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },

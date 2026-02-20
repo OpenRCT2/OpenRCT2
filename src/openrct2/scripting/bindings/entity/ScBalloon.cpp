@@ -28,7 +28,7 @@ namespace OpenRCT2::Scripting
 
     Balloon* ScBalloon::GetBalloon() const
     {
-        return OpenRCT2::getGameState().entities.GetEntity<Balloon>(_id);
+        return getGameState().entities.GetEntity<Balloon>(_id);
     }
 
     uint8_t ScBalloon::colour_get() const
@@ -36,7 +36,7 @@ namespace OpenRCT2::Scripting
         auto balloon = GetBalloon();
         if (balloon != nullptr)
         {
-            return balloon->colour;
+            return EnumValue(balloon->colour);
         }
         return 0;
     }
@@ -46,7 +46,7 @@ namespace OpenRCT2::Scripting
         auto balloon = GetBalloon();
         if (balloon != nullptr)
         {
-            balloon->colour = value;
+            balloon->colour = static_cast<Drawing::Colour>(value);
             balloon->Invalidate();
         }
     }

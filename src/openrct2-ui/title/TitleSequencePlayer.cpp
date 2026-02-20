@@ -24,6 +24,7 @@
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/ScrollingText.h>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/interface/Viewport.h>
 #include <openrct2/localisation/StringIds.h>
@@ -438,6 +439,9 @@ namespace OpenRCT2::Title
             windowManager->SetMainView(gameState.savedView, gameState.savedViewZoom, gameState.savedViewRotation);
             gameState.entities.ResetEntitySpatialIndices();
             ResetAllSpriteQuadrantPlacements();
+
+            // Invalidate scrolling text cache to prevent stale text from previous park
+            Drawing::ScrollingText::invalidate();
 
             auto intent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
             ContextBroadcastIntent(&intent);

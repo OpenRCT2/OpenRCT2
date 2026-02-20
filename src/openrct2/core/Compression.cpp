@@ -41,12 +41,11 @@ namespace OpenRCT2::Compression
         if (sourceLength > source.GetLength() - source.GetPosition())
             throw IOException("Not Enough Data to Compress");
 
-        int ret;
         StreamReadBuffer sourceBuf(source, sourceLength, kZlibChunkSize);
         StreamWriteBuffer destBuf(dest, zlibCompressBound(sourceLength), kZlibChunkSize);
 
         z_stream strm{};
-        ret = deflateInit2(&strm, level, Z_DEFLATED, kZlibWindowBits[static_cast<int>(header)], 8, Z_DEFAULT_STRATEGY);
+        int ret = deflateInit2(&strm, level, Z_DEFLATED, kZlibWindowBits[static_cast<int>(header)], 8, Z_DEFAULT_STRATEGY);
         if (ret != Z_OK)
         {
             LOG_ERROR("Failed to initialise stream");
@@ -88,12 +87,11 @@ namespace OpenRCT2::Compression
         if (sourceLength > source.GetLength() - source.GetPosition())
             throw IOException("Not Enough Data to Decompress");
 
-        int ret;
         StreamReadBuffer sourceBuf(source, sourceLength, kZlibChunkSize);
         StreamWriteBuffer destBuf(dest, decompressLength, kZlibChunkSize);
 
         z_stream strm{};
-        ret = inflateInit2(&strm, kZlibWindowBits[static_cast<int>(header)]);
+        int ret = inflateInit2(&strm, kZlibWindowBits[static_cast<int>(header)]);
         if (ret != Z_OK)
         {
             LOG_ERROR("Failed to initialise stream");
@@ -157,7 +155,6 @@ namespace OpenRCT2::Compression
         if (sourceLength > source.GetLength() - source.GetPosition())
             throw IOException("Not Enough Data to Compress");
 
-        size_t ret;
         StreamReadBuffer sourceBuf(source, sourceLength, ZSTD_CStreamInSize());
         StreamWriteBuffer destBuf(dest, zstdCompressBound(sourceLength), ZSTD_CStreamOutSize());
         unsigned metaFlags = static_cast<unsigned>(metadata);
@@ -170,7 +167,7 @@ namespace OpenRCT2::Compression
             return false;
         }
 
-        ret = ZSTD_CCtx_setParameter(ctx.get(), ZSTD_c_compressionLevel, level);
+        size_t ret = ZSTD_CCtx_setParameter(ctx.get(), ZSTD_c_compressionLevel, level);
         if (ZSTD_isError(ret))
         {
             LOG_ERROR("Failed to set compression level with error: %s", ZSTD_getErrorName(ret));

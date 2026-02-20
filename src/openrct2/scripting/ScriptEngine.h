@@ -11,7 +11,7 @@
 
 #ifdef ENABLE_SCRIPTING
 
-    #include "../actions/CustomAction.h"
+    #include "../actions/general/CustomAction.h"
     #include "../core/FileWatcher.h"
     #include "../management/Finance.h"
     #include "../world/Location.hpp"
@@ -213,7 +213,7 @@ namespace OpenRCT2::Scripting
             for (const auto& plugin : _plugins)
             {
                 const auto& metadata = plugin->GetMetadata();
-                if (metadata.Type == OpenRCT2::Scripting::PluginType::Remote)
+                if (metadata.Type == PluginType::Remote)
                 {
                     res.push_back(plugin);
                 }

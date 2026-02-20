@@ -491,10 +491,10 @@ namespace OpenRCT2::Ui
         assert(start_tab_id < w->widgets.size());
         assert(end_tab_id < w->widgets.size());
 
-        int32_t i, x = w->widgets[start_tab_id].left;
+        int32_t x = w->widgets[start_tab_id].left;
         int32_t tab_width = w->widgets[start_tab_id].width() - 1;
 
-        for (i = start_tab_id; i <= end_tab_id; i++)
+        for (int32_t i = start_tab_id; i <= end_tab_id; i++)
         {
             auto& widget = w->widgets[i];
             assert(widget.type == WidgetType::tab);
@@ -1052,7 +1052,7 @@ namespace OpenRCT2::Ui::Windows
         if (w.flashTimer > 0)
         {
             Rectangle::fillInset(
-                rt, { w.windowPos, w.windowPos + ScreenCoordsXY{ w.width - 1, w.height - 1 } }, { COLOUR_WHITE },
+                rt, { w.windowPos, w.windowPos + ScreenCoordsXY{ w.width - 1, w.height - 1 } }, { Drawing::Colour::white },
                 Rectangle::BorderStyle::outset, Rectangle::FillBrightness::light, Rectangle::FillMode::none);
         }
     }

@@ -51,7 +51,7 @@ namespace OpenRCT2
             return _pathRailingsDescriptor;
         }
 
-        void ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream) override;
+        void ReadLegacy(IReadObjectContext* context, IStream* stream) override;
         void ReadJson(IReadObjectContext* context, json_t& root) override;
         void Load() override;
         void Unload() override;

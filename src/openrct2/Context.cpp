@@ -25,7 +25,7 @@
 #include "PlatformEnvironment.h"
 #include "ReplayManager.h"
 #include "Version.h"
-#include "actions/GameAction.h"
+#include "actions/GameActionRunner.h"
 #include "audio/Audio.h"
 #include "audio/AudioContext.h"
 #include "config/Config.h"
@@ -39,6 +39,7 @@
 #include "core/Path.hpp"
 #include "core/String.hpp"
 #include "core/Timer.hpp"
+#include "drawing/ColourMap.h"
 #include "drawing/Drawing.h"
 #include "drawing/IDrawingEngine.h"
 #include "drawing/Image.h"
@@ -218,7 +219,7 @@ namespace OpenRCT2
 
             GfxObjectCheckAllImagesFreed();
             GfxUnloadCsg();
-            GfxUnloadG2AndFonts();
+            GfxUnloadG2PalettesFontsTracks();
             GfxUnloadG1();
             Audio::Close();
 
@@ -563,7 +564,7 @@ namespace OpenRCT2
         {
             if (!gOpenRCT2NoGraphics)
             {
-                ColoursInitMaps();
+                Drawing::initColourMaps();
             }
 
             WindowInitAll();
@@ -1058,7 +1059,7 @@ namespace OpenRCT2
             {
                 return false;
             }
-            GfxLoadG2FontsAndTracks();
+            GfxLoadG2PalettesFontsTracks();
             GfxLoadCsg();
             FontSpriteInitialiseCharacters();
             return true;

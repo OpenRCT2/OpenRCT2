@@ -132,13 +132,13 @@ namespace OpenRCT2::News
     public:
         static_assert(N > 0, "Cannot instantiate News::ItemQueue with size=0");
 
-        using value_type = typename std::array<Item, N>::value_type;
+        using value_type = std::array<Item, N>::value_type;
         using pointer = value_type*;
         using const_pointer = const value_type*;
         using reference = value_type&;
         using const_reference = const value_type&;
-        using iterator = typename std::array<Item, N>::iterator;
-        using const_iterator = typename std::array<Item, N>::const_iterator;
+        using iterator = std::array<Item, N>::iterator;
+        using const_iterator = std::array<Item, N>::const_iterator;
         using size_type = std::size_t;
         using difference_type = std::ptrdiff_t;
         using reverse_iterator = std::reverse_iterator<iterator>;

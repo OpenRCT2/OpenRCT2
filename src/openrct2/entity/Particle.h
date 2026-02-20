@@ -16,6 +16,11 @@ struct CoordsXYZ;
 struct PaintSession;
 struct VehicleColour;
 
+namespace OpenRCT2::Drawing
+{
+    enum class Colour : uint8_t;
+}
+
 constexpr int32_t kCrashedVehicleParticleFrameToSprite = 256;
 constexpr int32_t kCrashedVehicleParticleNumberSprites = 12;
 constexpr int32_t kCrashedVehicleParticleNumberTypes = 5;
@@ -26,7 +31,7 @@ struct VehicleCrashParticle : EntityBase
     static constexpr auto cEntityType = EntityType::crashedVehicleParticle;
     uint16_t frame;
     uint16_t time_to_live;
-    uint8_t colour[2];
+    OpenRCT2::Drawing::Colour colour[2];
     uint16_t crashed_sprite_base;
     int16_t velocity_x;
     int16_t velocity_y;

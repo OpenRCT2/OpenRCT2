@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../interface/Colour.h"
+#include "../drawing/Colour.h"
 #include "../interface/ColourWithFlags.h"
 #include "../localisation/StringIdType.h"
 #include "Font.h"
@@ -50,7 +50,7 @@ enum class TextDarkness : uint8_t
 
 struct TextPaint
 {
-    ColourWithFlags Colour = { COLOUR_BLACK };
+    ColourWithFlags Colour = { OpenRCT2::Drawing::Colour::black };
     ::FontStyle FontStyle = FontStyle::medium;
     TextUnderline UnderlineText = TextUnderline::off;
     TextAlignment Alignment = TextAlignment::left;
@@ -61,7 +61,7 @@ struct TextPaint
         : Colour(colour)
     {
     }
-    TextPaint(colour_t colour)
+    TextPaint(OpenRCT2::Drawing::Colour colour)
         : Colour(ColourWithFlags{ colour })
     {
     }
@@ -83,7 +83,7 @@ struct TextPaint
         , FontStyle(fontStyle)
     {
     }
-    TextPaint(colour_t colour, ::FontStyle fontStyle)
+    TextPaint(OpenRCT2::Drawing::Colour colour, ::FontStyle fontStyle)
         : Colour(ColourWithFlags{ colour })
         , FontStyle(fontStyle)
     {
@@ -93,7 +93,7 @@ struct TextPaint
         , UnderlineText(underlineText)
     {
     }
-    TextPaint(colour_t colour, TextUnderline underlineText)
+    TextPaint(OpenRCT2::Drawing::Colour colour, TextUnderline underlineText)
         : Colour(ColourWithFlags{ colour })
         , UnderlineText(underlineText)
     {
@@ -103,7 +103,7 @@ struct TextPaint
         , Alignment(alignment)
     {
     }
-    TextPaint(colour_t colour, TextAlignment alignment)
+    TextPaint(OpenRCT2::Drawing::Colour colour, TextAlignment alignment)
         : Colour(ColourWithFlags{ colour })
         , Alignment(alignment)
     {
@@ -131,7 +131,7 @@ struct TextPaint
         , UnderlineText(underlineText)
     {
     }
-    TextPaint(colour_t colour, ::FontStyle fontStyle, TextUnderline underlineText)
+    TextPaint(OpenRCT2::Drawing::Colour colour, ::FontStyle fontStyle, TextUnderline underlineText)
         : Colour(ColourWithFlags{ colour })
         , FontStyle(fontStyle)
         , UnderlineText(underlineText)
@@ -143,7 +143,7 @@ struct TextPaint
         , Alignment(alignment)
     {
     }
-    TextPaint(colour_t colour, ::FontStyle fontStyle, TextAlignment alignment)
+    TextPaint(OpenRCT2::Drawing::Colour colour, ::FontStyle fontStyle, TextAlignment alignment)
         : Colour(ColourWithFlags{ colour })
         , FontStyle(fontStyle)
         , Alignment(alignment)
@@ -155,7 +155,7 @@ struct TextPaint
         , Darkness(darkness)
     {
     }
-    TextPaint(colour_t colour, ::FontStyle fontStyle, TextDarkness darkness)
+    TextPaint(OpenRCT2::Drawing::Colour colour, ::FontStyle fontStyle, TextDarkness darkness)
         : Colour(ColourWithFlags{ colour })
         , FontStyle(fontStyle)
         , Darkness(darkness)
@@ -167,7 +167,7 @@ struct TextPaint
         , Alignment(alignment)
     {
     }
-    TextPaint(colour_t colour, TextUnderline underlineText, TextAlignment alignment)
+    TextPaint(OpenRCT2::Drawing::Colour colour, TextUnderline underlineText, TextAlignment alignment)
         : Colour(ColourWithFlags{ colour })
         , UnderlineText(underlineText)
         , Alignment(alignment)
@@ -187,7 +187,7 @@ struct TextPaint
         , Alignment(alignment)
     {
     }
-    TextPaint(colour_t colour, ::FontStyle fontStyle, TextUnderline underlineText, TextAlignment alignment)
+    TextPaint(OpenRCT2::Drawing::Colour colour, ::FontStyle fontStyle, TextUnderline underlineText, TextAlignment alignment)
         : Colour(ColourWithFlags{ colour })
         , FontStyle(fontStyle)
         , UnderlineText(underlineText)
@@ -201,7 +201,7 @@ struct TextPaint
         , Darkness(darkness)
     {
     }
-    TextPaint(colour_t colour, ::FontStyle fontStyle, TextAlignment alignment, TextDarkness darkness)
+    TextPaint(OpenRCT2::Drawing::Colour colour, ::FontStyle fontStyle, TextAlignment alignment, TextDarkness darkness)
         : Colour(ColourWithFlags{ colour })
         , FontStyle(fontStyle)
         , Alignment(alignment)

@@ -16,10 +16,11 @@
 #include "../GameState.h"
 #include "../Input.h"
 #include "../OpenRCT2.h"
-#include "../actions/BannerRemoveAction.h"
-#include "../actions/LargeSceneryRemoveAction.h"
-#include "../actions/ParkEntranceRemoveAction.h"
-#include "../actions/WallRemoveAction.h"
+#include "../actions/GameActionRunner.h"
+#include "../actions/park/ParkEntranceRemoveAction.h"
+#include "../actions/scenery/BannerRemoveAction.h"
+#include "../actions/scenery/LargeSceneryRemoveAction.h"
+#include "../actions/scenery/WallRemoveAction.h"
 #include "../audio/Audio.h"
 #include "../core/EnumUtils.hpp"
 #include "../core/Guard.hpp"
@@ -572,12 +573,11 @@ int16_t TileElementHeight(const CoordsXYZ& loc, uint8_t slope)
     int8_t quad = 0, quad_extra = 0; // which quadrant the element is in?
                                      // quad_extra is for extra height tiles
 
-    uint8_t xl, yl; // coordinates across this tile
+    // coordinates across this tile
+    uint8_t xl = loc.x & 0x1f;
+    uint8_t yl = loc.y & 0x1f;
 
     uint8_t TILE_SIZE = 32;
-
-    xl = loc.x & 0x1f;
-    yl = loc.y & 0x1f;
 
     // Slope logic:
     // Each of the four bits in slope represents that corner being raised
@@ -1685,7 +1685,8 @@ std::optional<CoordsXYZ> MapLargeSceneryGetOrigin(
  *
  *  rct2: 0x006B9B05
  */
-bool MapLargeScenerySignSetColour(const CoordsXYZD& signPos, int32_t sequence, uint8_t mainColour, uint8_t textColour)
+bool MapLargeScenerySignSetColour(
+    const CoordsXYZD& signPos, int32_t sequence, Drawing::Colour mainColour, Drawing::Colour textColour)
 {
     LargeSceneryElement* tileElement;
 
@@ -1769,13 +1770,11 @@ void MapInvalidateElement(const CoordsXY& elementPos, TileElement* tileElement)
 
 void MapInvalidateRegion(const CoordsXY& mins, const CoordsXY& maxs)
 {
-    int32_t x0, y0, x1, y1, left, right, top, bottom;
-
-    x0 = mins.x + 16;
-    y0 = mins.y + 16;
-
-    x1 = maxs.x + 16;
-    y1 = maxs.y + 16;
+    int32_t x0 = mins.x + 16;
+    int32_t y0 = mins.y + 16;
+    int32_t x1 = maxs.x + 16;
+    int32_t y1 = maxs.y + 16;
+    int32_t left, right, top, bottom;
 
     MapGetBoundingBox({ x0, y0, x1, y1 }, &left, &top, &right, &bottom);
 
@@ -2018,7 +2017,7 @@ TileElement* MapGetTrackElementAtOfTypeFromRide(const CoordsXYZ& trackPos, Track
     } while (!(tileElement++)->IsLastForTile());
 
     return nullptr;
-};
+}
 
 /**
  * Gets the track element at x, y, z that is the given track type and sequence.
@@ -2045,7 +2044,7 @@ TileElement* MapGetTrackElementAtFromRide(const CoordsXYZ& trackPos, RideId ride
     } while (!(tileElement++)->IsLastForTile());
 
     return nullptr;
-};
+}
 
 TileElement* MapGetTrackElementAtBeforeSurfaceFromRide(const CoordsXYZ& trackPos, const RideId rideIndex)
 {
@@ -2068,7 +2067,7 @@ TileElement* MapGetTrackElementAtBeforeSurfaceFromRide(const CoordsXYZ& trackPos
     } while (!(tileElement++)->IsLastForTile());
 
     return nullptr;
-};
+}
 
 /**
  * Gets the track element at x, y, z that is the given track type and sequence.
@@ -2098,7 +2097,7 @@ TileElement* MapGetTrackElementAtWithDirectionFromRide(const CoordsXYZD& trackPo
     } while (!(tileElement++)->IsLastForTile());
 
     return nullptr;
-};
+}
 
 WallElement* MapGetWallElementAt(const CoordsXYRangedZ& coords)
 {

@@ -20,21 +20,23 @@
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/SpriteIds.h>
-#include <openrct2/actions/BannerPlaceAction.h>
-#include <openrct2/actions/BannerSetColourAction.h>
-#include <openrct2/actions/FootpathAdditionPlaceAction.h>
-#include <openrct2/actions/LargeSceneryPlaceAction.h>
-#include <openrct2/actions/LargeScenerySetColourAction.h>
-#include <openrct2/actions/ScenerySetRestrictedAction.h>
-#include <openrct2/actions/SmallSceneryPlaceAction.h>
-#include <openrct2/actions/SmallScenerySetColourAction.h>
-#include <openrct2/actions/WallPlaceAction.h>
-#include <openrct2/actions/WallRemoveAction.h>
-#include <openrct2/actions/WallSetColourAction.h>
+#include <openrct2/actions/GameActionRunner.h>
+#include <openrct2/actions/footpath/FootpathAdditionPlaceAction.h>
+#include <openrct2/actions/scenery/BannerPlaceAction.h>
+#include <openrct2/actions/scenery/BannerSetColourAction.h>
+#include <openrct2/actions/scenery/LargeSceneryPlaceAction.h>
+#include <openrct2/actions/scenery/LargeScenerySetColourAction.h>
+#include <openrct2/actions/scenery/ScenerySetRestrictedAction.h>
+#include <openrct2/actions/scenery/SmallSceneryPlaceAction.h>
+#include <openrct2/actions/scenery/SmallScenerySetColourAction.h>
+#include <openrct2/actions/scenery/WallPlaceAction.h>
+#include <openrct2/actions/scenery/WallRemoveAction.h>
+#include <openrct2/actions/scenery/WallSetColourAction.h>
 #include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/core/String.hpp>
+#include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/localisation/Formatter.h>
@@ -136,9 +138,9 @@ namespace OpenRCT2::Ui::Windows
     static std::vector<ScenerySelection> _tabSelections;
 
     static bool _sceneryPaintEnabled;
-    static colour_t _sceneryPrimaryColour;
-    static colour_t _scenerySecondaryColour;
-    static colour_t _sceneryTertiaryColour;
+    static Colour _sceneryPrimaryColour;
+    static Colour _scenerySecondaryColour;
+    static Colour _sceneryTertiaryColour;
 
     uint8_t gWindowSceneryRotation;
     bool gWindowSceneryEyedropperEnabled;
@@ -282,7 +284,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (gWindowSceneryScatterEnabled)
             {
-                auto* windowMgr = Ui::GetWindowManager();
+                auto* windowMgr = GetWindowManager();
                 windowMgr->CloseByClass(WindowClass::sceneryScatter);
             }
 
@@ -292,7 +294,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onMouseUp(WidgetIndex widgetIndex) override
         {
-            auto* windowMgr = Ui::GetWindowManager();
+            auto* windowMgr = GetWindowManager();
 
             switch (widgetIndex)
             {
@@ -824,7 +826,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             auto windowWidth = width;
-            if (_tabEntries.size() > 0)
+            if (!_tabEntries.empty())
             {
                 const auto lastTabIndex = GetMaxTabCountInARow() == kMaxTabsPerRow ? kMaxTabsPerRow - 1
                                                                                    : _tabEntries.size() - 1;
@@ -876,7 +878,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].type = canFit ? WidgetType::flatBtn : WidgetType::empty;
         }
 
-        void onDraw(Drawing::RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             drawWidgets(rt);
             DrawTabs(rt, windowPos);
@@ -915,7 +917,7 @@ namespace OpenRCT2::Ui::Windows
                 auto sceneryObjectType = GetObjectTypeFromSceneryType(selectedSceneryEntry.SceneryType);
                 auto& objManager = GetContext()->GetObjectManager();
                 auto sceneryObject = objManager.GetLoadedObject(sceneryObjectType, selectedSceneryEntry.EntryIndex);
-                if (sceneryObject != nullptr && sceneryObject->GetAuthors().size() > 0)
+                if (sceneryObject != nullptr && !sceneryObject->GetAuthors().empty())
                 {
                     std::string authorsString;
                     const auto& authors = sceneryObject->GetAuthors();
@@ -937,8 +939,8 @@ namespace OpenRCT2::Ui::Windows
         }
 
         void setSelectedItem(
-            const ScenerySelection& scenery, const std::optional<colour_t> primary, const std::optional<colour_t> secondary,
-            const std::optional<colour_t> tertiary, const std::optional<colour_t> rotation)
+            const ScenerySelection& scenery, const std::optional<Colour> primary, const std::optional<Colour> secondary,
+            const std::optional<Colour> tertiary, const std::optional<uint8_t> rotation)
         {
             auto tabIndex = FindTabWithScenery(scenery);
             if (!tabIndex.has_value())
@@ -1006,7 +1008,7 @@ namespace OpenRCT2::Ui::Windows
                             tabInfo.AddEntryToBack(sceneryEntry);
                         }
                     }
-                    if (tabInfo.Entries.size() > 0)
+                    if (!tabInfo.Entries.empty())
                     {
                         _tabEntries.push_back(std::move(tabInfo));
                     }
@@ -1081,7 +1083,7 @@ namespace OpenRCT2::Ui::Windows
 
             PrepareWidgets();
 
-            auto* windowMgr = Ui::GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             windowMgr->InvalidateByClass(WindowClass::scenery);
         }
 
@@ -1573,7 +1575,7 @@ namespace OpenRCT2::Ui::Windows
             return { name, price };
         }
 
-        void DrawTabs(Drawing::RenderTarget& rt, const ScreenCoordsXY& offset)
+        void DrawTabs(RenderTarget& rt, const ScreenCoordsXY& offset)
         {
             for (size_t tabIndex = 0; tabIndex < _tabEntries.size(); tabIndex++)
             {
@@ -1588,7 +1590,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawSceneryItem(Drawing::RenderTarget& rt, ScenerySelection scenerySelection)
+        void DrawSceneryItem(RenderTarget& rt, ScenerySelection scenerySelection)
         {
             if (scenerySelection.SceneryType == SCENERY_TYPE_BANNER)
             {
@@ -1706,9 +1708,9 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onScrollDraw(int32_t scrollIndex, Drawing::RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
-            GfxClear(rt, ColourMapA[colours[1].colour].mid_light);
+            GfxClear(rt, getColourMap(colours[1].colour).midLight);
 
             auto numColumns = GetNumColumns();
             auto tabIndex = _activeTabIndex;
@@ -2079,8 +2081,8 @@ namespace OpenRCT2::Ui::Windows
          * on success places ghost scenery and returns cost to place proper
          */
         money64 TryPlaceGhostSmallScenery(
-            CoordsXYZD loc, uint8_t quadrant, ObjectEntryIndex entryIndex, colour_t primaryColour, colour_t secondaryColour,
-            colour_t tertiaryColour)
+            CoordsXYZD loc, uint8_t quadrant, ObjectEntryIndex entryIndex, Colour primaryColour, Colour secondaryColour,
+            Colour tertiaryColour)
         {
             SceneryRemoveGhostToolPlacement();
 
@@ -2138,8 +2140,8 @@ namespace OpenRCT2::Ui::Windows
         }
 
         money64 TryPlaceGhostWall(
-            CoordsXYZ loc, uint8_t edge, ObjectEntryIndex entryIndex, colour_t primaryColour, colour_t secondaryColour,
-            colour_t tertiaryColour)
+            CoordsXYZ loc, uint8_t edge, ObjectEntryIndex entryIndex, Colour primaryColour, Colour secondaryColour,
+            Colour tertiaryColour)
         {
             SceneryRemoveGhostToolPlacement();
 
@@ -2166,8 +2168,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
         money64 TryPlaceGhostLargeScenery(
-            CoordsXYZD loc, ObjectEntryIndex entryIndex, colour_t primaryColour, colour_t secondaryColour,
-            colour_t tertiaryColour)
+            CoordsXYZD loc, ObjectEntryIndex entryIndex, Colour primaryColour, Colour secondaryColour, Colour tertiaryColour)
         {
             SceneryRemoveGhostToolPlacement();
 
@@ -2343,7 +2344,8 @@ namespace OpenRCT2::Ui::Windows
                     {
                         WindowScenerySetSelectedItem(
                             { SCENERY_TYPE_LARGE, entryIndex }, info.Element->AsLargeScenery()->GetPrimaryColour(),
-                            info.Element->AsLargeScenery()->GetSecondaryColour(), std::nullopt,
+                            info.Element->AsLargeScenery()->GetSecondaryColour(),
+                            info.Element->AsLargeScenery()->GetTertiaryColour(),
                             (GetCurrentRotation() + info.Element->GetDirection()) & 3);
                     }
                     break;
@@ -3225,7 +3227,7 @@ namespace OpenRCT2::Ui::Windows
 
                 if (_lastProvisionalError.error != GameActions::Status::ok)
                 {
-                    auto windowManager = Ui::GetWindowManager();
+                    auto windowManager = GetWindowManager();
                     windowManager->ShowError(
                         _lastProvisionalError.getErrorTitle(), _lastProvisionalError.getErrorMessage(), true);
                 }
@@ -3423,8 +3425,8 @@ namespace OpenRCT2::Ui::Windows
     }
 
     void WindowScenerySetSelectedItem(
-        const ScenerySelection& scenery, const std::optional<colour_t> primary, const std::optional<colour_t> secondary,
-        const std::optional<colour_t> tertiary, const std::optional<colour_t> rotation)
+        const ScenerySelection& scenery, const std::optional<Colour> primary, const std::optional<Colour> secondary,
+        const std::optional<Colour> tertiary, const std::optional<uint8_t> rotation)
     {
         auto* windowMgr = GetWindowManager();
         auto* w = static_cast<SceneryWindow*>(windowMgr->BringToFrontByClass(WindowClass::scenery));
@@ -3455,9 +3457,9 @@ namespace OpenRCT2::Ui::Windows
     void WindowScenerySetDefaultPlacementConfiguration()
     {
         gWindowSceneryRotation = 3;
-        _sceneryPrimaryColour = COLOUR_BORDEAUX_RED;
-        _scenerySecondaryColour = COLOUR_YELLOW;
-        _sceneryTertiaryColour = COLOUR_DARK_BROWN;
+        _sceneryPrimaryColour = Colour::bordeauxRed;
+        _scenerySecondaryColour = Colour::yellow;
+        _sceneryTertiaryColour = Colour::darkBrown;
 
         WindowSceneryResetSelectedSceneryItems();
     }

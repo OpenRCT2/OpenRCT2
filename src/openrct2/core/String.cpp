@@ -38,7 +38,7 @@
 #include "StringBuilder.h"
 #include "UTF8.h"
 
-#if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
+#if defined(__unix__) || defined(__HAIKU__) || (defined(__APPLE__) && defined(__MACH__))
     #include <strings.h>
     #define _stricmp(x, y) strcasecmp((x), (y))
 #endif
@@ -57,9 +57,9 @@ namespace OpenRCT2::String
     {
 #ifdef _WIN32
         int srcLen = static_cast<int>(src.size());
-        int sizeReq = WideCharToMultiByte(OpenRCT2::CodePage::UTF8, 0, src.data(), srcLen, nullptr, 0, nullptr, nullptr);
+        int sizeReq = WideCharToMultiByte(CodePage::UTF8, 0, src.data(), srcLen, nullptr, 0, nullptr, nullptr);
         auto result = std::string(sizeReq, 0);
-        WideCharToMultiByte(OpenRCT2::CodePage::UTF8, 0, src.data(), srcLen, result.data(), sizeReq, nullptr, nullptr);
+        WideCharToMultiByte(CodePage::UTF8, 0, src.data(), srcLen, result.data(), sizeReq, nullptr, nullptr);
         return result;
 #else
     // Which constructor to use depends on the size of wchar_t...
@@ -85,9 +85,9 @@ namespace OpenRCT2::String
     {
 #ifdef _WIN32
         int srcLen = static_cast<int>(src.size());
-        int sizeReq = MultiByteToWideChar(OpenRCT2::CodePage::UTF8, 0, src.data(), srcLen, nullptr, 0);
+        int sizeReq = MultiByteToWideChar(CodePage::UTF8, 0, src.data(), srcLen, nullptr, 0);
         auto result = std::wstring(sizeReq, 0);
-        MultiByteToWideChar(OpenRCT2::CodePage::UTF8, 0, src.data(), srcLen, result.data(), sizeReq);
+        MultiByteToWideChar(CodePage::UTF8, 0, src.data(), srcLen, result.data(), sizeReq);
         return result;
 #else
         icu::UnicodeString str = icu::UnicodeString::fromUTF8(std::string(src));
@@ -609,9 +609,9 @@ namespace OpenRCT2::String
         std::string dst;
         {
             int srcLen = static_cast<int>(u16.size());
-            int sizeReq = WideCharToMultiByte(OpenRCT2::CodePage::UTF8, 0, u16.data(), srcLen, nullptr, 0, nullptr, nullptr);
+            int sizeReq = WideCharToMultiByte(CodePage::UTF8, 0, u16.data(), srcLen, nullptr, 0, nullptr, nullptr);
             dst = std::string(sizeReq, 0);
-            WideCharToMultiByte(OpenRCT2::CodePage::UTF8, 0, u16.data(), srcLen, dst.data(), sizeReq, nullptr, nullptr);
+            WideCharToMultiByte(CodePage::UTF8, 0, u16.data(), srcLen, dst.data(), sizeReq, nullptr, nullptr);
         }
 
         return dst;
@@ -721,13 +721,8 @@ namespace OpenRCT2::String
         return escaped.str();
     }
 
-    /* Case insensitive logical compare, produces the same output as Notepad++ lexicographical sort */
-    // Example:
-    // - Guest 10
-    // - Guest 99
-    // - Guest 100
-    // - John v2.0
-    // - John v2.1
+    // Case insensitive natural sort (numbers compared numerically).
+    // Strings starting with digits sort before alphabetic strings.
     int32_t logicalCmp(const char* s1, const char* s2)
     {
         const auto isDigit = [](char c) { return std::isdigit(static_cast<unsigned char>(c)); };
@@ -737,30 +732,9 @@ namespace OpenRCT2::String
         bool s1StartsDigit = isDigit(*s1);
         bool s2StartsDigit = isDigit(*s2);
         if (s1StartsDigit && !s2StartsDigit)
-        {
-            return -1; // s1 (starts with digit) comes before s2
-        }
+            return -1;
         if (!s1StartsDigit && s2StartsDigit)
-        {
-            return 1; // s2 (starts with digit) comes before s1
-        }
-
-        // If both start with digits, compare lexicographically
-        if (s1StartsDigit && s2StartsDigit)
-        {
-            while (*s1 != '\0' && *s2 != '\0')
-            {
-                char c1 = toUpper(*s1);
-                char c2 = toUpper(*s2);
-                if (c1 != c2)
-                {
-                    return c1 - c2;
-                }
-                s1++;
-                s2++;
-            }
-            return *s1 == '\0' ? (*s2 == '\0' ? 0 : -1) : 1;
-        }
+            return 1;
 
         while (*s1 != '\0' && *s2 != '\0')
         {

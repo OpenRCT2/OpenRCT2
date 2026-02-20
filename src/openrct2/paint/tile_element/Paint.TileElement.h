@@ -13,15 +13,8 @@
 
 namespace OpenRCT2
 {
-    struct BannerElement;
-    struct EntranceElement;
-    struct LargeSceneryElement;
-    struct PathElement;
-    struct SmallSceneryElement;
-    struct SurfaceElement;
     struct TrackElement;
-    struct WallElement;
-} // namespace OpenRCT2
+}
 
 struct PaintSession;
 
@@ -51,15 +44,5 @@ void PaintUtilSetSegmentSupportHeight(PaintSession& session, int32_t segments, u
 uint16_t PaintUtilRotateSegments(uint16_t segments, uint8_t rotation);
 
 void TileElementPaintSetup(PaintSession& session, const CoordsXY& mapCoords, bool isTrackPiecePreview = false);
-
-void PaintEntrance(PaintSession& session, uint8_t direction, int32_t height, const OpenRCT2::EntranceElement& entranceElement);
-void PaintBanner(PaintSession& session, uint8_t direction, int32_t height, const OpenRCT2::BannerElement& bannerElement);
-void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, const OpenRCT2::SurfaceElement& tileElement);
-void PaintSmallScenery(
-    PaintSession& session, uint8_t direction, int32_t height, const OpenRCT2::SmallSceneryElement& sceneryElement);
-void PaintWall(PaintSession& session, uint8_t direction, int32_t height, const OpenRCT2::WallElement& tileElement);
-void PaintLargeScenery(
-    PaintSession& session, uint8_t direction, uint16_t height, const OpenRCT2::LargeSceneryElement& tileElement);
-void PaintTrack(PaintSession& session, uint8_t direction, int32_t height, const OpenRCT2::TrackElement& tileElement);
 
 bool PaintShouldShowHeightMarkers(const PaintSession& session, uint32_t viewportFlag);

@@ -117,7 +117,7 @@ namespace OpenRCT2
         if (numRotationFrames == 0)
             return SpritePrecision::None;
         else
-            return static_cast<SpritePrecision>(Numerics::bitScanForward(numRotationFrames) + 1);
+            return static_cast<SpritePrecision>(bitScanForward(numRotationFrames) + 1);
     }
 
     static void RideObjectUpdateRideType(RideObjectEntry& rideEntry)
@@ -160,7 +160,7 @@ namespace OpenRCT2
         _shouldLoadImages = context->ShouldLoadImages();
 
         stream->Seek(8, STREAM_SEEK_CURRENT);
-        _legacyType.flags = stream->ReadValue<uint32_t>();
+        _legacyType.flags.holder = stream->ReadValue<uint32_t>();
         for (auto& rideType : _legacyType.ride_type)
         {
             rideType = stream->ReadValue<uint8_t>();
@@ -220,12 +220,12 @@ namespace OpenRCT2
         {
             // This used to be hard-coded. JSON objects set this themselves.
             _presetColours.count = 1;
-            _presetColours.list[0] = { COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED };
+            _presetColours.list[0] = { Drawing::Colour::brightRed, Drawing::Colour::brightRed, Drawing::Colour::brightRed };
 
             if (_legacyType.ride_type[0] == RIDE_TYPE_FOOD_STALL || _legacyType.ride_type[0] == RIDE_TYPE_DRINK_STALL)
             {
                 // In RCT2, no food or drink stall could be recoloured.
-                _legacyType.flags |= RIDE_ENTRY_FLAG_DISABLE_COLOUR_TAB;
+                _legacyType.flags.set(RideEntryFlag::disableColourTab);
             }
         }
 
@@ -241,7 +241,7 @@ namespace OpenRCT2
                 numPeepLoadingPositions = stream->ReadValue<uint16_t>();
             }
 
-            if (_legacyType.Cars[i].flags & CAR_ENTRY_FLAG_LOADING_WAYPOINTS)
+            if (_legacyType.Cars[i].flags.has(CarEntryFlag::loadingWaypoints))
             {
                 _legacyType.Cars[i].peep_loading_waypoint_segments = stream->ReadValue<int8_t>() == 0 ? 0 : 4;
                 if (_legacyType.ride_type[0] == RIDE_TYPE_ENTERPRISE)
@@ -336,10 +336,10 @@ namespace OpenRCT2
                 currentCarImagesOffset = imageIndex + carEntry.no_seating_rows * carEntry.NumCarImages;
                 // 0x6DEB0D
 
-                if (!(carEntry.flags & CAR_ENTRY_FLAG_RECALCULATE_SPRITE_BOUNDS))
+                if (!carEntry.flags.has(CarEntryFlag::recalculateSpriteBounds))
                 {
                     int32_t num_images = currentCarImagesOffset - baseImageId;
-                    if (carEntry.flags & CAR_ENTRY_FLAG_SPRITE_BOUNDS_INCLUDE_INVERTED_SET)
+                    if (carEntry.flags.has(CarEntryFlag::spriteBoundsIncludeInvertedSet))
                     {
                         num_images *= 2;
                     }
@@ -437,15 +437,15 @@ namespace OpenRCT2
         car.spriteHeightNegative = stream->ReadValue<uint8_t>();
         car.spriteHeightPositive = stream->ReadValue<uint8_t>();
         auto legacyAnimation = stream->ReadValue<uint8_t>();
-        car.flags = stream->ReadValue<uint32_t>();
+        car.flags.holder = stream->ReadValue<uint32_t>();
         // Implied in vanilla, but can be turned off in OpenRCT2.
-        car.flags |= CAR_ENTRY_FLAG_ENABLE_BODY_COLOUR;
+        car.flags.set(CarEntryFlag::enableBodyColour);
         car.base_num_frames = stream->ReadValue<uint16_t>();
         stream->Seek(15 * 4, STREAM_SEEK_CURRENT);
         car.no_seating_rows = stream->ReadValue<uint8_t>();
         car.spinning_inertia = stream->ReadValue<uint8_t>();
         car.spinning_friction = stream->ReadValue<uint8_t>();
-        car.friction_sound_id = stream->ReadValue<OpenRCT2::Audio::SoundId>();
+        car.friction_sound_id = stream->ReadValue<Audio::SoundId>();
         car.ReversedCarIndex = stream->ReadValue<uint8_t>();
         car.soundRange = stream->ReadValue<SoundRange>();
         car.double_sound_frequency = stream->ReadValue<uint8_t>();
@@ -464,11 +464,11 @@ namespace OpenRCT2
         car.AnimationFrames = animationProperties.NumFrames;
         car.SteamEffect.Longitudinal = DefaultSteamSpawnPosition[0];
         car.SteamEffect.Vertical = DefaultSteamSpawnPosition[1];
-        if (car.flags & CAR_ENTRY_FLAG_SPINNING)
+        if (car.flags.has(CarEntryFlag::hasSpinning))
         {
             car.spinningNumFrames = 8;
         }
-        if (car.flags & CAR_ENTRY_FLAG_SPINNING_COMBINED_WITH_NONSPINNING)
+        if (car.flags.has(CarEntryFlag::hasSpinningCombinedWithNonSpinning))
         {
             car.spinningNumFrames = 32;
         }
@@ -479,18 +479,18 @@ namespace OpenRCT2
     {
         // 0x6DE90B
         uint8_t numVerticalFrames;
-        if (carEntry.flags & CAR_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES)
+        if (carEntry.flags.has(CarEntryFlag::overrideNumberOfVerticalFrames))
         {
             numVerticalFrames = carEntry.num_vertical_frames_override;
         }
         else
         {
-            if (!(carEntry.flags & CAR_ENTRY_FLAG_SPINNING_COMBINED_WITH_NONSPINNING))
+            if (!carEntry.flags.has(CarEntryFlag::hasSpinningCombinedWithNonSpinning))
             {
-                if ((carEntry.flags & CAR_ENTRY_FLAG_VEHICLE_ANIMATION)
+                if (carEntry.flags.has(CarEntryFlag::hasVehicleAnimation)
                     && carEntry.animation != CarEntryAnimation::ObservationTower)
                 {
-                    if (!(carEntry.flags & CAR_ENTRY_FLAG_DODGEM_INUSE_LIGHTS))
+                    if (!carEntry.flags.has(CarEntryFlag::hasDodgemInUseLights))
                     {
                         numVerticalFrames = 4;
                     }
@@ -516,11 +516,11 @@ namespace OpenRCT2
     uint8_t RideObject::CalculateNumHorizontalFrames(const CarEntry& carEntry)
     {
         uint8_t numHorizontalFrames;
-        if (carEntry.flags & CAR_ENTRY_FLAG_SWINGING)
+        if (carEntry.flags.has(CarEntryFlag::hasSwinging))
         {
-            if (!(carEntry.flags & CAR_ENTRY_FLAG_SUSPENDED_SWING) && !(carEntry.flags & CAR_ENTRY_FLAG_SLIDE_SWING))
+            if (!carEntry.flags.hasAny(CarEntryFlag::useSuspendedSwing, CarEntryFlag::useSlideSwing))
             {
-                if (carEntry.flags & CAR_ENTRY_FLAG_WOODEN_WILD_MOUSE_SWING)
+                if (carEntry.flags.has(CarEntryFlag::useWoodenWildMouseSwing))
                 {
                     numHorizontalFrames = 3;
                 }
@@ -529,7 +529,7 @@ namespace OpenRCT2
                     numHorizontalFrames = 5;
                 }
             }
-            else if (!(carEntry.flags & CAR_ENTRY_FLAG_SUSPENDED_SWING) || !(carEntry.flags & CAR_ENTRY_FLAG_SLIDE_SWING))
+            else if (!carEntry.flags.hasAll(CarEntryFlag::useSuspendedSwing, CarEntryFlag::useSlideSwing))
             {
                 numHorizontalFrames = 7;
             }
@@ -597,9 +597,9 @@ namespace OpenRCT2
                 car.spriteWidth = 1;
                 car.spriteHeightNegative = 1;
                 car.spriteHeightPositive = 1;
-                car.flags = CAR_ENTRY_FLAG_SPINNING;
+                car.flags = { CarEntryFlag::hasSpinning };
                 car.PaintStyle = VEHICLE_VISUAL_FLAT_RIDE_OR_CAR_RIDE;
-                car.friction_sound_id = OpenRCT2::Audio::SoundId::null;
+                car.friction_sound_id = Audio::SoundId::null;
                 car.soundRange = SoundRange::none;
                 car.draw_order = 6;
 
@@ -625,22 +625,22 @@ namespace OpenRCT2
                 auto swingMode = Json::GetNumber<int32_t>(properties["swingMode"]);
                 if (swingMode == 1)
                 {
-                    _legacyType.flags |= RIDE_ENTRY_FLAG_INVERTER_SHIP_SWING_MODE;
+                    _legacyType.flags.set(RideEntryFlag::inverterShipSwingMode);
                 }
                 else if (swingMode == 2)
                 {
-                    _legacyType.flags |= RIDE_ENTRY_FLAG_INVERTER_SHIP_SWING_MODE;
-                    _legacyType.flags |= RIDE_ENTRY_FLAG_MAGIC_CARPET_SWING_MODE;
+                    _legacyType.flags.set(RideEntryFlag::inverterShipSwingMode);
+                    _legacyType.flags.set(RideEntryFlag::magicCarpetSwingMode);
                 }
 
                 auto rotationMode = Json::GetNumber<int32_t>(properties["rotationMode"]);
                 if (rotationMode == 1)
                 {
-                    _legacyType.flags |= RIDE_ENTRY_FLAG_TWIST_ROTATION_TYPE;
+                    _legacyType.flags.set(RideEntryFlag::hasTwistRotationType);
                 }
                 else if (rotationMode == 2)
                 {
-                    _legacyType.flags |= RIDE_ENTRY_FLAG_ENTERPRISE_ROTATION_TYPE;
+                    _legacyType.flags.set(RideEntryFlag::hasEnterpriseRotationType);
                 }
 
                 auto ratingMultiplier = properties["ratingMultipler"];
@@ -653,23 +653,23 @@ namespace OpenRCT2
             }
 
             _legacyType.BuildMenuPriority = Json::GetNumber<uint8_t>(properties["buildMenuPriority"]);
-            _legacyType.flags |= Json::GetFlags<uint32_t>(
+            _legacyType.flags |= Json::GetFlagHolder<RideEntryFlags, RideEntryFlag>(
                 properties,
                 {
-                    { "noInversions", RIDE_ENTRY_FLAG_NO_INVERSIONS },
-                    { "noBanking", RIDE_ENTRY_FLAG_NO_BANKED_TRACK },
-                    { "playDepartSound", RIDE_ENTRY_FLAG_PLAY_DEPART_SOUND },
+                    { "noInversions", RideEntryFlag::noInversions },
+                    { "noBanking", RideEntryFlag::noBankedTrack },
+                    { "playDepartSound", RideEntryFlag::playDepartSound },
                     // Skipping "disallowWandering", no vehicle sets this flag.
-                    { "playSplashSound", RIDE_ENTRY_FLAG_PLAY_SPLASH_SOUND },
-                    { "playSplashSoundSlide", RIDE_ENTRY_FLAG_PLAY_SPLASH_SOUND_SLIDE },
-                    { "hasShelter", RIDE_ENTRY_FLAG_COVERED_RIDE },
-                    { "limitAirTimeBonus", RIDE_ENTRY_FLAG_LIMIT_AIRTIME_BONUS },
-                    { "disableBreakdown", RIDE_ENTRY_FLAG_CANNOT_BREAK_DOWN },
+                    { "playSplashSound", RideEntryFlag::playSplashSound },
+                    { "playSplashSoundSlide", RideEntryFlag::playSplashSoundSlide },
+                    { "hasShelter", RideEntryFlag::isACoveredRide },
+                    { "limitAirTimeBonus", RideEntryFlag::limitAirTimeBonus },
+                    { "disableBreakdown", RideEntryFlag::cannotBreakDown },
                     // Skipping noDoorsOverTrack, moved to ride groups.
-                    { "noCollisionCrashes", RIDE_ENTRY_FLAG_DISABLE_COLLISION_CRASHES },
-                    { "disablePainting", RIDE_ENTRY_FLAG_DISABLE_COLOUR_TAB },
-                    { "riderControlsSpeed", RIDE_ENTRY_FLAG_RIDER_CONTROLS_SPEED },
-                    { "hideEmptyTrains", RIDE_ENTRY_FLAG_HIDE_EMPTY_TRAINS },
+                    { "noCollisionCrashes", RideEntryFlag::disableCollisionCrashes },
+                    { "disablePainting", RideEntryFlag::disableColourTab },
+                    { "riderControlsSpeed", RideEntryFlag::riderControlsSpeed },
+                    { "hideEmptyTrains", RideEntryFlag::hideEmptyTrains },
                 });
         }
 
@@ -692,7 +692,7 @@ namespace OpenRCT2
         float tabScale = Json::GetNumber<float>(properties["tabScale"]);
         if (tabScale != 0 && tabScale <= 0.5f)
         {
-            _legacyType.flags |= RIDE_ENTRY_FLAG_VEHICLE_TAB_SCALE_HALF;
+            _legacyType.flags.set(RideEntryFlag::tabIconIsHalfScale);
         }
 
         json_t headCars = Json::AsArray(properties["headCars"]);
@@ -757,8 +757,7 @@ namespace OpenRCT2
         car.no_seating_rows = Json::GetNumber<uint8_t>(jCar["numSeatRows"]);
         car.spinning_inertia = Json::GetNumber<uint8_t>(jCar["spinningInertia"]);
         car.spinning_friction = Json::GetNumber<uint8_t>(jCar["spinningFriction"]);
-        car.friction_sound_id = Json::GetEnum<OpenRCT2::Audio::SoundId>(
-            jCar["frictionSoundId"], OpenRCT2::Audio::SoundId::null);
+        car.friction_sound_id = Json::GetEnum<Audio::SoundId>(jCar["frictionSoundId"], Audio::SoundId::null);
         car.ReversedCarIndex = Json::GetNumber<uint8_t>(jCar["logFlumeReverserVehicleType"]);
         car.soundRange = Json::GetEnum<SoundRange>(jCar["soundRange"], SoundRange::none);
         car.double_sound_frequency = Json::GetNumber<uint8_t>(jCar["doubleSoundFrequency"]);
@@ -815,7 +814,7 @@ namespace OpenRCT2
             auto jLoadingWaypoints = jCar["loadingWaypoints"];
             if (jLoadingWaypoints.is_array())
             {
-                car.flags |= CAR_ENTRY_FLAG_LOADING_WAYPOINTS;
+                car.flags.set(CarEntryFlag::loadingWaypoints);
                 car.peep_loading_waypoint_segments = Json::GetNumber<uint8_t>(jCar["numSegments"]);
 
                 for (auto& jRoute : jLoadingWaypoints)
@@ -842,48 +841,49 @@ namespace OpenRCT2
         }
         car.spinningNumFrames = Json::GetNumber<uint8_t>(jCar["spinningNumFrames"]);
 
-        car.flags |= Json::GetFlags<uint32_t>(
+        car.flags |= Json::GetFlagHolder<CarEntryFlags, CarEntryFlag>(
             jCar,
             {
-                { "isPoweredRideWithUnrestrictedGravity", CAR_ENTRY_FLAG_POWERED_RIDE_UNRESTRICTED_GRAVITY },
-                { "hasNoUpstopWheels", CAR_ENTRY_FLAG_NO_UPSTOP_WHEELS },
-                { "hasNoUpstopWheelsBobsleigh", CAR_ENTRY_FLAG_NO_UPSTOP_BOBSLEIGH },
-                { "isMiniGolf", CAR_ENTRY_FLAG_MINI_GOLF },
-                { "isReverserBogie", CAR_ENTRY_FLAG_REVERSER_BOGIE },
-                { "isReverserPassengerCar", CAR_ENTRY_FLAG_REVERSER_PASSENGER_CAR },
-                { "hasInvertedSpriteSet", CAR_ENTRY_FLAG_HAS_INVERTED_SPRITE_SET },
-                { "hasDodgemInUseLights", CAR_ENTRY_FLAG_DODGEM_INUSE_LIGHTS },
-                { "hasAdditionalColour2", CAR_ENTRY_FLAG_ENABLE_TERTIARY_COLOUR },
-                { "recalculateSpriteBounds", CAR_ENTRY_FLAG_RECALCULATE_SPRITE_BOUNDS },
-                { "overrideNumberOfVerticalFrames", CAR_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES },
-                { "spriteBoundsIncludeInvertedSet", CAR_ENTRY_FLAG_SPRITE_BOUNDS_INCLUDE_INVERTED_SET },
-                { "hasAdditionalSpinningFrames", CAR_ENTRY_FLAG_SPINNING_COMBINED_WITH_NONSPINNING },
-                { "isLift", CAR_ENTRY_FLAG_LIFT },
-                { "hasAdditionalColour1", CAR_ENTRY_FLAG_ENABLE_TRIM_COLOUR },
-                { "hasSwinging", CAR_ENTRY_FLAG_SWINGING },
-                { "hasSpinning", CAR_ENTRY_FLAG_SPINNING },
-                { "isPowered", CAR_ENTRY_FLAG_POWERED },
-                { "hasScreamingRiders", CAR_ENTRY_FLAG_RIDERS_SCREAM },
-                { "useSuspendedSwing", CAR_ENTRY_FLAG_SUSPENDED_SWING },
-                { "useBoatHireCollisionDetection", CAR_ENTRY_FLAG_BOAT_HIRE_COLLISION_DETECTION },
-                { "hasVehicleAnimation", CAR_ENTRY_FLAG_VEHICLE_ANIMATION },
-                { "hasRiderAnimation", CAR_ENTRY_FLAG_RIDER_ANIMATION },
-                { "useWoodenWildMouseSwing", CAR_ENTRY_FLAG_WOODEN_WILD_MOUSE_SWING },
-                { "useSlideSwing", CAR_ENTRY_FLAG_SLIDE_SWING },
-                { "isChairlift", CAR_ENTRY_FLAG_CHAIRLIFT },
-                { "isWaterRide", CAR_ENTRY_FLAG_WATER_RIDE },
-                { "isGoKart", CAR_ENTRY_FLAG_GO_KART },
-                { "useDodgemCarPlacement", CAR_ENTRY_FLAG_DODGEM_CAR_PLACEMENT },
+                { "isPoweredRideWithUnrestrictedGravity", CarEntryFlag::isPoweredRideWithUnrestrictedGravity },
+                { "hasNoUpstopWheels", CarEntryFlag::hasNoUpstopWheels },
+                { "hasNoUpstopWheelsBobsleigh", CarEntryFlag::hasNoUpstopWheelsBobsleigh },
+                { "isMiniGolf", CarEntryFlag::isMiniGolf },
+                { "isReverserBogie", CarEntryFlag::isReverserCoasterBogie },
+                { "isReverserPassengerCar", CarEntryFlag::isReverserCoasterPassengerCar },
+                { "hasInvertedSpriteSet", CarEntryFlag::hasInvertedSpriteSet },
+                { "hasDodgemInUseLights", CarEntryFlag::hasDodgemInUseLights },
+                { "hasAdditionalColour2", CarEntryFlag::enableTertiaryColour },
+                { "recalculateSpriteBounds", CarEntryFlag::recalculateSpriteBounds },
+                { "overrideNumberOfVerticalFrames", CarEntryFlag::overrideNumberOfVerticalFrames },
+                { "spriteBoundsIncludeInvertedSet", CarEntryFlag::spriteBoundsIncludeInvertedSet },
+                { "hasAdditionalSpinningFrames", CarEntryFlag::hasSpinningCombinedWithNonSpinning },
+                { "isLift", CarEntryFlag::isLift },
+                { "hasAdditionalColour1", CarEntryFlag::enableTrimColour },
+                { "hasSwinging", CarEntryFlag::hasSwinging },
+                { "hasSpinning", CarEntryFlag::hasSpinning },
+                { "isPowered", CarEntryFlag::isPowered },
+                { "hasScreamingRiders", CarEntryFlag::hasScreamingRiders },
+                { "useSuspendedSwing", CarEntryFlag::useSuspendedSwing },
+                { "useBoatHireCollisionDetection", CarEntryFlag::useBoatHireCollisionDetection },
+                { "hasVehicleAnimation", CarEntryFlag::hasVehicleAnimation },
+                { "hasRiderAnimation", CarEntryFlag::hasRiderAnimation },
+                { "useWoodenWildMouseSwing", CarEntryFlag::useWoodenWildMouseSwing },
+                { "useSlideSwing", CarEntryFlag::useSlideSwing },
+                { "isChairlift", CarEntryFlag::isChairlift },
+                { "isWaterRide", CarEntryFlag::isWaterRide },
+                { "isGoKart", CarEntryFlag::isGoKart },
+                { "useDodgemCarPlacement", CarEntryFlag::useDodgemCarPlacement },
 
                 // Obsolete flag, only used on Boat Hire. Remaining usages have not yet been updated as of 2022-07-11.
-                { "VEHICLE_ENTRY_FLAG_11", CAR_ENTRY_FLAG_USE_16_ROTATION_FRAMES },
+                // TODO: Is this comment outdated?
+                { "VEHICLE_ENTRY_FLAG_11", CarEntryFlag::use16RotationFrames },
             });
         if (Json::GetBoolean(jCar["hasBaseColour"], true))
-            car.flags |= CAR_ENTRY_FLAG_ENABLE_BODY_COLOUR;
-        if (car.flags & CAR_ENTRY_FLAG_SPINNING && car.spinningNumFrames == 0)
+            car.flags.set(CarEntryFlag::enableBodyColour);
+        if (car.flags.has(CarEntryFlag::hasSpinning) && car.spinningNumFrames == 0)
         {
             car.spinningNumFrames = 8;
-            if (car.flags & CAR_ENTRY_FLAG_SPINNING_COMBINED_WITH_NONSPINNING)
+            if (car.flags.has(CarEntryFlag::hasSpinningCombinedWithNonSpinning))
             {
                 car.spinningNumFrames = 32;
             }
@@ -966,7 +966,7 @@ namespace OpenRCT2
         for (size_t index = 0; index < jCarColours.size(); index++)
         {
             auto config = ReadJsonColourConfiguration(jCarColours[index]);
-            if (config.size() >= 1)
+            if (!config.empty())
             {
                 list.list[index] = config[0];
                 list.count++;
@@ -990,18 +990,18 @@ namespace OpenRCT2
             VehicleColour carColour = {};
 
             auto colours = Json::AsArray(jColours);
-            if (colours.size() >= 1)
+            if (!colours.empty())
             {
-                carColour.Body = Colour::FromString(Json::GetString(colours[0]));
+                carColour.Body = Drawing::colourFromString(Json::GetString(colours[0]));
                 carColour.Trim = carColour.Body;
                 carColour.Tertiary = carColour.Body;
                 if (colours.size() >= 2)
                 {
-                    carColour.Trim = Colour::FromString(Json::GetString(colours[1]));
+                    carColour.Trim = Drawing::colourFromString(Json::GetString(colours[1]));
                 }
                 if (colours.size() >= 3)
                 {
-                    carColour.Tertiary = Colour::FromString(Json::GetString(colours[2]));
+                    carColour.Tertiary = Drawing::colourFromString(Json::GetString(colours[2]));
                 }
             }
             config.push_back(carColour);
@@ -1011,7 +1011,7 @@ namespace OpenRCT2
 
     bool RideObject::isRideTypeShopOrFacility(ride_type_t rideType)
     {
-        return GetRideTypeDescriptor(rideType).HasFlag(RtdFlag::isShopOrFacility);
+        return GetRideTypeDescriptor(rideType).flags.has(RtdFlag::isShopOrFacility);
     }
 
     ride_type_t RideObject::ParseRideType(const std::string& s)
@@ -1089,7 +1089,7 @@ namespace OpenRCT2
     void ReadLegacySpriteGroups(CarEntry& car, CarSpriteFlags carSpriteFlags)
     {
         auto baseSpritePrecision = SpritePrecision::Sprites32;
-        if (car.flags & CAR_ENTRY_FLAG_USE_16_ROTATION_FRAMES)
+        if (car.flags.has(CarEntryFlag::use16RotationFrames))
             baseSpritePrecision = SpritePrecision::Sprites16;
         if (carSpriteFlags.has(CarSpriteFlag::has4RotationFrames))
             baseSpritePrecision = SpritePrecision::Sprites4;
@@ -1102,7 +1102,7 @@ namespace OpenRCT2
         {
             car.SpriteGroups[EnumValue(SpriteGroupType::Slopes12)].spritePrecision = SpritePrecision::Sprites4;
             car.SpriteGroups[EnumValue(SpriteGroupType::Slopes25)].spritePrecision = baseSpritePrecision;
-            if (car.flags & CAR_ENTRY_FLAG_SPINNING_COMBINED_WITH_NONSPINNING)
+            if (car.flags.has(CarEntryFlag::hasSpinningCombinedWithNonSpinning))
                 car.SpriteGroups[EnumValue(SpriteGroupType::Slopes25)].spritePrecision = SpritePrecision::Sprites4;
         }
         if (carSpriteFlags.has(CarSpriteFlag::steepSlopes))

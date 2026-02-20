@@ -15,8 +15,9 @@
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/SpriteIds.h>
-#include <openrct2/actions/PlayerKickAction.h>
-#include <openrct2/actions/PlayerSetGroupAction.h>
+#include <openrct2/actions/GameActionRunner.h>
+#include <openrct2/actions/network/PlayerKickAction.h>
+#include <openrct2/actions/network/PlayerSetGroupAction.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/network/Network.h>
@@ -545,7 +546,7 @@ namespace OpenRCT2::Ui::Windows
         void ShowGroupDropdownOverview(Widget* widget)
         {
             Widget* dropdownWidget;
-            int32_t numItems, i;
+            int32_t numItems;
             int32_t player = Network::GetPlayerIndex(static_cast<uint8_t>(number));
             if (player == -1)
             {
@@ -560,7 +561,7 @@ namespace OpenRCT2::Ui::Windows
                 { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height(), colours[1],
                 0, 0, numItems, widget->right - dropdownWidget->left);
 
-            for (i = 0; i < Network::GetNumGroups(); i++)
+            for (int32_t i = 0; i < Network::GetNumGroups(); i++)
             {
                 gDropdown.items[i] = Dropdown::MenuLabel(Network::GetGroupName(i));
             }

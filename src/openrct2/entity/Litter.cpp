@@ -25,12 +25,10 @@ bool EntityBase::Is<Litter>() const
 
 static bool IsLocationLitterable(const CoordsXYZ& mapPos)
 {
-    TileElement* tileElement;
-
     if (!MapIsLocationOwned(mapPos))
         return false;
 
-    tileElement = MapGetFirstElementAt(mapPos);
+    TileElement* tileElement = MapGetFirstElementAt(mapPos);
     if (tileElement == nullptr)
         return false;
     do

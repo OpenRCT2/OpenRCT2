@@ -270,8 +270,8 @@ namespace OpenRCT2::Ui::Windows
     // Scenery
     WindowBase* SceneryOpen();
     void WindowScenerySetSelectedItem(
-        const ScenerySelection& sceneryconst, std::optional<colour_t> primary, std::optional<colour_t> secondary,
-        std::optional<colour_t> tertiary, std::optional<colour_t> rotation);
+        const ScenerySelection& sceneryconst, std::optional<Drawing::Colour> primary, std::optional<Drawing::Colour> secondary,
+        std::optional<Drawing::Colour> tertiary, std::optional<uint8_t> rotation);
     void WindowScenerySetSelectedTab(ObjectEntryIndex sceneryGroupIndex);
     void WindowScenerySetDefaultPlacementConfiguration();
     void WindowSceneryInit();

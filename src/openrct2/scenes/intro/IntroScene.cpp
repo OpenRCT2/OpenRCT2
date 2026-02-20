@@ -27,7 +27,7 @@ using namespace OpenRCT2::Drawing;
 namespace OpenRCT2
 {
     static constexpr PaletteIndex kBackgroundColourDark = PaletteIndex::pi10;
-    static constexpr PaletteIndex kBackgroundColourLogo = PaletteIndex::pi245;
+    static constexpr PaletteIndex kBackgroundColourLogo = PaletteIndex::primaryRemap2;
     static constexpr PaletteIndex kBorderColourPublisher = PaletteIndex::pi129;
 
     static constexpr ImageIndex kPaletteChrisSawyerLogo = 23217;

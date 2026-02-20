@@ -1,5 +1,5 @@
 function(download_openrct2_zip)
-    set(oneValueArgs ZIP_VERSION DOWNLOAD_DIR ZIP_URL SHA256)
+    set(oneValueArgs DOWNLOAD_DIR ZIP_URL SHA256)
     set(multiValueArgs SKIP_IF_EXISTS)
     cmake_parse_arguments(DOWNLOAD_OPENRCT2 "${options}" "${oneValueArgs}"
                         "${multiValueArgs}" ${ARGN} )
@@ -8,10 +8,11 @@ function(download_openrct2_zip)
 
     if (NOT EXISTS ${DOWNLOAD_OPENRCT2_DOWNLOAD_DIR})
         set(DOWNLOAD_ZIP 1)
+        file(MAKE_DIRECTORY "${DOWNLOAD_OPENRCT2_DOWNLOAD_DIR}")
     else ()
         if (EXISTS "${DOWNLOAD_OPENRCT2_DOWNLOAD_DIR}/${ZIP_FILE_NAME}.zipversion")
             file(READ "${DOWNLOAD_OPENRCT2_DOWNLOAD_DIR}/${ZIP_FILE_NAME}.zipversion" DOWNLOAD_OPENRCT2_CACHED_VERSION)
-            if (NOT ${DOWNLOAD_OPENRCT2_CACHED_VERSION} STREQUAL ${DOWNLOAD_OPENRCT2_ZIP_VERSION})
+            if (NOT ${DOWNLOAD_OPENRCT2_CACHED_VERSION} STREQUAL ${DOWNLOAD_OPENRCT2_ZIP_URL})
                 message("Cache ${DOWNLOAD_OPENRCT2_DOWNLOAD_DIR} not up to date")
                 set(DOWNLOAD_ZIP 1)
             endif ()
@@ -43,7 +44,7 @@ function(download_openrct2_zip)
         endif()
         file(WRITE
             "${DOWNLOAD_OPENRCT2_DOWNLOAD_DIR}/${ZIP_FILE_NAME}.zipversion"
-            "${DOWNLOAD_OPENRCT2_ZIP_VERSION}"
+            "${DOWNLOAD_OPENRCT2_ZIP_URL}"
         )
         file(REMOVE "${DOWNLOAD_OPENRCT2_DOWNLOAD_DIR}/${ZIP_FILE_NAME}")
     endif ()

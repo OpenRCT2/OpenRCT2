@@ -520,14 +520,6 @@ struct RCT12xy8
 };
 static_assert(sizeof(RCT12xy8) == 2);
 
-/* Track Element entry  size: 0x02 */
-struct TD46TrackElement
-{
-    OpenRCT2::RCT12::TrackElemType Type; // 0x00
-    uint8_t Flags;                       // 0x01
-};
-static_assert(sizeof(TD46TrackElement) == 0x02);
-
 struct RCT12Award
 {
     uint16_t Time;
@@ -824,8 +816,8 @@ public:
     RCT12ObjectEntryIndex GetEntryIndex() const;
     uint8_t GetAge() const;
     uint8_t GetSceneryQuadrant() const;
-    colour_t GetPrimaryColour() const;
-    colour_t GetSecondaryColour() const;
+    OpenRCT2::Drawing::Colour GetPrimaryColour() const;
+    OpenRCT2::Drawing::Colour GetSecondaryColour() const;
     bool NeedsSupports() const;
 };
 static_assert(sizeof(RCT12SmallSceneryElement) == 8);
@@ -837,8 +829,8 @@ private:
 public:
     uint32_t GetEntryIndex() const;
     uint16_t GetSequenceIndex() const;
-    colour_t GetPrimaryColour() const;
-    colour_t GetSecondaryColour() const;
+    OpenRCT2::Drawing::Colour GetPrimaryColour() const;
+    OpenRCT2::Drawing::Colour GetSecondaryColour() const;
     uint8_t GetBannerIndex() const;
 };
 static_assert(sizeof(RCT12LargeSceneryElement) == 8);
@@ -856,15 +848,15 @@ private:
 public:
     RCT12ObjectEntryIndex GetEntryIndex() const;
     uint8_t GetSlope() const;
-    colour_t GetPrimaryColour() const;
-    colour_t GetSecondaryColour() const;
-    colour_t GetTertiaryColour() const;
+    OpenRCT2::Drawing::Colour GetPrimaryColour() const;
+    OpenRCT2::Drawing::Colour GetSecondaryColour() const;
+    OpenRCT2::Drawing::Colour GetTertiaryColour() const;
     uint8_t GetAnimationFrame() const;
     uint8_t GetBannerIndex() const;
     bool IsAcrossTrack() const;
     bool AnimationIsBackwards() const;
     int32_t GetRCT1WallType(int32_t edge) const;
-    colour_t GetRCT1WallColour() const;
+    OpenRCT2::Drawing::Colour GetRCT1WallColour() const;
     uint8_t GetRCT1Slope() const;
 };
 static_assert(sizeof(RCT12WallElement) == 8);
@@ -1278,6 +1270,6 @@ namespace OpenRCT2::RCT12
      * Handles single and multi-byte strings.
      */
     size_t GetRCTStringBufferLen(const char* buffer, size_t maxBufferLen);
-    bool TrackTypeHasSpeedSetting(OpenRCT2::RCT12::TrackElemType trackType);
-    bool TrackTypeIsStation(OpenRCT2::RCT12::TrackElemType trackType);
+    bool TrackTypeHasSpeedSetting(TrackElemType trackType);
+    bool TrackTypeIsStation(TrackElemType trackType);
 } // namespace OpenRCT2::RCT12

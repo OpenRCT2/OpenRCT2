@@ -71,7 +71,7 @@ static void MazePaintSetup(
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll & ~EnumToFlag(PaintSegment::centre), 0xFFFF, 0);
 
     int32_t baseImageId = 0;
-    switch (ride.trackColours[0].supports)
+    switch (EnumValue(ride.trackColours[0].supports))
     {
         case 0:
             baseImageId = SprMazeBaseBrick;

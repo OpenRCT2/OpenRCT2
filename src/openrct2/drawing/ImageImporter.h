@@ -9,14 +9,11 @@
 
 #pragma once
 
-#include "../core/EnumUtils.hpp"
+#include "../core/FlagHolder.hpp"
 #include "../core/Imaging.h"
 #include "../core/JsonFwd.hpp"
 #include "../drawing/G1Element.h"
 #include "../world/Location.hpp"
-
-#include <string_view>
-#include <tuple>
 
 struct Image;
 
@@ -29,11 +26,12 @@ namespace OpenRCT2::Drawing
         Dithering,
     };
 
-    enum class ImportFlags : uint8_t
+    enum class ImportFlag : uint8_t
     {
-        RLE,
-        NoDrawOnZoom,
+        rle,
+        noDrawOnZoom,
     };
+    using ImportFlags = FlagHolder<uint8_t, ImportFlag>;
 
     enum class Palette : uint8_t
     {
@@ -45,7 +43,7 @@ namespace OpenRCT2::Drawing
     {
         ScreenCoordsXY offset{};
         Palette palette = Palette::OpenRCT2;
-        uint8_t importFlags = EnumToFlag(ImportFlags::RLE);
+        ImportFlags importFlags = { ImportFlag::rle };
         ImportMode importMode = ImportMode::Default;
         ScreenCoordsXY srcOffset{};
         ScreenSize srcSize{};
@@ -57,6 +55,11 @@ namespace OpenRCT2::Drawing
         G1Element Element{};
         std::vector<uint8_t> Buffer;
     };
+    struct PaletteImportResult
+    {
+        G1Palette element{};
+        std::vector<BGRColour> buffer;
+    };
 
     /**
      * Imports images to the internal RCT G1 format.
@@ -65,6 +68,7 @@ namespace OpenRCT2::Drawing
     {
     public:
         ImageImportResult Import(const Image& image, ImageImportMeta& meta) const;
+        PaletteImportResult importJSONPalette(json_t& jPalette) const;
 
     private:
         enum class PaletteIndexType : uint8_t
@@ -88,6 +92,7 @@ namespace OpenRCT2::Drawing
         static bool IsChangablePixel(int32_t paletteIndex);
         static PaletteIndexType GetPaletteIndexType(int32_t paletteIndex);
         static int32_t GetClosestPaletteIndex(const GamePalette& palette, const int16_t* colour);
+        BGRColour parseJSONPaletteColour(const std::string& s) const;
     };
 
     // Note: jsonSprite is deliberately left non-const: json_t behaviour changes when const.

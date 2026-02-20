@@ -28,6 +28,8 @@
 #include "../world/Map.h"
 #include "../world/Park.h"
 #include "Paint.h"
+#include "entity/Paint.Guest.h"
+#include "entity/Paint.Staff.h"
 #include "vehicle/VehiclePaint.h"
 
 #include <cassert>
@@ -138,8 +140,10 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
                 }
                 break;
             case EntityType::guest:
+                PaintGuest(session, *entity->cast<Guest>(), image_direction);
+                break;
             case EntityType::staff:
-                entity->cast<Peep>()->Paint(session, image_direction);
+                PaintStaff(session, *entity->cast<Staff>(), image_direction);
                 break;
             case EntityType::steamParticle:
                 entity->cast<SteamParticle>()->Paint(session, image_direction);

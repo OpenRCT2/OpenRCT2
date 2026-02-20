@@ -32,6 +32,7 @@
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
+#include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/interface/ColourWithFlags.h>
@@ -404,7 +405,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawPreview(Drawing::RenderTarget& rt)
+        void DrawPreview(RenderTarget& rt)
         {
             // Find preview image to draw
             PreviewImage* image = nullptr;
@@ -462,7 +463,7 @@ namespace OpenRCT2::Ui::Windows
 
                 if (targetType == PreviewImageType::screenshot)
                 {
-                    auto colour = ColourMapA[colours[1].colour].dark;
+                    auto colour = getColourMap(colours[1].colour).dark;
                     GfxDrawSpriteSolid(rt, ImageId(SPR_G2_LOGO_MONO_DITHERED), imagePos, colour);
                 }
 
@@ -477,7 +478,8 @@ namespace OpenRCT2::Ui::Windows
 
                 DrawTextBasic(
                     rt, textPos, previewText, {},
-                    { ColourWithFlags{ COLOUR_WHITE }.withFlag(ColourFlag::withOutline, true), TextAlignment::centre });
+                    { ColourWithFlags{ Drawing::Colour::white }.withFlag(ColourFlag::withOutline, true),
+                      TextAlignment::centre });
                 return;
             }
 
@@ -540,7 +542,7 @@ namespace OpenRCT2::Ui::Windows
         {
             setWidgets(window_loadsave_widgets);
 
-            const auto& uiContext = OpenRCT2::GetContext()->GetUiContext();
+            const auto& uiContext = GetContext()->GetUiContext();
             if (!uiContext.HasFilePicker())
             {
                 disabledWidgets |= (1uLL << WIDX_SYSTEM_BROWSER);
@@ -575,7 +577,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Populate file list
-            const char* pattern = GetFilterPatternByType(type, isSave);
+            auto pattern = GetFilterPatternByType(type, isSave, _trackDesign);
             const auto path = GetDir(type);
             PopulateList(path, pattern);
             numListItems = static_cast<uint16_t>(_listItems.size());
@@ -592,7 +594,7 @@ namespace OpenRCT2::Ui::Windows
         {
             _listItems.clear();
 
-            auto* windowMgr = Ui::GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             windowMgr->CloseByClass(WindowClass::loadsaveOverwritePrompt);
 
             Config::Save();
@@ -731,7 +733,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onDraw(Drawing::RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             drawWidgets(rt);
 
@@ -773,7 +775,7 @@ namespace OpenRCT2::Ui::Windows
                     auto cRT = const_cast<const RenderTarget&>(rt);
                     DrawTextEllipsised(
                         cRT, windowPos + ScreenCoordsXY{ widget.left + 5, widget.top + 1 }, widget.width() - 1, strId, ft,
-                        { COLOUR_GREY });
+                        { Drawing::Colour::grey });
                 };
 
             auto& config = Config::Get().general;
@@ -793,7 +795,8 @@ namespace OpenRCT2::Ui::Windows
             if (action == LoadSaveAction::save)
             {
                 auto& widget = widgets[WIDX_FILENAME_TEXTBOX];
-                DrawTextBasic(rt, windowPos + ScreenCoordsXY{ 5, widget.top + 2 }, STR_FILENAME_LABEL, {}, { COLOUR_GREY });
+                DrawTextBasic(
+                    rt, windowPos + ScreenCoordsXY{ 5, widget.top + 2 }, STR_FILENAME_LABEL, {}, { Drawing::Colour::grey });
             }
         }
 
@@ -821,7 +824,7 @@ namespace OpenRCT2::Ui::Windows
 
                 case WIDX_SYSTEM_BROWSER:
                 {
-                    u8string path = OpenSystemFileBrowser(isSave, type, _directory, _defaultPath);
+                    u8string path = OpenSystemFileBrowser(isSave, type, _directory, _defaultPath, _trackDesign);
                     if (!path.empty())
                     {
                         Select(path.c_str(), action, type, _trackDesign);
@@ -1077,10 +1080,11 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onScrollDraw(int32_t scrollIndex, Drawing::RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             Rectangle::fill(
-                rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } }, ColourMapA[colours[1].colour].mid_light);
+                rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } },
+                getColourMap(colours[1].colour).midLight);
 
             const int32_t listWidth = widgets[WIDX_SCROLL].width() - 1;
             const auto sizeColumnLeft = widgets[WIDX_SORT_SIZE].left;

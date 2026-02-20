@@ -44,7 +44,7 @@ namespace OpenRCT2
         constexpr uint8_t AlwaysRequired = (1 << 4);
         constexpr uint8_t Flag6 = (1 << 5);
         constexpr uint8_t AllFlags = 0xFF;
-    }; // namespace ObjectSelectionFlags
+    } // namespace ObjectSelectionFlags
 
 #pragma pack(push, 1)
     /**
@@ -224,7 +224,7 @@ namespace OpenRCT2
         ObjectGeneration GetGeneration() const
         {
             return _generation;
-        };
+        }
 
         ObjectType GetObjectType() const
         {

@@ -113,7 +113,7 @@ namespace OpenRCT2::TrackMetaData
         }
     };
 
-    using TrackComputeFunction = int32_t (*)(const int16_t);
+    using TrackComputeFunction = int32_t (*)(int16_t);
     struct TrackElementDescriptor
     {
         StringId description;

@@ -554,7 +554,6 @@ STR_1168    :Indstillinger
 STR_1169    :(ingen)
 STR_1170    :{STRING}
 STR_1171    :{RED}Lukket
-STR_1172    :{YELLOW}{STRINGID}
 STR_1173    :Byg stier og kø linjer
 STR_1174    :Banner skilt i vejen
 STR_1175    :Kan ikke bygge dette på en skrå sti
@@ -1111,7 +1110,6 @@ STR_1727    :Byggetilladelse er ikke til salg!
 STR_1728    :Kan ikke købe byggetilladelse her…
 STR_1729    :Land ikke ejet af parken!
 STR_1730    :{RED}Lukket
-STR_1731    :{WHITE}{STRINGID} - - 
 STR_1732    :Byg
 STR_1733    :Tilstand
 STR_1734    :{WINDOW_COLOUR_2}Antal omgange:
@@ -1152,7 +1150,6 @@ STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COM
 STR_1773    :Kun en on-ride foto sektion, tilladt per forlystelse
 STR_1774    :Kun et trækspil er tilladt per forlystelse.
 STR_1777    :Forlystelses musik
-STR_1778    :{STRINGID} - - 
 STR_1790    :vælg uniforms farve for denne type personale
 STR_1791    :{WINDOW_COLOUR_2}Uniforms farve:
 STR_1792    :Reagerer på et kald til {STRINGID} på grund af nedbrud

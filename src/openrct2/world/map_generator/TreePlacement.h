@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#pragma once
+
 namespace OpenRCT2::World::MapGenerator
 {
     struct Settings;

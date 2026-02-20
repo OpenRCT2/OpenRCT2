@@ -16,7 +16,8 @@
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/SpriteIds.h>
-#include <openrct2/actions/ClearAction.h>
+#include <openrct2/actions/GameActionRunner.h>
+#include <openrct2/actions/terraform/ClearAction.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/ui/WindowManager.h>
@@ -288,6 +289,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             auto action = GetClearAction();
+            action.SetFlags({ GameActions::CommandFlag::allowDuringPaused });
             auto result = GameActions::Query(&action, getGameState());
             auto cost = (result.error == GameActions::Status::ok ? result.cost : kMoney64Undefined);
             if (_clearSceneryCost != cost)

@@ -100,7 +100,7 @@ void Balloon::Pop(bool playSound)
     }
 }
 
-void Balloon::Create(const CoordsXYZ& balloonPos, int32_t colour, bool isPopped)
+void Balloon::Create(const CoordsXYZ& balloonPos, Drawing::Colour colour, bool isPopped)
 {
     auto* balloon = getGameState().entities.CreateEntity<Balloon>();
     if (balloon == nullptr)
@@ -159,7 +159,7 @@ bool Balloon::Collides() const
         {
             const TrackElement* trackElement = tileElement->AsTrack();
             const auto* ride = GetRide(trackElement->GetRideIndex());
-            if (ride != nullptr && ride->getRideTypeDescriptor().HasFlag(RtdFlag::hasRoofOverWholeRide))
+            if (ride != nullptr && ride->getRideTypeDescriptor().flags.has(RtdFlag::hasRoofOverWholeRide))
             {
                 check_ceiling = true;
             }

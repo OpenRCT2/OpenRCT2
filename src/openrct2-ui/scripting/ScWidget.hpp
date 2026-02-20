@@ -51,7 +51,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr && IsCustomWindow())
             {
-                return OpenRCT2::Ui::Windows::GetWidgetName(w, _widgetIndex);
+                return Ui::Windows::GetWidgetName(w, _widgetIndex);
             }
             return {};
         }
@@ -61,7 +61,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr && IsCustomWindow())
             {
-                OpenRCT2::Ui::Windows::SetWidgetName(w, _widgetIndex, value);
+                Ui::Windows::SetWidgetName(w, _widgetIndex, value);
             }
         }
 
@@ -286,7 +286,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr && IsCustomWindow())
             {
-                return OpenRCT2::Ui::Windows::GetWidgetTooltip(w, _widgetIndex);
+                return Ui::Windows::GetWidgetTooltip(w, _widgetIndex);
             }
             return {};
         }
@@ -295,7 +295,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr && IsCustomWindow())
             {
-                OpenRCT2::Ui::Windows::SetWidgetTooltip(w, _widgetIndex, value);
+                Ui::Windows::SetWidgetTooltip(w, _widgetIndex, value);
             }
         }
 
@@ -384,7 +384,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr && IsCustomWindow())
             {
-                OpenRCT2::Ui::Windows::UpdateWidgetText(w, _widgetIndex, value);
+                Ui::Windows::UpdateWidgetText(w, _widgetIndex, value);
             }
         }
 
@@ -585,21 +585,21 @@ namespace OpenRCT2::Scripting
         }
 
     private:
-        colour_t colour_get() const
+        uint8_t colour_get() const
         {
             auto w = GetWindow();
             if (w != nullptr)
             {
-                return GetWidgetColour(w, _widgetIndex);
+                return EnumValue(GetWidgetColour(w, _widgetIndex));
             }
-            return COLOUR_BLACK;
+            return EnumValue(Drawing::Colour::black);
         }
-        void colour_set(colour_t value)
+        void colour_set(uint8_t value)
         {
             auto w = GetWindow();
             if (w != nullptr)
             {
-                UpdateWidgetColour(w, _widgetIndex, value);
+                UpdateWidgetColour(w, _widgetIndex, static_cast<Drawing::Colour>(value));
                 Invalidate();
             }
         }
@@ -956,7 +956,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr && IsCustomWindow())
             {
-                return OpenRCT2::Ui::Windows::GetWidgetMaxLength(w, _widgetIndex);
+                return Ui::Windows::GetWidgetMaxLength(w, _widgetIndex);
             }
             return 0;
         }
@@ -966,7 +966,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr && IsCustomWindow())
             {
-                OpenRCT2::Ui::Windows::SetWidgetMaxLength(w, _widgetIndex, value);
+                Ui::Windows::SetWidgetMaxLength(w, _widgetIndex, value);
             }
         }
 

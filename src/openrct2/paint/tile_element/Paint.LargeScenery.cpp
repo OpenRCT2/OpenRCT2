@@ -16,6 +16,7 @@
 #include "../../core/EnumUtils.hpp"
 #include "../../core/Numerics.hpp"
 #include "../../core/UTF8.h"
+#include "../../drawing/ColourMap.h"
 #include "../../drawing/Drawing.h"
 #include "../../drawing/ScrollingText.h"
 #include "../../interface/Viewport.h"
@@ -31,6 +32,7 @@
 #include "../../world/tile_element/LargeSceneryElement.h"
 #include "../Boundbox.h"
 #include "../support/WoodenSupports.h"
+#include "Paint.LargeScenery.h"
 #include "Paint.TileElement.h"
 #include "Segment.h"
 
@@ -214,7 +216,8 @@ static void PaintLargeScenery3DText(
     if (text == nullptr)
         return;
 
-    auto textColour = isGhost ? static_cast<colour_t>(COLOUR_GREY) : tileElement.GetSecondaryColour();
+    auto textColour = isGhost ? static_cast<OpenRCT2::Drawing::Colour>(OpenRCT2::Drawing::Colour::grey)
+                              : tileElement.GetSecondaryColour();
     auto imageTemplate = ImageId().WithPrimary(textColour);
 
     char signString[256];
@@ -308,30 +311,17 @@ static void PaintLargeSceneryScrollingText(
 {
     PROFILED_FUNCTION();
 
-    auto textColour = isGhost ? static_cast<colour_t>(COLOUR_GREY) : tileElement.GetSecondaryColour();
-    auto textPaletteIndex = direction == 0 ? ColourMapA[textColour].mid_dark : ColourMapA[textColour].light;
+    auto textColour = isGhost ? static_cast<OpenRCT2::Drawing::Colour>(OpenRCT2::Drawing::Colour::grey)
+                              : tileElement.GetSecondaryColour();
+    auto textPaletteIndex = direction == 0 ? getColourMap(textColour).midDark : getColourMap(textColour).light;
 
     auto banner = tileElement.GetBanner();
     if (banner == nullptr)
         return;
 
-    auto ft = Formatter();
-    banner->formatTextTo(ft);
-
-    char text[256];
-    if (Config::Get().general.upperCaseBanners)
-    {
-        FormatStringToUpper(text, sizeof(text), STR_SCROLLING_SIGN_TEXT, ft.Data());
-    }
-    else
-    {
-        FormatStringLegacy(text, sizeof(text), STR_SCROLLING_SIGN_TEXT, ft.Data());
-    }
-
+    auto bannerText = banner->getText();
     auto scrollMode = sceneryEntry.scrolling_mode + ((direction + 1) & 3);
-    auto stringWidth = GfxGetStringWidth(text, FontStyle::tiny);
-    auto scroll = stringWidth > 0 ? (getGameState().currentTicks / 2) % stringWidth : 0;
-    auto imageId = ScrollingText::setup(session, STR_SCROLLING_SIGN_TEXT, ft, scroll, scrollMode, textPaletteIndex);
+    auto imageId = ScrollingText::setup(session, bannerText, scrollMode, textPaletteIndex);
     PaintAddImageAsChild(session, imageId, { 0, 0, height + 25 }, { bbOffset, { 1, 1, 21 } });
 }
 
@@ -422,5 +412,5 @@ void PaintLargeScenery(PaintSession& session, uint8_t direction, uint16_t height
         }
     }
     PaintLargeScenerySupports(
-        session, direction, height, tileElement, isGhost ? imageTemplate : ImageId(0, COLOUR_BLACK), tile);
+        session, direction, height, tileElement, isGhost ? imageTemplate : ImageId(0, OpenRCT2::Drawing::Colour::black), tile);
 }

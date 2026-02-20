@@ -35,4 +35,4 @@ namespace OpenRCT2::PathFinding
 
     int32_t GuestPathFindParkEntranceLeaving(Peep& peep, uint8_t edges);
 
-}; // namespace OpenRCT2::PathFinding
+} // namespace OpenRCT2::PathFinding

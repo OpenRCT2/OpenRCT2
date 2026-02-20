@@ -27,7 +27,7 @@ constexpr RideTypeDescriptor MiniGolfRTD =
         .extraTrackGroups = {},
     }),
     .InvertedTrackPaintFunctions = {},
-    .Flags = kRtdFlagsHasThreeColours | EnumsToFlags(RtdFlag::noTestMode, RtdFlag::hasTrack, RtdFlag::hasOneStation,
+    .flags = kRtdFlagsHasThreeColours | RtdFlags(RtdFlag::noTestMode, RtdFlag::hasTrack, RtdFlag::hasOneStation,
                      RtdFlag::supportsMultipleColourSchemes, RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit,
                      RtdFlag::slightlyInterestingToLookAt),
     .RideModes = EnumsToFlags(RideMode::continuousCircuit),
@@ -46,8 +46,8 @@ constexpr RideTypeDescriptor MiniGolfRTD =
     .PhotoItem = ShopItem::photo,
     .BonusValue = 23,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_SATURATED_GREEN, COLOUR_DARK_BROWN, COLOUR_BLACK },
-        { COLOUR_MOSS_GREEN, COLOUR_BORDEAUX_RED, COLOUR_DARK_BROWN },
+        { Drawing::Colour::saturatedGreen, Drawing::Colour::darkBrown, Drawing::Colour::black },
+        { Drawing::Colour::mossGreen, Drawing::Colour::bordeauxRed, Drawing::Colour::darkBrown },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_MINI_GOLF_TRACK, SPR_RIDE_DESIGN_PREVIEW_MINI_GOLF_SUPPORTS },
     .ColourKey = RideColourKey::Ride,
@@ -57,7 +57,7 @@ constexpr RideTypeDescriptor MiniGolfRTD =
         RatingsCalculationType::Normal,
         { RideRating::make(1, 50), RideRating::make(0, 90), RideRating::make(0, 00) },
         0,
-        -1,
+        kDynamicRideShelterRating,
         false,
         {
             { RatingsModifierType::BonusLength,      6000, 873, 0, 0 },

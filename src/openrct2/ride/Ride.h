@@ -13,7 +13,6 @@
 #include "../core/BitSet.hpp"
 #include "../core/FixedPoint.hpp"
 #include "../core/FlagHolder.hpp"
-#include "../rct2/Limits.h"
 #include "RideColour.h"
 #include "RideEntry.h"
 #include "RideRatings.h"
@@ -165,7 +164,7 @@ namespace OpenRCT2::ShelteredSectionsBits
     constexpr uint8_t kNumShelteredSectionsMask = 0b00011111;
     constexpr uint8_t kRotatingWhileSheltered = 0b00100000;
     constexpr uint8_t kBankingWhileSheltered = 0b01000000;
-}; // namespace OpenRCT2::ShelteredSectionsBits
+} // namespace OpenRCT2::ShelteredSectionsBits
 
 struct TrackDesign;
 struct TrackDesignState;
@@ -286,7 +285,7 @@ struct Ride
         EntityId slidePeep;
         uint16_t mazeTiles{};
     };
-    uint8_t slidePeepTShirtColour{};
+    OpenRCT2::Drawing::Colour slidePeepTShirtColour{};
     uint8_t spiralSlideProgress{};
     int32_t buildDate{};
     money64 upkeepCost{};
@@ -529,35 +528,6 @@ enum
     RIDE_LIFECYCLE_FIXED_RATINGS = 1 << 20,        // When set, the ratings will not be updated (useful for hacked rides).
     RIDE_LIFECYCLE_RANDOM_SHOP_COLOURS = 1 << 21,
     RIDE_LIFECYCLE_REVERSED_TRAINS = 1 << 22,
-};
-
-// Constants used by the ride_type->flags property at 0x008
-enum
-{
-    RIDE_ENTRY_FLAG_VEHICLE_TAB_SCALE_HALF = 1 << 0,
-    RIDE_ENTRY_FLAG_NO_INVERSIONS = 1 << 1,
-    RIDE_ENTRY_FLAG_NO_BANKED_TRACK = 1 << 2,
-    RIDE_ENTRY_FLAG_PLAY_DEPART_SOUND = 1 << 3,
-    RIDE_ENTRY_FLAG_INVERTER_SHIP_SWING_MODE = 1 << 4,
-    RIDE_ENTRY_FLAG_TWIST_ROTATION_TYPE = 1 << 5,
-    RIDE_ENTRY_FLAG_ENTERPRISE_ROTATION_TYPE = 1 << 6,
-    RIDE_ENTRY_FLAG_DISABLE_WANDERING_DEPRECATED = 1 << 7,
-    RIDE_ENTRY_FLAG_PLAY_SPLASH_SOUND = 1 << 8,
-    RIDE_ENTRY_FLAG_PLAY_SPLASH_SOUND_SLIDE = 1 << 9,
-    RIDE_ENTRY_FLAG_COVERED_RIDE = 1 << 10,
-    RIDE_ENTRY_FLAG_LIMIT_AIRTIME_BONUS = 1 << 11,
-    RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME_DEPRECATED = 1 << 12, // Always set with SEPARATE_RIDE, and deprecated in favour of it.
-    RIDE_ENTRY_FLAG_SEPARATE_RIDE_DEPRECATED = 1 << 13,      // Made redundant by ride groups
-    RIDE_ENTRY_FLAG_CANNOT_BREAK_DOWN = 1 << 14,
-    RIDE_ENTRY_DISABLE_LAST_OPERATING_MODE_DEPRECATED = 1 << 15,
-    RIDE_ENTRY_FLAG_DISABLE_DOOR_CONSTRUCTION_DEPRECATED = 1 << 16,
-    RIDE_ENTRY_DISABLE_FIRST_TWO_OPERATING_MODES_DEPRECATED = 1 << 17,
-    RIDE_ENTRY_FLAG_DISABLE_COLLISION_CRASHES = 1 << 18,
-    RIDE_ENTRY_FLAG_DISABLE_COLOUR_TAB = 1 << 19,
-    // Must be set with Inverter Ship swing mode as well.
-    RIDE_ENTRY_FLAG_MAGIC_CARPET_SWING_MODE = 1 << 20,
-    RIDE_ENTRY_FLAG_RIDER_CONTROLS_SPEED = 1 << 21,
-    RIDE_ENTRY_FLAG_HIDE_EMPTY_TRAINS = 1 << 22,
 };
 
 enum

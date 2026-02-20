@@ -28,8 +28,8 @@ constexpr RideTypeDescriptor InvertedImpulseCoasterRTD =
         .extraTrackGroups = {},
     }),
     .InvertedTrackPaintFunctions = {},
-    .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt |
-                 EnumsToFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::checkGForces,
+    .flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt |
+                 RtdFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::checkGForces,
                               RtdFlag::allowMultipleCircuits, RtdFlag::isSuspended, RtdFlag::allowReversedTrains),
     .RideModes = EnumsToFlags(RideMode::poweredLaunchPasstrough, RideMode::poweredLaunch),
     .DefaultMode = RideMode::poweredLaunchPasstrough,
@@ -50,11 +50,11 @@ constexpr RideTypeDescriptor InvertedImpulseCoasterRTD =
     .PhotoItem = ShopItem::photo2,
     .BonusValue = 75,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_GREY },
-        { COLOUR_YELLOW, COLOUR_YELLOW, COLOUR_WHITE },
-        { COLOUR_BRIGHT_PURPLE, COLOUR_BRIGHT_PURPLE, COLOUR_BORDEAUX_RED },
-        { COLOUR_BRIGHT_YELLOW, COLOUR_BRIGHT_YELLOW, COLOUR_BORDEAUX_RED }, // Volcano: The Blast Coaster
-        { COLOUR_BRIGHT_YELLOW, COLOUR_BRIGHT_YELLOW, COLOUR_TEAL }, // Wicked Twister
+        { Drawing::Colour::brightRed, Drawing::Colour::brightRed, Drawing::Colour::grey },
+        { Drawing::Colour::yellow, Drawing::Colour::yellow, Drawing::Colour::white },
+        { Drawing::Colour::brightPurple, Drawing::Colour::brightPurple, Drawing::Colour::bordeauxRed },
+        { Drawing::Colour::brightYellow, Drawing::Colour::brightYellow, Drawing::Colour::bordeauxRed }, // Volcano: The Blast Coaster
+        { Drawing::Colour::brightYellow, Drawing::Colour::brightYellow, Drawing::Colour::darkWater }, // Wicked Twister
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_INVERTED_IMPULSE_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_INVERTED_IMPULSE_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::Ride,
@@ -64,7 +64,7 @@ constexpr RideTypeDescriptor InvertedImpulseCoasterRTD =
         RatingsCalculationType::Normal,
         { RideRating::make(4, 00), RideRating::make(3, 00), RideRating::make(3, 20) },
         20,
-        -1,
+        kDynamicRideShelterRating,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },

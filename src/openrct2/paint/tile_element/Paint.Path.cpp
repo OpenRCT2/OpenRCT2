@@ -155,34 +155,19 @@ static void PathPaintQueueBanner(
         uint16_t scrollingMode = railings.scrollingMode;
         scrollingMode += direction;
 
-        auto ft = Formatter();
-
+        u8string bannerText;
         if (ride->status == RideStatus::open && !(ride->lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN))
         {
-            ft.Add<StringId>(STR_RIDE_ENTRANCE_NAME);
-            ride->formatNameTo(ft);
+            bannerText = ScrollingText::kRideBannerColourPrefix + ride->getName();
         }
         else
         {
-            ft.Add<StringId>(STR_RIDE_ENTRANCE_CLOSED);
+            bannerText = LanguageGetString(STR_RIDE_ENTRANCE_CLOSED);
         }
-
-        utf8 bannerBuffer[512]{};
-        if (Config::Get().general.upperCaseBanners)
-        {
-            FormatStringToUpper(bannerBuffer, sizeof(bannerBuffer), STR_BANNER_TEXT_FORMAT, ft.Data());
-        }
-        else
-        {
-            FormatStringLegacy(bannerBuffer, sizeof(bannerBuffer), STR_BANNER_TEXT_FORMAT, ft.Data());
-        }
-
-        uint16_t stringWidth = GfxGetStringWidth(bannerBuffer, FontStyle::tiny);
-        uint16_t scroll = stringWidth > 0 ? (getGameState().currentTicks / 2) % stringWidth : 0;
 
         PaintAddImageAsChild(
-            session, ScrollingText::setup(session, STR_BANNER_TEXT_FORMAT, ft, scroll, scrollingMode, PaletteIndex::pi0),
-            { 0, 0, height + 7 }, { boundBoxOffsets, { 1, 1, 21 } });
+            session, ScrollingText::setup(session, bannerText, scrollingMode, PaletteIndex::transparent), { 0, 0, height + 7 },
+            { boundBoxOffsets, { 1, 1, 21 } });
     }
 
     session.InteractionType = ViewportInteractionItem::footpath;
@@ -751,7 +736,7 @@ static void PaintHeightMarkers(PaintSession& session, const PathElement& pathEl)
         baseImageIndex += heightMarkerBaseZ / 16;
         baseImageIndex += GetHeightMarkerOffset();
         baseImageIndex -= kMapBaseZ;
-        auto imageId = ImageId(baseImageIndex, COLOUR_GREY);
+        auto imageId = ImageId(baseImageIndex, OpenRCT2::Drawing::Colour::grey);
         PaintAddImageAsParent(session, imageId, { 16, 16, heightMarkerBaseZ }, { 1, 1, 0 });
     }
 }
@@ -1046,7 +1031,7 @@ static void PathPaintPoleSupport(
         {
             // Only colour the supports if not already remapped (e.g. ghost remap)
             auto supportColour = pathPaintInfo.railings.supportColour;
-            if (supportColour != COLOUR_NULL && !imageTemplate.IsRemap())
+            if (supportColour != OpenRCT2::Drawing::kColourNull && !imageTemplate.IsRemap())
             {
                 imageTemplate = ImageId().WithPrimary(supportColour);
             }

@@ -228,6 +228,7 @@ void TextComposition::HandleMessage(const SDL_Event* e)
                         utf8* text = SDL_GetClipboardText();
                         Insert(text);
                         SDL_free(text);
+                        console.RefreshCaret(_session.SelectionStart);
                         Windows::WindowUpdateTextbox();
                     }
                     break;

@@ -44,9 +44,7 @@ void WallRemoveAtZ(const CoordsXYZ& wallPos)
  */
 void WallRemoveIntersectingWalls(const CoordsXYRangedZ& wallPos, Direction direction)
 {
-    TileElement* tileElement;
-
-    tileElement = MapGetFirstElementAt(wallPos);
+    TileElement* tileElement = MapGetFirstElementAt(wallPos);
     if (tileElement == nullptr)
         return;
     do
@@ -125,9 +123,7 @@ uint8_t GetWallSlopeFromEdgeSlope(uint8_t Slope, uint8_t Edge)
  */
 bool WallInTheWay(const CoordsXYRangedZ& fencePos, int32_t direction)
 {
-    TileElement* tileElement;
-
-    tileElement = MapGetFirstElementAt(fencePos);
+    TileElement* tileElement = MapGetFirstElementAt(fencePos);
     if (tileElement == nullptr)
         return false;
     do
