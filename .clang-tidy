@@ -7,6 +7,7 @@ Checks: >
     modernize-use-bool-literals,
     modernize-use-nullptr,
     modernize-use-override,
+    readability-container-size-empty,
     readability-redundant-typename,
     readability-uppercase-literal-suffix
 CheckOptions:
