@@ -612,18 +612,52 @@ jobs:
             bin/coverage.json*
             bin/OpenRCT2Tests.xz
           if-no-files-found: error
-  android:
-    name: Android
+  android-libs:
+    name: Android (${{ matrix.arch }})
     runs-on: ubuntu-latest
     needs: [check-code-formatting, build_variables]
     container: openrct2/openrct2-build:25-android
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: [armeabi-v7a, arm64-v8a, x86_64]
     steps:
       - name: Checkout
         uses: actions/checkout@v6
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2.20
         with:
-          key: android
+          key: android-${{ matrix.arch }}
+      - name: Cache Gradle
+        uses: actions/cache@v5
+        with:
+          # The gradle cache is by default ~/.gradle/caches, but ~ gets resolved by GitHub Actions to the runner's
+          # home directory (/home/github), not the user inside the container (/root). Name the path explicitly.
+          path: /root/.gradle/caches
+          key: gradle-${{ hashFiles('src/openrct2-android/gradle.properties') }}
+      - name: Install GCC problem matcher
+        uses: ammaraskar/gcc-problem-matcher@master
+      - name: Build Native Libs
+        run: |
+          . scripts/setenv
+          pushd src/openrct2-android
+          ./gradlew app:externalNativeBuildRelease -PabiFilter=${{ matrix.arch }}
+          popd
+      - name: Upload Native Libs
+        uses: actions/upload-artifact@v6
+        with:
+          name: android-libs-${{ matrix.arch }}
+          path: src/openrct2-android/app/build/intermediates/cmake/release/obj/${{ matrix.arch }}
+          if-no-files-found: error
+
+  android:
+    name: Android
+    runs-on: ubuntu-latest
+    needs: [android-libs, build_variables]
+    container: openrct2/openrct2-build:25-android
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
       - name: Cache Gradle
         uses: actions/cache@v5
         with:
@@ -636,16 +670,30 @@ jobs:
           echo "${{ secrets.OPENRCT2_KEYSTORE_CONTENTS }}" | base64 -d > keystore.jks
           echo "OPENRCT2_KEYSTORE_FILE=${{ github.workspace }}/keystore.jks" >> $GITHUB_ENV
           echo "OPENRCT2_KEYSTORE_PASSWORD=${{ secrets.OPENRCT2_KEYSTORE_PASSWORD }}" >> $GITHUB_ENV
-      - name: Install GCC problem matcher
-        uses: ammaraskar/gcc-problem-matcher@master
+      - name: Download all libs
+        uses: actions/download-artifact@v7
+        with:
+          pattern: android-libs-*
+          path: artifacts/android-libs
+      - name: Move libs to project
+        run: |
+          mkdir -p src/openrct2-android/app/libs
+          for arch in armeabi-v7a arm64-v8a x86_64; do
+            if [ -d "artifacts/android-libs/android-libs-$arch" ]; then
+              mkdir -p src/openrct2-android/app/libs/$arch
+              mv artifacts/android-libs/android-libs-$arch/* src/openrct2-android/app/libs/$arch/
+            else
+              echo "::warning title=Missing libraries::Warning: No libs found for $arch"
+            fi
+          done
       - name: Build OpenRCT2
         run: |
           . scripts/setenv
           pushd src/openrct2-android
-          ./gradlew app:assembleRelease
+          ./gradlew app:assembleRelease -PskipNativeBuild
           popd
           mkdir -p artifacts
-          mv src/openrct2-android/app/build/outputs/apk/release/app-release.apk artifacts/OpenRCT2-${{ needs.build_variables.outputs.name }}-android-arm.apk
+          mv src/openrct2-android/app/build/outputs/apk/release/app-release.apk artifacts/OpenRCT2-${{ needs.build_variables.outputs.name }}-android.apk
       - name: Upload artifacts (CI)
         uses: actions/upload-artifact@v6
         with:
