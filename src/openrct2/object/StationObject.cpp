@@ -30,29 +30,29 @@ namespace OpenRCT2
         baseImageIndex = LoadImages();
 
         entranceBackIndex = baseImageIndex;
-        entranceFrontIndex = baseImageIndex + 4;
+        entranceFrontIndex = entranceBackIndex + 4;
 
-        exitBackIndex = baseImageIndex + 8;
-        exitFrontIndex = baseImageIndex + 12;
+        exitBackIndex = entranceBackIndex + 8;
+        exitFrontIndex = entranceBackIndex + 12;
 
         if (!(Flags & StationObjectFlags::isTransparent))
         {
             if (numImages > 16)
-                shelterIndex = baseImageIndex + 16;
+                shelterIndex = entranceBackIndex + 16;
 
             return;
         }
 
-        entranceBackGlassIndex = baseImageIndex + 16;
-        entranceFrontGlassIndex = baseImageIndex + 20;
+        entranceBackGlassIndex = entranceBackIndex + 16;
+        entranceFrontGlassIndex = entranceBackIndex + 20;
 
-        exitBackGlassIndex = baseImageIndex + 24;
-        exitFrontGlassIndex = baseImageIndex + 28;
+        exitBackGlassIndex = entranceBackIndex + 24;
+        exitFrontGlassIndex = entranceBackIndex + 28;
 
         if (numImages > 32)
         {
-            shelterIndex = baseImageIndex + 32;
-            shelterGlassIndex = baseImageIndex + 44;
+            shelterIndex = entranceBackIndex + 32;
+            shelterGlassIndex = entranceBackIndex + 44;
         }
     }
 
