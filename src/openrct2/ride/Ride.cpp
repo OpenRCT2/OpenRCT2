@@ -2207,7 +2207,7 @@ std::pair<RideMeasurement*, OpenRCT2String> Ride::getMeasurement()
 VehicleColour RideGetVehicleColour(const Ride& ride, int32_t vehicleIndex)
 {
     // Prevent indexing array out of bounds
-    vehicleIndex = std::min<int32_t>(vehicleIndex, static_cast<int32_t>(std::size(ride.vehicleColours)));
+    vehicleIndex = std::min<int32_t>(vehicleIndex, std::size(ride.vehicleColours) - 1);
     return ride.vehicleColours[vehicleIndex];
 }
 
