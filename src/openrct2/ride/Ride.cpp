@@ -4450,13 +4450,14 @@ void RideUpdateVehicleColours(const Ride& ride)
         GfxInvalidateScreen();
     }
 
+    auto& entities = getGameState().entities;
     for (int32_t i = 0; i <= Limits::kMaxTrainsPerRide; i++)
     {
         int32_t carIndex = 0;
         VehicleColour colours = {};
 
-        for (Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[i]); vehicle != nullptr;
-             vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
+        for (Vehicle* vehicle = entities.GetEntity<Vehicle>(ride.vehicles[i]); vehicle != nullptr;
+             vehicle = entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
         {
             switch (ride.vehicleColourSettings)
             {
@@ -4467,16 +4468,12 @@ void RideUpdateVehicleColours(const Ride& ride)
                     colours = ride.vehicleColours[i];
                     break;
                 case VehicleColourSettings::perCar:
-                    if (vehicle->flags.has(VehicleFlag::carIsReversed))
-                    {
-                        colours = ride.vehicleColours[std::min(
-                            (ride.numCarsPerTrain - 1) - carIndex, Limits::kMaxCarsPerTrain - 1)];
-                    }
-                    else
-                    {
-                        colours = ride.vehicleColours[std::min(carIndex, Limits::kMaxCarsPerTrain - 1)];
-                    }
+                {
+                    const bool isReversed = vehicle->flags.has(VehicleFlag::carIsReversed);
+                    const auto colourIndex = isReversed ? (ride.numCarsPerTrain - 1) - carIndex : carIndex;
+                    colours = ride.vehicleColours[std::min(colourIndex, Limits::kMaxCarsPerTrain - 1)];
                     break;
+                }
             }
 
             vehicle->colours = colours;
