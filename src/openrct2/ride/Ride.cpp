@@ -4454,11 +4454,10 @@ void RideUpdateVehicleColours(const Ride& ride)
     for (int32_t i = 0; i <= Limits::kMaxTrainsPerRide; i++)
     {
         int32_t carIndex = 0;
-        VehicleColour colours = {};
-
         for (Vehicle* vehicle = entities.GetEntity<Vehicle>(ride.vehicles[i]); vehicle != nullptr;
              vehicle = entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
         {
+            VehicleColour colours = {};
             switch (ride.vehicleColourSettings)
             {
                 case VehicleColourSettings::same:
