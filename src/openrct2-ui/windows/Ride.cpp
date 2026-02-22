@@ -3011,7 +3011,7 @@ namespace OpenRCT2::Ui::Windows
             for (int32_t i = 0; i < ride->numTrains; i++)
             {
                 VehicleDrawInfo trainCarImages[Limits::kMaxCarsPerTrain];
-                VehicleDrawInfo* nextSpriteToDraw = trainCarImages;
+                VehicleDrawInfo* nextImageToDraw = trainCarImages;
                 int32_t x = startX;
                 int32_t y = startY;
 
@@ -3056,24 +3056,24 @@ namespace OpenRCT2::Ui::Windows
 
                     auto imageId = ImageId(imageIndex, vehicleColour.Body, vehicleColour.Trim, vehicleColour.Tertiary);
 
-                    nextSpriteToDraw->x = x;
-                    nextSpriteToDraw->y = y;
-                    nextSpriteToDraw->imageId = imageId;
-                    nextSpriteToDraw++;
+                    nextImageToDraw->x = x;
+                    nextImageToDraw->y = y;
+                    nextImageToDraw->imageId = imageId;
+                    nextImageToDraw++;
 
                     x += carEntry.spacing / 17432;
                     y -= (carEntry.spacing / 2) / 17432;
                 }
 
                 if (ride->getRideTypeDescriptor().flags.has(RtdFlag::layeredVehiclePreview)
-                    && (nextSpriteToDraw - trainCarImages) >= 2)
+                    && (nextImageToDraw - trainCarImages) >= 2)
                 {
-                    VehicleDrawInfo tmp = *(nextSpriteToDraw - 1);
-                    *(nextSpriteToDraw - 1) = *(nextSpriteToDraw - 2);
-                    *(nextSpriteToDraw - 2) = tmp;
+                    VehicleDrawInfo tmp = *(nextImageToDraw - 1);
+                    *(nextImageToDraw - 1) = *(nextImageToDraw - 2);
+                    *(nextImageToDraw - 2) = tmp;
                 }
 
-                VehicleDrawInfo* current = nextSpriteToDraw;
+                VehicleDrawInfo* current = nextImageToDraw;
                 while (--current >= trainCarImages)
                     GfxDrawSprite(rt, current->imageId, { current->x, current->y });
 
