@@ -2996,9 +2996,9 @@ namespace OpenRCT2::Ui::Windows
             // Background
             Rectangle::fill(rt, { { rt.x, rt.y }, { rt.x + rt.width, rt.y + rt.height } }, PaletteIndex::pi12);
 
-            Widget* widget = &widgets[WIDX_VEHICLE_TRAINS_PREVIEW];
-            int32_t startX = std::max(2, (widget->width() - 1 - ((ride->numTrains - 1) * 36)) / 2 - 25);
-            int32_t startY = widget->height() - 5;
+            const Widget& widget = widgets[WIDX_VEHICLE_TRAINS_PREVIEW];
+            int32_t startX = std::max(2, (widget.width() - 1 - ((ride->numTrains - 1) * 36)) / 2 - 25);
+            int32_t startY = widget.height() - 5;
 
             bool isReversed = ride->flags.has(RideFlag::reversedTrains);
             const int32_t firstCarIndex = (isReversed) ? ride->numCarsPerTrain - 1 : 0;
