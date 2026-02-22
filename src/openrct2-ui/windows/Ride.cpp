@@ -3001,13 +3001,12 @@ namespace OpenRCT2::Ui::Windows
             int32_t startY = widget->height() - 5;
 
             bool isReversed = ride->flags.has(RideFlag::reversedTrains);
-            int32_t carIndex = (isReversed) ? ride->numCarsPerTrain - 1 : 0;
-
+            const int32_t firstCarIndex = (isReversed) ? ride->numCarsPerTrain - 1 : 0;
             const auto& firstCarEntry = rideEntry->Cars[RideEntryGetVehicleAtPosition(
-                ride->subtype, ride->numCarsPerTrain, carIndex)];
+                ride->subtype, ride->numCarsPerTrain, firstCarIndex)];
             startY += firstCarEntry.tab_height;
 
-            // For each train
+            // Prepare and draw each train
             for (int32_t i = 0; i < ride->numTrains; i++)
             {
                 VehicleDrawInfo trainCarImages[Limits::kMaxCarsPerTrain];
@@ -3015,11 +3014,12 @@ namespace OpenRCT2::Ui::Windows
                 int32_t x = startX;
                 int32_t y = startY;
 
-                // For each car in train
                 static_assert(std::numeric_limits<decltype(ride->numCarsPerTrain)>::max() <= std::size(trainCarImages));
+
+                // Prepare each car in train for drawing
                 for (int32_t j = 0; j < ride->numCarsPerTrain; j++)
                 {
-                    carIndex = (isReversed) ? (ride->numCarsPerTrain - 1) - j : j;
+                    const auto carIndex = (isReversed) ? (ride->numCarsPerTrain - 1) - j : j;
 
                     const auto& carEntry = rideEntry->Cars[RideEntryGetVehicleAtPosition(
                         ride->subtype, ride->numCarsPerTrain, carIndex)];
@@ -3073,6 +3073,7 @@ namespace OpenRCT2::Ui::Windows
                     *(nextImageToDraw - 2) = tmp;
                 }
 
+                // Draw each car in the train
                 VehicleDrawInfo* current = nextImageToDraw;
                 while (--current >= trainCarImages)
                     GfxDrawSprite(rt, current->imageId, { current->x, current->y });
