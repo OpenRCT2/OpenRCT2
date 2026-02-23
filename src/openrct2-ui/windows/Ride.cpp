@@ -188,16 +188,18 @@ namespace OpenRCT2::Ui::Windows
         WIDX_RELIABILITY_BAR,
         WIDX_DOWN_TIME_BAR,
 
-        WIDX_TRACK_PREVIEW = 14,
+        WIDX_PRIMARY_PREVIEW = 14,
         WIDX_TRACK_COLOUR_SCHEME,
         WIDX_TRACK_COLOUR_SCHEME_DROPDOWN,
         WIDX_TRACK_MAIN_COLOUR,
         WIDX_TRACK_ADDITIONAL_COLOUR,
         WIDX_TRACK_SUPPORT_COLOUR,
+        WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX,
         WIDX_MAZE_STYLE,
         WIDX_MAZE_STYLE_DROPDOWN,
         WIDX_PAINT_INDIVIDUAL_AREA,
-        WIDX_ENTRANCE_PREVIEW,
+        WIDX_SECONDARY_PREVIEW,
+        WIDX_ENTRANCE_STYLE_LABEL,
         WIDX_ENTRANCE_STYLE,
         WIDX_ENTRANCE_STYLE_DROPDOWN,
         WIDX_VEHICLE_PREVIEW,
@@ -208,7 +210,6 @@ namespace OpenRCT2::Ui::Windows
         WIDX_VEHICLE_BODY_COLOUR,
         WIDX_VEHICLE_TRIM_COLOUR,
         WIDX_VEHICLE_TERTIARY_COLOUR,
-        WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX,
         WIDX_RANDOMISE_VEHICLE_COLOURS,
 
         WIDX_PLAY_MUSIC = 14,
@@ -339,12 +340,18 @@ namespace OpenRCT2::Ui::Windows
         makeWidget({ 79,  74}, { 12, 12}, WidgetType::colourBtn,    WindowColour::secondary, 0xFFFFFFFF,                    STR_SELECT_MAIN_COLOUR_TIP                   ),
         makeWidget({ 99,  74}, { 12, 12}, WidgetType::colourBtn,    WindowColour::secondary, 0xFFFFFFFF,                    STR_SELECT_ADDITIONAL_COLOUR_1_TIP           ),
         makeWidget({119,  74}, { 12, 12}, WidgetType::colourBtn,    WindowColour::secondary, 0xFFFFFFFF,                    STR_SELECT_SUPPORT_STRUCTURE_COLOUR_TIP      ),
+        makeWidget({100,  74}, {239, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_RANDOM_COLOUR                                                           ),
+
         makeWidget({ 74,  49}, {239, 12}, WidgetType::dropdownMenu, WindowColour::secondary                                                                              ),
         makeWidget({301,  50}, { 11, 10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH                                                          ),
+
         makeWidget({289,  68}, { 24, 24}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_PAINTBRUSH),       STR_PAINT_INDIVIDUAL_AREA_TIP                ),
+
         makeWidget({245, 101}, { 68, 47}, WidgetType::spinner,      WindowColour::secondary                                                                              ),
+        makeWidget({  3, 103}, { 97, 12}, WidgetType::label,        WindowColour::secondary, STR_STATION_STYLE                                                           ),
         makeWidget({103, 103}, {139, 12}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdEmpty                                                              ),
         makeWidget({230, 104}, { 11, 10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,            STR_SELECT_STYLE_OF_ENTRANCE_EXIT_STATION_TIP),
+
         makeWidget({  3, 157}, { 68, 47}, WidgetType::scroll,       WindowColour::secondary, kStringIdEmpty                                                              ),
         makeWidget({ 74, 157}, {239, 12}, WidgetType::dropdownMenu, WindowColour::secondary, STR_ARG_6_STRINGID                                                          ),
         makeWidget({301, 158}, { 11, 10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,            STR_SELECT_VEHICLE_COLOUR_SCHEME_TIP         ),
@@ -353,7 +360,6 @@ namespace OpenRCT2::Ui::Windows
         makeWidget({ 79, 190}, { 12, 12}, WidgetType::colourBtn,    WindowColour::secondary, 0xFFFFFFFF,                    STR_SELECT_MAIN_COLOUR_TIP                   ),
         makeWidget({ 99, 190}, { 12, 12}, WidgetType::colourBtn,    WindowColour::secondary, 0xFFFFFFFF,                    STR_SELECT_ADDITIONAL_COLOUR_1_TIP           ),
         makeWidget({119, 190}, { 12, 12}, WidgetType::colourBtn,    WindowColour::secondary, 0xFFFFFFFF,                    STR_SELECT_ADDITIONAL_COLOUR_2_TIP           ),
-        makeWidget({100,  74}, {239, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_RANDOM_COLOUR                                                           ),
         makeWidget({139, 190}, {110, 12}, WidgetType::button,       WindowColour::secondary, STR_RANDOMISE_VEHICLE_COLOURS, STR_RANDOMISE_VEHICLE_COLOURS_TIP            )
     );
 
@@ -4688,14 +4694,15 @@ namespace OpenRCT2::Ui::Windows
             // Track preview
             if (rtd.flags.hasAny(
                     RtdFlag::hasTrackColourMain, RtdFlag::hasTrackColourAdditional, RtdFlag::hasTrackColourSupports))
-                widgets[WIDX_TRACK_PREVIEW].type = WidgetType::spinner;
+                widgets[WIDX_PRIMARY_PREVIEW].type = WidgetType::spinner;
             else
-                widgets[WIDX_TRACK_PREVIEW].type = WidgetType::empty;
+                widgets[WIDX_PRIMARY_PREVIEW].type = WidgetType::empty;
 
             // Entrance style
             if (ride->getRideTypeDescriptor().flags.has(RtdFlag::hasEntranceAndExit))
             {
-                widgets[WIDX_ENTRANCE_PREVIEW].type = WidgetType::spinner;
+                widgets[WIDX_SECONDARY_PREVIEW].type = WidgetType::spinner;
+                widgets[WIDX_ENTRANCE_STYLE_LABEL].type = WidgetType::label;
                 widgets[WIDX_ENTRANCE_STYLE].type = WidgetType::dropdownMenu;
                 widgets[WIDX_ENTRANCE_STYLE_DROPDOWN].type = WidgetType::button;
 
@@ -4709,7 +4716,8 @@ namespace OpenRCT2::Ui::Windows
             }
             else
             {
-                widgets[WIDX_ENTRANCE_PREVIEW].type = WidgetType::empty;
+                widgets[WIDX_SECONDARY_PREVIEW].type = WidgetType::empty;
+                widgets[WIDX_ENTRANCE_STYLE_LABEL].type = WidgetType::empty;
                 widgets[WIDX_ENTRANCE_STYLE].type = WidgetType::empty;
                 widgets[WIDX_ENTRANCE_STYLE_DROPDOWN].type = WidgetType::empty;
             }
@@ -4827,9 +4835,6 @@ namespace OpenRCT2::Ui::Windows
 
         void ColourOnDraw(RenderTarget& rt)
         {
-            // TODO: This should use lists and identified sprites
-            RenderTarget clippedRT;
-
             auto ride = GetRide(rideId);
             if (ride == nullptr)
                 return;
@@ -4837,121 +4842,158 @@ namespace OpenRCT2::Ui::Windows
             drawWidgets(rt);
             drawTabImages(rt);
 
+            ColourOnDrawPrimaryPreview(rt, ride);
+            ColourOnDrawSecondaryPreview(rt, ride);
+        }
+
+        void ColourOnDrawPrimaryPreview(RenderTarget& rt, const Ride* ride)
+        {
             // Track / shop item preview
-            const auto& trackPreviewWidget = widgets[WIDX_TRACK_PREVIEW];
-            if (trackPreviewWidget.type != WidgetType::empty)
-                Rectangle::fill(
-                    rt,
-                    { { windowPos + ScreenCoordsXY{ trackPreviewWidget.left + 1, trackPreviewWidget.top + 1 } },
-                      { windowPos + ScreenCoordsXY{ trackPreviewWidget.right - 1, trackPreviewWidget.bottom - 1 } } },
-                    PaletteIndex::pi12);
+            const auto& widget = widgets[WIDX_PRIMARY_PREVIEW];
+            if (widget.type == WidgetType::empty)
+                return;
 
-            auto trackColour = ride->trackColours[_rideColour];
+            const auto clipScreenPos = windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 };
+            const auto clipWidth = widget.width() - 2;
+            const auto clipHeight = widget.height() - 1;
 
-            //
+            RenderTarget clippedRT;
+            if (!ClipRenderTarget(clippedRT, rt, clipScreenPos, clipWidth, clipHeight))
+                return;
+
+            GfxClear(clippedRT, PaletteIndex::pi12);
+
             auto rideEntry = ride->getRideEntry();
             if (rideEntry == nullptr || rideEntry->shop_item[0] == ShopItem::none)
             {
-                auto screenCoords = windowPos + ScreenCoordsXY{ trackPreviewWidget.left, trackPreviewWidget.top };
-
-                // Track
-                const auto& rtd = ride->getRideTypeDescriptor();
-                if (rtd.specialType == RtdSpecialType::maze)
-                {
-                    GfxDrawSprite(rt, ImageId(MazeOptions[EnumValue(trackColour.supports)].sprite), screenCoords);
-                }
-                else
-                {
-                    const auto& typeDescriptor = ride->getRideTypeDescriptor();
-                    int32_t spriteIndex = typeDescriptor.ColourPreview.Track;
-                    if (spriteIndex != 0)
-                    {
-                        GfxDrawSprite(rt, ImageId(spriteIndex, trackColour.main, trackColour.additional), screenCoords);
-                    }
-
-                    // Supports
-                    spriteIndex = typeDescriptor.ColourPreview.Supports;
-                    if (spriteIndex != 0)
-                    {
-                        GfxDrawSprite(rt, ImageId(spriteIndex, trackColour.supports), screenCoords);
-                    }
-                }
+                ColourOnDrawTrackPreview(clippedRT, ride, widget);
             }
             else
             {
-                ShopItem shopItemIndex = rideEntry->shop_item[1] == ShopItem::none ? rideEntry->shop_item[0]
-                                                                                   : rideEntry->shop_item[1];
-                auto shopItem = GetShopItemDescriptor(shopItemIndex);
+                ColourOnDrawShopPreview(clippedRT, ride, widget);
+            }
+        }
 
-                if (shopItem.IsRecolourable())
+        void ColourOnDrawTrackPreview(RenderTarget& rt, const Ride* ride, const Widget& widget)
+        {
+            const auto screenCoords = ScreenCoordsXY{ 0, 0 };
+            const auto trackColour = ride->trackColours[_rideColour];
+
+            const auto& rtd = ride->getRideTypeDescriptor();
+            if (rtd.specialType == RtdSpecialType::maze)
+            {
+                // Maze style
+                GfxDrawSprite(rt, ImageId(MazeOptions[EnumValue(trackColour.supports)].sprite), screenCoords);
+            }
+            else
+            {
+                const auto& typeDescriptor = ride->getRideTypeDescriptor();
+
+                // Track
+                int32_t spriteIndex = typeDescriptor.ColourPreview.Track;
+                if (spriteIndex != 0)
                 {
-                    auto screenCoords = windowPos
-                        + ScreenCoordsXY{ (trackPreviewWidget.left + trackPreviewWidget.right) / 2 - 8,
-                                          (trackPreviewWidget.bottom + trackPreviewWidget.top) / 2 - 6 };
-
-                    Colour spriteColour = ride->trackColours[0].main;
-                    if (ride->hasLifecycleFlag(RIDE_LIFECYCLE_RANDOM_SHOP_COLOURS))
-                        spriteColour = Colour((getGameState().currentTicks / 32) % kColourNumNormal);
-
-                    GfxDrawSprite(rt, ImageId(shopItem.Image, spriteColour), screenCoords);
+                    GfxDrawSprite(rt, ImageId(spriteIndex, trackColour.main, trackColour.additional), screenCoords);
                 }
-                else
+
+                // Supports
+                spriteIndex = typeDescriptor.ColourPreview.Supports;
+                if (spriteIndex != 0)
                 {
-                    const ImageIndex previewImage = rideEntry->images_offset + 3 + 1;
-                    auto image = GfxGetG1Element(previewImage);
-                    if (image == nullptr)
-                        return;
-
-                    const auto& previewWidget = widgets[WIDX_TRACK_PREVIEW];
-
-                    RenderTarget clipRT;
-                    auto clipScreenPos = windowPos + ScreenCoordsXY{ previewWidget.left + 1, previewWidget.top + 1 };
-                    const auto clipWidth = previewWidget.width() - 2;
-                    const auto clipHeight = previewWidget.height() - 1;
-                    ClipRenderTarget(clipRT, rt, clipScreenPos, clipWidth, clipHeight);
-
-                    auto imageLocationX = (clipWidth / 2) - (image->width / 2) - image->xOffset;
-                    auto imageLocationY = (clipHeight / 2) - (image->height / 2) - image->yOffset;
-
-                    GfxDrawSprite(
-                        clipRT, ImageId(previewImage, ride->trackColours[0].main), { imageLocationX, imageLocationY });
+                    GfxDrawSprite(rt, ImageId(spriteIndex, trackColour.supports), screenCoords);
                 }
             }
+        }
 
-            // Entrance preview
-            trackColour = ride->trackColours[0];
-            const auto& entrancePreviewWidget = widgets[WIDX_ENTRANCE_PREVIEW];
-            if (entrancePreviewWidget.type != WidgetType::empty)
+        void ColourOnDrawShopPreview(RenderTarget& rt, const Ride* ride, const Widget& widget)
+        {
+            const auto rideEntry = ride->getRideEntry();
+            ShopItem shopItemIndex = rideEntry->shop_item[1] == ShopItem::none ? rideEntry->shop_item[0]
+                                                                               : rideEntry->shop_item[1];
+
+            const auto shopItem = GetShopItemDescriptor(shopItemIndex);
+            if (shopItem.IsRecolourable())
             {
-                if (ClipRenderTarget(
-                        clippedRT, rt,
-                        windowPos + ScreenCoordsXY{ entrancePreviewWidget.left + 1, entrancePreviewWidget.top + 1 },
-                        entrancePreviewWidget.width() - 1, entrancePreviewWidget.height() - 1))
-                {
-                    GfxClear(clippedRT, PaletteIndex::pi12);
+                ColourOnDrawShopItemPreview(rt, ride, shopItem, widget);
+            }
+            else
+            {
+                ColourOnDrawShopBuildingPreview(rt, ride, widget);
+            }
+        }
 
-                    auto stationObj = ride->getStationObject();
-                    if (stationObj != nullptr && stationObj->BaseImageId != kImageIndexUndefined)
-                    {
-                        auto imageId = ImageId(stationObj->BaseImageId, trackColour.main, trackColour.additional);
+        void ColourOnDrawShopItemPreview(
+            RenderTarget& rt, const Ride* ride, const ShopItemDescriptor& shopItem, const Widget& widget)
+        {
+            Colour spriteColour = ride->trackColours[0].main;
+            if (ride->hasLifecycleFlag(RIDE_LIFECYCLE_RANDOM_SHOP_COLOURS))
+                spriteColour = Colour((getGameState().currentTicks / 32) % kColourNumNormal);
 
-                        // Back
-                        GfxDrawSprite(clippedRT, imageId, { 34, 20 });
+            auto* image = GfxGetG1Element(shopItem.Image);
+            if (image == nullptr)
+                return;
 
-                        // Front
-                        GfxDrawSprite(clippedRT, imageId.WithIndexOffset(4), { 34, 20 });
+            const auto screenCoords = ScreenCoordsXY{ (widget.width() - image->width) / 2,
+                                                      (widget.height() - image->height) / 2 };
+            GfxDrawSprite(rt, ImageId(shopItem.Image, spriteColour), screenCoords);
+        }
 
-                        // Glass
-                        if (stationObj->Flags & StationObjectFlags::isTransparent)
-                        {
-                            auto glassImageId = ImageId(stationObj->BaseImageId + 20).WithTransparency(trackColour.main);
-                            GfxDrawSprite(clippedRT, glassImageId, { 34, 20 });
-                        }
-                    }
-                }
+        void ColourOnDrawShopBuildingPreview(RenderTarget& rt, const Ride* ride, const Widget& widget)
+        {
+            const auto rideEntry = ride->getRideEntry();
+            const ImageIndex previewImage = rideEntry->images_offset + 3 + 1;
 
-                auto labelPos = windowPos + ScreenCoordsXY{ 3, widgets[WIDX_ENTRANCE_STYLE].top };
-                DrawTextEllipsised(rt, labelPos, 97, STR_STATION_STYLE, {});
+            auto* image = GfxGetG1Element(previewImage);
+            if (image == nullptr)
+                return;
+
+            const auto clipWidth = widget.width() - 2;
+            const auto clipHeight = widget.height() - 1;
+
+            auto imageLocationX = (clipWidth / 2) - (image->width / 2) - image->xOffset;
+            auto imageLocationY = (clipHeight / 2) - (image->height / 2) - image->yOffset;
+
+            GfxDrawSprite(rt, ImageId(previewImage, ride->trackColours[0].main), { imageLocationX, imageLocationY });
+        }
+
+        void ColourOnDrawSecondaryPreview(RenderTarget& rt, const Ride* ride)
+        {
+            const auto& widget = widgets[WIDX_SECONDARY_PREVIEW];
+            if (widget.type == WidgetType::empty)
+                return;
+
+            const auto clipScreenPos = windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 };
+            RenderTarget clippedRT;
+            if (!ClipRenderTarget(clippedRT, rt, clipScreenPos, widget.width() - 1, widget.height() - 1))
+            {
+                return;
+            }
+
+            GfxClear(clippedRT, PaletteIndex::pi12);
+
+            ColourOnDrawEntrancePreview(clippedRT, ride, widget);
+        }
+
+        void ColourOnDrawEntrancePreview(RenderTarget& rt, const Ride* ride, const Widget& widget)
+        {
+            auto stationObj = ride->getStationObject();
+            if (stationObj == nullptr && stationObj->BaseImageId == kImageIndexUndefined)
+                return;
+
+            auto trackColour = ride->trackColours[0];
+            auto imageId = ImageId(stationObj->BaseImageId, trackColour.main, trackColour.additional);
+
+            // Back
+            GfxDrawSprite(rt, imageId, { 34, 20 });
+
+            // Front
+            GfxDrawSprite(rt, imageId.WithIndexOffset(4), { 34, 20 });
+
+            // Glass
+            if (stationObj->Flags & StationObjectFlags::isTransparent)
+            {
+                auto glassImageId = ImageId(stationObj->BaseImageId + 20).WithTransparency(trackColour.main);
+                GfxDrawSprite(rt, glassImageId, { 34, 20 });
             }
         }
 

@@ -18,6 +18,7 @@
 - Fix: [#25999] Scenery picker tool does not pick the tertiary colour of large scenery correctly.
 - Fix: [#26037] Selecting elements in the tile inspector list and changing all tiles of a track piece does not redraw correctly.
 - Fix: [#26058] RCT Classic scenarios with packed objects missing from scenario index.
+- Fix: [#26057] In the scrolling intro, the Infogrames logo is taken off the screen before it reaches the bottom (original bug).
 
 0.4.31 (2026-02-01)
 ------------------------------------------------------------------------
