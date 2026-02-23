@@ -165,9 +165,9 @@ namespace OpenRCT2::RCT2
             {
                 if (skipObjectCheck)
                 {
-                    // When scanning, skip past packed object data without extracting it,
-                    // to avoid a race condition in ObjectRepository when scanning in parallel.
-                    stream->ReadValue<RCTObjectEntry>();
+                    // When scanning, skip past packed object data to keep the stream
+                    // position correct without importing objects into the repository.
+                    stream->Seek(sizeof(RCTObjectEntry), STREAM_SEEK_CURRENT);
                     SawyerChunkReader(stream).SkipChunk();
                 }
                 else
