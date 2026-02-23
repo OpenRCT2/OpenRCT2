@@ -10,6 +10,7 @@
 - Change: [#26049] Guest generation now starts slowing down above 52000 guests instead of 7000.
 - Fix: [#14686, #23996, #25981] Preview images from different windows overwrite each other when using OpenGL.
 - Fix: [#15128, #15626, #16331, #17443, #18626, #21597, #24175, #24971, #25963] Crash when loading corrupted RCT2/RCT1 save files with duplicate entity indices.
+- Fix: [#16963] Helixes can build tunnels in 1 unit high terrain instead of requiring 2+ (original bug).
 - Fix: [#25237] Wrong colours on the Knight costume.
 - Fix: [#25712, #25727] Crash during startup from window list race condition.
 - Fix: [#25910] Folders starting with numbers are sorted incorrectly (e.g. 1, 10, 2 instead of 1, 2, 10).
