@@ -229,7 +229,7 @@ void Vehicle::CheckAndApplyBlockSectionStopSite()
     {
         case TrackElemType::blockBrakes:
             // Check if this brake is the start of a cable lift
-            if (curRide->lifecycleFlags & RIDE_LIFECYCLE_CABLE_LIFT)
+            if (curRide->flags.has(RideFlag::cableLift))
             {
                 CoordsXYE track;
                 int32_t zUnused;
@@ -710,7 +710,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(
             || trackType == TrackElemType::rightEighthToDiag || trackType == TrackElemType::leftEighthToOrthogonal
             || trackType == TrackElemType::rightEighthToOrthogonal || trackType == TrackElemType::diagFlat
             || trackType == TrackElemType::sBendLeft || trackType == TrackElemType::sBendRight
-            || ((curRide.lifecycleFlags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING) && tileElement->AsTrack()->IsStation()))
+            || (curRide.flags.has(RideFlag::passStationNoStopping) && tileElement->AsTrack()->IsStation()))
         {
             UpdateGoKartAttemptSwitchLanes();
         }

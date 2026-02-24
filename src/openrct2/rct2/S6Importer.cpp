@@ -999,7 +999,7 @@ namespace OpenRCT2::RCT2
             dst->numBlockBrakes = src->numBlockBrakes;
             dst->liftHillSpeed = src->liftHillSpeed;
             dst->guestsFavourite = src->guestsFavourite;
-            dst->lifecycleFlags = src->lifecycleFlags;
+            dst->flags.holder = src->flags;
 
             for (uint8_t i = 0; i < Limits::kMaxTrainsPerRide; i++)
             {

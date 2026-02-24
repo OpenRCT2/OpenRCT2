@@ -6,6 +6,7 @@
 - Improved: [#25941] The command line sprite build command is now faster.
 - Improved: [#26002] Rides with newer track elements (like the zero G roll or diagonal brakes) can now be saved as track designs.
 - Improved: [#26050] Add Danish translation to Windows installer.
+- Improved: [#26091] When all rides are closed, the marketing window will no longer show the ride advertisement campaign.
 - Change: [#26011] Audio resampling no longer depends on the third-party library libspeexdsp.
 - Change: [#26049] Guest generation now starts slowing down above 52000 guests instead of 7000.
 - Fix: [#14686, #23996, #25981] Preview images from different windows overwrite each other when using OpenGL.
@@ -21,6 +22,7 @@
 - Fix: [#26037] Selecting elements in the tile inspector list and changing all tiles of a track piece does not redraw correctly.
 - Fix: [#26057] In the scrolling intro, the Infogrames logo is taken off the screen before it reaches the bottom (original bug).
 - Fix: [#26058] RCT Classic scenarios with packed objects missing from scenario index.
+- Fix: [#26083] You can advertise for closed food & drink stalls.
 
 0.4.31 (2026-02-01)
 ------------------------------------------------------------------------

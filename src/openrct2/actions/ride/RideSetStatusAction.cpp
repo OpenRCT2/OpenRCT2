@@ -83,7 +83,7 @@ namespace OpenRCT2::GameActions
         ride->formatNameTo(ft);
         if (_status != ride->status)
         {
-            if (_status == RideStatus::simulating && (ride->lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN))
+            if (_status == RideStatus::simulating && ride->flags.has(RideFlag::brokenDown))
             {
                 // Simulating will force clear the track, so make sure player can't cheat around a break down
                 res.error = Status::disallowed;
@@ -150,23 +150,23 @@ namespace OpenRCT2::GameActions
             case RideStatus::closed:
                 if (ride->status == _status || ride->status == RideStatus::simulating)
                 {
-                    if (!(ride->lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN))
+                    if (!ride->flags.has(RideFlag::brokenDown))
                     {
-                        ride->lifecycleFlags &= ~RIDE_LIFECYCLE_CRASHED;
+                        ride->flags.unset(RideFlag::crashed);
                         RideClearForConstruction(*ride);
                         ride->removePeeps();
                     }
                 }
 
                 ride->status = RideStatus::closed;
-                ride->lifecycleFlags &= ~RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING;
+                ride->flags.unset(RideFlag::passStationNoStopping);
                 ride->raceWinner = EntityId::GetNull();
                 ride->windowInvalidateFlags.set(RideInvalidateFlag::main, RideInvalidateFlag::list);
                 windowMgr->InvalidateByNumber(WindowClass::ride, _rideIndex.ToUnderlying());
                 break;
             case RideStatus::simulating:
             {
-                ride->lifecycleFlags &= ~RIDE_LIFECYCLE_CRASHED;
+                ride->flags.unset(RideFlag::crashed);
                 RideClearForConstruction(*ride);
                 ride->removePeeps();
 
@@ -179,7 +179,7 @@ namespace OpenRCT2::GameActions
                 }
 
                 ride->status = _status;
-                ride->lifecycleFlags &= ~RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING;
+                ride->flags.unset(RideFlag::passStationNoStopping);
                 ride->raceWinner = EntityId::GetNull();
                 ride->currentIssues = 0;
                 ride->lastIssueTime = 0;

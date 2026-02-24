@@ -253,9 +253,9 @@ bool Vehicle::CloseRestraints()
             && (curRide->breakdownReasonPending == BREAKDOWN_RESTRAINTS_STUCK_OPEN
                 || curRide->breakdownReasonPending == BREAKDOWN_DOORS_STUCK_OPEN))
         {
-            if (!(curRide->lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN))
+            if (!curRide->flags.has(RideFlag::brokenDown))
             {
-                curRide->lifecycleFlags |= RIDE_LIFECYCLE_BROKEN_DOWN;
+                curRide->flags.set(RideFlag::brokenDown);
 
                 RideBreakdownAddNewsItem(*curRide);
 
@@ -369,9 +369,9 @@ bool Vehicle::OpenRestraints()
             && (curRide->breakdownReasonPending == BREAKDOWN_RESTRAINTS_STUCK_CLOSED
                 || curRide->breakdownReasonPending == BREAKDOWN_DOORS_STUCK_CLOSED))
         {
-            if (!(curRide->lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN))
+            if (!curRide->flags.has(RideFlag::brokenDown))
             {
-                curRide->lifecycleFlags |= RIDE_LIFECYCLE_BROKEN_DOWN;
+                curRide->flags.set(RideFlag::brokenDown);
 
                 RideBreakdownAddNewsItem(*curRide);
 
@@ -434,9 +434,8 @@ void Vehicle::UpdateMeasurements()
 
     if (status == Status::travellingBoat)
     {
-        curRide->lifecycleFlags |= RIDE_LIFECYCLE_TESTED;
-        curRide->lifecycleFlags |= RIDE_LIFECYCLE_NO_RAW_STATS;
-        curRide->lifecycleFlags &= ~RIDE_LIFECYCLE_TEST_IN_PROGRESS;
+        curRide->flags.set(RideFlag::tested, RideFlag::noRawStats);
+        curRide->flags.unset(RideFlag::testInProgress);
         flags.unset(VehicleFlag::testing);
 
         auto* windowMgr = Ui::GetWindowManager();
@@ -767,7 +766,7 @@ void Vehicle::Update()
         UpdateMeasurements();
 
     _vehicleBreakdown = 255;
-    if (curRide->lifecycleFlags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN))
+    if (curRide->flags.hasAny(RideFlag::breakdownPending, RideFlag::brokenDown))
     {
         _vehicleBreakdown = curRide->breakdownReasonPending;
         auto carEntry = &rideEntry->Cars[vehicle_type];
@@ -903,8 +902,8 @@ void Vehicle::PeepEasterEggHereWeAre() const
  */
 static void test_finish(Ride& ride)
 {
-    ride.lifecycleFlags &= ~RIDE_LIFECYCLE_TEST_IN_PROGRESS;
-    ride.lifecycleFlags |= RIDE_LIFECYCLE_TESTED;
+    ride.flags.unset(RideFlag::testInProgress);
+    ride.flags.set(RideFlag::tested);
     ride.windowInvalidateFlags.set(RideInvalidateFlag::ratings);
 
     auto rideStations = ride.getStations();
@@ -950,8 +949,8 @@ void Vehicle::UpdateTestFinish()
  */
 static void test_reset(Ride& ride, StationIndex curStation)
 {
-    ride.lifecycleFlags |= RIDE_LIFECYCLE_TEST_IN_PROGRESS;
-    ride.lifecycleFlags &= ~RIDE_LIFECYCLE_NO_RAW_STATS;
+    ride.flags.set(RideFlag::testInProgress);
+    ride.flags.unset(RideFlag::noRawStats);
     ride.maxSpeed = 0;
     ride.averageSpeed = 0;
     ride.currentTestSegment = 0;
@@ -1064,10 +1063,10 @@ void Vehicle::UpdateTravellingCableLift()
     {
         if (flags.has(VehicleFlag::trainIsBroken))
         {
-            if (curRide->lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN)
+            if (curRide->flags.has(RideFlag::brokenDown))
                 return;
 
-            curRide->lifecycleFlags |= RIDE_LIFECYCLE_BROKEN_DOWN;
+            curRide->flags.set(RideFlag::brokenDown);
             RideBreakdownAddNewsItem(*curRide);
             curRide->windowInvalidateFlags.set(
                 RideInvalidateFlag::main, RideInvalidateFlag::list, RideInvalidateFlag::maintenance);
@@ -1081,7 +1080,7 @@ void Vehicle::UpdateTravellingCableLift()
 
         sub_state = 1;
         PeepEasterEggHereWeAre();
-        if (!(curRide->lifecycleFlags & RIDE_LIFECYCLE_TESTED))
+        if (!curRide->flags.has(RideFlag::tested))
         {
             if (flags.has(VehicleFlag::testing))
             {
@@ -1095,7 +1094,7 @@ void Vehicle::UpdateTravellingCableLift()
                     UpdateTestFinish();
                 }
             }
-            else if (!(curRide->lifecycleFlags & RIDE_LIFECYCLE_TEST_IN_PROGRESS) && !IsGhost())
+            else if (!curRide->flags.has(RideFlag::testInProgress) && !IsGhost())
             {
                 TestReset();
             }

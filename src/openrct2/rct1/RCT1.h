@@ -248,7 +248,7 @@ namespace OpenRCT2::RCT1
     {
         RideType type;                               // 0x000
         RCT1::VehicleType vehicleType;               // 0x001
-        uint16_t lifecycleFlags;                     // 0x002
+        uint16_t flags;                              // 0x002
         uint8_t operatingMode;                       // 0x004
         VehicleColourSettings vehicleColourSettings; // 0x005
         struct

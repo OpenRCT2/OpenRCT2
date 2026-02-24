@@ -240,7 +240,7 @@ namespace OpenRCT2::GameActions
         price *= ted.priceModifier;
         price >>= 16;
         price = supportCosts + price;
-        if (ride->lifecycleFlags & RIDE_LIFECYCLE_EVER_BEEN_OPENED)
+        if (ride->flags.has(RideFlag::everBeenOpened))
         {
             // 70% modifier for opened rides
             price = (price * 45875) / 65536;
@@ -442,10 +442,10 @@ namespace OpenRCT2::GameActions
             switch (trackType)
             {
                 case TrackElemType::onRidePhoto:
-                    ride->lifecycleFlags &= ~RIDE_LIFECYCLE_ON_RIDE_PHOTO;
+                    ride->flags.unset(RideFlag::onRidePhoto);
                     break;
                 case TrackElemType::cableLiftHill:
-                    ride->lifecycleFlags &= ~RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED;
+                    ride->flags.unset(RideFlag::cableLiftHillComponentUsed);
                     break;
                 case TrackElemType::blockBrakes:
                 case TrackElemType::diagBlockBrakes:
@@ -499,7 +499,7 @@ namespace OpenRCT2::GameActions
         price *= ted.priceModifier;
         price >>= 16;
         price = supportCosts + price;
-        if (ride->lifecycleFlags & RIDE_LIFECYCLE_EVER_BEEN_OPENED)
+        if (ride->flags.has(RideFlag::everBeenOpened))
         {
             // 70% modifier for opened rides
             price = (price * 45875) / 65536;

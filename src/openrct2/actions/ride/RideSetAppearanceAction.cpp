@@ -139,7 +139,7 @@ namespace OpenRCT2::GameActions
                 GfxInvalidateScreen();
                 break;
             case RideSetAppearanceType::SellingItemColourIsRandom:
-                ride->setLifecycleFlag(RIDE_LIFECYCLE_RANDOM_SHOP_COLOURS, static_cast<bool>(_value));
+                ride->flags.set(RideFlag::randomShopColours, static_cast<bool>(_value));
                 break;
         }
 

@@ -2308,6 +2308,12 @@ declare global {
         /**
          * Various flags related to the operation of the ride.
          */
+        flags: number;
+
+        /**
+         * Old name of ‘flags’ property
+         * @deprecated
+         */
         lifecycleFlags: number;
 
         /**

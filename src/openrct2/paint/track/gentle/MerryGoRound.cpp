@@ -36,7 +36,7 @@ static void PaintRiders(
 {
     if (session.rt.zoom_level > ZoomLevel{ 0 })
         return;
-    if (!(ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK))
+    if (!ride.flags.has(RideFlag::onTrack))
         return;
 
     for (int32_t peep = 0; peep <= 14; peep += 2)
@@ -66,12 +66,12 @@ static void PaintCarousel(
         return;
 
     auto vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[0]);
-    if (ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
+    if (ride.flags.has(RideFlag::onTrack) && vehicle != nullptr)
     {
         session.InteractionType = ViewportInteractionItem::entity;
         session.CurrentlyDrawnEntity = vehicle;
 
-        if (ride.lifecycleFlags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)
+        if (ride.flags.hasAny(RideFlag::breakdownPending, RideFlag::brokenDown)
             && ride.breakdownReasonPending == BREAKDOWN_CONTROL_FAILURE && ride.breakdownSoundModifier >= 128)
         {
             height += kMerryGoRoundBreakdownVibration[(vehicle->current_time >> 1) & 7];

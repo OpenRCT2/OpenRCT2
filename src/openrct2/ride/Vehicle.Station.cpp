@@ -86,7 +86,7 @@ static bool try_add_synchronised_station(const CoordsXYZ& coords)
     /* Ride vehicles are not on the track (e.g. ride is/was under
      * construction), so just return; vehicle_id for this station
      * is SPRITE_INDEX_NULL. */
-    if (!(ride->lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK))
+    if (!ride->flags.has(RideFlag::onTrack))
     {
         return true;
     }
@@ -210,7 +210,7 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
     {
         Ride* sv_ride = GetRide(sv->ride_id);
 
-        if (!(sv_ride->lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN))
+        if (!sv_ride->flags.has(RideFlag::brokenDown))
         {
             if (sv_ride->status != RideStatus::closed)
             {
@@ -463,13 +463,13 @@ void Vehicle::TrainReadyToDepart(uint8_t num_peeps_on_train, uint8_t num_used_se
     if (curRide == nullptr)
         return;
 
-    if (curRide->status == RideStatus::open && !(curRide->lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN)
+    if (curRide->status == RideStatus::open && !curRide->flags.has(RideFlag::brokenDown)
         && !flags.has(VehicleFlag::readyToDepart))
     {
         return;
     }
 
-    if (!(curRide->lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN))
+    if (!curRide->flags.has(RideFlag::brokenDown))
     {
         const auto& rtd = curRide->getRideTypeDescriptor();
         // Original code did not check if the ride was a boat hire, causing empty boats to leave the platform when closing a
@@ -689,7 +689,7 @@ void Vehicle::UpdateWaitingToDepart()
     const auto& currentStation = curRide->getStation(current_station);
 
     bool shouldBreak = false;
-    if (curRide->lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN)
+    if (curRide->flags.has(RideFlag::brokenDown))
     {
         switch (curRide->breakdownReasonPending)
         {
@@ -766,7 +766,7 @@ void Vehicle::UpdateWaitingToDepart()
 
     SetState(Status::departing);
 
-    if (curRide->lifecycleFlags & RIDE_LIFECYCLE_CABLE_LIFT)
+    if (curRide->flags.has(RideFlag::cableLift))
     {
         CoordsXYE track;
         int32_t zUnused;
@@ -954,7 +954,7 @@ void Vehicle::UpdateUnloadingPassengers()
             if (sub_state != 1)
                 return;
 
-            if (!(curRide->lifecycleFlags & RIDE_LIFECYCLE_TESTED) && flags.has(VehicleFlag::testing)
+            if (!curRide->flags.has(RideFlag::tested) && flags.has(VehicleFlag::testing)
                 && curRide->currentTestSegment + 1 >= curRide->numStations)
             {
                 UpdateTestFinish();
@@ -995,7 +995,7 @@ void Vehicle::UpdateUnloadingPassengers()
             return;
     }
 
-    if (!(curRide->lifecycleFlags & RIDE_LIFECYCLE_TESTED) && flags.has(VehicleFlag::testing)
+    if (!curRide->flags.has(RideFlag::tested) && flags.has(VehicleFlag::testing)
         && curRide->currentTestSegment + 1 >= curRide->numStations)
     {
         UpdateTestFinish();
@@ -1021,10 +1021,10 @@ void Vehicle::UpdateDeparting()
     {
         if (flags.has(VehicleFlag::trainIsBroken))
         {
-            if (curRide->lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN)
+            if (curRide->flags.has(RideFlag::brokenDown))
                 return;
 
-            curRide->lifecycleFlags |= RIDE_LIFECYCLE_BROKEN_DOWN;
+            curRide->flags.set(RideFlag::brokenDown);
             RideBreakdownAddNewsItem(*curRide);
 
             curRide->windowInvalidateFlags.set(
@@ -1050,7 +1050,7 @@ void Vehicle::UpdateDeparting()
             Play3D(SoundId::rideLaunch2, GetLocation());
         }
 
-        if (!(curRide->lifecycleFlags & RIDE_LIFECYCLE_TESTED))
+        if (!curRide->flags.has(RideFlag::tested))
         {
             if (flags.has(VehicleFlag::testing))
             {
@@ -1064,7 +1064,7 @@ void Vehicle::UpdateDeparting()
                     UpdateTestFinish();
                 }
             }
-            else if (!(curRide->lifecycleFlags & RIDE_LIFECYCLE_TEST_IN_PROGRESS) && !IsGhost())
+            else if (!curRide->flags.has(RideFlag::testInProgress) && !IsGhost())
             {
                 TestReset();
             }
@@ -1293,7 +1293,7 @@ void Vehicle::CheckIfMissing()
     if (curRide == nullptr)
         return;
 
-    if (curRide->lifecycleFlags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED))
+    if (curRide->flags.hasAny(RideFlag::brokenDown, RideFlag::crashed))
         return;
 
     if (curRide->isBlockSectioned())
@@ -1303,7 +1303,7 @@ void Vehicle::CheckIfMissing()
         return;
 
     lost_time_out++;
-    if (curRide->lifecycleFlags & RIDE_LIFECYCLE_HAS_STALLED_VEHICLE)
+    if (curRide->flags.has(RideFlag::hasStalledVehicle))
         return;
 
     uint16_t limit = curRide->type == RIDE_TYPE_BOAT_HIRE ? 15360 : 9600;
@@ -1311,7 +1311,7 @@ void Vehicle::CheckIfMissing()
     if (lost_time_out <= limit)
         return;
 
-    curRide->lifecycleFlags |= RIDE_LIFECYCLE_HAS_STALLED_VEHICLE;
+    curRide->flags.set(RideFlag::hasStalledVehicle);
 
     if (Config::Get().notifications.rideStalledVehicles)
     {
@@ -1514,7 +1514,7 @@ void Vehicle::UpdateArrivingPassThroughStation(const Ride& curRide, const CarEnt
 {
     if (sub_state == 0)
     {
-        if (curRide.mode == RideMode::race && curRide.lifecycleFlags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
+        if (curRide.mode == RideMode::race && curRide.flags.has(RideFlag::passStationNoStopping))
         {
             return;
         }
@@ -1711,7 +1711,7 @@ void Vehicle::UpdateArriving()
         return;
     }
 
-    if (curRide->mode == RideMode::race && curRide->lifecycleFlags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
+    if (curRide->mode == RideMode::race && curRide->flags.has(RideFlag::passStationNoStopping))
     {
         SetState(Status::departing, 1);
         return;

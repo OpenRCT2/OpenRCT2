@@ -105,6 +105,34 @@ enum class RideTestingFlag : uint8_t
 };
 using RideTestingFlags = FlagHolder<uint32_t, RideTestingFlag>;
 
+enum class RideFlag : uint8_t
+{
+    onTrack,
+    tested,
+    testInProgress,
+    noRawStats,
+    passStationNoStopping,
+    onRidePhoto,
+    breakdownPending,
+    brokenDown,
+    dueInspection,
+    queueFull,
+    crashed,
+    hasStalledVehicle,
+    everBeenOpened,
+    music,
+    indestructible,
+    indestructibleTrack,
+    cableLiftHillComponentUsed,
+    cableLift,
+    notCustomDesign,    // Used for the Award for Best Custom-designed Rides
+    sixFlagsDeprecated, // Not used anymore
+    fixedRatings,       // When set, the ratings will not be updated (useful for hacked rides).
+    randomShopColours,
+    reversedTrains,
+};
+using RideFlags = FlagHolder<uint32_t, RideFlag>;
+
 struct RideStation
 {
     static constexpr uint8_t kNoTrain = std::numeric_limits<uint8_t>::max();
@@ -332,7 +360,7 @@ struct Ride
     uint8_t numBlockBrakes{};
     uint8_t liftHillSpeed{};
     uint32_t guestsFavourite{};
-    uint32_t lifecycleFlags{};
+    RideFlags flags{};
     uint16_t totalAirTime{};
     StationIndex currentTestStation{ StationIndex::GetNull() };
     uint8_t numCircuits{};
@@ -468,9 +496,6 @@ public:
     const OpenRCT2::StationObject* getStationObject() const;
     const OpenRCT2::MusicObject* getMusicObject() const;
 
-    bool hasLifecycleFlag(uint32_t flag) const;
-    void setLifecycleFlag(uint32_t flag, bool on);
-
     bool hasRecolourableShopItems() const;
     bool hasStation() const;
 
@@ -502,34 +527,6 @@ static_assert(sizeof(TrackBeginEnd) == 36);
 #endif
 
 #pragma pack(pop)
-
-// Constants used by the lifecycleFlags property at 0x1D0
-enum
-{
-    RIDE_LIFECYCLE_ON_TRACK = 1 << 0,
-    RIDE_LIFECYCLE_TESTED = 1 << 1,
-    RIDE_LIFECYCLE_TEST_IN_PROGRESS = 1 << 2,
-    RIDE_LIFECYCLE_NO_RAW_STATS = 1 << 3,
-    RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING = 1 << 4,
-    RIDE_LIFECYCLE_ON_RIDE_PHOTO = 1 << 5,
-    RIDE_LIFECYCLE_BREAKDOWN_PENDING = 1 << 6,
-    RIDE_LIFECYCLE_BROKEN_DOWN = 1 << 7,
-    RIDE_LIFECYCLE_DUE_INSPECTION = 1 << 8,
-    RIDE_LIFECYCLE_QUEUE_FULL = 1 << 9,
-    RIDE_LIFECYCLE_CRASHED = 1 << 10,
-    RIDE_LIFECYCLE_HAS_STALLED_VEHICLE = 1 << 11,
-    RIDE_LIFECYCLE_EVER_BEEN_OPENED = 1 << 12,
-    RIDE_LIFECYCLE_MUSIC = 1 << 13,
-    RIDE_LIFECYCLE_INDESTRUCTIBLE = 1 << 14,
-    RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK = 1 << 15,
-    RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED = 1 << 16,
-    RIDE_LIFECYCLE_CABLE_LIFT = 1 << 17,
-    RIDE_LIFECYCLE_NOT_CUSTOM_DESIGN = 1 << 18,    // Used for the Award for Best Custom-designed Rides
-    RIDE_LIFECYCLE_SIX_FLAGS_DEPRECATED = 1 << 19, // Not used anymore
-    RIDE_LIFECYCLE_FIXED_RATINGS = 1 << 20,        // When set, the ratings will not be updated (useful for hacked rides).
-    RIDE_LIFECYCLE_RANDOM_SHOP_COLOURS = 1 << 21,
-    RIDE_LIFECYCLE_REVERSED_TRAINS = 1 << 22,
-};
 
 enum
 {
