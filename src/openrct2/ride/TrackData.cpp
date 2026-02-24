@@ -500,7 +500,7 @@ namespace OpenRCT2::TrackMetaData
         32,     // TrackElemType::onRidePhoto
         33,     // TrackElemType::down25LeftBanked
         33,     // TrackElemType::down25RightBanked
-        128,    // TrackElemType::watersplash
+        128,    // TrackElemType::waterSplash
         165,    // TrackElemType::flatToUp60LongBase
         165,    // TrackElemType::up60ToFlatLongBase
         32,     // TrackElemType::whirlpool
@@ -1755,7 +1755,7 @@ namespace OpenRCT2::TrackMetaData
         196608, // TrackElemType::onRidePhoto
         83968,  // TrackElemType::down25LeftBanked
         83968,  // TrackElemType::down25RightBanked
-        393216, // TrackElemType::watersplash
+        393216, // TrackElemType::waterSplash
         376832, // TrackElemType::flatToUp60LongBase
         376832, // TrackElemType::up60ToFlatLongBase
         126976, // TrackElemType::whirlpool
@@ -2110,7 +2110,7 @@ namespace OpenRCT2::TrackMetaData
         TrackElemType::onRidePhoto,
         TrackElemType::down25RightBanked, // TrackElemType::down25LeftBanked
         TrackElemType::down25LeftBanked, // TrackElemType::down25RightBanked
-        TrackElemType::watersplash,
+        TrackElemType::waterSplash,
         TrackElemType::flatToUp60LongBase,
         TrackElemType::up60ToFlatLongBase,
         TrackElemType::whirlpool,
@@ -2465,7 +2465,7 @@ namespace OpenRCT2::TrackMetaData
         /* TrackElemType::onRidePhoto                                   */ {},
         /* TrackElemType::down25LeftBanked                              */ { TrackElementFlag::down, TrackElementFlag::startsAtHalfHeight, TrackElementFlag::banked },
         /* TrackElemType::down25RightBanked                             */ { TrackElementFlag::down, TrackElementFlag::startsAtHalfHeight, TrackElementFlag::banked },
-        /* TrackElemType::watersplash                                   */ {},
+        /* TrackElemType::waterSplash                                   */ {},
         /* TrackElemType::flatToUp60LongBase                            */ { TrackElementFlag::up },
         /* TrackElemType::up60ToFlatLongBase                            */ { TrackElementFlag::up, TrackElementFlag::startsAtHalfHeight },
         /* TrackElemType::whirlpool                                     */ {},
@@ -2824,7 +2824,7 @@ namespace OpenRCT2::TrackMetaData
         { TrackGroup::onridePhoto,                       TrackPitch::none,             TrackPitch::none,           TrackRoll::none,        TrackRoll::none,        0   }, // TrackElemType::onRidePhoto
         { TrackGroup::slopeRollBanking,                  TrackPitch::down25,           TrackPitch::down25,         TrackRoll::left,        TrackRoll::left,        0   }, // TrackElemType::down25LeftBanked
         { TrackGroup::slopeRollBanking,                  TrackPitch::down25,           TrackPitch::down25,         TrackRoll::right,       TrackRoll::right,       0   }, // TrackElemType::down25RightBanked
-        { TrackGroup::waterSplash,                       TrackPitch::none,             TrackPitch::none,           TrackRoll::none,        TrackRoll::none,        0   }, // TrackElemType::watersplash
+        { TrackGroup::waterSplash,                       TrackPitch::none,             TrackPitch::none,           TrackRoll::none,        TrackRoll::none,        0   }, // TrackElemType::waterSplash
         { TrackGroup::slopeSteepLong,                    TrackPitch::up60,             TrackPitch::none,           TrackRoll::none,        TrackRoll::none,        0   }, // TrackElemType::flatToUp60LongBase
         { TrackGroup::slopeSteepLong,                    TrackPitch::none,             TrackPitch::up60,           TrackRoll::none,        TrackRoll::none,        0   }, // TrackElemType::up60ToFlatLongBase
         { TrackGroup::whirlpool,                         TrackPitch::none,             TrackPitch::none,           TrackRoll::none,        TrackRoll::none,        0   }, // TrackElemType::whirlpool
@@ -3570,7 +3570,7 @@ namespace OpenRCT2::TrackMetaData
             case TrackElemType::rightQuarterTurn1TileUp60:
             case TrackElemType::rightQuarterTurn1TileDown60:
                 return EvaluatorConst<-88>;
-            case TrackElemType::watersplash:
+            case TrackElemType::waterSplash:
                 return EvaluatorConst<0>;
             case TrackElemType::flatToUp60LongBase:
             case TrackElemType::down60ToFlatLongBase:
@@ -3966,7 +3966,7 @@ namespace OpenRCT2::TrackMetaData
             case TrackElemType::rightQuarterTurn1TileUp60:
             case TrackElemType::rightQuarterTurn1TileDown60:
                 return EvaluatorConst<0>;
-            case TrackElemType::watersplash:
+            case TrackElemType::waterSplash:
                 return EvaluatorWaterSplash;
             case TrackElemType::flatToUp60LongBase:
             case TrackElemType::down60ToFlatLongBase:
@@ -15389,7 +15389,7 @@ namespace OpenRCT2::TrackMetaData
         /* TrackElemType::onRidePhoto */ { 1, { kOnRidePhotoSeq0 } },
         /* TrackElemType::down25LeftBanked */ { 1, { kDown25LeftBankedSeq0 } },
         /* TrackElemType::down25RightBanked */ { 1, { kDown25RightBankedSeq0 } },
-        /* TrackElemType::watersplash */
+        /* TrackElemType::waterSplash */
         { 5, { kWatersplashSeq0, kWatersplashSeq1, kWatersplashSeq2, kWatersplashSeq3, kWatersplashSeq4 } },
         /* TrackElemType::flatToUp60LongBase */
         { 4, { kFlatToUp60LongBaseSeq0, kFlatToUp60LongBaseSeq1, kFlatToUp60LongBaseSeq2, kFlatToUp60LongBaseSeq3 } },

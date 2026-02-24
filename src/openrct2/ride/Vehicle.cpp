@@ -546,7 +546,7 @@ void Vehicle::UpdateMeasurements()
             case TrackElemType::whirlpool:
                 curRide->specialTrackElements.set(SpecialElement::whirlpool);
                 break;
-            case TrackElemType::watersplash:
+            case TrackElemType::waterSplash:
                 if (velocity >= 11.0_mph)
                 {
                     curRide->specialTrackElements.set(SpecialElement::splash);

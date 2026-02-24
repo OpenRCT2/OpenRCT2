@@ -109,7 +109,7 @@ namespace OpenRCT2
         kSeparator,
 
         // (Wooden) water splash
-        TrackElemType::watersplash,
+        TrackElemType::waterSplash,
         kSeparator,
 
         // River Rapids

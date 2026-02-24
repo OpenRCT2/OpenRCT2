@@ -13505,7 +13505,7 @@ TrackPaintFunction GetTrackPaintFunctionWoodenAndClassicWoodenRC(TrackElemType t
             return WoodenRCTrack25DegDownLeftBanked<isClassic>;
         case TrackElemType::down25RightBanked:
             return WoodenRCTrack25DegDownRightBanked<isClassic>;
-        case TrackElemType::watersplash:
+        case TrackElemType::waterSplash:
             return WoodenRCTrackWaterSplash<isClassic>;
         case TrackElemType::leftEighthToDiag:
             return WoodenRCTrackLeftEighthToDiag<isClassic>;

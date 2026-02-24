@@ -409,7 +409,7 @@ void Vehicle::UpdateHandleWaterSplash() const
     }
     if (IsHead())
     {
-        if (trackType == TrackElemType::watersplash)
+        if (trackType == TrackElemType::waterSplash)
         {
             if (track_progress == 48)
             {
@@ -1603,7 +1603,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
         }
     }
 
-    if (vehicle->GetTrackType() == TrackElemType::watersplash)
+    if (vehicle->GetTrackType() == TrackElemType::waterSplash)
     {
         if (vehicle->track_progress >= 48 && vehicle->track_progress <= 128)
         {
