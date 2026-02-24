@@ -209,17 +209,21 @@ namespace OpenRCT2::Ui::Windows
                     if (Campaign.campaign_type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE)
                     {
                         GetShopItems();
-                        int32_t numItems = 0;
-                        int32_t maxSize = std::min(Dropdown::kItemsMaxSize, static_cast<int32_t>(ShopItems.size()));
-                        for (int32_t i = 0; i < maxSize; i++)
+                        if (!ShopItems.empty())
                         {
-                            gDropdown.items[i] = Dropdown::MenuLabel(GetShopItemDescriptor(ShopItems[i]).Naming.Plural);
-                            numItems++;
-                        }
+                            int32_t numItems = 0;
+                            int32_t maxSize = std::min(Dropdown::kItemsMaxSize, static_cast<int32_t>(ShopItems.size()));
+                            for (int32_t i = 0; i < maxSize; i++)
+                            {
+                                gDropdown.items[i] = Dropdown::MenuLabel(GetShopItemDescriptor(ShopItems[i]).Naming.Plural);
+                                numItems++;
+                            }
 
-                        WindowDropdownShowTextCustomWidth(
-                            { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height(),
-                            colours[1], 0, Dropdown::Flag::StayOpen, numItems, dropdownWidget->width() - 4);
+                            WindowDropdownShowTextCustomWidth(
+                                { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top },
+                                dropdownWidget->height(), colours[1], 0, Dropdown::Flag::StayOpen, numItems,
+                                dropdownWidget->width() - 4);
+                        }
                     }
                     else
                     {
