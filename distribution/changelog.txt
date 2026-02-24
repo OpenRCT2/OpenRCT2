@@ -6,6 +6,7 @@
 - Improved: [#25941] The command line sprite build command is now faster.
 - Improved: [#26002] Rides with newer track elements (like the zero G roll or diagonal brakes) can now be saved as track designs.
 - Improved: [#26050] Add Danish translation to Windows installer.
+- Improved: [#26091] When all rides are closed, the marketing window will no longer show the ride advertisement campaign.
 - Change: [#26011] Audio resampling no longer depends on the third-party library libspeexdsp.
 - Change: [#26049] Guest generation now starts slowing down above 52000 guests instead of 7000.
 - Fix: [#14686, #23996, #25981] Preview images from different windows overwrite each other when using OpenGL.
