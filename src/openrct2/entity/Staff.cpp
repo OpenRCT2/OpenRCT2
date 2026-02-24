@@ -1886,7 +1886,7 @@ enum
  */
 // clang-format off
 static constexpr uint32_t FixingSubstatesForBreakdown[9] = {
-    ( // BREAKDOWN_SAFETY_CUT_OUT
+    ( // Breakdown::safetyCutOut
         (1 << PEEP_FIXING_MOVE_TO_STATION_END) |
         (1 << PEEP_FIXING_FIX_STATION_END) |
         (1 << PEEP_FIXING_MOVE_TO_STATION_START) |
@@ -1895,49 +1895,49 @@ static constexpr uint32_t FixingSubstatesForBreakdown[9] = {
         (1 << PEEP_FIXING_FINISH_FIX_OR_INSPECT) |
         (1 << PEEP_FIXING_LEAVE_BY_ENTRANCE_EXIT)
     ),
-    ( // BREAKDOWN_RESTRAINTS_STUCK_CLOSED
+    ( // Breakdown::restraintsStuckClosed
         (1 << PEEP_FIXING_MOVE_TO_BROKEN_DOWN_VEHICLE) |
         (1 << PEEP_FIXING_FIX_VEHICLE_CLOSED_RESTRAINTS) |
         (1 << PEEP_FIXING_MOVE_TO_STATION_EXIT) |
         (1 << PEEP_FIXING_FINISH_FIX_OR_INSPECT) |
         (1 << PEEP_FIXING_LEAVE_BY_ENTRANCE_EXIT)
     ),
-    ( // BREAKDOWN_RESTRAINTS_STUCK_OPEN
+    ( // Breakdown::restraintsStuckOpen
         (1 << PEEP_FIXING_MOVE_TO_BROKEN_DOWN_VEHICLE) |
         (1 << PEEP_FIXING_FIX_VEHICLE_OPEN_RESTRAINTS) |
         (1 << PEEP_FIXING_MOVE_TO_STATION_EXIT) |
         (1 << PEEP_FIXING_FINISH_FIX_OR_INSPECT) |
         (1 << PEEP_FIXING_LEAVE_BY_ENTRANCE_EXIT)
     ),
-    ( // BREAKDOWN_DOORS_STUCK_CLOSED
+    ( // Breakdown::doorsStuckClosed
         (1 << PEEP_FIXING_MOVE_TO_BROKEN_DOWN_VEHICLE) |
         (1 << PEEP_FIXING_FIX_VEHICLE_CLOSED_DOORS) |
         (1 << PEEP_FIXING_MOVE_TO_STATION_EXIT) |
         (1 << PEEP_FIXING_FINISH_FIX_OR_INSPECT) |
         (1 << PEEP_FIXING_LEAVE_BY_ENTRANCE_EXIT)
     ),
-    ( // BREAKDOWN_DOORS_STUCK_OPEN
+    ( // Breakdown::doorsStuckOpen
         (1 << PEEP_FIXING_MOVE_TO_BROKEN_DOWN_VEHICLE) |
         (1 << PEEP_FIXING_FIX_VEHICLE_OPEN_DOORS) |
         (1 << PEEP_FIXING_MOVE_TO_STATION_EXIT) |
         (1 << PEEP_FIXING_FINISH_FIX_OR_INSPECT) |
         (1 << PEEP_FIXING_LEAVE_BY_ENTRANCE_EXIT)
     ),
-    ( // BREAKDOWN_VEHICLE_MALFUNCTION
+    ( // Breakdown::vehicleMalfunction
         (1 << PEEP_FIXING_MOVE_TO_BROKEN_DOWN_VEHICLE) |
         (1 << PEEP_FIXING_FIX_VEHICLE_MALFUNCTION) |
         (1 << PEEP_FIXING_MOVE_TO_STATION_EXIT) |
         (1 << PEEP_FIXING_FINISH_FIX_OR_INSPECT) |
         (1 << PEEP_FIXING_LEAVE_BY_ENTRANCE_EXIT)
     ),
-    ( // BREAKDOWN_BRAKES_FAILURE
+    ( // Breakdown::brakesFailure
         (1 << PEEP_FIXING_MOVE_TO_STATION_START) |
         (1 << PEEP_FIXING_FIX_STATION_BRAKES) |
         (1 << PEEP_FIXING_MOVE_TO_STATION_EXIT) |
         (1 << PEEP_FIXING_FINISH_FIX_OR_INSPECT) |
         (1 << PEEP_FIXING_LEAVE_BY_ENTRANCE_EXIT)
     ),
-    ( // BREAKDOWN_CONTROL_FAILURE
+    ( // Breakdown::controlFailure
         (1 << PEEP_FIXING_MOVE_TO_STATION_END) |
         (1 << PEEP_FIXING_FIX_STATION_END) |
         (1 << PEEP_FIXING_MOVE_TO_STATION_START) |
@@ -2055,7 +2055,7 @@ void Staff::UpdateFixing(int32_t steps)
 
         if (State != PeepState::inspecting)
         {
-            sub_state_sequence_mask = FixingSubstatesForBreakdown[ride->breakdownReasonPending];
+            sub_state_sequence_mask = FixingSubstatesForBreakdown[EnumValue(ride->breakdownReasonPending)];
         }
 
         do

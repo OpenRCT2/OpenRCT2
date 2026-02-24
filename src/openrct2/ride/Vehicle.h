@@ -29,6 +29,8 @@ struct CarEntry;
 class DataSerialiser;
 struct PaintSession;
 
+enum class Breakdown : uint8_t;
+
 namespace OpenRCT2
 {
     struct TrackElement;
@@ -564,7 +566,7 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, OpenRCT2::TrackE
 void RideUpdateMeasurementsSpecialElements_WaterCoaster(Ride& ride, OpenRCT2::TrackElemType trackType);
 
 extern Vehicle* gCurrentVehicle;
-extern uint8_t _vehicleBreakdown;
+extern Breakdown _vehicleBreakdown;
 extern StationIndex _vehicleStationIndex;
 extern uint32_t _vehicleMotionTrackFlags;
 extern int32_t _vehicleVelocityF64E08;

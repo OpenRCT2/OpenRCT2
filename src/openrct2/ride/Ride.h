@@ -134,6 +134,32 @@ enum class RideFlag : uint8_t
 };
 using RideFlags = FlagHolder<uint32_t, RideFlag>;
 
+enum class Breakdown : uint8_t
+{
+    safetyCutOut,
+    restraintsStuckClosed,
+    restraintsStuckOpen,
+    doorsStuckClosed,
+    doorsStuckOpen,
+    vehicleMalfunction,
+    brakesFailure,
+    controlFailure,
+
+    none = 255,
+};
+constexpr auto kAllBreakdownTypes = std::to_array(
+    {
+        Breakdown::safetyCutOut,
+        Breakdown::restraintsStuckClosed,
+        Breakdown::restraintsStuckOpen,
+        Breakdown::doorsStuckClosed,
+        Breakdown::doorsStuckOpen,
+        Breakdown::vehicleMalfunction,
+        Breakdown::brakesFailure,
+        Breakdown::controlFailure,
+    });
+constexpr auto kBreakdownCount = kAllBreakdownTypes.size();
+
 struct RideStation
 {
     static constexpr uint8_t kNoTrain = std::numeric_limits<uint8_t>::max();
@@ -320,13 +346,13 @@ struct Ride
     money64 upkeepCost{};
     EntityId raceWinner{};
     uint32_t musicPosition{};
-    uint8_t breakdownReasonPending{};
+    Breakdown breakdownReasonPending{};
     MechanicStatus mechanicStatus{};
     EntityId mechanic{ EntityId::GetNull() };
     StationIndex inspectionStation{ StationIndex::GetNull() };
     uint8_t brokenTrain{};
     uint8_t brokenCar{};
-    uint8_t breakdownReason{};
+    Breakdown breakdownReason{};
     union
     {
         struct
@@ -745,21 +771,6 @@ enum
 
 enum
 {
-    BREAKDOWN_NONE = 255,
-    BREAKDOWN_SAFETY_CUT_OUT = 0,
-    BREAKDOWN_RESTRAINTS_STUCK_CLOSED,
-    BREAKDOWN_RESTRAINTS_STUCK_OPEN,
-    BREAKDOWN_DOORS_STUCK_CLOSED,
-    BREAKDOWN_DOORS_STUCK_OPEN,
-    BREAKDOWN_VEHICLE_MALFUNCTION,
-    BREAKDOWN_BRAKES_FAILURE,
-    BREAKDOWN_CONTROL_FAILURE,
-
-    BREAKDOWN_COUNT
-};
-
-enum
-{
     RIDE_DEPART_WAIT_FOR_LOAD_MASK = 7,
     RIDE_DEPART_WAIT_FOR_LOAD = 1 << 3,
     RIDE_DEPART_LEAVE_WHEN_ANOTHER_ARRIVES = 1 << 4,
@@ -841,7 +852,7 @@ void RideBreakdownAddNewsItem(const Ride& ride);
 Staff* RideFindClosestMechanic(const Ride& ride, int32_t forInspection);
 int32_t RideInitialiseConstructionWindow(Ride& ride);
 void RideSetMapTooltip(const OpenRCT2::TileElement& tileElement);
-void RidePrepareBreakdown(Ride& ride, int32_t breakdownReason);
+void RidePrepareBreakdown(Ride& ride, Breakdown breakdownReason);
 OpenRCT2::TileElement* RideGetStationStartTrackElement(const Ride& ride, StationIndex stationIndex);
 OpenRCT2::TileElement* RideGetStationExitElement(const CoordsXYZ& elementPos);
 money64 RideGetRefundPrice(const Ride& ride);

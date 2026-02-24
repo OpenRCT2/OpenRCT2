@@ -90,7 +90,7 @@ namespace OpenRCT2::GameActions
                 return Result(Status::disallowed, STR_CANT_REFURBISH_RIDE, STR_RIDE_NOT_YET_EMPTY);
             }
 
-            if (!ride->flags.has(RideFlag::everBeenOpened) || ride->getRideTypeDescriptor().AvailableBreakdowns == 0)
+            if (!ride->flags.has(RideFlag::everBeenOpened) || ride->getRideTypeDescriptor().availableBreakdowns.isEmpty())
             {
                 return Result(Status::disallowed, STR_CANT_REFURBISH_RIDE, STR_CANT_REFURBISH_NOT_NEEDED);
             }

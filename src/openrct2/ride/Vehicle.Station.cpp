@@ -693,10 +693,10 @@ void Vehicle::UpdateWaitingToDepart()
     {
         switch (curRide->breakdownReasonPending)
         {
-            case BREAKDOWN_RESTRAINTS_STUCK_CLOSED:
-            case BREAKDOWN_RESTRAINTS_STUCK_OPEN:
-            case BREAKDOWN_DOORS_STUCK_CLOSED:
-            case BREAKDOWN_DOORS_STUCK_OPEN:
+            case Breakdown::restraintsStuckClosed:
+            case Breakdown::restraintsStuckOpen:
+            case Breakdown::doorsStuckClosed:
+            case Breakdown::doorsStuckOpen:
                 break;
             default:
                 shouldBreak = true;
@@ -1161,7 +1161,7 @@ void Vehicle::UpdateDeparting()
                 acceleration = 15539;
                 if (velocity != 0)
                 {
-                    if (_vehicleBreakdown == BREAKDOWN_SAFETY_CUT_OUT)
+                    if (_vehicleBreakdown == Breakdown::safetyCutOut)
                     {
                         flags.set(VehicleFlag::stoppedBySafetyCutout);
                         flags.unset(VehicleFlag::collisionDisabled);
@@ -1179,7 +1179,7 @@ void Vehicle::UpdateDeparting()
                 acceleration = -15539;
                 if (velocity != 0)
                 {
-                    if (_vehicleBreakdown == BREAKDOWN_SAFETY_CUT_OUT)
+                    if (_vehicleBreakdown == Breakdown::safetyCutOut)
                     {
                         flags.set(VehicleFlag::stoppedBySafetyCutout);
                         flags.unset(VehicleFlag::collisionDisabled);
@@ -1341,7 +1341,7 @@ void Vehicle::UpdateTravelling()
     CheckIfMissing();
 
     auto curRide = GetRide();
-    if (curRide == nullptr || (_vehicleBreakdown == 0 && curRide->mode == RideMode::rotatingLift))
+    if (curRide == nullptr || (_vehicleBreakdown == Breakdown::safetyCutOut && curRide->mode == RideMode::rotatingLift))
         return;
 
     if (sub_state == 2)
@@ -1460,7 +1460,7 @@ void Vehicle::UpdateTravelling()
                     {
                         acceleration = -15539;
 
-                        if (_vehicleBreakdown == 0)
+                        if (_vehicleBreakdown == Breakdown::safetyCutOut)
                         {
                             sound2_flags &= ~VEHICLE_SOUND2_FLAGS_LIFT_HILL;
                             flags.set(VehicleFlag::stoppedBySafetyCutout);
@@ -1477,7 +1477,7 @@ void Vehicle::UpdateTravelling()
                 acceleration = 15539;
                 if (velocity != 0)
                 {
-                    if (_vehicleBreakdown == 0)
+                    if (_vehicleBreakdown == Breakdown::safetyCutOut)
                     {
                         flags.set(VehicleFlag::stoppedBySafetyCutout);
                         sound2_flags &= ~VEHICLE_SOUND2_FLAGS_LIFT_HILL;

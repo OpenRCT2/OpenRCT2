@@ -99,7 +99,7 @@ int32_t Vehicle::UpdateMotionDodgems()
 
     int32_t nextVelocity = velocity + acceleration;
     if (curRide->flags.hasAny(RideFlag::breakdownPending, RideFlag::brokenDown)
-        && curRide->breakdownReasonPending == BREAKDOWN_SAFETY_CUT_OUT)
+        && curRide->breakdownReasonPending == Breakdown::safetyCutOut)
     {
         nextVelocity = 0;
     }
@@ -111,7 +111,7 @@ int32_t Vehicle::UpdateMotionDodgems()
 
     acceleration = 0;
     if (!curRide->flags.hasAny(RideFlag::breakdownPending, RideFlag::brokenDown)
-        || curRide->breakdownReasonPending != BREAKDOWN_SAFETY_CUT_OUT)
+        || curRide->breakdownReasonPending != Breakdown::safetyCutOut)
     {
         if ((getGameState().currentTicks & 1) && var_34 != 0)
         {

@@ -526,7 +526,7 @@ namespace OpenRCT2::Ui::Windows
         STR_RIDE_BREAKDOWN_BRAKES_FAILURE,          // BREAKDOWN_BRAKES_FAILURE
         STR_RIDE_BREAKDOWN_CONTROL_FAILURE,         // BREAKDOWN_CONTROL_FAILURE
     };
-    static_assert(std::size(RideBreakdownReasonNames) == BREAKDOWN_COUNT);
+    static_assert(std::size(RideBreakdownReasonNames) == kBreakdownCount);
 
     // Used in other places as well
     const StringId ColourSchemeNames[4] = {
@@ -3842,17 +3842,17 @@ namespace OpenRCT2::Ui::Windows
                             break;
                     }
                     gDropdown.items[0] = Dropdown::MenuLabel(STR_DEBUG_FIX_RIDE);
-                    for (int32_t i = 0; i < 8; i++)
+                    for (auto i : kAllBreakdownTypes)
                     {
                         assert(j < static_cast<int32_t>(std::size(rideEntry->ride_type)));
-                        if (GetRideTypeDescriptor(rideEntry->ride_type[j]).AvailableBreakdowns & static_cast<uint8_t>(1 << i))
+                        if (GetRideTypeDescriptor(rideEntry->ride_type[j]).availableBreakdowns.has(i))
                         {
-                            if (i == BREAKDOWN_BRAKES_FAILURE && ride->isBlockSectioned())
+                            if (i == Breakdown::brakesFailure && ride->isBlockSectioned())
                             {
                                 if (ride->numTrains != 1)
                                     continue;
                             }
-                            gDropdown.items[numItems] = Dropdown::MenuLabel(RideBreakdownReasonNames[i]);
+                            gDropdown.items[numItems] = Dropdown::MenuLabel(RideBreakdownReasonNames[EnumValue(i)]);
                             numItems++;
                         }
                     }
@@ -3867,15 +3867,14 @@ namespace OpenRCT2::Ui::Windows
                             colours[1], Dropdown::Flag::StayOpen, numItems);
 
                         numItems = 1;
-                        int32_t breakdownReason = ride->breakdownReasonPending;
-                        if (breakdownReason != BREAKDOWN_NONE && ride->flags.has(RideFlag::breakdownPending))
+                        auto breakdownReason = ride->breakdownReasonPending;
+                        if (breakdownReason != Breakdown::none && ride->flags.has(RideFlag::breakdownPending))
                         {
-                            for (int32_t i = 0; i < 8; i++)
+                            for (auto i : kAllBreakdownTypes)
                             {
-                                if (GetRideTypeDescriptor(rideEntry->ride_type[j]).AvailableBreakdowns
-                                    & static_cast<uint8_t>(1 << i))
+                                if (GetRideTypeDescriptor(rideEntry->ride_type[j]).availableBreakdowns.has(i))
                                 {
-                                    if (i == BREAKDOWN_BRAKES_FAILURE && ride->isBlockSectioned())
+                                    if (i == Breakdown::brakesFailure && ride->isBlockSectioned())
                                     {
                                         if (ride->numTrains != 1)
                                             continue;
@@ -3885,7 +3884,7 @@ namespace OpenRCT2::Ui::Windows
                                         gDropdown.items[numItems].setChecked(true);
                                         break;
                                     }
-                                    gDropdown.items[numItems] = Dropdown::MenuLabel(RideBreakdownReasonNames[i]);
+                                    gDropdown.items[numItems] = Dropdown::MenuLabel(RideBreakdownReasonNames[EnumValue(i)]);
                                     numItems++;
                                 }
                             }
@@ -3925,7 +3924,7 @@ namespace OpenRCT2::Ui::Windows
                         Vehicle* vehicle;
                         switch (ride->breakdownReasonPending)
                         {
-                            case BREAKDOWN_SAFETY_CUT_OUT:
+                            case Breakdown::safetyCutOut:
                                 if (!ride->flags.has(RideFlag::onTrack))
                                     break;
                                 for (int32_t i = 0; i < ride->numTrains; ++i)
@@ -3940,22 +3939,24 @@ namespace OpenRCT2::Ui::Windows
                                     }
                                 }
                                 break;
-                            case BREAKDOWN_RESTRAINTS_STUCK_CLOSED:
-                            case BREAKDOWN_RESTRAINTS_STUCK_OPEN:
-                            case BREAKDOWN_DOORS_STUCK_CLOSED:
-                            case BREAKDOWN_DOORS_STUCK_OPEN:
+                            case Breakdown::restraintsStuckClosed:
+                            case Breakdown::restraintsStuckOpen:
+                            case Breakdown::doorsStuckClosed:
+                            case Breakdown::doorsStuckOpen:
                                 vehicle = getGameState().entities.GetEntity<Vehicle>(ride->vehicles[ride->brokenTrain]);
                                 if (vehicle != nullptr)
                                 {
                                     vehicle->flags.unset(VehicleFlag::carIsBroken);
                                 }
                                 break;
-                            case BREAKDOWN_VEHICLE_MALFUNCTION:
+                            case Breakdown::vehicleMalfunction:
                                 vehicle = getGameState().entities.GetEntity<Vehicle>(ride->vehicles[ride->brokenTrain]);
                                 if (vehicle != nullptr)
                                 {
                                     vehicle->flags.unset(VehicleFlag::trainIsBroken);
                                 }
+                                break;
+                            default:
                                 break;
                         }
                         ride->flags.unset(RideFlag::breakdownPending, RideFlag::brokenDown);
@@ -3980,15 +3981,15 @@ namespace OpenRCT2::Ui::Windows
                             if (rideEntry->ride_type[j] != kRideTypeNull)
                                 break;
                         }
-                        int32_t i;
+                        auto breakdown = Breakdown::none;
                         int32_t numItems = 1;
-                        for (i = 0; i < BREAKDOWN_COUNT; i++)
+                        for (auto i : kAllBreakdownTypes)
                         {
+                            breakdown = i;
                             assert(j < static_cast<int32_t>(std::size(rideEntry->ride_type)));
-                            if (GetRideTypeDescriptor(rideEntry->ride_type[j]).AvailableBreakdowns
-                                & static_cast<uint8_t>(1 << i))
+                            if (GetRideTypeDescriptor(rideEntry->ride_type[j]).availableBreakdowns.has(i))
                             {
-                                if (i == BREAKDOWN_BRAKES_FAILURE && ride->isBlockSectioned())
+                                if (i == Breakdown::brakesFailure && ride->isBlockSectioned())
                                 {
                                     if (ride->numTrains != 1)
                                         continue;
@@ -3998,7 +3999,7 @@ namespace OpenRCT2::Ui::Windows
                                 numItems++;
                             }
                         }
-                        RidePrepareBreakdown(*ride, i);
+                        RidePrepareBreakdown(*ride, breakdown);
                     }
                     break;
             }
@@ -4042,7 +4043,7 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_FORCE_BREAKDOWN].type = WidgetType::empty;
             }
 
-            if (ride->getRideTypeDescriptor().AvailableBreakdowns == 0 || !ride->flags.has(RideFlag::everBeenOpened))
+            if (ride->getRideTypeDescriptor().availableBreakdowns.isEmpty() || !ride->flags.has(RideFlag::everBeenOpened))
             {
                 disabledWidgets |= (1uLL << WIDX_REFURBISH_RIDE);
                 widgets[WIDX_REFURBISH_RIDE].tooltip = STR_CANT_REFURBISH_NOT_NEEDED;
@@ -4109,12 +4110,12 @@ namespace OpenRCT2::Ui::Windows
             screenCoords.y += 12;
 
             // Last / current breakdown
-            if (ride->breakdownReason == BREAKDOWN_NONE)
+            if (ride->breakdownReason == Breakdown::none)
                 return;
 
             stringId = ride->flags.has(RideFlag::brokenDown) ? STR_CURRENT_BREAKDOWN : STR_LAST_BREAKDOWN;
             ft = Formatter();
-            ft.Add<StringId>(RideBreakdownReasonNames[ride->breakdownReason]);
+            ft.Add<StringId>(RideBreakdownReasonNames[EnumValue(ride->breakdownReason)]);
             DrawTextBasic(rt, screenCoords, stringId, ft);
             screenCoords.y += 12;
 

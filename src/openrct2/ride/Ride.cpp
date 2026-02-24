@@ -159,7 +159,7 @@ static void RideBreakdownUpdate(Ride& ride);
 static void RideCallClosestMechanic(Ride& ride);
 static void RideCallMechanic(Ride& ride, Peep* mechanic, int32_t forInspection);
 static void RideEntranceExitConnected(Ride& ride);
-static int32_t RideGetNewBreakdownProblem(const Ride& ride);
+static Breakdown RideGetNewBreakdownProblem(const Ride& ride);
 static void RideInspectionUpdate(Ride& ride);
 static void RideMechanicStatusUpdate(Ride& ride, MechanicStatus mechanicStatus);
 static void RideMusicUpdate(Ride& ride);
@@ -956,7 +956,7 @@ bool Ride::supportsStatus(RideStatus s) const
 
 bool Ride::hasFailingBrakes() const
 {
-    return flags.has(RideFlag::brokenDown) && breakdownReasonPending == BREAKDOWN_BRAKES_FAILURE
+    return flags.has(RideFlag::brokenDown) && breakdownReasonPending == Breakdown::brakesFailure
         && mechanicStatus != MechanicStatus::hasFixedStationBrakes;
 }
 
@@ -1187,7 +1187,7 @@ void updateChairlift(Ride& ride)
     if (!ride.flags.has(RideFlag::onTrack))
         return;
     if (ride.flags.hasAny(RideFlag::breakdownPending, RideFlag::brokenDown, RideFlag::crashed)
-        && ride.breakdownReasonPending == 0)
+        && ride.breakdownReasonPending == Breakdown::safetyCutOut)
         return;
 
     uint16_t oldChairliftBullwheelRotation = ride.chairliftBullwheelRotation >> 14;
@@ -1319,14 +1319,14 @@ void updateSpiralSlide(Ride& ride)
 #pragma region Breakdown and inspection functions
 
 static uint8_t _breakdownProblemProbabilities[] = {
-    25, // BREAKDOWN_SAFETY_CUT_OUT
-    12, // BREAKDOWN_RESTRAINTS_STUCK_CLOSED
-    10, // BREAKDOWN_RESTRAINTS_STUCK_OPEN
-    13, // BREAKDOWN_DOORS_STUCK_CLOSED
-    10, // BREAKDOWN_DOORS_STUCK_OPEN
-    6,  // BREAKDOWN_VEHICLE_MALFUNCTION
-    0,  // BREAKDOWN_BRAKES_FAILURE
-    3,  // BREAKDOWN_CONTROL_FAILURE
+    25, // Breakdown::safetyCutOut
+    12, // Breakdown::restraintsStuckClosed
+    10, // Breakdown::restraintsStuckOpen
+    13, // Breakdown::doorsStuckClosed
+    10, // Breakdown::doorsStuckOpen
+    6,  // Breakdown::vehicleMalfunction
+    0,  // Breakdown::brakesFailure
+    3,  // Breakdown::controlFailure
 };
 
 /**
@@ -1351,7 +1351,7 @@ static void RideInspectionUpdate(Ride& ride)
         return;
     }
 
-    if (ride.getRideTypeDescriptor().AvailableBreakdowns == 0)
+    if (ride.getRideTypeDescriptor().availableBreakdowns.isEmpty())
         return;
 
     if (inspectionIntervalMinutes > ride.lastInspection)
@@ -1454,8 +1454,8 @@ static void RideBreakdownUpdate(Ride& ride)
          || static_cast<uint32_t>(ScenarioRand() & 0x2FFFFF) <= 1u + kRideInitialReliability - ride.reliability)
         && !gameState.cheats.disableAllBreakdowns)
     {
-        int32_t breakdownReason = RideGetNewBreakdownProblem(ride);
-        if (breakdownReason != -1)
+        auto breakdownReason = RideGetNewBreakdownProblem(ride);
+        if (breakdownReason != Breakdown::none)
             RidePrepareBreakdown(ride, breakdownReason);
     }
 }
@@ -1464,42 +1464,44 @@ static void RideBreakdownUpdate(Ride& ride)
  *
  *  rct2: 0x006B7294
  */
-static int32_t RideGetNewBreakdownProblem(const Ride& ride)
+static Breakdown RideGetNewBreakdownProblem(const Ride& ride)
 {
     // Brake failure is more likely when it's raining or heavily snowing (HeavySnow and Blizzard)
-    _breakdownProblemProbabilities[BREAKDOWN_BRAKES_FAILURE] = ClimateIsPrecipitating() ? 20 : 3;
+    _breakdownProblemProbabilities[EnumValue(Breakdown::brakesFailure)] = ClimateIsPrecipitating() ? 20 : 3;
 
     if (!ride.canBreakDown())
-        return -1;
+        return Breakdown::none;
 
-    int32_t availableBreakdownProblems = ride.getRideTypeDescriptor().AvailableBreakdowns;
+    auto availableBreakdownProblems = ride.getRideTypeDescriptor().availableBreakdowns;
 
     // Calculate the total probability range for all possible breakdown problems
     int32_t totalProbability = 0;
-    uint32_t problemBits = availableBreakdownProblems;
-    int32_t breakdownProblem;
-    while (problemBits != 0)
+    for (Breakdown breakdown : kAllBreakdownTypes)
     {
-        breakdownProblem = Numerics::bitScanForward(problemBits);
-        problemBits &= ~(1 << breakdownProblem);
-        totalProbability += _breakdownProblemProbabilities[breakdownProblem];
+        if (availableBreakdownProblems.has(breakdown))
+            totalProbability += _breakdownProblemProbabilities[EnumValue(breakdown)];
     }
+
     if (totalProbability == 0)
-        return -1;
+        return Breakdown::none;
 
     // Choose a random number within this range
     int32_t randomProbability = ScenarioRand() % totalProbability;
 
     // Find which problem range the random number lies
-    problemBits = availableBreakdownProblems;
-    do
+    auto breakdownProblem = Breakdown::none;
+    for (Breakdown breakdown : kAllBreakdownTypes)
     {
-        breakdownProblem = Numerics::bitScanForward(problemBits);
-        problemBits &= ~(1 << breakdownProblem);
-        randomProbability -= _breakdownProblemProbabilities[breakdownProblem];
-    } while (randomProbability >= 0);
+        if (availableBreakdownProblems.has(breakdown))
+        {
+            breakdownProblem = breakdown;
+            randomProbability -= _breakdownProblemProbabilities[EnumValue(breakdown)];
+        }
+        if (randomProbability < 0)
+            break;
+    }
 
-    if (breakdownProblem != BREAKDOWN_BRAKES_FAILURE)
+    if (breakdownProblem != Breakdown::brakesFailure)
         return breakdownProblem;
 
     // Brakes failure can not happen if block brakes are used (so long as there is more than one vehicle)
@@ -1507,22 +1509,22 @@ static int32_t RideGetNewBreakdownProblem(const Ride& ride)
     // rides have a lower probability to break down due to a random implementation reason.
     if (ride.isBlockSectioned())
         if (ride.numTrains != 1)
-            return -1;
+            return Breakdown::none;
 
     // If brakes failure is disabled, also take it out of the equation (see above comment why)
     if (getGameState().cheats.disableBrakesFailure)
-        return -1;
+        return Breakdown::none;
 
     auto monthsOld = ride.getAge();
     if (monthsOld < 16 || ride.reliabilityPercentage > 50)
-        return -1;
+        return Breakdown::none;
 
-    return BREAKDOWN_BRAKES_FAILURE;
+    return Breakdown::brakesFailure;
 }
 
 bool Ride::canBreakDown() const
 {
-    if (getRideTypeDescriptor().AvailableBreakdowns == 0)
+    if (getRideTypeDescriptor().availableBreakdowns.isEmpty())
     {
         return false;
     }
@@ -1551,7 +1553,7 @@ static void ChooseRandomTrainToBreakdownSafe(Ride& ride)
  *
  *  rct2: 0x006B7348
  */
-void RidePrepareBreakdown(Ride& ride, int32_t breakdownReason)
+void RidePrepareBreakdown(Ride& ride, Breakdown breakdownReason)
 {
     StationIndex i;
     Vehicle* vehicle;
@@ -1568,8 +1570,8 @@ void RidePrepareBreakdown(Ride& ride, int32_t breakdownReason)
 
     switch (breakdownReason)
     {
-        case BREAKDOWN_SAFETY_CUT_OUT:
-        case BREAKDOWN_CONTROL_FAILURE:
+        case Breakdown::safetyCutOut:
+        case Breakdown::controlFailure:
             // Inspect first station with an exit
             i = RideGetFirstValidStationExit(ride);
             if (!i.IsNull())
@@ -1578,10 +1580,10 @@ void RidePrepareBreakdown(Ride& ride, int32_t breakdownReason)
             }
 
             break;
-        case BREAKDOWN_RESTRAINTS_STUCK_CLOSED:
-        case BREAKDOWN_RESTRAINTS_STUCK_OPEN:
-        case BREAKDOWN_DOORS_STUCK_CLOSED:
-        case BREAKDOWN_DOORS_STUCK_OPEN:
+        case Breakdown::restraintsStuckClosed:
+        case Breakdown::restraintsStuckOpen:
+        case Breakdown::doorsStuckClosed:
+        case Breakdown::doorsStuckOpen:
             // Choose a random train and car
             ChooseRandomTrainToBreakdownSafe(ride);
             if (ride.numCarsPerTrain != 0)
@@ -1600,7 +1602,7 @@ void RidePrepareBreakdown(Ride& ride, int32_t breakdownReason)
                 }
             }
             break;
-        case BREAKDOWN_VEHICLE_MALFUNCTION:
+        case Breakdown::vehicleMalfunction:
             // Choose a random train
             ChooseRandomTrainToBreakdownSafe(ride);
             ride.brokenCar = 0;
@@ -1612,7 +1614,7 @@ void RidePrepareBreakdown(Ride& ride, int32_t breakdownReason)
                 vehicle->flags.set(VehicleFlag::trainIsBroken);
             }
             break;
-        case BREAKDOWN_BRAKES_FAILURE:
+        case Breakdown::brakesFailure:
             // Original code generates a random number but does not use it
             // Unsure if this was supposed to choose a random station (or random station with an exit)
             i = RideGetFirstValidStationExit(ride);
@@ -1620,6 +1622,8 @@ void RidePrepareBreakdown(Ride& ride, int32_t breakdownReason)
             {
                 ride.inspectionStation = i;
             }
+            break;
+        default:
             break;
     }
 }
@@ -1681,8 +1685,8 @@ static void RideMechanicStatusUpdate(Ride& ride, MechanicStatus mechanicStatus)
         && ride.flags.has(RideFlag::breakdownPending) && !ride.flags.has(RideFlag::brokenDown))
     {
         auto breakdownReason = ride.breakdownReasonPending;
-        if (breakdownReason == BREAKDOWN_SAFETY_CUT_OUT || breakdownReason == BREAKDOWN_BRAKES_FAILURE
-            || breakdownReason == BREAKDOWN_CONTROL_FAILURE)
+        if (breakdownReason == Breakdown::safetyCutOut || breakdownReason == Breakdown::brakesFailure
+            || breakdownReason == Breakdown::controlFailure)
         {
             ride.flags.set(RideFlag::brokenDown);
             ride.windowInvalidateFlags.set(RideInvalidateFlag::maintenance, RideInvalidateFlag::list, RideInvalidateFlag::main);
@@ -1699,7 +1703,7 @@ static void RideMechanicStatusUpdate(Ride& ride, MechanicStatus mechanicStatus)
             }
             break;
         case MechanicStatus::calling:
-            if (ride.getRideTypeDescriptor().AvailableBreakdowns == 0)
+            if (ride.getRideTypeDescriptor().availableBreakdowns.isEmpty())
             {
                 ride.flags.unset(RideFlag::breakdownPending, RideFlag::brokenDown, RideFlag::dueInspection);
                 break;
@@ -1891,7 +1895,7 @@ static int32_t RideMusicSampleRate(const Ride& ride)
     if (ride.flags.hasAny(RideFlag::breakdownPending, RideFlag::brokenDown))
     {
         sampleRate = ride.breakdownSoundModifier * 70;
-        if (ride.breakdownReasonPending != BREAKDOWN_CONTROL_FAILURE)
+        if (ride.breakdownReasonPending != Breakdown::controlFailure)
             sampleRate *= -1;
         sampleRate += 22050;
     }
@@ -1908,7 +1912,7 @@ static bool RideMusicBreakdownEffect(Ride& ride)
     // Oscillate parameters for a power cut effect when breaking down
     if (ride.flags.hasAny(RideFlag::breakdownPending, RideFlag::brokenDown))
     {
-        if (ride.breakdownReasonPending == BREAKDOWN_CONTROL_FAILURE)
+        if (ride.breakdownReasonPending == Breakdown::controlFailure)
         {
             if (!(getGameState().currentTicks & 7))
                 if (ride.breakdownSoundModifier != 255)
@@ -1916,8 +1920,8 @@ static bool RideMusicBreakdownEffect(Ride& ride)
         }
         else
         {
-            if (ride.flags.has(RideFlag::brokenDown) || ride.breakdownReasonPending == BREAKDOWN_BRAKES_FAILURE
-                || ride.breakdownReasonPending == BREAKDOWN_CONTROL_FAILURE)
+            if (ride.flags.has(RideFlag::brokenDown) || ride.breakdownReasonPending == Breakdown::brakesFailure
+                || ride.breakdownReasonPending == Breakdown::controlFailure)
             {
                 if (ride.breakdownSoundModifier != 255)
                     ride.breakdownSoundModifier++;

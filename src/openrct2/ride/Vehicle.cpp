@@ -71,7 +71,7 @@ constexpr int16_t kVehicleStoppingSpinSpeed = 600;
 
 Vehicle* gCurrentVehicle;
 
-uint8_t _vehicleBreakdown;
+Breakdown _vehicleBreakdown;
 StationIndex _vehicleStationIndex;
 uint32_t _vehicleMotionTrackFlags;
 int32_t _vehicleVelocityF64E08;
@@ -251,8 +251,8 @@ bool Vehicle::CloseRestraints()
          vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
     {
         if (vehicle->flags.has(VehicleFlag::carIsBroken) && vehicle->restraints_position != 0
-            && (curRide->breakdownReasonPending == BREAKDOWN_RESTRAINTS_STUCK_OPEN
-                || curRide->breakdownReasonPending == BREAKDOWN_DOORS_STUCK_OPEN))
+            && (curRide->breakdownReasonPending == Breakdown::restraintsStuckOpen
+                || curRide->breakdownReasonPending == Breakdown::doorsStuckOpen))
         {
             if (!curRide->flags.has(RideFlag::brokenDown))
             {
@@ -367,8 +367,8 @@ bool Vehicle::OpenRestraints()
         }
 
         if (vehicle->flags.has(VehicleFlag::carIsBroken) && vehicle->restraints_position != 0xFF
-            && (curRide->breakdownReasonPending == BREAKDOWN_RESTRAINTS_STUCK_CLOSED
-                || curRide->breakdownReasonPending == BREAKDOWN_DOORS_STUCK_CLOSED))
+            && (curRide->breakdownReasonPending == Breakdown::restraintsStuckClosed
+                || curRide->breakdownReasonPending == Breakdown::doorsStuckClosed))
         {
             if (!curRide->flags.has(RideFlag::brokenDown))
             {
@@ -766,12 +766,12 @@ void Vehicle::Update()
     if (flags.has(VehicleFlag::testing))
         UpdateMeasurements();
 
-    _vehicleBreakdown = 255;
+    _vehicleBreakdown = Breakdown::none;
     if (curRide->flags.hasAny(RideFlag::breakdownPending, RideFlag::brokenDown))
     {
         _vehicleBreakdown = curRide->breakdownReasonPending;
         auto carEntry = &rideEntry->Cars[vehicle_type];
-        if (carEntry->flags.has(CarEntryFlag::isPowered) && curRide->breakdownReasonPending == BREAKDOWN_SAFETY_CUT_OUT)
+        if (carEntry->flags.has(CarEntryFlag::isPowered) && curRide->breakdownReasonPending == Breakdown::safetyCutOut)
         {
             if (!carEntry->flags.has(CarEntryFlag::isWaterRide) || (pitch == VehiclePitch::up25 && velocity <= 2.0_mph))
             {

@@ -34,7 +34,7 @@ using namespace OpenRCT2::RideVehicle;
 
 // External globals from Vehicle.cpp
 extern Vehicle* gCurrentVehicle;
-extern uint8_t _vehicleBreakdown;
+extern Breakdown _vehicleBreakdown;
 extern StationIndex _vehicleStationIndex;
 extern uint32_t _vehicleMotionTrackFlags;
 extern int32_t _vehicleVelocityF64E08;
@@ -213,7 +213,7 @@ void Vehicle::CheckAndApplyBlockSectionStopSite()
     // Is chair lift type
     if (carEntry->flags.has(CarEntryFlag::isChairlift))
     {
-        velocity = _vehicleBreakdown == 0 ? 0 : curRide->speed << 16;
+        velocity = _vehicleBreakdown == Breakdown::safetyCutOut ? 0 : curRide->speed << 16;
         acceleration = 0;
     }
 

@@ -114,7 +114,7 @@ void Vehicle::UpdateSwinging()
  */
 void Vehicle::UpdateFerrisWheelRotating()
 {
-    if (_vehicleBreakdown == 0)
+    if (_vehicleBreakdown == Breakdown::safetyCutOut)
         return;
 
     auto curRide = GetRide();
@@ -206,7 +206,7 @@ void Vehicle::UpdateFerrisWheelRotating()
  */
 void Vehicle::UpdateSimulatorOperating()
 {
-    if (_vehicleBreakdown == 0)
+    if (_vehicleBreakdown == Breakdown::safetyCutOut)
         return;
 
     assert(current_time >= -1);
@@ -250,7 +250,7 @@ void UpdateRotatingEnterprise(Vehicle& vehicle)
  */
 void Vehicle::UpdateRotating()
 {
-    if (_vehicleBreakdown == 0)
+    if (_vehicleBreakdown == Breakdown::safetyCutOut)
         return;
 
     auto curRide = GetRide();
@@ -278,7 +278,7 @@ void Vehicle::UpdateRotating()
     }
 
     uint16_t time = current_time;
-    if (_vehicleBreakdown == BREAKDOWN_CONTROL_FAILURE)
+    if (_vehicleBreakdown == Breakdown::controlFailure)
     {
         time += (curRide->breakdownSoundModifier >> 6) + 1;
     }
@@ -297,7 +297,7 @@ void Vehicle::UpdateRotating()
 
     current_time = -1;
     NumRotations++;
-    if (_vehicleBreakdown != BREAKDOWN_CONTROL_FAILURE)
+    if (_vehicleBreakdown != Breakdown::controlFailure)
     {
         bool shouldStop = true;
         if (curRide->status != RideStatus::closed)
@@ -334,7 +334,7 @@ void Vehicle::UpdateRotating()
  */
 void Vehicle::UpdateSpaceRingsOperating()
 {
-    if (_vehicleBreakdown == 0)
+    if (_vehicleBreakdown == Breakdown::safetyCutOut)
         return;
 
     uint8_t spriteType = kSpaceRingsTimeToSpriteMap[current_time + 1];
@@ -360,7 +360,7 @@ void Vehicle::UpdateSpaceRingsOperating()
  */
 void Vehicle::UpdateHauntedHouseOperating()
 {
-    if (_vehicleBreakdown == 0)
+    if (_vehicleBreakdown == Breakdown::safetyCutOut)
         return;
 
     if (flatRideAnimationFrame != 0)
@@ -414,7 +414,7 @@ void Vehicle::UpdateHauntedHouseOperating()
  */
 void Vehicle::UpdateCrookedHouseOperating()
 {
-    if (_vehicleBreakdown == 0)
+    if (_vehicleBreakdown == Breakdown::safetyCutOut)
         return;
 
     // Originally used an array of size 1 at 0x009A0AC4 and passed the sub state into it.
@@ -434,7 +434,7 @@ void Vehicle::UpdateCrookedHouseOperating()
  */
 void Vehicle::UpdateTopSpinOperating()
 {
-    if (_vehicleBreakdown == 0)
+    if (_vehicleBreakdown == Breakdown::safetyCutOut)
         return;
 
     const TopSpinTimeToSpriteMap* sprite_map = kTopSpinTimeToSpriteMaps[sub_state];
@@ -466,7 +466,7 @@ void Vehicle::UpdateTopSpinOperating()
  */
 void Vehicle::UpdateShowingFilm()
 {
-    if (_vehicleBreakdown == 0)
+    if (_vehicleBreakdown == Breakdown::safetyCutOut)
         return;
 
     int32_t totalTime = kRideFilmLength[sub_state];
@@ -488,7 +488,7 @@ void Vehicle::UpdateShowingFilm()
  */
 void Vehicle::UpdateDoingCircusShow()
 {
-    if (_vehicleBreakdown == 0)
+    if (_vehicleBreakdown == Breakdown::safetyCutOut)
         return;
 
     int32_t currentTime = current_time + 1;

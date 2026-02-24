@@ -510,7 +510,7 @@ struct RideTypeDescriptor
     RideLegacyBoosterSettings LegacyBoosterSettings{};
     RideNaming Naming{};
     RideNameConvention NameConvention{};
-    uint8_t AvailableBreakdowns{};
+    FlagHolder<uint8_t, Breakdown> availableBreakdowns{};
     /** rct2: 0x0097D218 */
     RideHeights Heights{};
     uint8_t MaxMass{};
@@ -647,7 +647,7 @@ constexpr RideTypeDescriptor kDummyRTD =
     .LegacyBoosterSettings = {},
     .Naming = { STR_UNKNOWN_RIDE, STR_RIDE_DESCRIPTION_UNKNOWN },
     .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
-    .AvailableBreakdowns = 0,
+    .availableBreakdowns = {},
     .Heights = { 12, 64, 0, 0, },
     .MaxMass = 255,
     .LiftData = { OpenRCT2::Audio::SoundId::null, 5, 5 },

@@ -71,7 +71,7 @@ static void PaintCarousel(
         session.CurrentlyDrawnEntity = vehicle;
 
         if (ride.flags.hasAny(RideFlag::breakdownPending, RideFlag::brokenDown)
-            && ride.breakdownReasonPending == BREAKDOWN_CONTROL_FAILURE && ride.breakdownSoundModifier >= 128)
+            && ride.breakdownReasonPending == Breakdown::controlFailure && ride.breakdownSoundModifier >= 128)
         {
             height += kMerryGoRoundBreakdownVibration[(vehicle->current_time >> 1) & 7];
         }
