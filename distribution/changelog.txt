@@ -19,6 +19,7 @@
 - Fix: [#26037] Selecting elements in the tile inspector list and changing all tiles of a track piece does not redraw correctly.
 - Fix: [#26057] In the scrolling intro, the Infogrames logo is taken off the screen before it reaches the bottom (original bug).
 - Fix: [#26058] RCT Classic scenarios with packed objects missing from scenario index.
+- Fix: [#26083] You can advertise for closed food & drink stalls.
 
 0.4.31 (2026-02-01)
 ------------------------------------------------------------------------
