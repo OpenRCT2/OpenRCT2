@@ -362,37 +362,25 @@ void Vehicle::UpdateHandleWaterSplash() const
     const auto* rideEntry = GetRideEntry();
     auto trackType = GetTrackType();
 
-    if (!rideEntry->flags.has(RideEntryFlag::playSplashSound))
+    if (rideEntry->flags.has(RideEntryFlag::playSplashSound))
     {
-        if (rideEntry->flags.has(RideEntryFlag::coveredTrackIsWaterChannel))
+        if (trackType == TrackElemType::down25ToFlat && track_progress == 12)
         {
-            if (IsHead())
-            {
-                if (IsOnCoveredTrack())
-                {
-                    Vehicle* nextVehicle = getGameState().entities.GetEntity<Vehicle>(next_vehicle_on_ride);
-                    if (nextVehicle == nullptr)
-                        return;
-
-                    Vehicle* nextNextVehicle = getGameState().entities.GetEntity<Vehicle>(nextVehicle->next_vehicle_on_ride);
-                    if (nextNextVehicle == nullptr)
-                        return;
-                    if (!nextNextVehicle->IsOnCoveredTrack())
-                    {
-                        if (track_progress == 4)
-                        {
-                            vehicle_update_play_water_splash_sound();
-                        }
-                    }
-                }
-            }
+            vehicle_update_play_water_splash_sound();
         }
     }
-    else
+    else if (rideEntry->flags.has(RideEntryFlag::coveredTrackIsWaterChannel))
     {
-        if (trackType == TrackElemType::down25ToFlat)
+        if (IsHead() && IsOnCoveredTrack())
         {
-            if (track_progress == 12)
+            Vehicle* nextVehicle = getGameState().entities.GetEntity<Vehicle>(next_vehicle_on_ride);
+            if (nextVehicle == nullptr)
+                return;
+
+            Vehicle* nextNextVehicle = getGameState().entities.GetEntity<Vehicle>(nextVehicle->next_vehicle_on_ride);
+            if (nextNextVehicle == nullptr)
+                return;
+            if (!nextNextVehicle->IsOnCoveredTrack() && track_progress == 4)
             {
                 vehicle_update_play_water_splash_sound();
             }
@@ -400,12 +388,9 @@ void Vehicle::UpdateHandleWaterSplash() const
     }
     if (IsHead())
     {
-        if (trackType == TrackElemType::waterSplash)
+        if (trackType == TrackElemType::waterSplash && track_progress == 48)
         {
-            if (track_progress == 48)
-            {
-                vehicle_update_play_water_splash_sound();
-            }
+            vehicle_update_play_water_splash_sound();
         }
     }
 }
