@@ -20,6 +20,7 @@
 #include "../../ride/RideData.h"
 #include "../../ride/Track.h"
 #include "../../ride/TrackData.h"
+#include "../../ui/WindowManager.h"
 #include "../../world/ConstructionClearance.h"
 #include "../../world/Footpath.h"
 #include "../../world/Map.h"
@@ -354,6 +355,12 @@ namespace OpenRCT2::GameActions
             TileElementRemove(tileElement);
             ride->validateStations();
             ride->mazeTiles--;
+        }
+
+        if (!GetFlags().has(CommandFlag::allowDuringPaused))
+        {
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_RIDE_LIST));
         }
 
         return res;

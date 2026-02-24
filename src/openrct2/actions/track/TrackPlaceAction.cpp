@@ -19,6 +19,7 @@
 #include "../../ride/Track.h"
 #include "../../ride/TrackData.h"
 #include "../../ride/TrackDesign.h"
+#include "../../ui/WindowManager.h"
 #include "../../world/ConstructionClearance.h"
 #include "../../world/Footpath.h"
 #include "../../world/Map.h"
@@ -721,6 +722,12 @@ namespace OpenRCT2::GameActions
                 default:
                     break;
             }
+        }
+
+        if (!GetFlags().has(CommandFlag::allowDuringPaused))
+        {
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_RIDE_LIST));
         }
 
         money64 price = rtd.BuildCosts.TrackPrice;
