@@ -218,9 +218,8 @@ namespace OpenRCT2::Ui::Windows
                         }
 
                         WindowDropdownShowTextCustomWidth(
-                            { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top },
-                            dropdownWidget->height(), colours[1], 0, Dropdown::Flag::StayOpen, numItems,
-                            dropdownWidget->width() - 4);
+                            { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height(),
+                            colours[1], 0, Dropdown::Flag::StayOpen, numItems, dropdownWidget->width() - 4);
                     }
                     else
                     {
