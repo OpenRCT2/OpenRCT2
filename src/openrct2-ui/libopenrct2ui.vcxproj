@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <SolutionDir Condition="'$(SolutionDir)'==''">..\..\</SolutionDir>
@@ -80,6 +80,7 @@
     <ClInclude Include="interface\ViewportQuery.h" />
     <ClInclude Include="interface\Widget.h" />
     <ClInclude Include="interface\Window.h" />
+    <ClInclude Include="openrct2ui_pch.h" />
     <ClInclude Include="ride\Construction.h" />
     <ClInclude Include="ride\VehicleSounds.h" />
     <ClInclude Include="scripting\CustomImages.h" />
@@ -145,6 +146,9 @@
     <ClCompile Include="interface\ViewportQuery.cpp" />
     <ClCompile Include="interface\Widget.cpp" />
     <ClCompile Include="interface\Window.cpp" />
+    <ClCompile Include="openrct2ui_pch.cpp" Condition="'$(UsePCH)'=='true'">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="ride\Construction.cpp" />
     <ClCompile Include="ride\VehicleSounds.cpp" />
     <ClCompile Include="scripting\CustomImages.cpp" />
@@ -255,6 +259,9 @@
   <ItemDefinitionGroup>
     <ClCompile>
       <PreprocessorDefinitions Condition="'$(Breakpad)'=='true' and ('$(Platform)'=='Win32' or '$(Platform)'=='x64')">USE_BREAKPAD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader Condition="'$(UsePCH)'=='true'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(UsePCH)'=='true'">openrct2ui_pch.h</PrecompiledHeaderFile>
+      <ForcedIncludeFiles Condition="'$(UsePCH)'=='true'">openrct2ui_pch.h</ForcedIncludeFiles>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup>

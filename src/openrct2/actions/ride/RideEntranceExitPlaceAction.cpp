@@ -80,7 +80,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::notClosed, errorTitle, STR_MUST_BE_CLOSED_FIRST);
         }
 
-        if (ride->lifecycleFlags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
+        if (ride->flags.has(RideFlag::indestructibleTrack))
         {
             return Result(Status::disallowed, errorTitle, STR_NOT_ALLOWED_TO_MODIFY_STATION);
         }

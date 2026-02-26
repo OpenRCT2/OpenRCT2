@@ -16,6 +16,20 @@
 struct TrackDesign;
 struct TrackDesignTrackElement;
 
+namespace OpenRCT2
+{
+    enum class TrackElemType : uint16_t;
+
+#pragma pack(push, 1)
+    struct TD7TrackElement
+    {
+        TrackElemType type; // 0x00
+        uint8_t flags;      // 0x02
+    };
+#pragma pack(pop)
+    static_assert(sizeof(TD7TrackElement) == 0x03);
+} // namespace OpenRCT2
+
 namespace OpenRCT2::RCT12
 {
     enum class TrackElemType : uint8_t;
@@ -25,6 +39,7 @@ namespace OpenRCT2::RCT12
         td4,
         td4AA,
         td6,
+        td7,
         unknown
     };
 
@@ -78,7 +93,7 @@ namespace OpenRCT2::RCT12
     static_assert(sizeof(TD46TrackElement) == 0x02);
 #pragma pack(pop)
 
-    void convertFromTD46Flags(TrackDesignTrackElement& target, uint8_t flags);
-    uint8_t convertToTD46Flags(const TrackDesignTrackElement& source);
+    void convertFromTD46Flags(TrackDesignTrackElement& target, uint8_t flags, TD46Version version);
+    uint8_t convertToTD46Flags(const TrackDesignTrackElement& source, TD46Version version);
     void importMazeElement(TrackDesign& td, const TD46MazeElement& td46MazeElement);
 } // namespace OpenRCT2::RCT12

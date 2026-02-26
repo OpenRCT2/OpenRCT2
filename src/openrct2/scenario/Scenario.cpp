@@ -539,12 +539,12 @@ static ResultWithMessage ScenarioPrepareRidesForSave(GameState_t& gameState)
             // If there are more than 5 roller coasters, only mark the first five.
             if (isFiveCoasterObjective && (RideEntryHasCategory(*rideEntry, RideCategory::rollerCoaster) && rcs < 5))
             {
-                ride.lifecycleFlags |= RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
+                ride.flags.set(RideFlag::indestructibleTrack);
                 rcs++;
             }
             else
             {
-                ride.lifecycleFlags &= ~RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
+                ride.flags.unset(RideFlag::indestructibleTrack);
             }
         }
     }
@@ -568,7 +568,7 @@ static ResultWithMessage ScenarioPrepareRidesForSave(GameState_t& gameState)
                 auto ride = GetRide(it.element->AsTrack()->GetRideIndex());
 
                 // In the previous step, this flag was set on the first five roller coasters.
-                if (ride != nullptr && ride->lifecycleFlags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
+                if (ride != nullptr && ride->flags.has(RideFlag::indestructibleTrack))
                 {
                     markTrackAsIndestructible = true;
                 }

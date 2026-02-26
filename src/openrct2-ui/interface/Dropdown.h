@@ -52,8 +52,8 @@ namespace OpenRCT2::Ui::Windows
         std::span<const Dropdown::Item> items, int32_t width, size_t prefRowsPerColumn = 0);
 
     void WindowDropdownShowImage(
-        int32_t x, int32_t y, int32_t extray, ColourWithFlags colour, uint8_t flags, int32_t numItems, int32_t itemWidth,
-        int32_t itemHeight, int32_t numColumns);
+        const ScreenCoordsXY& screenPos, int32_t extray, ColourWithFlags colour, uint8_t flags, int32_t numItems,
+        int32_t itemWidth, int32_t itemHeight, int32_t numColumns);
 
     void WindowDropdownClose();
 
@@ -86,7 +86,7 @@ namespace OpenRCT2::Dropdown
     enum class ItemType
     {
         /**
-         * Regular label with padding at the left. Will get marked with » if selected.
+         * Regular label with padding on the left. Will get marked with » if selected.
          */
         regular,
         /**

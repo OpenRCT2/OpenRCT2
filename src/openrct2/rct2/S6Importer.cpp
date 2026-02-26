@@ -100,6 +100,12 @@ namespace OpenRCT2::RCT2
         ParkLoadResult Load(const u8string& path, const bool skipObjectCheck) override
         {
             const auto extension = Path::GetExtension(path);
+            if (String::iequals(extension, ".sea"))
+            {
+                auto data = DecryptSea(fs::u8path(path));
+                auto ms = MemoryStream(data.data(), data.size(), MemoryAccess::read);
+                return LoadFromStream(&ms, true, skipObjectCheck, path);
+            }
             if (String::iequals(extension, ".sc6"))
             {
                 return LoadScenario(path, skipObjectCheck);
@@ -161,9 +167,16 @@ namespace OpenRCT2::RCT2
 
             // Read packed objects
             // TODO try to contain this more and not store objects until later
-            if (!skipObjectCheck)
+            for (uint16_t i = 0; i < _s6.Header.NumPackedObjects; i++)
             {
-                for (uint16_t i = 0; i < _s6.Header.NumPackedObjects; i++)
+                if (skipObjectCheck)
+                {
+                    // When scanning, skip past packed object data to keep the stream
+                    // position correct without importing objects into the repository.
+                    stream->Seek(sizeof(RCTObjectEntry), STREAM_SEEK_CURRENT);
+                    SawyerChunkReader(stream).SkipChunk();
+                }
+                else
                 {
                     _objectRepository.ExportPackedObject(stream);
                 }
@@ -986,7 +999,7 @@ namespace OpenRCT2::RCT2
             dst->numBlockBrakes = src->numBlockBrakes;
             dst->liftHillSpeed = src->liftHillSpeed;
             dst->guestsFavourite = src->guestsFavourite;
-            dst->lifecycleFlags = src->lifecycleFlags;
+            dst->flags.holder = src->flags;
 
             for (uint8_t i = 0; i < Limits::kMaxTrainsPerRide; i++)
             {

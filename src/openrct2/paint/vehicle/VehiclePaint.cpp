@@ -4537,7 +4537,7 @@ static_assert(std::size(PaintFunctionsByPitch) == EnumValue(VehiclePitch::pitchC
  */
 static void vehicle_visual_splash1_effect(PaintSession& session, const int32_t z, const Vehicle* vehicle)
 {
-    if (vehicle->GetTrackType() != TrackElemType::watersplash)
+    if (vehicle->GetTrackType() != TrackElemType::waterSplash)
     {
         return;
     }

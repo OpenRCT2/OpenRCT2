@@ -7,6 +7,7 @@
   <summary>Amusement park simulation</summary>
   <summary xml:lang="ca">Simulador de parcs d’atraccions</summary>
   <summary xml:lang="cs">Simulátor zábavního parku</summary>
+  <summary xml:lang="da">Forlystelsespark‑simulation</summary>
   <summary xml:lang="de">Freizeitparksimulation</summary>
   <summary xml:lang="eo">Amuzparko-simulado</summary>
   <summary xml:lang="es">Simulador de parque de atracciones</summary>
@@ -21,6 +22,7 @@
     <name>The OpenRCT2 Team</name>
     <name xml:lang="ca">Equip de l’OpenRCT2</name>
     <name xml:lang="cs">Tým OpenRCT2</name>
+    <name xml:lang="da">OpenRCT2 holdet</name>
     <name xml:lang="de">Das OpenRCT2-Team</name>
     <name xml:lang="eo">La OpenRCT2-Teamo</name>
     <name xml:lang="es">El equipo de OpenRCT2</name>
@@ -61,6 +63,14 @@
       parku a při tom dbá na spokojenost návštěvníků. OpenRCT2 umožňuje hrát v režimu scénářů
       i pískoviště. Ve scénářích má hráč za úkol splnit dané cíle v časovém limitu, zatímco 
       na pískovišti může stavět s větší volností, volitelně bez finančních nebo jiných omezení.
+    </p>
+    <p xml:lang="da">
+        OpenRCT2 er en open source‑genimplementering af RollerCoaster Tycoon 2.
+        Spillet går ud på at bygge og drive en forlystelsespark med attraktioner, butikker
+        og faciliteter. Spilleren skal skabe overskud, holde gæsterne glade og opretholde 
+        et godt ry. OpenRCT2 kan spilles både som scenarier og i sandkassetilstand. 
+        Scenarier kræver, at spilleren opfylder et mål inden for en tidsgrænse, mens 
+        sandkasse giver friere rammer med mulighed for at slå begrænsninger og økonomi fra.
     </p>
     <p xml:lang="de">
         OpenRCT2 ist eine Open-Source-Reimplementierung von RollerCoaster Tycoon 2 (RCT2).
@@ -179,6 +189,9 @@
     <p xml:lang="cs">
       OpenRCT2 obsahuje mnoho změn oproti originálnímu RollerCoaster Tycoon 2, například:
     </p>
+    <p xml:lang="da">
+        OpenRCT2 indeholder mange forbedringer i forhold til det originale RollerCoaster Tycoon 2. Her er nogle af dem:
+    </p>
     <p xml:lang="de">
         OpenRCT2 hat viele Änderungen im Verleich mit dem Originalspiel RollerCoaster Tycoon 2. Hier sind einige von ihnen aufgelistet.
     </p>
@@ -220,6 +233,7 @@
       <li>User Interface theming.</li>
       <li xml:lang="ca">Temes per a la interfície gràfica</li>
       <li xml:lang="cs">Barevné motivy uživatelského rozhraní</li>
+      <li xml:lang="da">Brugerflade temaer</li>
       <li xml:lang="de">Thematische User-Interface-Anpassung.</li>
       <li xml:lang="eo">Etosoj de uzantinterfaco.</li>
       <li xml:lang="es">Temas para la interfaz de usuario.</li>
@@ -236,6 +250,7 @@
       <li>Fast-forwarding gameplay.</li>
       <li xml:lang="ca">Diferents velocitats de joc</li>
       <li xml:lang="cs">Možnost zrychlení hry</li>
+      <li xml:lang="da">Hurtigspoling af spilhastighed.</li>
       <li xml:lang="de">Spielsimulation beschleunigen.</li>
       <li xml:lang="eo">Rapidpluigo de ludado.</li>
       <li xml:lang="es">Aceleración de la velocidad del juego.</li>
@@ -252,6 +267,7 @@
       <li>Multiplayer support.</li>
       <li xml:lang="ca">Suport multijugador</li>
       <li xml:lang="cs">Multiplayer - hra více hráčů</li>
+      <li xml:lang="da">Multiplayer understøttelse.</li>
       <li xml:lang="de">Mehrspielerunterstützung.</li>
       <li xml:lang="eo">Plurludanta subteno.</li>
       <li xml:lang="es">Soporte multijugador.</li>
@@ -268,6 +284,7 @@
       <li>Multilingual. Improved translations.</li>
       <li xml:lang="ca">Traduccions a diversos idiomes i correccions de les traduccions originals</li>
       <li xml:lang="cs">Vylepšený překlad do mnoha jazyků</li>
+      <li xml:lang="da">Flersproget med forbedrede oversættelser.</li>
       <li xml:lang="de">Mehrsprachig. Verbesserte Übersetzungen.</li>
       <li xml:lang="eo">Plurlingva. Plibonigitaj tradukoj.</li>
       <li xml:lang="es">Traducido a varios idiomas y traducciones originales mejoradas.</li>
@@ -284,6 +301,7 @@
       <li>OpenGL hardware rendering.</li>
       <li xml:lang="ca">Renderització OpenGL per maquinari</li>
       <li xml:lang="cs">OpenGL hardwarové vykreslování</li>
+      <li xml:lang="da">OpenGL‑hardware‑rendering.</li>
       <li xml:lang="de">OpenGL-Hardwarerendering.</li>
       <li xml:lang="eo">Aparatara bildigo de OpenGL.</li>
       <li xml:lang="es">Renderizado acelerado por hardware con OpenGL.</li>
@@ -300,6 +318,7 @@
       <li>Various fixes and improvements for bugs in the original game.</li>
       <li xml:lang="ca">Correccions i millores dels errors del joc original</li>
       <li xml:lang="cs">Opravy chyb původní hry a různá vylepšení</li>
+      <li xml:lang="da">Diverse fejlrettelser og forbedringer i forhold til originalspillet.</li>
       <li xml:lang="de">Diverse Fehlerkorrekturen und Verbesserungen für Fehler im Originalspiel.</li>
       <li xml:lang="eo">Diversaj riparoj kaj plibonigoj por cimoj en la originala ludo.</li>
       <li xml:lang="es">Correcciones y mejoras de errores presentes en el juego original.</li>
@@ -316,6 +335,7 @@
       <li>Native support for Linux and macOS.</li>
       <li xml:lang="ca">Suport natiu per a Linux i macOS</li>
       <li xml:lang="cs">Verze pro Linux a macOS</li>
+      <li xml:lang="da">Indbygget support til Linux og macOS.</li>
       <li xml:lang="de">Native Unterstützung für Linux und macOS.</li>
       <li xml:lang="eo">Operaciuma subteno por Linux kaj macOS.</li>
       <li xml:lang="es">Compatibilidad nativa para Linux y macOS.</li>
@@ -332,6 +352,7 @@
       <li>Added hacks and cheats.</li>
       <li xml:lang="ca">Es poden fer trucs i trampes</li>
       <li xml:lang="cs">Přidané hacky a cheaty</li>
+      <li xml:lang="da">Tilføjede hacks og snydekoder.</li>
       <li xml:lang="de">Eingebaute Hacks und Cheats.</li>
       <li xml:lang="eo">Aldonis kodumojn kaj trompojn.</li>
       <li xml:lang="es">Incorporación de hacks y trucos.</li>
@@ -348,6 +369,7 @@
       <li>Auto-saving and giant screenshots.</li>
       <li xml:lang="ca">Desades automàtiques i captures de pantalla gegants</li>
       <li xml:lang="cs">Automatické ukládaní a obrovské snímky obrazovky</li>
+      <li xml:lang="da">Autosave og gigantiske Screenshots.</li>
       <li xml:lang="de">Automatisches Speichern und gigantische Screenshots.</li>
       <li xml:lang="eo">Aŭtokonservado kaj gigantaj ekrankopioj.</li>
       <li xml:lang="es">Guardado automático y capturas de pantalla gigantes.</li>
@@ -370,6 +392,9 @@
     </p>
     <p xml:lang="cs">
       OpenRCT2 vyžaduje k fungování soubory původního RollerCoaster Tycoon 2 nebo RollerCoaster Tycoon Classic.
+    </p>
+    <p xml:lang="da">
+        Originale spilfiler fra RollerCoaster Tycoon 2 eller RollerCoaster Tycoon Classic kræves for at spille OpenRCT2.
     </p>
     <p xml:lang="de">
         Die Originaldateien von RollerCoaster Tycoon 2 oder RollerCoaster Tycoon Classic werden benötigt, um OpenRCT2 zu spielen.
@@ -414,6 +439,7 @@
       <caption>Amusement park featuring an inverted roller coaster, a river rapids ride and custom scenery</caption>
       <caption xml:lang="ca">Parc d’atraccions amb una muntanya russa invertida, ràpids amb bots inflables i decoracions temàtiques.</caption>
       <caption xml:lang="cs">Zábavní park s obrácenou horskou dráhou, projížďkou po divoké vodě a uživatelskými kulisami</caption>
+      <caption xml:lang="da">Forlystelsespark med en inverted rutsjebane, river rapids og specialbygget sceneri</caption>
       <caption xml:lang="de">Freizeitpark mit einer umgekehrten Achterbahn, einer Stromschnellenattraktion und einer eigens errichteten Szenerie</caption>
       <caption xml:lang="eo">Amuzparko havante inversan ondan fervojon, rapidfluo-rajdon kaj propran pejzaĝon</caption>
       <caption xml:lang="es">Parque de atracciones con una montaña rusa invertida, un recorrido de rápidos y decoraciones personalizadas.</caption>

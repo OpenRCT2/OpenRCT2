@@ -84,9 +84,9 @@ namespace OpenRCT2::Scripting
 
         std::string status_get() const;
 
-        uint32_t lifecycleFlags_get() const;
+        uint32_t flags_get() const;
 
-        void lifecycleFlags_set(uint32_t value);
+        void flags_set(uint32_t value);
 
         uint8_t mode_get() const;
 

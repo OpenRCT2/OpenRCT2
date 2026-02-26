@@ -94,7 +94,7 @@ static ImageIndex GetMagicCarpetPendulumImage(Plane plane, Direction direction, 
 
 static Vehicle* GetFirstVehicle(const Ride& ride)
 {
-    if (ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK)
+    if (ride.flags.has(RideFlag::onTrack))
     {
         return getGameState().entities.GetEntity<Vehicle>(ride.vehicles[0]);
     }

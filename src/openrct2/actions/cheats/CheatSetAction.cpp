@@ -522,7 +522,7 @@ namespace OpenRCT2::GameActions
     {
         for (auto& ride : RideManager(gameState))
         {
-            if (ride.lifecycleFlags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN))
+            if (ride.flags.hasAny(RideFlag::breakdownPending, RideFlag::brokenDown))
             {
                 auto mechanic = RideGetAssignedMechanic(ride);
 
@@ -559,7 +559,7 @@ namespace OpenRCT2::GameActions
         for (auto& ride : RideManager(gameState))
         {
             // Reset crash status and history
-            ride.lifecycleFlags &= ~RIDE_LIFECYCLE_CRASHED;
+            ride.flags.unset(RideFlag::crashed);
             ride.lastCrashType = RIDE_CRASH_TYPE_NONE;
         }
         auto* windowMgr = Ui::GetWindowManager();

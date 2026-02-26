@@ -229,7 +229,7 @@ void Vehicle::CheckAndApplyBlockSectionStopSite()
     {
         case TrackElemType::blockBrakes:
             // Check if this brake is the start of a cable lift
-            if (curRide->lifecycleFlags & RIDE_LIFECYCLE_CABLE_LIFT)
+            if (curRide->flags.has(RideFlag::cableLift))
             {
                 CoordsXYE track;
                 int32_t zUnused;
@@ -371,24 +371,27 @@ void Vehicle::UpdateHandleWaterSplash() const
     const auto* rideEntry = GetRideEntry();
     auto trackType = GetTrackType();
 
-    if (!rideEntry->flags.has(RideEntryFlag::playSplashSound) && rideEntry->flags.has(RideEntryFlag::playSplashSoundSlide))
+    if (!rideEntry->flags.has(RideEntryFlag::playSplashSound))
     {
-        if (IsHead())
+        if (rideEntry->flags.has(RideEntryFlag::playSplashSoundSlide))
         {
-            if (IsOnCoveredTrack())
+            if (IsHead())
             {
-                Vehicle* nextVehicle = getGameState().entities.GetEntity<Vehicle>(next_vehicle_on_ride);
-                if (nextVehicle == nullptr)
-                    return;
-
-                Vehicle* nextNextVehicle = getGameState().entities.GetEntity<Vehicle>(nextVehicle->next_vehicle_on_ride);
-                if (nextNextVehicle == nullptr)
-                    return;
-                if (!nextNextVehicle->IsOnCoveredTrack())
+                if (IsOnCoveredTrack())
                 {
-                    if (track_progress == 4)
+                    Vehicle* nextVehicle = getGameState().entities.GetEntity<Vehicle>(next_vehicle_on_ride);
+                    if (nextVehicle == nullptr)
+                        return;
+
+                    Vehicle* nextNextVehicle = getGameState().entities.GetEntity<Vehicle>(nextVehicle->next_vehicle_on_ride);
+                    if (nextNextVehicle == nullptr)
+                        return;
+                    if (!nextNextVehicle->IsOnCoveredTrack())
                     {
-                        vehicle_update_play_water_splash_sound();
+                        if (track_progress == 4)
+                        {
+                            vehicle_update_play_water_splash_sound();
+                        }
                     }
                 }
             }
@@ -406,7 +409,7 @@ void Vehicle::UpdateHandleWaterSplash() const
     }
     if (IsHead())
     {
-        if (trackType == TrackElemType::watersplash)
+        if (trackType == TrackElemType::waterSplash)
         {
             if (track_progress == 48)
             {
@@ -707,7 +710,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(
             || trackType == TrackElemType::rightEighthToDiag || trackType == TrackElemType::leftEighthToOrthogonal
             || trackType == TrackElemType::rightEighthToOrthogonal || trackType == TrackElemType::diagFlat
             || trackType == TrackElemType::sBendLeft || trackType == TrackElemType::sBendRight
-            || ((curRide.lifecycleFlags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING) && tileElement->AsTrack()->IsStation()))
+            || (curRide.flags.has(RideFlag::passStationNoStopping) && tileElement->AsTrack()->IsStation()))
         {
             UpdateGoKartAttemptSwitchLanes();
         }
@@ -792,9 +795,7 @@ bool Vehicle::UpdateTrackMotionForwards(const CarEntry* carEntry, const Ride& cu
         }
         else if (TrackTypeIsBrakes(trackType))
         {
-            bool hasBrakesFailure = curRide.lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN
-                && curRide.breakdownReasonPending == BREAKDOWN_BRAKES_FAILURE;
-            if (!hasBrakesFailure || curRide.mechanicStatus == MechanicStatus::hasFixedStationBrakes)
+            if (!curRide.hasFailingBrakes())
             {
                 auto brakeSpeed = ChooseBrakeSpeed() << kTrackSpeedShiftAmount;
 
@@ -1600,7 +1601,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
         }
     }
 
-    if (vehicle->GetTrackType() == TrackElemType::watersplash)
+    if (vehicle->GetTrackType() == TrackElemType::waterSplash)
     {
         if (vehicle->track_progress >= 48 && vehicle->track_progress <= 128)
         {

@@ -675,8 +675,7 @@ namespace OpenRCT2::Ui::Windows
                         ridePtr->formatStatusTo(ft);
 
                         // Make test red and bold if broken down or crashed
-                        if ((ridePtr->lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN)
-                            || (ridePtr->lifecycleFlags & RIDE_LIFECYCLE_CRASHED))
+                        if (ridePtr->flags.hasAny(RideFlag::brokenDown, RideFlag::crashed))
                         {
                             format = STR_RED_OUTLINED_STRING;
                         }

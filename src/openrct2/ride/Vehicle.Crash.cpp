@@ -65,7 +65,7 @@ void Vehicle::SimulateCrash() const
     auto curRide = GetRide();
     if (curRide != nullptr)
     {
-        curRide->lifecycleFlags |= RIDE_LIFECYCLE_CRASHED;
+        curRide->flags.set(RideFlag::crashed);
     }
 }
 
@@ -89,7 +89,7 @@ void Vehicle::UpdateCollisionSetup()
 
     SetState(Status::crashed, sub_state);
 
-    if (!(curRide->lifecycleFlags & RIDE_LIFECYCLE_CRASHED))
+    if (!curRide->flags.has(RideFlag::crashed))
     {
         auto frontVehicle = GetHead();
         auto trainIndex = ride_get_train_index_from_vehicle(*curRide, frontVehicle->Id);
@@ -108,7 +108,7 @@ void Vehicle::UpdateCollisionSetup()
         }
     }
 
-    curRide->lifecycleFlags |= RIDE_LIFECYCLE_CRASHED;
+    curRide->flags.set(RideFlag::crashed);
     curRide->windowInvalidateFlags.set(RideInvalidateFlag::main, RideInvalidateFlag::list);
     KillAllPassengersInTrain();
 
@@ -373,7 +373,7 @@ void Vehicle::CrashOnLand()
     InvokeVehicleCrashHook(Id, "land");
 #endif
 
-    if (!(curRide->lifecycleFlags & RIDE_LIFECYCLE_CRASHED))
+    if (!curRide->flags.has(RideFlag::crashed))
     {
         auto frontVehicle = GetHead();
         auto trainIndex = ride_get_train_index_from_vehicle(*curRide, frontVehicle->Id);
@@ -391,7 +391,7 @@ void Vehicle::CrashOnLand()
             GameActions::ExecuteNested(&gameAction, getGameState());
         }
     }
-    curRide->lifecycleFlags |= RIDE_LIFECYCLE_CRASHED;
+    curRide->flags.set(RideFlag::crashed);
     curRide->windowInvalidateFlags.set(RideInvalidateFlag::main, RideInvalidateFlag::list);
 
     if (IsHead())
@@ -441,7 +441,7 @@ void Vehicle::CrashOnWater()
     InvokeVehicleCrashHook(Id, "water");
 #endif
 
-    if (!(curRide->lifecycleFlags & RIDE_LIFECYCLE_CRASHED))
+    if (!curRide->flags.has(RideFlag::crashed))
     {
         auto frontVehicle = GetHead();
         auto trainIndex = ride_get_train_index_from_vehicle(*curRide, frontVehicle->Id);
@@ -459,7 +459,7 @@ void Vehicle::CrashOnWater()
             GameActions::ExecuteNested(&gameAction, getGameState());
         }
     }
-    curRide->lifecycleFlags |= RIDE_LIFECYCLE_CRASHED;
+    curRide->flags.set(RideFlag::crashed);
     curRide->windowInvalidateFlags.set(RideInvalidateFlag::main, RideInvalidateFlag::list);
 
     if (IsHead())

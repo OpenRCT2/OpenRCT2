@@ -81,7 +81,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_MUST_BE_CLOSED_FIRST, kStringIdNone);
         }
 
-        if (ride->lifecycleFlags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
+        if (ride->flags.has(RideFlag::indestructibleTrack))
         {
             return Result(Status::invalidParameters, STR_NOT_ALLOWED_TO_MODIFY_STATION, kStringIdNone);
         }

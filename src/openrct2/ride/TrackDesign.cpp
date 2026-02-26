@@ -54,6 +54,7 @@
 #include "../object/ObjectRepository.h"
 #include "../object/SmallSceneryEntry.h"
 #include "../object/StationObject.h"
+#include "../rct12/TD46.h"
 #include "../rct2/RCT2.h"
 #include "../ride/RideConstruction.h"
 #include "../sawyer_coding/SawyerCoding.h"
@@ -193,8 +194,6 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
         return { false, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY };
     }
 
-    StringId warningMessage = kStringIdNone;
-
     RideGetStartOfTrack(&trackElement);
 
     int32_t z = trackElement.element->GetBaseZ();
@@ -226,10 +225,9 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
     {
         const auto& element = trackElement.element->AsTrack();
 
-        // Remove this check for new track design format
         if (element->GetTrackType() > TrackElemType::highestAlias)
         {
-            return { false, STR_TRACK_ELEM_UNSUPPORTED_TD6 };
+            version = RCT12::TD46Version::td7;
         }
 
         TrackDesignTrackElement track{};
@@ -239,10 +237,9 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
         track.brakeBoosterSpeed = element->GetBrakeBoosterSpeed();
         track.seatRotation = element->GetSeatRotation();
 
-        // This warning will not apply to new track design format
         if (track.type == TrackElemType::blockBrakes && element->GetBrakeBoosterSpeed() != kRCT2DefaultBlockBrakeSpeed)
         {
-            warningMessage = STR_TRACK_DESIGN_BLOCK_BRAKE_SPEED_RESET;
+            version = RCT12::TD46Version::td7;
         }
 
         if (element->HasChain())
@@ -275,7 +272,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
 
         if (trackElements.size() > RCT2::Limits::kTD6MaxTrackElements)
         {
-            return { false, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY };
+            version = RCT12::TD46Version::td7;
         }
     } while (trackElement.element != initialMap);
 
@@ -356,7 +353,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
     gMapSelectFlags.unset(MapSelectFlag::green);
 
     statistics.spaceRequired = TileCoordsXY(tds.previewMax - tds.previewMin) + TileCoordsXY{ 1, 1 };
-    return { true, warningMessage };
+    return { true, kStringIdNone };
 }
 
 ResultWithMessage TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, const Ride& ride)
@@ -397,7 +394,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, cons
 
                 if (mazeElements.size() >= RCT2::Limits::kTD6MaxMazeElements)
                 {
-                    return { false, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY };
+                    version = RCT12::TD46Version::td7;
                 }
             } while (!(tileElement++)->IsLastForTile());
         }
@@ -502,6 +499,9 @@ CoordsXYE TrackDesign::MazeGetFirstElement(const Ride& ride)
 ResultWithMessage TrackDesign::CreateTrackDesignScenery(TrackDesignState& tds)
 {
     sceneryElements = _trackSavedTileElementsDesc;
+    if (sceneryElements.size() >= RCT2::Limits::kTD6MaxSceneryElements)
+        version = RCT12::TD46Version::td7;
+
     // Run an element loop
     for (auto& scenery : sceneryElements)
     {
@@ -2212,4 +2212,22 @@ void TrackDesignGameStateData::setFlag(TrackDesignGameStateFlag flag, bool on)
         flags |= EnumToFlag(flag);
     else
         flags &= ~EnumToFlag(flag);
+}
+
+u8string trackDesignGetExtension(RCT12::TD46Version version)
+{
+    switch (version)
+    {
+        case RCT12::TD46Version::td4:
+        case RCT12::TD46Version::td4AA:
+            return ".td4";
+        case RCT12::TD46Version::td6:
+            return ".td6";
+        case RCT12::TD46Version::td7:
+            return ".td7";
+        case RCT12::TD46Version::unknown:
+            break;
+    }
+
+    return "";
 }

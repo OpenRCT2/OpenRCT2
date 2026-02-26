@@ -339,9 +339,9 @@ namespace OpenRCT2::Title
                 _initialLoadCommand = false;
                 success = true;
             }
-            catch (const std::exception&)
+            catch (const std::exception& e)
             {
-                Console::Error::WriteLine("Unable to load park: %s", path.c_str());
+                Console::Error::WriteLine("Unable to load park ‘%s’: %s", path.c_str(), e.what());
                 GetContext()->CloseProgress();
             }
 

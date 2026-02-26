@@ -83,7 +83,7 @@ namespace OpenRCT2
 
     public:
         TrackElemType GetTrackType() const;
-        void SetTrackType(TrackElemType newEntryIndex);
+        void SetTrackType(TrackElemType newType);
 
         ride_type_t GetRideType() const;
         void SetRideType(ride_type_t rideType);

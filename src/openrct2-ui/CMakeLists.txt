@@ -13,20 +13,10 @@ if (EMSCRIPTEN)
     set(SHARED_FLAGS "-fexceptions")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${USE_FLAGS} ${SHARED_FLAGS}")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${EMSCRIPTEN_LDFLAGS} --bind ${SHARED_FLAGS} -sEXPORTED_FUNCTIONS=${EMSCRIPTEN_EXPORTED_FUNCTIONS} --js-library ${ROOT_DIR}/emscripten/deps.js")
-    find_package(SpeexDSP REQUIRED)
 elseif (MSVC)
     find_package(SDL2 REQUIRED)
-    find_library(SPEEX_LDFLAGS libspeexdsp)
-    if (NOT DISABLE_FLAC)
-        find_library(SPEEX_LDFLAGS libflac)
-    endif ()
-    if (NOT DISABLE_VORBIS)
-        find_library(SPEEX_LDFLAGS libogg)
-        find_library(SPEEX_LDFLAGS libvorbis)
-    endif ()
 else ()
     PKG_CHECK_MODULES(SDL2 REQUIRED IMPORTED_TARGET sdl2)
-    PKG_CHECK_MODULES(SPEEX REQUIRED IMPORTED_TARGET speexdsp)
     if (NOT DISABLE_FLAC)
         PKG_CHECK_MODULES(FLAC REQUIRED IMPORTED_TARGET flac)
     endif ()
@@ -67,17 +57,14 @@ ipo_set_target_properties(openrct2)
 # mingw builds cannot use the PkgConfig imported targets
 if (EMSCRIPTEN)
     target_link_libraries(openrct2 "libopenrct2"
-                                    ${SPEEXDSP_LIBRARIES}
                                     ${ICU_DATA_LIBRARIES}
                                     ${ICU_DT_LIBRARY_RELEASE})
 elseif (NOT MSVC AND NOT WIN32)
     target_link_libraries(openrct2 "libopenrct2"
-                                    PkgConfig::SDL2
-                                    PkgConfig::SPEEX)
+                                    PkgConfig::SDL2)
 else ()
     target_link_libraries(openrct2 "libopenrct2"
-                                    ${SDL2_LDFLAGS}
-                                    ${SPEEX_LDFLAGS})
+                                    ${SDL2_LDFLAGS})
 endif ()
 target_link_platform_libraries(openrct2)
 
@@ -109,7 +96,6 @@ endif ()
 
 # Includes
 target_include_directories(openrct2 PRIVATE "${CMAKE_CURRENT_LIST_DIR}/.."
-                                              ${SPEEX_INCLUDE_DIRS}
                                               ${OGG_INCLUDE_DIRS}
                                               ${VORBIS_INCLUDE_DIRS}
                                               ${FLAC_INCLUDE_DIRS})

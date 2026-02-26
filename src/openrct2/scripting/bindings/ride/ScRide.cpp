@@ -116,19 +116,19 @@ namespace OpenRCT2::Scripting
         return "";
     }
 
-    uint32_t ScRide::lifecycleFlags_get() const
+    uint32_t ScRide::flags_get() const
     {
         auto ride = GetRide();
-        return ride != nullptr ? ride->lifecycleFlags : 0;
+        return ride != nullptr ? ride->flags.holder : 0;
     }
 
-    void ScRide::lifecycleFlags_set(uint32_t value)
+    void ScRide::flags_set(uint32_t value)
     {
         ThrowIfGameStateNotMutable();
         auto ride = GetRide();
         if (ride != nullptr)
         {
-            ride->lifecycleFlags = value;
+            ride->flags.holder = value;
         }
     }
 
@@ -530,7 +530,7 @@ namespace OpenRCT2::Scripting
 
         if (ride != nullptr)
         {
-            if (!(ride->lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN))
+            if (!ride->flags.has(RideFlag::brokenDown))
             {
                 return "none";
             }
@@ -656,7 +656,8 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScRide::classification_get, nullptr, "classification");
         dukglue_register_property(ctx, &ScRide::name_get, &ScRide::name_set, "name");
         dukglue_register_property(ctx, &ScRide::status_get, nullptr, "status");
-        dukglue_register_property(ctx, &ScRide::lifecycleFlags_get, &ScRide::lifecycleFlags_set, "lifecycleFlags");
+        dukglue_register_property(ctx, &ScRide::flags_get, &ScRide::flags_set, "lifecycleFlags");
+        dukglue_register_property(ctx, &ScRide::flags_get, &ScRide::flags_set, "flags");
         dukglue_register_property(ctx, &ScRide::mode_get, &ScRide::mode_set, "mode");
         dukglue_register_property(ctx, &ScRide::departFlags_get, &ScRide::departFlags_set, "departFlags");
         dukglue_register_property(ctx, &ScRide::minimumWaitingTime_get, &ScRide::minimumWaitingTime_set, "minimumWaitingTime");

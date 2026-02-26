@@ -13,7 +13,6 @@
 #include <iterator>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/config/Config.h>
-#include <speex/speex_resampler.h>
 
 using namespace OpenRCT2::Audio;
 
@@ -124,6 +123,7 @@ const AudioFormat& AudioMixer::GetFormat() const
     return _outputFormat;
 }
 
+// TODO: investigate replacing this with OpenAL (#26035)
 void AudioMixer::GetNextAudioChunk(uint8_t* dst, size_t length)
 {
     UpdateAdjustedSound();
@@ -156,6 +156,7 @@ void AudioMixer::GetNextAudioChunk(uint8_t* dst, size_t length)
     }
 }
 
+// TODO: investigate replacing this with OpenAL (#26035)
 void AudioMixer::UpdateAdjustedSound()
 {
     // Did the volume level get changed? Recalculate level in this case.
@@ -171,6 +172,7 @@ void AudioMixer::UpdateAdjustedSound()
     }
 }
 
+// TODO: investigate replacing this with OpenAL (#26035)
 void AudioMixer::MixChannel(ISDLAudioChannel* channel, uint8_t* data, size_t length)
 {
     int32_t outputByteRate = _outputFormat.GetByteRate();
@@ -236,8 +238,7 @@ void AudioMixer::MixChannel(ISDLAudioChannel* channel, uint8_t* data, size_t len
             outRate = _outputFormat.freq * (1 / rate);
         }
         _effectBuffer.resize(length);
-        bufferLen = ApplyResample(
-            channel, buffer, static_cast<int32_t>(bufferLen / outputByteRate), numSamples, inRate, outRate);
+        bufferLen = ApplyResample(buffer, static_cast<int32_t>(bufferLen / outputByteRate), numSamples, inRate, outRate);
         buffer = _effectBuffer.data();
     }
 
@@ -256,30 +257,60 @@ void AudioMixer::MixChannel(ISDLAudioChannel* channel, uint8_t* data, size_t len
 /**
  * Resample the given buffer into _effectBuffer.
  * Assumes that srcBuffer is the same format as _outputFormat.
+ *
+ * TODO: investigate replacing this with OpenAL (#26035)
  */
-size_t AudioMixer::ApplyResample(
-    ISDLAudioChannel* channel, const void* srcBuffer, int32_t srcSamples, int32_t dstSamples, int32_t inRate, int32_t outRate)
+size_t AudioMixer::ApplyResample(const void* srcBuffer, int32_t srcSamples, int32_t dstSamples, int32_t inRate, int32_t outRate)
 {
-    int32_t outputByteRate = _outputFormat.GetByteRate();
+    // Prevent buffer underread in inner loop
+    if (srcSamples < 2)
+        return 0;
 
-    // Create resampler
-    SpeexResamplerState* resampler = channel->GetResampler();
-    if (resampler == nullptr)
+    const int channels = _outputFormat.channels;
+    const int bytesPerFrame = channels * sizeof(int16_t);
+
+    const int16_t* src = static_cast<const int16_t*>(srcBuffer);
+    int16_t* dst = reinterpret_cast<int16_t*>(_effectBuffer.data());
+
+    double ratio = static_cast<double>(inRate) / static_cast<double>(outRate);
+
+    for (int32_t i = 0; i < dstSamples; ++i)
     {
-        resampler = speex_resampler_init(_outputFormat.channels, _outputFormat.freq, _outputFormat.freq, 0, nullptr);
-        channel->SetResampler(resampler);
+        double srcPos = i * ratio;
+        int32_t index = static_cast<int32_t>(srcPos);
+        double frac = srcPos - index;
+
+        // Clamp to avoid reading past end
+        if (index >= srcSamples - 1)
+        {
+            index = srcSamples - 2;
+            frac = 1.0;
+        }
+
+        for (int ch = 0; ch < channels; ++ch)
+        {
+            int32_t baseIndex = index * channels + ch;
+
+            int16_t s1 = src[baseIndex];
+            int16_t s2 = src[baseIndex + channels];
+
+            // Linear interpolation
+            double sample = (1.0 - frac) * s1 + frac * s2;
+
+            // Clamp to int16 range
+            if (sample > 32767.0)
+                sample = 32767.0;
+            if (sample < -32768.0)
+                sample = -32768.0;
+
+            dst[i * channels + ch] = static_cast<int16_t>(sample);
+        }
     }
-    speex_resampler_set_rate(resampler, inRate, outRate);
 
-    uint32_t inLen = srcSamples;
-    uint32_t outLen = dstSamples;
-    speex_resampler_process_interleaved_int(
-        resampler, static_cast<const spx_int16_t*>(srcBuffer), &inLen, reinterpret_cast<spx_int16_t*>(_effectBuffer.data()),
-        &outLen);
-
-    return outLen * outputByteRate;
+    return dstSamples * bytesPerFrame;
 }
 
+// TODO: investigate replacing this with OpenAL (#26035)
 void AudioMixer::ApplyPan(const IAudioChannel* channel, void* buffer, size_t len, size_t sampleSize)
 {
     if (channel->GetPan() != 0.5f && _outputFormat.channels == 2)
@@ -296,6 +327,7 @@ void AudioMixer::ApplyPan(const IAudioChannel* channel, void* buffer, size_t len
     }
 }
 
+// TODO: investigate replacing this with OpenAL (#26035)
 int32_t AudioMixer::ApplyVolume(const IAudioChannel* channel, void* buffer, size_t len)
 {
     float volumeAdjust = _volume;
@@ -347,6 +379,7 @@ int32_t AudioMixer::ApplyVolume(const IAudioChannel* channel, void* buffer, size
     return mixVolume;
 }
 
+// TODO: investigate replacing this with OpenAL (#26035)
 void AudioMixer::EffectPanS16(const IAudioChannel* channel, int16_t* data, int32_t length)
 {
     const float dt = 1.0f / static_cast<float>(length * 2.0f);
@@ -364,6 +397,7 @@ void AudioMixer::EffectPanS16(const IAudioChannel* channel, int16_t* data, int32
     }
 }
 
+// TODO: investigate replacing this with OpenAL (#26035)
 void AudioMixer::EffectPanU8(const IAudioChannel* channel, uint8_t* data, int32_t length)
 {
     float volumeL = channel->GetVolumeL();
@@ -379,6 +413,7 @@ void AudioMixer::EffectPanU8(const IAudioChannel* channel, uint8_t* data, int32_
     }
 }
 
+// TODO: investigate replacing this with OpenAL (#26035)
 void AudioMixer::EffectFadeS16(int16_t* data, int32_t length, int32_t startvolume, int32_t endvolume)
 {
     static_assert(SDL_MIX_MAXVOLUME == kMixerVolumeMax, "Max volume differs between OpenRCT2 and SDL2");
@@ -392,6 +427,7 @@ void AudioMixer::EffectFadeS16(int16_t* data, int32_t length, int32_t startvolum
     }
 }
 
+// TODO: investigate replacing this with OpenAL (#26035)
 void AudioMixer::EffectFadeU8(uint8_t* data, int32_t length, int32_t startvolume, int32_t endvolume)
 {
     static_assert(SDL_MIX_MAXVOLUME == kMixerVolumeMax, "Max volume differs between OpenRCT2 and SDL2");
