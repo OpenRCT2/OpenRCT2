@@ -13,6 +13,7 @@
 #include "Path.hpp"
 #include "String.hpp"
 
+#include <cinttypes>
 #include <string_view>
 
 #ifndef _WIN32
@@ -214,7 +215,8 @@ namespace OpenRCT2
         }
         char msg[256];
         std::snprintf(
-            msg, sizeof(msg), "Unable to read %lu bytes from file. Position: %lu, FileSize: %lu, feof = %d, ferror = %d",
+            msg, sizeof(msg),
+            "Unable to read %" PRIu64 " bytes from file. Position: %" PRIu64 ", FileSize: %" PRIu64 ", feof = %d, ferror = %d",
             length, position, _fileSize, feof(_file), ferror(_file));
         throw IOException(msg);
     }
@@ -235,7 +237,8 @@ namespace OpenRCT2
             char msg[256];
             std::snprintf(
                 msg, sizeof(msg),
-                "Unable to write %lu bytes to file. Count = %ld, Position = %lu, FileSize = %lu, feof = %d, ferror = %d",
+                "Unable to write %" PRIu64 " bytes to file. Count = %zu, Position = %" PRIu64 ", FileSize = %" PRIu64
+                ", feof = %d, ferror = %d",
                 length, count, position, _fileSize, feof(_file), ferror(_file));
             throw IOException(msg);
         }

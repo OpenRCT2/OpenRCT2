@@ -12,6 +12,7 @@
 #include "Guard.hpp"
 #include "Memory.hpp"
 
+#include <cinttypes>
 #include <cstring>
 
 namespace OpenRCT2
@@ -102,7 +103,8 @@ namespace OpenRCT2
         if (position > _dataSize)
         {
             char msg[256];
-            std::snprintf(msg, sizeof(msg), "Attempted to set position to %lu, stream length %lu.", position, _dataSize);
+            std::snprintf(
+                msg, sizeof(msg), "Attempted to set position to %" PRIu64 ", stream length %zu.", position, _dataSize);
             throw IOException(msg);
         }
         _position = static_cast<size_t>(position);
@@ -131,8 +133,8 @@ namespace OpenRCT2
         {
             char msg[256];
             std::snprintf(
-                msg, sizeof(msg), "Attempted to read past end of stream. Position: %lu, Length: %lu, DataSize: %lu", _position,
-                length, _dataSize);
+                msg, sizeof(msg), "Attempted to read past end of stream. Position: %zu, Length: %" PRIu64 ", DataSize: %zu.",
+                _position, length, _dataSize);
             throw IOException(msg);
         }
 
@@ -168,7 +170,7 @@ namespace OpenRCT2
         {
             char msg[256];
             std::snprintf(
-                msg, sizeof(msg), "Attempted to read past end of stream. Position: %lu, Length: %lu, DataSize: %lu", _position,
+                msg, sizeof(msg), "Attempted to read past end of stream. Position: %zu, Length: %zu, DataSize: %zu.", _position,
                 length, _dataSize);
             throw IOException(msg);
         }
