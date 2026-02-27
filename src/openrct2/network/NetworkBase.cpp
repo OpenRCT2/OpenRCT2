@@ -138,6 +138,11 @@ namespace OpenRCT2::Network
         client_command_handlers[Command::objectsList] = &NetworkBase::Client_Handle_OBJECTS_LIST;
         client_command_handlers[Command::scriptsData] = &NetworkBase::Client_Handle_SCRIPTS_DATA;
         client_command_handlers[Command::gameState] = &NetworkBase::Client_Handle_GAMESTATE;
+        // Lobby client handlers
+        client_command_handlers[Command::lobbyStateSync] = &NetworkBase::Client_Handle_LOBBY_STATE_SYNC;
+        client_command_handlers[Command::lobbyJoin] = &NetworkBase::Client_Handle_LOBBY_PLAYER_JOINED;
+        client_command_handlers[Command::lobbyLeave] = &NetworkBase::Client_Handle_LOBBY_PLAYER_LEFT;
+        client_command_handlers[Command::lobbyPlayerReady] = &NetworkBase::Client_Handle_LOBBY_PLAYER_READY;
 
         server_command_handlers[Command::auth] = &NetworkBase::ServerHandleAuth;
         server_command_handlers[Command::chat] = &NetworkBase::ServerHandleChat;
@@ -148,6 +153,11 @@ namespace OpenRCT2::Network
         server_command_handlers[Command::mapRequest] = &NetworkBase::ServerHandleMapRequest;
         server_command_handlers[Command::requestGameState] = &NetworkBase::ServerHandleRequestGamestate;
         server_command_handlers[Command::heartbeat] = &NetworkBase::ServerHandleHeartbeat;
+        // Lobby server handlers
+        server_command_handlers[Command::lobbyJoin] = &NetworkBase::ServerHandleLobbyJoin;
+        server_command_handlers[Command::lobbyLeave] = &NetworkBase::ServerHandleLobbyLeave;
+        server_command_handlers[Command::lobbyPlayerReady] = &NetworkBase::ServerHandleLobbyPlayerReady;
+        server_command_handlers[Command::lobbyStartRequest] = &NetworkBase::ServerHandleLobbyStartRequest;
 
         _chat_log_fs << std::unitbuf;
         _server_log_fs << std::unitbuf;

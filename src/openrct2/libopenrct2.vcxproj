@@ -339,6 +339,7 @@
     <ClInclude Include="network\NetworkConnection.h" />
     <ClInclude Include="network\NetworkGroup.h" />
     <ClInclude Include="network\NetworkKey.h" />
+    <ClInclude Include="network\NetworkLobbyHandlers.h" />
     <ClInclude Include="network\NetworkPacket.h" />
     <ClInclude Include="network\NetworkPlayer.h" />
     <ClInclude Include="network\NetworkServer.h" />
@@ -931,6 +932,7 @@
     <ClCompile Include="network\NetworkConnection.cpp" />
     <ClCompile Include="network\NetworkGroup.cpp" />
     <ClCompile Include="network\NetworkKey.cpp" />
+    <ClCompile Include="network\NetworkLobbyHandlers.cpp" />
     <ClCompile Include="network\NetworkPacket.cpp" />
     <ClCompile Include="network\NetworkPlayer.cpp" />
     <ClCompile Include="network\NetworkServer.cpp" />

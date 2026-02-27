@@ -36,8 +36,8 @@ namespace OpenRCT2::Network
     // Server: Send competition update
     void NetworkBase::ServerSendCompetitionUpdate()
     {
-        auto* ctx = GetContext();
-        auto* competitionMgr = ctx->GetCompetitionManager();
+        auto& ctx = GetContext();
+        auto* competitionMgr = ctx.GetCompetitionManager();
 
         if (!competitionMgr || !competitionMgr->IsActive())
             return;
@@ -63,8 +63,8 @@ namespace OpenRCT2::Network
     // Server: Send score update for a player
     void NetworkBase::ServerSendScoreUpdate(uint8_t playerId)
     {
-        auto* ctx = GetContext();
-        auto* competitionMgr = ctx->GetCompetitionManager();
+        auto& ctx = GetContext();
+        auto* competitionMgr = ctx.GetCompetitionManager();
         auto* playerData = competitionMgr->GetPlayerData(playerId);
 
         if (!playerData)
@@ -83,8 +83,8 @@ namespace OpenRCT2::Network
     // Server: Send full leaderboard
     void NetworkBase::ServerSendLeaderboard()
     {
-        auto* ctx = GetContext();
-        auto* competitionMgr = ctx->GetCompetitionManager();
+        auto& ctx = GetContext();
+        auto* competitionMgr = ctx.GetCompetitionManager();
 
         if (!competitionMgr || !competitionMgr->IsActive())
             return;
@@ -158,8 +158,8 @@ namespace OpenRCT2::Network
         config.ShowLiveScores = (showScores != 0);
         packet >> config.MapName;
 
-        auto* ctx = GetContext();
-        auto* competitionMgr = ctx->GetCompetitionManager();
+        auto& ctx = GetContext();
+        auto* competitionMgr = ctx.GetCompetitionManager();
         
         competitionMgr->Initialize(config);
         // Don't start yet - wait for territory assignment and server signal
@@ -183,8 +183,8 @@ namespace OpenRCT2::Network
         uint8_t winnerId;
         packet >> winnerId;
 
-        auto* ctx = GetContext();
-        auto* competitionMgr = ctx->GetCompetitionManager();
+        auto& ctx = GetContext();
+        auto* competitionMgr = ctx.GetCompetitionManager();
         
         competitionMgr->End();
         
@@ -213,8 +213,8 @@ namespace OpenRCT2::Network
         uint32_t numPlayers;
         packet >> numPlayers;
 
-        auto* ctx = GetContext();
-        auto* competitionMgr = ctx->GetCompetitionManager();
+        auto& ctx = GetContext();
+        auto* competitionMgr = ctx.GetCompetitionManager();
 
         for (uint32_t i = 0; i < numPlayers; i++)
         {
@@ -258,8 +258,8 @@ namespace OpenRCT2::Network
     // Server: Send lobby state sync to all clients
     void NetworkBase::ServerSendLobbyStateSync()
     {
-        auto* ctx = GetContext();
-        auto* competitionMgr = ctx->GetCompetitionManager();
+        auto& ctx = GetContext();
+        auto* competitionMgr = ctx.GetCompetitionManager();
 
         if (!competitionMgr || !competitionMgr->IsInLobby())
             return;
@@ -319,13 +319,13 @@ namespace OpenRCT2::Network
     // Server: Handle lobby join request
     void NetworkBase::ServerHandleLobbyJoin(Connection& connection, Packet& packet)
     {
-        auto* ctx = GetContext();
-        auto* competitionMgr = ctx->GetCompetitionManager();
+        auto& ctx = GetContext();
+        auto* competitionMgr = ctx.GetCompetitionManager();
 
         if (!competitionMgr || !competitionMgr->IsInLobby())
             return;
 
-        auto* player = GetPlayerByID(connection.Player->Id);
+        auto* player = GetPlayerByID(connection.player->Id);
         if (!player)
             return;
 
@@ -339,13 +339,13 @@ namespace OpenRCT2::Network
     // Server: Handle lobby leave request
     void NetworkBase::ServerHandleLobbyLeave(Connection& connection, Packet& packet)
     {
-        auto* ctx = GetContext();
-        auto* competitionMgr = ctx->GetCompetitionManager();
+        auto& ctx = GetContext();
+        auto* competitionMgr = ctx.GetCompetitionManager();
 
         if (!competitionMgr || !competitionMgr->IsInLobby())
             return;
 
-        auto* player = GetPlayerByID(connection.Player->Id);
+        auto* player = GetPlayerByID(connection.player->Id);
         if (!player)
             return;
 
@@ -360,13 +360,13 @@ namespace OpenRCT2::Network
         uint8_t ready;
         packet >> ready;
 
-        auto* ctx = GetContext();
-        auto* competitionMgr = ctx->GetCompetitionManager();
+        auto& ctx = GetContext();
+        auto* competitionMgr = ctx.GetCompetitionManager();
 
         if (!competitionMgr || !competitionMgr->IsInLobby())
             return;
 
-        auto* player = GetPlayerByID(connection.Player->Id);
+        auto* player = GetPlayerByID(connection.player->Id);
         if (!player)
             return;
 
@@ -378,13 +378,13 @@ namespace OpenRCT2::Network
     // Server: Handle lobby start request (host only)
     void NetworkBase::ServerHandleLobbyStartRequest(Connection& connection, Packet& packet)
     {
-        auto* ctx = GetContext();
-        auto* competitionMgr = ctx->GetCompetitionManager();
+        auto& ctx = GetContext();
+        auto* competitionMgr = ctx.GetCompetitionManager();
 
         if (!competitionMgr || !competitionMgr->IsInLobby())
             return;
 
-        auto* player = GetPlayerByID(connection.Player->Id);
+        auto* player = GetPlayerByID(connection.player->Id);
         if (!player || player->Id != 0) // Only host (player 0) can start
             return;
 
@@ -431,8 +431,8 @@ namespace OpenRCT2::Network
     // Client: Handle lobby state sync
     void NetworkBase::Client_Handle_LOBBY_STATE_SYNC(Connection& connection, Packet& packet)
     {
-        auto* ctx = GetContext();
-        auto* competitionMgr = ctx->GetCompetitionManager();
+        auto& ctx = GetContext();
+        auto* competitionMgr = ctx.GetCompetitionManager();
 
         if (!competitionMgr)
             return;
@@ -476,8 +476,8 @@ namespace OpenRCT2::Network
 
         packet >> playerId >> playerName;
 
-        auto* ctx = GetContext();
-        auto* competitionMgr = ctx->GetCompetitionManager();
+        auto& ctx = GetContext();
+        auto* competitionMgr = ctx.GetCompetitionManager();
 
         if (competitionMgr && competitionMgr->IsInLobby())
         {
@@ -491,8 +491,8 @@ namespace OpenRCT2::Network
         uint8_t playerId;
         packet >> playerId;
 
-        auto* ctx = GetContext();
-        auto* competitionMgr = ctx->GetCompetitionManager();
+        auto& ctx = GetContext();
+        auto* competitionMgr = ctx.GetCompetitionManager();
 
         if (competitionMgr && competitionMgr->IsInLobby())
         {
@@ -506,8 +506,8 @@ namespace OpenRCT2::Network
         uint8_t playerId, ready;
         packet >> playerId >> ready;
 
-        auto* ctx = GetContext();
-        auto* competitionMgr = ctx->GetCompetitionManager();
+        auto& ctx = GetContext();
+        auto* competitionMgr = ctx.GetCompetitionManager();
 
         if (competitionMgr && competitionMgr->IsInLobby())
         {

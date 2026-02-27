@@ -96,7 +96,7 @@ STR_0512    :A compact roller coaster with a spiral lift hill and smooth, twisti
 STR_0513    :A looping roller coaster where the riders ride in a standing position
 STR_0514    :Trains suspended beneath the roller coaster track swing out to the side around corners
 STR_0515    :A steel roller coaster with trains that are held beneath the track, with many complex and twisting track elements
-STR_0516    :A gentle roller coaster for people who haven’t yet got the courage to face the larger rides
+STR_0516    :A gentle roller coaster for people who havenΓÇÖt yet got the courage to face the larger rides
 STR_0517    :Passengers ride in miniature trains along a narrow-gauge railway track
 STR_0518    :Passengers travel in electric trains along a monorail track
 STR_0519    :Passengers ride in small cars hanging beneath the single-rail track, swinging freely from side to side around corners
@@ -140,8 +140,8 @@ STR_0559    :Large themed building containing scary corridors and spooky rooms
 STR_0560    :A place for sick guests to go for faster recovery
 STR_0561    :Circus animal show inside a big-top tent
 STR_0562    :Powered cars travel along a multi-level track past spooky scenery and special effects
-STR_0563    :Sitting in comfortable trains with only simple lap restraints riders enjoy giant smooth drops and twisting track as well as plenty of ‘air time’ over the hills
-STR_0564    :Running on wooden track, this coaster is fast, rough, noisy, and gives an ‘out of control’ riding experience with plenty of ‘air time’
+STR_0563    :Sitting in comfortable trains with only simple lap restraints riders enjoy giant smooth drops and twisting track as well as plenty of ΓÇÿair timeΓÇÖ over the hills
+STR_0564    :Running on wooden track, this coaster is fast, rough, noisy, and gives an ΓÇÿout of controlΓÇÖ riding experience with plenty of ΓÇÿair timeΓÇÖ
 STR_0565    :A simple wooden roller coaster capable of only gentle slopes and turns, where the cars are only kept on the track by side friction wheels and gravity
 STR_0566    :Individual roller coaster cars zip around a tight zig-zag layout of track with sharp corners and short sharp drops
 STR_0567    :Sitting in seats suspended either side of the track, riders are pitched head-over-heels while they plunge down steep drops and travel through various inversions
@@ -174,7 +174,7 @@ STR_0602    :Roller coaster trains are accelerated out of the station by linear 
 STR_0603    :A wooden style roller coaster with a steel track, allowing for steep drops and inversions
 STR_0604    :Riders ride single file on a narrow monorail track, as they race through tight inversions and direction changes
 STR_0605    :Riders toboggan down a meandering steel track, braking to control their speed
-STR_0606    :An older-style wooden roller coaster with a fast and rough ride, with plenty of air-time, some lateral G’s, and designed to feel ‘out-of-control’
+STR_0606    :An older-style wooden roller coaster with a fast and rough ride, with plenty of air-time, some lateral GΓÇÖs, and designed to feel ΓÇÿout-of-controlΓÇÖ
 STR_0607    :An intense, older-style steel looping roller coaster where the riders ride in a standing position
 STR_0608    :Roller coaster trains are accelerated by linear synchronous motors, speeding through tight twists and turns
 STR_0609    :An older-style wooden roller coaster with a fast and rough ride featuring articulated trains, plenty of air-time and twisting track
@@ -230,7 +230,7 @@ STR_0820    :Nov
 STR_0821    :Dec
 STR_0822    :Unable to access graphic data file
 STR_0823    :Missing or inaccessible data file
-STR_0824    :{BLACK}❌
+STR_0824    :{BLACK}Γ¥î
 STR_0825    :Chosen name in use already
 STR_0826    :Too many names defined
 STR_0827    :Not enough cash - requires {CURRENCY2DP}
@@ -238,13 +238,13 @@ STR_0828    :Close window
 STR_0829    :Window title - Drag this to move window
 STR_0830    :Zoom view in
 STR_0831    :Zoom view out
-STR_0832    :Rotate view 90° clockwise
+STR_0832    :Rotate view 90┬░ clockwise
 STR_0833    :Pause game
 STR_0834    :Disk and game options
-STR_0839    :{UINT16} × {UINT16}
-STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} × {UINT16}
-STR_0847    :About ‘OpenRCT2’
-STR_0850    :{WINDOW_COLOUR_2}Copyright © 2002 Chris Sawyer, all rights reserved
+STR_0839    :{UINT16} ├ù {UINT16}
+STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} ├ù {UINT16}
+STR_0847    :About ΓÇÿOpenRCT2ΓÇÖ
+STR_0850    :{WINDOW_COLOUR_2}Copyright ┬⌐ 2002 Chris Sawyer, all rights reserved
 STR_0851    :{WINDOW_COLOUR_2}Designed and programmed by Chris Sawyer
 STR_0852    :{WINDOW_COLOUR_2}Graphics by Simon Foster
 STR_0853    :{WINDOW_COLOUR_2}Sound and music by Allister Brimble
@@ -263,11 +263,11 @@ STR_0872    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0873    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0874    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0875    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0876    :{BLACK}▼
+STR_0876    :{BLACK}Γû╝
 STR_0877    :Too low!
 STR_0878    :Too high!
-STR_0879    :Can’t lower land here…
-STR_0880    :Can’t raise land here…
+STR_0879    :CanΓÇÖt lower land hereΓÇª
+STR_0880    :CanΓÇÖt raise land hereΓÇª
 STR_0881    :Object in the way
 STR_0882    :Load Game
 STR_0883    :Save Game
@@ -277,10 +277,10 @@ STR_0887    :Quit Scenario Editor
 STR_0888    :Quit Track Designer
 STR_0889    :Quit Track Designs Manager
 STR_0891    :Screenshot
-STR_0892    :Screenshot saved to disk as ‘{STRINGID}’
+STR_0892    :Screenshot saved to disk as ΓÇÿ{STRINGID}ΓÇÖ
 STR_0893    :Screenshot failed!
 STR_0894    :Landscape data area full!
-STR_0895    :Can’t build partly above and partly below ground
+STR_0895    :CanΓÇÖt build partly above and partly below ground
 STR_0896    :{POP16}{POP16}{STRINGID} Construction
 STR_0897    :Direction
 STR_0898    :Left-hand curve
@@ -311,11 +311,11 @@ STR_0922    :Steep slope up
 STR_0923    :Vertical rise
 STR_0924    :Helix down
 STR_0925    :Helix up
-STR_0926    :Can’t remove this…
-STR_0927    :Can’t construct this here…
+STR_0926    :CanΓÇÖt remove thisΓÇª
+STR_0927    :CanΓÇÖt construct this hereΓÇª
 STR_0928    :Chain lift, to pull cars up slopes
-STR_0929    :‘S’ Bend (left)
-STR_0930    :‘S’ Bend (right)
+STR_0929    :ΓÇÿSΓÇÖ Bend (left)
+STR_0930    :ΓÇÿSΓÇÖ Bend (right)
 STR_0931    :Vertical Loop (left)
 STR_0932    :Vertical Loop (right)
 STR_0933    :Raise or lower land first
@@ -330,7 +330,7 @@ STR_0941    :Hide Vertical Faces
 STR_0942    :See-Through Rides
 STR_0943    :See-Through Scenery
 STR_0944    :Save
-STR_0945    :Don’t Save
+STR_0945    :DonΓÇÖt Save
 STR_0946    :Cancel
 STR_0947    :Save this before loading?
 STR_0948    :Save this before quitting?
@@ -340,22 +340,22 @@ STR_0951    :Quit Game
 STR_0952    :Quit Game
 STR_0953    :Load Landscape
 STR_0955    :Select seat rotation angle for this track section
-STR_0956    :-180°
-STR_0957    :-135°
-STR_0958    :-90°
-STR_0959    :-45°
-STR_0960    :0°
-STR_0961    :+45°
-STR_0962    :+90°
-STR_0963    :+135°
-STR_0964    :+180°
-STR_0965    :+225°
-STR_0966    :+270°
-STR_0967    :+315°
-STR_0968    :+360°
-STR_0969    :+405°
-STR_0970    :+450°
-STR_0971    :+495°
+STR_0956    :-180┬░
+STR_0957    :-135┬░
+STR_0958    :-90┬░
+STR_0959    :-45┬░
+STR_0960    :0┬░
+STR_0961    :+45┬░
+STR_0962    :+90┬░
+STR_0963    :+135┬░
+STR_0964    :+180┬░
+STR_0965    :+225┬░
+STR_0966    :+270┬░
+STR_0967    :+315┬░
+STR_0968    :+360┬░
+STR_0969    :+405┬░
+STR_0970    :+450┬░
+STR_0971    :+495┬░
 STR_0972    :Cancel
 STR_0973    :OK
 STR_0974    :Rides
@@ -368,11 +368,11 @@ STR_0980    :New Thrill Rides
 STR_0981    :New Water Rides
 STR_0982    :New Shops & Stalls
 STR_0983    :Research & Development
-STR_0984    :{WINDOW_COLOUR_2}▲{BLACK}  {CURRENCY2DP}
-STR_0985    :{WINDOW_COLOUR_2}▼{BLACK}  {CURRENCY2DP}
+STR_0984    :{WINDOW_COLOUR_2}Γû▓{BLACK}  {CURRENCY2DP}
+STR_0985    :{WINDOW_COLOUR_2}Γû╝{BLACK}  {CURRENCY2DP}
 STR_0986    :{BLACK}{CURRENCY2DP}
 STR_0987    :Too many rides/attractions
-STR_0988    :Can’t create new ride/attraction…
+STR_0988    :CanΓÇÖt create new ride/attractionΓÇª
 STR_0989    :{STRINGID}
 STR_0990    :Construction
 STR_0991    :Station platform
@@ -386,10 +386,10 @@ STR_0998    :No more stations allowed on this ride
 STR_0999    :Requires a station platform
 STR_1000    :Track is not a complete circuit
 STR_1001    :Track unsuitable for type of train
-STR_1002    :Can’t open {STRINGID}…
-STR_1003    :Can’t test {STRINGID}…
-STR_1004    :Can’t close {STRINGID}…
-STR_1005    :Can’t start construction on {STRINGID}…
+STR_1002    :CanΓÇÖt open {STRINGID}ΓÇª
+STR_1003    :CanΓÇÖt test {STRINGID}ΓÇª
+STR_1004    :CanΓÇÖt close {STRINGID}ΓÇª
+STR_1005    :CanΓÇÖt start construction on {STRINGID}ΓÇª
 STR_1006    :Must be closed first
 STR_1007    :Unable to create enough vehicles
 STR_1008    :Open, close, or test ride/attraction
@@ -401,10 +401,10 @@ STR_1013    :Close park
 STR_1014    :Open park
 STR_1015    :Unable to operate with more than one station platform in this mode
 STR_1016    :Unable to operate with less than two stations in this mode
-STR_1017    :Can’t change operating mode…
-STR_1018    :Can’t make changes…
-STR_1019    :Can’t make changes…
-STR_1020    :Can’t make changes…
+STR_1017    :CanΓÇÖt change operating modeΓÇª
+STR_1018    :CanΓÇÖt make changesΓÇª
+STR_1019    :CanΓÇÖt make changesΓÇª
+STR_1020    :CanΓÇÖt make changesΓÇª
 STR_1021    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_1022    :{POP16}{POP16}{POP16}{COMMA16} car per train
 STR_1023    :{POP16}{POP16}{POP16}{COMMA16} cars per train
@@ -415,11 +415,11 @@ STR_1027    :Locate this on Main View
 STR_1028    :Off edge of map!
 STR_1029    :Cannot build partly above and partly below water!
 STR_1030    :Can only build this underwater!
-STR_1031    :Can’t build this underwater!
+STR_1031    :CanΓÇÖt build this underwater!
 STR_1032    :Can only build this on water!
 STR_1033    :Can only build this above ground!
 STR_1034    :Can only build this on land!
-STR_1035    :Local authority won’t allow construction above tree-height!
+STR_1035    :Local authority wonΓÇÖt allow construction above tree-height!
 STR_1036    :Load Game
 STR_1037    :Load Landscape
 STR_1038    :Convert saved game to scenario
@@ -434,7 +434,7 @@ STR_1046    :OpenRCT2 Track Design File
 STR_1047    :Game save failed!
 STR_1048    :Scenario save failed!
 STR_1049    :Landscape save failed!
-STR_1050    :Failed to load…{NEWLINE}File contains invalid data!
+STR_1050    :Failed to loadΓÇª{NEWLINE}File contains invalid data!
 STR_1051    :Invisible Supports
 STR_1052    :Invisible People
 STR_1053    :Rides/attractions in park
@@ -443,7 +443,7 @@ STR_1055    :Name person
 STR_1056    :Name staff member
 STR_1057    :Ride/attraction name
 STR_1058    :Enter new name for this ride/attraction:
-STR_1059    :Can’t rename ride/attraction…
+STR_1059    :CanΓÇÖt rename ride/attractionΓÇª
 STR_1060    :Invalid ride/attraction name
 STR_1061    :Normal mode
 STR_1062    :Continuous circuit mode
@@ -464,14 +464,14 @@ STR_1076    :Shop stall mode
 STR_1077    :Rotation mode
 STR_1078    :Forward rotation
 STR_1079    :Backward rotation
-STR_1080    :Film: “Avenging Aviators”
-STR_1081    :3D film: “Mouse Tails”
+STR_1080    :Film: ΓÇ£Avenging AviatorsΓÇ¥
+STR_1081    :3D film: ΓÇ£Mouse TailsΓÇ¥
 STR_1082    :Space rings mode
 STR_1083    :Beginners mode
 STR_1084    :LIM-powered launch
-STR_1085    :Film: “Thrill Riders”
-STR_1086    :3D film: “Storm Chasers”
-STR_1087    :3D film: “Space Raiders”
+STR_1085    :Film: ΓÇ£Thrill RidersΓÇ¥
+STR_1086    :3D film: ΓÇ£Storm ChasersΓÇ¥
+STR_1087    :3D film: ΓÇ£Space RaidersΓÇ¥
 STR_1088    :Intense mode
 STR_1089    :Berserk mode
 STR_1090    :Haunted house mode
@@ -527,9 +527,9 @@ STR_1139    :Select support structure colour
 STR_1140    :Select vehicle colour scheme option
 STR_1141    :Select which vehicle/train to modify
 STR_1142    :{MOVE_X}{10}{STRINGID}
-STR_1143    :»{MOVE_X}{10}{STRINGID}
-STR_1144    :Can’t build/move entrance for this ride/attraction…
-STR_1145    :Can’t build/move exit for this ride/attraction…
+STR_1143    :┬╗{MOVE_X}{10}{STRINGID}
+STR_1144    :CanΓÇÖt build/move entrance for this ride/attractionΓÇª
+STR_1145    :CanΓÇÖt build/move exit for this ride/attractionΓÇª
 STR_1146    :Entrance not yet built
 STR_1147    :Exit not yet built
 STR_1148    :Quarter load
@@ -541,29 +541,29 @@ STR_1153    :Height Marks on Ride Tracks
 STR_1154    :Height Marks on Land
 STR_1155    :Height Marks on Paths
 STR_1156    :{MOVE_X}{10}{STRING}
-STR_1157    :✓{MOVE_X}{10}{STRING}
-STR_1158    :Can’t remove this…
+STR_1157    :Γ£ô{MOVE_X}{10}{STRING}
+STR_1158    :CanΓÇÖt remove thisΓÇª
 STR_1159    :Place scenery, gardens, and other accessories
 STR_1160    :Create/adjust lakes & water
-STR_1161    :Can’t position this here…
+STR_1161    :CanΓÇÖt position this hereΓÇª
 STR_1162    :{OUTLINE}{TOPAZ}{STRINGID}
 STR_1163    :{STRINGID}{NEWLINE}(Right-Click to Modify)
 STR_1164    :{STRINGID}{NEWLINE}(Right-Click to Remove)
 STR_1165    :{STRINGID} - {STRINGID} {COMMA16}
-STR_1166    :Can’t lower water level here…
-STR_1167    :Can’t raise water level here…
+STR_1166    :CanΓÇÖt lower water level hereΓÇª
+STR_1167    :CanΓÇÖt raise water level hereΓÇª
 STR_1168    :Options
 STR_1169    :(None)
 STR_1170    :{STRING}
 STR_1171    :{RED}Closed
 STR_1173    :Build footpaths and queue lines
 STR_1174    :Banner sign in the way
-STR_1175    :Can’t build this on sloped footpath
-STR_1176    :Can’t build footpath here…
-STR_1177    :Can’t remove footpath from here…
+STR_1175    :CanΓÇÖt build this on sloped footpath
+STR_1176    :CanΓÇÖt build footpath hereΓÇª
+STR_1177    :CanΓÇÖt remove footpath from hereΓÇª
 STR_1178    :Land slope unsuitable
 STR_1179    :Footpath in the way
-STR_1180    :Can’t build this underwater!
+STR_1180    :CanΓÇÖt build this underwater!
 STR_1181    :Footpaths
 STR_1182    :Type
 STR_1183    :Direction
@@ -599,7 +599,7 @@ STR_1212    :{WINDOW_COLOUR_2}Maximum waiting time:
 STR_1213    :Select minimum length of time to wait before departing
 STR_1214    :Select maximum length of time to wait before departing
 STR_1215    :{WINDOW_COLOUR_2}Synchronise with adjacent stations
-STR_1216    :Select whether to synchronise departure with all adjacent stations (for ‘racing’)
+STR_1216    :Select whether to synchronise departure with all adjacent stations (for ΓÇÿracingΓÇÖ)
 STR_1217    :{COMMA16} seconds
 STR_1218    :{BLACK}+
 STR_1219    :{BLACK}-
@@ -710,7 +710,7 @@ STR_1323    :Courses
 STR_1324    :{COMMA16} course
 STR_1325    :{COMMA16} courses
 STR_1326    :Course {COMMA16}
-STR_1327    :Rotate objects by 90°
+STR_1327    :Rotate objects by 90┬░
 STR_1328    :Level land required
 STR_1329    :{WINDOW_COLOUR_2}Launch speed:
 STR_1330    :Maximum speed when leaving station
@@ -722,7 +722,7 @@ STR_1335    :{STRINGID} - Entrance{POP16}{POP16}
 STR_1336    :{STRINGID} - Station {POP16}{COMMA16} Entrance
 STR_1337    :{STRINGID} - Exit{POP16}{POP16}
 STR_1338    :{STRINGID} - Station {POP16}{COMMA16} Exit
-STR_1339    :{BLACK}No test results yet…
+STR_1339    :{BLACK}No test results yetΓÇª
 STR_1340    :{WINDOW_COLOUR_2}Max. speed: {BLACK}{VELOCITY}
 STR_1341    :{WINDOW_COLOUR_2}Ride time: {BLACK}{STRINGID}{STRINGID}{STRINGID}{STRINGID}
 STR_1342    :{DURATION}
@@ -741,13 +741,13 @@ STR_1354    :{WINDOW_COLOUR_2}Highest drop height: {BLACK}{LENGTH}
 STR_1355    :{WINDOW_COLOUR_2}Drops: {BLACK}{COMMA16}
 STR_1356    :{WINDOW_COLOUR_2}Inversions: {BLACK}{COMMA16}
 STR_1357    :{WINDOW_COLOUR_2}Holes: {BLACK}{COMMA16}
-STR_1358    :{WINDOW_COLOUR_2}Total ‘air’ time: {BLACK}{COMMA2DP32}secs
+STR_1358    :{WINDOW_COLOUR_2}Total ΓÇÿairΓÇÖ time: {BLACK}{COMMA2DP32}secs
 STR_1359    :{WINDOW_COLOUR_2}Queue time: {BLACK}{COMMA16} minute
 STR_1360    :{WINDOW_COLOUR_2}Queue time: {BLACK}{COMMA16} minutes
-STR_1361    :Can’t change speed…
-STR_1362    :Can’t change launch speed…
+STR_1361    :CanΓÇÖt change speedΓÇª
+STR_1362    :CanΓÇÖt change launch speedΓÇª
 STR_1363    :Too high for supports!
-STR_1364    :Supports for track above can’t be extended any further!
+STR_1364    :Supports for track above canΓÇÖt be extended any further!
 STR_1365    :In-line Twist (left)
 STR_1366    :In-line Twist (right)
 STR_1367    :Small Half Loop
@@ -769,8 +769,8 @@ STR_1382    :Curved Lift Hill (right)
 STR_1383    :Quarter Loop
 STR_1384    :{YELLOW}{STRINGID}
 STR_1385    :Other track configurations
-STR_1386    :Special…
-STR_1387    :Can’t change land type…
+STR_1386    :SpecialΓÇª
+STR_1387    :CanΓÇÖt change land typeΓÇª
 STR_1388    :{OUTLINE}{GREEN}+ {CURRENCY}
 STR_1389    :{OUTLINE}{RED}- {CURRENCY}
 STR_1390    :{CURRENCY2DP}
@@ -787,10 +787,10 @@ STR_1400    :Entrance
 STR_1401    :Exit
 STR_1402    :Build or move entrance to ride/attraction
 STR_1403    :Build or move exit from ride/attraction
-STR_1404    :Rotate 90°
+STR_1404    :Rotate 90┬░
 STR_1405    :Mirror image
 STR_1406    :Toggle scenery on/off (if available for this design)
-STR_1407    :{WINDOW_COLOUR_2}Build this…
+STR_1407    :{WINDOW_COLOUR_2}Build thisΓÇª
 STR_1408    :{WINDOW_COLOUR_2}Cost: {BLACK}{CURRENCY}
 STR_1409    :Entry/Exit Platform
 STR_1410    :Vertical Tower
@@ -835,16 +835,16 @@ STR_1448    :Watching new ride being constructed
 STR_1449    :{SPRITE} {STRINGID}{NEWLINE}({STRINGID})
 STR_1450    :{INLINE_SPRITE}{09}{20}{00}{00}{SPRITE} {STRINGID}{NEWLINE}({STRINGID})
 STR_1451    :{STRINGID}{NEWLINE}({STRINGID})
-STR_1452    :Guest’s name
+STR_1452    :GuestΓÇÖs name
 STR_1453    :Enter name for this guest:
-STR_1454    :Can’t name guest…
+STR_1454    :CanΓÇÖt name guestΓÇª
 STR_1455    :Invalid name for guest
 STR_1456    :{WINDOW_COLOUR_2}Cash spent: {BLACK}{CURRENCY2DP}
 STR_1457    :{WINDOW_COLOUR_2}Cash in pocket: {BLACK}{CURRENCY2DP}
 STR_1458    :{WINDOW_COLOUR_2}Time in park: {BLACK}{REALTIME}
 STR_1459    :Track style
-STR_1460    :‘U’ shaped open track
-STR_1461    :‘O’ shaped enclosed track
+STR_1460    :ΓÇÿUΓÇÖ shaped open track
+STR_1461    :ΓÇÿOΓÇÖ shaped enclosed track
 STR_1462    :Too steep for lift hill
 STR_1463    :Guests
 STR_1464    :Helix up (small)
@@ -863,131 +863,131 @@ STR_1476    :{WINDOW_COLOUR_2}Intensity rating: {BLACK}Not yet available
 STR_1477    :{WINDOW_COLOUR_2}Intensity rating: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
 STR_1478    :{WINDOW_COLOUR_2}Nausea rating: {BLACK}{COMMA2DP32}  ({STRINGID})
 STR_1479    :{WINDOW_COLOUR_2}Nausea rating: {BLACK}Not yet available
-STR_1480    :“I can’t afford {STRINGID}”
-STR_1481    :“I’ve spent all my money”
-STR_1482    :“I feel sick”
-STR_1483    :“I feel very sick”
-STR_1484    :“I want to go on something more thrilling than {STRINGID}”
-STR_1485    :“{STRINGID} looks too intense for me”
-STR_1486    :“I haven’t finished my {STRINGID} yet”
-STR_1487    :“Just looking at {STRINGID} makes me feel sick”
-STR_1488    :“I’m not paying that much to go on {STRINGID}”
-STR_1489    :“I want to go home”
-STR_1490    :“{STRINGID} is really good value”
-STR_1491    :“I’ve already got {STRINGID}”
-STR_1492    :“I can’t afford {STRINGID}”
-STR_1493    :“I’m not hungry”
-STR_1494    :“I’m not thirsty”
-STR_1495    :“Help! I’m drowning!”
-STR_1496    :“I’m lost!”
-STR_1497    :“{STRINGID} was great”
-STR_1498    :“I’ve been queuing for {STRINGID} for ages”
-STR_1499    :“I’m tired”
-STR_1500    :“I’m hungry”
-STR_1501    :“I’m thirsty”
-STR_1502    :“I need to go to the toilet”
-STR_1503    :“I can’t find {STRINGID}”
-STR_1504    :“I’m not paying that much to use {STRINGID}”
-STR_1505    :“I’m not going on {STRINGID} while it’s raining”
-STR_1506    :“The litter here is really bad”
-STR_1507    :“I can’t find the park exit”
-STR_1508    :“I want to get off {STRINGID}”
-STR_1509    :“I want to get out of {STRINGID}”
-STR_1510    :“I’m not going on {STRINGID} - it isn’t safe”
-STR_1511    :“This path is disgusting”
-STR_1512    :“It’s too crowded here”
-STR_1513    :“The vandalism here is really bad”
-STR_1514    :“Great scenery!”
-STR_1515    :“This park is really clean and tidy”
-STR_1516    :“The jumping fountains are great”
-STR_1517    :“The music is nice here”
-STR_1518    :“This balloon from {STRINGID} is really good value”
-STR_1519    :“This cuddly toy from {STRINGID} is really good value”
-STR_1520    :“This park map from {STRINGID} is really good value”
-STR_1521    :“This on-ride photo from {STRINGID} is really good value”
-STR_1522    :“This umbrella from {STRINGID} is really good value”
-STR_1523    :“This drink from {STRINGID} is really good value”
-STR_1524    :“This burger from {STRINGID} is really good value”
-STR_1525    :“These chips from {STRINGID} are really good value”
-STR_1526    :“This ice cream from {STRINGID} is really good value”
-STR_1527    :“This candyfloss from {STRINGID} is really good value”
+STR_1480    :ΓÇ£I canΓÇÖt afford {STRINGID}ΓÇ¥
+STR_1481    :ΓÇ£IΓÇÖve spent all my moneyΓÇ¥
+STR_1482    :ΓÇ£I feel sickΓÇ¥
+STR_1483    :ΓÇ£I feel very sickΓÇ¥
+STR_1484    :ΓÇ£I want to go on something more thrilling than {STRINGID}ΓÇ¥
+STR_1485    :ΓÇ£{STRINGID} looks too intense for meΓÇ¥
+STR_1486    :ΓÇ£I havenΓÇÖt finished my {STRINGID} yetΓÇ¥
+STR_1487    :ΓÇ£Just looking at {STRINGID} makes me feel sickΓÇ¥
+STR_1488    :ΓÇ£IΓÇÖm not paying that much to go on {STRINGID}ΓÇ¥
+STR_1489    :ΓÇ£I want to go homeΓÇ¥
+STR_1490    :ΓÇ£{STRINGID} is really good valueΓÇ¥
+STR_1491    :ΓÇ£IΓÇÖve already got {STRINGID}ΓÇ¥
+STR_1492    :ΓÇ£I canΓÇÖt afford {STRINGID}ΓÇ¥
+STR_1493    :ΓÇ£IΓÇÖm not hungryΓÇ¥
+STR_1494    :ΓÇ£IΓÇÖm not thirstyΓÇ¥
+STR_1495    :ΓÇ£Help! IΓÇÖm drowning!ΓÇ¥
+STR_1496    :ΓÇ£IΓÇÖm lost!ΓÇ¥
+STR_1497    :ΓÇ£{STRINGID} was greatΓÇ¥
+STR_1498    :ΓÇ£IΓÇÖve been queuing for {STRINGID} for agesΓÇ¥
+STR_1499    :ΓÇ£IΓÇÖm tiredΓÇ¥
+STR_1500    :ΓÇ£IΓÇÖm hungryΓÇ¥
+STR_1501    :ΓÇ£IΓÇÖm thirstyΓÇ¥
+STR_1502    :ΓÇ£I need to go to the toiletΓÇ¥
+STR_1503    :ΓÇ£I canΓÇÖt find {STRINGID}ΓÇ¥
+STR_1504    :ΓÇ£IΓÇÖm not paying that much to use {STRINGID}ΓÇ¥
+STR_1505    :ΓÇ£IΓÇÖm not going on {STRINGID} while itΓÇÖs rainingΓÇ¥
+STR_1506    :ΓÇ£The litter here is really badΓÇ¥
+STR_1507    :ΓÇ£I canΓÇÖt find the park exitΓÇ¥
+STR_1508    :ΓÇ£I want to get off {STRINGID}ΓÇ¥
+STR_1509    :ΓÇ£I want to get out of {STRINGID}ΓÇ¥
+STR_1510    :ΓÇ£IΓÇÖm not going on {STRINGID} - it isnΓÇÖt safeΓÇ¥
+STR_1511    :ΓÇ£This path is disgustingΓÇ¥
+STR_1512    :ΓÇ£ItΓÇÖs too crowded hereΓÇ¥
+STR_1513    :ΓÇ£The vandalism here is really badΓÇ¥
+STR_1514    :ΓÇ£Great scenery!ΓÇ¥
+STR_1515    :ΓÇ£This park is really clean and tidyΓÇ¥
+STR_1516    :ΓÇ£The jumping fountains are greatΓÇ¥
+STR_1517    :ΓÇ£The music is nice hereΓÇ¥
+STR_1518    :ΓÇ£This balloon from {STRINGID} is really good valueΓÇ¥
+STR_1519    :ΓÇ£This cuddly toy from {STRINGID} is really good valueΓÇ¥
+STR_1520    :ΓÇ£This park map from {STRINGID} is really good valueΓÇ¥
+STR_1521    :ΓÇ£This on-ride photo from {STRINGID} is really good valueΓÇ¥
+STR_1522    :ΓÇ£This umbrella from {STRINGID} is really good valueΓÇ¥
+STR_1523    :ΓÇ£This drink from {STRINGID} is really good valueΓÇ¥
+STR_1524    :ΓÇ£This burger from {STRINGID} is really good valueΓÇ¥
+STR_1525    :ΓÇ£These chips from {STRINGID} are really good valueΓÇ¥
+STR_1526    :ΓÇ£This ice cream from {STRINGID} is really good valueΓÇ¥
+STR_1527    :ΓÇ£This candyfloss from {STRINGID} is really good valueΓÇ¥
 STR_1528    :
 STR_1529    :
 STR_1530    :
-STR_1531    :“This pizza from {STRINGID} is really good value”
+STR_1531    :ΓÇ£This pizza from {STRINGID} is really good valueΓÇ¥
 STR_1532    :
-STR_1533    :“This popcorn from {STRINGID} is really good value”
-STR_1534    :“This hot dog from {STRINGID} is really good value”
-STR_1535    :“This tentacle from {STRINGID} is really good value”
-STR_1536    :“This hat from {STRINGID} is really good value”
-STR_1537    :“This toffee apple from {STRINGID} is really good value”
-STR_1538    :“This T-shirt from {STRINGID} is really good value”
-STR_1539    :“This doughnut from {STRINGID} is really good value”
-STR_1540    :“This coffee from {STRINGID} is really good value”
+STR_1533    :ΓÇ£This popcorn from {STRINGID} is really good valueΓÇ¥
+STR_1534    :ΓÇ£This hot dog from {STRINGID} is really good valueΓÇ¥
+STR_1535    :ΓÇ£This tentacle from {STRINGID} is really good valueΓÇ¥
+STR_1536    :ΓÇ£This hat from {STRINGID} is really good valueΓÇ¥
+STR_1537    :ΓÇ£This toffee apple from {STRINGID} is really good valueΓÇ¥
+STR_1538    :ΓÇ£This T-shirt from {STRINGID} is really good valueΓÇ¥
+STR_1539    :ΓÇ£This doughnut from {STRINGID} is really good valueΓÇ¥
+STR_1540    :ΓÇ£This coffee from {STRINGID} is really good valueΓÇ¥
 STR_1541    :
-STR_1542    :“This fried chicken from {STRINGID} is really good value”
-STR_1543    :“This lemonade from {STRINGID} is really good value”
+STR_1542    :ΓÇ£This fried chicken from {STRINGID} is really good valueΓÇ¥
+STR_1543    :ΓÇ£This lemonade from {STRINGID} is really good valueΓÇ¥
 STR_1544    :
 STR_1545    :
 STR_1546    :
 STR_1547    :
 STR_1548    :
 STR_1549    :
-STR_1550    :“Wow!”
-STR_1551    :“I have the strangest feeling someone is watching me”
-STR_1552    :“I’m not paying that much for a balloon from {STRINGID}”
-STR_1553    :“I’m not paying that much for a cuddly toy from {STRINGID}”
-STR_1554    :“I’m not paying that much for a park map from {STRINGID}”
-STR_1555    :“I’m not paying that much for an on-ride photo from {STRINGID}”
-STR_1556    :“I’m not paying that much for an umbrella from {STRINGID}”
-STR_1557    :“I’m not paying that much for a drink from {STRINGID}”
-STR_1558    :“I’m not paying that much for a burger from {STRINGID}”
-STR_1559    :“I’m not paying that much for chips from {STRINGID}”
-STR_1560    :“I’m not paying that much for an ice cream from {STRINGID}”
-STR_1561    :“I’m not paying that much for candyfloss from {STRINGID}”
+STR_1550    :ΓÇ£Wow!ΓÇ¥
+STR_1551    :ΓÇ£I have the strangest feeling someone is watching meΓÇ¥
+STR_1552    :ΓÇ£IΓÇÖm not paying that much for a balloon from {STRINGID}ΓÇ¥
+STR_1553    :ΓÇ£IΓÇÖm not paying that much for a cuddly toy from {STRINGID}ΓÇ¥
+STR_1554    :ΓÇ£IΓÇÖm not paying that much for a park map from {STRINGID}ΓÇ¥
+STR_1555    :ΓÇ£IΓÇÖm not paying that much for an on-ride photo from {STRINGID}ΓÇ¥
+STR_1556    :ΓÇ£IΓÇÖm not paying that much for an umbrella from {STRINGID}ΓÇ¥
+STR_1557    :ΓÇ£IΓÇÖm not paying that much for a drink from {STRINGID}ΓÇ¥
+STR_1558    :ΓÇ£IΓÇÖm not paying that much for a burger from {STRINGID}ΓÇ¥
+STR_1559    :ΓÇ£IΓÇÖm not paying that much for chips from {STRINGID}ΓÇ¥
+STR_1560    :ΓÇ£IΓÇÖm not paying that much for an ice cream from {STRINGID}ΓÇ¥
+STR_1561    :ΓÇ£IΓÇÖm not paying that much for candyfloss from {STRINGID}ΓÇ¥
 STR_1562    :
 STR_1563    :
 STR_1564    :
-STR_1565    :“I’m not paying that much for pizza from {STRINGID}”
+STR_1565    :ΓÇ£IΓÇÖm not paying that much for pizza from {STRINGID}ΓÇ¥
 STR_1566    :
-STR_1567    :“I’m not paying that much for popcorn from {STRINGID}”
-STR_1568    :“I’m not paying that much for a hot dog from {STRINGID}”
-STR_1569    :“I’m not paying that much for tentacle from {STRINGID}”
-STR_1570    :“I’m not paying that much for a hat from {STRINGID}”
-STR_1571    :“I’m not paying that much for a toffee apple from {STRINGID}”
-STR_1572    :“I’m not paying that much for a T-shirt from {STRINGID}”
-STR_1573    :“I’m not paying that much for a doughnut from {STRINGID}”
-STR_1574    :“I’m not paying that much for coffee from {STRINGID}”
+STR_1567    :ΓÇ£IΓÇÖm not paying that much for popcorn from {STRINGID}ΓÇ¥
+STR_1568    :ΓÇ£IΓÇÖm not paying that much for a hot dog from {STRINGID}ΓÇ¥
+STR_1569    :ΓÇ£IΓÇÖm not paying that much for tentacle from {STRINGID}ΓÇ¥
+STR_1570    :ΓÇ£IΓÇÖm not paying that much for a hat from {STRINGID}ΓÇ¥
+STR_1571    :ΓÇ£IΓÇÖm not paying that much for a toffee apple from {STRINGID}ΓÇ¥
+STR_1572    :ΓÇ£IΓÇÖm not paying that much for a T-shirt from {STRINGID}ΓÇ¥
+STR_1573    :ΓÇ£IΓÇÖm not paying that much for a doughnut from {STRINGID}ΓÇ¥
+STR_1574    :ΓÇ£IΓÇÖm not paying that much for coffee from {STRINGID}ΓÇ¥
 STR_1575    :
-STR_1576    :“I’m not paying that much for fried chicken from {STRINGID}”
-STR_1577    :“I’m not paying that much for lemonade from {STRINGID}”
+STR_1576    :ΓÇ£IΓÇÖm not paying that much for fried chicken from {STRINGID}ΓÇ¥
+STR_1577    :ΓÇ£IΓÇÖm not paying that much for lemonade from {STRINGID}ΓÇ¥
 STR_1578    :
 STR_1579    :
 STR_1580    :
 STR_1581    :
 STR_1582    :
 STR_1583    :
-STR_1584    :“This on-ride photo from {STRINGID} is really good value”
-STR_1585    :“This on-ride photo from {STRINGID} is really good value”
-STR_1586    :“This on-ride photo from {STRINGID} is really good value”
-STR_1587    :“This pretzel from {STRINGID} is really good value”
-STR_1588    :“This hot chocolate from {STRINGID} is really good value”
-STR_1589    :“This iced tea from {STRINGID} is really good value”
-STR_1590    :“This funnel cake from {STRINGID} is really good value”
-STR_1591    :“These sunglasses from {STRINGID} are really good value”
-STR_1592    :“These beef noodles from {STRINGID} are really good value”
-STR_1593    :“These fried rice noodles from {STRINGID} are really good value”
-STR_1594    :“This wonton soup from {STRINGID} is really good value”
-STR_1595    :“This meatball soup from {STRINGID} is really good value”
-STR_1596    :“This fruit juice from {STRINGID} is really good value”
-STR_1597    :“This soybean milk from {STRINGID} is really good value”
-STR_1598    :“This sujeonggwa from {STRINGID} is really good value”
-STR_1599    :“This sub sandwich from {STRINGID} is really good value”
-STR_1600    :“This cookie from {STRINGID} is really good value”
+STR_1584    :ΓÇ£This on-ride photo from {STRINGID} is really good valueΓÇ¥
+STR_1585    :ΓÇ£This on-ride photo from {STRINGID} is really good valueΓÇ¥
+STR_1586    :ΓÇ£This on-ride photo from {STRINGID} is really good valueΓÇ¥
+STR_1587    :ΓÇ£This pretzel from {STRINGID} is really good valueΓÇ¥
+STR_1588    :ΓÇ£This hot chocolate from {STRINGID} is really good valueΓÇ¥
+STR_1589    :ΓÇ£This iced tea from {STRINGID} is really good valueΓÇ¥
+STR_1590    :ΓÇ£This funnel cake from {STRINGID} is really good valueΓÇ¥
+STR_1591    :ΓÇ£These sunglasses from {STRINGID} are really good valueΓÇ¥
+STR_1592    :ΓÇ£These beef noodles from {STRINGID} are really good valueΓÇ¥
+STR_1593    :ΓÇ£These fried rice noodles from {STRINGID} are really good valueΓÇ¥
+STR_1594    :ΓÇ£This wonton soup from {STRINGID} is really good valueΓÇ¥
+STR_1595    :ΓÇ£This meatball soup from {STRINGID} is really good valueΓÇ¥
+STR_1596    :ΓÇ£This fruit juice from {STRINGID} is really good valueΓÇ¥
+STR_1597    :ΓÇ£This soybean milk from {STRINGID} is really good valueΓÇ¥
+STR_1598    :ΓÇ£This sujeonggwa from {STRINGID} is really good valueΓÇ¥
+STR_1599    :ΓÇ£This sub sandwich from {STRINGID} is really good valueΓÇ¥
+STR_1600    :ΓÇ£This cookie from {STRINGID} is really good valueΓÇ¥
 STR_1601    :
 STR_1602    :
 STR_1603    :
-STR_1604    :“This roast sausage from {STRINGID} is really good value”
+STR_1604    :ΓÇ£This roast sausage from {STRINGID} is really good valueΓÇ¥
 STR_1605    :
 STR_1606    :
 STR_1607    :
@@ -999,27 +999,27 @@ STR_1612    :
 STR_1613    :
 STR_1614    :
 STR_1615    :
-STR_1616    :“I’m not paying that much for an on-ride photo from {STRINGID}”
-STR_1617    :“I’m not paying that much for an on-ride photo from {STRINGID}”
-STR_1618    :“I’m not paying that much for an on-ride photo from {STRINGID}”
-STR_1619    :“I’m not paying that much for a pretzel from {STRINGID}”
-STR_1620    :“I’m not paying that much for hot chocolate from {STRINGID}”
-STR_1621    :“I’m not paying that much for iced tea from {STRINGID}”
-STR_1622    :“I’m not paying that much for a funnel cake from {STRINGID}”
-STR_1623    :“I’m not paying that much for sunglasses from {STRINGID}”
-STR_1624    :“I’m not paying that much for beef noodles from {STRINGID}”
-STR_1625    :“I’m not paying that much for fried rice noodles from {STRINGID}”
-STR_1626    :“I’m not paying that much for wonton soup from {STRINGID}”
-STR_1627    :“I’m not paying that much for meatball soup from {STRINGID}”
-STR_1628    :“I’m not paying that much for fruit juice from {STRINGID}”
-STR_1629    :“I’m not paying that much for soybean milk from {STRINGID}”
-STR_1630    :“I’m not paying that much for sujeonggwa from {STRINGID}”
-STR_1631    :“I’m not paying that much for a sub sandwich from {STRINGID}”
-STR_1632    :“I’m not paying that much for a cookie from {STRINGID}”
+STR_1616    :ΓÇ£IΓÇÖm not paying that much for an on-ride photo from {STRINGID}ΓÇ¥
+STR_1617    :ΓÇ£IΓÇÖm not paying that much for an on-ride photo from {STRINGID}ΓÇ¥
+STR_1618    :ΓÇ£IΓÇÖm not paying that much for an on-ride photo from {STRINGID}ΓÇ¥
+STR_1619    :ΓÇ£IΓÇÖm not paying that much for a pretzel from {STRINGID}ΓÇ¥
+STR_1620    :ΓÇ£IΓÇÖm not paying that much for hot chocolate from {STRINGID}ΓÇ¥
+STR_1621    :ΓÇ£IΓÇÖm not paying that much for iced tea from {STRINGID}ΓÇ¥
+STR_1622    :ΓÇ£IΓÇÖm not paying that much for a funnel cake from {STRINGID}ΓÇ¥
+STR_1623    :ΓÇ£IΓÇÖm not paying that much for sunglasses from {STRINGID}ΓÇ¥
+STR_1624    :ΓÇ£IΓÇÖm not paying that much for beef noodles from {STRINGID}ΓÇ¥
+STR_1625    :ΓÇ£IΓÇÖm not paying that much for fried rice noodles from {STRINGID}ΓÇ¥
+STR_1626    :ΓÇ£IΓÇÖm not paying that much for wonton soup from {STRINGID}ΓÇ¥
+STR_1627    :ΓÇ£IΓÇÖm not paying that much for meatball soup from {STRINGID}ΓÇ¥
+STR_1628    :ΓÇ£IΓÇÖm not paying that much for fruit juice from {STRINGID}ΓÇ¥
+STR_1629    :ΓÇ£IΓÇÖm not paying that much for soybean milk from {STRINGID}ΓÇ¥
+STR_1630    :ΓÇ£IΓÇÖm not paying that much for sujeonggwa from {STRINGID}ΓÇ¥
+STR_1631    :ΓÇ£IΓÇÖm not paying that much for a sub sandwich from {STRINGID}ΓÇ¥
+STR_1632    :ΓÇ£IΓÇÖm not paying that much for a cookie from {STRINGID}ΓÇ¥
 STR_1633    :
 STR_1634    :
 STR_1635    :
-STR_1636    :“I’m not paying that much for a roast sausage from {STRINGID}”
+STR_1636    :ΓÇ£IΓÇÖm not paying that much for a roast sausage from {STRINGID}ΓÇ¥
 STR_1637    :
 STR_1638    :
 STR_1639    :
@@ -1031,10 +1031,10 @@ STR_1644    :
 STR_1645    :
 STR_1646    :
 STR_1647    :
-STR_1648    :“Help! Put me down!”
-STR_1649    :“I’m running out of cash!”
-STR_1650    :“Wow! A new ride being built!”
-STR_1653    :“…and here we are on {STRINGID}!”
+STR_1648    :ΓÇ£Help! Put me down!ΓÇ¥
+STR_1649    :ΓÇ£IΓÇÖm running out of cash!ΓÇ¥
+STR_1650    :ΓÇ£Wow! A new ride being built!ΓÇ¥
+STR_1653    :ΓÇ£ΓÇªand here we are on {STRINGID}!ΓÇ¥
 STR_1654    :{WINDOW_COLOUR_2}Recent thoughts:
 STR_1655    :Construct footpath on land
 STR_1656    :Construct bridge or tunnel footpath
@@ -1064,12 +1064,12 @@ STR_1679    :Helix up (left)
 STR_1680    :Helix up (right)
 STR_1681    :Helix down (left)
 STR_1682    :Helix down (right)
-STR_1683    :Base size 2 × 2
-STR_1684    :Base size 4 × 4
-STR_1685    :Base size 2 × 4
-STR_1686    :Base size 5 × 1
+STR_1683    :Base size 2 ├ù 2
+STR_1684    :Base size 4 ├ù 4
+STR_1685    :Base size 2 ├ù 4
+STR_1686    :Base size 5 ├ù 1
 STR_1687    :Water splash
-STR_1688    :Base size 4 × 1
+STR_1688    :Base size 4 ├ù 1
 STR_1689    :Block brakes
 STR_1690    :{WINDOW_COLOUR_2}{STRINGID}{NEWLINE}{BLACK}{STRINGID}
 STR_1691    :{WINDOW_COLOUR_2}  Cost: {BLACK}{CURRENCY}
@@ -1085,7 +1085,7 @@ STR_1700    :Hire new Handyman
 STR_1701    :Hire new Mechanic
 STR_1702    :Hire new Security Guard
 STR_1703    :Hire new Entertainer
-STR_1704    :Can’t hire new staff…
+STR_1704    :CanΓÇÖt hire new staffΓÇª
 STR_1705    :Sack this staff member
 STR_1706    :Move this person to a new location
 STR_1707    :Too many staff in game
@@ -1098,18 +1098,18 @@ STR_1713    :{INLINE_SPRITE}{248}{19}{00}{00}{WINDOW_COLOUR_2}Water gardens
 STR_1714    :{INLINE_SPRITE}{249}{19}{00}{00}{WINDOW_COLOUR_2}Empty litter bins
 STR_1715    :{INLINE_SPRITE}{250}{19}{00}{00}{WINDOW_COLOUR_2}Mow grass
 STR_1716    :Invalid name for park
-STR_1717    :Can’t rename park…
+STR_1717    :CanΓÇÖt rename parkΓÇª
 STR_1718    :Park Name
 STR_1719    :Enter name for park:
 STR_1720    :Name park
 STR_1721    :Park closed
 STR_1722    :Park open
-STR_1723    :Can’t open park…
-STR_1724    :Can’t close park…
-STR_1725    :Can’t buy land…
+STR_1723    :CanΓÇÖt open parkΓÇª
+STR_1724    :CanΓÇÖt close parkΓÇª
+STR_1725    :CanΓÇÖt buy landΓÇª
 STR_1726    :Land not for sale!
 STR_1727    :Construction rights not for sale!
-STR_1728    :Can’t buy construction rights here…
+STR_1728    :CanΓÇÖt buy construction rights hereΓÇª
 STR_1729    :Land not owned by park!
 STR_1730    :{RED}Closed
 STR_1732    :Build
@@ -1117,18 +1117,18 @@ STR_1733    :Mode
 STR_1734    :{WINDOW_COLOUR_2}Number of laps:
 STR_1735    :Number of laps of circuit
 STR_1736    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1738    :Can’t change number of laps…
+STR_1738    :CanΓÇÖt change number of lapsΓÇª
 STR_1739    :Race won by guest {INT32}
 STR_1740    :Race won by {STRINGID}
 STR_1741    :Not yet constructed!
 STR_1742    :{WINDOW_COLOUR_2}Max. people on ride:
 STR_1743    :Maximum number of people allowed on this ride at one time
 STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1746    :Can’t change this…
+STR_1746    :CanΓÇÖt change thisΓÇª
 STR_1747    :{WINDOW_COLOUR_2}Time limit:
 STR_1748    :Time limit for ride
 STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DURATION}
-STR_1751    :Can’t change time limit for ride…
+STR_1751    :CanΓÇÖt change time limit for rideΓÇª
 STR_1752    :Show list of individual guests in park
 STR_1753    :Show summarised list of guests in park
 STR_1754    :{BLACK}{COMMA32} guests
@@ -1145,7 +1145,7 @@ STR_1764    :Log Bumps
 STR_1765    :On-ride photo section
 STR_1766    :Reverser turntable
 STR_1767    :Spinning tunnel
-STR_1768    :Can’t change number of swings…
+STR_1768    :CanΓÇÖt change number of swingsΓÇª
 STR_1769    :{WINDOW_COLOUR_2}Number of swings:
 STR_1770    :Number of complete swings
 STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
@@ -1172,7 +1172,7 @@ STR_1807    :Control failure
 STR_1808    :{WINDOW_COLOUR_2}Last breakdown: {BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}Current breakdown: {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}Carrying:
-STR_1811    :Can’t build this here…
+STR_1811    :CanΓÇÖt build this hereΓÇª
 STR_1812    :{BLACK}{STRINGID}
 STR_1813    :Miscellaneous Objects
 STR_1814    :Actions
@@ -1184,7 +1184,7 @@ STR_1819    :{WINDOW_COLOUR_2}All guests (summarised)
 STR_1820    :{WINDOW_COLOUR_2}Guests {STRINGID}
 STR_1821    :{WINDOW_COLOUR_2}Guests thinking {SMALLFONT}{STRINGID}
 STR_1822    :{WINDOW_COLOUR_2}Guests thinking about {POP16}{STRINGID}
-STR_1823    :Show guests’ thoughts about this ride/attraction
+STR_1823    :Show guestsΓÇ’ thoughts about this ride/attraction
 STR_1824    :Show guests on this ride/attraction
 STR_1825    :Show guests queuing for this ride/attraction
 STR_1826    :Status
@@ -1229,7 +1229,7 @@ STR_1864    :Mechanic
 STR_1865    :Security Guard
 STR_1866    :Entertainer
 STR_1867    :{BLACK}{COMMA32} {STRINGID}
-STR_1868    :Can’t change number of rotations…
+STR_1868    :CanΓÇÖt change number of rotationsΓÇª
 STR_1869    :{WINDOW_COLOUR_2}Number of rotations:
 STR_1870    :Number of complete rotations
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
@@ -1275,17 +1275,17 @@ STR_1914    :{BLACK}{CURRENCY2DP}
 STR_1915    :{RED}{CURRENCY2DP}
 STR_1916    :{WINDOW_COLOUR_2}Loan:
 STR_1917    :{POP16}{POP16}{POP16}{CURRENCY}
-STR_1918    :Can’t borrow any more money!
+STR_1918    :CanΓÇÖt borrow any more money!
 STR_1919    :Not enough cash available!
-STR_1920    :Can’t pay back loan!
+STR_1920    :CanΓÇÖt pay back loan!
 STR_1921    :Start a new game
 STR_1922    :Continue playing a saved game
 STR_1924    :Exit
-STR_1925    :Can’t place person here…
+STR_1925    :CanΓÇÖt place person hereΓÇª
 STR_1927    :{YELLOW}{STRINGID} has broken down
 STR_1928    :{RED}{STRINGID} has crashed!
-STR_1929    :{RED}{STRINGID} still hasn’t been fixed{NEWLINE}Check where your mechanics are and consider organizing them better
-STR_1930    :Turn on/off tracking information for this guest - (If tracking is on, guest’s movements will be reported in the message area)
+STR_1929    :{RED}{STRINGID} still hasnΓÇÖt been fixed{NEWLINE}Check where your mechanics are and consider organizing them better
+STR_1930    :Turn on/off tracking information for this guest - (If tracking is on, guestΓÇÖs movements will be reported in the message area)
 STR_1931    :{STRINGID} has joined the queue line for {STRINGID}
 STR_1932    :{STRINGID} is on {STRINGID}
 STR_1933    :{STRINGID} is in {STRINGID}
@@ -1298,7 +1298,7 @@ STR_1939    :Show view of staff member
 STR_1940    :Show happiness, energy, hunger etc. for this guest
 STR_1941    :Show which rides this guest has been on
 STR_1942    :Show financial information about this guest
-STR_1943    :Show guest’s recent thoughts
+STR_1943    :Show guestΓÇ’ recent thoughts
 STR_1944    :Show items guest is carrying
 STR_1945    :Show orders and options for this staff member
 STR_1946    :Select costume for this entertainer
@@ -1314,7 +1314,7 @@ STR_1955    :{WINDOW_COLOUR_2}Number of circuits:
 STR_1956    :Number of circuits of track per ride
 STR_1957    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1958    :{COMMA16}
-STR_1959    :Can’t change number of circuits…
+STR_1959    :CanΓÇÖt change number of circuitsΓÇª
 STR_1960    :{WINDOW_COLOUR_2}Balloon price:
 STR_1961    :{WINDOW_COLOUR_2}Cuddly Toy price:
 STR_1962    :{WINDOW_COLOUR_2}Park Map price:
@@ -1427,11 +1427,11 @@ STR_2068    :some Fried Chicken
 STR_2069    :some Lemonade
 STR_2070    :an Empty Box
 STR_2071    :an Empty Bottle
-STR_2072    :“{STRINGID}” Balloon
-STR_2073    :“{STRINGID}” Cuddly Toy
+STR_2072    :ΓÇ£{STRINGID}ΓÇ¥ Balloon
+STR_2073    :ΓÇ£{STRINGID}ΓÇ¥ Cuddly Toy
 STR_2074    :Map of {STRINGID}
 STR_2075    :On-Ride Photo of {STRINGID}
-STR_2076    :“{STRINGID}” Umbrella
+STR_2076    :ΓÇ£{STRINGID}ΓÇ¥ Umbrella
 STR_2077    :Drink
 STR_2078    :Burger
 STR_2079    :Chips
@@ -1445,9 +1445,9 @@ STR_2086    :Voucher for {STRINGID}
 STR_2087    :Popcorn
 STR_2088    :Hot Dog
 STR_2089    :Tentacle
-STR_2090    :“{STRINGID}” Hat
+STR_2090    :ΓÇ£{STRINGID}ΓÇ¥ Hat
 STR_2091    :Toffee Apple
-STR_2092    :“{STRINGID}” T-Shirt
+STR_2092    :ΓÇ£{STRINGID}ΓÇ¥ T-Shirt
 STR_2093    :Doughnut
 STR_2094    :Coffee
 STR_2095    :Empty Cup
@@ -1556,9 +1556,9 @@ STR_2212    :Show list of security guards in park
 STR_2213    :Show list of entertainers in park
 STR_2214    :Construction not possible while game is paused!
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
-STR_2216    :{WINDOW_COLOUR_1}{COMMA16}°C
-STR_2217    :{WINDOW_COLOUR_1}{COMMA16}°F
-STR_2218    :{RED}{STRINGID} on {STRINGID} hasn’t returned to the {STRINGID} yet!{NEWLINE}Check whether it is stuck or has stalled
+STR_2216    :{WINDOW_COLOUR_1}{COMMA16}┬░C
+STR_2217    :{WINDOW_COLOUR_1}{COMMA16}┬░F
+STR_2218    :{RED}{STRINGID} on {STRINGID} hasnΓÇÖt returned to the {STRINGID} yet!{NEWLINE}Check whether it is stuck or has stalled
 STR_2219    :{RED}{COMMA16} people have died in an accident on {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Park Rating: {BLACK}{COMMA16}
 STR_2221    :Park Rating: {COMMA16}
@@ -1568,7 +1568,7 @@ STR_2224    :{WINDOW_COLOUR_2}Cash: {BLACK}{CURRENCY2DP}
 STR_2225    :{WINDOW_COLOUR_2}Cash: {RED}{CURRENCY2DP}
 STR_2226    :{WINDOW_COLOUR_2}Park value: {BLACK}{CURRENCY}
 STR_2227    :{WINDOW_COLOUR_2}Company value: {BLACK}{CURRENCY}
-STR_2228    :{WINDOW_COLOUR_2}Last month’s profit from food/drink and{NEWLINE}merchandise sales: {BLACK}{CURRENCY}
+STR_2228    :{WINDOW_COLOUR_2}Last monthΓÇÖs profit from food/drink and{NEWLINE}merchandise sales: {BLACK}{CURRENCY}
 STR_2229    :Slope up to vertical
 STR_2230    :Vertical track
 STR_2231    :Holding brake for drop
@@ -1588,7 +1588,7 @@ STR_2244    :September
 STR_2245    :October
 STR_2246    :November
 STR_2247    :December
-STR_2248    :Can’t demolish ride/attraction…
+STR_2248    :CanΓÇÖt demolish ride/attractionΓÇª
 STR_2249    :{BABYBLUE}New ride/attraction now available:{NEWLINE}{STRINGID}
 STR_2250    :{BABYBLUE}New scenery/theming now available:{NEWLINE}{STRINGID}
 STR_2251    :Can only be built on paths!
@@ -1655,10 +1655,10 @@ STR_2312    :{WINDOW_COLOUR_2}Intensity rating: {BLACK}{COMMA2DP32} (approx.)
 STR_2313    :{WINDOW_COLOUR_2}Nausea rating: {BLACK}{COMMA2DP32} (approx.)
 STR_2314    :{WINDOW_COLOUR_2}Ride length: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Cost: {BLACK}around {CURRENCY}
-STR_2316    :{WINDOW_COLOUR_2}Space required: {BLACK}{COMMA16} × {COMMA16} blocks
+STR_2316    :{WINDOW_COLOUR_2}Space required: {BLACK}{COMMA16} ├ù {COMMA16} blocks
 STR_2321    :{WINDOW_COLOUR_2}Number of rides/attractions: {BLACK}{COMMA16}
 STR_2322    :{WINDOW_COLOUR_2}Staff: {BLACK}{COMMA32}
-STR_2323    :{WINDOW_COLOUR_2}Park size: {BLACK}{COMMA32}m²
+STR_2323    :{WINDOW_COLOUR_2}Park size: {BLACK}{COMMA32}m┬▓
 STR_2324    :{WINDOW_COLOUR_2}Park size: {BLACK}{COMMA32}sq.ft.
 STR_2325    :Buy land to extend park
 STR_2326    :Buy construction rights to allow construction above or below land outside the park
@@ -1669,16 +1669,16 @@ STR_2330    :{WINDOW_COLOUR_2}Temperature:
 STR_2331    :{WINDOW_COLOUR_2}Height Labels:
 STR_2332    :Units
 STR_2333    :Sound effects
-STR_2334    :Pounds (£)
+STR_2334    :Pounds (┬ú)
 STR_2335    :Dollars ($)
 STR_2336    :Franc (F)
 STR_2337    :Deutsche mark (DM)
-STR_2338    :Yen (¥)
+STR_2338    :Yen (┬Ñ)
 STR_2339    :Peseta (Pts)
 STR_2340    :Lira (L)
-STR_2341    :Guilders (ƒ)
+STR_2341    :Guilders (╞Æ)
 STR_2342    :Krona (kr)
-STR_2343    :Euros (€)
+STR_2343    :Euros (Γé¼)
 STR_2344    :Imperial
 STR_2345    :Metric
 STR_2347    :{RED}{STRINGID} has drowned!
@@ -1699,8 +1699,8 @@ STR_2362    :Toggle landscape tile edge smoothing on/off
 STR_2363    :Gridlines on Landscape
 STR_2364    :Toggle gridlines on landscape on/off
 STR_2365    :The bank refuses to increase your loan!
-STR_2366    :Celsius (°C)
-STR_2367    :Fahrenheit (°F)
+STR_2366    :Celsius (┬░C)
+STR_2367    :Fahrenheit (┬░F)
 STR_2368    :None
 STR_2369    :Low
 STR_2370    :Average
@@ -1807,9 +1807,9 @@ STR_2481    :Show graph of lateral acceleration against time
 STR_2482    :Profit: {CURRENCY} per week,  Park Value: {CURRENCY}
 STR_2483    :{WINDOW_COLOUR_2}Weekly profit: {BLACK}+{CURRENCY2DP}
 STR_2484    :{WINDOW_COLOUR_2}Weekly profit: {RED}{CURRENCY2DP}
-STR_2487    :Show ‘real’ names of guests
-STR_2488    :Toggle between showing ‘real’ names of guests and guest numbers
-STR_2489    :Shortcut keys…
+STR_2487    :Show ΓÇÿrealΓÇÖ names of guests
+STR_2488    :Toggle between showing ΓÇÿrealΓÇÖ names of guests and guest numbers
+STR_2489    :Shortcut keysΓÇª
 STR_2490    :Keyboard shortcuts
 STR_2491    :Reset keys
 STR_2492    :Set all keyboard shortcuts back to default settings
@@ -1954,7 +1954,7 @@ STR_2774    :Fullscreen
 STR_2775    :Fullscreen (borderless window)
 STR_2776    :Language:
 STR_2777    :{MOVE_X}{10}{STRING}
-STR_2778    :»{MOVE_X}{10}{STRING}
+STR_2778    :┬╗{MOVE_X}{10}{STRING}
 STR_2779    :Viewport #{COMMA16}
 STR_2780    :Extra viewport
 # End of new strings
@@ -1962,7 +1962,7 @@ STR_2781    :{STRINGID}:
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 
 STR_2784    :Change keyboard shortcut
-STR_2785    :{WINDOW_COLOUR_2}Press new shortcut key for:{NEWLINE}“{STRINGID}”
+STR_2785    :{WINDOW_COLOUR_2}Press new shortcut key for:{NEWLINE}ΓÇ£{STRINGID}ΓÇ¥
 STR_2786    :Click on shortcut description to select new key
 STR_2787    :{WINDOW_COLOUR_2}Park value: {BLACK}{CURRENCY}
 STR_2788    :{WINDOW_COLOUR_2}Congratulations!{NEWLINE}{BLACK}You achieved your objective with a company value of {CURRENCY}!
@@ -1986,9 +1986,9 @@ STR_2805    :Show map of park
 STR_2806    :{RED}Guests are complaining about the disgusting state of the paths in your park{NEWLINE}Check where your handymen are and consider organising them better
 STR_2807    :{RED}Guests are complaining about the amount of litter in your park{NEWLINE}Check where your handymen are and consider organising them better
 STR_2808    :{RED}Guests are complaining about the vandalism in your park{NEWLINE}Check where your security guards are and consider organising them better
-STR_2809    :{RED}Guests are hungry and can’t find anywhere to buy food
-STR_2810    :{RED}Guests are thirsty and can’t find anywhere to buy drinks
-STR_2811    :{RED}Guests are complaining because they can’t find the toilets in your park
+STR_2809    :{RED}Guests are hungry and canΓÇÖt find anywhere to buy food
+STR_2810    :{RED}Guests are thirsty and canΓÇÖt find anywhere to buy drinks
+STR_2811    :{RED}Guests are complaining because they canΓÇÖt find the toilets in your park
 STR_2812    :{RED}Guests are getting lost or stuck{NEWLINE}Check whether the layout of your footpaths needs improving to help the guests find their way around
 STR_2813    :{RED}Your park entrance fee is too high!{NEWLINE}Reduce your entrance fee or improve the value of the park to attract more guests
 STR_2814    :{WINDOW_COLOUR_2}Most untidy park award
@@ -2008,32 +2008,32 @@ STR_2827    :{WINDOW_COLOUR_2}Best custom-designed rides award
 STR_2828    :{WINDOW_COLOUR_2}Most dazzling ride colour schemes award
 STR_2829    :{WINDOW_COLOUR_2}Most confusing park layout award
 STR_2830    :{WINDOW_COLOUR_2}Best gentle ride award
-STR_2831    :{TOPAZ}Your park has received an award for being ‘The most untidy park in the country’!
-STR_2832    :{TOPAZ}Your park has received an award for being ‘The tidiest park in the country’!
-STR_2833    :{TOPAZ}Your park has received an award for being ‘The park with the best roller coasters’!
-STR_2834    :{TOPAZ}Your park has received an award for being ‘The best value park in the country’!
-STR_2835    :{TOPAZ}Your park has received an award for being ‘The most beautiful park in the country’!
-STR_2836    :{TOPAZ}Your park has received an award for being ‘The worst value park in the country’!
-STR_2837    :{TOPAZ}Your park has received an award for being ‘The safest park in the country’!
-STR_2838    :{TOPAZ}Your park has received an award for being ‘The park with the best staff’!
-STR_2839    :{TOPAZ}Your park has received an award for being ‘The park with the best food in the country’!
-STR_2840    :{TOPAZ}Your park has received an award for being ‘The park with the worst food in the country’!
-STR_2841    :{TOPAZ}Your park has received an award for being ‘The park with the best toilet facilities in the country’!
-STR_2842    :{TOPAZ}Your park has received an award for being ‘The most disappointing park in the country’!
-STR_2843    :{TOPAZ}Your park has received an award for being ‘The park with the best water rides in the country’!
-STR_2844    :{TOPAZ}Your park has received an award for being ‘The park with the best custom-designed rides’!
-STR_2845    :{TOPAZ}Your park has received an award for being ‘The park with the most dazzling choice of colour schemes’!
-STR_2846    :{TOPAZ}Your park has received an award for being ‘The park with the most confusing layout’!
-STR_2847    :{TOPAZ}Your park has received an award for being ‘The park with the best gentle rides’!
+STR_2831    :{TOPAZ}Your park has received an award for being ΓÇÿThe most untidy park in the countryΓÇÖ!
+STR_2832    :{TOPAZ}Your park has received an award for being ΓÇÿThe tidiest park in the countryΓÇÖ!
+STR_2833    :{TOPAZ}Your park has received an award for being ΓÇÿThe park with the best roller coastersΓÇö
+STR_2834    :{TOPAZ}Your park has received an award for being ΓÇÿThe best value park in the countryΓÇÖ!
+STR_2835    :{TOPAZ}Your park has received an award for being ΓÇÿThe most beautiful park in the countryΓÇÖ!
+STR_2836    :{TOPAZ}Your park has received an award for being ΓÇÿThe worst value park in the countryΓÇÖ!
+STR_2837    :{TOPAZ}Your park has received an award for being ΓÇÿThe safest park in the countryΓÇÖ!
+STR_2838    :{TOPAZ}Your park has received an award for being ΓÇÿThe park with the best staffΓÇÖ!
+STR_2839    :{TOPAZ}Your park has received an award for being ΓÇÿThe park with the best food in the countryΓÇÖ!
+STR_2840    :{TOPAZ}Your park has received an award for being ΓÇÿThe park with the worst food in the countryΓÇÖ!
+STR_2841    :{TOPAZ}Your park has received an award for being ΓÇÿThe park with the best toilet facilities in the countryΓÇÖ!
+STR_2842    :{TOPAZ}Your park has received an award for being ΓÇÿThe most disappointing park in the countryΓÇÖ!
+STR_2843    :{TOPAZ}Your park has received an award for being ΓÇÿThe park with the best water rides in the countryΓÇÖ!
+STR_2844    :{TOPAZ}Your park has received an award for being ΓÇÿThe park with the best custom-designed ridesΓÇÖ!
+STR_2845    :{TOPAZ}Your park has received an award for being ΓÇÿThe park with the most dazzling choice of colour schemesΓÇÖ!
+STR_2846    :{TOPAZ}Your park has received an award for being ΓÇÿThe park with the most confusing layoutΓÇÖ!
+STR_2847    :{TOPAZ}Your park has received an award for being ΓÇÿThe park with the best gentle ridesΓÇÖ!
 STR_2848    :{WINDOW_COLOUR_2}No recent awards
 STR_2849    :New scenario installed successfully
 STR_2850    :New track design installed successfully
 STR_2851    :Scenario already installed
 STR_2852    :Track design already installed
 STR_2853    :Forbidden by the local authority!
-STR_2854    :{RED}Guests can’t get to the entrance of {STRINGID}!{NEWLINE}Construct a path to the entrance
+STR_2854    :{RED}Guests canΓÇÖt get to the entrance of {STRINGID}!{NEWLINE}Construct a path to the entrance
 STR_2855    :{RED}{STRINGID} has no path leading from its exit!{NEWLINE}Construct a path from the ride exit
-STR_2858    :Can’t start marketing campaign…
+STR_2858    :CanΓÇÖt start marketing campaignΓÇª
 STR_2861    :{WINDOW_COLOUR_2}Licensed to Infogrames Interactive Inc.
 STR_2971    :Main colour scheme
 STR_2972    :Alternative colour scheme 1
@@ -2043,15 +2043,15 @@ STR_2975    :Select which colour scheme to change, or paint ride with
 STR_2976    :Paint an individual area of this ride using the selected colour scheme
 STR_2977    :Staff member name
 STR_2978    :Enter new name for this member of staff:
-STR_2979    :Can’t name staff member…
+STR_2979    :CanΓÇÖt name staff memberΓÇª
 STR_2980    :Too many banners in game
 STR_2981    :{RED}No entry
 STR_2982    :Banner text
 STR_2983    :Enter new text for this banner:
-STR_2984    :Can’t set new text for banner…
+STR_2984    :CanΓÇÖt set new text for bannerΓÇª
 STR_2985    :Banner
 STR_2986    :Change text on banner
-STR_2987    :Set this banner as a ‘no-entry’ sign for guests
+STR_2987    :Set this banner as a ΓÇÿno-entryΓÇÖ sign for guests
 STR_2988    :Demolish this banner
 STR_2989    :Select main colour
 STR_2990    :Select text colour
@@ -2074,7 +2074,7 @@ STR_3006    :{PALEGOLD}ABC
 STR_3007    :{LIGHTPINK}ABC
 STR_3008    :{PEARLAQUA}ABC
 STR_3009    :{PALESILVER}ABC
-STR_3010    :Unable to load file…
+STR_3010    :Unable to load fileΓÇª
 STR_3011    :File contains invalid data
 STR_3045    :Select style of music to play
 STR_3047    :Local authority forbids demolition or modifications to this ride
@@ -2084,7 +2084,7 @@ STR_3050    :Golf hole B
 STR_3051    :Golf hole C
 STR_3052    :Golf hole D
 STR_3053    :Golf hole E
-STR_3054    :Loading…
+STR_3054    :LoadingΓÇª
 STR_3058    :Brick walls
 STR_3059    :Hedges
 STR_3060    :Ice blocks
@@ -2094,13 +2094,13 @@ STR_3063    :Water channel (track submerged)
 STR_3064    :Beginner Parks
 STR_3065    :Challenging Parks
 STR_3066    :Expert Parks
-STR_3067    :“Real” Parks
+STR_3067    :ΓÇ£RealΓÇ¥ Parks
 STR_3068    :Other Parks
 STR_3069    :Top Section
 STR_3070    :Slope to Level
 STR_3071    :{WINDOW_COLOUR_2}Same price throughout park
 STR_3072    :Select whether this price is used throughout the entire park
-STR_3073    :{RED}WARNING: Your park rating has dropped below 700!{NEWLINE}If you haven’t raised the park rating in 4 weeks, your park will be closed down
+STR_3073    :{RED}WARNING: Your park rating has dropped below 700!{NEWLINE}If you havenΓÇÖt raised the park rating in 4 weeks, your park will be closed down
 STR_3074    :{RED}WARNING: Your park rating is still below 700!{NEWLINE}You have 3 weeks to raise the park rating
 STR_3075    :{RED}WARNING: Your park rating is still below 700!{NEWLINE}You have only 2 weeks to raise the park rating, or your park will be closed down
 STR_3076    :{RED}FINAL WARNING: Your park rating is still below 700!{NEWLINE}In just 7 days your park will be closed down unless you can raise the rating
@@ -2117,7 +2117,7 @@ STR_3099    :Select colour
 STR_3100    :Select second colour
 STR_3101    :Select third colour
 STR_3102    :Re-paint coloured scenery on landscape
-STR_3103    :Can’t re-paint this…
+STR_3103    :CanΓÇÖt re-paint thisΓÇª
 STR_3104    :List rides
 STR_3105    :List shops and stalls
 STR_3106    :List information kiosks and other guest facilities
@@ -2131,7 +2131,7 @@ STR_3113    :Select a different design
 STR_3114    :Go back to design selection window
 STR_3115    :Save track design
 STR_3116    :Save track design (Not possible until ride has been tested and statistics have been generated)
-STR_3117    :{BLACK}Calling mechanic…
+STR_3117    :{BLACK}Calling mechanicΓÇª
 STR_3118    :{BLACK}{STRINGID} is heading for the ride
 STR_3119    :{BLACK}{STRINGID} is fixing the ride
 STR_3120    :Locate nearest available mechanic, or mechanic fixing ride
@@ -2146,7 +2146,7 @@ STR_3128    :Save Track Design
 STR_3129    :Save Track Design with Scenery
 STR_3130    :Save
 STR_3131    :Cancel
-STR_3132    :{BLACK}Click items of scenery to select them to be saved with track design…
+STR_3132    :{BLACK}Click items of scenery to select them to be saved with track designΓÇª
 STR_3133    :Unable to build this on a slope
 STR_3134    :{RED}(Design includes scenery which is unavailable)
 STR_3135    :{RED}(Vehicle design unavailable. Ride performance may be affected.)
@@ -2205,8 +2205,8 @@ STR_3209    :Back to Previous Step:
 STR_3210    :Forward to Next Step:
 STR_3211    :Map size:
 STR_3212    :{POP16}{COMMA16}
-STR_3213    :Can’t decrease map size any further
-STR_3214    :Can’t increase map size any further
+STR_3213    :CanΓÇÖt decrease map size any further
+STR_3214    :CanΓÇÖt increase map size any further
 STR_3215    :Too close to edge of map
 STR_3216    :Select park-owned land etc.
 STR_3217    :Land Owned
@@ -2229,7 +2229,7 @@ STR_3233    :Scenario options - Guests
 STR_3235    :Show financial options
 STR_3236    :Show guest options
 STR_3238    :No Money
-STR_3239    :Make this park a ‘no money’ park with no financial restrictions
+STR_3239    :Make this park a ΓÇÿno moneyΓÇÖ park with no financial restrictions
 STR_3240    :Initial cash:
 STR_3241    :Initial loan:
 STR_3242    :Maximum loan size:
@@ -2238,20 +2238,20 @@ STR_3244    :Forbid marketing campaigns
 STR_3245    :Forbid advertising, promotional schemes, and other marketing campaigns
 STR_3246    :{CURRENCY}
 STR_3247    :{COMMA16}%
-STR_3248    :Can’t increase initial cash any further!
-STR_3249    :Can’t reduce initial cash any further!
-STR_3250    :Can’t increase initial loan any further!
-STR_3251    :Can’t reduce initial loan any further!
-STR_3252    :Can’t increase maximum loan size any further!
-STR_3253    :Can’t reduce maximum loan size any further!
-STR_3254    :Can’t increase interest rate any further!
-STR_3255    :Can’t reduce interest rate any further!
+STR_3248    :CanΓÇÖt increase initial cash any further!
+STR_3249    :CanΓÇÖt reduce initial cash any further!
+STR_3250    :CanΓÇÖt increase initial loan any further!
+STR_3251    :CanΓÇÖt reduce initial loan any further!
+STR_3252    :CanΓÇÖt increase maximum loan size any further!
+STR_3253    :CanΓÇÖt reduce maximum loan size any further!
+STR_3254    :CanΓÇÖt increase interest rate any further!
+STR_3255    :CanΓÇÖt reduce interest rate any further!
 STR_3260    :Cash per guest (average):
-STR_3261    :Guests’ initial happiness:
-STR_3262    :Guests’ initial hunger:
-STR_3263    :Guests’ initial thirst:
-STR_3264    :Can’t increase this any further!
-STR_3265    :Can’t reduce this any further!
+STR_3261    :GuestsΓÇÖ initial happiness:
+STR_3262    :GuestsΓÇÖ initial hunger:
+STR_3263    :GuestsΓÇÖ initial thirst:
+STR_3264    :CanΓÇÖt increase this any further!
+STR_3265    :CanΓÇÖt reduce this any further!
 STR_3266    :Select how this park charges for entrance and rides
 STR_3267    :Forbid tree removal
 STR_3268    :Forbid tall trees being removed
@@ -2272,7 +2272,7 @@ STR_3283    :Select rides to be preserved
 STR_3285    :Scenario options - Preserved Rides
 STR_3286    :Select objective for this scenario
 STR_3287    :{WINDOW_COLOUR_2}Objective:
-STR_3294    :Change…
+STR_3294    :ChangeΓÇª
 STR_3295    :Change name of park
 STR_3296    :Change name of scenario
 STR_3297    :Change detail notes about park / scenario
@@ -2298,18 +2298,18 @@ STR_3316    :Enter description of this scenario:
 STR_3317    :No details yet
 STR_3318    :Select which group this scenario appears in
 STR_3319    :{WINDOW_COLOUR_2}Scenario Group:
-STR_3320    :Unable to save scenario file…
+STR_3320    :Unable to save scenario fileΓÇª
 STR_3321    :New objects installed successfully
 STR_3322    :{WINDOW_COLOUR_2}Objective: {BLACK}{STRINGID}
 STR_3326    :{WINDOW_COLOUR_2}(no image)
 STR_3327    :Starting positions for people not set
-STR_3328    :Can’t advance to next editor stage…
+STR_3328    :CanΓÇÖt advance to next editor stageΓÇª
 STR_3329    :Park entrance not yet built
 STR_3330    :Park must own some land
 STR_3331    :Path from park entrance to map edge either not complete or too complex. Path must be single-width with as few junctions and corners as possible.
 STR_3332    :Park entrance is the wrong way round or has no path leading to the map edge
 STR_3333    :Export custom objects with saved games
-STR_3334    :Select whether to save any additional custom object data required (add-in data not supplied with the main product) in saved game or scenario files, allowing them to be loaded by someone who doesn’t have the additional object data
+STR_3334    :Select whether to save any additional custom object data required (add-in data not supplied with the main product) in saved game or scenario files, allowing them to be loaded by someone who doesnΓÇÖt have the additional object data
 STR_3335    :Track Designer - Select Ride Types & Vehicles
 STR_3336    :Track Designs Manager - Select Ride Type
 STR_3338    :{BLACK}Custom-designed layout
@@ -2320,19 +2320,19 @@ STR_3342    :Scenario Editor
 STR_3343    :Convert saved game to scenario
 STR_3344    :Track Designer
 STR_3345    :Track Designs Manager
-STR_3346    :Can’t save track design…
+STR_3346    :CanΓÇÖt save track designΓÇª
 STR_3347    :Ride is too large, contains too many elements, or scenery is too spread out
 STR_3348    :Rename
 STR_3349    :Delete
 STR_3350    :Track design name
 STR_3351    :Enter new name for this track design:
-STR_3352    :Can’t rename track design…
+STR_3352    :CanΓÇÖt rename track designΓÇª
 STR_3353    :New name contains invalid characters
 STR_3354    :Another file exists with this name, or file is write-protected
 STR_3355    :File is write-protected or locked
 STR_3356    :Delete File
 STR_3357    :{WINDOW_COLOUR_2}Are you sure you want to permanently delete {STRING}?
-STR_3358    :Can’t delete track design…
+STR_3358    :CanΓÇÖt delete track designΓÇª
 STR_3359    :{BLACK}No track designs of this type
 STR_3360    :Warning!
 STR_3361    :Too many track designs of this type. Some will not be listed.
@@ -2352,18 +2352,20 @@ STR_3376    :Install new
 STR_3377    :Install a new track design file
 STR_3378    :Install
 STR_3379    :Cancel
-STR_3380    :Unable to install this track design…
+STR_3380    :Unable to install this track designΓÇª
 STR_3381    :File is not compatible or contains invalid data
 STR_3382    :File copy failed
 STR_3383    :Select new name for track design
 STR_3384    :An existing track design already has this name. Please select a new name for this design:
-STR_3389    :Unable to select additional item of scenery…
+STR_3389    :Unable to select additional item of sceneryΓÇª
 STR_3390    :Too many items selected
 STR_3437    :Clear large areas of scenery from landscape
-STR_3438    :Unable to remove all scenery from here…
+STR_3438    :Unable to remove all scenery from hereΓÇª
 STR_3439    :Clear Scenery
 STR_3445    :Set Patrol Area
 STR_3446    :Cancel Patrol Area
+
+# New competition strings
 STR_7131    :Competition Lobby
 STR_7132    :Ready
 STR_7133    :Not Ready
