@@ -207,11 +207,16 @@ namespace OpenRCT2
             }
             throw IOException("Attempted to read past end of file.");
         }
+        uint64_t position = GetPosition();
         if (fread(buffer, 1, static_cast<size_t>(length), _file) == length)
         {
             return;
         }
-        throw IOException("Attempted to read past end of file.");
+        char msg[256];
+        std::snprintf(
+            msg, sizeof(msg), "Unable to read %lu bytes from file. Position: %lu, FileSize: %lu, feof = %d, ferror = %d",
+            length, position, _fileSize, feof(_file), ferror(_file));
+        throw IOException(msg);
     }
 
     void FileStream::Write(const void* buffer, uint64_t length)
@@ -224,15 +229,18 @@ namespace OpenRCT2
         {
             return;
         }
+        uint64_t position = GetPosition();
         if (auto count = fwrite(buffer, static_cast<size_t>(length), 1, _file); count != 1)
         {
-            std::string error = "Unable to write " + std::to_string(length) + " bytes to file. Count = " + std::to_string(count)
-                + ", errno = " + std::to_string(errno);
-            throw IOException(error);
+            char msg[256];
+            std::snprintf(
+                msg, sizeof(msg),
+                "Unable to write %lu bytes to file. Count = %ld, Position = %lu, FileSize = %lu, feof = %d, ferror = %d",
+                length, count, position, _fileSize, feof(_file), ferror(_file));
+            throw IOException(msg);
         }
 
-        uint64_t position = GetPosition();
-        _fileSize = std::max(_fileSize, position);
+        _fileSize = std::max(_fileSize, position + length);
     }
 
     uint64_t FileStream::TryRead(void* buffer, uint64_t length)
