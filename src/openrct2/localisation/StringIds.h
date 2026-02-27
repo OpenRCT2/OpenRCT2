@@ -1798,11 +1798,18 @@ enum : StringId
     STR_COMPETITION_DURATION = 7128,
     STR_COMPETITION_MAX_PLAYERS = 7129,
     STR_COMPETITION_RESULTS = 7130,
-    STR_WINNER = 7131,
-    STR_FINAL_SCORE = 7132,
-    STR_GUESTS_COUNT = 7133,
-    STR_RATING_VALUE = 7134,
-
-    // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
-    /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
+    STR_COMPETITION_LOBBY = 7131,
+    STR_READY = 7132,
+    STR_NOT_READY = 7133,
+    STR_WAITING_FOR_PLAYERS = 7134,
+    STR_ALL_PLAYERS_READY = 7135,
+    STR_START_COMPETITION_HOST = 7136,
+    STR_LEAVE_LOBBY = 7137,
+    STR_TOGGLE_READY = 7138,
+    STR_PLAYERS_COUNT_FORMAT = 7139,
+    STR_COMPETITION_TYPE_LABEL = 7140,
+    STR_DURATION_LABEL = 7141,
+    STR_LOBBY_FULL = 7142,
+    STR_CANNOT_START_NOT_ALL_READY = 7143,
+    STR_CANNOT_START_NEED_MORE_PLAYERS = 7144,
 };

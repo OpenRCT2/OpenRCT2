@@ -65,6 +65,11 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* ClearSceneryOpen();
     void ToggleClearSceneryWindow();
 
+    // Competition
+    WindowBase* CompetitionLeaderboardOpen();
+    WindowBase* CompetitionSetupOpen();
+    WindowBase* CompetitionLobbyOpen();
+
     // CustomCurrency
     WindowBase* CustomCurrencyOpen();
 
@@ -166,6 +171,7 @@ namespace OpenRCT2::Ui::Windows
     // Competition
     WindowBase* CompetitionLeaderboardOpen();
     WindowBase* CompetitionSetupOpen();
+    WindowBase* CompetitionLobbyOpen();
 
     // NewCampaign
     WindowBase* NewCampaignOpen(int16_t campaignType);

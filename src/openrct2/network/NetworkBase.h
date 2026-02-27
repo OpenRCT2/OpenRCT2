@@ -119,6 +119,12 @@ namespace OpenRCT2::Network
         void ServerSendLeaderboard();
         void ServerSendTerritoryAssignment(uint8_t playerId, const Competition::TerritoryBounds& bounds);
 
+        // Lobby packet dispatchers
+        void ServerSendLobbyStateSync();
+        void ServerSendLobbyPlayerJoined(uint8_t playerId, const std::string& name);
+        void ServerSendLobbyPlayerLeft(uint8_t playerId);
+        void ServerSendLobbyPlayerReady(uint8_t playerId, bool ready);
+
         // Handlers
         void ServerHandleRequestGamestate(Connection& connection, Packet& packet);
         void ServerHandleHeartbeat(Connection& connection, Packet& packet);
@@ -133,7 +139,12 @@ namespace OpenRCT2::Network
 
         // Competition handlers
         void ServerHandleCompetitionReady(Connection& connection, Packet& packet);
-
+        
+        // Lobby handlers
+        void ServerHandleLobbyJoin(Connection& connection, Packet& packet);
+        void ServerHandleLobbyLeave(Connection& connection, Packet& packet);
+        void ServerHandleLobbyPlayerReady(Connection& connection, Packet& packet);
+        void ServerHandleLobbyStartRequest(Connection& connection, Packet& packet);
     public: // Client
         void Reconnect();
         Mode GetMode() const noexcept;
@@ -169,6 +180,12 @@ namespace OpenRCT2::Network
 
         // Competition packet dispatchers
         void Client_Send_CompetitionReady();
+        
+        // Lobby packet dispatchers
+        void Client_Send_LobbyJoin();
+        void Client_Send_LobbyLeave();
+        void Client_Send_LobbyPlayerReady(bool ready);
+        void Client_Send_LobbyStartRequest();
 
         // Handlers.
         void Client_Handle_AUTH(Connection& connection, Packet& packet);
@@ -198,6 +215,13 @@ namespace OpenRCT2::Network
         void Client_Handle_SCORE_UPDATE(Connection& connection, Packet& packet);
         void Client_Handle_LEADERBOARD_UPDATE(Connection& connection, Packet& packet);
         void Client_Handle_TERRITORY_ASSIGNMENT(Connection& connection, Packet& packet);
+        
+        // Lobby handlers
+        void Client_Handle_LOBBY_STATE_SYNC(Connection& connection, Packet& packet);
+        void Client_Handle_LOBBY_PLAYER_JOINED(Connection& connection, Packet& packet);
+        void Client_Handle_LOBBY_PLAYER_LEFT(Connection& connection, Packet& packet);
+        void Client_Handle_LOBBY_PLAYER_READY(Connection& connection, Packet& packet);
+        void Client_Handle_LOBBY_START_REQUEST(Connection& connection, Packet& packet);
     public: // Public common
         std::string ServerName;
         std::string ServerDescription;

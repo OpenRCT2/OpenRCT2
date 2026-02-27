@@ -51,6 +51,10 @@ namespace OpenRCT2::Competition
         std::string MapName;
     };
 
+    constexpr uint32_t kMaxCompetitionPlayers = 8;
+    constexpr uint32_t kMaxCompetitionDurationMinutes = 600; // 10 hours
+    constexpr uint32_t kMinCompetitionDurationMinutes = 5;
+
     struct CompetitiveStats
     {
         money64 ParkValue = 0.00_GBP;
@@ -72,6 +76,7 @@ namespace OpenRCT2::Competition
         CompetitiveStats Stats;
         uint32_t Rank = 0;
         bool IsEliminated = false;
+        bool IsReady = false;
     };
 
     class CompetitionManager
@@ -86,6 +91,16 @@ namespace OpenRCT2::Competition
         void Update();
         void End();
         void Reset();
+
+        // Lobby management
+        bool CanJoinLobby() const;
+        bool AddPlayerToLobby(uint8_t playerId, const std::string& name);
+        void RemovePlayerFromLobby(uint8_t playerId);
+        void SetPlayerReady(uint8_t playerId, bool ready);
+        bool IsPlayerReady(uint8_t playerId) const;
+        bool AreAllPlayersReady() const;
+        uint8_t GetLobbyPlayerCount() const;
+        bool CanStartCompetition() const;
 
         // Player management
         void AddPlayer(uint8_t playerId, const std::string& name);

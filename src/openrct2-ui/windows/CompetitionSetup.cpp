@@ -293,7 +293,7 @@ namespace OpenRCT2::Ui::Windows
             // Show stop button when competition is active, hide when not active
             if (isActive)
             {
-                widgets[WIDX_STOP_BUTTON].flags.clear(WidgetFlag::isHidden);
+                widgets[WIDX_STOP_BUTTON].flags.unset(WidgetFlag::isHidden);
             }
             else
             {

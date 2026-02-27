@@ -86,11 +86,16 @@ namespace OpenRCT2::Network
         scriptsData,
         heartbeat,
         beginMap,
-        competitionStart,    // NEW: Start competition
-        competitionUpdate,   // NEW: Update scores/stats
-        competitionEnd,      // NEW: End competition with results
-        scoreUpdate,         // NEW: Individual score change
-        leaderboardUpdate,   // NEW: Full leaderboard data
+        competitionStart,       // Start competition
+        competitionUpdate,      // Update scores/stats
+        competitionEnd,         // End competition with results
+        scoreUpdate,            // Individual score change
+        leaderboardUpdate,      // Full leaderboard data
+        lobbyJoin,              // Player joins lobby
+        lobbyLeave,             // Player leaves lobby
+        lobbyPlayerReady,       // Player ready state change
+        lobbyStateSync,         // Full lobby state sync
+        lobbyStartRequest,      // Request to start competition (host only)
         max,
         invalid = static_cast<uint32_t>(-1),
     };

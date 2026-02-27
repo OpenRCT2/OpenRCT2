@@ -17,6 +17,16 @@ namespace OpenRCT2::Competition
     void CompetitionManager::Initialize(const CompetitionConfig& config)
     {
         _config = config;
+
+        // Enforce constraints
+        if (_config.MaxPlayers > kMaxCompetitionPlayers)
+            _config.MaxPlayers = kMaxCompetitionPlayers;
+
+        if (_config.DurationMinutes > kMaxCompetitionDurationMinutes)
+            _config.DurationMinutes = kMaxCompetitionDurationMinutes;
+        else if (_config.DurationMinutes < kMinCompetitionDurationMinutes)
+            _config.DurationMinutes = kMinCompetitionDurationMinutes;
+
         _status = CompetitionStatus::Lobby;
         _playerData.clear();
         _winnerId = 0;
@@ -24,6 +34,9 @@ namespace OpenRCT2::Competition
 
     void CompetitionManager::Start()
     {
+        if (!CanStartCompetition())
+            return;
+
         _status = CompetitionStatus::Active;
         _startTime = std::chrono::steady_clock::now();
         _endTime = _startTime + std::chrono::minutes(_config.DurationMinutes);
@@ -334,6 +347,105 @@ namespace OpenRCT2::Competition
     bool CompetitionManager::CanPlayerBuildAt(uint8_t playerId, const CoordsXY& coord) const
     {
         return _territoryManager.CanPlayerBuildAt(playerId, coord);
+    }
+
+    bool CompetitionManager::CanJoinLobby() const
+    {
+        if (_status != CompetitionStatus::Lobby)
+            return false;
+
+        return _playerData.size() < _config.MaxPlayers;
+    }
+
+    bool CompetitionManager::AddPlayerToLobby(uint8_t playerId, const std::string& name)
+    {
+        if (!CanJoinLobby())
+            return false;
+
+        // Check if player already exists
+        for (const auto& data : _playerData)
+        {
+            if (data.PlayerId == playerId)
+                return false;
+        }
+
+        PlayerCompetitionData data;
+        data.PlayerId = playerId;
+        data.PlayerName = name;
+        data.Stats = CompetitiveStats{};
+        data.IsReady = false;
+        data.IsEliminated = false;
+        data.Rank = 0;
+        _playerData.push_back(data);
+
+        return true;
+    }
+
+    void CompetitionManager::RemovePlayerFromLobby(uint8_t playerId)
+    {
+        if (_status != CompetitionStatus::Lobby)
+            return;
+
+        _playerData.erase(
+            std::remove_if(
+                _playerData.begin(), _playerData.end(),
+                [playerId](const auto& data) { return data.PlayerId == playerId; }),
+            _playerData.end());
+    }
+
+    void CompetitionManager::SetPlayerReady(uint8_t playerId, bool ready)
+    {
+        if (_status != CompetitionStatus::Lobby)
+            return;
+
+        auto* playerData = GetPlayerData(playerId);
+        if (playerData)
+        {
+            playerData->IsReady = ready;
+        }
+    }
+
+    bool CompetitionManager::IsPlayerReady(uint8_t playerId) const
+    {
+        for (const auto& data : _playerData)
+        {
+            if (data.PlayerId == playerId)
+                return data.IsReady;
+        }
+        return false;
+    }
+
+    bool CompetitionManager::AreAllPlayersReady() const
+    {
+        if (_playerData.empty())
+            return false;
+
+        for (const auto& data : _playerData)
+        {
+            if (!data.IsReady)
+                return false;
+        }
+
+        return true;
+    }
+
+    uint8_t CompetitionManager::GetLobbyPlayerCount() const
+    {
+        return static_cast<uint8_t>(_playerData.size());
+    }
+
+    bool CompetitionManager::CanStartCompetition() const
+    {
+        // Must be in lobby
+        if (_status != CompetitionStatus::Lobby)
+            return false;
+
+        // Must have at least 2 players
+        if (_playerData.size() < 2)
+            return false;
+
+        // All players must be ready
+        return AreAllPlayersReady();
     }
 
 } // namespace OpenRCT2::Competition

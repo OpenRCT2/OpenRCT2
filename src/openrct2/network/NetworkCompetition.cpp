@@ -248,14 +248,271 @@ namespace OpenRCT2::Network
         packet >> topLeftX >> topLeftY >> bottomRightX >> bottomRightY;
 
         Competition::TerritoryBounds bounds;
-        bounds.TopLeft = TileCoordsXY{ topLeftX, topLeftY };
-        bounds.BottomRight = TileCoordsXY{ bottomRightX, bottomRightY };
+        // Territory assignment logic would go here
+    }
+
+    // ===========================
+    // LOBBY NETWORK FUNCTIONS
+    // ===========================
+
+    // Server: Send lobby state sync to all clients
+    void NetworkBase::ServerSendLobbyStateSync()
+    {
+        auto* ctx = GetContext();
+        auto* competitionMgr = ctx->GetCompetitionManager();
+
+        if (!competitionMgr || !competitionMgr->IsInLobby())
+            return;
+
+        const auto& players = competitionMgr->GetAllPlayerData();
+        const auto& config = competitionMgr->GetConfig();
+
+        Packet packet;
+        packet << static_cast<uint32_t>(Command::lobbyStateSync);
+        packet << static_cast<uint8_t>(config.Type);
+        packet << config.DurationMinutes;
+        packet << config.MaxPlayers;
+        packet << static_cast<uint32_t>(players.size());
+
+        for (const auto& player : players)
+        {
+            packet << player.PlayerId;
+            packet << player.PlayerName;
+            packet << static_cast<uint8_t>(player.IsReady ? 1 : 0);
+        }
+
+        SendPacketToClients(packet);
+    }
+
+    // Server: Send lobby player joined
+    void NetworkBase::ServerSendLobbyPlayerJoined(uint8_t playerId, const std::string& name)
+    {
+        Packet packet;
+        packet << static_cast<uint32_t>(Command::lobbyJoin);
+        packet << playerId;
+        packet << name;
+
+        SendPacketToClients(packet);
+    }
+
+    // Server: Send lobby player left
+    void NetworkBase::ServerSendLobbyPlayerLeft(uint8_t playerId)
+    {
+        Packet packet;
+        packet << static_cast<uint32_t>(Command::lobbyLeave);
+        packet << playerId;
+
+        SendPacketToClients(packet);
+    }
+
+    // Server: Send lobby player ready state change
+    void NetworkBase::ServerSendLobbyPlayerReady(uint8_t playerId, bool ready)
+    {
+        Packet packet;
+        packet << static_cast<uint32_t>(Command::lobbyPlayerReady);
+        packet << playerId;
+        packet << static_cast<uint8_t>(ready ? 1 : 0);
+
+        SendPacketToClients(packet);
+    }
+
+    // Server: Handle lobby join request
+    void NetworkBase::ServerHandleLobbyJoin(Connection& connection, Packet& packet)
+    {
+        auto* ctx = GetContext();
+        auto* competitionMgr = ctx->GetCompetitionManager();
+
+        if (!competitionMgr || !competitionMgr->IsInLobby())
+            return;
+
+        auto* player = GetPlayerByID(connection.Player->Id);
+        if (!player)
+            return;
+
+        if (competitionMgr->AddPlayerToLobby(player->Id, player->Name))
+        {
+            ServerSendLobbyPlayerJoined(player->Id, player->Name);
+            ServerSendLobbyStateSync();
+        }
+    }
+
+    // Server: Handle lobby leave request
+    void NetworkBase::ServerHandleLobbyLeave(Connection& connection, Packet& packet)
+    {
+        auto* ctx = GetContext();
+        auto* competitionMgr = ctx->GetCompetitionManager();
+
+        if (!competitionMgr || !competitionMgr->IsInLobby())
+            return;
+
+        auto* player = GetPlayerByID(connection.Player->Id);
+        if (!player)
+            return;
+
+        competitionMgr->RemovePlayerFromLobby(player->Id);
+        ServerSendLobbyPlayerLeft(player->Id);
+        ServerSendLobbyStateSync();
+    }
+
+    // Server: Handle player ready state change
+    void NetworkBase::ServerHandleLobbyPlayerReady(Connection& connection, Packet& packet)
+    {
+        uint8_t ready;
+        packet >> ready;
 
         auto* ctx = GetContext();
         auto* competitionMgr = ctx->GetCompetitionManager();
-        auto& territoryMgr = competitionMgr->GetTerritoryManager();
 
-        territoryMgr.CreateTerritory(playerId, bounds);
+        if (!competitionMgr || !competitionMgr->IsInLobby())
+            return;
+
+        auto* player = GetPlayerByID(connection.Player->Id);
+        if (!player)
+            return;
+
+        competitionMgr->SetPlayerReady(player->Id, ready != 0);
+        ServerSendLobbyPlayerReady(player->Id, ready != 0);
+        ServerSendLobbyStateSync();
+    }
+
+    // Server: Handle lobby start request (host only)
+    void NetworkBase::ServerHandleLobbyStartRequest(Connection& connection, Packet& packet)
+    {
+        auto* ctx = GetContext();
+        auto* competitionMgr = ctx->GetCompetitionManager();
+
+        if (!competitionMgr || !competitionMgr->IsInLobby())
+            return;
+
+        auto* player = GetPlayerByID(connection.Player->Id);
+        if (!player || player->Id != 0) // Only host (player 0) can start
+            return;
+
+        if (competitionMgr->CanStartCompetition())
+        {
+            competitionMgr->Start();
+            ServerSendCompetitionStart(competitionMgr->GetConfig());
+        }
+    }
+
+    // Client: Send lobby join request
+    void NetworkBase::Client_Send_LobbyJoin()
+    {
+        Packet packet;
+        packet << static_cast<uint32_t>(Command::lobbyJoin);
+        _serverConnection->QueuePacket(std::move(packet));
+    }
+
+    // Client: Send lobby leave request
+    void NetworkBase::Client_Send_LobbyLeave()
+    {
+        Packet packet;
+        packet << static_cast<uint32_t>(Command::lobbyLeave);
+        _serverConnection->QueuePacket(std::move(packet));
+    }
+
+    // Client: Send player ready state
+    void NetworkBase::Client_Send_LobbyPlayerReady(bool ready)
+    {
+        Packet packet;
+        packet << static_cast<uint32_t>(Command::lobbyPlayerReady);
+        packet << static_cast<uint8_t>(ready ? 1 : 0);
+        _serverConnection->QueuePacket(std::move(packet));
+    }
+
+    // Client: Send lobby start request
+    void NetworkBase::Client_Send_LobbyStartRequest()
+    {
+        Packet packet;
+        packet << static_cast<uint32_t>(Command::lobbyStartRequest);
+        _serverConnection->QueuePacket(std::move(packet));
+    }
+
+    // Client: Handle lobby state sync
+    void NetworkBase::Client_Handle_LOBBY_STATE_SYNC(Connection& connection, Packet& packet)
+    {
+        auto* ctx = GetContext();
+        auto* competitionMgr = ctx->GetCompetitionManager();
+
+        if (!competitionMgr)
+            return;
+
+        uint8_t typeValue;
+        uint32_t durationMinutes, maxPlayers, numPlayers;
+
+        packet >> typeValue >> durationMinutes >> maxPlayers >> numPlayers;
+
+        Competition::CompetitionConfig config;
+        config.Type = static_cast<Competition::CompetitionType>(typeValue);
+        config.DurationMinutes = durationMinutes;
+        config.MaxPlayers = maxPlayers;
+
+        if (!competitionMgr->IsInLobby())
+        {
+            competitionMgr->Initialize(config);
+        }
+
+        // Clear existing player data and rebuild from packet
+        competitionMgr->Reset();
+        competitionMgr->Initialize(config);
+
+        for (uint32_t i = 0; i < numPlayers; i++)
+        {
+            uint8_t playerId, ready;
+            std::string playerName;
+
+            packet >> playerId >> playerName >> ready;
+
+            competitionMgr->AddPlayerToLobby(playerId, playerName);
+            competitionMgr->SetPlayerReady(playerId, ready != 0);
+        }
+    }
+
+    // Client: Handle player joined lobby
+    void NetworkBase::Client_Handle_LOBBY_PLAYER_JOINED(Connection& connection, Packet& packet)
+    {
+        uint8_t playerId;
+        std::string playerName;
+
+        packet >> playerId >> playerName;
+
+        auto* ctx = GetContext();
+        auto* competitionMgr = ctx->GetCompetitionManager();
+
+        if (competitionMgr && competitionMgr->IsInLobby())
+        {
+            competitionMgr->AddPlayerToLobby(playerId, playerName);
+        }
+    }
+
+    // Client: Handle player left lobby
+    void NetworkBase::Client_Handle_LOBBY_PLAYER_LEFT(Connection& connection, Packet& packet)
+    {
+        uint8_t playerId;
+        packet >> playerId;
+
+        auto* ctx = GetContext();
+        auto* competitionMgr = ctx->GetCompetitionManager();
+
+        if (competitionMgr && competitionMgr->IsInLobby())
+        {
+            competitionMgr->RemovePlayerFromLobby(playerId);
+        }
+    }
+
+    // Client: Handle player ready state change
+    void NetworkBase::Client_Handle_LOBBY_PLAYER_READY(Connection& connection, Packet& packet)
+    {
+        uint8_t playerId, ready;
+        packet >> playerId >> ready;
+
+        auto* ctx = GetContext();
+        auto* competitionMgr = ctx->GetCompetitionManager();
+
+        if (competitionMgr && competitionMgr->IsInLobby())
+        {
+            competitionMgr->SetPlayerReady(playerId, ready != 0);
+        }
     }
 
 } // namespace OpenRCT2::Network

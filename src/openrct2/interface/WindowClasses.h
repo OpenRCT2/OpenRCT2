@@ -94,6 +94,7 @@ enum class WindowClass : uint8_t
     // Competition windows
     competitionLeaderboard = 140,
     competitionSetup = 141,
+    competitionLobby = 142,
 
     // Only used for colour schemes
     staff = 220,
