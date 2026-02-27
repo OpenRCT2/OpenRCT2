@@ -1,0 +1,77 @@
+###############################################################################
+# Competition Multiplayer String Definitions
+# Add these to data/language/en-GB.txt
+###############################################################################
+
+# Window titles
+STR_COMPETITION_LEADERBOARD         :Competition Leaderboard
+STR_NO_ACTIVE_COMPETITION           :No active competition
+
+# Leaderboard columns
+STR_RANK_COLUMN                     :Rank
+STR_PLAYER_NAME_COLUMN              :Player
+STR_SCORE_COLUMN                    :Score
+STR_STATUS_COLUMN                   :Status
+
+# HUD strings
+STR_TIME_REMAINING_FORMAT           :Time: {UINT16}:{UINT16:02}
+STR_YOUR_RANK_FORMAT                :Rank: #{UINT16}
+STR_YOUR_SCORE_FORMAT               :Score: {UINT32}
+
+# Competition types
+STR_PARK_VALUE_RACE                 :Park Value Race
+STR_GUEST_COUNT_CHALLENGE           :Guest Count Challenge
+STR_RIDE_INCOME_MASTER              :Ride Income Master
+STR_SPEED_CHALLENGE                 :Speed Challenge
+STR_SURVIVAL_MODE                   :Survival Mode
+STR_RIDE_MASTER                     :Ride Master
+
+# Notifications
+STR_COMPETITION_STARTING            :Competition starting in {UINT16} seconds...
+STR_COMPETITION_STARTED             :Competition has started!
+STR_COMPETITION_ENDED               :Competition finished!
+STR_YOU_WON_COMPETITION             :Victory! You won the competition!
+STR_YOU_LOST_COMPETITION            :Competition ended. Better luck next time!
+STR_PLAYER_ELIMINATED               :{STRINGID} has been eliminated
+STR_PLAYER_LEADING                  :{STRINGID} is now in the lead!
+
+# Territory messages
+STR_CANT_BUILD_IN_OTHER_PLAYERS_TERRITORY  :You can only build in your own territory!
+STR_TERRITORY_ASSIGNED              :Your territory has been assigned
+STR_TERRITORY_COLOR                 :Territory Color: {COLOUR}
+
+# Status formats
+STR_GUESTS_COUNT                    :{UINT32} guests
+STR_RATING_VALUE                    :{RATING}
+STR_CURRENCY                        :{CURRENCY}
+STR_DASH                            :-
+
+# Button labels
+STR_REFRESH                         :Refresh
+STR_REFRESH_TIP                     :Refresh leaderboard
+STR_CLOSE_X                         :X
+STR_CLOSE_WINDOW_TIP                :Close window
+STR_START_COMPETITION               :Start Competition
+STR_LEAVE_COMPETITION               :Leave Competition
+STR_VIEW_LEADERBOARD                :View Leaderboard
+
+# Competition configuration
+STR_COMPETITION_DURATION            :Duration: {UINT16} minutes
+STR_MAX_PLAYERS                     :Max Players: {UINT16}
+STR_COMPETITION_TYPE                :Type: {STRINGID}
+
+# Victory screen
+STR_COMPETITION_RESULTS             :Competition Results
+STR_WINNER                          :Winner: {STRINGID}
+STR_FINAL_SCORE                     :Final Score: {UINT32}
+STR_YOUR_FINAL_RANK                 :Your Final Rank: #{UINT16}
+STR_STATISTICS                      :Statistics
+
+# Statistics
+STR_PARK_VALUE_STAT                 :Park Value: {CURRENCY}
+STR_GUEST_COUNT_STAT                :Guests: {UINT32}
+STR_RIDES_BUILT_STAT                :Rides Built: {UINT32}
+STR_STAFF_COUNT_STAT                :Staff: {UINT32}
+STR_TOTAL_INCOME_STAT               :Income: {CURRENCY}
+STR_TOTAL_EXPENSES_STAT             :Expenses: {CURRENCY}
+STR_TOTAL_PROFIT_STAT               :Profit: {CURRENCY}

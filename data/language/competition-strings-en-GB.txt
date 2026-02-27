@@ -1,0 +1,37 @@
+# Competition Multiplayer Strings - Add to data/language/en-GB.txt
+
+STR_7100    :Competition Leaderboard
+STR_7101    :Competition Setup
+STR_7102    :No active competition
+STR_7103    :Rank
+STR_7104    :Player
+STR_7105    :Score
+STR_7106    :Status
+STR_7107    :Time: {COMMA16}:{COMMA16}
+STR_7108    :Rank: #{COMMA16}
+STR_7109    :Score: {COMMA32}
+STR_7110    :Competition starting in {COMMA16} seconds...
+STR_7111    :Competition has started!
+STR_7112    :Competition finished!
+STR_7113    :Victory! You won the competition!
+STR_7114    :Competition ended. Better luck next time!
+STR_7115    :{STRINGID} has been eliminated
+STR_7116    :{STRINGID} is now in the lead!
+STR_7117    :You can only build in your own territory!
+STR_7118    :Your territory has been assigned
+STR_7119    :Park Value Race
+STR_7120    :Guest Count Challenge
+STR_7121    :Ride Income Master
+STR_7122    :Speed Challenge
+STR_7123    :Survival Mode
+STR_7124    :Ride Master
+STR_7125    :Start Competition
+STR_7126    :Leave Competition
+STR_7127    :View Leaderboard
+STR_7128    :Duration: {COMMA16} minutes
+STR_7129    :Max Players: {COMMA16}
+STR_7130    :Competition Results
+STR_7131    :Winner: {STRINGID}
+STR_7132    :Final Score: {COMMA32}
+STR_7133    :{COMMA32} guests
+STR_7134    :{COMMA16}.{COMMA16}

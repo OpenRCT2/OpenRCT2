@@ -86,6 +86,11 @@ namespace OpenRCT2::Network
         scriptsData,
         heartbeat,
         beginMap,
+        competitionStart,    // NEW: Start competition
+        competitionUpdate,   // NEW: Update scores/stats
+        competitionEnd,      // NEW: End competition with results
+        scoreUpdate,         // NEW: Individual score change
+        leaderboardUpdate,   // NEW: Full leaderboard data
         max,
         invalid = static_cast<uint32_t>(-1),
     };

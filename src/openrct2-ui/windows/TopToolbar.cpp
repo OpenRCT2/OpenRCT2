@@ -157,6 +157,8 @@ namespace OpenRCT2::Ui::Windows
     {
         DDIDX_MULTIPLAYER = 0,
         DDIDX_MULTIPLAYER_RECONNECT = 1,
+        DDIDX_COMPETITION_LEADERBOARD = 2,
+        DDIDX_COMPETITION_SETUP = 3,
 
         TOP_TOOLBAR_NETWORK_COUNT,
     };
@@ -768,6 +770,8 @@ namespace OpenRCT2::Ui::Windows
         {
             gDropdown.items[DDIDX_MULTIPLAYER] = Dropdown::PlainMenuLabel(STR_MULTIPLAYER);
             gDropdown.items[DDIDX_MULTIPLAYER_RECONNECT] = Dropdown::PlainMenuLabel(STR_MULTIPLAYER_RECONNECT);
+            gDropdown.items[DDIDX_COMPETITION_LEADERBOARD] = Dropdown::PlainMenuLabel(STR_COMPETITION_LEADERBOARD);
+            gDropdown.items[DDIDX_COMPETITION_SETUP] = Dropdown::PlainMenuLabel(STR_COMPETITION_SETUP);
 
             WindowDropdownShowText(
                 { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height(),
@@ -790,6 +794,12 @@ namespace OpenRCT2::Ui::Windows
                         break;
                     case DDIDX_MULTIPLAYER_RECONNECT:
                         Network::Reconnect();
+                        break;
+                    case DDIDX_COMPETITION_LEADERBOARD:
+                        ContextOpenWindow(WindowClass::competitionLeaderboard);
+                        break;
+                    case DDIDX_COMPETITION_SETUP:
+                        ContextOpenWindow(WindowClass::competitionSetup);
                         break;
                 }
             }

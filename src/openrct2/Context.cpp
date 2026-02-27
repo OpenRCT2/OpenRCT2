@@ -55,6 +55,7 @@
 #include "network/DiscordService.h"
 #include "network/Network.h"
 #include "network/NetworkBase.h"
+#include "competition/CompetitionManager.h"
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
 #include "paint/Painter.h"
@@ -126,6 +127,7 @@ namespace OpenRCT2
 #endif
 #ifndef DISABLE_NETWORK
         Network::NetworkBase _network;
+        std::unique_ptr<Competition::CompetitionManager> _competitionManager;
 #endif
 
         // Scenes
@@ -182,6 +184,7 @@ namespace OpenRCT2
 #endif
 #ifndef DISABLE_NETWORK
             , _network(*this)
+            , _competitionManager(std::make_unique<Competition::CompetitionManager>())
 #endif
             , _painter(std::make_unique<Paint::Painter>(*_uiContext))
         {
@@ -307,6 +310,11 @@ namespace OpenRCT2
         Network::NetworkBase& GetNetwork() override
         {
             return _network;
+        }
+        
+        Competition::CompetitionManager* GetCompetitionManager() override
+        {
+            return _competitionManager.get();
         }
 #endif
 

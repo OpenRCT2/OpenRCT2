@@ -20,6 +20,7 @@
     #include <openrct2/core/String.hpp>
     #include <openrct2/drawing/Drawing.h>
     #include <openrct2/interface/Chat.h>
+    #include <openrct2/localisation/StringIds.h>
     #include <openrct2/network/Network.h>
     #include <openrct2/ui/WindowManager.h>
     #include <openrct2/windows/Intent.h>
@@ -40,11 +41,12 @@ namespace OpenRCT2::Ui::Windows
         WIDX_MAXPLAYERS_INCREASE,
         WIDX_MAXPLAYERS_DECREASE,
         WIDX_ADVERTISE_CHECKBOX,
+        WIDX_COMPETITION_SETUP,
         WIDX_START_SERVER,
         WIDX_LOAD_SERVER
     };
 
-    static constexpr ScreenSize kWindowSize = { 300, 154 };
+    static constexpr ScreenSize kWindowSize = { 300, 170 };
 
     // clang-format off
     static constexpr auto _windowServerStartWidgets = makeWidgets(
@@ -56,6 +58,7 @@ namespace OpenRCT2::Ui::Windows
         makeWidget({ 120, 84 }, { 173, 13 }, WidgetType::textBox, WindowColour::secondary), // password text box
         makeSpinnerWidgets({ 120, 100 }, { 173, 12 }, WidgetType::spinner, WindowColour::secondary,STR_SERVER_MAX_PLAYERS_VALUE), // max players (3 widgets)
         makeWidget({ 6, 117 }, { 287, 14 }, WidgetType::checkbox, WindowColour::secondary, STR_ADVERTISE,STR_ADVERTISE_SERVER_TIP), // advertise checkbox
+        makeWidget({ 6, 133 }, { 287, 14 }, WidgetType::button, WindowColour::secondary, STR_COMPETITION_SETUP), // competition setup button
         makeWidget({ 6, kWindowSize.height - 6 - 13 }, { 101, 14 }, WidgetType::button, WindowColour::secondary,STR_NEW_GAME), // start server button
         makeWidget({ 112, kWindowSize.height - 6 - 13 }, { 101, 14 }, WidgetType::button, WindowColour::secondary, STR_LOAD_GAME) // None
     );
@@ -128,11 +131,15 @@ namespace OpenRCT2::Ui::Windows
                     Config::Save();
                     invalidate();
                     break;
+                case WIDX_COMPETITION_SETUP:
+                    ContextOpenWindow(WindowClass::competitionSetup);
+                    break;
                 case WIDX_START_SERVER:
                     Network::SetPassword(_password);
                     ScenarioselectOpen(ScenarioSelectCallback);
                     break;
                 case WIDX_LOAD_SERVER:
+                {
                     Network::SetPassword(_password);
                     auto intent = Intent(WindowClass::loadsave);
                     intent.PutEnumExtra<LoadSaveAction>(INTENT_EXTRA_LOADSAVE_ACTION, LoadSaveAction::load);
@@ -140,6 +147,7 @@ namespace OpenRCT2::Ui::Windows
                     intent.PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<CloseCallback>(LoadSaveCallback));
                     ContextOpenIntent(&intent);
                     break;
+                }
             }
         }
         void onPrepareDraw() override

@@ -197,6 +197,8 @@
     <ClCompile Include="windows\MapTooltip.cpp" />
     <ClCompile Include="windows\MazeConstruction.cpp" />
     <ClCompile Include="windows\Multiplayer.cpp" />
+    <ClCompile Include="windows\CompetitionLeaderboard.cpp" />
+    <ClCompile Include="windows\CompetitionSetup.cpp" />
     <ClCompile Include="windows\NetworkStatus.cpp" />
     <ClCompile Include="windows\NewCampaign.cpp" />
     <ClCompile Include="windows\NewRide.cpp" />

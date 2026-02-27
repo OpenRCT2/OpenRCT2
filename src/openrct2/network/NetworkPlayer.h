@@ -42,6 +42,11 @@ namespace OpenRCT2::Network
         uint32_t LastDemolishRideTime = 0;
         uint32_t LastPlaceSceneryTime = 0;
         std::unordered_map<GameCommand, int32_t> CooldownTime;
+
+        // Competition data
+        uint32_t CompetitionScore = 0;
+        uint32_t CompetitionRank = 0;
+
         Player() noexcept = default;
 
         void SetName(std::string_view name);

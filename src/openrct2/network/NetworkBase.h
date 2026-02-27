@@ -2,9 +2,11 @@
 
 #include "../System.hpp"
 #include "../actions/GameAction.hpp"
+#include "../competition/CompetitionManager.h"
 #include "../scenario/Scenario.h"
 #include "NetworkConnection.h"
 #include "NetworkGroup.h"
+#include "NetworkKey.h"
 #include "NetworkPlayer.h"
 #include "NetworkServerAdvertiser.h"
 #include "NetworkTypes.h"
@@ -109,6 +111,14 @@ namespace OpenRCT2::Network
         void ServerSendObjectsList(Connection& connection, const std::vector<const ObjectRepositoryItem*>& objects) const;
         void ServerSendScripts(Connection& connection);
 
+        // Competition packet dispatchers
+        void ServerSendCompetitionStart(const Competition::CompetitionConfig& config);
+        void ServerSendCompetitionUpdate();
+        void ServerSendCompetitionEnd(uint8_t winnerId);
+        void ServerSendScoreUpdate(uint8_t playerId);
+        void ServerSendLeaderboard();
+        void ServerSendTerritoryAssignment(uint8_t playerId, const Competition::TerritoryBounds& bounds);
+
         // Handlers
         void ServerHandleRequestGamestate(Connection& connection, Packet& packet);
         void ServerHandleHeartbeat(Connection& connection, Packet& packet);
@@ -120,6 +130,9 @@ namespace OpenRCT2::Network
         void ServerHandleGameInfo(Connection& connection, Packet& packet);
         void ServerHandleToken(Connection& connection, Packet& packet);
         void ServerHandleMapRequest(Connection& connection, Packet& packet);
+
+        // Competition handlers
+        void ServerHandleCompetitionReady(Connection& connection, Packet& packet);
 
     public: // Client
         void Reconnect();
@@ -154,6 +167,9 @@ namespace OpenRCT2::Network
         void Client_Send_MAPREQUEST(const std::vector<ObjectEntryDescriptor>& objects);
         void Client_Send_HEARTBEAT(Connection& connection) const;
 
+        // Competition packet dispatchers
+        void Client_Send_CompetitionReady();
+
         // Handlers.
         void Client_Handle_AUTH(Connection& connection, Packet& packet);
         void Client_Handle_BEGINMAP([[maybe_unused]] Connection& connection, Packet& packet);
@@ -174,11 +190,14 @@ namespace OpenRCT2::Network
         void Client_Handle_OBJECTS_LIST(Connection& connection, Packet& packet);
         void Client_Handle_SCRIPTS_DATA(Connection& connection, Packet& packet);
         void Client_Handle_GAMESTATE(Connection& connection, Packet& packet);
-        std::vector<uint8_t> _challenge;
-        std::map<uint32_t, GameActions::GameAction::Callback_t> _gameActionCallbacks;
-        Key _key;
-        UserManager _userManager;
 
+        // Competition handlers
+        void Client_Handle_COMPETITION_START(Connection& connection, Packet& packet);
+        void Client_Handle_COMPETITION_UPDATE(Connection& connection, Packet& packet);
+        void Client_Handle_COMPETITION_END(Connection& connection, Packet& packet);
+        void Client_Handle_SCORE_UPDATE(Connection& connection, Packet& packet);
+        void Client_Handle_LEADERBOARD_UPDATE(Connection& connection, Packet& packet);
+        void Client_Handle_TERRITORY_ASSIGNMENT(Connection& connection, Packet& packet);
     public: // Public common
         std::string ServerName;
         std::string ServerDescription;
@@ -189,6 +208,9 @@ namespace OpenRCT2::Network
         std::vector<std::unique_ptr<Player>> player_list;
         std::vector<std::unique_ptr<NetworkGroup>> group_list;
         bool IsServerPlayerInvisible = false;
+        UserManager _userManager;
+        Key _key;
+        std::vector<uint8_t> _challenge;
 
     private: // Common Data
         using CommandHandler = void (NetworkBase::*)(Connection& connection, Packet& packet);
@@ -230,6 +252,7 @@ namespace OpenRCT2::Network
         std::map<uint32_t, PlayerListUpdate> _pendingPlayerLists;
         std::multimap<uint32_t, Player> _pendingPlayerInfo;
         std::map<uint32_t, ServerTickData> _serverTickData;
+        std::map<uint32_t, GameActions::GameAction::Callback_t> _gameActionCallbacks;
         std::string _host;
         std::string _chatLogPath;
         std::string _chatLogFilenameFormat = "%Y%m%d-%H%M%S.txt";

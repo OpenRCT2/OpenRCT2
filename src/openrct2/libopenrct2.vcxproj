@@ -186,6 +186,10 @@
     <ClInclude Include="config\ConfigTypes.h" />
     <ClInclude Include="config\IniReader.hpp" />
     <ClInclude Include="config\IniWriter.hpp" />
+    <ClInclude Include="competition\CompetitionManager.h" />
+    <ClInclude Include="competition\CompetitionModes.h" />
+    <ClInclude Include="competition\CompetitionNotifications.h" />
+    <ClInclude Include="competition\PlayerTerritory.h" />
     <ClInclude Include="Context.h" />
     <ClInclude Include="core\Algorithm.hpp" />
     <ClInclude Include="core\BackgroundWorker.hpp" />
@@ -812,6 +816,10 @@
     <ClCompile Include="config\Config.cpp" />
     <ClCompile Include="config\IniReader.cpp" />
     <ClCompile Include="config\IniWriter.cpp" />
+    <ClCompile Include="competition\CompetitionManager.cpp" />
+    <ClCompile Include="competition\CompetitionModes.cpp" />
+    <ClCompile Include="competition\CompetitionNotifications.cpp" />
+    <ClCompile Include="competition\PlayerTerritory.cpp" />
     <ClCompile Include="Context.cpp" />
     <ClCompile Include="core\ChecksumStream.cpp" />
     <ClCompile Include="core\Compression.cpp" />

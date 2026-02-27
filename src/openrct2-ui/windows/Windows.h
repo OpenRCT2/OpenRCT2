@@ -163,6 +163,10 @@ namespace OpenRCT2::Ui::Windows
     // Multiplatyer
     WindowBase* MultiplayerOpen();
 
+    // Competition
+    WindowBase* CompetitionLeaderboardOpen();
+    WindowBase* CompetitionSetupOpen();
+
     // NewCampaign
     WindowBase* NewCampaignOpen(int16_t campaignType);
     void WindowCampaignRefreshRides();

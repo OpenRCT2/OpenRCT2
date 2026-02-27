@@ -62,6 +62,11 @@ namespace OpenRCT2
     {
         class NetworkBase;
     }
+    
+    namespace Competition
+    {
+        class CompetitionManager;
+    }
 
     namespace Scripting
     {
@@ -105,6 +110,7 @@ namespace OpenRCT2
         virtual Paint::Painter* GetPainter() = 0;
 #ifndef DISABLE_NETWORK
         virtual Network::NetworkBase& GetNetwork() = 0;
+        virtual Competition::CompetitionManager* GetCompetitionManager() = 0;
 #endif
 
         virtual IScene* GetPreloaderScene() = 0;

@@ -162,6 +162,10 @@ public:
                 return AssetPacksOpen();
             case WindowClass::editorParkEntrance:
                 return EditorParkEntranceOpen();
+            case WindowClass::competitionLeaderboard:
+                return CompetitionLeaderboardOpen();
+            case WindowClass::competitionSetup:
+                return CompetitionSetupOpen();
             default:
                 Console::Error::WriteLine("Unhandled window class (%d)", wc);
                 return nullptr;
@@ -1297,6 +1301,7 @@ public:
 
     /**
      * Invalidates the specified widget of all windows that match the specified window class.
+     *  rct2: 0x006EC3AC
      */
     void InvalidateWidgetByClass(WindowClass cls, WidgetIndex widgetIndex) override
     {

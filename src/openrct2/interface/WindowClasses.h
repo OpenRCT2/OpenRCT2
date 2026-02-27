@@ -90,6 +90,10 @@ enum class WindowClass : uint8_t
     progressWindow = 137,
     titleVersion = 138,
     editorParkEntrance = 139,
+    
+    // Competition windows
+    competitionLeaderboard = 140,
+    competitionSetup = 141,
 
     // Only used for colour schemes
     staff = 220,
