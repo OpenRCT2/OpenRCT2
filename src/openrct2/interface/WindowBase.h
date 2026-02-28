@@ -166,7 +166,7 @@ namespace OpenRCT2
         virtual void onDrawWidget(WidgetIndex widgetIndex, Drawing::RenderTarget& rt)
         {
         }
-        virtual OpenRCT2String onTooltip(WidgetIndex widgetIndex, StringId fallback)
+        virtual StringWithArgs onTooltip(WidgetIndex widgetIndex, StringId fallback)
         {
             return { fallback, {} };
         }

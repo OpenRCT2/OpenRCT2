@@ -30,7 +30,7 @@ struct IObjectManager;
 struct Ride;
 struct RideTypeDescriptor;
 struct Guest;
-struct OpenRCT2String;
+struct StringWithArgs;
 struct Staff;
 struct Vehicle;
 struct RideObjectEntry;
@@ -446,7 +446,7 @@ public:
     RideNaming getTypeNaming() const;
     OpenRCT2::TrackElement* getOriginElement(StationIndex stationIndex) const;
 
-    std::pair<RideMeasurement*, OpenRCT2String> getMeasurement();
+    std::pair<RideMeasurement*, StringWithArgs> getMeasurement();
 
     uint8_t getNumShelteredSections() const;
     void increaseNumShelteredSections();

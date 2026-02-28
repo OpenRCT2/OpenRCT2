@@ -942,7 +942,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        OpenRCT2String onTooltip(WidgetIndex widgetIndex, StringId fallback) override
+        StringWithArgs onTooltip(WidgetIndex widgetIndex, StringId fallback) override
         {
             switch (page)
             {
@@ -2737,7 +2737,7 @@ namespace OpenRCT2::Ui::Windows
             invalidateWidget(WIDX_TAB_2);
         }
 
-        OpenRCT2String VehicleTooltip(const WidgetIndex widgetIndex, StringId fallback)
+        StringWithArgs VehicleTooltip(const WidgetIndex widgetIndex, StringId fallback)
         {
             auto ride = GetRide(rideId);
             if (ride == nullptr)
@@ -6052,7 +6052,7 @@ namespace OpenRCT2::Ui::Windows
             _autoScrollGraph = false;
         }
 
-        OpenRCT2String GraphsTooltip(const WidgetIndex widgetIndex, const StringId fallback)
+        StringWithArgs GraphsTooltip(const WidgetIndex widgetIndex, const StringId fallback)
         {
             if (widgetIndex == WIDX_GRAPH)
             {

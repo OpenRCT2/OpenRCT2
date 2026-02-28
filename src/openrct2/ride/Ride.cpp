@@ -2169,7 +2169,7 @@ static void RideFreeOldMeasurements()
     } while (numRideMeasurements > kMaxRideMeasurements);
 }
 
-std::pair<RideMeasurement*, OpenRCT2String> Ride::getMeasurement()
+std::pair<RideMeasurement*, StringWithArgs> Ride::getMeasurement()
 {
     const auto& rtd = getRideTypeDescriptor();
 

@@ -650,7 +650,7 @@ namespace OpenRCT2::Ui::Windows
             invalidate();
         }
 
-        OpenRCT2String onTooltip(const WidgetIndex widgetIndex, const StringId fallback) override
+        StringWithArgs onTooltip(const WidgetIndex widgetIndex, const StringId fallback) override
         {
             if (widgetIndex >= WIDX_SCENERY_TAB_1)
             {
