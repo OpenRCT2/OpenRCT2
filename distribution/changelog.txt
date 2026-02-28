@@ -15,6 +15,7 @@
 - Fix: [#23519] Title sequence cannot open .sea scenarios from RCTC.
 - Fix: [#25237] Wrong colours on the Knight costume (original bug).
 - Fix: [#25712, #25727] Crash during startup from window list race condition.
+- Fix: [#25763] Crash when opening the Footpath window in Multiplayer.
 - Fix: [#25910] Folders starting with numbers are sorted incorrectly (e.g. 1, 10, 2 instead of 1, 2, 10).
 - Fix: [#25954] Guests display hats, balloons, and umbrellas while puking.
 - Fix: [#25961] Fix crash when rendering malformed vehicles in the ride window.

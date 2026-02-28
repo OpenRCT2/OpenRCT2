@@ -3827,18 +3827,20 @@ namespace OpenRCT2::Network
         return kStringIdNone;
     }
 
-    int32_t CanPerformAction(uint32_t groupindex, Permission index)
+    bool CanPerformAction(uint32_t groupindex, Permission index)
     {
         auto& network = GetContext()->GetNetwork();
-        Guard::IndexInRange(groupindex, network.group_list);
+        if (groupindex >= network.group_list.size())
+            return false;
 
         return network.group_list[groupindex]->CanPerformAction(index);
     }
 
-    int32_t CanPerformCommand(uint32_t groupindex, int32_t index)
+    bool CanPerformCommand(uint32_t groupindex, int32_t index)
     {
         auto& network = GetContext()->GetNetwork();
-        Guard::IndexInRange(groupindex, network.group_list);
+        if (groupindex >= network.group_list.size())
+            return false;
 
         return network.group_list[groupindex]->CanPerformCommand(static_cast<GameCommand>(index)); // TODO
     }
@@ -4269,13 +4271,13 @@ namespace OpenRCT2::Network
     {
         return -1;
     }
-    int32_t CanPerformAction(uint32_t groupindex, Permission index)
+    bool CanPerformAction(uint32_t groupindex, Permission index)
     {
-        return 0;
+        return false;
     }
-    int32_t CanPerformCommand(uint32_t groupindex, int32_t index)
+    bool CanPerformCommand(uint32_t groupindex, int32_t index)
     {
-        return 0;
+        return false;
     }
     void SetPickupPeep(uint8_t playerid, Peep* peep)
     {
