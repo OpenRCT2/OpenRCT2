@@ -1,6 +1,7 @@
 0.4.33 (in development)
 ------------------------------------------------------------------------
 - Fix: [#10616] Quarter-tile trees cannot be placed on dry portions of half-water tiles.
+- Fix: [#25993] Toggling “allow arbitrary ride type changes” does not resize open ride windows.
 - Fix: [#26111] Vehicle colours tab can go out of bounds in certain edge cases.
 
 0.4.32 (2026-03-01)

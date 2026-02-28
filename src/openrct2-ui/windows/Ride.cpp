@@ -671,6 +671,7 @@ namespace OpenRCT2::Ui::Windows
         uint16_t _rideColour = 0;
         std::vector<EntranceTypeLabel> _entranceDropdownData;
         bool _autoScrollGraph = true;
+        bool _lastAllowArbitraryRideTypeChanges = false;
 
         uint8_t getNumVisibleCars()
         {
@@ -782,6 +783,7 @@ namespace OpenRCT2::Ui::Windows
             UpdateOverallView(*ride);
 
             PopulateVehicleTypeDropdown(*ride, true);
+            _lastAllowArbitraryRideTypeChanges = getGameState().cheats.allowArbitraryRideTypeChanges;
         }
 
         void onClose() override
@@ -2280,6 +2282,17 @@ namespace OpenRCT2::Ui::Windows
             onPrepareDraw();
             invalidateWidget(WIDX_TAB_1);
 
+            // Resize window if cheat state changed
+            auto& gameState = getGameState();
+            if (_lastAllowArbitraryRideTypeChanges != gameState.cheats.allowArbitraryRideTypeChanges)
+            {
+                _lastAllowArbitraryRideTypeChanges = gameState.cheats.allowArbitraryRideTypeChanges;
+                invalidate();
+                onResize();
+                onPrepareDraw();
+                invalidate();
+            }
+
             // Update status
             auto ride = GetRide(rideId);
             if (ride != nullptr)
@@ -2291,7 +2304,7 @@ namespace OpenRCT2::Ui::Windows
 
                     if (_viewIndex <= ride->numTrains)
                     {
-                        Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(ride->vehicles[_viewIndex - 1]);
+                        Vehicle* vehicle = gameState.entities.GetEntity<Vehicle>(ride->vehicles[_viewIndex - 1]);
                         if (vehicle == nullptr
                             || (vehicle->status != Vehicle::Status::travelling
                                 && vehicle->status != Vehicle::Status::travellingCableLift
