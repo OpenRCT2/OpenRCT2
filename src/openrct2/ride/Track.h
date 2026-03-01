@@ -388,7 +388,7 @@ namespace OpenRCT2
         onRidePhoto = 114,
         down25LeftBanked = 115,
         down25RightBanked = 116,
-        watersplash = 117,
+        waterSplash = 117,
         flatToUp60LongBase = 118,
         up60ToFlatLongBase = 119,
         whirlpool = 120,

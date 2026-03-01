@@ -74,7 +74,7 @@ void Vehicle::UpdateDodgemsMode()
         TimeActive++;
     }
 
-    if (curRide->lifecycleFlags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
+    if (curRide->flags.has(RideFlag::passStationNoStopping))
         return;
 
     // Mark the dodgem as not in use.
@@ -98,7 +98,7 @@ int32_t Vehicle::UpdateMotionDodgems()
         return _vehicleMotionTrackFlags;
 
     int32_t nextVelocity = velocity + acceleration;
-    if (curRide->lifecycleFlags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)
+    if (curRide->flags.hasAny(RideFlag::breakdownPending, RideFlag::brokenDown)
         && curRide->breakdownReasonPending == BREAKDOWN_SAFETY_CUT_OUT)
     {
         nextVelocity = 0;
@@ -110,7 +110,7 @@ int32_t Vehicle::UpdateMotionDodgems()
     _vehicleUnkF64E10 = 1;
 
     acceleration = 0;
-    if (!(curRide->lifecycleFlags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN))
+    if (!curRide->flags.hasAny(RideFlag::breakdownPending, RideFlag::brokenDown)
         || curRide->breakdownReasonPending != BREAKDOWN_SAFETY_CUT_OUT)
     {
         if ((getGameState().currentTicks & 1) && var_34 != 0)

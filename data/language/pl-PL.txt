@@ -3836,3 +3836,8 @@ STR_7009    :Otrzymywanie skryptów…
 STR_7010    :Nie udało się uruchomić powtórki, plik ‘{STRING}’ nie istnieje lub jest nieprawidłowy
 STR_7011    :Nie udało się uruchomić powtórki
 STR_7012    :Polski Złoty (zł)
+STR_7013    :Przeciągnij po obszarze, aby utworzyć ścieżkę
+STR_7014    :Posiadam grę na platformie Steam, ale jej jeszcze nie zainstalowałem/-am.
+STR_7015    :Zamknij aplikację Steam, jeśli jest uruchomiona i kliknij ‘OK’.
+STR_7016    :OpenRCT2 próbował zainicjować pobieranie w aplikacji Steam. Otwórz aplikację Steam i manualnie rozpocznij pobieranie gry. Kiedy Steam zakończy pobieranie, kliknij ‘OK’.
+STR_7017    :Wyjdź

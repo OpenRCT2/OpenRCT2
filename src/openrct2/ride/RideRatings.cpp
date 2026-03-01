@@ -263,7 +263,7 @@ static bool ShouldSkipRatingCalculation(const Ride& ride)
     }
 
     // Skip rides that have a fixed rating.
-    if (ride.lifecycleFlags & RIDE_LIFECYCLE_FIXED_RATINGS)
+    if (ride.flags.has(RideFlag::fixedRatings))
     {
         return true;
     }
@@ -880,12 +880,11 @@ static void RideRatingsCalculate(RideRating::UpdateState& state, Ride& ride)
     switch (rrd.Type)
     {
         case RatingsCalculationType::Normal:
-            if (!(ride.lifecycleFlags & RIDE_LIFECYCLE_TESTED))
+            if (!ride.flags.has(RideFlag::tested))
                 return;
             break;
         case RatingsCalculationType::FlatRide:
-            ride.lifecycleFlags |= RIDE_LIFECYCLE_TESTED;
-            ride.lifecycleFlags |= RIDE_LIFECYCLE_NO_RAW_STATS;
+            ride.flags.set(RideFlag::tested, RideFlag::noRawStats);
             break;
         case RatingsCalculationType::Stall:
             ride.upkeepCost = RideComputeUpkeep(state, ride);
@@ -1071,7 +1070,7 @@ static void RideRatingsCalculate(RideRating::UpdateState& state, Ride& ride)
 
 #ifdef ENABLE_SCRIPTING
     // Only call the 'ride.ratings.calculate' API hook if testing of the ride is complete
-    if (ride.lifecycleFlags & RIDE_LIFECYCLE_TESTED)
+    if (ride.flags.has(RideFlag::tested))
     {
         auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
         if (hookEngine.HasSubscriptions(HookType::rideRatingsCalculate))
@@ -1194,7 +1193,7 @@ static money64 RideComputeUpkeep(RideRating::UpdateState& state, const Ride& rid
     totalLength *= ride.getRideTypeDescriptor().UpkeepCosts.TrackLengthMultiplier;
     upkeep += static_cast<uint16_t>(totalLength >> 10);
 
-    if (ride.lifecycleFlags & RIDE_LIFECYCLE_ON_RIDE_PHOTO)
+    if (ride.flags.has(RideFlag::onRidePhoto))
     {
         // The original code read from a table starting at 0x0097E3AE and
         // incrementing by 0x12 bytes between values. However, all of these
@@ -1908,7 +1907,7 @@ static void RideRatingsApplyBonusOperationOption(RideRating::Tuple& ratings, con
 
 static void RideRatingsApplyBonusReversedTrains(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
-    if (ride.hasLifecycleFlag(RIDE_LIFECYCLE_REVERSED_TRAINS))
+    if (ride.flags.has(RideFlag::reversedTrains))
     {
         RideRatingsAdd(
             ratings, ((ratings.excitement * modifier.excitement) >> 7), (ratings.intensity * modifier.intensity) >> 7,
@@ -1950,7 +1949,7 @@ static void RideRatingsApplyBonusMazeSize(RideRating::Tuple& ratings, const Ride
 static void RideRatingsApplyBonusBoatHireNoCircuit(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     // Most likely checking if the ride has does not have a circuit
-    if (!(ride.lifecycleFlags & RIDE_LIFECYCLE_TESTED))
+    if (!ride.flags.has(RideFlag::tested))
     {
         RideRatingsAdd(ratings, modifier.excitement, modifier.intensity, modifier.nausea);
     }

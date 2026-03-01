@@ -854,17 +854,15 @@ namespace OpenRCT2::RCT1
             dst->status = static_cast<RideStatus>(src->status);
 
             // Flags
-            dst->lifecycleFlags = src->lifecycleFlags;
+            dst->flags.holder = src->flags;
             // These flags were not in the base game
             if (_gameVersion == FILE_VERSION_RCT1)
             {
-                dst->lifecycleFlags &= ~RIDE_LIFECYCLE_MUSIC;
-                dst->lifecycleFlags &= ~RIDE_LIFECYCLE_INDESTRUCTIBLE;
-                dst->lifecycleFlags &= ~RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
+                dst->flags.unset(RideFlag::music, RideFlag::indestructible, RideFlag::indestructibleTrack);
             }
             if (VehicleTypeIsReversed(src->vehicleType))
             {
-                dst->lifecycleFlags |= RIDE_LIFECYCLE_REVERSED_TRAINS;
+                dst->flags.set(RideFlag::reversedTrains);
             }
 
             // Station
@@ -978,7 +976,7 @@ namespace OpenRCT2::RCT1
                         if (src->departFlags & RCT1_RIDE_DEPART_PLAY_MUSIC)
                         {
                             dst->departFlags &= ~RCT1_RIDE_DEPART_PLAY_MUSIC;
-                            dst->lifecycleFlags |= RIDE_LIFECYCLE_MUSIC;
+                            dst->flags.set(RideFlag::music);
                         }
                     }
                 }

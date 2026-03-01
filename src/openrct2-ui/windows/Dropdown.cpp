@@ -7,8 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "openrct2/core/String.hpp"
-
 #include <algorithm>
 #include <bitset>
 #include <iterator>
@@ -20,6 +18,7 @@
 #include <openrct2/SpriteIds.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/BitSet.hpp>
+#include <openrct2/core/String.hpp>
 #include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
@@ -89,6 +88,82 @@ namespace OpenRCT2::Ui::Windows
             return Config::Get().interface.enlargedUi ? 6 : 0;
         }
 
+        void drawItem(RenderTarget& rt, ScreenCoordsXY screenCoords, int32_t i)
+        {
+            int32_t highlightedIndex = gDropdown.highlightedIndex;
+            bool highlighted = (i == highlightedIndex);
+
+            if (highlighted)
+            {
+                // Darken the cell's background slightly when highlighted
+                const ScreenCoordsXY rightBottom = screenCoords + ScreenCoordsXY{ ItemWidth - 1, ItemHeight - 1 };
+                Rectangle::filter(rt, { screenCoords, rightBottom }, FilterPaletteID::paletteDarken3);
+            }
+
+            const auto& item = gDropdown.items[i];
+            switch (item.type)
+            {
+                case Dropdown::ItemType::regular:
+                {
+                    auto formatString = STR_OPTIONS_DROPDOWN_ITEM;
+                    if (i < Dropdown::kItemsMaxSize && gDropdown.items[i].isChecked())
+                        formatString = STR_OPTIONS_DROPDOWN_ITEM_SELECTED;
+
+                    drawTextItem(rt, screenCoords, width, item, highlighted, formatString, colours[0].colour);
+                    break;
+                }
+                case Dropdown::ItemType::toggle:
+                {
+                    auto formatString = STR_TOGGLE_OPTION;
+                    if (i < Dropdown::kItemsMaxSize && gDropdown.items[i].isChecked())
+                        formatString = STR_TOGGLE_OPTION_CHECKED;
+
+                    drawTextItem(rt, screenCoords, width, item, highlighted, formatString, colours[0].colour);
+                    break;
+                }
+                case Dropdown::ItemType::plain:
+                {
+                    drawTextItem(rt, screenCoords, width, item, highlighted, STR_STRING, colours[0].colour);
+                    break;
+                }
+                case Dropdown::ItemType::image:
+                {
+                    GfxDrawSprite(rt, item.image, screenCoords);
+                    break;
+                }
+                case Dropdown::ItemType::colour:
+                {
+                    auto image = item.image;
+                    if (highlightedIndex == i)
+                        image = image.WithIndexOffset(1);
+                    GfxDrawSprite(rt, image, screenCoords);
+                    break;
+                }
+                case Dropdown::ItemType::separator:
+                    break;
+            }
+        }
+
+        void drawSeparator(RenderTarget& rt, ScreenCoordsXY screenCoords)
+        {
+            const auto leftTop = screenCoords + ScreenCoordsXY{ 2, (ItemHeight / 2) - 1 };
+            const auto rightBottom = leftTop + ScreenCoordsXY{ ItemWidth - 4, 0 };
+            const auto shadowOffset = ScreenCoordsXY{ 0, 1 };
+
+            if (colours[0].flags.has(ColourFlag::translucent))
+            {
+                auto palette = kTranslucentWindowPalettes[EnumValue(colours[0].colour)];
+                Rectangle::filter(rt, { leftTop, rightBottom }, palette.highlight);
+                Rectangle::filter(rt, { leftTop + shadowOffset, rightBottom + shadowOffset }, palette.shadow);
+            }
+            else
+            {
+                Rectangle::fill(rt, { leftTop, rightBottom }, getColourMap(colours[0].colour).midDark);
+                Rectangle::fill(
+                    rt, { leftTop + shadowOffset, rightBottom + shadowOffset }, getColourMap(colours[0].colour).lightest);
+            }
+        }
+
         void drawTextItem(
             RenderTarget& rt, ScreenCoordsXY screenCoords, int32_t ddWidth, const Dropdown::Item& item, bool highlighted,
             StringId format, Colour background)
@@ -110,7 +185,6 @@ namespace OpenRCT2::Ui::Windows
         {
             drawWidgets(rt);
 
-            int32_t highlightedIndex = gDropdown.highlightedIndex;
             for (int32_t i = 0; i < gDropdown.numItems; i++)
             {
                 ScreenCoordsXY cellCoords;
@@ -124,76 +198,11 @@ namespace OpenRCT2::Ui::Windows
 
                 if (gDropdown.items[i].isSeparator())
                 {
-                    const auto leftTop = screenCoords + ScreenCoordsXY{ 2, (ItemHeight / 2) - 1 };
-                    const auto rightBottom = leftTop + ScreenCoordsXY{ ItemWidth - 4, 0 };
-                    const auto shadowOffset = ScreenCoordsXY{ 0, 1 };
-
-                    if (colours[0].flags.has(ColourFlag::translucent))
-                    {
-                        TranslucentWindowPalette palette = kTranslucentWindowPalettes[EnumValue(colours[0].colour)];
-                        Rectangle::filter(rt, { leftTop, rightBottom }, palette.highlight);
-                        Rectangle::filter(rt, { leftTop + shadowOffset, rightBottom + shadowOffset }, palette.shadow);
-                    }
-                    else
-                    {
-                        Rectangle::fill(rt, { leftTop, rightBottom }, getColourMap(colours[0].colour).midDark);
-                        Rectangle::fill(
-                            rt, { leftTop + shadowOffset, rightBottom + shadowOffset },
-                            getColourMap(colours[0].colour).lightest);
-                    }
+                    drawSeparator(rt, screenCoords);
                 }
                 else
                 {
-                    auto highlighted = (i == highlightedIndex);
-                    if (highlighted)
-                    {
-                        // Darken the cell's background slightly when highlighted
-                        const ScreenCoordsXY rightBottom = screenCoords + ScreenCoordsXY{ ItemWidth - 1, ItemHeight - 1 };
-                        Rectangle::filter(rt, { screenCoords, rightBottom }, FilterPaletteID::paletteDarken3);
-                    }
-
-                    const auto& item = gDropdown.items[i];
-                    switch (item.type)
-                    {
-                        case Dropdown::ItemType::regular:
-                        {
-                            auto formatString = STR_OPTIONS_DROPDOWN_ITEM;
-                            if (i < Dropdown::kItemsMaxSize && gDropdown.items[i].isChecked())
-                                formatString = STR_OPTIONS_DROPDOWN_ITEM_SELECTED;
-
-                            drawTextItem(rt, screenCoords, width, item, highlighted, formatString, colours[0].colour);
-                            break;
-                        }
-                        case Dropdown::ItemType::toggle:
-                        {
-                            auto formatString = STR_TOGGLE_OPTION;
-                            if (i < Dropdown::kItemsMaxSize && gDropdown.items[i].isChecked())
-                                formatString = STR_TOGGLE_OPTION_CHECKED;
-
-                            drawTextItem(rt, screenCoords, width, item, highlighted, formatString, colours[0].colour);
-                            break;
-                        }
-                        case Dropdown::ItemType::plain:
-                        {
-                            drawTextItem(rt, screenCoords, width, item, highlighted, STR_STRING, colours[0].colour);
-                            break;
-                        }
-                        case Dropdown::ItemType::image:
-                        {
-                            GfxDrawSprite(rt, item.image, screenCoords);
-                            break;
-                        }
-                        case Dropdown::ItemType::colour:
-                        {
-                            auto image = item.image;
-                            if (highlightedIndex == i)
-                                image = image.WithIndexOffset(1);
-                            GfxDrawSprite(rt, image, screenCoords);
-                            break;
-                        }
-                        case Dropdown::ItemType::separator:
-                            break;
-                    }
+                    drawItem(rt, screenCoords, i);
                 }
             }
         }
@@ -434,8 +443,8 @@ namespace OpenRCT2::Ui::Windows
      * @param numColumns (bl)
      */
     void WindowDropdownShowImage(
-        int32_t x, int32_t y, int32_t extray, ColourWithFlags colour, uint8_t flags, int32_t numItems, int32_t itemWidth,
-        int32_t itemHeight, int32_t numColumns)
+        const ScreenCoordsXY& screenPos, int32_t extray, ColourWithFlags colour, uint8_t flags, int32_t numItems,
+        int32_t itemWidth, int32_t itemHeight, int32_t numColumns)
     {
         gInputFlags.unset(InputFlag::dropdownStayOpen, InputFlag::dropdownMouseUp);
         if (flags & Dropdown::Flag::StayOpen || Config::Get().interface.touchEnhancements)
@@ -449,7 +458,7 @@ namespace OpenRCT2::Ui::Windows
         auto* w = windowMgr->Create<DropdownWindow>(WindowClass::dropdown, { itemWidth, itemHeight }, WindowFlag::stickToFront);
         if (w != nullptr)
         {
-            w->setImageItems({ x, y }, extray, colour, numItems, itemWidth, itemHeight, numColumns);
+            w->setImageItems(screenPos, extray, colour, numItems, itemWidth, itemHeight, numColumns);
         }
     }
 
@@ -607,7 +616,7 @@ namespace OpenRCT2::Ui::Windows
         // Show dropdown
         auto squareSize = DropdownWindow::GetDefaultRowHeight();
         WindowDropdownShowImage(
-            w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->height(), dropdownColour,
+            w->windowPos + ScreenCoordsXY{ widget->left, widget->top }, widget->height(), dropdownColour,
             Dropdown::Flag::StayOpen, numColours, squareSize, squareSize,
             DropdownGetAppropriateImageDropdownItemsPerRow(static_cast<uint32_t>(numColours)));
 
@@ -623,9 +632,6 @@ namespace OpenRCT2::Ui::Windows
             numItems, static_cast<uint32_t>(std::size(kAppropriateImageDropdownItemsPerRow) - 1))];
     }
 } // namespace OpenRCT2::Ui::Windows
-
-using namespace OpenRCT2::Ui::Windows;
-using namespace OpenRCT2;
 
 namespace OpenRCT2::Dropdown
 {

@@ -60,7 +60,7 @@ namespace OpenRCT2::GameActions
         switch (_setting)
         {
             case RideSetSetting::Mode:
-                if (ride->lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN)
+                if (ride->flags.has(RideFlag::brokenDown))
                 {
                     return Result(Status::disallowed, STR_CANT_CHANGE_OPERATING_MODE, STR_HAS_BROKEN_DOWN_AND_REQUIRES_FIXING);
                 }
@@ -127,7 +127,7 @@ namespace OpenRCT2::GameActions
                 }
                 break;
             case RideSetSetting::NumCircuits:
-                if (ride->lifecycleFlags & RIDE_LIFECYCLE_CABLE_LIFT && _value > 1)
+                if (ride->flags.has(RideFlag::cableLift) && _value > 1)
                 {
                     return Result(
                         Status::invalidParameters, STR_CANT_CHANGE_OPERATING_MODE,
@@ -194,16 +194,16 @@ namespace OpenRCT2::GameActions
 
                 if (_value == EnumValue(RideInspection::never))
                 {
-                    ride->lifecycleFlags &= ~RIDE_LIFECYCLE_DUE_INSPECTION;
+                    ride->flags.unset(RideFlag::dueInspection);
                 }
 
                 ride->inspectionInterval = static_cast<RideInspection>(_value);
                 break;
             case RideSetSetting::Music:
-                ride->lifecycleFlags &= ~RIDE_LIFECYCLE_MUSIC;
+                ride->flags.unset(RideFlag::music);
                 if (_value)
                 {
-                    ride->lifecycleFlags |= RIDE_LIFECYCLE_MUSIC;
+                    ride->flags.set(RideFlag::music);
                 }
                 ride->windowInvalidateFlags.set(RideInvalidateFlag::music);
                 break;

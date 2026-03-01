@@ -117,7 +117,7 @@ namespace OpenRCT2::Ui::Windows
             for (auto& curRide : RideManager(gameState))
             {
                 auto rideEntry = curRide.getRideEntry();
-                if (rideEntry != nullptr)
+                if (rideEntry != nullptr && curRide.status == RideStatus::open)
                 {
                     for (const auto itemType : rideEntry->shop_item)
                     {

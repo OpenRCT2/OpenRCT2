@@ -138,7 +138,7 @@ namespace OpenRCT2::GameActions
             if (shopItem == ShopItem::none)
             {
                 shopItem = ride->getRideTypeDescriptor().PhotoItem;
-                if ((ride->lifecycleFlags & RIDE_LIFECYCLE_ON_RIDE_PHOTO) == 0)
+                if (!ride->flags.has(RideFlag::onRidePhoto))
                 {
                     ride->price[1] = _price;
                     windowMgr->InvalidateByClass(WindowClass::ride);

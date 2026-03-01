@@ -91,6 +91,7 @@ STR_0095    :Alpin rutchebane
 STR_0096    :Klassisk træ rutsjebane
 STR_0097    :Klassisk Stå-op Rutschebane
 STR_0098    :LSM Accelereret Rutschebane
+STR_0099    :Klassisk Wooden Twister-rutsjebane
 STR_0512    :En kompakt rutschebane med en spiral stigning og bløde, snoede fald.
 STR_0513    :En loopende rutschebane hvor passagerne er i en stående position
 STR_0514    :Vogne suspenderet under rutschebane sporet, svinger ud til siden i svingene
@@ -176,6 +177,7 @@ STR_0605    :Ryttere kælker ned ad en bugtende stålbane og bremser for at kont
 STR_0606    :En ældre stils trærutsjebane med en hurtig og ujævn tur med masser af luft tid, laterale G'er, og designet til at føles som ‘ude-af-kontrol’
 STR_0607    :En intens, Klassisk stål-stil, loopende rutschebane hvor passagerne er i en stående position
 STR_0608    :Rutsjebanetog accelereres ud af stationen af lineære synkronmotorer, for at suse gennem snoede inversioner og sving
+STR_0609    :En træ-rutsjebane i klassisk stil med en hurtig og hård tur, artikulerede tog, masser af airtime og snoede spor
 STR_0767    :Gæst {INT32}
 STR_0768    :Handymand {INT32}
 STR_0769    :Mekaniker {INT32}
@@ -462,14 +464,14 @@ STR_1076    :Butiks bod tilstand
 STR_1077    :Rotations tilstand
 STR_1078    :Fremad rotation
 STR_1079    :Baglæns rotation
-STR_1080    :Film: ”Avenging aviators”
-STR_1081    :3D film: ”Mouse tails”
+STR_1080    :Film: ”Avenging Aviators”
+STR_1081    :3D-film: ”Mouse Tails”
 STR_1082    :Space rings tilstand
 STR_1083    :Begynder tilstand
 STR_1084    :LIM-drevet afsendelse
-STR_1085    :Film: ”Thrill riders”
-STR_1086    :3D film: ”Storm chasers”
-STR_1087    :3D film: ”Space raiders”
+STR_1085    :Film: ”Thrill Riders”
+STR_1086    :3D-film: ”Storm Chasers”
+STR_1087    :3D-film: ”Space Raiders”
 STR_1088    :Intens tilstand
 STR_1089    :Bersærk tilstand
 STR_1090    :Spøgelseshus tilstand
@@ -1252,8 +1254,8 @@ STR_1891    :Ingen {STRINGID} i parken endnu!
 STR_1894    :{WINDOW_COLOUR_2}{STRINGID} solgt: {BLACK}{COMMA32}
 STR_1895    :Byg en ny forlystelse
 STR_1896    :{WINDOW_COLOUR_2}Udgifter/indtægter
-STR_1897    :{WINDOW_COLOUR_2}Forlystelse konstruktion
-STR_1898    :{WINDOW_COLOUR_2}Forlystelse driftsomkostninger
+STR_1897    :{WINDOW_COLOUR_2}Konstruktion
+STR_1898    :{WINDOW_COLOUR_2}Drift (Forlystelser)
 STR_1899    :{WINDOW_COLOUR_2}Landopkøb
 STR_1900    :{WINDOW_COLOUR_2}Ændring af landskab
 STR_1901    :{WINDOW_COLOUR_2}Entrébilletter
@@ -2221,8 +2223,8 @@ STR_3228    :Sæt start punkt for personer
 STR_3229    :Blokbremser kan ikke bruges lige efter stationen
 STR_3230    :Blokbremser kan ikke bruges lige efter hinanden
 STR_3231    :Blokbremser kan ikke bruges lige efter toppen af en løftekæde
-STR_3232    :Indstillinger - Finansiel
-STR_3233    :Indstillinger - Gæster
+STR_3232    :Scenarieindstillinger - Økonomi
+STR_3233    :Scenarieindstillinger – Gæster
 STR_3235    :Vis finansindstillinger
 STR_3236    :Vis gæsteindstillinger
 STR_3238    :Ingen penge
@@ -2266,7 +2268,7 @@ STR_3279    :Gratis park entré / Betal for forlystelser
 STR_3280    :Betal Park entré / Gratis forlystelser
 STR_3281    :Entré pris:
 STR_3283    :vælg forlystelser der skal bevares
-STR_3285    :Bevarede forlystelser
+STR_3285    :Scenarieindstillinger - Bevarede forlystelser
 STR_3286    :Vælg mål for dette scenarie
 STR_3287    :{WINDOW_COLOUR_2}Mål:
 STR_3294    :Skift…
@@ -2938,7 +2940,7 @@ STR_5858    :Brug GPU til visning i stedet for CPU. Forbedrer kompatibiliteten m
 STR_5859    :Aktiver ‘frame tweening’ for et visuelt{NEWLINE}mere flydende spil. Ved deaktivering,{NEWLINE}vil spillet køre med 40 billeder pr. sekund, fast.
 STR_5860    :Skift original/decompileret spor tegning
 STR_5861    :Kunne ikke verificere nøglen.
-STR_5862    :Blokér ukendte spillere.
+STR_5862    :Blokér ukendte spillere
 STR_5863    :Tillad at kun spillere med kendte nøgler kan deltage.
 STR_5864    :Denne server tillader kun hvidlistede spillere at oprette forbindelse.
 STR_5865    :Gem chat historik
@@ -3179,7 +3181,7 @@ STR_6102    :Værdien af forlystelser vil ikke falde over tid over tid, Så gæs
 STR_6103    :Denne funktion er deaktiveret ved netværksspil.
 STR_6105    :Hypercoaster
 STR_6107    :Monster Trucks
-STR_6109    :Hyper-Twister
+STR_6109    :Hyper-Twister rutchebane
 STR_6111    :Klassisk mini rutchebane
 STR_6113    :En høj ikke-inverterende rutschebane med store fald, høj hastighed og komfortable vogne med simpel fastspænding
 STR_6115    :Kæmpe Eldrevne firhjulstrækkere , der kan klatre op ad stejle skråninger
@@ -3683,8 +3685,8 @@ STR_6657    :Land Ikke Ejet
 STR_6658    :Sæt land til at ikke være ejet af parken, heller ikke muligt at købe land
 STR_6659    :Gæster ignorerer priser
 STR_6660    :Gæsterne vil ignorere priserne for forlystelser og stande.
-STR_6661    :Alt tilfældigt
-STR_6662    :Gør farverne tilfældige for hver Randomise colours for every train or vehicle.
+STR_6661    :Randomisér alle
+STR_6662    :Randomisér farver for hvert tog eller køretøj.
 STR_6663    :Dato snyd
 STR_6664    :Vis dato snyd
 STR_6665    :Natur/vejr Snyd
@@ -3695,7 +3697,7 @@ STR_6669    :Vis snyd med ansatte
 STR_6670    :Gæste opførsel
 STR_6671    :Vis ‘rigtige’ navne på ansatte
 STR_6672    :Skift imellem at vise ‘rigtige’ navne på ansatte og ansatte numre
-STR_6673    :Gennemsigtig
+STR_6673    :Transparent
 # Used as part of a sentence (see https://github.com/OpenRCT2/OpenRCT2/issues/22072).
 STR_6674    :{MONTH}, År {COMMA16}
 STR_6675    :Peep Navne
@@ -3733,85 +3735,112 @@ STR_6706    :{WINDOW_COLOUR_2}Nuværende billedfil: {BLACK}{STRING}
 STR_6707    :(Ingen valgt)
 STR_6708    :Udglatnings Styrke
 STR_6709    :Angiv udglatnings styrke imellem {COMMA16} og {COMMA16}
-STR_6710    :Stable sort
-STR_6711    :Filename:
-STR_6712    :Save
+STR_6710    :Stabil sortering
+STR_6711    :Filnavn:
+STR_6712    :Gem
 STR_6713    :{COMMA32} {STRINGID}
-STR_6714    :Filename
-STR_6715    :Date modified
-STR_6716    :File size
-STR_6717    :File size {STRINGID}
-STR_6718    :Peep Animations
-STR_6719    :At least one guest peep animations object must be selected
-STR_6720    :At least one handyman peep animations object must be selected
-STR_6721    :At least one mechanic peep animations object must be selected
-STR_6722    :At least one security peep animations object must be selected
-STR_6723    :At least one entertainer peep animations object must be selected
+STR_6714    :Filnavn
+STR_6715    :Dato ændret
+STR_6716    :Filstørrelse
+STR_6717    :Filstørrelse {STRINGID}
+STR_6718    :Peep-animationer
+STR_6719    :Mindst ét gæste-peep-animationsobjekt skal være valgt
+STR_6720    :Mindst ét vicevært-peep-animationsobjekt skal være valgt
+STR_6721    :Mindst ét mekaniker-peep-animationsobjekt skal være valgt
+STR_6722    :Mindst ét sikkerheds-peep-animationsobjekt skal være valgt
+STR_6723    :Mindst ét entertainer-peep-animationsobjekt skal være valgt
 STR_6724    :Scenarie Tekster
 STR_6725    :X:
 STR_6726    :Y:
-STR_6727    :Dive Loop (left)
-STR_6728    :Dive Loop (right)
-STR_6729    :Cable lift hill must start immediately after station or block brake
-STR_6730    :Export emscripten data
-STR_6731    :Import emscripten data
-STR_6732    :Show a button in the toolbar to rotate the view anti-clockwise
-STR_6733    :See-Through
-STR_6734    :Map elements that are at or above the cutting height are rendered translucent.
-STR_6735    :Go up to parent folder
-STR_6736    :Preview
-STR_6737    :No preview available
-STR_6738    :{WINDOW_COLOUR_2}Park rating: {BLACK}{UINT16}
-STR_6739    :{WINDOW_COLOUR_2}Date: {BLACK}{STRINGID}
-STR_6740    :{WINDOW_COLOUR_2}Cash: {BLACK}{CURRENCY2DP}
-STR_6741    :{WINDOW_COLOUR_2}Num. rides: {BLACK}{UINT16}
-STR_6742    :{WINDOW_COLOUR_2}Num. guests: {BLACK}{UINT16}
-STR_6743    :Climate
+STR_6727    :Dyk Loop (venstre)
+STR_6728    :Dyk Loop (højre)
+STR_6729    :Kabel-lifthill skal starte umiddelbart efter station eller blokbremse
+STR_6730    :Eksportér emscripten-data
+STR_6731    :Importér emscripten-data
+STR_6732    :Vis en knap i værktøjslinjen til at rotere visningen mod uret
+STR_6733    :Gennemsigtig
+STR_6734    :Elementer på eller over skærehøjden vises som gennemsigtige.
+STR_6735    :Gå op til overmappen
+STR_6736    :Forhåndsvisning
+STR_6737    :Ingen forhåndsvisning tilgængelig
+STR_6738    :{WINDOW_COLOUR_2}Parkvurdering: {BLACK}{UINT16}
+STR_6739    :{WINDOW_COLOUR_2}Dato: {BLACK}{STRINGID}
+STR_6740    :{WINDOW_COLOUR_2}Kontanter: {BLACK}{CURRENCY2DP}
+STR_6741    :{WINDOW_COLOUR_2}Antal forlystelser: {BLACK}{UINT16}
+STR_6742    :{WINDOW_COLOUR_2}Antal gæster: {BLACK}{UINT16}
+STR_6743    :Klima
 STR_6744    :{WINDOW_COLOUR_2}{UINT16}%
-STR_6745    :{WINDOW_COLOUR_2}Guests’ intensity preferences:
-STR_6746    :No preferences
-STR_6747    :Preferences vary (default)
-STR_6748    :Only less intense rides
-STR_6749    :Only more intense rides
-STR_6750    :Select what kind of ride intensity newly spawned guests prefer.
-STR_6751    :Queue paths cannot be used for level crossings!
-STR_6752    :Scenario options - Objective
-STR_6753    :Scenario options - Scenario Details
-STR_6754    :Scenario options - Land Restrictions
-STR_6755    :Show objective options
-STR_6756    :Show scenario details options
-STR_6757    :Show land restriction options
-STR_6758    :Loan options
-STR_6759    :Business model
-STR_6760    :Earnings:
-STR_6761    :Scenario Details
-STR_6762    :Udseende
+STR_6745    :{WINDOW_COLOUR_2}Gæsters intensitetspræferencer:
+STR_6746    :Ingen præferencer
+STR_6747    :Varierende præferencer (standard)
+STR_6748    :Kun mindre intense forlystelser
+STR_6749    :Kun mere intense forlystelser
+STR_6750    :Vælg hvilken intensitet nye gæster foretrækker.
+STR_6751    :Køstier kan ikke bruges til planoverkørsler!
+STR_6752    :Scenarieindstillinger – Mål
+STR_6753    :Scenarieindstillinger – Scenariedetaljer
+STR_6754    :Scenarieindstillinger – Jordbegrænsninger
+STR_6755    :Vis målindstillinger
+STR_6756    :Vis scenariedetaljeindstillinger
+STR_6757    :Vis jordbegrænsningsindstillinger
+STR_6758    :Låneindstillinger
+STR_6759    :Forretningsmodel
+STR_6760    :Indtjening:
+STR_6761    :Scenariedetaljer
+STR_6762    :Brugerflade
 STR_6763    :RollerCoaster Tycoon 1
-STR_6764    :Saving and autosaves
-STR_6765    :Advanced
-STR_6766    :Clear
+STR_6764    :Gem og autogem
+STR_6765    :Avanceret
+STR_6766    :Ryd
 STR_6767    :Window
 STR_6768    :Rendering
-STR_6769    :Behaviour
-STR_6770    :Frame rate limit:
-STR_6771    :Internal speed (default)
-STR_6772    :Vertical sync
-STR_6773    :Unrestricted
-STR_6774    :Time since last inspection
-STR_6775    :{COMMA16} minute
-STR_6776    :{COMMA16} minutes
-STR_6777    :more than 4 hours
-STR_6778    :Preview scenarios using:
-STR_6779    :Select the kind of preview image to use in the scenario selection screen.
-STR_6780    :Mini maps
-STR_6781    :Screenshots
-STR_6782    :Park notifications
-STR_6783    :Ride notifications
-STR_6784    :Guest notifications
+STR_6769    :Adfærd
+STR_6770    :Begræns billedfrekvens:
+STR_6771    :Skærmens hastighed (standard)
+STR_6772    :Vertikal synkronisering
+STR_6773    :Ubegrænset
+STR_6774    :Tid siden sidste inspektion
+STR_6775    :{COMMA16} minut
+STR_6776    :{COMMA16} minutter
+STR_6777    :mere end 4 timer
+STR_6778    :Forhåndsvis scenarier med:
+STR_6779    :Vælg hvilken type forhåndsvisningsbillede der bruges i scenarieoversigten.
+STR_6780    :Minikort
+STR_6781    :Skærmbilleder
+STR_6782    :Park-meddelelser
+STR_6783    :Forlystelses-meddelelser
+STR_6784    :Gæste-meddelelser
 STR_6785    :Gamepad
-STR_6786    :Deadzone:
-STR_6787    :Analogue stick deadzone (minimum movement required)
-STR_6788    :Sensitivity:
-STR_6789    :Analogue stick sensitivity multiplier
-STR_6790    :Deadzone: {COMMA32}%
-STR_6791    :Sensitivity: {COMMA32}%
+STR_6786    :Dødzone:
+STR_6787    :Dødzone for analog‑stick (mindste nødvendige bevægelse)
+STR_6788    :Følsomhed:
+STR_6789    :Følsomhedsmultiplikator for analog‑stick
+STR_6790    :Dødzone: {COMMA32}%
+STR_6791    :Følsomhed: {COMMA32}%
+STR_6792    :Indgangsbygninger
+STR_6793    :Gæster og personale
+STR_6794    :Scenarie og Temaer
+STR_6795    :{MOVE_X}{10}{STRINGID}
+STR_6796    :•{MOVE_X}{10}{STRINGID}
+STR_6797    :Ingen forhåndsvisning
+STR_6798    :Skærmbillede
+STR_6799    :Minikort
+STR_7000    :eller
+STR_7001    :Forlystelsesnavn
+STR_7002    :{STRINGID} {STRINGID}
+STR_7003    :Lydfilen ‘{STRING}’ er afkortet. Forventede sample {INT32}, men kun {INT32} er tilgængelige. Overvej at geninstallere RCT2.
+STR_7004    :Tving genoptegning
+STR_7005    :Træk et område af fodgængersti
+STR_7006    :Tegn kant rundt om billedknapper
+STR_7007    :Forlystelsestype
+STR_7008    :Ukendt forlystelsestype ({INT32})
+STR_7009    :Modtager scripts…
+STR_7010    :Kunne ikke starte replay, filen ‘{STRING}’ findes ikke eller er ugyldig
+STR_7011    :Kunne ikke starte replay
+STR_7012    :Polsk złoty (PLN)
+STR_7013    :Træk områder af sti
+STR_7014    :Jeg ejer spillet på Steam, men har ikke installeret det endnu.
+STR_7015    :Luk venligst Steam, hvis det kører, og klik derefter på ‘OK’.
+STR_7016    :OpenRCT2 har forsøgt at starte en download i Steam. Åbn Steam og lad det hente spillet. Når Steam er færdig, klik på ‘OK’.
+STR_7017    :Afslut
+

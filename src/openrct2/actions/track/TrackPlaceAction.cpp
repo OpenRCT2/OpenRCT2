@@ -130,7 +130,7 @@ namespace OpenRCT2::GameActions
 
         const auto& rtd = ride->getRideTypeDescriptor();
 
-        if ((ride->lifecycleFlags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK) && _trackType == TrackElemType::endStation)
+        if (ride->flags.has(RideFlag::indestructibleTrack) && _trackType == TrackElemType::endStation)
         {
             return Result(
                 Status::disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NOT_ALLOWED_TO_MODIFY_STATION);
@@ -150,7 +150,7 @@ namespace OpenRCT2::GameActions
         {
             if (_trackType == TrackElemType::onRidePhoto)
             {
-                if (ride->lifecycleFlags & RIDE_LIFECYCLE_ON_RIDE_PHOTO)
+                if (ride->flags.has(RideFlag::onRidePhoto))
                 {
                     return Result(
                         Status::disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
@@ -159,7 +159,7 @@ namespace OpenRCT2::GameActions
             }
             else if (_trackType == TrackElemType::cableLiftHill)
             {
-                if (ride->lifecycleFlags & RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED)
+                if (ride->flags.has(RideFlag::cableLiftHillComponentUsed))
                 {
                     return Result(
                         Status::disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
@@ -674,11 +674,11 @@ namespace OpenRCT2::GameActions
             switch (_trackType)
             {
                 case TrackElemType::onRidePhoto:
-                    ride->lifecycleFlags |= RIDE_LIFECYCLE_ON_RIDE_PHOTO;
+                    ride->flags.set(RideFlag::onRidePhoto);
                     InvalidateTestResults(*ride);
                     break;
                 case TrackElemType::cableLiftHill:
-                    ride->lifecycleFlags |= RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED;
+                    ride->flags.set(RideFlag::cableLiftHillComponentUsed);
                     ride->cableLiftLoc = originLocation;
                     InvalidateTestResults(*ride);
                     break;

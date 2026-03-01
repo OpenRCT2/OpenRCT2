@@ -9,166 +9,290 @@
 
 #include "Profiling.h"
 
+#include "../core/Json.hpp"
+
+#include <algorithm>
 #include <cassert>
+#include <cctype>
 #include <chrono>
 #include <fstream>
 #include <iomanip>
-#include <stack>
 
 namespace OpenRCT2::Profiling
 {
-    inline static bool _enabled = false;
+    // Global enable flag, atomic for thread safety
+    static std::atomic<bool> _enabled{ false };
 
-    void Enable()
+    void enable()
     {
-        _enabled = true;
+        _enabled.store(true, std::memory_order_release);
     }
 
-    void Disable()
+    void disable()
     {
-        _enabled = false;
+        _enabled.store(false, std::memory_order_release);
     }
 
-    bool IsEnabled()
+    bool isEnabled()
     {
-        return _enabled;
+        return _enabled.load(std::memory_order_acquire);
     }
 
     namespace Detail
     {
         using Clock = std::chrono::high_resolution_clock;
-        using Tp = Clock::time_point;
+        using TimePoint = Clock::time_point;
 
-        struct FunctionEntry
+        struct StackEntry
         {
             FunctionInternal* Parent;
             FunctionInternal* Func;
-            Tp EntryTime;
-
-            FunctionEntry(FunctionInternal* parent, FunctionInternal* func, const Tp& entryTime)
-                : Parent(parent)
-                , Func(func)
-                , EntryTime(entryTime)
-            {
-            }
+            TimePoint EntryTime;
         };
 
-        static thread_local std::stack<FunctionEntry> _callStack;
+        static thread_local std::vector<StackEntry> _callStack;
+        static std::vector<Function*> _registry;
+        static std::mutex _registryMutex;
 
-        void FunctionEnter(Function& func)
+        std::vector<Function*>& getRegistry()
         {
-            const auto entryTime = Clock::now();
-
-            auto& funcInternal = static_cast<FunctionInternal&>(func);
-            funcInternal.CallCount++;
-
-            FunctionInternal* parent = nullptr;
-
-            if (!_callStack.empty())
-                parent = _callStack.top().Func;
-
-            _callStack.emplace(parent, &funcInternal, entryTime);
+            return _registry;
         }
 
-        void FunctionExit(Function& func)
+        std::mutex& getRegistryMutex()
+        {
+            return _registryMutex;
+        }
+
+        void registerFunction(FunctionInternal* func)
+        {
+            std::scoped_lock lock(_registryMutex);
+            _registry.push_back(func);
+        }
+
+        void functionEnter(FunctionInternal& func)
+        {
+            const auto entryTime = Clock::now();
+            func.CallCount.fetch_add(1, std::memory_order_relaxed);
+
+            FunctionInternal* parent = nullptr;
+            if (!_callStack.empty())
+            {
+                parent = _callStack.back().Func;
+            }
+
+            _callStack.push_back({ parent, &func, entryTime });
+        }
+
+        bool FunctionInternal::tryAddParent(FunctionInternal* parent)
+        {
+            std::scoped_lock lock(Mutex);
+            if (std::find(Parents.begin(), Parents.end(), parent) == Parents.end())
+            {
+                Parents.push_back(parent);
+                return true;
+            }
+            return false;
+        }
+
+        bool FunctionInternal::tryAddChild(FunctionInternal* child)
+        {
+            std::scoped_lock lock(Mutex);
+            if (std::find(Children.begin(), Children.end(), child) == Children.end())
+            {
+                Children.push_back(child);
+                return true;
+            }
+            return false;
+        }
+
+        std::vector<double> FunctionInternal::getTimeSamples() const
+        {
+            const size_t totalSamples = SampleIndex.load(std::memory_order_relaxed);
+            const size_t count = std::min(totalSamples, MaxSamplesSize);
+            std::vector<double> result;
+            result.reserve(count);
+
+            const size_t startIdx = (totalSamples > MaxSamplesSize) ? (totalSamples % MaxSamplesSize) : 0;
+            for (size_t i = 0; i < count; ++i)
+            {
+                const size_t idx = (startIdx + i) % MaxSamplesSize;
+                result.push_back(static_cast<double>(Samples[idx].load(std::memory_order_relaxed)) / 1000.0);
+            }
+            return result;
+        }
+
+        void functionExit(FunctionInternal& func)
         {
             const auto exitTime = Clock::now();
 
-            assert(!_callStack.empty());
+            assert(!_callStack.empty() && "FunctionExit called without matching FunctionEnter");
 
-            auto& stackEntry = _callStack.top();
+            const auto& entry = _callStack.back();
+            assert(entry.Func == &func && "FunctionExit called for wrong function");
 
-            const auto deltaTime = exitTime - stackEntry.EntryTime;
+            const auto elapsed = exitTime - entry.EntryTime;
+            const auto elapsedNs = static_cast<uint64_t>(std::chrono::duration_cast<std::chrono::nanoseconds>(elapsed).count());
 
-            // Elapsed microseconds.
-            const auto elapsedTimeUs = std::chrono::duration_cast<std::chrono::nanoseconds>(deltaTime).count() / 1000.0;
+            // All timing updates are lock free
+            func.TotalTimeNs.fetch_add(elapsedNs, std::memory_order_relaxed);
+            func.updateMin(elapsedNs);
+            func.updateMax(elapsedNs);
 
-            auto* funcData = stackEntry.Func;
+            const size_t idx = func.SampleIndex.fetch_add(1, std::memory_order_relaxed) % MaxSamplesSize;
+            func.Samples[idx].store(elapsedNs, std::memory_order_relaxed);
 
-            // We don't need a lock for this, we only have a fixed window.
-            const auto sampleEntryIdx = funcData->SampleIterator++ % funcData->Samples.size();
-            funcData->Samples[sampleEntryIdx] = elapsedTimeUs;
-
-            if (stackEntry.Parent)
+            // Only take locks when discovering new relationships
+            if (entry.Parent != nullptr)
             {
-                std::scoped_lock lock(stackEntry.Parent->Mutex);
-                stackEntry.Parent->Children.insert(funcData);
+                // If this is the same parent as last time, skip lock
+                FunctionInternal* lastParent = func.LastParent.load(std::memory_order_relaxed);
+                if (lastParent != entry.Parent)
+                {
+                    // Potentially new relationship so take locks and check
+                    if (func.tryAddParent(entry.Parent))
+                    {
+                        entry.Parent->tryAddChild(&func);
+                    }
+                    func.LastParent.store(entry.Parent, std::memory_order_relaxed);
+                }
             }
 
-            // This requires locking.
-            {
-                std::scoped_lock lock(funcData->Mutex);
-
-                if (stackEntry.Parent)
-                    funcData->Parents.insert(stackEntry.Parent);
-
-                if (funcData->MinTimeUs == 0.0)
-                    funcData->MinTimeUs = elapsedTimeUs;
-                else
-                    funcData->MinTimeUs = std::min(elapsedTimeUs, funcData->MinTimeUs);
-
-                funcData->MaxTimeUs = std::max(elapsedTimeUs, funcData->MaxTimeUs);
-                funcData->TotalTimeUs += elapsedTimeUs;
-            }
-
-            _callStack.pop();
-        }
-
-        std::vector<Function*>& GetRegistry()
-        {
-            static std::vector<Function*> Registry;
-            return Registry;
+            _callStack.pop_back();
         }
 
     } // namespace Detail
 
-    const std::vector<Function*>& GetData()
+    const std::vector<Function*>& getData()
     {
-        return Detail::GetRegistry();
+        // eturns reference to static vector. Safe because functions are only registered during static initialization.
+        return Detail::getRegistry();
     }
 
-    void ResetData()
+    void resetData()
     {
-        for (auto* func : Detail::GetRegistry())
-        {
-            auto* funcInternal = static_cast<Detail::FunctionInternal*>(func);
+        std::scoped_lock lock(Detail::getRegistryMutex());
 
-            std::scoped_lock lock(funcInternal->Mutex);
-            funcInternal->CallCount = 0;
-            funcInternal->MinTimeUs = 0.0;
-            funcInternal->MaxTimeUs = 0.0;
-            funcInternal->SampleIterator = 0;
-            funcInternal->Children.clear();
-            funcInternal->Parents.clear();
+        for (auto* func : Detail::getRegistry())
+        {
+            auto* internal = static_cast<Detail::FunctionInternal*>(func);
+
+            internal->CallCount.store(0, std::memory_order_relaxed);
+            internal->TotalTimeNs.store(0, std::memory_order_relaxed);
+            internal->MinTimeNs.store(0, std::memory_order_relaxed);
+            internal->MaxTimeNs.store(0, std::memory_order_relaxed);
+            internal->SampleIndex.store(0, std::memory_order_relaxed);
+            internal->LastParent.store(nullptr, std::memory_order_relaxed);
+
+            for (auto& sample : internal->Samples)
+            {
+                sample.store(0, std::memory_order_relaxed);
+            }
+
+            {
+                std::scoped_lock funcLock(internal->Mutex);
+                internal->Parents.clear();
+                internal->Children.clear();
+            }
         }
     }
 
-    bool ExportCSV(const std::string& filePath)
+    namespace
     {
-        std::ofstream out(filePath);
-        if (!out.is_open())
-            return false;
-
-        out << "function_name;calls;min_microseconds;max_microseconds;average_microseconds\n";
-        out << std::setprecision(12);
-
-        const auto& data = GetData();
-        for (auto* func : data)
+        bool writeCSV(const std::string& filePath)
         {
-            out << "\"" << func->GetName() << "\""
-                << ";";
-            out << func->GetCallCount() << ";";
-            out << func->GetMinTime() << ";";
-            out << func->GetMaxTime() << ";";
+            std::ofstream out(filePath);
+            if (!out.is_open())
+                return false;
 
-            double avg = 0.0;
-            if (func->GetCallCount() > 0)
-                avg = func->getTotalTime() / func->GetCallCount();
+            out << std::setprecision(12);
+            out << "function_name,calls,min_microseconds,max_microseconds,average_microseconds,total_microseconds\n";
 
-            out << avg << "\n";
+            std::scoped_lock lock(Detail::getRegistryMutex());
+
+            for (const auto* func : Detail::getRegistry())
+            {
+                out << "\"" << func->getName() << "\",";
+                out << func->getCallCount() << ",";
+                out << func->getMinTime() << ",";
+                out << func->getMaxTime() << ",";
+                out << func->getAverageTime() << ",";
+                out << func->getTotalTime() << "\n";
+            }
+
+            return true;
         }
 
-        return true;
+        bool writeJSON(const std::string& filePath)
+        {
+            std::scoped_lock lock(Detail::getRegistryMutex());
+            const auto& registry = Detail::getRegistry();
+
+            json_t functions = json_t::array();
+
+            for (size_t i = 0; i < registry.size(); ++i)
+            {
+                const auto* func = registry[i];
+
+                json_t parentIndices = json_t::array();
+                for (const auto* parent : func->getParents())
+                {
+                    auto it = std::find(registry.begin(), registry.end(), parent);
+                    if (it != registry.end())
+                        parentIndices.push_back(std::distance(registry.begin(), it));
+                }
+
+                json_t childIndices = json_t::array();
+                for (const auto* child : func->getChildren())
+                {
+                    auto it = std::find(registry.begin(), registry.end(), child);
+                    if (it != registry.end())
+                        childIndices.push_back(std::distance(registry.begin(), it));
+                }
+
+                functions.push_back(
+                    {
+                        { "name", func->getName() },
+                        { "callCount", func->getCallCount() },
+                        { "minTime", func->getMinTime() },
+                        { "maxTime", func->getMaxTime() },
+                        { "avgTime", func->getAverageTime() },
+                        { "totalTime", func->getTotalTime() },
+                        { "parents", parentIndices },
+                        { "children", childIndices },
+                    });
+            }
+
+            json_t root = { { "functions", functions } };
+
+            try
+            {
+                Json::WriteToFile(filePath, root);
+                return true;
+            }
+            catch (...)
+            {
+                return false;
+            }
+        }
+
+        bool hasExtension(const std::string& path, const std::string& ext)
+        {
+            if (path.size() < ext.size())
+                return false;
+
+            // Case insensitive extension comparison
+            auto pathEnd = path.substr(path.size() - ext.size());
+            std::transform(pathEnd.begin(), pathEnd.end(), pathEnd.begin(), ::tolower);
+            return pathEnd == ext;
+        }
+    } // namespace
+
+    bool exportData(const std::string& filePath)
+    {
+        if (hasExtension(filePath, ".json"))
+            return writeJSON(filePath);
+        return writeCSV(filePath);
     }
 
 } // namespace OpenRCT2::Profiling

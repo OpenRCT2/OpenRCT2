@@ -76,7 +76,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, errTitle, STR_ERR_RIDE_NOT_FOUND);
         }
 
-        if (ride->lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN)
+        if (ride->flags.has(RideFlag::brokenDown))
         {
             return Result(Status::broken, errTitle, STR_HAS_BROKEN_DOWN_AND_REQUIRES_FIXING);
         }
@@ -194,7 +194,7 @@ namespace OpenRCT2::GameActions
                 ride->removePeeps();
                 ride->vehicleChangeTimeout = 100;
 
-                ride->setLifecycleFlag(RIDE_LIFECYCLE_REVERSED_TRAINS, _value);
+                ride->flags.set(RideFlag::reversedTrains, static_cast<bool>(_value));
                 break;
             }
 

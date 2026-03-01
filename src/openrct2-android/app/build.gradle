@@ -24,12 +24,18 @@ android {
 
         versionCode = 18
         versionName = '0.4.31'
-        externalNativeBuild {
-            cmake {
-                arguments '-DANDROID_STL=c++_shared', '-DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON'
-                targets 'openrct2', 'openrct2-ui', 'openrct2-cli'
-                // abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
-                abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86_64'
+        if (!project.hasProperty('skipNativeBuild')) {
+            externalNativeBuild {
+                cmake {
+                    arguments '-DANDROID_STL=c++_shared', '-DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON'
+                    targets 'openrct2', 'openrct2-ui', 'openrct2-cli'
+                    if (project.hasProperty('abiFilter')) {
+                        abiFilters project.property('abiFilter').split(',')
+                    } else {
+                        // abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
+                        abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86_64'
+                    }
+                }
             }
         }
     }
@@ -45,15 +51,17 @@ android {
     }
 
     sourceSets.main {
-        jniLibs.srcDir('libs')
+        jniLibs.srcDirs = ['libs']
         java {
             srcDir('src/main/java')
         }
     }
-    externalNativeBuild {
-        cmake {
-            version = "4.0.3"
-            path = 'src/main/CMakeLists.txt'
+    if (!project.hasProperty('skipNativeBuild')) {
+        externalNativeBuild {
+            cmake {
+                version = "4.0.3"
+                path = 'src/main/CMakeLists.txt'
+            }
         }
     }
 

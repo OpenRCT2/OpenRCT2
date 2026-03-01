@@ -1849,6 +1849,7 @@ static uint64_t PageDisabledWidgets[] = {
                 windowTileInspectorSelectedIndex = index;
             }
             invalidate();
+            MapInvalidateTileFull(_toolMap);
         }
 
         void LoadTile(TileElement* elementToSelect)

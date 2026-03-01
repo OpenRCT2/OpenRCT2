@@ -21,6 +21,10 @@
     <VcpkgTriplet Condition="'$(Platform)'=='x64' and '$(UseSharedLibs)'!='true'">x64-windows-static</VcpkgTriplet>
     <VcpkgTriplet Condition="'$(Platform)'=='arm64' and '$(UseSharedLibs)'!='true'">arm64-windows-static</VcpkgTriplet>
   </PropertyGroup>
+  <PropertyGroup>
+    <!-- Enable Precompiled Headers by default for better build performance -->
+    <UsePCH Condition="'$(UsePCH)'==''">true</UsePCH>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
     <UseDebugLibraries>true</UseDebugLibraries>
   </PropertyGroup>
@@ -131,3 +135,4 @@
     <VcpkgEnabled>false</VcpkgEnabled>
   </PropertyGroup>
 </Project>
+
