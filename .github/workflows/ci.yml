@@ -465,7 +465,7 @@ jobs:
             distro: Ubuntu
             release: resolute
             image: ghcr.io/openrct2/openrct2-build:26-resolute
-            build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g1 -gz"
+            build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g1 -gz" -DDISABLE_IPO=on
           - platform: x86_64
             distro: Debian
             release: bookworm
