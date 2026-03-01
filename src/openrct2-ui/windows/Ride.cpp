@@ -138,10 +138,6 @@ namespace OpenRCT2::Ui::Windows
         WIDX_SIMULATE_LIGHT,
         WIDX_TEST_LIGHT,
         WIDX_OPEN_LIGHT,
-        WIDX_RIDE_TYPE,
-        WIDX_RIDE_TYPE_DROPDOWN,
-        WIDX_MAKE_INVISIBLE,
-        WIDX_MAKE_VISIBLE,
 
         WIDX_VEHICLE_TYPE = 14,
         WIDX_VEHICLE_TYPE_DROPDOWN,
@@ -213,6 +209,10 @@ namespace OpenRCT2::Ui::Windows
         WIDX_VEHICLE_TRIM_COLOUR,
         WIDX_VEHICLE_TERTIARY_COLOUR,
         WIDX_RANDOMISE_VEHICLE_COLOURS,
+        WIDX_RIDE_TYPE,
+        WIDX_RIDE_TYPE_DROPDOWN,
+        WIDX_MAKE_INVISIBLE,
+        WIDX_MAKE_VISIBLE,
 
         WIDX_PLAY_MUSIC = 14,
         WIDX_MUSIC,
@@ -281,11 +281,7 @@ namespace OpenRCT2::Ui::Windows
         makeWidget({296,  48}, { 14,  14}, WidgetType::imgBtn,        WindowColour::secondary, ImageId(SPR_G2_RCT1_CLOSE_BUTTON_0), STR_CLOSE_RIDE_TIP         ),
         makeWidget({296,  62}, { 14,  14}, WidgetType::imgBtn,        WindowColour::secondary, ImageId(SPR_G2_RCT1_TEST_BUTTON_0),  STR_SIMULATE_RIDE_TIP      ),
         makeWidget({296,  62}, { 14,  14}, WidgetType::imgBtn,        WindowColour::secondary, ImageId(SPR_G2_RCT1_TEST_BUTTON_0),  STR_TEST_RIDE_TIP          ),
-        makeWidget({296,  76}, { 14,  14}, WidgetType::imgBtn,        WindowColour::secondary, ImageId(SPR_G2_RCT1_OPEN_BUTTON_0),  STR_OPEN_RIDE_TIP          ),
-        makeWidget({  3, 180}, {305,  14}, WidgetType::dropdownMenu,  WindowColour::secondary, kStringIdEmpty                                              ),
-        makeWidget({297, 181}, { 11,  12}, WidgetType::button,        WindowColour::secondary, STR_DROPDOWN_GLYPH                                              ),
-        makeWidget({  3, 197}, {140,  14}, WidgetType::button,        WindowColour::secondary, STR_MAKE_INVISIBLE,                  STR_MAKE_INVISIBLE_TIP     ),
-        makeWidget({151, 197}, {140,  14}, WidgetType::button,        WindowColour::secondary, STR_MAKE_VISIBLE,                    STR_MAKE_VISIBLE_TIP       )
+        makeWidget({296,  76}, { 14,  14}, WidgetType::imgBtn,        WindowColour::secondary, ImageId(SPR_G2_RCT1_OPEN_BUTTON_0),  STR_OPEN_RIDE_TIP          )
     );
 
     // 0x009ADDA8
@@ -362,7 +358,12 @@ namespace OpenRCT2::Ui::Windows
         makeWidget({ 79, 190}, { 12, 12}, WidgetType::colourBtn,    WindowColour::secondary, 0xFFFFFFFF,                    STR_SELECT_MAIN_COLOUR_TIP                   ),
         makeWidget({ 99, 190}, { 12, 12}, WidgetType::colourBtn,    WindowColour::secondary, 0xFFFFFFFF,                    STR_SELECT_ADDITIONAL_COLOUR_1_TIP           ),
         makeWidget({119, 190}, { 12, 12}, WidgetType::colourBtn,    WindowColour::secondary, 0xFFFFFFFF,                    STR_SELECT_ADDITIONAL_COLOUR_2_TIP           ),
-        makeWidget({139, 190}, {110, 14}, WidgetType::button,       WindowColour::secondary, STR_RANDOMISE_VEHICLE_COLOURS, STR_RANDOMISE_VEHICLE_COLOURS_TIP            )
+        makeWidget({139, 190}, {110, 14}, WidgetType::button,       WindowColour::secondary, STR_RANDOMISE_VEHICLE_COLOURS, STR_RANDOMISE_VEHICLE_COLOURS_TIP            ),
+
+        makeWidget({  3, 180+30}, {309,  14}, WidgetType::dropdownMenu,  WindowColour::secondary, kStringIdEmpty                                                  ),
+        makeWidget({300, 181+30}, { 11,  12}, WidgetType::button,        WindowColour::secondary, STR_DROPDOWN_GLYPH                                              ),
+        makeWidget({  3, 197+30}, {152,  14}, WidgetType::button,        WindowColour::secondary, STR_MAKE_INVISIBLE,                  STR_MAKE_INVISIBLE_TIP     ),
+        makeWidget({160, 197+30}, {152,  14}, WidgetType::button,        WindowColour::secondary, STR_MAKE_VISIBLE,                    STR_MAKE_VISIBLE_TIP       )
     );
 
     // 0x009AE4C8
@@ -1404,6 +1405,11 @@ namespace OpenRCT2::Ui::Windows
             setWidgetDisabled(WIDX_TAB_8, disableTab8);
             setWidgetDisabled(WIDX_TAB_9, disableTab9);
             setWidgetDisabled(WIDX_TAB_10, disableTab10);
+
+            if (getGameState().cheats.allowArbitraryRideTypeChanges)
+            {
+                setWidgetDisabled(WIDX_TAB_5, false);
+            }
         }
 
         void UpdateOverallView(const Ride& ride) const
@@ -1670,19 +1676,6 @@ namespace OpenRCT2::Ui::Windows
                     }
                     break;
                 }
-                case WIDX_MAKE_INVISIBLE:
-                {
-                    auto gameAction = GameActions::RideSetVisibilityAction(
-                        rideId, GameActions::RideSetVisibilityType::invisible);
-                    GameActions::Execute(&gameAction, getGameState());
-                    break;
-                }
-                case WIDX_MAKE_VISIBLE:
-                {
-                    auto gameAction = GameActions::RideSetVisibilityAction(rideId, GameActions::RideSetVisibilityType::visible);
-                    GameActions::Execute(&gameAction, getGameState());
-                    break;
-                }
             }
         }
 
@@ -1707,10 +1700,6 @@ namespace OpenRCT2::Ui::Windows
                         newMinHeight += 14;
                     }
                 }
-            }
-            if (getGameState().cheats.allowArbitraryRideTypeChanges)
-            {
-                newMinHeight += 30;
             }
 
             flags |= WindowFlag::resizable;
@@ -2217,9 +2206,6 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_OPEN:
                     ShowOpenDropdown(&widgets[widgetIndex]);
                     break;
-                case WIDX_RIDE_TYPE_DROPDOWN:
-                    ShowRideTypeDropdown(&widgets[widgetIndex]);
-                    break;
                 case WIDX_LOCATE:
                     ShowLocateDropdown(&widgets[widgetIndex]);
                     break;
@@ -2272,27 +2258,6 @@ namespace OpenRCT2::Ui::Windows
                     }
                     break;
                 }
-                case WIDX_RIDE_TYPE_DROPDOWN:
-                    if (dropdownIndex != -1 && dropdownIndex < RIDE_TYPE_COUNT)
-                    {
-                        auto rideLabelId = std::clamp(dropdownIndex, 0, RIDE_TYPE_COUNT - 1);
-                        auto rideType = _rideDropdownData[rideLabelId].RideTypeId;
-                        if (rideType < RIDE_TYPE_COUNT)
-                        {
-                            auto rideSetSetting = GameActions::RideSetSettingAction(
-                                rideId, GameActions::RideSetSetting::RideType, rideType);
-                            rideSetSetting.SetCallback(
-                                [](const GameActions::GameAction* ga, const GameActions::Result* result) {
-                                    // Reset ghost track if ride construction window is open, prevents a crash
-                                    // Will get set to the correct Alternative variable during set_default_next_piece.
-                                    // TODO: Rework construction window to prevent the need for this.
-                                    _currentTrackAlternative.clearAll();
-                                    RideConstructionSetDefaultNextPiece();
-                                });
-                            GameActions::Execute(&rideSetSetting, gameState);
-                        }
-                    }
-                    break;
                 case WIDX_LOCATE:
                 {
                     if (dropdownIndex == 0)
@@ -2315,18 +2280,8 @@ namespace OpenRCT2::Ui::Windows
             onPrepareDraw();
             invalidateWidget(WIDX_TAB_1);
 
-            // Resize window if cheat state changed
-            auto& gameState = getGameState();
-            if (_lastAllowArbitraryRideTypeChanges != gameState.cheats.allowArbitraryRideTypeChanges)
-            {
-                _lastAllowArbitraryRideTypeChanges = gameState.cheats.allowArbitraryRideTypeChanges;
-                invalidate();
-                onResize();
-                onPrepareDraw();
-                invalidate();
-            }
-
             // Update status
+            auto& gameState = getGameState();
             auto ride = GetRide(rideId);
             if (ride != nullptr)
             {
@@ -2419,37 +2374,15 @@ namespace OpenRCT2::Ui::Windows
                 + widgetIsPressed(*this, WIDX_OPEN_LIGHT);
             widgets[WIDX_OPEN_LIGHT].image = ImageId(openLightImage);
 
-            const int32_t offset = gameState.cheats.allowArbitraryRideTypeChanges ? 34 : 0;
             // Anchor main page specific widgets
             widgets[WIDX_VIEWPORT].right = width - 26;
-            widgets[WIDX_VIEWPORT].bottom = height - (14 + offset);
+            widgets[WIDX_VIEWPORT].bottom = height - 14;
             widgets[WIDX_STATUS].right = width - 26;
-            widgets[WIDX_STATUS].top = height - (13 + offset);
-            widgets[WIDX_STATUS].bottom = height - (3 + offset);
+            widgets[WIDX_STATUS].top = height - 13;
+            widgets[WIDX_STATUS].bottom = height - 3;
             widgets[WIDX_VIEW].right = width - 60;
             widgets[WIDX_VIEW_DROPDOWN].right = width - 61;
             widgets[WIDX_VIEW_DROPDOWN].left = width - 71;
-            widgets[WIDX_RIDE_TYPE].right = width - 26;
-            widgets[WIDX_RIDE_TYPE].moveToY(height - 34);
-            widgets[WIDX_RIDE_TYPE_DROPDOWN].moveTo({ width - 37, height - 33 });
-            widgets[WIDX_MAKE_INVISIBLE].moveToY(height - 17);
-            widgets[WIDX_MAKE_VISIBLE].moveToY(height - 17);
-
-            if (!gameState.cheats.allowArbitraryRideTypeChanges)
-            {
-                widgets[WIDX_RIDE_TYPE].type = WidgetType::empty;
-                widgets[WIDX_RIDE_TYPE_DROPDOWN].type = WidgetType::empty;
-                widgets[WIDX_MAKE_INVISIBLE].type = WidgetType::empty;
-                widgets[WIDX_MAKE_VISIBLE].type = WidgetType::empty;
-            }
-            else
-            {
-                widgets[WIDX_RIDE_TYPE].type = WidgetType::dropdownMenu;
-                widgets[WIDX_RIDE_TYPE].text = ride->getRideTypeDescriptor().Naming.Name;
-                widgets[WIDX_RIDE_TYPE_DROPDOWN].type = WidgetType::button;
-                widgets[WIDX_MAKE_INVISIBLE].type = WidgetType::button;
-                widgets[WIDX_MAKE_VISIBLE].type = WidgetType::button;
-            }
 
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
 
@@ -4310,6 +4243,19 @@ namespace OpenRCT2::Ui::Windows
                     }
                     break;
                 }
+                case WIDX_MAKE_INVISIBLE:
+                {
+                    auto gameAction = GameActions::RideSetVisibilityAction(
+                        rideId, GameActions::RideSetVisibilityType::invisible);
+                    GameActions::Execute(&gameAction, getGameState());
+                    break;
+                }
+                case WIDX_MAKE_VISIBLE:
+                {
+                    auto gameAction = GameActions::RideSetVisibilityAction(rideId, GameActions::RideSetVisibilityType::visible);
+                    GameActions::Execute(&gameAction, getGameState());
+                    break;
+                }
             }
         }
 
@@ -4460,6 +4406,9 @@ namespace OpenRCT2::Ui::Windows
                     vehicleColour = RideGetVehicleColour(*ride, _vehicleIndex);
                     WindowDropdownShowColour(this, &widgets[widgetIndex], colours[1], vehicleColour.Tertiary);
                     break;
+                case WIDX_RIDE_TYPE_DROPDOWN:
+                    ShowRideTypeDropdown(&widgets[widgetIndex]);
+                    break;
             }
         }
 
@@ -4566,6 +4515,29 @@ namespace OpenRCT2::Ui::Windows
                     GameActions::Execute(&rideSetAppearanceAction, gameState);
                 }
                 break;
+                case WIDX_RIDE_TYPE_DROPDOWN:
+                {
+                    if (dropdownIndex != -1 && dropdownIndex < RIDE_TYPE_COUNT)
+                    {
+                        auto rideLabelId = std::clamp(dropdownIndex, 0, RIDE_TYPE_COUNT - 1);
+                        auto rideType = _rideDropdownData[rideLabelId].RideTypeId;
+                        if (rideType < RIDE_TYPE_COUNT)
+                        {
+                            auto rideSetSetting = GameActions::RideSetSettingAction(
+                                rideId, GameActions::RideSetSetting::RideType, rideType);
+                            rideSetSetting.SetCallback(
+                                [](const GameActions::GameAction* ga, const GameActions::Result* result) {
+                                    // Reset ghost track if ride construction window is open, prevents a crash
+                                    // Will get set to the correct Alternative variable during set_default_next_piece.
+                                    // TODO: Rework construction window to prevent the need for this.
+                                    _currentTrackAlternative.clearAll();
+                                    RideConstructionSetDefaultNextPiece();
+                                });
+                            GameActions::Execute(&rideSetSetting, gameState);
+                        }
+                    }
+                    break;
+                }
             }
         }
 
@@ -4575,6 +4547,17 @@ namespace OpenRCT2::Ui::Windows
             onPrepareDraw();
             invalidateWidget(WIDX_TAB_5);
             invalidateWidget(WIDX_VEHICLE_PREVIEW);
+
+            // Resize window if cheat state changed
+            auto& gameState = getGameState();
+            if (_lastAllowArbitraryRideTypeChanges != gameState.cheats.allowArbitraryRideTypeChanges)
+            {
+                _lastAllowArbitraryRideTypeChanges = gameState.cheats.allowArbitraryRideTypeChanges;
+                invalidate();
+                onResize();
+                onPrepareDraw();
+                invalidate();
+            }
         }
 
         void ColourOnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
@@ -4605,6 +4588,7 @@ namespace OpenRCT2::Ui::Windows
             startY = colourOnPrepareDrawTrack(startY, ride, rideEntry);
             startY = colourOnPrepareDrawEntrance(startY, ride);
             startY = colourOnPrepareDrawVehicles(startY, ride, rideEntry);
+            startY = colourOnPrepareDrawRideType(startY, ride);
 
             _colourPanelHeight = startY;
             if (_colourPanelHeight != height)
@@ -4881,6 +4865,34 @@ namespace OpenRCT2::Ui::Windows
             // clang-format on
 
             return startY + 53;
+        }
+
+        int32_t colourOnPrepareDrawRideType(int32_t startY, const Ride* ride)
+        {
+            if (!getGameState().cheats.allowArbitraryRideTypeChanges)
+            {
+                widgets[WIDX_RIDE_TYPE].type = WidgetType::empty;
+                widgets[WIDX_RIDE_TYPE_DROPDOWN].type = WidgetType::empty;
+                widgets[WIDX_MAKE_INVISIBLE].type = WidgetType::empty;
+                widgets[WIDX_MAKE_VISIBLE].type = WidgetType::empty;
+
+                return startY;
+            }
+
+            widgets[WIDX_RIDE_TYPE].type = WidgetType::dropdownMenu;
+            widgets[WIDX_RIDE_TYPE].text = ride->getRideTypeDescriptor().Naming.Name;
+            widgets[WIDX_RIDE_TYPE_DROPDOWN].type = WidgetType::button;
+            widgets[WIDX_MAKE_INVISIBLE].type = WidgetType::button;
+            widgets[WIDX_MAKE_VISIBLE].type = WidgetType::button;
+
+            // clang-format off
+            widgets[WIDX_RIDE_TYPE].moveTo         ({  3, startY + 0});
+            widgets[WIDX_RIDE_TYPE_DROPDOWN].moveTo({300, startY + 1});
+            widgets[WIDX_MAKE_INVISIBLE].moveTo    ({  3, startY + 17});
+            widgets[WIDX_MAKE_VISIBLE].moveTo      ({160, startY + 17});
+            // clang-format on
+
+            return startY + 247 - 210;
         }
 
         void ColourOnDraw(RenderTarget& rt)
