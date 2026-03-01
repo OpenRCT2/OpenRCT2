@@ -18,7 +18,6 @@ using namespace OpenRCT2;
 constexpr int32_t kMonthTicksIncrement = 4;
 constexpr int32_t kMaskWeekTicks = 0x3FFF;
 constexpr int32_t kMaskFortnightTicks = 0x7FFF;
-constexpr int32_t kMaskMonthTicks = 0xFFFF;
 
 // rct2: 0x00993988
 static const int16_t days_in_month[MONTH_COUNT] = {
@@ -109,7 +108,7 @@ int32_t Date::GetDaysInMonth(int32_t month)
 void OpenRCT2::DateUpdate(GameState_t& gameState)
 {
     int32_t monthTicks = gameState.date.monthTicks + kMonthTicksIncrement;
-    if (monthTicks > kMaskMonthTicks)
+    if (monthTicks >= kMonthTicksPerMonth)
     {
         gameState.date.monthTicks = 0;
         gameState.date.monthsElapsed++;
