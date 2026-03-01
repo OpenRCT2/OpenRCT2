@@ -4987,7 +4987,7 @@ namespace OpenRCT2::Ui::Windows
         void ColourOnDrawEntrancePreview(RenderTarget& rt, const Ride* ride, const Widget& widget)
         {
             auto stationObj = ride->getStationObject();
-            if (stationObj == nullptr && stationObj->entranceBackIndex == kImageIndexUndefined)
+            if (stationObj == nullptr || stationObj->entranceBackIndex == kImageIndexUndefined)
                 return;
 
             auto trackColour = ride->trackColours[0];
