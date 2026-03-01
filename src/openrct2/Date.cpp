@@ -73,14 +73,14 @@ int32_t Date::GetYear() const
 
 bool Date::IsDayStart() const
 {
-    if (monthTicks < 4)
+    if (monthTicks < kMonthTicksIncrement)
     {
         return false;
     }
-    int32_t prevMonthTick = monthTicks - 4;
+    int32_t prevMonthTick = monthTicks - kMonthTicksIncrement;
     int32_t currentMonth = GetMonth();
     int32_t currentDaysInMonth = GetDaysInMonth(currentMonth);
-    return ((currentDaysInMonth * monthTicks) >> 16 != (currentDaysInMonth * prevMonthTick) >> 16);
+    return ((currentDaysInMonth * monthTicks) / kMonthTicksPerMonth != (currentDaysInMonth * prevMonthTick) / kMonthTicksPerMonth);
 }
 
 bool Date::IsWeekStart() const
