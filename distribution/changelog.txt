@@ -3,9 +3,11 @@
 - Change: [#25962] The station style dropdown now shows entrance icons next to the labels for easier selection.
 - Fix: [#10616] Quarter-tile trees cannot be placed on dry portions of half-water tiles.
 - Fix: [#25735] Ride synchronisation z-check works incorrectly.
+- Fix: [#25962] Dropdown triangle glyphs are not optically centred.
 - Fix: [#25993] Toggling “allow arbitrary ride type changes” does not resize open ride windows.
 - Fix: [#26111] Vehicle colours tab can go out of bounds in certain edge cases.
 - Fix: [#26118] Windows installers for releases are not signed properly.
+- Fix: [#26128] The loan spinner widget does not appear on the same baseline as the text around it.
 
 0.4.32 (2026-03-01)
 ------------------------------------------------------------------------
