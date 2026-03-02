@@ -26,15 +26,15 @@ namespace OpenRCT2::World::MapGenerator
     /**
      * Not perfect, this still leaves some particular tiles unsmoothed.
      */
-    int32_t smoothTileStrong(const TileCoordsXY pos)
+    int32_t smoothTileStrong(const TileCoordsXY tileCoords)
     {
-        auto surfaceElement = MapGetSurfaceElementAt(pos);
+        auto surfaceElement = MapGetSurfaceElementAt(tileCoords);
         if (surfaceElement == nullptr)
             return 0;
 
         surfaceElement->SetSlope(kTileSlopeFlat);
 
-        auto x = pos.x, y = pos.y;
+        auto x = tileCoords.x, y = tileCoords.y;
         auto raisedLand = 0;
 
         // Raise to edge height - 2

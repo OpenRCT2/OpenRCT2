@@ -25,8 +25,8 @@ namespace OpenRCT2::World::MapGenerator
 
     using SmoothFunction = std::function<int32_t(TileCoordsXY)>;
 
-    int32_t smoothTileStrong(TileCoordsXY tileCoord);
-    int32_t smoothTileWeak(TileCoordsXY tileCoord);
+    int32_t smoothTileStrong(TileCoordsXY tileCoords);
+    int32_t smoothTileWeak(TileCoordsXY tileCoords);
 
     void smoothMap(TileCoordsXY mapSize, SmoothFunction smoothFunc);
 } // namespace OpenRCT2::World::MapGenerator

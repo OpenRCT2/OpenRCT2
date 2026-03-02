@@ -279,9 +279,9 @@ namespace OpenRCT2
         return objMgr.GetLoadedObject<FootpathRailingsObject>(GetRailingsEntryIndex());
     }
 
-    void PathElement::SetRailingsEntryIndex(ObjectEntryIndex newEntryIndex)
+    void PathElement::SetRailingsEntryIndex(ObjectEntryIndex newIndex)
     {
-        RailingsIndex = newEntryIndex;
+        RailingsIndex = newIndex;
         Flags2 &= ~FOOTPATH_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY;
     }
 
