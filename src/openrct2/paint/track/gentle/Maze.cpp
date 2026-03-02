@@ -9,10 +9,8 @@
 
 #include "../../../SpriteIds.h"
 #include "../../../core/Numerics.hpp"
-#include "../../../interface/Viewport.h"
 #include "../../../ride/Ride.h"
 #include "../../../ride/RideData.h"
-#include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
 #include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"

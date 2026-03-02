@@ -10,6 +10,7 @@
 #include "ScVehicle.hpp"
 
 #include "../../../ride/TrackData.h"
+#include "../../../ride/ted/TrackElementDescriptor.h"
 #include "../../../world/Map.h"
 #include "../../../world/tile_element/TrackElement.h"
 #include "../ride/ScRide.hpp"
@@ -17,7 +18,7 @@
 #ifdef ENABLE_SCRIPTING
 
 using namespace OpenRCT2::Drawing;
-using namespace OpenRCT2::TrackMetaData;
+using namespace OpenRCT2::TrackMetadata;
 
 namespace OpenRCT2::Scripting
 {

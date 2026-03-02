@@ -8,10 +8,8 @@
  *****************************************************************************/
 
 #include "../../../SpriteIds.h"
-#include "../../../interface/Viewport.h"
 #include "../../../ride/Ride.h"
 #include "../../../ride/RideEntry.h"
-#include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
 #include "../../../world/tile_element/TrackElement.h"
 #include "../../Boundbox.h"

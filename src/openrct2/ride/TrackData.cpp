@@ -13,13 +13,14 @@
 #include "../localisation/StringIds.h"
 #include "Track.h"
 #include "TrackPaint.h"
+#include "ted/TrackElementDescriptor.h"
 
 #include <cstdint>
 #include <iterator>
 
 using namespace OpenRCT2;
 
-namespace OpenRCT2::TrackMetaData
+namespace OpenRCT2::TrackMetadata
 {
     struct SequenceData
     {
@@ -3063,65 +3064,65 @@ namespace OpenRCT2::TrackMetaData
     // clang-format on
 
     constexpr static SpinFunction kTrackTypeToSpinFunction[] = {
-        SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None,
-        SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None,
-        SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::L8,   SpinFunction::R8,
-        SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::L8,   SpinFunction::R8,
-        SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None,
-        SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::L8,   SpinFunction::R8,
-        SpinFunction::L8,   SpinFunction::R8,   SpinFunction::LR,   SpinFunction::RL,   SpinFunction::None, SpinFunction::None,
-        SpinFunction::L7,   SpinFunction::R7,   SpinFunction::L7,   SpinFunction::R7,   SpinFunction::L7,   SpinFunction::R7,
-        SpinFunction::L7,   SpinFunction::R7,   SpinFunction::L5,   SpinFunction::R5,   SpinFunction::None, SpinFunction::None,
-        SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None,
-        SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None,
-        SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None,
-        SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None,
-        SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::L8,   SpinFunction::R8,   SpinFunction::LR,
-        SpinFunction::RL,   SpinFunction::L7,   SpinFunction::R7,   SpinFunction::L7,   SpinFunction::R7,   SpinFunction::L7,
-        SpinFunction::R7,   SpinFunction::L8,   SpinFunction::R8,   SpinFunction::L8,   SpinFunction::R8,   SpinFunction::L5,
-        SpinFunction::R5,   SpinFunction::L5,   SpinFunction::R5,   SpinFunction::None, SpinFunction::RC,   SpinFunction::None,
-        SpinFunction::L8,   SpinFunction::R8,   SpinFunction::L8,   SpinFunction::R8,   SpinFunction::L8,   SpinFunction::R8,
-        SpinFunction::L8,   SpinFunction::R8,   SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::SP,
-        SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None,
-        SpinFunction::R5,   SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None,
-        SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None,
-        SpinFunction::None, SpinFunction::L9,   SpinFunction::R9,   SpinFunction::L9,   SpinFunction::R9,   SpinFunction::L9,
-        SpinFunction::R9,   SpinFunction::L9,   SpinFunction::R9,   SpinFunction::None, SpinFunction::None, SpinFunction::None,
-        SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None,
-        SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None,
-        SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None,
-        SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None,
-        SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None,
-        SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::L7,   SpinFunction::R7,
-        SpinFunction::L7,   SpinFunction::R7,   SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None,
-        SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None,
-        SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None,
-        SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None,
-        SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::L7,
-        SpinFunction::R7,   SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None,
-        SpinFunction::None, SpinFunction::L7,   SpinFunction::R7,   SpinFunction::L7,   SpinFunction::R7,   SpinFunction::L8,
-        SpinFunction::R8,   SpinFunction::L8,   SpinFunction::R8,   SpinFunction::None, SpinFunction::None, SpinFunction::None,
-        SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None,
-        SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None,
-        SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None,
-        SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None,
-        SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None,
-        SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None,
-        SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None,
-        SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None,
-        SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None,
-        SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None,
-        SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::L9,
-        SpinFunction::R9,   SpinFunction::L9,   SpinFunction::R9,   SpinFunction::L9,   SpinFunction::R9,   SpinFunction::L9,
-        SpinFunction::R9,   SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None,
-        SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None,
-        SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None,
-        SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None,
-        SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::L9,
-        SpinFunction::R9,   SpinFunction::L9,   SpinFunction::R9,   SpinFunction::L9,   SpinFunction::R9,   SpinFunction::L9,
-        SpinFunction::R9,   SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None,
-        SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::L9,   SpinFunction::R9,   SpinFunction::L9,
-        SpinFunction::R9,   SpinFunction::None
+        SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none,
+        SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none,
+        SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::l8,   SpinFunction::r8,
+        SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::l8,   SpinFunction::r8,
+        SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none,
+        SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::l8,   SpinFunction::r8,
+        SpinFunction::l8,   SpinFunction::r8,   SpinFunction::lr,   SpinFunction::rl,   SpinFunction::none, SpinFunction::none,
+        SpinFunction::l7,   SpinFunction::r7,   SpinFunction::l7,   SpinFunction::r7,   SpinFunction::l7,   SpinFunction::r7,
+        SpinFunction::l7,   SpinFunction::r7,   SpinFunction::l5,   SpinFunction::r5,   SpinFunction::none, SpinFunction::none,
+        SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none,
+        SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none,
+        SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none,
+        SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none,
+        SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::l8,   SpinFunction::r8,   SpinFunction::lr,
+        SpinFunction::rl,   SpinFunction::l7,   SpinFunction::r7,   SpinFunction::l7,   SpinFunction::r7,   SpinFunction::l7,
+        SpinFunction::r7,   SpinFunction::l8,   SpinFunction::r8,   SpinFunction::l8,   SpinFunction::r8,   SpinFunction::l5,
+        SpinFunction::r5,   SpinFunction::l5,   SpinFunction::r5,   SpinFunction::none, SpinFunction::rc,   SpinFunction::none,
+        SpinFunction::l8,   SpinFunction::r8,   SpinFunction::l8,   SpinFunction::r8,   SpinFunction::l8,   SpinFunction::r8,
+        SpinFunction::l8,   SpinFunction::r8,   SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::sp,
+        SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none,
+        SpinFunction::r5,   SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none,
+        SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none,
+        SpinFunction::none, SpinFunction::l9,   SpinFunction::r9,   SpinFunction::l9,   SpinFunction::r9,   SpinFunction::l9,
+        SpinFunction::r9,   SpinFunction::l9,   SpinFunction::r9,   SpinFunction::none, SpinFunction::none, SpinFunction::none,
+        SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none,
+        SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none,
+        SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none,
+        SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none,
+        SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none,
+        SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::l7,   SpinFunction::r7,
+        SpinFunction::l7,   SpinFunction::r7,   SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none,
+        SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none,
+        SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none,
+        SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none,
+        SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::l7,
+        SpinFunction::r7,   SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none,
+        SpinFunction::none, SpinFunction::l7,   SpinFunction::r7,   SpinFunction::l7,   SpinFunction::r7,   SpinFunction::l8,
+        SpinFunction::r8,   SpinFunction::l8,   SpinFunction::r8,   SpinFunction::none, SpinFunction::none, SpinFunction::none,
+        SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none,
+        SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none,
+        SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none,
+        SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none,
+        SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none,
+        SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none,
+        SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none,
+        SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none,
+        SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none,
+        SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none,
+        SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::l9,
+        SpinFunction::r9,   SpinFunction::l9,   SpinFunction::r9,   SpinFunction::l9,   SpinFunction::r9,   SpinFunction::l9,
+        SpinFunction::r9,   SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none,
+        SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none,
+        SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none,
+        SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none,
+        SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::l9,
+        SpinFunction::r9,   SpinFunction::l9,   SpinFunction::r9,   SpinFunction::l9,   SpinFunction::r9,   SpinFunction::l9,
+        SpinFunction::r9,   SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::none,
+        SpinFunction::none, SpinFunction::none, SpinFunction::none, SpinFunction::l9,   SpinFunction::r9,   SpinFunction::l9,
+        SpinFunction::r9,   SpinFunction::none
     };
     static_assert(std::size(kTrackTypeToSpinFunction) == EnumValue(TrackElemType::count));
 
@@ -16089,4 +16090,4 @@ namespace OpenRCT2::TrackMetaData
         return kTrackElementDescriptors[EnumValue(type)];
     }
 
-} // namespace OpenRCT2::TrackMetaData
+} // namespace OpenRCT2::TrackMetadata

@@ -75,6 +75,7 @@
 #include "TrackDesign.h"
 #include "TrackDesignRepository.h"
 #include "Vehicle.h"
+#include "ted/TrackElementDescriptor.h"
 
 #include <iterator>
 #include <memory>
@@ -99,7 +100,7 @@ using namespace TrackDesignSceneryElementFlags;
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
-using namespace OpenRCT2::TrackMetaData;
+using namespace OpenRCT2::TrackMetadata;
 
 constexpr TileCoordsXY TRACK_DESIGN_PREVIEW_MAP_SIZE = TileCoordsXY{ 256, 256 };
 

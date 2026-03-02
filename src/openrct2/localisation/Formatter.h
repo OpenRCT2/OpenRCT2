@@ -129,7 +129,7 @@ namespace OpenRCT2
 } // namespace OpenRCT2
 
 // TODO: move/rename
-struct OpenRCT2String
+struct StringWithArgs
 {
     StringId str;
     OpenRCT2::Formatter args;

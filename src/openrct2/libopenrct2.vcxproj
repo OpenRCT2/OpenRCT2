@@ -556,6 +556,10 @@
     <ClInclude Include="ride\rtd\water\RiverRapids.h" />
     <ClInclude Include="ride\rtd\water\SplashBoats.h" />
     <ClInclude Include="ride\rtd\water\SubmarineRide.h" />
+    <ClInclude Include="ride\ted\PitchAndRoll.h" />
+    <ClInclude Include="ride\ted\TrackElementDescriptor.h" />
+    <ClInclude Include="ride\ted\TrackElemType.h" />
+    <ClInclude Include="ride\ted\TrackGroup.h" />
     <ClInclude Include="ride\Station.h" />
     <ClInclude Include="ride\ShopItem.h" />
     <ClInclude Include="ride\Track.h" />
@@ -1107,6 +1111,7 @@
     <ClCompile Include="rct2\T6Exporter.cpp" />
     <ClCompile Include="rct2\T6Importer.cpp" />
     <ClCompile Include="ReplayManager.cpp" />
+    <ClCompile Include="ride\ted\PitchAndRoll.cpp" />
     <ClCompile Include="ride\CableLift.cpp" />
     <ClCompile Include="ride\CarEntry.cpp" />
     <ClCompile Include="ride\MazeCost.cpp" />

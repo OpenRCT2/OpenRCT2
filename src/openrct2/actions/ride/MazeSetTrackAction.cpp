@@ -18,12 +18,12 @@
 #include "../../management/Finance.h"
 #include "../../ride/MazeCost.h"
 #include "../../ride/RideData.h"
-#include "../../ride/Track.h"
 #include "../../ride/TrackData.h"
 #include "../../world/ConstructionClearance.h"
 #include "../../world/Footpath.h"
 #include "../../world/Map.h"
 #include "../../world/Park.h"
+#include "../../world/QuarterTile.h"
 #include "../../world/Wall.h"
 #include "../../world/tile_element/Slope.h"
 #include "../../world/tile_element/SurfaceElement.h"
@@ -31,7 +31,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    using namespace OpenRCT2::TrackMetaData;
+    using namespace OpenRCT2::TrackMetadata;
 
     // clang-format off
     /** rct2: 0x00993CE9 */

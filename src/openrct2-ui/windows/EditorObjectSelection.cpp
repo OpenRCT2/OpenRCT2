@@ -820,7 +820,7 @@ namespace OpenRCT2::Ui::Windows
          *
          * rct2: 0x006AB058
          */
-        OpenRCT2String onTooltip(const WidgetIndex widgetIndex, const StringId fallback) override
+        StringWithArgs onTooltip(const WidgetIndex widgetIndex, const StringId fallback) override
         {
             if (widgetIndex >= WIDX_TAB_1 && static_cast<size_t>(widgetIndex) < WIDX_TAB_1 + std::size(ObjectSelectionPages))
             {

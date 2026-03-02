@@ -35,7 +35,7 @@
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Scripting;
-using namespace OpenRCT2::TrackMetaData;
+using namespace OpenRCT2::TrackMetadata;
 
 enum
 {

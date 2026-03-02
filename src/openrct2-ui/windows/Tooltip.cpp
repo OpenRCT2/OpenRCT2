@@ -40,7 +40,7 @@ namespace OpenRCT2::Ui::Windows
         int32_t _textHeight;
 
     public:
-        TooltipWindow(const OpenRCT2String& message, ScreenCoordsXY screenCoords)
+        TooltipWindow(const StringWithArgs& message, ScreenCoordsXY screenCoords)
         {
             _textWidth = FormatTextForTooltip(message);
             _textHeight = ((_tooltipNumLines + 1) * FontGetLineHeight(FontStyle::small));
@@ -135,11 +135,11 @@ namespace OpenRCT2::Ui::Windows
 
     private:
         // Returns the width of the new tooltip text
-        int32_t FormatTextForTooltip(const OpenRCT2String& message)
+        int32_t FormatTextForTooltip(const StringWithArgs& message)
         {
             const u8string tempString = FormatStringIDLegacy(message.str, message.args.Data());
 
-            OpenRCT2String formattedMessage{ STR_STRING_TOOLTIP, Formatter() };
+            StringWithArgs formattedMessage{ STR_STRING_TOOLTIP, Formatter() };
             formattedMessage.args.Add<const char*>(tempString.c_str());
             const u8string tooltipTextUnwrapped = FormatStringIDLegacy(formattedMessage.str, formattedMessage.args.Data());
 
@@ -162,7 +162,7 @@ namespace OpenRCT2::Ui::Windows
         gInputFlags.unset(InputFlag::leftMousePressed);
     }
 
-    void WindowTooltipShow(const OpenRCT2String& message, ScreenCoordsXY screenCoords)
+    void WindowTooltipShow(const StringWithArgs& message, ScreenCoordsXY screenCoords)
     {
         auto tooltipWindow = std::make_unique<TooltipWindow>(message, screenCoords);
         auto windowPos = tooltipWindow->windowPos;
@@ -183,7 +183,7 @@ namespace OpenRCT2::Ui::Windows
         auto widget = &widgetWindow->widgets[widgetIndex];
         widgetWindow->onPrepareDraw();
 
-        OpenRCT2String result;
+        StringWithArgs result;
         if (widget->flags.has(WidgetFlag::tooltipIsString))
         {
             auto tooltipString = widget->sztooltip;

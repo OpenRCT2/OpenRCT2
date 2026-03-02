@@ -70,6 +70,7 @@
 #include "TrackData.h"
 #include "TrackDesign.h"
 #include "Vehicle.h"
+#include "ted/TrackElementDescriptor.h"
 
 #include <cassert>
 #include <iterator>
@@ -77,7 +78,7 @@
 #include <optional>
 
 using namespace OpenRCT2;
-using namespace OpenRCT2::TrackMetaData;
+using namespace OpenRCT2::TrackMetadata;
 
 static constexpr auto kRideModeBlockSectionedCounterpart = std::to_array(
     {
@@ -2166,7 +2167,7 @@ static void RideFreeOldMeasurements()
     } while (numRideMeasurements > kMaxRideMeasurements);
 }
 
-std::pair<RideMeasurement*, OpenRCT2String> Ride::getMeasurement()
+std::pair<RideMeasurement*, StringWithArgs> Ride::getMeasurement()
 {
     const auto& rtd = getRideTypeDescriptor();
 
@@ -2207,7 +2208,7 @@ std::pair<RideMeasurement*, OpenRCT2String> Ride::getMeasurement()
 VehicleColour RideGetVehicleColour(const Ride& ride, int32_t vehicleIndex)
 {
     // Prevent indexing array out of bounds
-    vehicleIndex = std::min<int32_t>(vehicleIndex, static_cast<int32_t>(std::size(ride.vehicleColours)));
+    vehicleIndex = std::clamp<int32_t>(vehicleIndex, 0, std::size(ride.vehicleColours) - 1);
     return ride.vehicleColours[vehicleIndex];
 }
 

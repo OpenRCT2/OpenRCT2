@@ -19,6 +19,7 @@
 #include "../../world/ConstructionClearance.h"
 #include "../../world/Footpath.h"
 #include "../../world/Map.h"
+#include "../../world/QuarterTile.h"
 #include "../../world/Wall.h"
 #include "../../world/tile_element/Slope.h"
 #include "../../world/tile_element/SurfaceElement.h"
@@ -26,7 +27,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    using namespace OpenRCT2::TrackMetaData;
+    using namespace OpenRCT2::TrackMetadata;
 
     MazePlaceTrackAction::MazePlaceTrackAction(const CoordsXYZ& location, RideId rideIndex, uint16_t mazeEntry)
         : _loc(location)

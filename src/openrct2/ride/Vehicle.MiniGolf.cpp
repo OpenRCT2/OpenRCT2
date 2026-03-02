@@ -24,10 +24,12 @@
 #include "Track.h"
 #include "TrackData.h"
 #include "VehicleGeometry.h"
+#include "ted/PitchAndRoll.h"
+#include "ted/TrackElementDescriptor.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::RideVehicle;
-using namespace OpenRCT2::TrackMetaData;
+using namespace OpenRCT2::TrackMetadata;
 
 static PitchAndRoll PitchAndRollStart(bool useInvertedSprites, TileElement* tileElement)
 {

@@ -23,12 +23,13 @@
 #include "Track.h"
 #include "TrackData.h"
 #include "VehicleData.h"
+#include "ted/TrackElementDescriptor.h"
 
 #include <cassert>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
-using namespace OpenRCT2::TrackMetaData;
+using namespace OpenRCT2::TrackMetadata;
 
 constexpr int16_t kVehicleMaxSpinSpeed = 1536;
 constexpr int16_t kVehicleMinSpinSpeed = -kVehicleMaxSpinSpeed;
@@ -777,7 +778,7 @@ void Vehicle::UpdateSpinningCar()
     const auto& ted = GetTrackElementDescriptor(trackType);
     switch (ted.spinFunction)
     {
-        case SpinFunction::RC:
+        case SpinFunction::rc:
             // On a rotation control track element
             spinningInertia += 6;
             spinSpeed = dword_F64E08 >> spinningInertia;
@@ -791,25 +792,25 @@ void Vehicle::UpdateSpinningCar()
                 spin_speed += spinSpeed;
             }
             break;
-        case SpinFunction::R5:
+        case SpinFunction::r5:
             // It looks like in the original there was going to be special code for whirlpool
             // this has been removed and just uses R5
             spinningInertia += 5;
             spin_speed -= dword_F64E08 >> spinningInertia;
             break;
-        case SpinFunction::L5:
+        case SpinFunction::l5:
             spinningInertia += 5;
             spin_speed += dword_F64E08 >> spinningInertia;
             break;
-        case SpinFunction::R7:
+        case SpinFunction::r7:
             spinningInertia += 7;
             spin_speed -= dword_F64E08 >> spinningInertia;
             break;
-        case SpinFunction::L7:
+        case SpinFunction::l7:
             spinningInertia += 7;
             spin_speed += dword_F64E08 >> spinningInertia;
             break;
-        case SpinFunction::RL:
+        case SpinFunction::rl:
             // Right Left Curve Track Piece
             if (track_progress < 48)
             {
@@ -819,15 +820,15 @@ void Vehicle::UpdateSpinningCar()
                 break;
             }
             [[fallthrough]];
-        case SpinFunction::L9:
+        case SpinFunction::l9:
             spinningInertia += 9;
             spin_speed += dword_F64E08 >> spinningInertia;
             break;
-        case SpinFunction::L8:
+        case SpinFunction::l8:
             spinningInertia += 8;
             spin_speed += dword_F64E08 >> spinningInertia;
             break;
-        case SpinFunction::SP:
+        case SpinFunction::sp:
             // On rapids spin after fully on them
             if (track_progress > 22)
             {
@@ -836,7 +837,7 @@ void Vehicle::UpdateSpinningCar()
                 spin_speed += dword_F64E08 >> spinningInertia;
             }
             break;
-        case SpinFunction::LR:
+        case SpinFunction::lr:
             // Left Right Curve Track Piece
             if (track_progress < 48)
             {
@@ -846,15 +847,15 @@ void Vehicle::UpdateSpinningCar()
                 break;
             }
             [[fallthrough]];
-        case SpinFunction::R9:
+        case SpinFunction::r9:
             spinningInertia += 9;
             spin_speed -= dword_F64E08 >> spinningInertia;
             break;
-        case SpinFunction::R8:
+        case SpinFunction::r8:
             spinningInertia += 8;
             spin_speed -= dword_F64E08 >> spinningInertia;
             break;
-        case SpinFunction::None:
+        case SpinFunction::none:
             break;
     }
 

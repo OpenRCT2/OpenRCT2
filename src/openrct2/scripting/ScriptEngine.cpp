@@ -26,6 +26,7 @@
     #include "../core/Path.hpp"
     #include "../interface/InteractiveConsole.h"
     #include "../platform/Platform.h"
+    #include "../ride/ted/PitchAndRoll.h"
     #include "Duktape.hpp"
     #include "bindings/entity/ScBalloon.hpp"
     #include "bindings/entity/ScEntity.hpp"
@@ -70,6 +71,9 @@
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Scripting;
+
+using OpenRCT2::TrackMetadata::TrackPitch;
+using OpenRCT2::TrackMetadata::TrackRoll;
 
 struct ExpressionStringifier final
 {

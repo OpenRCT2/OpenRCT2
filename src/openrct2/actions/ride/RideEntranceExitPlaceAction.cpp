@@ -18,6 +18,7 @@
 #include "../../world/ConstructionClearance.h"
 #include "../../world/Map.h"
 #include "../../world/MapAnimation.h"
+#include "../../world/QuarterTile.h"
 #include "../../world/Wall.h"
 #include "../../world/tile_element/EntranceElement.h"
 #include "../../world/tile_element/Slope.h"

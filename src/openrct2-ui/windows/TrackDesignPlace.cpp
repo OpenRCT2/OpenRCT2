@@ -32,6 +32,7 @@
 #include <openrct2/ride/TrackData.h>
 #include <openrct2/ride/TrackDesign.h>
 #include <openrct2/ride/TrackDesignRepository.h>
+#include <openrct2/ride/ted/TrackElementDescriptor.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Map.h>
@@ -42,7 +43,7 @@
 #include <vector>
 
 using namespace OpenRCT2::Numerics;
-using namespace OpenRCT2::TrackMetaData;
+using namespace OpenRCT2::TrackMetadata;
 using OpenRCT2::Drawing::PaletteIndex;
 using OpenRCT2::GameActions::CommandFlag;
 using OpenRCT2::GameActions::CommandFlags;

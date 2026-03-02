@@ -21,12 +21,18 @@
 #include "VehicleSubpositionData.h"
 
 #include <cstddef>
+#include <optional>
 
 struct Ride;
 struct RideObjectEntry;
 struct CarEntry;
 class DataSerialiser;
 struct PaintSession;
+
+namespace OpenRCT2
+{
+    struct TrackElement;
+}
 
 struct GForces
 {

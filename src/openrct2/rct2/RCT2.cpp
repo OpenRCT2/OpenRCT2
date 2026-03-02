@@ -16,9 +16,12 @@
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/Track.h"
+#include "../ride/ted/TrackGroup.h"
 
 #include <cstdint>
 #include <cstring>
+
+using OpenRCT2::TrackGroup;
 
 namespace OpenRCT2::RCT2
 {

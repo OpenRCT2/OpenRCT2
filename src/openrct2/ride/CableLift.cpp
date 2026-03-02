@@ -18,13 +18,15 @@
 #include "../world/tile_element/TrackElement.h"
 #include "Ride.h"
 #include "RideData.h"
-#include "Track.h"
 #include "Vehicle.h"
 #include "VehicleData.h"
 #include "VehicleGeometry.h"
+#include "ted/PitchAndRoll.h"
+#include "ted/TrackElemType.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::RideVehicle;
+using namespace OpenRCT2::TrackMetadata;
 
 Vehicle* CableLiftSegmentCreate(
     Ride& ride, int32_t x, int32_t y, int32_t z, int32_t direction, uint16_t var_44, int32_t remaining_distance, bool head)

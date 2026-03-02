@@ -32,8 +32,8 @@
 #include "../object/PathAdditionEntry.h"
 #include "../paint/VirtualFloor.h"
 #include "../ride/RideData.h"
-#include "../ride/Track.h"
 #include "../ride/TrackData.h"
+#include "../ride/ted/TrackElementDescriptor.h"
 #include "Location.hpp"
 #include "Map.h"
 #include "MapAnimation.h"
@@ -49,7 +49,7 @@
 #include <iterator>
 
 using namespace OpenRCT2;
-using namespace OpenRCT2::TrackMetaData;
+using namespace OpenRCT2::TrackMetadata;
 using OpenRCT2::GameActions::CommandFlag;
 using OpenRCT2::GameActions::CommandFlags;
 

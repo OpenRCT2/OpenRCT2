@@ -12,7 +12,6 @@
 #include "../../../entity/Guest.h"
 #include "../../../interface/Viewport.h"
 #include "../../../ride/RideEntry.h"
-#include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
 #include "../../../ride/Vehicle.h"
 #include "../../Paint.h"

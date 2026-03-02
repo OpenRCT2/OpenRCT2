@@ -19,7 +19,7 @@
 #include "VehicleGeometry.h"
 
 using namespace OpenRCT2;
-using namespace OpenRCT2::TrackMetaData;
+using namespace OpenRCT2::TrackMetadata;
 using namespace OpenRCT2::RideVehicle;
 
 // External globals from Vehicle.cpp

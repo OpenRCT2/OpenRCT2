@@ -19,6 +19,7 @@
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/TrackData.h"
+#include "../ride/ted/TrackElementDescriptor.h"
 #include "Map.h"
 #include "Park.h"
 #include "QuarterTile.h"
@@ -95,7 +96,7 @@ static bool landSlopeFitsUnderTrack(int32_t baseZ, uint8_t slope, const TrackEle
     const auto [slopeNorthZ, slopeEastZ, slopeSouthZ, slopeWestZ] = GetSlopeCornerHeights(baseZ, slope);
 
     const TrackElemType trackElemType = trackElement.GetTrackType();
-    const auto& ted = TrackMetaData::GetTrackElementDescriptor(trackElemType);
+    const auto& ted = TrackMetadata::GetTrackElementDescriptor(trackElemType);
     const uint8_t sequenceIndex = trackElemType == TrackElemType::maze ? 0 : trackElement.GetSequenceIndex();
     const auto& trackClearances = ted.sequences[sequenceIndex].clearance;
     const auto trackQuarters = trackClearances.quarterTile.Rotate(trackElement.GetDirection());

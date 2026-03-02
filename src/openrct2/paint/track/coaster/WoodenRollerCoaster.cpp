@@ -14,7 +14,6 @@
 #include "../../../drawing/Drawing.h"
 #include "../../../interface/Viewport.h"
 #include "../../../ride/RideData.h"
-#include "../../../ride/TrackData.h"
 #include "../../../ride/TrackPaint.h"
 #include "../../../world/tile_element/TrackElement.h"
 #include "../../Boundbox.h"
@@ -28,6 +27,7 @@
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
+using namespace OpenRCT2::WoodenRC;
 
 // static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Square;
 
@@ -870,14 +870,14 @@ static constexpr ImageIndex kStationBlockBrakesImageIds[2][kNumOrthogonalDirecti
     },
 };
 
-static constexpr const uint32_t kWoodenRCDiagBrakeImages[kNumOrthogonalDirections] = {
+static constexpr uint32_t kWoodenRCDiagBrakeImages[kNumOrthogonalDirections] = {
     SPR_TRACKS_WOODEN_RC_DIAG_BRAKES,
     SPR_TRACKS_WOODEN_RC_DIAG_BRAKES + 1,
     SPR_TRACKS_WOODEN_RC_DIAG_BRAKES,
     SPR_TRACKS_WOODEN_RC_DIAG_BRAKES + 1,
 };
 
-static constexpr const uint32_t kWoodenRCDiagBlockBrakeImages[2][kNumOrthogonalDirections] = {
+static constexpr uint32_t kWoodenRCDiagBlockBrakeImages[2][kNumOrthogonalDirections] = {
     {
         SPR_TRACKS_WOODEN_RC_DIAG_BRAKES + 3,
         SPR_TRACKS_WOODEN_RC_DIAG_BRAKES + 5,
@@ -2008,7 +2008,7 @@ static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirecti
     } },
 } };
 
-ImageId WoodenRCGetRailsColour(PaintSession& session)
+ImageId WoodenRC::WoodenRCGetRailsColour(PaintSession& session)
 {
     return session.TrackColours;
 }
@@ -2033,7 +2033,7 @@ static void WoodenRCTrackFlat(
     };
 
     uint8_t isChained = trackElement.HasChain() ? 1 : 0;
-    WoodenRCTrackPaint<isClassic>(
+    TrackPaint<isClassic>(
         session, direction, imageIds[direction][isChained], railsImageIds[direction][isChained], { 0, 2, height },
         { { 0, 3, height }, { 32, 25, 2 } });
     WoodenASupportsPaintSetupRotated(
@@ -2146,12 +2146,12 @@ static void WoodenRCTrack25DegUp(
     };
 
     uint8_t isChained = trackElement.HasChain() ? 1 : 0;
-    WoodenRCTrackPaint<isClassic>(
+    TrackPaint<isClassic>(
         session, direction, imageIds[isChained][direction][0], imageIds[isChained][direction][1], { 0, 0, height },
         { { 0, 3, height }, { 32, 25, 2 } });
     if (direction == 1 || direction == 2)
     {
-        WoodenRCTrackPaint<isClassic>(
+        TrackPaint<isClassic>(
             session, direction, imageIds[isChained][direction][2], imageIds[isChained][direction][3], { 0, 0, height },
             { { 0, 26, height + 5 }, { 32, 1, 9 } });
     }
@@ -2196,13 +2196,13 @@ static void WoodenRCTrack60DegUp(
     {
         if (direction == 0 || direction == 3)
         {
-            WoodenRCTrackPaint<isClassic>(
+            TrackPaint<isClassic>(
                 session, direction, imageIdsChained[direction][0], imageIdsChained[direction][1], { 0, 0, height },
                 { { 0, 3, height }, { 32, 25, 2 } });
         }
         else
         {
-            session.WoodenSupportsPrependTo = WoodenRCTrackPaint<isClassic>(
+            session.WoodenSupportsPrependTo = TrackPaint<isClassic>(
                 session, direction, imageIdsChained[direction][0], imageIdsChained[direction][1], { 0, 0, height },
                 { { 28, 4, height - 16 }, { 2, 24, 93 } });
         }
@@ -2211,13 +2211,13 @@ static void WoodenRCTrack60DegUp(
     {
         if (direction == 0 || direction == 3)
         {
-            WoodenRCTrackPaint<isClassic>(
+            TrackPaint<isClassic>(
                 session, direction, imageIds[direction][0], imageIds[direction][1], { 0, 0, height },
                 { { 0, 3, height }, { 32, 25, 2 } });
         }
         else
         {
-            session.WoodenSupportsPrependTo = WoodenRCTrackPaint<isClassic>(
+            session.WoodenSupportsPrependTo = TrackPaint<isClassic>(
                 session, direction, imageIds[direction][0], imageIds[direction][1], { 0, 0, height },
                 { { 28, 4, height - 16 }, { 2, 24, 93 } });
         }
@@ -2302,12 +2302,12 @@ static void WoodenRCTrackFlatTo25DegUp(
     };
 
     uint8_t isChained = trackElement.HasChain() ? 1 : 0;
-    WoodenRCTrackPaint<isClassic>(
+    TrackPaint<isClassic>(
         session, direction, imageIds[isChained][direction][0], imageIds[isChained][direction][1], { 0, 0, height },
         { { 0, 3, height }, { 32, 25, 2 } });
     if (direction == 1 || direction == 2)
     {
-        WoodenRCTrackPaint<isClassic>(
+        TrackPaint<isClassic>(
             session, direction, imageIds[isChained][direction][2], imageIds[isChained][direction][3], { 0, 0, height },
             { { 0, 26, height + 5 }, { 32, 1, 9 } });
     }
@@ -2391,16 +2391,16 @@ static void WoodenRCTrack25DegUpTo60DegUp(
     {
         if (direction == 0 || direction == 3)
         {
-            WoodenRCTrackPaint<isClassic>(
+            TrackPaint<isClassic>(
                 session, direction, imageIdsChained[direction][0], imageIdsChained[direction][1], { 0, 0, height },
                 { { 0, 3, height }, { 32, 25, 2 } });
         }
         else
         {
-            session.WoodenSupportsPrependTo = WoodenRCTrackPaint<isClassic>(
+            session.WoodenSupportsPrependTo = TrackPaint<isClassic>(
                 session, direction, imageIdsChained[direction][0], imageIdsChained[direction][1], { 0, 0, height },
                 { { 28, 4, height + 2 }, { 2, 24, 43 } });
-            WoodenRCTrackPaint<isClassic>(
+            TrackPaint<isClassic>(
                 session, direction, imageIdsChained[direction][2], imageIdsChained[direction][3], { 0, 0, height },
                 { { 0, 4, height }, { 32, 2, 43 } });
         }
@@ -2409,16 +2409,16 @@ static void WoodenRCTrack25DegUpTo60DegUp(
     {
         if (direction == 0 || direction == 3)
         {
-            WoodenRCTrackPaint<isClassic>(
+            TrackPaint<isClassic>(
                 session, direction, imageIds[direction][0], imageIds[direction][1], { 0, 0, height },
                 { { 0, 3, height }, { 32, 25, 2 } });
         }
         else
         {
-            session.WoodenSupportsPrependTo = WoodenRCTrackPaint<isClassic>(
+            session.WoodenSupportsPrependTo = TrackPaint<isClassic>(
                 session, direction, imageIds[direction][0], imageIds[direction][1], { 0, 0, height },
                 { { 28, 4, height + 2 }, { 2, 24, 43 } });
-            WoodenRCTrackPaint<isClassic>(
+            TrackPaint<isClassic>(
                 session, direction, imageIds[direction][2], imageIds[direction][3], { 0, 0, height },
                 { { 0, 4, height }, { 32, 2, 43 } });
         }
@@ -2505,16 +2505,16 @@ static void WoodenRCTrack60DegUpTo25DegUp(
     {
         if (direction == 0 || direction == 3)
         {
-            WoodenRCTrackPaint<isClassic>(
+            TrackPaint<isClassic>(
                 session, direction, imageIdsChained[direction][0], imageIdsChained[direction][1], { 0, 0, height },
                 { { 0, 3, height }, { 32, 25, 2 } });
         }
         else
         {
-            session.WoodenSupportsPrependTo = WoodenRCTrackPaint<isClassic>(
+            session.WoodenSupportsPrependTo = TrackPaint<isClassic>(
                 session, direction, imageIdsChained[direction][0], imageIdsChained[direction][1], { 0, 0, height },
                 { { 28, 4, height + 2 }, { 2, 24, 43 } });
-            WoodenRCTrackPaint<isClassic>(
+            TrackPaint<isClassic>(
                 session, direction, imageIdsChained[direction][2], imageIdsChained[direction][3], { 0, 0, height },
                 { { 0, 4, height }, { 32, 2, 43 } });
         }
@@ -2523,16 +2523,16 @@ static void WoodenRCTrack60DegUpTo25DegUp(
     {
         if (direction == 0 || direction == 3)
         {
-            WoodenRCTrackPaint<isClassic>(
+            TrackPaint<isClassic>(
                 session, direction, imageIds[direction][0], imageIds[direction][1], { 0, 0, height },
                 { { 0, 3, height }, { 32, 25, 2 } });
         }
         else
         {
-            session.WoodenSupportsPrependTo = WoodenRCTrackPaint<isClassic>(
+            session.WoodenSupportsPrependTo = TrackPaint<isClassic>(
                 session, direction, imageIds[direction][0], imageIds[direction][1], { 0, 0, height },
                 { { 28, 4, height + 2 }, { 2, 24, 43 } });
-            WoodenRCTrackPaint<isClassic>(
+            TrackPaint<isClassic>(
                 session, direction, imageIds[direction][2], imageIds[direction][3], { 0, 0, height },
                 { { 0, 4, height }, { 32, 2, 43 } });
         }
@@ -2617,12 +2617,12 @@ static void WoodenRCTrack25DegUpToFlat(
     };
 
     uint8_t isChained = trackElement.HasChain() ? 1 : 0;
-    WoodenRCTrackPaint<isClassic>(
+    TrackPaint<isClassic>(
         session, direction, imageIds[isChained][direction][0], imageIds[isChained][direction][1], { 0, 0, height },
         { { 0, 3, height }, { 32, 25, 2 } });
     if (direction == 1 || direction == 2)
     {
-        WoodenRCTrackPaint<isClassic>(
+        TrackPaint<isClassic>(
             session, direction, imageIds[isChained][direction][2], imageIds[isChained][direction][3], { 0, 0, height },
             { { 0, 26, height + 5 }, { 32, 1, 9 } });
     }
@@ -3064,7 +3064,7 @@ static void WoodenRCTrackLeftBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    WoodenRCTrackFlatToBank<isClassic, kFlatToRightBankImages>(
+    TrackFlatToBank<isClassic, kFlatToRightBankImages>(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
@@ -3074,7 +3074,7 @@ static void WoodenRCTrackRightBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    WoodenRCTrackFlatToBank<isClassic, kFlatToLeftBankImages>(
+    TrackFlatToBank<isClassic, kFlatToLeftBankImages>(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
@@ -3084,7 +3084,7 @@ static void WoodenRCTrackBankedLeftQuarterTurn5(
     const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    WoodenRCTrackBankedRightQuarterTurn5<isClassic, kBankedQuarterTurn5Images>(
+    TrackBankedRightQuarterTurn5<isClassic, kBankedQuarterTurn5Images>(
         session, ride, trackSequence, DirectionNext(direction), height, trackElement, supportType);
 }
 
@@ -3096,7 +3096,7 @@ static void WoodenRCTrackLeftBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    WoodenRCTrack25DegUpToBank<isClassic, kUp25ToRightBankImages>(
+    Track25DegUpToBank<isClassic, kUp25ToRightBankImages>(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
@@ -3106,7 +3106,7 @@ static void WoodenRCTrackRightBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    WoodenRCTrack25DegUpToBank<isClassic, kUp25ToLeftBankImages>(
+    Track25DegUpToBank<isClassic, kUp25ToLeftBankImages>(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
@@ -3116,7 +3116,7 @@ static void WoodenRCTrack25DegDownToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    WoodenRCTrackBankTo25DegUp<isClassic, kRightBankToUp25Images>(
+    TrackBankTo25DegUp<isClassic, kRightBankToUp25Images>(
         session, ride, trackSequence, DirectionReverse(direction), height, trackElement, supportType);
 }
 
@@ -3126,7 +3126,7 @@ static void WoodenRCTrack25DegDownToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    WoodenRCTrackBankTo25DegUp<isClassic, kLeftBankToUp25Images>(
+    TrackBankTo25DegUp<isClassic, kLeftBankToUp25Images>(
         session, ride, trackSequence, DirectionReverse(direction), height, trackElement, supportType);
 }
 
@@ -3136,7 +3136,7 @@ static void WoodenRCTrackRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    WoodenRCTrackFlatToBank<isClassic, kLeftBankImages>(
+    TrackFlatToBank<isClassic, kLeftBankImages>(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
@@ -5196,7 +5196,7 @@ static void WoodenRCTrackRightQuarterTurn3Bank(
     const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    WoodenRCTrackLeftQuarterTurn3Bank<isClassic, kBankedQuarterTurn3Images>(
+    TrackLeftQuarterTurn3Bank<isClassic, kBankedQuarterTurn3Images>(
         session, ride, trackSequence, DirectionPrev(direction), height, trackElement, supportType);
 }
 
@@ -5555,7 +5555,7 @@ static void WoodenRCTrackLeftHalfBankedHelixDownSmall(
         direction = DirectionPrev(direction);
     }
     trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    WoodenRCTrackRightHalfBankedHelixUpSmall<isClassic, kRightHalfBankedHelixUpSmallImages>(
+    TrackRightHalfBankedHelixUpSmall<isClassic, kRightHalfBankedHelixUpSmallImages>(
         session, ride, trackSequence, DirectionNext(direction), height, trackElement, supportType);
 }
 
@@ -5571,7 +5571,7 @@ static void WoodenRCTrackRightHalfBankedHelixDownSmall(
         direction = DirectionNext(direction);
     }
     trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    WoodenRCTrackLeftHalfBankedHelixUpSmall<isClassic, kLeftHalfBankedHelixUpSmallImages>(
+    TrackLeftHalfBankedHelixUpSmall<isClassic, kLeftHalfBankedHelixUpSmallImages>(
         session, ride, trackSequence, DirectionPrev(direction), height, trackElement, supportType);
 }
 
@@ -5587,7 +5587,7 @@ static void WoodenRCTrackLeftHalfBankedHelixDownLarge(
         direction = DirectionPrev(direction);
     }
     trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    WoodenRCTrackRightHalfBankedHelixUpLarge<isClassic, kRightHalfBankedHelixUpLargeImages>(
+    TrackRightHalfBankedHelixUpLarge<isClassic, kRightHalfBankedHelixUpLargeImages>(
         session, ride, trackSequence, DirectionNext(direction), height, trackElement, supportType);
 }
 
@@ -5603,7 +5603,7 @@ static void WoodenRCTrackRightHalfBankedHelixDownLarge(
         direction = DirectionNext(direction);
     }
     trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    WoodenRCTrackLeftHalfBankedHelixUpLarge<isClassic, kLeftHalfBankedHelixUpLargeImages>(
+    TrackLeftHalfBankedHelixUpLarge<isClassic, kLeftHalfBankedHelixUpLargeImages>(
         session, ride, trackSequence, DirectionPrev(direction), height, trackElement, supportType);
 }
 
@@ -5782,7 +5782,7 @@ static void WoodenRCTrackBrakes(
         { SPR_WOODEN_RC_BRAKES_NW_SE, SPR_WOODEN_RC_BRAKES_RAILS_NW_SE },
     };
 
-    WoodenRCTrackPaint<isClassic>(
+    TrackPaint<isClassic>(
         session, direction, imageIds[direction][0], imageIds[direction][1], { 0, 2, height },
         { { 0, 3, height }, { 32, 25, 2 } });
     WoodenASupportsPaintSetupRotated(
@@ -6230,13 +6230,13 @@ static void WoodenRCTrackFlatTo60DegUpLongBase(
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
-                    session.WoodenSupportsPrependTo = WoodenRCTrackPaint<isClassic>(
+                    session.WoodenSupportsPrependTo = TrackPaint<isClassic>(
                         session, direction, SPR_TRACKS_WOODEN_RC_FLAT_TO_STEEP + 7,
                         SPR_TRACKS_WOODEN_RC_FLAT_TO_STEEP_RAILS + 7, { 0, 0, height },
                         { { 28, 4, height - 16 }, { 2, 24, 56 } });
                     break;
                 case 2:
-                    session.WoodenSupportsPrependTo = WoodenRCTrackPaint<isClassic>(
+                    session.WoodenSupportsPrependTo = TrackPaint<isClassic>(
                         session, direction, SPR_TRACKS_WOODEN_RC_FLAT_TO_STEEP + 11,
                         SPR_TRACKS_WOODEN_RC_FLAT_TO_STEEP_RAILS + 11, { 0, 0, height },
                         { { 28, 4, height - 16 }, { 2, 24, 56 } });
@@ -6291,13 +6291,13 @@ static void WoodenRCTrack60DegUpToFlatLongBase(
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
-                    session.WoodenSupportsPrependTo = WoodenRCTrackPaint<isClassic>(
+                    session.WoodenSupportsPrependTo = TrackPaint<isClassic>(
                         session, direction, SPR_TRACKS_WOODEN_RC_FLAT_TO_STEEP + 20,
                         SPR_TRACKS_WOODEN_RC_FLAT_TO_STEEP_RAILS + 20, { 0, 0, height },
                         { { 28, 4, height - 16 }, { 2, 24, 76 } });
                     break;
                 case 2:
-                    session.WoodenSupportsPrependTo = WoodenRCTrackPaint<isClassic>(
+                    session.WoodenSupportsPrependTo = TrackPaint<isClassic>(
                         session, direction, SPR_TRACKS_WOODEN_RC_FLAT_TO_STEEP + 24,
                         SPR_TRACKS_WOODEN_RC_FLAT_TO_STEEP_RAILS + 24, { 0, 0, height },
                         { { 28, 4, height - 16 }, { 2, 24, 76 } });
@@ -7628,7 +7628,7 @@ static void WoodenRCTrackLeftEighthBankToOrthogonal(
     const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    WoodenRCTrackRightEighthBankToDiag<isClassic, kRightEighthBankToDiagImages>(
+    TrackRightEighthBankToDiag<isClassic, kRightEighthBankToDiagImages>(
         session, ride, trackSequence, DirectionReverse(direction), height, trackElement, supportType);
 }
 
@@ -7639,7 +7639,7 @@ static void WoodenRCTrackRightEighthBankToOrthogonal(
     const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    WoodenRCTrackLeftEighthBankToDiag<isClassic, kLeftEighthBankToDiagImages>(
+    TrackLeftEighthBankToDiag<isClassic, kLeftEighthBankToDiagImages>(
         session, ride, trackSequence, DirectionPrev(direction), height, trackElement, supportType);
 }
 
@@ -7775,10 +7775,10 @@ static void WoodenRCTrackDiagBrakes(
     WoodenRCTrackPaintBb<isClassic>(session, &imageIds[trackSequence][direction][0], height);
     WoodenRCTrackPaintBb<isClassic>(session, &imageIds[trackSequence][direction][0], height);
 
-    if (kWoodenRCDiagonalSupports[trackSequence][direction] != WoodenSupportSubType::null)
+    if (kDiagonalSupports[trackSequence][direction] != WoodenSupportSubType::null)
     {
         WoodenASupportsPaintSetup(
-            session, supportType.wooden, kWoodenRCDiagonalSupports[trackSequence][direction], height, session.SupportColours);
+            session, supportType.wooden, kDiagonalSupports[trackSequence][direction], height, session.SupportColours);
     }
 
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
@@ -8044,10 +8044,10 @@ static void WoodenRCTrackDiagBlockBrakes(
     WoodenRCTrackPaintBb<isClassic>(session, &imageIds[trackElement.IsBrakeClosed()][trackSequence][direction][0], height);
     WoodenRCTrackPaintBb<isClassic>(session, &imageIds[trackElement.IsBrakeClosed()][trackSequence][direction][0], height);
 
-    if (kWoodenRCDiagonalSupports[trackSequence][direction] != WoodenSupportSubType::null)
+    if (kDiagonalSupports[trackSequence][direction] != WoodenSupportSubType::null)
     {
         WoodenASupportsPaintSetup(
-            session, supportType.wooden, kWoodenRCDiagonalSupports[trackSequence][direction], height, session.SupportColours);
+            session, supportType.wooden, kDiagonalSupports[trackSequence][direction], height, session.SupportColours);
     }
 
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
@@ -9871,7 +9871,7 @@ static void WoodenRCTrackDiagLeftBankToFlat(
     const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapReversedDiagonalStraight[trackSequence];
-    return WoodenRCTrackDiagFlatToBank<isClassic, kDiagFlatToRightBankImages>(
+    return TrackDiagFlatToBank<isClassic, kDiagFlatToRightBankImages>(
         session, ride, trackSequence, DirectionReverse(direction), height, trackElement, supportType);
 }
 
@@ -9881,7 +9881,7 @@ static void WoodenRCTrackDiagRightBankToFlat(
     const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapReversedDiagonalStraight[trackSequence];
-    return WoodenRCTrackDiagFlatToBank<isClassic, kDiagFlatToLeftBankImages>(
+    return TrackDiagFlatToBank<isClassic, kDiagFlatToLeftBankImages>(
         session, ride, trackSequence, DirectionReverse(direction), height, trackElement, supportType);
 }
 
@@ -9890,7 +9890,7 @@ static void WoodenRCTrackDiagLeftBankToDown25(
     const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapReversedDiagonalStraight[trackSequence];
-    return WoodenRCTrackDiagUp25ToBank<false, kDiagUp25ToRightBankImages>(
+    return TrackDiagUp25ToBank<false, kDiagUp25ToRightBankImages>(
         session, ride, trackSequence, DirectionReverse(direction), height, trackElement, supportType);
 }
 
@@ -9899,7 +9899,7 @@ static void WoodenRCTrackDiagRightBankToDown25(
     const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapReversedDiagonalStraight[trackSequence];
-    return WoodenRCTrackDiagUp25ToBank<false, kDiagUp25ToLeftBankImages>(
+    return TrackDiagUp25ToBank<false, kDiagUp25ToLeftBankImages>(
         session, ride, trackSequence, DirectionReverse(direction), height, trackElement, supportType);
 }
 
@@ -9909,7 +9909,7 @@ static void WoodenRCTrackDiagDown25ToLeftBank(
     const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapReversedDiagonalStraight[trackSequence];
-    return WoodenRCTrackDiagBankTo25DegUp<isClassic, kDiagRightBankTo25DegUpImages>(
+    return TrackDiagBankTo25DegUp<isClassic, kDiagRightBankTo25DegUpImages>(
         session, ride, trackSequence, DirectionReverse(direction), height, trackElement, supportType);
 }
 
@@ -9919,13 +9919,13 @@ static void WoodenRCTrackDiagDown25ToRightBank(
     const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapReversedDiagonalStraight[trackSequence];
-    return WoodenRCTrackDiagBankTo25DegUp<isClassic, kDiagLeftBankTo25DegUpImages>(
+    return TrackDiagBankTo25DegUp<isClassic, kDiagLeftBankTo25DegUpImages>(
         session, ride, trackSequence, DirectionReverse(direction), height, trackElement, supportType);
 }
 
 /** rct2: 0x008AC9D8 */
 template<bool isClassic>
-static void WoodenRCTrackDiagLeftBank(
+static void TrackDiagLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
@@ -10152,18 +10152,18 @@ static void WoodenRCTrackLeftQuarterTurn325DegDownToLeftBank(
     const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    WoodenRCTrackRightBankToRightQuarterTurn325DegUp<isClassic, kRightBankToRightQuarterTurn325DegUpImages>(
+    TrackRightBankToRightQuarterTurn325DegUp<isClassic, kRightBankToRightQuarterTurn325DegUpImages>(
         session, ride, trackSequence, DirectionNext(direction), height, trackElement, supportType);
 }
 
 /** rct2: 0x008ACB68 */
 template<bool isClassic>
-static void WoodenRCTrackRightQuarterTurn325DegDownToRightBank(
+static void TrackRightQuarterTurn325DegDownToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    WoodenRCTrackLeftBankToLeftQuarterTurn325DegUp<isClassic, kLeftBankToLeftQuarterTurn325DegUpImages>(
+    TrackLeftBankToLeftQuarterTurn325DegUp<isClassic, kLeftBankToLeftQuarterTurn325DegUpImages>(
         session, ride, trackSequence, DirectionPrev(direction), height, trackElement, supportType);
 }
 
@@ -10175,7 +10175,7 @@ static void WoodenRCTrackBlockBrakes(
 {
     const auto brakeImg = trackElement.IsBrakeClosed() ? kBlockBrakesImageIds[direction][1]
                                                        : kBlockBrakesImageIds[direction][0];
-    WoodenRCTrackPaint<isClassic>(
+    TrackPaint<isClassic>(
         session, direction, brakeImg, kBlockBrakesImageIds[direction][2], { 0, 2, height },
         { { 0, 3, height }, { 32, 25, 2 } });
     WoodenASupportsPaintSetupRotated(
@@ -12346,7 +12346,7 @@ static void WoodenRCTrackBooster(
         SPR_WOODEN_RC_FLAT_CHAIN_RAILS_SE_NW,
     };
 
-    WoodenRCTrackPaint<isClassic>(
+    TrackPaint<isClassic>(
         session, direction, imageIds[direction], railsImageIds[direction], { 0, 2, height },
         { { 0, 3, height }, { 32, 25, 2 } });
     WoodenASupportsPaintSetupRotated(
@@ -13398,9 +13398,9 @@ TrackPaintFunction GetTrackPaintFunctionWoodenAndClassicWoodenRC(TrackElemType t
         case TrackElemType::rightQuarterTurn5Tiles:
             return WoodenRCTrackRightQuarterTurn5<isClassic>;
         case TrackElemType::flatToLeftBank:
-            return WoodenRCTrackFlatToBank<isClassic, kFlatToLeftBankImages>;
+            return TrackFlatToBank<isClassic, kFlatToLeftBankImages>;
         case TrackElemType::flatToRightBank:
-            return WoodenRCTrackFlatToBank<isClassic, kFlatToRightBankImages>;
+            return TrackFlatToBank<isClassic, kFlatToRightBankImages>;
         case TrackElemType::leftBankToFlat:
             return WoodenRCTrackLeftBankToFlat<isClassic>;
         case TrackElemType::rightBankToFlat:
@@ -13408,15 +13408,15 @@ TrackPaintFunction GetTrackPaintFunctionWoodenAndClassicWoodenRC(TrackElemType t
         case TrackElemType::bankedLeftQuarterTurn5Tiles:
             return WoodenRCTrackBankedLeftQuarterTurn5<isClassic>;
         case TrackElemType::bankedRightQuarterTurn5Tiles:
-            return WoodenRCTrackBankedRightQuarterTurn5<isClassic, kBankedQuarterTurn5Images>;
+            return TrackBankedRightQuarterTurn5<isClassic, kBankedQuarterTurn5Images>;
         case TrackElemType::leftBankToUp25:
-            return WoodenRCTrackBankTo25DegUp<isClassic, kLeftBankToUp25Images>;
+            return TrackBankTo25DegUp<isClassic, kLeftBankToUp25Images>;
         case TrackElemType::rightBankToUp25:
-            return WoodenRCTrackBankTo25DegUp<isClassic, kRightBankToUp25Images>;
+            return TrackBankTo25DegUp<isClassic, kRightBankToUp25Images>;
         case TrackElemType::up25ToLeftBank:
-            return WoodenRCTrack25DegUpToBank<isClassic, kUp25ToLeftBankImages>;
+            return Track25DegUpToBank<isClassic, kUp25ToLeftBankImages>;
         case TrackElemType::up25ToRightBank:
-            return WoodenRCTrack25DegUpToBank<isClassic, kUp25ToRightBankImages>;
+            return Track25DegUpToBank<isClassic, kUp25ToRightBankImages>;
         case TrackElemType::leftBankToDown25:
             return WoodenRCTrackLeftBankTo25DegDown<isClassic>;
         case TrackElemType::rightBankToDown25:
@@ -13426,7 +13426,7 @@ TrackPaintFunction GetTrackPaintFunctionWoodenAndClassicWoodenRC(TrackElemType t
         case TrackElemType::down25ToRightBank:
             return WoodenRCTrack25DegDownToRightBank<isClassic>;
         case TrackElemType::leftBank:
-            return WoodenRCTrackFlatToBank<isClassic, kLeftBankImages>;
+            return TrackFlatToBank<isClassic, kLeftBankImages>;
         case TrackElemType::rightBank:
             return WoodenRCTrackRightBank<isClassic>;
         case TrackElemType::leftQuarterTurn5TilesUp25:
@@ -13450,7 +13450,7 @@ TrackPaintFunction GetTrackPaintFunctionWoodenAndClassicWoodenRC(TrackElemType t
         case TrackElemType::rightQuarterTurn3Tiles:
             return WoodenRCTrackRightQuarterTurn3<isClassic>;
         case TrackElemType::leftBankedQuarterTurn3Tiles:
-            return WoodenRCTrackLeftQuarterTurn3Bank<isClassic, kBankedQuarterTurn3Images>;
+            return TrackLeftQuarterTurn3Bank<isClassic, kBankedQuarterTurn3Images>;
         case TrackElemType::rightBankedQuarterTurn3Tiles:
             return WoodenRCTrackRightQuarterTurn3Bank<isClassic>;
         case TrackElemType::leftQuarterTurn3TilesUp25:
@@ -13462,17 +13462,17 @@ TrackPaintFunction GetTrackPaintFunctionWoodenAndClassicWoodenRC(TrackElemType t
         case TrackElemType::rightQuarterTurn3TilesDown25:
             return WoodenRCTrackRightQuarterTurn325DegDown<isClassic>;
         case TrackElemType::leftHalfBankedHelixUpSmall:
-            return WoodenRCTrackLeftHalfBankedHelixUpSmall<isClassic, kLeftHalfBankedHelixUpSmallImages>;
+            return TrackLeftHalfBankedHelixUpSmall<isClassic, kLeftHalfBankedHelixUpSmallImages>;
         case TrackElemType::rightHalfBankedHelixUpSmall:
-            return WoodenRCTrackRightHalfBankedHelixUpSmall<isClassic, kRightHalfBankedHelixUpSmallImages>;
+            return TrackRightHalfBankedHelixUpSmall<isClassic, kRightHalfBankedHelixUpSmallImages>;
         case TrackElemType::leftHalfBankedHelixDownSmall:
             return WoodenRCTrackLeftHalfBankedHelixDownSmall<isClassic>;
         case TrackElemType::rightHalfBankedHelixDownSmall:
             return WoodenRCTrackRightHalfBankedHelixDownSmall<isClassic>;
         case TrackElemType::leftHalfBankedHelixUpLarge:
-            return WoodenRCTrackLeftHalfBankedHelixUpLarge<isClassic, kLeftHalfBankedHelixUpLargeImages>;
+            return TrackLeftHalfBankedHelixUpLarge<isClassic, kLeftHalfBankedHelixUpLargeImages>;
         case TrackElemType::rightHalfBankedHelixUpLarge:
-            return WoodenRCTrackRightHalfBankedHelixUpLarge<isClassic, kRightHalfBankedHelixUpLargeImages>;
+            return TrackRightHalfBankedHelixUpLarge<isClassic, kRightHalfBankedHelixUpLargeImages>;
         case TrackElemType::leftHalfBankedHelixDownLarge:
             return WoodenRCTrackLeftHalfBankedHelixDownLarge<isClassic>;
         case TrackElemType::rightHalfBankedHelixDownLarge:
@@ -13516,9 +13516,9 @@ TrackPaintFunction GetTrackPaintFunctionWoodenAndClassicWoodenRC(TrackElemType t
         case TrackElemType::rightEighthToOrthogonal:
             return WoodenRCTrackRightEighthToOrthogonal<isClassic>;
         case TrackElemType::leftEighthBankToDiag:
-            return WoodenRCTrackLeftEighthBankToDiag<isClassic, kLeftEighthBankToDiagImages>;
+            return TrackLeftEighthBankToDiag<isClassic, kLeftEighthBankToDiagImages>;
         case TrackElemType::rightEighthBankToDiag:
-            return WoodenRCTrackRightEighthBankToDiag<isClassic, kRightEighthBankToDiagImages>;
+            return TrackRightEighthBankToDiag<isClassic, kRightEighthBankToDiagImages>;
         case TrackElemType::leftEighthBankToOrthogonal:
             return WoodenRCTrackLeftEighthBankToOrthogonal<isClassic>;
         case TrackElemType::rightEighthBankToOrthogonal:
@@ -13550,21 +13550,21 @@ TrackPaintFunction GetTrackPaintFunctionWoodenAndClassicWoodenRC(TrackElemType t
         case TrackElemType::diagDown25ToFlat:
             return WoodenRCTrackDiag25DegDownToFlat<isClassic>;
         case TrackElemType::diagFlatToLeftBank:
-            return WoodenRCTrackDiagFlatToBank<isClassic, kDiagFlatToLeftBankImages>;
+            return TrackDiagFlatToBank<isClassic, kDiagFlatToLeftBankImages>;
         case TrackElemType::diagFlatToRightBank:
-            return WoodenRCTrackDiagFlatToBank<isClassic, kDiagFlatToRightBankImages>;
+            return TrackDiagFlatToBank<isClassic, kDiagFlatToRightBankImages>;
         case TrackElemType::diagLeftBankToFlat:
             return WoodenRCTrackDiagLeftBankToFlat<isClassic>;
         case TrackElemType::diagRightBankToFlat:
             return WoodenRCTrackDiagRightBankToFlat<isClassic>;
         case TrackElemType::diagLeftBankToUp25:
-            return WoodenRCTrackDiagBankTo25DegUp<isClassic, kDiagLeftBankTo25DegUpImages>;
+            return TrackDiagBankTo25DegUp<isClassic, kDiagLeftBankTo25DegUpImages>;
         case TrackElemType::diagRightBankToUp25:
-            return WoodenRCTrackDiagBankTo25DegUp<isClassic, kDiagRightBankTo25DegUpImages>;
+            return TrackDiagBankTo25DegUp<isClassic, kDiagRightBankTo25DegUpImages>;
         case TrackElemType::diagUp25ToLeftBank:
-            return WoodenRCTrackDiagUp25ToBank<isClassic, kDiagUp25ToLeftBankImages>;
+            return TrackDiagUp25ToBank<isClassic, kDiagUp25ToLeftBankImages>;
         case TrackElemType::diagUp25ToRightBank:
-            return WoodenRCTrackDiagUp25ToBank<isClassic, kDiagUp25ToRightBankImages>;
+            return TrackDiagUp25ToBank<isClassic, kDiagUp25ToRightBankImages>;
         case TrackElemType::diagLeftBankToDown25:
             return WoodenRCTrackDiagLeftBankToDown25;
         case TrackElemType::diagRightBankToDown25:
@@ -13574,17 +13574,17 @@ TrackPaintFunction GetTrackPaintFunctionWoodenAndClassicWoodenRC(TrackElemType t
         case TrackElemType::diagDown25ToRightBank:
             return WoodenRCTrackDiagDown25ToRightBank<isClassic>;
         case TrackElemType::diagLeftBank:
-            return WoodenRCTrackDiagLeftBank<isClassic>;
+            return TrackDiagLeftBank<isClassic>;
         case TrackElemType::diagRightBank:
             return WoodenRCTrackDiagRightBank<isClassic>;
         case TrackElemType::leftBankToLeftQuarterTurn3TilesUp25:
-            return WoodenRCTrackLeftBankToLeftQuarterTurn325DegUp<isClassic, kLeftBankToLeftQuarterTurn325DegUpImages>;
+            return TrackLeftBankToLeftQuarterTurn325DegUp<isClassic, kLeftBankToLeftQuarterTurn325DegUpImages>;
         case TrackElemType::rightBankToRightQuarterTurn3TilesUp25:
-            return WoodenRCTrackRightBankToRightQuarterTurn325DegUp<isClassic, kRightBankToRightQuarterTurn325DegUpImages>;
+            return TrackRightBankToRightQuarterTurn325DegUp<isClassic, kRightBankToRightQuarterTurn325DegUpImages>;
         case TrackElemType::leftQuarterTurn3TilesDown25ToLeftBank:
             return WoodenRCTrackLeftQuarterTurn325DegDownToLeftBank<isClassic>;
         case TrackElemType::rightQuarterTurn3TilesDown25ToRightBank:
-            return WoodenRCTrackRightQuarterTurn325DegDownToRightBank<isClassic>;
+            return TrackRightQuarterTurn325DegDownToRightBank<isClassic>;
         case TrackElemType::blockBrakes:
             return WoodenRCTrackBlockBrakes<isClassic>;
         case TrackElemType::leftBankedQuarterTurn3TileUp25:
@@ -13683,7 +13683,7 @@ TrackPaintFunction GetTrackPaintFunctionWoodenRC(TrackElemType trackType)
     return GetTrackPaintFunctionWoodenAndClassicWoodenRC<false>(trackType);
 }
 
-TrackPaintFunction GetTrackPaintFunctionClassicWoodenRCFallback(TrackElemType trackType)
+TrackPaintFunction WoodenRC::GetTrackPaintFunctionClassicWoodenRCFallback(TrackElemType trackType)
 {
     return GetTrackPaintFunctionWoodenAndClassicWoodenRC<true>(trackType);
 }

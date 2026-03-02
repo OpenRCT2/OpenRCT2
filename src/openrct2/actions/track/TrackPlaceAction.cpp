@@ -19,6 +19,7 @@
 #include "../../ride/Track.h"
 #include "../../ride/TrackData.h"
 #include "../../ride/TrackDesign.h"
+#include "../../ride/ted/TrackElementDescriptor.h"
 #include "../../world/ConstructionClearance.h"
 #include "../../world/Footpath.h"
 #include "../../world/Map.h"
@@ -36,7 +37,7 @@
 namespace OpenRCT2::GameActions
 {
     using namespace OpenRCT2::Numerics;
-    using namespace OpenRCT2::TrackMetaData;
+    using namespace OpenRCT2::TrackMetadata;
 
     TrackPlaceAction::TrackPlaceAction(
         RideId rideIndex, TrackElemType trackType, ride_type_t rideType, const CoordsXYZD& origin, int32_t brakeSpeed,

@@ -22,6 +22,7 @@
 #include "../../world/Map.h"
 #include "../../world/MapAnimation.h"
 #include "../../world/Park.h"
+#include "../../world/QuarterTile.h"
 #include "../../world/tile_element/EntranceElement.h"
 #include "../../world/tile_element/SurfaceElement.h"
 

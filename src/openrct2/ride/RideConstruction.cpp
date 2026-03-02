@@ -45,12 +45,13 @@
 #include "TrackData.h"
 #include "TrainManager.h"
 #include "Vehicle.h"
+#include "ted/TrackElementDescriptor.h"
 
 #include <cassert>
 #include <sfl/static_vector.hpp>
 
 using namespace OpenRCT2;
-using namespace OpenRCT2::TrackMetaData;
+using namespace OpenRCT2::TrackMetadata;
 using OpenRCT2::GameActions::CommandFlag;
 using OpenRCT2::GameActions::CommandFlags;
 
@@ -90,7 +91,7 @@ RideConstructionState gRideEntranceExitPlacePreviousRideConstructionState;
 Direction gRideEntranceExitPlaceDirection;
 
 using namespace OpenRCT2;
-using namespace OpenRCT2::TrackMetaData;
+using namespace OpenRCT2::TrackMetadata;
 
 static int32_t ride_check_if_construction_allowed(Ride& ride)
 {

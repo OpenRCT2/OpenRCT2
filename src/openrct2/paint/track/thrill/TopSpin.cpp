@@ -12,7 +12,6 @@
 #include "../../../entity/EntityRegistry.h"
 #include "../../../interface/Viewport.h"
 #include "../../../ride/RideData.h"
-#include "../../../ride/TrackData.h"
 #include "../../../ride/TrackPaint.h"
 #include "../../../ride/Vehicle.h"
 #include "../../Boundbox.h"

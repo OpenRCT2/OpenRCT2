@@ -154,10 +154,10 @@ namespace OpenRCT2::GameActions
         waterHeight = TileElementWaterHeight(loc2);
 
         surfaceHeight = landHeight;
-        // If on water
-        if (waterHeight > 0)
+        // If on water (land at this quadrant is below water level)
+        if (waterHeight > 0 && landHeight < waterHeight)
         {
-            // BaseHeight2 is now the water height
+            // surfaceHeight is now the water height
             surfaceHeight = waterHeight;
             if (_loc.z == 0)
             {
@@ -204,7 +204,8 @@ namespace OpenRCT2::GameActions
         }
 
         if (!gameState.cheats.disableClearanceChecks && (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_REQUIRE_FLAT_SURFACE))
-            && !supportsRequired && !isOnWater && surfaceElement != nullptr && (surfaceElement->GetSlope() != kTileSlopeFlat))
+            && !supportsRequired && surfaceElement != nullptr && surfaceElement->GetWaterHeight() == 0
+            && (surfaceElement->GetSlope() != kTileSlopeFlat))
         {
             return Result(Status::disallowed, STR_CANT_POSITION_THIS_HERE, STR_LEVEL_LAND_REQUIRED);
         }
@@ -346,10 +347,10 @@ namespace OpenRCT2::GameActions
         waterHeight = TileElementWaterHeight({ x2, y2 });
 
         surfaceHeight = landHeight;
-        // If on water
-        if (waterHeight > 0)
+        // If on water (land at this quadrant is below water level)
+        if (waterHeight > 0 && landHeight < waterHeight)
         {
-            // BaseHeight2 is now the water height
+            // surfaceHeight is now the water height
             surfaceHeight = waterHeight;
         }
         auto targetHeight = _loc.z;

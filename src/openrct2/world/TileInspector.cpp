@@ -16,6 +16,7 @@
 #include "../ride/Station.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
+#include "../ride/ted/TrackElementDescriptor.h"
 #include "../ui/WindowManager.h"
 #include "../windows/TileInspectorGlobals.h"
 #include "Banner.h"
@@ -41,7 +42,7 @@ TileCoordsXY windowTileInspectorTile;
 int32_t windowTileInspectorElementCount = 0;
 int32_t windowTileInspectorSelectedIndex = -1;
 
-using namespace OpenRCT2::TrackMetaData;
+using namespace OpenRCT2::TrackMetadata;
 
 namespace OpenRCT2::TileInspector
 {

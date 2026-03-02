@@ -1,4 +1,11 @@
-0.4.32 (in development)
+0.4.33 (in development)
+------------------------------------------------------------------------
+- Fix: [#10616] Quarter-tile trees cannot be placed on dry portions of half-water tiles.
+- Fix: [#25993] Toggling “allow arbitrary ride type changes” does not resize open ride windows.
+- Fix: [#26111] Vehicle colours tab can go out of bounds in certain edge cases.
+- Fix: [#26118] Windows installers for releases are not signed properly.
+
+0.4.32 (2026-03-01)
 ------------------------------------------------------------------------
 - Feature: [#22704] Rides can be made invisible more easily.
 - Improved: [#21753] Tracked rides with cheated powered launch mode can change powered launch speed without extra cheats.

@@ -33,10 +33,11 @@
 #include "TrackData.h"
 #include "TrackDesign.h"
 #include "TrackStyle.h"
+#include "ted/TrackElementDescriptor.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
-using namespace OpenRCT2::TrackMetaData;
+using namespace OpenRCT2::TrackMetadata;
 
 /* rct2: 0x007667AC */
 static constexpr TileCoordsXY EntranceOffsetEdgeNE[] = {

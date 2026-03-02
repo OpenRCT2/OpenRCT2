@@ -56,13 +56,14 @@
 #include "VehicleData.h"
 #include "VehicleGeometry.h"
 #include "VehicleSubpositionData.h"
+#include "ted/TrackElementDescriptor.h"
 
 #include <cassert>
 #include <iterator>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
-using namespace OpenRCT2::TrackMetaData;
+using namespace OpenRCT2::TrackMetadata;
 using namespace OpenRCT2::RideVehicle;
 
 constexpr int16_t kVehicleMaxSpinSpeedForStopping = 700;

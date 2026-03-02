@@ -57,6 +57,7 @@
 #include "../world/Footpath.h"
 #include "../world/Map.h"
 #include "../world/Park.h"
+#include "../world/QuarterTile.h"
 #include "../world/Scenery.h"
 #include "../world/tile_element/EntranceElement.h"
 #include "../world/tile_element/PathElement.h"

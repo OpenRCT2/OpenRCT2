@@ -15,7 +15,8 @@
 #include "../../ride/RideData.h"
 #include "../../ride/Track.h"
 #include "../../ride/TrackData.h"
-#include "../../ride/TrackDesign.h"
+#include "../../ride/ted/TrackElemType.h"
+#include "../../ride/ted/TrackElementDescriptor.h"
 #include "../../world/Footpath.h"
 #include "../../world/Map.h"
 #include "../../world/tile_element/SurfaceElement.h"
@@ -26,7 +27,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    using namespace OpenRCT2::TrackMetaData;
+    using namespace OpenRCT2::TrackMetadata;
 
     TrackRemoveAction::TrackRemoveAction(TrackElemType trackType, int32_t sequence, const CoordsXYZD& origin)
         : _trackType(trackType)

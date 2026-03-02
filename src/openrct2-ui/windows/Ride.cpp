@@ -67,6 +67,7 @@
 #include <openrct2/ride/TrackDesign.h>
 #include <openrct2/ride/TrackDesignRepository.h>
 #include <openrct2/ride/Vehicle.h>
+#include <openrct2/ride/ted/TrackElementDescriptor.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
@@ -80,7 +81,7 @@
 #include <vector>
 
 using namespace OpenRCT2::Drawing;
-using namespace OpenRCT2::TrackMetaData;
+using namespace OpenRCT2::TrackMetadata;
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -670,6 +671,7 @@ namespace OpenRCT2::Ui::Windows
         uint16_t _rideColour = 0;
         std::vector<EntranceTypeLabel> _entranceDropdownData;
         bool _autoScrollGraph = true;
+        bool _lastAllowArbitraryRideTypeChanges = false;
 
         uint8_t getNumVisibleCars()
         {
@@ -781,6 +783,7 @@ namespace OpenRCT2::Ui::Windows
             UpdateOverallView(*ride);
 
             PopulateVehicleTypeDropdown(*ride, true);
+            _lastAllowArbitraryRideTypeChanges = getGameState().cheats.allowArbitraryRideTypeChanges;
         }
 
         void onClose() override
@@ -942,7 +945,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        OpenRCT2String onTooltip(WidgetIndex widgetIndex, StringId fallback) override
+        StringWithArgs onTooltip(WidgetIndex widgetIndex, StringId fallback) override
         {
             switch (page)
             {
@@ -2279,6 +2282,17 @@ namespace OpenRCT2::Ui::Windows
             onPrepareDraw();
             invalidateWidget(WIDX_TAB_1);
 
+            // Resize window if cheat state changed
+            auto& gameState = getGameState();
+            if (_lastAllowArbitraryRideTypeChanges != gameState.cheats.allowArbitraryRideTypeChanges)
+            {
+                _lastAllowArbitraryRideTypeChanges = gameState.cheats.allowArbitraryRideTypeChanges;
+                invalidate();
+                onResize();
+                onPrepareDraw();
+                invalidate();
+            }
+
             // Update status
             auto ride = GetRide(rideId);
             if (ride != nullptr)
@@ -2290,7 +2304,7 @@ namespace OpenRCT2::Ui::Windows
 
                     if (_viewIndex <= ride->numTrains)
                     {
-                        Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(ride->vehicles[_viewIndex - 1]);
+                        Vehicle* vehicle = gameState.entities.GetEntity<Vehicle>(ride->vehicles[_viewIndex - 1]);
                         if (vehicle == nullptr
                             || (vehicle->status != Vehicle::Status::travelling
                                 && vehicle->status != Vehicle::Status::travellingCableLift
@@ -2734,7 +2748,7 @@ namespace OpenRCT2::Ui::Windows
             invalidateWidget(WIDX_TAB_2);
         }
 
-        OpenRCT2String VehicleTooltip(const WidgetIndex widgetIndex, StringId fallback)
+        StringWithArgs VehicleTooltip(const WidgetIndex widgetIndex, StringId fallback)
         {
             auto ride = GetRide(rideId);
             if (ride == nullptr)
@@ -4973,7 +4987,7 @@ namespace OpenRCT2::Ui::Windows
         void ColourOnDrawEntrancePreview(RenderTarget& rt, const Ride* ride, const Widget& widget)
         {
             auto stationObj = ride->getStationObject();
-            if (stationObj == nullptr && stationObj->entranceBackIndex == kImageIndexUndefined)
+            if (stationObj == nullptr || stationObj->entranceBackIndex == kImageIndexUndefined)
                 return;
 
             auto trackColour = ride->trackColours[0];
@@ -6047,7 +6061,7 @@ namespace OpenRCT2::Ui::Windows
             _autoScrollGraph = false;
         }
 
-        OpenRCT2String GraphsTooltip(const WidgetIndex widgetIndex, const StringId fallback)
+        StringWithArgs GraphsTooltip(const WidgetIndex widgetIndex, const StringId fallback)
         {
             if (widgetIndex == WIDX_GRAPH)
             {
