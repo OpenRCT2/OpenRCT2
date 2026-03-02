@@ -2994,6 +2994,308 @@ static void LayDownRCTrackOnRidePhoto(
     }
     TrackPaintUtilOnridePhotoPaint2(session, direction, trackElement, height, kGeneralSupportHeightOnRidePhotoInverted);
 }
+/** rct2: 0x008AEDB0 */
+static void LayDownRCTrack90DegUp(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    switch (trackSequence)
+    {
+        case 0:
+            if (trackElement.HasChain())
+            {
+                switch (direction)
+                {
+                    case 0:
+                        PaintAddImageAsParentRotated(
+                            session, direction, session.TrackColours.WithIndex(26609), { 0, 0, height + 24 },
+                            { { 0, 6, height + 61 }, { 32, 20, 3 } });
+                        break;
+                    case 1:
+                        PaintAddImageAsParentRotated(
+                            session, direction, session.TrackColours.WithIndex(26610), { 0, 0, height + 24 },
+                            { { 0, 4, height + 11 }, { 32, 2, 31 } });
+                        break;
+                    case 2:
+                        PaintAddImageAsParentRotated(
+                            session, direction, session.TrackColours.WithIndex(26611), { 0, 0, height + 24 },
+                            { { 0, 4, height + 11 }, { 32, 2, 31 } });
+                        break;
+                    case 3:
+                        PaintAddImageAsParentRotated(
+                            session, direction, session.TrackColours.WithIndex(26612), { 0, 0, height + 24 },
+                            { { 0, 6, height + 61 }, { 32, 20, 3 } });
+                        break;
+                }
+            }
+            else
+            {
+                switch (direction)
+                {
+                    case 0:
+                        PaintAddImageAsParentRotated(
+                            session, direction, session.TrackColours.WithIndex(26605), { 0, 0, height + 24 },
+                            { { 0, 6, height + 61 }, { 32, 20, 3 } });
+                        break;
+                    case 1:
+                        PaintAddImageAsParentRotated(
+                            session, direction, session.TrackColours.WithIndex(26606), { 0, 0, height + 24 },
+                            { { 0, 4, height + 11 }, { 32, 2, 31 } });
+                        break;
+                    case 2:
+                        PaintAddImageAsParentRotated(
+                            session, direction, session.TrackColours.WithIndex(26607), { 0, 0, height + 24 },
+                            { { 0, 4, height + 11 }, { 32, 2, 31 } });
+                        break;
+                    case 3:
+                        PaintAddImageAsParentRotated(
+                            session, direction, session.TrackColours.WithIndex(26608), { 0, 0, height + 24 },
+                            { { 0, 6, height + 61 }, { 32, 20, 3 } });
+                        break;
+                }
+            }
+            PaintUtilSetVerticalTunnel(session, height + 32);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            break;
+        case 1:
+            break;
+    }
+}
+
+/** rct2: 0x008AEDC0 */
+static void LayDownRCTrack90DegDown(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    LayDownRCTrack90DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
+}
+
+/** rct2: 0x008AED70 */
+static void LayDownRCTrack60DegUpTo90DegUp(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    switch (trackSequence)
+    {
+        case 0:
+            if (trackElement.HasChain())
+            {
+                switch (direction)
+                {
+                    case 0:
+                        PaintAddImageAsParentRotated(
+                            session, direction, session.TrackColours.WithIndex(26597), { 0, 0, height + 24 },
+                            { { 0, 6, height + 85 }, { 32, 20, 3 } });
+                        break;
+                    case 1:
+                        PaintAddImageAsParentRotated(
+                            session, direction, session.TrackColours.WithIndex(26598), { 0, 0, height + 24 },
+                            { { 0, 4, height + 11 }, { 32, 2, 55 } });
+                        break;
+                    case 2:
+                        PaintAddImageAsParentRotated(
+                            session, direction, session.TrackColours.WithIndex(26599), { 0, 0, height + 24 },
+                            { { 0, 4, height + 11 }, { 32, 2, 55 } });
+                        break;
+                    case 3:
+                        PaintAddImageAsParentRotated(
+                            session, direction, session.TrackColours.WithIndex(26600), { 0, 0, height + 24 },
+                            { { 0, 6, height + 85 }, { 32, 20, 3 } });
+                        break;
+                }
+            }
+            else
+            {
+                switch (direction)
+                {
+                    case 0:
+                        PaintAddImageAsParentRotated(
+                            session, direction, session.TrackColours.WithIndex(26589), { 0, 0, height + 24 },
+                            { { 0, 6, height + 85 }, { 32, 20, 3 } });
+                        break;
+                    case 1:
+                        PaintAddImageAsParentRotated(
+                            session, direction, session.TrackColours.WithIndex(26590), { 0, 0, height + 24 },
+                            { { 0, 4, height + 11 }, { 32, 2, 55 } });
+                        break;
+                    case 2:
+                        PaintAddImageAsParentRotated(
+                            session, direction, session.TrackColours.WithIndex(26591), { 0, 0, height + 24 },
+                            { { 0, 4, height + 11 }, { 32, 2, 55 } });
+                        break;
+                    case 3:
+                        PaintAddImageAsParentRotated(
+                            session, direction, session.TrackColours.WithIndex(26592), { 0, 0, height + 24 },
+                            { { 0, 6, height + 85 }, { 32, 20, 3 } });
+                        break;
+                }
+            }
+            if (direction == 0 || direction == 3)
+            {
+                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+            }
+            PaintUtilSetVerticalTunnel(session, height + 56);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            break;
+        case 1:
+            break;
+    }
+}
+
+/** rct2: 0x008AED80 */
+static void LayDownRCTrack90DegDownTo60DegDown(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    LayDownRCTrack60DegUpTo90DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
+}
+
+/** rct2: 0x008AED90 */
+static void LayDownRCTrack90DegUpTo60DegUp(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    if (trackElement.HasChain())
+    {
+        switch (direction)
+        {
+            case 0:
+                PaintAddImageAsParentRotated(
+                    session, direction, session.TrackColours.WithIndex(26601), { 0, 0, height + 24 },
+                    { { 0, 6, height + 85 }, { 32, 20, 3 } });
+                break;
+            case 1:
+                PaintAddImageAsParentRotated(
+                    session, direction, session.TrackColours.WithIndex(26602), { 0, 0, height + 24 },
+                    { { 0, 4, height + 11 }, { 32, 2, 55 } });
+                break;
+            case 2:
+                PaintAddImageAsParentRotated(
+                    session, direction, session.TrackColours.WithIndex(26603), { 0, 0, height + 24 },
+                    { { 0, 4, height + 11 }, { 32, 2, 55 } });
+                break;
+            case 3:
+                PaintAddImageAsParentRotated(
+                    session, direction, session.TrackColours.WithIndex(26604), { 0, 0, height + 24 },
+                    { { 0, 6, height + 85 }, { 32, 20, 3 } });
+                break;
+        }
+    }
+    else
+    {
+        switch (direction)
+        {
+            case 0:
+                PaintAddImageAsParentRotated(
+                    session, direction, session.TrackColours.WithIndex(26593), { 0, 0, height + 24 },
+                    { { 0, 6, height + 85 }, { 32, 20, 3 } });
+                break;
+            case 1:
+                PaintAddImageAsParentRotated(
+                    session, direction, session.TrackColours.WithIndex(26594), { 0, 0, height + 24 },
+                    { { 0, 4, height + 11 }, { 32, 2, 55 } });
+                break;
+            case 2:
+                PaintAddImageAsParentRotated(
+                    session, direction, session.TrackColours.WithIndex(26595), { 0, 0, height + 24 },
+                    { { 0, 4, height + 11 }, { 32, 2, 55 } });
+                break;
+            case 3:
+                PaintAddImageAsParentRotated(
+                    session, direction, session.TrackColours.WithIndex(26596), { 0, 0, height + 24 },
+                    { { 0, 6, height + 85 }, { 32, 20, 3 } });
+                break;
+        }
+    }
+    switch (direction)
+    {
+        case 1:
+            PaintUtilPushTunnelRight(session, height + 48, kTunnelGroup, TunnelSubType::SlopeEnd);
+            break;
+        case 2:
+            PaintUtilPushTunnelLeft(session, height + 48, kTunnelGroup, TunnelSubType::SlopeEnd);
+            break;
+    }
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 96);
+}
+
+/** rct2: 0x008AEDA0 */
+static void LayDownRCTrack60DegDownTo90DegDown(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    switch (trackSequence)
+    {
+        case 0:
+            if (trackElement.HasChain())
+            {
+                switch (direction)
+                {
+                    case 0:
+                        PaintAddImageAsParentRotated(
+                            session, direction, session.TrackColours.WithIndex(26603), { 0, 0, height + 24 },
+                            { { 0, 4, height + 11 }, { 32, 2, 55 } });
+                        break;
+                    case 1:
+                        PaintAddImageAsParentRotated(
+                            session, direction, session.TrackColours.WithIndex(26604), { 0, 0, height + 24 },
+                            { { 0, 6, height + 85 }, { 32, 20, 3 } });
+                        break;
+                    case 2:
+                        PaintAddImageAsParentRotated(
+                            session, direction, session.TrackColours.WithIndex(26601), { 0, 0, height + 24 },
+                            { { 0, 6, height + 85 }, { 32, 20, 3 } });
+                        break;
+                    case 3:
+                        PaintAddImageAsParentRotated(
+                            session, direction, session.TrackColours.WithIndex(26602), { 0, 0, height + 24 },
+                            { { 0, 4, height + 11 }, { 32, 2, 55 } });
+                        break;
+                }
+            }
+            else
+            {
+                switch (direction)
+                {
+                    case 0:
+                        PaintAddImageAsParentRotated(
+                            session, direction, session.TrackColours.WithIndex(26595), { 0, 0, height + 24 },
+                            { { 0, 4, height + 11 }, { 32, 2, 55 } });
+                        break;
+                    case 1:
+                        PaintAddImageAsParentRotated(
+                            session, direction, session.TrackColours.WithIndex(26596), { 0, 0, height + 24 },
+                            { { 0, 6, height + 85 }, { 32, 20, 3 } });
+                        break;
+                    case 2:
+                        PaintAddImageAsParentRotated(
+                            session, direction, session.TrackColours.WithIndex(26593), { 0, 0, height + 24 },
+                            { { 0, 6, height + 85 }, { 32, 20, 3 } });
+                        break;
+                    case 3:
+                        PaintAddImageAsParentRotated(
+                            session, direction, session.TrackColours.WithIndex(26594), { 0, 0, height + 24 },
+                            { { 0, 4, height + 11 }, { 32, 2, 55 } });
+                        break;
+                }
+            }
+            if (direction == 0 || direction == 3)
+            {
+                PaintUtilPushTunnelRotated(session, direction, height + 48, kTunnelGroup, TunnelSubType::SlopeEnd);
+            }
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 96);
+            break;
+        case 1:
+            break;
+    }
+}
 
 /** rct2: 0x00824D8C */
 static void LayDownRCTrackLeftEighthToDiag(
@@ -8272,6 +8574,18 @@ TrackPaintFunction GetTrackPaintFunctionLayDownRCInverted(TrackElemType trackTyp
             return LayDownRCTrackBrakes;
         case TrackElemType::onRidePhoto:
             return LayDownRCTrackOnRidePhoto;
+        case TrackElemType::up90:
+            return LayDownRCTrack90DegUp;
+        case TrackElemType::down90:
+            return LayDownRCTrack90DegDown;
+        case TrackElemType::up60ToUp90:
+            return LayDownRCTrack60DegUpTo90DegUp;
+        case TrackElemType::down90ToDown60:
+            return LayDownRCTrack90DegDownTo60DegDown;
+        case TrackElemType::up90ToUp60:
+            return LayDownRCTrack90DegUpTo60DegUp;
+        case TrackElemType::down60ToDown90:
+            return LayDownRCTrack60DegDownTo90DegDown;
         case TrackElemType::leftEighthToDiag:
             return LayDownRCTrackLeftEighthToDiag;
         case TrackElemType::rightEighthToDiag:
