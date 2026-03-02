@@ -118,7 +118,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr auto _windowFinancesSummaryWidgets = makeWidgets(
         makeFinancesWidgets(STR_FINANCIAL_SUMMARY, kTabContentSizeSummary, kWindowSizeSummary),
         makeWidget        ({130,  50}, {391, 211}, WidgetType::scroll,  WindowColour::secondary, SCROLL_HORIZONTAL              ),
-        makeSpinnerWidgets({ 64, 279}, { 97,  14}, WidgetType::spinner, WindowColour::secondary, STR_FINANCES_SUMMARY_LOAN_VALUE) // NB: 3 widgets
+        makeSpinnerWidgets({ 64, 277}, { 97,  14}, WidgetType::spinner, WindowColour::secondary, STR_FINANCES_SUMMARY_LOAN_VALUE) // NB: 3 widgets
     );
 
     static constexpr auto _windowFinancesCashWidgets = makeWidgets(
