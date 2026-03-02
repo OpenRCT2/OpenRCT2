@@ -1,6 +1,7 @@
 0.4.33 (in development)
 ------------------------------------------------------------------------
 - Fix: [#10616] Quarter-tile trees cannot be placed on dry portions of half-water tiles.
+- Fix: [#25735] Ride synchronisation z-check works incorrectly.
 - Fix: [#25993] Toggling “allow arbitrary ride type changes” does not resize open ride windows.
 - Fix: [#26111] Vehicle colours tab can go out of bounds in certain edge cases.
 - Fix: [#26118] Windows installers for releases are not signed properly.
@@ -22,7 +23,6 @@
 - Fix: [#23519] Title sequence cannot open .sea scenarios from RCTC.
 - Fix: [#25237] Wrong colours on the Knight costume (original bug).
 - Fix: [#25712, #25727] Crash during startup from window list race condition.
-- Fix: [#25735] Ride synchronisation z-check works incorrectly.
 - Fix: [#25763] Crash when opening the Footpath window in Multiplayer.
 - Fix: [#25910] Folders starting with numbers are sorted incorrectly (e.g. 1, 10, 2 instead of 1, 2, 10).
 - Fix: [#25954] Guests display hats, balloons, and umbrellas while puking.
