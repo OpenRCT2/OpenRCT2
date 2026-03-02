@@ -38,9 +38,8 @@ enum class DiagnosticLevel
  *    #endif // DEBUG_LEVEL_2
  * #endif // DEBUG_LEVEL_1
  *
- * The defines will be either 0 or 1 so compiler will complain about undefined
- * macro if you forget to include the file, which would not happen if we were
- * only checking whether the define is present or not.
+ * The defines will be either 0 or 1 so compiler will complain about undefined macro if you forget to include the file,
+ * which would not happen if we were only checking whether the define is present.
  */
 
 #if defined(DEBUG)

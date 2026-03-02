@@ -2709,8 +2709,7 @@ void Ride::chainQueues() const
 
         auto mapLocation = station.Entrance.ToCoordsXYZ();
 
-        // This will fire for every entrance on this x, y and z, regardless whether that actually belongs to
-        // the ride or not.
+        // This will fire for every entrance on this x, y and z, regardless whether that actually belongs to the ride.
         TileElement* tileElement = MapGetFirstElementAt(station.Entrance);
         if (tileElement != nullptr)
         {

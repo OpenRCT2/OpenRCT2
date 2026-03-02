@@ -51,7 +51,7 @@ namespace OpenRCT2::Path
      * Scans a directory and optionally sub directories for files that matches the
      * given pattern and returns an enumerator.
      * @param pattern The path followed by a semi-colon delimited list of wildcard patterns.
-     * @param recurse Whether to scan sub directories or not.
+     * @param recurse Whether to scan sub directories.
      * @returns A new FileScanner, this must be deleted when no longer needed.
      */
     [[nodiscard]] std::unique_ptr<IFileScanner> ScanDirectory(const std::string& pattern, bool recurse);

@@ -261,7 +261,7 @@ namespace OpenRCT2::GameActions
                 }
             }
 
-            // Set the on-ride photo price, whether the ride has one or not (except shops).
+            // Set the on-ride photo price, regardless of the ride having them (except shops).
             if (!rtd.flags.has(RtdFlag::isShopOrFacility) && ShopItemHasCommonPrice(ShopItem::photo))
             {
                 auto price = ShopItemGetCommonPrice(ride, ShopItem::photo);

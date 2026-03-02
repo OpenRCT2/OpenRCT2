@@ -1970,9 +1970,8 @@ static Ride* GuestFindBestRideToGoOn(Guest& guest)
 }
 
 /**
- * This function is called whenever a peep is deciding whether or not they want
- * to go on a ride or visit a shop. They may be physically present at the
- * ride/shop, or they may just be thinking about it.
+ * This function is called whenever a peep is deciding whether they want to go on a ride or visit a shop.
+ * They may be physically present at the ride/shop, or they may just be thinking about it.
  *  rct2: 0x006960AB
  */
 bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, bool thinking)

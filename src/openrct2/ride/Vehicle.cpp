@@ -998,7 +998,7 @@ void Vehicle::TestReset()
     test_reset(*curRide, current_station);
 }
 
-// The result of this function is used to decide whether a vehicle on a tower ride should go further up or not.
+// The result of this function is used to decide whether a vehicle on a tower ride should go further up.
 // Therefore, it will return true if anything is amiss.
 bool Vehicle::CurrentTowerElementIsTop()
 {

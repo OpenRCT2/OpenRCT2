@@ -27,7 +27,7 @@ enum class DrawingEngine : int32_t
 enum DrawingEngineFlag
 {
     /**
-     * Whether or not the engine will only draw changed blocks of the screen each frame.
+     * Whether the engine will only draw changed blocks of the screen each frame.
      */
     dirtyOptimisations,
 

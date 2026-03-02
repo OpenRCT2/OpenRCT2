@@ -8,8 +8,7 @@
  *****************************************************************************/
 
 /**
- * Whether a particular ride has a running track or not. Will probably end up
- * being used in various places in the game.
+ * Whether a particular ride has a running track. Will probably end up being used in various places in the game.
  *
  * Data source is 0x0097E3AC
  *

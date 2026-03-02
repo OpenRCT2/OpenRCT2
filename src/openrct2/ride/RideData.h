@@ -380,8 +380,7 @@ enum class RtdFlag : uint8_t
 
     isFlatRide,
 
-    // Whether or not guests will go on the ride again if they liked it
-    // (this is usually applied to everything apart from transport rides).
+    // Whether guests will go on the ride again if they liked it (usually applied to everything apart from transport rides).
     guestsWillRideAgain,
 
     // Used by Toilets and First Aid to mark that guest should go
@@ -394,7 +393,7 @@ enum class RtdFlag : uint8_t
     sellsFood,
     sellsDrinks,
 
-    // Whether or not vehicle colours can be set
+    // Whether vehicle colours can be set
     hasVehicleColours,
 
     checkForStalling,
