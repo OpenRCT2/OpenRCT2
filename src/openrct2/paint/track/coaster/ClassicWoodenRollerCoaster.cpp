@@ -287,7 +287,7 @@ static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kUp25T
     },
 } };
 
-static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kUp25ToRightBankImages = { {
+static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kClassicWoodenUp25ToRightBankImages = { {
     {
         SPR_CLASSIC_WOODEN_RC_25_UP_TO_RIGHT_BANK_SW_NE,
     },
@@ -306,7 +306,7 @@ static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kUp25T
     },
 } };
 
-static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kLeftBankToUp25Images = { {
+static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kClassicWoodenLeftBankToUp25Images = { {
     {
         SPR_CLASSIC_WOODEN_RC_LEFT_BANK_TO_25_UP_SW_NE,
     },
@@ -324,7 +324,7 @@ static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kLeftB
         SPR_CLASSIC_WOODEN_RC_LEFT_BANK_TO_25_UP_SE_NW,
     },
 } };
-static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kRightBankToUp25Images = { {
+static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kClassicWoodenRightBankToUp25Images = { {
     {
         SPR_CLASSIC_WOODEN_RC_RIGHT_BANK_TO_25_UP_SW_NE,
     },
@@ -656,7 +656,7 @@ static void ClassicWoodenRCTrackLeftBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    Track25DegUpToBank<true, kUp25ToRightBankImages>(
+    Track25DegUpToBank<true, kClassicWoodenUp25ToRightBankImages>(
         session, ride, trackSequence, DirectionReverse(direction), height, trackElement, supportType);
 }
 
@@ -672,7 +672,7 @@ static void ClassicWoodenRCTrack25DegDownToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    TrackBankTo25DegUp<true, kRightBankToUp25Images>(
+    TrackBankTo25DegUp<true, kClassicWoodenRightBankToUp25Images>(
         session, ride, trackSequence, DirectionReverse(direction), height, trackElement, supportType);
 }
 
@@ -680,7 +680,7 @@ static void ClassicWoodenRCTrack25DegDownToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    TrackBankTo25DegUp<true, kLeftBankToUp25Images>(
+    TrackBankTo25DegUp<true, kClassicWoodenLeftBankToUp25Images>(
         session, ride, trackSequence, DirectionReverse(direction), height, trackElement, supportType);
 }
 
@@ -1205,15 +1205,15 @@ TrackPaintFunction GetTrackPaintFunctionClassicWoodenRC(TrackElemType trackType)
         case TrackElemType::up25ToLeftBank:
             return Track25DegUpToBank<true, kUp25ToLeftBankImages>;
         case TrackElemType::up25ToRightBank:
-            return Track25DegUpToBank<true, kUp25ToRightBankImages>;
+            return Track25DegUpToBank<true, kClassicWoodenUp25ToRightBankImages>;
         case TrackElemType::leftBankToDown25:
             return ClassicWoodenRCTrackLeftBankTo25DegDown;
         case TrackElemType::rightBankToDown25:
             return ClassicWoodenRCTrackRightBankTo25DegDown;
         case TrackElemType::leftBankToUp25:
-            return TrackBankTo25DegUp<true, kLeftBankToUp25Images>;
+            return TrackBankTo25DegUp<true, kClassicWoodenLeftBankToUp25Images>;
         case TrackElemType::rightBankToUp25:
-            return TrackBankTo25DegUp<true, kRightBankToUp25Images>;
+            return TrackBankTo25DegUp<true, kClassicWoodenRightBankToUp25Images>;
         case TrackElemType::down25ToLeftBank:
             return ClassicWoodenRCTrack25DegDownToLeftBank;
         case TrackElemType::down25ToRightBank:

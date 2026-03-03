@@ -794,7 +794,7 @@ static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kClass
     },
 } };
 
-static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kUp25ToRightBankImages = { {
+static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kClassicWoodenTwisterUp25ToRightBankImages = { {
     {
         SPR_CLASSIC_WOODEN_TWISTER_RC_UP25_TO_RIGHT_BANK_0,
         SPR_CLASSIC_WOODEN_TWISTER_RC_UP25_TO_RIGHT_BANK_HANDRAIL_0,
@@ -817,7 +817,7 @@ static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kUp25T
     },
 } };
 
-static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kLeftBankToUp25Images = { {
+static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kClassicWoodenTwisterLeftBankToUp25Images = { {
     {
         SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_BANK_TO_UP25_0,
         SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_BANK_TO_UP25_HANDRAIL_0,
@@ -840,7 +840,7 @@ static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kLeftB
     },
 } };
 
-static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kRightBankToUp25Images = { {
+static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kClassicWoodenTwisterRightBankToUp25Images = { {
     {
         SPR_CLASSIC_WOODEN_TWISTER_RC_RIGHT_BANK_TO_UP25_0,
         SPR_CLASSIC_WOODEN_TWISTER_RC_RIGHT_BANK_TO_UP25_HANDRAIL_0,
@@ -863,74 +863,75 @@ static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kRight
     },
 } };
 
-static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 3> kBankedQuarterTurn3Images = { {
-    { {
-        {
-            SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_0_0,
-            SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_HANDRAIL_0_0,
-        },
-        {
-            SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_0_1,
-            SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_HANDRAIL_0_1,
-            SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_FRONT_0_1,
-            SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_FRONT_HANDRAIL_0_1,
-        },
-        {
-            SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_0_2,
-            SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_HANDRAIL_0_2,
-        },
-        {
-            SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_0_3,
-            SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_HANDRAIL_0_3,
-            SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_FRONT_0_3,
-            SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_FRONT_HANDRAIL_0_3,
-        },
-    } },
-    { {
-        {
-            SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_1_0,
-            SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_HANDRAIL_1_0,
-        },
-        {
-            SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_1_1,
-            SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_HANDRAIL_1_1,
-            SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_FRONT_1_1,
-            SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_FRONT_HANDRAIL_1_1,
-        },
-        {
-            SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_1_2,
-            SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_HANDRAIL_1_2,
-        },
-        {
-            SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_1_3,
-            SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_HANDRAIL_1_3,
-            SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_FRONT_1_3,
-            SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_FRONT_HANDRAIL_1_3,
-        },
-    } },
-    { {
-        {
-            SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_2_0,
-            SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_HANDRAIL_2_0,
-        },
-        {
-            SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_2_1,
-            SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_HANDRAIL_2_1,
-            SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_FRONT_2_1,
-            SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_FRONT_HANDRAIL_2_1,
-        },
-        {
-            SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_2_2,
-            SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_HANDRAIL_2_2,
-        },
-        {
-            SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_2_3,
-            SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_HANDRAIL_2_3,
-            SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_FRONT_2_3,
-            SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_FRONT_HANDRAIL_2_3,
-        },
-    } },
-} };
+static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 3>
+    kClassicWoodenTwisterBankedQuarterTurn3Images = { {
+        { {
+            {
+                SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_0_0,
+                SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_HANDRAIL_0_0,
+            },
+            {
+                SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_0_1,
+                SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_HANDRAIL_0_1,
+                SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_FRONT_0_1,
+                SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_FRONT_HANDRAIL_0_1,
+            },
+            {
+                SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_0_2,
+                SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_HANDRAIL_0_2,
+            },
+            {
+                SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_0_3,
+                SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_HANDRAIL_0_3,
+                SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_FRONT_0_3,
+                SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_FRONT_HANDRAIL_0_3,
+            },
+        } },
+        { {
+            {
+                SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_1_0,
+                SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_HANDRAIL_1_0,
+            },
+            {
+                SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_1_1,
+                SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_HANDRAIL_1_1,
+                SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_FRONT_1_1,
+                SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_FRONT_HANDRAIL_1_1,
+            },
+            {
+                SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_1_2,
+                SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_HANDRAIL_1_2,
+            },
+            {
+                SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_1_3,
+                SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_HANDRAIL_1_3,
+                SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_FRONT_1_3,
+                SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_FRONT_HANDRAIL_1_3,
+            },
+        } },
+        { {
+            {
+                SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_2_0,
+                SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_HANDRAIL_2_0,
+            },
+            {
+                SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_2_1,
+                SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_HANDRAIL_2_1,
+                SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_FRONT_2_1,
+                SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_FRONT_HANDRAIL_2_1,
+            },
+            {
+                SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_2_2,
+                SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_HANDRAIL_2_2,
+            },
+            {
+                SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_2_3,
+                SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_HANDRAIL_2_3,
+                SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_FRONT_2_3,
+                SPR_CLASSIC_WOODEN_TWISTER_RC_BANKED_QUARTER_TURN_3_FRONT_HANDRAIL_2_3,
+            },
+        } },
+    } };
 
 static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 5> kBankedQuarterTurn5Images = { {
     { {
@@ -1045,77 +1046,78 @@ static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirecti
     } },
 } };
 
-static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 3> kLeftHalfBankedHelixUpSmallImages = { {
-    { {
-        {
-            SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_0_0,
-            SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_HANDRAIL_0_0,
-        },
-        {
-            SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_0_1,
-            SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_HANDRAIL_0_1,
-            SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_FRONT_0_1,
-            SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_FRONT_HANDRAIL_0_1,
-        },
-        {
-            SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_0_2,
-            SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_HANDRAIL_0_2,
-        },
-        {
-            SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_0_3,
-            SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_HANDRAIL_0_3,
-            SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_FRONT_0_3,
-            SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_FRONT_HANDRAIL_0_3,
-        },
-    } },
-    { {
-        {
-            SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_1_0,
-            SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_HANDRAIL_1_0,
-        },
-        {
-            SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_1_1,
-            SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_HANDRAIL_1_1,
-            SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_FRONT_1_1,
-            SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_FRONT_HANDRAIL_1_1,
-        },
-        {
-            SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_1_2,
-            SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_HANDRAIL_1_2,
-        },
-        {
-            SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_1_3,
-            SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_HANDRAIL_1_3,
-            SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_FRONT_1_3,
-            SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_FRONT_HANDRAIL_1_3,
-        },
-    } },
-    { {
-        {
-            SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_2_0,
-            SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_HANDRAIL_2_0,
-        },
-        {
-            SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_2_1,
-            SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_HANDRAIL_2_1,
-            SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_FRONT_2_1,
-            SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_FRONT_HANDRAIL_2_1,
-        },
-        {
-            SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_2_2,
-            SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_HANDRAIL_2_2,
-        },
-        {
-            SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_2_3,
-            SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_HANDRAIL_2_3,
-            SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_FRONT_2_3,
-            SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_FRONT_HANDRAIL_2_3,
-        },
-    } },
-} };
+static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 3>
+    kClassicWoodenTwisterLeftHalfBankedHelixUpSmallImages = { {
+        { {
+            {
+                SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_0_0,
+                SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_HANDRAIL_0_0,
+            },
+            {
+                SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_0_1,
+                SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_HANDRAIL_0_1,
+                SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_FRONT_0_1,
+                SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_FRONT_HANDRAIL_0_1,
+            },
+            {
+                SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_0_2,
+                SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_HANDRAIL_0_2,
+            },
+            {
+                SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_0_3,
+                SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_HANDRAIL_0_3,
+                SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_FRONT_0_3,
+                SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_FRONT_HANDRAIL_0_3,
+            },
+        } },
+        { {
+            {
+                SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_1_0,
+                SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_HANDRAIL_1_0,
+            },
+            {
+                SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_1_1,
+                SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_HANDRAIL_1_1,
+                SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_FRONT_1_1,
+                SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_FRONT_HANDRAIL_1_1,
+            },
+            {
+                SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_1_2,
+                SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_HANDRAIL_1_2,
+            },
+            {
+                SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_1_3,
+                SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_HANDRAIL_1_3,
+                SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_FRONT_1_3,
+                SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_FRONT_HANDRAIL_1_3,
+            },
+        } },
+        { {
+            {
+                SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_2_0,
+                SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_HANDRAIL_2_0,
+            },
+            {
+                SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_2_1,
+                SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_HANDRAIL_2_1,
+                SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_FRONT_2_1,
+                SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_FRONT_HANDRAIL_2_1,
+            },
+            {
+                SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_2_2,
+                SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_HANDRAIL_2_2,
+            },
+            {
+                SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_2_3,
+                SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_HANDRAIL_2_3,
+                SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_FRONT_2_3,
+                SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_FRONT_HANDRAIL_2_3,
+            },
+        } },
+    } };
 
-static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 3> kRightHalfBankedHelixUpSmallImages = {
-    {
+static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 3>
+    kClassicWoodenTwisterRightHalfBankedHelixUpSmallImages = { {
         { {
             {
                 SPR_CLASSIC_WOODEN_TWISTER_RC_RIGHT_HALF_BANKED_HELIX_UP_SMALL_0_0,
@@ -1182,8 +1184,7 @@ static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirecti
                 SPR_CLASSIC_WOODEN_TWISTER_RC_RIGHT_HALF_BANKED_HELIX_UP_SMALL_HANDRAIL_2_3,
             },
         } },
-    }
-};
+    } };
 
 static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 5> kLeftHalfBankedHelixUpLargeImages = { {
     { {
@@ -1888,7 +1889,7 @@ static void ClassicWoodenTwisterRCTrackLeftBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    Track25DegUpToBank<false, kUp25ToRightBankImages>(
+    Track25DegUpToBank<false, kClassicWoodenTwisterUp25ToRightBankImages>(
         session, ride, trackSequence, DirectionReverse(direction), height, trackElement, supportType);
 }
 
@@ -1904,7 +1905,7 @@ static void ClassicWoodenTwisterRCTrack25DegDownToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    TrackBankTo25DegUp<false, kRightBankToUp25Images>(
+    TrackBankTo25DegUp<false, kClassicWoodenTwisterRightBankToUp25Images>(
         session, ride, trackSequence, DirectionReverse(direction), height, trackElement, supportType);
 }
 
@@ -1912,7 +1913,7 @@ static void ClassicWoodenTwisterRCTrack25DegDownToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    TrackBankTo25DegUp<false, kLeftBankToUp25Images>(
+    TrackBankTo25DegUp<false, kClassicWoodenTwisterLeftBankToUp25Images>(
         session, ride, trackSequence, DirectionReverse(direction), height, trackElement, supportType);
 }
 
@@ -1921,7 +1922,7 @@ static void ClassicWoodenTwisterRCTrackRightQuarterTurn3Bank(
     const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    TrackLeftQuarterTurn3Bank<false, kBankedQuarterTurn3Images>(
+    TrackLeftQuarterTurn3Bank<false, kClassicWoodenTwisterBankedQuarterTurn3Images>(
         session, ride, trackSequence, DirectionPrev(direction), height, trackElement, supportType);
 }
 
@@ -1943,7 +1944,7 @@ static void ClassicWoodenTwisterRCTrackLeftHalfBankedHelixDownSmall(
         direction = DirectionPrev(direction);
     }
     trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    TrackRightHalfBankedHelixUpSmall<false, kRightHalfBankedHelixUpSmallImages>(
+    TrackRightHalfBankedHelixUpSmall<false, kClassicWoodenTwisterRightHalfBankedHelixUpSmallImages>(
         session, ride, trackSequence, DirectionNext(direction), height, trackElement, supportType);
 }
 
@@ -1957,7 +1958,7 @@ static void ClassicWoodenTwisterRCTrackRightHalfBankedHelixDownSmall(
         direction = DirectionNext(direction);
     }
     trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    TrackLeftHalfBankedHelixUpSmall<false, kLeftHalfBankedHelixUpSmallImages>(
+    TrackLeftHalfBankedHelixUpSmall<false, kClassicWoodenTwisterLeftHalfBankedHelixUpSmallImages>(
         session, ride, trackSequence, DirectionPrev(direction), height, trackElement, supportType);
 }
 
@@ -2114,23 +2115,23 @@ TrackPaintFunction GetTrackPaintFunctionClassicWoodenTwisterRC(TrackElemType tra
         case TrackElemType::up25ToLeftBank:
             return Track25DegUpToBank<false, kClassicWoodenTwisterUp25ToLeftBankImages>;
         case TrackElemType::up25ToRightBank:
-            return Track25DegUpToBank<false, kUp25ToRightBankImages>;
+            return Track25DegUpToBank<false, kClassicWoodenTwisterUp25ToRightBankImages>;
         case TrackElemType::leftBankToDown25:
             return ClassicWoodenTwisterRCTrackLeftBankTo25DegDown;
         case TrackElemType::rightBankToDown25:
             return ClassicWoodenTwisterRCTrackRightBankTo25DegDown;
 
         case TrackElemType::leftBankToUp25:
-            return TrackBankTo25DegUp<false, kLeftBankToUp25Images>;
+            return TrackBankTo25DegUp<false, kClassicWoodenTwisterLeftBankToUp25Images>;
         case TrackElemType::rightBankToUp25:
-            return TrackBankTo25DegUp<false, kRightBankToUp25Images>;
+            return TrackBankTo25DegUp<false, kClassicWoodenTwisterRightBankToUp25Images>;
         case TrackElemType::down25ToLeftBank:
             return ClassicWoodenTwisterRCTrack25DegDownToLeftBank;
         case TrackElemType::down25ToRightBank:
             return ClassicWoodenTwisterRCTrack25DegDownToRightBank;
 
         case TrackElemType::leftBankedQuarterTurn3Tiles:
-            return TrackLeftQuarterTurn3Bank<false, kBankedQuarterTurn3Images>;
+            return TrackLeftQuarterTurn3Bank<false, kClassicWoodenTwisterBankedQuarterTurn3Images>;
         case TrackElemType::rightBankedQuarterTurn3Tiles:
             return ClassicWoodenTwisterRCTrackRightQuarterTurn3Bank;
 
@@ -2140,9 +2141,9 @@ TrackPaintFunction GetTrackPaintFunctionClassicWoodenTwisterRC(TrackElemType tra
             return TrackBankedRightQuarterTurn5<false, kBankedQuarterTurn5Images>;
 
         case TrackElemType::leftHalfBankedHelixUpSmall:
-            return TrackLeftHalfBankedHelixUpSmall<false, kLeftHalfBankedHelixUpSmallImages>;
+            return TrackLeftHalfBankedHelixUpSmall<false, kClassicWoodenTwisterLeftHalfBankedHelixUpSmallImages>;
         case TrackElemType::rightHalfBankedHelixUpSmall:
-            return TrackRightHalfBankedHelixUpSmall<false, kRightHalfBankedHelixUpSmallImages>;
+            return TrackRightHalfBankedHelixUpSmall<false, kClassicWoodenTwisterRightHalfBankedHelixUpSmallImages>;
         case TrackElemType::leftHalfBankedHelixDownSmall:
             return ClassicWoodenTwisterRCTrackLeftHalfBankedHelixDownSmall;
         case TrackElemType::rightHalfBankedHelixDownSmall:
