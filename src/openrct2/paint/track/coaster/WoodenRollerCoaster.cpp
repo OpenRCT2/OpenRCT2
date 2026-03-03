@@ -1107,7 +1107,7 @@ static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirecti
     } },
 } };
 
-static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 5> kBankedQuarterTurn5Images = { {
+static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 5> kWoodenBankedQuarterTurn5Images = { {
     { {
         {
             SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_SW_SE_SEQ_0,
@@ -1360,121 +1360,122 @@ static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirecti
         } },
     } };
 
-static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 5> kLeftHalfBankedHelixUpLargeImages = { {
-    { {
-        {
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_0_0,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_0_0,
-        },
-        {
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_0_1,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_0_1,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_0_1,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_HANDRAIL_0_1,
-        },
-        {
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_0_2,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_0_2,
-        },
-        {
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_0_3,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_0_3,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_0_3,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_HANDRAIL_0_3,
-        },
-    } },
-    { {
-        {
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_1_0,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_1_0,
-        },
-        {
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_1_1,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_1_1,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_1_1,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_HANDRAIL_1_1,
-        },
-        {
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_1_2,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_1_2,
-        },
-        {
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_1_3,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_1_3,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_1_3,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_HANDRAIL_1_3,
-        },
-    } },
-    { {
-        {
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_2_0,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_2_0,
-        },
-        {
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_2_1,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_2_1,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_2_1,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_HANDRAIL_2_1,
-        },
-        {
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_2_2,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_2_2,
-        },
-        {
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_2_3,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_2_3,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_2_3,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_HANDRAIL_2_3,
-        },
-    } },
-    { {
-        {
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_3_0,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_3_0,
-        },
-        {
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_3_1,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_3_1,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_3_1,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_HANDRAIL_3_1,
-        },
-        {
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_3_2,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_3_2,
-        },
-        {
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_3_3,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_3_3,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_3_3,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_HANDRAIL_3_3,
-        },
-    } },
-    { {
-        {
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_4_0,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_4_0,
-        },
-        {
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_4_1,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_4_1,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_4_1,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_HANDRAIL_4_1,
-        },
-        {
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_4_2,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_4_2,
-        },
-        {
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_4_3,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_4_3,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_4_3,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_HANDRAIL_4_3,
-        },
-    } },
-} };
+static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 5>
+    kWoodenLeftHalfBankedHelixUpLargeImages = { {
+        { {
+            {
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_0_0,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_0_0,
+            },
+            {
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_0_1,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_0_1,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_0_1,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_HANDRAIL_0_1,
+            },
+            {
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_0_2,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_0_2,
+            },
+            {
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_0_3,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_0_3,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_0_3,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_HANDRAIL_0_3,
+            },
+        } },
+        { {
+            {
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_1_0,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_1_0,
+            },
+            {
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_1_1,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_1_1,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_1_1,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_HANDRAIL_1_1,
+            },
+            {
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_1_2,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_1_2,
+            },
+            {
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_1_3,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_1_3,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_1_3,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_HANDRAIL_1_3,
+            },
+        } },
+        { {
+            {
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_2_0,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_2_0,
+            },
+            {
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_2_1,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_2_1,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_2_1,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_HANDRAIL_2_1,
+            },
+            {
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_2_2,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_2_2,
+            },
+            {
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_2_3,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_2_3,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_2_3,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_HANDRAIL_2_3,
+            },
+        } },
+        { {
+            {
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_3_0,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_3_0,
+            },
+            {
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_3_1,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_3_1,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_3_1,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_HANDRAIL_3_1,
+            },
+            {
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_3_2,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_3_2,
+            },
+            {
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_3_3,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_3_3,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_3_3,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_HANDRAIL_3_3,
+            },
+        } },
+        { {
+            {
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_4_0,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_4_0,
+            },
+            {
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_4_1,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_4_1,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_4_1,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_HANDRAIL_4_1,
+            },
+            {
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_4_2,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_4_2,
+            },
+            {
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_4_3,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_4_3,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_4_3,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_HANDRAIL_4_3,
+            },
+        } },
+    } };
 
-static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 5> kRightHalfBankedHelixUpLargeImages = {
-    {
+static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 5>
+    kWoodenRightHalfBankedHelixUpLargeImages = { {
         { {
             {
                 SPR_WOODEN_RC_RIGHT_HALF_BANKED_HELIX_LARGE_UP_0_0,
@@ -1585,8 +1586,7 @@ static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirecti
                 SPR_WOODEN_RC_RIGHT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_4_3,
             },
         } },
-    }
-};
+    } };
 
 static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 2>
     kLeftBankToLeftQuarterTurn325DegUpImages = { {
@@ -3087,7 +3087,7 @@ static void WoodenRCTrackBankedLeftQuarterTurn5(
     const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    TrackBankedRightQuarterTurn5<isClassic, kBankedQuarterTurn5Images>(
+    TrackBankedRightQuarterTurn5<isClassic, kWoodenBankedQuarterTurn5Images>(
         session, ride, trackSequence, DirectionNext(direction), height, trackElement, supportType);
 }
 
@@ -5590,7 +5590,7 @@ static void WoodenRCTrackLeftHalfBankedHelixDownLarge(
         direction = DirectionPrev(direction);
     }
     trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    TrackRightHalfBankedHelixUpLarge<isClassic, kRightHalfBankedHelixUpLargeImages>(
+    TrackRightHalfBankedHelixUpLarge<isClassic, kWoodenRightHalfBankedHelixUpLargeImages>(
         session, ride, trackSequence, DirectionNext(direction), height, trackElement, supportType);
 }
 
@@ -5606,7 +5606,7 @@ static void WoodenRCTrackRightHalfBankedHelixDownLarge(
         direction = DirectionNext(direction);
     }
     trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    TrackLeftHalfBankedHelixUpLarge<isClassic, kLeftHalfBankedHelixUpLargeImages>(
+    TrackLeftHalfBankedHelixUpLarge<isClassic, kWoodenLeftHalfBankedHelixUpLargeImages>(
         session, ride, trackSequence, DirectionPrev(direction), height, trackElement, supportType);
 }
 
@@ -13411,7 +13411,7 @@ TrackPaintFunction GetTrackPaintFunctionWoodenAndClassicWoodenRC(TrackElemType t
         case TrackElemType::bankedLeftQuarterTurn5Tiles:
             return WoodenRCTrackBankedLeftQuarterTurn5<isClassic>;
         case TrackElemType::bankedRightQuarterTurn5Tiles:
-            return TrackBankedRightQuarterTurn5<isClassic, kBankedQuarterTurn5Images>;
+            return TrackBankedRightQuarterTurn5<isClassic, kWoodenBankedQuarterTurn5Images>;
         case TrackElemType::leftBankToUp25:
             return TrackBankTo25DegUp<isClassic, kWoodenLeftBankToUp25Images>;
         case TrackElemType::rightBankToUp25:
@@ -13473,9 +13473,9 @@ TrackPaintFunction GetTrackPaintFunctionWoodenAndClassicWoodenRC(TrackElemType t
         case TrackElemType::rightHalfBankedHelixDownSmall:
             return WoodenRCTrackRightHalfBankedHelixDownSmall<isClassic>;
         case TrackElemType::leftHalfBankedHelixUpLarge:
-            return TrackLeftHalfBankedHelixUpLarge<isClassic, kLeftHalfBankedHelixUpLargeImages>;
+            return TrackLeftHalfBankedHelixUpLarge<isClassic, kWoodenLeftHalfBankedHelixUpLargeImages>;
         case TrackElemType::rightHalfBankedHelixUpLarge:
-            return TrackRightHalfBankedHelixUpLarge<isClassic, kRightHalfBankedHelixUpLargeImages>;
+            return TrackRightHalfBankedHelixUpLarge<isClassic, kWoodenRightHalfBankedHelixUpLargeImages>;
         case TrackElemType::leftHalfBankedHelixDownLarge:
             return WoodenRCTrackLeftHalfBankedHelixDownLarge<isClassic>;
         case TrackElemType::rightHalfBankedHelixDownLarge:
