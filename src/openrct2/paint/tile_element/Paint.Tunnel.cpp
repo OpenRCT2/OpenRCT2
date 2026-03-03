@@ -18,9 +18,6 @@ static std::array<TunnelGroupMap, kTunnelGroupCount> tunnelMap = {
                     TunnelType::InvertedFlatTo25Deg, TunnelType::InvertedFlat },
 };
 
-void TrackPaintUtilRightQuarterTurn3TilesTunnel(
-    PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence, TunnelType tunnelType);
-
 void PaintUtilPushTunnelLeft(PaintSession& session, uint16_t height, TunnelType type)
 {
     if (!session.LeftTunnels.full())

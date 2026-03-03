@@ -118,6 +118,9 @@ void TrackPaintUtilRightQuarterTurn3Tiles25DegDownTunnel(
 void TrackPaintUtilLeftQuarterTurn3TilesTunnel(
     PaintSession& session, TunnelGroup group, TunnelSubType tunnelType, int16_t height, Direction direction,
     uint8_t trackSequence);
+
+void TrackPaintUtilRightQuarterTurn3TilesTunnel(
+    PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence, TunnelType tunnelType);
 void TrackPaintUtilRightQuarterTurn3TilesTunnel(
     PaintSession& session, TunnelGroup group, TunnelSubType tunnelType, int16_t height, Direction direction,
     uint8_t trackSequence);

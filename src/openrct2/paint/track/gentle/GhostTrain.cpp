@@ -22,9 +22,6 @@ using namespace OpenRCT2;
 
 static constexpr TunnelGroup kTunnelGroupIncline = TunnelGroup::Standard;
 
-void TrackPaintUtilRightQuarterTurn3TilesTunnel(
-    PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence, TunnelType tunnelType);
-
 enum
 {
     SprGhostTrainTrackFlatSwNe = 28821,
