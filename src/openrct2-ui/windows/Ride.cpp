@@ -367,8 +367,8 @@ namespace OpenRCT2::Ui::Windows
     static constexpr auto _musicWidgets = makeWidgets(
         kMainRideWidgets,
         makeWidget({  7, 47}, {302,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_PLAY_MUSIC,     STR_SELECT_MUSIC_TIP      ),
-        makeWidget({  7, 62}, {302,  12}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdEmpty                                ),
-        makeWidget({297, 63}, { 11,  10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH, STR_SELECT_MUSIC_STYLE_TIP),
+        makeWidget({  7, 62}, {302,  14}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdEmpty                                ),
+        makeWidget({297, 63}, { 11,  12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH, STR_SELECT_MUSIC_STYLE_TIP),
         makeWidget({154, 90}, {114, 114}, WidgetType::flatBtn,      WindowColour::secondary                                                ),
         makeWidget({  7, 90}, {500, 450}, WidgetType::scroll,       WindowColour::secondary, SCROLL_BOTH                                   )
     );
