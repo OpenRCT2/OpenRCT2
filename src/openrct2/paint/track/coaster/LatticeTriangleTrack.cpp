@@ -18173,7 +18173,7 @@ static void LatticeTriangleTrackRightEighthBankToOrthogonalDown25(
         session, ride, trackSequence, (direction + 3) & 3, height, trackElement, supportType);
 }
 
-static constexpr CoordsXYZ diagBrakeBoundsOffsets[4] = {
+static constexpr CoordsXYZ kLatticeTriangleDiagBrakeBoundsOffsets[4] = {
     { 0, 0, 24 },
     { 0, 0, 24 },
     { 0, 0, 24 },
@@ -18190,7 +18190,7 @@ static void LatticeTriangleTrackDiagBrakes(
 
     TrackPaintUtilDiagTilesPaint(
         session, 3, height, direction, trackSequence, kLatticeTriangleDiagBrakeImages[trackElement.IsBrakeClosed()][1],
-        defaultDiagTileOffsets, defaultDiagBoundLengths, diagBrakeBoundsOffsets);
+        defaultDiagTileOffsets, defaultDiagBoundLengths, kLatticeTriangleDiagBrakeBoundsOffsets);
 
     if (trackSequence == 3)
     {

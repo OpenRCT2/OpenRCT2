@@ -5653,7 +5653,7 @@ static void LoopingRCTrackDiagFlat(
         session, 3, height, direction, trackSequence, images[trackElement.HasChain()], supportType.metal);
 }
 
-static constexpr CoordsXYZ diagBrakeBoundsOffsets[4] = {
+static constexpr CoordsXYZ kLoopingDiagBrakeBoundsOffsets[4] = {
     { 0, 0, 24 },
     { 0, 0, 24 },
     { 0, 0, 24 },
@@ -5670,7 +5670,7 @@ static void LoopingRCTrackDiagBrakes(
 
     TrackPaintUtilDiagTilesPaint(
         session, 3, height, direction, trackSequence, kLoopingRCDiagBrakeImages + 4, defaultDiagTileOffsets,
-        defaultDiagBoundLengths, diagBrakeBoundsOffsets);
+        defaultDiagBoundLengths, kLoopingDiagBrakeBoundsOffsets);
 
     if (trackSequence == 3)
     {
