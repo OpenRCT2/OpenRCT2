@@ -349,18 +349,18 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr auto window_options_audio_widgets = makeWidgets(
         kMainOptionsWidgets,
-        makeWidget({ 10,  53}, {290, 12}, WidgetType::dropdownMenu, WindowColour::secondary                                                ), // Audio device
-        makeWidget({288,  54}, { 11, 10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,      STR_AUDIO_DEVICE_TIP ),
-        makeWidget({ 10,  69}, {220, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_MASTER_VOLUME,       STR_MASTER_VOLUME_TIP), // Enable / disable master sound
-        makeWidget({ 10,  84}, {220, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_SOUND_EFFECTS,       STR_SOUND_EFFECTS_TIP), // Enable / disable sound effects
-        makeWidget({ 10,  99}, {220, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_RIDE_MUSIC,          STR_RIDE_MUSIC_TIP   ), // Enable / disable ride music
-        makeWidget({ 10, 113}, {290, 13}, WidgetType::checkbox,     WindowColour::secondary, STR_AUDIO_FOCUS,         STR_AUDIO_FOCUS_TIP  ), // Enable / disable audio disabled on focus lost
-        makeWidget({ 10, 128}, {145, 13}, WidgetType::label,        WindowColour::secondary, STR_OPTIONS_MUSIC_LABEL, STR_TITLE_MUSIC_TIP  ), // Title music label
-        makeWidget({155, 127}, {145, 13}, WidgetType::dropdownMenu, WindowColour::secondary                                                ), // Title music
-        makeWidget({288, 128}, { 11, 11}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,      STR_TITLE_MUSIC_TIP  ),
-        makeWidget({155,  68}, {145, 13}, WidgetType::scroll,       WindowColour::secondary, SCROLL_HORIZONTAL                             ), // Master volume
-        makeWidget({155,  83}, {145, 13}, WidgetType::scroll,       WindowColour::secondary, SCROLL_HORIZONTAL                             ), // Sound effect volume
-        makeWidget({155,  98}, {145, 13}, WidgetType::scroll,       WindowColour::secondary, SCROLL_HORIZONTAL                             )  // Music volume
+        makeWidget({ 10,  53}, {290, 14}, WidgetType::dropdownMenu, WindowColour::secondary                                                ), // Audio device
+        makeWidget({288,  54}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,      STR_AUDIO_DEVICE_TIP ),
+        makeWidget({ 10,  71}, {220, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_MASTER_VOLUME,       STR_MASTER_VOLUME_TIP), // Enable / disable master sound
+        makeWidget({ 10,  86}, {220, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_SOUND_EFFECTS,       STR_SOUND_EFFECTS_TIP), // Enable / disable sound effects
+        makeWidget({ 10, 101}, {220, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_RIDE_MUSIC,          STR_RIDE_MUSIC_TIP   ), // Enable / disable ride music
+        makeWidget({ 10, 115}, {290, 13}, WidgetType::checkbox,     WindowColour::secondary, STR_AUDIO_FOCUS,         STR_AUDIO_FOCUS_TIP  ), // Enable / disable audio disabled on focus lost
+        makeWidget({ 10, 130}, {145, 12}, WidgetType::label,        WindowColour::secondary, STR_OPTIONS_MUSIC_LABEL, STR_TITLE_MUSIC_TIP  ), // Title music label
+        makeWidget({155, 129}, {145, 14}, WidgetType::dropdownMenu, WindowColour::secondary                                                ), // Title music
+        makeWidget({288, 130}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,      STR_TITLE_MUSIC_TIP  ),
+        makeWidget({155,  72}, {145, 13}, WidgetType::scroll,       WindowColour::secondary, SCROLL_HORIZONTAL                             ), // Master volume
+        makeWidget({155,  87}, {145, 13}, WidgetType::scroll,       WindowColour::secondary, SCROLL_HORIZONTAL                             ), // Sound effect volume
+        makeWidget({155, 102}, {145, 13}, WidgetType::scroll,       WindowColour::secondary, SCROLL_HORIZONTAL                             )  // Music volume
     );
 
     constexpr int32_t kControlsGroupStart = 53;
