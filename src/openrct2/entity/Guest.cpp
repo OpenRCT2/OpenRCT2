@@ -7526,7 +7526,6 @@ int32_t GetPeepFaceSpriteLarge(Guest* peep)
 bool Guest::UpdateQueuePosition(PeepActionType previous_action)
 {
     TimeInQueue = std::min<uint32_t>(TimeInQueue + 1, 65535);
-    std::cout << "Queue time: " << TimeInQueue + 0 << "\n";
 
     auto* guestNext = getGameState().entities.GetEntity<Guest>(GuestNextInQueue);
     if (guestNext == nullptr)
