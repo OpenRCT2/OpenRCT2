@@ -152,13 +152,23 @@ namespace OpenRCT2::Ui::Windows
         WIDX_VEHICLE_CARS_PER_TRAIN_INCREASE,
         WIDX_VEHICLE_CARS_PER_TRAIN_DECREASE,
 
-        WIDX_MODE_TWEAK = 14,
+        WIDX_MODE = 14,
+        WIDX_MODE_DROPDOWN,
+        WIDX_MODE_TWEAK_LABEL,
+        WIDX_MODE_TWEAK,
         WIDX_MODE_TWEAK_INCREASE,
         WIDX_MODE_TWEAK_DECREASE,
+        WIDX_LIFT_HILL_SPEED_LABEL,
         WIDX_LIFT_HILL_SPEED,
         WIDX_LIFT_HILL_SPEED_INCREASE,
         WIDX_LIFT_HILL_SPEED_DECREASE,
+        WIDX_OPERATE_NUMBER_OF_CIRCUITS_LABEL,
+        WIDX_OPERATE_NUMBER_OF_CIRCUITS,
+        WIDX_OPERATE_NUMBER_OF_CIRCUITS_INCREASE,
+        WIDX_OPERATE_NUMBER_OF_CIRCUITS_DECREASE,
         WIDX_LOAD_CHECKBOX,
+        WIDX_LOAD,
+        WIDX_LOAD_DROPDOWN,
         WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX,
         WIDX_MINIMUM_LENGTH_CHECKBOX,
         WIDX_MINIMUM_LENGTH,
@@ -169,16 +179,6 @@ namespace OpenRCT2::Ui::Windows
         WIDX_MAXIMUM_LENGTH_INCREASE,
         WIDX_MAXIMUM_LENGTH_DECREASE,
         WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX,
-        WIDX_MODE_TWEAK_LABEL,
-        WIDX_LIFT_HILL_SPEED_LABEL,
-        WIDX_MODE,
-        WIDX_MODE_DROPDOWN,
-        WIDX_LOAD,
-        WIDX_LOAD_DROPDOWN,
-        WIDX_OPERATE_NUMBER_OF_CIRCUITS_LABEL,
-        WIDX_OPERATE_NUMBER_OF_CIRCUITS,
-        WIDX_OPERATE_NUMBER_OF_CIRCUITS_INCREASE,
-        WIDX_OPERATE_NUMBER_OF_CIRCUITS_DECREASE,
 
         WIDX_INSPECTION_INTERVAL = 14,
         WIDX_INSPECTION_INTERVAL_DROPDOWN,
@@ -300,23 +300,23 @@ namespace OpenRCT2::Ui::Windows
     // 0x009ADEFC
     static constexpr auto _operatingWidgets = makeWidgets(
         kMainRideWidgets,
+        makeWidget        ({  7,  47}, {302, 14}, WidgetType::dropdownMenu, WindowColour::secondary, 0xFFFFFFFF,                             STR_SELECT_OPERATING_MODE                   ),
+        makeWidget        ({297,  48}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,                     STR_SELECT_OPERATING_MODE                   ),
+        makeWidget        ({ 21,  61}, {129, 12}, WidgetType::label,        WindowColour::secondary                                                                                      ),
         makeSpinnerWidgets({157,  61}, {152, 14}, WidgetType::spinner,      WindowColour::secondary, STR_ARG_18_STRINGID                                                                 ), // NB: 3 widgets
+        makeWidget        ({ 21,  75}, {129, 12}, WidgetType::label,        WindowColour::secondary, STR_LIFT_HILL_CHAIN_SPEED                                                           ),
         makeSpinnerWidgets({157,  75}, {152, 14}, WidgetType::spinner,      WindowColour::secondary, STR_LIFT_HILL_CHAIN_SPEED_VALUE                                                     ), // NB: 3 widgets
+        makeWidget        ({ 21,  89}, {129, 12}, WidgetType::label,        WindowColour::secondary, STR_NUMBER_OF_CIRCUITS,                 STR_NUMBER_OF_CIRCUITS_TIP                  ),
+        makeSpinnerWidgets({157,  89}, {152, 14}, WidgetType::spinner,      WindowColour::secondary, STR_NUMBER_OF_CIRCUITS_VALUE                                                        ), // NB: 3 widgets
         makeWidget        ({  7, 109}, { 80, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_WAIT_FOR,                           STR_WAIT_FOR_PASSENGERS_BEFORE_DEPARTING_TIP),
+        makeWidget        ({ 87, 109}, {222, 14}, WidgetType::dropdownMenu, WindowColour::secondary                                                                                      ),
+        makeWidget        ({297, 110}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH                                                                  ),
         makeWidget        ({  7, 124}, {302, 12}, WidgetType::checkbox,     WindowColour::secondary                                                                                      ),
         makeWidget        ({  7, 139}, {150, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_MINIMUM_WAITING_TIME,               STR_MINIMUM_LENGTH_BEFORE_DEPARTING_TIP     ),
         makeSpinnerWidgets({157, 139}, {152, 14}, WidgetType::spinner,      WindowColour::secondary, STR_ARG_10_STRINGID                                                                 ), // NB: 3 widgets
         makeWidget        ({  7, 154}, {150, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_MAXIMUM_WAITING_TIME,               STR_MAXIMUM_LENGTH_BEFORE_DEPARTING_TIP     ),
         makeSpinnerWidgets({157, 154}, {152, 14}, WidgetType::spinner,      WindowColour::secondary, STR_ARG_14_STRINGID                                                                 ), // NB: 3 widgets
-        makeWidget        ({  7, 169}, {302, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_SYNCHRONISE_WITH_ADJACENT_STATIONS, STR_SYNCHRONISE_WITH_ADJACENT_STATIONS_TIP  ),
-        makeWidget        ({ 21,  61}, {129, 12}, WidgetType::label,        WindowColour::secondary                                                                                      ),
-        makeWidget        ({ 21,  75}, {129, 12}, WidgetType::label,        WindowColour::secondary, STR_LIFT_HILL_CHAIN_SPEED                                                           ),
-        makeWidget        ({  7,  47}, {302, 14}, WidgetType::dropdownMenu, WindowColour::secondary, 0xFFFFFFFF,                             STR_SELECT_OPERATING_MODE                   ),
-        makeWidget        ({297,  48}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,                     STR_SELECT_OPERATING_MODE                   ),
-        makeWidget        ({ 87, 109}, {222, 14}, WidgetType::dropdownMenu, WindowColour::secondary                                                                                      ),
-        makeWidget        ({297, 110}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH                                                                  ),
-        makeWidget        ({ 21,  89}, {129, 12}, WidgetType::label,        WindowColour::secondary, STR_NUMBER_OF_CIRCUITS,                 STR_NUMBER_OF_CIRCUITS_TIP                  ),
-        makeSpinnerWidgets({157,  89}, {152, 14}, WidgetType::spinner,      WindowColour::secondary, STR_NUMBER_OF_CIRCUITS_VALUE                                                        )  // NB: 3 widgets
+        makeWidget        ({  7, 169}, {302, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_SYNCHRONISE_WITH_ADJACENT_STATIONS, STR_SYNCHRONISE_WITH_ADJACENT_STATIONS_TIP  )
     );
 
     // 0x009AE190
