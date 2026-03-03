@@ -512,10 +512,10 @@ bool Staff::DoHandymanPathFinding()
                 bool chooseRandom = true;
                 if (litterDirection != kInvalidDirection && pathDirections & (1 << litterDirection))
                 {
-                    /// Check whether path is a queue path and connected to a ride
+                    // Check whether path is a queue path and connected to a ride
                     bool connectedQueue = (pathElement->IsQueue() && !pathElement->GetRideIndex().IsNull());
-                    /// When in a queue path make the probability of following litter much lower (10% instead of 90%)
-                    /// as handymen often get stuck when there is litter on a normal path next to a queue they are in
+                    // When in a queue path make the probability of following litter much lower (10% instead of 90%)
+                    // as handymen often get stuck when there is litter on a normal path next to a queue they are in
                     uint32_t chooseRandomProbability = connectedQueue ? 0xE666 : 0x1999;
                     if ((ScenarioRand() & 0xFFFF) >= chooseRandomProbability)
                     {
