@@ -18,7 +18,7 @@
 using namespace OpenRCT2;
 
 /** rct2: 0x009A37C4 */
-static constexpr CoordsXY kSurroundingTiles[] = {
+static constexpr CoordsXY kCollisionSurroundingTiles[] = {
     { 0, 0 },
     { 0, +kCoordsXYStep },
     { +kCoordsXYStep, 0 },
@@ -101,7 +101,7 @@ bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, EntityId* oth
 
     bool mayCollide = false;
     Vehicle* collideVehicle = nullptr;
-    for (auto xy_offset : kSurroundingTiles)
+    for (auto xy_offset : kCollisionSurroundingTiles)
     {
         location += xy_offset;
 

@@ -30,7 +30,7 @@ extern int32_t _vehicleUnkF64E10;
 extern CoordsXYZ _vehicleCurPosition;
 
 /** rct2: 0x009A37C4 */
-static constexpr CoordsXY kSurroundingTiles[] = {
+static constexpr CoordsXY kDodgemsSurroundingTiles[] = {
     { 0, 0 },
     { 0, +kCoordsXYStep },
     { +kCoordsXYStep, 0 },
@@ -287,7 +287,7 @@ std::optional<EntityId> Vehicle::DodgemsCarWouldCollideAt(const CoordsXY& coords
     auto location = coords;
 
     RideId rideIndex = ride;
-    for (auto xy_offset : kSurroundingTiles)
+    for (auto xy_offset : kDodgemsSurroundingTiles)
     {
         location += xy_offset;
 
