@@ -24,7 +24,7 @@
 namespace OpenRCT2
 {
     // clang-format off
-    static constexpr CommandLineOptionDefinition kNoOptions[]
+    static constexpr CommandLineOptionDefinition kSimulateNoOptions[]
     {
         kOptionTableEnd
     };
@@ -33,7 +33,7 @@ namespace OpenRCT2
 
     const CommandLineCommand CommandLine::kSimulateCommands[]{
         // Main commands
-        DefineCommand("", "<park file> <ticks>", kNoOptions, HandleSimulate),
+        DefineCommand("", "<park file> <ticks>", kSimulateNoOptions, HandleSimulate),
         kCommandTableEnd
     };
     // clang-format on
