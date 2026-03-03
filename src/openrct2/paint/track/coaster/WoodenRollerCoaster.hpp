@@ -296,7 +296,8 @@ namespace OpenRCT2::WoodenRC
                 }
         }
 
-        TrackPaintUtilLeftQuarterTurn3TilesTunnel(session, kWoodenTunnelGroup, TunnelSubType::Flat, height, direction, trackSequence);
+        TrackPaintUtilLeftQuarterTurn3TilesTunnel(
+            session, kWoodenTunnelGroup, TunnelSubType::Flat, height, direction, trackSequence);
 
         static constexpr int blockedSegments[4] = {
             kSegmentsAll,
