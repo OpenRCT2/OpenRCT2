@@ -73,63 +73,63 @@ enum
     SPR_VIRGINIA_REEL_25_DEG_UP_LIFT_HILL_SE_NW = 21503,
 };
 
-static constexpr uint32_t kPiecesFlat[4] = {
+static constexpr uint32_t kVirginiaReelPiecesFlat[4] = {
     SPR_VIRGINIA_REEL_FLAT_SW_NE,
     SPR_VIRGINIA_REEL_FLAT_NW_SE,
     SPR_VIRGINIA_REEL_FLAT_SW_NE,
     SPR_VIRGINIA_REEL_FLAT_NW_SE,
 };
 
-static constexpr uint32_t kPiecesFlatLiftHill[4] = {
+static constexpr uint32_t kVirginiaReelPiecesFlatLiftHill[4] = {
     SPR_VIRGINIA_REEL_FLAT_LIFT_HILL_SW_NE,
     SPR_VIRGINIA_REEL_FLAT_LIFT_HILL_NW_SE,
     SPR_VIRGINIA_REEL_FLAT_LIFT_HILL_NE_SW,
     SPR_VIRGINIA_REEL_FLAT_LIFT_HILL_SE_NW,
 };
 
-static constexpr uint32_t kPiecesFlatTo25DegUp[4] = {
+static constexpr uint32_t kVirginiaReelPiecesFlatTo25DegUp[4] = {
     SPR_VIRGINIA_REEL_FLAT_TO_25_DEG_UP_SW_NE,
     SPR_VIRGINIA_REEL_FLAT_TO_25_DEG_UP_NW_SE,
     SPR_VIRGINIA_REEL_FLAT_TO_25_DEG_UP_NE_SW,
     SPR_VIRGINIA_REEL_FLAT_TO_25_DEG_UP_SE_NW,
 };
 
-static constexpr uint32_t kPiecesFlatTo25DegUpLiftHill[4] = {
+static constexpr uint32_t kVirginiaReelPiecesFlatTo25DegUpLiftHill[4] = {
     SPR_VIRGINIA_REEL_FLAT_TO_25_DEG_UP_LIFT_HILL_SW_NE,
     SPR_VIRGINIA_REEL_FLAT_TO_25_DEG_UP_LIFT_HILL_NW_SE,
     SPR_VIRGINIA_REEL_FLAT_TO_25_DEG_UP_LIFT_HILL_NE_SW,
     SPR_VIRGINIA_REEL_FLAT_TO_25_DEG_UP_LIFT_HILL_SE_NW,
 };
 
-static constexpr uint32_t kPieces25DegUpToFlat[4] = {
+static constexpr uint32_t kVirginiaReelPieces25DegUpToFlat[4] = {
     SPR_VIRGINIA_REEL_25_DEG_UP_TO_FLAT_SW_NE,
     SPR_VIRGINIA_REEL_25_DEG_UP_TO_FLAT_NW_SE,
     SPR_VIRGINIA_REEL_25_DEG_UP_TO_FLAT_NE_SW,
     SPR_VIRGINIA_REEL_25_DEG_UP_TO_FLAT_SE_NW,
 };
 
-static constexpr uint32_t kPieces25DegUpToFlatLiftHill[4] = {
+static constexpr uint32_t kVirginiaReelPieces25DegUpToFlatLiftHill[4] = {
     SPR_VIRGINIA_REEL_25_DEG_UP_TO_FLAT_LIFT_HILL_SW_NE,
     SPR_VIRGINIA_REEL_25_DEG_UP_TO_FLAT_LIFT_HILL_NW_SE,
     SPR_VIRGINIA_REEL_25_DEG_UP_TO_FLAT_LIFT_HILL_NE_SW,
     SPR_VIRGINIA_REEL_25_DEG_UP_TO_FLAT_LIFT_HILL_SE_NW,
 };
 
-static constexpr uint32_t kPieces25DegUp[4] = {
+static constexpr uint32_t kVirginiaReelPieces25DegUp[4] = {
     SPR_VIRGINIA_REEL_25_DEG_UP_SW_NE,
     SPR_VIRGINIA_REEL_25_DEG_UP_NW_SE,
     SPR_VIRGINIA_REEL_25_DEG_UP_NE_SW,
     SPR_VIRGINIA_REEL_25_DEG_UP_SE_NW,
 };
 
-static constexpr uint32_t kPieces25DegUpLiftHill[4] = {
+static constexpr uint32_t kVirginiaReelPieces25DegUpLiftHill[4] = {
     SPR_VIRGINIA_REEL_25_DEG_UP_LIFT_HILL_SW_NE,
     SPR_VIRGINIA_REEL_25_DEG_UP_LIFT_HILL_NW_SE,
     SPR_VIRGINIA_REEL_25_DEG_UP_LIFT_HILL_NE_SW,
     SPR_VIRGINIA_REEL_25_DEG_UP_LIFT_HILL_SE_NW,
 };
 
-static constexpr uint32_t kPiecesFlatQuarterTurn3Tiles[4][3] = {
+static constexpr uint32_t kVirginiaReelPiecesFlatQuarterTurn3Tiles[4][3] = {
     {
         SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_0,
         SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_1,
@@ -152,7 +152,7 @@ static constexpr uint32_t kPiecesFlatQuarterTurn3Tiles[4][3] = {
     },
 };
 
-static constexpr uint32_t kPiecesFlatQuarterTurn1Tile[4] = {
+static constexpr uint32_t kVirginiaReelPiecesFlatQuarterTurn1Tile[4] = {
     SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_1_TILE_SW_NW,
     SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_1_TILE_NW_NE,
     SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_1_TILE_NE_SE,
@@ -164,10 +164,10 @@ static void PaintVirginiaReelTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    const uint32_t* sprites = kPiecesFlat;
+    const uint32_t* sprites = kVirginiaReelPiecesFlat;
     if (trackElement.HasChain())
     {
-        sprites = kPiecesFlatLiftHill;
+        sprites = kVirginiaReelPiecesFlatLiftHill;
     }
 
     auto imageId = session.TrackColours.WithIndex(sprites[direction]);
@@ -194,10 +194,10 @@ static void PaintVirginiaReelTrack25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    const uint32_t* sprites = kPieces25DegUp;
+    const uint32_t* sprites = kVirginiaReelPieces25DegUp;
     if (trackElement.HasChain())
     {
-        sprites = kPieces25DegUpLiftHill;
+        sprites = kVirginiaReelPieces25DegUpLiftHill;
     }
 
     auto imageId = session.TrackColours.WithIndex(sprites[direction]);
@@ -244,10 +244,10 @@ static void PaintVirginiaReelTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    const uint32_t* sprites = kPiecesFlatTo25DegUp;
+    const uint32_t* sprites = kVirginiaReelPiecesFlatTo25DegUp;
     if (trackElement.HasChain())
     {
-        sprites = kPiecesFlatTo25DegUpLiftHill;
+        sprites = kVirginiaReelPiecesFlatTo25DegUpLiftHill;
     }
 
     auto imageId = session.TrackColours.WithIndex(sprites[direction]);
@@ -284,10 +284,10 @@ static void PaintVirginiaReelTrack25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    const uint32_t* sprites = kPieces25DegUpToFlat;
+    const uint32_t* sprites = kVirginiaReelPieces25DegUpToFlat;
     if (trackElement.HasChain())
     {
-        sprites = kPieces25DegUpToFlatLiftHill;
+        sprites = kVirginiaReelPieces25DegUpToFlatLiftHill;
     }
 
     auto imageId = session.TrackColours.WithIndex(sprites[direction]);
@@ -389,7 +389,7 @@ static void PaintVirginiaReelTrackLeftQuarterTurn3Tiles(
     const TrackElement& trackElement, SupportType supportType)
 {
     TrackPaintUtilLeftQuarterTurn3TilesPaint(
-        session, 2, height, direction, trackSequence, session.TrackColours, kPiecesFlatQuarterTurn3Tiles);
+        session, 2, height, direction, trackSequence, session.TrackColours, kVirginiaReelPiecesFlatQuarterTurn3Tiles);
     TrackPaintUtilLeftQuarterTurn3TilesTunnel(
         session, kVirginiaReelTunnelGroup, TunnelSubType::Flat, height, direction, trackSequence);
 
@@ -437,7 +437,7 @@ static void PaintVirginiaReelTrackLeftQuarterTurn1Tile(
     const TrackElement& trackElement, SupportType supportType)
 {
     TrackPaintUtilLeftQuarterTurn1TilePaint(
-        session, 2, height, 0, direction, session.TrackColours, kPiecesFlatQuarterTurn1Tile);
+        session, 2, height, 0, direction, session.TrackColours, kVirginiaReelPiecesFlatQuarterTurn1Tile);
 
     DrawSupportForSequenceA<TrackElemType::leftQuarterTurn1Tile>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);

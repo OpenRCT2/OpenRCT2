@@ -72,7 +72,7 @@ enum
     SprCarRideQuarterTurn3TilesSeNePart2 = 28820,
 };
 
-static constexpr uint32_t kPiecesFlat[4] = {
+static constexpr uint32_t kCarRidePiecesFlat[4] = {
     SprCarRideFlatSwNe,
     SprCarRideFlatNwSe,
     SprCarRideFlatSwNe,
@@ -86,21 +86,21 @@ static constexpr uint32_t kPiecesLogBumps[4] = {
     SprCarRideLogBumpsNwSe,
 };
 
-static constexpr uint32_t kPieces25DegUp[4] = {
+static constexpr uint32_t kCarRidePieces25DegUp[4] = {
     SprCarRide25DegUpSwNe,
     SprCarRide25DegUpNwSe,
     SprCarRide25DegUpNeSw,
     SprCarRide25DegUpSeNw,
 };
 
-static constexpr uint32_t kPiecesFlatTo25DegUp[4] = {
+static constexpr uint32_t kCarRidePiecesFlatTo25DegUp[4] = {
     SprCarRideFlatTo25DegUpSwNe,
     SprCarRideFlatTo25DegUpNwSe,
     SprCarRideFlatTo25DegUpNeSw,
     SprCarRideFlatTo25DegUpSeNw,
 };
 
-static constexpr uint32_t kPieces25DegUpToFlat[4] = {
+static constexpr uint32_t kCarRidePieces25DegUpToFlat[4] = {
     SprCarRideDegUpToFlatSwNe,
     SprCarRideDegUpToFlatNwSe,
     SprCarRideDegUpToFlatNeSw,
@@ -114,7 +114,7 @@ static constexpr uint32_t kPieces60DegUp[4] = {
     SprCarRide60DegUpSeNw,
 };
 
-static constexpr uint32_t kPieces25DegUpTo60DegUp[4][2] = {
+static constexpr uint32_t kCarRidePieces25DegUpTo60DegUp[4][2] = {
     { SprCarRide25DegUpTo60DegUpSwNe, 0 },
     { SprCarRide25DegUpTo60DegUpNwSe, SprCarRide25DegUpTo60DegUpFrontNwSe },
     { SprCarRide25DegUpTo60DegUpNeSw, SprCarRide25DegUpTo60DegUpFrontNeSw },
@@ -163,7 +163,7 @@ static void PaintCarRideTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto imageId = session.TrackColours.WithIndex(kPiecesFlat[direction]);
+    auto imageId = session.TrackColours.WithIndex(kCarRidePiecesFlat[direction]);
 
     if (direction == 0 || direction == 2)
     {
@@ -197,7 +197,7 @@ static void PaintCarRideTrack25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto imageId = session.TrackColours.WithIndex(kPieces25DegUp[direction]);
+    auto imageId = session.TrackColours.WithIndex(kCarRidePieces25DegUp[direction]);
 
     if (direction == 0 || direction == 2)
     {
@@ -238,7 +238,7 @@ static void PaintCarRideTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto imageId = session.TrackColours.WithIndex(kPiecesFlatTo25DegUp[direction]);
+    auto imageId = session.TrackColours.WithIndex(kCarRidePiecesFlatTo25DegUp[direction]);
 
     if (direction == 0 || direction == 2)
     {
@@ -279,7 +279,7 @@ static void PaintCarRideTrack25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto imageId = session.TrackColours.WithIndex(kPieces25DegUpToFlat[direction]);
+    auto imageId = session.TrackColours.WithIndex(kCarRidePieces25DegUpToFlat[direction]);
 
     if (direction == 0 || direction == 2)
     {
@@ -344,7 +344,7 @@ static void PaintCarRideStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    const ImageId imageId = session.TrackColours.WithIndex(kPiecesFlat[direction]);
+    const ImageId imageId = session.TrackColours.WithIndex(kCarRidePiecesFlat[direction]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { { 0, 6, height + 1 }, { 32, 20, 1 } });
 
     TrackPaintUtilDrawStationTunnel(session, direction, height);
@@ -461,7 +461,7 @@ static void PaintCarRideTrackSpinningTunnel(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto imageId = session.TrackColours.WithIndex(kPiecesFlat[direction]);
+    auto imageId = session.TrackColours.WithIndex(kCarRidePiecesFlat[direction]);
 
     if (direction == 0 || direction == 2)
     {
@@ -548,7 +548,7 @@ static void PaintCarRideTrack25DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto imageId = session.TrackColours.WithIndex(kPieces25DegUpTo60DegUp[direction][0]);
+    auto imageId = session.TrackColours.WithIndex(kCarRidePieces25DegUpTo60DegUp[direction][0]);
 
     if (direction == 0 || direction == 2)
     {
@@ -559,9 +559,9 @@ static void PaintCarRideTrack25DegUpTo60DegUp(
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 6, 0, height }, { 20, 32, 1 } });
     }
 
-    if (kPieces25DegUpTo60DegUp[direction][1] != 0)
+    if (kCarRidePieces25DegUpTo60DegUp[direction][1] != 0)
     {
-        imageId = session.TrackColours.WithIndex(kPieces25DegUpTo60DegUp[direction][1]);
+        imageId = session.TrackColours.WithIndex(kCarRidePieces25DegUpTo60DegUp[direction][1]);
 
         if (direction == 0 || direction == 2)
         {
