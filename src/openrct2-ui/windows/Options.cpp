@@ -448,14 +448,14 @@ namespace OpenRCT2::Ui::Windows
         makeWidget        ({239, kRCT1Start + 15}, { 60, 14}, WidgetType::button,       WindowColour::secondary, STR_BROWSE                                                                              ), // RCT 1 path browse
         makeWidget        ({249, kRCT1Start + 15}, { 50, 14}, WidgetType::button,       WindowColour::secondary, STR_CLEAR_BUTTON,                          STR_PATH_TO_RCT1_CLEAR_TIP                   ), // RCT 1 path clear
 
-        makeWidget        ({  5, kSavingStart +  0}, {300, 80}, WidgetType::groupbox,     WindowColour::secondary, STR_GROUP_SAVING                                                                        ),
+        makeWidget        ({  5, kSavingStart +  0}, {300, 82}, WidgetType::groupbox,     WindowColour::secondary, STR_GROUP_SAVING                                                                        ),
         makeWidget        ({ 10, kSavingStart + 16}, {290, 12}, WidgetType::checkbox,     WindowColour::tertiary,  STR_SAVE_PLUGIN_DATA,                      STR_SAVE_PLUGIN_DATA_TIP                     ), // Export plug-in objects with saved games
         makeWidget        ({ 10, kSavingStart + 30}, {290, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_ALWAYS_NATIVE_LOADSAVE,                STR_ALWAYS_NATIVE_LOADSAVE_TIP               ), // Use native load/save window
         makeWidget        ({ 23, kSavingStart + 46}, {135, 12}, WidgetType::label,        WindowColour::secondary, STR_OPTIONS_AUTOSAVE_FREQUENCY_LABEL,      STR_AUTOSAVE_FREQUENCY_TIP                   ),
-        makeWidget        ({165, kSavingStart + 45}, {135, 13}, WidgetType::dropdownMenu, WindowColour::secondary                                                                                          ), // Autosave dropdown
-        makeWidget        ({288, kSavingStart + 46}, { 11, 11}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,                        STR_AUTOSAVE_FREQUENCY_TIP                   ), // Autosave dropdown button
-        makeWidget        ({ 23, kSavingStart + 60}, {135, 12}, WidgetType::label,        WindowColour::secondary, STR_AUTOSAVE_AMOUNT,                       STR_AUTOSAVE_AMOUNT_TIP                      ),
-        makeSpinnerWidgets({165, kSavingStart + 60}, {135, 12}, WidgetType::spinner,      WindowColour::secondary, kStringIdNone,                             STR_AUTOSAVE_AMOUNT_TIP                      ), // Autosave amount spinner
+        makeWidget        ({165, kSavingStart + 45}, {135, 14}, WidgetType::dropdownMenu, WindowColour::secondary                                                                                          ), // Autosave dropdown
+        makeWidget        ({288, kSavingStart + 46}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,                        STR_AUTOSAVE_FREQUENCY_TIP                   ), // Autosave dropdown button
+        makeWidget        ({ 23, kSavingStart + 63}, {135, 12}, WidgetType::label,        WindowColour::secondary, STR_AUTOSAVE_AMOUNT,                       STR_AUTOSAVE_AMOUNT_TIP                      ),
+        makeSpinnerWidgets({165, kSavingStart + 62}, {135, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdNone,                             STR_AUTOSAVE_AMOUNT_TIP                      ), // Autosave amount spinner
 
         makeWidget        ({  5, kAdvancedStart +  0}, {300, 97}, WidgetType::groupbox,     WindowColour::secondary, STR_GROUP_ADVANCED                                                                      ),
         makeWidget        ({ 10, kAdvancedStart + 16}, {295, 12}, WidgetType::checkbox,     WindowColour::tertiary,  STR_ENABLE_DEBUGGING_TOOLS,                STR_ENABLE_DEBUGGING_TOOLS_TIP               ), // Enable debugging tools
