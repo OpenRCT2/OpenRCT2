@@ -21,7 +21,7 @@
 
 using namespace OpenRCT2;
 
-static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Standard;
+static constexpr TunnelGroup kSteeplechaseTunnelGroup = TunnelGroup::Standard;
 
 static constexpr const uint32_t SteeplechaseRCDiagBrakeImages[kNumOrthogonalDirections] = {
     SPR_TRACKS_STEEPLECHASE_DIAG_BRAKES,
@@ -69,7 +69,7 @@ static void SteeplechaseTrackFlat(
     }
     MetalASupportsPaintSetupRotated(
         session, supportType.metal, MetalSupportPlace::centre, direction, 0, height, session.SupportColours);
-    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+    PaintUtilPushTunnelRotated(session, direction, height, kSteeplechaseTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -154,11 +154,11 @@ static void SteeplechaseTrack25DegUp(
         session, supportType.metal, MetalSupportPlace::centre, direction, 8, height, session.SupportColours);
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kSteeplechaseTunnelGroup, TunnelSubType::SlopeStart);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, kSteeplechaseTunnelGroup, TunnelSubType::SlopeEnd);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
@@ -218,11 +218,11 @@ static void SteeplechaseTrackFlatTo25DegUp(
         session.SupportColours);
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRotated(session, direction, height, kSteeplechaseTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height, kSteeplechaseTunnelGroup, TunnelSubType::SlopeEnd);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -282,11 +282,11 @@ static void SteeplechaseTrack25DegUpToFlat(
         session.SupportColours);
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kSteeplechaseTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, kSteeplechaseTunnelGroup, TunnelSubType::FlatTo25Deg);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40);
@@ -354,7 +354,7 @@ static void SteeplechaseTrackLeftQuarterTurn5(
             }
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+                PaintUtilPushTunnelRotated(session, direction, height, kSteeplechaseTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -491,10 +491,10 @@ static void SteeplechaseTrackLeftQuarterTurn5(
             switch (direction)
             {
                 case 2:
-                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+                    PaintUtilPushTunnelRight(session, height, kSteeplechaseTunnelGroup, TunnelSubType::Flat);
                     break;
                 case 3:
-                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+                    PaintUtilPushTunnelLeft(session, height, kSteeplechaseTunnelGroup, TunnelSubType::Flat);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -549,7 +549,7 @@ static void SteeplechaseTrackSBendLeft(
             DrawSBendLeftSupports(session, supportType.metal, trackSequence, direction, height - heightOffset, 0, 0);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+                PaintUtilPushTunnelRotated(session, direction, height, kSteeplechaseTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -647,10 +647,10 @@ static void SteeplechaseTrackSBendLeft(
             switch (direction)
             {
                 case 1:
-                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+                    PaintUtilPushTunnelRight(session, height, kSteeplechaseTunnelGroup, TunnelSubType::Flat);
                     break;
                 case 2:
-                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+                    PaintUtilPushTunnelLeft(session, height, kSteeplechaseTunnelGroup, TunnelSubType::Flat);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -694,7 +694,7 @@ static void SteeplechaseTrackSBendRight(
             DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height, 0, 0);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+                PaintUtilPushTunnelRotated(session, direction, height, kSteeplechaseTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -792,10 +792,10 @@ static void SteeplechaseTrackSBendRight(
             switch (direction)
             {
                 case 1:
-                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+                    PaintUtilPushTunnelRight(session, height, kSteeplechaseTunnelGroup, TunnelSubType::Flat);
                     break;
                 case 2:
-                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+                    PaintUtilPushTunnelLeft(session, height, kSteeplechaseTunnelGroup, TunnelSubType::Flat);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -844,7 +844,7 @@ static void SteeplechaseTrackLeftQuarterTurn3(
 
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+                PaintUtilPushTunnelRotated(session, direction, height, kSteeplechaseTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -916,10 +916,10 @@ static void SteeplechaseTrackLeftQuarterTurn3(
             switch (direction)
             {
                 case 2:
-                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+                    PaintUtilPushTunnelRight(session, height, kSteeplechaseTunnelGroup, TunnelSubType::Flat);
                     break;
                 case 3:
-                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+                    PaintUtilPushTunnelLeft(session, height, kSteeplechaseTunnelGroup, TunnelSubType::Flat);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -964,7 +964,7 @@ static void SteeplechaseTrackBrakes(
     MetalASupportsPaintSetupRotated(
         session, supportType.metal, MetalSupportPlace::centre, direction, 0, height, session.SupportColours);
 
-    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+    PaintUtilPushTunnelRotated(session, direction, height, kSteeplechaseTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -1004,7 +1004,7 @@ static void SteeplechaseTrackLeftEighthToDiag(
                 session, supportType.metal, MetalSupportPlace::centre, direction, 0, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+                PaintUtilPushTunnelRotated(session, direction, height, kSteeplechaseTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -1161,7 +1161,7 @@ static void SteeplechaseTrackRightEighthToDiag(
                 session, supportType.metal, MetalSupportPlace::centre, direction, 0, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+                PaintUtilPushTunnelRotated(session, direction, height, kSteeplechaseTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -2174,7 +2174,7 @@ static void SteeplechaseTrackBlockBrakes(
     }
     MetalASupportsPaintSetupRotated(
         session, supportType.metal, MetalSupportPlace::centre, direction, 0, height, session.SupportColours);
-    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+    PaintUtilPushTunnelRotated(session, direction, height, kSteeplechaseTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }

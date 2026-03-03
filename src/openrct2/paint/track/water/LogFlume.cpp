@@ -18,7 +18,7 @@
 
 using namespace OpenRCT2;
 
-static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Standard;
+static constexpr TunnelGroup kLogFlumeTunnelGroup = TunnelGroup::Standard;
 
 enum
 {
@@ -182,7 +182,7 @@ static void PaintLogFlumeTrackFlat(
         MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 0, height, session.SupportColours);
     }
 
-    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+    PaintUtilPushTunnelRotated(session, direction, height, kLogFlumeTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -240,11 +240,11 @@ static void PaintLogFlumeTrack25DegUp(
 
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kLogFlumeTunnelGroup, TunnelSubType::SlopeStart);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, kLogFlumeTunnelGroup, TunnelSubType::SlopeEnd);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
@@ -274,11 +274,11 @@ static void PaintLogFlumeTrackFlatTo25DegUp(
 
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRotated(session, direction, height, kLogFlumeTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height, kLogFlumeTunnelGroup, TunnelSubType::SlopeEnd);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -308,11 +308,11 @@ static void PaintLogFlumeTrack25DegUpToFlat(
 
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kLogFlumeTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, kLogFlumeTunnelGroup, TunnelSubType::FlatTo25Deg);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40);
@@ -342,11 +342,11 @@ static void PaintLogFlumeTrack25DegDown(
 
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, kLogFlumeTunnelGroup, TunnelSubType::SlopeEnd);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kLogFlumeTunnelGroup, TunnelSubType::SlopeStart);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
@@ -376,11 +376,11 @@ static void PaintLogFlumeTrackFlatTo25DegDown(
 
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, kLogFlumeTunnelGroup, TunnelSubType::FlatTo25Deg);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kLogFlumeTunnelGroup, TunnelSubType::Flat);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40);
@@ -410,11 +410,11 @@ static void PaintLogFlumeTrack25DegDownToFlat(
 
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height, kLogFlumeTunnelGroup, TunnelSubType::SlopeEnd);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRotated(session, direction, height, kLogFlumeTunnelGroup, TunnelSubType::Flat);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -517,14 +517,14 @@ static void PaintLogFlumeTrackSBendLeft(
     {
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+            PaintUtilPushTunnelRotated(session, direction, height, kLogFlumeTunnelGroup, TunnelSubType::Flat);
         }
     }
     else if (trackSequence == 3)
     {
         if (direction == 1 || direction == 2)
         {
-            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+            PaintUtilPushTunnelRotated(session, direction, height, kLogFlumeTunnelGroup, TunnelSubType::Flat);
         }
     }
 
@@ -628,14 +628,14 @@ static void PaintLogFlumeTrackSBendRight(
     {
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+            PaintUtilPushTunnelRotated(session, direction, height, kLogFlumeTunnelGroup, TunnelSubType::Flat);
         }
     }
     else if (trackSequence == 3)
     {
         if (direction == 1 || direction == 2)
         {
-            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+            PaintUtilPushTunnelRotated(session, direction, height, kLogFlumeTunnelGroup, TunnelSubType::Flat);
         }
     }
 
@@ -690,13 +690,13 @@ static void PaintLogFlumeTrackLeftQuarterTurn3Tiles(
         case 0:
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+                PaintUtilPushTunnelRotated(session, direction, height, kLogFlumeTunnelGroup, TunnelSubType::Flat);
             }
             break;
         case 3:
             if (direction == 2 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction ^ 1, height, kTunnelGroup, TunnelSubType::Flat);
+                PaintUtilPushTunnelRotated(session, direction ^ 1, height, kLogFlumeTunnelGroup, TunnelSubType::Flat);
             }
             break;
     }
@@ -780,13 +780,13 @@ static void PaintLogFlumeTrackRightQuarterTurn3Tiles(
         case 0:
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+                PaintUtilPushTunnelRotated(session, direction, height, kLogFlumeTunnelGroup, TunnelSubType::Flat);
             }
             break;
         case 3:
             if (direction == 0 || direction == 1)
             {
-                PaintUtilPushTunnelRotated(session, direction ^ 1, height, kTunnelGroup, TunnelSubType::Flat);
+                PaintUtilPushTunnelRotated(session, direction ^ 1, height, kLogFlumeTunnelGroup, TunnelSubType::Flat);
             }
             break;
     }
@@ -857,7 +857,7 @@ static void PaintLogFlumeTrackReverser(
 
     MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 0, height, session.SupportColours);
 
-    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+    PaintUtilPushTunnelRotated(session, direction, height, kLogFlumeTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -888,7 +888,7 @@ static void LogFlumeTrack25Down60(
             MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 8, height, session.SupportColours);
         }
 
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::FlatTo25Deg);
+        PaintUtilPushTunnelRotated(session, direction, height, kLogFlumeTunnelGroup, TunnelSubType::FlatTo25Deg);
     }
     else
     {
@@ -898,7 +898,7 @@ static void LogFlumeTrack25Down60(
                 session, supportType.metal, MetalSupportPlace::centre, 8, height + 12, session.SupportColours);
         }
 
-        PaintUtilPushTunnelRotated(session, direction, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height + 24, kLogFlumeTunnelGroup, TunnelSubType::SlopeEnd);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -928,7 +928,7 @@ static void LogFlumeTrack60Down(
             MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 8, height, session.SupportColours);
         }
 
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kLogFlumeTunnelGroup, TunnelSubType::SlopeStart);
     }
     else
     {
@@ -938,7 +938,7 @@ static void LogFlumeTrack60Down(
                 session, supportType.metal, MetalSupportPlace::centre, 8, height + 12, session.SupportColours);
         }
 
-        PaintUtilPushTunnelRotated(session, direction, height + 56, kTunnelGroup, TunnelSubType::SlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height + 56, kLogFlumeTunnelGroup, TunnelSubType::SlopeEnd);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 104);
@@ -963,7 +963,7 @@ static void LogFlumeTrack60Down25(
 
     if (direction == 1 || direction == 2)
     {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeStart);
+        PaintUtilPushTunnelRotated(session, direction, height, kLogFlumeTunnelGroup, TunnelSubType::SlopeStart);
 
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
@@ -972,7 +972,7 @@ static void LogFlumeTrack60Down25(
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 24, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRotated(session, direction, height + 24, kLogFlumeTunnelGroup, TunnelSubType::Flat);
 
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {

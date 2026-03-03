@@ -17,7 +17,7 @@
 
 using namespace OpenRCT2;
 
-static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Standard;
+static constexpr TunnelGroup kDinghySlideCoveredTunnelGroup = TunnelGroup::Standard;
 
 enum
 {
@@ -196,7 +196,7 @@ static void DinghySlideTrackCoveredFlat(
         MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 0, height, session.SupportColours);
     }
 
-    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+    PaintUtilPushTunnelRotated(session, direction, height, kDinghySlideCoveredTunnelGroup, TunnelSubType::Flat);
 
     PaintUtilSetSegmentSupportHeight(
         session,
@@ -230,11 +230,11 @@ static void DinghySlideTrackCovered25DegUp(
 
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kDinghySlideCoveredTunnelGroup, TunnelSubType::SlopeStart);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, kDinghySlideCoveredTunnelGroup, TunnelSubType::SlopeEnd);
     }
 
     PaintUtilSetSegmentSupportHeight(
@@ -269,11 +269,11 @@ static void DinghySlideTrackCovered60DegUp(
 
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kDinghySlideCoveredTunnelGroup, TunnelSubType::SlopeStart);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 56, kTunnelGroup, TunnelSubType::SlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height + 56, kDinghySlideCoveredTunnelGroup, TunnelSubType::SlopeEnd);
     }
 
     PaintUtilSetSegmentSupportHeight(
@@ -308,11 +308,11 @@ static void DinghySlideTrackCoveredFlatTo25DegUp(
 
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRotated(session, direction, height, kDinghySlideCoveredTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height, kDinghySlideCoveredTunnelGroup, TunnelSubType::SlopeEnd);
     }
 
     PaintUtilSetSegmentSupportHeight(
@@ -347,11 +347,11 @@ static void DinghySlideTrackCovered25DegUpTo60DegUp(
 
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kDinghySlideCoveredTunnelGroup, TunnelSubType::SlopeStart);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height + 24, kDinghySlideCoveredTunnelGroup, TunnelSubType::SlopeEnd);
     }
 
     PaintUtilSetSegmentSupportHeight(
@@ -386,11 +386,11 @@ static void DinghySlideTrackCovered60DegUpTo25DegUp(
 
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kDinghySlideCoveredTunnelGroup, TunnelSubType::SlopeStart);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height + 24, kDinghySlideCoveredTunnelGroup, TunnelSubType::SlopeEnd);
     }
 
     PaintUtilSetSegmentSupportHeight(
@@ -425,11 +425,11 @@ static void DinghySlideTrackCovered25DegUpToFlat(
 
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kDinghySlideCoveredTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, kDinghySlideCoveredTunnelGroup, TunnelSubType::FlatTo25Deg);
     }
 
     PaintUtilSetSegmentSupportHeight(
@@ -554,19 +554,19 @@ static void DinghySlideTrackCoveredRightQuarterTurn5(
 
     if (direction == 0 && trackSequence == 0)
     {
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelLeft(session, height, kDinghySlideCoveredTunnelGroup, TunnelSubType::Flat);
     }
     if (direction == 0 && trackSequence == 6)
     {
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRight(session, height, kDinghySlideCoveredTunnelGroup, TunnelSubType::Flat);
     }
     if (direction == 1 && trackSequence == 6)
     {
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelLeft(session, height, kDinghySlideCoveredTunnelGroup, TunnelSubType::Flat);
     }
     if (direction == 3 && trackSequence == 0)
     {
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRight(session, height, kDinghySlideCoveredTunnelGroup, TunnelSubType::Flat);
     }
 
     switch (trackSequence)
@@ -726,14 +726,14 @@ static void DinghySlideTrackCoveredSBendLeft(
     {
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+            PaintUtilPushTunnelRotated(session, direction, height, kDinghySlideCoveredTunnelGroup, TunnelSubType::Flat);
         }
     }
     else if (trackSequence == 3)
     {
         if (direction == 1 || direction == 2)
         {
-            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+            PaintUtilPushTunnelRotated(session, direction, height, kDinghySlideCoveredTunnelGroup, TunnelSubType::Flat);
         }
     }
 
@@ -837,14 +837,14 @@ static void DinghySlideTrackCoveredSBendRight(
     {
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+            PaintUtilPushTunnelRotated(session, direction, height, kDinghySlideCoveredTunnelGroup, TunnelSubType::Flat);
         }
     }
     else if (trackSequence == 3)
     {
         if (direction == 1 || direction == 2)
         {
-            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+            PaintUtilPushTunnelRotated(session, direction, height, kDinghySlideCoveredTunnelGroup, TunnelSubType::Flat);
         }
     }
 
@@ -902,7 +902,8 @@ static void DinghySlideTrackCoveredRightQuarterTurn3(
 
     TrackPaintUtilRightQuarterTurn3TilesPaint3(session, height, direction, trackSequence, session.TrackColours, imageIds);
     TrackPaintUtilRightQuarterTurn3TilesPaint3(session, height, direction, trackSequence, session.TrackColours, frontImageIds);
-    TrackPaintUtilRightQuarterTurn3TilesTunnel(session, kTunnelGroup, TunnelSubType::Flat, height, direction, trackSequence);
+    TrackPaintUtilRightQuarterTurn3TilesTunnel(
+        session, kDinghySlideCoveredTunnelGroup, TunnelSubType::Flat, height, direction, trackSequence);
 
     switch (trackSequence)
     {
