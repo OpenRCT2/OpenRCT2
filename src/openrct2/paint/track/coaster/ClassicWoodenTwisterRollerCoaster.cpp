@@ -718,7 +718,7 @@ enum
     SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_EIGHTH_BANK_TO_DIAG_FRONT_HANDRAIL_3_3 = SPR_CSG_BEGIN + 66942,
 };
 
-static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kFlatToLeftBankImages = { {
+static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kClassicWoodenTwisterFlatToLeftBankImages = { {
     {
         SPR_CLASSIC_WOODEN_TWISTER_RC_FLAT_TO_LEFT_BANK_0,
         SPR_CLASSIC_WOODEN_TWISTER_RC_FLAT_TO_LEFT_BANK_HANDRAIL_0,
@@ -1868,7 +1868,7 @@ static void ClassicWoodenTwisterRCTrackRightBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    TrackFlatToBank<false, kFlatToLeftBankImages>(
+    TrackFlatToBank<false, kClassicWoodenTwisterFlatToLeftBankImages>(
         session, ride, trackSequence, DirectionReverse(direction), height, trackElement, supportType);
 }
 
@@ -2096,7 +2096,7 @@ TrackPaintFunction GetTrackPaintFunctionClassicWoodenTwisterRC(TrackElemType tra
     switch (trackType)
     {
         case TrackElemType::flatToLeftBank:
-            return TrackFlatToBank<false, kFlatToLeftBankImages>;
+            return TrackFlatToBank<false, kClassicWoodenTwisterFlatToLeftBankImages>;
         case TrackElemType::flatToRightBank:
             return TrackFlatToBank<false, kFlatToRightBankImages>;
         case TrackElemType::leftBankToFlat:

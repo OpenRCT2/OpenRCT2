@@ -892,7 +892,7 @@ static constexpr uint32_t kWoodenRCDiagBlockBrakeImages[2][kNumOrthogonalDirecti
     },
 };
 
-static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kFlatToLeftBankImages = { {
+static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kWoodenFlatToLeftBankImages = { {
     {
         SPR_WOODEN_RC_FLAT_TO_LEFT_BANK_SW_NE,
         SPR_WOODEN_RC_FLAT_TO_LEFT_BANK_RAILS_SW_NE,
@@ -3074,7 +3074,7 @@ static void WoodenRCTrackRightBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    TrackFlatToBank<isClassic, kFlatToLeftBankImages>(
+    TrackFlatToBank<isClassic, kWoodenFlatToLeftBankImages>(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
@@ -13398,7 +13398,7 @@ TrackPaintFunction GetTrackPaintFunctionWoodenAndClassicWoodenRC(TrackElemType t
         case TrackElemType::rightQuarterTurn5Tiles:
             return WoodenRCTrackRightQuarterTurn5<isClassic>;
         case TrackElemType::flatToLeftBank:
-            return TrackFlatToBank<isClassic, kFlatToLeftBankImages>;
+            return TrackFlatToBank<isClassic, kWoodenFlatToLeftBankImages>;
         case TrackElemType::flatToRightBank:
             return TrackFlatToBank<isClassic, kFlatToRightBankImages>;
         case TrackElemType::leftBankToFlat:
