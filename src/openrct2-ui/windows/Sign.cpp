@@ -252,7 +252,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (_isSmall)
             {
-                auto* wallEntry = OpenRCT2::ObjectManager::GetObjectEntry<WallSceneryEntry>(_sceneryEntry);
+                auto* wallEntry = OpenRCT2::ObjectEntryManager::GetObjectEntry<WallSceneryEntry>(_sceneryEntry);
 
                 main_colour_btn->type = WidgetType::empty;
                 text_colour_btn->type = WidgetType::empty;
@@ -271,7 +271,7 @@ namespace OpenRCT2::Ui::Windows
             }
             else
             {
-                auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<LargeSceneryEntry>(_sceneryEntry);
+                auto* sceneryEntry = OpenRCT2::ObjectEntryManager::GetObjectEntry<LargeSceneryEntry>(_sceneryEntry);
 
                 main_colour_btn->type = WidgetType::empty;
                 text_colour_btn->type = WidgetType::empty;

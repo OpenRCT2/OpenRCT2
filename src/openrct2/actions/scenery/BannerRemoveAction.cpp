@@ -84,7 +84,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_REMOVE_THIS, kStringIdNone);
         }
 
-        auto* bannerEntry = ObjectManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
+        auto* bannerEntry = ObjectEntryManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
         if (bannerEntry != nullptr)
         {
             res.cost = -((bannerEntry->price * 3) / 4);
@@ -124,7 +124,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_REMOVE_THIS, kStringIdNone);
         }
 
-        auto* bannerEntry = ObjectManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
+        auto* bannerEntry = ObjectEntryManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
         if (bannerEntry != nullptr)
         {
             res.cost = -((bannerEntry->price * 3) / 4);

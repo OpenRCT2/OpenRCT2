@@ -553,7 +553,7 @@ void LoadPalette()
 
     uint32_t palette = SPR_GAME_DEFAULT_PALETTE;
 
-    auto water_type = OpenRCT2::ObjectManager::GetObjectEntry<WaterObjectEntry>(0);
+    auto water_type = OpenRCT2::ObjectEntryManager::GetObjectEntry<WaterObjectEntry>(0);
     if (water_type != nullptr)
     {
         Guard::Assert(water_type->mainPalette != kImageIndexUndefined, "Failed to load water palette");
@@ -748,7 +748,7 @@ void UpdatePalette(std::span<const BGRAColour> palette, PaletteIndex startIndex,
  */
 void UpdatePaletteEffects()
 {
-    auto water_type = OpenRCT2::ObjectManager::GetObjectEntry<WaterObjectEntry>(0);
+    auto water_type = OpenRCT2::ObjectEntryManager::GetObjectEntry<WaterObjectEntry>(0);
 
     if (gClimateLightningFlash == 1)
     {

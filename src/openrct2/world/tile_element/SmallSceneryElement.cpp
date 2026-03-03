@@ -127,6 +127,6 @@ namespace OpenRCT2
 
     const SmallSceneryEntry* SmallSceneryElement::GetEntry() const
     {
-        return ObjectManager::GetObjectEntry<SmallSceneryEntry>(entryIndex);
+        return ObjectEntryManager::GetObjectEntry<SmallSceneryEntry>(entryIndex);
     }
 } // namespace OpenRCT2

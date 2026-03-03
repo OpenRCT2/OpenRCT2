@@ -122,7 +122,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_POSITION_THIS_HERE, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 
-        auto* sceneryEntry = ObjectManager::GetObjectEntry<SmallSceneryEntry>(_sceneryType);
+        auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<SmallSceneryEntry>(_sceneryType);
         if (sceneryEntry == nullptr)
         {
             LOG_ERROR("Small scenery object entry not found for sceneryType %u", _sceneryType);
@@ -313,7 +313,7 @@ namespace OpenRCT2::GameActions
             res.position.z = surfaceHeight;
         }
 
-        auto* sceneryEntry = ObjectManager::GetObjectEntry<SmallSceneryEntry>(_sceneryType);
+        auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<SmallSceneryEntry>(_sceneryType);
         if (sceneryEntry == nullptr)
         {
             LOG_ERROR("Small scenery object entry not found for sceneryType %u", _sceneryType);

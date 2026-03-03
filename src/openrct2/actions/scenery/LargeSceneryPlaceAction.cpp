@@ -100,7 +100,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_POSITION_THIS_HERE, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 
-        auto* sceneryEntry = ObjectManager::GetObjectEntry<LargeSceneryEntry>(_sceneryType);
+        auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<LargeSceneryEntry>(_sceneryType);
         if (sceneryEntry == nullptr)
         {
             LOG_ERROR("Large scenery entry not found for sceneryType %u", _sceneryType);
@@ -208,7 +208,7 @@ namespace OpenRCT2::GameActions
 
         money64 supportsCost = 0;
 
-        auto* sceneryEntry = ObjectManager::GetObjectEntry<LargeSceneryEntry>(_sceneryType);
+        auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<LargeSceneryEntry>(_sceneryType);
         if (sceneryEntry == nullptr)
         {
             LOG_ERROR("Large scenery entry not found for sceneryType = %u", _sceneryType);

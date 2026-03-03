@@ -87,7 +87,7 @@ namespace OpenRCT2
 
     const WallSceneryEntry* WallElement::GetEntry() const
     {
-        return ObjectManager::GetObjectEntry<WallSceneryEntry>(entryIndex);
+        return ObjectEntryManager::GetObjectEntry<WallSceneryEntry>(entryIndex);
     }
 
     void WallElement::SetEntryIndex(uint16_t newIndex)

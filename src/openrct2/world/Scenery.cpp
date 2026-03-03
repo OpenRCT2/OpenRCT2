@@ -350,15 +350,15 @@ static bool IsSceneryEntryValid(const ScenerySelection& item)
     switch (item.SceneryType)
     {
         case SCENERY_TYPE_SMALL:
-            return OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(item.EntryIndex) != nullptr;
+            return OpenRCT2::ObjectEntryManager::GetObjectEntry<SmallSceneryEntry>(item.EntryIndex) != nullptr;
         case SCENERY_TYPE_PATH_ITEM:
-            return OpenRCT2::ObjectManager::GetObjectEntry<PathAdditionEntry>(item.EntryIndex) != nullptr;
+            return OpenRCT2::ObjectEntryManager::GetObjectEntry<PathAdditionEntry>(item.EntryIndex) != nullptr;
         case SCENERY_TYPE_WALL:
-            return OpenRCT2::ObjectManager::GetObjectEntry<WallSceneryEntry>(item.EntryIndex) != nullptr;
+            return OpenRCT2::ObjectEntryManager::GetObjectEntry<WallSceneryEntry>(item.EntryIndex) != nullptr;
         case SCENERY_TYPE_LARGE:
-            return OpenRCT2::ObjectManager::GetObjectEntry<LargeSceneryEntry>(item.EntryIndex) != nullptr;
+            return OpenRCT2::ObjectEntryManager::GetObjectEntry<LargeSceneryEntry>(item.EntryIndex) != nullptr;
         case SCENERY_TYPE_BANNER:
-            return OpenRCT2::ObjectManager::GetObjectEntry<BannerSceneryEntry>(item.EntryIndex) != nullptr;
+            return OpenRCT2::ObjectEntryManager::GetObjectEntry<BannerSceneryEntry>(item.EntryIndex) != nullptr;
         default:
             return false;
     }
@@ -432,7 +432,7 @@ static MiscScenery GetAllMiscScenery()
     std::vector<ObjectEntryIndex> sceneryGroupIds;
     for (ObjectEntryIndex i = 0; i < kMaxSceneryGroupObjects; i++)
     {
-        const auto* sgEntry = OpenRCT2::ObjectManager::GetObjectEntry<SceneryGroupEntry>(i);
+        const auto* sgEntry = OpenRCT2::ObjectEntryManager::GetObjectEntry<SceneryGroupEntry>(i);
         if (sgEntry != nullptr)
         {
             referencedBySceneryGroups.insert(
@@ -451,35 +451,35 @@ static MiscScenery GetAllMiscScenery()
             {
                 case ObjectType::smallScenery:
                 {
-                    const auto* objectEntry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(i);
+                    const auto* objectEntry = OpenRCT2::ObjectEntryManager::GetObjectEntry<SmallSceneryEntry>(i);
                     if (objectEntry != nullptr)
                         linkedSceneryGroup = objectEntry->scenery_tab_id;
                     break;
                 }
                 case ObjectType::largeScenery:
                 {
-                    const auto* objectEntry = OpenRCT2::ObjectManager::GetObjectEntry<LargeSceneryEntry>(i);
+                    const auto* objectEntry = OpenRCT2::ObjectEntryManager::GetObjectEntry<LargeSceneryEntry>(i);
                     if (objectEntry != nullptr)
                         linkedSceneryGroup = objectEntry->scenery_tab_id;
                     break;
                 }
                 case ObjectType::walls:
                 {
-                    const auto* objectEntry = OpenRCT2::ObjectManager::GetObjectEntry<WallSceneryEntry>(i);
+                    const auto* objectEntry = OpenRCT2::ObjectEntryManager::GetObjectEntry<WallSceneryEntry>(i);
                     if (objectEntry != nullptr)
                         linkedSceneryGroup = objectEntry->scenery_tab_id;
                     break;
                 }
                 case ObjectType::banners:
                 {
-                    const auto* objectEntry = OpenRCT2::ObjectManager::GetObjectEntry<BannerSceneryEntry>(i);
+                    const auto* objectEntry = OpenRCT2::ObjectEntryManager::GetObjectEntry<BannerSceneryEntry>(i);
                     if (objectEntry != nullptr)
                         linkedSceneryGroup = objectEntry->scenery_tab_id;
                     break;
                 }
                 case ObjectType::pathAdditions:
                 {
-                    const auto* objectEntry = OpenRCT2::ObjectManager::GetObjectEntry<PathAdditionEntry>(i);
+                    const auto* objectEntry = OpenRCT2::ObjectEntryManager::GetObjectEntry<PathAdditionEntry>(i);
                     if (objectEntry != nullptr)
                         linkedSceneryGroup = objectEntry->scenery_tab_id;
                     break;

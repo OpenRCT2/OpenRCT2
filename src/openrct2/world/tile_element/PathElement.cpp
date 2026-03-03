@@ -155,7 +155,7 @@ namespace OpenRCT2
     {
         if (!HasAddition())
             return nullptr;
-        return ObjectManager::GetObjectEntry<PathAdditionEntry>(GetAdditionEntryIndex());
+        return ObjectEntryManager::GetObjectEntry<PathAdditionEntry>(GetAdditionEntryIndex());
     }
 
     void PathElement::SetAddition(uint8_t newAddition)

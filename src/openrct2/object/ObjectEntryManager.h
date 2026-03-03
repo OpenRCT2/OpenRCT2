@@ -11,7 +11,7 @@
 
 #include "ObjectTypes.h"
 
-namespace OpenRCT2::ObjectManager
+namespace OpenRCT2::ObjectEntryManager
 {
     const void* GetObjectEntry(ObjectType type, ObjectEntryIndex idx);
 
@@ -20,4 +20,4 @@ namespace OpenRCT2::ObjectManager
     {
         return reinterpret_cast<const T*>(GetObjectEntry(T::kObjectType, idx));
     }
-} // namespace OpenRCT2::ObjectManager
+} // namespace OpenRCT2::ObjectEntryManager

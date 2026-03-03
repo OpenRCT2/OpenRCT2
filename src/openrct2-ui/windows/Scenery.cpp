@@ -207,7 +207,7 @@ namespace OpenRCT2::Ui::Windows
 
             const SceneryGroupEntry* GetSceneryGroupEntry() const
             {
-                return ObjectManager::GetObjectEntry<SceneryGroupEntry>(SceneryGroupIndex);
+                return ObjectEntryManager::GetObjectEntry<SceneryGroupEntry>(SceneryGroupIndex);
             }
         };
 
@@ -593,7 +593,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     else if (tabSelectedScenery.SceneryType == SCENERY_TYPE_LARGE)
                     {
-                        const auto* sceneryEntry = ObjectManager::GetObjectEntry<LargeSceneryEntry>(
+                        const auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<LargeSceneryEntry>(
                             tabSelectedScenery.EntryIndex);
                         if (sceneryEntry != nullptr)
                         {
@@ -602,7 +602,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     else if (tabSelectedScenery.SceneryType == SCENERY_TYPE_WALL)
                     {
-                        const auto* sceneryEntry = ObjectManager::GetObjectEntry<WallSceneryEntry>(
+                        const auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<WallSceneryEntry>(
                             tabSelectedScenery.EntryIndex);
                         if (sceneryEntry != nullptr)
                         {
@@ -611,7 +611,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     else if (tabSelectedScenery.SceneryType == SCENERY_TYPE_PATH_ITEM)
                     {
-                        const auto* sceneryEntry = ObjectManager::GetObjectEntry<PathAdditionEntry>(
+                        const auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<PathAdditionEntry>(
                             tabSelectedScenery.EntryIndex);
                         if (sceneryEntry != nullptr)
                         {
@@ -620,7 +620,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     else if (tabSelectedScenery.SceneryType == SCENERY_TYPE_SMALL)
                     {
-                        const auto* sceneryEntry = ObjectManager::GetObjectEntry<SmallSceneryEntry>(
+                        const auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<SmallSceneryEntry>(
                             tabSelectedScenery.EntryIndex);
                         if (sceneryEntry != nullptr)
                         {
@@ -730,7 +730,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].type = WidgetType::flatBtn;
 
-                    auto* sceneryEntry = ObjectManager::GetObjectEntry<SmallSceneryEntry>(tabSelectedScenery.EntryIndex);
+                    auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<SmallSceneryEntry>(tabSelectedScenery.EntryIndex);
                     if (sceneryEntry != nullptr && sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_ROTATABLE))
                     {
                         widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type = WidgetType::flatBtn;
@@ -769,7 +769,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (tabSelectedScenery.SceneryType == SCENERY_TYPE_BANNER)
                 {
-                    auto* bannerEntry = ObjectManager::GetObjectEntry<BannerSceneryEntry>(tabSelectedScenery.EntryIndex);
+                    auto* bannerEntry = ObjectEntryManager::GetObjectEntry<BannerSceneryEntry>(tabSelectedScenery.EntryIndex);
                     if (bannerEntry != nullptr && bannerEntry->flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR)
                     {
                         widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WidgetType::colourBtn;
@@ -777,7 +777,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else if (tabSelectedScenery.SceneryType == SCENERY_TYPE_LARGE)
                 {
-                    auto* sceneryEntry = ObjectManager::GetObjectEntry<LargeSceneryEntry>(tabSelectedScenery.EntryIndex);
+                    auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<LargeSceneryEntry>(tabSelectedScenery.EntryIndex);
                     if (sceneryEntry != nullptr)
                     {
                         if (sceneryEntry->flags & LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR
@@ -792,7 +792,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else if (tabSelectedScenery.SceneryType == SCENERY_TYPE_WALL)
                 {
-                    auto* wallEntry = ObjectManager::GetObjectEntry<WallSceneryEntry>(tabSelectedScenery.EntryIndex);
+                    auto* wallEntry = ObjectEntryManager::GetObjectEntry<WallSceneryEntry>(tabSelectedScenery.EntryIndex);
                     if (wallEntry != nullptr && wallEntry->flags & (WALL_SCENERY_HAS_PRIMARY_COLOUR | WALL_SCENERY_HAS_GLASS))
                     {
                         widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WidgetType::colourBtn;
@@ -810,7 +810,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else if (tabSelectedScenery.SceneryType == SCENERY_TYPE_SMALL)
                 {
-                    auto* sceneryEntry = ObjectManager::GetObjectEntry<SmallSceneryEntry>(tabSelectedScenery.EntryIndex);
+                    auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<SmallSceneryEntry>(tabSelectedScenery.EntryIndex);
 
                     if (sceneryEntry != nullptr
                         && sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR | SMALL_SCENERY_FLAG_HAS_GLASS))
@@ -996,7 +996,7 @@ namespace OpenRCT2::Ui::Windows
 
             for (ObjectEntryIndex scenerySetIndex = 0; scenerySetIndex < kMaxTabs - kReservedTabCount; scenerySetIndex++)
             {
-                const auto* sceneryGroupEntry = ObjectManager::GetObjectEntry<SceneryGroupEntry>(scenerySetIndex);
+                const auto* sceneryGroupEntry = ObjectEntryManager::GetObjectEntry<SceneryGroupEntry>(scenerySetIndex);
                 if (sceneryGroupEntry != nullptr && SceneryGroupIsInvented(scenerySetIndex))
                 {
                     SceneryTabInfo tabInfo;
@@ -1025,7 +1025,7 @@ namespace OpenRCT2::Ui::Windows
             // small scenery
             for (ObjectEntryIndex sceneryId = 0; sceneryId < kMaxSmallSceneryObjects; sceneryId++)
             {
-                const auto* sceneryEntry = ObjectManager::GetObjectEntry<SmallSceneryEntry>(sceneryId);
+                const auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<SmallSceneryEntry>(sceneryId);
                 if (sceneryEntry != nullptr)
                 {
                     initSceneryEntry({ SCENERY_TYPE_SMALL, sceneryId }, sceneryEntry->scenery_tab_id);
@@ -1035,7 +1035,7 @@ namespace OpenRCT2::Ui::Windows
             // large scenery
             for (ObjectEntryIndex sceneryId = 0; sceneryId < kMaxLargeSceneryObjects; sceneryId++)
             {
-                const auto* sceneryEntry = ObjectManager::GetObjectEntry<LargeSceneryEntry>(sceneryId);
+                const auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<LargeSceneryEntry>(sceneryId);
                 if (sceneryEntry != nullptr)
                 {
                     initSceneryEntry({ SCENERY_TYPE_LARGE, sceneryId }, sceneryEntry->scenery_tab_id);
@@ -1045,7 +1045,7 @@ namespace OpenRCT2::Ui::Windows
             // walls
             for (ObjectEntryIndex sceneryId = 0; sceneryId < kMaxWallSceneryObjects; sceneryId++)
             {
-                const auto* sceneryEntry = ObjectManager::GetObjectEntry<WallSceneryEntry>(sceneryId);
+                const auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<WallSceneryEntry>(sceneryId);
                 if (sceneryEntry != nullptr)
                 {
                     initSceneryEntry({ SCENERY_TYPE_WALL, sceneryId }, sceneryEntry->scenery_tab_id);
@@ -1055,7 +1055,7 @@ namespace OpenRCT2::Ui::Windows
             // banners
             for (ObjectEntryIndex sceneryId = 0; sceneryId < kMaxBannerObjects; sceneryId++)
             {
-                const auto* sceneryEntry = ObjectManager::GetObjectEntry<BannerSceneryEntry>(sceneryId);
+                const auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<BannerSceneryEntry>(sceneryId);
                 if (sceneryEntry != nullptr)
                 {
                     initSceneryEntry({ SCENERY_TYPE_BANNER, sceneryId }, sceneryEntry->scenery_tab_id);
@@ -1064,7 +1064,7 @@ namespace OpenRCT2::Ui::Windows
 
             for (ObjectEntryIndex sceneryId = 0; sceneryId < kMaxPathAdditionObjects; sceneryId++)
             {
-                const auto* sceneryEntry = ObjectManager::GetObjectEntry<PathAdditionEntry>(sceneryId);
+                const auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<PathAdditionEntry>(sceneryId);
                 if (sceneryEntry != nullptr)
                 {
                     initSceneryEntry({ SCENERY_TYPE_PATH_ITEM, sceneryId }, sceneryEntry->scenery_tab_id);
@@ -1530,7 +1530,7 @@ namespace OpenRCT2::Ui::Windows
         template<typename TObjectType>
         std::pair<StringId, money64> GetNameAndPriceByType(const ScenerySelection& selectedScenery)
         {
-            auto* sceneryEntry = ObjectManager::GetObjectEntry<TObjectType>(selectedScenery.EntryIndex);
+            auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<TObjectType>(selectedScenery.EntryIndex);
             if (sceneryEntry != nullptr)
             {
                 return { sceneryEntry->name, sceneryEntry->price };
@@ -1594,7 +1594,7 @@ namespace OpenRCT2::Ui::Windows
         {
             if (scenerySelection.SceneryType == SCENERY_TYPE_BANNER)
             {
-                auto bannerEntry = ObjectManager::GetObjectEntry<BannerSceneryEntry>(scenerySelection.EntryIndex);
+                auto bannerEntry = ObjectEntryManager::GetObjectEntry<BannerSceneryEntry>(scenerySelection.EntryIndex);
                 if (bannerEntry == nullptr)
                     return;
 
@@ -1604,7 +1604,7 @@ namespace OpenRCT2::Ui::Windows
             }
             else if (scenerySelection.SceneryType == SCENERY_TYPE_LARGE)
             {
-                auto sceneryEntry = ObjectManager::GetObjectEntry<LargeSceneryEntry>(scenerySelection.EntryIndex);
+                auto sceneryEntry = ObjectEntryManager::GetObjectEntry<LargeSceneryEntry>(scenerySelection.EntryIndex);
                 if (sceneryEntry == nullptr)
                     return;
 
@@ -1619,7 +1619,7 @@ namespace OpenRCT2::Ui::Windows
             }
             else if (scenerySelection.SceneryType == SCENERY_TYPE_WALL)
             {
-                auto wallEntry = ObjectManager::GetObjectEntry<WallSceneryEntry>(scenerySelection.EntryIndex);
+                auto wallEntry = ObjectEntryManager::GetObjectEntry<WallSceneryEntry>(scenerySelection.EntryIndex);
                 if (wallEntry == nullptr)
                     return;
 
@@ -1658,7 +1658,7 @@ namespace OpenRCT2::Ui::Windows
             }
             else if (scenerySelection.SceneryType == SCENERY_TYPE_PATH_ITEM)
             {
-                auto* pathAdditionEntry = ObjectManager::GetObjectEntry<PathAdditionEntry>(scenerySelection.EntryIndex);
+                auto* pathAdditionEntry = ObjectEntryManager::GetObjectEntry<PathAdditionEntry>(scenerySelection.EntryIndex);
                 if (pathAdditionEntry == nullptr)
                     return;
 
@@ -1667,7 +1667,7 @@ namespace OpenRCT2::Ui::Windows
             }
             else
             {
-                auto sceneryEntry = ObjectManager::GetObjectEntry<SmallSceneryEntry>(scenerySelection.EntryIndex);
+                auto sceneryEntry = ObjectEntryManager::GetObjectEntry<SmallSceneryEntry>(scenerySelection.EntryIndex);
                 if (sceneryEntry == nullptr)
                     return;
 
@@ -1803,7 +1803,7 @@ namespace OpenRCT2::Ui::Windows
                 gMapSelectPositionB.y = mapTile.y;
             }
 
-            auto* sceneryEntry = ObjectManager::GetObjectEntry<SmallSceneryEntry>(selection.EntryIndex);
+            auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<SmallSceneryEntry>(selection.EntryIndex);
 
             gMapSelectType = MapSelectType::full;
             if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE) && !gWindowSceneryScatterEnabled)
@@ -1948,7 +1948,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            auto* sceneryEntry = ObjectManager::GetObjectEntry<LargeSceneryEntry>(selection.EntryIndex);
+            auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<LargeSceneryEntry>(selection.EntryIndex);
 
             gMapSelectFlags.set(MapSelectFlag::enableConstruct);
 
@@ -2284,7 +2284,7 @@ namespace OpenRCT2::Ui::Windows
                     auto banner = info.Element->AsBanner()->GetBanner();
                     if (banner != nullptr)
                     {
-                        auto* bannerEntry = ObjectManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
+                        auto* bannerEntry = ObjectEntryManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
                         if (bannerEntry->flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR)
                         {
                             auto repaintScenery = GameActions::BannerSetColourAction(
@@ -2313,7 +2313,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     SmallSceneryElement* sceneryElement = info.Element->AsSmallScenery();
                     auto entryIndex = sceneryElement->GetEntryIndex();
-                    auto* sceneryEntry = ObjectManager::GetObjectEntry<SmallSceneryEntry>(entryIndex);
+                    auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<SmallSceneryEntry>(entryIndex);
                     if (sceneryEntry != nullptr)
                     {
                         WindowScenerySetSelectedItem(
@@ -2326,7 +2326,7 @@ namespace OpenRCT2::Ui::Windows
                 case ViewportInteractionItem::wall:
                 {
                     auto entryIndex = info.Element->AsWall()->GetEntryIndex();
-                    auto* sceneryEntry = ObjectManager::GetObjectEntry<WallSceneryEntry>(entryIndex);
+                    auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<WallSceneryEntry>(entryIndex);
                     if (sceneryEntry != nullptr)
                     {
                         WindowScenerySetSelectedItem(
@@ -2339,7 +2339,7 @@ namespace OpenRCT2::Ui::Windows
                 case ViewportInteractionItem::largeScenery:
                 {
                     auto entryIndex = info.Element->AsLargeScenery()->GetEntryIndex();
-                    auto* sceneryEntry = ObjectManager::GetObjectEntry<LargeSceneryEntry>(entryIndex);
+                    auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<LargeSceneryEntry>(entryIndex);
                     if (sceneryEntry != nullptr)
                     {
                         WindowScenerySetSelectedItem(
@@ -2355,7 +2355,7 @@ namespace OpenRCT2::Ui::Windows
                     auto banner = info.Element->AsBanner()->GetBanner();
                     if (banner != nullptr)
                     {
-                        auto sceneryEntry = ObjectManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
+                        auto sceneryEntry = ObjectEntryManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
                         if (sceneryEntry != nullptr)
                         {
                             WindowScenerySetSelectedItem(
@@ -2367,7 +2367,7 @@ namespace OpenRCT2::Ui::Windows
                 case ViewportInteractionItem::pathAddition:
                 {
                     auto entryIndex = info.Element->AsPath()->GetAdditionEntryIndex();
-                    auto* pathAdditionEntry = ObjectManager::GetObjectEntry<PathAdditionEntry>(entryIndex);
+                    auto* pathAdditionEntry = ObjectEntryManager::GetObjectEntry<PathAdditionEntry>(entryIndex);
                     if (pathAdditionEntry != nullptr)
                     {
                         WindowScenerySetSelectedItem(
@@ -2463,7 +2463,7 @@ namespace OpenRCT2::Ui::Windows
                 std::numeric_limits<decltype(TileElement::BaseHeight)>::max() - 32);
             bool can_raise_item = false;
 
-            const auto* sceneryEntry = ObjectManager::GetObjectEntry<SmallSceneryEntry>(sceneryIndex);
+            const auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<SmallSceneryEntry>(sceneryIndex);
             if (sceneryEntry == nullptr)
             {
                 gridPos.SetNull();
@@ -2676,7 +2676,7 @@ namespace OpenRCT2::Ui::Windows
             uint16_t maxPossibleHeight = ZoomLevel::max().ApplyTo(
                 std::numeric_limits<decltype(TileElement::BaseHeight)>::max() - 32);
 
-            auto* wallEntry = ObjectManager::GetObjectEntry<WallSceneryEntry>(sceneryIndex);
+            auto* wallEntry = ObjectEntryManager::GetObjectEntry<WallSceneryEntry>(sceneryIndex);
             if (wallEntry != nullptr)
             {
                 maxPossibleHeight -= wallEntry->height;
@@ -2760,7 +2760,7 @@ namespace OpenRCT2::Ui::Windows
             uint16_t maxPossibleHeight = ZoomLevel::max().ApplyTo(
                 std::numeric_limits<decltype(TileElement::BaseHeight)>::max() - 32);
 
-            auto* sceneryEntry = ObjectManager::GetObjectEntry<LargeSceneryEntry>(sceneryIndex);
+            auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<LargeSceneryEntry>(sceneryIndex);
             if (sceneryEntry)
             {
                 int16_t maxClearZ = 0;
@@ -2923,7 +2923,7 @@ namespace OpenRCT2::Ui::Windows
             for (int32_t q = 0; q < quantity; q++)
             {
                 int32_t zCoordinate = gSceneryPlaceZ;
-                auto* sceneryEntry = ObjectManager::GetObjectEntry<SmallSceneryEntry>(selectedScenery);
+                auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<SmallSceneryEntry>(selectedScenery);
 
                 int16_t cur_grid_x = gridPos.x;
                 int16_t cur_grid_y = gridPos.y;

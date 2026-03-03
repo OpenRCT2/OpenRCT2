@@ -17,7 +17,7 @@ namespace OpenRCT2
         auto banner = GetBanner();
         if (banner != nullptr)
         {
-            return OpenRCT2::ObjectManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
+            return OpenRCT2::ObjectEntryManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
         }
         return nullptr;
     }

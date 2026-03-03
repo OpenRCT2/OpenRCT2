@@ -13,7 +13,7 @@
 #include "Object.h"
 #include "ObjectManager.h"
 
-namespace OpenRCT2::ObjectManager
+namespace OpenRCT2::ObjectEntryManager
 {
     const void* GetObjectEntry(ObjectType type, ObjectEntryIndex idx)
     {
@@ -24,4 +24,4 @@ namespace OpenRCT2::ObjectManager
         }
         return object->GetLegacyData();
     }
-} // namespace OpenRCT2::ObjectManager
+} // namespace OpenRCT2::ObjectEntryManager

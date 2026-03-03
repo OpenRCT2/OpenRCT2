@@ -1517,7 +1517,8 @@ static uint64_t PageDisabledWidgets[] = {
                             { colours[1] });
 
                         // Banner info
-                        auto* largeSceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<LargeSceneryEntry>(largeSceneryType);
+                        auto* largeSceneryEntry = OpenRCT2::ObjectEntryManager::GetObjectEntry<LargeSceneryEntry>(
+                            largeSceneryType);
                         if (largeSceneryEntry != nullptr && largeSceneryEntry->scrolling_mode != kScrollingModeNone)
                         {
                             auto banner = sceneryElement->GetBanner();

@@ -322,7 +322,7 @@ static void ScenarioWeekUpdate()
     RideCheckAllReachable();
     RideUpdateFavouritedStat();
 
-    auto water_type = OpenRCT2::ObjectManager::GetObjectEntry<WaterObjectEntry>(0);
+    auto water_type = OpenRCT2::ObjectEntryManager::GetObjectEntry<WaterObjectEntry>(0);
 
     if (month <= MONTH_APRIL && water_type != nullptr && water_type->flags & WATER_FLAGS_ALLOW_DUCKS)
     {
