@@ -438,7 +438,7 @@ static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kClass
     },
 } };
 
-static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kDiagLeftBankImages = { {
+static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kClassicWoodenDiagLeftBankImages = { {
     {
         SPR_CLASSIC_WOODEN_RC_DIAG_LEFT_BANK_0,
         kImageIndexUndefined,
@@ -1174,7 +1174,7 @@ static void ClassicWoodenRCTrackDiagRightBank(
     const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapReversedDiagonalStraight[trackSequence];
-    return TrackDiagLeftBank<true, kDiagLeftBankImages>(
+    return TrackDiagLeftBank<true, kClassicWoodenDiagLeftBankImages>(
         session, ride, trackSequence, DirectionReverse(direction), height, trackElement, supportType);
 }
 
@@ -1251,7 +1251,7 @@ TrackPaintFunction GetTrackPaintFunctionClassicWoodenRC(TrackElemType trackType)
         case TrackElemType::diagRightBankToDown25:
             return ClassicWoodenRCTrackDiagRightBankToDown25;
         case TrackElemType::diagLeftBank:
-            return TrackDiagLeftBank<true, kDiagLeftBankImages>;
+            return TrackDiagLeftBank<true, kClassicWoodenDiagLeftBankImages>;
         case TrackElemType::diagRightBank:
             return ClassicWoodenRCTrackDiagRightBank;
         case TrackElemType::leftEighthBankToDiag:
