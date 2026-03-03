@@ -328,7 +328,7 @@ static void BlockBrakesOpenPreviousSection(const Ride& ride, const CoordsXYZ& ve
  *
  *  rct2: 0x006DB38B
  */
-static PitchAndRoll PitchAndRollStart(bool useInvertedSprites, TileElement* tileElement)
+static PitchAndRoll TrackMotionPitchAndRollStart(bool useInvertedSprites, TileElement* tileElement)
 {
     auto trackType = tileElement->AsTrack()->GetTrackType();
     const auto& ted = GetTrackElementDescriptor(trackType);
@@ -669,7 +669,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(
             }
         }
 
-        if (PitchAndRollStart(flags.has(VehicleFlag::carIsInverted), tileElement) != pitchAndRollEnd)
+        if (TrackMotionPitchAndRollStart(flags.has(VehicleFlag::carIsInverted), tileElement) != pitchAndRollEnd)
         {
             return false;
         }

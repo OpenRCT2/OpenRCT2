@@ -31,7 +31,7 @@ using namespace OpenRCT2;
 using namespace OpenRCT2::RideVehicle;
 using namespace OpenRCT2::TrackMetadata;
 
-static PitchAndRoll PitchAndRollStart(bool useInvertedSprites, TileElement* tileElement)
+static PitchAndRoll MiniGolfPitchAndRollStart(bool useInvertedSprites, TileElement* tileElement)
 {
     auto trackType = tileElement->AsTrack()->GetTrackType();
     const auto& ted = GetTrackElementDescriptor(trackType);
@@ -260,7 +260,7 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
             trackPos = { output.x, output.y, outZ };
             direction = outDirection;
 
-            if (PitchAndRollStart(false, tileElement) != TrackPitchAndRollEnd(GetTrackType()))
+            if (MiniGolfPitchAndRollStart(false, tileElement) != TrackPitchAndRollEnd(GetTrackType()))
             {
                 _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
                 _vehicleVelocityF64E0C -= remaining_distance + 1;
@@ -453,7 +453,7 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
             auto direction = trackBeginEnd.begin_direction;
             tileElement = trackBeginEnd.begin_element;
 
-            if (PitchAndRollStart(false, tileElement) != TrackPitchAndRollEnd(GetTrackType()))
+            if (MiniGolfPitchAndRollStart(false, tileElement) != TrackPitchAndRollEnd(GetTrackType()))
             {
                 _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
                 _vehicleVelocityF64E0C -= remaining_distance - 0x368A;
