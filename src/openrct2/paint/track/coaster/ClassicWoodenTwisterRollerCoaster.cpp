@@ -1416,7 +1416,7 @@ static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirecti
     } };
 
 static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 2>
-    kLeftBankToLeftQuarterTurn325DegUpImages = { {
+    kClassicWoodenTwisterLeftBankToLeftQuarterTurn325DegUpImages = { {
         { {
             {
                 SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_BANK_TO_LEFT_QUARTER_TURN_3_25_DEG_UP_0_0,
@@ -1466,7 +1466,7 @@ static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirecti
     } };
 
 static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 2>
-    kRightBankToRightQuarterTurn325DegUpImages = { {
+    kClassicWoodenTwisterRightBankToRightQuarterTurn325DegUpImages = { {
         { {
             {
                 SPR_CLASSIC_WOODEN_TWISTER_RC_RIGHT_BANK_TO_RIGHT_QUARTER_TURN_3_25_DEG_UP_0_0,
@@ -1996,7 +1996,7 @@ static void ClassicWoodenTwisterRCTrackLeftQuarterTurn325DegDownToLeftBank(
     const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    TrackRightBankToRightQuarterTurn325DegUp<false, kRightBankToRightQuarterTurn325DegUpImages>(
+    TrackRightBankToRightQuarterTurn325DegUp<false, kClassicWoodenTwisterRightBankToRightQuarterTurn325DegUpImages>(
         session, ride, trackSequence, DirectionNext(direction), height, trackElement, supportType);
 }
 
@@ -2005,7 +2005,7 @@ static void ClassicWoodenTwisterRCTrackRightQuarterTurn325DegDownToRightBank(
     const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    TrackLeftBankToLeftQuarterTurn325DegUp<false, kLeftBankToLeftQuarterTurn325DegUpImages>(
+    TrackLeftBankToLeftQuarterTurn325DegUp<false, kClassicWoodenTwisterLeftBankToLeftQuarterTurn325DegUpImages>(
         session, ride, trackSequence, DirectionPrev(direction), height, trackElement, supportType);
 }
 
@@ -2160,9 +2160,10 @@ TrackPaintFunction GetTrackPaintFunctionClassicWoodenTwisterRC(TrackElemType tra
             return ClassicWoodenTwisterRCTrackRightHalfBankedHelixDownLarge;
 
         case TrackElemType::leftBankToLeftQuarterTurn3TilesUp25:
-            return TrackLeftBankToLeftQuarterTurn325DegUp<false, kLeftBankToLeftQuarterTurn325DegUpImages>;
+            return TrackLeftBankToLeftQuarterTurn325DegUp<false, kClassicWoodenTwisterLeftBankToLeftQuarterTurn325DegUpImages>;
         case TrackElemType::rightBankToRightQuarterTurn3TilesUp25:
-            return TrackRightBankToRightQuarterTurn325DegUp<false, kRightBankToRightQuarterTurn325DegUpImages>;
+            return TrackRightBankToRightQuarterTurn325DegUp<
+                false, kClassicWoodenTwisterRightBankToRightQuarterTurn325DegUpImages>;
         case TrackElemType::leftQuarterTurn3TilesDown25ToLeftBank:
             return ClassicWoodenTwisterRCTrackLeftQuarterTurn325DegDownToLeftBank;
         case TrackElemType::rightQuarterTurn3TilesDown25ToRightBank:
