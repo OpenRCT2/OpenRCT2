@@ -7,15 +7,14 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../UiStringIds.h"
-#include "../interface/Theme.h"
-
 #include <cassert>
 #include <cmath>
 #include <iterator>
 #include <limits>
 #include <memory>
+#include <openrct2-ui/UiStringIds.h>
 #include <openrct2-ui/interface/Dropdown.h>
+#include <openrct2-ui/interface/Theme.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Windows.h>
@@ -268,9 +267,9 @@ namespace OpenRCT2::Ui::Windows
     // 0x009ADC34
     static constexpr auto _mainWidgets = makeWidgets(
         kMainRideWidgets,
-        makeWidget({  3,  60}, {288, 107}, WidgetType::viewport,      WindowColour::secondary                                                                  ),
-        makeWidget({ 35,  46}, {222,  12}, WidgetType::dropdownMenu,  WindowColour::secondary, kWidgetContentEmpty,                 STR_VIEW_SELECTION         ),
-        makeWidget({245,  47}, { 11,  10}, WidgetType::button,        WindowColour::secondary, STR_DROPDOWN_GLYPH,                  STR_VIEW_SELECTION         ),
+        makeWidget({  3,  62}, {288, 107}, WidgetType::viewport,      WindowColour::secondary                                                                  ),
+        makeWidget({ 35,  46}, {222,  14}, WidgetType::dropdownMenu,  WindowColour::secondary, kWidgetContentEmpty,                 STR_VIEW_SELECTION         ),
+        makeWidget({245,  47}, { 11,  12}, WidgetType::button,        WindowColour::secondary, STR_DROPDOWN_GLYPH,                  STR_VIEW_SELECTION         ),
         makeWidget({  3, 167}, {288,  11}, WidgetType::labelCentred,  WindowColour::secondary                                                                  ),
         makeWidget({291,  46}, { 24,  24}, WidgetType::flatBtn,       WindowColour::secondary, kWidgetContentEmpty,                 STR_OPEN_CLOSE_OR_TEST_RIDE),
         makeWidget({291,  70}, { 24,  24}, WidgetType::flatBtn,       WindowColour::secondary, ImageId(SPR_CONSTRUCTION),           STR_CONSTRUCTION           ),
@@ -281,10 +280,10 @@ namespace OpenRCT2::Ui::Windows
         makeWidget({296,  62}, { 14,  14}, WidgetType::imgBtn,        WindowColour::secondary, ImageId(SPR_G2_RCT1_TEST_BUTTON_0),  STR_SIMULATE_RIDE_TIP      ),
         makeWidget({296,  62}, { 14,  14}, WidgetType::imgBtn,        WindowColour::secondary, ImageId(SPR_G2_RCT1_TEST_BUTTON_0),  STR_TEST_RIDE_TIP          ),
         makeWidget({296,  76}, { 14,  14}, WidgetType::imgBtn,        WindowColour::secondary, ImageId(SPR_G2_RCT1_OPEN_BUTTON_0),  STR_OPEN_RIDE_TIP          ),
-        makeWidget({  3, 180}, {305,  12}, WidgetType::dropdownMenu,  WindowColour::secondary, STR_ARG_6_STRINGID                                              ),
-        makeWidget({297, 180}, { 11,  12}, WidgetType::button,        WindowColour::secondary, STR_DROPDOWN_GLYPH                                              ),
-        makeWidget({  3, 195}, {140,  12}, WidgetType::button,        WindowColour::secondary, STR_MAKE_INVISIBLE,                  STR_MAKE_INVISIBLE_TIP     ),
-        makeWidget({151, 195}, {140,  12}, WidgetType::button,        WindowColour::secondary, STR_MAKE_VISIBLE,                    STR_MAKE_VISIBLE_TIP       )
+        makeWidget({  3, 180}, {305,  14}, WidgetType::dropdownMenu,  WindowColour::secondary, STR_ARG_6_STRINGID                                              ),
+        makeWidget({297, 181}, { 11,  12}, WidgetType::button,        WindowColour::secondary, STR_DROPDOWN_GLYPH                                              ),
+        makeWidget({  3, 197}, {140,  14}, WidgetType::button,        WindowColour::secondary, STR_MAKE_INVISIBLE,                  STR_MAKE_INVISIBLE_TIP     ),
+        makeWidget({151, 197}, {140,  14}, WidgetType::button,        WindowColour::secondary, STR_MAKE_VISIBLE,                    STR_MAKE_VISIBLE_TIP       )
     );
 
     // 0x009ADDA8
@@ -2445,7 +2444,7 @@ namespace OpenRCT2::Ui::Windows
                 + widgetIsPressed(*this, WIDX_OPEN_LIGHT);
             widgets[WIDX_OPEN_LIGHT].image = ImageId(openLightImage);
 
-            const int32_t offset = gameState.cheats.allowArbitraryRideTypeChanges ? 30 : 0;
+            const int32_t offset = gameState.cheats.allowArbitraryRideTypeChanges ? 34 : 0;
             // Anchor main page specific widgets
             widgets[WIDX_VIEWPORT].right = width - 26;
             widgets[WIDX_VIEWPORT].bottom = height - (14 + offset);
@@ -2456,8 +2455,8 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_VIEW_DROPDOWN].right = width - 61;
             widgets[WIDX_VIEW_DROPDOWN].left = width - 71;
             widgets[WIDX_RIDE_TYPE].right = width - 26;
-            widgets[WIDX_RIDE_TYPE].moveToY(height - 32);
-            widgets[WIDX_RIDE_TYPE_DROPDOWN].moveTo({ width - 37, height - 31 });
+            widgets[WIDX_RIDE_TYPE].moveToY(height - 34);
+            widgets[WIDX_RIDE_TYPE_DROPDOWN].moveTo({ width - 37, height - 33 });
             widgets[WIDX_MAKE_INVISIBLE].moveToY(height - 17);
             widgets[WIDX_MAKE_VISIBLE].moveToY(height - 17);
 
