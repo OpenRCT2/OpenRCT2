@@ -289,12 +289,12 @@ namespace OpenRCT2::Ui::Windows
     // 0x009ADDA8
     static constexpr auto _vehicleWidgets = makeWidgets(
         kMainRideWidgets,
-        makeWidget        ({  7,  50}, {302, 12}, WidgetType::dropdownMenu, WindowColour::secondary                                                          ),
-        makeWidget        ({297,  51}, { 11, 10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH                                      ),
+        makeWidget        ({  7,  50}, {302, 14}, WidgetType::dropdownMenu, WindowColour::secondary                                                          ),
+        makeWidget        ({297,  51}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH                                      ),
         makeWidget        ({  7, 137}, {302, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_OPTION_REVERSE_TRAINS, STR_OPTION_REVERSE_TRAINS_TIP),
         makeWidget        ({  7, 154}, {302, 43}, WidgetType::scroll,       WindowColour::secondary, kStringIdEmpty                                          ),
-        makeSpinnerWidgets({  7, 203}, {145, 12}, WidgetType::spinner,      WindowColour::secondary, STR_RIDE_VEHICLE_COUNT, STR_MAX_VEHICLES_TIP            ),
-        makeSpinnerWidgets({164, 203}, {145, 12}, WidgetType::spinner,      WindowColour::secondary, STR_1_CAR_PER_TRAIN,    STR_MAX_CARS_PER_TRAIN_TIP      )
+        makeSpinnerWidgets({  7, 203}, {145, 14}, WidgetType::spinner,      WindowColour::secondary, STR_RIDE_VEHICLE_COUNT, STR_MAX_VEHICLES_TIP            ),
+        makeSpinnerWidgets({164, 203}, {145, 14}, WidgetType::spinner,      WindowColour::secondary, STR_1_CAR_PER_TRAIN,    STR_MAX_CARS_PER_TRAIN_TIP      )
     );
 
     // 0x009ADEFC
@@ -2107,7 +2107,7 @@ namespace OpenRCT2::Ui::Windows
             Widget* dropdownWidget = widget - 1;
             WindowDropdownShowTextCustomWidth(
                 { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height(), colours[1],
-                0, Dropdown::Flag::StayOpen, numItems, dropdownWidget->width() - 1);
+                0, Dropdown::Flag::StayOpen, numItems, dropdownWidget->width() - 3);
 
             // Find the current vehicle type in the ordered list.
             int32_t pos = 0;
