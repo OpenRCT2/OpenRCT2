@@ -303,19 +303,19 @@ namespace OpenRCT2::Ui::Windows
     );
 
     constexpr int32_t kFrameRenderingStart = 53;
-    constexpr int32_t kFrameEffectStart = 163;
+    constexpr int32_t kFrameEffectStart = 165;
 
     static constexpr auto window_options_rendering_widgets = makeWidgets(
         kMainOptionsWidgets,
-        makeWidget({  5,  kFrameRenderingStart + 0}, {300, 108}, WidgetType::groupbox,     WindowColour::secondary, STR_RENDERING_GROUP                                       ), // Rendering group
+        makeWidget({  5,  kFrameRenderingStart + 0}, {300, 110}, WidgetType::groupbox,     WindowColour::secondary, STR_RENDERING_GROUP                                       ), // Rendering group
         makeWidget({ 10, kFrameRenderingStart + 15}, {281,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_TILE_SMOOTHING,         STR_TILE_SMOOTHING_TIP        ), // Landscape smoothing
         makeWidget({ 10, kFrameRenderingStart + 30}, {281,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_GRIDLINES,              STR_GRIDLINES_TIP             ), // Gridlines
         makeWidget({ 10, kFrameRenderingStart + 45}, {281,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_UPPERCASE_BANNERS,      STR_UPPERCASE_BANNERS_TIP     ), // Uppercase banners
         makeWidget({ 10, kFrameRenderingStart + 60}, {281,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_SHOW_GUEST_PURCHASES,   STR_SHOW_GUEST_PURCHASES_TIP  ), // Guest purchases
         makeWidget({ 10, kFrameRenderingStart + 75}, {281,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_TRANSPARENT_SCREENSHOT, STR_TRANSPARENT_SCREENSHOT_TIP), // Transparent screenshot
-        makeWidget({ 10, kFrameRenderingStart + 90}, {281,  12}, WidgetType::label,        WindowColour::secondary, STR_VIRTUAL_FLOOR_STYLE,    STR_VIRTUAL_FLOOR_STYLE_TIP   ), // Virtual floor
-        makeWidget({155, kFrameRenderingStart + 90}, {145,  12}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdNone,              STR_VIRTUAL_FLOOR_STYLE_TIP   ), // Virtual floor dropdown
-        makeWidget({288, kFrameRenderingStart + 91}, { 11,  10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,         STR_VIRTUAL_FLOOR_STYLE_TIP   ), // Virtual floor dropdown
+        makeWidget({ 10, kFrameRenderingStart + 91}, {281,  12}, WidgetType::label,        WindowColour::secondary, STR_VIRTUAL_FLOOR_STYLE,    STR_VIRTUAL_FLOOR_STYLE_TIP   ), // Virtual floor
+        makeWidget({155, kFrameRenderingStart + 90}, {145,  14}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdNone,              STR_VIRTUAL_FLOOR_STYLE_TIP   ), // Virtual floor dropdown
+        makeWidget({288, kFrameRenderingStart + 91}, { 11,  12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,         STR_VIRTUAL_FLOOR_STYLE_TIP   ), // Virtual floor dropdown
 
         makeWidget({ 5,  kFrameEffectStart + 0}, {300, 94}, WidgetType::groupbox, WindowColour::secondary, STR_EFFECTS_GROUP                                             ), // Rendering group
         makeWidget({10, kFrameEffectStart + 15}, {281, 12}, WidgetType::checkbox, WindowColour::secondary, STR_CYCLE_DAY_NIGHT,          STR_CYCLE_DAY_NIGHT_TIP         ), // Cycle day-night
