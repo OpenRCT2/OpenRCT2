@@ -476,80 +476,81 @@ static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kDiagU
     },
 } };
 
-static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 4> kLeftEighthBankToDiagImages = { {
-    { {
-        {
-            SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_0_0,
-        },
-        {
-            SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_0_1,
-            kImageIndexUndefined,
-            SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_FRONT_0_1,
-        },
-        {
-            SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_0_2,
-        },
-        {
-            SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_0_3,
-            kImageIndexUndefined,
-            SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_FRONT_0_3,
-        },
-    } },
-    { {
-        {
-            SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_1_0,
-        },
-        {
-            SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_1_1,
-            kImageIndexUndefined,
-            SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_FRONT_1_1,
-        },
-        {
-            SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_1_2,
-        },
-        {
-            SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_1_3,
-            kImageIndexUndefined,
-            SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_FRONT_1_3,
-        },
-    } },
-    { {
-        {
-            SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_2_0,
-        },
-        {
-            SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_2_1,
-            kImageIndexUndefined,
-            SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_FRONT_2_1,
-        },
-        {
-            SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_2_2,
-        },
-        {
-            SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_2_3,
-            kImageIndexUndefined,
-            SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_FRONT_2_3,
-        },
-    } },
-    { {
-        {
-            SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_3_0,
-        },
-        {
-            SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_3_1,
-            kImageIndexUndefined,
-            SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_FRONT_3_1,
-        },
-        {
-            SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_3_2,
-        },
-        {
-            SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_3_3,
-            kImageIndexUndefined,
-            SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_FRONT_3_3,
-        },
-    } },
-} };
+static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 4>
+    kClassicWoodenLeftEighthBankToDiagImages = { {
+        { {
+            {
+                SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_0_0,
+            },
+            {
+                SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_0_1,
+                kImageIndexUndefined,
+                SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_FRONT_0_1,
+            },
+            {
+                SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_0_2,
+            },
+            {
+                SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_0_3,
+                kImageIndexUndefined,
+                SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_FRONT_0_3,
+            },
+        } },
+        { {
+            {
+                SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_1_0,
+            },
+            {
+                SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_1_1,
+                kImageIndexUndefined,
+                SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_FRONT_1_1,
+            },
+            {
+                SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_1_2,
+            },
+            {
+                SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_1_3,
+                kImageIndexUndefined,
+                SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_FRONT_1_3,
+            },
+        } },
+        { {
+            {
+                SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_2_0,
+            },
+            {
+                SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_2_1,
+                kImageIndexUndefined,
+                SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_FRONT_2_1,
+            },
+            {
+                SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_2_2,
+            },
+            {
+                SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_2_3,
+                kImageIndexUndefined,
+                SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_FRONT_2_3,
+            },
+        } },
+        { {
+            {
+                SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_3_0,
+            },
+            {
+                SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_3_1,
+                kImageIndexUndefined,
+                SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_FRONT_3_1,
+            },
+            {
+                SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_3_2,
+            },
+            {
+                SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_3_3,
+                kImageIndexUndefined,
+                SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_FRONT_3_3,
+            },
+        } },
+    } };
 
 static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 4> kRightEighthBankToDiagImages = { {
     { {
@@ -1163,7 +1164,7 @@ static void ClassicWoodenRCTrackRightEighthBankToOrthogonal(
     const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    TrackLeftEighthBankToDiag<true, kLeftEighthBankToDiagImages>(
+    TrackLeftEighthBankToDiag<true, kClassicWoodenLeftEighthBankToDiagImages>(
         session, ride, trackSequence, DirectionPrev(direction), height, trackElement, supportType);
 }
 
@@ -1253,7 +1254,7 @@ TrackPaintFunction GetTrackPaintFunctionClassicWoodenRC(TrackElemType trackType)
         case TrackElemType::diagRightBank:
             return ClassicWoodenRCTrackDiagRightBank;
         case TrackElemType::leftEighthBankToDiag:
-            return TrackLeftEighthBankToDiag<true, kLeftEighthBankToDiagImages>;
+            return TrackLeftEighthBankToDiag<true, kClassicWoodenLeftEighthBankToDiagImages>;
         case TrackElemType::rightEighthBankToDiag:
             return TrackRightEighthBankToDiag<true, kRightEighthBankToDiagImages>;
         case TrackElemType::leftEighthBankToOrthogonal:
