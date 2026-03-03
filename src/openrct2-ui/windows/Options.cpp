@@ -327,24 +327,24 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr auto window_options_culture_widgets = makeWidgets(
         kMainOptionsWidgets,
-        makeWidget({ 10,  53}, {145, 12}, WidgetType::label,        WindowColour::secondary, STR_OPTIONS_LANGUAGE,   STR_LANGUAGE_TIP           ), // language
-        makeWidget({155,  53}, {145, 12}, WidgetType::dropdownMenu, WindowColour::secondary, STR_STRING                                         ),
-        makeWidget({288,  54}, { 11, 10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,     STR_LANGUAGE_TIP           ),
-        makeWidget({ 10,  68}, {145, 12}, WidgetType::label,        WindowColour::secondary, STR_CURRENCY,           STR_CURRENCY_TIP           ), // Currency
-        makeWidget({155,  68}, {145, 12}, WidgetType::dropdownMenu, WindowColour::secondary                                                     ),
-        makeWidget({288,  69}, { 11, 10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,     STR_CURRENCY_TIP           ),
-        makeWidget({ 10,  83}, {145, 12}, WidgetType::label,        WindowColour::secondary, STR_DISTANCE_AND_SPEED, STR_DISTANCE_AND_SPEED_TIP ), // Distance and speed
-        makeWidget({155,  83}, {145, 12}, WidgetType::dropdownMenu, WindowColour::secondary                                                     ),
-        makeWidget({288,  84}, { 11, 10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,     STR_DISTANCE_AND_SPEED_TIP ),
-        makeWidget({ 10,  98}, {145, 12}, WidgetType::label,        WindowColour::secondary, STR_TEMPERATURE,        STR_TEMPERATURE_FORMAT_TIP ), // Temperature
-        makeWidget({155,  98}, {145, 12}, WidgetType::dropdownMenu, WindowColour::secondary                                                     ),
-        makeWidget({288,  99}, { 11, 10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,     STR_TEMPERATURE_FORMAT_TIP ),
-        makeWidget({ 10, 113}, {145, 12}, WidgetType::label,        WindowColour::secondary, STR_HEIGHT_LABELS,      STR_HEIGHT_LABELS_UNITS_TIP), // Height labels
-        makeWidget({155, 113}, {145, 12}, WidgetType::dropdownMenu, WindowColour::secondary                                                     ),
-        makeWidget({288, 114}, { 11, 10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,     STR_HEIGHT_LABELS_UNITS_TIP),
-        makeWidget({ 10, 128}, {145, 12}, WidgetType::label,        WindowColour::secondary, STR_DATE_FORMAT,        STR_DATE_FORMAT_TIP        ), // Date format
-        makeWidget({155, 128}, {145, 12}, WidgetType::dropdownMenu, WindowColour::secondary                                                     ),
-        makeWidget({288, 129}, { 11, 10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,     STR_DATE_FORMAT_TIP        )
+        makeWidget({ 10,  54}, {145, 12}, WidgetType::label,        WindowColour::secondary, STR_OPTIONS_LANGUAGE,   STR_LANGUAGE_TIP           ), // language
+        makeWidget({155,  53}, {145, 14}, WidgetType::dropdownMenu, WindowColour::secondary, STR_STRING                                         ),
+        makeWidget({288,  54}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,     STR_LANGUAGE_TIP           ),
+        makeWidget({ 10,  71}, {145, 12}, WidgetType::label,        WindowColour::secondary, STR_CURRENCY,           STR_CURRENCY_TIP           ), // Currency
+        makeWidget({155,  70}, {145, 14}, WidgetType::dropdownMenu, WindowColour::secondary                                                     ),
+        makeWidget({288,  71}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,     STR_CURRENCY_TIP           ),
+        makeWidget({ 10,  88}, {145, 12}, WidgetType::label,        WindowColour::secondary, STR_DISTANCE_AND_SPEED, STR_DISTANCE_AND_SPEED_TIP ), // Distance and speed
+        makeWidget({155,  87}, {145, 14}, WidgetType::dropdownMenu, WindowColour::secondary                                                     ),
+        makeWidget({288,  88}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,     STR_DISTANCE_AND_SPEED_TIP ),
+        makeWidget({ 10, 105}, {145, 12}, WidgetType::label,        WindowColour::secondary, STR_TEMPERATURE,        STR_TEMPERATURE_FORMAT_TIP ), // Temperature
+        makeWidget({155, 104}, {145, 14}, WidgetType::dropdownMenu, WindowColour::secondary                                                     ),
+        makeWidget({288, 105}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,     STR_TEMPERATURE_FORMAT_TIP ),
+        makeWidget({ 10, 122}, {145, 12}, WidgetType::label,        WindowColour::secondary, STR_HEIGHT_LABELS,      STR_HEIGHT_LABELS_UNITS_TIP), // Height labels
+        makeWidget({155, 121}, {145, 14}, WidgetType::dropdownMenu, WindowColour::secondary                                                     ),
+        makeWidget({288, 122}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,     STR_HEIGHT_LABELS_UNITS_TIP),
+        makeWidget({ 10, 139}, {145, 12}, WidgetType::label,        WindowColour::secondary, STR_DATE_FORMAT,        STR_DATE_FORMAT_TIP        ), // Date format
+        makeWidget({155, 138}, {145, 14}, WidgetType::dropdownMenu, WindowColour::secondary                                                     ),
+        makeWidget({288, 139}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,     STR_DATE_FORMAT_TIP        )
     );
 
     static constexpr auto window_options_audio_widgets = makeWidgets(
