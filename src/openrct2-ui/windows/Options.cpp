@@ -277,29 +277,29 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr auto window_options_display_widgets = makeWidgets(
         kMainOptionsWidgets,
-        makeWidget        ({  5,  53}, {300,  64}, WidgetType::groupbox,     WindowColour::secondary, STR_GROUP_WINDOW                                                                ), // Window group
-        makeWidget        ({ 10,  67}, {145,  12}, WidgetType::label,        WindowColour::secondary, STR_FULLSCREEN_MODE,                   STR_FULLSCREEN_MODE_TIP                  ), // Fullscreen
-        makeWidget        ({155,  68}, {145,  12}, WidgetType::dropdownMenu, WindowColour::secondary                                                                                  ),
-        makeWidget        ({288,  69}, { 11,  10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,                    STR_FULLSCREEN_MODE_TIP                  ),
-        makeWidget        ({ 24,  82}, {145,  12}, WidgetType::label,        WindowColour::secondary, STR_DISPLAY_RESOLUTION,                STR_DISPLAY_RESOLUTION_TIP               ), // Resolution
-        makeWidget        ({155,  83}, {145,  12}, WidgetType::dropdownMenu, WindowColour::secondary, STR_ARG_16_RESOLUTION_X_BY_Y                                                    ),
-        makeWidget        ({288,  84}, { 11,  10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,                    STR_DISPLAY_RESOLUTION_TIP               ),
-        makeWidget        ({ 10,  98}, {145,  12}, WidgetType::label,        WindowColour::secondary, STR_UI_SCALING_DESC,                   STR_WINDOW_SCALE_TIP                     ), // Scale
-        makeSpinnerWidgets({155,  98}, {145,  12}, WidgetType::spinner,      WindowColour::secondary, kStringIdNone,                         STR_WINDOW_SCALE_TIP                     ), // Scale spinner (3 widgets)
+        makeWidget        ({  5,  53}, {300,  70}, WidgetType::groupbox,     WindowColour::secondary, STR_GROUP_WINDOW                                                                ), // Window group
+        makeWidget        ({ 10,  69}, {145,  12}, WidgetType::label,        WindowColour::secondary, STR_FULLSCREEN_MODE,                   STR_FULLSCREEN_MODE_TIP                  ), // Fullscreen
+        makeWidget        ({155,  68}, {145,  14}, WidgetType::dropdownMenu, WindowColour::secondary                                                                                  ),
+        makeWidget        ({288,  69}, { 11,  12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,                    STR_FULLSCREEN_MODE_TIP                  ),
+        makeWidget        ({ 24,  86}, {145,  12}, WidgetType::label,        WindowColour::secondary, STR_DISPLAY_RESOLUTION,                STR_DISPLAY_RESOLUTION_TIP               ), // Resolution
+        makeWidget        ({155,  85}, {145,  14}, WidgetType::dropdownMenu, WindowColour::secondary, STR_ARG_16_RESOLUTION_X_BY_Y                                                    ),
+        makeWidget        ({288,  86}, { 11,  12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,                    STR_DISPLAY_RESOLUTION_TIP               ),
+        makeWidget        ({ 10, 102}, {145,  12}, WidgetType::label,        WindowColour::secondary, STR_UI_SCALING_DESC,                   STR_WINDOW_SCALE_TIP                     ), // Scale
+        makeSpinnerWidgets({155, 102}, {145,  14}, WidgetType::spinner,      WindowColour::secondary, kStringIdNone,                         STR_WINDOW_SCALE_TIP                     ), // Scale spinner (3 widgets)
 
-        makeWidget        ({  5, 121}, {300,  64}, WidgetType::groupbox,     WindowColour::secondary, STR_GROUP_RENDERING                                                             ), // Rendering group
-        makeWidget        ({ 10, 135}, {145,  12}, WidgetType::label,        WindowColour::secondary, STR_DRAWING_ENGINE,                    STR_DRAWING_ENGINE_TIP                   ), // Drawing engine (label)
-        makeWidget        ({155, 135}, {145,  12}, WidgetType::dropdownMenu, WindowColour::secondary                                                                                  ), // Drawing engine (dropdown label)
-        makeWidget        ({288, 136}, { 11,  10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,                    STR_DRAWING_ENGINE_TIP                   ), // Drawing engine (chevron)
-        makeWidget        ({ 10, 150}, {145,  12}, WidgetType::label,        WindowColour::secondary, STR_FRAME_RATE_LIMIT_LABEL                                                      ), // Frame rate limit (label)
-        makeWidget        ({155, 150}, {145,  12}, WidgetType::dropdownMenu, WindowColour::secondary                                                                                  ), // Frame rate limit (dropdown label)
-        makeWidget        ({288, 151}, { 11,  10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH                                                              ), // Frame rate limit (chevron)
-        makeWidget        ({ 10, 166}, {136,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_SHOW_FPS,                          STR_SHOW_FPS_TIP                         ), // Show fps
-        makeWidget        ({155, 166}, {136,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_MULTITHREADING,                    STR_MULTITHREADING_TIP                   ), // Multithreading
+        makeWidget        ({  5, 129}, {300,  68}, WidgetType::groupbox,     WindowColour::secondary, STR_GROUP_RENDERING                                                             ), // Rendering group
+        makeWidget        ({ 10, 146}, {145,  12}, WidgetType::label,        WindowColour::secondary, STR_DRAWING_ENGINE,                    STR_DRAWING_ENGINE_TIP                   ), // Drawing engine (label)
+        makeWidget        ({155, 145}, {145,  14}, WidgetType::dropdownMenu, WindowColour::secondary                                                                                  ), // Drawing engine (dropdown label)
+        makeWidget        ({288, 146}, { 11,  12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,                    STR_DRAWING_ENGINE_TIP                   ), // Drawing engine (chevron)
+        makeWidget        ({ 10, 161}, {145,  12}, WidgetType::label,        WindowColour::secondary, STR_FRAME_RATE_LIMIT_LABEL                                                      ), // Frame rate limit (label)
+        makeWidget        ({155, 160}, {145,  14}, WidgetType::dropdownMenu, WindowColour::secondary                                                                                  ), // Frame rate limit (dropdown label)
+        makeWidget        ({288, 161}, { 11,  12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH                                                              ), // Frame rate limit (chevron)
+        makeWidget        ({ 11, 178}, {136,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_SHOW_FPS,                          STR_SHOW_FPS_TIP                         ), // Show fps
+        makeWidget        ({155, 178}, {136,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_MULTITHREADING,                    STR_MULTITHREADING_TIP                   ), // Multithreading
 
-        makeWidget        ({  5, 188}, {300,  49}, WidgetType::groupbox,     WindowColour::secondary, STR_GROUP_BEHAVIOUR                                                             ), // Behaviour group
-        makeWidget        ({ 11, 203}, {280,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS_TIP), // Minimise fullscreen focus loss
-        makeWidget        ({ 11, 218}, {280,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_DISABLE_SCREENSAVER,               STR_DISABLE_SCREENSAVER_TIP              )  // Disable screensaver
+        makeWidget        ({  5, 200}, {300,  49}, WidgetType::groupbox,     WindowColour::secondary, STR_GROUP_BEHAVIOUR                                                             ), // Behaviour group
+        makeWidget        ({ 11, 215}, {280,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS_TIP), // Minimise fullscreen focus loss
+        makeWidget        ({ 11, 230}, {280,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_DISABLE_SCREENSAVER,               STR_DISABLE_SCREENSAVER_TIP              )  // Disable screensaver
     );
 
     constexpr int32_t kFrameRenderingStart = 53;
