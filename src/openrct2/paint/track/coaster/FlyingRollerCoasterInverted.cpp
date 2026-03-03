@@ -21,7 +21,7 @@ using namespace OpenRCT2;
 static constexpr TunnelGroup kFlyingInvertedTunnelGroup = TunnelGroup::Square;
 static constexpr uint8_t kFlyingInvertedSupportHeight = 39;
 
-static constexpr const uint32_t kInvertedRCDiagBrakeImages[kNumOrthogonalDirections] = {
+static constexpr const uint32_t kFlyingInvertedInvertedRCDiagBrakeImages[kNumOrthogonalDirections] = {
     SPR_TRACKS_BM_INVERT_DIAG_BRAKES,
     SPR_TRACKS_BM_INVERT_DIAG_BRAKES + 1,
     SPR_TRACKS_BM_INVERT_DIAG_BRAKES,
@@ -8542,7 +8542,7 @@ static void InvertedFlyingRCTrackDiagBrakes(
     const TrackElement& trackElement, SupportType supportType)
 {
     TrackPaintUtilDiagTilesPaint(
-        session, 1, height + 24, direction, trackSequence, kInvertedRCDiagBrakeImages, defaultDiagTileOffsets,
+        session, 1, height + 24, direction, trackSequence, kFlyingInvertedInvertedRCDiagBrakeImages, defaultDiagTileOffsets,
         defaultDiagBoundLengths, nullptr);
 
     int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];

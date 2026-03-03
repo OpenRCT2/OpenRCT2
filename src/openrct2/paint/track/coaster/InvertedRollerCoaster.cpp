@@ -28,7 +28,7 @@ static constexpr ImageIndex kInvertedRCDiagFlatImages[2][kNumOrthogonalDirection
     { 27611, 27612, 27613, 27614 },
 };
 
-static constexpr ImageIndex kInvertedRCDiagBrakeImages[kNumOrthogonalDirections] = {
+static constexpr ImageIndex kInvertedInvertedRCDiagBrakeImages[kNumOrthogonalDirections] = {
     SPR_TRACKS_BM_INVERT_DIAG_BRAKES,
     SPR_TRACKS_BM_INVERT_DIAG_BRAKES + 1,
     SPR_TRACKS_BM_INVERT_DIAG_BRAKES,
@@ -6304,7 +6304,7 @@ static void InvertedRCTrackDiagBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    InvertedRCTrackDiagFlatBase(session, trackSequence, kInvertedRCDiagBrakeImages, direction, height, supportType);
+    InvertedRCTrackDiagFlatBase(session, trackSequence, kInvertedInvertedRCDiagBrakeImages, direction, height, supportType);
 }
 
 /** rct2: 0x008A97B8 */
