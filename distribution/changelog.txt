@@ -8,6 +8,7 @@
 - Fix: [#26111] Vehicle colours tab can go out of bounds in certain edge cases.
 - Fix: [#26118] Windows installers for releases are not signed properly.
 - Fix: [#26128] The loan spinner widget does not appear on the same baseline as the text around it.
+- Fix: [#26140] The time a guest has spent in a queue overflows back to 0 after it reaches 65535 (about a year).
 
 0.4.32 (2026-03-01)
 ------------------------------------------------------------------------
