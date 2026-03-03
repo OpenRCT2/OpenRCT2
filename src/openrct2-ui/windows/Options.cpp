@@ -387,15 +387,15 @@ namespace OpenRCT2::Ui::Windows
     );
 
     constexpr int32_t kThemesGroupStart = 53;
-    constexpr int32_t kToolbarGroupStart = kThemesGroupStart + 52;
+    constexpr int32_t kToolbarGroupStart = kThemesGroupStart + 53;
 
     static constexpr auto window_options_interface_widgets = makeWidgets(
         kMainOptionsWidgets,
-        makeWidget({  5, kThemesGroupStart +  0}, {300, 48}, WidgetType::groupbox,     WindowColour::secondary, STR_THEMES_GROUP                                          ), // Themes group
+        makeWidget({  5, kThemesGroupStart +  0}, {300, 50}, WidgetType::groupbox,     WindowColour::secondary, STR_THEMES_GROUP                                          ), // Themes group
         makeWidget({ 10, kThemesGroupStart + 14}, {145, 12}, WidgetType::label,        WindowColour::secondary, STR_THEMES_LABEL_CURRENT_THEME, STR_CURRENT_THEME_TIP     ), // Themes
-        makeWidget({155, kThemesGroupStart + 14}, {145, 12}, WidgetType::dropdownMenu, WindowColour::secondary, STR_STRING                                                ),
-        makeWidget({288, kThemesGroupStart + 15}, { 11, 10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,             STR_CURRENT_THEME_TIP     ),
-        makeWidget({155, kThemesGroupStart + 30}, {145, 13}, WidgetType::button,       WindowColour::secondary, STR_EDIT_THEMES_BUTTON,         STR_EDIT_THEMES_BUTTON_TIP), // Themes button
+        makeWidget({155, kThemesGroupStart + 14}, {145, 14}, WidgetType::dropdownMenu, WindowColour::secondary, STR_STRING                                                ),
+        makeWidget({288, kThemesGroupStart + 15}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,             STR_CURRENT_THEME_TIP     ),
+        makeWidget({155, kThemesGroupStart + 30}, {145, 14}, WidgetType::button,       WindowColour::secondary, STR_EDIT_THEMES_BUTTON,         STR_EDIT_THEMES_BUTTON_TIP), // Themes button
 
         makeWidget({  5, kToolbarGroupStart +  0}, {300,107}, WidgetType::groupbox, WindowColour::secondary, STR_TOOLBAR_BUTTONS_GROUP                                                         ), // Toolbar buttons group
         makeWidget({ 10, kToolbarGroupStart + 14}, {280, 12}, WidgetType::checkbox, WindowColour::tertiary,  STR_OPTIONS_TOOLBAR_BUTTONS_CENTRED, STR_OPTIONS_TOOLBAR_BUTTONS_CENTRED_TIP      ),
