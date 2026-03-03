@@ -180,13 +180,13 @@ namespace OpenRCT2::Ui::Windows
         WIDX_MAXIMUM_LENGTH_DECREASE,
         WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX,
 
-        WIDX_INSPECTION_INTERVAL = 14,
+        WIDX_RELIABILITY_BAR = 14,
+        WIDX_DOWN_TIME_BAR,
+        WIDX_INSPECTION_INTERVAL,
         WIDX_INSPECTION_INTERVAL_DROPDOWN,
         WIDX_LOCATE_MECHANIC,
         WIDX_REFURBISH_RIDE,
         WIDX_FORCE_BREAKDOWN,
-        WIDX_RELIABILITY_BAR,
-        WIDX_DOWN_TIME_BAR,
 
         WIDX_PRIMARY_PREVIEW = 14,
         WIDX_TRACK_COLOUR_SCHEME,
@@ -322,13 +322,13 @@ namespace OpenRCT2::Ui::Windows
     // 0x009AE190
     static constexpr auto _maintenanceWidgets = makeWidgets(
         kMainRideWidgets,
-        makeWidget     ({107,  71}, {202,  12}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdEmpty,            STR_SELECT_HOW_OFTEN_A_MECHANIC_SHOULD_CHECK_THIS_RIDE),
-        makeWidget     ({297,  72}, { 11,  10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,        STR_SELECT_HOW_OFTEN_A_MECHANIC_SHOULD_CHECK_THIS_RIDE),
-        makeWidget     ({289, 108}, { 24,  24}, WidgetType::flatBtn,      WindowColour::secondary, 0xFFFFFFFF,                STR_LOCATE_NEAREST_AVAILABLE_MECHANIC_TIP             ),
-        makeWidget     ({265, 108}, { 24,  24}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_CONSTRUCTION), STR_REFURBISH_RIDE_TIP                                ),
-        makeWidget     ({241, 108}, { 24,  24}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_NO_ENTRY),     STR_DEBUG_FORCE_BREAKDOWN_TIP                         ),
-        makeProgressBar({107,  47}, { 147, 10}, Drawing::Colour::brightGreen                                                                                                                 ),
-        makeProgressBar({107,  58}, { 147, 10}, Drawing::Colour::brightRed                                                                                                                   )
+        makeProgressBar({107,  47}, { 147, 12}, Drawing::Colour::brightGreen                                                                                                        ),
+        makeProgressBar({107,  62}, { 147, 12}, Drawing::Colour::brightRed                                                                                                          ),
+        makeWidget     ({107,  76}, { 202, 14}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdEmpty,            STR_SELECT_HOW_OFTEN_A_MECHANIC_SHOULD_CHECK_THIS_RIDE),
+        makeWidget     ({297,  77}, {  11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,        STR_SELECT_HOW_OFTEN_A_MECHANIC_SHOULD_CHECK_THIS_RIDE),
+        makeWidget     ({289, 123}, {  24, 24}, WidgetType::flatBtn,      WindowColour::secondary, 0xFFFFFFFF,                STR_LOCATE_NEAREST_AVAILABLE_MECHANIC_TIP             ),
+        makeWidget     ({265, 123}, {  24, 24}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_CONSTRUCTION), STR_REFURBISH_RIDE_TIP                                ),
+        makeWidget     ({241, 123}, {  24, 24}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_NO_ENTRY),     STR_DEBUG_FORCE_BREAKDOWN_TIP                         )
     );
 
     // 0x009AE2A4
@@ -4136,18 +4136,19 @@ namespace OpenRCT2::Ui::Windows
             DrawTextBasic(rt, screenCoords, STR_INSPECTION);
 
             // Reliability
-            widget = &widgets[WIDX_PAGE_BACKGROUND];
-            screenCoords = windowPos + ScreenCoordsXY{ widget->left + 4, widget->top + 4 };
-
+            widget = &widgets[WIDX_RELIABILITY_BAR];
+            screenCoords = windowPos + ScreenCoordsXY{ 4, widget->top + 1 };
             auto ft = Formatter();
             ft.Add<uint16_t>(reliability);
             DrawTextBasic(rt, screenCoords, STR_RELIABILITY_LABEL_1757, ft);
-            screenCoords.y += 11;
 
+            // Down time
+            widget = &widgets[WIDX_DOWN_TIME_BAR];
+            screenCoords = windowPos + ScreenCoordsXY{ 4, widget->top + 1 };
             ft = Formatter();
             ft.Add<uint16_t>(downTime);
             DrawTextBasic(rt, screenCoords, STR_DOWN_TIME_LABEL_1889, ft);
-            screenCoords.y += 26;
+            screenCoords.y += 30;
 
             // Last inspection
             StringId stringId;
@@ -4161,7 +4162,7 @@ namespace OpenRCT2::Ui::Windows
             ft = Formatter();
             ft.Add<uint16_t>(ride->lastInspection);
             DrawTextBasic(rt, screenCoords, stringId, ft);
-            screenCoords.y += 12;
+            screenCoords.y += 15;
 
             // Last / current breakdown
             if (ride->breakdownReason == Breakdown::none)
@@ -4171,7 +4172,7 @@ namespace OpenRCT2::Ui::Windows
             ft = Formatter();
             ft.Add<StringId>(RideBreakdownReasonNames[EnumValue(ride->breakdownReason)]);
             DrawTextBasic(rt, screenCoords, stringId, ft);
-            screenCoords.y += 12;
+            screenCoords.y += 15;
 
             // Mechanic status
             if (ride->flags.has(RideFlag::brokenDown))
