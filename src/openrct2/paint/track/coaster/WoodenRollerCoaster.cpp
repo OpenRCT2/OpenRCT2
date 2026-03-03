@@ -915,7 +915,7 @@ static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kWoode
     },
 } };
 
-static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kFlatToRightBankImages = { {
+static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kWoodenFlatToRightBankImages = { {
     {
         SPR_WOODEN_RC_FLAT_TO_RIGHT_BANK_SW_NE,
         SPR_WOODEN_RC_FLAT_TO_RIGHT_BANK_RAILS_SW_NE,
@@ -938,7 +938,7 @@ static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kFlatT
     },
 } };
 
-static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kLeftBankImages = { {
+static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kWoodenLeftBankImages = { {
     { SPR_WOODEN_RC_LEFT_BANK_SW_NE, SPR_WOODEN_RC_LEFT_BANK_RAILS_SW_NE, SPR_TRACKS_WOODEN_RC_LEFT_BANK_FRONT_SW_NE,
       SPR_TRACKS_WOODEN_RC_LEFT_BANK_RAILS_FRONT_SW_NE },
     { SPR_WOODEN_RC_LEFT_BANK_NW_SE, SPR_WOODEN_RC_LEFT_BANK_RAILS_NW_SE, SPR_TRACKS_WOODEN_RC_LEFT_BANK_FRONT_NW_SE,
@@ -947,7 +947,7 @@ static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kLeftB
     { SPR_WOODEN_RC_LEFT_BANK_SE_NW, SPR_WOODEN_RC_LEFT_BANK_RAILS_SE_NW },
 } };
 
-static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kUp25ToLeftBankImages = { {
+static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kWoodenUp25ToLeftBankImages = { {
     {
         SPR_WOODEN_RC_25_DEG_TO_LEFT_BANK_SW_NE,
         SPR_WOODEN_RC_25_DEG_TO_LEFT_BANK_RAILS_SW_NE,
@@ -1688,7 +1688,7 @@ static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirecti
         } },
     } };
 
-static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kDiagFlatToLeftBankImages = { {
+static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kWoodenDiagFlatToLeftBankImages = { {
     {
         SPR_WOODEN_RC_DIAG_FLAT_TO_LEFT_BANK_0,
         SPR_WOODEN_RC_DIAG_FLAT_TO_LEFT_BANK_HANDRAIL_0,
@@ -3065,7 +3065,7 @@ static void WoodenRCTrackLeftBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    TrackFlatToBank<isClassic, kFlatToRightBankImages>(
+    TrackFlatToBank<isClassic, kWoodenFlatToRightBankImages>(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
@@ -3107,7 +3107,7 @@ static void WoodenRCTrackRightBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    Track25DegUpToBank<isClassic, kUp25ToLeftBankImages>(
+    Track25DegUpToBank<isClassic, kWoodenUp25ToLeftBankImages>(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
@@ -3137,7 +3137,7 @@ static void WoodenRCTrackRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    TrackFlatToBank<isClassic, kLeftBankImages>(
+    TrackFlatToBank<isClassic, kWoodenLeftBankImages>(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
@@ -9882,7 +9882,7 @@ static void WoodenRCTrackDiagRightBankToFlat(
     const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapReversedDiagonalStraight[trackSequence];
-    return TrackDiagFlatToBank<isClassic, kDiagFlatToLeftBankImages>(
+    return TrackDiagFlatToBank<isClassic, kWoodenDiagFlatToLeftBankImages>(
         session, ride, trackSequence, DirectionReverse(direction), height, trackElement, supportType);
 }
 
@@ -13401,7 +13401,7 @@ TrackPaintFunction GetTrackPaintFunctionWoodenAndClassicWoodenRC(TrackElemType t
         case TrackElemType::flatToLeftBank:
             return TrackFlatToBank<isClassic, kWoodenFlatToLeftBankImages>;
         case TrackElemType::flatToRightBank:
-            return TrackFlatToBank<isClassic, kFlatToRightBankImages>;
+            return TrackFlatToBank<isClassic, kWoodenFlatToRightBankImages>;
         case TrackElemType::leftBankToFlat:
             return WoodenRCTrackLeftBankToFlat<isClassic>;
         case TrackElemType::rightBankToFlat:
@@ -13415,7 +13415,7 @@ TrackPaintFunction GetTrackPaintFunctionWoodenAndClassicWoodenRC(TrackElemType t
         case TrackElemType::rightBankToUp25:
             return TrackBankTo25DegUp<isClassic, kRightBankToUp25Images>;
         case TrackElemType::up25ToLeftBank:
-            return Track25DegUpToBank<isClassic, kUp25ToLeftBankImages>;
+            return Track25DegUpToBank<isClassic, kWoodenUp25ToLeftBankImages>;
         case TrackElemType::up25ToRightBank:
             return Track25DegUpToBank<isClassic, kUp25ToRightBankImages>;
         case TrackElemType::leftBankToDown25:
@@ -13427,7 +13427,7 @@ TrackPaintFunction GetTrackPaintFunctionWoodenAndClassicWoodenRC(TrackElemType t
         case TrackElemType::down25ToRightBank:
             return WoodenRCTrack25DegDownToRightBank<isClassic>;
         case TrackElemType::leftBank:
-            return TrackFlatToBank<isClassic, kLeftBankImages>;
+            return TrackFlatToBank<isClassic, kWoodenLeftBankImages>;
         case TrackElemType::rightBank:
             return WoodenRCTrackRightBank<isClassic>;
         case TrackElemType::leftQuarterTurn5TilesUp25:
@@ -13551,7 +13551,7 @@ TrackPaintFunction GetTrackPaintFunctionWoodenAndClassicWoodenRC(TrackElemType t
         case TrackElemType::diagDown25ToFlat:
             return WoodenRCTrackDiag25DegDownToFlat<isClassic>;
         case TrackElemType::diagFlatToLeftBank:
-            return TrackDiagFlatToBank<isClassic, kDiagFlatToLeftBankImages>;
+            return TrackDiagFlatToBank<isClassic, kWoodenDiagFlatToLeftBankImages>;
         case TrackElemType::diagFlatToRightBank:
             return TrackDiagFlatToBank<isClassic, kDiagFlatToRightBankImages>;
         case TrackElemType::diagLeftBankToFlat:

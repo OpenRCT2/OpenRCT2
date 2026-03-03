@@ -741,7 +741,7 @@ static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kClass
     },
 } };
 
-static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kFlatToRightBankImages = { {
+static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kClassicWoodenTwisterFlatToRightBankImages = { {
     {
         SPR_CLASSIC_WOODEN_TWISTER_RC_FLAT_TO_RIGHT_BANK_0,
         SPR_CLASSIC_WOODEN_TWISTER_RC_FLAT_TO_RIGHT_BANK_HANDRAIL_0,
@@ -764,14 +764,14 @@ static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kFlatT
     },
 } };
 
-static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kLeftBankImages = { {
+static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kClassicWoodenTwisterLeftBankImages = { {
     { SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_BANK_0, SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_BANK_HANDRAIL_0 },
     { SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_BANK_1, SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_BANK_HANDRAIL_1 },
     { SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_BANK_2, SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_BANK_HANDRAIL_2 },
     { SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_BANK_3, SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_BANK_HANDRAIL_3 },
 } };
 
-static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kUp25ToLeftBankImages = { {
+static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kClassicWoodenTwisterUp25ToLeftBankImages = { {
     {
         SPR_CLASSIC_WOODEN_TWISTER_RC_UP25_TO_LEFT_BANK_0,
         SPR_CLASSIC_WOODEN_TWISTER_RC_UP25_TO_LEFT_BANK_HANDRAIL_0,
@@ -1513,7 +1513,7 @@ static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirecti
         } },
     } };
 
-static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kDiagFlatToLeftBankImages = { {
+static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kClassicWoodenTwisterDiagFlatToLeftBankImages = { {
     {
         SPR_CLASSIC_WOODEN_TWISTER_RC_DIAG_FLAT_TO_LEFT_BANK_0,
         SPR_CLASSIC_WOODEN_TWISTER_RC_DIAG_FLAT_TO_LEFT_BANK_HANDRAIL_0,
@@ -1861,7 +1861,7 @@ static void ClassicWoodenTwisterRCTrackLeftBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    TrackFlatToBank<false, kFlatToRightBankImages>(
+    TrackFlatToBank<false, kClassicWoodenTwisterFlatToRightBankImages>(
         session, ride, trackSequence, DirectionReverse(direction), height, trackElement, supportType);
 }
 
@@ -1877,7 +1877,7 @@ static void ClassicWoodenTwisterRCTrackRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    TrackFlatToBank<false, kLeftBankImages>(
+    TrackFlatToBank<false, kClassicWoodenTwisterLeftBankImages>(
         session, ride, trackSequence, DirectionReverse(direction), height, trackElement, supportType);
 }
 
@@ -1893,7 +1893,7 @@ static void ClassicWoodenTwisterRCTrackRightBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    Track25DegUpToBank<false, kUp25ToLeftBankImages>(
+    Track25DegUpToBank<false, kClassicWoodenTwisterUp25ToLeftBankImages>(
         session, ride, trackSequence, DirectionReverse(direction), height, trackElement, supportType);
 }
 
@@ -2018,7 +2018,7 @@ static void ClassicWoodenTwisterRCTrackDiagRightBankToFlat(
     const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapReversedDiagonalStraight[trackSequence];
-    return TrackDiagFlatToBank<false, kDiagFlatToLeftBankImages>(
+    return TrackDiagFlatToBank<false, kClassicWoodenTwisterDiagFlatToLeftBankImages>(
         session, ride, trackSequence, DirectionReverse(direction), height, trackElement, supportType);
 }
 
@@ -2099,17 +2099,17 @@ TrackPaintFunction GetTrackPaintFunctionClassicWoodenTwisterRC(TrackElemType tra
         case TrackElemType::flatToLeftBank:
             return TrackFlatToBank<false, kClassicWoodenTwisterFlatToLeftBankImages>;
         case TrackElemType::flatToRightBank:
-            return TrackFlatToBank<false, kFlatToRightBankImages>;
+            return TrackFlatToBank<false, kClassicWoodenTwisterFlatToRightBankImages>;
         case TrackElemType::leftBankToFlat:
             return ClassicWoodenTwisterRCTrackLeftBankToFlat;
         case TrackElemType::rightBankToFlat:
             return ClassicWoodenTwisterRCTrackRightBankToFlat;
         case TrackElemType::leftBank:
-            return TrackFlatToBank<false, kLeftBankImages>;
+            return TrackFlatToBank<false, kClassicWoodenTwisterLeftBankImages>;
         case TrackElemType::rightBank:
             return ClassicWoodenTwisterRCTrackRightBank;
         case TrackElemType::up25ToLeftBank:
-            return Track25DegUpToBank<false, kUp25ToLeftBankImages>;
+            return Track25DegUpToBank<false, kClassicWoodenTwisterUp25ToLeftBankImages>;
         case TrackElemType::up25ToRightBank:
             return Track25DegUpToBank<false, kUp25ToRightBankImages>;
         case TrackElemType::leftBankToDown25:
@@ -2164,7 +2164,7 @@ TrackPaintFunction GetTrackPaintFunctionClassicWoodenTwisterRC(TrackElemType tra
             return ClassicWoodenTwisterRCTrackRightQuarterTurn325DegDownToRightBank;
 
         case TrackElemType::diagFlatToLeftBank:
-            return TrackDiagFlatToBank<false, kDiagFlatToLeftBankImages>;
+            return TrackDiagFlatToBank<false, kClassicWoodenTwisterDiagFlatToLeftBankImages>;
         case TrackElemType::diagFlatToRightBank:
             return TrackDiagFlatToBank<false, kDiagFlatToRightBankImages>;
         case TrackElemType::diagLeftBankToFlat:
