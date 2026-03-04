@@ -13530,9 +13530,9 @@ static void InvertedRCTrackLeftLargeCorkscrewUp(
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BM_INVERT_LARGE_CORKSCREW + 16)),
-                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 6, height + 50 }, { 32, 20, 3 } });
+                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 6, height + 48 }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 50, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 54, session.SupportColours);
                     break;
             }
 
@@ -13719,9 +13719,9 @@ static void InvertedRCTrackRightLargeCorkscrewUp(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BM_INVERT_LARGE_CORKSCREW + 21)),
-                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 6, height + 50 }, { 32, 20, 3 } });
+                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 6, height + 48 }, { 32, 20, 1 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 50, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 54, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -13754,7 +13754,7 @@ static void InvertedRCTrackRightLargeCorkscrewUp(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BM_INVERT_LARGE_CORKSCREW + 22)),
-                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 28, height + 43 }, { 30, 2, 32 } });
+                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 40, height + 43 }, { 30, 1, 32 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
