@@ -12682,8 +12682,7 @@ static void InvertedRCTrackLeftLargeZeroGRollUp(
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BM_INVERT_LARGE_ZERO_G_ROLL + 5)),
-                        { 0, 0, height + kInvertedSpriteOffset },
-                        { { 0, 4, height + kInvertedSpriteOffset + 11 }, { 32, 2, 81 } });
+                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 4, height + kInvertedSpriteOffset }, { 32, 2, 81 } });
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 106,
                         session.SupportColours);
@@ -12890,8 +12889,7 @@ static void InvertedRCTrackRightLargeZeroGRollUp(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BM_INVERT_LARGE_ZERO_G_ROLL + 31)),
-                        { 0, 0, height + kInvertedSpriteOffset },
-                        { { 0, 4, height + kInvertedSpriteOffset + 11 }, { 32, 2, 81 } });
+                        { 0, 0, height + kInvertedSpriteOffset }, { { 4, 4, height + kInvertedSpriteOffset }, { 28, 1, 70 } });
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 106, session.SupportColours);
                     break;
@@ -12927,7 +12925,7 @@ static void InvertedRCTrackRightLargeZeroGRollUp(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BM_INVERT_LARGE_ZERO_G_ROLL + 32)),
-                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 2, height + 11 }, { 32, 2, 81 } });
+                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 2, height + 11 }, { 32, 1, 81 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -12967,7 +12965,7 @@ static void InvertedRCTrackRightLargeZeroGRollUp(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BM_INVERT_LARGE_ZERO_G_ROLL + 33)),
-                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 2, height }, { 32, 1, 48 } });
+                        { 0, 0, height + kInvertedSpriteOffset }, { { 4, 2, height }, { 32, 1, 48 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -13596,7 +13594,7 @@ static void InvertedRCTrackLeftLargeCorkscrewUp(
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BM_INVERT_LARGE_CORKSCREW + 8)),
-                        { 0, 0, height + kInvertedSpriteOffset }, { { 2, 2, height + 50 }, { 28, 28, 0 } });
+                        { 0, 0, height + kInvertedSpriteOffset }, { { 1, -1, height + 40 }, { 1, 30, 50 } });
 
                     break;
                 case 2:
@@ -13813,13 +13811,13 @@ static void InvertedRCTrackRightLargeCorkscrewUp(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BM_INVERT_LARGE_CORKSCREW + 33)),
-                        { 0, 0, height + kInvertedSpriteOffset }, { { 2, 2, height + 50 }, { 28, 28, 0 } });
+                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 0, height + 40 }, { 1, 31, 50 } });
 
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BM_INVERT_LARGE_CORKSCREW + 38)),
-                        { 0, 0, height + kInvertedSpriteOffset }, { { 2, 2, height + 50 }, { 28, 28, 0 } });
+                        { 0, 0, height + kInvertedSpriteOffset }, { { 2, 2, height + 50 }, { 28, 28, 1 } });
 
                     break;
             }
