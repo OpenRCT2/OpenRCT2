@@ -1623,10 +1623,9 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            _windowTitle = FormatStringID(STR_RIDE_CONSTRUCTION_WINDOW_TITLE, currentRide->getName().c_str());
-            widgets[WIDX_TITLE].setString(_windowTitle.c_str());
-
             auto ft = Formatter::Common();
+            ft.Add<uint16_t>(stringId);
+
             if (_currentlyShowingBrakeOrBoosterSpeed)
             {
                 uint16_t brakeSpeed2 = ((_currentBrakeSpeed * 9) >> 2) & 0xFFFF;
