@@ -272,7 +272,7 @@ inline PaintStruct* PaintAddImageAsParent(
 }
 
 [[nodiscard]] PaintStruct* PaintAddImageAsOrphan(
-    PaintSession& session, ImageId image_id, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox);
+    PaintSession& session, ImageId imageId, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox);
 PaintStruct* PaintAddImageAsChild(
     PaintSession& session, ImageId image_id, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox);
 

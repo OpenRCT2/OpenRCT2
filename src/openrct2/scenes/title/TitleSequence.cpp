@@ -298,11 +298,11 @@ namespace OpenRCT2::Title
         return true;
     }
 
-    static std::vector<std::string> GetSaves(const std::string& directory)
+    static std::vector<std::string> GetSaves(const std::string& path)
     {
         std::vector<std::string> saves;
 
-        auto pattern = Path::Combine(directory, u8"*.sc6;*.sv6;*.park;*.sv4;*.sc4");
+        auto pattern = Path::Combine(path, u8"*.sc6;*.sv6;*.park;*.sv4;*.sc4");
         auto scanner = Path::ScanDirectory(pattern, true);
         while (scanner->Next())
         {

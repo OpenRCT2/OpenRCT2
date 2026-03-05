@@ -68,14 +68,14 @@ void MapInit(const TileCoordsXY& size);
 
 void MapCountRemainingLandRights();
 void MapStripGhostFlagFromElements();
-OpenRCT2::TileElement* MapGetFirstElementAt(const CoordsXY& tilePos);
+OpenRCT2::TileElement* MapGetFirstElementAt(const CoordsXY& elementPos);
 OpenRCT2::TileElement* MapGetFirstElementAt(const TileCoordsXY& tilePos);
 OpenRCT2::TileElement* MapGetNthElementAt(const CoordsXY& coords, int32_t n);
 OpenRCT2::TileElement* MapGetFirstTileElementWithBaseHeightBetween(
     const TileCoordsXYRangedZ& loc, OpenRCT2::TileElementType type);
 void MapSetTileElement(const TileCoordsXY& tilePos, OpenRCT2::TileElement* elements);
 int32_t MapHeightFromSlope(const CoordsXY& coords, int32_t slopeDirection, bool isSloped);
-OpenRCT2::BannerElement* MapGetBannerElementAt(const CoordsXYZ& bannerPos, uint8_t direction);
+OpenRCT2::BannerElement* MapGetBannerElementAt(const CoordsXYZ& bannerPos, uint8_t position);
 OpenRCT2::SurfaceElement* MapGetSurfaceElementAt(const TileCoordsXY& coords);
 OpenRCT2::SurfaceElement* MapGetSurfaceElementAt(const CoordsXY& coords);
 OpenRCT2::PathElement* MapGetPathElementAt(const TileCoordsXYZ& loc);
