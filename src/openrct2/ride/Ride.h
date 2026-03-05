@@ -501,7 +501,7 @@ public:
     RideNaming getTypeNaming() const;
     OpenRCT2::TrackElement* getOriginElement(StationIndex stationIndex) const;
 
-    std::pair<RideMeasurement*, StringWithArgs> getMeasurement();
+    std::pair<RideMeasurement*, OpenRCT2::StringWithArgs> getMeasurement();
 
     uint8_t getNumShelteredSections() const;
     void increaseNumShelteredSections();

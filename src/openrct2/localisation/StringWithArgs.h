@@ -12,8 +12,11 @@
 #include "Formatter.h"
 #include "StringIdType.h"
 
-struct StringWithArgs
+namespace OpenRCT2
 {
-    StringId str;
-    OpenRCT2::Formatter args;
-};
+    struct StringWithArgs
+    {
+        StringId str;
+        Formatter args;
+    };
+} // namespace OpenRCT2
