@@ -13,6 +13,7 @@
 #include "../core/BitSet.hpp"
 #include "../core/FixedPoint.hpp"
 #include "../core/FlagHolder.hpp"
+#include "../localisation/StringWithArgs.h"
 #include "RideColour.h"
 #include "RideEntry.h"
 #include "RideRatings.h"
@@ -31,7 +32,6 @@ struct IObjectManager;
 struct Ride;
 struct RideTypeDescriptor;
 struct Guest;
-struct StringWithArgs;
 struct Staff;
 struct Vehicle;
 struct RideObjectEntry;

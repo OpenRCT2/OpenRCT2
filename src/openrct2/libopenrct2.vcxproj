@@ -321,6 +321,7 @@
     <ClInclude Include="localisation\Localisation.Date.h" />
     <ClInclude Include="localisation\LocalisationService.h" />
     <ClInclude Include="localisation\StringIds.h" />
+    <ClInclude Include="localisation\StringWithArgs.h" />
     <ClInclude Include="management\Award.h" />
     <ClInclude Include="management\Finance.h" />
     <ClInclude Include="management\Marketing.h" />

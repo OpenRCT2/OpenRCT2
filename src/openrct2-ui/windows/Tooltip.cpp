@@ -17,6 +17,7 @@
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
+#include <openrct2/localisation/StringWithArgs.h>
 #include <openrct2/ui/WindowManager.h>
 
 using namespace OpenRCT2::Drawing;

@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../localisation/Formatter.h"
+#include "../localisation/StringWithArgs.h"
 #include "ColourWithFlags.h"
 #include "ScrollArea.h"
 #include "Window.h"

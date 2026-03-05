@@ -40,6 +40,7 @@
 #include <openrct2/localisation/Language.h>
 #include <openrct2/localisation/Localisation.Date.h>
 #include <openrct2/localisation/LocalisationService.h>
+#include <openrct2/localisation/StringWithArgs.h>
 #include <openrct2/network/Network.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/rct1/Csg.h>

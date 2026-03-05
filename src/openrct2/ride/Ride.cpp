@@ -36,6 +36,7 @@
 #include "../interface/WindowBase.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Formatting.h"
+#include "../localisation/StringWithArgs.h"
 #include "../management/NewsItem.h"
 #include "../object/MusicObject.h"
 #include "../object/ObjectList.h"
