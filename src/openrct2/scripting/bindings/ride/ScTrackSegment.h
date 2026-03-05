@@ -68,9 +68,8 @@ namespace OpenRCT2::Scripting
         DukValue getMirrorElement() const;
         DukValue getAlternativeElement() const;
         int32_t getPriceModifier() const;
-        int32_t getPreviewZOffset() const;
         int32_t getTrackGroup() const;
-        template<OpenRCT2::TrackMetadata::TrackElementFlag flag>
+        template<TrackMetadata::TrackElementFlag flag>
         bool getTrackFlag() const;
         std::string getTrackCurvature() const;
         std::string getTrackPitchDirection() const;
