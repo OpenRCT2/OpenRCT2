@@ -292,6 +292,7 @@ namespace OpenRCT2::Ui::Windows
 
             initScrollWidgets();
             invalidate();
+            onResize();
         }
 
         void SetPressedTab()
