@@ -87,7 +87,7 @@ namespace OpenRCT2::Ui::Windows
         bool _selectedItemIsBeingUpdated;
         bool _reloadTrackDesigns;
 
-        void FilterList()
+        void filterList()
         {
             _filteredTrackIds.clear();
 
@@ -120,7 +120,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void SelectFromList(int32_t listIndex)
+        void selectFromList(int32_t listIndex)
         {
             Audio::Play(Audio::SoundId::click1, 0, this->windowPos.x + (this->width / 2));
             if (gLegacyScene != LegacyScene::trackDesignsManager)
@@ -168,7 +168,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        int32_t GetListItemFromPosition(const ScreenCoordsXY& screenCoords)
+        int32_t getListItemFromPosition(const ScreenCoordsXY& screenCoords)
         {
             size_t maxItems = _filteredTrackIds.size();
             if (gLegacyScene != LegacyScene::trackDesignsManager)
@@ -185,7 +185,7 @@ namespace OpenRCT2::Ui::Windows
             return index;
         }
 
-        void LoadDesignsList(RideSelection item)
+        void loadDesignsList(RideSelection item)
         {
             auto repo = GetContext()->GetTrackDesignRepository();
             std::string entryName;
@@ -198,10 +198,10 @@ namespace OpenRCT2::Ui::Windows
             }
             _trackDesigns = repo->GetItemsForObjectEntry(item.Type, entryName);
 
-            FilterList();
+            filterList();
         }
 
-        bool LoadDesignPreview(const u8string& path)
+        bool loadDesignPreview(const u8string& path)
         {
             _loadedTrackDesign = TrackDesignImport(path.c_str());
             if (_loadedTrackDesign != nullptr)
@@ -224,7 +224,7 @@ namespace OpenRCT2::Ui::Windows
             setWidgets(_trackListWidgets);
             widgets[WIDX_FILTER_STRING].string = _filterString;
 
-            LoadDesignsList(_window_track_list_item);
+            loadDesignsList(_window_track_list_item);
 
             WindowInitScrollWidgets(*this);
             _selectedItemIsBeingUpdated = false;
@@ -244,7 +244,7 @@ namespace OpenRCT2::Ui::Windows
             _loadedTrackDesignIndex = kTrackDesignIndexUnloaded;
         }
 
-        void ReopenTrackManager()
+        void reopenTrackManager()
         {
             auto* windowMgr = GetWindowManager();
             windowMgr->CloseByNumber(WindowClass::manageTrackDesign, number);
@@ -267,7 +267,7 @@ namespace OpenRCT2::Ui::Windows
             // try to load the track manager again, and an infinite loop will result.
             if ((gLegacyScene == LegacyScene::trackDesignsManager) && gScreenAge != 0)
             {
-                ReopenTrackManager();
+                reopenTrackManager();
             }
         }
 
@@ -296,7 +296,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     else
                     {
-                        ReopenTrackManager();
+                        reopenTrackManager();
                     }
                     break;
                 case WIDX_FILTER_STRING:
@@ -318,7 +318,7 @@ namespace OpenRCT2::Ui::Windows
                     }
 
                     String::set(_filterString, sizeof(_filterString), "");
-                    FilterList();
+                    filterList();
                     invalidate();
                     break;
             }
@@ -341,10 +341,10 @@ namespace OpenRCT2::Ui::Windows
         {
             if (!_selectedItemIsBeingUpdated)
             {
-                int32_t i = GetListItemFromPosition(screenCoords);
+                int32_t i = getListItemFromPosition(screenCoords);
                 if (i != -1)
                 {
-                    SelectFromList(i);
+                    selectFromList(i);
                 }
             }
         }
@@ -353,7 +353,7 @@ namespace OpenRCT2::Ui::Windows
         {
             if (!_selectedItemIsBeingUpdated)
             {
-                int32_t i = GetListItemFromPosition(screenCoords);
+                int32_t i = getListItemFromPosition(screenCoords);
                 if (i != -1 && selectedListItem != i)
                 {
                     selectedListItem = i;
@@ -372,7 +372,7 @@ namespace OpenRCT2::Ui::Windows
 
             String::set(_filterString, sizeof(_filterString), std::string(text).c_str());
 
-            FilterList();
+            filterList();
 
             scrolls->contentOffsetY = 0;
 
@@ -445,7 +445,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (_reloadTrackDesigns)
             {
-                LoadDesignsList(_window_track_list_item);
+                loadDesignsList(_window_track_list_item);
                 selectedListItem = 0;
                 invalidate();
                 _reloadTrackDesigns = false;
@@ -489,7 +489,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (_loadedTrackDesignIndex != trackIndex)
             {
-                if (LoadDesignPreview(path))
+                if (loadDesignPreview(path))
                 {
                     _loadedTrackDesignIndex = trackIndex;
                 }
@@ -744,12 +744,12 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void SetIsBeingUpdated(const bool beingUpdated)
+        void setIsBeingUpdated(const bool beingUpdated)
         {
             _selectedItemIsBeingUpdated = beingUpdated;
         }
 
-        void ReloadTrackDesigns()
+        void reloadTrackDesigns()
         {
             _reloadTrackDesigns = true;
         }
@@ -780,7 +780,7 @@ namespace OpenRCT2::Ui::Windows
         auto* trackListWindow = static_cast<TrackListWindow*>(windowMgr->FindByClass(WindowClass::trackDesignList));
         if (trackListWindow != nullptr)
         {
-            trackListWindow->ReloadTrackDesigns();
+            trackListWindow->reloadTrackDesigns();
         }
     }
 
@@ -790,7 +790,7 @@ namespace OpenRCT2::Ui::Windows
         auto* trackListWindow = static_cast<TrackListWindow*>(windowMgr->FindByClass(WindowClass::trackDesignList));
         if (trackListWindow != nullptr)
         {
-            trackListWindow->SetIsBeingUpdated(beingUpdated);
+            trackListWindow->setIsBeingUpdated(beingUpdated);
         }
     }
 } // namespace OpenRCT2::Ui::Windows
