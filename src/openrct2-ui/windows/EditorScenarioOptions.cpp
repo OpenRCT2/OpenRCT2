@@ -272,7 +272,7 @@ namespace OpenRCT2::Ui::Windows
         makeSpinnerWidgets({298,  86}, {       70,  14}, WidgetType::spinner,      WindowColour::secondary                                                                          ), // NB: 3 widgets
         makeWidget        ({  8, 106}, {      280,  12}, WidgetType::label,        WindowColour::secondary, STR_GUEST_INIT_THIRST                                                   ),
         makeSpinnerWidgets({298, 105}, {       70,  14}, WidgetType::spinner,      WindowColour::secondary                                                                          ), // NB: 3 widgets
-        makeWidget        ({  8, 114}, {      180,  12}, WidgetType::label,        WindowColour::secondary, STR_GUESTS_PREFER_INTENSITY_LABEL                                       ),
+        makeWidget        ({  8, 124}, {      180,  12}, WidgetType::label,        WindowColour::secondary, STR_GUESTS_PREFER_INTENSITY_LABEL                                       ),
         makeWidget        ({198, 123}, {      170,  14}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdNone,                        STR_GUESTS_PREFER_INTENSITY_TIP   ),
         makeWidget        ({357, 124}, {       11,  12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,                   STR_GUESTS_PREFER_INTENSITY_TIP   ),
         makeWidget        ({  8, 143}, {      350,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_HARD_GUEST_GENERATION,            STR_HARD_GUEST_GENERATION_TIP     )
