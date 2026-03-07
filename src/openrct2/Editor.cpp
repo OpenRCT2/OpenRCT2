@@ -341,7 +341,7 @@ namespace OpenRCT2::Editor
             park.bankLoanInterestRate = std::clamp<uint8_t>(park.bankLoanInterestRate, 5, kMaxBankLoanInterestRate);
         }
 
-        ClimateReset();
+        Weather::reset();
 
         News::InitQueue(gameState);
     }

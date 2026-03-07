@@ -1468,7 +1468,7 @@ static void RideBreakdownUpdate(Ride& ride)
 static Breakdown RideGetNewBreakdownProblem(const Ride& ride)
 {
     // Brake failure is more likely when it's raining or heavily snowing (HeavySnow and Blizzard)
-    _breakdownProblemProbabilities[EnumValue(Breakdown::brakesFailure)] = ClimateIsPrecipitating() ? 20 : 3;
+    _breakdownProblemProbabilities[EnumValue(Breakdown::brakesFailure)] = Weather::isPrecipitating() ? 20 : 3;
 
     if (!ride.canBreakDown())
         return Breakdown::none;

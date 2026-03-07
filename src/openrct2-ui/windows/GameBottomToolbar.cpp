@@ -215,7 +215,7 @@ namespace OpenRCT2::Ui::Windows
             StringId format = STR_CELSIUS_VALUE;
             if (Config::Get().general.temperatureFormat == TemperatureUnit::Fahrenheit)
             {
-                temperature = ClimateCelsiusToFahrenheit(temperature);
+                temperature = Weather::celsiusToFahrenheit(temperature);
                 format = STR_FAHRENHEIT_VALUE;
             }
             ft = Formatter();
@@ -224,11 +224,11 @@ namespace OpenRCT2::Ui::Windows
             screenCoords.x += 30;
 
             // Current weather
-            auto currentWeatherSpriteId = ClimateGetWeatherSpriteId(getGameState().weatherCurrent.weatherType);
+            auto currentWeatherSpriteId = Weather::getWeatherSpriteId(getGameState().weatherCurrent.weatherType);
             GfxDrawSprite(rt, ImageId(currentWeatherSpriteId), screenCoords);
 
             // Next weather
-            auto nextWeatherSpriteId = ClimateGetWeatherSpriteId(getGameState().weatherNext.weatherType);
+            auto nextWeatherSpriteId = Weather::getWeatherSpriteId(getGameState().weatherNext.weatherType);
             if (currentWeatherSpriteId != nextWeatherSpriteId)
             {
                 if (getGameState().weatherUpdateTimer < 960)

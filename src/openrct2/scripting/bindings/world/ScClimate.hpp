@@ -55,29 +55,29 @@ namespace OpenRCT2::Scripting
     class ScClimate
     {
     public:
-        static std::string WeatherTypeToString(WeatherType token)
+        static std::string WeatherTypeToString(Weather::Type token)
         {
             switch (token)
             {
-                case WeatherType::Sunny:
+                case Weather::Type::Sunny:
                     return "sunny";
-                case WeatherType::PartiallyCloudy:
+                case Weather::Type::PartiallyCloudy:
                     return "partiallyCloudy";
-                case WeatherType::Cloudy:
+                case Weather::Type::Cloudy:
                     return "cloudy";
-                case WeatherType::Rain:
+                case Weather::Type::Rain:
                     return "rain";
-                case WeatherType::HeavyRain:
+                case Weather::Type::HeavyRain:
                     return "heavyRain";
-                case WeatherType::Thunder:
+                case Weather::Type::Thunder:
                     return "thunder";
-                case WeatherType::Snow:
+                case Weather::Type::Snow:
                     return "snow";
-                case WeatherType::HeavySnow:
+                case Weather::Type::HeavySnow:
                     return "heavySnow";
-                case WeatherType::Blizzard:
+                case Weather::Type::Blizzard:
                     return "blizzard";
-                case WeatherType::Count:
+                case Weather::Type::Count:
                     return {};
             }
             return {};

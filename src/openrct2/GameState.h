@@ -43,8 +43,8 @@ namespace OpenRCT2
         uint32_t currentTicks{};
         Date date;
 
-        WeatherState weatherCurrent;
-        WeatherState weatherNext;
+        Weather::State weatherCurrent;
+        Weather::State weatherNext;
         uint16_t weatherUpdateTimer;
 
         uint32_t nextGuestNumber;

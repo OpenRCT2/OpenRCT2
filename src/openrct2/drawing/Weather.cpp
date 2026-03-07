@@ -63,12 +63,12 @@ void DrawWeather(RenderTarget& rt, IWeatherDrawer* weatherDrawer)
         viewFlags = viewport->flags;
 
     auto weatherLevel = getGameState().weatherCurrent.level;
-    if (weatherLevel == WeatherLevel::None || gTrackDesignSaveMode || (viewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
+    if (weatherLevel == Weather::Level::None || gTrackDesignSaveMode || (viewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
         return;
 
     // Get weather draw function and draw weather
     auto drawFunc = DrawRainFunctions[EnumValue(weatherLevel)];
-    if (ClimateIsSnowing() || ClimateTransitioningToSnow())
+    if (Weather::isSnowing() || Weather::isTransitioningToSnow())
     {
         drawFunc = DrawSnowFunctions[EnumValue(weatherLevel)];
     }

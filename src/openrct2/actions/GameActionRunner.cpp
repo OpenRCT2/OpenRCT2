@@ -140,9 +140,9 @@ namespace OpenRCT2::GameActions
             }
 
             GameAction* action = queued.action.get();
-            action->SetFlags(action->GetFlags().with(CommandFlag::networked));
-
             Guard::Assert(action != nullptr);
+
+            action->SetFlags(action->GetFlags().with(CommandFlag::networked));
 
             Result result = Execute(action, gameState);
             if (result.error == Status::ok && Network::GetMode() == Network::Mode::server)

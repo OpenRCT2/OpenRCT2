@@ -219,7 +219,7 @@ namespace OpenRCT2::GameActions
                 break;
             case CheatType::forceWeather:
                 // Todo - make sure this is safe
-                ClimateForceWeather(WeatherType{ static_cast<uint8_t>(_param1) });
+                Weather::forceWeather(Weather::Type{ static_cast<uint8_t>(_param1) });
                 break;
             case CheatType::freezeWeather:
                 gameState.cheats.freezeWeather = _param1 != 0;
@@ -390,7 +390,7 @@ namespace OpenRCT2::GameActions
             case CheatType::setStaffSpeed:
                 return { { 0, 255 }, { 0, 0 } };
             case CheatType::forceWeather:
-                return { { 0, EnumValue(WeatherType::Count) - 1 }, { 0, 0 } };
+                return { { 0, EnumValue(Weather::Type::Count) - 1 }, { 0, 0 } };
             case CheatType::setForcedParkRating:
                 return { { -1, 999 }, { 0, 0 } };
             case CheatType::createDucks:

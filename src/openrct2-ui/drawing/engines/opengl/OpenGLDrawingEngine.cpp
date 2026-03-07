@@ -368,7 +368,7 @@ public:
 
     void PaintWindows() override
     {
-        if (ClimateHasWeatherEffect() || gPaintForceRedraw)
+        if (Weather::hasWeatherEffect() || gPaintForceRedraw)
         {
             WindowUpdateAllViewports();
             // OpenGL doesn't support restoring pixels, always redraw.

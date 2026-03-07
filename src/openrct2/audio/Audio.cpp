@@ -326,7 +326,7 @@ namespace OpenRCT2::Audio
     {
         StopVehicleSounds();
         PeepStopCrowdNoise();
-        ClimateStopWeatherSound();
+        Weather::stopWeatherSound();
     }
 
     void StopAll()
@@ -399,7 +399,7 @@ namespace OpenRCT2::Audio
         PeepStopCrowdNoise();
         StopTitleMusic();
         RideAudio::StopAllChannels();
-        ClimateStopWeatherSound();
+        Weather::stopWeatherSound();
         _currentAudioDevice = -1;
     }
 

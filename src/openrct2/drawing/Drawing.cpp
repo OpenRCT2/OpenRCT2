@@ -716,7 +716,7 @@ void UpdatePalette(std::span<const BGRAColour> palette, PaletteIndex startIndex,
         else
         {
             float night = gDayNightCycle;
-            if (night >= 0 && gClimateLightningFlash == 0)
+            if (night >= 0 && Weather::gLightningFlash == 0)
             {
                 r = Lerp(r, SoftLight(r, 8), night);
                 g = Lerp(g, SoftLight(g, 8), night);
@@ -750,7 +750,7 @@ void UpdatePaletteEffects()
 {
     auto water_type = OpenRCT2::ObjectManager::GetObjectEntry<WaterObjectEntry>(0);
 
-    if (gClimateLightningFlash == 1)
+    if (Weather::gLightningFlash == 1)
     {
         // Change palette to lighter colour during lightning
         int32_t palette = SPR_GAME_DEFAULT_PALETTE;
@@ -775,11 +775,11 @@ void UpdatePaletteEffects()
 
             UpdatePalette(gGamePalette, kPaletteOffsetDynamic, kPaletteLengthDynamic);
         }
-        gClimateLightningFlash++;
+        Weather::gLightningFlash++;
     }
     else
     {
-        if (gClimateLightningFlash == 2)
+        if (Weather::gLightningFlash == 2)
         {
             // Change palette back to normal after lightning
             int32_t palette = SPR_GAME_DEFAULT_PALETTE;
@@ -809,7 +809,7 @@ void UpdatePaletteEffects()
         uint32_t shade = 0;
         if (Config::Get().general.renderWeatherGloom)
         {
-            auto paletteId = ClimateGetWeatherGloomPaletteId(getGameState().weatherCurrent);
+            auto paletteId = Weather::getWeatherGloomPaletteId(getGameState().weatherCurrent);
             if (paletteId != FilterPaletteID::paletteNull)
             {
                 shade = 1;
@@ -892,10 +892,10 @@ void UpdatePaletteEffects()
         }
 
         UpdatePalette(gGamePalette, kPaletteOffsetAnimated, kPaletteLengthAnimated);
-        if (gClimateLightningFlash == 2)
+        if (Weather::gLightningFlash == 2)
         {
             UpdatePalette(gGamePalette, kPaletteOffsetDynamic, kPaletteLengthDynamic);
-            gClimateLightningFlash = 0;
+            Weather::gLightningFlash = 0;
         }
     }
 }

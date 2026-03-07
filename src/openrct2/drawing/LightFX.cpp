@@ -956,7 +956,7 @@ namespace OpenRCT2::Drawing::LightFx
 
         float wetnessBoost = 1.0f; // 1.0f + wetness * wetness * 0.1f;
 
-        if (night >= 0 && gClimateLightningFlash != 1)
+        if (night >= 0 && Weather::gLightningFlash != 1)
         {
             *r = Lerp(*r, SoftLight(*r, 8), night);
             *g = Lerp(*g, SoftLight(*g, 8), night);

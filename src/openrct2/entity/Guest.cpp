@@ -1529,7 +1529,7 @@ static money64 getItemValue(const ShopItemDescriptor& shopItemDescriptor)
  */
 static bool GuestDecideAndBuyItem(Guest& guest, Ride& ride, const ShopItem shopItem, money64 price)
 {
-    const bool isPrecipitating = ClimateIsPrecipitating();
+    const bool isPrecipitating = Weather::isPrecipitating();
     const bool isPrecipitatingAndUmbrella = isPrecipitating && (shopItem == ShopItem::umbrella);
 
     bool hasVoucher = false;
@@ -2106,7 +2106,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
                 }
                 else
                 {
-                    const bool isPrecipitating = ClimateIsPrecipitating();
+                    const bool isPrecipitating = Weather::isPrecipitating();
                     if (isPrecipitating && !GuestShouldRideWhileRaining(*this, ride))
                     {
                         if (peepAtRide)
@@ -4962,7 +4962,7 @@ void Guest::UpdateRideMazePathfinding()
 
     if (IsActionInterruptable())
     {
-        if (Energy > 80 && !(PeepFlags & PEEP_FLAGS_SLOW_WALK) && !ClimateIsPrecipitating()
+        if (Energy > 80 && !(PeepFlags & PEEP_FLAGS_SLOW_WALK) && !Weather::isPrecipitating()
             && (ScenarioRand() & 0xFFFF) <= 2427)
         {
             Action = PeepActionType::jump;
@@ -6947,7 +6947,7 @@ void Guest::UpdateAnimationGroup()
         WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
     }
 
-    if (ClimateIsPrecipitating() && (HasItem(ShopItem::umbrella)) && x != kLocationNull)
+    if (Weather::isPrecipitating() && (HasItem(ShopItem::umbrella)) && x != kLocationNull)
     {
         CoordsXY loc = { x, y };
         if (MapIsLocationValid(loc.ToTileStart()))

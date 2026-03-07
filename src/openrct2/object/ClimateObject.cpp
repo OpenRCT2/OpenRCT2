@@ -22,6 +22,8 @@
 
 namespace OpenRCT2
 {
+    using namespace OpenRCT2::Weather;
+
     struct RawClimateMonth
     {
         int8_t baseTemperature;
@@ -59,10 +61,10 @@ namespace OpenRCT2
         const auto dist = getYearlyDistribution();
         const auto totalSize = kNumClimateMonths * kWeatherDistSize;
 
-        for (auto i = 0u; i < EnumValue(WeatherType::Count); i++)
+        for (auto i = 0u; i < EnumValue(Weather::Type::Count); i++)
         {
-            auto type = WeatherType(i);
-            auto imageId = ImageId(ClimateGetWeatherSpriteId(type));
+            auto type = Weather::Type(i);
+            auto imageId = ImageId(Weather::getWeatherSpriteId(type));
             auto coords = ScreenCoordsXY(8 + (i % 3) * 35, 3 + (i / 3) * 37);
             GfxDrawSprite(rt, imageId, coords);
 
@@ -95,7 +97,7 @@ namespace OpenRCT2
         return _climate.itemThresholds;
     }
 
-    const WeatherPattern& ClimateObject::getPatternForMonth(uint8_t month) const
+    const Pattern& ClimateObject::getPatternForMonth(uint8_t month) const
     {
         return _climate.patterns[month];
     }
@@ -107,7 +109,7 @@ namespace OpenRCT2
 
     YearlyDistribution ClimateObject::getYearlyDistribution() const
     {
-        auto weatherTypeCount = [](const WeatherPattern& pattern, const WeatherType target) {
+        auto weatherTypeCount = [](const Weather::Pattern& pattern, const Weather::Type target) {
             auto count = 0u;
             for (auto type : pattern.distribution)
             {
@@ -121,8 +123,8 @@ namespace OpenRCT2
         for (auto m = 0; m < kNumClimateMonths; m++)
         {
             auto& pattern = getPatternForMonth(m);
-            for (auto i = 0u; i < EnumValue(WeatherType::Count); i++)
-                dist[i] += weatherTypeCount(pattern, WeatherType(i));
+            for (auto i = 0u; i < EnumValue(Weather::Type::Count); i++)
+                dist[i] += weatherTypeCount(pattern, Weather::Type(i));
         }
 
         return dist;
@@ -148,7 +150,7 @@ namespace OpenRCT2
 
                 for (auto k = 0u; k < srcMonth.distribution[w]; k++)
                 {
-                    dstMonth.distribution[i] = WeatherType(w);
+                    dstMonth.distribution[i] = Weather::Type(w);
                     i++;
                 }
             }

@@ -379,9 +379,9 @@ void ScreenshotGiant()
 
 static void ApplyOptions(const ScreenshotOptions* options, Viewport& viewport)
 {
-    if (options->weather != WeatherType::Sunny && options->weather != WeatherType::Count)
+    if (options->weather != Weather::Type::Sunny && options->weather != Weather::Type::Count)
     {
-        ClimateForceWeather(WeatherType{ static_cast<uint8_t>(EnumValue(options->weather) - 1) });
+        Weather::forceWeather(Weather::Type{ static_cast<uint8_t>(EnumValue(options->weather) - 1) });
     }
 
     if (options->hide_guests)
