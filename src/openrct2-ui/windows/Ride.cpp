@@ -2985,6 +2985,64 @@ namespace OpenRCT2::Ui::Windows
             ImageId imageId;
         };
 
+        static VehicleDrawInfo* prepareTrainCarImages(
+            const Ride& ride, const RideObjectEntry& rideEntry, int32_t trainIndex, bool isReversed, int32_t x, int32_t y,
+            VehicleDrawInfo* out)
+        {
+            auto nextImageToDraw = out;
+
+            for (int32_t j = 0; j < ride.numCarsPerTrain; j++)
+            {
+                const auto carIndex = (isReversed) ? (ride.numCarsPerTrain - 1) - j : j;
+                const auto vehicleIndex = RideEntryGetVehicleAtPosition(ride.subtype, ride.numCarsPerTrain, carIndex);
+
+                const auto& carEntry = rideEntry.Cars[vehicleIndex];
+                x += carEntry.spacing / 17432;
+                y -= (carEntry.spacing / 2) / 17432;
+
+                int32_t vehicleColourIndex = 0;
+                switch (ride.vehicleColourSettings)
+                {
+                    case VehicleColourSettings::same:
+                        vehicleColourIndex = 0;
+                        break;
+                    case VehicleColourSettings::perTrain:
+                        vehicleColourIndex = trainIndex;
+                        break;
+                    case VehicleColourSettings::perCar:
+                        vehicleColourIndex = carIndex;
+                        break;
+                }
+
+                VehicleColour vehicleColour = RideGetVehicleColour(ride, vehicleColourIndex);
+
+                ImageIndex imageIndex = carEntry.SpriteByYaw(Entity::Yaw::kBaseRotation / 2, SpriteGroupType::SlopeFlat);
+
+                if (isReversed)
+                {
+                    auto baseRotation = carEntry.NumRotationSprites(SpriteGroupType::SlopeFlat);
+                    imageIndex = carEntry.SpriteByYaw(
+                        (imageIndex + (baseRotation / 2)) & (baseRotation - 1), SpriteGroupType::SlopeFlat);
+                }
+
+                imageIndex &= carEntry.TabRotationMask;
+                imageIndex *= carEntry.base_num_frames;
+                imageIndex += carEntry.base_image_id;
+
+                auto imageId = ImageId(imageIndex, vehicleColour.Body, vehicleColour.Trim, vehicleColour.Tertiary);
+
+                nextImageToDraw->x = x;
+                nextImageToDraw->y = y;
+                nextImageToDraw->imageId = imageId;
+                nextImageToDraw++;
+
+                x += carEntry.spacing / 17432;
+                y -= (carEntry.spacing / 2) / 17432;
+            }
+
+            return nextImageToDraw;
+        }
+
         void VehicleOnScrollDraw(RenderTarget& rt, int32_t scrollIndex)
         {
             auto ride = GetRide(rideId);
@@ -3010,60 +3068,8 @@ namespace OpenRCT2::Ui::Windows
             for (int32_t i = 0; i < ride->numTrains; i++)
             {
                 VehicleDrawInfo trainCarImages[Limits::kMaxCarsPerTrain];
-                VehicleDrawInfo* nextImageToDraw = trainCarImages;
-                int32_t x = startX;
-                int32_t y = startY;
 
-                static_assert(std::numeric_limits<decltype(ride->numCarsPerTrain)>::max() <= std::size(trainCarImages));
-
-                // Prepare each car in train for drawing
-                for (int32_t j = 0; j < ride->numCarsPerTrain; j++)
-                {
-                    const auto carIndex = (isReversed) ? (ride->numCarsPerTrain - 1) - j : j;
-
-                    const auto& carEntry = rideEntry->Cars[RideEntryGetVehicleAtPosition(
-                        ride->subtype, ride->numCarsPerTrain, carIndex)];
-                    x += carEntry.spacing / 17432;
-                    y -= (carEntry.spacing / 2) / 17432;
-
-                    // Get colour of vehicle
-                    int32_t vehicleColourIndex = 0;
-                    switch (ride->vehicleColourSettings)
-                    {
-                        case VehicleColourSettings::same:
-                            vehicleColourIndex = 0;
-                            break;
-                        case VehicleColourSettings::perTrain:
-                            vehicleColourIndex = i;
-                            break;
-                        case VehicleColourSettings::perCar:
-                            vehicleColourIndex = carIndex;
-                            break;
-                    }
-                    VehicleColour vehicleColour = RideGetVehicleColour(*ride, vehicleColourIndex);
-
-                    ImageIndex imageIndex = carEntry.SpriteByYaw(Entity::Yaw::kBaseRotation / 2, SpriteGroupType::SlopeFlat);
-                    if (isReversed)
-                    {
-                        auto baseRotation = carEntry.NumRotationSprites(SpriteGroupType::SlopeFlat);
-                        imageIndex = carEntry.SpriteByYaw(
-                            (imageIndex + (baseRotation / 2)) & (baseRotation - 1), SpriteGroupType::SlopeFlat);
-                    }
-
-                    imageIndex &= carEntry.TabRotationMask;
-                    imageIndex *= carEntry.base_num_frames;
-                    imageIndex += carEntry.base_image_id;
-
-                    auto imageId = ImageId(imageIndex, vehicleColour.Body, vehicleColour.Trim, vehicleColour.Tertiary);
-
-                    nextImageToDraw->x = x;
-                    nextImageToDraw->y = y;
-                    nextImageToDraw->imageId = imageId;
-                    nextImageToDraw++;
-
-                    x += carEntry.spacing / 17432;
-                    y -= (carEntry.spacing / 2) / 17432;
-                }
+                auto* nextImageToDraw = prepareTrainCarImages(*ride, *rideEntry, i, isReversed, startX, startY, trainCarImages);
 
                 if (ride->getRideTypeDescriptor().flags.has(RtdFlag::layeredVehiclePreview)
                     && (nextImageToDraw - trainCarImages) >= 2)
