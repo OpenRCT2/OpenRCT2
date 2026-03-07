@@ -1,5 +1,6 @@
 0.5.1 (in development)
 ------------------------------------------------------------------------
+- Feature: [#25362] Dragged footpaths over terrain now automatically create connected slopes.
 - Feature: [#24242] [Plugin] Add ride-breakdown hooktype.
 - Feature: [#24879] [Plugin] Add methods for showing and hiding gridlines.
 - Improved: [#26374] Add higher resolution app icons for Android.
@@ -53,7 +54,6 @@
 0.4.32 (2026-03-01)
 ------------------------------------------------------------------------
 - Feature: [#22704] Rides can be made invisible more easily.
-- Feature: [#25362] Dragged footpaths over terrain now automatically create connected slopes.
 - Improved: [#21753] Tracked rides with cheated powered launch mode can change powered launch speed without extra cheats.
 - Improved: [#25526] When a shop item cannot be recoloured, show a preview of the building instead.
 - Improved: [#25941] The command line sprite build command is now faster.

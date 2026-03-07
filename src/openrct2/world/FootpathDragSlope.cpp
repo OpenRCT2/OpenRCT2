@@ -28,7 +28,7 @@ namespace OpenRCT2
     };
 
     // Get surface height including raised corners and steep slopes
-    static int32_t GetMaxSurfaceHeight(const SurfaceElement& surface)
+    static int32_t getMaxSurfaceHeight(const SurfaceElement& surface)
     {
         int32_t z = surface.GetBaseZ();
         uint8_t slope = surface.GetSlope();
@@ -39,7 +39,7 @@ namespace OpenRCT2
         return z;
     }
 
-    std::vector<FootpathDragPlacement> CalculateConnectedPathSlopes(MapRange range, CoordsXY dragStart)
+    std::vector<FootpathDragPlacement> calculateConnectedPathSlopes(MapRange range, CoordsXY dragStart)
     {
         std::vector<FootpathDragPlacement> result;
 
@@ -112,7 +112,7 @@ namespace OpenRCT2
                 if (surfaceElement != nullptr)
                 {
                     int32_t base = surfaceElement->GetBaseZ();
-                    int32_t top = GetMaxSurfaceHeight(*surfaceElement);
+                    int32_t top = getMaxSurfaceHeight(*surfaceElement);
 
                     sliceBaseZ = std::max(sliceBaseZ, base);
                     sliceMaxZ = std::max(sliceMaxZ, top);
