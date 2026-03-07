@@ -501,4 +501,4 @@ namespace OpenRCT2::Weather
             _thunderStatus[instanceIndex] = ThunderStatus::playing;
         }
     }
-}
+} // namespace OpenRCT2::Weather

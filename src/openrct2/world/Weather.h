@@ -101,4 +101,4 @@ namespace OpenRCT2::Weather
     bool hasWeatherEffect();
     Drawing::FilterPaletteID getWeatherGloomPaletteId(const State& state);
     uint32_t getWeatherSpriteId(Type weatherType);
-}
+} // namespace OpenRCT2::Weather

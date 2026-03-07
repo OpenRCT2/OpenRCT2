@@ -43,13 +43,13 @@
 #include "scripting/ScriptEngine.h"
 #include "ui/WindowManager.h"
 #include "windows/Intent.h"
-#include "world/Weather.h"
 #include "world/Entrance.h"
 #include "world/Footpath.h"
 #include "world/Map.h"
 #include "world/MapLimits.h"
 #include "world/Park.h"
 #include "world/Scenery.h"
+#include "world/Weather.h"
 
 #include <array>
 #include <cassert>

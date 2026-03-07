@@ -66,13 +66,13 @@
 #include "ui/WindowManager.h"
 #include "windows/Intent.h"
 #include "world/Banner.h"
-#include "world/Weather.h"
 #include "world/Entrance.h"
 #include "world/Footpath.h"
 #include "world/Map.h"
 #include "world/MapAnimation.h"
 #include "world/Park.h"
 #include "world/Scenery.h"
+#include "world/Weather.h"
 #include "world/tile_element/SurfaceElement.h"
 
 #include <cstdio>
