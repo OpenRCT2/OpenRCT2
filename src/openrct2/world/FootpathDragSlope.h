@@ -32,6 +32,6 @@ namespace OpenRCT2
      * Build path placements that follow terrain with appropriate slopes.
      * Returns empty if no valid terrain (caller handles fallback).
      */
-    std::vector<FootpathDragPlacement> CalculateConnectedPathSlopes(MapRange range, CoordsXY dragStart);
+    std::vector<FootpathDragPlacement> calculateConnectedPathSlopes(MapRange range, CoordsXY dragStart);
 
 } // namespace OpenRCT2

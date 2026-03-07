@@ -70,7 +70,7 @@ namespace OpenRCT2::Ui::Windows
      * Resolve an irregular slope placement (e.g., corner-raised terrain) by calculating the
      * max surface height and treating it as a flat path. This allows placement on uneven terrain.
      */
-    static void ResolveIrregularPlacement(FootpathPlacementResult& placement, const TileCoordsXY& location)
+    static void resolveIrregularPlacement(FootpathPlacementResult& placement, const TileCoordsXY& location)
     {
         if (placement.slope.type != FootpathSlopeType::irregular)
             return;
@@ -1106,7 +1106,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            ResolveIrregularPlacement(placement, TileCoordsXY(*mapPos));
+            resolveIrregularPlacement(placement, TileCoordsXY(*mapPos));
 
             // Set provisional path
             auto pathType = gFootpathSelection.getSelectedSurface();
@@ -1134,7 +1134,7 @@ namespace OpenRCT2::Ui::Windows
                     if (baseZ == 0)
                     {
                         placement = FootpathGetOnTerrainPlacement(TileCoordsXY(CoordsXY(x, y)));
-                        ResolveIrregularPlacement(placement, TileCoordsXY(CoordsXY(x, y)));
+                        resolveIrregularPlacement(placement, TileCoordsXY(CoordsXY(x, y)));
                     }
 
                     auto calculatedLocation = CoordsXYZ(x, y, placement.baseZ);
@@ -1147,7 +1147,7 @@ namespace OpenRCT2::Ui::Windows
 
         static std::vector<ProvisionalTile> buildConnectedTileVector(MapRange range, CoordsXY dragStart)
         {
-            auto placements = CalculateConnectedPathSlopes(range, dragStart);
+            auto placements = calculateConnectedPathSlopes(range, dragStart);
             if (placements.empty())
                 return buildTileVector(range, 0);
 
