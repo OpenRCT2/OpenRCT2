@@ -14,6 +14,7 @@
 #include "../core/FlagHolder.hpp"
 #include "../entity/EntityBase.h"
 #include "../ride/RideTypes.h"
+#include "../ride/Track.h"
 #include "../world/Location.hpp"
 #include "Angles.h"
 #include "CarEntry.h"
@@ -554,6 +555,9 @@ enum class SoundRange : uint8_t
 
 constexpr uint8_t kVehicleSeatPairFlag = 0x80;
 constexpr uint8_t kVehicleSeatNumMask = 0x7F;
+
+OpenRCT2::TrackMetadata::PitchAndRoll PitchAndRollStart(bool useInvertedSprites, OpenRCT2::TileElement* tileElement);
+int32_t GetAccelerationDecrease2(const int32_t velocity, const int32_t totalMass);
 
 Vehicle* TryGetVehicle(EntityId spriteIndex);
 void VehicleUpdateAll();

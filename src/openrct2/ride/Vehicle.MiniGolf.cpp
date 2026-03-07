@@ -31,13 +31,6 @@ using namespace OpenRCT2;
 using namespace OpenRCT2::RideVehicle;
 using namespace OpenRCT2::TrackMetadata;
 
-static PitchAndRoll PitchAndRollStart(bool useInvertedSprites, TileElement* tileElement)
-{
-    auto trackType = tileElement->AsTrack()->GetTrackType();
-    const auto& ted = GetTrackElementDescriptor(trackType);
-    return PitchAndRoll{ ted.definition.pitchStart, TrackGetActualBank3(useInvertedSprites, tileElement) };
-}
-
 void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemType trackType)
 {
     const auto& ted = GetTrackElementDescriptor(trackType);
@@ -642,24 +635,6 @@ void Vehicle::Loc6DCE02(const Ride& curRide)
         }
         _vehicleStationIndex = curRide.getStationIndex(&station);
     }
-}
-
-static constexpr int32_t GetAccelerationDecrease2(const int32_t velocity, const int32_t totalMass)
-{
-    int32_t accelerationDecrease2 = velocity >> 8;
-    accelerationDecrease2 *= accelerationDecrease2;
-    if (velocity < 0)
-    {
-        accelerationDecrease2 = -accelerationDecrease2;
-    }
-    accelerationDecrease2 >>= 4;
-    // OpenRCT2: vehicles from different track types can have  0 mass.
-    if (totalMass != 0)
-    {
-        return accelerationDecrease2 / totalMass;
-    }
-
-    return accelerationDecrease2;
 }
 
 int32_t Vehicle::UpdateTrackMotionMiniGolfCalculateAcceleration(const CarEntry& carEntry)

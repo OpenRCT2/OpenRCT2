@@ -324,17 +324,6 @@ static void BlockBrakesOpenPreviousSection(const Ride& ride, const CoordsXYZ& ve
     }
 }
 
-/**
- *
- *  rct2: 0x006DB38B
- */
-static PitchAndRoll PitchAndRollStart(bool useInvertedSprites, TileElement* tileElement)
-{
-    auto trackType = tileElement->AsTrack()->GetTrackType();
-    const auto& ted = GetTrackElementDescriptor(trackType);
-    return PitchAndRoll{ ted.definition.pitchStart, TrackGetActualBank3(useInvertedSprites, tileElement) };
-}
-
 void Vehicle::UpdateGoKartAttemptSwitchLanes()
 {
     uint16_t probability = 0x8000;
@@ -1281,24 +1270,6 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
         acceleration += Geometry::getAccelerationFromPitch(pitch);
         _vehicleUnkF64E10++;
     }
-}
-
-static constexpr int32_t GetAccelerationDecrease2(const int32_t velocity, const int32_t totalMass)
-{
-    int32_t accelerationDecrease2 = velocity >> 8;
-    accelerationDecrease2 *= accelerationDecrease2;
-    if (velocity < 0)
-    {
-        accelerationDecrease2 = -accelerationDecrease2;
-    }
-    accelerationDecrease2 >>= 4;
-    // OpenRCT2: vehicles from different track types can have  0 mass.
-    if (totalMass != 0)
-    {
-        return accelerationDecrease2 / totalMass;
-    }
-
-    return accelerationDecrease2;
 }
 
 /**
