@@ -2978,13 +2978,6 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        struct VehicleDrawInfo
-        {
-            int16_t x;
-            int16_t y;
-            ImageId imageId;
-        };
-
         static ImageId getVehiclePreviewImageId(
             const Ride& ride, const RideObjectEntry& rideEntry, const CarEntry& carEntry, int32_t trainIndex, int32_t carIndex,
             bool isReversed)
@@ -3024,11 +3017,20 @@ namespace OpenRCT2::Ui::Windows
             return ImageId(imageIndex, vehicleColour.Body, vehicleColour.Trim, vehicleColour.Tertiary);
         }
 
-        static VehicleDrawInfo* prepareTrainCarImages(
-            const Ride& ride, const RideObjectEntry& rideEntry, int32_t trainIndex, bool isReversed, int32_t x, int32_t y,
-            VehicleDrawInfo* out)
+        struct VehicleDrawInfo
         {
-            for (int32_t j = 0; j < ride.numCarsPerTrain; j++)
+            int16_t x;
+            int16_t y;
+            ImageId imageId;
+        };
+
+        static size_t prepareTrainCarImages(
+            const Ride& ride, const RideObjectEntry& rideEntry, int32_t trainIndex, bool isReversed, int32_t x, int32_t y,
+            std::span<VehicleDrawInfo> out)
+        {
+            size_t count = 0;
+
+            for (int32_t j = 0; j < ride.numCarsPerTrain; ++j)
             {
                 const int32_t carIndex = isReversed ? (ride.numCarsPerTrain - 1 - j) : j;
 
@@ -3041,17 +3043,17 @@ namespace OpenRCT2::Ui::Windows
                 x += dx;
                 y -= dy;
 
-                out->x = x;
-                out->y = y;
-                out->imageId = getVehiclePreviewImageId(ride, rideEntry, carEntry, trainIndex, carIndex, isReversed);
+                auto imageId = getVehiclePreviewImageId(ride, rideEntry, carEntry, trainIndex, carIndex, isReversed);
 
-                ++out;
+                out[count++] = VehicleDrawInfo{ .x = static_cast<int16_t>(x),
+                                                .y = static_cast<int16_t>(y),
+                                                .imageId = imageId };
 
                 x += dx;
                 y -= dy;
             }
 
-            return out;
+            return count;
         }
 
         void VehicleOnScrollDraw(RenderTarget& rt, int32_t scrollIndex)
@@ -3080,20 +3082,19 @@ namespace OpenRCT2::Ui::Windows
             {
                 VehicleDrawInfo trainCarImages[Limits::kMaxCarsPerTrain];
 
-                auto* nextImageToDraw = prepareTrainCarImages(*ride, *rideEntry, i, isReversed, startX, startY, trainCarImages);
+                std::span images(trainCarImages);
+                auto count = prepareTrainCarImages(*ride, *rideEntry, i, isReversed, startX, startY, images);
 
-                if (ride->getRideTypeDescriptor().flags.has(RtdFlag::layeredVehiclePreview)
-                    && (nextImageToDraw - trainCarImages) >= 2)
+                if (ride->getRideTypeDescriptor().flags.has(RtdFlag::layeredVehiclePreview) && count >= 2)
                 {
-                    VehicleDrawInfo tmp = *(nextImageToDraw - 1);
-                    *(nextImageToDraw - 1) = *(nextImageToDraw - 2);
-                    *(nextImageToDraw - 2) = tmp;
+                    std::swap(images[count - 1], images[count - 2]);
                 }
 
                 // Draw each car in the train
-                VehicleDrawInfo* current = nextImageToDraw;
-                while (--current >= trainCarImages)
-                    GfxDrawSprite(rt, current->imageId, { current->x, current->y });
+                for (auto& image : std::views::reverse(images.first(count)))
+                {
+                    GfxDrawSprite(rt, image.imageId, { image.x, image.y });
+                }
 
                 startX += 36;
             }
