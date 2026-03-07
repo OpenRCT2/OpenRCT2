@@ -22,7 +22,7 @@
 #include "ride/RideRatings.h"
 #include "scenario/ScenarioOptions.h"
 #include "world/Banner.h"
-#include "world/Climate.h"
+#include "world/Weather.h"
 #include "world/Location.hpp"
 #include "world/ParkData.h"
 #include "world/ScenerySelection.h"

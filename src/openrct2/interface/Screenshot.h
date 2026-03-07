@@ -10,7 +10,7 @@
 #pragma once
 
 #include "../core/FileSystem.hpp"
-#include "../world/Climate.h"
+#include "../world/Weather.h"
 #include "../world/Location.hpp"
 #include "ZoomLevel.h"
 

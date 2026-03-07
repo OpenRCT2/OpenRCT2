@@ -48,7 +48,7 @@
 #include "../windows/Intent.h"
 #include "../world/TilePointerIndex.hpp"
 #include "Banner.h"
-#include "Climate.h"
+#include "Weather.h"
 #include "Entrance.h"
 #include "Footpath.h"
 #include "MapAnimation.h"

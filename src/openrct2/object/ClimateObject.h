@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../world/Climate.h"
+#include "../world/Weather.h"
 #include "Object.h"
 
 namespace OpenRCT2

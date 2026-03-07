@@ -25,7 +25,7 @@
 #include <openrct2/localisation/Localisation.Date.h>
 #include <openrct2/network/Network.h>
 #include <openrct2/ui/WindowManager.h>
-#include <openrct2/world/Climate.h>
+#include <openrct2/world/Weather.h>
 #include <openrct2/world/Park.h>
 
 namespace OpenRCT2::Ui::Windows

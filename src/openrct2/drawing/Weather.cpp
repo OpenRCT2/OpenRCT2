@@ -15,7 +15,7 @@
 #include "../interface/Viewport.h"
 #include "../ride/TrackDesign.h"
 #include "../ui/UiContext.h"
-#include "../world/Climate.h"
+#include "../world/Weather.h"
 #include "Drawing.h"
 #include "IDrawingEngine.h"
 

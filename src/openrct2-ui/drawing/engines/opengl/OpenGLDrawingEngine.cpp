@@ -38,7 +38,7 @@
     #include <openrct2/drawing/Weather.h>
     #include <openrct2/interface/Screenshot.h>
     #include <openrct2/ui/UiContext.h>
-    #include <openrct2/world/Climate.h>
+    #include <openrct2/world/Weather.h>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;

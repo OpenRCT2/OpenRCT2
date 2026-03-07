@@ -54,7 +54,7 @@
 #include "../scenario/ScenarioRepository.h"
 #include "../scripting/ScriptEngine.h"
 #include "../ui/WindowManager.h"
-#include "../world/Climate.h"
+#include "../world/Weather.h"
 #include "../world/Entrance.h"
 #include "../world/Map.h"
 #include "../world/Park.h"

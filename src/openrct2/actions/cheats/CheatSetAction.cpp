@@ -34,7 +34,7 @@
 #include "../../ui/WindowManager.h"
 #include "../../util/Util.h"
 #include "../../windows/Intent.h"
-#include "../../world/Climate.h"
+#include "../../world/Weather.h"
 #include "../../world/Location.hpp"
 #include "../../world/Map.h"
 #include "../../world/Park.h"

@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "Climate.h"
+#include "Weather.h"
 
 #include "../Context.h"
 #include "../Game.h"

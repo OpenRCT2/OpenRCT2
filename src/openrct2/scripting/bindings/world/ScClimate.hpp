@@ -16,7 +16,7 @@
     #include "../../../core/StringTypes.h"
     #include "../../../object/ClimateObject.h"
     #include "../../../object/ObjectManager.h"
-    #include "../../../world/Climate.h"
+    #include "../../../world/Weather.h"
     #include "../../Duktape.hpp"
     #include "../../ScriptEngine.h"
 

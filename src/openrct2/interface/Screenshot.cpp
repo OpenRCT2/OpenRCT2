@@ -30,7 +30,7 @@
 #include "../paint/Painter.h"
 #include "../paint/tile_element/Paint.TileElement.h"
 #include "../platform/Platform.h"
-#include "../world/Climate.h"
+#include "../world/Weather.h"
 #include "../world/Map.h"
 #include "../world/Park.h"
 #include "../world/tile_element/SurfaceElement.h"

@@ -632,7 +632,7 @@
     <ClInclude Include="scripting\bindings\ride\ScTrackIterator.h" />
     <ClInclude Include="scripting\bindings\ride\ScTrackSegment.h" />
     <ClInclude Include="scripting\bindings\world\ScAward.hpp" />
-    <ClInclude Include="scripting\bindings\world\ScClimate.hpp" />
+    <ClInclude Include="scripting\bindings\world\ScWeather.hpp" />
     <ClInclude Include="scripting\bindings\world\ScDate.hpp" />
     <ClInclude Include="scripting\bindings\world\ScMap.hpp" />
     <ClInclude Include="scripting\bindings\world\ScPark.hpp" />
@@ -657,7 +657,7 @@
     <ClInclude Include="windows\Intent.h" />
     <ClInclude Include="windows\TileInspectorGlobals.h" />
     <ClInclude Include="world\Banner.h" />
-    <ClInclude Include="world\Climate.h" />
+    <ClInclude Include="world\Weather.h" />
     <ClInclude Include="world\ConstructionClearance.h" />
     <ClInclude Include="world\Entrance.h" />
     <ClInclude Include="world\Footpath.h" />
@@ -1208,7 +1208,6 @@
     <ClCompile Include="Version.cpp" />
     <ClCompile Include="windows\Intent.cpp" />
     <ClCompile Include="world\Banner.cpp" />
-    <ClCompile Include="world\Climate.cpp" />
     <ClCompile Include="world\ConstructionClearance.cpp" />
     <ClCompile Include="world\Entrance.cpp" />
     <ClCompile Include="world\Footpath.cpp" />
@@ -1220,6 +1219,7 @@
     <ClCompile Include="world\Scenery.cpp" />
     <ClCompile Include="world\SurfaceData.cpp" />
     <ClCompile Include="world\TileInspector.cpp" />
+    <ClCompile Include="world\Weather.cpp" />
     <ClCompile Include="world\map_generator\MapGen.cpp" />
     <ClCompile Include="world\map_generator\MapHelpers.cpp" />
     <ClCompile Include="world\map_generator\PngTerrainGenerator.cpp" />

@@ -44,7 +44,7 @@
 #include "../scenario/Scenario.h"
 #include "../scenario/ScenarioRepository.h"
 #include "../scenario/ScenarioSources.h"
-#include "../world/Climate.h"
+#include "../world/Weather.h"
 #include "../world/Entrance.h"
 #include "../world/Map.h"
 #include "../world/MapAnimation.h"

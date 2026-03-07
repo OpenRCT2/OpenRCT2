@@ -43,7 +43,7 @@
 #include "scripting/ScriptEngine.h"
 #include "ui/WindowManager.h"
 #include "windows/Intent.h"
-#include "world/Climate.h"
+#include "world/Weather.h"
 #include "world/Entrance.h"
 #include "world/Footpath.h"
 #include "world/Map.h"
