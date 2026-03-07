@@ -92,12 +92,12 @@ namespace OpenRCT2::Weather
     void stopWeatherSound();
     void forceWeather(Type weather);
 
+    bool isDry();
     bool isRaining();
     bool isTransitioningToSnow();
     bool isSnowing();
     bool isSnowingHeavily();
     bool isPrecipitating();
-    bool isDry(Type);
     bool hasWeatherEffect();
     Drawing::FilterPaletteID getWeatherGloomPaletteId(const State& state);
     uint32_t getWeatherSpriteId(Type weatherType);

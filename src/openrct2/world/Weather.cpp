@@ -267,6 +267,12 @@ namespace OpenRCT2::Weather
         updateThunderSound();
     }
 
+    bool isDry()
+    {
+        auto& weather = getGameState().weatherCurrent.weatherType;
+        return weather == Type::Sunny || weather == Type::PartiallyCloudy || weather == Type::Cloudy;
+    }
+
     bool isRaining()
     {
         auto& weather = getGameState().weatherCurrent.weatherType;
@@ -294,11 +300,6 @@ namespace OpenRCT2::Weather
     bool isPrecipitating()
     {
         return isRaining() || isSnowingHeavily();
-    }
-
-    bool isDry(Type weather)
-    {
-        return weather == Type::Sunny || weather == Type::PartiallyCloudy || weather == Type::Cloudy;
     }
 
     bool hasWeatherEffect()
