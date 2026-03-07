@@ -92,7 +92,7 @@ namespace OpenRCT2::GameActions
             {
                 if (gameState.park.flags & PARK_FLAGS_FORBID_TREE_REMOVAL)
                 {
-                    if (sceneryEntry->HasFlag(LARGE_SCENERY_FLAG_IS_TREE))
+                    if (sceneryEntry->flags.has(LargeSceneryFlag::isTree))
                     {
                         res.error = Status::noClearance;
                         res.errorTitle = STR_CANT_REMOVE_THIS;

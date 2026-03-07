@@ -365,15 +365,15 @@ void PaintLargeScenery(PaintSession& session, uint8_t direction, uint16_t height
     }
     else
     {
-        if (sceneryEntry->flags & LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR)
+        if (sceneryEntry->flags.has(LargeSceneryFlag::hasPrimaryColour))
         {
             imageTemplate = imageTemplate.WithPrimary(tileElement.GetPrimaryColour());
         }
-        if (sceneryEntry->flags & LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR)
+        if (sceneryEntry->flags.has(LargeSceneryFlag::hasSecondaryColour))
         {
             imageTemplate = imageTemplate.WithSecondary(tileElement.GetSecondaryColour());
         }
-        if (sceneryEntry->flags & LARGE_SCENERY_FLAG_HAS_TERTIARY_COLOUR)
+        if (sceneryEntry->flags.has(LargeSceneryFlag::hasTertiaryColour))
         {
             imageTemplate = imageTemplate.WithTertiary(tileElement.GetTertiaryColour());
         }
@@ -398,7 +398,7 @@ void PaintLargeScenery(PaintSession& session, uint8_t direction, uint16_t height
 
     if (sceneryEntry->scrolling_mode != kScrollingModeNone && direction != 1 && direction != 2)
     {
-        if (sceneryEntry->flags & LARGE_SCENERY_FLAG_3D_TEXT)
+        if (sceneryEntry->flags.has(LargeSceneryFlag::is3DText))
         {
             PaintLargeScenery3DText(session, *sceneryEntry, tile, tileElement, direction, height, isGhost);
         }

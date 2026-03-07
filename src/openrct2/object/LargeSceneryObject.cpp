@@ -56,7 +56,7 @@ namespace OpenRCT2
     {
         stream->Seek(6, STREAM_SEEK_CURRENT);
         _legacyType.tool_id = static_cast<CursorID>(stream->ReadValue<uint8_t>());
-        _legacyType.flags = stream->ReadValue<uint8_t>();
+        _legacyType.flags.holder = stream->ReadValue<uint8_t>();
         _legacyType.price = stream->ReadValue<int16_t>() * 10;
         _legacyType.removal_price = stream->ReadValue<int16_t>() * 10;
         stream->Seek(5, STREAM_SEEK_CURRENT);
@@ -69,7 +69,7 @@ namespace OpenRCT2
         RCTObjectEntry sgEntry = stream->ReadValue<RCTObjectEntry>();
         SetPrimarySceneryGroup(ObjectEntryDescriptor(sgEntry));
 
-        if (_legacyType.flags & LARGE_SCENERY_FLAG_3D_TEXT)
+        if (_legacyType.flags.has(LargeSceneryFlag::is3DText))
         {
             RCTLargeSceneryText _3dFontLegacy = ReadLegacy3DFont(*stream);
             _3dFont = std::make_unique<LargeSceneryText>(_3dFontLegacy);
@@ -100,13 +100,13 @@ namespace OpenRCT2
         // functioned, but without the ability to change the colours when the object was selected in the scenery window.
         // OpenRCT2 changes the rendering so that the flags are required, we therefore have to assume all custom objects
         // can be recoloured.
-        if (!(_legacyType.flags & LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR))
+        if (!_legacyType.flags.has(LargeSceneryFlag::hasPrimaryColour))
         {
-            _legacyType.flags |= LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR | LARGE_SCENERY_FLAG_HIDE_PRIMARY_REMAP_BUTTON;
+            _legacyType.flags.set(LargeSceneryFlag::hasPrimaryColour, LargeSceneryFlag::hidePrimaryRemapButton);
         }
-        if (!(_legacyType.flags & LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR))
+        if (!_legacyType.flags.has(LargeSceneryFlag::hasSecondaryColour))
         {
-            _legacyType.flags |= LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR | LARGE_SCENERY_FLAG_HIDE_SECONDARY_REMAP_BUTTON;
+            _legacyType.flags.set(LargeSceneryFlag::hasSecondaryColour, LargeSceneryFlag::hideSecondaryRemapButton);
         }
     }
 
@@ -119,7 +119,7 @@ namespace OpenRCT2
 
         _legacyType.tiles = _tiles;
 
-        if (_legacyType.flags & LARGE_SCENERY_FLAG_3D_TEXT)
+        if (_legacyType.flags.has(LargeSceneryFlag::is3DText))
         {
             _legacyType.text_image = _legacyType.image;
             if (_3dFont->flags & LARGE_SCENERY_TEXT_FLAG_VERTICAL)
@@ -148,11 +148,11 @@ namespace OpenRCT2
         auto screenCoords = ScreenCoordsXY{ width / 2, (height / 2) - 39 };
 
         auto image = ImageId(_legacyType.image);
-        if (_legacyType.flags & LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR)
+        if (_legacyType.flags.has(LargeSceneryFlag::hasPrimaryColour))
             image = image.WithPrimary(Drawing::Colour::bordeauxRed);
-        if (_legacyType.flags & LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR)
+        if (_legacyType.flags.has(LargeSceneryFlag::hasSecondaryColour))
             image = image.WithSecondary(Drawing::Colour::yellow);
-        if (_legacyType.flags & LARGE_SCENERY_FLAG_HAS_TERTIARY_COLOUR)
+        if (_legacyType.flags.has(LargeSceneryFlag::hasTertiaryColour))
             image = image.WithTertiary(Drawing::Colour::darkBrown);
 
         GfxDrawSprite(rt, image, screenCoords);
@@ -210,15 +210,15 @@ namespace OpenRCT2
 
             _legacyType.scrolling_mode = Json::GetNumber<uint8_t>(properties["scrollingMode"], kScrollingModeNone);
 
-            _legacyType.flags = Json::GetFlags<uint8_t>(
+            _legacyType.flags = Json::GetFlagHolder<LargeSceneryFlags, LargeSceneryFlag>(
                 properties,
                 {
-                    { "hasPrimaryColour", LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR },
-                    { "hasSecondaryColour", LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR },
-                    { "hasTertiaryColour", LARGE_SCENERY_FLAG_HAS_TERTIARY_COLOUR },
-                    { "isAnimated", LARGE_SCENERY_FLAG_ANIMATED },
-                    { "isPhotogenic", LARGE_SCENERY_FLAG_PHOTOGENIC },
-                    { "isTree", LARGE_SCENERY_FLAG_IS_TREE },
+                    { "hasPrimaryColour", LargeSceneryFlag::hasPrimaryColour },
+                    { "hasSecondaryColour", LargeSceneryFlag::hasSecondaryColour },
+                    { "hasTertiaryColour", LargeSceneryFlag::hasTertiaryColour },
+                    { "isAnimated", LargeSceneryFlag::isAnimated },
+                    { "isPhotogenic", LargeSceneryFlag::isPhotogenic },
+                    { "isTree", LargeSceneryFlag::isTree },
                 });
 
             // Tiles
@@ -233,7 +233,7 @@ namespace OpenRCT2
             if (j3dFont.is_object())
             {
                 _3dFont = ReadJson3dFont(j3dFont);
-                _legacyType.flags |= LARGE_SCENERY_FLAG_3D_TEXT;
+                _legacyType.flags.set(LargeSceneryFlag::is3DText);
             }
 
             SetPrimarySceneryGroup(ObjectEntryDescriptor(Json::GetString(properties["sceneryGroup"])));

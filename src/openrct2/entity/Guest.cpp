@@ -6591,7 +6591,7 @@ static bool GuestFindRideToLookAt(Guest& guest, uint8_t edge, RideId* rideToView
         if (tileElement->GetType() == TileElementType::LargeScenery)
         {
             const auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
-            if (sceneryEntry == nullptr || !(sceneryEntry->flags & LARGE_SCENERY_FLAG_PHOTOGENIC))
+            if (sceneryEntry == nullptr || !sceneryEntry->flags.has(LargeSceneryFlag::isPhotogenic))
             {
                 continue;
             }
@@ -6708,7 +6708,7 @@ static bool GuestFindRideToLookAt(Guest& guest, uint8_t edge, RideId* rideToView
         if (tileElement->GetType() == TileElementType::LargeScenery)
         {
             auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
-            if (!(sceneryEntry == nullptr || sceneryEntry->flags & LARGE_SCENERY_FLAG_PHOTOGENIC))
+            if (!(sceneryEntry == nullptr || sceneryEntry->flags.has(LargeSceneryFlag::isPhotogenic)))
             {
                 continue;
             }
@@ -6824,7 +6824,7 @@ static bool GuestFindRideToLookAt(Guest& guest, uint8_t edge, RideId* rideToView
         if (tileElement->GetType() == TileElementType::LargeScenery)
         {
             const auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
-            if (sceneryEntry == nullptr || !(sceneryEntry->flags & LARGE_SCENERY_FLAG_PHOTOGENIC))
+            if (sceneryEntry == nullptr || !sceneryEntry->flags.has(LargeSceneryFlag::isPhotogenic))
             {
                 continue;
             }

@@ -780,14 +780,20 @@ namespace OpenRCT2::Ui::Windows
                     auto* sceneryEntry = ObjectManager::GetObjectEntry<LargeSceneryEntry>(tabSelectedScenery.EntryIndex);
                     if (sceneryEntry != nullptr)
                     {
-                        if (sceneryEntry->flags & LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR
-                            && !(sceneryEntry->flags & LARGE_SCENERY_FLAG_HIDE_PRIMARY_REMAP_BUTTON))
+                        if (sceneryEntry->flags.has(LargeSceneryFlag::hasPrimaryColour)
+                            && !sceneryEntry->flags.has(LargeSceneryFlag::hidePrimaryRemapButton))
+                        {
                             widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WidgetType::colourBtn;
-                        if (sceneryEntry->flags & LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR
-                            && !(sceneryEntry->flags & LARGE_SCENERY_FLAG_HIDE_SECONDARY_REMAP_BUTTON))
+                        }
+                        if (sceneryEntry->flags.has(LargeSceneryFlag::hasSecondaryColour)
+                            && !sceneryEntry->flags.has(LargeSceneryFlag::hideSecondaryRemapButton))
+                        {
                             widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].type = WidgetType::colourBtn;
-                        if (sceneryEntry->flags & LARGE_SCENERY_FLAG_HAS_TERTIARY_COLOUR)
+                        }
+                        if (sceneryEntry->flags.has(LargeSceneryFlag::hasTertiaryColour))
+                        {
                             widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].type = WidgetType::colourBtn;
+                        }
                     }
                 }
                 else if (tabSelectedScenery.SceneryType == SCENERY_TYPE_WALL)
@@ -1609,11 +1615,11 @@ namespace OpenRCT2::Ui::Windows
                     return;
 
                 auto imageId = ImageId(sceneryEntry->image + gWindowSceneryRotation);
-                if (sceneryEntry->flags & LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR)
+                if (sceneryEntry->flags.has(LargeSceneryFlag::hasPrimaryColour))
                     imageId = imageId.WithPrimary(_sceneryPrimaryColour);
-                if (sceneryEntry->flags & LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR)
+                if (sceneryEntry->flags.has(LargeSceneryFlag::hasSecondaryColour))
                     imageId = imageId.WithSecondary(_scenerySecondaryColour);
-                if (sceneryEntry->flags & LARGE_SCENERY_FLAG_HAS_TERTIARY_COLOUR)
+                if (sceneryEntry->flags.has(LargeSceneryFlag::hasTertiaryColour))
                     imageId = imageId.WithTertiary(_sceneryTertiaryColour);
                 GfxDrawSprite(rt, imageId, { 33, 0 });
             }
@@ -2268,7 +2274,7 @@ namespace OpenRCT2::Ui::Windows
                     auto* sceneryEntry = info.Element->AsLargeScenery()->GetEntry();
 
                     // If can't repaint
-                    if (!(sceneryEntry->flags & LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR))
+                    if (!sceneryEntry->flags.has(LargeSceneryFlag::hasPrimaryColour))
                         return;
 
                     auto repaintScenery = GameActions::LargeScenerySetColourAction(

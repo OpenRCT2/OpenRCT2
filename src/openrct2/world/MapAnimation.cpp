@@ -240,7 +240,7 @@ static bool UpdateLargeSceneryAnimation(
     const LargeSceneryElement& scenery, const CoordsXYZ& loc, const int32_t baseZ, const Viewport* const viewport)
 {
     const auto* const entry = scenery.GetEntry();
-    if (entry != nullptr && (entry->flags & LARGE_SCENERY_FLAG_ANIMATED))
+    if (entry != nullptr && entry->flags.has(LargeSceneryFlag::isAnimated))
     {
         if constexpr (invalidate)
         {
@@ -548,7 +548,7 @@ static std::optional<UpdateType> IsElementAnimated(const TileElementBase& elemen
         {
             const auto* const scenery = element.AsLargeScenery();
             const auto* const entry = scenery->GetEntry();
-            if (entry != nullptr && (entry->flags & LARGE_SCENERY_FLAG_ANIMATED))
+            if (entry != nullptr && entry->flags.has(LargeSceneryFlag::isAnimated))
             {
                 return std::optional(UpdateType::invalidate);
             }

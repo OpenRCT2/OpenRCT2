@@ -279,11 +279,11 @@ namespace OpenRCT2::Ui::Windows
                 {
                     return;
                 }
-                if (sceneryEntry->flags & LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR)
+                if (sceneryEntry->flags.has(LargeSceneryFlag::hasPrimaryColour))
                 {
                     main_colour_btn->type = WidgetType::colourBtn;
                 }
-                if (sceneryEntry->flags & LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR)
+                if (sceneryEntry->flags.has(LargeSceneryFlag::hasSecondaryColour))
                 {
                     text_colour_btn->type = WidgetType::colourBtn;
                 }
