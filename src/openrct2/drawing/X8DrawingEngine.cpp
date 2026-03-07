@@ -25,7 +25,7 @@
 #include "IDrawingEngine.h"
 #include "InvalidationGrid.h"
 #include "LightFX.h"
-#include "Weather.h"
+#include "WeatherDrawer.h"
 
 #include <algorithm>
 #include <cassert>
