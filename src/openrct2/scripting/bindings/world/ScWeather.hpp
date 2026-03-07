@@ -52,7 +52,7 @@ namespace OpenRCT2::Scripting
         }
     };
 
-    class ScClimate
+    class ScWeather
     {
     public:
         static std::string WeatherTypeToString(Weather::Type token)
@@ -109,9 +109,9 @@ namespace OpenRCT2::Scripting
 
         static void Register(duk_context* ctx)
         {
-            dukglue_register_property(ctx, &ScClimate::type_get, nullptr, "type");
-            dukglue_register_property(ctx, &ScClimate::current_get, nullptr, "current");
-            dukglue_register_property(ctx, &ScClimate::future_get, nullptr, "future");
+            dukglue_register_property(ctx, &ScWeather::type_get, nullptr, "type");
+            dukglue_register_property(ctx, &ScWeather::current_get, nullptr, "current");
+            dukglue_register_property(ctx, &ScWeather::future_get, nullptr, "future");
         }
     };
 

@@ -53,7 +53,6 @@
     #include "bindings/ride/ScRide.hpp"
     #include "bindings/ride/ScRideStation.hpp"
     #include "bindings/world/ScAward.hpp"
-    #include "bindings/world/ScClimate.hpp"
     #include "bindings/world/ScDate.hpp"
     #include "bindings/world/ScMap.hpp"
     #include "bindings/world/ScPark.hpp"
@@ -62,6 +61,7 @@
     #include "bindings/world/ScScenario.hpp"
     #include "bindings/world/ScTile.hpp"
     #include "bindings/world/ScTileElement.hpp"
+    #include "bindings/world/ScWeather.hpp"
 
     #include <cassert>
     #include <iostream>
@@ -410,7 +410,7 @@ void ScriptEngine::Initialise()
     auto ctx = static_cast<duk_context*>(_context);
     ScAward::Register(ctx);
     ScCheats::Register(ctx);
-    ScClimate::Register(ctx);
+    ScWeather::Register(ctx);
     ScWeatherState::Register(ctx);
     ScConfiguration::Register(ctx);
     ScConsole::Register(ctx);
@@ -467,7 +467,7 @@ void ScriptEngine::Initialise()
     ScPlugin::Register(ctx);
 
     dukglue_register_global(ctx, std::make_shared<ScCheats>(), "cheats");
-    dukglue_register_global(ctx, std::make_shared<ScClimate>(), "climate");
+    dukglue_register_global(ctx, std::make_shared<ScWeather>(), "climate");
     dukglue_register_global(ctx, std::make_shared<ScConsole>(_console), "console");
     dukglue_register_global(ctx, std::make_shared<ScContext>(_execInfo, _hookEngine), "context");
     dukglue_register_global(ctx, std::make_shared<ScDate>(), "date");
