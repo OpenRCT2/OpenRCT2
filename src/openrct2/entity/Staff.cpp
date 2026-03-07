@@ -1212,7 +1212,7 @@ void Staff::UpdateSweeping()
     }
     if (auto loc = UpdateAction(); loc.has_value())
     {
-        int16_t actionZ = GetZOnSlope((*loc).x, (*loc).y);
+        int16_t actionZ = GetZOnSlope(loc->x, loc->y);
         MoveTo({ loc.value(), actionZ });
         return;
     }

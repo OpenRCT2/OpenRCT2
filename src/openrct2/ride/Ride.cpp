@@ -3061,10 +3061,10 @@ static void RideSetMazeEntranceExitPoints(Ride& ride)
             *position++ = station.Exit;
         }
     }
-    (*position++).SetNull();
+    position->SetNull();
 
     // Enumerate entrance and exit positions
-    for (position = positions; !(*position).IsNull(); position++)
+    for (position = positions; !(position->IsNull()); position++)
     {
         auto entranceExitMapPos = position->ToCoordsXYZ();
 

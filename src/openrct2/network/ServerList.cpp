@@ -306,7 +306,7 @@ namespace OpenRCT2::Network
                             auto entry = ServerListEntry::FromJson(jinfo);
                             if (entry.has_value())
                             {
-                                (*entry).Local = true;
+                                entry->Local = true;
                                 entries.push_back(std::move(*entry));
                             }
                         }
