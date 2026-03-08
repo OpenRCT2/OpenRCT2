@@ -3722,7 +3722,7 @@ namespace OpenRCT2::TrackMetadata
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
-    static constexpr SequenceDescriptor kWatersplashSeq0 = {
+    static constexpr SequenceDescriptor kWaterSplashSeq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .flags = { SequenceFlag::hasHeightMarker },
@@ -3734,7 +3734,7 @@ namespace OpenRCT2::TrackMetadata
         } },
     };
 
-    static constexpr SequenceDescriptor kWatersplashSeq1 = {
+    static constexpr SequenceDescriptor kWaterSplashSeq1 = {
         .clearance = { -32, 0, 0, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw },
@@ -3745,7 +3745,7 @@ namespace OpenRCT2::TrackMetadata
         } },
     };
 
-    static constexpr SequenceDescriptor kWatersplashSeq2 = {
+    static constexpr SequenceDescriptor kWaterSplashSeq2 = {
         .clearance = { -64, 0, 0, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw },
@@ -3756,7 +3756,7 @@ namespace OpenRCT2::TrackMetadata
         } },
     };
 
-    static constexpr SequenceDescriptor kWatersplashSeq3 = {
+    static constexpr SequenceDescriptor kWaterSplashSeq3 = {
         .clearance = { -96, 0, 0, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw },
@@ -3767,7 +3767,7 @@ namespace OpenRCT2::TrackMetadata
         } },
     };
 
-    static constexpr SequenceDescriptor kWatersplashSeq4 = {
+    static constexpr SequenceDescriptor kWaterSplashSeq4 = {
         .clearance = { -128, 0, 0, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .flags = { SequenceFlag::hasHeightMarker },
@@ -12723,7 +12723,7 @@ namespace OpenRCT2::TrackMetadata
         .flags = {},
         .definition = { TrackGroup::waterSplash, TrackPitch::none, TrackPitch::none, TrackRoll::none, TrackRoll::none, 0 },
         .verticalFactor = EvaluatorWaterSplash,
-        .sequenceData = { 5, { kWatersplashSeq0, kWatersplashSeq1, kWatersplashSeq2, kWatersplashSeq3, kWatersplashSeq4 } },
+        .sequenceData = { 5, { kWaterSplashSeq0, kWaterSplashSeq1, kWaterSplashSeq2, kWaterSplashSeq3, kWaterSplashSeq4 } },
     };
 
     constexpr auto kTEDFlatToUp60LongBase = TrackElementDescriptor{
