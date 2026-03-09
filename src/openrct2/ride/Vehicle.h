@@ -26,15 +26,16 @@
 struct Ride;
 struct RideObjectEntry;
 struct CarEntry;
-class DataSerialiser;
 struct PaintSession;
 
 enum class Breakdown : uint8_t;
 
 namespace OpenRCT2
 {
+    class DataSerialiser;
+
     struct TrackElement;
-}
+} // namespace OpenRCT2
 
 struct GForces
 {
@@ -320,7 +321,7 @@ struct Vehicle : EntityBase
         TrackTypeAndDirection |= trackDirection & kVehicleTrackDirectionMask;
     }
     void ApplyMass(int16_t appliedMass);
-    void Serialise(DataSerialiser& stream);
+    void Serialise(OpenRCT2::DataSerialiser& stream);
     void Paint(PaintSession& session, int32_t imageDirection) const;
     bool IsCableLift() const;
 

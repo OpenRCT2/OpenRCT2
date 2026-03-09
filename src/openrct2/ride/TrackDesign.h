@@ -128,7 +128,6 @@ struct TrackDesignMazeElement
     uint16_t mazeEntry{};
 };
 
-class DataSerialiser;
 enum class RideMode : uint8_t;
 
 enum class TrackDesignGameStateFlag
@@ -198,6 +197,11 @@ struct TrackDesignGameStateData
     void setFlag(TrackDesignGameStateFlag flag, bool on);
 };
 
+namespace OpenRCT2
+{
+    class DataSerialiser;
+}
+
 struct TrackDesign
 {
     TrackDesignTrackAndVehicleSettings trackAndVehicle{};
@@ -216,7 +220,7 @@ struct TrackDesign
 public:
     ResultWithMessage CreateTrackDesign(TrackDesignState& tds, const Ride& ride);
     ResultWithMessage CreateTrackDesignScenery(TrackDesignState& tds);
-    void Serialise(DataSerialiser& stream);
+    void Serialise(OpenRCT2::DataSerialiser& stream);
 
 private:
     uint8_t _saveDirection;

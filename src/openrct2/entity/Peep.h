@@ -30,6 +30,7 @@ constexpr auto kPeepClearanceHeight = 4 * kCoordsZStep;
 
 namespace OpenRCT2
 {
+    class DataSerialiser;
     class Formatter;
     struct TileElement;
 } // namespace OpenRCT2
@@ -418,7 +419,7 @@ public: // Peep
     void SetDestination(const CoordsXY& coords, int32_t tolerance);
     [[nodiscard]] CoordsXY GetDestination() const;
 
-    void Serialise(class DataSerialiser& stream);
+    void Serialise(class OpenRCT2::DataSerialiser& stream);
 
     // TODO: Make these private again when done refactoring
 public: // Peep

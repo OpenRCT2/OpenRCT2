@@ -91,7 +91,7 @@ struct IGameStateSnapshots
     /*
      * Serialisation of GameStateSnapshot_t
      */
-    virtual void SerialiseSnapshot(GameStateSnapshot_t& snapshot, DataSerialiser& serialiser) const = 0;
+    virtual void SerialiseSnapshot(GameStateSnapshot_t& snapshot, OpenRCT2::DataSerialiser& serialiser) const = 0;
 
     /*
      * Compares two states resulting GameStateCompareData with all mismatches stored.

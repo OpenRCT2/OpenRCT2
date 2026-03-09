@@ -11,9 +11,13 @@
 
 #include "EntityBase.h"
 
-class DataSerialiser;
 struct CoordsXYZ;
 struct PaintSession;
+
+namespace OpenRCT2
+{
+    class DataSerialiser;
+}
 
 namespace OpenRCT2::Drawing
 {
@@ -31,7 +35,7 @@ struct Balloon : EntityBase
     void Update();
     void Pop(bool playSound);
     void Press();
-    void Serialise(DataSerialiser& stream);
+    void Serialise(OpenRCT2::DataSerialiser& stream);
     void Paint(PaintSession& session, int32_t imageDirection) const;
     bool Collides() const;
 };

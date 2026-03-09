@@ -34,6 +34,11 @@ struct EntitySpriteData
     ScreenRect SpriteRect;
 };
 
+namespace OpenRCT2
+{
+    class DataSerialiser;
+}
+
 struct EntityBase
 {
     EntityType Type;
@@ -92,7 +97,7 @@ struct EntityBase
         return reinterpret_cast<const T*>(this);
     }
 
-    void Serialise(class DataSerialiser& stream);
+    void Serialise(class OpenRCT2::DataSerialiser& stream);
 
     void Paint() const;
 };

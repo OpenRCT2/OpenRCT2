@@ -15,9 +15,13 @@
 
 #include <utility>
 
-class DataSerialiser;
 struct CoordsXYZ;
 struct PaintSession;
+
+namespace OpenRCT2
+{
+    class DataSerialiser;
+}
 
 struct MoneyEffect : EntityBase
 {
@@ -36,6 +40,6 @@ struct MoneyEffect : EntityBase
     void SetValue(money64 value);
     void Update();
     std::pair<StringId, money64> GetStringId() const;
-    void Serialise(DataSerialiser& stream);
+    void Serialise(OpenRCT2::DataSerialiser& stream);
     void Paint(PaintSession& session, int32_t imageDirection) const;
 };

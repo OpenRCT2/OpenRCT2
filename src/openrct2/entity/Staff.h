@@ -18,6 +18,8 @@
 
 namespace OpenRCT2
 {
+    class DataSerialiser;
+
     struct TileElement;
     struct PathElement;
 } // namespace OpenRCT2
@@ -27,7 +29,6 @@ namespace OpenRCT2::Drawing
     enum class Colour : uint8_t;
 }
 
-class DataSerialiser;
 class PatrolArea;
 struct Ride;
 
@@ -83,7 +84,7 @@ public:
     bool CanIgnoreWideFlag(const CoordsXYZ& staffPos, OpenRCT2::TileElement* path) const;
 
     static void ResetStats();
-    void Serialise(DataSerialiser& stream);
+    void Serialise(OpenRCT2::DataSerialiser& stream);
 
     void ClearPatrolArea();
     void SetPatrolArea(const CoordsXY& coords, bool value);

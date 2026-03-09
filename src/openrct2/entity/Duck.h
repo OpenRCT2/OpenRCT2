@@ -11,9 +11,13 @@
 
 #include "EntityBase.h"
 
-class DataSerialiser;
 struct CoordsXY;
 struct PaintSession;
+
+namespace OpenRCT2
+{
+    class DataSerialiser;
+}
 
 struct Duck : EntityBase
 {
@@ -38,7 +42,7 @@ struct Duck : EntityBase
     uint32_t GetFrameImage(int32_t direction) const;
     bool IsFlying();
     void Remove();
-    void Serialise(DataSerialiser& stream);
+    void Serialise(OpenRCT2::DataSerialiser& stream);
     void Paint(PaintSession& session, int32_t imageDirection) const;
 
 private:

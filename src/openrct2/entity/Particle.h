@@ -11,10 +11,14 @@
 
 #include "EntityBase.h"
 
-class DataSerialiser;
 struct CoordsXYZ;
 struct PaintSession;
 struct VehicleColour;
+
+namespace OpenRCT2
+{
+    class DataSerialiser;
+}
 
 namespace OpenRCT2::Drawing
 {
@@ -43,7 +47,7 @@ struct VehicleCrashParticle : EntityBase
     void SetSpriteData();
     void Launch();
     void Update();
-    void Serialise(DataSerialiser& stream);
+    void Serialise(OpenRCT2::DataSerialiser& stream);
     void Paint(PaintSession& session, int32_t imageDirection) const;
 };
 
@@ -53,7 +57,7 @@ struct CrashSplashParticle : EntityBase
     uint16_t frame;
     static void Create(const CoordsXYZ& splashPos);
     void Update();
-    void Serialise(DataSerialiser& stream);
+    void Serialise(OpenRCT2::DataSerialiser& stream);
     void Paint(PaintSession& session, int32_t imageDirection) const;
 };
 
@@ -63,7 +67,7 @@ struct ExplosionFlare : EntityBase
     uint16_t frame;
     static void Create(const CoordsXYZ& flarePos);
     void Update();
-    void Serialise(DataSerialiser& stream);
+    void Serialise(OpenRCT2::DataSerialiser& stream);
     void Paint(PaintSession& session, int32_t imageDirection) const;
 };
 
@@ -73,7 +77,7 @@ struct ExplosionCloud : EntityBase
     uint16_t frame;
     static void Create(const CoordsXYZ& cloudPos);
     void Update();
-    void Serialise(DataSerialiser& stream);
+    void Serialise(OpenRCT2::DataSerialiser& stream);
     void Paint(PaintSession& session, int32_t imageDirection) const;
 };
 
@@ -85,6 +89,6 @@ struct SteamParticle : EntityBase
 
     static void Create(const CoordsXYZ& coords);
     void Update();
-    void Serialise(DataSerialiser& stream);
+    void Serialise(OpenRCT2::DataSerialiser& stream);
     void Paint(PaintSession& session, int32_t imageDirection) const;
 };

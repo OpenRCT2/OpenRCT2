@@ -137,7 +137,12 @@ constexpr int32_t kCheatsStaffNormalSpeed = 0x60;
 constexpr int32_t kCheatsStaffFreezeSpeed = 0;
 constexpr int32_t kForcedParkRatingDisabled = -1;
 
+namespace OpenRCT2
+{
+    class DataSerialiser;
+}
+
 void CheatsReset();
 const char* CheatsGetName(CheatType cheatType);
 void CheatsSet(CheatType cheatType, int64_t param1 = 0, int64_t param2 = 0);
-void CheatsSerialise(class DataSerialiser& ds);
+void CheatsSerialise(class OpenRCT2::DataSerialiser& ds);

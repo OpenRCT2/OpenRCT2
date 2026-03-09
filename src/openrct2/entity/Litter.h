@@ -12,10 +12,14 @@
 #include "../localisation/StringIdType.h"
 #include "EntityBase.h"
 
-class DataSerialiser;
 struct CoordsXYZ;
 struct CoordsXYZD;
 struct PaintSession;
+
+namespace OpenRCT2
+{
+    class DataSerialiser;
+}
 
 struct Litter : EntityBase
 {
@@ -40,7 +44,7 @@ struct Litter : EntityBase
     uint32_t creationTick;
     static void Create(const CoordsXYZD& litterPos, Type type);
     static void RemoveAt(const CoordsXYZ& litterPos);
-    void Serialise(DataSerialiser& stream);
+    void Serialise(OpenRCT2::DataSerialiser& stream);
     StringId GetName() const;
     uint32_t GetAge() const;
     void Paint(PaintSession& session, int32_t imageDirection) const;
