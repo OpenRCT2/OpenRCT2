@@ -15,7 +15,10 @@
     #include "../../../management/Marketing.h"
     #include "ScPeep.hpp"
 
-enum class PeepAnimationType : uint8_t;
+namespace OpenRCT2
+{
+    enum class PeepAnimationType : uint8_t;
+}
 
 namespace OpenRCT2::Scripting
 {

@@ -16,7 +16,6 @@
 #include <string_view>
 
 struct StringWithArgs;
-struct Peep;
 struct Ride;
 struct RideSelection;
 struct TrackDesign;
@@ -32,6 +31,7 @@ namespace OpenRCT2
 {
     class Formatter;
     struct ObjectEntryDescriptor;
+    struct Peep;
     struct TileElement;
 } // namespace OpenRCT2
 

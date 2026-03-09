@@ -13,7 +13,10 @@
 
     #include "ScEntity.hpp"
 
-struct Balloon;
+namespace OpenRCT2
+{
+    struct Balloon;
+}
 
 namespace OpenRCT2::Scripting
 {

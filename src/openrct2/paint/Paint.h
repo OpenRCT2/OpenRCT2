@@ -25,12 +25,12 @@
 #include <sfl/static_vector.hpp>
 #include <thread>
 
-struct EntityBase;
-
 enum class ViewportInteractionItem : uint8_t;
 
 namespace OpenRCT2
 {
+    struct EntityBase;
+
     struct TileElement;
     struct SurfaceElement;
 
@@ -64,7 +64,7 @@ struct PaintStruct
     PaintStruct* Children;
     PaintStruct* NextQuadrantEntry;
     OpenRCT2::TileElement* Element;
-    EntityBase* Entity;
+    OpenRCT2::EntityBase* Entity;
     ImageId image_id;
     ScreenCoordsXY ScreenPos;
     CoordsXY MapPos;
@@ -142,7 +142,7 @@ struct PaintSessionCore
     PaintStringStruct* LastPSString;
     AttachedPaintStruct* LastAttachedPS;
     const OpenRCT2::SurfaceElement* Surface;
-    EntityBase* CurrentlyDrawnEntity;
+    OpenRCT2::EntityBase* CurrentlyDrawnEntity;
     OpenRCT2::TileElement* CurrentlyDrawnTileElement;
     const OpenRCT2::TileElement* PathElementOnSameHeight;
     const OpenRCT2::TileElement* TrackElementOnSameHeight;

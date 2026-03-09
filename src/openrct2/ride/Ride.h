@@ -31,14 +31,15 @@
 struct IObjectManager;
 struct Ride;
 struct RideTypeDescriptor;
-struct Guest;
-struct Staff;
 struct Vehicle;
 struct RideObjectEntry;
 struct ResultWithMessage;
 
 namespace OpenRCT2
 {
+    struct Guest;
+    struct Staff;
+
     class Formatter;
     class MusicObject;
     class StationObject;
@@ -483,8 +484,8 @@ public:
     int32_t getTotalQueueLength() const;
     int32_t getMaxQueueTime() const;
 
-    void queueInsertGuestAtFront(StationIndex stationIndex, Guest* peep);
-    Guest* getQueueHeadGuest(StationIndex stationIndex) const;
+    void queueInsertGuestAtFront(StationIndex stationIndex, OpenRCT2::Guest* peep);
+    OpenRCT2::Guest* getQueueHeadGuest(StationIndex stationIndex) const;
 
     void setNameToDefault();
     std::string getName() const;
@@ -820,14 +821,14 @@ void RideCheckAllReachable();
 
 bool RideTryGetOriginElement(const Ride& ride, CoordsXYE* output);
 void RideClearBlockedTiles(const Ride& ride);
-Staff* RideGetMechanic(const Ride& ride);
-Staff* RideGetAssignedMechanic(const Ride& ride);
+OpenRCT2::Staff* RideGetMechanic(const Ride& ride);
+OpenRCT2::Staff* RideGetAssignedMechanic(const Ride& ride);
 VehicleColour RideGetVehicleColour(const Ride& ride, int32_t vehicleIndex);
 int32_t RideGetUnusedPresetVehicleColour(OpenRCT2::ObjectEntryIndex subType);
 void RideSetVehicleColoursToRandomPreset(Ride& ride, uint8_t preset_index);
 void RideMeasurementsUpdate();
 void RideBreakdownAddNewsItem(const Ride& ride);
-Staff* RideFindClosestMechanic(const Ride& ride, int32_t forInspection);
+OpenRCT2::Staff* RideFindClosestMechanic(const Ride& ride, int32_t forInspection);
 int32_t RideInitialiseConstructionWindow(Ride& ride);
 void RideSetMapTooltip(const OpenRCT2::TileElement& tileElement);
 void RidePrepareBreakdown(Ride& ride, Breakdown breakdownReason);

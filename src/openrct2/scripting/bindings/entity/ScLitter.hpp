@@ -13,7 +13,10 @@
 
     #include "ScEntity.hpp"
 
-struct Litter;
+namespace OpenRCT2
+{
+    struct Litter;
+}
 
 namespace OpenRCT2::Scripting
 {

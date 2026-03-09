@@ -18,11 +18,12 @@
 #include <vector>
 
 enum class RCT12PeepAnimationGroup : uint8_t;
-enum class StaffType : uint8_t;
 
 namespace OpenRCT2
 {
     class PeepAnimationsObject;
+
+    enum class StaffType : uint8_t;
 
     enum class AnimationPeepType : uint8_t
     {

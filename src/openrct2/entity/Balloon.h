@@ -14,28 +14,28 @@
 struct CoordsXYZ;
 struct PaintSession;
 
-namespace OpenRCT2
-{
-    class DataSerialiser;
-}
-
 namespace OpenRCT2::Drawing
 {
     enum class Colour : uint8_t;
 }
 
-struct Balloon : EntityBase
+namespace OpenRCT2
 {
-    static constexpr auto cEntityType = EntityType::balloon;
-    uint16_t frame;
-    uint16_t popped;
-    uint8_t time_to_move;
-    OpenRCT2::Drawing::Colour colour;
-    static void Create(const CoordsXYZ& balloonPos, OpenRCT2::Drawing::Colour colour, bool isPopped);
-    void Update();
-    void Pop(bool playSound);
-    void Press();
-    void Serialise(OpenRCT2::DataSerialiser& stream);
-    void Paint(PaintSession& session, int32_t imageDirection) const;
-    bool Collides() const;
-};
+    class DataSerialiser;
+
+    struct Balloon : EntityBase
+    {
+        static constexpr auto cEntityType = EntityType::balloon;
+        uint16_t frame;
+        uint16_t popped;
+        uint8_t time_to_move;
+        Drawing::Colour colour;
+        static void Create(const CoordsXYZ& balloonPos, Drawing::Colour colour, bool isPopped);
+        void Update();
+        void Pop(bool playSound);
+        void Press();
+        void Serialise(DataSerialiser& stream);
+        void Paint(PaintSession& session, int32_t imageDirection) const;
+        bool Collides() const;
+    };
+} // namespace OpenRCT2

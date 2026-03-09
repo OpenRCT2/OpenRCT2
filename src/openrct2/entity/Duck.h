@@ -17,38 +17,38 @@ struct PaintSession;
 namespace OpenRCT2
 {
     class DataSerialiser;
-}
 
-struct Duck : EntityBase
-{
-    static constexpr auto cEntityType = EntityType::duck;
-    enum class DuckState : uint8_t
+    struct Duck : EntityBase
     {
-        FlyToWater,
-        Swim,
-        Drink,
-        DoubleDrink,
-        FlyAway,
+        static constexpr auto cEntityType = EntityType::duck;
+        enum class DuckState : uint8_t
+        {
+            FlyToWater,
+            Swim,
+            Drink,
+            DoubleDrink,
+            FlyAway,
+        };
+        uint16_t frame;
+        int16_t target_x;
+        int16_t target_y;
+        DuckState state;
+
+        static void Create(const CoordsXY& pos);
+        static void RemoveAll();
+        void Press();
+        void Update();
+        uint32_t GetFrameImage(int32_t direction) const;
+        bool IsFlying();
+        void Remove();
+        void Serialise(DataSerialiser& stream);
+        void Paint(PaintSession& session, int32_t imageDirection) const;
+
+    private:
+        void UpdateFlyToWater();
+        void UpdateSwim();
+        void UpdateDrink();
+        void UpdateDoubleDrink();
+        void UpdateFlyAway();
     };
-    uint16_t frame;
-    int16_t target_x;
-    int16_t target_y;
-    DuckState state;
-
-    static void Create(const CoordsXY& pos);
-    static void RemoveAll();
-    void Press();
-    void Update();
-    uint32_t GetFrameImage(int32_t direction) const;
-    bool IsFlying();
-    void Remove();
-    void Serialise(OpenRCT2::DataSerialiser& stream);
-    void Paint(PaintSession& session, int32_t imageDirection) const;
-
-private:
-    void UpdateFlyToWater();
-    void UpdateSwim();
-    void UpdateDrink();
-    void UpdateDoubleDrink();
-    void UpdateFlyAway();
-};
+} // namespace OpenRCT2

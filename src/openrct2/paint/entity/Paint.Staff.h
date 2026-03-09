@@ -11,8 +11,12 @@
 
 #include <cstdint>
 
-struct PaintSession;
-struct Staff;
+namespace OpenRCT2
+{
+    struct Staff;
+}
 
-void PaintStaff(PaintSession& session, const Staff& staff, int32_t orientation);
-void PaintStaffLightingEffects(const Staff& staff);
+struct PaintSession;
+
+void PaintStaff(PaintSession& session, const OpenRCT2::Staff& staff, int32_t orientation);
+void PaintStaffLightingEffects(const OpenRCT2::Staff& staff);

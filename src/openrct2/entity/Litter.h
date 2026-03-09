@@ -19,33 +19,33 @@ struct PaintSession;
 namespace OpenRCT2
 {
     class DataSerialiser;
-}
 
-struct Litter : EntityBase
-{
-    enum class Type : uint8_t
+    struct Litter : EntityBase
     {
-        vomit,
-        vomitAlt,
-        emptyCan,
-        rubbish,
-        burgerBox,
-        emptyCup,
-        emptyBox,
-        emptyBottle,
-        emptyBowlRed,
-        emptyDrinkCarton,
-        emptyJuiceCup,
-        emptyBowlBlue,
-    };
+        enum class Type : uint8_t
+        {
+            vomit,
+            vomitAlt,
+            emptyCan,
+            rubbish,
+            burgerBox,
+            emptyCup,
+            emptyBox,
+            emptyBottle,
+            emptyBowlRed,
+            emptyDrinkCarton,
+            emptyJuiceCup,
+            emptyBowlBlue,
+        };
 
-    static constexpr auto cEntityType = EntityType::litter;
-    Type SubType;
-    uint32_t creationTick;
-    static void Create(const CoordsXYZD& litterPos, Type type);
-    static void RemoveAt(const CoordsXYZ& litterPos);
-    void Serialise(OpenRCT2::DataSerialiser& stream);
-    StringId GetName() const;
-    uint32_t GetAge() const;
-    void Paint(PaintSession& session, int32_t imageDirection) const;
-};
+        static constexpr auto cEntityType = EntityType::litter;
+        Type SubType;
+        uint32_t creationTick;
+        static void Create(const CoordsXYZD& litterPos, Type type);
+        static void RemoveAt(const CoordsXYZ& litterPos);
+        void Serialise(DataSerialiser& stream);
+        StringId GetName() const;
+        uint32_t GetAge() const;
+        void Paint(PaintSession& session, int32_t imageDirection) const;
+    };
+} // namespace OpenRCT2

@@ -16,12 +16,12 @@
 struct CoordsXY;
 struct Vehicle;
 struct CoordsXYZ;
-struct EntityBase;
 
 namespace OpenRCT2
 {
+    struct EntityBase;
     struct Viewport;
-}
+} // namespace OpenRCT2
 
 namespace OpenRCT2::Drawing
 {

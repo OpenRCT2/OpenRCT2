@@ -14,13 +14,12 @@
 
 #include <memory>
 
-struct Peep;
-struct Guest;
-
 namespace OpenRCT2
 {
+    struct Guest;
+    struct Peep;
     struct TileElement;
-}
+} // namespace OpenRCT2
 
 namespace OpenRCT2::PathFinding
 {

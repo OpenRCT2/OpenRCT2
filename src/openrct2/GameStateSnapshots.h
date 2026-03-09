@@ -38,7 +38,7 @@ struct GameStateSpriteChange
     };
 
     uint8_t changeType;
-    EntityType entityType;
+    OpenRCT2::EntityType entityType;
     uint32_t spriteIndex;
 
     std::vector<Diff> diffs;

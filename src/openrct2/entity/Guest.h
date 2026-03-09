@@ -15,452 +15,457 @@
 #include "../ride/ShopItem.h"
 #include "Peep.h"
 
-constexpr int8_t kPeepMaxThoughts = 5;
-
-constexpr int8_t kPeepHungerWarningThreshold = 25;
-constexpr int8_t kPeepThirstWarningThreshold = 25;
-constexpr int8_t kPeepToiletWarningThreshold = 28;
-constexpr int8_t kPeepLitterWarningThreshold = 23;
-constexpr int8_t kPeepDisgustWarningThreshold = 22;
-constexpr int8_t kPeepVandalismWarningThreshold = 15;
-constexpr int8_t kPeepNoExitWarningThreshold = 8;
-constexpr int8_t kPeepLostWarningThreshold = 8;
-constexpr int8_t kPeepTooLongQueueThreshold = 25;
-
-constexpr int kPeepMaxHappiness = 255;
-constexpr int kPeepMaxHunger = 255;
-constexpr int16_t kPeepMaxToilet = 255;
-constexpr int16_t kPeepMaxNausea = 255;
-constexpr int kPeepMaxThirst = 255;
-
-enum class PeepThoughtType : uint8_t
-{
-    CantAffordRide = 0,   // "I can't afford"
-    SpentMoney = 1,       // "I've spent all my money"
-    Sick = 2,             // "I feel sick"
-    VerySick = 3,         // "I feel very sick"
-    MoreThrilling = 4,    // "I want to go on something more thrilling than X"
-    Intense = 5,          // "X looks too intense for me"
-    HaventFinished = 6,   // "I haven't finished my X yet"
-    Sickening = 7,        // "Just looking at X makes me feel sick"
-    BadValue = 8,         // "I'm not paying that much to go on X"
-    GoHome = 9,           // "I want to go home"
-    GoodValue = 10,       // "X is really good value"
-    AlreadyGot = 11,      // "I've already got"
-    CantAffordItem = 12,  // "I can't afford"
-    NotHungry = 13,       // "I'm not hungry"
-    NotThirsty = 14,      // "I'm not thirsty"
-    Drowning = 15,        // "Help! I'm drowning!"
-    Lost = 16,            // "I'm lost!"
-    WasGreat = 17,        // "X was great"
-    QueuingAges = 18,     // "I've been queuing for X for ages"
-    Tired = 19,           // "I'm tired"
-    Hungry = 20,          // "I'm hungry"
-    Thirsty = 21,         // "I'm thirsty"
-    Toilet = 22,          // "I need to go to the toilet"
-    CantFind = 23,        // "I can't find X"
-    NotPaying = 24,       // "I'm not paying that much to use X"
-    NotWhileRaining = 25, // "I'm not going on X while it's raining"
-    BadLitter = 26,       // "The litter here is really bad"
-    CantFindExit = 27,    // "I can't find the exit"
-    GetOff = 28,          // "I want to get off X"
-    GetOut = 29,          // "I want to get out of X"
-    NotSafe = 30,         // "I'm not going on X - it isn't safe"
-    PathDisgusting = 31,  // "This path is disgusting"
-    Crowded = 32,         // "It's too crowded here"
-    Vandalism = 33,       // "The vandalism here is really bad"
-    Scenery = 34,         // "Great scenery!"
-    VeryClean = 35,       // "This park is very clean and tidy"
-    Fountains = 36,       // "The jumping fountains are great"
-    Music = 37,           // "The music is nice here"
-    Balloon = 38,         // "This balloon from X is really good value"
-    Toy = 39,             // "This cuddly toy from X is really good value"
-    Map = 40,
-    Photo = 41, // "This on ride photo from X is really good value"
-    Umbrella = 42,
-    Drink = 43,
-    Burger = 44,
-    Chips = 45,
-    IceCream = 46,
-    Candyfloss = 47,
-
-    Pizza = 51,
-
-    Popcorn = 53,
-    HotDog = 54,
-    Tentacle = 55,
-    Hat = 56,
-    ToffeeApple = 57,
-    Tshirt = 58,
-    Doughnut = 59,
-    Coffee = 60,
-
-    Chicken = 62,
-    Lemonade = 63,
-
-    Wow = 67, // "Wow!"
-
-    Wow2 = 70,        // "Wow!"
-    Watched = 71,     // "I have the strangest feeling someone is watching me"
-    BalloonMuch = 72, // "I'm not paying that much to get a balloon from X"
-    ToyMuch = 73,
-    MapMuch = 74,
-    PhotoMuch = 75,
-    UmbrellaMuch = 76,
-    DrinkMuch = 77,
-    BurgerMuch = 78,
-    ChipsMuch = 79,
-    IceCreamMuch = 80,
-    CandyflossMuch = 81,
-
-    PizzaMuch = 85,
-
-    PopcornMuch = 87,
-    HotDogMuch = 88,
-    TentacleMuch = 89,
-    HatMuch = 90,
-    ToffeeAppleMuch = 91,
-    TshirtMuch = 92,
-    DoughnutMuch = 93,
-    CoffeeMuch = 94,
-
-    ChickenMuch = 96,
-    LemonadeMuch = 97,
-
-    Photo2 = 104, // "This on-ride photo from X is really good value"
-    Photo3 = 105,
-    Photo4 = 106,
-    Pretzel = 107,
-    HotChocolate = 108,
-    IcedTea = 109,
-    FunnelCake = 110,
-    Sunglasses = 111,
-    BeefNoodles = 112,
-    FriedRiceNoodles = 113,
-    WontonSoup = 114,
-    MeatballSoup = 115,
-    FruitJuice = 116,
-    SoybeanMilk = 117,
-    Sujongkwa = 118,
-    SubSandwich = 119,
-    Cookie = 120,
-
-    RoastSausage = 124,
-
-    Photo2Much = 136,
-    Photo3Much = 137,
-    Photo4Much = 138,
-    PretzelMuch = 139,
-    HotChocolateMuch = 140,
-    IcedTeaMuch = 141,
-    FunnelCakeMuch = 142,
-    SunglassesMuch = 143,
-    BeefNoodlesMuch = 144,
-    FriedRiceNoodlesMuch = 145,
-    WontonSoupMuch = 146,
-    MeatballSoupMuch = 147,
-    FruitJuiceMuch = 148,
-    SoybeanMilkMuch = 149,
-    SujongkwaMuch = 150,
-    SubSandwichMuch = 151,
-    CookieMuch = 152,
-
-    RoastSausageMuch = 156,
-
-    Help = 168,               // "Help! Put me down!"
-    RunningOut = 169,         // "I'm running out of cash!"
-    NewRide = 170,            // "Wow! A new ride being built!"
-    NiceRideDeprecated = 171, // "Nice ride! But not as good as the Phoenix..."
-    ExcitedDeprecated = 172,  // "I'm so excited - It's an Intamin ride!"
-    HereWeAre = 173,          // "...and here we are on X!"
-
-    None = 255
-};
-
-enum class PeepNauseaTolerance : uint8_t
-{
-    None,
-    Low,
-    Average,
-    High
-};
-
-static constexpr uint16_t kPeepThoughtItemNone = std::numeric_limits<uint16_t>::max();
-
-struct PeepThought
-{
-    PeepThoughtType type;
-    union
-    {
-        RideId rideId;
-        ShopItem shopItem;
-        uint16_t item;
-    };
-    uint8_t freshness;     // larger is less fresh
-    uint8_t fresh_timeout; // updates every tick
-};
-
-struct Guest;
-struct Staff;
 struct CarEntry;
 
-struct IntensityRange
+namespace OpenRCT2
 {
-private:
-    uint8_t _value{};
+    constexpr int8_t kPeepMaxThoughts = 5;
 
-public:
-    explicit IntensityRange(uint8_t value)
-        : _value(value)
+    constexpr int8_t kPeepHungerWarningThreshold = 25;
+    constexpr int8_t kPeepThirstWarningThreshold = 25;
+    constexpr int8_t kPeepToiletWarningThreshold = 28;
+    constexpr int8_t kPeepLitterWarningThreshold = 23;
+    constexpr int8_t kPeepDisgustWarningThreshold = 22;
+    constexpr int8_t kPeepVandalismWarningThreshold = 15;
+    constexpr int8_t kPeepNoExitWarningThreshold = 8;
+    constexpr int8_t kPeepLostWarningThreshold = 8;
+    constexpr int8_t kPeepTooLongQueueThreshold = 25;
+
+    constexpr int kPeepMaxHappiness = 255;
+    constexpr int kPeepMaxHunger = 255;
+    constexpr int16_t kPeepMaxToilet = 255;
+    constexpr int16_t kPeepMaxNausea = 255;
+    constexpr int kPeepMaxThirst = 255;
+
+    enum class PeepThoughtType : uint8_t
     {
-    }
+        CantAffordRide = 0,   // "I can't afford"
+        SpentMoney = 1,       // "I've spent all my money"
+        Sick = 2,             // "I feel sick"
+        VerySick = 3,         // "I feel very sick"
+        MoreThrilling = 4,    // "I want to go on something more thrilling than X"
+        Intense = 5,          // "X looks too intense for me"
+        HaventFinished = 6,   // "I haven't finished my X yet"
+        Sickening = 7,        // "Just looking at X makes me feel sick"
+        BadValue = 8,         // "I'm not paying that much to go on X"
+        GoHome = 9,           // "I want to go home"
+        GoodValue = 10,       // "X is really good value"
+        AlreadyGot = 11,      // "I've already got"
+        CantAffordItem = 12,  // "I can't afford"
+        NotHungry = 13,       // "I'm not hungry"
+        NotThirsty = 14,      // "I'm not thirsty"
+        Drowning = 15,        // "Help! I'm drowning!"
+        Lost = 16,            // "I'm lost!"
+        WasGreat = 17,        // "X was great"
+        QueuingAges = 18,     // "I've been queuing for X for ages"
+        Tired = 19,           // "I'm tired"
+        Hungry = 20,          // "I'm hungry"
+        Thirsty = 21,         // "I'm thirsty"
+        Toilet = 22,          // "I need to go to the toilet"
+        CantFind = 23,        // "I can't find X"
+        NotPaying = 24,       // "I'm not paying that much to use X"
+        NotWhileRaining = 25, // "I'm not going on X while it's raining"
+        BadLitter = 26,       // "The litter here is really bad"
+        CantFindExit = 27,    // "I can't find the exit"
+        GetOff = 28,          // "I want to get off X"
+        GetOut = 29,          // "I want to get out of X"
+        NotSafe = 30,         // "I'm not going on X - it isn't safe"
+        PathDisgusting = 31,  // "This path is disgusting"
+        Crowded = 32,         // "It's too crowded here"
+        Vandalism = 33,       // "The vandalism here is really bad"
+        Scenery = 34,         // "Great scenery!"
+        VeryClean = 35,       // "This park is very clean and tidy"
+        Fountains = 36,       // "The jumping fountains are great"
+        Music = 37,           // "The music is nice here"
+        Balloon = 38,         // "This balloon from X is really good value"
+        Toy = 39,             // "This cuddly toy from X is really good value"
+        Map = 40,
+        Photo = 41, // "This on ride photo from X is really good value"
+        Umbrella = 42,
+        Drink = 43,
+        Burger = 44,
+        Chips = 45,
+        IceCream = 46,
+        Candyfloss = 47,
 
-    IntensityRange(uint8_t min, uint8_t max)
-        : _value(std::min<uint8_t>(min, 15) | (std::min<uint8_t>(max, 15) << 4))
-    {
-    }
+        Pizza = 51,
 
-    uint8_t GetMinimum() const
-    {
-        return _value & 0x0F;
-    }
+        Popcorn = 53,
+        HotDog = 54,
+        Tentacle = 55,
+        Hat = 56,
+        ToffeeApple = 57,
+        Tshirt = 58,
+        Doughnut = 59,
+        Coffee = 60,
 
-    uint8_t GetMaximum() const
-    {
-        return _value >> 4;
-    }
+        Chicken = 62,
+        Lemonade = 63,
 
-    IntensityRange WithMinimum(uint8_t value) const
-    {
-        return IntensityRange(value, GetMaximum());
-    }
+        Wow = 67, // "Wow!"
 
-    IntensityRange WithMaximum(uint8_t value) const
-    {
-        return IntensityRange(GetMinimum(), value);
-    }
+        Wow2 = 70,        // "Wow!"
+        Watched = 71,     // "I have the strangest feeling someone is watching me"
+        BalloonMuch = 72, // "I'm not paying that much to get a balloon from X"
+        ToyMuch = 73,
+        MapMuch = 74,
+        PhotoMuch = 75,
+        UmbrellaMuch = 76,
+        DrinkMuch = 77,
+        BurgerMuch = 78,
+        ChipsMuch = 79,
+        IceCreamMuch = 80,
+        CandyflossMuch = 81,
 
-    explicit operator uint8_t() const
-    {
-        return _value;
-    }
+        PizzaMuch = 85,
 
-    friend bool operator==(const IntensityRange& lhs, const IntensityRange& rhs)
-    {
-        return lhs._value == rhs._value;
-    }
+        PopcornMuch = 87,
+        HotDogMuch = 88,
+        TentacleMuch = 89,
+        HatMuch = 90,
+        ToffeeAppleMuch = 91,
+        TshirtMuch = 92,
+        DoughnutMuch = 93,
+        CoffeeMuch = 94,
 
-    friend bool operator!=(const IntensityRange& lhs, const IntensityRange& rhs)
-    {
-        return lhs._value != rhs._value;
-    }
-};
+        ChickenMuch = 96,
+        LemonadeMuch = 97,
 
-struct Guest : Peep
-{
-    static constexpr auto cEntityType = EntityType::guest;
+        Photo2 = 104, // "This on-ride photo from X is really good value"
+        Photo3 = 105,
+        Photo4 = 106,
+        Pretzel = 107,
+        HotChocolate = 108,
+        IcedTea = 109,
+        FunnelCake = 110,
+        Sunglasses = 111,
+        BeefNoodles = 112,
+        FriedRiceNoodles = 113,
+        WontonSoup = 114,
+        MeatballSoup = 115,
+        FruitJuice = 116,
+        SoybeanMilk = 117,
+        Sujongkwa = 118,
+        SubSandwich = 119,
+        Cookie = 120,
 
-public:
-    uint8_t GuestNumRides;
-    EntityId GuestNextInQueue;
-    int32_t ParkEntryTime;
-    RideId GuestHeadingToRideId;
-    uint8_t GuestIsLostCountdown;
-    uint8_t GuestTimeOnRide;
-    money64 PaidToEnter;
-    money64 PaidOnRides;
-    money64 PaidOnFood;
-    money64 PaidOnDrink;
-    money64 PaidOnSouvenirs;
-    bool OutsideOfPark;
-    uint8_t Happiness;
-    uint8_t HappinessTarget;
-    uint8_t Nausea;
-    uint8_t NauseaTarget;
-    uint8_t Hunger;
-    uint8_t Thirst;
-    uint8_t Toilet;
-    uint8_t TimeToConsume;
-    IntensityRange Intensity{ 0 };
-    PeepNauseaTolerance NauseaTolerance;
-    uint16_t TimeInQueue;
-    money64 CashInPocket;
-    money64 CashSpent;
-    RideId Photo1RideRef;
-    RideId Photo2RideRef;
-    RideId Photo3RideRef;
-    RideId Photo4RideRef;
+        RoastSausage = 124,
 
-    int8_t RejoinQueueTimeout; // whilst waiting for a free vehicle (or pair) in the entrance
-    RideId PreviousRide;
-    uint16_t PreviousRideTimeOut;
-    std::array<PeepThought, kPeepMaxThoughts> Thoughts;
-    // 0x3F Litter Count split into lots of 3 with time, 0xC0 Time since last recalc
-    uint8_t LitterCount;
-    // 0x3F Sick Count split into lots of 3 with time, 0xC0 Time since last recalc
-    uint8_t DisgustingCount;
-    uint8_t AmountOfFood;
-    uint8_t AmountOfDrinks;
-    uint8_t AmountOfSouvenirs;
-    uint8_t VandalismSeen; // 0xC0 vandalism thought timeout, 0x3F vandalism tiles seen
-    uint8_t VoucherType;
-    union
-    {
-        RideId VoucherRideId;
-        ShopItemIndex VoucherShopItem;
+        Photo2Much = 136,
+        Photo3Much = 137,
+        Photo4Much = 138,
+        PretzelMuch = 139,
+        HotChocolateMuch = 140,
+        IcedTeaMuch = 141,
+        FunnelCakeMuch = 142,
+        SunglassesMuch = 143,
+        BeefNoodlesMuch = 144,
+        FriedRiceNoodlesMuch = 145,
+        WontonSoupMuch = 146,
+        MeatballSoupMuch = 147,
+        FruitJuiceMuch = 148,
+        SoybeanMilkMuch = 149,
+        SujongkwaMuch = 150,
+        SubSandwichMuch = 151,
+        CookieMuch = 152,
+
+        RoastSausageMuch = 156,
+
+        Help = 168,               // "Help! Put me down!"
+        RunningOut = 169,         // "I'm running out of cash!"
+        NewRide = 170,            // "Wow! A new ride being built!"
+        NiceRideDeprecated = 171, // "Nice ride! But not as good as the Phoenix..."
+        ExcitedDeprecated = 172,  // "I'm so excited - It's an Intamin ride!"
+        HereWeAre = 173,          // "...and here we are on X!"
+
+        None = 255
     };
-    uint8_t SurroundingsThoughtTimeout;
-    uint8_t Angriness;
-    uint8_t TimeLost; // the time the peep has been lost when it reaches 254 generates the lost thought
-    uint8_t DaysInQueue;
-    OpenRCT2::Drawing::Colour BalloonColour;
-    OpenRCT2::Drawing::Colour UmbrellaColour;
-    OpenRCT2::Drawing::Colour HatColour;
-    RideId FavouriteRide;
-    uint8_t FavouriteRideRating;
-    uint64_t ItemFlags;
 
-    void Update();
-    void Tick128UpdateGuest(uint32_t index);
-    uint64_t GetFoodOrDrinkFlags() const;
-    uint64_t GetEmptyContainerFlags() const;
-    bool HasDrink() const;
-    bool HasFoodOrDrink() const;
-    bool HasEmptyContainer() const;
-    void UpdateAnimationGroup();
-    bool HeadingForRideOrParkExit() const;
-    void ReadMap();
-    bool ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, bool thinking);
-    void SpendMoney(money64& peep_expend_type, money64 amount, ExpenditureType type);
-    void SpendMoney(money64 amount, ExpenditureType type);
-    void SetHasRidden(const Ride& ride);
-    bool HasRidden(const Ride& ride) const;
-    void SetHasRiddenRideType(ride_type_t rideType);
-    bool HasRiddenRideType(ride_type_t rideType) const;
-    void SetParkEntryTime(int32_t entryTime);
-    int32_t GetParkEntryTime() const;
-    void CheckIfLost();
-    void CheckCantFindRide();
-    void CheckCantFindExit();
-    void SetAnimationGroup(PeepAnimationGroup new_sprite_type);
-    int32_t GetEasterEggNameId() const;
-    void UpdateEasterEggInteractions();
-    void InsertNewThought(PeepThoughtType thought_type);
-    void InsertNewThought(PeepThoughtType thought_type, ShopItem thought_arguments);
-    void InsertNewThought(PeepThoughtType thought_type, RideId rideId);
-    void InsertNewThought(PeepThoughtType thought_type, uint16_t thought_arguments);
-    static Guest* Generate(const CoordsXYZ& coords);
-    bool UpdateQueuePosition(PeepActionType previous_action);
-    void RemoveFromQueue();
+    enum class PeepNauseaTolerance : uint8_t
+    {
+        None,
+        Low,
+        Average,
+        High
+    };
 
-    uint64_t GetItemFlags() const;
-    void SetItemFlags(uint64_t itemFlags);
-    void RemoveAllItems();
-    void RemoveItem(ShopItem item);
-    void GiveItem(ShopItem item);
-    bool HasItem(ShopItem peepItem) const;
-    void Serialise(OpenRCT2::DataSerialiser& stream);
+    static constexpr uint16_t kPeepThoughtItemNone = std::numeric_limits<uint16_t>::max();
 
-    // Removes the ride from the guests memory, this includes
-    // the history, thoughts, etc.
-    void RemoveRideFromMemory(RideId rideId);
-    void HandleEasterEggName();
-    void ChoseNotToGoOnRide(const Ride& ride, bool peepAtRide, bool updateLastRide);
-    void OnEnterRide(Ride& ride);
-    void OnExitRide(Ride& ride);
-    void ThrowUp();
+    struct PeepThought
+    {
+        PeepThoughtType type;
+        union
+        {
+            RideId rideId;
+            ShopItem shopItem;
+            uint16_t item;
+        };
+        uint8_t freshness;     // larger is less fresh
+        uint8_t fresh_timeout; // updates every tick
+    };
 
-private:
-    bool ShouldFindBench();
-    bool UpdateWalkingFindBin();
-    bool UpdateWalkingFindBench();
-    void UpdateRide();
-    void UpdateOnRide() {}; // TODO
-    void UpdateWalking();
-    void UpdateQueuing();
-    void UpdateSitting();
-    void UpdateEnteringPark();
-    void UpdateLeavingPark();
-    void UpdateBuying();
-    void UpdateWatching();
-    void UpdateUsingBin();
-    void UpdateRideAtEntrance();
-    void UpdateRideAdvanceThroughEntrance();
-    void UpdateRideLeaveEntranceWaypoints(const Ride& ride);
-    uint8_t GetWaypointedSeatLocation(const Ride& ride, const CarEntry* vehicle_type, uint8_t track_direction) const;
-    void UpdateRideFreeVehicleCheck();
-    void UpdateRideFreeVehicleEnterRide(Ride& ride);
-    void UpdateRideApproachVehicle();
-    void UpdateRideEnterVehicle();
-    void UpdateRideLeaveVehicle();
-    void UpdateRideApproachExit();
-    void UpdateRideInExit();
+    struct Guest;
+    struct Staff;
 
-    void UpdateRideApproachVehicleWaypoints();
+    struct IntensityRange
+    {
+    private:
+        uint8_t _value{};
 
-    void UpdateRideApproachExitWaypoints();
-    void UpdateRideApproachSpiralSlide();
-    void UpdateRideOnSpiralSlide();
-    void UpdateRideLeaveSpiralSlide();
-    void UpdateRideMazePathfinding();
-    void UpdateRideLeaveExit();
-    void UpdateRideShopApproach();
-    void UpdateRideShopInteract();
-    void UpdateRideShopLeave();
-    void UpdateRidePrepareForExit();
-    void UpdateMotivesIdle();
-    void UpdateConsumptionMotives();
-    int32_t CheckEasterEggName(int32_t index) const;
-    void GivePassingGuestPurpleClothes(Guest& passingPeep);
-    void GivePassingGuestPizza(Guest& passingPeep);
-    void MakePassingGuestSick(Guest& passingPeep);
-    void GivePassingPeepsIceCream(Guest& passingPeep);
-    void GoToRideEntrance(const Ride& ride);
-};
+    public:
+        explicit IntensityRange(uint8_t value)
+            : _value(value)
+        {
+        }
 
-void UpdateRideApproachVehicleWaypointsMotionSimulator(Guest&, const CoordsXY&, int16_t&);
-void UpdateRideApproachVehicleWaypointsDefault(Guest&, const CoordsXY&, int16_t&);
+        IntensityRange(uint8_t min, uint8_t max)
+            : _value(std::min<uint8_t>(min, 15) | (std::min<uint8_t>(max, 15) << 4))
+        {
+        }
 
-static_assert(sizeof(Guest) <= 512);
+        uint8_t GetMinimum() const
+        {
+            return _value & 0x0F;
+        }
 
-enum
-{
-    EASTEREGG_PEEP_NAME_MICHAEL_SCHUMACHER,
-    EASTEREGG_PEEP_NAME_JACQUES_VILLENEUVE,
-    EASTEREGG_PEEP_NAME_DAMON_HILL,
-    EASTEREGG_PEEP_NAME_MR_BEAN,
-    EASTEREGG_PEEP_NAME_CHRIS_SAWYER,
-    EASTEREGG_PEEP_NAME_KATIE_BRAYSHAW,
-    EASTEREGG_PEEP_NAME_MELANIE_WARN,
-    EASTEREGG_PEEP_NAME_SIMON_FOSTER,
-    EASTEREGG_PEEP_NAME_JOHN_WARDLEY,
-    EASTEREGG_PEEP_NAME_LISA_STIRLING,
-    EASTEREGG_PEEP_NAME_DONALD_MACRAE,
-    EASTEREGG_PEEP_NAME_KATHERINE_MCGOWAN,
-    EASTEREGG_PEEP_NAME_FRANCES_MCGOWAN,
-    EASTEREGG_PEEP_NAME_CORINA_MASSOURA,
-    EASTEREGG_PEEP_NAME_CAROL_YOUNG,
-    EASTEREGG_PEEP_NAME_MIA_SHERIDAN,
-    EASTEREGG_PEEP_NAME_KATIE_RODGER,
-    EASTEREGG_PEEP_NAME_EMMA_GARRELL,
-    EASTEREGG_PEEP_NAME_JOANNE_BARTON,
-    EASTEREGG_PEEP_NAME_FELICITY_ANDERSON,
-    EASTEREGG_PEEP_NAME_KATIE_SMITH,
-    EASTEREGG_PEEP_NAME_EILIDH_BELL,
-    EASTEREGG_PEEP_NAME_NANCY_STILLWAGON,
-    EASTEREGG_PEEP_NAME_DAVID_ELLIS
-};
+        uint8_t GetMaximum() const
+        {
+            return _value >> 4;
+        }
 
-void PeepThoughtSetFormatArgs(const PeepThought* thought, OpenRCT2::Formatter& ft);
+        IntensityRange WithMinimum(uint8_t value) const
+        {
+            return IntensityRange(value, GetMaximum());
+        }
 
-void IncrementGuestsInPark();
-void IncrementGuestsHeadingForPark();
-void DecrementGuestsInPark();
-void DecrementGuestsHeadingForPark();
+        IntensityRange WithMaximum(uint8_t value) const
+        {
+            return IntensityRange(GetMinimum(), value);
+        }
 
-void PeepUpdateRideLeaveEntranceMaze(Guest& peep, Ride& ride, CoordsXYZD& entrance_loc);
-void PeepUpdateRideLeaveEntranceSpiralSlide(Guest& peep, Ride& ride, CoordsXYZD& entrance_loc);
-void PeepUpdateRideLeaveEntranceDefault(Guest& peep, Ride& ride, CoordsXYZD& entrance_loc);
+        explicit operator uint8_t() const
+        {
+            return _value;
+        }
 
-CoordsXY GetGuestWaypointLocationDefault(const Vehicle& vehicle, const Ride& ride, const StationIndex& CurrentRideStation);
-CoordsXY GetGuestWaypointLocationEnterprise(const Vehicle& vehicle, const Ride& ride, const StationIndex& CurrentRideStation);
+        friend bool operator==(const IntensityRange& lhs, const IntensityRange& rhs)
+        {
+            return lhs._value == rhs._value;
+        }
+
+        friend bool operator!=(const IntensityRange& lhs, const IntensityRange& rhs)
+        {
+            return lhs._value != rhs._value;
+        }
+    };
+
+    struct Guest : Peep
+    {
+        static constexpr auto cEntityType = EntityType::guest;
+
+    public:
+        uint8_t GuestNumRides;
+        EntityId GuestNextInQueue;
+        int32_t ParkEntryTime;
+        RideId GuestHeadingToRideId;
+        uint8_t GuestIsLostCountdown;
+        uint8_t GuestTimeOnRide;
+        money64 PaidToEnter;
+        money64 PaidOnRides;
+        money64 PaidOnFood;
+        money64 PaidOnDrink;
+        money64 PaidOnSouvenirs;
+        bool OutsideOfPark;
+        uint8_t Happiness;
+        uint8_t HappinessTarget;
+        uint8_t Nausea;
+        uint8_t NauseaTarget;
+        uint8_t Hunger;
+        uint8_t Thirst;
+        uint8_t Toilet;
+        uint8_t TimeToConsume;
+        IntensityRange Intensity{ 0 };
+        PeepNauseaTolerance NauseaTolerance;
+        uint16_t TimeInQueue;
+        money64 CashInPocket;
+        money64 CashSpent;
+        RideId Photo1RideRef;
+        RideId Photo2RideRef;
+        RideId Photo3RideRef;
+        RideId Photo4RideRef;
+
+        int8_t RejoinQueueTimeout; // whilst waiting for a free vehicle (or pair) in the entrance
+        RideId PreviousRide;
+        uint16_t PreviousRideTimeOut;
+        std::array<PeepThought, kPeepMaxThoughts> Thoughts;
+        // 0x3F Litter Count split into lots of 3 with time, 0xC0 Time since last recalc
+        uint8_t LitterCount;
+        // 0x3F Sick Count split into lots of 3 with time, 0xC0 Time since last recalc
+        uint8_t DisgustingCount;
+        uint8_t AmountOfFood;
+        uint8_t AmountOfDrinks;
+        uint8_t AmountOfSouvenirs;
+        uint8_t VandalismSeen; // 0xC0 vandalism thought timeout, 0x3F vandalism tiles seen
+        uint8_t VoucherType;
+        union
+        {
+            RideId VoucherRideId;
+            ShopItemIndex VoucherShopItem;
+        };
+        uint8_t SurroundingsThoughtTimeout;
+        uint8_t Angriness;
+        uint8_t TimeLost; // the time the peep has been lost when it reaches 254 generates the lost thought
+        uint8_t DaysInQueue;
+        Drawing::Colour BalloonColour;
+        Drawing::Colour UmbrellaColour;
+        Drawing::Colour HatColour;
+        RideId FavouriteRide;
+        uint8_t FavouriteRideRating;
+        uint64_t ItemFlags;
+
+        void Update();
+        void Tick128UpdateGuest(uint32_t index);
+        uint64_t GetFoodOrDrinkFlags() const;
+        uint64_t GetEmptyContainerFlags() const;
+        bool HasDrink() const;
+        bool HasFoodOrDrink() const;
+        bool HasEmptyContainer() const;
+        void UpdateAnimationGroup();
+        bool HeadingForRideOrParkExit() const;
+        void ReadMap();
+        bool ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, bool thinking);
+        void SpendMoney(money64& peep_expend_type, money64 amount, ExpenditureType type);
+        void SpendMoney(money64 amount, ExpenditureType type);
+        void SetHasRidden(const Ride& ride);
+        bool HasRidden(const Ride& ride) const;
+        void SetHasRiddenRideType(ride_type_t rideType);
+        bool HasRiddenRideType(ride_type_t rideType) const;
+        void SetParkEntryTime(int32_t entryTime);
+        int32_t GetParkEntryTime() const;
+        void CheckIfLost();
+        void CheckCantFindRide();
+        void CheckCantFindExit();
+        void SetAnimationGroup(PeepAnimationGroup new_sprite_type);
+        int32_t GetEasterEggNameId() const;
+        void UpdateEasterEggInteractions();
+        void InsertNewThought(PeepThoughtType thought_type);
+        void InsertNewThought(PeepThoughtType thought_type, ShopItem thought_arguments);
+        void InsertNewThought(PeepThoughtType thought_type, RideId rideId);
+        void InsertNewThought(PeepThoughtType thought_type, uint16_t thought_arguments);
+        static Guest* Generate(const CoordsXYZ& coords);
+        bool UpdateQueuePosition(PeepActionType previous_action);
+        void RemoveFromQueue();
+
+        uint64_t GetItemFlags() const;
+        void SetItemFlags(uint64_t itemFlags);
+        void RemoveAllItems();
+        void RemoveItem(ShopItem item);
+        void GiveItem(ShopItem item);
+        bool HasItem(ShopItem peepItem) const;
+        void Serialise(DataSerialiser& stream);
+
+        // Removes the ride from the guests memory, this includes
+        // the history, thoughts, etc.
+        void RemoveRideFromMemory(RideId rideId);
+        void HandleEasterEggName();
+        void ChoseNotToGoOnRide(const Ride& ride, bool peepAtRide, bool updateLastRide);
+        void OnEnterRide(Ride& ride);
+        void OnExitRide(Ride& ride);
+        void ThrowUp();
+
+    private:
+        bool ShouldFindBench();
+        bool UpdateWalkingFindBin();
+        bool UpdateWalkingFindBench();
+        void UpdateRide();
+        void UpdateOnRide() {}; // TODO
+        void UpdateWalking();
+        void UpdateQueuing();
+        void UpdateSitting();
+        void UpdateEnteringPark();
+        void UpdateLeavingPark();
+        void UpdateBuying();
+        void UpdateWatching();
+        void UpdateUsingBin();
+        void UpdateRideAtEntrance();
+        void UpdateRideAdvanceThroughEntrance();
+        void UpdateRideLeaveEntranceWaypoints(const Ride& ride);
+        uint8_t GetWaypointedSeatLocation(const Ride& ride, const CarEntry* vehicle_type, uint8_t track_direction) const;
+        void UpdateRideFreeVehicleCheck();
+        void UpdateRideFreeVehicleEnterRide(Ride& ride);
+        void UpdateRideApproachVehicle();
+        void UpdateRideEnterVehicle();
+        void UpdateRideLeaveVehicle();
+        void UpdateRideApproachExit();
+        void UpdateRideInExit();
+
+        void UpdateRideApproachVehicleWaypoints();
+
+        void UpdateRideApproachExitWaypoints();
+        void UpdateRideApproachSpiralSlide();
+        void UpdateRideOnSpiralSlide();
+        void UpdateRideLeaveSpiralSlide();
+        void UpdateRideMazePathfinding();
+        void UpdateRideLeaveExit();
+        void UpdateRideShopApproach();
+        void UpdateRideShopInteract();
+        void UpdateRideShopLeave();
+        void UpdateRidePrepareForExit();
+        void UpdateMotivesIdle();
+        void UpdateConsumptionMotives();
+        int32_t CheckEasterEggName(int32_t index) const;
+        void GivePassingGuestPurpleClothes(Guest& passingPeep);
+        void GivePassingGuestPizza(Guest& passingPeep);
+        void MakePassingGuestSick(Guest& passingPeep);
+        void GivePassingPeepsIceCream(Guest& passingPeep);
+        void GoToRideEntrance(const Ride& ride);
+    };
+
+    void UpdateRideApproachVehicleWaypointsMotionSimulator(Guest&, const CoordsXY&, int16_t&);
+    void UpdateRideApproachVehicleWaypointsDefault(Guest&, const CoordsXY&, int16_t&);
+
+    static_assert(sizeof(Guest) <= 512);
+
+    enum
+    {
+        EASTEREGG_PEEP_NAME_MICHAEL_SCHUMACHER,
+        EASTEREGG_PEEP_NAME_JACQUES_VILLENEUVE,
+        EASTEREGG_PEEP_NAME_DAMON_HILL,
+        EASTEREGG_PEEP_NAME_MR_BEAN,
+        EASTEREGG_PEEP_NAME_CHRIS_SAWYER,
+        EASTEREGG_PEEP_NAME_KATIE_BRAYSHAW,
+        EASTEREGG_PEEP_NAME_MELANIE_WARN,
+        EASTEREGG_PEEP_NAME_SIMON_FOSTER,
+        EASTEREGG_PEEP_NAME_JOHN_WARDLEY,
+        EASTEREGG_PEEP_NAME_LISA_STIRLING,
+        EASTEREGG_PEEP_NAME_DONALD_MACRAE,
+        EASTEREGG_PEEP_NAME_KATHERINE_MCGOWAN,
+        EASTEREGG_PEEP_NAME_FRANCES_MCGOWAN,
+        EASTEREGG_PEEP_NAME_CORINA_MASSOURA,
+        EASTEREGG_PEEP_NAME_CAROL_YOUNG,
+        EASTEREGG_PEEP_NAME_MIA_SHERIDAN,
+        EASTEREGG_PEEP_NAME_KATIE_RODGER,
+        EASTEREGG_PEEP_NAME_EMMA_GARRELL,
+        EASTEREGG_PEEP_NAME_JOANNE_BARTON,
+        EASTEREGG_PEEP_NAME_FELICITY_ANDERSON,
+        EASTEREGG_PEEP_NAME_KATIE_SMITH,
+        EASTEREGG_PEEP_NAME_EILIDH_BELL,
+        EASTEREGG_PEEP_NAME_NANCY_STILLWAGON,
+        EASTEREGG_PEEP_NAME_DAVID_ELLIS
+    };
+
+    void PeepThoughtSetFormatArgs(const PeepThought* thought, Formatter& ft);
+
+    void IncrementGuestsInPark();
+    void IncrementGuestsHeadingForPark();
+    void DecrementGuestsInPark();
+    void DecrementGuestsHeadingForPark();
+
+    void PeepUpdateRideLeaveEntranceMaze(Guest& peep, Ride& ride, CoordsXYZD& entrance_loc);
+    void PeepUpdateRideLeaveEntranceSpiralSlide(Guest& peep, Ride& ride, CoordsXYZD& entrance_loc);
+    void PeepUpdateRideLeaveEntranceDefault(Guest& peep, Ride& ride, CoordsXYZD& entrance_loc);
+
+    CoordsXY GetGuestWaypointLocationDefault(const Vehicle& vehicle, const Ride& ride, const StationIndex& CurrentRideStation);
+    CoordsXY GetGuestWaypointLocationEnterprise(
+        const Vehicle& vehicle, const Ride& ride, const StationIndex& CurrentRideStation);
+} // namespace OpenRCT2

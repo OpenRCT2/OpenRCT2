@@ -20,8 +20,12 @@
 #include <string_view>
 #include <vector>
 
-struct Peep;
 struct CoordsXYZ;
+
+namespace OpenRCT2
+{
+    struct Peep;
+}
 
 namespace OpenRCT2::GameActions
 {

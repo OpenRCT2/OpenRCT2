@@ -12,11 +12,10 @@
 #include "../core/Money.hpp"
 #include "Location.hpp"
 
-struct Guest;
-
 namespace OpenRCT2
 {
     struct GameState_t;
+    struct Guest;
 } // namespace OpenRCT2
 
 namespace OpenRCT2::Park

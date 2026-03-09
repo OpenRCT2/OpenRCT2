@@ -11,13 +11,17 @@
 
 #include <cstdint>
 
+namespace OpenRCT2
+{
+    struct Guest;
+    enum class PeepAnimationType : uint8_t;
+} // namespace OpenRCT2
+
 struct BoundBoxXYZ;
-struct Guest;
 struct PaintSession;
-enum class PeepAnimationType : uint8_t;
 using Direction = uint8_t;
 
-void PaintGuest(PaintSession& session, const Guest& guest, int32_t orientation);
+void PaintGuest(PaintSession& session, const OpenRCT2::Guest& guest, int32_t orientation);
 void PaintGuestAccesories(
-    PaintSession& session, const Guest& guest, uint8_t imageOffset, PeepAnimationType actionAnimationGroup,
+    PaintSession& session, const OpenRCT2::Guest& guest, uint8_t imageOffset, OpenRCT2::PeepAnimationType actionAnimationGroup,
     Direction direction);

@@ -13,7 +13,10 @@
 
     #include "ScEntity.hpp"
 
-struct MoneyEffect;
+namespace OpenRCT2
+{
+    struct MoneyEffect;
+}
 
 namespace OpenRCT2::Scripting
 {

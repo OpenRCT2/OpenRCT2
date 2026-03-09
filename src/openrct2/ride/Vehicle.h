@@ -109,9 +109,9 @@ enum class MiniGolfFlag : uint8_t
 
 using MiniGolfFlags = FlagHolder<uint8_t, MiniGolfFlag>;
 
-struct Vehicle : EntityBase
+struct Vehicle : OpenRCT2::EntityBase
 {
-    static constexpr auto cEntityType = EntityType::vehicle;
+    static constexpr auto cEntityType = OpenRCT2::EntityType::vehicle;
 
     enum class Type : uint8_t
     {

@@ -15,8 +15,11 @@
 
     #include <memory>
 
-enum class PeepAnimationType : uint8_t;
-enum class StaffType : uint8_t;
+namespace OpenRCT2
+{
+    enum class PeepAnimationType : uint8_t;
+    enum class StaffType : uint8_t;
+} // namespace OpenRCT2
 
 namespace OpenRCT2::Scripting
 {
