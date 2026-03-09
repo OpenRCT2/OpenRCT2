@@ -567,6 +567,7 @@
     <ClInclude Include="ride\TrackData.h" />
     <ClInclude Include="ride\TrackDesign.h" />
     <ClInclude Include="ride\TrackDesignRepository.h" />
+    <ClInclude Include="ride\TrackIteration.h" />
     <ClInclude Include="ride\TrackPaint.h" />
     <ClInclude Include="ride\TrackStyle.h" />
     <ClInclude Include="ride\TrainManager.h" />
@@ -1129,6 +1130,7 @@
     <ClCompile Include="ride\TrackDesign.cpp" />
     <ClCompile Include="ride\TrackDesignRepository.cpp" />
     <ClCompile Include="ride\TrackDesignSave.cpp" />
+    <ClCompile Include="ride\TrackIteration.cpp" />
     <ClCompile Include="ride\TrackPaint.cpp" />
     <ClCompile Include="ride\TrackStyle.cpp" />
     <ClCompile Include="ride\TrainManager.cpp" />

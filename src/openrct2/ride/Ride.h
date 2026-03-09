@@ -526,34 +526,12 @@ public:
     bool hasRecolourableShopItems() const;
     bool hasStation() const;
 
-    bool findTrackGap(const CoordsXYE& input, CoordsXYE* output) const;
-
     // TO-DO: those friend functions are temporary, find a way to not access the private fields
     friend void updateSpiralSlide(Ride& ride);
     friend void updateChairlift(Ride& ride);
 };
 void updateSpiralSlide(Ride& ride);
 void updateChairlift(Ride& ride);
-
-#pragma pack(push, 1)
-
-struct TrackBeginEnd
-{
-    int32_t begin_x;
-    int32_t begin_y;
-    int32_t begin_z;
-    int32_t begin_direction;
-    OpenRCT2::TileElement* begin_element;
-    int32_t end_x;
-    int32_t end_y;
-    int32_t end_direction;
-    OpenRCT2::TileElement* end_element;
-};
-#ifdef PLATFORM_32BIT
-static_assert(sizeof(TrackBeginEnd) == 36);
-#endif
-
-#pragma pack(pop)
 
 enum
 {
@@ -872,15 +850,6 @@ int32_t GetTurnCount3Elements(const Ride& ride, uint8_t type);
 int32_t GetTurnCount4PlusElements(const Ride& ride, uint8_t type);
 
 bool RideHasAnyTrackElements(const Ride& ride);
-
-bool TrackBlockGetNext(CoordsXYE* input, CoordsXYE* output, int32_t* z, int32_t* direction);
-bool TrackBlockGetNextFromZero(
-    const CoordsXYZ& startPos, const Ride& ride, uint8_t direction_start, CoordsXYE* output, int32_t* z, int32_t* direction,
-    bool isGhost);
-
-bool TrackBlockGetPrevious(const CoordsXYE& trackPos, TrackBeginEnd* outTrackBeginEnd);
-bool TrackBlockGetPreviousFromZero(
-    const CoordsXYZ& startPos, const Ride& ride, uint8_t direction, TrackBeginEnd* outTrackBeginEnd);
 
 void RideGetStartOfTrack(CoordsXYE* output);
 

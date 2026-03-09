@@ -23,6 +23,7 @@
 #include "RideData.h"
 #include "Track.h"
 #include "TrackData.h"
+#include "TrackIteration.h"
 #include "VehicleGeometry.h"
 #include "ted/PitchAndRoll.h"
 #include "ted/TrackElementDescriptor.h"
@@ -247,7 +248,7 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
             int32_t outZ{};
             int32_t outDirection{};
             CoordsXYE input = { TrackLocation, tileElement };
-            if (!TrackBlockGetNext(&input, &output, &outZ, &outDirection))
+            if (!trackBlockGetNext(&input, &output, &outZ, &outDirection))
             {
                 _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
                 _vehicleVelocityF64E0C -= remaining_distance + 1;
@@ -440,7 +441,7 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
         {
             auto tileElement = MapGetTrackElementAtOfTypeSeq(TrackLocation, GetTrackType(), 0);
             TrackBeginEnd trackBeginEnd;
-            if (!TrackBlockGetPrevious({ TrackLocation, tileElement }, &trackBeginEnd))
+            if (!trackBlockGetPrevious({ TrackLocation, tileElement }, &trackBeginEnd))
             {
                 _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
                 _vehicleVelocityF64E0C -= remaining_distance + 1;

@@ -27,6 +27,7 @@
 #include "../peep/GuestPathfinding.h"
 #include "../ride/RideData.h"
 #include "../ride/Track.h"
+#include "../ride/TrackIteration.h"
 #include "../ride/Vehicle.h"
 #include "../scenario/Scenario.h"
 #include "../util/Util.h"
@@ -2343,7 +2344,7 @@ bool Staff::UpdateFixingMoveToStationStart(bool firstRun, const Ride& ride)
 
         Direction stationDirection = 0;
         TrackBeginEnd trackBeginEnd;
-        while (TrackBlockGetPrevious(input, &trackBeginEnd))
+        while (trackBlockGetPrevious(input, &trackBeginEnd))
         {
             if (trackBeginEnd.begin_element->AsTrack()->IsStation())
             {

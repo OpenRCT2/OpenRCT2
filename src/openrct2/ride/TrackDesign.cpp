@@ -12,7 +12,6 @@
 #include "../Cheats.h"
 #include "../Context.h"
 #include "../Diagnostic.h"
-#include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../TrackImporter.h"
@@ -57,7 +56,6 @@
 #include "../rct12/TD46.h"
 #include "../rct2/RCT2.h"
 #include "../ride/RideConstruction.h"
-#include "../sawyer_coding/SawyerCoding.h"
 #include "../world/Footpath.h"
 #include "../world/Map.h"
 #include "../world/MapSelection.h"
@@ -74,6 +72,7 @@
 #include "TrackData.h"
 #include "TrackDesign.h"
 #include "TrackDesignRepository.h"
+#include "TrackIteration.h"
 #include "Vehicle.h"
 #include "ted/TrackElementDescriptor.h"
 
@@ -254,7 +253,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
 
         trackElements.push_back(track);
 
-        if (!TrackBlockGetNext(&trackElement, &trackElement, nullptr, nullptr))
+        if (!trackBlockGetNext(&trackElement, &trackElement, nullptr, nullptr))
         {
             break;
         }

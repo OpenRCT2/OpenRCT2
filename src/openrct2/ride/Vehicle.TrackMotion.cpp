@@ -24,6 +24,7 @@
 #include "RideData.h"
 #include "Track.h"
 #include "TrackData.h"
+#include "TrackIteration.h"
 #include "VehicleGeometry.h"
 #include "ted/TrackElementDescriptor.h"
 
@@ -235,7 +236,7 @@ void Vehicle::CheckAndApplyBlockSectionStopSite()
                 CoordsXYE track;
                 int32_t zUnused;
                 int32_t direction;
-                if (TrackBlockGetNextFromZero(TrackLocation, *curRide, GetTrackDirection(), &track, &zUnused, &direction, false)
+                if (trackBlockGetNextFromZero(TrackLocation, *curRide, GetTrackDirection(), &track, &zUnused, &direction, false)
                     && track.element != nullptr && track.element->AsTrack()->HasCableLift())
                 {
                     ApplyCableLiftBlockBrake(curRide->isBlockSectioned() && trackElement->AsTrack()->IsBrakeClosed());
@@ -305,7 +306,7 @@ void Vehicle::UpdateVelocity()
 static void BlockBrakesOpenPreviousSection(const Ride& ride, const CoordsXYZ& vehicleTrackLocation, TileElement* tileElement)
 {
     CoordsXYZ location = vehicleTrackLocation;
-    TrackElement* trackElement = TrackGetPreviousBlock(location, tileElement);
+    TrackElement* trackElement = trackGetPreviousBlock(location, tileElement);
     if (trackElement == nullptr)
         return;
 
@@ -467,7 +468,7 @@ void Vehicle::Sub6DBF3E()
             int32_t outputZ, outputDirection;
 
             CoordsXYE input = { TrackLocation, tileElement };
-            if (!TrackBlockGetNext(&input, &output, &outputZ, &outputDirection))
+            if (!trackBlockGetNext(&input, &output, &outputZ, &outputDirection))
             {
                 _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_12;
             }
@@ -562,7 +563,7 @@ void Vehicle::PopulateBrakeSpeed(const CoordsXYZ& vehicleTrackLocation, TrackEle
             break;
         }
         timeoutCount--;
-    } while (TrackBlockGetNext(&output, &output, &outputZ, nullptr) && timeoutCount);
+    } while (trackBlockGetNext(&output, &output, &outputZ, nullptr) && timeoutCount);
 
     // If block brake is not found, use the track's speed
     BlockBrakeSpeed = trackSpeed;
@@ -638,7 +639,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(
     if (isGoingBack)
     {
         TrackBeginEnd trackBeginEnd;
-        if (!TrackBlockGetPrevious({ TrackLocation, tileElement }, &trackBeginEnd))
+        if (!trackBlockGetPrevious({ TrackLocation, tileElement }, &trackBeginEnd))
         {
             return false;
         }
@@ -653,7 +654,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(
         {
             int32_t curZ, direction;
             CoordsXYE xyElement = { TrackLocation, tileElement };
-            if (!TrackBlockGetNext(&xyElement, &xyElement, &curZ, &direction))
+            if (!trackBlockGetNext(&xyElement, &xyElement, &curZ, &direction))
             {
                 return false;
             }
@@ -1038,7 +1039,7 @@ bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(TrackElemType trackType, con
     {
         // Loc6DBB7E:;
         TrackBeginEnd trackBeginEnd;
-        if (!TrackBlockGetPrevious({ trackPos, tileElement }, &trackBeginEnd))
+        if (!trackBlockGetPrevious({ trackPos, tileElement }, &trackBeginEnd))
         {
             return false;
         }
@@ -1083,7 +1084,7 @@ bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(TrackElemType trackType, con
         input.x = trackPos.x;
         input.y = trackPos.y;
         input.element = tileElement;
-        if (!TrackBlockGetNext(&input, &output, &outputZ, &direction))
+        if (!trackBlockGetNext(&input, &output, &outputZ, &direction))
         {
             return false;
         }

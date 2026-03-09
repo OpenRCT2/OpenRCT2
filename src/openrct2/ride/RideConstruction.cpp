@@ -43,6 +43,7 @@
 #include "RideData.h"
 #include "Track.h"
 #include "TrackData.h"
+#include "TrackIteration.h"
 #include "TrainManager.h"
 #include "Vehicle.h"
 #include "ted/TrackElementDescriptor.h"
@@ -137,7 +138,7 @@ void RideConstructionStart(Ride& ride)
     CoordsXYE trackElement;
     if (RideTryGetOriginElement(ride, &trackElement))
     {
-        ride.findTrackGap(trackElement, &trackElement);
+        findTrackGap(ride, trackElement, &trackElement);
 
         WindowBase* w = WindowGetMain();
         if (w != nullptr && RideModify(trackElement))
@@ -601,7 +602,7 @@ void RideConstructionSetDefaultNextPiece()
         case RideConstructionState::Front:
         {
             direction = _currentTrackPieceDirection;
-            if (!TrackBlockGetPreviousFromZero(_currentTrackBegin, *ride, direction, &trackBeginEnd))
+            if (!trackBlockGetPreviousFromZero(_currentTrackBegin, *ride, direction, &trackBeginEnd))
             {
                 ride_construction_reset_current_piece();
                 return;
@@ -666,7 +667,7 @@ void RideConstructionSetDefaultNextPiece()
         case RideConstructionState::Back:
         {
             direction = DirectionReverse(_currentTrackPieceDirection);
-            if (!TrackBlockGetNextFromZero(_currentTrackBegin, *ride, direction, &xyElement, &z, &direction, false))
+            if (!trackBlockGetNextFromZero(_currentTrackBegin, *ride, direction, &xyElement, &z, &direction, false))
             {
                 ride_construction_reset_current_piece();
                 return;
@@ -753,7 +754,7 @@ void RideSelectNextSection()
         inputElement.x = newCoords->x;
         inputElement.y = newCoords->y;
         inputElement.element = tileElement;
-        if (TrackBlockGetNext(&inputElement, &outputElement, &newCoords->z, &direction))
+        if (trackBlockGetNext(&inputElement, &outputElement, &newCoords->z, &direction))
         {
             newCoords->x = outputElement.x;
             newCoords->y = outputElement.y;
@@ -808,7 +809,7 @@ void RideSelectPreviousSection()
         }
 
         TrackBeginEnd trackBeginEnd;
-        if (TrackBlockGetPrevious({ *newCoords, tileElement }, &trackBeginEnd))
+        if (trackBlockGetPrevious({ *newCoords, tileElement }, &trackBeginEnd))
         {
             _currentTrackBegin.x = trackBeginEnd.begin_x;
             _currentTrackBegin.y = trackBeginEnd.begin_y;
@@ -999,7 +1000,7 @@ bool RideModify(const CoordsXYE& input)
     if (ride->getRideTypeDescriptor().flags.has(RtdFlag::cannotHaveGaps))
     {
         CoordsXYE endOfTrackElement{};
-        if (ride->findTrackGap(tileElement, &endOfTrackElement))
+        if (findTrackGap(*ride, tileElement, &endOfTrackElement))
             tileElement = endOfTrackElement;
     }
 
@@ -1140,7 +1141,7 @@ money64 RideGetRefundPrice(const Ride& ride)
 
         cost += res.cost;
 
-        if (!TrackBlockGetNext(&trackElement, &trackElement, nullptr, nullptr))
+        if (!trackBlockGetNext(&trackElement, &trackElement, nullptr, nullptr))
         {
             break;
         }
@@ -1148,7 +1149,7 @@ money64 RideGetRefundPrice(const Ride& ride)
         moveSlowIt = !moveSlowIt;
         if (moveSlowIt)
         {
-            if (!TrackBlockGetNext(&slowIt, &slowIt, nullptr, nullptr) || slowIt.element == trackElement.element)
+            if (!trackBlockGetNext(&slowIt, &slowIt, nullptr, nullptr) || slowIt.element == trackElement.element)
             {
                 break;
             }
@@ -1438,7 +1439,7 @@ bool RideSelectBackwardsFromFront()
     {
         RideConstructionInvalidateCurrentTrack();
         TrackBeginEnd trackBeginEnd;
-        if (TrackBlockGetPreviousFromZero(_currentTrackBegin, *ride, _currentTrackPieceDirection, &trackBeginEnd))
+        if (trackBlockGetPreviousFromZero(_currentTrackBegin, *ride, _currentTrackPieceDirection, &trackBeginEnd))
         {
             _rideConstructionState = RideConstructionState::Selected;
             _currentTrackBegin.x = trackBeginEnd.begin_x;
@@ -1463,7 +1464,7 @@ bool RideSelectForwardsFromBack()
         int32_t z = _currentTrackBegin.z;
         int32_t direction = DirectionReverse(_currentTrackPieceDirection);
         CoordsXYE next_track;
-        if (TrackBlockGetNextFromZero(_currentTrackBegin, *ride, direction, &next_track, &z, &direction, false))
+        if (trackBlockGetNextFromZero(_currentTrackBegin, *ride, direction, &next_track, &z, &direction, false))
         {
             _rideConstructionState = RideConstructionState::Selected;
             _currentTrackBegin.x = next_track.x;

@@ -30,6 +30,7 @@
 #include "Station.h"
 #include "Track.h"
 #include "TrackData.h"
+#include "TrackIteration.h"
 
 #include <iterator>
 
@@ -404,7 +405,7 @@ static void ride_ratings_update_state_2(RideRating::UpdateState& state)
 
             CoordsXYE trackElement = { state.Proximity, tileElement };
             CoordsXYE nextTrackElement;
-            if (!TrackBlockGetNext(&trackElement, &nextTrackElement, nullptr, nullptr))
+            if (!trackBlockGetNext(&trackElement, &nextTrackElement, nullptr, nullptr))
             {
                 state.State = RIDE_RATINGS_STATE_4;
                 return;
@@ -497,7 +498,7 @@ static void ride_ratings_update_state_5(RideRating::UpdateState& state)
             ride_ratings_score_close_proximity(state, tileElement);
 
             TrackBeginEnd trackBeginEnd;
-            if (!TrackBlockGetPrevious({ state.Proximity, tileElement }, &trackBeginEnd))
+            if (!trackBlockGetPrevious({ state.Proximity, tileElement }, &trackBeginEnd))
             {
                 state.State = RIDE_RATINGS_STATE_CALCULATE;
                 return;

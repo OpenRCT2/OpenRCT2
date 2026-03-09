@@ -70,6 +70,7 @@
 #include "Track.h"
 #include "TrackData.h"
 #include "TrackDesign.h"
+#include "TrackIteration.h"
 #include "Vehicle.h"
 #include "ted/TrackElementDescriptor.h"
 
@@ -522,320 +523,6 @@ bool RideTryGetOriginElement(const Ride& ride, CoordsXYE* output)
     } while (TileElementIteratorNext(&it));
 
     return resultTileElement != nullptr;
-}
-
-/**
- *
- * rct2: 0x006C6096
- * Gets the next track block coordinates from the
- * coordinates of the first of element of a track block.
- * Use track_block_get_next if you are unsure if you are
- * on the first element of a track block
- */
-bool TrackBlockGetNextFromZero(
-    const CoordsXYZ& startPos, const Ride& ride, uint8_t direction_start, CoordsXYE* output, int32_t* z, int32_t* direction,
-    bool isGhost)
-{
-    auto trackPos = startPos;
-
-    if (!TrackPieceDirectionIsDiagonal(direction_start))
-    {
-        trackPos += CoordsDirectionDelta[direction_start];
-    }
-
-    TileElement* tileElement = MapGetFirstElementAt(trackPos);
-    if (tileElement == nullptr)
-    {
-        output->element = nullptr;
-        output->x = kLocationNull;
-        return false;
-    }
-
-    do
-    {
-        auto trackElement = tileElement->AsTrack();
-        if (trackElement == nullptr)
-            continue;
-
-        if (trackElement->GetRideIndex() != ride.id)
-            continue;
-
-        if (trackElement->GetSequenceIndex() != 0)
-            continue;
-
-        if (tileElement->IsGhost() != isGhost)
-            continue;
-
-        const auto& ted = GetTrackElementDescriptor(trackElement->GetTrackType());
-        if (ted.sequenceData.numSequences == 0)
-            continue;
-
-        const auto& nextTrackCoordinate = ted.coordinates;
-        uint8_t nextRotation = tileElement->GetDirectionWithOffset(nextTrackCoordinate.rotationBegin)
-            | (nextTrackCoordinate.rotationBegin & kTrackDirectionDiagonalMask);
-
-        if (nextRotation != direction_start)
-            continue;
-
-        int16_t nextZ = nextTrackCoordinate.zBegin - ted.sequenceData.sequences[0].clearance.z + tileElement->GetBaseZ();
-        if (nextZ != trackPos.z)
-            continue;
-
-        if (z != nullptr)
-            *z = tileElement->GetBaseZ();
-        if (direction != nullptr)
-            *direction = nextRotation;
-        *output = { trackPos, tileElement };
-        return true;
-    } while (!(tileElement++)->IsLastForTile());
-
-    if (direction != nullptr)
-        *direction = direction_start;
-    if (z != nullptr)
-        *z = trackPos.z;
-    *output = { trackPos, --tileElement };
-    return false;
-}
-
-/**
- *
- *  rct2: 0x006C60C2
- */
-bool TrackBlockGetNext(CoordsXYE* input, CoordsXYE* output, int32_t* z, int32_t* direction)
-{
-    if (input == nullptr || input->element == nullptr)
-        return false;
-
-    auto inputElement = input->element->AsTrack();
-    if (inputElement == nullptr)
-        return false;
-
-    auto rideIndex = inputElement->GetRideIndex();
-    auto ride = GetRide(rideIndex);
-    if (ride == nullptr)
-        return false;
-
-    const auto& ted = GetTrackElementDescriptor(inputElement->GetTrackType());
-    auto sequenceIndex = inputElement->GetSequenceIndex();
-    if (sequenceIndex >= ted.sequenceData.numSequences)
-        return false;
-
-    const auto& trackBlock = ted.sequenceData.sequences[sequenceIndex].clearance;
-    const auto& trackCoordinate = ted.coordinates;
-
-    int32_t x = input->x;
-    int32_t y = input->y;
-    int32_t OriginZ = inputElement->GetBaseZ();
-
-    uint8_t rotation = inputElement->GetDirection();
-
-    CoordsXY coords = { x, y };
-    CoordsXY trackCoordOffset = { trackCoordinate.x, trackCoordinate.y };
-    CoordsXY trackBlockOffset = { trackBlock.x, trackBlock.y };
-    coords += trackCoordOffset.Rotate(rotation);
-    coords += trackBlockOffset.Rotate(DirectionReverse(rotation));
-
-    OriginZ -= trackBlock.z;
-    OriginZ += trackCoordinate.zEnd;
-
-    uint8_t directionStart = ((trackCoordinate.rotationEnd + rotation) & kTileElementDirectionMask)
-        | (trackCoordinate.rotationEnd & kTrackDirectionDiagonalMask);
-
-    return TrackBlockGetNextFromZero({ coords, OriginZ }, *ride, directionStart, output, z, direction, false);
-}
-
-/**
- * Returns the begin position / direction and end position / direction of the
- * track piece that proceeds the given location. Gets the previous track block
- * coordinates from the coordinates of the first of element of a track block.
- * Use track_block_get_previous if you are unsure if you are on the first
- * element of a track block
- *  rct2: 0x006C63D6
- */
-bool TrackBlockGetPreviousFromZero(
-    const CoordsXYZ& startPos, const Ride& ride, uint8_t direction, TrackBeginEnd* outTrackBeginEnd)
-{
-    uint8_t directionStart = direction;
-    direction = DirectionReverse(direction);
-    auto trackPos = startPos;
-
-    if (!TrackPieceDirectionIsDiagonal(direction))
-    {
-        trackPos += CoordsDirectionDelta[direction];
-    }
-
-    TileElement* tileElement = MapGetFirstElementAt(trackPos);
-    if (tileElement == nullptr)
-    {
-        outTrackBeginEnd->end_x = trackPos.x;
-        outTrackBeginEnd->end_y = trackPos.y;
-        outTrackBeginEnd->begin_element = nullptr;
-        outTrackBeginEnd->begin_direction = DirectionReverse(directionStart);
-        return false;
-    }
-
-    do
-    {
-        auto trackElement = tileElement->AsTrack();
-        if (trackElement == nullptr)
-            continue;
-
-        if (trackElement->GetRideIndex() != ride.id)
-            continue;
-
-        const auto& ted = GetTrackElementDescriptor(trackElement->GetTrackType());
-        if (ted.sequenceData.numSequences == 0)
-            continue;
-
-        auto sequenceIndex = trackElement->GetSequenceIndex();
-        if ((sequenceIndex + 1) != ted.sequenceData.numSequences)
-            continue;
-
-        const auto& currentBlock = ted.sequenceData.sequences[sequenceIndex].clearance;
-
-        const auto& nextTrackCoordinate = ted.coordinates;
-        uint8_t nextRotation = tileElement->GetDirectionWithOffset(nextTrackCoordinate.rotationEnd)
-            | (nextTrackCoordinate.rotationEnd & kTrackDirectionDiagonalMask);
-
-        if (nextRotation != directionStart)
-            continue;
-
-        int16_t nextZ = nextTrackCoordinate.zEnd - currentBlock.z + tileElement->GetBaseZ();
-        if (nextZ != trackPos.z)
-            continue;
-
-        nextRotation = tileElement->GetDirectionWithOffset(nextTrackCoordinate.rotationBegin)
-            | (nextTrackCoordinate.rotationBegin & kTrackDirectionDiagonalMask);
-        outTrackBeginEnd->begin_element = tileElement;
-        outTrackBeginEnd->begin_x = trackPos.x;
-        outTrackBeginEnd->begin_y = trackPos.y;
-        outTrackBeginEnd->end_x = trackPos.x;
-        outTrackBeginEnd->end_y = trackPos.y;
-
-        CoordsXY coords = { outTrackBeginEnd->begin_x, outTrackBeginEnd->begin_y };
-        CoordsXY offsets = { nextTrackCoordinate.x, nextTrackCoordinate.y };
-        coords += offsets.Rotate(DirectionReverse(nextRotation));
-        outTrackBeginEnd->begin_x = coords.x;
-        outTrackBeginEnd->begin_y = coords.y;
-
-        outTrackBeginEnd->begin_z = tileElement->GetBaseZ();
-
-        const auto& firstBlock = ted.sequenceData.sequences[0].clearance;
-        outTrackBeginEnd->begin_z += firstBlock.z - currentBlock.z;
-        outTrackBeginEnd->begin_direction = nextRotation;
-        outTrackBeginEnd->end_direction = DirectionReverse(directionStart);
-        return true;
-    } while (!(tileElement++)->IsLastForTile());
-
-    outTrackBeginEnd->end_x = trackPos.x;
-    outTrackBeginEnd->end_y = trackPos.y;
-    outTrackBeginEnd->begin_z = trackPos.z;
-    outTrackBeginEnd->begin_element = nullptr;
-    outTrackBeginEnd->end_direction = DirectionReverse(directionStart);
-    return false;
-}
-
-/**
- *
- *  rct2: 0x006C6402
- *
- * @remarks outTrackBeginEnd.begin_x and outTrackBeginEnd.begin_y will be in the
- * higher two bytes of ecx and edx where as outTrackBeginEnd.end_x and
- * outTrackBeginEnd.end_y will be in the lower two bytes (cx and dx).
- */
-bool TrackBlockGetPrevious(const CoordsXYE& trackPos, TrackBeginEnd* outTrackBeginEnd)
-{
-    if (trackPos.element == nullptr)
-        return false;
-
-    auto trackElement = trackPos.element->AsTrack();
-    if (trackElement == nullptr)
-        return false;
-
-    const auto& ted = GetTrackElementDescriptor(trackElement->GetTrackType());
-
-    auto rideIndex = trackElement->GetRideIndex();
-    auto ride = GetRide(rideIndex);
-    if (ride == nullptr)
-        return false;
-
-    auto sequenceIndex = trackElement->GetSequenceIndex();
-    if (sequenceIndex >= ted.sequenceData.numSequences)
-        return false;
-
-    const auto& trackBlock = ted.sequenceData.sequences[sequenceIndex].clearance;
-    auto trackCoordinate = ted.coordinates;
-
-    int32_t z = trackElement->GetBaseZ();
-
-    uint8_t rotation = trackElement->GetDirection();
-    CoordsXY coords = CoordsXY{ trackPos };
-    CoordsXY offsets = { trackBlock.x, trackBlock.y };
-    coords += offsets.Rotate(DirectionReverse(rotation));
-
-    z -= trackBlock.z;
-    z += trackCoordinate.zBegin;
-
-    rotation = ((trackCoordinate.rotationBegin + rotation) & kTileElementDirectionMask)
-        | (trackCoordinate.rotationBegin & kTrackDirectionDiagonalMask);
-
-    return TrackBlockGetPreviousFromZero({ coords, z }, *ride, rotation, outTrackBeginEnd);
-}
-
-/**
- *
- * Make sure to pass in the x and y of the start track element too.
- *  rct2: 0x006CB02F
- * ax result x
- * bx result y
- * esi input / output map element
- */
-bool Ride::findTrackGap(const CoordsXYE& input, CoordsXYE* output) const
-{
-    if (input.element == nullptr || input.element->GetType() != TileElementType::Track)
-        return false;
-
-    const auto& rtd = getRideTypeDescriptor();
-    if (rtd.specialType == RtdSpecialType::maze)
-        return false;
-
-    auto* windowMgr = Ui::GetWindowManager();
-    WindowBase* w = windowMgr->FindByClass(WindowClass::rideConstruction);
-    if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && _currentRideIndex == id)
-    {
-        RideConstructionInvalidateCurrentTrack();
-    }
-
-    bool moveSlowIt = true;
-    TrackCircuitIterator it = {};
-    TrackCircuitIteratorBegin(&it, input);
-    TrackCircuitIterator slowIt = it;
-    while (TrackCircuitIteratorNext(&it))
-    {
-        if (!TrackIsConnectedByShape(it.last.element, it.current.element))
-        {
-            *output = it.current;
-            return true;
-        }
-        // #2081: prevent an infinite loop
-        moveSlowIt = !moveSlowIt;
-        if (moveSlowIt)
-        {
-            TrackCircuitIteratorNext(&slowIt);
-            if (TrackCircuitIteratorsMatch(&it, &slowIt))
-            {
-                *output = it.current;
-                return true;
-            }
-        }
-    }
-    if (!it.looped)
-    {
-        *output = it.last;
-        return true;
-    }
-
-    return false;
 }
 
 void Ride::formatStatusTo(Formatter& ft) const
@@ -2750,8 +2437,8 @@ static ResultWithMessage RideCheckBlockBrakes(const CoordsXYE& input, CoordsXYE*
         RideConstructionInvalidateCurrentTrack();
 
     TrackCircuitIterator it;
-    TrackCircuitIteratorBegin(&it, input);
-    while (TrackCircuitIteratorNext(&it))
+    trackCircuitIteratorBegin(&it, input);
+    while (trackCircuitIteratorNext(&it))
     {
         if (TrackTypeIsBlockBrakes(it.current.element->AsTrack()->GetTrackType()))
         {
@@ -2818,10 +2505,10 @@ static bool RideCheckTrackContainsInversions(const CoordsXYE& input, CoordsXYE* 
 
     bool moveSlowIt = true;
     TrackCircuitIterator it, slowIt;
-    TrackCircuitIteratorBegin(&it, input);
+    trackCircuitIteratorBegin(&it, input);
     slowIt = it;
 
-    while (TrackCircuitIteratorNext(&it))
+    while (trackCircuitIteratorNext(&it))
     {
         auto trackType = it.current.element->AsTrack()->GetTrackType();
         const auto& ted = GetTrackElementDescriptor(trackType);
@@ -2835,8 +2522,8 @@ static bool RideCheckTrackContainsInversions(const CoordsXYE& input, CoordsXYE* 
         moveSlowIt = !moveSlowIt;
         if (moveSlowIt)
         {
-            TrackCircuitIteratorNext(&slowIt);
-            if (TrackCircuitIteratorsMatch(&it, &slowIt))
+            trackCircuitIteratorNext(&slowIt);
+            if (trackCircuitIteratorsMatch(&it, &slowIt))
             {
                 return false;
             }
@@ -2879,10 +2566,10 @@ static bool RideCheckTrackContainsBanked(const CoordsXYE& input, CoordsXYE* outp
 
     bool moveSlowIt = true;
     TrackCircuitIterator it, slowIt;
-    TrackCircuitIteratorBegin(&it, input);
+    trackCircuitIteratorBegin(&it, input);
     slowIt = it;
 
-    while (TrackCircuitIteratorNext(&it))
+    while (trackCircuitIteratorNext(&it))
     {
         auto trackType = it.current.element->AsTrack()->GetTrackType();
         const auto& ted = GetTrackElementDescriptor(trackType);
@@ -2896,8 +2583,8 @@ static bool RideCheckTrackContainsBanked(const CoordsXYE& input, CoordsXYE* outp
         moveSlowIt = !moveSlowIt;
         if (moveSlowIt)
         {
-            TrackCircuitIteratorNext(&slowIt);
-            if (TrackCircuitIteratorsMatch(&it, &slowIt))
+            trackCircuitIteratorNext(&slowIt);
+            if (trackCircuitIteratorsMatch(&it, &slowIt))
             {
                 return false;
             }
@@ -2924,7 +2611,7 @@ static int32_t RideCheckStationLength(const CoordsXYE& input, CoordsXYE* output)
     output->y = input.y;
     output->element = input.element;
     TrackBeginEnd trackBeginEnd;
-    while (TrackBlockGetPrevious(*output, &trackBeginEnd))
+    while (trackBlockGetPrevious(*output, &trackBeginEnd))
     {
         output->x = trackBeginEnd.begin_x;
         output->y = trackBeginEnd.begin_y;
@@ -2952,7 +2639,7 @@ static int32_t RideCheckStationLength(const CoordsXYE& input, CoordsXYE* output)
             }
             num_station_elements = 0;
         }
-    } while (TrackBlockGetNext(output, output, nullptr, nullptr));
+    } while (trackBlockGetNext(output, output, nullptr, nullptr));
 
     // Prevent returning a pointer to a map element with no track.
     *output = last_good_station;
@@ -2983,7 +2670,7 @@ static bool RideCheckStartAndEndIsStation(const CoordsXYE& input)
     }
 
     // Check back of the track
-    TrackGetBack(input, &trackBack);
+    trackGetBack(input, &trackBack);
     auto trackType = trackBack.element->AsTrack()->GetTrackType();
     const auto& tedBack = GetTrackElementDescriptor(trackType);
     if (tedBack.sequenceData.sequences[0].flags.has(SequenceFlag::trackOrigin))
@@ -2993,7 +2680,7 @@ static bool RideCheckStartAndEndIsStation(const CoordsXYE& input)
     ride->chairliftBullwheelLocation[0] = TileCoordsXYZ{ CoordsXYZ{ trackBack.x, trackBack.y, trackBack.element->GetBaseZ() } };
 
     // Check front of the track
-    TrackGetFront(input, &trackFront);
+    trackGetFront(input, &trackFront);
     trackType = trackFront.element->AsTrack()->GetTrackType();
     const auto& tedFront = GetTrackElementDescriptor(trackType);
     if (tedFront.sequenceData.sequences[0].flags.has(SequenceFlag::trackOrigin))
@@ -3017,7 +2704,7 @@ static void RideSetBoatHireReturnPoint(Ride& ride, const CoordsXYE& startElement
     int32_t startX = returnPos.x;
     int32_t startY = returnPos.y;
     TrackBeginEnd trackBeginEnd;
-    while (TrackBlockGetPrevious(returnPos, &trackBeginEnd))
+    while (trackBlockGetPrevious(returnPos, &trackBeginEnd))
     {
         // If previous track is back to the starting x, y, then break loop (otherwise possible infinite loop)
         if (trackType != TrackElemType::none && startX == trackBeginEnd.begin_x && startY == trackBeginEnd.begin_y)
@@ -3135,7 +2822,7 @@ static void RideOpenBlockBrakes(const CoordsXYE& startElement)
             default:
                 break;
         }
-    } while (TrackBlockGetNext(&currentElement, &currentElement, nullptr, nullptr)
+    } while (trackBlockGetNext(&currentElement, &currentElement, nullptr, nullptr)
              && currentElement.element != startElement.element);
 }
 
@@ -3154,7 +2841,7 @@ void BlockBrakeSetLinkedBrakesClosed(const CoordsXYZ& vehicleTrackLocation, Trac
     CoordsXY slowLocation = location;
     do
     {
-        if (!TrackBlockGetPrevious({ location, tileElement }, &trackBeginEnd))
+        if (!trackBlockGetPrevious({ location, tileElement }, &trackBeginEnd))
         {
             return;
         }
@@ -3180,7 +2867,7 @@ void BlockBrakeSetLinkedBrakesClosed(const CoordsXYZ& vehicleTrackLocation, Trac
         counter = !counter;
         if (counter)
         {
-            TrackBlockGetPrevious({ slowLocation, &slowTileElement }, &slowTrackBeginEnd);
+            trackBlockGetPrevious({ slowLocation, &slowTileElement }, &slowTrackBeginEnd);
             slowLocation.x = slowTrackBeginEnd.end_x;
             slowLocation.y = slowTrackBeginEnd.end_y;
             slowTileElement = *(slowTrackBeginEnd.begin_element);
@@ -3563,7 +3250,7 @@ static void RidecreateVehiclesFindFirstBlock(const Ride& ride, CoordsXYE* outXYE
     CoordsXY trackPos = curTrackPos;
     auto trackElement = curTrackElement;
     TrackBeginEnd trackBeginEnd;
-    while (TrackBlockGetPrevious({ trackPos, reinterpret_cast<TileElement*>(trackElement) }, &trackBeginEnd))
+    while (trackBlockGetPrevious({ trackPos, reinterpret_cast<TileElement*>(trackElement) }, &trackBeginEnd))
     {
         trackPos = { trackBeginEnd.end_x, trackBeginEnd.end_y };
         trackElement = trackBeginEnd.begin_element->AsTrack();
@@ -3729,7 +3416,7 @@ void Ride::moveTrainsToBlockBrakes(const CoordsXYZ& firstBlockPosition, TrackEle
         if (cableLiftTileElement != nullptr)
         {
             CoordsXYZ location = cableLiftLoc;
-            cableLiftPreviousBlock = TrackGetPreviousBlock(location, reinterpret_cast<TileElement*>(cableLiftTileElement));
+            cableLiftPreviousBlock = trackGetPreviousBlock(location, reinterpret_cast<TileElement*>(cableLiftTileElement));
         }
     }
 
@@ -3843,8 +3530,8 @@ static ResultWithMessage RideInitialiseCableLiftTrack(const Ride& ride, bool isA
         RideGetStartOfTrack(&stationTile);
 
         TrackCircuitIterator it;
-        TrackCircuitIteratorBegin(&it, stationTile);
-        while (TrackCircuitIteratorNext(&it))
+        trackCircuitIteratorBegin(&it, stationTile);
+        while (trackCircuitIteratorNext(&it))
         {
             TileElement* tileElement = it.current.element;
             GetTrackElementOriginAndApplyChanges(
@@ -3860,8 +3547,8 @@ static ResultWithMessage RideInitialiseCableLiftTrack(const Ride& ride, bool isA
         return { false };
 
     TrackCircuitIterator it;
-    TrackCircuitIteratorBegin(&it, cableLiftCoords);
-    while (TrackCircuitIteratorPrevious(&it))
+    trackCircuitIteratorBegin(&it, cableLiftCoords);
+    while (trackCircuitIteratorPrevious(&it))
     {
         TileElement* tileElement = it.current.element;
         auto trackType = tileElement->AsTrack()->GetTrackType();
@@ -4013,7 +3700,7 @@ void Ride::constructMissingEntranceOrExit() const
 
         CoordsXYE trackElement;
         RideTryGetOriginElement(*this, &trackElement);
-        findTrackGap(trackElement, &trackElement);
+        findTrackGap(*this, trackElement, &trackElement);
         int32_t ok = RideModify(trackElement);
         if (ok == 0)
         {
@@ -4215,7 +3902,7 @@ void RideGetStartOfTrack(CoordsXYE* output)
 {
     TrackBeginEnd trackBeginEnd;
     CoordsXYE trackElement = *output;
-    if (TrackBlockGetPrevious(trackElement, &trackBeginEnd))
+    if (trackBlockGetPrevious(trackElement, &trackBeginEnd))
     {
         TileElement* initial_map = trackElement.element;
         TrackBeginEnd slowIt = trackBeginEnd;
@@ -4231,7 +3918,7 @@ void RideGetStartOfTrack(CoordsXYE* output)
                 /* .element = */ trackBeginEnd.begin_element,
             };
 
-            if (!TrackBlockGetPrevious(
+            if (!trackBlockGetPrevious(
                     { trackBeginEnd.end_x, trackBeginEnd.end_y, trackBeginEnd.begin_element }, &trackBeginEnd))
             {
                 trackElement = lastGood;
@@ -4241,7 +3928,7 @@ void RideGetStartOfTrack(CoordsXYE* output)
             moveSlowIt = !moveSlowIt;
             if (moveSlowIt)
             {
-                if (!TrackBlockGetPrevious({ slowIt.end_x, slowIt.end_y, slowIt.begin_element }, &slowIt)
+                if (!trackBlockGetPrevious({ slowIt.end_x, slowIt.end_y, slowIt.begin_element }, &slowIt)
                     || slowIt.begin_element == trackBeginEnd.begin_element)
                 {
                     break;
@@ -5081,10 +4768,10 @@ static int32_t RideGetTrackLength(const Ride& ride)
     int32_t result = 0;
 
     TrackCircuitIterator it;
-    TrackCircuitIteratorBegin(&it, { trackStart.x, trackStart.y, tileElement });
+    trackCircuitIteratorBegin(&it, { trackStart.x, trackStart.y, tileElement });
 
     TrackCircuitIterator slowIt = it;
-    while (TrackCircuitIteratorNext(&it))
+    while (trackCircuitIteratorNext(&it))
     {
         trackType = it.current.element->AsTrack()->GetTrackType();
         const auto& ted = GetTrackElementDescriptor(trackType);
@@ -5093,8 +4780,8 @@ static int32_t RideGetTrackLength(const Ride& ride)
         moveSlowIt = !moveSlowIt;
         if (moveSlowIt)
         {
-            TrackCircuitIteratorNext(&slowIt);
-            if (TrackCircuitIteratorsMatch(&it, &slowIt))
+            trackCircuitIteratorNext(&slowIt);
+            if (trackCircuitIteratorsMatch(&it, &slowIt))
             {
                 return 0;
             }
@@ -5943,7 +5630,7 @@ ResultWithMessage Ride::changeStatusCheckCompleteCircuit(const CoordsXYE& trackE
     CoordsXYE problematicTrackElement = {};
     if (mode == RideMode::race || mode == RideMode::continuousCircuit || isBlockSectioned())
     {
-        if (findTrackGap(trackElement, &problematicTrackElement))
+        if (findTrackGap(*this, trackElement, &problematicTrackElement))
         {
             RideScrollToTrackError(problematicTrackElement);
             return { false, STR_TRACK_IS_NOT_A_COMPLETE_CIRCUIT };
@@ -5994,7 +5681,7 @@ ResultWithMessage Ride::changeStatusCheckTrackValidity(const CoordsXYE& trackEle
 
     if (mode == RideMode::stationToStation)
     {
-        if (!findTrackGap(trackElement, &problematicTrackElement))
+        if (!findTrackGap(*this, trackElement, &problematicTrackElement))
         {
             return { false, STR_RIDE_MUST_START_AND_END_WITH_STATIONS };
         }

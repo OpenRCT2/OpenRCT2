@@ -50,28 +50,7 @@ enum
     RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL = (1 << 2),
 };
 
-struct TrackCircuitIterator
-{
-    CoordsXYE last;
-    CoordsXYE current;
-    int32_t currentZ;
-    int32_t currentDirection;
-    OpenRCT2::TileElement* first;
-    bool firstIteration;
-    bool looped;
-};
-
 int32_t TrackIsConnectedByShape(OpenRCT2::TileElement* a, OpenRCT2::TileElement* b);
-
-void TrackCircuitIteratorBegin(TrackCircuitIterator* it, CoordsXYE first);
-bool TrackCircuitIteratorPrevious(TrackCircuitIterator* it);
-bool TrackCircuitIteratorNext(TrackCircuitIterator* it);
-bool TrackCircuitIteratorsMatch(const TrackCircuitIterator* firstIt, const TrackCircuitIterator* secondIt);
-
-void TrackGetBack(const CoordsXYE& input, CoordsXYE* output);
-void TrackGetFront(const CoordsXYE& input, CoordsXYE* output);
-
-OpenRCT2::TrackElement* TrackGetPreviousBlock(CoordsXYZ& location, OpenRCT2::TileElement* tileElement);
 
 bool TrackElementIsCovered(OpenRCT2::TrackElemType trackElementType);
 OpenRCT2::TrackElemType UncoverTrackElement(OpenRCT2::TrackElemType trackElementType);

@@ -7,9 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "openrct2-ui/ProvisionalElements.h"
-
 #include <limits>
+#include <openrct2-ui/ProvisionalElements.h>
 #include <openrct2-ui/UiContext.h>
 #include <openrct2-ui/input/InputManager.h>
 #include <openrct2-ui/interface/Dropdown.h>
@@ -50,6 +49,7 @@
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
 #include <openrct2/ride/TrackData.h>
+#include <openrct2/ride/TrackIteration.h>
 #include <openrct2/ride/ted/TrackElementDescriptor.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
@@ -2428,14 +2428,14 @@ namespace OpenRCT2::Ui::Windows
             inputElement.x = newCoords->x;
             inputElement.y = newCoords->y;
             inputElement.element = tileElement;
-            if (TrackBlockGetPrevious({ *newCoords, tileElement }, &trackBeginEnd))
+            if (trackBlockGetPrevious({ *newCoords, tileElement }, &trackBeginEnd))
             {
                 *newCoords = { trackBeginEnd.begin_x, trackBeginEnd.begin_y, trackBeginEnd.begin_z };
                 direction = trackBeginEnd.begin_direction;
                 type = trackBeginEnd.begin_element->AsTrack()->GetTrackType();
                 _gotoStartPlacementMode = false;
             }
-            else if (TrackBlockGetNext(&inputElement, &outputElement, &newCoords->z, &direction))
+            else if (trackBlockGetNext(&inputElement, &outputElement, &newCoords->z, &direction))
             {
                 newCoords->x = outputElement.x;
                 newCoords->y = outputElement.y;
@@ -2973,7 +2973,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             CoordsXYE next_track;
-            if (TrackBlockGetNextFromZero(trackPos, *ride, trackDirection, &next_track, &trackPos.z, &trackDirection, false))
+            if (trackBlockGetNextFromZero(trackPos, *ride, trackDirection, &next_track, &trackPos.z, &trackDirection, false))
             {
                 _currentTrackBegin.x = next_track.x;
                 _currentTrackBegin.y = next_track.y;
@@ -3020,7 +3020,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             TrackBeginEnd trackBeginEnd;
-            if (TrackBlockGetPreviousFromZero(trackPos, *ride, trackDirection, &trackBeginEnd))
+            if (trackBlockGetPreviousFromZero(trackPos, *ride, trackDirection, &trackBeginEnd))
             {
                 _currentTrackBegin.x = trackBeginEnd.begin_x;
                 _currentTrackBegin.y = trackBeginEnd.begin_y;
@@ -5165,7 +5165,7 @@ namespace OpenRCT2::Ui::Windows
                 y -= CoordsDirectionDelta[direction].y;
             }
             CoordsXYE next_track;
-            if (TrackBlockGetNextFromZero({ x, y, z }, *ride, direction, &next_track, &z, &direction, true))
+            if (trackBlockGetNextFromZero({ x, y, z }, *ride, direction, &next_track, &z, &direction, true))
             {
                 auto trackType = next_track.element->AsTrack()->GetTrackType();
                 int32_t trackSequence = next_track.element->AsTrack()->GetSequenceIndex();

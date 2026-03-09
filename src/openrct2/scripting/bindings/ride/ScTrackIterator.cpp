@@ -14,6 +14,7 @@
     #include "../../../Context.h"
     #include "../../../ride/Ride.h"
     #include "../../../ride/TrackData.h"
+    #include "../../../ride/TrackIteration.h"
     #include "../../../ride/ted/TrackElementDescriptor.h"
     #include "../../../world/Map.h"
     #include "../../../world/tile_element/TrackElement.h"
@@ -86,7 +87,7 @@ DukValue ScTrackIterator::previousPosition_get() const
 
     auto posEl = CoordsXYE(pos.x, pos.y, reinterpret_cast<TileElement*>(el));
     TrackBeginEnd tbe{};
-    TrackBlockGetPrevious(posEl, &tbe);
+    trackBlockGetPrevious(posEl, &tbe);
     CoordsXYZD result(tbe.end_x, tbe.end_y, tbe.begin_z, tbe.begin_direction);
     return ToDuk(ctx, result);
 }
@@ -108,7 +109,7 @@ DukValue ScTrackIterator::nextPosition_get() const
     CoordsXYE next;
     int32_t z{};
     int32_t direction{};
-    TrackBlockGetNext(&posEl, &next, &z, &direction);
+    trackBlockGetNext(&posEl, &next, &z, &direction);
     CoordsXYZD result(next.x, next.y, z, direction);
     return ToDuk(ctx, result);
 }
@@ -125,7 +126,7 @@ bool ScTrackIterator::previous()
 
     auto posEl = CoordsXYE(pos.x, pos.y, reinterpret_cast<TileElement*>(el));
     TrackBeginEnd tbe{};
-    if (TrackBlockGetPrevious(posEl, &tbe))
+    if (trackBlockGetPrevious(posEl, &tbe))
     {
         auto prev = CoordsXYE(tbe.end_x, tbe.end_y, tbe.begin_element);
         auto origin = GetTrackSegmentOrigin(prev);
@@ -153,7 +154,7 @@ bool ScTrackIterator::next()
     CoordsXYE next;
     int32_t z{};
     int32_t direction{};
-    if (TrackBlockGetNext(&posEl, &next, &z, &direction))
+    if (trackBlockGetNext(&posEl, &next, &z, &direction))
     {
         auto origin = GetTrackSegmentOrigin(next);
         if (origin)

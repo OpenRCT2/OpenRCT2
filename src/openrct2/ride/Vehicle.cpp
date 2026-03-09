@@ -52,6 +52,7 @@
 #include "RideData.h"
 #include "Track.h"
 #include "TrackData.h"
+#include "TrackIteration.h"
 #include "TrainManager.h"
 #include "VehicleData.h"
 #include "VehicleGeometry.h"
@@ -1376,14 +1377,14 @@ void Vehicle::UpdateCrossings() const
 
             if (travellingForwards)
             {
-                if (!TrackBlockGetNext(&xyElement, &xyElement, &curZ, &direction))
+                if (!trackBlockGetNext(&xyElement, &xyElement, &curZ, &direction))
                 {
                     break;
                 }
             }
             else
             {
-                if (!TrackBlockGetPrevious(xyElement, &output))
+                if (!trackBlockGetPrevious(xyElement, &output))
                 {
                     break;
                 }
@@ -1414,7 +1415,7 @@ void Vehicle::UpdateCrossings() const
     {
         if (travellingForwards)
         {
-            if (TrackBlockGetPrevious(xyElement, &output))
+            if (trackBlockGetPrevious(xyElement, &output))
             {
                 xyElement.x = output.begin_x;
                 xyElement.y = output.begin_y;

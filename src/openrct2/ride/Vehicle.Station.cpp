@@ -24,6 +24,7 @@
 #include "Ride.h"
 #include "RideData.h"
 #include "Track.h"
+#include "TrackIteration.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
@@ -774,7 +775,7 @@ void Vehicle::UpdateWaitingToDepart()
         int32_t direction;
 
         uint8_t trackDirection = GetTrackDirection();
-        if (TrackBlockGetNextFromZero(TrackLocation, *curRide, trackDirection, &track, &zUnused, &direction, false))
+        if (trackBlockGetNextFromZero(TrackLocation, *curRide, trackDirection, &track, &zUnused, &direction, false))
         {
             if (track.element->AsTrack()->HasCableLift())
             {
