@@ -4585,10 +4585,10 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             auto startY = 49 + getTitleBarDiffNormal();
+            startY = colourOnPrepareDrawRideType(startY, ride);
             startY = colourOnPrepareDrawTrack(startY, ride, rideEntry);
             startY = colourOnPrepareDrawEntrance(startY, ride);
             startY = colourOnPrepareDrawVehicles(startY, ride, rideEntry);
-            startY = colourOnPrepareDrawRideType(startY, ride);
 
             _colourPanelHeight = startY;
             if (_colourPanelHeight != height)
