@@ -29,7 +29,7 @@ using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::WoodenRC;
 
-// static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Square;
+// static constexpr TunnelGroup kWoodenTunnelGroup = TunnelGroup::Square;
 
 enum
 {
@@ -892,7 +892,7 @@ static constexpr uint32_t kWoodenRCDiagBlockBrakeImages[2][kNumOrthogonalDirecti
     },
 };
 
-static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kFlatToLeftBankImages = { {
+static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kWoodenFlatToLeftBankImages = { {
     {
         SPR_WOODEN_RC_FLAT_TO_LEFT_BANK_SW_NE,
         SPR_WOODEN_RC_FLAT_TO_LEFT_BANK_RAILS_SW_NE,
@@ -915,7 +915,7 @@ static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kFlatT
     },
 } };
 
-static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kFlatToRightBankImages = { {
+static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kWoodenFlatToRightBankImages = { {
     {
         SPR_WOODEN_RC_FLAT_TO_RIGHT_BANK_SW_NE,
         SPR_WOODEN_RC_FLAT_TO_RIGHT_BANK_RAILS_SW_NE,
@@ -938,7 +938,7 @@ static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kFlatT
     },
 } };
 
-static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kLeftBankImages = { {
+static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kWoodenLeftBankImages = { {
     { SPR_WOODEN_RC_LEFT_BANK_SW_NE, SPR_WOODEN_RC_LEFT_BANK_RAILS_SW_NE, SPR_TRACKS_WOODEN_RC_LEFT_BANK_FRONT_SW_NE,
       SPR_TRACKS_WOODEN_RC_LEFT_BANK_RAILS_FRONT_SW_NE },
     { SPR_WOODEN_RC_LEFT_BANK_NW_SE, SPR_WOODEN_RC_LEFT_BANK_RAILS_NW_SE, SPR_TRACKS_WOODEN_RC_LEFT_BANK_FRONT_NW_SE,
@@ -947,7 +947,7 @@ static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kLeftB
     { SPR_WOODEN_RC_LEFT_BANK_SE_NW, SPR_WOODEN_RC_LEFT_BANK_RAILS_SE_NW },
 } };
 
-static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kUp25ToLeftBankImages = { {
+static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kWoodenUp25ToLeftBankImages = { {
     {
         SPR_WOODEN_RC_25_DEG_TO_LEFT_BANK_SW_NE,
         SPR_WOODEN_RC_25_DEG_TO_LEFT_BANK_RAILS_SW_NE,
@@ -970,7 +970,7 @@ static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kUp25T
     },
 } };
 
-static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kUp25ToRightBankImages = { {
+static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kWoodenUp25ToRightBankImages = { {
     {
         SPR_WOODEN_RC_25_DEG_TO_RIGHT_BANK_SW_NE,
         SPR_WOODEN_RC_25_DEG_TO_RIGHT_BANK_RAILS_SW_NE,
@@ -993,7 +993,7 @@ static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kUp25T
     },
 } };
 
-static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kLeftBankToUp25Images = { {
+static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kWoodenLeftBankToUp25Images = { {
     {
         SPR_WOODEN_RC_LEFT_BANK_TO_25_DEG_SW_NE,
         SPR_WOODEN_RC_LEFT_BANK_TO_25_DEG_RAILS_SW_NE,
@@ -1015,7 +1015,7 @@ static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kLeftB
         SPR_WOODEN_RC_LEFT_BANK_TO_25_DEG_RAILS_SE_NW,
     },
 } };
-static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kRightBankToUp25Images = { {
+static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kWoodenRightBankToUp25Images = { {
     {
         SPR_WOODEN_RC_RIGHT_BANK_TO_25_DEG_SW_NE,
         SPR_WOODEN_RC_RIGHT_BANK_TO_25_DEG_RAILS_SW_NE,
@@ -1038,7 +1038,7 @@ static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kRight
     },
 } };
 
-static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 3> kBankedQuarterTurn3Images = { {
+static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 3> kWoodenBankedQuarterTurn3Images = { {
     { {
         {
             SPR_WOODEN_RC_BANKED_QUARTER_TURN_3_0_0,
@@ -1107,7 +1107,7 @@ static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirecti
     } },
 } };
 
-static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 5> kBankedQuarterTurn5Images = { {
+static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 5> kWoodenBankedQuarterTurn5Images = { {
     { {
         {
             SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_SW_SE_SEQ_0,
@@ -1220,77 +1220,78 @@ static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirecti
     } },
 } };
 
-static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 3> kLeftHalfBankedHelixUpSmallImages = { {
-    { {
-        {
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_0_0,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_HANDRAIL_0_0,
-        },
-        {
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_0_1,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_HANDRAIL_0_1,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_FRONT_0_1,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_FRONT_HANDRAIL_0_1,
-        },
-        {
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_0_2,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_HANDRAIL_0_2,
-        },
-        {
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_0_3,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_HANDRAIL_0_3,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_FRONT_0_3,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_FRONT_HANDRAIL_0_3,
-        },
-    } },
-    { {
-        {
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_1_0,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_HANDRAIL_1_0,
-        },
-        {
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_1_1,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_HANDRAIL_1_1,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_FRONT_1_1,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_FRONT_HANDRAIL_1_1,
-        },
-        {
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_1_2,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_HANDRAIL_1_2,
-        },
-        {
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_1_3,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_HANDRAIL_1_3,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_FRONT_1_3,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_FRONT_HANDRAIL_1_3,
-        },
-    } },
-    { {
-        {
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_2_0,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_HANDRAIL_2_0,
-        },
-        {
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_2_1,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_HANDRAIL_2_1,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_FRONT_2_1,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_FRONT_HANDRAIL_2_1,
-        },
-        {
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_2_2,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_HANDRAIL_2_2,
-        },
-        {
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_2_3,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_HANDRAIL_2_3,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_FRONT_2_3,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_FRONT_HANDRAIL_2_3,
-        },
-    } },
-} };
+static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 3>
+    kWoodenLeftHalfBankedHelixUpSmallImages = { {
+        { {
+            {
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_0_0,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_HANDRAIL_0_0,
+            },
+            {
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_0_1,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_HANDRAIL_0_1,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_FRONT_0_1,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_FRONT_HANDRAIL_0_1,
+            },
+            {
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_0_2,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_HANDRAIL_0_2,
+            },
+            {
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_0_3,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_HANDRAIL_0_3,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_FRONT_0_3,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_FRONT_HANDRAIL_0_3,
+            },
+        } },
+        { {
+            {
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_1_0,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_HANDRAIL_1_0,
+            },
+            {
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_1_1,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_HANDRAIL_1_1,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_FRONT_1_1,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_FRONT_HANDRAIL_1_1,
+            },
+            {
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_1_2,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_HANDRAIL_1_2,
+            },
+            {
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_1_3,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_HANDRAIL_1_3,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_FRONT_1_3,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_FRONT_HANDRAIL_1_3,
+            },
+        } },
+        { {
+            {
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_2_0,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_HANDRAIL_2_0,
+            },
+            {
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_2_1,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_HANDRAIL_2_1,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_FRONT_2_1,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_FRONT_HANDRAIL_2_1,
+            },
+            {
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_2_2,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_HANDRAIL_2_2,
+            },
+            {
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_2_3,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_HANDRAIL_2_3,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_FRONT_2_3,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_UP_SMALL_FRONT_HANDRAIL_2_3,
+            },
+        } },
+    } };
 
-static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 3> kRightHalfBankedHelixUpSmallImages = {
-    {
+static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 3>
+    kWoodenRightHalfBankedHelixUpSmallImages = { {
         { {
             {
                 SPR_WOODEN_RC_RIGHT_HALF_BANKED_HELIX_UP_SMALL_0_0,
@@ -1357,124 +1358,124 @@ static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirecti
                 SPR_WOODEN_RC_RIGHT_HALF_BANKED_HELIX_UP_SMALL_HANDRAIL_2_3,
             },
         } },
-    }
-};
+    } };
 
-static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 5> kLeftHalfBankedHelixUpLargeImages = { {
-    { {
-        {
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_0_0,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_0_0,
-        },
-        {
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_0_1,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_0_1,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_0_1,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_HANDRAIL_0_1,
-        },
-        {
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_0_2,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_0_2,
-        },
-        {
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_0_3,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_0_3,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_0_3,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_HANDRAIL_0_3,
-        },
-    } },
-    { {
-        {
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_1_0,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_1_0,
-        },
-        {
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_1_1,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_1_1,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_1_1,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_HANDRAIL_1_1,
-        },
-        {
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_1_2,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_1_2,
-        },
-        {
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_1_3,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_1_3,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_1_3,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_HANDRAIL_1_3,
-        },
-    } },
-    { {
-        {
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_2_0,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_2_0,
-        },
-        {
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_2_1,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_2_1,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_2_1,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_HANDRAIL_2_1,
-        },
-        {
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_2_2,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_2_2,
-        },
-        {
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_2_3,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_2_3,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_2_3,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_HANDRAIL_2_3,
-        },
-    } },
-    { {
-        {
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_3_0,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_3_0,
-        },
-        {
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_3_1,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_3_1,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_3_1,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_HANDRAIL_3_1,
-        },
-        {
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_3_2,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_3_2,
-        },
-        {
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_3_3,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_3_3,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_3_3,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_HANDRAIL_3_3,
-        },
-    } },
-    { {
-        {
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_4_0,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_4_0,
-        },
-        {
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_4_1,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_4_1,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_4_1,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_HANDRAIL_4_1,
-        },
-        {
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_4_2,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_4_2,
-        },
-        {
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_4_3,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_4_3,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_4_3,
-            SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_HANDRAIL_4_3,
-        },
-    } },
-} };
+static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 5>
+    kWoodenLeftHalfBankedHelixUpLargeImages = { {
+        { {
+            {
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_0_0,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_0_0,
+            },
+            {
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_0_1,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_0_1,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_0_1,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_HANDRAIL_0_1,
+            },
+            {
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_0_2,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_0_2,
+            },
+            {
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_0_3,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_0_3,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_0_3,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_HANDRAIL_0_3,
+            },
+        } },
+        { {
+            {
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_1_0,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_1_0,
+            },
+            {
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_1_1,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_1_1,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_1_1,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_HANDRAIL_1_1,
+            },
+            {
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_1_2,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_1_2,
+            },
+            {
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_1_3,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_1_3,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_1_3,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_HANDRAIL_1_3,
+            },
+        } },
+        { {
+            {
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_2_0,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_2_0,
+            },
+            {
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_2_1,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_2_1,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_2_1,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_HANDRAIL_2_1,
+            },
+            {
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_2_2,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_2_2,
+            },
+            {
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_2_3,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_2_3,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_2_3,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_HANDRAIL_2_3,
+            },
+        } },
+        { {
+            {
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_3_0,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_3_0,
+            },
+            {
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_3_1,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_3_1,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_3_1,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_HANDRAIL_3_1,
+            },
+            {
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_3_2,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_3_2,
+            },
+            {
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_3_3,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_3_3,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_3_3,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_HANDRAIL_3_3,
+            },
+        } },
+        { {
+            {
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_4_0,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_4_0,
+            },
+            {
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_4_1,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_4_1,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_4_1,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_HANDRAIL_4_1,
+            },
+            {
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_4_2,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_4_2,
+            },
+            {
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_4_3,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_4_3,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_4_3,
+                SPR_WOODEN_RC_LEFT_HALF_BANKED_HELIX_LARGE_UP_FRONT_HANDRAIL_4_3,
+            },
+        } },
+    } };
 
-static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 5> kRightHalfBankedHelixUpLargeImages = {
-    {
+static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 5>
+    kWoodenRightHalfBankedHelixUpLargeImages = { {
         { {
             {
                 SPR_WOODEN_RC_RIGHT_HALF_BANKED_HELIX_LARGE_UP_0_0,
@@ -1585,11 +1586,10 @@ static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirecti
                 SPR_WOODEN_RC_RIGHT_HALF_BANKED_HELIX_LARGE_UP_HANDRAIL_4_3,
             },
         } },
-    }
-};
+    } };
 
 static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 2>
-    kLeftBankToLeftQuarterTurn325DegUpImages = { {
+    kWoodenLeftBankToLeftQuarterTurn325DegUpImages = { {
         { {
             {
                 SPR_WOODEN_RC_LEFT_BANK_TO_LEFT_QUARTER_TURN_3_25_DEG_UP_0_0,
@@ -1639,7 +1639,7 @@ static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirecti
     } };
 
 static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 2>
-    kRightBankToRightQuarterTurn325DegUpImages = { {
+    kWoodenRightBankToRightQuarterTurn325DegUpImages = { {
         { {
             {
                 SPR_WOODEN_RC_RIGHT_BANK_TO_RIGHT_QUARTER_TURN_3_25_DEG_UP_0_0,
@@ -1688,7 +1688,7 @@ static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirecti
         } },
     } };
 
-static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kDiagFlatToLeftBankImages = { {
+static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kWoodenDiagFlatToLeftBankImages = { {
     {
         SPR_WOODEN_RC_DIAG_FLAT_TO_LEFT_BANK_0,
         SPR_WOODEN_RC_DIAG_FLAT_TO_LEFT_BANK_HANDRAIL_0,
@@ -1711,7 +1711,7 @@ static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kDiagF
     },
 } };
 
-static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kDiagFlatToRightBankImages = { {
+static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kWoodenDiagFlatToRightBankImages = { {
     {
         SPR_WOODEN_RC_DIAG_FLAT_TO_RIGHT_BANK_0,
         SPR_WOODEN_RC_DIAG_FLAT_TO_RIGHT_BANK_HANDRAIL_0,
@@ -1734,7 +1734,7 @@ static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kDiagF
     },
 } };
 
-static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kDiagLeftBankTo25DegUpImages = { {
+static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kWoodenDiagLeftBankTo25DegUpImages = { {
     {
         SPR_WOODEN_RC_DIAG_LEFT_BANK_TO_25_DEG_UP_0,
         SPR_WOODEN_RC_DIAG_LEFT_BANK_TO_25_DEG_UP_HANDRAIL_0,
@@ -1757,7 +1757,7 @@ static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kDiagL
     },
 } };
 
-static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kDiagRightBankTo25DegUpImages = { {
+static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kWoodenDiagRightBankTo25DegUpImages = { {
     {
         SPR_WOODEN_RC_DIAG_RIGHT_BANK_TO_25_DEG_UP_0,
         SPR_WOODEN_RC_DIAG_RIGHT_BANK_TO_25_DEG_UP_HANDRAIL_0,
@@ -1780,7 +1780,7 @@ static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kDiagR
     },
 } };
 
-static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kDiagUp25ToLeftBankImages = { {
+static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kWoodenDiagUp25ToLeftBankImages = { {
     {
         SPR_WOODEN_RC_DIAG_UP_25_TO_LEFT_BANK_0,
         SPR_WOODEN_RC_DIAG_UP_25_TO_LEFT_BANK_HANDRAIL_0,
@@ -1803,7 +1803,7 @@ static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kDiagU
     },
 } };
 
-static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kDiagUp25ToRightBankImages = { {
+static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kWoodenDiagUp25ToRightBankImages = { {
     {
         SPR_WOODEN_RC_DIAG_UP_25_TO_RIGHT_BANK_0,
         SPR_WOODEN_RC_DIAG_UP_25_TO_RIGHT_BANK_HANDRAIL_0,
@@ -1826,7 +1826,7 @@ static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kDiagU
     },
 } };
 
-static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 4> kLeftEighthBankToDiagImages = { {
+static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 4> kWoodenLeftEighthBankToDiagImages = { {
     { {
         {
             SPR_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_0_0,
@@ -1917,96 +1917,98 @@ static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirecti
     } },
 } };
 
-static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 4> kRightEighthBankToDiagImages = { {
-    { {
-        {
-            SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_0_0,
-            SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_HANDRAIL_0_0,
-            SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_FRONT_0_0,
-            SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_FRONT_HANDRAIL_0_0,
-        },
-        {
-            SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_0_1,
-            SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_HANDRAIL_0_1,
-        },
-        {
-            SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_0_2,
-            SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_HANDRAIL_0_2,
-            SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_FRONT_0_2,
-            SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_FRONT_HANDRAIL_0_2,
-        },
-        {
-            SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_0_3,
-            SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_HANDRAIL_0_3,
-        },
-    } },
-    { {
-        {
-            SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_1_0,
-            SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_HANDRAIL_1_0,
-            SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_FRONT_1_0,
-            SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_FRONT_HANDRAIL_1_0,
-        },
-        {
-            SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_1_1,
-            SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_HANDRAIL_1_1,
-        },
-        {
-            SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_1_2,
-            SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_HANDRAIL_1_2,
-            SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_FRONT_1_2,
-            SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_FRONT_HANDRAIL_1_2,
-        },
-        {
-            SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_1_3,
-            SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_HANDRAIL_1_3,
-        },
-    } },
-    { {
-        {
-            SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_2_0,
-            SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_HANDRAIL_2_0,
-            SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_FRONT_2_0,
-            SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_FRONT_HANDRAIL_2_0,
-        },
-        {
-            SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_2_1,
-            SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_HANDRAIL_2_1,
-        },
-        {
-            SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_2_2,
-            SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_HANDRAIL_2_2,
-            SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_FRONT_2_2,
-            SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_FRONT_HANDRAIL_2_2,
-        },
-        {
-            SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_2_3,
-            SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_HANDRAIL_2_3,
-        },
-    } },
-    { {
-        {
-            SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_3_0,
-            SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_HANDRAIL_3_0,
-            SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_FRONT_3_0,
-            SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_FRONT_HANDRAIL_3_0,
-        },
-        {
-            SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_3_1,
-            SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_HANDRAIL_3_1,
-        },
-        {
-            SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_3_2,
-            SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_HANDRAIL_3_2,
-            SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_FRONT_3_2,
-            SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_FRONT_HANDRAIL_3_2,
-        },
-        {
-            SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_3_3,
-            SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_HANDRAIL_3_3,
-        },
-    } },
-} };
+static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 4> kWoodenRightEighthBankToDiagImages = {
+    {
+        { {
+            {
+                SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_0_0,
+                SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_HANDRAIL_0_0,
+                SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_FRONT_0_0,
+                SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_FRONT_HANDRAIL_0_0,
+            },
+            {
+                SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_0_1,
+                SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_HANDRAIL_0_1,
+            },
+            {
+                SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_0_2,
+                SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_HANDRAIL_0_2,
+                SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_FRONT_0_2,
+                SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_FRONT_HANDRAIL_0_2,
+            },
+            {
+                SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_0_3,
+                SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_HANDRAIL_0_3,
+            },
+        } },
+        { {
+            {
+                SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_1_0,
+                SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_HANDRAIL_1_0,
+                SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_FRONT_1_0,
+                SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_FRONT_HANDRAIL_1_0,
+            },
+            {
+                SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_1_1,
+                SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_HANDRAIL_1_1,
+            },
+            {
+                SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_1_2,
+                SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_HANDRAIL_1_2,
+                SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_FRONT_1_2,
+                SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_FRONT_HANDRAIL_1_2,
+            },
+            {
+                SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_1_3,
+                SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_HANDRAIL_1_3,
+            },
+        } },
+        { {
+            {
+                SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_2_0,
+                SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_HANDRAIL_2_0,
+                SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_FRONT_2_0,
+                SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_FRONT_HANDRAIL_2_0,
+            },
+            {
+                SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_2_1,
+                SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_HANDRAIL_2_1,
+            },
+            {
+                SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_2_2,
+                SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_HANDRAIL_2_2,
+                SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_FRONT_2_2,
+                SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_FRONT_HANDRAIL_2_2,
+            },
+            {
+                SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_2_3,
+                SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_HANDRAIL_2_3,
+            },
+        } },
+        { {
+            {
+                SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_3_0,
+                SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_HANDRAIL_3_0,
+                SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_FRONT_3_0,
+                SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_FRONT_HANDRAIL_3_0,
+            },
+            {
+                SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_3_1,
+                SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_HANDRAIL_3_1,
+            },
+            {
+                SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_3_2,
+                SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_HANDRAIL_3_2,
+                SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_FRONT_3_2,
+                SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_FRONT_HANDRAIL_3_2,
+            },
+            {
+                SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_3_3,
+                SPR_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_HANDRAIL_3_3,
+            },
+        } },
+    }
+};
 
 ImageId WoodenRC::WoodenRCGetRailsColour(PaintSession& session)
 {
@@ -2038,7 +2040,7 @@ static void WoodenRCTrackFlat(
         { { 0, 3, height }, { 32, 25, 2 } });
     WoodenASupportsPaintSetupRotated(
         session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours);
-    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+    PaintUtilPushTunnelRotated(session, direction, height, kWoodenTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -2161,11 +2163,11 @@ static void WoodenRCTrack25DegUp(
 
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kWoodenTunnelGroup, TunnelSubType::SlopeStart);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, kWoodenTunnelGroup, TunnelSubType::SlopeEnd);
     }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -2229,11 +2231,11 @@ static void WoodenRCTrack60DegUp(
 
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kWoodenTunnelGroup, TunnelSubType::SlopeStart);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 56, kTunnelGroup, TunnelSubType::SlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height + 56, kWoodenTunnelGroup, TunnelSubType::SlopeEnd);
     }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -2317,11 +2319,11 @@ static void WoodenRCTrackFlatTo25DegUp(
 
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRotated(session, direction, height, kWoodenTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height, kWoodenTunnelGroup, TunnelSubType::SlopeEnd);
     }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -2430,11 +2432,11 @@ static void WoodenRCTrack25DegUpTo60DegUp(
 
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kWoodenTunnelGroup, TunnelSubType::SlopeStart);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height + 24, kWoodenTunnelGroup, TunnelSubType::SlopeEnd);
     }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -2544,11 +2546,11 @@ static void WoodenRCTrack60DegUpTo25DegUp(
 
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kWoodenTunnelGroup, TunnelSubType::SlopeStart);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height + 24, kWoodenTunnelGroup, TunnelSubType::SlopeEnd);
     }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -2632,11 +2634,11 @@ static void WoodenRCTrack25DegUpToFlat(
 
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kWoodenTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, kWoodenTunnelGroup, TunnelSubType::FlatTo25Deg);
     }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -3005,7 +3007,8 @@ static void WoodenRCTrackRightQuarterTurn5(
 
     WoodenRCTrackPaintBb<isClassic>(session, &imageIds[0][direction][trackSequence], height);
     WoodenRCTrackPaintBb<isClassic>(session, &imageIds[1][direction][trackSequence], height);
-    TrackPaintUtilRightQuarterTurn5TilesTunnel(session, kTunnelGroup, TunnelSubType::Flat, height, direction, trackSequence);
+    TrackPaintUtilRightQuarterTurn5TilesTunnel(
+        session, kWoodenTunnelGroup, TunnelSubType::Flat, height, direction, trackSequence);
 
     if (supportSubType[direction][trackSequence] != WoodenSupportSubType::null)
     {
@@ -3064,7 +3067,7 @@ static void WoodenRCTrackLeftBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    TrackFlatToBank<isClassic, kFlatToRightBankImages>(
+    TrackFlatToBank<isClassic, kWoodenFlatToRightBankImages>(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
@@ -3074,7 +3077,7 @@ static void WoodenRCTrackRightBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    TrackFlatToBank<isClassic, kFlatToLeftBankImages>(
+    TrackFlatToBank<isClassic, kWoodenFlatToLeftBankImages>(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
@@ -3084,7 +3087,7 @@ static void WoodenRCTrackBankedLeftQuarterTurn5(
     const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    TrackBankedRightQuarterTurn5<isClassic, kBankedQuarterTurn5Images>(
+    TrackBankedRightQuarterTurn5<isClassic, kWoodenBankedQuarterTurn5Images>(
         session, ride, trackSequence, DirectionNext(direction), height, trackElement, supportType);
 }
 
@@ -3096,7 +3099,7 @@ static void WoodenRCTrackLeftBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    Track25DegUpToBank<isClassic, kUp25ToRightBankImages>(
+    Track25DegUpToBank<isClassic, kWoodenUp25ToRightBankImages>(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
@@ -3106,7 +3109,7 @@ static void WoodenRCTrackRightBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    Track25DegUpToBank<isClassic, kUp25ToLeftBankImages>(
+    Track25DegUpToBank<isClassic, kWoodenUp25ToLeftBankImages>(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
@@ -3116,7 +3119,7 @@ static void WoodenRCTrack25DegDownToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    TrackBankTo25DegUp<isClassic, kRightBankToUp25Images>(
+    TrackBankTo25DegUp<isClassic, kWoodenRightBankToUp25Images>(
         session, ride, trackSequence, DirectionReverse(direction), height, trackElement, supportType);
 }
 
@@ -3126,7 +3129,7 @@ static void WoodenRCTrack25DegDownToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    TrackBankTo25DegUp<isClassic, kLeftBankToUp25Images>(
+    TrackBankTo25DegUp<isClassic, kWoodenLeftBankToUp25Images>(
         session, ride, trackSequence, DirectionReverse(direction), height, trackElement, supportType);
 }
 
@@ -3136,7 +3139,7 @@ static void WoodenRCTrackRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    TrackFlatToBank<isClassic, kLeftBankImages>(
+    TrackFlatToBank<isClassic, kWoodenLeftBankImages>(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
@@ -3204,7 +3207,7 @@ static void WoodenRCTrackLeftQuarterTurn525DegUp(
             }
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+                PaintUtilPushTunnelRotated(session, direction, height - 8, kWoodenTunnelGroup, TunnelSubType::SlopeStart);
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -3489,10 +3492,10 @@ static void WoodenRCTrackLeftQuarterTurn525DegUp(
             switch (direction)
             {
                 case 2:
-                    PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
+                    PaintUtilPushTunnelRight(session, height + 8, kWoodenTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
                 case 3:
-                    PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
+                    PaintUtilPushTunnelLeft(session, height + 8, kWoodenTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -3565,7 +3568,7 @@ static void WoodenRCTrackRightQuarterTurn525DegUp(
             }
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+                PaintUtilPushTunnelRotated(session, direction, height - 8, kWoodenTunnelGroup, TunnelSubType::SlopeStart);
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -3851,10 +3854,10 @@ static void WoodenRCTrackRightQuarterTurn525DegUp(
             switch (direction)
             {
                 case 0:
-                    PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
+                    PaintUtilPushTunnelRight(session, height + 8, kWoodenTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
                 case 1:
-                    PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
+                    PaintUtilPushTunnelLeft(session, height + 8, kWoodenTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -3951,7 +3954,7 @@ static void WoodenRCTrackSBendLeft(
             }
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+                PaintUtilPushTunnelRotated(session, direction, height, kWoodenTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -4147,10 +4150,10 @@ static void WoodenRCTrackSBendLeft(
             switch (direction)
             {
                 case 1:
-                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+                    PaintUtilPushTunnelRight(session, height, kWoodenTunnelGroup, TunnelSubType::Flat);
                     break;
                 case 2:
-                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+                    PaintUtilPushTunnelLeft(session, height, kWoodenTunnelGroup, TunnelSubType::Flat);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -4225,7 +4228,7 @@ static void WoodenRCTrackSBendRight(
             }
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+                PaintUtilPushTunnelRotated(session, direction, height, kWoodenTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -4421,10 +4424,10 @@ static void WoodenRCTrackSBendRight(
             switch (direction)
             {
                 case 1:
-                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+                    PaintUtilPushTunnelRight(session, height, kWoodenTunnelGroup, TunnelSubType::Flat);
                     break;
                 case 2:
-                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+                    PaintUtilPushTunnelLeft(session, height, kWoodenTunnelGroup, TunnelSubType::Flat);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -4464,7 +4467,7 @@ static void WoodenRCTrackLeftVerticalLoop(
                 session, MetalSupportType::boxed, MetalSupportPlace::centre, 8, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+                PaintUtilPushTunnelRotated(session, direction, height - 8, kWoodenTunnelGroup, TunnelSubType::SlopeStart);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -4715,10 +4718,10 @@ static void WoodenRCTrackLeftVerticalLoop(
             switch (direction)
             {
                 case 1:
-                    PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+                    PaintUtilPushTunnelRight(session, height - 8, kWoodenTunnelGroup, TunnelSubType::SlopeStart);
                     break;
                 case 2:
-                    PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+                    PaintUtilPushTunnelLeft(session, height - 8, kWoodenTunnelGroup, TunnelSubType::SlopeStart);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -4765,7 +4768,7 @@ static void WoodenRCTrackRightVerticalLoop(
                 session, MetalSupportType::boxed, MetalSupportPlace::centre, 8, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+                PaintUtilPushTunnelRotated(session, direction, height - 8, kWoodenTunnelGroup, TunnelSubType::SlopeStart);
             }
             PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
@@ -4964,10 +4967,10 @@ static void WoodenRCTrackRightVerticalLoop(
             switch (direction)
             {
                 case 1:
-                    PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+                    PaintUtilPushTunnelRight(session, height - 8, kWoodenTunnelGroup, TunnelSubType::SlopeStart);
                     break;
                 case 2:
-                    PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+                    PaintUtilPushTunnelLeft(session, height - 8, kWoodenTunnelGroup, TunnelSubType::SlopeStart);
                     break;
             }
             PaintUtilSetGeneralSupportHeight(session, height + 56);
@@ -5043,7 +5046,7 @@ static void WoodenRCTrackLeftQuarterTurn3(
             }
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+                PaintUtilPushTunnelRotated(session, direction, height, kWoodenTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -5166,10 +5169,10 @@ static void WoodenRCTrackLeftQuarterTurn3(
             switch (direction)
             {
                 case 2:
-                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+                    PaintUtilPushTunnelRight(session, height, kWoodenTunnelGroup, TunnelSubType::Flat);
                     break;
                 case 3:
-                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+                    PaintUtilPushTunnelLeft(session, height, kWoodenTunnelGroup, TunnelSubType::Flat);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -5196,7 +5199,7 @@ static void WoodenRCTrackRightQuarterTurn3Bank(
     const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    TrackLeftQuarterTurn3Bank<isClassic, kBankedQuarterTurn3Images>(
+    TrackLeftQuarterTurn3Bank<isClassic, kWoodenBankedQuarterTurn3Images>(
         session, ride, trackSequence, DirectionPrev(direction), height, trackElement, supportType);
 }
 
@@ -5266,7 +5269,7 @@ static void WoodenRCTrackLeftQuarterTurn325DegUp(
             }
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+                PaintUtilPushTunnelRotated(session, direction, height - 8, kWoodenTunnelGroup, TunnelSubType::SlopeStart);
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -5348,10 +5351,10 @@ static void WoodenRCTrackLeftQuarterTurn325DegUp(
             switch (direction)
             {
                 case 2:
-                    PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
+                    PaintUtilPushTunnelRight(session, height + 8, kWoodenTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
                 case 3:
-                    PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
+                    PaintUtilPushTunnelLeft(session, height + 8, kWoodenTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -5426,7 +5429,7 @@ static void WoodenRCTrackRightQuarterTurn325DegUp(
             }
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+                PaintUtilPushTunnelRotated(session, direction, height - 8, kWoodenTunnelGroup, TunnelSubType::SlopeStart);
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -5509,10 +5512,10 @@ static void WoodenRCTrackRightQuarterTurn325DegUp(
             switch (direction)
             {
                 case 0:
-                    PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
+                    PaintUtilPushTunnelRight(session, height + 8, kWoodenTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
                 case 1:
-                    PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
+                    PaintUtilPushTunnelLeft(session, height + 8, kWoodenTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -5555,7 +5558,7 @@ static void WoodenRCTrackLeftHalfBankedHelixDownSmall(
         direction = DirectionPrev(direction);
     }
     trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    TrackRightHalfBankedHelixUpSmall<isClassic, kRightHalfBankedHelixUpSmallImages>(
+    TrackRightHalfBankedHelixUpSmall<isClassic, kWoodenRightHalfBankedHelixUpSmallImages>(
         session, ride, trackSequence, DirectionNext(direction), height, trackElement, supportType);
 }
 
@@ -5571,7 +5574,7 @@ static void WoodenRCTrackRightHalfBankedHelixDownSmall(
         direction = DirectionNext(direction);
     }
     trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    TrackLeftHalfBankedHelixUpSmall<isClassic, kLeftHalfBankedHelixUpSmallImages>(
+    TrackLeftHalfBankedHelixUpSmall<isClassic, kWoodenLeftHalfBankedHelixUpSmallImages>(
         session, ride, trackSequence, DirectionPrev(direction), height, trackElement, supportType);
 }
 
@@ -5587,7 +5590,7 @@ static void WoodenRCTrackLeftHalfBankedHelixDownLarge(
         direction = DirectionPrev(direction);
     }
     trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    TrackRightHalfBankedHelixUpLarge<isClassic, kRightHalfBankedHelixUpLargeImages>(
+    TrackRightHalfBankedHelixUpLarge<isClassic, kWoodenRightHalfBankedHelixUpLargeImages>(
         session, ride, trackSequence, DirectionNext(direction), height, trackElement, supportType);
 }
 
@@ -5603,7 +5606,7 @@ static void WoodenRCTrackRightHalfBankedHelixDownLarge(
         direction = DirectionNext(direction);
     }
     trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    TrackLeftHalfBankedHelixUpLarge<isClassic, kLeftHalfBankedHelixUpLargeImages>(
+    TrackLeftHalfBankedHelixUpLarge<isClassic, kWoodenLeftHalfBankedHelixUpLargeImages>(
         session, ride, trackSequence, DirectionPrev(direction), height, trackElement, supportType);
 }
 
@@ -5673,7 +5676,7 @@ static void WoodenRCTrackLeftQuarterTurn160DegUp(
             break;
     }
     TrackPaintUtilLeftQuarterTurn1TileTunnel(
-        session, kTunnelGroup, direction, height, -8, TunnelSubType::SlopeStart, +56, TunnelSubType::SlopeEnd);
+        session, kWoodenTunnelGroup, direction, height, -8, TunnelSubType::SlopeStart, +56, TunnelSubType::SlopeEnd);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 104);
 }
@@ -5744,7 +5747,7 @@ static void WoodenRCTrackRightQuarterTurn160DegUp(
             break;
     }
     TrackPaintUtilRightQuarterTurn1TileTunnel(
-        session, kTunnelGroup, direction, height, -8, TunnelSubType::SlopeStart, +56, TunnelSubType::SlopeEnd);
+        session, kWoodenTunnelGroup, direction, height, -8, TunnelSubType::SlopeStart, +56, TunnelSubType::SlopeEnd);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 104);
 }
@@ -5787,7 +5790,7 @@ static void WoodenRCTrackBrakes(
         { { 0, 3, height }, { 32, 25, 2 } });
     WoodenASupportsPaintSetupRotated(
         session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours);
-    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+    PaintUtilPushTunnelRotated(session, direction, height, kWoodenTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -5865,11 +5868,11 @@ static void WoodenRCTrack25DegUpLeftBanked(
     }
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kWoodenTunnelGroup, TunnelSubType::SlopeStart);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, kWoodenTunnelGroup, TunnelSubType::SlopeEnd);
     }
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
@@ -5948,11 +5951,11 @@ static void WoodenRCTrack25DegUpRightBanked(
     }
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kWoodenTunnelGroup, TunnelSubType::SlopeStart);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, kWoodenTunnelGroup, TunnelSubType::SlopeEnd);
     }
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
@@ -6079,7 +6082,7 @@ static void WoodenRCTrackFlatTo60DegUpLongBase(
                 WoodenSupportTransitionType::flatToUp60DegLongBaseSeq0);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+                PaintUtilPushTunnelRotated(session, direction, height, kWoodenTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -6258,10 +6261,10 @@ static void WoodenRCTrackFlatTo60DegUpLongBase(
             switch (direction)
             {
                 case 1:
-                    PaintUtilPushTunnelRight(session, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
+                    PaintUtilPushTunnelRight(session, height + 24, kWoodenTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
                 case 2:
-                    PaintUtilPushTunnelLeft(session, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
+                    PaintUtilPushTunnelLeft(session, height + 24, kWoodenTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -6318,7 +6321,7 @@ static void WoodenRCTrack60DegUpToFlatLongBase(
                 WoodenSupportTransitionType::up60DegToFlatLongBaseSeq0);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeStart);
+                PaintUtilPushTunnelRotated(session, direction, height, kWoodenTunnelGroup, TunnelSubType::SlopeStart);
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 80);
@@ -6521,10 +6524,10 @@ static void WoodenRCTrack60DegUpToFlatLongBase(
             switch (direction)
             {
                 case 1:
-                    PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
+                    PaintUtilPushTunnelRight(session, height + 8, kWoodenTunnelGroup, TunnelSubType::FlatTo25Deg);
                     break;
                 case 2:
-                    PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
+                    PaintUtilPushTunnelLeft(session, height + 8, kWoodenTunnelGroup, TunnelSubType::FlatTo25Deg);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -6685,7 +6688,7 @@ static void WoodenRCTrackWaterSplash(
             }
             WoodenASupportsPaintSetupRotated(
                 session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours);
-            PaintUtilPushTunnelRotated(session, direction, height + 16, kTunnelGroup, TunnelSubType::Flat);
+            PaintUtilPushTunnelRotated(session, direction, height + 16, kWoodenTunnelGroup, TunnelSubType::Flat);
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
@@ -7060,7 +7063,7 @@ static void WoodenRCTrackWaterSplash(
             }
             WoodenASupportsPaintSetupRotated(
                 session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours);
-            PaintUtilPushTunnelRotated(session, direction, height + 16, kTunnelGroup, TunnelSubType::Flat);
+            PaintUtilPushTunnelRotated(session, direction, height + 16, kWoodenTunnelGroup, TunnelSubType::Flat);
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
@@ -7133,7 +7136,7 @@ static void WoodenRCTrackLeftEighthToDiag(
             }
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+                PaintUtilPushTunnelRotated(session, direction, height, kWoodenTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -7399,7 +7402,7 @@ static void WoodenRCTrackRightEighthToDiag(
             }
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+                PaintUtilPushTunnelRotated(session, direction, height, kWoodenTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -7628,7 +7631,7 @@ static void WoodenRCTrackLeftEighthBankToOrthogonal(
     const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    TrackRightEighthBankToDiag<isClassic, kRightEighthBankToDiagImages>(
+    TrackRightEighthBankToDiag<isClassic, kWoodenRightEighthBankToDiagImages>(
         session, ride, trackSequence, DirectionReverse(direction), height, trackElement, supportType);
 }
 
@@ -7639,7 +7642,7 @@ static void WoodenRCTrackRightEighthBankToOrthogonal(
     const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    TrackLeftEighthBankToDiag<isClassic, kLeftEighthBankToDiagImages>(
+    TrackLeftEighthBankToDiag<isClassic, kWoodenLeftEighthBankToDiagImages>(
         session, ride, trackSequence, DirectionPrev(direction), height, trackElement, supportType);
 }
 
@@ -9871,7 +9874,7 @@ static void WoodenRCTrackDiagLeftBankToFlat(
     const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapReversedDiagonalStraight[trackSequence];
-    return TrackDiagFlatToBank<isClassic, kDiagFlatToRightBankImages>(
+    return TrackDiagFlatToBank<isClassic, kWoodenDiagFlatToRightBankImages>(
         session, ride, trackSequence, DirectionReverse(direction), height, trackElement, supportType);
 }
 
@@ -9881,7 +9884,7 @@ static void WoodenRCTrackDiagRightBankToFlat(
     const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapReversedDiagonalStraight[trackSequence];
-    return TrackDiagFlatToBank<isClassic, kDiagFlatToLeftBankImages>(
+    return TrackDiagFlatToBank<isClassic, kWoodenDiagFlatToLeftBankImages>(
         session, ride, trackSequence, DirectionReverse(direction), height, trackElement, supportType);
 }
 
@@ -9890,7 +9893,7 @@ static void WoodenRCTrackDiagLeftBankToDown25(
     const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapReversedDiagonalStraight[trackSequence];
-    return TrackDiagUp25ToBank<false, kDiagUp25ToRightBankImages>(
+    return TrackDiagUp25ToBank<false, kWoodenDiagUp25ToRightBankImages>(
         session, ride, trackSequence, DirectionReverse(direction), height, trackElement, supportType);
 }
 
@@ -9899,7 +9902,7 @@ static void WoodenRCTrackDiagRightBankToDown25(
     const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapReversedDiagonalStraight[trackSequence];
-    return TrackDiagUp25ToBank<false, kDiagUp25ToLeftBankImages>(
+    return TrackDiagUp25ToBank<false, kWoodenDiagUp25ToLeftBankImages>(
         session, ride, trackSequence, DirectionReverse(direction), height, trackElement, supportType);
 }
 
@@ -9909,7 +9912,7 @@ static void WoodenRCTrackDiagDown25ToLeftBank(
     const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapReversedDiagonalStraight[trackSequence];
-    return TrackDiagBankTo25DegUp<isClassic, kDiagRightBankTo25DegUpImages>(
+    return TrackDiagBankTo25DegUp<isClassic, kWoodenDiagRightBankTo25DegUpImages>(
         session, ride, trackSequence, DirectionReverse(direction), height, trackElement, supportType);
 }
 
@@ -9919,7 +9922,7 @@ static void WoodenRCTrackDiagDown25ToRightBank(
     const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapReversedDiagonalStraight[trackSequence];
-    return TrackDiagBankTo25DegUp<isClassic, kDiagLeftBankTo25DegUpImages>(
+    return TrackDiagBankTo25DegUp<isClassic, kWoodenDiagLeftBankTo25DegUpImages>(
         session, ride, trackSequence, DirectionReverse(direction), height, trackElement, supportType);
 }
 
@@ -10152,7 +10155,7 @@ static void WoodenRCTrackLeftQuarterTurn325DegDownToLeftBank(
     const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    TrackRightBankToRightQuarterTurn325DegUp<isClassic, kRightBankToRightQuarterTurn325DegUpImages>(
+    TrackRightBankToRightQuarterTurn325DegUp<isClassic, kWoodenRightBankToRightQuarterTurn325DegUpImages>(
         session, ride, trackSequence, DirectionNext(direction), height, trackElement, supportType);
 }
 
@@ -10163,7 +10166,7 @@ static void TrackRightQuarterTurn325DegDownToRightBank(
     const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    TrackLeftBankToLeftQuarterTurn325DegUp<isClassic, kLeftBankToLeftQuarterTurn325DegUpImages>(
+    TrackLeftBankToLeftQuarterTurn325DegUp<isClassic, kWoodenLeftBankToLeftQuarterTurn325DegUpImages>(
         session, ride, trackSequence, DirectionPrev(direction), height, trackElement, supportType);
 }
 
@@ -10180,7 +10183,7 @@ static void WoodenRCTrackBlockBrakes(
         { { 0, 3, height }, { 32, 25, 2 } });
     WoodenASupportsPaintSetupRotated(
         session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours);
-    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+    PaintUtilPushTunnelRotated(session, direction, height, kWoodenTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -10251,7 +10254,7 @@ static void WoodenRCTrackLeftBankedQuarterTurn325DegUp(
             }
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+                PaintUtilPushTunnelRotated(session, direction, height - 8, kWoodenTunnelGroup, TunnelSubType::SlopeStart);
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -10333,10 +10336,10 @@ static void WoodenRCTrackLeftBankedQuarterTurn325DegUp(
             switch (direction)
             {
                 case 2:
-                    PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
+                    PaintUtilPushTunnelRight(session, height + 8, kWoodenTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
                 case 3:
-                    PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
+                    PaintUtilPushTunnelLeft(session, height + 8, kWoodenTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -10411,7 +10414,7 @@ static void WoodenRCTrackRightBankedQuarterTurn325DegUp(
             }
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+                PaintUtilPushTunnelRotated(session, direction, height - 8, kWoodenTunnelGroup, TunnelSubType::SlopeStart);
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -10494,10 +10497,10 @@ static void WoodenRCTrackRightBankedQuarterTurn325DegUp(
             switch (direction)
             {
                 case 0:
-                    PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
+                    PaintUtilPushTunnelRight(session, height + 8, kWoodenTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
                 case 1:
-                    PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
+                    PaintUtilPushTunnelLeft(session, height + 8, kWoodenTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -10592,7 +10595,7 @@ static void WoodenRCTrackLeftBankedQuarterTurn525DegUp(
             }
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+                PaintUtilPushTunnelRotated(session, direction, height - 8, kWoodenTunnelGroup, TunnelSubType::SlopeStart);
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -10877,10 +10880,10 @@ static void WoodenRCTrackLeftBankedQuarterTurn525DegUp(
             switch (direction)
             {
                 case 2:
-                    PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
+                    PaintUtilPushTunnelRight(session, height + 8, kWoodenTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
                 case 3:
-                    PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
+                    PaintUtilPushTunnelLeft(session, height + 8, kWoodenTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -10953,7 +10956,7 @@ static void WoodenRCTrackRightBankedQuarterTurn525DegUp(
             }
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+                PaintUtilPushTunnelRotated(session, direction, height - 8, kWoodenTunnelGroup, TunnelSubType::SlopeStart);
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -11238,10 +11241,10 @@ static void WoodenRCTrackRightBankedQuarterTurn525DegUp(
             switch (direction)
             {
                 case 0:
-                    PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
+                    PaintUtilPushTunnelRight(session, height + 8, kWoodenTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
                 case 1:
-                    PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
+                    PaintUtilPushTunnelLeft(session, height + 8, kWoodenTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -11339,11 +11342,11 @@ static void WoodenRCTrack25DegUpToLeftBanked25DegUp(
     }
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kWoodenTunnelGroup, TunnelSubType::SlopeStart);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, kWoodenTunnelGroup, TunnelSubType::SlopeEnd);
     }
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
@@ -11416,11 +11419,11 @@ static void WoodenRCTrack25DegUpToRightBanked25DegUp(
     }
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kWoodenTunnelGroup, TunnelSubType::SlopeStart);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, kWoodenTunnelGroup, TunnelSubType::SlopeEnd);
     }
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
@@ -11481,11 +11484,11 @@ static void WoodenRCTrackLeftBanked25DegUpTo25DegUp(
     }
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kWoodenTunnelGroup, TunnelSubType::SlopeStart);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, kWoodenTunnelGroup, TunnelSubType::SlopeEnd);
     }
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
@@ -11546,11 +11549,11 @@ static void WoodenRCTrackRightBanked25DegUpTo25DegUp(
     }
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kWoodenTunnelGroup, TunnelSubType::SlopeStart);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, kWoodenTunnelGroup, TunnelSubType::SlopeEnd);
     }
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
@@ -11669,11 +11672,11 @@ static void WoodenRCTrackLeftBankedFlatToLeftBanked25DegUp(
     }
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRotated(session, direction, height, kWoodenTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height, kWoodenTunnelGroup, TunnelSubType::SlopeEnd);
     }
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -11752,11 +11755,11 @@ static void WoodenRCTrackRightBankedFlatToRightBanked25DegUp(
     }
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRotated(session, direction, height, kWoodenTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height, kWoodenTunnelGroup, TunnelSubType::SlopeEnd);
     }
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -11835,11 +11838,11 @@ static void WoodenRCTrackLeftBanked25DegUpToLeftBankedFlat(
     }
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kWoodenTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, kWoodenTunnelGroup, TunnelSubType::FlatTo25Deg);
     }
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40);
@@ -11918,11 +11921,11 @@ static void WoodenRCTrackRightBanked25DegUpToRightBankedFlat(
     }
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kWoodenTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, kWoodenTunnelGroup, TunnelSubType::FlatTo25Deg);
     }
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40);
@@ -12041,11 +12044,11 @@ static void WoodenRCTrackFlatToLeftBanked25DegUp(
     }
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRotated(session, direction, height, kWoodenTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height, kWoodenTunnelGroup, TunnelSubType::SlopeEnd);
     }
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -12124,11 +12127,11 @@ static void WoodenRCTrackFlatToRightBanked25DegUp(
     }
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRotated(session, direction, height, kWoodenTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height, kWoodenTunnelGroup, TunnelSubType::SlopeEnd);
     }
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -12201,11 +12204,11 @@ static void WoodenRCTrackLeftBanked25DegUpToFlat(
     }
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kWoodenTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, kWoodenTunnelGroup, TunnelSubType::FlatTo25Deg);
     }
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40);
@@ -12278,11 +12281,11 @@ static void WoodenRCTrackRightBanked25DegUpToFlat(
     }
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kWoodenTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, kWoodenTunnelGroup, TunnelSubType::FlatTo25Deg);
     }
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40);
@@ -12351,7 +12354,7 @@ static void WoodenRCTrackBooster(
         { { 0, 3, height }, { 32, 25, 2 } });
     WoodenASupportsPaintSetupRotated(
         session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours);
-    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+    PaintUtilPushTunnelRotated(session, direction, height, kWoodenTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -12399,7 +12402,7 @@ static void WoodenRCTrackLeftMediumHalfLoopUp(
 
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+                PaintUtilPushTunnelRotated(session, direction, height - 8, kWoodenTunnelGroup, TunnelSubType::SlopeStart);
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -12557,7 +12560,7 @@ static void WoodenRCTrackLeftMediumHalfLoopUp(
 
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height + 16, kTunnelGroup, TunnelSubType::Flat);
+                PaintUtilPushTunnelRotated(session, direction, height + 16, kWoodenTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
@@ -12607,7 +12610,7 @@ static void WoodenRCTrackRightMediumHalfLoopUp(
 
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+                PaintUtilPushTunnelRotated(session, direction, height - 8, kWoodenTunnelGroup, TunnelSubType::SlopeStart);
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -12765,7 +12768,7 @@ static void WoodenRCTrackRightMediumHalfLoopUp(
                 0xFFFF, 0);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height + 16, kTunnelGroup, TunnelSubType::Flat);
+                PaintUtilPushTunnelRotated(session, direction, height + 16, kWoodenTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
@@ -12825,7 +12828,7 @@ static void WoodenRCTrackLeftLargeHalfLoopUp(
                 session, MetalSupportType::boxed, MetalSupportPlace::centre, 5, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+                PaintUtilPushTunnelRotated(session, direction, height - 8, kWoodenTunnelGroup, TunnelSubType::SlopeStart);
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -13051,7 +13054,7 @@ static void WoodenRCTrackLeftLargeHalfLoopUp(
             }
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+                PaintUtilPushTunnelRotated(session, direction, height, kWoodenTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -13101,7 +13104,7 @@ static void WoodenRCTrackRightLargeHalfLoopUp(
                 session, MetalSupportType::boxed, MetalSupportPlace::centre, 5, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+                PaintUtilPushTunnelRotated(session, direction, height - 8, kWoodenTunnelGroup, TunnelSubType::SlopeStart);
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -13326,7 +13329,7 @@ static void WoodenRCTrackRightLargeHalfLoopUp(
             }
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+                PaintUtilPushTunnelRotated(session, direction, height, kWoodenTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -13398,9 +13401,9 @@ TrackPaintFunction GetTrackPaintFunctionWoodenAndClassicWoodenRC(TrackElemType t
         case TrackElemType::rightQuarterTurn5Tiles:
             return WoodenRCTrackRightQuarterTurn5<isClassic>;
         case TrackElemType::flatToLeftBank:
-            return TrackFlatToBank<isClassic, kFlatToLeftBankImages>;
+            return TrackFlatToBank<isClassic, kWoodenFlatToLeftBankImages>;
         case TrackElemType::flatToRightBank:
-            return TrackFlatToBank<isClassic, kFlatToRightBankImages>;
+            return TrackFlatToBank<isClassic, kWoodenFlatToRightBankImages>;
         case TrackElemType::leftBankToFlat:
             return WoodenRCTrackLeftBankToFlat<isClassic>;
         case TrackElemType::rightBankToFlat:
@@ -13408,15 +13411,15 @@ TrackPaintFunction GetTrackPaintFunctionWoodenAndClassicWoodenRC(TrackElemType t
         case TrackElemType::bankedLeftQuarterTurn5Tiles:
             return WoodenRCTrackBankedLeftQuarterTurn5<isClassic>;
         case TrackElemType::bankedRightQuarterTurn5Tiles:
-            return TrackBankedRightQuarterTurn5<isClassic, kBankedQuarterTurn5Images>;
+            return TrackBankedRightQuarterTurn5<isClassic, kWoodenBankedQuarterTurn5Images>;
         case TrackElemType::leftBankToUp25:
-            return TrackBankTo25DegUp<isClassic, kLeftBankToUp25Images>;
+            return TrackBankTo25DegUp<isClassic, kWoodenLeftBankToUp25Images>;
         case TrackElemType::rightBankToUp25:
-            return TrackBankTo25DegUp<isClassic, kRightBankToUp25Images>;
+            return TrackBankTo25DegUp<isClassic, kWoodenRightBankToUp25Images>;
         case TrackElemType::up25ToLeftBank:
-            return Track25DegUpToBank<isClassic, kUp25ToLeftBankImages>;
+            return Track25DegUpToBank<isClassic, kWoodenUp25ToLeftBankImages>;
         case TrackElemType::up25ToRightBank:
-            return Track25DegUpToBank<isClassic, kUp25ToRightBankImages>;
+            return Track25DegUpToBank<isClassic, kWoodenUp25ToRightBankImages>;
         case TrackElemType::leftBankToDown25:
             return WoodenRCTrackLeftBankTo25DegDown<isClassic>;
         case TrackElemType::rightBankToDown25:
@@ -13426,7 +13429,7 @@ TrackPaintFunction GetTrackPaintFunctionWoodenAndClassicWoodenRC(TrackElemType t
         case TrackElemType::down25ToRightBank:
             return WoodenRCTrack25DegDownToRightBank<isClassic>;
         case TrackElemType::leftBank:
-            return TrackFlatToBank<isClassic, kLeftBankImages>;
+            return TrackFlatToBank<isClassic, kWoodenLeftBankImages>;
         case TrackElemType::rightBank:
             return WoodenRCTrackRightBank<isClassic>;
         case TrackElemType::leftQuarterTurn5TilesUp25:
@@ -13450,7 +13453,7 @@ TrackPaintFunction GetTrackPaintFunctionWoodenAndClassicWoodenRC(TrackElemType t
         case TrackElemType::rightQuarterTurn3Tiles:
             return WoodenRCTrackRightQuarterTurn3<isClassic>;
         case TrackElemType::leftBankedQuarterTurn3Tiles:
-            return TrackLeftQuarterTurn3Bank<isClassic, kBankedQuarterTurn3Images>;
+            return TrackLeftQuarterTurn3Bank<isClassic, kWoodenBankedQuarterTurn3Images>;
         case TrackElemType::rightBankedQuarterTurn3Tiles:
             return WoodenRCTrackRightQuarterTurn3Bank<isClassic>;
         case TrackElemType::leftQuarterTurn3TilesUp25:
@@ -13462,17 +13465,17 @@ TrackPaintFunction GetTrackPaintFunctionWoodenAndClassicWoodenRC(TrackElemType t
         case TrackElemType::rightQuarterTurn3TilesDown25:
             return WoodenRCTrackRightQuarterTurn325DegDown<isClassic>;
         case TrackElemType::leftHalfBankedHelixUpSmall:
-            return TrackLeftHalfBankedHelixUpSmall<isClassic, kLeftHalfBankedHelixUpSmallImages>;
+            return TrackLeftHalfBankedHelixUpSmall<isClassic, kWoodenLeftHalfBankedHelixUpSmallImages>;
         case TrackElemType::rightHalfBankedHelixUpSmall:
-            return TrackRightHalfBankedHelixUpSmall<isClassic, kRightHalfBankedHelixUpSmallImages>;
+            return TrackRightHalfBankedHelixUpSmall<isClassic, kWoodenRightHalfBankedHelixUpSmallImages>;
         case TrackElemType::leftHalfBankedHelixDownSmall:
             return WoodenRCTrackLeftHalfBankedHelixDownSmall<isClassic>;
         case TrackElemType::rightHalfBankedHelixDownSmall:
             return WoodenRCTrackRightHalfBankedHelixDownSmall<isClassic>;
         case TrackElemType::leftHalfBankedHelixUpLarge:
-            return TrackLeftHalfBankedHelixUpLarge<isClassic, kLeftHalfBankedHelixUpLargeImages>;
+            return TrackLeftHalfBankedHelixUpLarge<isClassic, kWoodenLeftHalfBankedHelixUpLargeImages>;
         case TrackElemType::rightHalfBankedHelixUpLarge:
-            return TrackRightHalfBankedHelixUpLarge<isClassic, kRightHalfBankedHelixUpLargeImages>;
+            return TrackRightHalfBankedHelixUpLarge<isClassic, kWoodenRightHalfBankedHelixUpLargeImages>;
         case TrackElemType::leftHalfBankedHelixDownLarge:
             return WoodenRCTrackLeftHalfBankedHelixDownLarge<isClassic>;
         case TrackElemType::rightHalfBankedHelixDownLarge:
@@ -13516,9 +13519,9 @@ TrackPaintFunction GetTrackPaintFunctionWoodenAndClassicWoodenRC(TrackElemType t
         case TrackElemType::rightEighthToOrthogonal:
             return WoodenRCTrackRightEighthToOrthogonal<isClassic>;
         case TrackElemType::leftEighthBankToDiag:
-            return TrackLeftEighthBankToDiag<isClassic, kLeftEighthBankToDiagImages>;
+            return TrackLeftEighthBankToDiag<isClassic, kWoodenLeftEighthBankToDiagImages>;
         case TrackElemType::rightEighthBankToDiag:
-            return TrackRightEighthBankToDiag<isClassic, kRightEighthBankToDiagImages>;
+            return TrackRightEighthBankToDiag<isClassic, kWoodenRightEighthBankToDiagImages>;
         case TrackElemType::leftEighthBankToOrthogonal:
             return WoodenRCTrackLeftEighthBankToOrthogonal<isClassic>;
         case TrackElemType::rightEighthBankToOrthogonal:
@@ -13550,21 +13553,21 @@ TrackPaintFunction GetTrackPaintFunctionWoodenAndClassicWoodenRC(TrackElemType t
         case TrackElemType::diagDown25ToFlat:
             return WoodenRCTrackDiag25DegDownToFlat<isClassic>;
         case TrackElemType::diagFlatToLeftBank:
-            return TrackDiagFlatToBank<isClassic, kDiagFlatToLeftBankImages>;
+            return TrackDiagFlatToBank<isClassic, kWoodenDiagFlatToLeftBankImages>;
         case TrackElemType::diagFlatToRightBank:
-            return TrackDiagFlatToBank<isClassic, kDiagFlatToRightBankImages>;
+            return TrackDiagFlatToBank<isClassic, kWoodenDiagFlatToRightBankImages>;
         case TrackElemType::diagLeftBankToFlat:
             return WoodenRCTrackDiagLeftBankToFlat<isClassic>;
         case TrackElemType::diagRightBankToFlat:
             return WoodenRCTrackDiagRightBankToFlat<isClassic>;
         case TrackElemType::diagLeftBankToUp25:
-            return TrackDiagBankTo25DegUp<isClassic, kDiagLeftBankTo25DegUpImages>;
+            return TrackDiagBankTo25DegUp<isClassic, kWoodenDiagLeftBankTo25DegUpImages>;
         case TrackElemType::diagRightBankToUp25:
-            return TrackDiagBankTo25DegUp<isClassic, kDiagRightBankTo25DegUpImages>;
+            return TrackDiagBankTo25DegUp<isClassic, kWoodenDiagRightBankTo25DegUpImages>;
         case TrackElemType::diagUp25ToLeftBank:
-            return TrackDiagUp25ToBank<isClassic, kDiagUp25ToLeftBankImages>;
+            return TrackDiagUp25ToBank<isClassic, kWoodenDiagUp25ToLeftBankImages>;
         case TrackElemType::diagUp25ToRightBank:
-            return TrackDiagUp25ToBank<isClassic, kDiagUp25ToRightBankImages>;
+            return TrackDiagUp25ToBank<isClassic, kWoodenDiagUp25ToRightBankImages>;
         case TrackElemType::diagLeftBankToDown25:
             return WoodenRCTrackDiagLeftBankToDown25;
         case TrackElemType::diagRightBankToDown25:
@@ -13578,9 +13581,9 @@ TrackPaintFunction GetTrackPaintFunctionWoodenAndClassicWoodenRC(TrackElemType t
         case TrackElemType::diagRightBank:
             return WoodenRCTrackDiagRightBank<isClassic>;
         case TrackElemType::leftBankToLeftQuarterTurn3TilesUp25:
-            return TrackLeftBankToLeftQuarterTurn325DegUp<isClassic, kLeftBankToLeftQuarterTurn325DegUpImages>;
+            return TrackLeftBankToLeftQuarterTurn325DegUp<isClassic, kWoodenLeftBankToLeftQuarterTurn325DegUpImages>;
         case TrackElemType::rightBankToRightQuarterTurn3TilesUp25:
-            return TrackRightBankToRightQuarterTurn325DegUp<isClassic, kRightBankToRightQuarterTurn325DegUpImages>;
+            return TrackRightBankToRightQuarterTurn325DegUp<isClassic, kWoodenRightBankToRightQuarterTurn325DegUpImages>;
         case TrackElemType::leftQuarterTurn3TilesDown25ToLeftBank:
             return WoodenRCTrackLeftQuarterTurn325DegDownToLeftBank<isClassic>;
         case TrackElemType::rightQuarterTurn3TilesDown25ToRightBank:

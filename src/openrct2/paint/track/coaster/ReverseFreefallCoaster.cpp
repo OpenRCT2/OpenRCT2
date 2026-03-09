@@ -22,14 +22,12 @@
 
 using namespace OpenRCT2;
 
-static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Square;
+static constexpr TunnelGroup kReverseFreefallTunnelGroup = TunnelGroup::Square;
 
 enum
 {
     SPR_REVERSE_FREEFALL_RC_STATION_SW_NE = 22162,
     SPR_REVERSE_FREEFALL_RC_STATION_NW_SE = 22163,
-    SPR_REVERSE_FREEFALL_RC_FLAT_SW_NE = 22164,
-    SPR_REVERSE_FREEFALL_RC_FLAT_NW_SE = 22165,
     SPR_REVERSE_FREEFALL_RC_VERTICAL_SW_NE = 22166,
     SPR_REVERSE_FREEFALL_RC_VERTICAL_NW_SE = 22167,
     SPR_REVERSE_FREEFALL_RC_VERTICAL_NE_SW = 22168,
@@ -90,9 +88,6 @@ enum
     SPR_REVERSE_FREEFALL_RC_SLOPE_SUPPORTS_SE_NW_4 = 22223,
     SPR_REVERSE_FREEFALL_RC_SLOPE_SUPPORTS_SE_NW_6 = 22224,
     SPR_REVERSE_FREEFALL_RC_SLOPE_SUPPORTS_SE_NW_5 = 22225,
-
-    SPR_AIR_POWERED_VERTICAL_RC_FLAT_SW_NE = 22226,
-    SPR_AIR_POWERED_VERTICAL_RC_FLAT_NW_SE = 22227,
 };
 
 static constexpr uint32_t kPiecesStation[4] = {
@@ -209,13 +204,13 @@ static void PaintReverseFreefallRCFlat(
     {
         auto imageId = session.TrackColours.WithIndex(SPR_REVERSE_FREEFALL_RC_FLAT_NW_SE);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 6, 0, height }, { 20, 32, 1 } });
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRight(session, height, kReverseFreefallTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
         auto imageId = session.TrackColours.WithIndex(SPR_REVERSE_FREEFALL_RC_FLAT_SW_NE);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelLeft(session, height, kReverseFreefallTunnelGroup, TunnelSubType::Flat);
     }
 
     DrawSupportForSequenceA<TrackElemType::flat>(
@@ -281,11 +276,11 @@ static void PaintReverseFreefallRCSlope(
                 int32_t tunnelOffset = tunnelOffsets03[trackSequence];
                 if (direction & 1)
                 {
-                    PaintUtilPushTunnelRight(session, height + tunnelOffset, kTunnelGroup, TunnelSubType::Flat);
+                    PaintUtilPushTunnelRight(session, height + tunnelOffset, kReverseFreefallTunnelGroup, TunnelSubType::Flat);
                 }
                 else
                 {
-                    PaintUtilPushTunnelLeft(session, height + tunnelOffset, kTunnelGroup, TunnelSubType::Flat);
+                    PaintUtilPushTunnelLeft(session, height + tunnelOffset, kReverseFreefallTunnelGroup, TunnelSubType::Flat);
                 }
             }
             else

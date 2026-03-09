@@ -328,7 +328,7 @@ static void BlockBrakesOpenPreviousSection(const Ride& ride, const CoordsXYZ& ve
  *
  *  rct2: 0x006DB38B
  */
-static PitchAndRoll PitchAndRollStart(bool useInvertedSprites, TileElement* tileElement)
+static PitchAndRoll TrackMotionPitchAndRollStart(bool useInvertedSprites, TileElement* tileElement)
 {
     auto trackType = tileElement->AsTrack()->GetTrackType();
     const auto& ted = GetTrackElementDescriptor(trackType);
@@ -669,7 +669,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(
             }
         }
 
-        if (PitchAndRollStart(flags.has(VehicleFlag::carIsInverted), tileElement) != pitchAndRollEnd)
+        if (TrackMotionPitchAndRollStart(flags.has(VehicleFlag::carIsInverted), tileElement) != pitchAndRollEnd)
         {
             return false;
         }
@@ -1283,7 +1283,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
     }
 }
 
-static constexpr int32_t GetAccelerationDecrease2(const int32_t velocity, const int32_t totalMass)
+static constexpr int32_t TrackMotionGetAccelerationDecrease2(const int32_t velocity, const int32_t totalMass)
 {
     int32_t accelerationDecrease2 = velocity >> 8;
     accelerationDecrease2 *= accelerationDecrease2;
@@ -1585,7 +1585,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
 
     int32_t curAcceleration = newAcceleration;
     curAcceleration -= vehicle->velocity / 4096;
-    curAcceleration -= GetAccelerationDecrease2(vehicle->velocity, totalMass);
+    curAcceleration -= TrackMotionGetAccelerationDecrease2(vehicle->velocity, totalMass);
 
     if (carEntry->flags.has(CarEntryFlag::isPowered))
     {

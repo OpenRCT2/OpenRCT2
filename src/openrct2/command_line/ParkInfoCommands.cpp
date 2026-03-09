@@ -19,7 +19,7 @@
 namespace OpenRCT2
 {
     // clang-format off
-    static constexpr CommandLineOptionDefinition kNoOptions[]
+    static constexpr CommandLineOptionDefinition kParkInfoNoOptions[]
     {
         kOptionTableEnd
     };
@@ -28,7 +28,7 @@ namespace OpenRCT2
 
     const CommandLineCommand CommandLine::kParkInfoCommands[]{
         // Main commands
-        DefineCommand("objects", "<savefile>", kNoOptions, HandleObjectsInfo),
+        DefineCommand("objects", "<savefile>", kParkInfoNoOptions, HandleObjectsInfo),
 
         kCommandTableEnd
     };
