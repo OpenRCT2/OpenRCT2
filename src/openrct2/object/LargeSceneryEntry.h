@@ -43,7 +43,14 @@ namespace OpenRCT2
         uint8_t Pad3;
     };
 
-    // // TODO: Remove not required
+    enum class LargeSceneryTextFlag : uint8_t
+    {
+        isVertical,
+        isTwoLine,
+    };
+    using LargeSceneryTextFlags = FlagHolder<uint8_t, LargeSceneryTextFlag>;
+
+    // TODO: Remove not required
     struct RCTLargeSceneryText
     {
         struct
@@ -52,7 +59,7 @@ namespace OpenRCT2
         } offset[2];                       // 0x0
         uint16_t maxWidth;                 // 0x8
         uint16_t PadA;                     // 0xA
-        uint8_t flags;                     // 0xC
+        LargeSceneryTextFlags flags;       // 0xC
         uint8_t num_images;                // 0xD
         LargeSceneryTextGlyph glyphs[256]; // 0xE
     };
@@ -70,12 +77,6 @@ namespace OpenRCT2
         hideSecondaryRemapButton,
     };
     using LargeSceneryFlags = FlagHolder<uint16_t, LargeSceneryFlag>;
-
-    enum LARGE_SCENERY_TEXT_FLAGS
-    {
-        LARGE_SCENERY_TEXT_FLAG_VERTICAL = (1 << 0), // 0x1
-        LARGE_SCENERY_TEXT_FLAG_TWO_LINE = (1 << 1), // 0x2
-    };
 
     struct LargeSceneryEntry
     {
@@ -98,7 +99,7 @@ namespace OpenRCT2
     {
         CoordsXY offset[2];
         uint16_t maxWidth;
-        uint8_t flags;
+        LargeSceneryTextFlags flags;
         uint16_t num_images;
         LargeSceneryTextGlyph glyphs[256];
 

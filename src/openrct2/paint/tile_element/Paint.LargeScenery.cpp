@@ -124,9 +124,9 @@ static void PaintLargeScenery3DTextLine(
     auto width = text.MeasureWidth(line);
     auto offsetX = text.offset[(direction & 1)].x;
     auto acc = offsetY * ((direction & 1) ? -1 : 1);
-    if (!(text.flags & LARGE_SCENERY_TEXT_FLAG_VERTICAL))
+    if (!text.flags.has(LargeSceneryTextFlag::isVertical))
     {
-        // sign is horizontal, centre text:
+        // Centre text:
         offsetX -= (width / 2);
         acc -= (width / 2);
     }
@@ -137,7 +137,7 @@ static void PaintLargeScenery3DTextLine(
         // Upcasting from uint8_t to uint32_t to avoid an overflow.
         uint32_t glyphOffset = glyph.image_offset;
         auto glyphType = direction & 1;
-        if (text.flags & LARGE_SCENERY_TEXT_FLAG_VERTICAL)
+        if (text.flags.has(LargeSceneryTextFlag::isVertical))
         {
             glyphOffset *= 2;
         }
@@ -167,7 +167,7 @@ static void PaintLargeScenery3DTextLine(
         {
             PaintAttachToPreviousPS(session, imageId, offsetX, -DivToMinusInfinity(acc, 2));
         }
-        else if (text.flags & LARGE_SCENERY_TEXT_FLAG_VERTICAL)
+        else if (text.flags.has(LargeSceneryTextFlag::isVertical))
         {
             PaintAttachToPreviousPS(session, imageId, offsetX, DivToMinusInfinity(acc, 2));
         }
@@ -182,7 +182,7 @@ static void PaintLargeScenery3DTextLine(
 
 static bool Is3DTextSingleLine(const LargeSceneryText& text, std::string_view s)
 {
-    if (text.flags & LARGE_SCENERY_TEXT_FLAG_TWO_LINE)
+    if (text.flags.has(LargeSceneryTextFlag::isTwoLine))
     {
         auto width = text.MeasureWidth(s);
         return width <= text.maxWidth;
@@ -226,9 +226,8 @@ static void PaintLargeScenery3DText(
     FormatStringLegacy(signString, sizeof(signString), STR_STRINGID, ft.Data());
 
     auto offsetY = text->offset[(direction & 1)].y * 2;
-    if (text->flags & LARGE_SCENERY_TEXT_FLAG_VERTICAL)
+    if (text->flags.has(LargeSceneryTextFlag::isVertical))
     {
-        // Vertical sign
         offsetY++;
         auto displayText = LargeSceneryCalculateDisplayText(*text, signString, true);
         auto displayTextHeight = text->MeasureHeight(displayText);

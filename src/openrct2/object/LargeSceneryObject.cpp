@@ -33,7 +33,7 @@ namespace OpenRCT2
         _3dFontLegacy.offset[1].y = stream.ReadValue<int16_t>();
         _3dFontLegacy.maxWidth = stream.ReadValue<uint16_t>();
         stream.ReadValue<uint16_t>();
-        _3dFontLegacy.flags = stream.ReadValue<uint8_t>();
+        _3dFontLegacy.flags = stream.ReadValue<LargeSceneryTextFlags>();
         _3dFontLegacy.num_images = stream.ReadValue<uint8_t>();
 
         auto ReadLegacyTextGlyph = [&stream]() {
@@ -122,7 +122,7 @@ namespace OpenRCT2
         if (_legacyType.flags.has(LargeSceneryFlag::is3DText))
         {
             _legacyType.text_image = _legacyType.image;
-            if (_3dFont->flags & LARGE_SCENERY_TEXT_FLAG_VERTICAL)
+            if (_3dFont->flags.has(LargeSceneryTextFlag::isVertical))
             {
                 _legacyType.image += _3dFont->num_images * 2;
             }
@@ -289,11 +289,11 @@ namespace OpenRCT2
         font->maxWidth = Json::GetNumber<uint16_t>(j3dFont["maxWidth"]);
         font->num_images = Json::GetNumber<uint16_t>(j3dFont["numImages"]);
 
-        font->flags = Json::GetFlags<uint8_t>(
+        font->flags = Json::GetFlagHolder<LargeSceneryTextFlags, LargeSceneryTextFlag>(
             j3dFont,
             {
-                { "isVertical", LARGE_SCENERY_TEXT_FLAG_VERTICAL },
-                { "isTwoLine", LARGE_SCENERY_TEXT_FLAG_TWO_LINE },
+                { "isVertical", LargeSceneryTextFlag::isVertical },
+                { "isTwoLine", LargeSceneryTextFlag::isTwoLine },
             });
 
         auto jGlyphs = j3dFont["glyphs"];
