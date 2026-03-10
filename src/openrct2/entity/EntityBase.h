@@ -101,3 +101,51 @@ struct EntityBase
 
     void Paint() const;
 };
+
+// Forward declarations of template specializations
+// These are redundant here for regular builds, but are required for unity builds.
+struct Guest;
+struct Staff;
+struct Peep;
+struct Litter;
+struct JumpingFountain;
+struct SteamParticle;
+struct MoneyEffect;
+struct VehicleCrashParticle;
+struct ExplosionCloud;
+struct ExplosionFlare;
+struct CrashSplashParticle;
+struct Balloon;
+struct Duck;
+struct Vehicle;
+
+template<>
+bool EntityBase::Is<EntityBase>() const;
+template<>
+bool EntityBase::Is<Guest>() const;
+template<>
+bool EntityBase::Is<Staff>() const;
+template<>
+bool EntityBase::Is<Peep>() const;
+template<>
+bool EntityBase::Is<Litter>() const;
+template<>
+bool EntityBase::Is<JumpingFountain>() const;
+template<>
+bool EntityBase::Is<SteamParticle>() const;
+template<>
+bool EntityBase::Is<MoneyEffect>() const;
+template<>
+bool EntityBase::Is<VehicleCrashParticle>() const;
+template<>
+bool EntityBase::Is<ExplosionCloud>() const;
+template<>
+bool EntityBase::Is<ExplosionFlare>() const;
+template<>
+bool EntityBase::Is<CrashSplashParticle>() const;
+template<>
+bool EntityBase::Is<Balloon>() const;
+template<>
+bool EntityBase::Is<Duck>() const;
+template<>
+bool EntityBase::Is<Vehicle>() const;
