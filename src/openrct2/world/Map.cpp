@@ -1845,7 +1845,7 @@ namespace OpenRCT2
             {
                 return false;
             }
-            if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE))
+            if (sceneryEntry->flags.has(SmallSceneryFlag::occupiesFullTile))
                 return true;
         }
         return false;

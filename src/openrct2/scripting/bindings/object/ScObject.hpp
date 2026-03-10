@@ -834,7 +834,7 @@ namespace OpenRCT2::Scripting
             auto sceneryEntry = GetLegacyData();
             if (sceneryEntry != nullptr)
             {
-                return sceneryEntry->flags;
+                return sceneryEntry->flags.holder;
             }
             return 0;
         }

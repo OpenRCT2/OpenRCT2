@@ -25,7 +25,7 @@ namespace OpenRCT2
     void SmallSceneryObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     {
         stream->Seek(6, STREAM_SEEK_CURRENT);
-        _legacyType.flags = stream->ReadValue<uint32_t>();
+        _legacyType.flags = stream->ReadValue<SmallSceneryFlags>();
         _legacyType.height = stream->ReadValue<uint8_t>();
         _legacyType.tool_id = static_cast<CursorID>(stream->ReadValue<uint8_t>());
         _legacyType.price = stream->ReadValue<int16_t>() * 10;
@@ -43,14 +43,14 @@ namespace OpenRCT2
         RCTObjectEntry sgEntry = stream->ReadValue<RCTObjectEntry>();
         SetPrimarySceneryGroup(ObjectEntryDescriptor(sgEntry));
 
-        if (_legacyType.HasFlag(SMALL_SCENERY_FLAG_HAS_FRAME_OFFSETS))
+        if (_legacyType.flags.has(SmallSceneryFlag::hasFrameOffsets))
         {
             _frameOffsets = ReadFrameOffsets(stream);
         }
         // This crude method was used by RCT2. JSON objects have a flag for this property.
         if (_legacyType.height > 64)
         {
-            _legacyType.flags |= SMALL_SCENERY_FLAG_IS_TREE;
+            _legacyType.flags.set(SmallSceneryFlag::isTree);
         }
 
         GetImageTable().Read(context, stream);
@@ -80,7 +80,7 @@ namespace OpenRCT2
         _legacyType.scenery_tab_id = kObjectEntryIndexNull;
         _legacyType.FrameOffsetCount = 0;
 
-        if (_legacyType.HasFlag(SMALL_SCENERY_FLAG_HAS_FRAME_OFFSETS))
+        if (_legacyType.flags.has(SmallSceneryFlag::hasFrameOffsets))
         {
             _legacyType.frame_offsets = _frameOffsets.data();
             _legacyType.FrameOffsetCount = static_cast<uint16_t>(_frameOffsets.size());
@@ -101,15 +101,15 @@ namespace OpenRCT2
     void SmallSceneryObject::DrawPreview(Drawing::RenderTarget& rt, int32_t width, int32_t height) const
     {
         auto imageId = ImageId(_legacyType.image);
-        if (_legacyType.HasFlag(SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR))
+        if (_legacyType.flags.has(SmallSceneryFlag::hasPrimaryColour))
         {
             imageId = imageId.WithPrimary(Drawing::Colour::bordeauxRed);
-            if (_legacyType.HasFlag(SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR))
+            if (_legacyType.flags.has(SmallSceneryFlag::hasSecondaryColour))
             {
                 imageId = imageId.WithSecondary(Drawing::Colour::yellow);
             }
         }
-        if (_legacyType.HasFlag(SMALL_SCENERY_FLAG_HAS_TERTIARY_COLOUR))
+        if (_legacyType.flags.has(SmallSceneryFlag::hasTertiaryColour))
         {
             imageId = imageId.WithSecondary(Drawing::Colour::darkBrown);
         }
@@ -117,23 +117,23 @@ namespace OpenRCT2
         auto screenCoords = ScreenCoordsXY{ width / 2, (height / 2) + (_legacyType.height / 2) };
         screenCoords.y = std::min(screenCoords.y, height - 16);
 
-        if ((_legacyType.HasFlag(SMALL_SCENERY_FLAG_FULL_TILE)) && (_legacyType.HasFlag(SMALL_SCENERY_FLAG_VOFFSET_CENTRE)))
+        if (_legacyType.flags.hasAll(SmallSceneryFlag::occupiesFullTile, SmallSceneryFlag::vOffsetCentre))
         {
             screenCoords.y -= 12;
         }
 
         GfxDrawSprite(rt, imageId, screenCoords);
 
-        if (_legacyType.HasFlag(SMALL_SCENERY_FLAG_HAS_GLASS))
+        if (_legacyType.flags.has(SmallSceneryFlag::hasGlass))
         {
             imageId = ImageId(_legacyType.image + 4).WithTransparency(Drawing::Colour::bordeauxRed);
             GfxDrawSprite(rt, imageId, screenCoords);
         }
 
-        if (_legacyType.HasFlag(SMALL_SCENERY_FLAG_ANIMATED_FG))
+        if (_legacyType.flags.has(SmallSceneryFlag::hasOverlayImage))
         {
             imageId = ImageId(_legacyType.image + 4);
-            if (_legacyType.HasFlag(SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR))
+            if (_legacyType.flags.has(SmallSceneryFlag::hasSecondaryColour))
             {
                 imageId = imageId.WithSecondary(Drawing::Colour::yellow);
             }
@@ -193,34 +193,34 @@ void SmallSceneryObject::PerformFixes()
             _legacyType.animation_mask = Json::GetNumber<uint16_t>(properties["animationMask"]);
             _legacyType.num_frames = Json::GetNumber<uint16_t>(properties["numFrames"]);
 
-            _legacyType.flags = Json::GetFlags<uint32_t>(
+            _legacyType.flags = Json::GetFlagHolder<SmallSceneryFlags, SmallSceneryFlag>(
                 properties,
                 {
-                    { "SMALL_SCENERY_FLAG_VOFFSET_CENTRE", SMALL_SCENERY_FLAG_VOFFSET_CENTRE },
-                    { "requiresFlatSurface", SMALL_SCENERY_FLAG_REQUIRE_FLAT_SURFACE },
-                    { "isRotatable", SMALL_SCENERY_FLAG_ROTATABLE },
-                    { "isAnimated", SMALL_SCENERY_FLAG_ANIMATED },
-                    { "canWither", SMALL_SCENERY_FLAG_CAN_WITHER },
-                    { "canBeWatered", SMALL_SCENERY_FLAG_CAN_BE_WATERED },
-                    { "hasOverlayImage", SMALL_SCENERY_FLAG_ANIMATED_FG },
-                    { "hasGlass", SMALL_SCENERY_FLAG_HAS_GLASS },
-                    { "hasPrimaryColour", SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR },
-                    { "SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_1", SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_1 },
-                    { "SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_4", SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_4 },
-                    { "isClock", SMALL_SCENERY_FLAG_IS_CLOCK },
-                    { "SMALL_SCENERY_FLAG_SWAMP_GOO", SMALL_SCENERY_FLAG_SWAMP_GOO },
-                    { "SMALL_SCENERY_FLAG17", SMALL_SCENERY_FLAG17 },
-                    { "isStackable", SMALL_SCENERY_FLAG_STACKABLE },
-                    { "prohibitWalls", SMALL_SCENERY_FLAG_NO_WALLS },
-                    { "hasSecondaryColour", SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR },
-                    { "hasNoSupports", SMALL_SCENERY_FLAG_NO_SUPPORTS },
-                    { "SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED", SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED },
-                    { "SMALL_SCENERY_FLAG_COG", SMALL_SCENERY_FLAG_COG },
-                    { "allowSupportsAbove", SMALL_SCENERY_FLAG_BUILD_DIRECTLY_ONTOP },
-                    { "supportsHavePrimaryColour", SMALL_SCENERY_FLAG_PAINT_SUPPORTS },
-                    { "SMALL_SCENERY_FLAG27", SMALL_SCENERY_FLAG27 },
-                    { "isTree", SMALL_SCENERY_FLAG_IS_TREE },
-                    { "hasTertiaryColour", SMALL_SCENERY_FLAG_HAS_TERTIARY_COLOUR },
+                    { "SMALL_SCENERY_FLAG_VOFFSET_CENTRE", SmallSceneryFlag::vOffsetCentre },
+                    { "requiresFlatSurface", SmallSceneryFlag::requiresFlatSurface },
+                    { "isRotatable", SmallSceneryFlag::isRotatable },
+                    { "isAnimated", SmallSceneryFlag::isAnimated },
+                    { "canWither", SmallSceneryFlag::canWither },
+                    { "canBeWatered", SmallSceneryFlag::canBeWatered },
+                    { "hasOverlayImage", SmallSceneryFlag::hasOverlayImage },
+                    { "hasGlass", SmallSceneryFlag::hasGlass },
+                    { "hasPrimaryColour", SmallSceneryFlag::hasPrimaryColour },
+                    { "SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_1", SmallSceneryFlag::isFountain },
+                    { "SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_4", SmallSceneryFlag::isCupidFountain },
+                    { "isClock", SmallSceneryFlag::isClock },
+                    { "SMALL_SCENERY_FLAG_SWAMP_GOO", SmallSceneryFlag::isSwampGoo },
+                    { "SMALL_SCENERY_FLAG17", SmallSceneryFlag::flag17 },
+                    { "isStackable", SmallSceneryFlag::isStackable },
+                    { "prohibitWalls", SmallSceneryFlag::prohibitWalls },
+                    { "hasSecondaryColour", SmallSceneryFlag::hasSecondaryColour },
+                    { "hasNoSupports", SmallSceneryFlag::hasNoSupports },
+                    { "SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED", SmallSceneryFlag::isVisibleWhenZoomed },
+                    { "SMALL_SCENERY_FLAG_COG", SmallSceneryFlag::isCogwheel },
+                    { "allowSupportsAbove", SmallSceneryFlag::allowSupportsAbove },
+                    { "supportsHavePrimaryColour", SmallSceneryFlag::supportsHavePrimaryColour },
+                    { "SMALL_SCENERY_FLAG27", SmallSceneryFlag::flag27 },
+                    { "isTree", SmallSceneryFlag::isTree },
+                    { "hasTertiaryColour", SmallSceneryFlag::hasTertiaryColour },
                 });
 
             // Determine shape flags from a shape string
@@ -230,21 +230,21 @@ void SmallSceneryObject::PerformFixes()
                 auto quarters = shape.substr(0, 3);
                 if (quarters == "2/4")
                 {
-                    _legacyType.flags |= SMALL_SCENERY_FLAG_FULL_TILE | SMALL_SCENERY_FLAG_HALF_SPACE;
+                    _legacyType.flags.set(SmallSceneryFlag::occupiesFullTile, SmallSceneryFlag::occupiesHalfTile);
                 }
                 else if (quarters == "3/4")
                 {
-                    _legacyType.flags |= SMALL_SCENERY_FLAG_FULL_TILE | SMALL_SCENERY_FLAG_THREE_QUARTERS;
+                    _legacyType.flags.set(SmallSceneryFlag::occupiesFullTile, SmallSceneryFlag::occupiesThreeQuarters);
                 }
                 else if (quarters == "4/4")
                 {
-                    _legacyType.flags |= SMALL_SCENERY_FLAG_FULL_TILE;
+                    _legacyType.flags.set(SmallSceneryFlag::occupiesFullTile);
                 }
                 if (shape.size() >= 5)
                 {
-                    if ((shape.substr(3) == "+D"))
+                    if (shape.substr(3) == "+D")
                     {
-                        _legacyType.flags |= SMALL_SCENERY_FLAG_DIAGONAL;
+                        _legacyType.flags.set(SmallSceneryFlag::isDiagonal);
                     }
                 }
             }
@@ -253,7 +253,7 @@ void SmallSceneryObject::PerformFixes()
             if (jFrameOffsets.is_array())
             {
                 _frameOffsets = ReadJsonFrameOffsets(jFrameOffsets);
-                _legacyType.flags |= SMALL_SCENERY_FLAG_HAS_FRAME_OFFSETS;
+                _legacyType.flags.set(SmallSceneryFlag::hasFrameOffsets);
             }
 
             SetPrimarySceneryGroup(ObjectEntryDescriptor(Json::GetString(properties["sceneryGroup"])));

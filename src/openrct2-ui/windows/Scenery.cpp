@@ -731,7 +731,7 @@ namespace OpenRCT2::Ui::Windows
                     widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].type = WidgetType::flatBtn;
 
                     auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<SmallSceneryEntry>(tabSelectedScenery.EntryIndex);
-                    if (sceneryEntry != nullptr && sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_ROTATABLE))
+                    if (sceneryEntry != nullptr && sceneryEntry->flags.has(SmallSceneryFlag::isRotatable))
                     {
                         widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type = WidgetType::flatBtn;
                     }
@@ -819,13 +819,13 @@ namespace OpenRCT2::Ui::Windows
                     auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<SmallSceneryEntry>(tabSelectedScenery.EntryIndex);
 
                     if (sceneryEntry != nullptr
-                        && sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR | SMALL_SCENERY_FLAG_HAS_GLASS))
+                        && sceneryEntry->flags.hasAny(SmallSceneryFlag::hasPrimaryColour, SmallSceneryFlag::hasGlass))
                     {
                         widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WidgetType::colourBtn;
 
-                        if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR))
+                        if (sceneryEntry->flags.has(SmallSceneryFlag::hasSecondaryColour))
                             widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].type = WidgetType::colourBtn;
-                        if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_TERTIARY_COLOUR))
+                        if (sceneryEntry->flags.has(SmallSceneryFlag::hasTertiaryColour))
                             widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].type = WidgetType::colourBtn;
                     }
                 }
@@ -1678,35 +1678,34 @@ namespace OpenRCT2::Ui::Windows
                     return;
 
                 auto imageId = ImageId(sceneryEntry->image + gWindowSceneryRotation);
-                if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR))
+                if (sceneryEntry->flags.has(SmallSceneryFlag::hasPrimaryColour))
                 {
                     imageId = imageId.WithPrimary(_sceneryPrimaryColour);
-                    if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR))
+                    if (sceneryEntry->flags.has(SmallSceneryFlag::hasSecondaryColour))
                     {
                         imageId = imageId.WithSecondary(_scenerySecondaryColour);
                     }
                 }
-                if (sceneryEntry->flags & SMALL_SCENERY_FLAG_HAS_TERTIARY_COLOUR)
+                if (sceneryEntry->flags.has(SmallSceneryFlag::hasTertiaryColour))
                 {
                     imageId = imageId.WithTertiary(_sceneryTertiaryColour);
                 }
 
                 auto spriteTop = (sceneryEntry->height / 4) + 43;
-                if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE)
-                    && sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
+                if (sceneryEntry->flags.hasAll(SmallSceneryFlag::occupiesFullTile, SmallSceneryFlag::vOffsetCentre))
                 {
                     spriteTop -= 12;
                 }
 
                 GfxDrawSprite(rt, imageId, { 32, spriteTop });
 
-                if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_GLASS))
+                if (sceneryEntry->flags.has(SmallSceneryFlag::hasGlass))
                 {
                     imageId = ImageId(sceneryEntry->image + 4 + gWindowSceneryRotation).WithTransparency(_sceneryPrimaryColour);
                     GfxDrawSprite(rt, imageId, { 32, spriteTop });
                 }
 
-                if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_ANIMATED_FG))
+                if (sceneryEntry->flags.has(SmallSceneryFlag::hasOverlayImage))
                 {
                     imageId = ImageId(sceneryEntry->image + 4 + gWindowSceneryRotation);
                     GfxDrawSprite(rt, imageId, { 32, spriteTop });
@@ -1812,7 +1811,7 @@ namespace OpenRCT2::Ui::Windows
             auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<SmallSceneryEntry>(selection.EntryIndex);
 
             gMapSelectType = MapSelectType::full;
-            if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE) && !gWindowSceneryScatterEnabled)
+            if (!sceneryEntry->flags.has(SmallSceneryFlag::occupiesFullTile) && !gWindowSceneryScatterEnabled)
             {
                 gMapSelectType = getMapSelectQuarter((quadrant ^ 2));
             }
@@ -2243,7 +2242,7 @@ namespace OpenRCT2::Ui::Windows
                     auto* sceneryEntry = info.Element->AsSmallScenery()->GetEntry();
 
                     // If can't repaint
-                    if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR | SMALL_SCENERY_FLAG_HAS_GLASS))
+                    if (!sceneryEntry->flags.hasAny(SmallSceneryFlag::hasPrimaryColour, SmallSceneryFlag::hasGlass))
                         return;
 
                     uint8_t quadrant = info.Element->AsSmallScenery()->GetSceneryQuadrant();
@@ -2477,7 +2476,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             maxPossibleHeight -= sceneryEntry->height;
-            if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_STACKABLE))
+            if (sceneryEntry->flags.has(SmallSceneryFlag::isStackable))
             {
                 can_raise_item = true;
             }
@@ -2485,7 +2484,7 @@ namespace OpenRCT2::Ui::Windows
             updatePlacementUpdateScreenCoordsAndButtonsPressed(can_raise_item, screenPos);
 
             // Small scenery
-            if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE))
+            if (!sceneryEntry->flags.has(SmallSceneryFlag::occupiesFullTile))
             {
                 uint8_t quadrant = 0;
 
@@ -2549,7 +2548,7 @@ namespace OpenRCT2::Ui::Windows
 
                 uint8_t rotation = gWindowSceneryRotation;
 
-                if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_ROTATABLE))
+                if (!sceneryEntry->flags.has(SmallSceneryFlag::isRotatable))
                 {
                     rotation = UtilRand() & 0xFF;
                 }
@@ -2633,7 +2632,7 @@ namespace OpenRCT2::Ui::Windows
             gridPos = gridPos.ToTileStart();
             uint8_t rotation = gWindowSceneryRotation;
 
-            if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_ROTATABLE))
+            if (!sceneryEntry->flags.has(SmallSceneryFlag::isRotatable))
             {
                 rotation = UtilRand() & 0xFF;
             }
@@ -2936,7 +2935,7 @@ namespace OpenRCT2::Ui::Windows
 
                 if (isCluster)
                 {
-                    if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE))
+                    if (!sceneryEntry->flags.has(SmallSceneryFlag::occupiesFullTile))
                     {
                         quadrant = UtilRand() & 3;
                     }
@@ -2951,7 +2950,7 @@ namespace OpenRCT2::Ui::Windows
                     cur_grid_x += grid_x_offset * kCoordsXYStep;
                     cur_grid_y += grid_y_offset * kCoordsXYStep;
 
-                    if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_ROTATABLE))
+                    if (!sceneryEntry->flags.has(SmallSceneryFlag::isRotatable))
                     {
                         gSceneryPlaceRotation = (gSceneryPlaceRotation + 1) & 3;
                     }

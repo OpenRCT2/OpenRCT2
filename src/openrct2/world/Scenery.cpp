@@ -178,12 +178,12 @@ void SmallSceneryElement::UpdateAge(const CoordsXY& sceneryPos)
     }
 
     auto& gameState = getGameState();
-    if (gameState.cheats.disablePlantAging && sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_CAN_BE_WATERED))
+    if (gameState.cheats.disablePlantAging && sceneryEntry->flags.has(SmallSceneryFlag::canBeWatered))
     {
         return;
     }
 
-    if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_CAN_BE_WATERED) || Weather::isDry() || GetAge() < 5)
+    if (!sceneryEntry->flags.has(SmallSceneryFlag::canBeWatered) || Weather::isDry() || GetAge() < 5)
     {
         IncreaseAge(sceneryPos);
         return;
@@ -211,7 +211,7 @@ void SmallSceneryElement::UpdateAge(const CoordsXY& sceneryPos)
                 return;
             case TileElementType::SmallScenery:
                 sceneryEntry = tileElementAbove->AsSmallScenery()->GetEntry();
-                if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
+                if (sceneryEntry->flags.has(SmallSceneryFlag::vOffsetCentre))
                 {
                     IncreaseAge(sceneryPos);
                     return;

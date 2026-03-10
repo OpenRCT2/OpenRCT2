@@ -223,7 +223,7 @@ namespace OpenRCT2::GameActions
                 continue;
 
             auto* sceneryEntry = sceneryElement->GetEntry();
-            if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_IS_TREE))
+            if (!sceneryEntry->flags.has(SmallSceneryFlag::isTree))
                 continue;
 
             return sceneryElement->as<TileElement>();

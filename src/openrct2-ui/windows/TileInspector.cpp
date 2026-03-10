@@ -1318,7 +1318,7 @@ static uint64_t PageDisabledWidgets[] = {
 
                         // Quadrant value
                         const auto* sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
-                        if (sceneryEntry != nullptr && !(sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE)))
+                        if (sceneryEntry != nullptr && !sceneryEntry->flags.has(SmallSceneryFlag::occupiesFullTile))
                         {
                             int16_t quadrant = tileElement->AsSmallScenery()->GetSceneryQuadrant();
                             static constexpr StringId _quadrantStringIdx[] = {

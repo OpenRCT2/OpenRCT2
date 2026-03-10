@@ -484,7 +484,7 @@ bool TrackGetIsSheltered(const CoordsXYZ& input)
         if (sceneryEntry == nullptr)
             continue;
 
-        if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE))
+        if (sceneryEntry->flags.has(SmallSceneryFlag::occupiesFullTile))
             return true;
 
         // Iterate through each tile_element.

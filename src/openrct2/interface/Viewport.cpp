@@ -1312,7 +1312,7 @@ namespace OpenRCT2
                 auto sceneryItem = tileElement->AsSmallScenery();
                 auto sceneryEntry = sceneryItem->GetEntry();
                 if (sceneryEntry != nullptr
-                    && (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_IS_TREE) || IsCursorIdVegetation(sceneryEntry->tool_id)))
+                    && (sceneryEntry->flags.has(SmallSceneryFlag::isTree) || IsCursorIdVegetation(sceneryEntry->tool_id)))
                 {
                     return true;
                 }

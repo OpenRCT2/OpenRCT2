@@ -816,10 +816,10 @@ static void TrackDesignMirrorScenery(TrackDesign& td)
                 auto* sceneryEntry = reinterpret_cast<const SmallSceneryEntry*>(obj->GetLegacyData());
                 scenery.loc.y = -scenery.loc.y;
 
-                if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_DIAGONAL))
+                if (sceneryEntry->flags.has(SmallSceneryFlag::isDiagonal))
                 {
                     scenery.setRotation(scenery.getRotation() ^ (1 << 0));
-                    if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE))
+                    if (!sceneryEntry->flags.has(SmallSceneryFlag::occupiesFullTile))
                     {
                         scenery.setQuadrant(scenery.getQuadrant() ^ (1 << 0));
                     }
@@ -972,9 +972,10 @@ static GameActions::Result TrackDesignPlaceSceneryElementRemoveGhost(
             quadrant &= 3;
 
             auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<SmallSceneryEntry>(entryInfo->Index);
-            if (!(!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE) && sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_DIAGONAL))
-                && sceneryEntry->HasFlag(
-                    SMALL_SCENERY_FLAG_DIAGONAL | SMALL_SCENERY_FLAG_HALF_SPACE | SMALL_SCENERY_FLAG_THREE_QUARTERS))
+            if (!(!sceneryEntry->flags.has(SmallSceneryFlag::occupiesFullTile)
+                  && sceneryEntry->flags.has(SmallSceneryFlag::isDiagonal))
+                && sceneryEntry->flags.hasAny(
+                    SmallSceneryFlag::isDiagonal, SmallSceneryFlag::occupiesHalfTile, SmallSceneryFlag::occupiesThreeQuarters))
             {
                 quadrant = 0;
             }

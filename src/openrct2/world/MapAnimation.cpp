@@ -159,12 +159,12 @@ static std::optional<UpdateType> UpdateSmallSceneryAnimation(
         return std::nullopt;
     }
 
-    if (entry->HasFlag(
-            SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_1 | SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_4 | SMALL_SCENERY_FLAG_SWAMP_GOO
-            | SMALL_SCENERY_FLAG_HAS_FRAME_OFFSETS | SMALL_SCENERY_FLAG_IS_CLOCK))
+    if (entry->flags.hasAny(
+            SmallSceneryFlag::isFountain, SmallSceneryFlag::isCupidFountain, SmallSceneryFlag::isSwampGoo,
+            SmallSceneryFlag::hasFrameOffsets, SmallSceneryFlag::isClock))
     {
         auto animationType = UpdateType::invalidate;
-        if (entry->HasFlag(SMALL_SCENERY_FLAG_IS_CLOCK))
+        if (entry->flags.has(SmallSceneryFlag::isClock))
         {
             animationType = UpdateType::update;
 
@@ -530,9 +530,9 @@ static std::optional<UpdateType> IsElementAnimated(const TileElementBase& elemen
         {
             const auto* const scenery = element.AsSmallScenery();
             const auto* const entry = scenery->GetEntry();
-            if (entry != nullptr && entry->HasFlag(SMALL_SCENERY_FLAG_ANIMATED))
+            if (entry != nullptr && entry->flags.has(SmallSceneryFlag::isAnimated))
             {
-                if (entry->HasFlag(SMALL_SCENERY_FLAG_IS_CLOCK))
+                if (entry->flags.has(SmallSceneryFlag::isClock))
                 {
                     return std::optional(UpdateType::update);
                 }

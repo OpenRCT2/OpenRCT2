@@ -52,7 +52,7 @@ static bool MapPlaceClearFunc(
     auto& park = getGameState().park;
     if (park.flags & PARK_FLAGS_FORBID_TREE_REMOVAL)
     {
-        if (scenery != nullptr && scenery->HasFlag(SMALL_SCENERY_FLAG_IS_TREE))
+        if (scenery != nullptr && scenery->flags.has(SmallSceneryFlag::isTree))
             return false;
     }
 

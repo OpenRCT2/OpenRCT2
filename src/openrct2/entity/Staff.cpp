@@ -1102,7 +1102,7 @@ namespace OpenRCT2
 
                 const auto* sceneryEntry = tile_element->AsSmallScenery()->GetEntry();
 
-                if (sceneryEntry == nullptr || !sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_CAN_BE_WATERED))
+                if (sceneryEntry == nullptr || !sceneryEntry->flags.has(SmallSceneryFlag::canBeWatered))
                     continue;
 
                 tile_element->AsSmallScenery()->SetAge(0);
@@ -1484,7 +1484,7 @@ namespace OpenRCT2
 
                 auto* sceneryEntry = tile_element->AsSmallScenery()->GetEntry();
 
-                if (sceneryEntry == nullptr || !sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_CAN_BE_WATERED))
+                if (sceneryEntry == nullptr || !sceneryEntry->flags.has(SmallSceneryFlag::canBeWatered))
                 {
                     continue;
                 }
