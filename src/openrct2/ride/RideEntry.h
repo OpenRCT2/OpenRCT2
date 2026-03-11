@@ -51,7 +51,11 @@ enum class RideEntryFlag : uint8_t
     hasEnterpriseRotationType,
     disableWanderingDeprecated,
     playSplashSound,
-    playSplashSoundSlide,
+    /**
+     * Since the Water Coaster water channel pieces share the same TrackElemType as the Dinghy Slide covered track pieces,
+     * this flag was originally named playSplashSoundSlide
+     */
+    coveredTrackIsWaterChannel,
     isACoveredRide,
     limitAirTimeBonus,
     // Both flags below were made redundant by ride groups and deprecated in favour of it

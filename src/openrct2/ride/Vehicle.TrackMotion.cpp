@@ -364,7 +364,7 @@ void Vehicle::UpdateHandleWaterSplash() const
 
     if (!rideEntry->flags.has(RideEntryFlag::playSplashSound))
     {
-        if (rideEntry->flags.has(RideEntryFlag::playSplashSoundSlide))
+        if (rideEntry->flags.has(RideEntryFlag::coveredTrackIsWaterChannel))
         {
             if (IsHead())
             {
@@ -1582,7 +1582,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
         }
     }
 
-    if (rideEntry->flags.has(RideEntryFlag::playSplashSoundSlide))
+    if (rideEntry->flags.has(RideEntryFlag::coveredTrackIsWaterChannel))
     {
         if (vehicle->IsHead())
         {

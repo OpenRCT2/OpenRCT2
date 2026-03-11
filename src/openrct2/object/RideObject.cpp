@@ -663,7 +663,7 @@ namespace OpenRCT2
                     { "playDepartSound", RideEntryFlag::playDepartSound },
                     // Skipping "disallowWandering", no vehicle sets this flag.
                     { "playSplashSound", RideEntryFlag::playSplashSound },
-                    { "playSplashSoundSlide", RideEntryFlag::playSplashSoundSlide },
+                    { "playSplashSoundSlide", RideEntryFlag::coveredTrackIsWaterChannel },
                     { "hasShelter", RideEntryFlag::isACoveredRide },
                     { "limitAirTimeBonus", RideEntryFlag::limitAirTimeBonus },
                     { "disableBreakdown", RideEntryFlag::cannotBreakDown },
