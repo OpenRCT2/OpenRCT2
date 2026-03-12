@@ -5270,19 +5270,7 @@ namespace OpenRCT2::Ui::Windows
         void MusicUpdate()
         {
             currentFrame++;
-            onPrepareDraw();
             invalidateWidget(WIDX_TAB_6);
-
-            if (auto ride = GetRide(rideId); ride != nullptr && ride->windowInvalidateFlags.has(RideInvalidateFlag::music))
-            {
-                ride->windowInvalidateFlags.unset(RideInvalidateFlag::music);
-                invalidate();
-                onResize();
-                onPrepareDraw();
-                invalidate();
-            }
-
-            widgetScrollUpdateThumbs(*this, WIDX_MUSIC_DATA);
         }
 
         ScreenSize MusicScrollGetSize(int32_t scrollIndex)
@@ -5330,6 +5318,14 @@ namespace OpenRCT2::Ui::Windows
             auto ride = GetRide(rideId);
             if (ride == nullptr)
                 return;
+
+            if (ride->windowInvalidateFlags.has(RideInvalidateFlag::music))
+            {
+                ride->windowInvalidateFlags.unset(RideInvalidateFlag::music);
+                invalidate();
+                onResize();
+                invalidate();
+            }
 
             // Align music dropdown
             widgets[WIDX_MUSIC].right = width - 8;
