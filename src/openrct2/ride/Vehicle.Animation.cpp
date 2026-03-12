@@ -58,7 +58,7 @@ void Vehicle::UpdateSwinging()
             swingState += 4;
     }
 
-    const auto spriteMap = kSwingingTimeToSpriteMaps[swingState];
+    const auto spriteMap = kSwingTimeToSpriteMaps[swingState];
     int8_t spriteType = spriteMap[current_time + 1];
 
     // 0x80 indicates that a complete swing has been

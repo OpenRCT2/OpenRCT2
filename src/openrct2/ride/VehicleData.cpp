@@ -929,21 +929,21 @@ const uint8_t kSpaceRingsTimeToSpriteMap[] =
     255,
 };
 
-static constexpr int8_t kSwingingTimeToSpriteMap0[] = {
+static constexpr int8_t kPirateShipAnimationSmall[] = {
     0,  0,  0,  1,  1,  1,  1,  1,  1,  1,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  3,  3,  3,  3,    3,  3,
     3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  2,  2,  2,  2,  2,  2,    2,  2,
     2,  2,  2,  1,  1,  1,  1,  1,  1,  1,  0,  0,  0,  0,  0,  -1, -1, -1, -1, -1, -1, -1, -2, -2, -2,   -2, -2,
     -2, -2, -2, -2, -2, -2, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3,   -3, -3,
     -3, -3, -3, -3, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -1, -1, -1, -1, -1, -1, -1, 0,  0,  -128,
 };
-static constexpr int8_t kSwingingTimeToSpriteMap1[] = {
+static constexpr int8_t kPirateShipAnimationMedium[] = {
     0,  0,  1,  1,  1,  1,  2,  2,  2,  2,  2,  3,  3,  3,  3,  3,  3,  4,  4,  4,  4,  4,  4,  4,  4,  4,  5,    5,  5,
     5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  4,  4,  4,  4,  4,  4,  4,  4,  4,  3,    3,  3,
     3,  3,  3,  2,  2,  2,  2,  2,  1,  1,  1,  1,  0,  0,  0,  -1, -1, -1, -1, -2, -2, -2, -2, -2, -3, -3, -3,   -3, -3,
     -3, -4, -4, -4, -4, -4, -4, -4, -4, -4, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5,   -5, -5,
     -5, -4, -4, -4, -4, -4, -4, -4, -4, -4, -3, -3, -3, -3, -3, -3, -2, -2, -2, -2, -2, -1, -1, -1, -1, 0,  -128,
 };
-static constexpr int8_t kSwingingTimeToSpriteMap2[] = {
+static constexpr int8_t kPirateShipAnimationLarge[] = {
     0,  0,  1,  1,  1,  2,  2,  2,  3,  3,  3,  3,  4,  4,  4,  4,  4,  5,  5,  5,  5,  5,  5,    6,  6,  6,
     6,  6,  6,  6,  6,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  6,  6,  6,    6,  6,  6,
     6,  6,  5,  5,  5,  5,  5,  5,  4,  4,  4,  4,  4,  3,  3,  3,  3,  2,  2,  2,  1,  1,  1,    0,  0,  0,
@@ -951,7 +951,7 @@ static constexpr int8_t kSwingingTimeToSpriteMap2[] = {
     -6, -6, -6, -7, -7, -7, -7, -7, -7, -7, -7, -7, -7, -7, -7, -7, -7, -7, -6, -6, -6, -6, -6,   -6, -6, -6,
     -5, -5, -5, -5, -5, -5, -4, -4, -4, -4, -4, -3, -3, -3, -3, -2, -2, -2, -1, -1, -1, 0,  -128,
 };
-static constexpr int8_t kSwingingTimeToSpriteMap3[] = {
+static constexpr int8_t kPirateShipAnimationLoop[] = {
     0,  1,  1,  2,  2,  3,  3,  4,  4,  4,  5,  5,  5,  5,  6,  6,  6,  6,  6,  7,  7,  7,  7,  7,    7,  8,  8,
     8,  8,  8,  8,  8,  8,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  8,  8,  8,  8,  8,    8,  8,  8,
     7,  7,  7,  7,  7,  7,  6,  6,  6,  6,  6,  5,  5,  5,  5,  4,  4,  4,  3,  3,  2,  2,  1,  1,    0,  0,  -1,
@@ -959,7 +959,7 @@ static constexpr int8_t kSwingingTimeToSpriteMap3[] = {
     -8, -8, -8, -8, -9, -9, -9, -9, -9, -9, -9, -9, -9, -9, -9, -9, -9, -8, -8, -8, -8, -8, -8, -8,   -8, -7, -7,
     -7, -7, -7, -7, -6, -6, -6, -6, -6, -5, -5, -5, -5, -4, -4, -4, -3, -3, -2, -2, -1, -1, 0,  -128,
 };
-static constexpr int8_t kSwingingTimeToSpriteMap4[] = {
+static constexpr int8_t kInverterShipAnimationSmall[] = {
     0,  0,  0,  1,  1,  1,  1,  1,  2,  2,  2,  2,  2,  3,  3,  3,  3,  3,  4,  4,  4,    4,  4,  5,  5,  5,  5,  5,
     5,  5,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  7,  7,  7,  7,  7,  7,  7,    7,  7,  7,  7,  7,  7,  7,
     7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,    6,  6,  5,  5,  5,  5,  5,
@@ -969,7 +969,7 @@ static constexpr int8_t kSwingingTimeToSpriteMap4[] = {
     -7, -7, -7, -7, -7, -7, -7, -6, -6, -6, -6, -6, -6, -6, -6, -6, -6, -6, -6, -5, -5,   -5, -5, -5, -5, -5, -4, -4,
     -4, -4, -4, -3, -3, -3, -3, -3, -2, -2, -2, -2, -2, -1, -1, -1, -1, -1, 0,  0,  -128,
 };
-static constexpr int8_t kSwingingTimeToSpriteMap5[] = {
+static constexpr int8_t kInverterShipAnimationMedium[] = {
     0,   0,   1,   1,   1,   1,   2,   2,   2,   2,   3,   3,   3,   3,   4,   4,   4,   4,   5,   5,   5,    5,   6,   6,
     6,   6,   7,   7,   7,   7,   8,   8,   8,   8,   9,   9,   9,   9,   10,  10,  10,  10,  11,  11,  11,   11,  12,  12,
     12,  12,  13,  13,  13,  13,  13,  13,  14,  14,  14,  14,  14,  14,  14,  14,  14,  14,  15,  15,  15,   15,  15,  15,
@@ -984,7 +984,7 @@ static constexpr int8_t kSwingingTimeToSpriteMap5[] = {
     -11, -11, -10, -10, -10, -10, -9,  -9,  -9,  -9,  -8,  -8,  -8,  -8,  -7,  -7,  -7,  -7,  -6,  -6,  -6,   -6,  -5,  -5,
     -5,  -5,  -4,  -4,  -4,  -4,  -3,  -3,  -3,  -3,  -2,  -2,  -2,  -2,  -1,  -1,  -1,  -1,  0,   0,   -128,
 };
-static constexpr int8_t kSwingingTimeToSpriteMap6[] = {
+static constexpr int8_t kInverterShipAnimationLarge[] = {
     0,   1,   1,   1,   2,   2,   2,   3,   3,   3,   4,   4,   4,   5,   5,   5,   6,   6,   6,   7,    7,   7,   8,
     8,   8,   9,   9,   9,   10,  10,  10,  11,  11,  11,  12,  12,  12,  13,  13,  13,  14,  14,  14,   15,  15,  15,
     16,  16,  16,  17,  17,  17,  18,  18,  18,  19,  19,  19,  20,  20,  20,  21,  21,  21,  22,  22,   22,  23,  23,
@@ -1002,7 +1002,7 @@ static constexpr int8_t kSwingingTimeToSpriteMap6[] = {
     -14, -13, -13, -13, -12, -12, -12, -11, -11, -11, -10, -10, -10, -9,  -9,  -9,  -8,  -8,  -8,  -7,   -7,  -7,  -6,
     -6,  -6,  -5,  -5,  -5,  -4,  -4,  -4,  -3,  -3,  -3,  -2,  -2,  -2,  -1,  -1,  -1,  0,   0,   -128,
 };
-static constexpr int8_t kSwingingTimeToSpriteMap7[] = {
+static constexpr int8_t kInverterShipAnimationLoop[] = {
     0,   1,   1,   1,   2,   2,   2,   3,   3,   3,   4,   4,   4,   5,   5,   5,   6,   6,   6,    7,   7,   7,
     8,   8,   8,   9,   9,   9,   10,  10,  10,  11,  11,  11,  12,  12,  12,  13,  13,  13,  14,   14,  14,  15,
     15,  15,  16,  16,  16,  17,  17,  17,  18,  18,  18,  19,  19,  19,  20,  20,  20,  21,  21,   21,  22,  22,
@@ -1014,7 +1014,7 @@ static constexpr int8_t kSwingingTimeToSpriteMap7[] = {
     -13, -13, -12, -12, -12, -11, -11, -11, -10, -10, -10, -9,  -9,  -9,  -8,  -8,  -8,  -7,  -7,   -7,  -6,  -6,
     -6,  -5,  -5,  -5,  -4,  -4,  -4,  -3,  -3,  -3,  -2,  -2,  -2,  -1,  -1,  -1,  0,   0,   -128,
 };
-static constexpr int8_t kSwingingTimeToSpriteMap8[] = {
+static constexpr int8_t kMagicCarpetAnimationSmall[] = {
     0,  0,  0,  1,  1,  1,  1,  1,  2,  2,  2,  2,  2,  3,  3,  3,  3,  3,  4,  4,  4,    4,  4,  5,  5,  5,  5,  5,
     5,  5,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  7,  7,  7,  7,  7,  7,  7,    7,  7,  7,  7,  7,  7,  7,
     7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,    6,  6,  5,  5,  5,  5,  5,
@@ -1024,7 +1024,7 @@ static constexpr int8_t kSwingingTimeToSpriteMap8[] = {
     25, 25, 25, 25, 25, 25, 25, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 27, 27,   27, 27, 27, 27, 27, 28, 28,
     28, 28, 28, 29, 29, 29, 29, 29, 30, 30, 30, 30, 30, 31, 31, 31, 31, 31, 0,  0,  -128,
 };
-static constexpr int8_t kSwingingTimeToSpriteMap9[] = {
+static constexpr int8_t kMagicCarpetAnimationMedium[] = {
     0,  0,  0,  1,  1,  1,  1,  1,  2,  2,  2,  2,  2,  3,  3,  3,  3,  3,  4,  4,  4,    4,  4,  5,  5,  5,  5,  5,
     5,  5,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  7,  7,  7,  7,  7,  7,  7,    7,  7,  7,  7,  7,  7,  7,
     7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,    6,  6,  5,  5,  5,  5,  5,
@@ -1034,7 +1034,7 @@ static constexpr int8_t kSwingingTimeToSpriteMap9[] = {
     25, 25, 25, 25, 25, 25, 25, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 27, 27,   27, 27, 27, 27, 27, 28, 28,
     28, 28, 28, 29, 29, 29, 29, 29, 30, 30, 30, 30, 30, 31, 31, 31, 31, 31, 0,  0,  -128,
 };
-static constexpr int8_t kSwingingTimeToSpriteMap10[] = {
+static constexpr int8_t kMagicCarpetAnimationLarge[] = {
     0,  0,  1,  1,  1,  1,  2,  2,  2,  2,  3,  3,  3,  3,  4,  4,  4,  4,  5,  5,  5,  5,  6,  6,  6,  6,  7,  7,    7,  7,
     8,  8,  8,  8,  9,  9,  9,  9,  10, 10, 10, 10, 11, 11, 11, 11, 12, 12, 12, 12, 13, 13, 13, 13, 14, 14, 14, 14,   14, 14,
     15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16,   16, 16,
@@ -1048,16 +1048,16 @@ static constexpr int8_t kSwingingTimeToSpriteMap10[] = {
     18, 18, 18, 19, 19, 19, 19, 20, 20, 20, 20, 21, 21, 21, 21, 22, 22, 22, 22, 23, 23, 23, 23, 24, 24, 24, 24, 25,   25, 25,
     25, 26, 26, 26, 26, 27, 27, 27, 27, 28, 28, 28, 28, 29, 29, 29, 29, 30, 30, 30, 30, 31, 31, 31, 31, 0,  0,  -128,
 };
-static constexpr int8_t kSwingingTimeToSpriteMap11[] = {
+static constexpr int8_t kMagicCarpetAnimationLoop[] = {
     0,  0,  1,  1,  1,  2,  2,  2,  3,  3,  3,  4,  4,  4,  5,  5,  5,  5,  6,  6,  6,  6,  7,  7,  7,  7,  8,  8,    8,
     8,  9,  9,  9,  9,  10, 10, 10, 10, 11, 11, 11, 11, 12, 12, 12, 12, 13, 13, 13, 13, 14, 14, 14, 14, 15, 15, 15,   15,
     16, 16, 16, 16, 17, 17, 17, 17, 18, 18, 18, 18, 19, 19, 19, 19, 20, 20, 20, 20, 21, 21, 21, 21, 22, 22, 22, 22,   23,
     23, 23, 24, 24, 24, 25, 25, 25, 26, 26, 26, 27, 27, 27, 28, 28, 28, 29, 29, 29, 30, 30, 30, 31, 31, 31, 0,  -128,
 };
 
-const int8_t* kSwingingTimeToSpriteMaps[] = {
-    kSwingingTimeToSpriteMap0, kSwingingTimeToSpriteMap1, kSwingingTimeToSpriteMap2,  kSwingingTimeToSpriteMap3,
-    kSwingingTimeToSpriteMap4, kSwingingTimeToSpriteMap5, kSwingingTimeToSpriteMap6,  kSwingingTimeToSpriteMap7,
-    kSwingingTimeToSpriteMap8, kSwingingTimeToSpriteMap9, kSwingingTimeToSpriteMap10, kSwingingTimeToSpriteMap11,
+const int8_t* kSwingTimeToSpriteMaps[] = {
+    kPirateShipAnimationSmall,   kPirateShipAnimationMedium,   kPirateShipAnimationLarge,   kPirateShipAnimationLoop,
+    kInverterShipAnimationSmall, kInverterShipAnimationMedium, kInverterShipAnimationLarge, kInverterShipAnimationLoop,
+    kMagicCarpetAnimationSmall,  kMagicCarpetAnimationMedium,  kMagicCarpetAnimationLarge,  kMagicCarpetAnimationLoop,
 };
 // clang-format on
