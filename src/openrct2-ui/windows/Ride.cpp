@@ -5020,14 +5020,12 @@ namespace OpenRCT2::Ui::Windows
 
             const auto clipScreenPos = windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 };
             RenderTarget clippedRT;
-            if (!ClipRenderTarget(clippedRT, rt, clipScreenPos, widget.width() - 1, widget.height() - 1))
+            if (ClipRenderTarget(clippedRT, rt, clipScreenPos, widget.width() - 1, widget.height() - 1))
             {
-                return;
+                GfxClear(clippedRT, PaletteIndex::pi12);
+                ColourOnDrawEntrancePreview(clippedRT, ride, widget);
             }
 
-            GfxClear(clippedRT, PaletteIndex::pi12);
-
-            ColourOnDrawEntrancePreview(clippedRT, ride, widget);
             colourOnDrawEntranceDropdownCaption(rt, ride);
         }
 
