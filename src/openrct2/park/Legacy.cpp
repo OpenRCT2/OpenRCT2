@@ -2992,7 +2992,8 @@ bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, TrackElemType trackType,
          || rideType == RIDE_TYPE_LOOPING_ROLLER_COASTER || rideType == RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER
          || rideType == RIDE_TYPE_ALPINE_COASTER || rideType == RIDE_TYPE_MINI_ROLLER_COASTER
          || rideType == RIDE_TYPE_SPIRAL_ROLLER_COASTER || rideType == RIDE_TYPE_MINE_RIDE
-         || rideType == RIDE_TYPE_HYBRID_COASTER || rideType == RIDE_TYPE_STEEPLECHASE)
+         || rideType == RIDE_TYPE_HYBRID_COASTER || rideType == RIDE_TYPE_STEEPLECHASE
+         || rideType == RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER)
         && parkFileVersion < kParkFileVersionUprightQuarterHelices)
     {
         switch (trackType)
