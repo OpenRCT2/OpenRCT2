@@ -4640,7 +4640,6 @@ namespace OpenRCT2::Ui::Windows
         void ColourUpdate()
         {
             currentFrame++;
-            onPrepareDraw();
             invalidateWidget(WIDX_TAB_5);
             invalidateWidget(WIDX_VEHICLE_PREVIEW);
         }
