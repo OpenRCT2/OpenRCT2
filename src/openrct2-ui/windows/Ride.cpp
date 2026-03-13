@@ -209,10 +209,10 @@ namespace OpenRCT2::Ui::Windows
         WIDX_VEHICLE_TRIM_COLOUR,
         WIDX_VEHICLE_TERTIARY_COLOUR,
         WIDX_RANDOMISE_VEHICLE_COLOURS,
+        WIDX_RIDE_TYPE_LABEL,
         WIDX_RIDE_TYPE,
         WIDX_RIDE_TYPE_DROPDOWN,
-        WIDX_MAKE_INVISIBLE,
-        WIDX_MAKE_VISIBLE,
+        WIDX_VISIBILITY_DROPDOWN,
 
         WIDX_PLAY_MUSIC = 14,
         WIDX_MUSIC,
@@ -330,6 +330,7 @@ namespace OpenRCT2::Ui::Windows
     );
 
     // 0x009AE2A4
+    static constexpr auto kVisibilityIcon = ImageId(SPR_G2_ICON_VISIBILITY_TOGGLE);
     static constexpr auto _colourWidgets = makeWidgets(
         kMainRideWidgets,
         makeWidget({  3,  49}, { 68, 47}, WidgetType::spinner,      WindowColour::secondary                                                                              ),
@@ -360,10 +361,10 @@ namespace OpenRCT2::Ui::Windows
         makeWidget({119, 190}, { 12, 12}, WidgetType::colourBtn,    WindowColour::secondary, 0xFFFFFFFF,                    STR_SELECT_ADDITIONAL_COLOUR_2_TIP           ),
         makeWidget({139, 190}, {110, 14}, WidgetType::button,       WindowColour::secondary, STR_RANDOMISE_VEHICLE_COLOURS, STR_RANDOMISE_VEHICLE_COLOURS_TIP            ),
 
-        makeWidget({  3, 180+30}, {309,  14}, WidgetType::dropdownMenu,  WindowColour::secondary, kStringIdEmpty                                                  ),
-        makeWidget({300, 181+30}, { 11,  12}, WidgetType::button,        WindowColour::secondary, STR_DROPDOWN_GLYPH                                              ),
-        makeWidget({  3, 197+30}, {152,  14}, WidgetType::button,        WindowColour::secondary, STR_MAKE_INVISIBLE,                  STR_MAKE_INVISIBLE_TIP     ),
-        makeWidget({160, 197+30}, {152,  14}, WidgetType::button,        WindowColour::secondary, STR_MAKE_VISIBLE,                    STR_MAKE_VISIBLE_TIP       )
+        makeWidget({  3, 210}, {300, 12}, WidgetType::label,        WindowColour::secondary, STR_RIDE_TYPE_TRACK_STYLE                                                   ),
+        makeWidget({  3, 225}, {283, 14}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdEmpty                                                              ),
+        makeWidget({274, 226}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH                                                          ),
+        makeWidget({288, 215}, { 24, 24}, WidgetType::flatBtn,      WindowColour::secondary, kVisibilityIcon,               STR_MAKE_INVISIBLE_TIP                       )
     );
 
     // 0x009AE4C8
@@ -4243,19 +4244,6 @@ namespace OpenRCT2::Ui::Windows
                     }
                     break;
                 }
-                case WIDX_MAKE_INVISIBLE:
-                {
-                    auto gameAction = GameActions::RideSetVisibilityAction(
-                        rideId, GameActions::RideSetVisibilityType::invisible);
-                    GameActions::Execute(&gameAction, getGameState());
-                    break;
-                }
-                case WIDX_MAKE_VISIBLE:
-                {
-                    auto gameAction = GameActions::RideSetVisibilityAction(rideId, GameActions::RideSetVisibilityType::visible);
-                    GameActions::Execute(&gameAction, getGameState());
-                    break;
-                }
             }
         }
 
@@ -4263,6 +4251,14 @@ namespace OpenRCT2::Ui::Windows
         {
             auto bottom = _colourPanelHeight - getTitleBarDiffNormal();
             WindowSetResize(*this, { kMinimumWindowWidth, bottom }, { kMinimumWindowWidth, bottom });
+        }
+
+        void ShowVisibilityDropdown(const Widget& widget)
+        {
+            gDropdown.items[0] = Dropdown::PlainMenuLabel(STR_MAKE_INVISIBLE);
+            gDropdown.items[1] = Dropdown::PlainMenuLabel(STR_MAKE_VISIBLE);
+
+            WindowDropdownShowText({ windowPos.x + widget.left, windowPos.y + widget.top }, widget.height(), colours[1], 0, 2);
         }
 
         void ColourOnMouseDown(WidgetIndex widgetIndex)
@@ -4409,6 +4405,9 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_RIDE_TYPE_DROPDOWN:
                     ShowRideTypeDropdown(&widgets[widgetIndex]);
                     break;
+                case WIDX_VISIBILITY_DROPDOWN:
+                    ShowVisibilityDropdown(widgets[widgetIndex]);
+                    break;
             }
         }
 
@@ -4536,6 +4535,18 @@ namespace OpenRCT2::Ui::Windows
                             GameActions::Execute(&rideSetSetting, gameState);
                         }
                     }
+                    break;
+                }
+                case WIDX_VISIBILITY_DROPDOWN:
+                {
+                    if (dropdownIndex == -1)
+                        break;
+
+                    using GameActions::RideSetVisibilityType;
+                    auto visibility = dropdownIndex == 0 ? RideSetVisibilityType::invisible : RideSetVisibilityType::visible;
+
+                    auto gameAction = GameActions::RideSetVisibilityAction(rideId, visibility);
+                    GameActions::Execute(&gameAction, getGameState());
                     break;
                 }
             }
@@ -4871,25 +4882,25 @@ namespace OpenRCT2::Ui::Windows
         {
             if (!getGameState().cheats.allowArbitraryRideTypeChanges)
             {
+                widgets[WIDX_RIDE_TYPE_LABEL].type = WidgetType::empty;
                 widgets[WIDX_RIDE_TYPE].type = WidgetType::empty;
                 widgets[WIDX_RIDE_TYPE_DROPDOWN].type = WidgetType::empty;
-                widgets[WIDX_MAKE_INVISIBLE].type = WidgetType::empty;
-                widgets[WIDX_MAKE_VISIBLE].type = WidgetType::empty;
+                widgets[WIDX_VISIBILITY_DROPDOWN].type = WidgetType::empty;
 
                 return startY;
             }
 
+            widgets[WIDX_RIDE_TYPE_LABEL].type = WidgetType::label;
             widgets[WIDX_RIDE_TYPE].type = WidgetType::dropdownMenu;
             widgets[WIDX_RIDE_TYPE].text = ride->getRideTypeDescriptor().Naming.Name;
             widgets[WIDX_RIDE_TYPE_DROPDOWN].type = WidgetType::button;
-            widgets[WIDX_MAKE_INVISIBLE].type = WidgetType::button;
-            widgets[WIDX_MAKE_VISIBLE].type = WidgetType::button;
+            widgets[WIDX_VISIBILITY_DROPDOWN].type = WidgetType::flatBtn;
 
             // clang-format off
-            widgets[WIDX_RIDE_TYPE].moveTo         ({  3, startY + 0});
-            widgets[WIDX_RIDE_TYPE_DROPDOWN].moveTo({300, startY + 1});
-            widgets[WIDX_MAKE_INVISIBLE].moveTo    ({  3, startY + 17});
-            widgets[WIDX_MAKE_VISIBLE].moveTo      ({160, startY + 17});
+            widgets[WIDX_RIDE_TYPE_LABEL].moveTo    ({  3, startY + 0});
+            widgets[WIDX_RIDE_TYPE].moveTo          ({  3, startY + 15});
+            widgets[WIDX_RIDE_TYPE_DROPDOWN].moveTo ({274, startY + 16});
+            widgets[WIDX_VISIBILITY_DROPDOWN].moveTo({288, startY + 5});
             // clang-format on
 
             return startY + 247 - 210;
