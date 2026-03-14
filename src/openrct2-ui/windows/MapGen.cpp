@@ -130,9 +130,9 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr auto kBaseWidgets = makeWidgets(
         makeMapGenWidgets(STR_MAPGEN_CAPTION_GENERATOR),
-        makeSpinnerWidgets ({165, 52}, { 50, 14}, WidgetType::spinner,      WindowColour::secondary, STR_COMMA16                                                ), // NB: 3 widgets
+        makeSpinnerWidgets ({165, 52}, { 50, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                                ), // NB: 3 widgets
         makeWidget         ({216, 52}, { 21, 12}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_G2_LINK_CHAIN), STR_MAINTAIN_SQUARE_MAP_TOOLTIP),
-        makeSpinnerWidgets ({238, 52}, { 50, 14}, WidgetType::spinner,      WindowColour::secondary, STR_POP16_COMMA16                                          ), // NB: 3 widgets
+        makeSpinnerWidgets ({238, 52}, { 50, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                          ), // NB: 3 widgets
         makeDropdownWidgets({155, 72}, {133, 14}, WidgetType::dropdownMenu, WindowColour::secondary, STR_HEIGHTMAP_FLATLAND                                     ),
 
         makeWidget        ({  5,  94}, {290, 57}, WidgetType::groupbox, WindowColour::secondary, STR_MAPGEN_SIMPLEX_NOISE), // WIDX_SIMPLEX_GROUP
@@ -274,6 +274,9 @@ namespace OpenRCT2::Ui::Windows
         bool _randomTerrain = true;
         bool _heightmapLoaded = false;
         std::string _heightmapFilename{};
+
+        u8string _xSpinnerCaption{};
+        u8string _ySpinnerCaption{};
 
         void setPage(int32_t newPage)
         {
@@ -545,10 +548,10 @@ namespace OpenRCT2::Ui::Windows
 
             SetPressedTab();
 
-            // Push width (Y) and height (X) to the common formatter arguments for the map size spinners to use
-            auto ft = Formatter::Common();
-            ft.Add<uint16_t>(_settings.mapSize.y - 2);
-            ft.Add<uint16_t>(_settings.mapSize.x - 2);
+            _xSpinnerCaption = std::to_string(_settings.mapSize.x - 2);
+            widgets[WIDX_MAP_SIZE_X].setString(_xSpinnerCaption.c_str());
+            _ySpinnerCaption = std::to_string(_settings.mapSize.y - 2);
+            widgets[WIDX_MAP_SIZE_Y].setString(_ySpinnerCaption.c_str());
 
             auto& sourceWidget = widgets[WIDX_HEIGHTMAP_SOURCE];
             switch (_settings.algorithm)

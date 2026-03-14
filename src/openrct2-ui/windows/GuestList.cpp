@@ -62,7 +62,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr auto window_guest_list_widgets = makeWidgets(
         makeWindowShim(kWindowTitle, kWindowSize),
         makeWidget({  0, 43}, {350, 287}, WidgetType::resize,       WindowColour::secondary                                                        ), // tab content panel
-        makeWidget({  5, 59}, { 80,  12}, WidgetType::dropdownMenu, WindowColour::secondary, STR_ARG_4_PAGE_X                                      ), // page dropdown
+        makeWidget({  5, 59}, { 80,  12}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdEmpty                                      ), // page dropdown
         makeWidget({ 73, 60}, { 11,  10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH                                    ), // page dropdown button
         makeWidget({120, 59}, {142,  12}, WidgetType::dropdownMenu, WindowColour::secondary, 0xFFFFFFFF,              STR_INFORMATION_TYPE_TIP     ), // information type dropdown
         makeWidget({250, 60}, { 11,  10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,      STR_INFORMATION_TYPE_TIP     ), // information type dropdown button
@@ -157,6 +157,8 @@ namespace OpenRCT2::Ui::Windows
         std::optional<size_t> _highlightedIndex;
 
         uint32_t _tabAnimationIndex{};
+
+        u8string _pageDropdownCaption{};
 
     public:
         void onOpen() override
@@ -418,9 +420,8 @@ namespace OpenRCT2::Ui::Windows
             {
                 widgets[WIDX_PAGE_DROPDOWN].type = WidgetType::dropdownMenu;
                 widgets[WIDX_PAGE_DROPDOWN_BUTTON].type = WidgetType::button;
-                auto ft = Formatter::Common();
-                ft.Increment(4);
-                ft.Add<uint16_t>(_selectedPage + 1);
+                _pageDropdownCaption = FormatStringID(STR_PAGE_X, static_cast<uint16_t>(_selectedPage + 1));
+                widgets[WIDX_PAGE_DROPDOWN].setString(_pageDropdownCaption.c_str());
             }
             else
             {

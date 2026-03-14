@@ -98,7 +98,7 @@ namespace OpenRCT2
 
         // New properties
         WidgetFlags flags{};
-        utf8* sztooltip{};
+        const utf8* sztooltip{};
 
         int16_t width() const
         {
@@ -181,6 +181,18 @@ namespace OpenRCT2
         {
             string = newString;
             flags.set(WidgetFlag::textIsString);
+        }
+
+        void setTooltip(StringId newStringId)
+        {
+            tooltip = newStringId;
+            flags.unset(WidgetFlag::tooltipIsString);
+        }
+
+        void setTooltip(const utf8* newString)
+        {
+            sztooltip = newString;
+            flags.set(WidgetFlag::tooltipIsString);
         }
     };
 

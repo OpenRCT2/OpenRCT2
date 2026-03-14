@@ -280,7 +280,7 @@ namespace OpenRCT2::Ui::Windows
         makeWidget({296,  62}, { 14,  14}, WidgetType::imgBtn,        WindowColour::secondary, ImageId(SPR_G2_RCT1_TEST_BUTTON_0),  STR_SIMULATE_RIDE_TIP      ),
         makeWidget({296,  62}, { 14,  14}, WidgetType::imgBtn,        WindowColour::secondary, ImageId(SPR_G2_RCT1_TEST_BUTTON_0),  STR_TEST_RIDE_TIP          ),
         makeWidget({296,  76}, { 14,  14}, WidgetType::imgBtn,        WindowColour::secondary, ImageId(SPR_G2_RCT1_OPEN_BUTTON_0),  STR_OPEN_RIDE_TIP          ),
-        makeWidget({  3, 180}, {305,  14}, WidgetType::dropdownMenu,  WindowColour::secondary, STR_ARG_6_STRINGID                                              ),
+        makeWidget({  3, 180}, {305,  14}, WidgetType::dropdownMenu,  WindowColour::secondary, kStringIdEmpty                                              ),
         makeWidget({297, 181}, { 11,  12}, WidgetType::button,        WindowColour::secondary, STR_DROPDOWN_GLYPH                                              ),
         makeWidget({  3, 197}, {140,  14}, WidgetType::button,        WindowColour::secondary, STR_MAKE_INVISIBLE,                  STR_MAKE_INVISIBLE_TIP     ),
         makeWidget({151, 197}, {140,  14}, WidgetType::button,        WindowColour::secondary, STR_MAKE_VISIBLE,                    STR_MAKE_VISIBLE_TIP       )
@@ -293,8 +293,8 @@ namespace OpenRCT2::Ui::Windows
         makeWidget        ({297,  51}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH                                      ),
         makeWidget        ({  7, 137}, {302, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_OPTION_REVERSE_TRAINS, STR_OPTION_REVERSE_TRAINS_TIP),
         makeWidget        ({  7, 154}, {302, 43}, WidgetType::scroll,       WindowColour::secondary, kStringIdEmpty                                          ),
-        makeSpinnerWidgets({  7, 203}, {145, 14}, WidgetType::spinner,      WindowColour::secondary, STR_RIDE_VEHICLE_COUNT, STR_MAX_VEHICLES_TIP            ),
-        makeSpinnerWidgets({164, 203}, {145, 14}, WidgetType::spinner,      WindowColour::secondary, STR_1_CAR_PER_TRAIN,    STR_MAX_CARS_PER_TRAIN_TIP      )
+        makeSpinnerWidgets({  7, 203}, {145, 14}, WidgetType::spinner,      WindowColour::secondary, STR_RIDE_VEHICLE_COUNT,    STR_MAX_VEHICLES_TIP         ),
+        makeSpinnerWidgets({164, 203}, {145, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty,            STR_MAX_CARS_PER_TRAIN_TIP   )
     );
 
     // 0x009ADEFC
@@ -303,19 +303,19 @@ namespace OpenRCT2::Ui::Windows
         makeWidget        ({  7,  47}, {302, 14}, WidgetType::dropdownMenu, WindowColour::secondary, 0xFFFFFFFF,                             STR_SELECT_OPERATING_MODE                   ),
         makeWidget        ({297,  48}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,                     STR_SELECT_OPERATING_MODE                   ),
         makeWidget        ({ 21,  62}, {129, 12}, WidgetType::label,        WindowColour::secondary                                                                                      ),
-        makeSpinnerWidgets({157,  62}, {152, 14}, WidgetType::spinner,      WindowColour::secondary, STR_ARG_18_STRINGID                                                                 ), // NB: 3 widgets
+        makeSpinnerWidgets({157,  62}, {152, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                                                 ), // NB: 3 widgets
         makeWidget        ({ 21,  78}, {129, 12}, WidgetType::label,        WindowColour::secondary, STR_LIFT_HILL_CHAIN_SPEED                                                           ),
-        makeSpinnerWidgets({157,  77}, {152, 14}, WidgetType::spinner,      WindowColour::secondary, STR_LIFT_HILL_CHAIN_SPEED_VALUE                                                     ), // NB: 3 widgets
+        makeSpinnerWidgets({157,  77}, {152, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                                     ), // NB: 3 widgets
         makeWidget        ({ 21,  94}, {129, 12}, WidgetType::label,        WindowColour::secondary, STR_NUMBER_OF_CIRCUITS,                 STR_NUMBER_OF_CIRCUITS_TIP                  ),
-        makeSpinnerWidgets({157,  93}, {152, 14}, WidgetType::spinner,      WindowColour::secondary, STR_NUMBER_OF_CIRCUITS_VALUE                                                        ), // NB: 3 widgets
+        makeSpinnerWidgets({157,  93}, {152, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                                        ), // NB: 3 widgets
         makeWidget        ({  7, 118}, { 80, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_WAIT_FOR,                           STR_WAIT_FOR_PASSENGERS_BEFORE_DEPARTING_TIP),
         makeWidget        ({ 87, 117}, {222, 14}, WidgetType::dropdownMenu, WindowColour::secondary                                                                                      ),
         makeWidget        ({297, 118}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH                                                                  ),
         makeWidget        ({  7, 135}, {302, 12}, WidgetType::checkbox,     WindowColour::secondary                                                                                      ),
         makeWidget        ({  7, 151}, {150, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_MINIMUM_WAITING_TIME,               STR_MINIMUM_LENGTH_BEFORE_DEPARTING_TIP     ),
-        makeSpinnerWidgets({157, 150}, {152, 14}, WidgetType::spinner,      WindowColour::secondary, STR_ARG_10_STRINGID                                                                 ), // NB: 3 widgets
+        makeSpinnerWidgets({157, 150}, {152, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                                                 ), // NB: 3 widgets
         makeWidget        ({  7, 168}, {150, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_MAXIMUM_WAITING_TIME,               STR_MAXIMUM_LENGTH_BEFORE_DEPARTING_TIP     ),
-        makeSpinnerWidgets({157, 167}, {152, 14}, WidgetType::spinner,      WindowColour::secondary, STR_ARG_14_STRINGID                                                                 ), // NB: 3 widgets
+        makeSpinnerWidgets({157, 167}, {152, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                                                 ), // NB: 3 widgets
         makeWidget        ({  7, 184}, {302, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_SYNCHRONISE_WITH_ADJACENT_STATIONS, STR_SYNCHRONISE_WITH_ADJACENT_STATIONS_TIP  )
     );
 
@@ -335,7 +335,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr auto _colourWidgets = makeWidgets(
         kMainRideWidgets,
         makeWidget({  3,  49}, { 68, 47}, WidgetType::spinner,      WindowColour::secondary                                                                              ),
-        makeWidget({ 74,  49}, {239, 14}, WidgetType::dropdownMenu, WindowColour::secondary, STR_ARG_14_STRINGID                                                         ),
+        makeWidget({ 74,  49}, {239, 14}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdEmpty                                                         ),
         makeWidget({301,  50}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,            STR_COLOUR_SCHEME_TO_CHANGE_TIP              ),
         makeWidget({ 79,  74}, { 12, 12}, WidgetType::colourBtn,    WindowColour::secondary, 0xFFFFFFFF,                    STR_SELECT_MAIN_COLOUR_TIP                   ),
         makeWidget({ 99,  74}, { 12, 12}, WidgetType::colourBtn,    WindowColour::secondary, 0xFFFFFFFF,                    STR_SELECT_ADDITIONAL_COLOUR_1_TIP           ),
@@ -353,7 +353,7 @@ namespace OpenRCT2::Ui::Windows
         makeWidget({230, 103}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,            STR_SELECT_STYLE_OF_ENTRANCE_EXIT_STATION_TIP),
 
         makeWidget({  3, 157}, { 68, 49}, WidgetType::scroll,       WindowColour::secondary, kStringIdEmpty                                                              ),
-        makeWidget({ 74, 157}, {239, 14}, WidgetType::dropdownMenu, WindowColour::secondary, STR_ARG_6_STRINGID                                                          ),
+        makeWidget({ 74, 157}, {239, 14}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdEmpty                                                          ),
         makeWidget({301, 158}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,            STR_SELECT_VEHICLE_COLOUR_SCHEME_TIP         ),
         makeWidget({ 74, 173}, {239, 14}, WidgetType::dropdownMenu, WindowColour::secondary                                                                              ),
         makeWidget({301, 174}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,            STR_SELECT_VEHICLE_TO_MODIFY_TIP             ),
@@ -397,10 +397,10 @@ namespace OpenRCT2::Ui::Windows
     static constexpr auto _incomeWidgets = makeWidgets(
         kMainRideWidgets,
         makeWidget        ({ 19,  50}, {126, 14}, WidgetType::label,    WindowColour::secondary                                                                    ),
-        makeSpinnerWidgets({147,  50}, {162, 14}, WidgetType::spinner,  WindowColour::secondary, STR_ARG_6_CURRENCY2DP                                             ), // NB: 3 widgets
+        makeSpinnerWidgets({147,  50}, {162, 14}, WidgetType::spinner,  WindowColour::secondary, kStringIdEmpty                                             ), // NB: 3 widgets
         makeWidget        ({  5,  62}, {306, 13}, WidgetType::checkbox, WindowColour::secondary, STR_SAME_PRICE_THROUGHOUT_PARK, STR_SAME_PRICE_THROUGHOUT_PARK_TIP),
         makeWidget        ({ 19,  94}, {126, 14}, WidgetType::label,    WindowColour::secondary                                                                    ),
-        makeSpinnerWidgets({147,  94}, {162, 14}, WidgetType::spinner,  WindowColour::secondary, STR_RIDE_SECONDARY_PRICE_VALUE                                    ), // NB: 3 widgets
+        makeSpinnerWidgets({147,  94}, {162, 14}, WidgetType::spinner,  WindowColour::secondary, kStringIdEmpty                                    ), // NB: 3 widgets
         makeWidget        ({  5, 106}, {306, 13}, WidgetType::checkbox, WindowColour::secondary, STR_SAME_PRICE_THROUGHOUT_PARK, STR_SAME_PRICE_THROUGHOUT_PARK_TIP)
     );
 
@@ -670,7 +670,18 @@ namespace OpenRCT2::Ui::Windows
         std::vector<EntranceTypeLabel> _entranceDropdownData;
         bool _autoScrollGraph = true;
         bool _lastAllowArbitraryRideTypeChanges = false;
+
         u8string _windowTitle{};
+        // Num trains, Tweak mode, track colour scheme, primary price
+        u8string _spinnerCaption0{};
+        // Cars per train, Lift hill speed, vehicle colour scheme, secondary price
+        u8string _spinnerCaption1{};
+        // Number of circuits, individual train/vehicle colour
+        u8string _spinnerCaption2{};
+        // Minimum waiting time
+        u8string _spinnerCaption3{};
+        // Maximum waiting time
+        u8string _spinnerCaption4{};
 
         uint8_t getNumVisibleCars()
         {
@@ -2824,7 +2835,6 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_VEHICLE_TRAINS_INCREASE:
                 {
                     auto ft = Formatter();
-                    ft.Increment(12);
 
                     RideComponentType vehicleType = ride->getRideTypeDescriptor().NameConvention.vehicle;
                     StringId stringId = GetRideComponentName(vehicleType).count;
@@ -2845,7 +2855,6 @@ namespace OpenRCT2::Ui::Windows
                         return { kStringIdNone, {} };
 
                     auto ft = Formatter();
-                    ft.Increment(16);
                     ft.Add<uint16_t>(std::max(uint8_t(1), ride->maxCarsPerTrain) - rideEntry->zero_cars);
 
                     StringId stringId = GetRideComponentName(RideComponentType::Car).singular;
@@ -2862,9 +2871,6 @@ namespace OpenRCT2::Ui::Windows
 
         void VehicleOnPrepareDraw()
         {
-            StringId stringId;
-            int32_t carsPerTrain;
-
             SetPressedTab();
 
             auto ride = GetRide(rideId);
@@ -2874,7 +2880,7 @@ namespace OpenRCT2::Ui::Windows
             const auto* rideEntry = ride->getRideEntry();
 
             // Widget setup
-            carsPerTrain = ride->numCarsPerTrain - rideEntry->zero_cars;
+            int16_t carsPerTrain = ride->numCarsPerTrain - rideEntry->zero_cars;
 
             // Vehicle type
             widgets[WIDX_VEHICLE_TYPE].text = rideEntry->naming.Name;
@@ -2927,33 +2933,23 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_VEHICLE_REVERSED_TRAINS_CHECKBOX].type = WidgetType::empty;
             }
 
-            auto ft = Formatter::Common();
-            ft.Increment(6);
-            ft.Add<uint16_t>(carsPerTrain);
             RideComponentType vehicleType = ride->getRideTypeDescriptor().NameConvention.vehicle;
-            stringId = GetRideComponentName(vehicleType).count;
+            auto stringId = GetRideComponentName(vehicleType).count;
             if (ride->numTrains > 1)
             {
                 stringId = GetRideComponentName(vehicleType).count_plural;
             }
-            ft.Add<StringId>(stringId);
-            ft.Add<uint16_t>(ride->numTrains);
-
-            ft.Increment(8);
+            _spinnerCaption0 = FormatStringID(stringId, static_cast<uint16_t>(ride->numTrains));
+            widgets[WIDX_VEHICLE_TRAINS].setString(_spinnerCaption0.c_str());
 
             _windowTitle = ride->getName();
             widgets[WIDX_TITLE].setString(_windowTitle.c_str());
 
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
 
-            if (abs(ride->numCarsPerTrain - rideEntry->zero_cars) == 1)
-            {
-                widgets[WIDX_VEHICLE_CARS_PER_TRAIN].text = STR_1_CAR_PER_TRAIN;
-            }
-            else
-            {
-                widgets[WIDX_VEHICLE_CARS_PER_TRAIN].text = STR_X_CARS_PER_TRAIN;
-            }
+            auto carsPerTrainStringId = abs(carsPerTrain) == 1 ? STR_1_CAR_PER_TRAIN : STR_X_CARS_PER_TRAIN;
+            _spinnerCaption1 = FormatStringID(carsPerTrainStringId, carsPerTrain);
+            widgets[WIDX_VEHICLE_CARS_PER_TRAIN].setString(_spinnerCaption1.c_str());
         }
 
         void VehicleOnDraw(RenderTarget& rt)
@@ -3568,7 +3564,6 @@ namespace OpenRCT2::Ui::Windows
                 | (1uLL << WIDX_MINIMUM_LENGTH_CHECKBOX) | (1uLL << WIDX_MAXIMUM_LENGTH_CHECKBOX)
                 | (1uLL << WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX));
 
-            auto ft = Formatter::Common();
             // Sometimes, only one of the alternatives support lift hill pieces. Make sure to check both.
             const auto& rtd = ride->getRideTypeDescriptor();
             bool hasAlternativeType = rtd.flags.has(RtdFlag::hasInvertedVariant);
@@ -3579,9 +3574,8 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_LIFT_HILL_SPEED].type = WidgetType::spinner;
                 widgets[WIDX_LIFT_HILL_SPEED_INCREASE].type = WidgetType::button;
                 widgets[WIDX_LIFT_HILL_SPEED_DECREASE].type = WidgetType::button;
-                ft.Rewind();
-                ft.Increment(20);
-                ft.Add<uint16_t>(ride->liftHillSpeed);
+                _spinnerCaption1 = FormatStringID(STR_VELOCITY, static_cast<uint16_t>(ride->liftHillSpeed));
+                widgets[WIDX_LIFT_HILL_SPEED].setString(_spinnerCaption1.c_str());
             }
             else
             {
@@ -3598,9 +3592,8 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_OPERATE_NUMBER_OF_CIRCUITS].type = WidgetType::spinner;
                 widgets[WIDX_OPERATE_NUMBER_OF_CIRCUITS_INCREASE].type = WidgetType::button;
                 widgets[WIDX_OPERATE_NUMBER_OF_CIRCUITS_DECREASE].type = WidgetType::button;
-                ft.Rewind();
-                ft.Increment(22);
-                ft.Add<uint16_t>(ride->numCircuits);
+                _spinnerCaption2 = std::to_string(ride->numCircuits);
+                widgets[WIDX_OPERATE_NUMBER_OF_CIRCUITS].setString(_spinnerCaption2.c_str());
             }
             else
             {
@@ -3659,12 +3652,10 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_MAXIMUM_LENGTH_INCREASE].type = WidgetType::button;
                 widgets[WIDX_MAXIMUM_LENGTH_DECREASE].type = WidgetType::button;
 
-                ft.Rewind();
-                ft.Increment(10);
-                ft.Add<StringId>(STR_FORMAT_SECONDS);
-                ft.Add<uint16_t>(ride->minWaitingTime);
-                ft.Add<StringId>(STR_FORMAT_SECONDS);
-                ft.Add<uint16_t>(ride->maxWaitingTime);
+                _spinnerCaption3 = FormatStringID(STR_FORMAT_SECONDS, static_cast<uint16_t>(ride->minWaitingTime));
+                widgets[WIDX_MINIMUM_LENGTH].setString(_spinnerCaption3.c_str());
+                _spinnerCaption4 = FormatStringID(STR_FORMAT_SECONDS, static_cast<uint16_t>(ride->maxWaitingTime));
+                widgets[WIDX_MAXIMUM_LENGTH].setString(_spinnerCaption4.c_str());
 
                 if (ride->departFlags & RIDE_DEPART_WAIT_FOR_LOAD)
                     pressedWidgets |= (1uLL << WIDX_LOAD_CHECKBOX);
@@ -3697,71 +3688,65 @@ namespace OpenRCT2::Ui::Windows
 
             // Mode specific functionality
             auto multiplier = ride->getRideTypeDescriptor().OperatingSettings.OperatingSettingMultiplier;
-            ft.Rewind();
-            ft.Increment(18);
-            ft.Add<uint16_t>(static_cast<uint16_t>(ride->operationOption) * multiplier);
+            uint16_t tweakValue = static_cast<uint16_t>(ride->operationOption) * multiplier;
+
             switch (ride->mode)
             {
                 case RideMode::poweredLaunchPasstrough:
                 case RideMode::poweredLaunch:
                 case RideMode::upwardLaunch:
                 case RideMode::poweredLaunchBlockSectioned:
-                    ft.Rewind();
-                    ft.Increment(18);
-                    ft.Add<uint16_t>((ride->launchSpeed * 9) / 4);
-                    format = STR_RIDE_MODE_SPEED_VALUE;
+                    tweakValue = ((ride->launchSpeed * 9) / 4);
+                    format = STR_VELOCITY;
                     caption = STR_LAUNCH_SPEED;
                     tooltip = STR_LAUNCH_SPEED_TIP;
                     break;
                 case RideMode::stationToStation:
-                    ft.Rewind();
-                    ft.Increment(18);
-                    ft.Add<uint16_t>((ride->speed * 9) / 4);
-                    format = STR_RIDE_MODE_SPEED_VALUE;
+                    tweakValue = ((ride->speed * 9) / 4);
+                    format = STR_VELOCITY;
                     caption = STR_SPEED;
                     tooltip = STR_SPEED_TIP;
                     break;
                 case RideMode::race:
-                    ft.Rewind();
-                    ft.Increment(18);
-                    ft.Add<uint16_t>(ride->numLaps);
-                    format = STR_NUMBER_OF_LAPS_VALUE;
+                    tweakValue = ride->numLaps;
+                    format = STR_COMMA16;
                     caption = STR_NUMBER_OF_LAPS;
                     tooltip = STR_NUMBER_OF_LAPS_TIP;
                     break;
                 case RideMode::dodgems:
-                    format = STR_RIDE_MODE_TIME_LIMIT_VALUE;
+                    format = STR_RIDE_TIME_ENTRY;
                     caption = STR_TIME_LIMIT;
                     tooltip = STR_TIME_LIMIT_TIP;
                     break;
                 case RideMode::swing:
-                    format = STR_RIDE_MODE_NUMBER_OF_SWINGS_VALUE;
+                    format = STR_COMMA16;
                     caption = STR_NUMBER_OF_SWINGS;
                     tooltip = STR_NUMBER_OF_SWINGS_TIP;
                     break;
                 case RideMode::rotation:
                 case RideMode::forwardRotation:
                 case RideMode::backwardRotation:
-                    format = STR_NUMBER_OF_ROTATIONS_VALUE;
+                    format = STR_COMMA16;
                     caption = STR_NUMBER_OF_ROTATIONS;
                     tooltip = STR_NUMBER_OF_ROTATIONS_TIP;
                     break;
                 default:
-                    format = STR_MAX_PEOPLE_ON_RIDE_VALUE;
+                    format = STR_COMMA16;
                     caption = STR_MAX_PEOPLE_ON_RIDE;
                     tooltip = STR_MAX_PEOPLE_ON_RIDE_TIP;
                     if (!ride->getRideTypeDescriptor().flags.has(RtdFlag::noVehicles))
-                        format = 0;
+                        format = kStringIdEmpty;
                     break;
             }
 
-            if (format != 0)
+            if (format != kStringIdEmpty)
             {
+                _spinnerCaption0 = FormatStringID(format, tweakValue);
                 widgets[WIDX_MODE_TWEAK_LABEL].type = WidgetType::label;
                 widgets[WIDX_MODE_TWEAK_LABEL].text = caption;
                 widgets[WIDX_MODE_TWEAK_LABEL].tooltip = tooltip;
                 widgets[WIDX_MODE_TWEAK].type = WidgetType::spinner;
-                widgets[WIDX_MODE_TWEAK].text = format;
+                widgets[WIDX_MODE_TWEAK].setString(_spinnerCaption0.c_str());
                 widgets[WIDX_MODE_TWEAK_INCREASE].type = WidgetType::button;
                 widgets[WIDX_MODE_TWEAK_DECREASE].type = WidgetType::button;
                 pressedWidgets &= ~(1uLL << WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX);
@@ -4484,8 +4469,8 @@ namespace OpenRCT2::Ui::Windows
                     if (ride->vehicleColourSettings != VehicleColourSettings::perTrain)
                         numItems = ride->numCarsPerTrain;
 
-                    stringId = ride->vehicleColourSettings == VehicleColourSettings::perTrain ? STR_RIDE_COLOUR_TRAIN_OPTION
-                                                                                              : STR_RIDE_COLOUR_VEHICLE_OPTION;
+                    auto listingTrains = ride->vehicleColourSettings == VehicleColourSettings::perTrain;
+                    stringId = listingTrains ? STR_RIDE_COLOUR_TRAIN_OPTION : STR_RIDE_COLOUR_VEHICLE_OPTION;
                     auto dropdownIndex = 0;
                     for (auto i = 0; i < std::min(numItems, Dropdown::kItemsMaxSize); i++)
                     {
@@ -4501,8 +4486,11 @@ namespace OpenRCT2::Ui::Windows
 
                         uint16_t vehicleIndex = dropdownIndex + 1;
                         Formatter ft;
-                        ft.Add<StringId>(
-                            GetRideComponentName(ride->getRideTypeDescriptor().NameConvention.vehicle).capitalised);
+                        if (listingTrains)
+                        {
+                            ft.Add<StringId>(
+                                GetRideComponentName(ride->getRideTypeDescriptor().NameConvention.vehicle).capitalised);
+                        }
                         ft.Add<uint16_t>(vehicleIndex);
 
                         gDropdown.items[dropdownIndex] = Dropdown::MenuLabel(stringId, ft);
@@ -4848,21 +4836,26 @@ namespace OpenRCT2::Ui::Windows
                     widgets[WIDX_VEHICLE_COLOUR_SCHEME].type = WidgetType::empty;
                     widgets[WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN].type = WidgetType::empty;
                 }
-                auto ft = Formatter::Common();
-                ft.Increment(6);
-                ft.Add<StringId>(VehicleColourSchemeNames[EnumValue(ride->vehicleColourSettings)]);
-                ft.Add<StringId>(GetRideComponentName(ride->getRideTypeDescriptor().NameConvention.vehicle).singular);
-                ft.Add<StringId>(GetRideComponentName(ride->getRideTypeDescriptor().NameConvention.vehicle).capitalised);
-                ft.Add<uint16_t>(carIndexToDropdownIndex(_vehicleIndex) + 1);
+
+                auto vehicleNameStandard = GetRideComponentName(ride->getRideTypeDescriptor().NameConvention.vehicle);
+                _spinnerCaption1 = FormatStringID(
+                    VehicleColourSchemeNames[EnumValue(ride->vehicleColourSettings)], vehicleNameStandard.singular);
+                widgets[WIDX_VEHICLE_COLOUR_SCHEME].setString(_spinnerCaption1.c_str());
 
                 // Vehicle index
                 if (ride->vehicleColourSettings != VehicleColourSettings::same)
                 {
                     widgets[WIDX_VEHICLE_COLOUR_INDEX].type = WidgetType::dropdownMenu;
                     widgets[WIDX_VEHICLE_COLOUR_INDEX_DROPDOWN].type = WidgetType::button;
-                    widgets[WIDX_VEHICLE_COLOUR_INDEX].text = ride->vehicleColourSettings == VehicleColourSettings::perTrain
-                        ? STR_RIDE_COLOUR_TRAIN_VALUE
-                        : STR_RIDE_COLOUR_VEHICLE_VALUE;
+
+                    uint16_t friendlyVehicleIndex = carIndexToDropdownIndex(_vehicleIndex) + 1;
+                    if (ride->vehicleColourSettings == VehicleColourSettings::perTrain)
+                        _spinnerCaption2 = FormatStringID(
+                            STR_RIDE_COLOUR_TRAIN_OPTION, vehicleNameStandard.capitalised, friendlyVehicleIndex);
+                    else
+                        _spinnerCaption2 = FormatStringID(STR_RIDE_COLOUR_VEHICLE_OPTION, friendlyVehicleIndex);
+
+                    widgets[WIDX_VEHICLE_COLOUR_INDEX].setString(_spinnerCaption2.c_str());
                 }
                 else
                 {
@@ -4883,9 +4876,8 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_RANDOMISE_VEHICLE_COLOURS].type = WidgetType::empty;
             }
 
-            auto ft = Formatter::Common();
-            ft.Increment(14);
-            ft.Add<StringId>(ColourSchemeNames[colourScheme]);
+            _spinnerCaption0 = LanguageGetString(ColourSchemeNames[colourScheme]);
+            widgets[WIDX_TRACK_COLOUR_SCHEME].setString(_spinnerCaption0.c_str());
 
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
         }
@@ -6688,13 +6680,16 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_SECONDARY_PRICE_LABEL].text = STR_SHOP_ITEM_PRICE_LABEL_ON_RIDE_PHOTO;
             widgets[WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK].type = WidgetType::empty;
 
-            widgets[WIDX_PRIMARY_PRICE].text = STR_BOTTOM_TOOLBAR_CASH;
             auto ridePrimaryPrice = RideGetPrice(*ride);
-            auto ft = Formatter::Common();
-            ft.Rewind();
-            ft.Add<money64>(ridePrimaryPrice);
             if (ridePrimaryPrice == 0)
-                widgets[WIDX_PRIMARY_PRICE].text = STR_FREE;
+            {
+                widgets[WIDX_PRIMARY_PRICE].setString(STR_FREE);
+            }
+            else
+            {
+                _spinnerCaption0 = FormatStringID(STR_BOTTOM_TOOLBAR_CASH, ridePrimaryPrice);
+                widgets[WIDX_PRIMARY_PRICE].setString(_spinnerCaption0.c_str());
+            }
 
             ShopItem primaryItem = ShopItem::admission;
             if (rtd.specialType == RtdSpecialType::toilet || ((primaryItem = rideEntry->shop_item[0]) != ShopItem::none))
@@ -6741,12 +6736,15 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_SECONDARY_PRICE_SAME_THROUGHOUT_PARK].type = WidgetType::checkbox;
 
                 // Set secondary item price
-                widgets[WIDX_SECONDARY_PRICE].text = STR_RIDE_SECONDARY_PRICE_VALUE;
-                ft.Rewind();
-                ft.Increment(10);
-                ft.Add<money64>(ride->price[1]);
                 if (ride->price[1] == 0)
-                    widgets[WIDX_SECONDARY_PRICE].text = STR_FREE;
+                {
+                    widgets[WIDX_SECONDARY_PRICE].setString(STR_FREE);
+                }
+                else
+                {
+                    _spinnerCaption0 = FormatStringID(STR_BOTTOM_TOOLBAR_CASH, ride->price[1]);
+                    widgets[WIDX_SECONDARY_PRICE].setString(_spinnerCaption0.c_str());
+                }
             }
 
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);

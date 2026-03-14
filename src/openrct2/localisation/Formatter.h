@@ -18,8 +18,6 @@
 #include <array>
 #include <cstring>
 
-extern thread_local uint8_t gCommonFormatArgs[80];
-
 namespace OpenRCT2
 {
     class Formatter

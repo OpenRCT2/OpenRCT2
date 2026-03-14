@@ -630,7 +630,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 const auto objectSelectResult = WindowEditorObjectSelectionSelectObject(
                     0, { EditorInputFlag::select }, listItem->repositoryItem);
-                if (!objectSelectResult.Successful)
+                if (!objectSelectResult.successful)
                     return;
 
                 if (_loadedObject != nullptr)
@@ -656,14 +656,16 @@ namespace OpenRCT2::Ui::Windows
             if (!(object_selection_flags & ObjectSelectionFlags::Selected))
                 inputFlags.set(EditorInputFlag::select);
 
-            _gSceneryGroupPartialSelectError = std::nullopt;
+            gSceneryGroupPartialSelectError.clear();
             const auto objectSelectResult = WindowEditorObjectSelectionSelectObject(0, inputFlags, listItem->repositoryItem);
-            if (!objectSelectResult.Successful)
+            if (!objectSelectResult.successful)
             {
-                StringId error_title = inputFlags.has(EditorInputFlag::select) ? STR_UNABLE_TO_SELECT_THIS_OBJECT
-                                                                               : STR_UNABLE_TO_DE_SELECT_THIS_OBJECT;
+                StringId errorTitle = inputFlags.has(EditorInputFlag::select) ? STR_UNABLE_TO_SELECT_THIS_OBJECT
+                                                                              : STR_UNABLE_TO_DE_SELECT_THIS_OBJECT;
 
-                ContextShowError(error_title, objectSelectResult.Message, {});
+                Formatter ft{};
+                ft.Add<const char*>(objectSelectResult.message.c_str());
+                ContextShowError(errorTitle, STR_STRING, ft);
                 return;
             }
 
@@ -673,19 +675,11 @@ namespace OpenRCT2::Ui::Windows
                 invalidate();
             }
 
-            if (_gSceneryGroupPartialSelectError.has_value())
+            if (!gSceneryGroupPartialSelectError.empty())
             {
-                const auto errorMessage = _gSceneryGroupPartialSelectError.value();
-                if (errorMessage == STR_OBJECT_SELECTION_ERR_TOO_MANY_OF_TYPE_SELECTED)
-                {
-                    ContextShowError(
-                        STR_WARNING_TOO_MANY_OBJECTS_SELECTED, STR_NOT_ALL_OBJECTS_IN_THIS_SCENERY_GROUP_COULD_BE_SELECTED, {});
-                }
-                else
-                {
-                    ContextShowError(
-                        errorMessage, STR_NOT_ALL_OBJECTS_IN_THIS_SCENERY_GROUP_COULD_BE_SELECTED, Formatter::Common());
-                }
+                Formatter ft{};
+                ft.Add<const char*>(gSceneryGroupPartialSelectError.c_str());
+                ContextShowError(STR_STRING, STR_NOT_ALL_OBJECTS_IN_THIS_SCENERY_GROUP_COULD_BE_SELECTED, ft);
             }
         }
 
@@ -1747,7 +1741,7 @@ namespace OpenRCT2::Ui::Windows
             LoadPalette();
         }
         if (showFallbackWarning)
-            ContextShowError(STR_OBJECT_SELECTION_FALLBACK_IMAGES_WARNING, kStringIdEmpty, Formatter::Common());
+            ContextShowError(STR_OBJECT_SELECTION_FALLBACK_IMAGES_WARNING, kStringIdEmpty, {});
     }
 
     bool EditorObjectSelectionWindowCheck()
@@ -1770,3 +1764,4 @@ namespace OpenRCT2::Ui::Windows
         return false;
     }
 } // namespace OpenRCT2::Ui::Windows
+;

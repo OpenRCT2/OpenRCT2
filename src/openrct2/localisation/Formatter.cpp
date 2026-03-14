@@ -9,8 +9,6 @@
 
 #include "Formatter.h"
 
-thread_local uint8_t gCommonFormatArgs[80];
-
 namespace OpenRCT2
 {
     Formatter& Formatter::operator=(const Formatter& other)
@@ -27,10 +25,5 @@ namespace OpenRCT2
         }
         CurrentBuf = StartBuf + other.NumBytes();
         return *this;
-    }
-
-    Formatter Formatter::Common()
-    {
-        return Formatter{ gCommonFormatArgs };
     }
 } // namespace OpenRCT2

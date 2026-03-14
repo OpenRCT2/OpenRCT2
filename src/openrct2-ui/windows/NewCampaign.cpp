@@ -75,6 +75,7 @@ namespace OpenRCT2::Ui::Windows
                 ObjectEntryIndex ShopItemId;
             };
         } Campaign;
+        u8string _dropdownCaption{};
 
         static bool RideValueCompare(const RideId& a, const RideId& b)
         {
@@ -326,10 +327,8 @@ namespace OpenRCT2::Ui::Windows
                         auto curRide = GetRide(Campaign.RideId);
                         if (curRide != nullptr)
                         {
-                            widgets[WIDX_RIDE_DROPDOWN].text = STR_STRINGID;
-
-                            auto ft = Formatter::Common();
-                            curRide->formatNameTo(ft);
+                            _dropdownCaption = curRide->getName();
+                            widgets[WIDX_RIDE_DROPDOWN].setString(_dropdownCaption.c_str());
                         }
                     }
                     break;

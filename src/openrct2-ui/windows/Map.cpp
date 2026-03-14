@@ -160,9 +160,9 @@ namespace OpenRCT2::Ui::Windows
         makeRemapWidget   ({  3,  17}, { 31,  27}, WidgetType::colourBtn, WindowColour::secondary, SPR_TAB,                      STR_SHOW_PEOPLE_ON_MAP_TIP      ),
         makeRemapWidget   ({ 34,  17}, { 31,  27}, WidgetType::colourBtn, WindowColour::secondary, SPR_TAB,                      STR_SHOW_RIDES_STALLS_ON_MAP_TIP),
         makeWidget        ({  3,  46}, {239, 180}, WidgetType::scroll,    WindowColour::secondary, SCROLL_BOTH                                                   ),
-        makeSpinnerWidgets({102, 229}, { 50,  12}, WidgetType::spinner,   WindowColour::secondary, STR_COMMA16                                                   ), // NB: 3 widgets
+        makeSpinnerWidgets({102, 229}, { 50,  12}, WidgetType::spinner,   WindowColour::secondary, kStringIdEmpty                                                   ), // NB: 3 widgets
         makeWidget        ({153, 230}, { 20,  12}, WidgetType::flatBtn,   WindowColour::secondary, ImageId(SPR_G2_LINK_CHAIN),   STR_MAINTAIN_SQUARE_MAP_TOOLTIP ),
-        makeSpinnerWidgets({174, 229}, { 50,  12}, WidgetType::spinner,   WindowColour::secondary, STR_POP16_COMMA16                                             ), // NB: 3 widgets
+        makeSpinnerWidgets({174, 229}, { 50,  12}, WidgetType::spinner,   WindowColour::secondary, kStringIdEmpty                                             ), // NB: 3 widgets
         makeWidget        ({  4,  46}, { 24,  24}, WidgetType::flatBtn,   WindowColour::secondary, ImageId(SPR_BUY_LAND_RIGHTS), STR_SELECT_PARK_OWNED_LAND_TIP  ),
         makeWidget        ({  4,  70}, { 24,  24}, WidgetType::flatBtn,   WindowColour::secondary, ImageId(SPR_G2_PEEP_SPAWN),   STR_SET_STARTING_POSITIONS_TIP  ),
         makeWidget        ({ 28,  94}, { 24,  24}, WidgetType::flatBtn,   WindowColour::secondary, ImageId(SPR_PARK_ENTRANCE),   STR_BUILD_PARK_ENTRANCE_TIP     ),
@@ -241,6 +241,9 @@ namespace OpenRCT2::Ui::Windows
             Y,
         } _resizeDirection{ ResizeDirection::Both };
         uint16_t _flashingFlags = 0;
+
+        u8string _xSpinnerCaption{};
+        u8string _ySpinnerCaption{};
 
     public:
         void onOpen() override
@@ -1123,9 +1126,10 @@ namespace OpenRCT2::Ui::Windows
 
             // Push width (Y) and height (X) to the common formatter arguments for the map size spinners to use
             auto& gameState = getGameState();
-            auto ft = Formatter::Common();
-            ft.Add<uint16_t>(gameState.mapSize.y - 2);
-            ft.Add<uint16_t>(gameState.mapSize.x - 2);
+            _xSpinnerCaption = std::to_string(gameState.mapSize.x - 2);
+            widgets[WIDX_MAP_SIZE_SPINNER_X].setString(_xSpinnerCaption.c_str());
+            _ySpinnerCaption = std::to_string(gameState.mapSize.y - 2);
+            widgets[WIDX_MAP_SIZE_SPINNER_Y].setString(_ySpinnerCaption.c_str());
         }
 
         void InputMapSize(WidgetIndex callingWidget)

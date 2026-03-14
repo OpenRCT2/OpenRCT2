@@ -86,6 +86,7 @@ namespace OpenRCT2::Ui::Windows
         TrackDesignPreviewBuffer _trackDesignPreviewPixels{};
         bool _selectedItemIsBeingUpdated;
         bool _reloadTrackDesigns;
+        u8string _windowTitle;
 
         void filterList()
         {
@@ -390,17 +391,19 @@ namespace OpenRCT2::Ui::Windows
                 stringId = rideName.Name;
             }
 
-            Formatter::Common().Add<StringId>(stringId);
+            StringId titleFormat;
             if (gLegacyScene == LegacyScene::trackDesignsManager)
             {
-                widgets[WIDX_TITLE].text = STR_TRACK_DESIGNS;
+                titleFormat = STR_TRACK_DESIGNS;
                 widgets[WIDX_TRACK_LIST].tooltip = STR_CLICK_ON_DESIGN_TO_RENAME_OR_DELETE_IT;
             }
             else
             {
-                widgets[WIDX_TITLE].text = STR_SELECT_DESIGN;
+                titleFormat = STR_SELECT_DESIGN;
                 widgets[WIDX_TRACK_LIST].tooltip = STR_CLICK_ON_DESIGN_TO_BUILD_IT_TIP;
             }
+            _windowTitle = FormatStringID(titleFormat, stringId);
+            widgets[WIDX_TITLE].setString(_windowTitle.c_str());
 
             if ((gLegacyScene == LegacyScene::trackDesignsManager) || selectedListItem != 0)
             {

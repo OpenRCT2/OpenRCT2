@@ -382,7 +382,7 @@ namespace OpenRCT2::Ui
         }
 
         auto stringId = widget.text;
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         if (widget.flags.has(WidgetFlag::textIsString))
         {
             stringId = STR_STRING;
@@ -430,7 +430,7 @@ namespace OpenRCT2::Ui
             t = w.windowPos.y + widget.top;
 
         auto stringId = widget.text;
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         if (widget.flags.has(WidgetFlag::textIsString))
         {
             stringId = STR_STRING;
@@ -485,7 +485,7 @@ namespace OpenRCT2::Ui
 
         // Text
         auto stringId = widget.text;
-        auto rawFt = Formatter::Common();
+        auto rawFt = Formatter();
         if (widget.flags.has(WidgetFlag::textIsString))
         {
             if (widget.string != nullptr && widget.string[0] != '\0')
@@ -689,7 +689,7 @@ namespace OpenRCT2::Ui
             return;
 
         auto stringId = widget.text;
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         if (widget.flags.has(WidgetFlag::textIsString))
         {
             stringId = STR_STRING;

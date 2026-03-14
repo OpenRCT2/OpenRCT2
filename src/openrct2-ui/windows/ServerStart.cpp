@@ -54,7 +54,7 @@ namespace OpenRCT2::Ui::Windows
         makeWidget({ 120, 52 }, { 173, 13 }, WidgetType::textBox, WindowColour::secondary), // description text box
         makeWidget({ 120, 68 }, { 173, 13 }, WidgetType::textBox, WindowColour::secondary), // greeting text box
         makeWidget({ 120, 84 }, { 173, 13 }, WidgetType::textBox, WindowColour::secondary), // password text box
-        makeSpinnerWidgets({ 120, 100 }, { 173, 12 }, WidgetType::spinner, WindowColour::secondary,STR_SERVER_MAX_PLAYERS_VALUE), // max players (3 widgets)
+        makeSpinnerWidgets({ 120, 100 }, { 173, 12 }, WidgetType::spinner, WindowColour::secondary,kStringIdEmpty), // max players (3 widgets)
         makeWidget({ 6, 117 }, { 287, 14 }, WidgetType::checkbox, WindowColour::secondary, STR_ADVERTISE,STR_ADVERTISE_SERVER_TIP), // advertise checkbox
         makeWidget({ 6, kWindowSize.height - 6 - 13 }, { 101, 14 }, WidgetType::button, WindowColour::secondary,STR_NEW_GAME), // start server button
         makeWidget({ 112, kWindowSize.height - 6 - 13 }, { 101, 14 }, WidgetType::button, WindowColour::secondary, STR_LOAD_GAME) // None
@@ -63,6 +63,8 @@ namespace OpenRCT2::Ui::Windows
 
     class ServerStartWindow final : public Window
     {
+        u8string _maxPlayersCaption{};
+
     public:
         void onOpen() override
         {
@@ -147,9 +149,9 @@ namespace OpenRCT2::Ui::Windows
             ColourSchemeUpdateByClass(this, WindowClass::serverList);
 
             setCheckboxValue(WIDX_ADVERTISE_CHECKBOX, Config::Get().network.advertise);
-            auto ft = Formatter::Common();
-            ft.Increment(18);
-            ft.Add<uint16_t>(Config::Get().network.maxplayers);
+
+            _maxPlayersCaption = std::to_string(Config::Get().network.maxplayers);
+            widgets[WIDX_MAXPLAYERS].setString(_maxPlayersCaption.c_str());
         }
         void onUpdate() override
         {

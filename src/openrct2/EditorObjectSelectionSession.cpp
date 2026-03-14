@@ -20,7 +20,7 @@
 #include "entity/EntityList.h"
 #include "entity/Guest.h"
 #include "entity/Staff.h"
-#include "localisation/Formatter.h"
+#include "localisation/Formatting.h"
 #include "management/Research.h"
 #include "object/DefaultObjects.h"
 #include "object/FootpathEntry.h"
@@ -48,7 +48,7 @@
 
 using namespace OpenRCT2;
 
-std::optional<StringId> _gSceneryGroupPartialSelectError;
+u8string gSceneryGroupPartialSelectError;
 std::vector<uint8_t> _objectSelectionFlags;
 uint32_t _numSelectedObjectsForType[EnumValue(ObjectType::count)];
 static int32_t _numAvailableObjectsForType[EnumValue(ObjectType::count)];
@@ -63,12 +63,16 @@ static void ReplaceSelectedWaterPalette(const ObjectRepositoryItem* item);
 /**
  * Master objects are objects that are not optional / required dependants of an object.
  */
-static constexpr ResultWithMessage ObjectSelectionError(bool isMasterObject, StringId message)
+static ResultWithMessageString ObjectSelectionError(bool isMasterObject, u8string message)
 {
     if (!isMasterObject)
         ResetSelectedObjectCountAndSize();
 
     return { false, message };
+}
+static ResultWithMessageString ObjectSelectionError(bool isMasterObject, StringId message)
+{
+    return ObjectSelectionError(isMasterObject, LanguageGetString(message));
 }
 
 /**
@@ -548,7 +552,7 @@ void FinishObjectSelection()
  *
  *  rct2: 0x006AB54F
  */
-ResultWithMessage WindowEditorObjectSelectionSelectObject(
+ResultWithMessageString WindowEditorObjectSelectionSelectObject(
     uint8_t isMasterObject, EditorInputFlags flags, const ObjectRepositoryItem* item)
 {
     if (item == nullptr)
@@ -631,9 +635,9 @@ ResultWithMessage WindowEditorObjectSelectionSelectObject(
         for (const auto& sgEntry : item->SceneryGroupInfo.Entries)
         {
             const auto selectionResult = WindowEditorObjectSelectionSelectObject(++isMasterObject, flags, sgEntry);
-            if (!selectionResult.Successful)
+            if (!selectionResult.successful)
             {
-                _gSceneryGroupPartialSelectError = selectionResult.Message;
+                gSceneryGroupPartialSelectError = selectionResult.message;
                 LOG_ERROR("Could not find object: %s", std::string(sgEntry.GetName()).c_str());
             }
         }
@@ -652,9 +656,9 @@ ResultWithMessage WindowEditorObjectSelectionSelectObject(
     {
         char objectName[64];
         ObjectCreateIdentifierName(objectName, 64, &item->ObjectEntry);
-        auto ft = Formatter::Common();
-        ft.Add<const char*>(objectName);
-        return ObjectSelectionError(isMasterObject, STR_OBJECT_SELECTION_ERR_SHOULD_SELECT_X_FIRST);
+        const char* ref = objectName;
+        const auto error = FormatStringID(STR_OBJECT_SELECTION_ERR_SHOULD_SELECT_X_FIRST, ref);
+        return ObjectSelectionError(isMasterObject, error);
     }
 
     if (maxObjects <= _numSelectedObjectsForType[EnumValue(objectType)])
@@ -668,7 +672,7 @@ ResultWithMessage WindowEditorObjectSelectionSelectObject(
     return { true };
 }
 
-ResultWithMessage WindowEditorObjectSelectionSelectObject(
+ResultWithMessageString WindowEditorObjectSelectionSelectObject(
     uint8_t isMasterObject, EditorInputFlags flags, const ObjectEntryDescriptor& descriptor)
 {
     auto& objectRepository = GetContext()->GetObjectRepository();
