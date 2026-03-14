@@ -2983,18 +2983,18 @@ bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, TrackElemType trackType,
         }
     }
     else if (
-        (rideType == RIDE_TYPE_STAND_UP_ROLLER_COASTER || rideType == RIDE_TYPE_CLASSIC_STAND_UP_ROLLER_COASTER
-         || rideType == RIDE_TYPE_CORKSCREW_ROLLER_COASTER || rideType == RIDE_TYPE_HYPERCOASTER
-         || rideType == RIDE_TYPE_LAY_DOWN_ROLLER_COASTER || rideType == RIDE_TYPE_TWISTER_ROLLER_COASTER
-         || rideType == RIDE_TYPE_HYPER_TWISTER || rideType == RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER
-         || rideType == RIDE_TYPE_FLYING_ROLLER_COASTER || rideType == RIDE_TYPE_GIGA_COASTER
-         || rideType == RIDE_TYPE_LSM_LAUNCHED_ROLLER_COASTER || rideType == RIDE_TYPE_SINGLE_RAIL_ROLLER_COASTER
-         || rideType == RIDE_TYPE_LOOPING_ROLLER_COASTER || rideType == RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER
-         || rideType == RIDE_TYPE_ALPINE_COASTER || rideType == RIDE_TYPE_MINI_ROLLER_COASTER
-         || rideType == RIDE_TYPE_SPIRAL_ROLLER_COASTER || rideType == RIDE_TYPE_MINE_RIDE
-         || rideType == RIDE_TYPE_HYBRID_COASTER || rideType == RIDE_TYPE_STEEPLECHASE
-         || rideType == RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER)
-        && parkFileVersion < kParkFileVersionUprightQuarterHelices)
+        parkFileVersion < kParkFileVersionUprightQuarterHelices
+        && (rideType == RIDE_TYPE_STAND_UP_ROLLER_COASTER || rideType == RIDE_TYPE_CLASSIC_STAND_UP_ROLLER_COASTER
+            || rideType == RIDE_TYPE_CORKSCREW_ROLLER_COASTER || rideType == RIDE_TYPE_HYPERCOASTER
+            || rideType == RIDE_TYPE_LAY_DOWN_ROLLER_COASTER || rideType == RIDE_TYPE_TWISTER_ROLLER_COASTER
+            || rideType == RIDE_TYPE_HYPER_TWISTER || rideType == RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER
+            || rideType == RIDE_TYPE_FLYING_ROLLER_COASTER || rideType == RIDE_TYPE_GIGA_COASTER
+            || rideType == RIDE_TYPE_LSM_LAUNCHED_ROLLER_COASTER || rideType == RIDE_TYPE_SINGLE_RAIL_ROLLER_COASTER
+            || rideType == RIDE_TYPE_LOOPING_ROLLER_COASTER || rideType == RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER
+            || rideType == RIDE_TYPE_ALPINE_COASTER || rideType == RIDE_TYPE_MINI_ROLLER_COASTER
+            || rideType == RIDE_TYPE_SPIRAL_ROLLER_COASTER || rideType == RIDE_TYPE_MINE_RIDE
+            || rideType == RIDE_TYPE_HYBRID_COASTER || rideType == RIDE_TYPE_STEEPLECHASE
+            || rideType == RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER))
     {
         switch (trackType)
         {
