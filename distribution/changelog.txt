@@ -13,6 +13,7 @@
 - Fix: [#26128] The loan spinner widget does not appear on the same baseline as the text around it.
 - Fix: [#26140] The time a guest has spent in a queue overflows back to 0 after it reaches 65535 (about a year).
 - Fix: [#26159] The map generator window is not resized correctly in Enlarged UI mode.
+- Fix: [#26196] The sprites of one angle of the Steeplechase left large turn are misaligned (original bug).
 
 0.4.32 (2026-03-01)
 ------------------------------------------------------------------------
