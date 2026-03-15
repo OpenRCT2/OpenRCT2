@@ -51,23 +51,23 @@ namespace OpenRCT2::Profiling
         };
 
         static thread_local std::vector<StackEntry> _callStack;
-        static std::vector<Function*> _registry;
-        static std::mutex _registryMutex;
 
         std::vector<Function*>& getRegistry()
         {
-            return _registry;
+            static std::vector<Function*> registry;
+            return registry;
         }
 
         std::mutex& getRegistryMutex()
         {
-            return _registryMutex;
+            static std::mutex mutex;
+            return mutex;
         }
 
         void registerFunction(FunctionInternal* func)
         {
-            std::scoped_lock lock(_registryMutex);
-            _registry.push_back(func);
+            std::scoped_lock lock(getRegistryMutex());
+            getRegistry().push_back(func);
         }
 
         void functionEnter(FunctionInternal& func)
