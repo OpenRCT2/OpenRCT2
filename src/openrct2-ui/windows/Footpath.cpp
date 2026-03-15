@@ -134,19 +134,13 @@ namespace OpenRCT2::Ui::Windows
         ObjectEntryIndex type{};
         CoordsXY positionA{};
         CoordsXY positionB{};
-        /**
-         * Z of the first tile. Used for checking if the provisional path needs updating.
-         */
         int32_t startZ{};
         ProvisionalPathFlags flags{};
         ObjectEntryIndex surfaceIndex{};
         ObjectEntryIndex railingsIndex{};
         PathConstructFlags constructFlags{};
         std::vector<ProvisionalTile> tiles{};
-        /**
-         * Stores the last error from provisional path placement, so it can be shown
-         * when the user tries to place paths but all tiles failed.
-         */
+        bool usingModifiers{};
         GameActions::Result lastError{};
     };
 
@@ -1093,8 +1087,10 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Check for change
+            bool currentlyUsingModifiers = _footpathPlaceShiftState || _footpathPlaceCtrlState;
             if (_provisionalFootpath.flags.has(ProvisionalPathFlag::placed) && _provisionalFootpath.positionA == mapPos
-                && _provisionalFootpath.startZ == _footpathPlaceZ)
+                && _provisionalFootpath.startZ == _footpathPlaceZ
+                && _provisionalFootpath.usingModifiers == currentlyUsingModifiers)
             {
                 return;
             }
@@ -1125,6 +1121,7 @@ namespace OpenRCT2::Ui::Windows
             auto tiles = std::array<ProvisionalTile, 1>({ footpathLoc, placement.slope });
             const auto footpathCost = FootpathProvisionalSet(
                 pathType, gFootpathSelection.railings, *mapPos, *mapPos, placement.baseZ, tiles, constructFlags);
+            _provisionalFootpath.usingModifiers = currentlyUsingModifiers;
 
             if (_windowFootpathCost != footpathCost)
             {
@@ -1174,33 +1171,28 @@ namespace OpenRCT2::Ui::Windows
         {
             gMapSelectFlags.unset(MapSelectFlag::enableArrow);
 
-            // Calculate expected tile count based on range
             int32_t rangeXTiles = (range.GetX2() - range.GetX1()) / kCoordsXYStep + 1;
             int32_t rangeYTiles = (range.GetY2() - range.GetY1()) / kCoordsXYStep + 1;
             size_t expectedTileCount = static_cast<size_t>(rangeXTiles * rangeYTiles);
 
-            // Check for change
+            bool currentlyUsingModifiers = _footpathPlaceShiftState || _footpathPlaceCtrlState;
             if (_provisionalFootpath.flags.has(ProvisionalPathFlag::placed) && range.Point1 == _provisionalFootpath.positionA
                 && range.Point2 == _provisionalFootpath.positionB && baseZ == _provisionalFootpath.startZ
-                && _provisionalFootpath.tiles.size() == expectedTileCount)
+                && _provisionalFootpath.tiles.size() == expectedTileCount
+                && _provisionalFootpath.usingModifiers == currentlyUsingModifiers)
             {
                 return;
             }
 
-            // Set map selection
             gMapSelectFlags.set(MapSelectFlag::enable);
             gMapSelectType = MapSelectType::full;
 
             FootpathUpdateProvisional();
 
-            // Set provisional path
-            // When no modifier keys are pressed (baseZ == 0), use the connected algorithm
-            // that automatically adds slopes to create a continuous path over terrain.
-            // When Shift or Ctrl is pressed, fall back to the original behavior.
             std::vector<ProvisionalTile> tiles;
             bool isSingleTile = (range.Point1 == range.Point2);
 
-            if (baseZ == 0 && !_footpathPlaceShiftState && !_footpathPlaceCtrlState && !isSingleTile)
+            if (baseZ == 0 && !currentlyUsingModifiers && !isSingleTile)
             {
                 tiles = buildConnectedTileVector(range, _dragStartPos);
             }
@@ -1213,6 +1205,7 @@ namespace OpenRCT2::Ui::Windows
             auto constructFlags = FootpathCreateConstructFlags(pathType);
             const auto footpathCost = FootpathProvisionalSet(
                 pathType, gFootpathSelection.railings, range.Point1, range.Point2, baseZ, tiles, constructFlags);
+            _provisionalFootpath.usingModifiers = currentlyUsingModifiers;
 
             if (_windowFootpathCost != footpathCost)
             {
