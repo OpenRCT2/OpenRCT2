@@ -2672,7 +2672,7 @@ static bool RideCheckStartAndEndIsStation(const CoordsXYE& input)
     trackGetBack(input, &trackBack);
     auto trackType = trackBack.element->AsTrack()->GetTrackType();
     const auto& tedBack = GetTrackElementDescriptor(trackType);
-    if (tedBack.sequenceData.sequences[0].flags.has(SequenceFlag::trackOrigin))
+    if (!tedBack.sequenceData.sequences[0].flags.has(SequenceFlag::trackOrigin))
     {
         return false;
     }
@@ -2682,7 +2682,7 @@ static bool RideCheckStartAndEndIsStation(const CoordsXYE& input)
     trackGetFront(input, &trackFront);
     trackType = trackFront.element->AsTrack()->GetTrackType();
     const auto& tedFront = GetTrackElementDescriptor(trackType);
-    if (tedFront.sequenceData.sequences[0].flags.has(SequenceFlag::trackOrigin))
+    if (!tedFront.sequenceData.sequences[0].flags.has(SequenceFlag::trackOrigin))
     {
         return false;
     }
