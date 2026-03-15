@@ -185,7 +185,7 @@ jobs:
             tracks.dat
   windows:
     name: Windows
-    runs-on: windows-latest
+    runs-on: windows-2025-vs2026
     needs: [check-code-formatting, build_variables, g2dat]
     strategy:
       fail-fast: false
