@@ -69,12 +69,15 @@ PaletteIndex PaletteMap::operator[](size_t index) const
 
 PaletteIndex PaletteMap::Blend(PaletteIndex src, PaletteIndex dst) const
 {
+    const auto srcValue = EnumValue(src);
+    const auto dstValue = EnumValue(dst);
 #ifdef _DEBUG
     // src = 0 would be transparent so there is no blend palette for that, hence (src - 1)
-    assert(src != PaletteIndex::transparent && (EnumValue(src) - 1) < _numMaps);
-    assert(EnumValue(dst) < _mapLength);
+    assert(src != PaletteIndex::transparent);
+    assert(static_cast<size_t>(srcValue - 1) < _numMaps);
+    assert(static_cast<size_t>(dstValue) < _mapLength);
 #endif
-    auto idx = ((EnumValue(src) - 1) * 256) + EnumValue(dst);
+    auto idx = ((srcValue - 1) * 256) + dstValue;
     return _data[idx];
 }
 
