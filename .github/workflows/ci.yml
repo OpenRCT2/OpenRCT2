@@ -185,12 +185,20 @@ jobs:
             tracks.dat
   windows:
     name: Windows
-    runs-on: windows-2025-vs2026
+    runs-on: ${{ matrix.runs_on }}
     needs: [check-code-formatting, build_variables, g2dat]
     strategy:
       fail-fast: false
       matrix:
-        platform: [win32, x64, arm64]
+        include:
+          - platform: win32
+            runs_on: windows-2025-vs2026
+          - platform: x64
+            runs_on: windows-2025-vs2026
+          # keep arm64 on vs2022 for now. VS2026 is a bit slower and we can maintain
+          # compatibility with vs2022
+          - platform: arm64
+            runs_on: windows-latest
     env:
       PLATFORM: ${{ matrix.platform }}
       DISTANCE_FROM_TAG: ${{ needs.build_variables.outputs.distance }}
