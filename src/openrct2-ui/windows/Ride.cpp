@@ -6742,8 +6742,8 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else
                 {
-                    _spinnerCaption0 = FormatStringID(STR_BOTTOM_TOOLBAR_CASH, ride->price[1]);
-                    widgets[WIDX_SECONDARY_PRICE].setString(_spinnerCaption0.c_str());
+                    _spinnerCaption1 = FormatStringID(STR_BOTTOM_TOOLBAR_CASH, ride->price[1]);
+                    widgets[WIDX_SECONDARY_PRICE].setString(_spinnerCaption1.c_str());
                 }
             }
 

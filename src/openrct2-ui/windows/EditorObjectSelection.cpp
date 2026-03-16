@@ -1764,4 +1764,3 @@ namespace OpenRCT2::Ui::Windows
         return false;
     }
 } // namespace OpenRCT2::Ui::Windows
-;
