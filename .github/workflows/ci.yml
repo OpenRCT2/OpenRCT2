@@ -349,7 +349,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
       - name: ccache
-        uses: hendrikmuhs/ccache-action@v1.2.20
+        uses: hendrikmuhs/ccache-action@v1.2.21
         with:
           key: ${{ matrix.cache_key }}
       - name: Install GCC problem matcher
@@ -391,7 +391,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
       - name: ccache
-        uses: hendrikmuhs/ccache-action@v1.2.20
+        uses: hendrikmuhs/ccache-action@v1.2.21
         with:
           key: ${{ matrix.cache_key }}
       - name: Install GCC problem matcher
@@ -494,7 +494,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
       - name: ccache
-        uses: hendrikmuhs/ccache-action@v1.2.20
+        uses: hendrikmuhs/ccache-action@v1.2.21
         with:
           key: linux-${{ matrix.platform }}-${{ matrix.distro }}-${{ matrix.release }}
       - name: Get pre-reqs
@@ -523,7 +523,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
       - name: ccache
-        uses: hendrikmuhs/ccache-action@v1.2.20
+        uses: hendrikmuhs/ccache-action@v1.2.21
         with:
           key: linux-appimage
       - name: Get pre-reqs
@@ -578,7 +578,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
       - name: ccache
-        uses: hendrikmuhs/ccache-action@v1.2.20
+        uses: hendrikmuhs/ccache-action@v1.2.21
         with:
           key: linux-clang
       - name: Install GCC problem matcher
@@ -594,7 +594,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
       - name: ccache
-        uses: hendrikmuhs/ccache-action@v1.2.20
+        uses: hendrikmuhs/ccache-action@v1.2.21
         with:
           key: linux-clang-tests
       - name: Install GCC problem matcher
@@ -639,7 +639,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
       - name: ccache
-        uses: hendrikmuhs/ccache-action@v1.2.20
+        uses: hendrikmuhs/ccache-action@v1.2.21
         with:
           key: android-${{ matrix.arch }}
       - name: Cache Gradle
@@ -729,7 +729,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
       - name: ccache
-        uses: hendrikmuhs/ccache-action@v1.2.20
+        uses: hendrikmuhs/ccache-action@v1.2.21
         with:
           key: emscripten
       - name: Install GCC problem matcher
