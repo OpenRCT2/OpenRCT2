@@ -1737,12 +1737,14 @@ namespace OpenRCT2::TrackMetadata
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 2,
         .blockedSegments = kLeftQuarterBankedHelixLargeUpSeq0.blockedSegments,
+        .reversedTrackSequence = 6,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterBankedHelixLargeDownSeq1 = {
         .clearance = { 0, -32, 0, 16, { 0b1000, 0 }, { ClearanceFlag::flag0 } },
         .allowedWallEdges = 0b1100,
         .blockedSegments = kLeftQuarterBankedHelixLargeUpSeq1.blockedSegments,
+        .reversedTrackSequence = 4,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterBankedHelixLargeDownSeq2 = {
@@ -1750,18 +1752,21 @@ namespace OpenRCT2::TrackMetadata
         .allowedWallEdges = 0b0011,
         .woodenSupports = { WoodenSupportSubType::corner3 },
         .blockedSegments = kLeftQuarterBankedHelixLargeUpSeq2.blockedSegments,
+        .reversedTrackSequence = 5,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterBankedHelixLargeDownSeq3 = {
         .clearance = { -32, -32, 0, 16, { 0b1101, 0 }, {} },
         .woodenSupports = { WoodenSupportSubType::corner1 },
         .blockedSegments = kLeftQuarterBankedHelixLargeUpSeq3.blockedSegments,
+        .reversedTrackSequence = 3,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterBankedHelixLargeDownSeq4 = {
         .clearance = { -32, -64, 0, 8, { 0b1000, 0 }, { ClearanceFlag::flag0 } },
         .allowedWallEdges = 0b1100,
         .blockedSegments = kLeftQuarterBankedHelixLargeUpSeq4.blockedSegments,
+        .reversedTrackSequence = 1,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterBankedHelixLargeDownSeq5 = {
@@ -1770,6 +1775,7 @@ namespace OpenRCT2::TrackMetadata
         .woodenSupports = { WoodenSupportSubType::corner0 },
         .extraSupportRotation = -1,
         .blockedSegments = kLeftQuarterBankedHelixLargeUpSeq5.blockedSegments,
+        .reversedTrackSequence = 2,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterBankedHelixLargeDownSeq6 = {
@@ -1780,6 +1786,7 @@ namespace OpenRCT2::TrackMetadata
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = -1,
         .blockedSegments = kLeftQuarterBankedHelixLargeUpSeq6.blockedSegments,
+        .reversedTrackSequence = 0,
     };
 
     static constexpr SequenceDescriptor kRightQuarterBankedHelixLargeDownSeq0 = {
@@ -1790,12 +1797,14 @@ namespace OpenRCT2::TrackMetadata
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 2,
         .blockedSegments = kRightQuarterBankedHelixLargeUpSeq0.blockedSegments,
+        .reversedTrackSequence = 6,
     };
 
     static constexpr SequenceDescriptor kRightQuarterBankedHelixLargeDownSeq1 = {
         .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, { ClearanceFlag::flag0 } },
         .allowedWallEdges = 0b0110,
         .blockedSegments = kRightQuarterBankedHelixLargeUpSeq1.blockedSegments,
+        .reversedTrackSequence = 4,
     };
 
     static constexpr SequenceDescriptor kRightQuarterBankedHelixLargeDownSeq2 = {
@@ -1803,18 +1812,21 @@ namespace OpenRCT2::TrackMetadata
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
         .blockedSegments = kRightQuarterBankedHelixLargeUpSeq2.blockedSegments,
+        .reversedTrackSequence = 5,
     };
 
     static constexpr SequenceDescriptor kRightQuarterBankedHelixLargeDownSeq3 = {
         .clearance = { -32, 32, 0, 16, { 0b1110, 0 }, {} },
         .woodenSupports = { WoodenSupportSubType::corner0 },
         .blockedSegments = kRightQuarterBankedHelixLargeUpSeq3.blockedSegments,
+        .reversedTrackSequence = 3,
     };
 
     static constexpr SequenceDescriptor kRightQuarterBankedHelixLargeDownSeq4 = {
         .clearance = { -32, 64, 0, 8, { 0b0100, 0 }, { ClearanceFlag::flag0 } },
         .allowedWallEdges = 0b0110,
         .blockedSegments = kRightQuarterBankedHelixLargeUpSeq4.blockedSegments,
+        .reversedTrackSequence = 1,
     };
 
     static constexpr SequenceDescriptor kRightQuarterBankedHelixLargeDownSeq5 = {
@@ -1823,6 +1835,7 @@ namespace OpenRCT2::TrackMetadata
         .woodenSupports = { WoodenSupportSubType::corner1 },
         .extraSupportRotation = 1,
         .blockedSegments = kRightQuarterBankedHelixLargeUpSeq5.blockedSegments,
+        .reversedTrackSequence = 2,
     };
 
     static constexpr SequenceDescriptor kRightQuarterBankedHelixLargeDownSeq6 = {
@@ -1833,6 +1846,7 @@ namespace OpenRCT2::TrackMetadata
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 1,
         .blockedSegments = kRightQuarterBankedHelixLargeUpSeq6.blockedSegments,
+        .reversedTrackSequence = 0,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterHelixLargeUpSeq0 = {
@@ -1957,12 +1971,14 @@ namespace OpenRCT2::TrackMetadata
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 2,
         .blockedSegments = kLeftQuarterHelixLargeUpSeq0.blockedSegments,
+        .reversedTrackSequence = 6,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterHelixLargeDownSeq1 = {
         .clearance = { 0, -32, 0, 16, { 0b1000, 0 }, { ClearanceFlag::flag0 } },
         .allowedWallEdges = 0b1100,
         .blockedSegments = kLeftQuarterHelixLargeUpSeq1.blockedSegments,
+        .reversedTrackSequence = 4,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterHelixLargeDownSeq2 = {
@@ -1970,18 +1986,21 @@ namespace OpenRCT2::TrackMetadata
         .allowedWallEdges = 0b0011,
         .woodenSupports = { WoodenSupportSubType::corner3 },
         .blockedSegments = kLeftQuarterHelixLargeUpSeq2.blockedSegments,
+        .reversedTrackSequence = 5,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterHelixLargeDownSeq3 = {
         .clearance = { -32, -32, 0, 16, { 0b1101, 0 }, {} },
         .woodenSupports = { WoodenSupportSubType::corner1 },
         .blockedSegments = kLeftQuarterBankedHelixLargeUpSeq3.blockedSegments,
+        .reversedTrackSequence = 3,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterHelixLargeDownSeq4 = {
         .clearance = { -32, -64, 0, 8, { 0b1000, 0 }, { ClearanceFlag::flag0 } },
         .allowedWallEdges = 0b1100,
         .blockedSegments = kLeftQuarterHelixLargeUpSeq4.blockedSegments,
+        .reversedTrackSequence = 1,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterHelixLargeDownSeq5 = {
@@ -1990,6 +2009,7 @@ namespace OpenRCT2::TrackMetadata
         .woodenSupports = { WoodenSupportSubType::corner0 },
         .extraSupportRotation = -1,
         .blockedSegments = kLeftQuarterHelixLargeUpSeq5.blockedSegments,
+        .reversedTrackSequence = 2,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterHelixLargeDownSeq6 = {
@@ -2000,6 +2020,7 @@ namespace OpenRCT2::TrackMetadata
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = -1,
         .blockedSegments = kLeftQuarterHelixLargeUpSeq6.blockedSegments,
+        .reversedTrackSequence = 0,
     };
 
     static constexpr SequenceDescriptor kRightQuarterHelixLargeDownSeq0 = {
@@ -2010,12 +2031,14 @@ namespace OpenRCT2::TrackMetadata
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 2,
         .blockedSegments = kRightQuarterHelixLargeUpSeq0.blockedSegments,
+        .reversedTrackSequence = 6,
     };
 
     static constexpr SequenceDescriptor kRightQuarterHelixLargeDownSeq1 = {
         .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, { ClearanceFlag::flag0 } },
         .allowedWallEdges = 0b0110,
         .blockedSegments = kRightQuarterHelixLargeUpSeq1.blockedSegments,
+        .reversedTrackSequence = 4,
     };
 
     static constexpr SequenceDescriptor kRightQuarterHelixLargeDownSeq2 = {
@@ -2023,18 +2046,21 @@ namespace OpenRCT2::TrackMetadata
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
         .blockedSegments = kRightQuarterHelixLargeUpSeq2.blockedSegments,
+        .reversedTrackSequence = 5,
     };
 
     static constexpr SequenceDescriptor kRightQuarterHelixLargeDownSeq3 = {
         .clearance = { -32, 32, 0, 16, { 0b1110, 0 }, {} },
         .woodenSupports = { WoodenSupportSubType::corner0 },
         .blockedSegments = kRightQuarterBankedHelixLargeUpSeq3.blockedSegments,
+        .reversedTrackSequence = 3,
     };
 
     static constexpr SequenceDescriptor kRightQuarterHelixLargeDownSeq4 = {
         .clearance = { -32, 64, 0, 8, { 0b0100, 0 }, { ClearanceFlag::flag0 } },
         .allowedWallEdges = 0b0110,
         .blockedSegments = kRightQuarterHelixLargeUpSeq4.blockedSegments,
+        .reversedTrackSequence = 1,
     };
 
     static constexpr SequenceDescriptor kRightQuarterHelixLargeDownSeq5 = {
@@ -2043,6 +2069,7 @@ namespace OpenRCT2::TrackMetadata
         .woodenSupports = { WoodenSupportSubType::corner1 },
         .extraSupportRotation = 1,
         .blockedSegments = kRightQuarterHelixLargeUpSeq5.blockedSegments,
+        .reversedTrackSequence = 2,
     };
 
     static constexpr SequenceDescriptor kRightQuarterHelixLargeDownSeq6 = {
@@ -2053,6 +2080,7 @@ namespace OpenRCT2::TrackMetadata
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 1,
         .blockedSegments = kRightQuarterHelixLargeUpSeq6.blockedSegments,
+        .reversedTrackSequence = 0,
     };
 
     static constexpr SequenceDescriptor kUp25LeftBankedSeq0 = {
@@ -7677,6 +7705,7 @@ namespace OpenRCT2::TrackMetadata
         .spinFunction = SpinFunction::l8,
         .verticalFactor = EvaluatorConst<200>,
         .lateralFactor = EvaluatorConst<160>,
+        .reversedRotationOffset = 1,
         .sequenceData = { 7,
                           { kLeftQuarterBankedHelixLargeDownSeq0, kLeftQuarterBankedHelixLargeDownSeq1,
                             kLeftQuarterBankedHelixLargeDownSeq2, kLeftQuarterBankedHelixLargeDownSeq3,
@@ -7697,6 +7726,7 @@ namespace OpenRCT2::TrackMetadata
         .spinFunction = SpinFunction::r8,
         .verticalFactor = EvaluatorConst<200>,
         .lateralFactor = EvaluatorConst<-160>,
+        .reversedRotationOffset = 3,
         .sequenceData = { 7,
                           { kRightQuarterBankedHelixLargeDownSeq0, kRightQuarterBankedHelixLargeDownSeq1,
                             kRightQuarterBankedHelixLargeDownSeq2, kRightQuarterBankedHelixLargeDownSeq3,
@@ -7752,6 +7782,7 @@ namespace OpenRCT2::TrackMetadata
                         TrackRoll::none, 0 },
         .spinFunction = SpinFunction::l8,
         .lateralFactor = EvaluatorConst<98>,
+        .reversedRotationOffset = 1,
         .sequenceData = { 7,
                           { kLeftQuarterHelixLargeDownSeq0, kLeftQuarterHelixLargeDownSeq1, kLeftQuarterHelixLargeDownSeq2,
                             kLeftQuarterHelixLargeDownSeq3, kLeftQuarterHelixLargeDownSeq4, kLeftQuarterHelixLargeDownSeq5,
@@ -7770,6 +7801,7 @@ namespace OpenRCT2::TrackMetadata
                         TrackRoll::none, 0 },
         .spinFunction = SpinFunction::r8,
         .lateralFactor = EvaluatorConst<-98>,
+        .reversedRotationOffset = 3,
         .sequenceData = { 7,
                           { kRightQuarterHelixLargeDownSeq0, kRightQuarterHelixLargeDownSeq1, kRightQuarterHelixLargeDownSeq2,
                             kRightQuarterHelixLargeDownSeq3, kRightQuarterHelixLargeDownSeq4, kRightQuarterHelixLargeDownSeq5,

@@ -598,17 +598,20 @@ namespace OpenRCT2
         const std::array<std::array<int8_t, kNumOrthogonalDirections>, sequenceCount>& supportHeightExtras,
         const OpenRCT2::BlockedSegmentsType blockedSegmentsType, const TunnelGroup tunnelGroup,
         const std::array<int8_t, sequenceCount>& generalSupportHeights, const auto tunnelPaintFunction, const bool down,
-        const uint8_t trackSequenceMap[sequenceCount], const int8_t directionOffset, const bool trackSupportColours>
+        const bool trackSupportColours>
     void trackPaintGeneric(
         PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
         const OpenRCT2::TrackElement& trackElement, const SupportType supportType)
     {
+        const auto& ted = OpenRCT2::TrackMetadata::GetTrackElementDescriptor(trackElement.GetTrackType());
+        const auto& sequenceDescriptor = ted.sequenceData.sequences[trackSequence];
+
         uint8_t modifiedTrackSequence = trackSequence;
         Direction modifiedDirection = direction;
         if constexpr (down)
         {
-            modifiedTrackSequence = trackSequenceMap[trackSequence];
-            modifiedDirection = (direction + directionOffset) & 3;
+            modifiedTrackSequence = sequenceDescriptor.reversedTrackSequence;
+            modifiedDirection = (direction + ted.reversedRotationOffset) & 3;
         }
 
         ImageId imageId = trackSupportColours ? getPrimaryTrackColourWithSecondarySupportColour(session) : session.TrackColours;
@@ -625,9 +628,6 @@ namespace OpenRCT2
                 session, modifiedDirection, sequenceCount, modifiedTrackSequence, mapSpriteCount, 1, spriteMap, imageId, height,
                 &boundingBoxes[0][0][0]);
         }
-
-        const auto& ted = OpenRCT2::TrackMetadata::GetTrackElementDescriptor(trackElement.GetTrackType());
-        const auto& sequenceDescriptor = ted.sequenceData.sequences[trackSequence];
 
         if constexpr (woodenSupports)
         {
