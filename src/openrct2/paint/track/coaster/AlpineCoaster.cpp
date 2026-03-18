@@ -1231,7 +1231,7 @@ namespace OpenRCT2::AlpineRC
                         case 1:
                             PaintAddImageAsParentRotated(
                                 session, direction,
-                                session.TrackColours.WithIndex((SPR_TRACKS_ALPINE_LIFT_TRACK_GENTLE_DIAGONAL + 1)),
+                                session.TrackColours.WithIndex((SPR_TRACKS_ALPINE_LIFT_TRACK_GENTLE_DIAGONAL + 9)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             break;
                     }
@@ -1243,7 +1243,7 @@ namespace OpenRCT2::AlpineRC
                         case 1:
                             PaintAddImageAsParentRotated(
                                 session, direction,
-                                session.TrackColours.WithIndex((SPR_TRACKS_ALPINE_TRACK_GENTLE_DIAGONAL + 1)),
+                                session.TrackColours.WithIndex((SPR_TRACKS_ALPINE_TRACK_GENTLE_DIAGONAL + 9)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             break;
                     }

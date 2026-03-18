@@ -1891,7 +1891,7 @@ namespace OpenRCT2::SingleRailRC
                         case 1:
                             PaintAddImageAsParentRotated(
                                 session, direction,
-                                session.TrackColours.WithIndex((SPR_TRACKS_SINGLE_RAIL_LIFT_TRACK_GENTLE_DIAGONAL + 1)),
+                                session.TrackColours.WithIndex((SPR_TRACKS_SINGLE_RAIL_LIFT_TRACK_GENTLE_DIAGONAL + 9)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
                                 session, supportType.metal, MetalSupportPlace::topCorner, 9, height, session.SupportColours);
@@ -1917,7 +1917,7 @@ namespace OpenRCT2::SingleRailRC
                         case 1:
                             PaintAddImageAsParentRotated(
                                 session, direction,
-                                session.TrackColours.WithIndex((SPR_TRACKS_SINGLE_RAIL_TRACK_GENTLE_DIAGONAL + 1)),
+                                session.TrackColours.WithIndex((SPR_TRACKS_SINGLE_RAIL_TRACK_GENTLE_DIAGONAL + 9)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
                                 session, supportType.metal, MetalSupportPlace::topCorner, 9, height, session.SupportColours);

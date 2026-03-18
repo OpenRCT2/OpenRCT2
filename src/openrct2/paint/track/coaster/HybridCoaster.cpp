@@ -1768,7 +1768,7 @@ namespace OpenRCT2::HybridRC
                         case 1:
                             PaintAddImageAsParentRotated(
                                 session, direction,
-                                GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_GENTLE_DIAGONAL + 1),
+                                GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_GENTLE_DIAGONAL + 9),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             break;
                     }
