@@ -1231,8 +1231,7 @@ namespace OpenRCT2
                                 {
                                     auto* trackElement = it.element->AsTrack();
                                     auto trackType = trackElement->GetTrackType();
-                                    if (TrackTypeMustBeMadeInvisible(
-                                            trackElement->GetRideType(), trackType, os.getHeader().targetVersion))
+                                    if (TrackTypeMustBeMadeInvisible(*trackElement, os.getHeader().targetVersion))
                                     {
                                         it.element->SetInvisible(true);
                                     }

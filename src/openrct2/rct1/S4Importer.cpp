@@ -1771,7 +1771,7 @@ namespace OpenRCT2::RCT1
                         dst2->SetMazeEntry(src2->GetMazeEntry());
                     }
 
-                    if (TrackTypeMustBeMadeInvisible(rideType, trackType))
+                    if (TrackTypeMustBeMadeInvisible(*dst2))
                     {
                         dst->SetInvisible(true);
                     }

@@ -1441,7 +1441,7 @@ namespace OpenRCT2::RCT2
                         dst2->SetSeatRotation(src2->GetSeatRotation());
                     }
 
-                    if (TrackTypeMustBeMadeInvisible(rideType, dst2->GetTrackType()))
+                    if (TrackTypeMustBeMadeInvisible(*dst2))
                     {
                         dst->SetInvisible(true);
                     }
