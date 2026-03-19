@@ -1217,6 +1217,7 @@ declare global {
         entranceObject: number;
         colour1: number;
         colour2: number;
+        inspectionInterval: number;
     }
 
     interface RideDemolishArgs extends GameActionArgs {
