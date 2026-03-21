@@ -427,7 +427,7 @@ namespace OpenRCT2::Audio
 
     void Resume()
     {
-        gGameSoundsOff = false;
+        gGameSoundsOff = !Config::Get().sound.masterSoundEnabled;
         PlayTitleMusic();
     }
 

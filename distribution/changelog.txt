@@ -6,6 +6,7 @@
 - Change: [#25962] The station style dropdown now shows entrance icons next to the labels for easier selection.
 - Change: [#26178] Symmetric spinning trains and legacy ‘pre-reversed’ trains can no longer be reversed.
 - Fix: [#10616] Quarter-tile trees cannot be placed on dry portions of half-water tiles.
+- Fix: [#25128] Mute button displayed in wrong state after load.
 - Fix: [#25460] Infinite loop when moving track design ghost queue over queue loop with zero clearances.
 - Fix: [#25735] Ride synchronisation z-check works incorrectly.
 - Fix: [#25962] Dropdown triangle glyphs are not optically centred.
