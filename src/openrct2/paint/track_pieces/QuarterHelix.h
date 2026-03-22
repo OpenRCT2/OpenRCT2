@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../../ride/TrackPaint.h"
+#include "../../paint/track/TrackPaintGeneric.h"
 
 namespace OpenRCT2
 {
