@@ -146,12 +146,16 @@ void DrawTextEllipsised(
 {
     utf8 buffer[512];
     FormatStringLegacy(buffer, sizeof(buffer), format, ft.Data());
-    DrawTextEllipsised(rt, coords, width, buffer, textPaint);
+    GfxClipString(buffer, width, textPaint.FontStyle);
+    DrawText(rt, coords, buffer, textPaint);
 }
 
-void DrawTextEllipsised(RenderTarget& rt, const ScreenCoordsXY& coords, int32_t width, u8string string, TextPaint textPaint)
+void DrawTextEllipsised(
+    RenderTarget& rt, const ScreenCoordsXY& coords, int32_t width, u8string_view string, TextPaint textPaint)
 {
-    GfxClipString(const_cast<utf8*>(string.c_str()), width, textPaint.FontStyle);
+    utf8 buffer[512]{};
+    string.copy(buffer, std::min(string.length(), sizeof(buffer) - 1));
+    GfxClipString(buffer, width, textPaint.FontStyle);
     DrawText(rt, coords, string, textPaint);
 }
 
