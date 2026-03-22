@@ -398,6 +398,7 @@
     <ClInclude Include="paint\Paint.h" />
     <ClInclude Include="paint\Paint.SessionFlags.h" />
     <ClInclude Include="paint\Painter.h" />
+    <ClInclude Include="paint\Balloon.h" />
     <ClInclude Include="paint\entity\Paint.Guest.h" />
     <ClInclude Include="paint\entity\Paint.Peep.h" />
     <ClInclude Include="paint\entity\Paint.Staff.h" />
@@ -992,6 +993,7 @@
     <ClCompile Include="paint\Paint.Entity.cpp" />
     <ClCompile Include="paint\Painter.cpp" />
     <ClCompile Include="paint\PaintHelpers.cpp" />
+    <ClCompile Include="paint\entity\Paint.Balloon.cpp" />
     <ClCompile Include="paint\entity\Paint.Guest.cpp" />
     <ClCompile Include="paint\entity\Paint.Peep.cpp" />
     <ClCompile Include="paint\entity\Paint.Staff.cpp" />

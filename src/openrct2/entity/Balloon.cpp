@@ -14,7 +14,6 @@
 #include "../audio/Audio.h"
 #include "../core/DataSerialiser.h"
 #include "../network/Network.h"
-#include "../paint/Paint.h"
 #include "../profiling/Profiling.h"
 #include "../ride/RideData.h"
 #include "../scenario/Scenario.h"
@@ -123,20 +122,6 @@ namespace OpenRCT2
         stream << popped;
         stream << time_to_move;
         stream << colour;
-    }
-
-    void Balloon::Paint(PaintSession& session, int32_t imageDirection) const
-    {
-        PROFILED_FUNCTION();
-
-        uint32_t imageId = 22651 + (frame & 7);
-        if (popped != 0)
-        {
-            imageId += 8;
-        }
-
-        auto image = ImageId(imageId, colour);
-        PaintAddImageAsParent(session, image, { 0, 0, z }, { 1, 1, 0 });
     }
 
     bool Balloon::Collides() const

@@ -12,7 +12,6 @@
 #include "EntityBase.h"
 
 struct CoordsXYZ;
-struct PaintSession;
 
 namespace OpenRCT2::Drawing
 {
@@ -35,7 +34,6 @@ namespace OpenRCT2
         void Pop(bool playSound);
         void Press();
         void Serialise(DataSerialiser& stream);
-        void Paint(PaintSession& session, int32_t imageDirection) const;
         bool Collides() const;
     };
 } // namespace OpenRCT2
