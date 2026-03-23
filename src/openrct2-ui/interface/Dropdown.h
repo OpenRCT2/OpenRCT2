@@ -15,7 +15,7 @@
 #include <openrct2/core/EnumUtils.hpp>
 #include <openrct2/core/StringTypes.h>
 #include <openrct2/interface/Window.h>
-#include <openrct2/limits.h>
+#include <openrct2/Limits.h>
 #include <optional>
 #include <span>
 
