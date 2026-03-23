@@ -306,6 +306,10 @@ JSValue ScObjectManager::CreateScObject(JSContext* ctx, ObjectType type, int32_t
         {
             return ScBannerObject::New(ctx, type, index);
         }
+        case ObjectType::footpathSurface:
+        {
+            return ScFootpathSurfaceObject::New(ctx, type, index);
+        }
         case ObjectType::sceneryGroup:
         {
             return ScSceneryGroupObject::New(ctx, type, index);
