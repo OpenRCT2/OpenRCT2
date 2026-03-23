@@ -12,6 +12,7 @@
 #ifdef ENABLE_SCRIPTING
 
     #include "../../../Context.h"
+    #include "../../../object/FootpathSurfaceObject.h"
     #include "../../../object/LargeSceneryObject.h"
     #include "../../../object/ObjectManager.h"
     #include "../../../object/RideObject.h"
@@ -896,6 +897,38 @@ namespace OpenRCT2::Scripting
         static JSValue New(JSContext* ctx, ObjectType type, int32_t index)
         {
             return ScSceneryObject::New(ctx, type, index);
+        }
+    };
+
+    class ScFootpathSurfaceObject final : public ScObject
+    {
+    public:
+        static JSValue New(JSContext* ctx, ObjectType type, int32_t index)
+        {
+            JSValue obj = ScObject::New(ctx, type, index);
+            AddFuncs(ctx, obj);
+            return obj;
+        }
+
+    private:
+        static void AddFuncs(JSContext* ctx, JSValue obj)
+        {
+            static constexpr JSCFunctionListEntry funcs[] = {
+                JS_CGETSET_DEF("flags", ScFootpathSurfaceObject::flags_get, nullptr),
+            };
+            JS_SetPropertyFunctionList(ctx, obj, funcs, std::size(funcs));
+        }
+
+        static JSValue flags_get(JSContext* ctx, JSValue thisVal)
+        {
+            auto footpathObject = GetFootpathSurfaceObject(thisVal);
+            return JS_NewUint32(ctx, footpathObject != nullptr ? footpathObject->Flags : 0);
+        }
+
+    protected:
+        static FootpathSurfaceObject* GetFootpathSurfaceObject(JSValue thisVal)
+        {
+            return static_cast<FootpathSurfaceObject*>(GetObject(thisVal));
         }
     };
 
