@@ -31,7 +31,7 @@ namespace OpenRCT2::Dropdown
     struct Item;
 
     constexpr StringId kSeparatorString = 0;
-    constexpr int32_t kItemsMaxSize = 512;
+    constexpr int32_t kItemsMaxSize = 1024;
 
     struct DropdownState;
 
