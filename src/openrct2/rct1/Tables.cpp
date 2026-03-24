@@ -20,8 +20,11 @@
 // clang-format off
 namespace OpenRCT2::RCT1
 {
-    Drawing::Colour GetColour(uint8_t colour)
+    Drawing::Colour getColour(uint8_t colour, bool isBaseGame)
     {
+        if (isBaseGame && colour == 15)
+            return Drawing::Colour::gold;
+        
         static constexpr Drawing::Colour map[] =
         {
             Drawing::Colour::black,
