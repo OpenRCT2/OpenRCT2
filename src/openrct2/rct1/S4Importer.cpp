@@ -1065,7 +1065,7 @@ namespace OpenRCT2::RCT1
             dst->currentTestStation = StationIndex::GetNull();
             dst->averageSpeedTestTimeout = src->averageSpeedTestTimeout;
             dst->slideInUse = src->slideInUse;
-            dst->slidePeepTShirtColour = GetColour(src->slidePeepTshirtColour);
+            dst->slidePeepTShirtColour = getColour(src->slidePeepTshirtColour, _gameVersion);
             dst->spiralSlideProgress = src->spiralSlideProgress;
             // Doubles as slidePeep
             dst->mazeTiles = src->mazeTiles;
@@ -1102,9 +1102,9 @@ namespace OpenRCT2::RCT1
             dst->vehicleColourSettings = src->vehicleColourSettings;
             if (_gameVersion == RCT1Version::baseGame)
             {
-                dst->trackColours[0].main = GetColour(src->trackPrimaryColour);
-                dst->trackColours[0].additional = GetColour(src->trackSecondaryColour);
-                dst->trackColours[0].supports = GetColour(src->trackSupportColour);
+                dst->trackColours[0].main = getColour(src->trackPrimaryColour, _gameVersion);
+                dst->trackColours[0].additional = getColour(src->trackSecondaryColour, _gameVersion);
+                dst->trackColours[0].supports = getColour(src->trackSupportColour, _gameVersion);
 
                 // Balloons were always blue in the original RCT.
                 if (src->type == RideType::balloonStall)
@@ -1120,9 +1120,9 @@ namespace OpenRCT2::RCT1
             {
                 for (int i = 0; i < Limits::kNumColourSchemes; i++)
                 {
-                    dst->trackColours[i].main = GetColour(src->trackColourMain[i]);
-                    dst->trackColours[i].additional = GetColour(src->trackColourAdditional[i]);
-                    dst->trackColours[i].supports = GetColour(src->trackColourSupports[i]);
+                    dst->trackColours[i].main = getColour(src->trackColourMain[i], _gameVersion);
+                    dst->trackColours[i].additional = getColour(src->trackColourAdditional[i], _gameVersion);
+                    dst->trackColours[i].supports = getColour(src->trackColourSupports[i], _gameVersion);
                 }
             }
 
@@ -1154,11 +1154,11 @@ namespace OpenRCT2::RCT1
                     const auto colourSchemeCopyDescriptor = GetColourSchemeCopyDescriptor(src->vehicleType);
                     if (colourSchemeCopyDescriptor.colour1 == kCopyColour1)
                     {
-                        dst->vehicleColours[i].Body = GetColour(src->vehicleColours[i].body);
+                        dst->vehicleColours[i].Body = getColour(src->vehicleColours[i].body, _gameVersion);
                     }
                     else if (colourSchemeCopyDescriptor.colour1 == kCopyColour2)
                     {
-                        dst->vehicleColours[i].Body = GetColour(src->vehicleColours[i].trim);
+                        dst->vehicleColours[i].Body = getColour(src->vehicleColours[i].trim, _gameVersion);
                     }
                     else
                     {
@@ -1167,11 +1167,11 @@ namespace OpenRCT2::RCT1
 
                     if (colourSchemeCopyDescriptor.colour2 == kCopyColour1)
                     {
-                        dst->vehicleColours[i].Trim = GetColour(src->vehicleColours[i].body);
+                        dst->vehicleColours[i].Trim = getColour(src->vehicleColours[i].body, _gameVersion);
                     }
                     else if (colourSchemeCopyDescriptor.colour2 == kCopyColour2)
                     {
-                        dst->vehicleColours[i].Trim = GetColour(src->vehicleColours[i].trim);
+                        dst->vehicleColours[i].Trim = getColour(src->vehicleColours[i].trim, _gameVersion);
                     }
                     else
                     {
@@ -1180,11 +1180,11 @@ namespace OpenRCT2::RCT1
 
                     if (colourSchemeCopyDescriptor.colour3 == kCopyColour1)
                     {
-                        dst->vehicleColours[i].Tertiary = GetColour(src->vehicleColours[i].body);
+                        dst->vehicleColours[i].Tertiary = getColour(src->vehicleColours[i].body, _gameVersion);
                     }
                     else if (colourSchemeCopyDescriptor.colour3 == kCopyColour2)
                     {
-                        dst->vehicleColours[i].Tertiary = GetColour(src->vehicleColours[i].trim);
+                        dst->vehicleColours[i].Tertiary = getColour(src->vehicleColours[i].trim, _gameVersion);
                     }
                     else
                     {
@@ -1284,11 +1284,11 @@ namespace OpenRCT2::RCT1
             // RCT1 had no third colour
             if (colourSchemeCopyDescriptor.colour1 == kCopyColour1)
             {
-                dst->colours.Body = GetColour(src->Colours.BodyColour);
+                dst->colours.Body = getColour(src->Colours.BodyColour, _gameVersion);
             }
             else if (colourSchemeCopyDescriptor.colour1 == kCopyColour2)
             {
-                dst->colours.Body = GetColour(src->Colours.TrimColour);
+                dst->colours.Body = getColour(src->Colours.TrimColour, _gameVersion);
             }
             else
             {
@@ -1297,11 +1297,11 @@ namespace OpenRCT2::RCT1
 
             if (colourSchemeCopyDescriptor.colour2 == kCopyColour1)
             {
-                dst->colours.Trim = GetColour(src->Colours.BodyColour);
+                dst->colours.Trim = getColour(src->Colours.BodyColour, _gameVersion);
             }
             else if (colourSchemeCopyDescriptor.colour2 == kCopyColour2)
             {
-                dst->colours.Trim = GetColour(src->Colours.TrimColour);
+                dst->colours.Trim = getColour(src->Colours.TrimColour, _gameVersion);
             }
             else
             {
@@ -1310,11 +1310,11 @@ namespace OpenRCT2::RCT1
 
             if (colourSchemeCopyDescriptor.colour3 == kCopyColour1)
             {
-                dst->colours.Tertiary = GetColour(src->Colours.BodyColour);
+                dst->colours.Tertiary = getColour(src->Colours.BodyColour, _gameVersion);
             }
             else if (colourSchemeCopyDescriptor.colour3 == kCopyColour2)
             {
-                dst->colours.Tertiary = GetColour(src->Colours.TrimColour);
+                dst->colours.Tertiary = getColour(src->Colours.TrimColour, _gameVersion);
             }
             else
             {
@@ -1360,8 +1360,8 @@ namespace OpenRCT2::RCT1
             dst->nextFlags = src->NextFlags;
             dst->var37 = src->Var37;
             dst->stepProgress = src->StepProgress;
-            dst->tShirtColour = GetColour(src->TshirtColour);
-            dst->trousersColour = GetColour(src->TrousersColour);
+            dst->tShirtColour = getColour(src->TshirtColour, _gameVersion);
+            dst->trousersColour = getColour(src->TrousersColour, _gameVersion);
             dst->destinationX = src->DestinationX;
             dst->destinationY = src->DestinationY;
             dst->destinationTolerance = src->DestinationTolerance;
@@ -1791,7 +1791,7 @@ namespace OpenRCT2::RCT1
                     dst2->setEntryIndex(entryIndex);
                     dst2->setAge(src2->GetAge());
                     dst2->setSceneryQuadrant(src2->GetSceneryQuadrant());
-                    dst2->setPrimaryColour(GetColour(EnumValue(src2->GetPrimaryColour())));
+                    dst2->setPrimaryColour(getColour(EnumValue(src2->GetPrimaryColour()), _gameVersion));
                     if (src2->NeedsSupports())
                         dst2->setNeedsSupports();
 
@@ -1852,7 +1852,7 @@ namespace OpenRCT2::RCT1
                         if (type == -1)
                             continue;
 
-                        Drawing::Colour colourA = GetColour(EnumValue(src2->GetRCT1WallColour()));
+                        Drawing::Colour colourA = getColour(EnumValue(src2->GetRCT1WallColour()), _gameVersion);
                         Drawing::Colour colourB = Drawing::Colour::black;
                         Drawing::Colour colourC = Drawing::Colour::black;
                         ConvertWall(type, &colourA, &colourB);
@@ -1903,8 +1903,8 @@ namespace OpenRCT2::RCT1
                     auto type = src2->GetEntryIndex();
                     dst2->setEntryIndex(_largeSceneryTypeToEntryMap[type]);
                     dst2->setSequenceIndex(src2->GetSequenceIndex());
-                    dst2->setPrimaryColour(GetColour(EnumValue(src2->GetPrimaryColour())));
-                    dst2->setSecondaryColour(GetColour(EnumValue(src2->GetSecondaryColour())));
+                    dst2->setPrimaryColour(getColour(EnumValue(src2->GetPrimaryColour()), _gameVersion));
+                    dst2->setSecondaryColour(getColour(EnumValue(src2->GetSecondaryColour()), _gameVersion));
 
                     return 1;
                 }
@@ -2303,9 +2303,9 @@ namespace OpenRCT2::RCT1
             park.guestGenerationProbability = _s4.GuestGenerationProbability;
 
             // Staff colours
-            park.staffHandymanColour = GetColour(_s4.HandymanColour);
-            park.staffMechanicColour = GetColour(_s4.MechanicColour);
-            park.staffSecurityColour = GetColour(_s4.SecurityGuardColour);
+            park.staffHandymanColour = getColour(_s4.HandymanColour, _gameVersion);
+            park.staffMechanicColour = getColour(_s4.MechanicColour, _gameVersion);
+            park.staffSecurityColour = getColour(_s4.SecurityGuardColour, _gameVersion);
 
             // Flags
             park.flags.holder = _s4.parkFlags.without(ParkFlag::antiCheatDeprecated).holder;
@@ -2522,7 +2522,7 @@ namespace OpenRCT2::RCT1
                 dst->text = GetUserString(src->StringID);
             }
 
-            dst->colour = GetColour(src->Colour);
+            dst->colour = getColour(src->Colour, _gameVersion);
             dst->textColour = src->textColour;
             dst->position.x = src->x;
             dst->position.y = src->y;
@@ -2866,7 +2866,7 @@ namespace OpenRCT2::RCT1
             dst->peep[i] = spriteIndex;
             if (!spriteIndex.IsNull())
             {
-                dst->peep_tshirt_colours[i] = GetColour(src->PeepTshirtColours[i]);
+                dst->peep_tshirt_colours[i] = getColour(src->PeepTshirtColours[i], _gameVersion);
             }
         }
 
@@ -2928,18 +2928,19 @@ namespace OpenRCT2::RCT1
         dst->timeToConsume = src->TimeToConsume;
         dst->vandalismSeen = src->VandalismSeen;
 
-        // Balloons were always blue in RCT1 without AA/LL, umbrellas always red
+        // Balloons were always blue in RCT1 without AA/LL, umbrellas always red. Hats were only introduced in AA.
         if (_gameVersion == RCT1Version::baseGame)
         {
             dst->umbrellaColour = Drawing::Colour::brightRed;
             dst->balloonColour = Drawing::Colour::lightBlue;
+            dst->hatColour = Drawing::Colour::brightRed;
         }
         else
         {
-            dst->umbrellaColour = GetColour(src->UmbrellaColour);
-            dst->balloonColour = GetColour(src->BalloonColour);
+            dst->umbrellaColour = getColour(src->UmbrellaColour, _gameVersion);
+            dst->balloonColour = getColour(src->BalloonColour, _gameVersion);
+            dst->hatColour = getColour(src->HatColour, _gameVersion);
         }
-        dst->hatColour = GetColour(src->HatColour);
 
         dst->happiness = src->Happiness;
         dst->happinessTarget = src->HappinessTarget;
@@ -3076,8 +3077,8 @@ namespace OpenRCT2::RCT1
         ImportEntityCommonProperties(dst, src);
         dst->frame = src->Frame;
         dst->timeToLive = src->TimeToLive;
-        dst->colour[0] = GetColour(src->Colour[0]);
-        dst->colour[1] = GetColour(src->Colour[1]);
+        dst->colour[0] = getColour(src->Colour[0], _gameVersion);
+        dst->colour[1] = getColour(src->Colour[1], _gameVersion);
         dst->crashedSpriteBase = src->CrashedEntityBase;
         dst->velocityX = src->VelocityX;
         dst->velocityY = src->VelocityY;
@@ -3151,7 +3152,7 @@ namespace OpenRCT2::RCT1
         }
         else
         {
-            dst->colour = GetColour(src->Colour);
+            dst->colour = getColour(src->Colour, _gameVersion);
         }
     }
 

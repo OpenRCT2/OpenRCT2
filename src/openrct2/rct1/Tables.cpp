@@ -14,14 +14,32 @@
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "RCT1.h"
+#include "RCT1File.h"
 
 #include <iterator>
 
 // clang-format off
 namespace OpenRCT2::RCT1
 {
-    Drawing::Colour GetColour(uint8_t colour)
+    Drawing::Colour getColour(uint8_t colour, RCT1Version version)
     {
+        if (version == RCT1Version::baseGame)
+        {
+            switch (colour)
+            {
+                case 5:
+                    return Drawing::Colour::deepBlue;
+                case 8:
+                    return Drawing::Colour::emerald;
+                case 15:
+                    return Drawing::Colour::gold;
+                case 17:
+                    return Drawing::Colour::amber;
+                case 23:
+                    return Drawing::Colour::ruby;
+            }
+        }
+        
         static constexpr Drawing::Colour map[] =
         {
             Drawing::Colour::black,
