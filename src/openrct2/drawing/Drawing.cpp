@@ -163,6 +163,7 @@ static constexpr FilterPaletteID kGlassPaletteIds[kColourNumTotal] = {
     FilterPaletteID::paletteGlassDullBrownLight,
     FilterPaletteID::paletteGlassInvisible,
     FilterPaletteID::paletteGlassVoid,
+    FilterPaletteID::paletteGlassGold,
 };
 
 // Previously 0x97FCBC use it to get the correct palette from g1_elements
@@ -227,6 +228,7 @@ static constexpr uint16_t kPaletteToG1Offset[kPaletteTotalOffsets] = {
     SPR_PALETTE_DULL_BROWN_LIGHT,
     SPR_PALETTE_INVISIBLE,
     SPR_PALETTE_VOID,
+    SPR_PALETTE_GOLD,
 
     // Additional palettes
     SPR_PALETTE_WATER,
@@ -371,6 +373,7 @@ static constexpr uint16_t kPaletteToG1Offset[kPaletteTotalOffsets] = {
     SPR_PALETTE_GLASS_DULL_BROWN_LIGHT,
     SPR_PALETTE_GLASS_INVISIBLE,
     SPR_PALETTE_GLASS_VOID,
+    SPR_PALETTE_GLASS_GOLD,
 };
 
 static constexpr TranslucentWindowPalette kWindowPaletteGrey = { FilterPaletteID::paletteTranslucentGrey,                  FilterPaletteID::paletteTranslucentGreyHighlight,             FilterPaletteID::paletteTranslucentGreyShadow };

@@ -665,6 +665,11 @@
         "format": "raw"
     },
     {
+        "path": "map_base/palette_map_gold.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
         "path": "map_base/palette_map_water.png",
         "palette": "keep",
         "format": "raw"
@@ -1341,6 +1346,11 @@
     },
     {
         "path": "map_glass/palette_map_glass_void.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_gold.png",
         "palette": "keep",
         "format": "raw"
     }

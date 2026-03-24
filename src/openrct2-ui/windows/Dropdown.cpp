@@ -539,7 +539,7 @@ namespace OpenRCT2::Ui::Windows
         Colour::honeyDew,       Colour::celadon,        Colour::seafoamGreen, Colour::periwinkle,
         Colour::pastelPink,
 
-        Colour::invisible,      Colour::voidBackground,
+        Colour::invisible,      Colour::voidBackground, Colour::gold,
     };
 
     constexpr std::array kColourTooltips = {
@@ -605,7 +605,9 @@ namespace OpenRCT2::Ui::Windows
 
         STR_COLOUR_INVISIBLE_TIP,
         STR_COLOUR_VOID_TIP,
+        STR_COLOUR_GOLD_TIP,
     };
+    static_assert(kColourTooltips.size() == kColourNumTotal);
 
     Colour ColourDropDownIndexToColour(uint8_t ddidx)
     {

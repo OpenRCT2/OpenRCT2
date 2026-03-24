@@ -72,6 +72,7 @@ namespace OpenRCT2::Drawing
         { "dull_brown_light", Colour::beige },
         { "invisible", Colour::invisible },
         { "void", Colour::voidBackground },
+        { "gold", Colour::gold },
     };
 
     Colour colourFromString(u8string s, Colour defaultValue)

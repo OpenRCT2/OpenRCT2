@@ -161,5 +161,6 @@ namespace OpenRCT2::Drawing
         paletteGlassDullBrownLight = paletteGlass + EnumValue(Colour::beige),
         paletteGlassInvisible = paletteGlass + EnumValue(Colour::invisible),
         paletteGlassVoid = paletteGlass + EnumValue(Colour::voidBackground),
+        paletteGlassGold = paletteGlass + EnumValue(Colour::gold),
     };
 }

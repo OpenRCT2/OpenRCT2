@@ -1286,6 +1286,7 @@ enum : ImageIndex
     SPR_PALETTE_DULL_BROWN_LIGHT,
     SPR_PALETTE_INVISIBLE,
     SPR_PALETTE_VOID,
+    SPR_PALETTE_GOLD,
     SPR_PALETTE_2_END,
 
     // Additional palettes dumped from G1
@@ -1431,6 +1432,7 @@ enum : ImageIndex
     SPR_PALETTE_GLASS_DULL_BROWN_LIGHT,
     SPR_PALETTE_GLASS_INVISIBLE,
     SPR_PALETTE_GLASS_VOID,
+    SPR_PALETTE_GLASS_GOLD,
     SPR_PALETTE_END,
 
     // Sprite font characters
