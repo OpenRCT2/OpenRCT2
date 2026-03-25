@@ -54,6 +54,8 @@ namespace OpenRCT2::Drawing
         outElement.zoomedOffset = meta.zoomedOffset;
         if (meta.importFlags.has(ImportFlag::noDrawOnZoom))
             outElement.flags.set(G1Flag::noZoomDraw);
+        if (meta.zoomedOffset != 0)
+            outElement.flags.set(G1Flag::hasZoomSprite);
 
         ImageImportResult result;
         result.Element = outElement;
