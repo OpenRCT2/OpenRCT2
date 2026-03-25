@@ -2717,7 +2717,7 @@ namespace OpenRCT2::Ui::Windows
 
             auto* widget = &widgets[WIDX_VIEW];
             DrawTextBasic(
-                rt, { windowPos.x + (widget->left + widget->right - 11) / 2, windowPos.y + widget->top },
+                rt, { windowPos.x + (widget->left + widget->right - 11) / 2, windowPos.y + widget->textTop() },
                 STR_WINDOW_COLOUR_2_STRINGID, ft, { TextAlignment::centre });
 
             // Status
