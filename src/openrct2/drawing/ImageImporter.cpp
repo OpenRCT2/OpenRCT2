@@ -250,13 +250,15 @@ namespace OpenRCT2::Drawing
                         currentCode->NumPixels = npixels;
                         currentCode->OffsetX = startX;
 
-                        if (x == size.width - 1)
+                        auto isLastPixel = x == size.width - 1;
+                        if (isLastPixel)
                         {
                             currentCode->NumPixels |= 0x80;
                         }
 
                         currentCode = reinterpret_cast<RLECode*>(dst);
-                        dst += 2;
+                        if (!isLastPixel)
+                            dst += 2;
                     }
                     else
                     {
