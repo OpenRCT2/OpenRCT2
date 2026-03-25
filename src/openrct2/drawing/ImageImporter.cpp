@@ -43,10 +43,12 @@ namespace OpenRCT2::Drawing
         auto pixels = GetPixels(image, meta);
         auto buffer = isRLE ? EncodeRLE(pixels.data(), meta.srcSize) : EncodeRaw(pixels.data(), meta.srcSize);
 
+        G1Flags flags = { G1Flag::hasTransparency };
+        flags.set(G1Flag::hasRLECompression, isRLE);
         G1Element outElement;
         outElement.width = meta.srcSize.width;
         outElement.height = meta.srcSize.height;
-        outElement.flags = { isRLE ? G1Flag::hasRLECompression : G1Flag::hasTransparency };
+        outElement.flags = flags;
         outElement.xOffset = meta.offset.x;
         outElement.yOffset = meta.offset.y;
         outElement.zoomedOffset = meta.zoomedOffset;
