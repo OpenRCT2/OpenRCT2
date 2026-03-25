@@ -29,9 +29,9 @@ namespace OpenRCT2::Drawing
         if (meta.srcSize.height == 0)
             meta.srcSize.height = image.Height;
 
-        if (meta.srcSize.width > 256 || meta.srcSize.height > 256)
+        if (meta.srcSize.width > 300 || meta.srcSize.height > 300)
         {
-            throw std::invalid_argument("Only images 256x256 or less are supported.");
+            throw std::invalid_argument("Only images 300x300 or less are supported.");
         }
 
         if (meta.palette == Palette::KeepIndices && image.Depth != 8)
