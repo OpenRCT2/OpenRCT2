@@ -59,8 +59,7 @@ namespace OpenRCT2
         const bool woodenSupports,
         const std::array<std::array<int8_t, kNumOrthogonalDirections>, sequenceCount>& supportHeightExtras,
         const OpenRCT2::BlockedSegmentsType blockedSegmentsType, const TunnelGroup tunnelGroup,
-        const std::array<int8_t, sequenceCount>& generalSupportHeights, const auto tunnelPaintFunction, const bool down,
-        const bool trackSupportColours>
+        const int16_t trackClearanceHeight, const auto tunnelPaintFunction, const bool down, const bool trackSupportColours>
     void trackPaintGeneric(
         PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
         const OpenRCT2::TrackElement& trackElement, const SupportType supportType)
@@ -117,7 +116,11 @@ namespace OpenRCT2
         const auto segments = sequenceDescriptor.blockedSegments[EnumValue(blockedSegmentsType)];
         PaintUtilSetSegmentSupportHeight(session, paintSegmentsRotate(segments, direction), 0xFFFF, 0);
 
-        PaintUtilSetGeneralSupportHeight(session, height + generalSupportHeights[modifiedTrackSequence]);
+        constexpr int16_t trackClearanceHeightCeil = Numerics::ceil2(trackClearanceHeight, kLandHeightStep);
+        const auto generalSupportHeight = height + trackClearanceHeightCeil + sequenceDescriptor.generalSupportHeight;
+        const bool setGeneralSupportHeight = sequenceDescriptor.generalSupportHeight
+            != TrackMetadata::kDoNotSetGeneralSupportHeight;
+        PaintUtilSetGeneralSupportHeight(session, generalSupportHeight * setGeneralSupportHeight);
 
         tunnelPaintFunction(session, modifiedTrackSequence, modifiedDirection, height, tunnelGroup);
     }

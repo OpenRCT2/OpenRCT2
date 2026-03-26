@@ -223,6 +223,28 @@ namespace OpenRCT2::TrackMetadata
         kSegmentsAll,                                                                         // wide
     } };
 
+    static constexpr int16_t kDoNotSetGeneralSupportHeight = std::numeric_limits<int16_t>::min();
+
+    constexpr int16_t calculateGeneralSupportHeight(
+        const SequenceClearance& sequenceClearance, const int32_t clearanceOffset, bool startsAtHalfHeight)
+    {
+        const int16_t trackHeight = sequenceClearance.z + (startsAtHalfHeight * kCoordsZStep);
+        startsAtHalfHeight = trackHeight % kLandHeightStep == kCoordsZStep;
+
+        int32_t trackClearance = 0;
+        if (!startsAtHalfHeight)
+        {
+            trackClearance = Numerics::ceil2(sequenceClearance.clearanceZ, kLandHeightStep);
+        }
+        else
+        {
+            trackClearance = Numerics::ceil2(sequenceClearance.clearanceZ, kCoordsZStep);
+            trackClearance += (trackClearance + kCoordsZStep) % kLandHeightStep;
+        }
+
+        return trackClearance + (clearanceOffset * kLandHeightStep);
+    };
+
     struct SequenceDescriptor
     {
         SequenceClearance clearance{};
@@ -235,6 +257,7 @@ namespace OpenRCT2::TrackMetadata
         int8_t extraSupportRotation = 0;
         bool invertSegmentBlocking = false;
         BlockedSegmentsPerType blockedSegments{ kSegmentsNone, kSegmentsNone, kSegmentsNone };
+        int16_t generalSupportHeight = kDoNotSetGeneralSupportHeight;
         uint8_t reversedTrackSequence = 0;
 
         constexpr uint8_t getEntranceConnectionSides() const
