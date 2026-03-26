@@ -1667,7 +1667,7 @@ namespace OpenRCT2::TrackMetadata
         .allowedWallEdges = 0b0001,
         .flags = { SequenceFlag::hasHeightMarker },
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25even },
-        .metalSupports = { MetalSupportPlace::centre },
+        .metalSupports = { MetalSupportPlace::centre, false, kCoordsZStep },
         .extraSupportRotation = -1,
         .blockedSegments = { {
             EnumsToFlags(PS::bottom, PS::centre, PS::topLeft, PS::bottomRight, PS::bottomLeft, PS::left), // narrow
@@ -1724,7 +1724,7 @@ namespace OpenRCT2::TrackMetadata
         .allowedWallEdges = 0b0001,
         .flags = { SequenceFlag::hasHeightMarker },
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25even },
-        .metalSupports = { MetalSupportPlace::centre },
+        .metalSupports = { MetalSupportPlace::centre, false, kCoordsZStep },
         .extraSupportRotation = 1,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftQuarterBankedHelixLargeUpSeq6.blockedSegments),
     };
@@ -1734,7 +1734,7 @@ namespace OpenRCT2::TrackMetadata
         .allowedWallEdges = 0b0010,
         .flags = { SequenceFlag::hasHeightMarker },
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25even },
-        .metalSupports = { MetalSupportPlace::centre },
+        .metalSupports = { MetalSupportPlace::centre, false, kCoordsZStep },
         .extraSupportRotation = 2,
         .blockedSegments = kLeftQuarterBankedHelixLargeUpSeq0.blockedSegments,
         .reversedTrackSequence = 6,
@@ -1794,7 +1794,7 @@ namespace OpenRCT2::TrackMetadata
         .allowedWallEdges = 0b1000,
         .flags = { SequenceFlag::hasHeightMarker },
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25even },
-        .metalSupports = { MetalSupportPlace::centre },
+        .metalSupports = { MetalSupportPlace::centre, false, kCoordsZStep },
         .extraSupportRotation = 2,
         .blockedSegments = kRightQuarterBankedHelixLargeUpSeq0.blockedSegments,
         .reversedTrackSequence = 6,
@@ -1901,7 +1901,7 @@ namespace OpenRCT2::TrackMetadata
         .allowedWallEdges = 0b0001,
         .flags = { SequenceFlag::hasHeightMarker },
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25even },
-        .metalSupports = { MetalSupportPlace::centre },
+        .metalSupports = { MetalSupportPlace::centre, false, kCoordsZStep },
         .extraSupportRotation = -1,
         .blockedSegments = { {
             EnumsToFlags(PS::bottom, PS::centre, PS::topLeft, PS::bottomRight, PS::bottomLeft), // narrow
@@ -1958,7 +1958,7 @@ namespace OpenRCT2::TrackMetadata
         .allowedWallEdges = 0b0001,
         .flags = { SequenceFlag::hasHeightMarker },
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25even },
-        .metalSupports = { MetalSupportPlace::centre },
+        .metalSupports = { MetalSupportPlace::centre, false, kCoordsZStep },
         .extraSupportRotation = 1,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftQuarterHelixLargeUpSeq6.blockedSegments),
     };
@@ -1968,7 +1968,7 @@ namespace OpenRCT2::TrackMetadata
         .allowedWallEdges = 0b0010,
         .flags = { SequenceFlag::hasHeightMarker },
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25even },
-        .metalSupports = { MetalSupportPlace::centre },
+        .metalSupports = { MetalSupportPlace::centre, false, kCoordsZStep },
         .extraSupportRotation = 2,
         .blockedSegments = kLeftQuarterHelixLargeUpSeq0.blockedSegments,
         .reversedTrackSequence = 6,
@@ -2028,7 +2028,7 @@ namespace OpenRCT2::TrackMetadata
         .allowedWallEdges = 0b1000,
         .flags = { SequenceFlag::hasHeightMarker },
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25even },
-        .metalSupports = { MetalSupportPlace::centre },
+        .metalSupports = { MetalSupportPlace::centre, false, kCoordsZStep },
         .extraSupportRotation = 2,
         .blockedSegments = kRightQuarterHelixLargeUpSeq0.blockedSegments,
         .reversedTrackSequence = 6,

@@ -206,12 +206,14 @@ namespace OpenRCT2::TrackMetadata
     {
         WoodenSupportSubType subType = WoodenSupportSubType::null;
         WoodenSupportTransitionType transitionType = WoodenSupportTransitionType::none;
+        int8_t height = 0;
     };
 
     struct SequenceMetalSupport
     {
         MetalSupportPlace place = MetalSupportPlace::none;
         uint8_t alternates = false;
+        int8_t height = 0;
     };
 
     using BlockedSegmentsPerType = std::array<uint16_t, kBlockedSegmentsTypeCount>;

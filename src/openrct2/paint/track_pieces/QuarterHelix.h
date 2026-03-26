@@ -95,7 +95,6 @@ namespace OpenRCT2
     extern const QuarterHelixBoundingBoxes kRightQuarterHelixLargeUpBoundingBoxes;
 
     extern const std::array<int8_t, kQuarterHelixSequenceCount> kQuarterHelixGeneralSupportHeights;
-    extern const std::array<int8_t, kQuarterHelixSequenceCount> kQuarterHelixSupportHeights;
 
     void trackPaintLeftQuarterHelixTunnels(
         PaintSession& session, const uint8_t trackSequence, const Direction direction, const int32_t height,
@@ -114,9 +113,9 @@ namespace OpenRCT2
     {
         trackPaintGeneric<
             kQuarterHelixSequenceCount, kQuarterHelixSequenceSpriteCount, 1, imageIndex, spriteMap,
-            kLeftQuarterHelixLargeUpBoundingBoxes, woodenSupports, kQuarterHelixSupportHeights, supportHeightExtras,
-            blockedSegmentsType, tunnelGroup, kQuarterHelixGeneralSupportHeights, trackPaintLeftQuarterHelixTunnels, false,
-            trackSupportColours>(session, ride, trackSequence, direction, height, trackElement, supportType);
+            kLeftQuarterHelixLargeUpBoundingBoxes, woodenSupports, supportHeightExtras, blockedSegmentsType, tunnelGroup,
+            kQuarterHelixGeneralSupportHeights, trackPaintLeftQuarterHelixTunnels, false, trackSupportColours>(
+            session, ride, trackSequence, direction, height, trackElement, supportType);
     }
 
     template<
@@ -129,9 +128,9 @@ namespace OpenRCT2
     {
         trackPaintGeneric<
             kQuarterHelixSequenceCount, kQuarterHelixSequenceSpriteCount, 1, imageIndex, spriteMap,
-            kRightQuarterHelixLargeUpBoundingBoxes, woodenSupports, kQuarterHelixSupportHeights, supportHeightExtras,
-            blockedSegmentsType, tunnelGroup, kQuarterHelixGeneralSupportHeights, trackPaintRightQuarterHelixTunnels, false,
-            trackSupportColours>(session, ride, trackSequence, direction, height, trackElement, supportType);
+            kRightQuarterHelixLargeUpBoundingBoxes, woodenSupports, supportHeightExtras, blockedSegmentsType, tunnelGroup,
+            kQuarterHelixGeneralSupportHeights, trackPaintRightQuarterHelixTunnels, false, trackSupportColours>(
+            session, ride, trackSequence, direction, height, trackElement, supportType);
     }
 
     template<
@@ -144,9 +143,9 @@ namespace OpenRCT2
     {
         trackPaintGeneric<
             kQuarterHelixSequenceCount, kQuarterHelixSequenceSpriteCount, 1, imageIndex, spriteMap,
-            kRightQuarterHelixLargeUpBoundingBoxes, woodenSupports, kQuarterHelixSupportHeights, supportHeightExtras,
-            blockedSegmentsType, tunnelGroup, kQuarterHelixGeneralSupportHeights, trackPaintRightQuarterHelixTunnels, true,
-            trackSupportColours>(session, ride, trackSequence, direction, height, trackElement, supportType);
+            kRightQuarterHelixLargeUpBoundingBoxes, woodenSupports, supportHeightExtras, blockedSegmentsType, tunnelGroup,
+            kQuarterHelixGeneralSupportHeights, trackPaintRightQuarterHelixTunnels, true, trackSupportColours>(
+            session, ride, trackSequence, direction, height, trackElement, supportType);
     }
 
     template<
@@ -159,9 +158,9 @@ namespace OpenRCT2
     {
         trackPaintGeneric<
             kQuarterHelixSequenceCount, kQuarterHelixSequenceSpriteCount, 1, imageIndex, spriteMap,
-            kLeftQuarterHelixLargeUpBoundingBoxes, woodenSupports, kQuarterHelixSupportHeights, supportHeightExtras,
-            blockedSegmentsType, tunnelGroup, kQuarterHelixGeneralSupportHeights, trackPaintLeftQuarterHelixTunnels, true,
-            trackSupportColours>(session, ride, trackSequence, direction, height, trackElement, supportType);
+            kLeftQuarterHelixLargeUpBoundingBoxes, woodenSupports, supportHeightExtras, blockedSegmentsType, tunnelGroup,
+            kQuarterHelixGeneralSupportHeights, trackPaintLeftQuarterHelixTunnels, true, trackSupportColours>(
+            session, ride, trackSequence, direction, height, trackElement, supportType);
     }
 
     template<
@@ -174,9 +173,9 @@ namespace OpenRCT2
     {
         trackPaintGeneric<
             kQuarterHelixSequenceCount, kQuarterHelixSequenceSpriteCount, 2, imageIndex, spriteMap,
-            kLeftQuarterHelixLargeUpBoundingBoxes, woodenSupports, kQuarterHelixSupportHeights, supportHeightExtras,
-            blockedSegmentsType, tunnelGroup, kQuarterHelixGeneralSupportHeights, trackPaintLeftQuarterHelixTunnels, false,
-            trackSupportColours>(session, ride, trackSequence, direction, height, trackElement, supportType);
+            kLeftQuarterHelixLargeUpBoundingBoxes, woodenSupports, supportHeightExtras, blockedSegmentsType, tunnelGroup,
+            kQuarterHelixGeneralSupportHeights, trackPaintLeftQuarterHelixTunnels, false, trackSupportColours>(
+            session, ride, trackSequence, direction, height, trackElement, supportType);
     }
 
     template<
@@ -189,9 +188,9 @@ namespace OpenRCT2
     {
         trackPaintGeneric<
             kQuarterHelixSequenceCount, kQuarterHelixSequenceSpriteCount, 2, imageIndex, spriteMap,
-            kRightQuarterHelixLargeUpBoundingBoxes, woodenSupports, kQuarterHelixSupportHeights, supportHeightExtras,
-            blockedSegmentsType, tunnelGroup, kQuarterHelixGeneralSupportHeights, trackPaintRightQuarterHelixTunnels, false,
-            trackSupportColours>(session, ride, trackSequence, direction, height, trackElement, supportType);
+            kRightQuarterHelixLargeUpBoundingBoxes, woodenSupports, supportHeightExtras, blockedSegmentsType, tunnelGroup,
+            kQuarterHelixGeneralSupportHeights, trackPaintRightQuarterHelixTunnels, false, trackSupportColours>(
+            session, ride, trackSequence, direction, height, trackElement, supportType);
     }
 
     template<
@@ -204,9 +203,9 @@ namespace OpenRCT2
     {
         trackPaintGeneric<
             kQuarterHelixSequenceCount, kQuarterHelixSequenceSpriteCount, 2, imageIndex, spriteMap,
-            kRightQuarterHelixLargeUpBoundingBoxes, woodenSupports, kQuarterHelixSupportHeights, supportHeightExtras,
-            blockedSegmentsType, tunnelGroup, kQuarterHelixGeneralSupportHeights, trackPaintRightQuarterHelixTunnels, true,
-            trackSupportColours>(session, ride, trackSequence, direction, height, trackElement, supportType);
+            kRightQuarterHelixLargeUpBoundingBoxes, woodenSupports, supportHeightExtras, blockedSegmentsType, tunnelGroup,
+            kQuarterHelixGeneralSupportHeights, trackPaintRightQuarterHelixTunnels, true, trackSupportColours>(
+            session, ride, trackSequence, direction, height, trackElement, supportType);
     }
 
     template<
@@ -219,8 +218,8 @@ namespace OpenRCT2
     {
         trackPaintGeneric<
             kQuarterHelixSequenceCount, kQuarterHelixSequenceSpriteCount, 2, imageIndex, spriteMap,
-            kLeftQuarterHelixLargeUpBoundingBoxes, woodenSupports, kQuarterHelixSupportHeights, supportHeightExtras,
-            blockedSegmentsType, tunnelGroup, kQuarterHelixGeneralSupportHeights, trackPaintLeftQuarterHelixTunnels, true,
-            trackSupportColours>(session, ride, trackSequence, direction, height, trackElement, supportType);
+            kLeftQuarterHelixLargeUpBoundingBoxes, woodenSupports, supportHeightExtras, blockedSegmentsType, tunnelGroup,
+            kQuarterHelixGeneralSupportHeights, trackPaintLeftQuarterHelixTunnels, true, trackSupportColours>(
+            session, ride, trackSequence, direction, height, trackElement, supportType);
     }
 } // namespace OpenRCT2

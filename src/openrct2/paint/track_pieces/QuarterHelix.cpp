@@ -53,7 +53,6 @@ namespace OpenRCT2
         kLeftQuarterHelixLargeUpBoundingBoxes);
 
     const std::array<int8_t, kQuarterHelixSequenceCount> kQuarterHelixGeneralSupportHeights = { 32, 32, 32, 48, 48, 48, 48 };
-    const std::array<int8_t, kQuarterHelixSequenceCount> kQuarterHelixSupportHeights = { 0, 0, 0, 0, 0, 0, kCoordsZStep };
 
     void trackPaintLeftQuarterHelixTunnels(
         PaintSession& session, const uint8_t trackSequence, const Direction direction, const int32_t height,

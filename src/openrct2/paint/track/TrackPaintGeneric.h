@@ -56,7 +56,7 @@ namespace OpenRCT2
         const uint64_t spriteMap,
         const std::array<std::array<std::array<BoundBoxXYZ, mapSpriteCount>, sequenceCount>, kNumOrthogonalDirections>&
             boundingBoxes,
-        const bool woodenSupports, const std::array<int8_t, sequenceCount>& supportHeights,
+        const bool woodenSupports,
         const std::array<std::array<int8_t, kNumOrthogonalDirections>, sequenceCount>& supportHeightExtras,
         const OpenRCT2::BlockedSegmentsType blockedSegmentsType, const TunnelGroup tunnelGroup,
         const std::array<int8_t, sequenceCount>& generalSupportHeights, const auto tunnelPaintFunction, const bool down,
@@ -97,8 +97,9 @@ namespace OpenRCT2
             {
                 const Direction supportRotation = (direction + sequenceDescriptor.extraSupportRotation) & 3;
                 WoodenASupportsPaintSetupRotated(
-                    session, supportType.wooden, sequenceDescriptor.woodenSupports.subType, supportRotation, height,
-                    session.SupportColours, sequenceDescriptor.woodenSupports.transitionType);
+                    session, supportType.wooden, sequenceDescriptor.woodenSupports.subType, supportRotation,
+                    height + sequenceDescriptor.woodenSupports.height, session.SupportColours,
+                    sequenceDescriptor.woodenSupports.transitionType);
             }
         }
         else
@@ -109,7 +110,7 @@ namespace OpenRCT2
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, sequenceDescriptor.metalSupports.place, supportRotation,
                     supportHeightExtras[modifiedTrackSequence][modifiedDirection],
-                    height + supportHeights[modifiedTrackSequence], session.SupportColours);
+                    height + sequenceDescriptor.metalSupports.height, session.SupportColours);
             }
         }
 
