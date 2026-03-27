@@ -17,6 +17,11 @@
 
 #include <cstdint>
 
+namespace OpenRCT2::Drawing
+{
+    struct RenderTarget;
+}
+
 namespace OpenRCT2
 {
     using WidgetIndex = uint16_t;
@@ -74,10 +79,28 @@ namespace OpenRCT2
         SCROLL_BOTH = SCROLL_HORIZONTAL | SCROLL_VERTICAL
     };
 
+    enum class WindowColour : uint8_t
+    {
+        primary,
+        secondary,
+        tertiary,
+        quaternary,
+    };
+
     constexpr const char* kCloseBoxStringBlackNormal = u8"{BLACK}❌";
     constexpr const char* kCloseBoxStringBlackLarge = u8"{BLACK}X";
     constexpr const char* kCloseBoxStringWhiteNormal = u8"{WHITE}❌";
     constexpr const char* kCloseBoxStringWhiteLarge = u8"{WHITE}X";
+
+    struct Widget;
+    struct WindowBase;
+
+    struct WidgetEventList
+    {
+        void (*draw)(
+            Drawing::RenderTarget& RenderTarget, const Widget& widget, const WidgetIndex widgetIndex, const WindowBase& window)
+            = nullptr;
+    };
 
     struct Widget
     {
@@ -97,8 +120,25 @@ namespace OpenRCT2
         StringId tooltip{ kStringIdNone };
 
         // New properties
+        WidgetEventList events{};
         WidgetFlags flags{};
         const utf8* sztooltip{};
+
+        constexpr Widget() = default;
+
+        constexpr Widget(
+            ScreenCoordsXY origin, ScreenSize size, WidgetType widgetType, WindowColour colour_, StringId content_,
+            StringId tooltip_)
+        {
+            this->left = origin.x;
+            this->right = origin.x + size.width - 1;
+            this->top = origin.y;
+            this->bottom = origin.y + size.height - 1;
+            this->type = widgetType;
+            this->colour = EnumValue(colour_);
+            this->content = content_;
+            this->tooltip = tooltip_;
+        }
 
         int16_t width() const
         {
