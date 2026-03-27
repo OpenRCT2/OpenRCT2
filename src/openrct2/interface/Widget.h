@@ -127,17 +127,17 @@ namespace OpenRCT2
         constexpr Widget() = default;
 
         constexpr Widget(
-            ScreenCoordsXY origin, ScreenSize size, WidgetType widgetType, WindowColour colour, StringId content,
-            StringId tooltip)
+            ScreenCoordsXY origin, ScreenSize size, WidgetType widgetType, WindowColour colour_, StringId content_,
+                StringId tooltip_)
         {
             this->left = origin.x;
             this->right = origin.x + size.width - 1;
             this->top = origin.y;
             this->bottom = origin.y + size.height - 1;
             this->type = widgetType;
-            this->colour = EnumValue(colour);
-            this->content = content;
-            this->tooltip = tooltip;
+            this->colour = EnumValue(colour_);
+            this->content = content_;
+            this->tooltip = tooltip_;
         }
 
         int16_t width() const
