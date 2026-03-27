@@ -20,9 +20,9 @@ namespace OpenRCT2::Ui::Widgets
         static constexpr auto kWidgetType = WidgetType::caption;
 
         constexpr Caption(
-            ScreenCoordsXY origin, ScreenSize size, WindowColour colour, StringId content = kStringIdNone,
-            StringId tooltip = kStringIdNone)
-            : Widget(origin, size, kWidgetType, colour, content, tooltip)
+            ScreenCoordsXY origin, ScreenSize size, WindowColour colour_, StringId content_ = kStringIdNone,
+            StringId tooltip_ = kStringIdNone)
+            : Widget(origin, size, kWidgetType, colour_, content_, tooltip_)
         {
             events.draw = &draw;
         }
