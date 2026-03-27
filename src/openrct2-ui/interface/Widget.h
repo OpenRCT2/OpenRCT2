@@ -12,6 +12,7 @@
 #include "Window.h"
 
 #include <openrct2-ui/UiStringIds.h>
+#include <openrct2-ui/widget/CaptionWidget.h>
 #include <openrct2/drawing/FilterPaletteIds.h>
 #include <openrct2/interface/Widget.h>
 
@@ -31,14 +32,6 @@ namespace OpenRCT2::Ui
     constexpr const char* kBlackRightArrowString = u8"{BLACK}▶";
     constexpr const char* kCheckMarkString = u8"✓";
     constexpr const char* kEyeString = u8"👁";
-
-    enum class WindowColour : uint8_t
-    {
-        primary,
-        secondary,
-        tertiary,
-        quaternary,
-    };
 
     constexpr Widget makeWidget(
         const ScreenCoordsXY& origin, const ScreenSize& size, WidgetType type, WindowColour colour,
@@ -175,11 +168,11 @@ namespace OpenRCT2::Ui
     constexpr std::array<Widget, 3> makeWindowShim(StringId title, ScreenSize size)
     {
         // clang-format off
-        std::array<Widget, 3> out = {
+        auto out = makeWidgets(
             makeWidget({ 0, 0 }, { size.width, size.height }, WidgetType::frame, WindowColour::primary),
-            makeWidget({ 1, 1 }, { size.width - 1, kTitleHeightNormal }, WidgetType::caption, WindowColour::primary, title, STR_WINDOW_TITLE_TIP),
-            makeWidget({ size.width - 12, 2 }, { 11, 11 }, WidgetType::closeBox, WindowColour::primary, kWidgetContentEmpty, STR_CLOSE_WINDOW_TIP),
-        };
+            OpenRCT2::Ui::Widgets::Caption({ 1, 1 }, { size.width - 1, kTitleHeightNormal }, WindowColour::primary, title),
+            makeWidget({ size.width - 12, 2 }, { 11, 11 }, WidgetType::closeBox, WindowColour::primary, kWidgetContentEmpty, STR_CLOSE_WINDOW_TIP)
+        );
         // clang-format on
 
         out[2].string = kCloseBoxStringBlackNormal;

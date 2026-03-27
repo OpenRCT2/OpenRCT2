@@ -168,15 +168,9 @@ namespace OpenRCT2::Ui::Windows
                         y += 7;
                     }
 
-                    Widget groupWidget = {
-                        .type = WidgetType::groupbox,
-                        .colour = EnumValue(colours[1].colour),
-                        .left = static_cast<int16_t>(baseCheckBox.left - 5),
-                        .right = static_cast<int16_t>(baseCheckBox.right + 5),
-                        .top = y,
-                        .bottom = static_cast<int16_t>(y + kListRowHeight),
-                        .text = def.group,
-                    };
+                    Widget groupWidget = makeWidget(
+                        { baseCheckBox.left - 5, y }, { baseCheckBox.width() + 10, kListRowHeight }, WidgetType::groupbox,
+                        WindowColour::secondary, def.group);
 
                     groupWidgetsToInsert.emplace_back(groupWidget);
                     lastGroup = def.group;
@@ -184,15 +178,9 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 // Create checkbox widgets
-                Widget checkboxWidget = {
-                    .type = WidgetType::checkbox,
-                    .colour = EnumValue(colours[1].colour),
-                    .left = baseCheckBox.left,
-                    .right = baseCheckBox.right,
-                    .top = y,
-                    .bottom = static_cast<int16_t>(y + kListRowHeight + 3),
-                    .text = def.caption,
-                };
+                Widget checkboxWidget = makeWidget(
+                    { baseCheckBox.left, y }, { baseCheckBox.width(), kListRowHeight + 3 }, WidgetType::checkbox,
+                    WindowColour::secondary, def.caption);
 
                 checkboxWidgetsToInsert.emplace_back(checkboxWidget);
                 numGroupElements++;
