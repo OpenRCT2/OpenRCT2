@@ -128,7 +128,7 @@ namespace OpenRCT2
 
         constexpr Widget(
             ScreenCoordsXY origin, ScreenSize size, WidgetType widgetType, WindowColour colour_, StringId content_,
-                StringId tooltip_)
+            StringId tooltip_)
         {
             this->left = origin.x;
             this->right = origin.x + size.width - 1;
