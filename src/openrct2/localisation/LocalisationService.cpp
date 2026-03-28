@@ -63,7 +63,7 @@ namespace OpenRCT2::Localisation
             return "(undefined string)";
         }
 
-        return nullptr;
+        return "";
     }
 
     std::string LocalisationService::GetLanguagePath(uint32_t languageId) const
