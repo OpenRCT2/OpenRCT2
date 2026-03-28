@@ -1,0 +1,23 @@
+{
+  "name": "@openrct2/types",
+  "description": "TypeScript type definitions for the OpenRCT2 Plugin API",
+  "license": "GPL-3.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/OpenRCT2/OpenRCT2.git",
+    "directory": "distribution"
+  },
+  "homepage": "https://github.com/OpenRCT2/OpenRCT2/blob/develop/distribution/openrct2.d.ts",
+  "keywords": [
+    "openrct2",
+    "types",
+    "typescript",
+    "plugin",
+    "modding",
+    "scripting"
+  ],
+  "types": "openrct2.d.ts",
+  "files": [
+    "openrct2.d.ts"
+  ]
+}
