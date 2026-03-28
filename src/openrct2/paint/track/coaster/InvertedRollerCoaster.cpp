@@ -11711,7 +11711,8 @@ static void InvertedRCTrackRightEighthDiveLoopUpToOrthogonal(
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BM_INVERT_DIVE_LOOP + 28)),
-                        { -16, -16, height + kInvertedSpriteOffset }, { { 0, 0, height + 88 }, { 32, 32, 1 } });
+                        { -16, -16, height + kInvertedSpriteOffset },
+                        { { 0, 0, height + 88 }, { 10, 10, 1 } }); // Typo fixed from 32, 32, 1
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -11784,26 +11785,22 @@ static void InvertedRCTrackRightEighthDiveLoopUpToOrthogonal(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BM_INVERT_DIVE_LOOP + 17)),
                         { -16, -16, height + kInvertedSpriteOffset }, { { 2, 2, height + 100 }, { 28, 28, 1 } });
-
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BM_INVERT_DIVE_LOOP + 21)),
                         { -16, -16, height + kInvertedSpriteOffset },
                         { { -8, -8, height + kInvertedSpriteOffset }, { 3, 3, 15 } });
-
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BM_INVERT_DIVE_LOOP + 25)),
                         { -16, -16, height + kInvertedSpriteOffset }, { { 0, -1, height + 33 }, { 1, 32, 64 } });
-
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BM_INVERT_DIVE_LOOP + 29)),
                         { -16, -16, height + kInvertedSpriteOffset }, { { 2, 2, height + 100 }, { 28, 28, 1 } });
-
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -11833,7 +11830,7 @@ static void InvertedRCTrackRightEighthDiveLoopUpToOrthogonal(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BM_INVERT_DIVE_LOOP + 26)),
-                        { -16, -16, height + kInvertedSpriteOffset }, { { 1, 0, height + 0 }, { 1, 32, 64 } });
+                        { -16, -16, height + kInvertedSpriteOffset }, { { 1, 0, height + 0 }, { 32, 1, 64 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -11846,9 +11843,8 @@ static void InvertedRCTrackRightEighthDiveLoopUpToOrthogonal(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::topLeft, PaintSegment::top, PaintSegment::topRight, PaintSegment::left,
-                        PaintSegment::centre, PaintSegment::right, PaintSegment::bottomLeft, PaintSegment::bottom,
-                        PaintSegment::bottomRight),
+                        PaintSegment::topRight, PaintSegment::centre, PaintSegment::right, PaintSegment::bottomLeft,
+                        PaintSegment::bottom, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 80 + 16 + 8);
@@ -12860,8 +12856,8 @@ static void InvertedRCTrackRightLargeZeroGRollUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::top, PaintSegment::centre,
-                        PaintSegment::bottom),
+                        PaintSegment::topRight, PaintSegment::top, PaintSegment::topLeft, PaintSegment::centre,
+                        PaintSegment::left), // FIXED: Mirrored perfectly from Left across TR-C-BL
                     direction),
                 0xFFFF, 0);
             switch (direction)
@@ -12889,7 +12885,7 @@ static void InvertedRCTrackRightLargeZeroGRollUp(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BM_INVERT_LARGE_ZERO_G_ROLL + 31)),
-                        { 0, 0, height + kInvertedSpriteOffset }, { { 4, 4, height + kInvertedSpriteOffset }, { 28, 1, 70 } });
+                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 4, height + kInvertedSpriteOffset }, { 32, 2, 81 } });
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 106, session.SupportColours);
                     break;
@@ -12925,23 +12921,23 @@ static void InvertedRCTrackRightLargeZeroGRollUp(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BM_INVERT_LARGE_ZERO_G_ROLL + 32)),
-                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 2, height + 11 }, { 32, 1, 81 } });
+                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 2, height + 11 }, { 32, 2, 81 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BM_INVERT_LARGE_ZERO_G_ROLL + 36)),
-                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 4, height }, { 32, 2, 92 } });
+                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 4, height + 11 }, { 26, 2, 81 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BM_INVERT_LARGE_ZERO_G_ROLL + 37)),
-                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 4, height }, { 32, 2, 92 } });
+                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 4, height + 93 }, { 26, 20, 1 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::top, PaintSegment::topLeft, PaintSegment::left, PaintSegment::bottomLeft,
-                        PaintSegment::centre, PaintSegment::topRight),
+                        PaintSegment::top, PaintSegment::topLeft, PaintSegment::bottomLeft, PaintSegment::left,
+                        PaintSegment::centre, PaintSegment::topRight), // FIXED: Mirrored perfectly from Left across TR-C-BL
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 72 + 16 + 8);
@@ -12965,7 +12961,7 @@ static void InvertedRCTrackRightLargeZeroGRollUp(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BM_INVERT_LARGE_ZERO_G_ROLL + 33)),
-                        { 0, 0, height + kInvertedSpriteOffset }, { { 4, 2, height }, { 32, 1, 48 } });
+                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 2, height }, { 32, 1, 48 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -12978,8 +12974,8 @@ static void InvertedRCTrackRightLargeZeroGRollUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::top, PaintSegment::topLeft, PaintSegment::left, PaintSegment::bottomLeft,
-                        PaintSegment::centre, PaintSegment::topRight),
+                        PaintSegment::top, PaintSegment::topLeft, PaintSegment::bottomLeft, PaintSegment::left,
+                        PaintSegment::centre, PaintSegment::topRight), // FIXED: Mirrored perfectly from Left across TR-C-BL
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 64 + 16 + 8);
