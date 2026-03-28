@@ -17,7 +17,7 @@
 
 namespace OpenRCT2::Scripting
 {
-    // When adding to this map, also add to IconName in openrct2.d.ts
+    // When adding to this map, also add to IconName in distribution/scripting/openrct2.d.ts
 
     static EnumMap<uint32_t> SpriteLookupTable = {
         // G1 Icons

@@ -215,10 +215,10 @@ Section "!OpenRCT2" Section1
     File ..\..\PRIVACY.md
     Push "$INSTDIR\PRIVACY.md"
     Call unix2dos
-    File ..\scripting.md
-    Push "$INSTDIR\scripting.md"
+    File ..\scripting\README.md
+    Push "$INSTDIR\README.md"
     Call unix2dos
-    File ..\openrct2.d.ts
+    File ..\scripting\openrct2.d.ts
     Push "$INSTDIR\openrct2.d.ts"
     Call unix2dos
 
@@ -294,7 +294,7 @@ Section "Uninstall"
     Delete "$INSTDIR\readme.txt"
     Delete "$INSTDIR\contributors.md"
     Delete "$INSTDIR\PRIVACY.md"
-    Delete "$INSTDIR\scripting.md"
+    Delete "$INSTDIR\README.md"
     Delete "$INSTDIR\openrct2.d.ts"
     Delete "$INSTDIR\${OPENRCT2_EXE}"
     Delete "$INSTDIR\${OPENRCT2_COM}"
