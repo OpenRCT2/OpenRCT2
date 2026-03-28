@@ -51,48 +51,4 @@ namespace OpenRCT2
     } };
     const QuarterHelixBoundingBoxes kRightQuarterHelixLargeUpBoundingBoxes = flipTrackSequenceBoundBoxesXAxis(
         kLeftQuarterHelixLargeUpBoundingBoxes);
-
-    void trackPaintLeftQuarterHelixTunnels(
-        PaintSession& session, const uint8_t trackSequence, const Direction direction, const int32_t height,
-        const TunnelGroup tunnelGroup)
-    {
-        if (trackSequence == 0 && direction == 0)
-        {
-            PaintUtilPushTunnelLeft(session, height, tunnelGroup, TunnelSubType::Flat);
-        }
-        else if (trackSequence == 0 && direction == 3)
-        {
-            PaintUtilPushTunnelRight(session, height, tunnelGroup, TunnelSubType::Flat);
-        }
-        else if (trackSequence == 6 && direction == 2)
-        {
-            PaintUtilPushTunnelRight(session, height + kLandHeightStep, tunnelGroup, TunnelSubType::FlatTo25Deg);
-        }
-        else if (trackSequence == 6 && direction == 3)
-        {
-            PaintUtilPushTunnelLeft(session, height + kLandHeightStep, tunnelGroup, TunnelSubType::FlatTo25Deg);
-        }
-    }
-
-    void trackPaintRightQuarterHelixTunnels(
-        PaintSession& session, const uint8_t trackSequence, const Direction direction, const int32_t height,
-        const TunnelGroup tunnelGroup)
-    {
-        if (trackSequence == 0 && direction == 0)
-        {
-            PaintUtilPushTunnelLeft(session, height, tunnelGroup, TunnelSubType::Flat);
-        }
-        else if (trackSequence == 0 && direction == 3)
-        {
-            PaintUtilPushTunnelRight(session, height, tunnelGroup, TunnelSubType::Flat);
-        }
-        else if (trackSequence == 6 && direction == 0)
-        {
-            PaintUtilPushTunnelRight(session, height + kLandHeightStep, tunnelGroup, TunnelSubType::FlatTo25Deg);
-        }
-        else if (trackSequence == 6 && direction == 1)
-        {
-            PaintUtilPushTunnelLeft(session, height + kLandHeightStep, tunnelGroup, TunnelSubType::FlatTo25Deg);
-        }
-    }
 } // namespace OpenRCT2

@@ -13,6 +13,7 @@
 #include "../../localisation/StringIdType.h"
 #include "../../paint/support/MetalSupports.h"
 #include "../../paint/support/WoodenSupports.h"
+#include "../../paint/tile_element/Paint.Tunnel.h"
 #include "../../paint/tile_element/Segment.h"
 #include "../../world/QuarterTile.h"
 #include "PitchAndRoll.h"
@@ -245,6 +246,46 @@ namespace OpenRCT2::TrackMetadata
         return trackClearance + (clearanceOffset * kLandHeightStep);
     };
 
+    enum class SequenceTunnelType : uint8_t
+    {
+        upright,
+        inverted,
+        invertedFlying,
+    };
+    constexpr size_t kSequenceTunnelTypeCount = 3;
+
+    struct SequenceTunnelInfo
+    {
+        int8_t height = 0;
+        TunnelSubType type = TunnelSubType::Flat;
+    };
+
+    struct SequenceTunnel
+    {
+        Direction direction = kInvalidDirection;
+        std::array<SequenceTunnelInfo, kSequenceTunnelTypeCount> tunnelInfo{};
+    };
+
+    constexpr uint8_t kSequenceTunnelMaxPerSequence = 2;
+
+    constexpr SequenceTunnel sequenceTunnelAllTypes(const Direction direction, const int8_t height, const TunnelSubType type)
+    {
+        const SequenceTunnelInfo tunnelInfo{ height, type };
+        return SequenceTunnel{ direction, { tunnelInfo, tunnelInfo, tunnelInfo } };
+    }
+
+    using SequenceTunnels = std::array<SequenceTunnel, kSequenceTunnelMaxPerSequence>;
+
+    template<Direction (&directionFunction)(Direction)>
+    constexpr SequenceTunnels sequenceTunnelsModify(SequenceTunnels sequenceTunnels)
+    {
+        for (auto& tunnel : sequenceTunnels)
+        {
+            tunnel.direction = directionFunction(tunnel.direction);
+        }
+        return sequenceTunnels;
+    }
+
     struct SequenceDescriptor
     {
         SequenceClearance clearance{};
@@ -258,6 +299,7 @@ namespace OpenRCT2::TrackMetadata
         bool invertSegmentBlocking = false;
         BlockedSegmentsPerType blockedSegments{ kSegmentsNone, kSegmentsNone, kSegmentsNone };
         int16_t generalSupportHeight = kDoNotSetGeneralSupportHeight;
+        SequenceTunnels tunnels{};
         uint8_t reversedTrackSequence = 0;
 
         constexpr uint8_t getEntranceConnectionSides() const

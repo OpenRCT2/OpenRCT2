@@ -51,6 +51,10 @@ namespace OpenRCT2
         const uint8_t spriteCount, const uint8_t spriteIndex, const uint64_t spriteMap, const ImageId imageId,
         const int32_t height, const BoundBoxXYZ* const boundingBoxes);
 
+    void paintTrackTunnel(
+        PaintSession& session, const Direction direction, const int32_t height, const TrackMetadata::SequenceTunnel& tunnel,
+        const TrackMetadata::SequenceTunnelType tunnelType, const TunnelGroup tunnelGroup);
+
     template<
         const size_t sequenceCount, const size_t mapSpriteCount, const size_t sequenceSpriteCount, const ImageIndex imageIndex,
         const uint64_t spriteMap,
@@ -59,11 +63,14 @@ namespace OpenRCT2
         const bool woodenSupports,
         const std::array<std::array<int8_t, kNumOrthogonalDirections>, sequenceCount>& supportHeightExtras,
         const OpenRCT2::BlockedSegmentsType blockedSegmentsType, const TunnelGroup tunnelGroup,
-        const int16_t trackClearanceHeight, const auto tunnelPaintFunction, const bool down, const bool trackSupportColours>
+        const TrackMetadata::SequenceTunnelType tunnelType, const uint8_t tunnelCount, const int16_t trackClearanceHeight,
+        const bool down, const bool trackSupportColours>
     void trackPaintGeneric(
         PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
         const OpenRCT2::TrackElement& trackElement, const SupportType supportType)
     {
+        static_assert(tunnelCount <= TrackMetadata::kSequenceTunnelMaxPerSequence);
+
         const auto& ted = OpenRCT2::TrackMetadata::GetTrackElementDescriptor(trackElement.GetTrackType());
         const auto& sequenceDescriptor = ted.sequenceData.sequences[trackSequence];
 
@@ -122,6 +129,13 @@ namespace OpenRCT2
             != TrackMetadata::kDoNotSetGeneralSupportHeight;
         PaintUtilSetGeneralSupportHeight(session, generalSupportHeight * setGeneralSupportHeight);
 
-        tunnelPaintFunction(session, modifiedTrackSequence, modifiedDirection, height, tunnelGroup);
+        if constexpr (tunnelCount >= 1)
+        {
+            paintTrackTunnel(session, direction, height, sequenceDescriptor.tunnels[0], tunnelType, tunnelGroup);
+        }
+        if constexpr (tunnelCount >= 2)
+        {
+            paintTrackTunnel(session, direction, height, sequenceDescriptor.tunnels[1], tunnelType, tunnelGroup);
+        }
     }
 } // namespace OpenRCT2
