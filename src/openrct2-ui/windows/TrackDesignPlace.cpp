@@ -19,7 +19,8 @@
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/SpriteIds.h>
-#include <openrct2/actions/TrackDesignAction.h>
+#include <openrct2/actions/GameActionRunner.h>
+#include <openrct2/actions/track/TrackDesignAction.h>
 #include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
@@ -31,6 +32,7 @@
 #include <openrct2/ride/TrackData.h>
 #include <openrct2/ride/TrackDesign.h>
 #include <openrct2/ride/TrackDesignRepository.h>
+#include <openrct2/ride/ted/TrackElementDescriptor.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Map.h>
@@ -41,7 +43,7 @@
 #include <vector>
 
 using namespace OpenRCT2::Numerics;
-using namespace OpenRCT2::TrackMetaData;
+using namespace OpenRCT2::TrackMetadata;
 using OpenRCT2::Drawing::PaletteIndex;
 using OpenRCT2::GameActions::CommandFlag;
 using OpenRCT2::GameActions::CommandFlags;
@@ -373,9 +375,9 @@ namespace OpenRCT2::Ui::Windows
                 g1temp.offset = reinterpret_cast<uint8_t*>(_miniPreview.data());
                 g1temp.width = kTrackMiniPreviewSize.width;
                 g1temp.height = kTrackMiniPreviewSize.height;
-                GfxSetG1Element(SPR_TEMP, &g1temp);
-                DrawingEngineInvalidateImage(SPR_TEMP);
-                GfxDrawSprite(clippedRT, ImageId(SPR_TEMP, this->colours[0].colour), { 0, 0 });
+                GfxSetG1Element(SPR_TEMP_TRACK_PLACE, &g1temp);
+                DrawingEngineInvalidateImage(SPR_TEMP_TRACK_PLACE);
+                GfxDrawSprite(clippedRT, ImageId(SPR_TEMP_TRACK_PLACE, this->colours[0].colour), { 0, 0 });
             }
 
             // Price

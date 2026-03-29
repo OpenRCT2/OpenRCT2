@@ -14,7 +14,8 @@
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/SpriteIds.h>
-#include <openrct2/actions/ParkSetResearchFundingAction.h>
+#include <openrct2/actions/GameActionRunner.h>
+#include <openrct2/actions/park/ParkSetResearchFundingAction.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.Date.h>

@@ -18,13 +18,15 @@
 #include "../world/tile_element/TrackElement.h"
 #include "Ride.h"
 #include "RideData.h"
-#include "Track.h"
 #include "Vehicle.h"
 #include "VehicleData.h"
 #include "VehicleGeometry.h"
+#include "ted/PitchAndRoll.h"
+#include "ted/TrackElemType.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::RideVehicle;
+using namespace OpenRCT2::TrackMetadata;
 
 Vehicle* CableLiftSegmentCreate(
     Ride& ride, int32_t x, int32_t y, int32_t z, int32_t direction, uint16_t var_44, int32_t remaining_distance, bool head)
@@ -78,7 +80,7 @@ Vehicle* CableLiftSegmentCreate(
     current->SetTrackType(TrackElemType::cableLiftHill);
     current->SetTrackDirection(current->Orientation >> 3);
     current->track_progress = 164;
-    current->Flags = VehicleFlags::CollisionDisabled;
+    current->flags = { VehicleFlag::collisionDisabled };
     current->SetState(Vehicle::Status::movingToEndOfStation, 0);
     current->num_peeps = 0;
     current->next_free_seat = 0;
@@ -211,7 +213,7 @@ void Vehicle::CableLiftUpdateTravelling()
 
     velocity = std::min(passengerVehicle->velocity, 439800);
     acceleration = 0;
-    if (passengerVehicle->HasFlag(VehicleFlags::TrainIsBroken))
+    if (passengerVehicle->flags.has(VehicleFlag::trainIsBroken))
         return;
 
     if (!(CableLiftUpdateTrackMotion() & VEHICLE_UPDATE_MOTION_TRACK_FLAG_1))

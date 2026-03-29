@@ -13,7 +13,6 @@
 #include "../../../object/StationObject.h"
 #include "../../../ride/Ride.h"
 #include "../../../ride/RideEntry.h"
-#include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
 #include "../../../ride/Vehicle.h"
 #include "../../Boundbox.h"
@@ -67,7 +66,7 @@ static void PaintSwingingShipRiders(
     if (session.rt.zoom_level > ZoomLevel{ 1 })
         return;
 
-    if (!(ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK))
+    if (!ride.flags.has(RideFlag::onTrack))
         return;
 
     int32_t peep = 0;
@@ -96,7 +95,7 @@ static void PaintSwingingShipStructure(
         return;
 
     Vehicle* vehicle = nullptr;
-    if (ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK && !ride.vehicles[0].IsNull())
+    if (ride.flags.has(RideFlag::onTrack) && !ride.vehicles[0].IsNull())
     {
         vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[0]);
         session.InteractionType = ViewportInteractionItem::entity;

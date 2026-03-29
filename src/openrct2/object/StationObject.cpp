@@ -24,16 +24,36 @@ namespace OpenRCT2
         NameStringId = LanguageAllocateObjectString(GetName());
 
         auto numImages = GetImageTable().GetCount();
-        if (numImages != 0)
-        {
-            BaseImageId = LoadImages();
+        if (numImages == 0)
+            return;
 
-            uint32_t shelterOffset = (Flags & StationObjectFlags::isTransparent) ? 32 : 16;
-            if (numImages > shelterOffset)
-            {
-                ShelterImageId = BaseImageId + shelterOffset;
-            }
+        baseImageIndex = LoadImages();
+
+        entranceBackIndex = baseImageIndex;
+        entranceFrontIndex = entranceBackIndex + 4;
+
+        exitBackIndex = entranceBackIndex + 8;
+        exitFrontIndex = entranceBackIndex + 12;
+
+        if (!(Flags & StationObjectFlags::isTransparent))
+        {
+            if (numImages > 16)
+                shelterIndex = entranceBackIndex + 16;
+
+            return;
         }
+
+        entranceBackGlassIndex = entranceBackIndex + 16;
+        entranceFrontGlassIndex = entranceBackIndex + 20;
+
+        exitBackGlassIndex = entranceBackIndex + 24;
+        exitFrontGlassIndex = entranceBackIndex + 28;
+
+        if (numImages > 32)
+            shelterIndex = entranceBackIndex + 32;
+
+        if (numImages > 44)
+            shelterGlassIndex = entranceBackIndex + 44;
     }
 
     void StationObject::Unload()
@@ -42,8 +62,20 @@ namespace OpenRCT2
         UnloadImages();
 
         NameStringId = 0;
-        BaseImageId = kImageIndexUndefined;
-        ShelterImageId = kImageIndexUndefined;
+        baseImageIndex = kImageIndexUndefined;
+
+        entranceBackIndex = kImageIndexUndefined;
+        entranceFrontIndex = kImageIndexUndefined;
+        exitBackIndex = kImageIndexUndefined;
+        exitFrontIndex = kImageIndexUndefined;
+
+        entranceBackGlassIndex = kImageIndexUndefined;
+        entranceFrontGlassIndex = kImageIndexUndefined;
+        exitBackGlassIndex = kImageIndexUndefined;
+        exitFrontGlassIndex = kImageIndexUndefined;
+
+        shelterIndex = kImageIndexUndefined;
+        shelterGlassIndex = kImageIndexUndefined;
     }
 
     void StationObject::DrawPreview(Drawing::RenderTarget& rt, int32_t width, int32_t height) const
@@ -54,27 +86,22 @@ namespace OpenRCT2
         auto colour1 = Drawing::Colour::bordeauxRed;
         auto tcolour0 = colour0;
 
-        auto imageId = ImageId(BaseImageId);
-        auto tImageId = ImageId(BaseImageId + 16).WithTransparency(tcolour0);
-        if (Flags & StationObjectFlags::hasPrimaryColour)
-        {
-            imageId = imageId.WithPrimary(colour0);
-        }
-        if (Flags & StationObjectFlags::hasSecondaryColour)
-        {
-            imageId = imageId.WithSecondary(colour1);
-        }
-
-        GfxDrawSprite(rt, imageId, screenCoords);
+        // Draw back sprite
+        auto backImageId = ImageId(entranceBackIndex, colour0, colour1);
+        GfxDrawSprite(rt, backImageId, screenCoords);
         if (Flags & StationObjectFlags::isTransparent)
         {
+            auto tImageId = ImageId(entranceBackGlassIndex).WithTransparency(tcolour0);
             GfxDrawSprite(rt, tImageId, screenCoords);
         }
 
-        GfxDrawSprite(rt, imageId.WithIndexOffset(4), screenCoords);
+        // Draw front sprite
+        auto frontImageId = ImageId(entranceFrontIndex, colour0, colour1);
+        GfxDrawSprite(rt, frontImageId, screenCoords);
         if (Flags & StationObjectFlags::isTransparent)
         {
-            GfxDrawSprite(rt, tImageId.WithIndexOffset(4), screenCoords);
+            auto frontGlassImageId = ImageId(entranceFrontGlassIndex).WithTransparency(tcolour0);
+            GfxDrawSprite(rt, frontGlassImageId, screenCoords);
         }
     }
 

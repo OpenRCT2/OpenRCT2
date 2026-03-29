@@ -1025,7 +1025,7 @@ namespace OpenRCT2::Drawing::LightFx
     }
 
     void RenderToTexture(
-        const Viewport& vp, void* dstPixels, uint32_t dstPitch, uint8_t* bits, uint32_t width, uint32_t height,
+        const Viewport& vp, void* dstPixels, uint32_t dstPitch, PaletteIndex* bits, uint32_t width, uint32_t height,
         const uint32_t* palette, const uint32_t* lightPalette)
     {
         UpdateViewportSettings(vp);
@@ -1045,9 +1045,9 @@ namespace OpenRCT2::Drawing::LightFx
             uint32_t* dst = reinterpret_cast<uint32_t*>(reinterpret_cast<uintptr_t>(dstPixels) + dstOffset);
             for (uint32_t x = 0; x < width; x++)
             {
-                uint8_t* src = &bits[y * width + x];
-                uint32_t darkColour = palette[*src];
-                uint32_t lightColour = lightPalette[*src];
+                PaletteIndex src = bits[y * width + x];
+                uint32_t darkColour = palette[EnumValue(src)];
+                uint32_t lightColour = lightPalette[EnumValue(src)];
                 uint8_t lightIntensity = lightBits[y * width + x];
 
                 uint32_t colour = 0;

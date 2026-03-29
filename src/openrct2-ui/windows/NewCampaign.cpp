@@ -13,7 +13,8 @@
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
-#include <openrct2/actions/ParkMarketingAction.h>
+#include <openrct2/actions/GameActionRunner.h>
+#include <openrct2/actions/park/ParkMarketingAction.h>
 #include <openrct2/core/BitSet.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
@@ -116,7 +117,7 @@ namespace OpenRCT2::Ui::Windows
             for (auto& curRide : RideManager(gameState))
             {
                 auto rideEntry = curRide.getRideEntry();
-                if (rideEntry != nullptr)
+                if (rideEntry != nullptr && curRide.status == RideStatus::open)
                 {
                     for (const auto itemType : rideEntry->shop_item)
                     {

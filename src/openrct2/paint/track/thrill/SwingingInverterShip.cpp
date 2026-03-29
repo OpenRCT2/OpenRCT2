@@ -13,7 +13,6 @@
 #include "../../../object/StationObject.h"
 #include "../../../ride/Ride.h"
 #include "../../../ride/RideEntry.h"
-#include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
 #include "../../../ride/Vehicle.h"
 #include "../../Boundbox.h"
@@ -75,7 +74,7 @@ static void PaintSwingingInverterShipStructure(
     BoundBoxXYZ bb = { { boundBox.offset, height }, { boundBox.length, 127 } };
 
     Vehicle* vehicle = nullptr;
-    if (ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK)
+    if (ride.flags.has(RideFlag::onTrack))
     {
         vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[0]);
         if (vehicle != nullptr)

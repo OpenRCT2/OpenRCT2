@@ -17,9 +17,10 @@
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
 #include "../Version.h"
-#include "../actions/LoadOrQuitAction.h"
-#include "../actions/NetworkModifyGroupAction.h"
-#include "../actions/PeepPickupAction.h"
+#include "../actions/GameActionRunner.h"
+#include "../actions/general/LoadOrQuitAction.h"
+#include "../actions/network/NetworkModifyGroupAction.h"
+#include "../actions/peep/PeepPickupAction.h"
 #include "../core/File.h"
 #include "../core/Guard.hpp"
 #include "../core/Json.hpp"
@@ -47,7 +48,7 @@
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
 
-constexpr uint8_t kStreamVersion = 1;
+constexpr uint8_t kStreamVersion = 0;
 
 const std::string kStreamID = std::string(kOpenRCT2Version) + "-" + std::to_string(kStreamVersion);
 
@@ -67,7 +68,7 @@ static constexpr uint32_t kMaxPacketsPerTick = 100;
     #include "../Cheats.h"
     #include "../ParkImporter.h"
     #include "../Version.h"
-    #include "../actions/GameAction.h"
+    #include "../actions/GameAction.hpp"
     #include "../config/Config.h"
     #include "../core/Console.hpp"
     #include "../core/EnumUtils.hpp"
@@ -3826,18 +3827,20 @@ namespace OpenRCT2::Network
         return kStringIdNone;
     }
 
-    int32_t CanPerformAction(uint32_t groupindex, Permission index)
+    bool CanPerformAction(uint32_t groupindex, Permission index)
     {
         auto& network = GetContext()->GetNetwork();
-        Guard::IndexInRange(groupindex, network.group_list);
+        if (groupindex >= network.group_list.size())
+            return false;
 
         return network.group_list[groupindex]->CanPerformAction(index);
     }
 
-    int32_t CanPerformCommand(uint32_t groupindex, int32_t index)
+    bool CanPerformCommand(uint32_t groupindex, int32_t index)
     {
         auto& network = GetContext()->GetNetwork();
-        Guard::IndexInRange(groupindex, network.group_list);
+        if (groupindex >= network.group_list.size())
+            return false;
 
         return network.group_list[groupindex]->CanPerformCommand(static_cast<GameCommand>(index)); // TODO
     }
@@ -4268,13 +4271,13 @@ namespace OpenRCT2::Network
     {
         return -1;
     }
-    int32_t CanPerformAction(uint32_t groupindex, Permission index)
+    bool CanPerformAction(uint32_t groupindex, Permission index)
     {
-        return 0;
+        return false;
     }
-    int32_t CanPerformCommand(uint32_t groupindex, int32_t index)
+    bool CanPerformCommand(uint32_t groupindex, int32_t index)
     {
-        return 0;
+        return false;
     }
     void SetPickupPeep(uint8_t playerid, Peep* peep)
     {

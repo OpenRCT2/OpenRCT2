@@ -9,9 +9,10 @@
 
 #pragma once
 
-#include "../Game.h"
+#include "../actions/GameCommand.h"
 #include "../core/JsonFwd.hpp"
 #include "../core/Money.hpp"
+#include "../core/StringTypes.h"
 #include "../localisation/StringIds.h"
 #include "NetworkTypes.h"
 
@@ -93,8 +94,8 @@ namespace OpenRCT2::Network
     [[nodiscard]] uint8_t GetDefaultGroup();
     [[nodiscard]] int32_t GetNumActions();
     [[nodiscard]] StringId GetActionNameStringID(uint32_t index);
-    [[nodiscard]] int32_t CanPerformAction(uint32_t groupindex, Permission index);
-    [[nodiscard]] int32_t CanPerformCommand(uint32_t groupindex, int32_t index);
+    [[nodiscard]] bool CanPerformAction(uint32_t groupindex, Permission index);
+    [[nodiscard]] bool CanPerformCommand(uint32_t groupindex, int32_t index);
     void SetPickupPeep(uint8_t playerid, Peep* peep);
     [[nodiscard]] Peep* GetPickupPeep(uint8_t playerid);
     void SetPickupPeepOldX(uint8_t playerid, int32_t x);

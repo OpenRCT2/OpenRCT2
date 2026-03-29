@@ -10,8 +10,10 @@
 #pragma once
 
 #include "../core/EnumUtils.hpp"
-#include "Track.h"
+#include "../world/Location.hpp"
+#include "ted/TrackElemType.h"
 
+#include <cstddef>
 #include <cstdint>
 
 constexpr const size_t VehicleTrackSubpositionSizeDefault = EnumValue(OpenRCT2::TrackElemType::count)

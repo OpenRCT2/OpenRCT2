@@ -1,4 +1,4 @@
-Last updated:    2025-08-04
+Last updated:    2026-02-15
 ------------------------------------------------------------------------
 
 
@@ -146,7 +146,6 @@ duktape          | MIT licence.
 libcURL          | MIT (or Modified BSD-style) licence.
 libicu           | Unicode licence.
 libpng           | libpng licence.
-libspeex         | BSD-style licence.
 libzip           | BSD 3 clause licence.
 nlohmann-json    | MIT licence.
 OpenSSL          | OpenSSL licence.

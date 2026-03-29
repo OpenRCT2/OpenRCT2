@@ -22,7 +22,8 @@
 #include <openrct2/GameState.h>
 #include <openrct2/PlatformEnvironment.h>
 #include <openrct2/SpriteIds.h>
-#include <openrct2/actions/ScenarioSetSettingAction.h>
+#include <openrct2/actions/GameActionRunner.h>
+#include <openrct2/actions/general/ScenarioSetSettingAction.h>
 #include <openrct2/audio/Audio.h>
 #include <openrct2/audio/AudioContext.h>
 #include <openrct2/audio/AudioMixer.h>
@@ -689,7 +690,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        OpenRCT2String onTooltip(WidgetIndex widgetIndex, StringId fallback) override
+        StringWithArgs onTooltip(WidgetIndex widgetIndex, StringId fallback) override
         {
             if (page == WINDOW_OPTIONS_PAGE_ADVANCED)
                 return AdvancedTooltip(widgetIndex, fallback);
@@ -2252,7 +2253,7 @@ namespace OpenRCT2::Ui::Windows
             DrawTextEllipsised(rt, screenCoords, pathWidget.width() - 1, STR_BLACK_STRING, ft);
         }
 
-        OpenRCT2String AdvancedTooltip(WidgetIndex widgetIndex, StringId fallback)
+        StringWithArgs AdvancedTooltip(WidgetIndex widgetIndex, StringId fallback)
         {
             if (widgetIndex == WIDX_PATH_TO_RCT1_PATH)
             {

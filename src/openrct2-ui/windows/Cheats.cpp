@@ -18,8 +18,9 @@
 #include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/SpriteIds.h>
-#include <openrct2/actions/CheatSetAction.h>
-#include <openrct2/actions/ParkSetDateAction.h>
+#include <openrct2/actions/GameActionRunner.h>
+#include <openrct2/actions/cheats/CheatSetAction.h>
+#include <openrct2/actions/park/ParkSetDateAction.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/EnumUtils.hpp>
 #include <openrct2/drawing/Drawing.h>
@@ -728,7 +729,7 @@ static StringId window_cheats_page_titles[] = {
             }
         }
 
-        OpenRCT2String onTooltip(WidgetIndex widgetIndex, StringId fallback) override
+        StringWithArgs onTooltip(WidgetIndex widgetIndex, StringId fallback) override
         {
             if (page == WINDOW_CHEATS_PAGE_RIDES && widgetIndex == WIDX_UNLOCK_OPERATING_LIMITS)
             {

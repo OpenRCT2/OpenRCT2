@@ -490,7 +490,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        OpenRCT2String onTooltip(WidgetIndex widgetIndex, StringId fallback) override
+        StringWithArgs onTooltip(WidgetIndex widgetIndex, StringId fallback) override
         {
             const auto& gameState = getGameState();
             auto ft = Formatter();

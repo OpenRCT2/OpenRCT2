@@ -1,3 +1,31 @@
+openrct2 (0.4.32-develop-1) unstable; urgency=medium
+
+ * Feature: [#22704] Rides can be made invisible more easily.
+ * Improved: [#21753] Tracked rides with cheated powered launch mode can change powered launch speed without extra cheats.
+ * Improved: [#25526] When a shop item cannot be recoloured, show a preview of the building instead.
+ * Improved: [#25941] The command line sprite build command is now faster.
+ * Improved: [#26002] Rides with newer track elements (like the zero G roll or diagonal brakes) can now be saved as track designs.
+ * Improved: [#26026] Profiler is now thread safe and supports JSON export with call graph data.
+ * Improved: [#26050] Add Danish translation to Windows installer.
+ * Improved: [#26091] When all rides are closed, the marketing window will no longer show the ride advertisement campaign.
+ * Change: [#26011] Audio resampling no longer depends on the third-party library libspeexdsp.
+ * Change: [#26049] Guest generation now starts slowing down above 52000 guests instead of 7000.
+ * Fix: [#14686, #23996, #25981] Preview images from different windows overwrite each other when using OpenGL.
+ * Fix: [#15128, #15626, #16331, #17443, #18626, #21597, #24175, #24971, #25963] Crash when loading corrupted RCT2/RCT1 save files with duplicate entity indices.
+ * Fix: [#23519] Title sequence cannot open .sea scenarios from RCTC.
+ * Fix: [#25237] Wrong colours on the Knight costume (original bug).
+ * Fix: [#25712, #25727] Crash during startup from window list race condition.
+ * Fix: [#25763] Crash when opening the Footpath window in Multiplayer.
+ * Fix: [#25910] Folders starting with numbers are sorted incorrectly (e.g. 1, 10, 2 instead of 1, 2, 10).
+ * Fix: [#25954] Guests display hats, balloons, and umbrellas while puking.
+ * Fix: [#25961] Fix crash when rendering malformed vehicles in the ride window.
+ * Fix: [#25978] Frozen peeps start clapping when the scenario is won.
+ * Fix: [#25999] Scenery picker tool does not pick the tertiary colour of large scenery correctly.
+ * Fix: [#26037] Selecting elements in the tile inspector list and changing all tiles of a track piece does not redraw correctly.
+ * Fix: [#26057] In the scrolling intro, the Infogrames logo is taken off the screen before it reaches the bottom (original bug).
+ * Fix: [#26058] RCT Classic scenarios with packed objects missing from scenario index.
+ * Fix: [#26083] You can advertise for closed food & drink stalls.
+
 openrct2 (0.4.31-develop-1) unstable; urgency=medium
 
  * Feature: [#25844] The sprite builder now also supports adding JSON-based palettes.

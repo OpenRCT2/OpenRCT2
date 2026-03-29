@@ -24,14 +24,15 @@
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/SpriteIds.h>
-#include <openrct2/actions/MazeSetTrackAction.h>
+#include <openrct2/actions/GameActionRunner.h>
 #include <openrct2/actions/ResultWithMessage.h>
-#include <openrct2/actions/RideDemolishAction.h>
-#include <openrct2/actions/RideEntranceExitPlaceAction.h>
-#include <openrct2/actions/RideSetStatusAction.h>
-#include <openrct2/actions/TrackPlaceAction.h>
-#include <openrct2/actions/TrackRemoveAction.h>
-#include <openrct2/actions/TrackSetBrakeSpeedAction.h>
+#include <openrct2/actions/ride/MazeSetTrackAction.h>
+#include <openrct2/actions/ride/RideDemolishAction.h>
+#include <openrct2/actions/ride/RideEntranceExitPlaceAction.h>
+#include <openrct2/actions/ride/RideSetStatusAction.h>
+#include <openrct2/actions/track/TrackPlaceAction.h>
+#include <openrct2/actions/track/TrackRemoveAction.h>
+#include <openrct2/actions/track/TrackSetBrakeSpeedAction.h>
 #include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/Numerics.hpp>
@@ -48,6 +49,7 @@
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
 #include <openrct2/ride/TrackData.h>
+#include <openrct2/ride/ted/TrackElementDescriptor.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/ConstructionClearance.h>
@@ -66,7 +68,7 @@ constexpr int8_t kDefaultMinimumSpeed = 2;
 constexpr uint8_t kVerticalDropButtonStart = 6;
 
 using namespace OpenRCT2::Numerics;
-using namespace OpenRCT2::TrackMetaData;
+using namespace OpenRCT2::TrackMetadata;
 using OpenRCT2::GameActions::CommandFlag;
 using OpenRCT2::GameActions::CommandFlags;
 using OpenRCT2::GameActions::MazeBuildMode;

@@ -59,6 +59,9 @@
   <ItemDefinitionGroup>
     <ClCompile>
       <PreprocessorDefinitions>GTEST_LANG_CXX11;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader Condition="'$(UsePCH)'=='true'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(UsePCH)'=='true'">tests_pch.h</PrecompiledHeaderFile>
+      <ForcedIncludeFiles Condition="'$(UsePCH)'=='true'">tests_pch.h</ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <AdditionalDependencies>libopenrct2.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -76,6 +79,7 @@
     <ClInclude Include="AssertHelpers.hpp" />
     <ClInclude Include="helpers\StringHelpers.hpp" />
     <ClInclude Include="TestData.h" />
+    <ClInclude Include="tests_pch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BitSetTests.cpp" />
@@ -95,12 +99,16 @@
     <ClCompile Include="PlayTests.cpp" />
     <ClCompile Include="Pathfinding.cpp" />
     <ClCompile Include="RideRatings.cpp" />
+    <ClCompile Include="EntityImportTests.cpp" />
     <ClCompile Include="S6ImportExportTests.cpp" />
     <ClCompile Include="SawyerCodingTest.cpp" />
     <ClCompile Include="ScenarioPatcherTests.cpp" />
     <ClCompile Include="TestData.cpp" />
     <ClCompile Include="tests.cpp" />
     <ClCompile Include="StringTest.cpp" />
+    <ClCompile Include="tests_pch.cpp" Condition="'$(UsePCH)'=='true'">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="TileElements.cpp" />
     <ClCompile Include="TileElementsView.cpp" />
   </ItemGroup>
@@ -119,3 +127,4 @@
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>
+

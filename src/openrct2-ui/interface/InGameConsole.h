@@ -62,7 +62,7 @@ namespace OpenRCT2::Ui
         void Close() override;
         void Hide() override;
         void Toggle();
-        void WriteLine(const std::string& s, FormatToken colourFormat) override;
+        void WriteLine(const std::string& input, FormatToken colourFormat) override;
 
         void Input(ConsoleInput input);
         void RefreshCaret(size_t position = 0);

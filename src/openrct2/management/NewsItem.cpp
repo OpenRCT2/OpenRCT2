@@ -246,7 +246,7 @@ std::optional<CoordsXYZ> News::GetSubjectLocation(ItemType type, int32_t subject
 
             // Find which ride peep is on
             Ride* ride = GetRide(peep->CurrentRide);
-            if (ride == nullptr || !(ride->lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK))
+            if (ride == nullptr || !ride->flags.has(RideFlag::onTrack))
             {
                 subjectLoc = std::nullopt;
                 break;

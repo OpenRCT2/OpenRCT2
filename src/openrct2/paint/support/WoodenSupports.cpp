@@ -12,6 +12,7 @@
 #include "../../SpriteIds.h"
 #include "../../interface/Viewport.h"
 #include "../../ride/TrackData.h"
+#include "../../ride/ted/TrackElementDescriptor.h"
 #include "../../world/Footpath.h"
 #include "../../world/tile_element/Slope.h"
 #include "../Boundbox.h"
@@ -659,7 +660,7 @@ bool DrawSupportForSequenceA(
     PaintSession& session, const WoodenSupportType supportType, const TrackElemType trackType, const uint8_t sequence,
     const Direction direction, const int32_t height, const ImageId imageTemplate)
 {
-    const auto& ted = TrackMetaData::GetTrackElementDescriptor(trackType);
+    const auto& ted = TrackMetadata::GetTrackElementDescriptor(trackType);
     const auto& sequenceDesc = ted.sequences[sequence];
     const auto& desc = sequenceDesc.woodenSupports;
 
@@ -676,7 +677,7 @@ bool DrawSupportForSequenceB(
     PaintSession& session, const WoodenSupportType supportType, const TrackElemType trackType, const uint8_t sequence,
     const Direction direction, const int32_t height, const ImageId imageTemplate)
 {
-    const auto& ted = TrackMetaData::GetTrackElementDescriptor(trackType);
+    const auto& ted = TrackMetadata::GetTrackElementDescriptor(trackType);
     const auto& sequenceDesc = ted.sequences[sequence];
     const auto& desc = sequenceDesc.woodenSupports;
 

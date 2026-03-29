@@ -12,17 +12,19 @@
 #include "../interface/Viewport.h"
 
 #include <openrct2/GameState.h>
-#include <openrct2/actions/RideCreateAction.h>
+#include <openrct2/actions/GameActionRunner.h>
+#include <openrct2/actions/ride/RideCreateAction.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideConstruction.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/RideTypes.h>
 #include <openrct2/ride/TrackData.h>
+#include <openrct2/ride/ted/TrackElementDescriptor.h>
 #include <openrct2/world/Map.h>
 #include <openrct2/world/tile_element/TrackElement.h>
 
-using namespace OpenRCT2::TrackMetaData;
+using namespace OpenRCT2::TrackMetadata;
 
 namespace OpenRCT2
 {
@@ -108,7 +110,7 @@ namespace OpenRCT2
         kSeparator,
 
         // (Wooden) water splash
-        TrackElemType::watersplash,
+        TrackElemType::waterSplash,
         kSeparator,
 
         // River Rapids

@@ -36,6 +36,7 @@ constexpr RideTypeDescriptor MonorailRTD =
                      RtdFlag::allowMultipleCircuits, RtdFlag::isTransportRide, RtdFlag::showInTrackDesigner),
     .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::shuttle),
     .DefaultMode = RideMode::continuousCircuit,
+    .OperatingSettings = { 5, 27 },
     .Naming = { STR_RIDE_NAME_MONORAIL, STR_RIDE_DESCRIPTION_MONORAIL },
     .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_DOORS_STUCK_CLOSED) | (1 << BREAKDOWN_DOORS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
@@ -59,7 +60,7 @@ constexpr RideTypeDescriptor MonorailRTD =
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_MONORAIL_TRACK, SPR_RIDE_DESIGN_PREVIEW_MONORAIL_SUPPORTS },
     .ColourKey = RideColourKey::Ride,
     .Name = "monorail",
-    .RatingsData = 
+    .RatingsData =
     {
         RatingsCalculationType::Normal,
         { RideRating::make(2, 00), RideRating::make(0, 00), RideRating::make(0, 00) },

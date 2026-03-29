@@ -12,7 +12,6 @@
 #include "../../../entity/Guest.h"
 #include "../../../interface/Viewport.h"
 #include "../../../ride/RideEntry.h"
-#include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
 #include "../../../ride/Vehicle.h"
 #include "../../Paint.h"
@@ -54,7 +53,7 @@ static void PaintSpaceRingsStructure(
     int32_t frameNum = direction;
     uint32_t baseImageId = rideEntry->Cars[0].base_image_id;
     auto vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[vehicleIndex]);
-    if (ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
+    if (ride.flags.has(RideFlag::onTrack) && vehicle != nullptr)
     {
         session.InteractionType = ViewportInteractionItem::entity;
         session.CurrentlyDrawnEntity = vehicle;

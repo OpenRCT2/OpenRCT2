@@ -186,7 +186,6 @@ namespace OpenRCT2
                 break;
         }
 
-        assert(false);
-        return nullptr;
+        throw std::invalid_argument(String::stdFormat("Unknown file type: %d", static_cast<int>(fileType)));
     }
 } // namespace OpenRCT2

@@ -170,7 +170,7 @@ namespace OpenRCT2::RCT12
         onRidePhoto = 114,
         down25LeftBanked = 115,
         down25RightBanked = 116,
-        watersplash = 117,
+        waterSplash = 117,
         flatToUp60LongBase = 118,
         up60ToFlatLongBase = 119,
         whirlpool = 120,
@@ -519,14 +519,6 @@ struct RCT12xy8
     }
 };
 static_assert(sizeof(RCT12xy8) == 2);
-
-/* Track Element entry  size: 0x02 */
-struct TD46TrackElement
-{
-    OpenRCT2::RCT12::TrackElemType Type; // 0x00
-    uint8_t Flags;                       // 0x01
-};
-static_assert(sizeof(TD46TrackElement) == 0x02);
 
 struct RCT12Award
 {

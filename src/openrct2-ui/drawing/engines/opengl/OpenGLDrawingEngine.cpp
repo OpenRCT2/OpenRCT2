@@ -117,7 +117,7 @@ public:
 
     void Clear(RenderTarget& rt, PaletteIndex paletteIndex) override;
     void FillRect(
-        RenderTarget& rt, PaletteIndex paletteIndex, int32_t x, int32_t y, int32_t w, int32_t h,
+        RenderTarget& rt, PaletteIndex paletteIndex, int32_t left, int32_t top, int32_t right, int32_t bottom,
         bool crossHatch = false) override;
     void FilterRect(
         RenderTarget& rt, FilterPaletteID palette, int32_t left, int32_t top, int32_t right, int32_t bottom) override;
@@ -204,7 +204,7 @@ private:
     uint32_t _height = 0;
     uint32_t _pitch = 0;
     size_t _bitsSize = 0;
-    std::unique_ptr<uint8_t[]> _bits;
+    std::unique_ptr<PaletteIndex[]> _bits;
 
     RenderTarget _mainRT = {};
 
@@ -485,8 +485,8 @@ public:
         framebuffer.GetPixels(_mainRT);
 
         int32_t stride = _mainRT.LineStride();
-        uint8_t* to = _mainRT.bits + y * stride + x;
-        uint8_t* from = _mainRT.bits + (y - dy) * stride + x - dx;
+        PaletteIndex* to = _mainRT.bits + y * stride + x;
+        PaletteIndex* from = _mainRT.bits + (y - dy) * stride + x - dx;
 
         if (dy > 0)
         {
@@ -552,10 +552,10 @@ private:
     {
         size_t newBitsSize = pitch * height;
 
-        auto newBits = std::make_unique<uint8_t[]>(newBitsSize);
+        auto newBits = std::make_unique<PaletteIndex[]>(newBitsSize);
         if (_bits == nullptr)
         {
-            std::fill_n(newBits.get(), newBitsSize, 0);
+            std::fill_n(newBits.get(), newBitsSize, PaletteIndex::transparent);
         }
         else
         {
@@ -565,8 +565,8 @@ private:
             }
             else
             {
-                uint8_t* src = _bits.get();
-                uint8_t* dst = newBits.get();
+                PaletteIndex* src = _bits.get();
+                PaletteIndex* dst = newBits.get();
 
                 uint32_t minWidth = std::min(_width, width);
                 uint32_t minHeight = std::min(_height, height);
@@ -575,7 +575,7 @@ private:
                     std::copy_n(src, minWidth, dst);
                     if (pitch - minWidth > 0)
                     {
-                        std::fill_n(dst + minWidth, pitch - minWidth, 0);
+                        std::fill_n(dst + minWidth, pitch - minWidth, PaletteIndex::transparent);
                     }
                     src += _pitch;
                     dst += pitch;

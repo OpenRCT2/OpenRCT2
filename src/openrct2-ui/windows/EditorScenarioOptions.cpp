@@ -19,8 +19,9 @@
 #include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/SpriteIds.h>
-#include <openrct2/actions/ParkSetNameAction.h>
-#include <openrct2/actions/ScenarioSetSettingAction.h>
+#include <openrct2/actions/GameActionRunner.h>
+#include <openrct2/actions/general/ScenarioSetSettingAction.h>
+#include <openrct2/actions/park/ParkSetNameAction.h>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
@@ -2287,7 +2288,7 @@ namespace OpenRCT2::Ui::Windows
             auto* currentRide = GetRide(_rideableRides[i]);
             if (currentRide != nullptr)
             {
-                currentRide->lifecycleFlags ^= RIDE_LIFECYCLE_INDESTRUCTIBLE;
+                currentRide->flags.flip(RideFlag::indestructible);
             }
             invalidate();
         }
@@ -2365,7 +2366,7 @@ namespace OpenRCT2::Ui::Windows
                 auto* currentRide = GetRide(_rideableRides[i]);
                 if (currentRide != nullptr)
                 {
-                    if (currentRide->lifecycleFlags & RIDE_LIFECYCLE_INDESTRUCTIBLE)
+                    if (currentRide->flags.has(RideFlag::indestructible))
                     {
                         auto darkness = stringId == STR_WINDOW_COLOUR_2_STRINGID ? TextDarkness::extraDark : TextDarkness::dark;
                         DrawText(

@@ -12,7 +12,6 @@
 #include "../../../entity/EntityRegistry.h"
 #include "../../../interface/Viewport.h"
 #include "../../../ride/RideData.h"
-#include "../../../ride/TrackData.h"
 #include "../../../ride/TrackPaint.h"
 #include "../../../ride/Vehicle.h"
 #include "../../Boundbox.h"
@@ -130,7 +129,7 @@ static void PaintTopSpinVehicle(
     uint8_t seatRotation = 0;
     uint8_t armRotation = 0;
     auto* vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[0]);
-    if (ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
+    if (ride.flags.has(RideFlag::onTrack) && vehicle != nullptr)
     {
         session.InteractionType = ViewportInteractionItem::entity;
         session.CurrentlyDrawnEntity = vehicle;

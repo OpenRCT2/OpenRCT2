@@ -12,7 +12,7 @@
 #include "../Context.h"
 #include "../Diagnostic.h"
 #include "../GameState.h"
-#include "../actions/StaffSetOrdersAction.h"
+#include "../actions/peep/StaffSetOrdersAction.h"
 #include "../audio/Audio.h"
 #include "../core/DataSerialiser.h"
 #include "../entity/EntityList.h"
@@ -1244,12 +1244,12 @@ void Staff::UpdateHeadingToInspect()
 
     if (ride->getStation(CurrentRideStation).Exit.IsNull())
     {
-        ride->lifecycleFlags &= ~RIDE_LIFECYCLE_DUE_INSPECTION;
+        ride->flags.unset(RideFlag::dueInspection);
         SetState(PeepState::falling);
         return;
     }
 
-    if (ride->mechanicStatus != MechanicStatus::heading || !(ride->lifecycleFlags & RIDE_LIFECYCLE_DUE_INSPECTION))
+    if (ride->mechanicStatus != MechanicStatus::heading || !ride->flags.has(RideFlag::dueInspection))
     {
         SetState(PeepState::falling);
         return;
@@ -1267,7 +1267,7 @@ void Staff::UpdateHeadingToInspect()
         MechanicTimeSinceCall++;
         if (MechanicTimeSinceCall > 2500)
         {
-            if (ride->lifecycleFlags & RIDE_LIFECYCLE_DUE_INSPECTION && ride->mechanicStatus == MechanicStatus::heading)
+            if (ride->flags.has(RideFlag::dueInspection) && ride->mechanicStatus == MechanicStatus::heading)
             {
                 ride->mechanicStatus = MechanicStatus::calling;
             }
@@ -1975,8 +1975,7 @@ void Staff::UpdateFixing(int32_t steps)
     bool progressToNextSubstate = true;
     bool firstRun = true;
 
-    if ((State == PeepState::inspecting)
-        && (ride->lifecycleFlags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)))
+    if ((State == PeepState::inspecting) && (ride->flags.hasAny(RideFlag::breakdownPending, RideFlag::brokenDown)))
     {
         // Ride has broken down since Mechanic was called to inspect it.
         // Mechanic identifies the breakdown and switches to fixing it.
@@ -2170,7 +2169,7 @@ bool Staff::UpdateFixingFixVehicle(bool firstRun, const Ride& ride)
         return true;
     }
 
-    vehicle->ClearFlag(VehicleFlags::CarIsBroken);
+    vehicle->flags.unset(VehicleFlag::carIsBroken);
 
     return false;
 }
@@ -2211,7 +2210,7 @@ bool Staff::UpdateFixingFixVehicleMalfunction(bool firstRun, const Ride& ride)
         return true;
     }
 
-    vehicle->ClearFlag(VehicleFlags::TrainIsBroken);
+    vehicle->flags.unset(VehicleFlag::trainIsBroken);
 
     return false;
 }
@@ -2598,7 +2597,7 @@ void Staff::UpdateRideInspected(RideId rideIndex)
     auto ride = GetRide(rideIndex);
     if (ride != nullptr)
     {
-        ride->lifecycleFlags &= ~RIDE_LIFECYCLE_DUE_INSPECTION;
+        ride->flags.unset(RideFlag::dueInspection);
         ride->reliability += ((100 - ride->reliabilityPercentage) / 4) * (ScenarioRand() & 0xFF);
         ride->lastInspection = 0;
         ride->windowInvalidateFlags.set(RideInvalidateFlag::maintenance, RideInvalidateFlag::main, RideInvalidateFlag::list);

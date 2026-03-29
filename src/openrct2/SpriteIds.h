@@ -15,10 +15,21 @@
 
 #include <cstddef>
 
+// Number of temp sprite slots available for dynamic on-demand drawing
+constexpr size_t kTempSpriteCount = 5;
+
 enum : ImageIndex
 {
     // Used for on-demand drawing of dynamic memory
-    SPR_TEMP = 0x7FFFE,
+    // Each window that uses temporary sprites gets its own slot to avoid conflicts
+    // when multiple windows are open simultaneously (especially in OpenGL mode)
+    SPR_TEMP_BEGIN = 0x7FFFA,
+    SPR_TEMP_MAP = SPR_TEMP_BEGIN + 0,           // Map.cpp minimap
+    SPR_TEMP_TRACK_LIST = SPR_TEMP_BEGIN + 1,    // TrackList.cpp track design preview
+    SPR_TEMP_TRACK_PLACE = SPR_TEMP_BEGIN + 2,   // TrackDesignPlace.cpp placement preview
+    SPR_TEMP_PARK_PREVIEW = SPR_TEMP_BEGIN + 3,  // ParkPreview.cpp scenario/save preview
+    SPR_TEMP_INSTALL_TRACK = SPR_TEMP_BEGIN + 4, // InstallTrack.cpp track install preview
+    SPR_TEMP_END = SPR_TEMP_BEGIN + kTempSpriteCount,
 
     // Unused, listed for documentation purposes only
     SPR_G1_PALETTE_DEFAULT = 1532,
@@ -916,20 +927,6 @@ enum : ImageIndex
     SPR_MENU_LOGO = 23212,
     SPR_CREDITS_LOGO_SMALL = 23213,
     SPR_CREDITS_CHRIS_SAWYER_SMALL = 23214,
-    SPR_INTRO_CHRIS_SAWYER_00 = 23215,
-    SPR_INTRO_CHRIS_SAWYER_10 = SPR_INTRO_CHRIS_SAWYER_00 + 1,
-    SPR_INTRO_LOGO_00 = 23218,
-    SPR_INTRO_LOGO_10 = SPR_INTRO_LOGO_00 + 1,
-    SPR_INTRO_LOGO_20 = SPR_INTRO_LOGO_00 + 2,
-    SPR_INTRO_LOGO_01 = SPR_INTRO_LOGO_00 + 3,
-    SPR_INTRO_LOGO_11 = SPR_INTRO_LOGO_00 + 4,
-    SPR_INTRO_LOGO_21 = SPR_INTRO_LOGO_00 + 5,
-
-    SPR_INTRO_INFOGRAMES_00 = 23226,
-    SPR_INTRO_INFOGRAMES_10 = SPR_INTRO_INFOGRAMES_00 + 1,
-    SPR_INTRO_INFOGRAMES_01 = SPR_INTRO_INFOGRAMES_00 + 2,
-    SPR_INTRO_INFOGRAMES_11 = SPR_INTRO_INFOGRAMES_00 + 3,
-    SPR_CREDITS_INFOGRAMES = 23230,
 
     SPR_NEW_RIDE_MASK = 29013,
 

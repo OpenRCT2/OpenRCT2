@@ -3841,3 +3841,8 @@ STR_7009    :Es reben scripts nous…
 STR_7010    :No s’ha pogut iniciar la repetició. El fitxer «{STRING}» no existeix o no és vàlid.
 STR_7011    :No s’ha pogut iniciar la repetició.
 STR_7012    :Złoty polonès (PLN)
+STR_7013    :Construeix àrees de camins
+STR_7014    :Tinc el joc a l’Steam, però no el tinc instal·lat.
+STR_7015    :Tanqueu l'Steam si està en execució i després premeu «D’acord».
+STR_7016    :L’OpenRCT2 ha intentat executar una descàrrega a l’Steam. Executeu l’Steam i deixeu que descarregui el joc. Quan hagi acabat, premeu «D’acord».
+STR_7017    :Surt

@@ -9,53 +9,30 @@
 
 #include "Track.h"
 
-#include "../Cheats.h"
 #include "../Diagnostic.h"
-#include "../Game.h"
 #include "../GameState.h"
 #include "../actions/ResultWithMessage.h"
 #include "../audio/Audio.h"
-#include "../config/Config.h"
 #include "../interface/Viewport.h"
-#include "../management/Finance.h"
 #include "../network/Network.h"
-#include "../platform/Platform.h"
-#include "../rct1/RCT1.h"
-#include "../ride/RideColour.h"
-#include "../sawyer_coding/SawyerCoding.h"
 #include "../world/Footpath.h"
 #include "../world/Map.h"
-#include "../world/MapAnimation.h"
-#include "../world/Park.h"
-#include "../world/Scenery.h"
 #include "../world/tile_element/SmallSceneryElement.h"
 #include "../world/tile_element/TileElement.h"
 #include "../world/tile_element/TrackElement.h"
 #include "Ride.h"
 #include "RideData.h"
-#include "RideRatings.h"
 #include "Station.h"
 #include "TrackData.h"
 #include "TrackDesign.h"
+#include "ted/TrackElementDescriptor.h"
 
 #include <cassert>
 
 using namespace OpenRCT2;
-using namespace OpenRCT2::TrackMetaData;
+using namespace OpenRCT2::TrackMetadata;
 using OpenRCT2::GameActions::CommandFlag;
 using OpenRCT2::GameActions::CommandFlags;
-
-PitchAndRoll TrackPitchAndRollStart(TrackElemType trackType)
-{
-    const auto& ted = GetTrackElementDescriptor(trackType);
-    return { ted.definition.pitchStart, ted.definition.rollStart };
-}
-
-PitchAndRoll TrackPitchAndRollEnd(TrackElemType trackType)
-{
-    const auto& ted = GetTrackElementDescriptor(trackType);
-    return { ted.definition.pitchEnd, ted.definition.rollEnd };
-}
 
 /**
  * Helper method to determine if a connects to b by its bank and angle, not location.

@@ -12,11 +12,12 @@
 #include "../Context.h"
 #include "../GameState.h"
 #include "../Input.h"
+#include "../actions/GameActionRunner.h"
 #include "../actions/ResultWithMessage.h"
-#include "../actions/RideEntranceExitRemoveAction.h"
-#include "../actions/RideSetSettingAction.h"
-#include "../actions/RideSetStatusAction.h"
-#include "../actions/TrackRemoveAction.h"
+#include "../actions/ride/RideEntranceExitRemoveAction.h"
+#include "../actions/ride/RideSetSettingAction.h"
+#include "../actions/ride/RideSetStatusAction.h"
+#include "../actions/track/TrackRemoveAction.h"
 #include "../entity/EntityList.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/Staff.h"
@@ -44,12 +45,13 @@
 #include "TrackData.h"
 #include "TrainManager.h"
 #include "Vehicle.h"
+#include "ted/TrackElementDescriptor.h"
 
 #include <cassert>
 #include <sfl/static_vector.hpp>
 
 using namespace OpenRCT2;
-using namespace OpenRCT2::TrackMetaData;
+using namespace OpenRCT2::TrackMetadata;
 using OpenRCT2::GameActions::CommandFlag;
 using OpenRCT2::GameActions::CommandFlags;
 
@@ -89,7 +91,7 @@ RideConstructionState gRideEntranceExitPlacePreviousRideConstructionState;
 Direction gRideEntranceExitPlaceDirection;
 
 using namespace OpenRCT2;
-using namespace OpenRCT2::TrackMetaData;
+using namespace OpenRCT2::TrackMetadata;
 
 static int32_t ride_check_if_construction_allowed(Ride& ride)
 {
@@ -100,7 +102,7 @@ static int32_t ride_check_if_construction_allowed(Ride& ride)
         ContextShowError(STR_INVALID_RIDE_TYPE, STR_CANT_EDIT_INVALID_RIDE_TYPE, ft);
         return 0;
     }
-    if (ride.lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN)
+    if (ride.flags.has(RideFlag::brokenDown))
     {
         ride.formatNameTo(ft);
         ContextShowError(STR_CANT_START_CONSTRUCTION_ON, STR_HAS_BROKEN_DOWN_AND_REQUIRES_FIXING, ft);
@@ -153,9 +155,9 @@ void RideConstructionStart(Ride& ride)
  */
 static void ride_remove_cable_lift(Ride& ride)
 {
-    if (ride.lifecycleFlags & RIDE_LIFECYCLE_CABLE_LIFT)
+    if (ride.flags.has(RideFlag::cableLift))
     {
-        ride.lifecycleFlags &= ~RIDE_LIFECYCLE_CABLE_LIFT;
+        ride.flags.unset(RideFlag::cableLift);
         auto spriteIndex = ride.cableLift;
         do
         {
@@ -177,10 +179,9 @@ static void ride_remove_cable_lift(Ride& ride)
  */
 void Ride::removeVehicles()
 {
-    if (lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK)
+    if (flags.has(RideFlag::onTrack))
     {
-        lifecycleFlags &= ~RIDE_LIFECYCLE_ON_TRACK;
-        lifecycleFlags &= ~(RIDE_LIFECYCLE_TEST_IN_PROGRESS | RIDE_LIFECYCLE_HAS_STALLED_VEHICLE);
+        flags.unset(RideFlag::onTrack, RideFlag::testInProgress, RideFlag::hasStalledVehicle);
 
         for (size_t i = 0; i <= Limits::kMaxTrainsPerRide; i++)
         {
@@ -223,7 +224,7 @@ void RideClearForConstruction(Ride& ride)
 {
     ride.measurement = {};
 
-    ride.lifecycleFlags &= ~(RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN);
+    ride.flags.unset(RideFlag::breakdownPending, RideFlag::brokenDown);
     ride.windowInvalidateFlags.set(RideInvalidateFlag::main, RideInvalidateFlag::list);
 
     // Open circuit rides will go directly into building mode (creating ghosts) where it would normally clear the stats,
@@ -972,7 +973,7 @@ bool RideModify(const CoordsXYE& input)
     if (rideEntry == nullptr || !ride_check_if_construction_allowed(*ride))
         return false;
 
-    if (ride->lifecycleFlags & RIDE_LIFECYCLE_INDESTRUCTIBLE && !getGameState().cheats.makeAllDestructible)
+    if (ride->flags.has(RideFlag::indestructible) && !getGameState().cheats.makeAllDestructible)
     {
         Formatter ft;
         ride->formatNameTo(ft);

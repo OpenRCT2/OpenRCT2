@@ -34,7 +34,7 @@ env:
   OPENRCT2_BUILD_SERVER: GitHub
   OPENRCT2_ORG_TOKEN: ${{ secrets.OPENRCT2_ORG_TOKEN }}
   BACKTRACE_IO_TOKEN: ${{ secrets.BACKTRACE_IO_TOKEN }}
-  OPENRCT2_VERSION: 0.4.31
+  OPENRCT2_VERSION: 0.4.32
 
 # https://docs.github.com/en/actions/using-jobs/using-concurrency#example-using-a-fallback-value
 concurrency:
@@ -129,7 +129,7 @@ jobs:
   check-code-formatting:
     name: Check code formatting
     runs-on: ubuntu-latest
-    container: openrct2/openrct2-build:24-format
+    container: ghcr.io/openrct2/openrct2-build:26-format
     permissions:
       pull-requests: write
       contents: read
@@ -321,7 +321,7 @@ jobs:
     name: Windows (${{ matrix.platform_name }}) using mingw
     runs-on: ubuntu-latest
     needs: [check-code-formatting, build_variables]
-    container: openrct2/openrct2-build:24-mingw
+    container: ghcr.io/openrct2/openrct2-build:26-mingw
     strategy:
       fail-fast: false
       matrix:
@@ -459,17 +459,22 @@ jobs:
           - platform: x86_64
             distro: Ubuntu
             release: noble
-            image: openrct2/openrct2-build:24-noble
+            image: ghcr.io/openrct2/openrct2-build:26-noble
             build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g1 -gz -fno-var-tracking-assignments"
+          - platform: x86_64
+            distro: Ubuntu
+            release: resolute
+            image: ghcr.io/openrct2/openrct2-build:26-resolute
+            build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g1 -gz"
           - platform: x86_64
             distro: Debian
             release: bookworm
-            image: openrct2/openrct2-build:24-bookworm
+            image: ghcr.io/openrct2/openrct2-build:26-bookworm
             build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g1 -gz -fno-var-tracking-assignments" -DWITH_TESTS=off
           - platform: x86_64
             distro: Debian
             release: trixie
-            image: openrct2/openrct2-build:24-trixie
+            image: ghcr.io/openrct2/openrct2-build:26-trixie
             build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g1 -gz -fno-var-tracking-assignments" -DWITH_TESTS=off
     steps:
       - name: Checkout
@@ -554,7 +559,7 @@ jobs:
     name: Ubuntu Linux (noble, debug, [http, network, flac, vorbis OpenGL] disabled) using clang
     runs-on: ubuntu-latest
     needs: [check-code-formatting, build_variables]
-    container: openrct2/openrct2-build:24-noble
+    container: ghcr.io/openrct2/openrct2-build:26-noble
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -570,7 +575,7 @@ jobs:
     name: Ubuntu Linux (debug) using clang, coverage enabled
     runs-on: ubuntu-latest
     needs: [check-code-formatting, build_variables]
-    container: openrct2/openrct2-build:24-noble
+    container: ghcr.io/openrct2/openrct2-build:26-noble
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -607,44 +612,105 @@ jobs:
             bin/coverage.json*
             bin/OpenRCT2Tests.xz
           if-no-files-found: error
-  android:
-    name: Android
+  android-libs:
+    name: Android (${{ matrix.arch }})
     runs-on: ubuntu-latest
     needs: [check-code-formatting, build_variables]
-    container: openrct2/openrct2-build:24-android
+    container: ghcr.io/openrct2/openrct2-build:26-android
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: [armeabi-v7a, arm64-v8a, x86_64]
     steps:
       - name: Checkout
         uses: actions/checkout@v6
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2.20
         with:
-          key: android
+          key: android-${{ matrix.arch }}
+      - name: Cache Gradle
+        uses: actions/cache@v5
+        with:
+          # The gradle cache is by default ~/.gradle/caches, but ~ gets resolved by GitHub Actions to the runner's
+          # home directory (/home/github), not the user inside the container (/root). Name the path explicitly.
+          path: /root/.gradle/caches
+          key: gradle-${{ hashFiles('src/openrct2-android/gradle.properties') }}
+      - name: Install GCC problem matcher
+        uses: ammaraskar/gcc-problem-matcher@master
+      - name: Build Native Libs
+        run: |
+          . scripts/setenv
+          pushd src/openrct2-android
+          ./gradlew app:externalNativeBuildRelease -PabiFilter=${{ matrix.arch }}
+          popd
+      - name: Upload Native Libs
+        uses: actions/upload-artifact@v6
+        with:
+          name: android-libs-${{ matrix.arch }}
+          path: src/openrct2-android/app/build/intermediates/cmake/release/obj/${{ matrix.arch }}
+          if-no-files-found: error
+
+  android:
+    name: Android
+    runs-on: ubuntu-latest
+    needs: [android-libs, build_variables]
+    container: openrct2/openrct2-build:25-android
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Cache Gradle
+        uses: actions/cache@v5
+        with:
+          # The gradle cache is by default ~/.gradle/caches, but ~ gets resolved by GitHub Actions to the runner's
+          # home directory (/home/github), not the user inside the container (/root). Name the path explicitly.
+          path: /root/.gradle/caches
+          key: gradle-${{ hashFiles('src/openrct2-android/gradle.properties') }}
       - name: Setup keystore
         run: |
           echo "${{ secrets.OPENRCT2_KEYSTORE_CONTENTS }}" | base64 -d > keystore.jks
           echo "OPENRCT2_KEYSTORE_FILE=${{ github.workspace }}/keystore.jks" >> $GITHUB_ENV
           echo "OPENRCT2_KEYSTORE_PASSWORD=${{ secrets.OPENRCT2_KEYSTORE_PASSWORD }}" >> $GITHUB_ENV
-      - name: Install GCC problem matcher
-        uses: ammaraskar/gcc-problem-matcher@master
+      - name: Download all libs
+        uses: actions/download-artifact@v7
+        with:
+          pattern: android-libs-*
+          path: artifacts/android-libs
+      - name: Move libs to project
+        run: |
+          mkdir -p src/openrct2-android/app/libs
+          for arch in armeabi-v7a arm64-v8a x86_64; do
+            if [ -d "artifacts/android-libs/android-libs-$arch" ]; then
+              mkdir -p src/openrct2-android/app/libs/$arch
+              mv artifacts/android-libs/android-libs-$arch/* src/openrct2-android/app/libs/$arch/
+            else
+              echo "::warning title=Missing libraries::Warning: No libs found for $arch"
+            fi
+          done
       - name: Build OpenRCT2
         run: |
           . scripts/setenv
           pushd src/openrct2-android
-          ./gradlew app:assembleRelease
+          ./gradlew app:assembleRelease -PskipNativeBuild
           popd
           mkdir -p artifacts
-          mv src/openrct2-android/app/build/outputs/apk/release/app-release.apk artifacts/OpenRCT2-${{ needs.build_variables.outputs.name }}-android-arm.apk
+          mv src/openrct2-android/app/build/outputs/apk/release/app-release.apk artifacts/OpenRCT2-${{ needs.build_variables.outputs.name }}-android.apk
       - name: Upload artifacts (CI)
         uses: actions/upload-artifact@v6
         with:
           name: OpenRCT2-${{ needs.build_variables.outputs.name }}-Android
           path: artifacts
           if-no-files-found: error
+      - name: Upload gradle issues
+        uses: actions/upload-artifact@v6
+        with:
+          name: OpenRCT2-${{ needs.build_variables.outputs.name }}-gradle-issues
+          path: src/openrct2-android/build/reports/problems/problems-report.html
+          if-no-files-found: ignore
   emscripten:
     name: Emscripten
     runs-on: ubuntu-latest
     needs: [check-code-formatting, build_variables]
-    container: openrct2/openrct2-build:24-emscripten
+    container: ghcr.io/openrct2/openrct2-build:26-emscripten
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -677,12 +743,17 @@ jobs:
         uses: actions/download-artifact@v7
         with:
           merge-multiple: false
-      # Having multiple artifacts named the same might be confusing. Drop the unsigned versions.
+      # Only remove unsigned artifacts if signing is enabled, otherwise we might end up with no artifacts at all
       - name: Remove unsigned artifacts and flatten
         run: |
           ls -lR
-          find . -maxdepth 1 -name '*unsigned*' -type d -exec rm -rf {} + 2>/dev/null || true
-          echo "Unsigned artifacts removed"
+          if [[ "${{ needs.build_variables.outputs.sign }}" == "true" ]]; then
+             echo "Signing enabled, removing unsigned artifacts"
+             find . -maxdepth 1 -name '*unsigned*' -type d -exec rm -rf {} + 2>/dev/null || true
+             echo "Unsigned artifacts removed"
+           else
+             echo "Signing not enabled, keeping unsigned artifacts"
+          fi
           # Flatten remaining artifact directories
           find . -maxdepth 2 -type f \( -path './OpenRCT2-*/*' -o -path './graphics-*/*' \) -exec mv {} . \;
           # Clean up empty directories

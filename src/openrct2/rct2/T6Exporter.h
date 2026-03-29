@@ -33,5 +33,11 @@ namespace OpenRCT2::RCT2
 
     private:
         const TrackDesign& _trackDesign;
+
+        void exportMazeElements(IStream& tempStream) const;
+        void exportTrackElements(IStream& tempStream) const;
+        void exportTrackElementsTD7(IStream& tempStream) const;
+        void exportEntranceElements(IStream& tempStream) const;
+        void exportSceneryElements(IStream& tempStream) const;
     };
 } // namespace OpenRCT2::RCT2

@@ -12,7 +12,6 @@
 #include "../../../interface/Viewport.h"
 #include "../../../ride/Ride.h"
 #include "../../../ride/RideEntry.h"
-#include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
 #include "../../../ride/Vehicle.h"
 #include "../../Boundbox.h"
@@ -46,7 +45,7 @@ static void PaintMotionSimulatorVehicle(
     CoordsXYZ offset(offsetX, offsetY, height + 2);
 
     Vehicle* vehicle = nullptr;
-    if (ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK)
+    if (ride.flags.has(RideFlag::onTrack))
     {
         vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[0]);
         if (vehicle != nullptr)

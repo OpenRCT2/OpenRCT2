@@ -298,7 +298,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        OpenRCT2String onTooltip(WidgetIndex widgetIndex, StringId fallback) override
+        StringWithArgs onTooltip(WidgetIndex widgetIndex, StringId fallback) override
         {
             auto ft = Formatter();
             ft.Add<char*>(_version.c_str());

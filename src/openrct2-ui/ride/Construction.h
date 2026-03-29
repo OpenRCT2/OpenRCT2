@@ -16,6 +16,12 @@
 
 namespace OpenRCT2
 {
+    namespace TrackMetadata
+    {
+        enum class TrackPitch : uint8_t;
+        enum class TrackRoll : uint8_t;
+    } // namespace TrackMetadata
+
     enum class RideConstructionState : uint8_t;
 
     struct SpecialElement
@@ -32,8 +38,8 @@ namespace OpenRCT2
     };
 
     SpecialElementsDropdownState BuildSpecialElementsList(
-        const Ride& currentRide, uint8_t buildDirection, TrackPitch buildSlope, TrackRoll buildBank,
-        RideConstructionState state);
+        const Ride& currentRide, uint8_t buildDirection, TrackMetadata::TrackPitch buildSlope,
+        TrackMetadata::TrackRoll buildBank, RideConstructionState state);
 
     void RideConstructNew(RideSelection listItem);
     CoordsXYZD RideGetEntranceOrExitPositionFromScreenPosition(const ScreenCoordsXY& screenCoords);

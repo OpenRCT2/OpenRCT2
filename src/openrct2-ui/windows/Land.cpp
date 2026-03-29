@@ -19,10 +19,11 @@
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/SpriteIds.h>
-#include <openrct2/actions/LandLowerAction.h>
-#include <openrct2/actions/LandRaiseAction.h>
-#include <openrct2/actions/LandSmoothAction.h>
-#include <openrct2/actions/SurfaceSetStyleAction.h>
+#include <openrct2/actions/GameActionRunner.h>
+#include <openrct2/actions/terraform/LandLowerAction.h>
+#include <openrct2/actions/terraform/LandRaiseAction.h>
+#include <openrct2/actions/terraform/LandSmoothAction.h>
+#include <openrct2/actions/terraform/SurfaceSetStyleAction.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/object/ObjectManager.h>

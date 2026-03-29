@@ -37,6 +37,7 @@ constexpr RideTypeDescriptor MiniatureRailwayRTD =
                      RtdFlag::supportsLevelCrossings),
     .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::shuttle),
     .DefaultMode = RideMode::continuousCircuit,
+    .OperatingSettings = { 5, 27 },
     .Naming = { STR_RIDE_NAME_MINIATURE_RAILWAY, STR_RIDE_DESCRIPTION_MINIATURE_RAILWAY },
     .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
@@ -57,7 +58,7 @@ constexpr RideTypeDescriptor MiniatureRailwayRTD =
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_MINIATURE_RAILWAY_TRACK, SPR_RIDE_DESIGN_PREVIEW_MINIATURE_RAILWAY_SUPPORTS },
     .ColourKey = RideColourKey::Ride,
     .Name = "miniature_railway",
-    .RatingsData = 
+    .RatingsData =
     {
         RatingsCalculationType::Normal,
         { RideRating::make(2, 50), RideRating::make(0, 00), RideRating::make(0, 00) },

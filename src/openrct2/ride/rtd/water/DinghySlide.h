@@ -30,7 +30,7 @@ constexpr RideTypeDescriptor DinghySlideRTD =
             .extraTrackGroups = {},
             .icon = SPR_RIDE_CONSTRUCTION_U_SHAPED_TRACK,
             .tooltip = STR_RIDE_CONSTRUCTION_U_SHAPED_OPEN_TRACK_TIP,
-        }, 
+        },
         {
             .trackStyle = TrackStyle::dinghySlideCovered,
             .supportType = MetalSupportType::tubes,
@@ -41,15 +41,16 @@ constexpr RideTypeDescriptor DinghySlideRTD =
         }
     ),
     .InvertedTrackPaintFunctions = {},
-    .flags = kRtdFlagsHasThreeColours | RtdFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, 
-                     RtdFlag::canSynchroniseWithAdjacentStations, RtdFlag::hasGForces, 
-                     RtdFlag::hasDataLogging, RtdFlag::hasDrops, RtdFlag::hasCoveredPieces, 
-                     RtdFlag::hasLoadOptions, RtdFlag::guestsWillRideAgain, RtdFlag::hasVehicleColours, 
-                     RtdFlag::checkForStalling, RtdFlag::hasTrack, RtdFlag::supportsMultipleColourSchemes, 
-                     RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit, RtdFlag::hasAirTime, 
+    .flags = kRtdFlagsHasThreeColours | RtdFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation,
+                     RtdFlag::canSynchroniseWithAdjacentStations, RtdFlag::hasGForces,
+                     RtdFlag::hasDataLogging, RtdFlag::hasDrops, RtdFlag::hasCoveredPieces,
+                     RtdFlag::hasLoadOptions, RtdFlag::guestsWillRideAgain, RtdFlag::hasVehicleColours,
+                     RtdFlag::checkForStalling, RtdFlag::hasTrack, RtdFlag::supportsMultipleColourSchemes,
+                     RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit, RtdFlag::hasAirTime,
                      RtdFlag::showInTrackDesigner, RtdFlag::interestingToLookAt),
     .RideModes = EnumsToFlags(RideMode::continuousCircuit),
     .DefaultMode = RideMode::continuousCircuit,
+    .OperatingSettings = { 5, 27 },
     .Naming = { STR_RIDE_NAME_DINGHY_SLIDE, STR_RIDE_DESCRIPTION_DINGHY_SLIDE },
     .NameConvention = { RideComponentType::Boat, RideComponentType::Track, RideComponentType::Station },
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
@@ -71,7 +72,7 @@ constexpr RideTypeDescriptor DinghySlideRTD =
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_DINGHY_SLIDE_TRACK, SPR_RIDE_DESIGN_PREVIEW_DINGHY_SLIDE_SUPPORTS },
     .ColourKey = RideColourKey::Ride,
     .Name = "dinghy_slide",
-    .RatingsData = 
+    .RatingsData =
     {
         RatingsCalculationType::Normal,
         { RideRating::make(2, 70), RideRating::make(2, 00), RideRating::make(1, 50) },

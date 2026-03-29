@@ -100,6 +100,12 @@ namespace OpenRCT2::RCT2
         ParkLoadResult Load(const u8string& path, const bool skipObjectCheck) override
         {
             const auto extension = Path::GetExtension(path);
+            if (String::iequals(extension, ".sea"))
+            {
+                auto data = DecryptSea(fs::u8path(path));
+                auto ms = MemoryStream(data.data(), data.size(), MemoryAccess::read);
+                return LoadFromStream(&ms, true, skipObjectCheck, path);
+            }
             if (String::iequals(extension, ".sc6"))
             {
                 return LoadScenario(path, skipObjectCheck);
@@ -161,9 +167,16 @@ namespace OpenRCT2::RCT2
 
             // Read packed objects
             // TODO try to contain this more and not store objects until later
-            if (!skipObjectCheck)
+            for (uint16_t i = 0; i < _s6.Header.NumPackedObjects; i++)
             {
-                for (uint16_t i = 0; i < _s6.Header.NumPackedObjects; i++)
+                if (skipObjectCheck)
+                {
+                    // When scanning, skip past packed object data to keep the stream
+                    // position correct without importing objects into the repository.
+                    stream->Seek(sizeof(RCTObjectEntry), STREAM_SEEK_CURRENT);
+                    SawyerChunkReader(stream).SkipChunk();
+                }
+                else
                 {
                     _objectRepository.ExportPackedObject(stream);
                 }
@@ -986,7 +999,7 @@ namespace OpenRCT2::RCT2
             dst->numBlockBrakes = src->numBlockBrakes;
             dst->liftHillSpeed = src->liftHillSpeed;
             dst->guestsFavourite = src->guestsFavourite;
-            dst->lifecycleFlags = src->lifecycleFlags;
+            dst->flags.holder = src->flags;
 
             for (uint8_t i = 0; i < Limits::kMaxTrainsPerRide; i++)
             {
@@ -1651,6 +1664,9 @@ namespace OpenRCT2::RCT2
         {
             for (int32_t i = 0; i < GetMaxEntities(); i++)
             {
+                // Make sure the EntityIndex matches the array position to handle corrupted saves where duplicate or invalid
+                // indices would cause CreateEntityAt to fail
+                _s6.Entities[i].Unknown.EntityIndex = static_cast<uint16_t>(i);
                 ImportEntity(gameState, _s6.Entities[i].Unknown);
             }
         }
@@ -2023,7 +2039,7 @@ namespace OpenRCT2::RCT2
         dst->next_vehicle_on_ride = EntityId::FromUnderlying(src->NextVehicleOnRide);
         dst->var_44 = src->Var44;
         dst->mass = src->Mass;
-        dst->Flags = src->UpdateFlags;
+        dst->flags.holder = src->UpdateFlags;
         dst->SwingSprite = src->SwingSprite;
         dst->current_station = StationIndex::FromUnderlying(src->CurrentStation);
         dst->current_time = src->CurrentTime;
@@ -2068,13 +2084,13 @@ namespace OpenRCT2::RCT2
         dst->vertical_drop_countdown = src->VerticalDropCountdown;
         dst->var_D3 = src->VarD3;
         dst->mini_golf_current_animation = MiniGolfAnimation(src->MiniGolfCurrentAnimation);
-        dst->mini_golf_flags = src->MiniGolfFlags;
+        dst->miniGolfFlags.holder = src->MiniGolfFlags;
         dst->ride_subtype = RCTEntryIndexToOpenRCT2EntryIndex(src->RideSubtype);
         dst->seat_rotation = src->SeatRotation;
         dst->target_seat_rotation = src->TargetSeatRotation;
         if (src->Flags & RCT12_ENTITY_FLAGS_IS_CRASHED_VEHICLE_ENTITY)
         {
-            dst->SetFlag(VehicleFlags::Crashed);
+            dst->flags.set(VehicleFlag::crashed);
         }
         dst->BlockBrakeSpeed = kRCT2DefaultBlockBrakeSpeed;
     }

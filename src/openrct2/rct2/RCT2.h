@@ -287,7 +287,7 @@ namespace OpenRCT2::RCT2
         uint8_t numBlockBrakes;                                             // 0x1CC
         uint8_t liftHillSpeed;                                              // 0x1CD
         uint16_t guestsFavourite;                                           // 0x1CE
-        uint32_t lifecycleFlags;                                            // 0x1D0
+        uint32_t flags;                                                     // 0x1D0
         Drawing::Colour vehicleColoursExtended[Limits::kMaxVehicleColours]; // 0x1D4
         uint16_t totalAirTime;                                              // 0x1F4
         uint8_t currentTestStation;                                         // 0x1F6

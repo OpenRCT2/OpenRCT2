@@ -18,25 +18,23 @@
     #include <openrct2/drawing/RenderTarget.h>
     #include <openrct2/scripting/Duktape.hpp>
 
-using namespace OpenRCT2::Drawing;
-
 namespace OpenRCT2::Scripting
 {
     class ScGraphicsContext
     {
     private:
         duk_context* _ctx{};
-        RenderTarget _rt{};
+        Drawing::RenderTarget _rt{};
 
         std::optional<uint8_t> _colour{};
         std::optional<uint8_t> _secondaryColour{};
         std::optional<uint8_t> _tertiaryColour{};
         std::optional<uint8_t> _paletteId{};
-        PaletteIndex _stroke{};
-        PaletteIndex _fill{};
+        Drawing::PaletteIndex _stroke{};
+        Drawing::PaletteIndex _fill{};
 
     public:
-        ScGraphicsContext(duk_context* ctx, const RenderTarget& rt)
+        ScGraphicsContext(duk_context* ctx, const Drawing::RenderTarget& rt)
             : _ctx(ctx)
             , _rt(rt)
         {
@@ -130,7 +128,7 @@ namespace OpenRCT2::Scripting
 
         void fill_set(uint8_t value)
         {
-            _fill = static_cast<PaletteIndex>(value);
+            _fill = static_cast<Drawing::PaletteIndex>(value);
         }
 
         uint8_t stroke_get() const
@@ -140,7 +138,7 @@ namespace OpenRCT2::Scripting
 
         void stroke_set(uint8_t value)
         {
-            _stroke = static_cast<PaletteIndex>(value);
+            _stroke = static_cast<Drawing::PaletteIndex>(value);
         }
 
         int32_t width_get() const
@@ -167,14 +165,16 @@ namespace OpenRCT2::Scripting
 
         void box(int32_t x, int32_t y, int32_t width, int32_t height)
         {
-            Rectangle::fillInset(_rt, { x, y, x + width - 1, y + height - 1 }, { static_cast<Colour>(_colour.value_or(0)) });
+            Drawing::Rectangle::fillInset(
+                _rt, { x, y, x + width - 1, y + height - 1 }, { static_cast<Drawing::Colour>(_colour.value_or(0)) });
         }
 
         void well(int32_t x, int32_t y, int32_t width, int32_t height)
         {
-            Rectangle::fillInset(
-                _rt, { x, y, x + width - 1, y + height - 1 }, { static_cast<Colour>(_colour.value_or(0)) },
-                Rectangle::BorderStyle::inset, Rectangle::FillBrightness::light, Rectangle::FillMode::dontLightenWhenInset);
+            Drawing::Rectangle::fillInset(
+                _rt, { x, y, x + width - 1, y + height - 1 }, { static_cast<Drawing::Colour>(_colour.value_or(0)) },
+                Drawing::Rectangle::BorderStyle::inset, Drawing::Rectangle::FillBrightness::light,
+                Drawing::Rectangle::FillMode::dontLightenWhenInset);
         }
 
         void clear()
@@ -184,7 +184,7 @@ namespace OpenRCT2::Scripting
 
         void clip(int32_t x, int32_t y, int32_t width, int32_t height)
         {
-            RenderTarget newRT;
+            Drawing::RenderTarget newRT;
             ClipRenderTarget(newRT, _rt, { x, y }, width, height);
             _rt = newRT;
         }
@@ -201,15 +201,15 @@ namespace OpenRCT2::Scripting
             {
                 if (_colour)
                 {
-                    img = img.WithPrimary(static_cast<Colour>(*_colour));
+                    img = img.WithPrimary(static_cast<Drawing::Colour>(*_colour));
                 }
                 if (_secondaryColour)
                 {
-                    img = img.WithSecondary(static_cast<Colour>(*_secondaryColour));
+                    img = img.WithSecondary(static_cast<Drawing::Colour>(*_secondaryColour));
                 }
             }
 
-            GfxDrawSprite(_rt, img.WithTertiary(static_cast<Colour>(_tertiaryColour.value_or(0))), { x, y });
+            GfxDrawSprite(_rt, img.WithTertiary(static_cast<Drawing::Colour>(_tertiaryColour.value_or(0))), { x, y });
         }
 
         void line(int32_t x1, int32_t y1, int32_t x2, int32_t y2)
@@ -219,7 +219,7 @@ namespace OpenRCT2::Scripting
 
         void rect(int32_t x, int32_t y, int32_t width, int32_t height)
         {
-            if (_stroke != PaletteIndex::transparent)
+            if (_stroke != Drawing::PaletteIndex::transparent)
             {
                 line(x, y, x + width, y);
                 line(x + width - 1, y + 1, x + width - 1, y + height - 1);
@@ -231,15 +231,15 @@ namespace OpenRCT2::Scripting
                 width -= 2;
                 height -= 2;
             }
-            if (_fill != PaletteIndex::transparent)
+            if (_fill != Drawing::PaletteIndex::transparent)
             {
-                Rectangle::fill(_rt, { x, y, x + width - 1, y + height - 1 }, _fill);
+                Drawing::Rectangle::fill(_rt, { x, y, x + width - 1, y + height - 1 }, _fill);
             }
         }
 
         void text(const std::string& text, int32_t x, int32_t y)
         {
-            DrawText(_rt, { x, y }, { static_cast<Colour>(_colour.value_or(0)) }, text.c_str());
+            DrawText(_rt, { x, y }, { static_cast<Drawing::Colour>(_colour.value_or(0)) }, text.c_str());
         }
     };
 } // namespace OpenRCT2::Scripting

@@ -14,13 +14,14 @@
     #include "../../../Context.h"
     #include "../../../ride/Ride.h"
     #include "../../../ride/TrackData.h"
+    #include "../../../ride/ted/TrackElementDescriptor.h"
     #include "../../../world/Map.h"
     #include "../../../world/tile_element/TrackElement.h"
     #include "../../ScriptEngine.h"
     #include "ScTrackSegment.h"
 
 using namespace OpenRCT2::Scripting;
-using namespace OpenRCT2::TrackMetaData;
+using namespace OpenRCT2::TrackMetadata;
 
 std::shared_ptr<ScTrackIterator> ScTrackIterator::FromElement(const CoordsXY& position, int32_t elementIndex)
 {

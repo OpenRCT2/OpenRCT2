@@ -10,8 +10,6 @@
 #include "../../../Game.h"
 #include "../../../GameState.h"
 #include "../../../config/Config.h"
-#include "../../../interface/Viewport.h"
-#include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
 #include "../../../ride/Vehicle.h"
 #include "../../Paint.h"

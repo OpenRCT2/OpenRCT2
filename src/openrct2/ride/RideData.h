@@ -35,6 +35,7 @@
 #include "Track.h"
 #include "TrackStyle.h"
 #include "Vehicle.h"
+#include "ted/TrackGroup.h"
 
 enum class ResearchCategory : uint8_t;
 
@@ -273,7 +274,7 @@ struct UpkeepCostsDescriptor
     money64 CostPerStation;
 };
 
-using RideTrackGroups = OpenRCT2::BitSet<EnumValue(TrackGroup::count)>;
+using RideTrackGroups = OpenRCT2::BitSet<EnumValue(OpenRCT2::TrackGroup::count)>;
 using UpdateRideApproachVehicleWaypointsFunction = void (*)(Guest&, const CoordsXY&, int16_t&);
 using RideMusicUpdateFunction = void (*)(Ride&);
 using PeepUpdateRideLeaveEntranceFunc = void (*)(Guest&, Ride&, CoordsXYZD&);
@@ -306,7 +307,7 @@ struct TrackDrawerEntry
     StringId tooltip = kStringIdNone;
 
     void GetAvailableTrackGroups(RideTrackGroups& res) const;
-    bool SupportsTrackGroup(TrackGroup trackGroup) const;
+    bool SupportsTrackGroup(OpenRCT2::TrackGroup trackGroup) const;
 };
 
 struct TrackDrawerDescriptor
@@ -561,7 +562,7 @@ struct RideTypeDescriptor
     RtdSpecialType specialType = RtdSpecialType::none;
 
     /** @deprecated */
-    bool SupportsTrackGroup(TrackGroup trackGroup) const;
+    bool SupportsTrackGroup(OpenRCT2::TrackGroup trackGroup) const;
     ResearchCategory GetResearchCategory() const;
     bool SupportsRideMode(RideMode rideMode) const;
     /**
@@ -695,7 +696,7 @@ constexpr bool RideTypeIsValid(ride_type_t rideType)
     return rideType < std::size(kRideTypeDescriptors);
 }
 
-bool IsTrackEnabled(TrackGroup trackGroup);
+bool IsTrackEnabled(OpenRCT2::TrackGroup trackGroup);
 void UpdateEnabledRideGroups(TrackDrawerDescriptor trackDrawerDescriptor);
 void UpdateDisabledRideGroups(const RideTrackGroups& res);
 

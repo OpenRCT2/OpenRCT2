@@ -46,13 +46,12 @@
 
 using namespace OpenRCT2;
 
-constexpr size_t TRACK_MAX_SAVED_TILE_ELEMENTS = 1500;
 constexpr int32_t TRACK_NEARBY_SCENERY_DISTANCE = 1;
 
 bool gTrackDesignSaveMode = false;
 RideId gTrackDesignSaveRideIndex = RideId::GetNull();
 
-std::vector<const TileElement*> _trackSavedTileElements;
+static std::vector<const TileElement*> _trackSavedTileElements;
 std::vector<TrackDesignSceneryElement> _trackSavedTileElementsDesc;
 
 struct TrackDesignAddStatus
@@ -181,14 +180,6 @@ static bool TrackDesignSaveCanAddTileElement(TileElement* tileElement)
         return false;
     }
 
-    // Get number of spare elements left
-    size_t spareSavedElements = TRACK_MAX_SAVED_TILE_ELEMENTS - _trackSavedTileElements.size();
-    if (newElementCount > spareSavedElements)
-    {
-        // No more spare saved elements left
-        return false;
-    }
-
     return true;
 }
 
@@ -198,11 +189,8 @@ static bool TrackDesignSaveCanAddTileElement(TileElement* tileElement)
  */
 static void TrackDesignSavePushTileElement(const CoordsXY& loc, TileElement* tileElement)
 {
-    if (_trackSavedTileElements.size() < TRACK_MAX_SAVED_TILE_ELEMENTS)
-    {
-        _trackSavedTileElements.push_back(tileElement);
-        MapInvalidateTileFull(loc);
-    }
+    _trackSavedTileElements.push_back(tileElement);
+    MapInvalidateTileFull(loc);
 }
 
 static bool TrackDesignSaveIsSupportedObject(const Object* obj)

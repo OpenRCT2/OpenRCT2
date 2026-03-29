@@ -24,8 +24,9 @@
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/SpriteIds.h>
-#include <openrct2/actions/FootpathPlaceAction.h>
-#include <openrct2/actions/FootpathRemoveAction.h>
+#include <openrct2/actions/GameActionRunner.h>
+#include <openrct2/actions/footpath/FootpathPlaceAction.h>
+#include <openrct2/actions/footpath/FootpathRemoveAction.h>
 #include <openrct2/audio/Audio.h>
 #include <openrct2/core/FlagHolder.hpp>
 #include <openrct2/drawing/Drawing.h>
@@ -819,7 +820,7 @@ namespace OpenRCT2::Ui::Windows
 
             auto itemsPerRow = DropdownGetAppropriateImageDropdownItemsPerRow(numPathTypes);
             WindowDropdownShowImage(
-                windowPos.x + widget->left, windowPos.y + widget->top, widget->height(), colours[1], 0, numPathTypes, 47, 36,
+                windowPos + ScreenCoordsXY{ widget->left, widget->top }, widget->height(), colours[1], 0, numPathTypes, 47, 36,
                 itemsPerRow);
 
             gDropdown.hasTooltips = true;
@@ -855,7 +856,7 @@ namespace OpenRCT2::Ui::Windows
 
             auto itemsPerRow = DropdownGetAppropriateImageDropdownItemsPerRow(numRailingsTypes);
             WindowDropdownShowImage(
-                windowPos.x + widget->left, windowPos.y + widget->top, widget->height(), colours[1], 0, numRailingsTypes, 47,
+                windowPos + ScreenCoordsXY{ widget->left, widget->top }, widget->height(), colours[1], 0, numRailingsTypes, 47,
                 36, itemsPerRow);
 
             gDropdown.hasTooltips = true;

@@ -19,9 +19,10 @@
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/SpriteIds.h>
-#include <openrct2/actions/MapChangeSizeAction.h>
-#include <openrct2/actions/PeepSpawnPlaceAction.h>
-#include <openrct2/actions/SurfaceSetStyleAction.h>
+#include <openrct2/actions/GameActionRunner.h>
+#include <openrct2/actions/general/MapChangeSizeAction.h>
+#include <openrct2/actions/peep/PeepSpawnPlaceAction.h>
+#include <openrct2/actions/terraform/SurfaceSetStyleAction.h>
 #include <openrct2/audio/Audio.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
@@ -587,9 +588,9 @@ namespace OpenRCT2::Ui::Windows
             g1temp.offset = reinterpret_cast<uint8_t*>(_mapImageData.data());
             g1temp.width = getMiniMapWidth();
             g1temp.height = getMiniMapWidth();
-            GfxSetG1Element(SPR_TEMP, &g1temp);
-            DrawingEngineInvalidateImage(SPR_TEMP);
-            GfxDrawSprite(rt, ImageId(SPR_TEMP), screenOffset);
+            GfxSetG1Element(SPR_TEMP_MAP, &g1temp);
+            DrawingEngineInvalidateImage(SPR_TEMP_MAP);
+            GfxDrawSprite(rt, ImageId(SPR_TEMP_MAP), screenOffset);
 
             if (selectedTab == PAGE_PEEPS)
             {

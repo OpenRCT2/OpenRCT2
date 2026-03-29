@@ -21,8 +21,8 @@
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/SpriteIds.h>
-#include <openrct2/actions/LoadOrQuitAction.h>
 #include <openrct2/actions/ResultWithMessage.h>
+#include <openrct2/actions/general/LoadOrQuitAction.h>
 #include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/EnumUtils.hpp>
@@ -820,7 +820,7 @@ namespace OpenRCT2::Ui::Windows
          *
          * rct2: 0x006AB058
          */
-        OpenRCT2String onTooltip(const WidgetIndex widgetIndex, const StringId fallback) override
+        StringWithArgs onTooltip(const WidgetIndex widgetIndex, const StringId fallback) override
         {
             if (widgetIndex >= WIDX_TAB_1 && static_cast<size_t>(widgetIndex) < WIDX_TAB_1 + std::size(ObjectSelectionPages))
             {

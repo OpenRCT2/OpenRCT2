@@ -52,15 +52,15 @@ namespace OpenRCT2::Drawing::ScrollingText
 
     static void initialiseCharacterBitmaps(uint32_t glyphStart, uint16_t count)
     {
-        uint8_t drawingSurface[64];
+        PaletteIndex drawingSurface[64];
         RenderTarget rt;
-        rt.bits = reinterpret_cast<uint8_t*>(&drawingSurface);
+        rt.bits = drawingSurface;
         rt.width = 8;
         rt.height = 8;
 
         for (int32_t i = 0; i < count; i++)
         {
-            std::fill_n(drawingSurface, sizeof(drawingSurface), 0x00);
+            std::fill_n(drawingSurface, sizeof(drawingSurface), PaletteIndex::transparent);
             GfxDrawSpriteSoftware(rt, ImageId(glyphStart + (EnumValue(FontStyle::tiny) * count) + i), { -1, 0 });
 
             for (int32_t x = 0; x < 8; x++)
@@ -69,8 +69,8 @@ namespace OpenRCT2::Drawing::ScrollingText
                 for (int32_t y = 0; y < 8; y++)
                 {
                     val >>= 1;
-                    uint8_t pixel = rt.bits[x + y * 8];
-                    if (pixel == 1)
+                    PaletteIndex pixel = rt.bits[x + y * 8];
+                    if (pixel == PaletteIndex::fontFill)
                     {
                         val |= 0x80;
                     }

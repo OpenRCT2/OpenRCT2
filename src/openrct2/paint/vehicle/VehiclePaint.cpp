@@ -1164,7 +1164,7 @@ static void VehicleSpritePaintRestraints(
 // Returns the opposite of the bank angle for reversed cars, normal bank angle otherwise
 static VehicleRoll GetPaintBankRotation(const Vehicle* vehicle)
 {
-    return (vehicle->HasFlag(VehicleFlags::CarIsReversed)) ? RollInvertTable[EnumValue(vehicle->roll)] : vehicle->roll;
+    return (vehicle->flags.has(VehicleFlag::carIsReversed)) ? RollInvertTable[EnumValue(vehicle->roll)] : vehicle->roll;
 }
 
 #pragma endregion
@@ -1266,7 +1266,7 @@ static void VehiclePitchFlatBankedLeft67(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
-    if (vehicle->HasFlag(VehicleFlags::CarIsInverted))
+    if (vehicle->flags.has(VehicleFlag::carIsInverted))
     {
         carEntry--;
     }
@@ -1288,7 +1288,7 @@ static void VehiclePitchFlatBankedLeft90(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
-    if (vehicle->HasFlag(VehicleFlags::CarIsInverted))
+    if (vehicle->flags.has(VehicleFlag::carIsInverted))
     {
         carEntry--;
     }
@@ -1310,7 +1310,7 @@ static void VehiclePitchFlatBankedLeft112(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
-    if (vehicle->HasFlag(VehicleFlags::CarIsInverted))
+    if (vehicle->flags.has(VehicleFlag::carIsInverted))
     {
         carEntry--;
     }
@@ -1332,7 +1332,7 @@ static void VehiclePitchFlatBankedLeft135(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
-    if (vehicle->HasFlag(VehicleFlags::CarIsInverted))
+    if (vehicle->flags.has(VehicleFlag::carIsInverted))
     {
         carEntry--;
     }
@@ -1354,7 +1354,7 @@ static void VehiclePitchFlatBankedLeft157(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
-    if (vehicle->HasFlag(VehicleFlags::CarIsInverted))
+    if (vehicle->flags.has(VehicleFlag::carIsInverted))
     {
         carEntry--;
     }
@@ -1376,7 +1376,7 @@ static void VehiclePitchFlatBankedRight67(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
-    if (vehicle->HasFlag(VehicleFlags::CarIsInverted))
+    if (vehicle->flags.has(VehicleFlag::carIsInverted))
     {
         carEntry--;
     }
@@ -1398,7 +1398,7 @@ static void VehiclePitchFlatBankedRight90(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
-    if (vehicle->HasFlag(VehicleFlags::CarIsInverted))
+    if (vehicle->flags.has(VehicleFlag::carIsInverted))
     {
         carEntry--;
     }
@@ -1420,7 +1420,7 @@ static void VehiclePitchFlatBankedRight112(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
-    if (vehicle->HasFlag(VehicleFlags::CarIsInverted))
+    if (vehicle->flags.has(VehicleFlag::carIsInverted))
     {
         carEntry--;
     }
@@ -1442,7 +1442,7 @@ static void VehiclePitchFlatBankedRight135(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
-    if (vehicle->HasFlag(VehicleFlags::CarIsInverted))
+    if (vehicle->flags.has(VehicleFlag::carIsInverted))
     {
         carEntry--;
     }
@@ -1464,7 +1464,7 @@ static void VehiclePitchFlatBankedRight157(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
-    if (vehicle->HasFlag(VehicleFlags::CarIsInverted))
+    if (vehicle->flags.has(VehicleFlag::carIsInverted))
     {
         carEntry--;
     }
@@ -3395,7 +3395,7 @@ static void VehiclePitchDown75(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
-    if (vehicle->HasFlag(VehicleFlags::CarIsInverted))
+    if (vehicle->flags.has(VehicleFlag::carIsInverted))
     {
         if (vehicle->GetTrackType() != TrackElemType::down90ToDown60
             && (vehicle->GetTrackType()) != TrackElemType::down60ToDown90)
@@ -3421,7 +3421,7 @@ static void VehiclePitchDown90(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
-    if (vehicle->HasFlag(VehicleFlags::CarIsInverted))
+    if (vehicle->flags.has(VehicleFlag::carIsInverted))
     {
         if (vehicle->GetTrackType() != TrackElemType::down90 && (vehicle->GetTrackType()) != TrackElemType::down90ToDown60
             && (vehicle->GetTrackType()) != TrackElemType::down60ToDown90)
@@ -3451,7 +3451,7 @@ static void VehiclePitchDown105(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
-    if (vehicle->HasFlag(VehicleFlags::CarIsInverted))
+    if (vehicle->flags.has(VehicleFlag::carIsInverted))
     {
         carEntry--;
     }
@@ -3473,7 +3473,7 @@ static void VehiclePitchDown120(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
-    if (vehicle->HasFlag(VehicleFlags::CarIsInverted))
+    if (vehicle->flags.has(VehicleFlag::carIsInverted))
     {
         carEntry--;
     }
@@ -3495,7 +3495,7 @@ static void VehiclePitchDown135(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
-    if (vehicle->HasFlag(VehicleFlags::CarIsInverted))
+    if (vehicle->flags.has(VehicleFlag::carIsInverted))
     {
         carEntry--;
     }
@@ -3517,7 +3517,7 @@ static void VehiclePitchDown150(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
-    if (vehicle->HasFlag(VehicleFlags::CarIsInverted))
+    if (vehicle->flags.has(VehicleFlag::carIsInverted))
     {
         carEntry--;
     }
@@ -3539,7 +3539,7 @@ static void VehiclePitchDown165(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
-    if (vehicle->HasFlag(VehicleFlags::CarIsInverted))
+    if (vehicle->flags.has(VehicleFlag::carIsInverted))
     {
         carEntry--;
     }
@@ -3566,7 +3566,7 @@ void VehiclePitchCorkscrew(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
-    if (vehicle->HasFlag(VehicleFlags::CarIsInverted))
+    if (vehicle->flags.has(VehicleFlag::carIsInverted))
     {
         carEntry--;
     }
@@ -4537,7 +4537,7 @@ static_assert(std::size(PaintFunctionsByPitch) == EnumValue(VehiclePitch::pitchC
  */
 static void vehicle_visual_splash1_effect(PaintSession& session, const int32_t z, const Vehicle* vehicle)
 {
-    if (vehicle->GetTrackType() != TrackElemType::watersplash)
+    if (vehicle->GetTrackType() != TrackElemType::waterSplash)
     {
         return;
     }
@@ -4697,7 +4697,7 @@ void VehicleVisualDefault(
 {
     if (vehicle->pitch < VehiclePitch::pitchCount)
     {
-        if (vehicle->HasFlag(VehicleFlags::CarIsReversed))
+        if (vehicle->flags.has(VehicleFlag::carIsReversed))
         {
             auto imagePitch = PitchInvertTable[EnumValue(vehicle->pitch)];
             auto imageYaw = (imageDirection + (kBaseRotation / 2)) & (kBaseRotation - 1);
@@ -4715,7 +4715,7 @@ void Vehicle::Paint(PaintSession& session, int32_t imageDirection) const
 {
     const CarEntry* carEntry;
 
-    if (HasFlag(VehicleFlags::Crashed))
+    if (flags.has(VehicleFlag::crashed))
     {
         PaintAddImageAsParent(
             session, ImageId(SPR_WATER_PARTICLES_DENSE_0 + animation_frame), { 0, 0, z }, { { 0, 0, z + 2 }, { 1, 1, 0 } });
@@ -4736,7 +4736,7 @@ void Vehicle::Paint(PaintSession& session, int32_t imageDirection) const
         }
 
         auto carEntryIndex = vehicle_type;
-        if (HasFlag(VehicleFlags::CarIsInverted))
+        if (flags.has(VehicleFlag::carIsInverted))
         {
             carEntryIndex++;
             zOffset += 16;

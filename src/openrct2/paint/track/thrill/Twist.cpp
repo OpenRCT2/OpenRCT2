@@ -12,7 +12,6 @@
 #include "../../../interface/Viewport.h"
 #include "../../../ride/Ride.h"
 #include "../../../ride/RideEntry.h"
-#include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
 #include "../../../ride/Vehicle.h"
 #include "../../Boundbox.h"
@@ -38,7 +37,7 @@ static void PaintTwistStructure(
 
     height += 7;
 
-    if (ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK && !ride.vehicles[0].IsNull())
+    if (ride.flags.has(RideFlag::onTrack) && !ride.vehicles[0].IsNull())
     {
         vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[0]);
 
@@ -69,7 +68,7 @@ static void PaintTwistStructure(
     };
     PaintAddImageAsParent(session, imageId, { xOffset, yOffset, height }, bb);
 
-    if (session.rt.zoom_level < ZoomLevel{ 1 } && ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
+    if (session.rt.zoom_level < ZoomLevel{ 1 } && ride.flags.has(RideFlag::onTrack) && vehicle != nullptr)
     {
         for (int32_t i = 0; i < vehicle->num_peeps; i += 2)
         {

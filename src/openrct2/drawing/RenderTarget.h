@@ -15,10 +15,11 @@
 namespace OpenRCT2::Drawing
 {
     struct IDrawingEngine;
+    enum class PaletteIndex : uint8_t;
 
     struct RenderTarget
     {
-        uint8_t* bits{};
+        PaletteIndex* bits{};
         int32_t x{};
         int32_t y{};
         int32_t width{};
@@ -35,7 +36,7 @@ namespace OpenRCT2::Drawing
 
         IDrawingEngine* DrawingEngine{};
 
-        uint8_t* GetBitsOffset(const ScreenCoordsXY& pos) const;
+        PaletteIndex* GetBitsOffset(const ScreenCoordsXY& pos) const;
         RenderTarget Crop(const ScreenCoordsXY& pos, const ScreenSize& size) const;
 
         [[nodiscard]] constexpr int32_t WorldX() const

@@ -8,9 +8,8 @@
  *****************************************************************************/
 
 #include "../../../SpriteIds.h"
-#include "../../../interface/Viewport.h"
-#include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
+#include "../../../ride/ted/TrackElemType.h"
 #include "../../Paint.h"
 #include "../../support/MetalSupports.h"
 #include "../../tile_element/Segment.h"

@@ -37,6 +37,7 @@ constexpr RideTypeDescriptor MiniHelicoptersRTD =
                      RtdFlag::slightlyInterestingToLookAt),
     .RideModes = EnumsToFlags(RideMode::continuousCircuit),
     .DefaultMode = RideMode::continuousCircuit,
+    .OperatingSettings = { 5, 18 },
     .Naming = { STR_RIDE_NAME_MINI_HELICOPTERS, STR_RIDE_DESCRIPTION_MINI_HELICOPTERS },
     .NameConvention = { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station },
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
@@ -60,7 +61,7 @@ constexpr RideTypeDescriptor MiniHelicoptersRTD =
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_MINI_HELICOPTERS_TRACK, SPR_RIDE_DESIGN_PREVIEW_MINI_HELICOPTERS_SUPPORTS },
     .ColourKey = RideColourKey::Ride,
     .Name = "mini_helicopters",
-    .RatingsData = 
+    .RatingsData =
     {
         RatingsCalculationType::Normal,
         { RideRating::make(1, 60), RideRating::make(0, 40), RideRating::make(0, 00) },

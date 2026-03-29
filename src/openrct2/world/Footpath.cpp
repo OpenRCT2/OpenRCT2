@@ -14,9 +14,10 @@
 #include "../GameState.h"
 #include "../Identifiers.h"
 #include "../OpenRCT2.h"
-#include "../actions/FootpathPlaceAction.h"
-#include "../actions/FootpathRemoveAction.h"
-#include "../actions/LandSetRightsAction.h"
+#include "../actions/GameActionRunner.h"
+#include "../actions/footpath/FootpathPlaceAction.h"
+#include "../actions/footpath/FootpathRemoveAction.h"
+#include "../actions/park/LandSetRightsAction.h"
 #include "../core/Guard.hpp"
 #include "../entity/EntityList.h"
 #include "../entity/EntityRegistry.h"
@@ -31,8 +32,8 @@
 #include "../object/PathAdditionEntry.h"
 #include "../paint/VirtualFloor.h"
 #include "../ride/RideData.h"
-#include "../ride/Track.h"
 #include "../ride/TrackData.h"
+#include "../ride/ted/TrackElementDescriptor.h"
 #include "Location.hpp"
 #include "Map.h"
 #include "MapAnimation.h"
@@ -48,7 +49,7 @@
 #include <iterator>
 
 using namespace OpenRCT2;
-using namespace OpenRCT2::TrackMetaData;
+using namespace OpenRCT2::TrackMetadata;
 using OpenRCT2::GameActions::CommandFlag;
 using OpenRCT2::GameActions::CommandFlags;
 

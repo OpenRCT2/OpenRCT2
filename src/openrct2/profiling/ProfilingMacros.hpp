@@ -22,7 +22,7 @@ namespace OpenRCT2::Profiling
     static constexpr auto _profiling_func_name = func;                                                                         \
     struct Profiler_FunctionLiteral                                                                                            \
     {                                                                                                                          \
-        static constexpr const char* Str()                                                                                     \
+        static constexpr const char* str()                                                                                     \
         {                                                                                                                      \
             return _profiling_func_name;                                                                                       \
         }                                                                                                                      \

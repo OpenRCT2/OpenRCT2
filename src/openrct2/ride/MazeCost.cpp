@@ -16,8 +16,9 @@
 #include "Ride.h"
 #include "RideData.h"
 #include "TrackData.h"
+#include "ted/TrackElementDescriptor.h"
 
-using namespace OpenRCT2::TrackMetaData;
+using namespace OpenRCT2::TrackMetadata;
 
 namespace OpenRCT2
 {

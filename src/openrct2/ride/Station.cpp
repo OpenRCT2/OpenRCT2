@@ -98,13 +98,13 @@ static void RideUpdateStationDodgems(Ride& ride, StationIndex stationIndex)
 
     // Change of station depart flag should really call invalidate_station_start
     // but since dodgems do not have station lights there is no point.
-    if (ride.status == RideStatus::closed || (ride.lifecycleFlags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED)))
+    if (ride.status == RideStatus::closed || ride.flags.hasAny(RideFlag::brokenDown, RideFlag::crashed))
     {
         station.Depart &= ~kStationDepartFlag;
         return;
     }
 
-    if (ride.lifecycleFlags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
+    if (ride.flags.has(RideFlag::passStationNoStopping))
     {
         int32_t dx = ride.timeLimit * 32;
         int32_t dh = (dx >> 8) & 0xFF;
@@ -118,7 +118,7 @@ static void RideUpdateStationDodgems(Ride& ride, StationIndex stationIndex)
                 continue;
 
             // End match
-            ride.lifecycleFlags &= ~RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING;
+            ride.flags.unset(RideFlag::passStationNoStopping);
             station.Depart &= ~kStationDepartFlag;
             return;
         }
@@ -143,7 +143,7 @@ static void RideUpdateStationDodgems(Ride& ride, StationIndex stationIndex)
         }
 
         // Begin the match
-        ride.lifecycleFlags |= RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING;
+        ride.flags.set(RideFlag::passStationNoStopping);
         station.Depart |= kStationDepartFlag;
         ride.windowInvalidateFlags.set(RideInvalidateFlag::main, RideInvalidateFlag::list);
     }
@@ -158,7 +158,7 @@ static void RideUpdateStationNormal(Ride& ride, StationIndex stationIndex)
     auto& station = ride.getStation(stationIndex);
     int32_t time = station.Depart & kStationDepartMask;
     const auto currentTicks = getGameState().currentTicks;
-    if ((ride.lifecycleFlags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED))
+    if (ride.flags.hasAny(RideFlag::brokenDown, RideFlag::crashed)
         || (ride.status == RideStatus::closed && ride.numRiders == 0))
     {
         if (time != 0 && time != 127 && !(currentTicks & 7))
@@ -192,7 +192,7 @@ static void RideUpdateStationNormal(Ride& ride, StationIndex stationIndex)
 static void RideUpdateStationRace(Ride& ride, StationIndex stationIndex)
 {
     auto& station = ride.getStation(stationIndex);
-    if (ride.status == RideStatus::closed || (ride.lifecycleFlags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED)))
+    if (ride.status == RideStatus::closed || ride.flags.hasAny(RideFlag::brokenDown, RideFlag::crashed))
     {
         if (station.Depart & kStationDepartFlag)
         {
@@ -202,7 +202,7 @@ static void RideUpdateStationRace(Ride& ride, StationIndex stationIndex)
         return;
     }
 
-    if (ride.lifecycleFlags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
+    if (ride.flags.has(RideFlag::passStationNoStopping))
     {
         int32_t numLaps = ride.numLaps;
 
@@ -226,7 +226,7 @@ static void RideUpdateStationRace(Ride& ride, StationIndex stationIndex)
                 }
 
                 // Race is over
-                ride.lifecycleFlags &= ~RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING;
+                ride.flags.unset(RideFlag::passStationNoStopping);
                 if (station.Depart & kStationDepartFlag)
                 {
                     station.Depart &= ~kStationDepartFlag;
@@ -261,7 +261,7 @@ static void RideUpdateStationRace(Ride& ride, StationIndex stationIndex)
 
         // Begin the race
         RideRaceInitVehicleSpeeds(ride);
-        ride.lifecycleFlags |= RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING;
+        ride.flags.set(RideFlag::passStationNoStopping);
         if (!(station.Depart & kStationDepartFlag))
         {
             station.Depart |= kStationDepartFlag;
@@ -285,7 +285,7 @@ static void RideRaceInitVehicleSpeeds(const Ride& ride)
         if (vehicle == nullptr)
             continue;
 
-        vehicle->ClearFlag(VehicleFlags::CurrentlyColliding);
+        vehicle->flags.unset(VehicleFlag::currentlyColliding);
 
         const auto* rideEntry = vehicle->GetRideEntry();
 

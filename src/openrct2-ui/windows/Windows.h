@@ -15,7 +15,7 @@
 #include <optional>
 #include <string_view>
 
-struct OpenRCT2String;
+struct StringWithArgs;
 struct Peep;
 struct Ride;
 struct RideSelection;
@@ -344,7 +344,7 @@ namespace OpenRCT2::Ui::Windows
 
     // Tooltip
     void WindowTooltipReset(const ScreenCoordsXY& screenCoords);
-    void WindowTooltipShow(const OpenRCT2String& message, ScreenCoordsXY screenCoords);
+    void WindowTooltipShow(const StringWithArgs& message, ScreenCoordsXY screenCoords);
     void WindowTooltipOpen(WindowBase* widgetWindow, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
     void WindowTooltipClose();
 

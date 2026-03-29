@@ -201,10 +201,10 @@ bool MarketingIsCampaignTypeApplicable(int32_t campaignType)
 
             [[fallthrough]];
         case ADVERTISING_CAMPAIGN_RIDE:
-            // Check if any rides exist
+            // Check if any rides exist and are open
             for (auto& ride : RideManager(gameState))
             {
-                if (ride.isRide())
+                if (ride.isRide() && ride.status == RideStatus::open)
                 {
                     return true;
                 }
@@ -216,7 +216,7 @@ bool MarketingIsCampaignTypeApplicable(int32_t campaignType)
             for (auto& ride : RideManager(gameState))
             {
                 auto rideEntry = ride.getRideEntry();
-                if (rideEntry != nullptr)
+                if (rideEntry != nullptr && ride.status == RideStatus::open)
                 {
                     for (auto& item : rideEntry->shop_item)
                     {

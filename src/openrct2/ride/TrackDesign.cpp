@@ -16,21 +16,22 @@
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../TrackImporter.h"
-#include "../actions/FootpathLayoutPlaceAction.h"
-#include "../actions/FootpathRemoveAction.h"
-#include "../actions/LargeSceneryPlaceAction.h"
-#include "../actions/LargeSceneryRemoveAction.h"
-#include "../actions/MazePlaceTrackAction.h"
+#include "../actions/GameActionRunner.h"
 #include "../actions/ResultWithMessage.h"
-#include "../actions/RideCreateAction.h"
-#include "../actions/RideDemolishAction.h"
-#include "../actions/RideEntranceExitPlaceAction.h"
-#include "../actions/SmallSceneryPlaceAction.h"
-#include "../actions/SmallSceneryRemoveAction.h"
-#include "../actions/TrackPlaceAction.h"
-#include "../actions/TrackRemoveAction.h"
-#include "../actions/WallPlaceAction.h"
-#include "../actions/WallRemoveAction.h"
+#include "../actions/footpath/FootpathLayoutPlaceAction.h"
+#include "../actions/footpath/FootpathRemoveAction.h"
+#include "../actions/ride/MazePlaceTrackAction.h"
+#include "../actions/ride/RideCreateAction.h"
+#include "../actions/ride/RideDemolishAction.h"
+#include "../actions/ride/RideEntranceExitPlaceAction.h"
+#include "../actions/scenery/LargeSceneryPlaceAction.h"
+#include "../actions/scenery/LargeSceneryRemoveAction.h"
+#include "../actions/scenery/SmallSceneryPlaceAction.h"
+#include "../actions/scenery/SmallSceneryRemoveAction.h"
+#include "../actions/scenery/WallPlaceAction.h"
+#include "../actions/scenery/WallRemoveAction.h"
+#include "../actions/track/TrackPlaceAction.h"
+#include "../actions/track/TrackRemoveAction.h"
 #include "../audio/Audio.h"
 #include "../config/Config.h"
 #include "../core/DataSerialiser.h"
@@ -53,6 +54,7 @@
 #include "../object/ObjectRepository.h"
 #include "../object/SmallSceneryEntry.h"
 #include "../object/StationObject.h"
+#include "../rct12/TD46.h"
 #include "../rct2/RCT2.h"
 #include "../ride/RideConstruction.h"
 #include "../sawyer_coding/SawyerCoding.h"
@@ -73,6 +75,7 @@
 #include "TrackDesign.h"
 #include "TrackDesignRepository.h"
 #include "Vehicle.h"
+#include "ted/TrackElementDescriptor.h"
 
 #include <iterator>
 #include <memory>
@@ -97,7 +100,7 @@ using namespace TrackDesignSceneryElementFlags;
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
-using namespace OpenRCT2::TrackMetaData;
+using namespace OpenRCT2::TrackMetadata;
 
 constexpr TileCoordsXY TRACK_DESIGN_PREVIEW_MAP_SIZE = TileCoordsXY{ 256, 256 };
 
@@ -192,8 +195,6 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
         return { false, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY };
     }
 
-    StringId warningMessage = kStringIdNone;
-
     RideGetStartOfTrack(&trackElement);
 
     int32_t z = trackElement.element->GetBaseZ();
@@ -225,10 +226,9 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
     {
         const auto& element = trackElement.element->AsTrack();
 
-        // Remove this check for new track design format
         if (element->GetTrackType() > TrackElemType::highestAlias)
         {
-            return { false, STR_TRACK_ELEM_UNSUPPORTED_TD6 };
+            version = RCT12::TD46Version::td7;
         }
 
         TrackDesignTrackElement track{};
@@ -238,18 +238,17 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
         track.brakeBoosterSpeed = element->GetBrakeBoosterSpeed();
         track.seatRotation = element->GetSeatRotation();
 
-        // This warning will not apply to new track design format
         if (track.type == TrackElemType::blockBrakes && element->GetBrakeBoosterSpeed() != kRCT2DefaultBlockBrakeSpeed)
         {
-            warningMessage = STR_TRACK_DESIGN_BLOCK_BRAKE_SPEED_RESET;
+            version = RCT12::TD46Version::td7;
         }
 
         if (element->HasChain())
-            track.SetFlag(TrackDesignTrackElementFlag::hasChain);
+            track.flags.set(TrackDesignTrackElementFlag::hasChain);
 
         if (ride.getRideTypeDescriptor().flags.has(RtdFlag::hasInvertedVariant) && element->IsInverted())
         {
-            track.SetFlag(TrackDesignTrackElementFlag::isInverted);
+            track.flags.set(TrackDesignTrackElementFlag::isInverted);
         }
 
         trackElements.push_back(track);
@@ -274,7 +273,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
 
         if (trackElements.size() > RCT2::Limits::kTD6MaxTrackElements)
         {
-            return { false, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY };
+            version = RCT12::TD46Version::td7;
         }
     } while (trackElement.element != initialMap);
 
@@ -355,7 +354,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
     gMapSelectFlags.unset(MapSelectFlag::green);
 
     statistics.spaceRequired = TileCoordsXY(tds.previewMax - tds.previewMin) + TileCoordsXY{ 1, 1 };
-    return { true, warningMessage };
+    return { true, kStringIdNone };
 }
 
 ResultWithMessage TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, const Ride& ride)
@@ -394,9 +393,9 @@ ResultWithMessage TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, cons
                 _saveDirection = tileElement->GetDirection();
                 mazeElements.push_back(maze);
 
-                if (mazeElements.size() >= 2000)
+                if (mazeElements.size() >= RCT2::Limits::kTD6MaxMazeElements)
                 {
-                    return { false, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY };
+                    version = RCT12::TD46Version::td7;
                 }
             } while (!(tileElement++)->IsLastForTile());
         }
@@ -501,6 +500,9 @@ CoordsXYE TrackDesign::MazeGetFirstElement(const Ride& ride)
 ResultWithMessage TrackDesign::CreateTrackDesignScenery(TrackDesignState& tds)
 {
     sceneryElements = _trackSavedTileElementsDesc;
+    if (sceneryElements.size() >= RCT2::Limits::kTD6MaxSceneryElements)
+        version = RCT12::TD46Version::td7;
+
     // Run an element loop
     for (auto& scenery : sceneryElements)
     {
@@ -1614,11 +1616,11 @@ static GameActions::Result TrackDesignPlaceRide(
                 int16_t tempZ = newCoords.z - trackCoordinates->zBegin;
 
                 SelectedLiftAndInverted liftHillAndAlternativeState{};
-                if (track.HasFlag(TrackDesignTrackElementFlag::hasChain))
+                if (track.flags.has(TrackDesignTrackElementFlag::hasChain))
                 {
                     liftHillAndAlternativeState.set(LiftHillAndInverted::liftHill);
                 }
-                if (track.HasFlag(TrackDesignTrackElementFlag::isInverted))
+                if (track.flags.has(TrackDesignTrackElementFlag::isInverted))
                 {
                     liftHillAndAlternativeState.set(LiftHillAndInverted::inverted);
                 }
@@ -2069,7 +2071,7 @@ bool TrackDesignSceneryElement::operator!=(const TrackDesignSceneryElement& rhs)
  *
  *  rct2: 0x006D1EF0
  */
-void TrackDesignDrawPreview(TrackDesign& td, uint8_t* pixels, bool placeScenery)
+void TrackDesignDrawPreview(TrackDesign& td, TrackDesignPreviewBuffer& pixels, bool placeScenery)
 {
     StashMap();
     TrackDesignPreviewClearMap();
@@ -2085,7 +2087,7 @@ void TrackDesignDrawPreview(TrackDesign& td, uint8_t* pixels, bool placeScenery)
     TrackDesignGameStateData updatedGameStateData = td.gameStateData;
     if (!TrackDesignPlacePreview(tds, td, &ride, updatedGameStateData, placeScenery))
     {
-        std::fill_n(pixels, kTrackPreviewImageSize * 4, 0x00);
+        std::fill(std::begin(pixels), std::end(pixels), PaletteIndex::transparent);
         UnstashMap();
         return;
     }
@@ -2138,7 +2140,7 @@ void TrackDesignDrawPreview(TrackDesign& td, uint8_t* pixels, bool placeScenery)
     rt.width = 370;
     rt.height = 217;
     rt.pitch = 0;
-    rt.bits = pixels;
+    rt.bits = pixels.data();
 
     auto drawingEngine = std::make_unique<X8DrawingEngine>(GetContext()->GetUiContext());
     rt.DrawingEngine = drawingEngine.get();
@@ -2146,10 +2148,10 @@ void TrackDesignDrawPreview(TrackDesign& td, uint8_t* pixels, bool placeScenery)
     drawingEngine->BeginDraw();
 
     const ScreenCoordsXY offset = { size_x / 2, size_y / 2 };
-    for (uint8_t i = 0; i < 4; i++)
+    for (Direction direction = 0; direction < kNumOrthogonalDirections; direction++)
     {
-        view.viewPos = Translate3DTo2DWithZ(i, centre) - offset;
-        view.rotation = i;
+        view.viewPos = Translate3DTo2DWithZ(direction, centre) - offset;
+        view.rotation = direction;
         ViewportRender(rt, &view);
 
         rt.bits += kTrackPreviewImageSize;
@@ -2211,4 +2213,22 @@ void TrackDesignGameStateData::setFlag(TrackDesignGameStateFlag flag, bool on)
         flags |= EnumToFlag(flag);
     else
         flags &= ~EnumToFlag(flag);
+}
+
+u8string trackDesignGetExtension(RCT12::TD46Version version)
+{
+    switch (version)
+    {
+        case RCT12::TD46Version::td4:
+        case RCT12::TD46Version::td4AA:
+            return ".td4";
+        case RCT12::TD46Version::td6:
+            return ".td6";
+        case RCT12::TD46Version::td7:
+            return ".td7";
+        case RCT12::TD46Version::unknown:
+            break;
+    }
+
+    return "";
 }

@@ -12,13 +12,13 @@
     #include "ScriptEngine.h"
 
     #include "../PlatformEnvironment.h"
-    #include "../actions/BannerPlaceAction.h"
-    #include "../actions/CustomAction.h"
-    #include "../actions/GameAction.h"
-    #include "../actions/LargeSceneryPlaceAction.h"
-    #include "../actions/RideCreateAction.h"
-    #include "../actions/StaffHireNewAction.h"
-    #include "../actions/WallPlaceAction.h"
+    #include "../actions/GameAction.hpp"
+    #include "../actions/general/CustomAction.h"
+    #include "../actions/peep/StaffHireNewAction.h"
+    #include "../actions/ride/RideCreateAction.h"
+    #include "../actions/scenery/BannerPlaceAction.h"
+    #include "../actions/scenery/LargeSceneryPlaceAction.h"
+    #include "../actions/scenery/WallPlaceAction.h"
     #include "../config/Config.h"
     #include "../core/EnumMap.hpp"
     #include "../core/File.h"
@@ -26,6 +26,7 @@
     #include "../core/Path.hpp"
     #include "../interface/InteractiveConsole.h"
     #include "../platform/Platform.h"
+    #include "../ride/ted/PitchAndRoll.h"
     #include "Duktape.hpp"
     #include "bindings/entity/ScBalloon.hpp"
     #include "bindings/entity/ScEntity.hpp"
@@ -70,6 +71,9 @@
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Scripting;
+
+using OpenRCT2::TrackMetadata::TrackPitch;
+using OpenRCT2::TrackMetadata::TrackRoll;
 
 struct ExpressionStringifier final
 {

@@ -12,7 +12,6 @@
 #include "../../../interface/Viewport.h"
 #include "../../../ride/Ride.h"
 #include "../../../ride/RideEntry.h"
-#include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
 #include "../../../ride/Vehicle.h"
 #include "../../../world/tile_element/TileElement.h"
@@ -68,7 +67,7 @@ static void PaintCrookedHouseStructure(
     if (rideEntry == nullptr)
         return;
 
-    if (ride->lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK)
+    if (ride->flags.has(RideFlag::onTrack))
     {
         auto vehicle = getGameState().entities.GetEntity<Vehicle>(ride->vehicles[0]);
         if (vehicle != nullptr)

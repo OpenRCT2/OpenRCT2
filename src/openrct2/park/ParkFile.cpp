@@ -13,6 +13,7 @@
 #include "../Context.h"
 #include "../Diagnostic.h"
 #include "../Editor.h"
+#include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../ParkImporter.h"
@@ -1428,7 +1429,7 @@ namespace OpenRCT2
                     cs.readWrite(ride.mode);
                     cs.readWrite(ride.status);
                     cs.readWrite(ride.departFlags);
-                    cs.readWrite(ride.lifecycleFlags);
+                    cs.readWrite(ride.flags.holder);
 
                     // Meta
                     cs.readWrite(ride.customName);
@@ -2229,11 +2230,11 @@ namespace OpenRCT2
         {
             uint16_t updateFlags = 0;
             cs.readWrite(updateFlags);
-            entity.Flags = updateFlags;
+            entity.flags.holder = updateFlags;
         }
         else
         {
-            cs.readWrite(entity.Flags);
+            cs.readWrite(entity.flags.holder);
         }
         cs.readWrite(entity.SwingSprite);
         cs.readWrite(entity.current_station);
@@ -2293,7 +2294,7 @@ namespace OpenRCT2
         cs.readWrite(entity.vertical_drop_countdown);
         cs.readWrite(entity.var_D3);
         cs.readWrite(entity.mini_golf_current_animation);
-        cs.readWrite(entity.mini_golf_flags);
+        cs.readWrite(entity.miniGolfFlags.holder);
         cs.readWrite(entity.ride_subtype);
         cs.readWrite(entity.colours.Tertiary);
         cs.readWrite(entity.seat_rotation);
@@ -2304,7 +2305,7 @@ namespace OpenRCT2
             cs.readWrite(isCrashedVehicle);
             if (isCrashedVehicle)
             {
-                entity.SetFlag(VehicleFlags::Crashed);
+                entity.flags.set(VehicleFlag::crashed);
             }
         }
         if (cs.getMode() == OrcaStream::Mode::reading && os.getHeader().targetVersion < kBlockBrakeImprovementsVersion)

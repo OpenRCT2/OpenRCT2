@@ -15,7 +15,8 @@
 #include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
-#include "../actions/ParkSetParameterAction.h"
+#include "../actions/GameActionRunner.h"
+#include "../actions/park/ParkSetParameterAction.h"
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
 #include "../entity/EntityList.h"
@@ -85,9 +86,7 @@ namespace OpenRCT2::Park
         {
             if (ride.status != RideStatus::open)
                 continue;
-            if (ride.lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN)
-                continue;
-            if (ride.lifecycleFlags & RIDE_LIFECYCLE_CRASHED)
+            if (ride.flags.hasAny(RideFlag::brokenDown, RideFlag::crashed))
                 continue;
 
             // Add ride value
@@ -116,9 +115,7 @@ namespace OpenRCT2::Park
         {
             if (ride.status != RideStatus::open)
                 continue;
-            if (ride.lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN)
-                continue;
-            if (ride.lifecycleFlags & RIDE_LIFECYCLE_CRASHED)
+            if (ride.flags.hasAny(RideFlag::brokenDown, RideFlag::crashed))
                 continue;
 
             // Add guest score for ride type
@@ -127,7 +124,7 @@ namespace OpenRCT2::Park
             // If difficult guest generation, extra guests are available for good rides
             if (park.flags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION)
             {
-                if (!(ride.lifecycleFlags & RIDE_LIFECYCLE_TESTED))
+                if (!ride.flags.has(RideFlag::tested))
                     continue;
                 if (!ride.getRideTypeDescriptor().flags.has(RtdFlag::hasTrack))
                     continue;
@@ -185,8 +182,8 @@ namespace OpenRCT2::Park
             }
         }
 
-        // Reduces chance for any more than 7000 guests
-        if (numGuests > 7000)
+        // Reduces chance for any more than 52000 guests
+        if (numGuests > 52000)
         {
             probability /= 4;
         }

@@ -13,7 +13,6 @@
 #include "../../../object/StationObject.h"
 #include "../../../ride/Ride.h"
 #include "../../../ride/RideEntry.h"
-#include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
 #include "../../../ride/Vehicle.h"
 #include "../../Boundbox.h"
@@ -94,7 +93,7 @@ static ImageIndex GetMagicCarpetPendulumImage(Plane plane, Direction direction, 
 
 static Vehicle* GetFirstVehicle(const Ride& ride)
 {
-    if (ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK)
+    if (ride.flags.has(RideFlag::onTrack))
     {
         return getGameState().entities.GetEntity<Vehicle>(ride.vehicles[0]);
     }

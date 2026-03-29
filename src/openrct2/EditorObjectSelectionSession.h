@@ -49,7 +49,7 @@ void FinishObjectSelection();
 ResultWithMessage WindowEditorObjectSelectionSelectObject(
     uint8_t isMasterObject, EditorInputFlags flags, const OpenRCT2::ObjectRepositoryItem* item);
 ResultWithMessage WindowEditorObjectSelectionSelectObject(
-    uint8_t isMasterObject, EditorInputFlags flags, const OpenRCT2::ObjectEntryDescriptor& entry);
+    uint8_t isMasterObject, EditorInputFlags flags, const OpenRCT2::ObjectEntryDescriptor& descriptor);
 
 /**
  * Removes all unused objects from the object selection.
