@@ -19,7 +19,7 @@
   "types": "openrct2.d.ts",
   "files": [
     "openrct2.d.ts",
-    "README.md"
+    "scripting.md"
   ],
-  "readme": "README.md"
+  "readme": "scripting.md"
 }

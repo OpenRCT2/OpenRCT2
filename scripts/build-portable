@@ -26,7 +26,7 @@ if [[ "$OSTYPE" == "cygwin" || "$OSTYPE" == "msys" ]]; then
         ../licence.txt \
         ../distribution/changelog.txt \
         ../distribution/readme.txt \
-        ../distribution/scripting/README.md \
+        ../distribution/scripting/scripting.md \
         ../distribution/scripting/openrct2.d.ts
 
     destination=$(cygpath -w $(readlink -f $destination))

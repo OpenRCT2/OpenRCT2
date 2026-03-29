@@ -435,7 +435,7 @@ if (NOT MACOS_BUNDLE OR (MACOS_BUNDLE AND WITH_TESTS))
     list(APPEND DOC_FILES "${ROOT_DIR}/contributors.md"
                         "${ROOT_DIR}/PRIVACY.md"
                         "${ROOT_DIR}/licence.txt"
-                        "${ROOT_DIR}/distribution/scripting/README.md"
+                        "${ROOT_DIR}/distribution/scripting/scripting.md"
                         "${ROOT_DIR}/distribution/scripting/openrct2.d.ts")
 
     if (DOWNLOAD_TITLE_SEQUENCES)
