@@ -42,11 +42,20 @@ jobs:
           fi
           echo "version=$VERSION"
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          if [[ "$VERSION" == *-* ]]; then
+            echo "tag=dev" >> "$GITHUB_OUTPUT"
+          else
+            echo "tag=latest" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Set package version
         working-directory: distribution/scripting
         run: npm version "${{ steps.version.outputs.version }}" --no-git-tag-version
 
+      - name: Prepare README for npm
+        working-directory: distribution/scripting
+        run: cp scripting.md README.md
+
       - name: Publish
         working-directory: distribution/scripting
-        run: npm publish --access public
+        run: npm publish --access public --tag "${{ steps.version.outputs.tag }}"
