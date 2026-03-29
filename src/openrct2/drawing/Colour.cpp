@@ -73,6 +73,23 @@ namespace OpenRCT2::Drawing
         { "invisible", Colour::invisible },
         { "void", Colour::voidBackground },
         { "gold", Colour::gold },
+        { "amber", Colour::amber },
+        { "amethyst", Colour::amethyst },
+        { "asparagus", Colour::asparagus },
+        { "brown", Colour::brown },
+        { "burnt_pink", Colour::burntPink },
+        { "cactus", Colour::cactus },
+        { "caramel", Colour::caramel },
+        { "copper", Colour::copper },
+        { "crimson", Colour::crimson },
+        { "darker_water", Colour::darkerWater },
+        { "emerald", Colour::emerald },
+        { "obsidian", Colour::obsidian },
+        { "pesto", Colour::pesto },
+        { "pine_green", Colour::pineGreen },
+        { "ruby", Colour::ruby },
+        { "sapphire", Colour::sapphire },
+        { "silver", Colour::silver },
     };
 
     Colour colourFromString(u8string s, Colour defaultValue)

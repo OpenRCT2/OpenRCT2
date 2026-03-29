@@ -3840,3 +3840,20 @@ STR_7040    :Footpath additions
 STR_7041    :Park info panel
 STR_7042    :Date info panel
 STR_7043    :Gold
+STR_7044    :Amber
+STR_7045    :Amethyst
+STR_7046    :Asparagus
+STR_7047    :Brown
+STR_7048    :Burnt pink
+STR_7049    :Cactus
+STR_7050    :Caramel
+STR_7051    :Copper
+STR_7052    :Crimson
+STR_7053    :Darker water
+STR_7054    :Emerald
+STR_7055    :Obsidian
+STR_7056    :Pesto
+STR_7057    :Pine green
+STR_7058    :Ruby
+STR_7059    :Sapphire
+STR_7060    :Silver
