@@ -655,7 +655,7 @@ static void ApplyPathFixes(const json_t& scenarioPatch)
 
         for (auto coordinate : coordinates)
         {
-            auto slope = FootpathSlope{FootpathSlopeType::flat, Direction{}};
+            auto slope = FootpathSlope{ FootpathSlopeType::flat, Direction{} };
             if (direction != kInvalidDirection)
                 slope = { FootpathSlopeType::sloped, direction };
             auto footpathPlaceAction = GameActions::FootpathPlaceAction(
