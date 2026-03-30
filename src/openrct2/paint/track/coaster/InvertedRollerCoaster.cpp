@@ -15429,7 +15429,8 @@ static void InvertedRCTrackLeftBankToLeftQuarterTurn3Tile25DegUp(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
+                    EnumsToFlags(
+                        PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             switch (direction)
@@ -15631,215 +15632,16 @@ static void InvertedRCTrackLeftQuarterTurn3Tile25DegDownToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    switch (trackSequence)
-    {
-        case 0:
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
-                    direction),
-                0xFFFF, 0);
-            switch (direction)
-            {
-                case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BM_INVERT_TURN_BANK_TRANSITION + 12)),
-                        { 0, 6, height + kInvertedSpriteOffset }, { { 0, 6, height + kInvertedSpriteOffset }, { 32, 20, 3 } });
-                    break;
-                case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BM_INVERT_TURN_BANK_TRANSITION + 15)),
-                        { 0, 6, height + kInvertedSpriteOffset }, { { 0, 15, height + kInvertedSpriteOffset }, { 12, 20, 3 } });
-                    break;
-                case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BM_INVERT_TURN_BANK_TRANSITION + 17)),
-                        { 0, 6, height + kInvertedSpriteOffset }, { { 15, 0, height + kInvertedSpriteOffset }, { 12, 20, 3 } });
-                    break;
-                case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BM_INVERT_TURN_BANK_TRANSITION + 10)),
-                        { 0, 6, height + kInvertedSpriteOffset }, { { 0, 6, height + kInvertedSpriteOffset }, { 32, 20, 3 } });
-                    break;
-            }
-            MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.SupportColours);
-            if (direction == 0 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
-            }
-
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
-            break;
-        case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
-            break;
-        case 2:
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
-            break;
-        case 3:
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
-                        PaintSegment::bottomRight),
-                    direction),
-                0xFFFF, 0);
-            switch (direction)
-            {
-                case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BM_INVERT_TURN_BANK_TRANSITION + 11)),
-                        { 6, 0, height + kInvertedSpriteOffset }, { 20, 32, 3 });
-                    break;
-                case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BM_INVERT_TURN_BANK_TRANSITION + 13)),
-                        { 6, 0, height + kInvertedSpriteOffset }, { 20, 32, 3 });
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BM_INVERT_TURN_BANK_TRANSITION + 14)),
-                        { 6, 0, height + kInvertedSpriteOffset }, { { 0, 27, height + kInvertedSpriteOffset }, { 1, 32, 26 } });
-                    break;
-                case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BM_INVERT_TURN_BANK_TRANSITION + 16)),
-                        { 6, 0, height + kInvertedSpriteOffset }, { 20, 32, 3 });
-                    break;
-                case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BM_INVERT_TURN_BANK_TRANSITION + 9)),
-                        { 6, 0, height + kInvertedSpriteOffset }, { 20, 32, 3 });
-                    break;
-            }
-            MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight + 6, session.SupportColours);
-            switch (direction)
-            {
-                case 2:
-                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-                    break;
-                case 3:
-                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-                    break;
-            }
-
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
-            break;
-    }
+    InvertedRCTrackRightBankToRightQuarterTurn3Tile25DegUp(
+        session, ride, 3 - trackSequence, (direction + 1) & 3, height, trackElement, supportType);
 }
-
 static void InvertedRCTrackRightQuarterTurn3Tile25DegDownToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    switch (trackSequence)
-    {
-        case 0:
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::right, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft,
-                        PaintSegment::topRight),
-                    direction),
-                0xFFFF, 0);
-            switch (direction)
-            {
-                case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BM_INVERT_TURN_BANK_TRANSITION + 8)),
-                        { 0, 6, height + kInvertedSpriteOffset }, { { 0, 6, height + kInvertedSpriteOffset }, { 32, 20, 3 } });
-                    break;
-                case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BM_INVERT_TURN_BANK_TRANSITION + 1)),
-                        { 0, 6, height + kInvertedSpriteOffset }, { { 15, 0, height + kInvertedSpriteOffset }, { 12, 32, 3 } });
-                    break;
-                case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BM_INVERT_TURN_BANK_TRANSITION + 4)),
-                        { 0, 6, height + kInvertedSpriteOffset }, { { 0, 15, height + kInvertedSpriteOffset }, { 12, 20, 3 } });
-                    break;
-                case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BM_INVERT_TURN_BANK_TRANSITION + 6)),
-                        { 0, 6, height + kInvertedSpriteOffset }, { { 0, 6, height + kInvertedSpriteOffset }, { 32, 20, 3 } });
-                    break;
-            }
-            MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.SupportColours);
-            if (direction == 0 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
-            }
-
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
-            break;
-        case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
-            break;
-        case 2:
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
-            break;
-        case 3:
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
-                        PaintSegment::bottomRight),
-                    direction),
-                0xFFFF, 0);
-            switch (direction)
-            {
-                case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BM_INVERT_TURN_BANK_TRANSITION + 7)),
-                        { 6, 0, height + kInvertedSpriteOffset }, { 20, 32, 3 });
-                    break;
-                case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BM_INVERT_TURN_BANK_TRANSITION + 0)),
-                        { 6, 0, height + kInvertedSpriteOffset }, { 20, 32, 3 });
-                    break;
-                case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BM_INVERT_TURN_BANK_TRANSITION + 2)),
-                        { 6, 0, height + kInvertedSpriteOffset }, { 20, 32, 3 });
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BM_INVERT_TURN_BANK_TRANSITION + 3)),
-                        { 6, 0, height + kInvertedSpriteOffset }, { { 0, 27, height + kInvertedSpriteOffset }, { 1, 32, 26 } });
-                    break;
-                case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BM_INVERT_TURN_BANK_TRANSITION + 5)),
-                        { 6, 0, height + kInvertedSpriteOffset }, { 20, 32, 3 });
-                    break;
-            }
-            MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight + 6, session.SupportColours);
-            switch (direction)
-            {
-                case 0:
-                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-                    break;
-                case 1:
-                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-                    break;
-            }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight),
-                    direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
-            break;
-    }
+    InvertedRCTrackLeftBankToLeftQuarterTurn3Tile25DegUp(
+        session, ride, 3 - trackSequence, (direction - 1) & 3, height, trackElement, supportType);
 }
-
 static void InvertedRCTrack60DegUpTo90DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
