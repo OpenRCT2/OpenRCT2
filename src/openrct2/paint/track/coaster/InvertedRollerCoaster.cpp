@@ -15583,7 +15583,7 @@ static void InvertedRCTrackRightBankToRightQuarterTurn3Tile25DegUp(
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BM_INVERT_TURN_BANK_TRANSITION + 16)),
-                        { 0, 6, height + kInvertedSpriteOffset }, { { 0, 0, height + kInvertedSpriteOffset }, { 32, 20, 1 } });
+                        { 0, 6, height + kInvertedSpriteOffset }, { { 0, 10, height + kInvertedSpriteOffset }, { 32, 20, 1 } });
                     break;
             }
             MetalASupportsPaintSetup(
