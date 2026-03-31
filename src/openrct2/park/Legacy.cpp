@@ -2982,6 +2982,68 @@ bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, TrackElemType trackType,
                 break;
         }
     }
+    else if (
+        (rideType == RIDE_TYPE_INVERTED_ROLLER_COASTER || rideType == RIDE_TYPE_FLYING_ROLLER_COASTER_ALT)
+        && parkFileVersion < kExtendedInvertedRollerCoasterVersion)
+    {
+        switch (trackType)
+        {
+            // inversions
+            case TrackElemType::leftLargeCorkscrewUp:
+            case TrackElemType::rightLargeCorkscrewUp:
+            case TrackElemType::leftLargeCorkscrewDown:
+            case TrackElemType::rightLargeCorkscrewDown:
+            case TrackElemType::leftMediumHalfLoopUp:
+            case TrackElemType::rightMediumHalfLoopUp:
+            case TrackElemType::leftMediumHalfLoopDown:
+            case TrackElemType::rightMediumHalfLoopDown:
+            case TrackElemType::leftBarrelRollUpToDown:
+            case TrackElemType::rightBarrelRollUpToDown:
+            case TrackElemType::leftBarrelRollDownToUp:
+            case TrackElemType::rightBarrelRollDownToUp:
+            case TrackElemType::leftZeroGRollUp:
+            case TrackElemType::rightZeroGRollUp:
+            case TrackElemType::leftZeroGRollDown:
+            case TrackElemType::rightZeroGRollDown:
+            case TrackElemType::leftLargeZeroGRollUp:
+            case TrackElemType::rightLargeZeroGRollUp:
+            case TrackElemType::leftLargeZeroGRollDown:
+            case TrackElemType::rightLargeZeroGRollDown:
+
+            // transitions and vertical
+            case TrackElemType::flatToUp60:
+            case TrackElemType::up60ToFlat:
+            case TrackElemType::flatToDown60:
+            case TrackElemType::down60ToFlat:
+            case TrackElemType::diagFlatToUp60:
+            case TrackElemType::diagUp60ToFlat:
+            case TrackElemType::diagFlatToDown60:
+            case TrackElemType::diagDown60ToFlat:
+            case TrackElemType::flatToUp60LongBase:
+            case TrackElemType::up60ToFlatLongBase:
+            case TrackElemType::down60ToFlatLongBase:
+            case TrackElemType::flatToDown60LongBase:
+            case TrackElemType::up90:
+            case TrackElemType::down90:
+            case TrackElemType::up60ToUp90:
+            case TrackElemType::down90ToDown60:
+            case TrackElemType::up90ToUp60:
+            case TrackElemType::down60ToDown90:
+            case TrackElemType::leftQuarterTurn1TileUp90:
+            case TrackElemType::rightQuarterTurn1TileUp90:
+            case TrackElemType::leftQuarterTurn1TileDown90:
+            case TrackElemType::rightQuarterTurn1TileDown90:
+            case TrackElemType::leftBankToLeftQuarterTurn3TilesUp25:
+            case TrackElemType::rightBankToRightQuarterTurn3TilesUp25:
+            case TrackElemType::leftQuarterTurn3TilesDown25ToLeftBank:
+            case TrackElemType::rightQuarterTurn3TilesDown25ToRightBank:
+            case TrackElemType::up90ToInvertedFlatQuarterLoop:
+            case TrackElemType::invertedFlatToDown90QuarterLoop:
+                return true;
+            default:
+                break;
+        }
+    }
 
     return false;
 }
