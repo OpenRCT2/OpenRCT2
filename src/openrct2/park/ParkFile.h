@@ -61,6 +61,7 @@ namespace OpenRCT2
     constexpr uint16_t kHigherInversionsHolesHelicesStatsVersion = 55;
     constexpr uint16_t kFixedObsoleteFootpathsVersion = 56;
     constexpr uint16_t kRevertToVanillaFairRidePriceCalculation = 58;
+    constexpr uint16_t kExtendedInvertedRollerCoasterVersion = 59;
 
     class ParkFileExporter
     {
