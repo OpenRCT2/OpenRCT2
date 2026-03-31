@@ -42645,7 +42645,7 @@
     {
         "path": "track/bm_invert/vertical_to_steep_1.png",
         "x": -11,
-        "y": -54,
+        "y": -55,
         "palette": "keep"
     },
     {
@@ -42794,8 +42794,8 @@
     },
     {
         "path": "track/bm_invert/flat_to_steep_1_4.png",
-        "x": -24,
-        "y": -46,
+        "x": -25,
+        "y": -47,
         "palette": "keep"
     },
     {
@@ -42879,7 +42879,7 @@
     {
         "path": "track/bm_invert/steep_to_flat_1_2.png",
         "x": -26,
-        "y": -28,
+        "y": -29,
         "palette": "keep"
     },
     {
@@ -43293,7 +43293,7 @@
     {
         "path": "track/bm_invert/small_flat_to_steep_1.png",
         "x": -24,
-        "y": -22,
+        "y": -23,
         "palette": "keep"
     },
     {
