@@ -3,11 +3,18 @@ on:
   push:
     tags:
       - 'v*'
+    branches:
+      - develop
+    paths:
+      - 'distribution/scripting/openrct2.d.ts'
   workflow_dispatch:
     inputs:
       version:
         description: 'Version to publish (e.g. 0.4.32). Leave empty to use the tag version.'
         required: false
+
+env:
+  OPENRCT2_VERSION: 0.4.32
 
 jobs:
   publish:
@@ -22,6 +29,7 @@ jobs:
         with:
           sparse-checkout: |
             distribution/scripting
+            src/openrct2/scripting/ScriptEngine.h
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -36,6 +44,9 @@ jobs:
             VERSION="${{ github.event.inputs.version }}"
           elif [[ "$GITHUB_REF" == refs/tags/v* ]]; then
             VERSION="${GITHUB_REF#refs/tags/v}"
+          elif [[ "$GITHUB_REF" == refs/heads/develop ]]; then
+            API_VERSION=$(grep -oP 'kPluginApiVersion\s*=\s*\K[0-9]+' src/openrct2/scripting/ScriptEngine.h)
+            VERSION="${{ env.OPENRCT2_VERSION }}-dev.${API_VERSION}"
           else
             echo "::error::No version could be determined. Run on a tag or provide a version input."
             exit 1
@@ -48,13 +59,13 @@ jobs:
             echo "tag=latest" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Set package version
-        working-directory: distribution/scripting
-        run: npm version "${{ steps.version.outputs.version }}" --no-git-tag-version
-
       - name: Prepare README for npm
         working-directory: distribution/scripting
         run: cp scripting.md README.md
+
+      - name: Set package version
+        working-directory: distribution/scripting
+        run: npm version "${{ steps.version.outputs.version }}" --no-git-tag-version
 
       - name: Publish
         working-directory: distribution/scripting
