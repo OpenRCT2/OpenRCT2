@@ -14178,7 +14178,7 @@ static void InvertedRCTrackFlatTo60DegUpLongBase(
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 72,
+                            session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 76,
                             session.SupportColours);
                         break;
                     case 2:
@@ -14208,7 +14208,7 @@ static void InvertedRCTrackFlatTo60DegUpLongBase(
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_FLAT_TO_STEEP + 7),
-                        { 0, 0, height + kInvertedSpriteOffset }, { { 1, 1, height + 11 }, { 32, 1, 98 } });
+                        { 0, 0, height + kInvertedSpriteOffset }, { { 1, 4, height + 11 }, { 32, 1, 78 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
