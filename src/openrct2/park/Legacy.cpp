@@ -22,6 +22,7 @@
 #include "../rct2/RCT2.h"
 #include "../ride/Ride.h"
 #include "../ride/ted/TrackElemType.h"
+#include "../world/tile_element/TrackElement.h"
 #include "ParkFile.h"
 
 #include <array>
@@ -2388,8 +2389,12 @@ std::string_view GetClimateObjectIdFromLegacyClimateType(RCT12::ClimateType clim
     return kClimateObjectIdsByLegacyClimateType[EnumValue(climate)];
 }
 
-bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, TrackElemType trackType, int32_t parkFileVersion)
+bool TrackTypeMustBeMadeInvisible(const OpenRCT2::TrackElement& trackElement, const int32_t parkFileVersion)
 {
+    const auto rideType = trackElement.GetRideType();
+    const auto trackType = trackElement.GetTrackType();
+    const auto isInverted = trackElement.IsInverted();
+
     // Lots of Log Flumes exist where the downward slopes are simulated by using other track
     // types like the Splash Boats, but not actually made invisible, because they never needed
     // to be.
@@ -3039,6 +3044,29 @@ bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, TrackElemType trackType,
             case TrackElemType::rightQuarterTurn3TilesDown25ToRightBank:
             case TrackElemType::up90ToInvertedFlatQuarterLoop:
             case TrackElemType::invertedFlatToDown90QuarterLoop:
+        parkFileVersion < kParkFileVersionUprightQuarterHelices
+        && (rideType == RIDE_TYPE_STAND_UP_ROLLER_COASTER || rideType == RIDE_TYPE_CLASSIC_STAND_UP_ROLLER_COASTER
+            || rideType == RIDE_TYPE_CORKSCREW_ROLLER_COASTER || rideType == RIDE_TYPE_HYPERCOASTER
+            || rideType == RIDE_TYPE_LAY_DOWN_ROLLER_COASTER || rideType == RIDE_TYPE_TWISTER_ROLLER_COASTER
+            || rideType == RIDE_TYPE_HYPER_TWISTER || rideType == RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER
+            || (rideType == RIDE_TYPE_FLYING_ROLLER_COASTER && !isInverted) || rideType == RIDE_TYPE_GIGA_COASTER
+            || rideType == RIDE_TYPE_LSM_LAUNCHED_ROLLER_COASTER || rideType == RIDE_TYPE_SINGLE_RAIL_ROLLER_COASTER
+            || rideType == RIDE_TYPE_LOOPING_ROLLER_COASTER || rideType == RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER
+            || rideType == RIDE_TYPE_ALPINE_COASTER || rideType == RIDE_TYPE_MINI_ROLLER_COASTER
+            || rideType == RIDE_TYPE_SPIRAL_ROLLER_COASTER || rideType == RIDE_TYPE_MINE_RIDE
+            || rideType == RIDE_TYPE_HYBRID_COASTER || rideType == RIDE_TYPE_STEEPLECHASE
+            || rideType == RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER))
+    {
+        switch (trackType)
+        {
+            case TrackElemType::leftQuarterHelixLargeUp:
+            case TrackElemType::rightQuarterHelixLargeUp:
+            case TrackElemType::leftQuarterHelixLargeDown:
+            case TrackElemType::rightQuarterHelixLargeDown:
+            case TrackElemType::leftQuarterBankedHelixLargeUp:
+            case TrackElemType::rightQuarterBankedHelixLargeUp:
+            case TrackElemType::leftQuarterBankedHelixLargeDown:
+            case TrackElemType::rightQuarterBankedHelixLargeDown:
                 return true;
             default:
                 break;
