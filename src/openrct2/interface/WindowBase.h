@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../localisation/Formatter.h"
+#include "../localisation/StringWithArgs.h"
 #include "ColourWithFlags.h"
 #include "ScrollArea.h"
 #include "Window.h"
@@ -23,7 +23,10 @@
 enum class TileInspectorPage : int16_t;
 
 struct ResearchItem;
-struct RCTObjectEntry;
+namespace OpenRCT2
+{
+    struct RCTObjectEntry;
+}
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__
     #pragma GCC diagnostic push

@@ -12,8 +12,6 @@
 #include "../localisation/StringIdType.h"
 #include "ObjectTypes.h"
 
-enum class RailingEntrySupportType : uint8_t;
-
 namespace OpenRCT2
 {
     enum
@@ -22,6 +20,8 @@ namespace OpenRCT2
         FOOTPATH_ENTRY_FLAG_IS_QUEUE = (1 << 3),
         FOOTPATH_ENTRY_FLAG_NO_SLOPE_RAILINGS = (1 << 4),
     };
+
+    enum class RailingEntrySupportType : uint8_t;
 
     struct FootpathEntry
     {

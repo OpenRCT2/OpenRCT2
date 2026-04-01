@@ -20,8 +20,10 @@
 #include <openrct2/core/BitSet.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/ColourMap.h>
+#include <openrct2/drawing/Drawing.String.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
+#include <openrct2/drawing/Text.h>
 #include <openrct2/interface/ColourWithFlags.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
@@ -90,15 +92,8 @@ namespace OpenRCT2::Ui::Windows
 
         void drawItem(RenderTarget& rt, ScreenCoordsXY screenCoords, int32_t i)
         {
-            int32_t highlightedIndex = gDropdown.highlightedIndex;
-            bool highlighted = (i == highlightedIndex);
-
-            if (highlighted)
-            {
-                // Darken the cell's background slightly when highlighted
-                const ScreenCoordsXY rightBottom = screenCoords + ScreenCoordsXY{ ItemWidth - 1, ItemHeight - 1 };
-                Rectangle::filter(rt, { screenCoords, rightBottom }, FilterPaletteID::paletteDarken3);
-            }
+            const int32_t highlightedIndex = gDropdown.highlightedIndex;
+            const bool highlighted = (i == highlightedIndex);
 
             const auto& item = gDropdown.items[i];
             switch (item.type)
@@ -178,12 +173,14 @@ namespace OpenRCT2::Ui::Windows
             Formatter ft;
             ft.Add<const utf8*>(item.text);
 
-            DrawTextEllipsised(rt, { screenCoords.x + 2, screenCoords.y + yOffset }, ddWidth - 7, format, ft, { colour });
+            drawTextEllipsised(rt, { screenCoords.x + 2, screenCoords.y + yOffset }, ddWidth - 7, format, ft, { colour });
         }
 
         void onDraw(RenderTarget& rt) override
         {
             drawWidgets(rt);
+
+            int32_t highlightedIndex = gDropdown.highlightedIndex;
 
             for (int32_t i = 0; i < gDropdown.numItems; i++)
             {
@@ -196,9 +193,25 @@ namespace OpenRCT2::Ui::Windows
                 ScreenCoordsXY screenCoords = windowPos
                     + ScreenCoordsXY{ 2 + (cellCoords.x * ItemWidth), 2 + (cellCoords.y * ItemHeight) };
 
+                bool highlighted = (i == highlightedIndex);
+                if (highlighted)
+                {
+                    // Darken the cell's background slightly when highlighted
+                    const ScreenCoordsXY rightBottom = screenCoords + ScreenCoordsXY{ ItemWidth - 1, ItemHeight - 1 };
+                    Rectangle::filter(rt, { screenCoords, rightBottom }, FilterPaletteID::paletteDarken3);
+                }
+
                 if (gDropdown.items[i].isSeparator())
                 {
                     drawSeparator(rt, screenCoords);
+                }
+                else if (gDropdown.cellDrawFunction.has_value())
+                {
+                    RenderTarget clippedRT;
+                    if (ClipRenderTarget(clippedRT, rt, screenCoords, ItemWidth, ItemHeight))
+                    {
+                        gDropdown.cellDrawFunction.value()(clippedRT, gDropdown.items[i], highlighted);
+                    }
                 }
                 else
                 {
@@ -368,7 +381,7 @@ namespace OpenRCT2::Ui::Windows
         int32_t maxStringWidth = 0;
         for (size_t i = 0; i < num_items; i++)
         {
-            int32_t stringWidth = GfxGetStringWidth(gDropdown.items[i].text, FontStyle::medium);
+            int32_t stringWidth = getStringWidth(gDropdown.items[i].text, FontStyle::medium);
             if (gDropdown.items[i].type != Dropdown::ItemType::plain)
                 stringWidth += kDropdownItemLeftPadding;
             maxStringWidth = std::max(stringWidth, maxStringWidth);
@@ -376,6 +389,8 @@ namespace OpenRCT2::Ui::Windows
 
         WindowDropdownShowTextCustomWidth(
             screenPos, extray, colour, 0, flags, num_items, maxStringWidth + 3, prefRowsPerColumn);
+
+        gDropdown.cellDrawFunction = std::nullopt;
     }
 
     void WindowDropdownShowText(
@@ -417,6 +432,8 @@ namespace OpenRCT2::Ui::Windows
             auto numRowsPerColumn = prefRowsPerColumn > 0 ? static_cast<int32_t>(prefRowsPerColumn) : Dropdown::kItemsMaxSize;
             w->setTextItems(screenPos, extray, colour, customItemHeight, flags, num_items, width, numRowsPerColumn);
         }
+
+        gDropdown.cellDrawFunction = std::nullopt;
     }
 
     void WindowDropdownShowTextCustomWidth(
@@ -460,6 +477,18 @@ namespace OpenRCT2::Ui::Windows
         {
             w->setImageItems(screenPos, extray, colour, numItems, itemWidth, itemHeight, numColumns);
         }
+
+        gDropdown.cellDrawFunction = std::nullopt;
+    }
+
+    void WindowDropdownShowCustom(
+        const ScreenCoordsXY& screenPos, int32_t extraY, ColourWithFlags colour, uint8_t flags,
+        Dropdown::CellDrawFunction drawFunction, int32_t numItems, int32_t itemWidth, int32_t itemHeight, int32_t numColumns)
+    {
+        // Fall back to image internals
+        WindowDropdownShowImage(screenPos, extraY, colour, flags, numItems, itemWidth, itemHeight, numColumns);
+
+        gDropdown.cellDrawFunction = drawFunction;
     }
 
     void WindowDropdownClose()

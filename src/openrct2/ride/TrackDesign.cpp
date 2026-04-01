@@ -12,7 +12,6 @@
 #include "../Cheats.h"
 #include "../Context.h"
 #include "../Diagnostic.h"
-#include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../TrackImporter.h"
@@ -57,7 +56,6 @@
 #include "../rct12/TD46.h"
 #include "../rct2/RCT2.h"
 #include "../ride/RideConstruction.h"
-#include "../sawyer_coding/SawyerCoding.h"
 #include "../world/Footpath.h"
 #include "../world/Map.h"
 #include "../world/MapSelection.h"
@@ -74,6 +72,7 @@
 #include "TrackData.h"
 #include "TrackDesign.h"
 #include "TrackDesignRepository.h"
+#include "TrackIteration.h"
 #include "Vehicle.h"
 #include "ted/TrackElementDescriptor.h"
 
@@ -219,7 +218,8 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
     // start.
     TileElement* initialMap = trackElement.element;
 
-    CoordsXYZ startPos = { trackElement.x, trackElement.y, z + trackCoordinates->zBegin - ted.sequences[0].clearance.z };
+    CoordsXYZ startPos = { trackElement.x, trackElement.y,
+                           z + trackCoordinates->zBegin - ted.sequenceData.sequences[0].clearance.z };
     tds.origin = startPos;
 
     do
@@ -253,7 +253,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
 
         trackElements.push_back(track);
 
-        if (!TrackBlockGetNext(&trackElement, &trackElement, nullptr, nullptr))
+        if (!trackBlockGetNext(&trackElement, &trackElement, nullptr, nullptr))
         {
             break;
         }
@@ -816,10 +816,10 @@ static void TrackDesignMirrorScenery(TrackDesign& td)
                 auto* sceneryEntry = reinterpret_cast<const SmallSceneryEntry*>(obj->GetLegacyData());
                 scenery.loc.y = -scenery.loc.y;
 
-                if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_DIAGONAL))
+                if (sceneryEntry->flags.has(SmallSceneryFlag::isDiagonal))
                 {
                     scenery.setRotation(scenery.getRotation() ^ (1 << 0));
-                    if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE))
+                    if (!sceneryEntry->flags.has(SmallSceneryFlag::occupiesFullTile))
                     {
                         scenery.setQuadrant(scenery.getQuadrant() ^ (1 << 0));
                     }
@@ -971,10 +971,11 @@ static GameActions::Result TrackDesignPlaceSceneryElementRemoveGhost(
             uint8_t quadrant = scenery.getQuadrant() + _currentTrackPieceDirection;
             quadrant &= 3;
 
-            auto* sceneryEntry = ObjectManager::GetObjectEntry<SmallSceneryEntry>(entryInfo->Index);
-            if (!(!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE) && sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_DIAGONAL))
-                && sceneryEntry->HasFlag(
-                    SMALL_SCENERY_FLAG_DIAGONAL | SMALL_SCENERY_FLAG_HALF_SPACE | SMALL_SCENERY_FLAG_THREE_QUARTERS))
+            auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<SmallSceneryEntry>(entryInfo->Index);
+            if (!(!sceneryEntry->flags.has(SmallSceneryFlag::occupiesFullTile)
+                  && sceneryEntry->flags.has(SmallSceneryFlag::isDiagonal))
+                && sceneryEntry->flags.hasAny(
+                    SmallSceneryFlag::isDiagonal, SmallSceneryFlag::occupiesHalfTile, SmallSceneryFlag::occupiesThreeQuarters))
             {
                 quadrant = 0;
             }
@@ -1586,9 +1587,9 @@ static GameActions::Result TrackDesignPlaceRide(
         switch (tds.placeOperation)
         {
             case TrackPlaceOperation::drawOutlines:
-                for (uint8_t i = 0; i < ted.numSequences; i++)
+                for (uint8_t i = 0; i < ted.sequenceData.numSequences; i++)
                 {
-                    const auto& trackBlock = ted.sequences[i].clearance;
+                    const auto& trackBlock = ted.sequenceData.sequences[i].clearance;
                     auto tile = CoordsXY{ newCoords } + CoordsXY{ trackBlock.x, trackBlock.y }.Rotate(rotation);
                     TrackDesignUpdatePreviewBounds(tds, { tile, newCoords.z });
                     TrackDesignAddSelectedTile(tile);
@@ -1597,7 +1598,7 @@ static GameActions::Result TrackDesignPlaceRide(
             case TrackPlaceOperation::removeGhost:
             {
                 const TrackCoordinates* trackCoordinates = &ted.coordinates;
-                int32_t tempZ = newCoords.z - trackCoordinates->zBegin + ted.sequences[0].clearance.z;
+                int32_t tempZ = newCoords.z - trackCoordinates->zBegin + ted.sequenceData.sequences[0].clearance.z;
                 auto trackRemoveAction = GameActions::TrackRemoveAction(
                     trackType, 0, { newCoords, tempZ, static_cast<Direction>(rotation & 3) });
                 trackRemoveAction.SetFlags(
@@ -1661,9 +1662,9 @@ static GameActions::Result TrackDesignPlaceRide(
             case TrackPlaceOperation::getPlaceZ:
             {
                 int32_t tempZ = newCoords.z - ted.coordinates.zBegin;
-                for (uint8_t i = 0; i < ted.numSequences; i++)
+                for (uint8_t i = 0; i < ted.sequenceData.numSequences; i++)
                 {
-                    const auto& trackBlock = ted.sequences[i].clearance;
+                    const auto& trackBlock = ted.sequenceData.sequences[i].clearance;
                     auto tile = CoordsXY{ newCoords } + CoordsXY{ trackBlock.x, trackBlock.y }.Rotate(rotation);
                     if (!MapIsLocationValid(tile))
                     {

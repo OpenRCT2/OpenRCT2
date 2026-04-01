@@ -12,7 +12,6 @@
 #include "../../../SpriteIds.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
-#include "../../Track.h"
 
 // clang-format off
 namespace OpenRCT2
@@ -38,7 +37,7 @@ constexpr RideTypeDescriptor InvertedImpulseCoasterRTD =
     .LegacyBoosterSettings = { 25, 25 },
     .Naming = { STR_RIDE_NAME_INVERTED_IMPULSE_COASTER, STR_RIDE_DESCRIPTION_INVERTED_IMPULSE_COASTER },
     .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
-    .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
+    .availableBreakdowns = { Breakdown::safetyCutOut, Breakdown::restraintsStuckClosed, Breakdown::restraintsStuckOpen, Breakdown::vehicleMalfunction },
     .Heights = { 45, 40, 29, 8, },
     .MaxMass = 23,
     .LiftData = { Audio::SoundId::liftClassic, 4, 7 },

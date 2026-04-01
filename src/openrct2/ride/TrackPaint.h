@@ -11,8 +11,13 @@
 
 #include "../paint/Paint.h"
 #include "../paint/support/MetalSupports.h"
+#include "../paint/support/WoodenSupports.h"
 #include "../paint/tile_element/Paint.TileElement.h"
+#include "../paint/tile_element/Segment.h"
 #include "../paint/track/Support.h"
+#include "../ride/TrackData.h"
+#include "../ride/ted/TrackElementDescriptor.h"
+#include "../world/tile_element/TrackElement.h"
 
 namespace OpenRCT2
 {

@@ -242,7 +242,6 @@ STR_0832    :Nézet elforgatása 90°-kal az óramutató járásával megegyező
 STR_0833    :A játék megállítása
 STR_0834    :Mentési és játékbeállítások
 STR_0839    :{UINT16} × {UINT16}
-STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} × {UINT16}
 STR_0847    :Az ’OpenRCT2’ névjegye
 STR_0850    :{WINDOW_COLOUR_2}Copyright © 2002 Chris Sawyer, minden jog fenntartva
 STR_0851    :{WINDOW_COLOUR_2}Tervezte és programozta: Chris Sawyer
@@ -253,16 +252,6 @@ STR_0855    :{WINDOW_COLOUR_2}Képviselet: Jacqui Lyons a Marjacq Ltd.-től
 STR_0856    :{WINDOW_COLOUR_2}Köszönet:
 STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth és John Wardley
 STR_0865    :{STRINGID}
-STR_0866    :{POP16}{STRINGID}
-STR_0867    :{POP16}{POP16}{STRINGID}
-STR_0868    :{POP16}{POP16}{POP16}{STRINGID}
-STR_0869    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0870    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0872    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0873    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0874    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0875    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0876    :{BLACK}▼
 STR_0877    :Túl alacsony !
 STR_0878    :Túl magas !
@@ -281,7 +270,7 @@ STR_0892    :A képernyő elmentve ’{STRINGID}’ néven
 STR_0893    :A képmentés sikertelen !
 STR_0894    :Táj-adatterület megtelt !
 STR_0895    :Nem lehet részben föld fölé, részben föld alá építeni!
-STR_0896    :{POP16}{POP16}{STRINGID} építése
+STR_0896    :{STRINGID} építése
 STR_0897    :Irány
 STR_0898    :Balkanyar
 STR_0899    :Jobbkanyar
@@ -309,8 +298,8 @@ STR_0920    :Vízszintes
 STR_0921    :Emelkedő
 STR_0922    :Meredek emelkedő
 STR_0923    :Függőleges emelkedés
-STR_0924    :Spirálpálya lefelé
-STR_0925    :Spirálpálya felfelé
+STR_0924    :Spirál lefelé
+STR_0925    :Spirál felfelé
 STR_0926    :Nem távolítható el…
 STR_0927    :Nem építhető itt…
 STR_0928    :Láncos felvonó, a kocsik emelkedőkön történő felhúzására
@@ -406,8 +395,6 @@ STR_1018    :Nem változtatható meg…
 STR_1019    :Nem változtatható meg…
 STR_1020    :Nem változtatható meg…
 STR_1021    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_1022    :{POP16}{POP16}{POP16}{COMMA16} kocsi vonatonként
-STR_1023    :{POP16}{POP16}{POP16}{COMMA16} kocsi vonatonként
 STR_1024    :{COMMA16} kocsi vonatonként
 STR_1025    :{COMMA16} kocsi vonatonként
 STR_1026    :Az állomás túl hosszú!
@@ -516,9 +503,7 @@ STR_1128    :Megállították a blokkoló fékek
 STR_1129    :Minden jármű azonos színű
 STR_1130    :Minden {STRINGID} más színű
 STR_1131    :Minden jármű más színű
-STR_1132    :Jármű {POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1133    :Jármű {POP16}{COMMA16}
-STR_1134    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID} {COMMA16}
+STR_1133    :Jármű {COMMA16}
 STR_1135    :{STRINGID} {COMMA16}
 STR_1136    :A fő szín kiválasztása
 STR_1137    :Az 1. további szín kiválasztása
@@ -714,7 +699,6 @@ STR_1327    :Az objektumok forgatása 90°-kal
 STR_1328    :Vízszintes talaj szükséges
 STR_1329    :{WINDOW_COLOUR_2}Kilövési sebesség:
 STR_1330    :A legnagyobb sebesség az állomás elhagyásakor
-STR_1331    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_1332    :{VELOCITY}
 STR_1333    :{STRINGID} - {STRINGID}{POP16}
 STR_1334    :{STRINGID} - {STRINGID} {COMMA16}
@@ -812,7 +796,6 @@ STR_1425    :Út
 STR_1426    :Várósor
 STR_1427    :{WINDOW_COLOUR_2}Óránkénti vendégek: {BLACK}{COMMA32} 
 STR_1428    :{WINDOW_COLOUR_2}Belépési díj:
-STR_1429    :{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1430    :Ingyenes
 STR_1431    :Sétál
 STR_1432    :{STRINGID} felé tart
@@ -847,10 +830,10 @@ STR_1460    :’U’ alakú nyílt pálya
 STR_1461    :’O’ alakú zárt pálya
 STR_1462    :Túl meredek a felvonószakaszhoz
 STR_1463    :Vendégek
-STR_1464    :Spirálpálya felfelé (kicsi)
-STR_1465    :Spirálpálya felfelé (nagy)
-STR_1466    :Spirálpálya lefelé (kicsi)
-STR_1467    :Spirálpálya lefelé (nagy)
+STR_1464    :Fél spirál felfelé (kicsi)
+STR_1465    :Fél spirál felfelé (nagy)
+STR_1466    :Fél spirál lefelé (kicsi)
+STR_1467    :Fél spirál lefelé (nagy)
 STR_1468    :Személyzet
 STR_1469    :A játéknak állomással kell kezdődnie és végződnie
 STR_1470    :Az állomás nem elég hosszú
@@ -1056,14 +1039,13 @@ STR_1671    :{WINDOW_COLOUR_2}Teljes nyereség: {BLACK}{CURRENCY2DP}
 STR_1672    :Fékek
 STR_1673    :Forgásvezérlő kapcsolószakasz
 STR_1674    :Fékezési sebesség 
-STR_1675    :{POP16}{VELOCITY}
 STR_1676    :Sebességlimit beállítása a fékek számára
 STR_1677    :{WINDOW_COLOUR_2}Népszerűség: {BLACK}ismeretlen
 STR_1678    :{WINDOW_COLOUR_2}Népszerűség: {BLACK}{COMMA16}%
-STR_1679    :Spirálpálya felfelé (balra)
-STR_1680    :Spirálpálya felfelé (jobbra)
-STR_1681    :Spirálpálya lefelé (balra)
-STR_1682    :Spirálpálya lefelé (jobbra)
+STR_1679    :Negyed spirál felfelé (balra)
+STR_1680    :Negyed spirál felfelé (jobbra)
+STR_1681    :Negyed spirál lefelé (balra)
+STR_1682    :Negyed spirál lefelé (jobbra)
 STR_1683    :Alapméret 2 × 2
 STR_1684    :Alapméret 4 × 4
 STR_1685    :Alapméret 2 × 4
@@ -1116,18 +1098,15 @@ STR_1732    :Építés
 STR_1733    :Mód
 STR_1734    :{WINDOW_COLOUR_2}Körök száma:
 STR_1735    :A pályán megtett körök száma
-STR_1736    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1738    :Nem változtatható meg a körök száma…
 STR_1739    :Vendég {INT32} nyerte a versenyt
 STR_1740    :{STRINGID} nyerte a versenyt
 STR_1741    :Még nincs megépítve !
 STR_1742    :{WINDOW_COLOUR_2}Max. ember a játékon:
 STR_1743    :Maximum ennyi ember lehet egyszerre a játékon
-STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1746    :Nem változtathatod meg…
 STR_1747    :{WINDOW_COLOUR_2}Időkorlát:
 STR_1748    :A játék időkorlátja
-STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DURATION}
 STR_1751    :Nem változtatható meg a játék időkorlátja…
 STR_1752    :A park egyedi vendégeinek listázása
 STR_1753    :A park vendégeinek összegző listázása
@@ -1148,7 +1127,6 @@ STR_1767    :Forgó alagút
 STR_1768    :Nem változtatható meg a lengések száma…
 STR_1769    :{WINDOW_COLOUR_2}Lengések száma:
 STR_1770    :A teljes lengések száma
-STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1773    :Csak egy élményfotó-szakasz engedélyezett játékonként
 STR_1774    :Csak egy kábeles felvonószakasz engedélyezett játékonként
 STR_1777    :Játékok zenéje
@@ -1160,7 +1138,6 @@ STR_1794    :Ezt javítja: {STRINGID}
 STR_1795    :Rádióhívásra válaszol
 STR_1796    :Meghibásodott és javításra van szüksége
 STR_1798    :Örvény
-STR_1799    :{POP16}{POP16}{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1800    :Biztonsági megszakítás
 STR_1801    :Zárva ragadt utasrögzítők
 STR_1802    :Nyitva ragadt utasrögzítők
@@ -1232,7 +1209,6 @@ STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :Nem változtatható meg a forgások száma…
 STR_1869    :{WINDOW_COLOUR_2}Forgások száma:
 STR_1870    :A teljes körforgások száma
-STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Bevétel: {BLACK}{CURRENCY2DP} óránként
 STR_1874    :{WINDOW_COLOUR_2}Nyereség: {BLACK}{CURRENCY2DP} óránként
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Játékok ellenőrzése
@@ -1274,7 +1250,6 @@ STR_1913    :{BLACK}+{CURRENCY2DP}
 STR_1914    :{BLACK}{CURRENCY2DP}
 STR_1915    :{RED}{CURRENCY2DP}
 STR_1916    :{WINDOW_COLOUR_2}Kölcsön:
-STR_1917    :{POP16}{POP16}{POP16}{CURRENCY}
 STR_1918    :Nem vehetsz fel több pénzt!
 STR_1919    :Nincs elég pénz!
 STR_1920    :Nem tudod visszafizetni a kölcsönt!
@@ -1312,7 +1287,6 @@ STR_1953    :Marketing
 STR_1954    :Kutatás finanszírozása
 STR_1955    :{WINDOW_COLOUR_2}Körök száma:
 STR_1956    :A pályakörök száma menetenként
-STR_1957    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1958    :{COMMA16}
 STR_1959    :Nem változtatható meg a körök száma…
 STR_1960    :{WINDOW_COLOUR_2}Lufi ára:
@@ -2110,7 +2084,6 @@ STR_3092    :Nem mozgathatod vagy módosíthatod a játék állomását!
 STR_3093    :{WINDOW_COLOUR_2}Kedvence: {BLACK}{STRINGID}
 STR_3094    :nincs adat
 STR_3095    :{WINDOW_COLOUR_2}Felvonó láncsebessége:
-STR_3096    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_3097    :A felvonószakasz láncsebességének kiválasztása
 STR_3099    :Szín kiválasztása
 STR_3100    :Második szín kiválasztása
@@ -2203,7 +2176,6 @@ STR_3208    :Játéktervkezelő
 STR_3209    :Vissza az előző lépésre:
 STR_3210    :Tovább a következő lépésre:
 STR_3211    :Térkép mérete:
-STR_3212    :{POP16}{COMMA16}
 STR_3213    :Nem csökkenthető tovább a térkép mérete
 STR_3214    :Nem növelhető tovább a térkép mérete
 STR_3215    :Túl közel van a térkép széléhez
@@ -2994,12 +2966,11 @@ STR_5914    :Ismeretlen játék
 STR_5915    :Játékos
 STR_5916    :{COMMA16} játékos
 STR_5917    :{COMMA16} játékos
-STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_5919    :{COMMA16}
 STR_5920    :Időjárási hatások megjelenítése
 STR_5921    :Ha be van kapcsolva, viharok idején esős és komor színű lesz a játék.
-STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}Max. {STRINGID}
-STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}Max. {COMMA16} {STRINGID} vonatonként
+STR_5922    :Max. {STRINGID}
+STR_5923    :Max. {COMMA16} {STRINGID} vonatonként
 STR_5924    :Felszín részletei
 STR_5925    :Út részletei
 STR_5926    :Pálya részleti
@@ -3384,7 +3355,6 @@ STR_6355    :Nagy sűrűség
 STR_6356    :Kacsákat rak le, ha van víz a parkban
 STR_6357    :Eltávolít minden kacsát a térképről
 STR_6358    :{UINT16}. oldal
-STR_6359    :{POP16}{POP16}{UINT16}. oldal
 STR_6361    :Fényhatások a játékokon (kísérleti)
 STR_6362    :Ha be van kapcsolva, a pályával rendelkező játékokon a járművek éjjel ki lesznek világítva.
 STR_6363    :A szöveg a vágólapra másolva
@@ -3841,3 +3811,9 @@ STR_7014    :Megvan a játék a Steamen, de még nincs telepítve.
 STR_7015    :Kérjük, zárd be a Steamet, ha fut, majd kattints az „OK” gombra.
 STR_7016    :Az OpenRCT2 megpróbálta elindítani a letöltést a Steamen. Nyisd meg a Steamet, és hagyd, hogy letöltse a játékot. Amikor elkészült, kattints az „OK” gombra.
 STR_7017    :Kilépés
+STR_7023    :Tedd láthatatlanná
+STR_7024    :Az egész játékot láthatatlanná teszi
+STR_7025    :Tedd láthatóvá
+STR_7026    :Az egész játékot láthatóvá teszi
+STR_7028    :Negyed spirál felfelé
+STR_7029    :Negyed spirál lefelé

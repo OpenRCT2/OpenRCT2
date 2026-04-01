@@ -20,7 +20,6 @@
 #include "../../interface/Viewport.h"
 #include "../../ride/CarEntry.h"
 #include "../../ride/RideData.h"
-#include "../../ride/Track.h"
 #include "../../ride/Vehicle.h"
 #include "../Paint.h"
 
@@ -4783,6 +4782,9 @@ void Vehicle::Paint(PaintSession& session, int32_t imageDirection) const
             break;
         case VEHICLE_VISUAL_SUBMARINE:
             VehicleVisualSubmarine(session, x, imageDirection, y, z + zOffset, this, carEntry);
+            break;
+        case VEHICLE_VISUAL_SPINNING_CARS:
+            VehicleVisualClassicMiniSpinning(session, x, imageDirection, y, z + zOffset, this, carEntry);
             break;
     }
 }

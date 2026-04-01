@@ -1,7 +1,7 @@
 {
   "objects": {
-    "url": "https://github.com/OpenRCT2/objects/releases/download/v1.7.6/objects.zip",
-    "sha256": "6aca2eb441fbe8c022ff84d59fb51ed7ea577756640970dc989eab685ff45696"
+    "url": "https://github.com/OpenRCT2/objects/releases/download/v1.7.8/objects.zip",
+    "sha256": "3d1d98802c6a0cd27f195a0ae7aa05067a071157d776f3326b49f3012c2311bb"
   },
   "openmusic": {
     "url": "https://github.com/OpenRCT2/OpenMusic/releases/download/v1.6.1/openmusic.zip",

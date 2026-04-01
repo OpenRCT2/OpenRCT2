@@ -13,7 +13,6 @@
 #include "../../../drawing/LightFX.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
-#include "../../Track.h"
 
 // clang-format off
 namespace OpenRCT2 {
@@ -39,7 +38,7 @@ constexpr RideTypeDescriptor MonorailRTD =
     .OperatingSettings = { 5, 27 },
     .Naming = { STR_RIDE_NAME_MONORAIL, STR_RIDE_DESCRIPTION_MONORAIL },
     .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
-    .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_DOORS_STUCK_CLOSED) | (1 << BREAKDOWN_DOORS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
+    .availableBreakdowns = { Breakdown::safetyCutOut, Breakdown::doorsStuckClosed, Breakdown::doorsStuckOpen, Breakdown::vehicleMalfunction },
     .Heights = { 8, 32, 8, 9, },
     .MaxMass = 78,
     .LiftData = { Audio::SoundId::null, 5, 5 },

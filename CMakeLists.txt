@@ -48,12 +48,13 @@ if (APPLE)
     set(CMAKE_SYSTEM_PROCESSOR "${CMAKE_OSX_ARCHITECTURES}" CACHE STRING "")
 endif ()
 
-project(openrct2 CXX)
+# C Language required for quickjs-ng
+project(openrct2 CXX C)
 
 include(cmake/platform.cmake)
 include(CMakeDependentOption)
 
-# vcpkg includes its own copy of duktapeConfig.cmake; only include ours as needed.
+# vcpkg includes its own copy of *.cmake; only include ours as needed.
 if (NOT MSVC)
     include(FindPkgConfig)
     set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake;${CMAKE_MODULE_PATH}")
@@ -267,7 +268,7 @@ endfunction ()
 
 # Add check flags to a compile TARGET
 function (SET_CHECK_CXX_FLAGS _TARGET)
-    target_compile_options("${_TARGET}" PRIVATE "${SUPPORTED_CHECK_CXX_COMPILER_FLAGS}")
+    target_compile_options("${_TARGET}" PRIVATE $<$<COMPILE_LANGUAGE:CXX>:${SUPPORTED_CHECK_CXX_COMPILER_FLAGS}>)
 endfunction()
 
 # Check if a flag exists and add it to the compiler and the linker options
@@ -395,7 +396,6 @@ endif()
 # graphics files (g2.dat, fonts.dat, palettes.dat, tracks.dat)
 if (NOT CMAKE_CROSSCOMPILING)
     set(graphics_files "g2" "fonts" "palettes" "tracks")
-    
     foreach(graphics_file ${graphics_files})
         set(output_file "${graphics_file}.dat")
         set(json_file "${ROOT_DIR}/resources/${graphics_file}/sprites.json")

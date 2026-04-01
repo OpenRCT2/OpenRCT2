@@ -78,7 +78,7 @@ namespace OpenRCT2
     public:
         explicit Intent(WindowClass windowClass);
         explicit Intent(WindowDetail windowDetail);
-        explicit Intent(IntentAction windowclass);
+        explicit Intent(IntentAction intentAction);
 
         WindowClass GetWindowClass() const;
         WindowDetail GetWindowDetail() const;

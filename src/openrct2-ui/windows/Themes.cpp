@@ -17,8 +17,10 @@
 #include <openrct2/Input.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/drawing/ColourMap.h>
+#include <openrct2/drawing/Drawing.String.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
+#include <openrct2/drawing/Text.h>
 #include <openrct2/interface/ColourWithFlags.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
@@ -397,21 +399,19 @@ namespace OpenRCT2::Ui::Windows
 
             if (_selectedTab == WINDOW_THEMES_TAB_SETTINGS)
             {
-                DrawTextBasic(
+                drawText(
                     rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_THEMES_PRESETS].top + 1 }, STR_THEMES_LABEL_CURRENT_THEME,
                     {}, { colours[1] });
 
                 size_t activeAvailableThemeIndex = ThemeManagerGetAvailableThemeIndex();
                 const utf8* activeThemeName = ThemeManagerGetAvailableThemeName(activeAvailableThemeIndex);
-                auto ft = Formatter();
-                ft.Add<const utf8*>(activeThemeName);
 
                 auto screenPos = windowPos
                     + ScreenCoordsXY{ widgets[WIDX_THEMES_PRESETS].left + 1, widgets[WIDX_THEMES_PRESETS].top };
                 auto newWidth = windowPos.x + widgets[WIDX_THEMES_PRESETS_DROPDOWN].left - widgets[WIDX_THEMES_PRESETS].left
                     - 4;
 
-                DrawTextEllipsised(rt, screenPos, newWidth, STR_STRING, ft, { colours[1] });
+                drawTextEllipsised(rt, screenPos, newWidth, activeThemeName, { colours[1] });
             }
         }
 
@@ -779,8 +779,8 @@ namespace OpenRCT2::Ui::Windows
 
                     for (uint8_t j = 0; j < numColours; j++)
                     {
-                        DrawTextWrapped(
-                            rt, { 2, screenCoords.y + 4 }, kWindowHeaderWidth, ThemeDescGetName(wc), {}, { colours[1] });
+                        drawTextWrapped(
+                            rt, { 2, screenCoords.y + 4 }, kWindowHeaderWidth, ThemeDescGetName(wc), { colours[1] });
 
                         // Don't draw the empty row
                         if (emptyRow && j == 1)
@@ -802,8 +802,8 @@ namespace OpenRCT2::Ui::Windows
                             Rectangle::FillBrightness::dark, Rectangle::FillMode::dontLightenWhenInset);
                         if (colour.flags.has(ColourFlag::translucent))
                         {
-                            DrawText(
-                                rt, topLeft, { colours[1].colour, FontStyle::medium, TextDarkness::dark }, kCheckMarkString);
+                            drawText(
+                                rt, topLeft, kCheckMarkString, { colours[1].colour, FontStyle::medium, TextDarkness::dark });
                         }
                     }
                 }
@@ -864,7 +864,7 @@ namespace OpenRCT2::Ui::Windows
 
             std::string str = FormatStringIDLegacy(format, args);
 
-            return GfxGetStringWidth(str, FontStyle::medium);
+            return getStringWidth(str, FontStyle::medium);
         }
 
         int8_t GetTotalColoursUpTo(int8_t index)

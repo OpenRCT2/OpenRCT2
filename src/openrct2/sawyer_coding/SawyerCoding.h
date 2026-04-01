@@ -38,6 +38,9 @@ namespace OpenRCT2::SawyerCoding
     size_t DecodeTD6(const uint8_t* src, uint8_t* dst, size_t length);
     size_t EncodeTD6(const uint8_t* src, uint8_t* dst, size_t length);
     int32_t ValidateTrackChecksum(const uint8_t* src, size_t length);
+    size_t EncodeChunkRLE(const uint8_t* src_buffer, uint8_t* dst_buffer, size_t length);
+    size_t EncodeChunkRepeat(const uint8_t* src_buffer, uint8_t* dst_buffer, size_t length);
+    void EncodeChunkRotate(uint8_t* buffer, size_t length);
 
     int32_t DetectFileType(const uint8_t* src, size_t length);
     int32_t DetectRCT1Version(int32_t gameVersion);

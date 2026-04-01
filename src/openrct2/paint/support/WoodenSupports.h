@@ -65,7 +65,11 @@ enum class WoodenSupportTransitionType : uint8_t
 constexpr int32_t kWoodenSupportTransitionTypeCount = 21;
 
 struct PaintSession;
-struct PathRailingsDescriptor;
+
+namespace OpenRCT2
+{
+    struct PathRailingsDescriptor;
+}
 
 bool WoodenASupportsPaintSetup(
     PaintSession& session, WoodenSupportType supportType, WoodenSupportSubType subType, int32_t height, ImageId imageTemplate,
@@ -81,7 +85,7 @@ bool WoodenBSupportsPaintSetupRotated(
     ImageId imageTemplate, WoodenSupportTransitionType transitionType = WoodenSupportTransitionType::none);
 bool PathBoxSupportsPaintSetup(
     PaintSession& session, WoodenSupportSubType supportType, bool isSloped, Direction slopeRotation, int32_t height,
-    ImageId imageTemplate, const PathRailingsDescriptor& pathPaintInfo);
+    ImageId imageTemplate, const OpenRCT2::PathRailingsDescriptor& pathPaintInfo);
 bool DrawSupportForSequenceA(
     PaintSession& session, WoodenSupportType supportType, OpenRCT2::TrackElemType trackType, uint8_t sequence,
     Direction direction, int32_t height, ImageId imageTemplate);

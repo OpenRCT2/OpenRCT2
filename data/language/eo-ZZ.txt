@@ -242,7 +242,6 @@ STR_0832    :Turni vidon 90° dekstrume
 STR_0833    :Paŭzigi ludon
 STR_0834    :Agordoj de disko kaj ludo
 STR_0839    :{UINT16} x {UINT16}
-STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
 STR_0847    :Pri ‘OpenRCT2’
 STR_0850    :{WINDOW_COLOUR_2}Aŭtorrajto © 2002 Chris Sawyer, tutaj rajtoj estas rezervitaj
 STR_0851    :{WINDOW_COLOUR_2}Desegnita kaj programita de Chris Sawyer
@@ -253,16 +252,6 @@ STR_0855    :{WINDOW_COLOUR_2}Reprezentita de Jacqui Lyons al Marjacq Ltd.
 STR_0856    :{WINDOW_COLOUR_2}Danke al:
 STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth, kaj John Wardley
 STR_0865    :{STRINGID}
-STR_0866    :{POP16}{STRINGID}
-STR_0867    :{POP16}{POP16}{STRINGID}
-STR_0868    :{POP16}{POP16}{POP16}{STRINGID}
-STR_0869    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0870    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0872    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0873    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0874    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0875    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0876    :{BLACK}▼
 STR_0877    :Tro malalte!
 STR_0878    :Tro alte!
@@ -281,7 +270,7 @@ STR_0892    :Ekrankopio estis konservita al la disko kiel ‘{STRINGID}’
 STR_0893    :Malsukcesis konservi ekrankopion!
 STR_0894    :Zono de pejzaĝodatumoj estas plena!
 STR_0895    :Ne eblas konstrui kaj parte supertere kaj parte subtere
-STR_0896    :{POP16}{POP16}{STRINGID} Konstruado
+STR_0896    :{STRINGID} Konstruado
 STR_0897    :Direkto
 STR_0898    :Maldekstra kurbo
 STR_0899    :Dekstra kurbo
@@ -406,8 +395,6 @@ STR_1018    :Ne eblas ŝanĝi tion…
 STR_1019    :Ne eblas ŝanĝi tion…
 STR_1020    :Ne eblas ŝanĝi tion…
 STR_1021    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_1022    :Po {POP16}{POP16}{POP16}{COMMA16} ĉaro por trajno
-STR_1023    :Po {POP16}{POP16}{POP16}{COMMA16} ĉaroj por trajno
 STR_1024    :Po {COMMA16} ĉaro por trajno
 STR_1025    :Po {COMMA16} ĉaroj por trajno
 STR_1026    :Staciplatformo estas tro longa!
@@ -516,9 +503,7 @@ STR_1128    :Haltita per bremsoj de blokparto
 STR_1129    :Ĉiuj veturiloj havas saman koloron
 STR_1130    :Malsamaj koloroj por ĉiu {STRINGID}
 STR_1131    :Malsamaj koloroj por ĉiu veturilo
-STR_1132    :Veturilo {POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1133    :Veturilo {POP16}{COMMA16}
-STR_1134    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID} {COMMA16}
+STR_1133    :Veturilo {COMMA16}
 STR_1135    :{STRINGID} {COMMA16}
 STR_1136    :Elekti ĉefan koloron
 STR_1137    :Elekti aldonan koloron 1
@@ -714,7 +699,6 @@ STR_1327    :Turni objektojn 90°
 STR_1328    :Ebena tero estas necesita
 STR_1329    :{WINDOW_COLOUR_2}Rapideco de lanĉo:
 STR_1330    :Maksimuma rapideco ekveturante el stacio
-STR_1331    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_1332    :{VELOCITY}
 STR_1333    :{STRINGID} - {STRINGID}{POP16}
 STR_1334    :{STRINGID} - {STRINGID} {COMMA16}
@@ -812,7 +796,6 @@ STR_1425    :Trotuaro
 STR_1426    :Atendovico
 STR_1427    :{WINDOW_COLOUR_2}Klientoj: {BLACK}po {COMMA32} por horo
 STR_1428    :{WINDOW_COLOUR_2}Enirokosto:
-STR_1429    :{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1430    :Senkosta
 STR_1431    :Marŝas
 STR_1432    :Iras al {STRINGID}
@@ -847,10 +830,10 @@ STR_1460    :‘U’-trakformo
 STR_1461    :‘O’-trakformo
 STR_1462    :Tro krute por liftparto
 STR_1463    :Gastoj
-STR_1464    :Kreska Helico (malgranda)
-STR_1465    :Kreska Helico (granda)
-STR_1466    :Malkreska Helico (malgranda)
-STR_1467    :Malkreska Helico (granda)
+STR_1464    :Duona Kreska Helico (malgranda)
+STR_1465    :Duona Kreska Helico (granda)
+STR_1466    :Duona Malkreska Helico (malgranda)
+STR_1467    :Duona Malkreska Helico (granda)
 STR_1468    :Dungitaro
 STR_1469    :Atrakcio devas havi staciojn ĉe ĝiaj komencejo kaj finejo
 STR_1470    :Stacio ne estas sufiĉe longa
@@ -1056,14 +1039,13 @@ STR_1671    :{WINDOW_COLOUR_2}Totala profito: {BLACK}{CURRENCY2DP}
 STR_1672    :Bremsoj
 STR_1673    :Turnadoreĝimo-Baskulo
 STR_1674    :Rapideco de bremsoj
-STR_1675    :{POP16}{VELOCITY}
 STR_1676    :Agordi rapidlimon de bremsoj
 STR_1677    :{WINDOW_COLOUR_2}Populareco: {BLACK}Nekonata
 STR_1678    :{WINDOW_COLOUR_2}Populareco: {BLACK}{COMMA16}%
-STR_1679    :Kreska Helico (maldekstre)
-STR_1680    :Kreska Helico (dekstre)
-STR_1681    :Malkreska Helico (maldekstre)
-STR_1682    :Malkreska Helico (dekstre)
+STR_1679    :Kvarona Kreska Helico (maldekstre)
+STR_1680    :Kvarona Kreska Helico (dekstre)
+STR_1681    :Kvarona Malkreska Helico (maldekstre)
+STR_1682    :Kvarona Malkreska Helico (dekstre)
 STR_1683    :Bazdimensioj 2 x 2
 STR_1684    :Bazdimensioj 4 x 4
 STR_1685    :Bazdimensioj 2 x 4
@@ -1116,18 +1098,15 @@ STR_1732    :Konstrui
 STR_1733    :Reĝimo
 STR_1734    :{WINDOW_COLOUR_2}Nombro de etapoj:
 STR_1735    :Nombro de etapoj ĉirkaŭ cirkvito
-STR_1736    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1738    :Ne eblas ŝanĝi nombron de etapoj…
 STR_1739    :Vetkuro estis gajnita de gasto {INT32}
 STR_1740    :Vetkuro estis gajnita de {STRINGID}
 STR_1741    :Ankoraŭ ne estas konstruita!
 STR_1742    :{WINDOW_COLOUR_2}Maks. homoj en atrakcio:
 STR_1743    :Maksimuma nombro de homoj permesitaj en atrakcio iutempe
-STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1746    :Ne eblas ŝanĝi ĉi tion…
 STR_1747    :{WINDOW_COLOUR_2}Templimo:
 STR_1748    :Templimo de atrakcio
-STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DURATION}
 STR_1751    :Ne eblas ŝanĝi templimon de atrakcio…
 STR_1752    :Montri liston de individuaj gastoj en parko
 STR_1753    :Montri resumitan liston de la gastoj en parko
@@ -1148,7 +1127,6 @@ STR_1767    :Turniĝanta tunelo
 STR_1768    :Ne eblas ŝanĝi nombron de svingoj…
 STR_1769    :{WINDOW_COLOUR_2}Nombro de svingoj:
 STR_1770    :Nombro de plenaj svingoj
-STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1773    :Nur unu sur-atrakcia fotoparto estas permesita po atrakcio
 STR_1774    :Nur unu kablolifta monteto estas permesita po atrakcio
 STR_1777    :Muziko de atrakcio
@@ -1160,7 +1138,6 @@ STR_1794    :Riparas je {STRINGID}
 STR_1795    :Respondas radiovokon
 STR_1796    :Paneita kaj bezonas riparon
 STR_1798    :Akvoturno
-STR_1799    :{POP16}{POP16}{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1800    :Sekuriga malŝaltado
 STR_1801    :Bridoj ne eblas malŝlosiĝi
 STR_1802    :Bridoj ne eblas ŝlosiĝi
@@ -1232,7 +1209,6 @@ STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :Ne eblas ŝanĝi nombron de turnadoj…
 STR_1869    :{WINDOW_COLOUR_2}Nombro de turnadoj:
 STR_1870    :Nombro de plenaj turnadoj
-STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Enspezo: {BLACK}po {CURRENCY2DP} por horo
 STR_1874    :{WINDOW_COLOUR_2}Profito: {BLACK}po {CURRENCY2DP} por horo
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Inspekti Atrakciojn
@@ -1274,7 +1250,6 @@ STR_1913    :{BLACK}+{CURRENCY2DP}
 STR_1914    :{BLACK}{CURRENCY2DP}
 STR_1915    :{RED}{CURRENCY2DP}
 STR_1916    :{WINDOW_COLOUR_2}Prunto:
-STR_1917    :{POP16}{POP16}{POP16}{CURRENCY}
 STR_1918    :Ne eblas prunti pli da monoj!
 STR_1919    :Ne sufiĉas mono disponebla!
 STR_1920    :Ne eblas repagi prunton!
@@ -1312,7 +1287,6 @@ STR_1953    :Vendado
 STR_1954    :Financado de Esplorado
 STR_1955    :{WINDOW_COLOUR_2}Nombro de cirkvitoj:
 STR_1956    :Nombro de cirkvitoj de trako po rajdanto
-STR_1957    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1958    :{COMMA16}
 STR_1959    :Ne eblas ŝanĝi nombron de cirkvitoj…
 STR_1960    :{WINDOW_COLOUR_2}Prezo de Balono:
@@ -2110,7 +2084,6 @@ STR_3092    :Vi ne permesas movi aŭ redakti la stacion por ĉi tiu atrakcio!
 STR_3093    :{WINDOW_COLOUR_2}Plej ŝatas: {BLACK}{STRINGID}
 STR_3094    :Ne disponebla
 STR_3095    :{WINDOW_COLOUR_2}Rapideco de ĉenlifto:
-STR_3096    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_3097    :Elekti rapidecon de ĉenlifto
 STR_3099    :Elekti koloron
 STR_3100    :Elekti duan koloron
@@ -2203,7 +2176,6 @@ STR_3208    :Administrilo de Trakdesegnaĵoj
 STR_3209    :Reiri al Pasinta Etapo:
 STR_3210    :Iri al Sekva Etapo:
 STR_3211    :Dimensioj de mapo:
-STR_3212    :{POP16}{COMMA16}
 STR_3213    :Ne eblas malpliigi mapodimensiojn plu
 STR_3214    :Ne eblas pliigi mapodimensiojn plu
 STR_3215    :Tro proksime al mapbordo
@@ -2994,12 +2966,11 @@ STR_5914    :Nekonata atrakcio
 STR_5915    :Ludanto
 STR_5916    :{COMMA16} ludanto
 STR_5917    :{COMMA16} ludantoj
-STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_5919    :{COMMA16}
 STR_5920    :Bildigi veterefektojn
 STR_5921    :Se ŝaltita, pluvo kaj mallumaj koloroj bildigitos dum ŝtormoj.
-STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}Maks. {STRINGID}
-STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}Maks. po {COMMA16} {STRINGID} por trajno
+STR_5922    :Maks. {STRINGID}
+STR_5923    :Maks. po {COMMA16} {STRINGID} por trajno
 STR_5924    :Detaloj de surfaco
 STR_5925    :Detaloj de vojoj
 STR_5926    :Detaloj de trako
@@ -3384,7 +3355,6 @@ STR_6355    :Alta denseco
 STR_6356    :Generas anasojn se parko enhavas akvon
 STR_6357    :Forigas ĉiujn anasojn de la mapo
 STR_6358    :Paĝo {UINT16}
-STR_6359    :{POP16}{POP16}Paĝo {UINT16}
 STR_6361    :Ŝalti lumefektojn sur atrakcioj (eksperimenta)
 STR_6362    :Se ŝaltita, veturiloj de atrakcioj kun trakoj lumos nokte.
 STR_6363    :Teksto kopiita al tondujo
@@ -3841,3 +3811,9 @@ STR_7014    :Mi posedas la ludon de Steam, sed mi ankoraŭ ne instalis ĝin.
 STR_7015    :Bonvolu fermi je Steam se ĝi rulas, tiam alklaki la ‘OK’ butonon.
 STR_7016    :OpenRCT2 provis ekagigi elŝutaĵon en Steam. Bonvolu malfermi je Steam kaj lasu ĝin elŝuti la ludon. Kiam Steam estas finita, alklaku la ‘OK’ butonon.
 STR_7017    :Forlasi
+STR_7023    :Nevidebligi
+STR_7024    :Nevidebligas la tutan atrakcion
+STR_7025    :Videbligi
+STR_7026    :Videbligas la tutan atrakcion
+STR_7028    :Kvarona Kreska Helico
+STR_7029    :Kvarona Malkreska Helico

@@ -14,6 +14,7 @@
 #include "../audio/Audio.h"
 #include "../audio/AudioMixer.h"
 #include "../core/UTF8.h"
+#include "../drawing/Drawing.String.h"
 #include "../drawing/Drawing.h"
 #include "../drawing/Rectangle.h"
 #include "../drawing/Text.h"
@@ -191,18 +192,15 @@ void ChatDraw(RenderTarget& rt, ColourWithFlags chatBackgroundColor)
 
         screenCoords.y = _chatBottom - inputLineHeight - 5;
 
-        auto lineCh = lineBuffer.c_str();
-        auto ft = Formatter();
-        ft.Add<const char*>(lineCh);
-        inputLineHeight = DrawTextWrapped(
-            rt, screenCoords + ScreenCoordsXY{ 0, 3 }, _chatWidth - 10, STR_STRING, ft, { OpenRCT2::Drawing::kColourNull });
+        inputLineHeight = drawTextWrapped(
+            rt, screenCoords + ScreenCoordsXY{ 0, 3 }, _chatWidth - 10, lineBuffer, { OpenRCT2::Drawing::kColourNull });
         GfxSetDirtyBlocks({ screenCoords, { screenCoords + ScreenCoordsXY{ _chatWidth, inputLineHeight + 15 } } });
 
         // TODO: Show caret if the input text has multiple lines
-        if (_chatCaretTicks < 15 && GfxGetStringWidth(lineBuffer, FontStyle::medium) < (_chatWidth - 10))
+        if (_chatCaretTicks < 15 && getStringWidth(lineBuffer, FontStyle::medium) < (_chatWidth - 10))
         {
             lineBuffer.assign(_chatCurrentLine.c_str(), _chatTextInputSession->SelectionStart);
-            int32_t caretX = screenCoords.x + GfxGetStringWidth(lineBuffer, FontStyle::medium);
+            int32_t caretX = screenCoords.x + getStringWidth(lineBuffer, FontStyle::medium);
             int32_t caretY = screenCoords.y + 14;
 
             Rectangle::fill(rt, { { caretX, caretY }, { caretX + 6, caretY + 1 } }, PaletteIndex::yellow10);
@@ -293,7 +291,7 @@ static int32_t ChatHistoryDrawString(RenderTarget& rt, const char* text, const S
 {
     int32_t numLines;
     u8string wrappedString;
-    GfxWrapString(FormatString("{OUTLINE}{WHITE}{STRING}", text), width, FontStyle::medium, &wrappedString, &numLines);
+    wrapString(FormatString("{OUTLINE}{WHITE}{STRING}", text), width, FontStyle::medium, &wrappedString, &numLines);
     auto lineHeight = FontGetLineHeight(FontStyle::medium);
 
     int32_t expectedY = screenCoords.y - (numLines * lineHeight);
@@ -306,7 +304,7 @@ static int32_t ChatHistoryDrawString(RenderTarget& rt, const char* text, const S
     int32_t lineY = screenCoords.y;
     for (int32_t line = 0; line <= numLines; ++line)
     {
-        DrawText(rt, { screenCoords.x, lineY - (numLines * lineHeight) }, { OpenRCT2::Drawing::kColourNull }, bufferPtr);
+        drawText(rt, { screenCoords.x, lineY - (numLines * lineHeight) }, bufferPtr, { OpenRCT2::Drawing::kColourNull });
         bufferPtr = GetStringEnd(bufferPtr) + 1;
         lineY += lineHeight;
     }
@@ -318,7 +316,7 @@ static int32_t ChatHistoryDrawString(RenderTarget& rt, const char* text, const S
 int32_t ChatStringWrappedGetHeight(u8string_view args, int32_t width)
 {
     int32_t numLines;
-    GfxWrapString(FormatStringID(STR_STRING, args), width, FontStyle::medium, nullptr, &numLines);
+    wrapString(FormatStringID(STR_STRING, args), width, FontStyle::medium, nullptr, &numLines);
     const int32_t lineHeight = FontGetLineHeight(FontStyle::medium);
     return lineHeight * (numLines + 1);
 }

@@ -29,7 +29,16 @@ namespace OpenRCT2
 
         baseImageIndex = LoadImages();
 
-        entranceBackIndex = baseImageIndex;
+        // An odd number of images suggests there is an icon present
+        auto iconOffset = numImages & 1;
+        if (iconOffset == 1)
+        {
+            iconIndex = baseImageIndex;
+            if (numImages == 1)
+                return;
+        }
+
+        entranceBackIndex = baseImageIndex + iconOffset;
         entranceFrontIndex = entranceBackIndex + 4;
 
         exitBackIndex = entranceBackIndex + 8;
@@ -37,7 +46,7 @@ namespace OpenRCT2
 
         if (!(Flags & StationObjectFlags::isTransparent))
         {
-            if (numImages > 16)
+            if (numImages > iconOffset + 16)
                 shelterIndex = entranceBackIndex + 16;
 
             return;
@@ -49,10 +58,10 @@ namespace OpenRCT2
         exitBackGlassIndex = entranceBackIndex + 24;
         exitFrontGlassIndex = entranceBackIndex + 28;
 
-        if (numImages > 32)
+        if (numImages > iconOffset + 32)
             shelterIndex = entranceBackIndex + 32;
 
-        if (numImages > 44)
+        if (numImages > iconOffset + 44)
             shelterGlassIndex = entranceBackIndex + 44;
     }
 

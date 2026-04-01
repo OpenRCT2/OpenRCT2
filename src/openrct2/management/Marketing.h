@@ -15,8 +15,6 @@
 #include "../ride/RideTypes.h"
 #include "../ride/ShopItem.h"
 
-struct Guest;
-
 enum
 {
     ADVERTISING_CAMPAIGN_PARK_ENTRY_FREE,
@@ -44,6 +42,8 @@ enum
 
 namespace OpenRCT2
 {
+    struct Guest;
+
     enum class MarketingCampaignFlag : uint8_t
     {
         firstWeek,
@@ -69,7 +69,7 @@ extern const StringId kMarketingCampaignNames[ADVERTISING_CAMPAIGN_COUNT][3];
 
 uint16_t MarketingGetCampaignGuestGenerationProbability(int32_t campaign);
 void MarketingUpdate();
-void MarketingSetGuestCampaign(Guest* peep, int32_t campaign);
+void MarketingSetGuestCampaign(OpenRCT2::Guest* peep, int32_t campaign);
 bool MarketingIsCampaignTypeApplicable(int32_t campaignType);
 MarketingCampaign* MarketingGetCampaign(int32_t campaignType);
 void MarketingNewCampaign(const MarketingCampaign& campaign);

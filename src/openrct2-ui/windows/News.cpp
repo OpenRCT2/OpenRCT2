@@ -17,6 +17,7 @@
 #include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
+#include <openrct2/drawing/Text.h>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/entity/Peep.h>
 #include <openrct2/entity/Staff.h>
@@ -491,13 +492,13 @@ namespace OpenRCT2::Ui::Windows
                     auto ft = Formatter();
                     ft.Add<StringId>(DateDayNames[newsItem.day - 1]);
                     ft.Add<StringId>(DateGameMonthNames[DateGetMonth(newsItem.monthYear)]);
-                    DrawTextBasic(rt, { 2, y }, STR_NEWS_DATE_FORMAT, ft, { Drawing::Colour::white, FontStyle::small });
+                    drawText(rt, { 2, y }, STR_NEWS_DATE_FORMAT, ft, { Drawing::Colour::white, FontStyle::small });
                 }
                 // Item text
                 {
                     auto ft = Formatter();
                     ft.Add<const char*>(newsItem.text.c_str());
-                    DrawTextWrapped(
+                    drawTextWrapped(
                         rt, { 2, y + lineHeight }, 325, STR_BOTTOM_TOOLBAR_NEWS_TEXT, ft,
                         { Drawing::Colour::brightGreen, FontStyle::small });
                 }

@@ -9,6 +9,7 @@
 
 #include "FileStream.h"
 
+#include "../platform/Platform.h"
 #include "Path.hpp"
 #include "String.hpp"
 
@@ -44,6 +45,20 @@ namespace OpenRCT2
 
     FileStream::FileStream(const utf8* path, FileMode fileMode)
     {
+        if (fileMode == FileMode::open)
+        {
+            auto assetOpen = Platform::OpenAssetFile(path);
+            if (assetOpen.result == Platform::AssetCheckResult::Found)
+            {
+                _asset = assetOpen.handle;
+                _fileSize = assetOpen.size;
+                _canRead = true;
+                _canWrite = false;
+                _ownsFilePtr = true;
+                return;
+            }
+        }
+
         const char* mode;
         switch (fileMode)
         {
@@ -117,7 +132,17 @@ namespace OpenRCT2
             _disposed = true;
             if (_ownsFilePtr)
             {
-                fclose(_file);
+                if (_asset != nullptr)
+                {
+                    Platform::CloseAssetFile(_asset);
+                }
+                else
+                {
+                    if (_file != nullptr)
+                    {
+                        fclose(_file);
+                    }
+                }
             }
         }
     }
@@ -139,6 +164,10 @@ namespace OpenRCT2
 
     uint64_t FileStream::GetPosition() const
     {
+        if (_asset != nullptr)
+        {
+            return Platform::GetAssetPosition(_asset);
+        }
         return ftello(_file);
     }
 
@@ -149,6 +178,11 @@ namespace OpenRCT2
 
     void FileStream::Seek(int64_t offset, int32_t origin)
     {
+        if (_asset != nullptr)
+        {
+            Platform::SeekAsset(_asset, offset, origin);
+            return;
+        }
         switch (origin)
         {
             case STREAM_SEEK_BEGIN:
@@ -165,6 +199,14 @@ namespace OpenRCT2
 
     void FileStream::Read(void* buffer, uint64_t length)
     {
+        if (_asset != nullptr)
+        {
+            if (Platform::ReadAsset(_asset, buffer, length) == length)
+            {
+                return;
+            }
+            throw IOException("Attempted to read past end of file.");
+        }
         if (fread(buffer, 1, static_cast<size_t>(length), _file) == length)
         {
             return;
@@ -174,6 +216,10 @@ namespace OpenRCT2
 
     void FileStream::Write(const void* buffer, uint64_t length)
     {
+        if (_canWrite == false)
+        {
+            throw IOException("Cannot write to a read-only stream.");
+        }
         if (length == 0)
         {
             return;
@@ -191,6 +237,10 @@ namespace OpenRCT2
 
     uint64_t FileStream::TryRead(void* buffer, uint64_t length)
     {
+        if (_asset != nullptr)
+        {
+            return Platform::TryReadAsset(_asset, buffer, length);
+        }
         size_t readBytes = fread(buffer, 1, static_cast<size_t>(length), _file);
         return readBytes;
     }

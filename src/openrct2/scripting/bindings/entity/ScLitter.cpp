@@ -11,11 +11,12 @@
 
     #include "ScLitter.hpp"
 
+    #include "../../../core/EnumMap.hpp"
     #include "../../../entity/Litter.h"
 
 namespace OpenRCT2::Scripting
 {
-    static const DukEnumMap<Litter::Type> LitterTypeMap(
+    static const EnumMap<Litter::Type> LitterTypeMap(
         {
             { "vomit", Litter::Type::vomit },
             { "vomit_alt", Litter::Type::vomitAlt },
@@ -31,57 +32,62 @@ namespace OpenRCT2::Scripting
             { "empty_bowl_blue", Litter::Type::emptyBowlBlue },
         });
 
-    ScLitter::ScLitter(EntityId Id)
-        : ScEntity(Id)
+    JSValue ScLitter::New(JSContext* ctx, EntityId entityId)
     {
+        JSValue obj = gScEntity.New(ctx, entityId);
+        AddFuncs(ctx, obj);
+        return obj;
     }
 
-    void ScLitter::Register(duk_context* ctx)
+    void ScLitter::AddFuncs(JSContext* ctx, JSValue obj)
     {
-        dukglue_set_base_class<ScEntity, ScLitter>(ctx);
-        dukglue_register_property(ctx, &ScLitter::litterType_get, &ScLitter::litterType_set, "litterType");
-        dukglue_register_property(ctx, &ScLitter::creationTick_get, nullptr, "creationTick");
+        static constexpr JSCFunctionListEntry funcs[] = {
+            JS_CGETSET_DEF("litterType", &ScLitter::litterType_get, &ScLitter::litterType_set),
+            JS_CGETSET_DEF("creationTick", &ScLitter::creationTick_get, nullptr)
+        };
+        JS_SetPropertyFunctionList(ctx, obj, funcs, std::size(funcs));
     }
 
-    Litter* ScLitter::GetLitter() const
+    Litter* ScLitter::GetLitter(JSValue thisVal)
     {
-        return getGameState().entities.GetEntity<Litter>(_id);
+        auto id = GetEntityId(thisVal);
+        return getGameState().entities.GetEntity<Litter>(id);
     }
 
-    std::string ScLitter::litterType_get() const
+    JSValue ScLitter::litterType_get(JSContext* ctx, JSValue thisVal)
     {
-        auto* litter = GetLitter();
+        auto* litter = GetLitter(thisVal);
         if (litter != nullptr)
         {
             auto it = LitterTypeMap.find(litter->SubType);
             if (it != LitterTypeMap.end())
             {
-                return std::string{ it->first };
+                return JSFromStdString(ctx, it->first);
             }
         }
-        return {};
+        return JS_UNDEFINED;
     }
 
-    void ScLitter::litterType_set(const std::string& litterType)
+    JSValue ScLitter::litterType_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
+        JS_UNPACK_STR(litterType, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
 
         auto it = LitterTypeMap.find(litterType);
-        if (it == LitterTypeMap.end())
-            return;
-        auto* litter = GetLitter();
-        litter->SubType = it->second;
-        litter->Invalidate();
+        if (it != LitterTypeMap.end())
+        {
+            auto* litter = GetLitter(thisVal);
+            litter->SubType = it->second;
+            litter->Invalidate();
+        }
+        return JS_UNDEFINED;
     }
 
-    uint32_t ScLitter::creationTick_get() const
+    JSValue ScLitter::creationTick_get(JSContext* ctx, JSValue thisVal)
     {
-        auto* litter = GetLitter();
-        if (litter == nullptr)
-            return 0;
-        return litter->creationTick;
+        auto* litter = GetLitter(thisVal);
+        return JS_NewUint32(ctx, litter == nullptr ? 0 : litter->creationTick);
     }
-
 } // namespace OpenRCT2::Scripting
 
 #endif

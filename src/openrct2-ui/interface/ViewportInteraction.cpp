@@ -451,7 +451,7 @@ namespace OpenRCT2::Ui
                 auto banner = tileElement->AsBanner()->GetBanner();
                 if (banner != nullptr)
                 {
-                    auto* bannerEntry = ObjectManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
+                    auto* bannerEntry = ObjectEntryManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
 
                     auto ft = Formatter();
                     ft.Add<StringId>(STR_MAP_TOOLTIP_BANNER_STRINGID_STRINGID);

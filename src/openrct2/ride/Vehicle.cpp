@@ -52,6 +52,7 @@
 #include "RideData.h"
 #include "Track.h"
 #include "TrackData.h"
+#include "TrackIteration.h"
 #include "TrainManager.h"
 #include "VehicleData.h"
 #include "VehicleGeometry.h"
@@ -71,7 +72,7 @@ constexpr int16_t kVehicleStoppingSpinSpeed = 600;
 
 Vehicle* gCurrentVehicle;
 
-uint8_t _vehicleBreakdown;
+Breakdown _vehicleBreakdown;
 StationIndex _vehicleStationIndex;
 uint32_t _vehicleMotionTrackFlags;
 int32_t _vehicleVelocityF64E08;
@@ -80,6 +81,31 @@ int32_t _vehicleUnkF64E10;
 uint8_t _vehicleF64E2C;
 Vehicle* _vehicleFrontVehicle;
 CoordsXYZ _vehicleCurPosition;
+
+PitchAndRoll PitchAndRollStart(bool useInvertedSprites, TileElement* tileElement)
+{
+    auto trackType = tileElement->AsTrack()->GetTrackType();
+    const auto& ted = GetTrackElementDescriptor(trackType);
+    return PitchAndRoll{ ted.definition.pitchStart, TrackGetActualBank3(useInvertedSprites, tileElement) };
+}
+
+int32_t GetAccelerationDecrease2(const int32_t velocity, const int32_t totalMass)
+{
+    int32_t accelerationDecrease2 = velocity >> 8;
+    accelerationDecrease2 *= accelerationDecrease2;
+    if (velocity < 0)
+    {
+        accelerationDecrease2 = -accelerationDecrease2;
+    }
+    accelerationDecrease2 >>= 4;
+    // OpenRCT2: vehicles from different track types can have  0 mass.
+    if (totalMass != 0)
+    {
+        return accelerationDecrease2 / totalMass;
+    }
+
+    return accelerationDecrease2;
+}
 
 template<>
 bool EntityBase::Is<Vehicle>() const
@@ -203,7 +229,7 @@ void Vehicle::UpdateTrackChange()
         return;
 
     _vehicleCurPosition = TrackLocation
-        + CoordsXYZ{ moveInfo->x, moveInfo->y, moveInfo->z + GetRideTypeDescriptor((*curRide).type).Heights.VehicleZOffset };
+        + CoordsXYZ{ moveInfo->x, moveInfo->y, moveInfo->z + GetRideTypeDescriptor(curRide->type).Heights.VehicleZOffset };
     Orientation = moveInfo->yaw;
     roll = moveInfo->roll;
     pitch = moveInfo->pitch;
@@ -251,8 +277,8 @@ bool Vehicle::CloseRestraints()
          vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
     {
         if (vehicle->flags.has(VehicleFlag::carIsBroken) && vehicle->restraints_position != 0
-            && (curRide->breakdownReasonPending == BREAKDOWN_RESTRAINTS_STUCK_OPEN
-                || curRide->breakdownReasonPending == BREAKDOWN_DOORS_STUCK_OPEN))
+            && (curRide->breakdownReasonPending == Breakdown::restraintsStuckOpen
+                || curRide->breakdownReasonPending == Breakdown::doorsStuckOpen))
         {
             if (!curRide->flags.has(RideFlag::brokenDown))
             {
@@ -367,8 +393,8 @@ bool Vehicle::OpenRestraints()
         }
 
         if (vehicle->flags.has(VehicleFlag::carIsBroken) && vehicle->restraints_position != 0xFF
-            && (curRide->breakdownReasonPending == BREAKDOWN_RESTRAINTS_STUCK_CLOSED
-                || curRide->breakdownReasonPending == BREAKDOWN_DOORS_STUCK_CLOSED))
+            && (curRide->breakdownReasonPending == Breakdown::restraintsStuckClosed
+                || curRide->breakdownReasonPending == Breakdown::doorsStuckClosed))
         {
             if (!curRide->flags.has(RideFlag::brokenDown))
             {
@@ -766,12 +792,12 @@ void Vehicle::Update()
     if (flags.has(VehicleFlag::testing))
         UpdateMeasurements();
 
-    _vehicleBreakdown = 255;
+    _vehicleBreakdown = Breakdown::none;
     if (curRide->flags.hasAny(RideFlag::breakdownPending, RideFlag::brokenDown))
     {
         _vehicleBreakdown = curRide->breakdownReasonPending;
         auto carEntry = &rideEntry->Cars[vehicle_type];
-        if (carEntry->flags.has(CarEntryFlag::isPowered) && curRide->breakdownReasonPending == BREAKDOWN_SAFETY_CUT_OUT)
+        if (carEntry->flags.has(CarEntryFlag::isPowered) && curRide->breakdownReasonPending == Breakdown::safetyCutOut)
         {
             if (!carEntry->flags.has(CarEntryFlag::isWaterRide) || (pitch == VehiclePitch::up25 && velocity <= 2.0_mph))
             {
@@ -1376,14 +1402,14 @@ void Vehicle::UpdateCrossings() const
 
             if (travellingForwards)
             {
-                if (!TrackBlockGetNext(&xyElement, &xyElement, &curZ, &direction))
+                if (!trackBlockGetNext(&xyElement, &xyElement, &curZ, &direction))
                 {
                     break;
                 }
             }
             else
             {
-                if (!TrackBlockGetPrevious(xyElement, &output))
+                if (!trackBlockGetPrevious(xyElement, &output))
                 {
                     break;
                 }
@@ -1414,7 +1440,7 @@ void Vehicle::UpdateCrossings() const
     {
         if (travellingForwards)
         {
-            if (TrackBlockGetPrevious(xyElement, &output))
+            if (trackBlockGetPrevious(xyElement, &output))
             {
                 xyElement.x = output.begin_x;
                 xyElement.y = output.begin_y;
@@ -1548,5 +1574,5 @@ void Vehicle::Serialise(DataSerialiser& stream)
 
 bool Vehicle::IsOnCoveredTrack() const
 {
-    return TrackElementIsCovered(GetTrackType());
+    return trackTypeIsCovered(GetTrackType());
 }

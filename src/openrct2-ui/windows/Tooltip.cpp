@@ -13,10 +13,13 @@
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
+#include <openrct2/drawing/Drawing.String.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
+#include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
+#include <openrct2/localisation/StringWithArgs.h>
 #include <openrct2/ui/WindowManager.h>
 
 using namespace OpenRCT2::Drawing;
@@ -130,7 +133,7 @@ namespace OpenRCT2::Ui::Windows
             // Text
             left = windowPos.x + ((width + 1) / 2) - 1;
             top = windowPos.y + 1;
-            DrawStringCentredRaw(rt, { left, top }, _tooltipNumLines, _tooltipText.data(), FontStyle::small);
+            drawStringCentredRaw(rt, { left, top }, _tooltipNumLines, _tooltipText.data(), FontStyle::small);
         }
 
     private:
@@ -143,11 +146,11 @@ namespace OpenRCT2::Ui::Windows
             formattedMessage.args.Add<const char*>(tempString.c_str());
             const u8string tooltipTextUnwrapped = FormatStringIDLegacy(formattedMessage.str, formattedMessage.args.Data());
 
-            auto textWidth = GfxGetStringWidthNewLined(tooltipTextUnwrapped, FontStyle::small);
+            auto textWidth = getStringWidthNewlined(tooltipTextUnwrapped, FontStyle::small);
             textWidth = std::min(textWidth, 196);
 
             int32_t numLines;
-            textWidth = GfxWrapString(tooltipTextUnwrapped, textWidth + 1, FontStyle::small, &_tooltipText, &numLines);
+            textWidth = wrapString(tooltipTextUnwrapped, textWidth + 1, FontStyle::small, &_tooltipText, &numLines);
             _tooltipNumLines = numLines;
             return textWidth;
         }

@@ -58,13 +58,13 @@
 #include "../scenario/ScenarioObjective.h"
 #include "../scenario/ScenarioRepository.h"
 #include "../scenario/ScenarioSources.h"
-#include "../world/Climate.h"
 #include "../world/Map.h"
 #include "../world/MapAnimation.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
 #include "../world/TilePointerIndex.hpp"
 #include "../world/Wall.h"
+#include "../world/Weather.h"
 #include "../world/tile_element/BannerElement.h"
 #include "../world/tile_element/EntranceElement.h"
 #include "../world/tile_element/LargeSceneryElement.h"
@@ -1756,7 +1756,7 @@ namespace OpenRCT2::RCT1
                     auto trackType = dst2->GetTrackType();
                     // Brakes import as closed to preserve legacy behaviour
                     dst2->SetBrakeClosed(trackType == TrackElemType::brakes);
-                    if (TrackTypeHasSpeedSetting(trackType))
+                    if (trackTypeHasSpeedSetting(trackType))
                     {
                         dst2->SetBrakeBoosterSpeed(src2->GetBrakeBoosterSpeed());
                     }
@@ -1771,7 +1771,7 @@ namespace OpenRCT2::RCT1
                         dst2->SetMazeEntry(src2->GetMazeEntry());
                     }
 
-                    if (TrackTypeMustBeMadeInvisible(rideType, trackType))
+                    if (TrackTypeMustBeMadeInvisible(*dst2))
                     {
                         dst->SetInvisible(true);
                     }
@@ -2383,18 +2383,18 @@ namespace OpenRCT2::RCT1
         {
             gameState.weatherUpdateTimer = _s4.WeatherUpdateTimer;
             gameState.weatherCurrent = {
-                .weatherType = WeatherType{ _s4.Weather },
+                .weatherType = Weather::Type{ _s4.Weather },
                 .temperature = static_cast<int8_t>(_s4.Temperature),
-                .weatherEffect = WeatherEffectType::None,
+                .weatherEffect = Weather::EffectType::None,
                 .weatherGloom = _s4.WeatherGloom,
-                .level = static_cast<WeatherLevel>(_s4.Rain),
+                .level = static_cast<Weather::Level>(_s4.Rain),
             };
             gameState.weatherNext = {
-                .weatherType = WeatherType{ _s4.TargetWeather },
+                .weatherType = Weather::Type{ _s4.TargetWeather },
                 .temperature = static_cast<int8_t>(_s4.TargetTemperature),
-                .weatherEffect = WeatherEffectType::None,
+                .weatherEffect = Weather::EffectType::None,
                 .weatherGloom = _s4.TargetWeatherGloom,
-                .level = static_cast<WeatherLevel>(_s4.TargetRain),
+                .level = static_cast<Weather::Level>(_s4.TargetRain),
             };
         }
 

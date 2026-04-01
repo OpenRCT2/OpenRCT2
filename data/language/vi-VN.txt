@@ -242,7 +242,6 @@ STR_0832    :Xoay khung nhìn 90° theo chiều kim đồng hồ
 STR_0833    :Tạm dừng trò chơi
 STR_0834    :Tùy chọn đĩa và trò chơi
 STR_0839    :{UINT16} × {UINT16}
-STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} × {UINT16}
 STR_0847    :Về ‘OpenRCT2’
 STR_0850    :{WINDOW_COLOUR_2}Bản quyền © 2002 Chris Sawyer, mọi quyền được bảo lưu
 STR_0851    :{WINDOW_COLOUR_2}Thiết kế và lập trình bởi Chris Sawyer
@@ -253,16 +252,6 @@ STR_0855    :{WINDOW_COLOUR_2}Đại diện bởi Jacqui Lyons tại Marjacq Ltd
 STR_0856    :{WINDOW_COLOUR_2}Cảm ơn:
 STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth, và John Wardley
 STR_0865    :{STRINGID}
-STR_0866    :{POP16}{STRINGID}
-STR_0867    :{POP16}{POP16}{STRINGID}
-STR_0868    :{POP16}{POP16}{POP16}{STRINGID}
-STR_0869    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0870    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0872    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0873    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0874    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0875    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0876    :{BLACK}▼
 STR_0877    :Quá thấp!
 STR_0878    :Quá cao!
@@ -281,7 +270,7 @@ STR_0892    :Ảnh chụp màn hình đã lưu vào đĩa dưới dạng ‘{STR
 STR_0893    :Ảnh chụp màn hình thất bại!
 STR_0894    :Vùng dữ liệu cảnh quan đầy!
 STR_0895    :Không thể xây dựng một phần trên và một phần dưới lòng đất
-STR_0896    :{POP16}{POP16}{STRINGID} Xây dựng
+STR_0896    :{STRINGID} Xây dựng
 STR_0897    :Hướng
 STR_0898    :Đường cong trái
 STR_0899    :Đường cong phải
@@ -406,8 +395,6 @@ STR_1018    :Không thể thực hiện thay đổi…
 STR_1019    :Không thể thực hiện thay đổi…
 STR_1020    :Không thể thực hiện thay đổi…
 STR_1021    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_1022    :{POP16}{POP16}{POP16}{COMMA16} toa mỗi chuyến tàu
-STR_1023    :{POP16}{POP16}{POP16}{COMMA16} toa mỗi chuyến tàu
 STR_1024    :{COMMA16} toa mỗi chuyến tàu
 STR_1025    :{COMMA16} toa mỗi chuyến tàu
 STR_1026    :Sân ga quá dài!
@@ -516,9 +503,7 @@ STR_1128    :Bị dừng bởi phanh khối
 STR_1129    :Tất cả phương tiện cùng màu
 STR_1130    :Màu khác nhau cho mỗi {STRINGID}
 STR_1131    :Màu khác nhau cho mỗi phương tiện
-STR_1132    :Phương tiện {POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1133    :Phương tiện {POP16}{COMMA16}
-STR_1134    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID} {COMMA16}
+STR_1133    :Phương tiện {COMMA16}
 STR_1135    :{STRINGID} {COMMA16}
 STR_1136    :Chọn màu chính
 STR_1137    :Chọn màu phụ 1
@@ -714,7 +699,6 @@ STR_1327    :Xoay vật thể 90°
 STR_1328    :Yêu cầu đất bằng phẳng
 STR_1329    :{WINDOW_COLOUR_2}Tốc độ phóng:
 STR_1330    :Tốc độ tối đa khi rời ga
-STR_1331    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_1332    :{VELOCITY}
 STR_1333    :{STRINGID} - {STRINGID}{POP16}
 STR_1334    :{STRINGID} - {STRINGID} {COMMA16}
@@ -812,7 +796,6 @@ STR_1425    :Đường đi bộ
 STR_1426    :Hàng chờ
 STR_1427    :{WINDOW_COLOUR_2}Khách hàng: {BLACK}{COMMA32} mỗi giờ
 STR_1428    :{WINDOW_COLOUR_2}Giá vé vào cửa:
-STR_1429    :{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1430    :Miễn phí
 STR_1431    :Đang đi bộ
 STR_1432    :Đang hướng đến {STRINGID}
@@ -1006,7 +989,6 @@ STR_1671    :{WINDOW_COLOUR_2}Tổng lợi nhuận: {BLACK}{CURRENCY2DP}
 STR_1672    :Phanh
 STR_1673    :Đường ray điều khiển quay
 STR_1674    :Tốc độ phanh
-STR_1675    :{POP16}{VELOCITY}
 STR_1676    :Đặt giới hạn tốc độ cho phanh
 STR_1677    :{WINDOW_COLOUR_2}Mức độ phổ biến: {BLACK}Không rõ
 STR_1678    :{WINDOW_COLOUR_2}Mức độ phổ biến: {BLACK}{COMMA16}%
@@ -1066,18 +1048,15 @@ STR_1732    :Xây dựng
 STR_1733    :Chế độ
 STR_1734    :{WINDOW_COLOUR_2}Số vòng:
 STR_1735    :Số vòng của đường đua
-STR_1736    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1738    :Không thể thay đổi số vòng…
 STR_1739    :Cuộc đua do khách {INT32} thắng
 STR_1740    :Cuộc đua do {STRINGID} thắng
 STR_1741    :Chưa được xây dựng!
 STR_1742    :{WINDOW_COLOUR_2}Số người tối đa trên trò chơi:
 STR_1743    :Số người tối đa được phép trên trò chơi này cùng một lúc
-STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1746    :Không thể thay đổi cái này…
 STR_1747    :{WINDOW_COLOUR_2}Giới hạn thời gian:
 STR_1748    :Giới hạn thời gian cho trò chơi
-STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DURATION}
 STR_1751    :Không thể thay đổi giới hạn thời gian cho trò chơi…
 STR_1752    :Hiển thị danh sách khách cá nhân trong công viên
 STR_1753    :Hiển thị danh sách khách tóm tắt trong công viên
@@ -1098,7 +1077,6 @@ STR_1767    :Đường hầm xoay
 STR_1768    :Không thể thay đổi số lần đu…
 STR_1769    :{WINDOW_COLOUR_2}Số lần đu:
 STR_1770    :Số lần đu hoàn chỉnh
-STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1773    :Chỉ cho phép một phần chụp ảnh trên trò chơi mỗi trò chơi
 STR_1774    :Chỉ cho phép một đồi nâng dây cáp mỗi trò chơi
 STR_1777    :Nhạc trò chơi
@@ -1110,7 +1088,6 @@ STR_1794    :Đang sửa {STRINGID}
 STR_1795    :Đang trả lời cuộc gọi vô tuyến
 STR_1796    :Đã hỏng và cần sửa chữa
 STR_1798    :Xoáy nước
-STR_1799    :{POP16}{POP16}{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1800    :Cắt an toàn
 STR_1801    :Dây an toàn bị kẹt đóng
 STR_1802    :Dây an toàn bị kẹt mở
@@ -1182,7 +1159,6 @@ STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :Không thể thay đổi số vòng xoay…
 STR_1869    :{WINDOW_COLOUR_2}Số vòng xoay:
 STR_1870    :Số vòng xoay hoàn chỉnh
-STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Thu nhập: {BLACK}{CURRENCY2DP} mỗi giờ
 STR_1874    :{WINDOW_COLOUR_2}Lợi nhuận: {BLACK}{CURRENCY2DP} mỗi giờ
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Kiểm tra trò chơi
@@ -1224,7 +1200,6 @@ STR_1913    :{BLACK}+{CURRENCY2DP}
 STR_1914    :{BLACK}{CURRENCY2DP}
 STR_1915    :{RED}{CURRENCY2DP}
 STR_1916    :{WINDOW_COLOUR_2}Khoản vay:
-STR_1917    :{POP16}{POP16}{POP16}{CURRENCY}
 STR_1918    :Không thể vay thêm tiền!
 STR_1919    :Không đủ tiền mặt!
 STR_1920    :Không thể trả nợ!
@@ -1262,7 +1237,6 @@ STR_1953    :Tiếp thị
 STR_1954    :Quỹ nghiên cứu
 STR_1955    :{WINDOW_COLOUR_2}Số mạch:
 STR_1956    :Số vòng đường ray mỗi chuyến đi
-STR_1957    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1958    :{COMMA16}
 STR_1959    :Không thể thay đổi số mạch…
 STR_1960    :{WINDOW_COLOUR_2}Giá bóng bay:
@@ -2058,7 +2032,6 @@ STR_3092    :Bạn không được phép di chuyển hoặc sửa đổi nhà ga
 STR_3093    :{WINDOW_COLOUR_2}Yêu thích: {BLACK}{STRINGID}
 STR_3094    :Không áp dụng
 STR_3095    :{WINDOW_COLOUR_2}Tốc độ xích kéo dốc:
-STR_3096    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_3097    :Chọn tốc độ xích kéo dốc
 STR_3099    :Chọn màu
 STR_3100    :Chọn màu thứ hai
@@ -2151,7 +2124,6 @@ STR_3208    :Quản lý thiết kế đường ray
 STR_3209    :Quay lại bước trước:
 STR_3210    :Tiến tới bước tiếp theo:
 STR_3211    :Kích thước bản đồ:
-STR_3212    :{POP16}{COMMA16}
 STR_3213    :Không thể giảm kích thước bản đồ thêm nữa
 STR_3214    :Không thể tăng kích thước bản đồ thêm nữa
 STR_3215    :Quá gần rìa bản đồ
@@ -2936,12 +2908,11 @@ STR_5914    :Trò chơi không xác định
 STR_5915    :Người chơi
 STR_5916    :{COMMA16} người chơi
 STR_5917    :{COMMA16} người chơi
-STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_5919    :{COMMA16}
 STR_5920    :Kết xuất hiệu ứng thời tiết
 STR_5921    :Nếu được bật, mưa và màu sắc u ám sẽ được hiển thị trong các cơn bão.
-STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}Tối đa {STRINGID}
-STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}Tối đa {COMMA16} {STRINGID} mỗi đoàn tàu
+STR_5922    :Tối đa {STRINGID}
+STR_5923    :Tối đa {COMMA16} {STRINGID} mỗi đoàn tàu
 STR_5924    :Chi tiết bề mặt
 STR_5925    :Chi tiết đường đi
 STR_5926    :Chi tiết đường ray
@@ -3326,7 +3297,6 @@ STR_6355    :Mật độ cao
 STR_6356    :Tạo vịt nếu công viên có nước
 STR_6357    :Xóa tất cả vịt khỏi bản đồ
 STR_6358    :Trang {UINT16}
-STR_6359    :{POP16}{POP16}Trang {UINT16}
 STR_6361    :Bật hiệu ứng ánh sáng trên các trò chơi (thử nghiệm)
 STR_6362    :Nếu được bật, các phương tiện cho các trò chơi có đường ray sẽ được chiếu sáng vào ban đêm.
 STR_6363    :Đã sao chép văn bản vào khay nhớ tạm

@@ -70,7 +70,7 @@ namespace OpenRCT2
 
         ObjectEntryIndex GetEdgeObjectIndex() const;
         TerrainEdgeObject* GetEdgeObject() const;
-        void SetEdgeObjectIndex(ObjectEntryIndex newStyle);
+        void SetEdgeObjectIndex(ObjectEntryIndex newIndex);
 
         bool CanGrassGrow() const;
         uint8_t GetGrassLength() const;

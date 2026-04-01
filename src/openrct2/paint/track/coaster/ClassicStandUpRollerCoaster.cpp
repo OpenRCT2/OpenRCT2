@@ -1524,6 +1524,10 @@ TrackPaintFunction GetTrackPaintFunctionClassicStandUpRC(TrackElemType trackType
         case TrackElemType::rightBankToRightQuarterTurn3TilesUp25:
         case TrackElemType::leftQuarterTurn3TilesDown25ToLeftBank:
         case TrackElemType::rightQuarterTurn3TilesDown25ToRightBank:
+        case TrackElemType::leftQuarterBankedHelixLargeUp:
+        case TrackElemType::rightQuarterBankedHelixLargeUp:
+        case TrackElemType::leftQuarterBankedHelixLargeDown:
+        case TrackElemType::rightQuarterBankedHelixLargeDown:
             return TrackPaintFunctionDummy;
 
         default:

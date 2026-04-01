@@ -29,7 +29,6 @@
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/ShopItem.h"
-#include "../ride/Track.h"
 #include "../ride/Vehicle.h"
 #include "ObjectRepository.h"
 
@@ -452,6 +451,9 @@ namespace OpenRCT2
         car.powered_acceleration = stream->ReadValue<uint8_t>();
         car.powered_max_speed = stream->ReadValue<uint8_t>();
         car.PaintStyle = stream->ReadValue<uint8_t>();
+        // Since this animation style may be replaced with a generic spinner system, make sure it gets limited to just our port.
+        if (car.PaintStyle == VEHICLE_VISUAL_SPINNING_CARS)
+            car.PaintStyle = VEHICLE_VISUAL_DEFAULT;
         car.effect_visual = stream->ReadValue<uint8_t>();
         car.draw_order = stream->ReadValue<uint8_t>();
         car.num_vertical_frames_override = stream->ReadValue<uint8_t>();
@@ -661,7 +663,7 @@ namespace OpenRCT2
                     { "playDepartSound", RideEntryFlag::playDepartSound },
                     // Skipping "disallowWandering", no vehicle sets this flag.
                     { "playSplashSound", RideEntryFlag::playSplashSound },
-                    { "playSplashSoundSlide", RideEntryFlag::playSplashSoundSlide },
+                    { "playSplashSoundSlide", RideEntryFlag::coveredTrackIsWaterChannel },
                     { "hasShelter", RideEntryFlag::isACoveredRide },
                     { "limitAirTimeBonus", RideEntryFlag::limitAirTimeBonus },
                     { "disableBreakdown", RideEntryFlag::cannotBreakDown },
@@ -670,6 +672,7 @@ namespace OpenRCT2
                     { "disablePainting", RideEntryFlag::disableColourTab },
                     { "riderControlsSpeed", RideEntryFlag::riderControlsSpeed },
                     { "hideEmptyTrains", RideEntryFlag::hideEmptyTrains },
+                    { "noReverseOption", RideEntryFlag::noReverseOption },
                 });
         }
 
@@ -764,6 +767,13 @@ namespace OpenRCT2
         car.powered_acceleration = Json::GetNumber<uint8_t>(jCar["poweredAcceleration"]);
         car.powered_max_speed = Json::GetNumber<uint8_t>(jCar["poweredMaxSpeed"]);
         car.PaintStyle = Json::GetNumber<uint8_t>(jCar["carVisual"]);
+        // Since this animation style may be replaced with a generic spinner system, make sure it gets limited to just our port.
+        if (car.PaintStyle == VEHICLE_VISUAL_SPINNING_CARS
+            && (GetIdentifier() != "rct1.ride.spinning_cars"
+                || _legacyType.ride_type[0] != RIDE_TYPE_CLASSIC_MINI_ROLLER_COASTER))
+        {
+            car.PaintStyle = VEHICLE_VISUAL_DEFAULT;
+        }
         car.effect_visual = Json::GetNumber<uint8_t>(jCar["effectVisual"], 1);
         car.draw_order = Json::GetNumber<uint8_t>(jCar["drawOrder"]);
         car.num_vertical_frames_override = Json::GetNumber<uint8_t>(jCar["numVerticalFramesOverride"]);

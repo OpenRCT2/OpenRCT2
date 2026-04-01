@@ -11,7 +11,6 @@
 
 #include "../../RideData.h"
 #include "../../ShopItem.h"
-#include "../../Track.h"
 
 // clang-format off
 namespace OpenRCT2
@@ -36,7 +35,7 @@ constexpr RideTypeDescriptor CinemaRTD =
     .DefaultMode = RideMode::mouseTails3DFilm,
     .Naming = { STR_RIDE_NAME_3D_CINEMA, STR_RIDE_DESCRIPTION_3D_CINEMA },
     .NameConvention = { RideComponentType::Building, RideComponentType::Structure, RideComponentType::Station },
-    .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
+    .availableBreakdowns = { Breakdown::safetyCutOut },
     .Heights = { 12, 128, 3, 2, },
     .MaxMass = 255,
     .LiftData = { Audio::SoundId::null, 5, 5 },

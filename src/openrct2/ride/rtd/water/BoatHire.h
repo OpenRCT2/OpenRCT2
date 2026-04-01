@@ -13,7 +13,6 @@
 #include "../../../drawing/LightFX.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
-#include "../../Track.h"
 
 // clang-format off
 namespace OpenRCT2
@@ -36,7 +35,7 @@ constexpr RideTypeDescriptor BoatHireRTD =
     .OperatingSettings = { 5, 18 },
     .Naming = { STR_RIDE_NAME_BOAT_HIRE, STR_RIDE_DESCRIPTION_BOAT_HIRE },
     .NameConvention = { RideComponentType::Boat, RideComponentType::DockingPlatform, RideComponentType::DockingPlatform },
-    .AvailableBreakdowns = (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
+    .availableBreakdowns = { Breakdown::vehicleMalfunction },
     .Heights = { 255, 16, 0, 3, },
     .MaxMass = 255,
     .LiftData = { Audio::SoundId::null, 5, 5 },

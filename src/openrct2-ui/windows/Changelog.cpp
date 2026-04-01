@@ -7,15 +7,16 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <fstream>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Diagnostic.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/PlatformEnvironment.h>
 #include <openrct2/Version.h>
+#include <openrct2/core/File.h>
 #include <openrct2/core/FileSystem.hpp>
 #include <openrct2/core/String.hpp>
+#include <openrct2/drawing/Drawing.String.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatting.h>
@@ -65,18 +66,7 @@ namespace OpenRCT2::Ui::Windows
         {
             auto& env = GetContext()->GetPlatformEnvironment();
             auto path = env.GetFilePath(pathId);
-            auto fs = std::ifstream(fs::u8path(path), std::ios::in);
-            if (!fs.is_open())
-            {
-                throw std::runtime_error("Unable to open " + path);
-            }
-            fs.seekg(0, fs.end);
-            auto length = fs.tellg();
-            fs.seekg(0, fs.beg);
-            std::unique_ptr<char[]> buffer = std::make_unique<char[]>(length);
-            fs.read(buffer.get(), length);
-            auto result = std::string(buffer.get(), buffer.get() + length);
-            return result;
+            return File::ReadAllText(path);
         }
 
         /**
@@ -187,7 +177,7 @@ namespace OpenRCT2::Ui::Windows
                 if (screenCoords.y + lineHeight < rt.y || screenCoords.y >= rt.y + rt.height)
                     continue;
 
-                DrawText(rt, screenCoords, { colours[0] }, line.c_str());
+                drawText(rt, screenCoords, line, { colours[0] });
             }
         }
 
@@ -272,7 +262,7 @@ namespace OpenRCT2::Ui::Windows
             _changelogLongestLineWidth = 0;
             for (const auto& line : _changelogLines)
             {
-                int32_t linewidth = GfxGetStringWidth(line.c_str(), FontStyle::medium);
+                int32_t linewidth = Drawing::getStringWidth(line.c_str(), FontStyle::medium);
                 _changelogLongestLineWidth = std::max(linewidth, _changelogLongestLineWidth);
             }
         }

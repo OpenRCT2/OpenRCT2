@@ -24,8 +24,10 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/core/EnumUtils.hpp>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Currency.h>
 #include <openrct2/localisation/Formatter.h>
+#include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/Localisation.Date.h>
 #include <openrct2/network/Network.h>
 #include <openrct2/ui/WindowManager.h>
@@ -273,7 +275,7 @@ static constexpr auto window_cheats_guests_widgets = makeWidgets(
     makeWidget({ 11, 251}, kCheatButtonSize,  WidgetType::button,   WindowColour::secondary, STR_CHEAT_LESS_THAN_15                                          ), // ride intensity < 15
 
     makeWidget({  5, 258+15+6+2}, {238, 62},        WidgetType::groupbox, WindowColour::secondary, STR_CHEAT_GIVE_ALL_GUESTS                                       ), // Guests inventory group frame
-    makeWidget({ 11, 279+15+6-3}, kCheatButtonSize, WidgetType::button,   WindowColour::secondary, STR_CURRENCY_FORMAT                                             ), // give guests money
+    makeWidget({ 11, 279+15+6-3}, kCheatButtonSize, WidgetType::button,   WindowColour::secondary, kStringIdEmpty                                                  ), // give guests money
     makeWidget({127, 279+15+6-3}, kCheatButtonSize, WidgetType::button,   WindowColour::secondary, STR_SHOP_ITEM_PLURAL_PARK_MAP                                   ), // give guests park maps
     makeWidget({ 11, 300+15+6-3}, kCheatButtonSize, WidgetType::button,   WindowColour::secondary, STR_SHOP_ITEM_PLURAL_BALLOON                                    ), // give guests balloons
     makeWidget({127, 300+15+6-3}, kCheatButtonSize, WidgetType::button,   WindowColour::secondary, STR_SHOP_ITEM_PLURAL_UMBRELLA                                   ), // give guests umbrellas
@@ -350,7 +352,7 @@ static constexpr auto window_cheats_rides_widgets = makeWidgets(
 static constexpr auto window_cheats_weather_widgets = makeWidgets(
     kMainCheatWidgets,
     makeWidget        ({  5,  48}, {238,  50},       WidgetType::groupbox,     WindowColour::secondary, STR_CHEAT_WEATHER_GROUP                                      ), // Weather group
-    makeWidget        ({126,  62}, {111,  14},       WidgetType::dropdownMenu, WindowColour::secondary, STR_WEATHER_CAPTION,             STR_CHANGE_WEATHER_TOOLTIP  ), // Force weather
+    makeWidget        ({126,  62}, {111,  14},       WidgetType::dropdownMenu, WindowColour::secondary, kStringIdEmpty,                  STR_CHANGE_WEATHER_TOOLTIP  ), // Force weather
     makeWidget        ({225,  63}, { 11,  12},       WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,              STR_CHANGE_WEATHER_TOOLTIP  ), // Force weather
     makeWidget        ({ 11,  80}, kCheatCheckSize,  WidgetType::checkbox,     WindowColour::secondary, STR_CHEAT_FREEZE_WEATHER,        STR_CHEAT_FREEZE_WEATHER_TIP), // Freeze weather
     makeWidget        ({  5, 102}, {238,  37},       WidgetType::groupbox,     WindowColour::secondary, STR_FAUNA                                                    ), // Fauna group
@@ -413,6 +415,8 @@ static StringId window_cheats_page_titles[] = {
         int32_t _yearSpinnerValue = 1;
         int32_t _monthSpinnerValue = 1;
         int32_t _daySpinnerValue = 1;
+        u8string _moneyButtonText = FormatStringID(STR_CURRENCY_FORMAT, 1000.00_GBP);
+        u8string _weatherDropdownText{};
 
     public:
         void onOpen() override
@@ -539,8 +543,6 @@ static StringId window_cheats_page_titles[] = {
                 }
                 case WINDOW_CHEATS_PAGE_GUESTS:
                 {
-                    auto ft = Formatter::Common();
-                    ft.Add<money64>(1000.00_GBP);
                     setCheckboxValue(WIDX_GUEST_IGNORE_RIDE_INTENSITY, gameState.cheats.ignoreRideIntensity);
                     setCheckboxValue(WIDX_GUEST_IGNORE_PRICE, gameState.cheats.ignorePrice);
                     setCheckboxValue(WIDX_DISABLE_VANDALISM, gameState.cheats.disableVandalism);
@@ -586,10 +588,8 @@ static StringId window_cheats_page_titles[] = {
             if (page == WINDOW_CHEATS_PAGE_WEATHER)
             {
                 auto& weatherType = kWeatherTypes[EnumValue(gameState.weatherCurrent.weatherType)];
-
-                auto ft = Formatter::Common();
-                ft.Add<uint32_t>(weatherType.smallIcon);
-                ft.Add<StringId>(weatherType.label);
+                _weatherDropdownText = FormatStringID(STR_WEATHER_CAPTION, weatherType.smallIcon, weatherType.label);
+                widgets[WIDX_WEATHER].setString(_weatherDropdownText.c_str());
             }
 
             // Staff speed
@@ -625,36 +625,35 @@ static StringId window_cheats_page_titles[] = {
                 }
 
                 auto& widget = widgets[WIDX_MONEY_SPINNER];
-                DrawTextBasic(
-                    rt, windowPos + ScreenCoordsXY{ _xLcol, widget.top + 2 }, STR_BOTTOM_TOOLBAR_CASH, ft, { colour });
+                drawText(rt, windowPos + ScreenCoordsXY{ _xLcol, widget.top + 2 }, STR_BOTTOM_TOOLBAR_CASH, ft, { colour });
             }
             else if (page == WINDOW_CHEATS_PAGE_DATE)
             {
                 auto& yearBox = widgets[WIDX_YEAR_BOX];
-                DrawTextBasic(rt, windowPos + ScreenCoordsXY{ _xLcol, yearBox.top + 2 }, STR_YEAR);
+                drawText(rt, windowPos + ScreenCoordsXY{ _xLcol, yearBox.top + 2 }, STR_YEAR);
 
                 auto& monthBox = widgets[WIDX_MONTH_BOX];
-                DrawTextBasic(rt, windowPos + ScreenCoordsXY{ _xLcol, monthBox.top + 2 }, STR_MONTH);
+                drawText(rt, windowPos + ScreenCoordsXY{ _xLcol, monthBox.top + 2 }, STR_MONTH);
 
                 auto& dayBox = widgets[WIDX_DAY_BOX];
-                DrawTextBasic(rt, windowPos + ScreenCoordsXY{ _xLcol, dayBox.top + 2 }, STR_DAY);
+                drawText(rt, windowPos + ScreenCoordsXY{ _xLcol, dayBox.top + 2 }, STR_DAY);
 
                 auto ft = Formatter();
                 ft.Add<int32_t>(_yearSpinnerValue);
-                DrawTextBasic(
+                drawText(
                     rt, windowPos + ScreenCoordsXY{ _xRcol, yearBox.top + 2 }, STR_FORMAT_INTEGER, ft,
                     { colours[1], TextAlignment::right });
 
                 ft = Formatter();
                 int32_t actual_month = _monthSpinnerValue - 1;
                 ft.Add<int32_t>(actual_month);
-                DrawTextBasic(
+                drawText(
                     rt, windowPos + ScreenCoordsXY{ _xRcol, monthBox.top + 2 }, STR_FORMAT_MONTH, ft,
                     { colours[1], TextAlignment::right });
 
                 ft = Formatter();
                 ft.Add<int32_t>(_daySpinnerValue);
-                DrawTextBasic(
+                drawText(
                     rt, windowPos + ScreenCoordsXY{ _xRcol, dayBox.top + 2 }, STR_FORMAT_INTEGER, ft,
                     { colours[1], TextAlignment::right });
             }
@@ -664,55 +663,54 @@ static StringId window_cheats_page_titles[] = {
                 ft.Add<int32_t>(_parkRatingSpinnerValue);
 
                 auto& widget = widgets[WIDX_PARK_RATING_SPINNER];
-                DrawTextBasic(
+                drawText(
                     rt, windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 2 }, STR_FORMAT_INTEGER, ft, { colours[1] });
             }
             else if (page == WINDOW_CHEATS_PAGE_STAFF)
             {
                 auto& widget = widgets[WIDX_STAFF_SPEED];
-                DrawTextBasic(rt, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 1 }, STR_CHEAT_STAFF_SPEED);
+                drawText(rt, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 1 }, STR_CHEAT_STAFF_SPEED);
             }
             else if (page == WINDOW_CHEATS_PAGE_GUESTS)
             {
                 {
                     auto& widget = widgets[WIDX_GUEST_HAPPINESS_MIN];
-                    DrawTextBasic(rt, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 2 }, STR_CHEAT_GUEST_HAPPINESS);
+                    drawText(rt, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 2 }, STR_CHEAT_GUEST_HAPPINESS);
                 }
                 {
                     auto& widget = widgets[WIDX_GUEST_ENERGY_MIN];
-                    DrawTextBasic(rt, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 2 }, STR_CHEAT_GUEST_ENERGY);
+                    drawText(rt, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 2 }, STR_CHEAT_GUEST_ENERGY);
                 }
                 {
                     auto& widget = widgets[WIDX_GUEST_HUNGER_MIN];
-                    DrawTextBasic(rt, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 2 }, STR_CHEAT_GUEST_HUNGER);
+                    drawText(rt, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 2 }, STR_CHEAT_GUEST_HUNGER);
                 }
                 {
                     auto& widget = widgets[WIDX_GUEST_THIRST_MIN];
-                    DrawTextBasic(rt, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 2 }, STR_CHEAT_GUEST_THIRST);
+                    drawText(rt, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 2 }, STR_CHEAT_GUEST_THIRST);
                 }
                 {
                     auto& widget = widgets[WIDX_GUEST_NAUSEA_MIN];
-                    DrawTextBasic(rt, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 2 }, STR_CHEAT_GUEST_NAUSEA);
+                    drawText(rt, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 2 }, STR_CHEAT_GUEST_NAUSEA);
                 }
                 {
                     auto& widget = widgets[WIDX_GUEST_NAUSEA_TOLERANCE_MIN];
-                    DrawTextBasic(
-                        rt, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 2 }, STR_CHEAT_GUEST_NAUSEA_TOLERANCE);
+                    drawText(rt, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 2 }, STR_CHEAT_GUEST_NAUSEA_TOLERANCE);
                 }
                 {
                     auto& widget = widgets[WIDX_GUEST_TOILET_MIN];
-                    DrawTextBasic(rt, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 2 }, STR_CHEAT_GUEST_TOILET);
+                    drawText(rt, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 2 }, STR_CHEAT_GUEST_TOILET);
                 }
                 {
                     auto& widget = widgets[WIDX_GUEST_RIDE_INTENSITY_LESS_THAN_15];
-                    DrawTextBasic(
+                    drawText(
                         rt, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top - 17 }, STR_CHEAT_GUEST_PREFERRED_INTENSITY);
                 }
             }
             else if (page == WINDOW_CHEATS_PAGE_WEATHER)
             {
                 auto& widget = widgets[WIDX_WEATHER];
-                DrawTextBasic(rt, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 1 }, STR_CHANGE_WEATHER);
+                drawText(rt, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 1 }, STR_CHANGE_WEATHER);
             }
         }
 
@@ -769,6 +767,9 @@ static StringId window_cheats_page_titles[] = {
                 resizeFrame();
                 invalidate();
             }
+
+            if (p == WINDOW_CHEATS_PAGE_GUESTS)
+                widgets[WIDX_GIVE_GUESTS_MONEY].setString(_moneyButtonText.c_str());
         }
 
         void UpdateTabPositions()

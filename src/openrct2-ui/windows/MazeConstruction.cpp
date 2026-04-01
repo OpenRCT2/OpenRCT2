@@ -24,7 +24,7 @@
 #include <openrct2/actions/ride/RideEntranceExitPlaceAction.h>
 #include <openrct2/audio/Audio.h>
 #include <openrct2/drawing/Drawing.h>
-#include <openrct2/localisation/Formatter.h>
+#include <openrct2/localisation/Formatting.h>
 #include <openrct2/ride/RideConstruction.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
@@ -42,7 +42,7 @@ namespace OpenRCT2::Ui::Windows
 {
 #pragma region Widgets
 
-    static constexpr StringId kWindowTitle = STR_RIDE_CONSTRUCTION_WINDOW_TITLE;
+    static constexpr StringId kWindowTitle = kStringIdNone;
     static constexpr ScreenSize kWindowSize = { 166, 200 };
 
     enum : WidgetIndex
@@ -110,6 +110,8 @@ namespace OpenRCT2::Ui::Windows
 
     class MazeConstructionWindow final : public Window
     {
+        u8string _windowTitle{};
+
     public:
         void onOpen() override
         {
@@ -294,16 +296,14 @@ namespace OpenRCT2::Ui::Windows
         void onPrepareDraw() override
         {
             auto currentRide = GetRide(_currentRideIndex);
-            auto ft = Formatter::Common();
             if (currentRide != nullptr)
             {
-                ft.Increment(4);
-                currentRide->formatNameTo(ft);
+                _windowTitle = FormatStringID(STR_RIDE_CONSTRUCTION_WINDOW_TITLE, currentRide->getName().c_str());
+                widgets[WIDX_TITLE].setString(_windowTitle.c_str());
             }
             else
             {
-                ft.Increment(4);
-                ft.Add<StringId>(kStringIdNone);
+                widgets[WIDX_TITLE].setString(kStringIdNone);
             }
         }
 

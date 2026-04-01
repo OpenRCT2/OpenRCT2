@@ -11,7 +11,7 @@
 
 #include "../core/FlagHolder.hpp"
 #include "ColourPalette.h"
-#include "Weather.h"
+#include "WeatherDrawer.h"
 
 #include <memory>
 #include <string>

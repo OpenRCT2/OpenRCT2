@@ -38,7 +38,7 @@ struct GameStateSpriteChange
     };
 
     uint8_t changeType;
-    EntityType entityType;
+    OpenRCT2::EntityType entityType;
     uint32_t spriteIndex;
 
     std::vector<Diff> diffs;
@@ -91,7 +91,7 @@ struct IGameStateSnapshots
     /*
      * Serialisation of GameStateSnapshot_t
      */
-    virtual void SerialiseSnapshot(GameStateSnapshot_t& snapshot, DataSerialiser& serialiser) const = 0;
+    virtual void SerialiseSnapshot(GameStateSnapshot_t& snapshot, OpenRCT2::DataSerialiser& serialiser) const = 0;
 
     /*
      * Compares two states resulting GameStateCompareData with all mismatches stored.

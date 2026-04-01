@@ -12,7 +12,6 @@
 #include "../../../SpriteIds.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
-#include "../../Track.h"
 
 // clang-format off
 namespace OpenRCT2
@@ -39,7 +38,7 @@ constexpr RideTypeDescriptor LogFlumeRTD =
     .OperatingSettings = { 5, 27 },
     .Naming = { STR_RIDE_NAME_LOG_FLUME, STR_RIDE_DESCRIPTION_LOG_FLUME },
     .NameConvention = { RideComponentType::Boat, RideComponentType::Track, RideComponentType::Station },
-    .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_BRAKES_FAILURE),
+    .availableBreakdowns = { Breakdown::safetyCutOut, Breakdown::brakesFailure },
     .Heights = { 10, 24, 7, 9, },
     .MaxMass = 255,
     .LiftData = { Audio::SoundId::liftFlume, 5, 5 },

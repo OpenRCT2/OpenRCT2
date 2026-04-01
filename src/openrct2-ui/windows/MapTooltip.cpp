@@ -15,6 +15,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/Input.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/ui/WindowManager.h>
 
@@ -56,7 +57,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             auto stringCoords = windowPos + ScreenCoordsXY{ width / 2, height / 2 };
-            DrawTextWrapped(rt, stringCoords, width, STR_MAP_TOOLTIP_STRINGID, _mapTooltipArgs, { TextAlignment::centre });
+            drawTextWrapped(rt, stringCoords, width, STR_MAP_TOOLTIP_STRINGID, _mapTooltipArgs, { TextAlignment::centre });
         }
     };
 

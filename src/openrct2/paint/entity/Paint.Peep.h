@@ -14,9 +14,13 @@
 
 #include <cstdint>
 
-struct Peep;
+namespace OpenRCT2
+{
+    struct Peep;
+    enum class PeepAnimationType : uint8_t;
+} // namespace OpenRCT2
+
 using Direction = uint8_t;
-enum class PeepAnimationType : uint8_t;
 
 constexpr BoundBoxXYZ kPaintPeepBoundBox(int32_t z)
 {
@@ -33,7 +37,7 @@ struct BaseImageAndOffset
 {
     ImageIndex baseImageId;
     uint8_t offset;
-    PeepAnimationType actionAnimationGroup;
+    OpenRCT2::PeepAnimationType actionAnimationGroup;
 };
 
-BaseImageAndOffset PaintPeepGetBaseImageAndOffset(const Peep& peep, Direction direction);
+BaseImageAndOffset PaintPeepGetBaseImageAndOffset(const OpenRCT2::Peep& peep, Direction direction);

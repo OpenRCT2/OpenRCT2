@@ -141,7 +141,13 @@ jobs:
         uses: actions/checkout@v6
       - run: git config --global --add safe.directory $PWD
       - name: Run clang-format
+        id: clang_format
         run: scripts/check-code-formatting
+      - uses: parkerbxyz/suggest-changes@v3
+        if: github.event_name == 'pull_request' && failure()
+        with:
+          comment: 'Please commit the suggested changes from clang-format.'
+          event: 'REQUEST_CHANGES'
   check-changelog-formatting:
     name: Check changelog formatting
     runs-on: ubuntu-slim
@@ -170,10 +176,7 @@ jobs:
           echo "$GITHUB_WORKSPACE/bin" >> $GITHUB_PATH
       - name: Build graphics .dat files
         run: |
-          gxc build g2.dat OpenRCT2/resources/g2/sprites.json
-          gxc build palettes.dat OpenRCT2/resources/palettes/sprites.json
-          gxc build fonts.dat OpenRCT2/resources/fonts/sprites.json
-          gxc build tracks.dat OpenRCT2/resources/tracks/sprites.json
+          OpenRCT2/scripts/build-graphics-dat "$PWD"
       - name: Upload graphics .dat files
         uses: actions/upload-artifact@v6
         with:
@@ -185,12 +188,20 @@ jobs:
             tracks.dat
   windows:
     name: Windows
-    runs-on: windows-latest
+    runs-on: ${{ matrix.runs_on }}
     needs: [check-code-formatting, build_variables, g2dat]
     strategy:
       fail-fast: false
       matrix:
-        platform: [win32, x64, arm64]
+        include:
+          - platform: win32
+            runs_on: windows-2025-vs2026
+          - platform: x64
+            runs_on: windows-2025-vs2026
+          # keep arm64 on vs2022 for now. VS2026 is a bit slower and we can maintain
+          # compatibility with vs2022
+          - platform: arm64
+            runs_on: windows-latest
     env:
       PLATFORM: ${{ matrix.platform }}
       DISTANCE_FROM_TAG: ${{ needs.build_variables.outputs.distance }}
@@ -335,7 +346,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
       - name: ccache
-        uses: hendrikmuhs/ccache-action@v1.2.20
+        uses: hendrikmuhs/ccache-action@v1.2.21
         with:
           key: ${{ matrix.cache_key }}
       - name: Install GCC problem matcher
@@ -377,7 +388,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
       - name: ccache
-        uses: hendrikmuhs/ccache-action@v1.2.20
+        uses: hendrikmuhs/ccache-action@v1.2.21
         with:
           key: ${{ matrix.cache_key }}
       - name: Install GCC problem matcher
@@ -480,7 +491,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
       - name: ccache
-        uses: hendrikmuhs/ccache-action@v1.2.20
+        uses: hendrikmuhs/ccache-action@v1.2.21
         with:
           key: linux-${{ matrix.platform }}-${{ matrix.distro }}-${{ matrix.release }}
       - name: Get pre-reqs
@@ -509,7 +520,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
       - name: ccache
-        uses: hendrikmuhs/ccache-action@v1.2.20
+        uses: hendrikmuhs/ccache-action@v1.2.21
         with:
           key: linux-appimage
       - name: Get pre-reqs
@@ -564,7 +575,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
       - name: ccache
-        uses: hendrikmuhs/ccache-action@v1.2.20
+        uses: hendrikmuhs/ccache-action@v1.2.21
         with:
           key: linux-clang
       - name: Install GCC problem matcher
@@ -580,7 +591,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
       - name: ccache
-        uses: hendrikmuhs/ccache-action@v1.2.20
+        uses: hendrikmuhs/ccache-action@v1.2.21
         with:
           key: linux-clang-tests
       - name: Install GCC problem matcher
@@ -625,7 +636,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
       - name: ccache
-        uses: hendrikmuhs/ccache-action@v1.2.20
+        uses: hendrikmuhs/ccache-action@v1.2.21
         with:
           key: android-${{ matrix.arch }}
       - name: Cache Gradle
@@ -634,14 +645,18 @@ jobs:
           # The gradle cache is by default ~/.gradle/caches, but ~ gets resolved by GitHub Actions to the runner's
           # home directory (/home/github), not the user inside the container (/root). Name the path explicitly.
           path: /root/.gradle/caches
-          key: gradle-${{ hashFiles('src/openrct2-android/gradle.properties') }}
+          # The cache key needs to occasionally be updated as the cache itself is immutable, otherwise it can grow stale. The easiest way to force this is to include the tag, which changes every month.
+          # Keep in sync with the cache key used in the `android` job.
+          key: gradle-${{ runner.os }}-${{ needs.build_variables.outputs.tag }}-android-${{ hashFiles('src/openrct2-android/build.gradle', 'src/openrct2-android/settings.gradle', 'src/openrct2-android/app/build.gradle', 'src/openrct2-android/gradle.properties', 'src/openrct2-android/gradle/wrapper/gradle-wrapper.properties') }}
+          restore-keys: |
+            gradle-${{ runner.os }}-${{ needs.build_variables.outputs.tag }}-android-
       - name: Install GCC problem matcher
         uses: ammaraskar/gcc-problem-matcher@master
       - name: Build Native Libs
         run: |
           . scripts/setenv
           pushd src/openrct2-android
-          ./gradlew app:externalNativeBuildRelease -PabiFilter=${{ matrix.arch }}
+          ./gradlew app:externalNativeBuildRelease -PabiFilter=${{ matrix.arch }} -PskipAssets -PskipJava
           popd
       - name: Upload Native Libs
         uses: actions/upload-artifact@v6
@@ -653,8 +668,8 @@ jobs:
   android:
     name: Android
     runs-on: ubuntu-latest
-    needs: [android-libs, build_variables]
-    container: openrct2/openrct2-build:25-android
+    needs: [android-libs, build_variables, g2dat]
+    container: ghcr.io/openrct2/openrct2-build:26-android
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -664,7 +679,10 @@ jobs:
           # The gradle cache is by default ~/.gradle/caches, but ~ gets resolved by GitHub Actions to the runner's
           # home directory (/home/github), not the user inside the container (/root). Name the path explicitly.
           path: /root/.gradle/caches
-          key: gradle-${{ hashFiles('src/openrct2-android/gradle.properties') }}
+          # Keep in sync with the cache key used in the `android-libs` job.
+          key: gradle-${{ runner.os }}-${{ needs.build_variables.outputs.tag }}-android-${{ hashFiles('src/openrct2-android/build.gradle', 'src/openrct2-android/settings.gradle', 'src/openrct2-android/app/build.gradle', 'src/openrct2-android/gradle.properties', 'src/openrct2-android/gradle/wrapper/gradle-wrapper.properties') }}
+          restore-keys: |
+            gradle-${{ runner.os }}-${{ needs.build_variables.outputs.tag }}-android-
       - name: Setup keystore
         run: |
           echo "${{ secrets.OPENRCT2_KEYSTORE_CONTENTS }}" | base64 -d > keystore.jks
@@ -686,9 +704,15 @@ jobs:
               echo "::warning title=Missing libraries::Warning: No libs found for $arch"
             fi
           done
+      - name: Download graphics .dat files
+        uses: actions/download-artifact@v7
+        with:
+          name: graphics-${{ needs.build_variables.outputs.name }}
+          path: bin/data
       - name: Build OpenRCT2
         run: |
           . scripts/setenv
+          export OPENRCT2_DAT_DIR="$GITHUB_WORKSPACE/bin/data"
           pushd src/openrct2-android
           ./gradlew app:assembleRelease -PskipNativeBuild
           popd
@@ -715,7 +739,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
       - name: ccache
-        uses: hendrikmuhs/ccache-action@v1.2.20
+        uses: hendrikmuhs/ccache-action@v1.2.21
         with:
           key: emscripten
       - name: Install GCC problem matcher

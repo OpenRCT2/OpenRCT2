@@ -1114,7 +1114,7 @@ declare global {
          * @see `ShopItem` in {@link https://github.com/OpenRCT2/OpenRCT2/blob/develop/src/openrct2/ride/ShopItem.h}
          */
         item: number;
-        numweeks: number;
+        duration: number;
     }
 
     interface ParkSetDateArgs extends GameActionArgs {
@@ -1217,6 +1217,7 @@ declare global {
         entranceObject: number;
         colour1: number;
         colour2: number;
+        inspectionInterval: number;
     }
 
     interface RideDemolishArgs extends GameActionArgs {

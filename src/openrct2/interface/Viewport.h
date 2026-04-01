@@ -19,9 +19,6 @@
 
 struct PaintSession;
 struct PaintStruct;
-struct EntityBase;
-struct Guest;
-struct Staff;
 struct PaintEntry;
 
 namespace OpenRCT2::Drawing
@@ -31,6 +28,9 @@ namespace OpenRCT2::Drawing
 
 namespace OpenRCT2
 {
+    struct EntityBase;
+    struct Guest;
+    struct Staff;
     struct TileElement;
     struct WindowBase;
 

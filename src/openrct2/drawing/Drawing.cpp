@@ -21,10 +21,12 @@
 #include "../object/WaterEntry.h"
 #include "../platform/Platform.h"
 #include "../util/Util.h"
-#include "../world/Climate.h"
 #include "../world/Location.hpp"
+#include "../world/Weather.h"
+#include "Font.h"
 #include "LightFX.h"
 #include "Rectangle.h"
+#include "Text.h"
 
 #include <array>
 #include <cassert>
@@ -69,12 +71,15 @@ PaletteIndex PaletteMap::operator[](size_t index) const
 
 PaletteIndex PaletteMap::Blend(PaletteIndex src, PaletteIndex dst) const
 {
+    const auto srcValue = EnumValue(src);
+    const auto dstValue = EnumValue(dst);
 #ifdef _DEBUG
     // src = 0 would be transparent so there is no blend palette for that, hence (src - 1)
-    assert(src != PaletteIndex::transparent && (EnumValue(src) - 1) < _numMaps);
-    assert(EnumValue(dst) < _mapLength);
+    assert(src != PaletteIndex::transparent);
+    assert(static_cast<size_t>(srcValue - 1) < _numMaps);
+    assert(static_cast<size_t>(dstValue) < _mapLength);
 #endif
-    auto idx = ((EnumValue(src) - 1) * 256) + EnumValue(dst);
+    auto idx = ((srcValue - 1) * 256) + dstValue;
     return _data[idx];
 }
 
@@ -95,13 +100,6 @@ uint32_t gPaletteEffectFrame;
 ImageId gPickupPeepImage;
 int32_t gPickupPeepX;
 int32_t gPickupPeepY;
-
-// Originally 0x9ABE04
-TextColours gTextPalette = {
-    PaletteIndex::transparent,
-    PaletteIndex::transparent,
-    PaletteIndex::transparent,
-};
 
 bool gPaintForceRedraw{ false };
 
@@ -553,7 +551,7 @@ void LoadPalette()
 
     uint32_t palette = SPR_GAME_DEFAULT_PALETTE;
 
-    auto water_type = OpenRCT2::ObjectManager::GetObjectEntry<WaterObjectEntry>(0);
+    auto water_type = OpenRCT2::ObjectEntryManager::GetObjectEntry<WaterObjectEntry>(0);
     if (water_type != nullptr)
     {
         Guard::Assert(water_type->mainPalette != kImageIndexUndefined, "Failed to load water palette");
@@ -716,7 +714,7 @@ void UpdatePalette(std::span<const BGRAColour> palette, PaletteIndex startIndex,
         else
         {
             float night = gDayNightCycle;
-            if (night >= 0 && gClimateLightningFlash == 0)
+            if (night >= 0 && Weather::gLightningFlash == 0)
             {
                 r = Lerp(r, SoftLight(r, 8), night);
                 g = Lerp(g, SoftLight(g, 8), night);
@@ -748,9 +746,9 @@ void UpdatePalette(std::span<const BGRAColour> palette, PaletteIndex startIndex,
  */
 void UpdatePaletteEffects()
 {
-    auto water_type = OpenRCT2::ObjectManager::GetObjectEntry<WaterObjectEntry>(0);
+    auto water_type = OpenRCT2::ObjectEntryManager::GetObjectEntry<WaterObjectEntry>(0);
 
-    if (gClimateLightningFlash == 1)
+    if (Weather::gLightningFlash == 1)
     {
         // Change palette to lighter colour during lightning
         int32_t palette = SPR_GAME_DEFAULT_PALETTE;
@@ -775,11 +773,11 @@ void UpdatePaletteEffects()
 
             UpdatePalette(gGamePalette, kPaletteOffsetDynamic, kPaletteLengthDynamic);
         }
-        gClimateLightningFlash++;
+        Weather::gLightningFlash++;
     }
     else
     {
-        if (gClimateLightningFlash == 2)
+        if (Weather::gLightningFlash == 2)
         {
             // Change palette back to normal after lightning
             int32_t palette = SPR_GAME_DEFAULT_PALETTE;
@@ -809,7 +807,7 @@ void UpdatePaletteEffects()
         uint32_t shade = 0;
         if (Config::Get().general.renderWeatherGloom)
         {
-            auto paletteId = ClimateGetWeatherGloomPaletteId(getGameState().weatherCurrent);
+            auto paletteId = Weather::getWeatherGloomPaletteId(getGameState().weatherCurrent);
             if (paletteId != FilterPaletteID::paletteNull)
             {
                 shade = 1;
@@ -892,10 +890,10 @@ void UpdatePaletteEffects()
         }
 
         UpdatePalette(gGamePalette, kPaletteOffsetAnimated, kPaletteLengthAnimated);
-        if (gClimateLightningFlash == 2)
+        if (Weather::gLightningFlash == 2)
         {
             UpdatePalette(gGamePalette, kPaletteOffsetDynamic, kPaletteLengthDynamic);
-            gClimateLightningFlash = 0;
+            Weather::gLightningFlash = 0;
         }
     }
 }
@@ -932,8 +930,8 @@ void DebugRT(RenderTarget& rt)
     GfxDrawLine(rt, { topLeft, topLeft + ScreenCoordsXY{ 4, 0 } }, PaletteIndex::pi136);
 
     const auto str = std::to_string(rt.x);
-    DrawText(rt, ScreenCoordsXY{ rt.x, rt.y }, { Colour::white, FontStyle::tiny }, str.c_str());
+    drawText(rt, ScreenCoordsXY{ rt.x, rt.y }, str, { Colour::white, FontStyle::tiny });
 
     const auto str2 = std::to_string(rt.y);
-    DrawText(rt, ScreenCoordsXY{ rt.x, rt.y + 6 }, { Colour::white, FontStyle::tiny }, str2.c_str());
+    drawText(rt, ScreenCoordsXY{ rt.x, rt.y + 6 }, str2, { Colour::white, FontStyle::tiny });
 }

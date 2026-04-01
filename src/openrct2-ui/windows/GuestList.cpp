@@ -20,6 +20,7 @@
 #include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
+#include <openrct2/drawing/Text.h>
 #include <openrct2/entity/EntityList.h>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/entity/Guest.h>
@@ -62,7 +63,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr auto window_guest_list_widgets = makeWidgets(
         makeWindowShim(kWindowTitle, kWindowSize),
         makeWidget({  0, 43}, {350, 287}, WidgetType::resize,       WindowColour::secondary                                                        ), // tab content panel
-        makeWidget({  5, 59}, { 80,  12}, WidgetType::dropdownMenu, WindowColour::secondary, STR_ARG_4_PAGE_X                                      ), // page dropdown
+        makeWidget({  5, 59}, { 80,  12}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdEmpty                                      ), // page dropdown
         makeWidget({ 73, 60}, { 11,  10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH                                    ), // page dropdown button
         makeWidget({120, 59}, {142,  12}, WidgetType::dropdownMenu, WindowColour::secondary, 0xFFFFFFFF,              STR_INFORMATION_TYPE_TIP     ), // information type dropdown
         makeWidget({250, 60}, { 11,  10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,      STR_INFORMATION_TYPE_TIP     ), // information type dropdown button
@@ -157,6 +158,8 @@ namespace OpenRCT2::Ui::Windows
         std::optional<size_t> _highlightedIndex;
 
         uint32_t _tabAnimationIndex{};
+
+        u8string _pageDropdownCaption{};
 
     public:
         void onOpen() override
@@ -418,9 +421,8 @@ namespace OpenRCT2::Ui::Windows
             {
                 widgets[WIDX_PAGE_DROPDOWN].type = WidgetType::dropdownMenu;
                 widgets[WIDX_PAGE_DROPDOWN_BUTTON].type = WidgetType::button;
-                auto ft = Formatter::Common();
-                ft.Increment(4);
-                ft.Add<uint16_t>(_selectedPage + 1);
+                _pageDropdownCaption = FormatStringID(STR_PAGE_X, static_cast<uint16_t>(_selectedPage + 1));
+                widgets[WIDX_PAGE_DROPDOWN].setString(_pageDropdownCaption.c_str());
             }
             else
             {
@@ -462,7 +464,7 @@ namespace OpenRCT2::Ui::Windows
 
             {
                 Formatter ft(_filterArguments.args);
-                DrawTextEllipsised(rt, screenCoords, 310, format, ft);
+                drawTextEllipsised(rt, screenCoords, 310, format, ft);
             }
 
             // Number of guests (list items)
@@ -471,7 +473,7 @@ namespace OpenRCT2::Ui::Windows
                 screenCoords = windowPos + ScreenCoordsXY{ 4, widgets[WIDX_GUEST_LIST].bottom + 2 };
                 auto ft = Formatter();
                 ft.Add<int32_t>(static_cast<int32_t>(_guestList.size()));
-                DrawTextBasic(
+                drawText(
                     rt, screenCoords, (_guestList.size() == 1 ? STR_FORMAT_NUM_GUESTS_SINGULAR : STR_FORMAT_NUM_GUESTS_PLURAL),
                     ft);
             }
@@ -672,7 +674,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     auto ft = Formatter();
                     peep->FormatNameTo(ft);
-                    DrawTextEllipsised(rt, { 0, y }, 113, format, ft);
+                    drawTextEllipsised(rt, { 0, y }, 113, format, ft);
 
                     switch (_selectedView)
                     {
@@ -687,7 +689,7 @@ namespace OpenRCT2::Ui::Windows
                             // Action
                             ft = Formatter();
                             peep->FormatActionTo(ft);
-                            DrawTextEllipsised(rt, { 133, y }, 314, format, ft);
+                            drawTextEllipsised(rt, { 133, y }, 314, format, ft);
                             break;
                         case GuestViewType::Thoughts:
                             // For each thought
@@ -702,7 +704,7 @@ namespace OpenRCT2::Ui::Windows
 
                                 ft = Formatter();
                                 PeepThoughtSetFormatArgs(&thought, ft);
-                                DrawTextEllipsised(rt, { 118, y }, 329, format, ft, { FontStyle::small });
+                                drawTextEllipsised(rt, { 118, y }, 329, format, ft, { FontStyle::small });
                                 break;
                             }
                             break;
@@ -747,18 +749,18 @@ namespace OpenRCT2::Ui::Windows
                     // Draw small font if displaying guests
                     if (_selectedView == GuestViewType::Thoughts)
                     {
-                        DrawTextEllipsised(rt, { 0, y }, 414, format, ft, { FontStyle::small });
+                        drawTextEllipsised(rt, { 0, y }, 414, format, ft, { FontStyle::small });
                     }
                     else
                     {
-                        DrawTextEllipsised(rt, { 0, y }, 414, format, ft);
+                        drawTextEllipsised(rt, { 0, y }, 414, format, ft);
                     }
 
                     // Draw guest count
                     ft = Formatter();
                     ft.Add<StringId>(STR_GUESTS_COUNT_COMMA_SEP);
                     ft.Add<uint32_t>(group.NumGuests);
-                    DrawTextBasic(rt, { 326, y }, format, ft, { TextAlignment::right });
+                    drawText(rt, { 326, y }, format, ft, { TextAlignment::right });
                 }
                 y += kSummarisedGuestsRowHeight;
                 index++;

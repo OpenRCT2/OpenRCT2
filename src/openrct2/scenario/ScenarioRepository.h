@@ -16,7 +16,10 @@
 
 #include <memory>
 
-struct RCTObjectEntry;
+namespace OpenRCT2
+{
+    struct RCTObjectEntry;
+}
 
 namespace OpenRCT2::Scenario
 {

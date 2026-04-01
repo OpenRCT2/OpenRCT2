@@ -13,7 +13,6 @@
 #include "../../../ride/RideStringIds.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
-#include "../../Track.h"
 
 // clang-format off
 namespace OpenRCT2
@@ -53,7 +52,7 @@ constexpr RideTypeDescriptor DinghySlideRTD =
     .OperatingSettings = { 5, 27 },
     .Naming = { STR_RIDE_NAME_DINGHY_SLIDE, STR_RIDE_DESCRIPTION_DINGHY_SLIDE },
     .NameConvention = { RideComponentType::Boat, RideComponentType::Track, RideComponentType::Station },
-    .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
+    .availableBreakdowns = { Breakdown::safetyCutOut },
     .Heights = { 15, 24, 5, 7, },
     .MaxMass = 5,
     .LiftData = { Audio::SoundId::liftFrictionWheels, 4, 5 },

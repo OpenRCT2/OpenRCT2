@@ -37,6 +37,7 @@
 #include <openrct2/core/Numerics.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/Text.h>
 #include <openrct2/entity/Staff.h>
 #include <openrct2/interface/Chat.h>
 #include <openrct2/interface/ColourWithFlags.h>
@@ -1423,8 +1424,8 @@ namespace OpenRCT2::Ui::Windows
                 if (getGameState().cheats.disableClearanceChecks)
                 {
                     auto colour = ColourWithFlags{ Drawing::Colour::darkOrange }.withFlag(ColourFlag::withOutline, true);
-                    DrawTextBasic(
-                        rt, screenPos + ScreenCoordsXY{ 26, 2 }, STR_OVERLAY_CLEARANCE_CHECKS_DISABLED, {},
+                    drawText(
+                        rt, screenPos + ScreenCoordsXY{ 26, 2 }, STR_OVERLAY_CLEARANCE_CHECKS_DISABLED,
                         { colour, TextAlignment::right });
                 }
             }
@@ -1489,7 +1490,7 @@ namespace OpenRCT2::Ui::Windows
                 auto ft = Formatter();
                 ft.Add<int32_t>(Network::GetNumVisiblePlayers());
                 auto colour = ColourWithFlags{ Drawing::Colour::white }.withFlag(ColourFlag::withOutline, true);
-                DrawTextBasic(rt, screenPos + ScreenCoordsXY{ 23, 1 }, STR_COMMA16, ft, { colour, TextAlignment::right });
+                drawText(rt, screenPos + ScreenCoordsXY{ 23, 1 }, STR_COMMA16, ft, { colour, TextAlignment::right });
             }
 
             if (widgets[WIDX_ROTATE_ANTI_CLOCKWISE].type != WidgetType::empty)

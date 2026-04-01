@@ -60,6 +60,18 @@ namespace OpenRCT2::Path
 
     bool DirectoryExists(u8string_view path)
     {
+        auto assetCheckResult = Platform::CheckAssetDirectoryExists(path);
+        switch (assetCheckResult)
+        {
+            case Platform::AssetCheckResult::Found:
+                return true;
+            case Platform::AssetCheckResult::NotFound:
+                return false;
+            case Platform::AssetCheckResult::NotApplicable:
+            default:
+                break;
+        }
+
         std::error_code ec;
         const auto result = fs::is_directory(fs::u8path(path), ec);
         return result && ec.value() == 0;

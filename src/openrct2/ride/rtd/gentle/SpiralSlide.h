@@ -12,7 +12,6 @@
 #include "../../../SpriteIds.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
-#include "../../Track.h"
 
 // clang-format off
 namespace OpenRCT2
@@ -37,7 +36,7 @@ constexpr RideTypeDescriptor SpiralSlideRTD =
     .OperatingSettings = { 1, 5 },
     .Naming = { STR_RIDE_NAME_SPIRAL_SLIDE, STR_RIDE_DESCRIPTION_SPIRAL_SLIDE },
     .NameConvention = { RideComponentType::Train, RideComponentType::Building, RideComponentType::Station },
-    .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
+    .availableBreakdowns = { Breakdown::safetyCutOut },
     .Heights = { 15, 128, 0, 2, },
     .MaxMass = 255,
     .LiftData = { Audio::SoundId::null, 5, 5 },

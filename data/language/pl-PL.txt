@@ -242,7 +242,6 @@ STR_0832    :Obróć widok o 90°
 STR_0833    :Pauza
 STR_0834    :Menu zapisu i opcji
 STR_0839    :{UINT16} × {UINT16}
-STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} × {UINT16}
 STR_0847    :O „OpenRCT2”
 STR_0850    :{WINDOW_COLOUR_2}Copyright © 2002 Chris Sawyer, wszystkie prawa zastrzeżone
 STR_0851    :{WINDOW_COLOUR_2}Projekt i implementacja: Chris Sawyer
@@ -253,16 +252,6 @@ STR_0855    :{WINDOW_COLOUR_2}Reprezentacja przez: Jacqui Lyons at Marjacq Ltd.
 STR_0856    :{WINDOW_COLOUR_2}Podziękowania dla:
 STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth i John Wardley
 STR_0865    :{STRINGID}
-STR_0866    :{POP16}{STRINGID}
-STR_0867    :{POP16}{POP16}{STRINGID}
-STR_0868    :{POP16}{POP16}{POP16}{STRINGID}
-STR_0869    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0870    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0872    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0873    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0874    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0875    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0876    :{BLACK}▼
 STR_0877    :Za nisko!
 STR_0878    :Za wysoko!
@@ -281,7 +270,7 @@ STR_0892    :Zrzut ekranu zapisany jako „{STRINGID}”
 STR_0893    :Zrzut ekranu nieudany!
 STR_0894    :Obszar danych krajobrazu jest pełny!
 STR_0895    :Nie można wybudować częściowo nad i pod ziemią
-STR_0896    :{POP16}{POP16}{STRINGID} Budowanie
+STR_0896    :{STRINGID} Budowanie
 STR_0897    :Kierunek
 STR_0898    :Zakręt w lewo
 STR_0899    :Zakręt w prawo
@@ -406,8 +395,6 @@ STR_1018    :Zmiana niemożliwa…
 STR_1019    :Zmiana niemożliwa…
 STR_1020    :Zmiana niemożliwa…
 STR_1021    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_1022    :{POP16}{POP16}{POP16}{COMMA16} wagon na pociąg
-STR_1023    :{POP16}{POP16}{POP16}{COMMA16} wagony na pociąg
 STR_1024    :{COMMA16} wagon na pociąg
 STR_1025    :{COMMA16} wagony na pociąg
 STR_1026    :Peron stacji za długi!
@@ -516,9 +503,7 @@ STR_1128    :Zatrzymane przez hamulce blokowe
 STR_1129    :Wszystkie pojazdy w tym samym kolorze
 STR_1130    :Inny kolor w każdym {STRINGID}
 STR_1131    :Inny kolor w każdym pojeździe
-STR_1132    :Pojazd {POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1133    :Pojazd {POP16}{COMMA16}
-STR_1134    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID} {COMMA16}
+STR_1133    :Pojazd {COMMA16}
 STR_1135    :{STRINGID} {COMMA16}
 STR_1136    :Wybierz główny kolor
 STR_1137    :Wybierz dodatkowy kolor nr 1
@@ -714,7 +699,6 @@ STR_1327    :Obróć obiekt o 90°
 STR_1328    :Wymagany poziom terenu
 STR_1329    :{WINDOW_COLOUR_2}Prędkość startu:
 STR_1330    :Maksymalna prędkość przy opuszczaniu stacji
-STR_1331    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_1332    :{VELOCITY}
 STR_1333    :{STRINGID} - {STRINGID}{POP16}
 STR_1334    :{STRINGID} - {STRINGID} {COMMA16}
@@ -812,7 +796,6 @@ STR_1425    :Chodnik
 STR_1426    :Kolejka
 STR_1427    :{WINDOW_COLOUR_2}Klienci: {BLACK}{COMMA32} na godzinę
 STR_1428    :{WINDOW_COLOUR_2}Cena wstępu:
-STR_1429    :{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1430    :Za darmo
 STR_1431    :Spaceruje
 STR_1432    :Idzie w kierunku {STRINGID}
@@ -1056,7 +1039,6 @@ STR_1671    :{WINDOW_COLOUR_2}Całkowity zysk: {BLACK}{CURRENCY2DP}
 STR_1672    :Hamulce
 STR_1673    :Tor opcji blokowania obrotów
 STR_1674    :Prędkość hamowania
-STR_1675    :{POP16}{VELOCITY}
 STR_1676    :Ustaw limit prędkości hamowania
 STR_1677    :{WINDOW_COLOUR_2}Popularność: {BLACK}Nieznana
 STR_1678    :{WINDOW_COLOUR_2}Popularność: {BLACK}{COMMA16}%
@@ -1116,18 +1098,15 @@ STR_1732    :Buduj
 STR_1733    :Tryb
 STR_1734    :{WINDOW_COLOUR_2}Liczba okrążeń:
 STR_1735    :Liczba okrążeń
-STR_1736    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1738    :Nie można zmienić liczby okrążeń…
 STR_1739    :Wyścig wygrany przez gościa {INT32}
 STR_1740    :Wyścig wygrał {STRINGID}
 STR_1741    :Jeszcze nie zbudowane!
 STR_1742    :{WINDOW_COLOUR_2}Maks. ludzi na przejazd:
 STR_1743    :Maksymalna liczba osób, które mogą jednocześnie korzystać z tej atrakcji
-STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1746    :Nie można tego zmienić…
 STR_1747    :{WINDOW_COLOUR_2}Limit czasu:
 STR_1748    :Limit czasu na przejazd
-STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DURATION}
 STR_1751    :Nie można zmienić limitu czasu przejazdu…
 STR_1752    :Pokaż listę gości parku
 STR_1753    :Pokaż zbiorczą listę gości w parku
@@ -1148,7 +1127,6 @@ STR_1767    :Wirujący tunel
 STR_1768    :Nie można zmienić liczby huśtań…
 STR_1769    :{WINDOW_COLOUR_2}Liczba huśtań:
 STR_1770    :Liczba pełnych huśtań
-STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1773    :Tylko jedna sekcja fotograficzna dostępna na atrakcję
 STR_1774    :Tylko jedna wyciągarka dostępna na atrakcję
 STR_1777    :{WINDOW_COLOUR_2}Muzyka atrakcji
@@ -1160,7 +1138,6 @@ STR_1794    :Naprawia {STRINGID}
 STR_1795    :Odbiera wezwanie telefoniczne
 STR_1796    :Zepsute, wymaga naprawy
 STR_1798    :Wir
-STR_1799    :{POP16}{POP16}{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1800    :Wyłącznik bezpieczeństwa
 STR_1801    :Ogranicznik zamknięty
 STR_1802    :Ogranicznik otwarty
@@ -1232,7 +1209,6 @@ STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :Nie można zmienić liczby obrotów…
 STR_1869    :{WINDOW_COLOUR_2}Liczba obrotów:
 STR_1870    :Liczba pełnych obrotów
-STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Przychód: {BLACK}{CURRENCY2DP} na godzinę
 STR_1874    :{WINDOW_COLOUR_2}Zysk: {BLACK}{CURRENCY2DP} na godzinę
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Inspekcja atrakcji
@@ -1274,7 +1250,6 @@ STR_1913    :{BLACK}+{CURRENCY2DP}
 STR_1914    :{BLACK}{CURRENCY2DP}
 STR_1915    :{RED}{CURRENCY2DP}
 STR_1916    :{WINDOW_COLOUR_2}Pożyczka:
-STR_1917    :{POP16}{POP16}{POP16}{CURRENCY}
 STR_1918    :Nie można pożyczyć więcej pieniędzy!
 STR_1919    :Za mało pieniędzy!
 STR_1920    :Nie można spłacić pożyczki!
@@ -1312,7 +1287,6 @@ STR_1953    :Marketing
 STR_1954    :Środki przeznaczone na badania
 STR_1955    :{WINDOW_COLOUR_2}Liczba okrążeń:
 STR_1956    :Liczba okrążeń toru w czasie jednego przejazdu
-STR_1957    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1958    :{COMMA16}
 STR_1959    :Nie mogę zmienić liczby okrążeń…
 STR_1960    :{WINDOW_COLOUR_2}Cena balonu:
@@ -2110,7 +2084,6 @@ STR_3092    :Nie można przesuwać ani modyfikować stacji dla tej atrakcji!
 STR_3093    :{WINDOW_COLOUR_2}Ulubiona: {BLACK}{STRINGID}
 STR_3094    :Brak
 STR_3095    :{WINDOW_COLOUR_2}Prędkość wyciągarki:
-STR_3096    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_3097    :Ustaw prędkość wyciągarki
 STR_3099    :Wybierz kolor
 STR_3100    :Wybierz drugi kolor
@@ -2203,7 +2176,6 @@ STR_3208    :Menedżer tworzenia tras
 STR_3209    :Powrót do poprzedniego kroku:
 STR_3210    :Do następnego kroku:
 STR_3211    :Rozmiar mapy:
-STR_3212    :{POP16}{COMMA16}
 STR_3213    :Nie można bardziej zmniejszyć mapy
 STR_3214    :Nie można bardziej zwiększyć mapy
 STR_3215    :Za blisko do krawędzi mapy
@@ -2994,12 +2966,11 @@ STR_5914    :Nieznana atrakcja
 STR_5915    :Gracz
 STR_5916    :{COMMA16} gracz
 STR_5917    :{COMMA16} graczy
-STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_5919    :{COMMA16}
 STR_5920    :Efekty graficzne pogody
 STR_5921    :Jeśli włączone, deszcz i błyski będą widoczne podczas burzy.
-STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}Maks. {STRINGID}
-STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}Maks. {COMMA16} {STRINGID} na pociąg
+STR_5922    :Maks. {STRINGID}
+STR_5923    :Maks. {COMMA16} {STRINGID} na pociąg
 STR_5924    :Szczegóły powierzchni
 STR_5925    :Szczegóły ścieżki
 STR_5926    :Szczegóły trasy
@@ -3384,7 +3355,6 @@ STR_6355    :Wysoka gęstość
 STR_6356    :Przyzywa kaczki jeśli park zawiera wodę
 STR_6357    :Usuwa wszystkie kaczki z mapy
 STR_6358    :Strona {UINT16}
-STR_6359    :{POP16}{POP16}Strona {UINT16}
 STR_6361    :Włącz oświetlenie pojazdów
 STR_6362    :Jeśli włączone, pojazdy będą oświetlone w nocy.
 STR_6363    :Tekst skopiowany do schowka

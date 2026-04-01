@@ -21,8 +21,8 @@
 #include "../world/tile_element/TrackElement.h"
 #include "Ride.h"
 #include "RideData.h"
-#include "Track.h"
 #include "TrackData.h"
+#include "TrackIteration.h"
 #include "VehicleGeometry.h"
 #include "ted/PitchAndRoll.h"
 #include "ted/TrackElementDescriptor.h"
@@ -30,13 +30,6 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::RideVehicle;
 using namespace OpenRCT2::TrackMetadata;
-
-static PitchAndRoll PitchAndRollStart(bool useInvertedSprites, TileElement* tileElement)
-{
-    auto trackType = tileElement->AsTrack()->GetTrackType();
-    const auto& ted = GetTrackElementDescriptor(trackType);
-    return PitchAndRoll{ ted.definition.pitchStart, TrackGetActualBank3(useInvertedSprites, tileElement) };
-}
 
 void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemType trackType)
 {
@@ -247,7 +240,7 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
             int32_t outZ{};
             int32_t outDirection{};
             CoordsXYE input = { TrackLocation, tileElement };
-            if (!TrackBlockGetNext(&input, &output, &outZ, &outDirection))
+            if (!trackBlockGetNext(&input, &output, &outZ, &outDirection))
             {
                 _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
                 _vehicleVelocityF64E0C -= remaining_distance + 1;
@@ -440,7 +433,7 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
         {
             auto tileElement = MapGetTrackElementAtOfTypeSeq(TrackLocation, GetTrackType(), 0);
             TrackBeginEnd trackBeginEnd;
-            if (!TrackBlockGetPrevious({ TrackLocation, tileElement }, &trackBeginEnd))
+            if (!trackBlockGetPrevious({ TrackLocation, tileElement }, &trackBeginEnd))
             {
                 _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
                 _vehicleVelocityF64E0C -= remaining_distance + 1;
@@ -603,7 +596,7 @@ void Vehicle::Loc6DCE02(const Ride& curRide)
 
     auto trackType = GetTrackType();
     const auto& ted = GetTrackElementDescriptor(trackType);
-    if (!ted.sequences[0].flags.has(SequenceFlag::trackOrigin))
+    if (!ted.sequenceData.sequences[0].flags.has(SequenceFlag::trackOrigin))
     {
         return;
     }
@@ -642,24 +635,6 @@ void Vehicle::Loc6DCE02(const Ride& curRide)
         }
         _vehicleStationIndex = curRide.getStationIndex(&station);
     }
-}
-
-static constexpr int32_t GetAccelerationDecrease2(const int32_t velocity, const int32_t totalMass)
-{
-    int32_t accelerationDecrease2 = velocity >> 8;
-    accelerationDecrease2 *= accelerationDecrease2;
-    if (velocity < 0)
-    {
-        accelerationDecrease2 = -accelerationDecrease2;
-    }
-    accelerationDecrease2 >>= 4;
-    // OpenRCT2: vehicles from different track types can have  0 mass.
-    if (totalMass != 0)
-    {
-        return accelerationDecrease2 / totalMass;
-    }
-
-    return accelerationDecrease2;
 }
 
 int32_t Vehicle::UpdateTrackMotionMiniGolfCalculateAcceleration(const CarEntry& carEntry)

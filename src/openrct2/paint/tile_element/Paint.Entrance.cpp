@@ -119,7 +119,7 @@ static void PaintRideEntranceExit(PaintSession& session, uint8_t direction, int3
     }
 
     auto stationObj = ride->getStationObject();
-    if (stationObj == nullptr || stationObj->baseImageIndex == kImageIndexUndefined)
+    if (stationObj == nullptr || stationObj->entranceBackIndex == kImageIndexUndefined)
     {
         return;
     }

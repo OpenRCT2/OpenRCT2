@@ -268,10 +268,10 @@
     <ClInclude Include="drawing\Rectangle.h" />
     <ClInclude Include="drawing\RenderTarget.h" />
     <ClInclude Include="drawing\ScrollingText.h" />
-    <ClInclude Include="drawing\Weather.h" />
     <ClInclude Include="drawing\Text.h" />
     <ClInclude Include="drawing\TextColour.h" />
     <ClInclude Include="drawing\TTF.h" />
+    <ClInclude Include="drawing\WeatherDrawer.h" />
     <ClInclude Include="drawing\X8DrawingEngine.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="EditorObjectSelectionSession.h" />
@@ -321,6 +321,7 @@
     <ClInclude Include="localisation\Localisation.Date.h" />
     <ClInclude Include="localisation\LocalisationService.h" />
     <ClInclude Include="localisation\StringIds.h" />
+    <ClInclude Include="localisation\StringWithArgs.h" />
     <ClInclude Include="management\Award.h" />
     <ClInclude Include="management\Finance.h" />
     <ClInclude Include="management\Marketing.h" />
@@ -397,6 +398,7 @@
     <ClInclude Include="paint\Paint.h" />
     <ClInclude Include="paint\Paint.SessionFlags.h" />
     <ClInclude Include="paint\Painter.h" />
+    <ClInclude Include="paint\Balloon.h" />
     <ClInclude Include="paint\entity\Paint.Guest.h" />
     <ClInclude Include="paint\entity\Paint.Peep.h" />
     <ClInclude Include="paint\entity\Paint.Staff.h" />
@@ -411,12 +413,14 @@
     <ClInclude Include="paint\tile_element\Paint.Surface.h" />
     <ClInclude Include="paint\tile_element\Paint.TileElement.h" />
     <ClInclude Include="paint\tile_element\Paint.Track.h" />
+    <ClInclude Include="paint\tile_element\Paint.Tunnel.h" />
     <ClInclude Include="paint\tile_element\Paint.Wall.h" />
     <ClInclude Include="paint\tile_element\Segment.h" />
-    <ClInclude Include="paint\tile_element\Paint.Tunnel.h" />
     <ClInclude Include="paint\track\coaster\WoodenRollerCoaster.hpp" />
     <ClInclude Include="paint\track\Segment.h" />
     <ClInclude Include="paint\track\Support.h" />
+    <ClInclude Include="paint\track\TrackPaintGeneric.h" />
+    <ClInclude Include="paint\track_pieces\QuarterHelix.h" />
     <ClInclude Include="paint\vehicle\Vehicle.MiniGolf.h" />
     <ClInclude Include="paint\vehicle\VehiclePaint.h" />
     <ClInclude Include="paint\VirtualFloor.h" />
@@ -557,6 +561,19 @@
     <ClInclude Include="ride\rtd\water\SplashBoats.h" />
     <ClInclude Include="ride\rtd\water\SubmarineRide.h" />
     <ClInclude Include="ride\ted\PitchAndRoll.h" />
+    <ClInclude Include="ride\ted\TED.Corkscrew.h" />
+    <ClInclude Include="ride\ted\TED.DiveLoop.h" />
+    <ClInclude Include="ride\ted\TED.FlatRide.h" />
+    <ClInclude Include="ride\ted\TED.HalfHelix.h" />
+    <ClInclude Include="ride\ted\TED.Heartline.h" />
+    <ClInclude Include="ride\ted\TED.LongBase.h" />
+    <ClInclude Include="ride\ted\TED.Loop.h" />
+    <ClInclude Include="ride\ted\TED.Maze.h" />
+    <ClInclude Include="ride\ted\TED.MiniGolf.h" />
+    <ClInclude Include="ride\ted\TED.SBend.h" />
+    <ClInclude Include="ride\ted\TED.Station.h" />
+    <ClInclude Include="ride\ted\TED.Water.h" />
+    <ClInclude Include="ride\ted\TED.ZeroG.h" />
     <ClInclude Include="ride\ted\TrackElementDescriptor.h" />
     <ClInclude Include="ride\ted\TrackElemType.h" />
     <ClInclude Include="ride\ted\TrackGroup.h" />
@@ -566,6 +583,7 @@
     <ClInclude Include="ride\TrackData.h" />
     <ClInclude Include="ride\TrackDesign.h" />
     <ClInclude Include="ride\TrackDesignRepository.h" />
+    <ClInclude Include="ride\TrackIteration.h" />
     <ClInclude Include="ride\TrackPaint.h" />
     <ClInclude Include="ride\TrackStyle.h" />
     <ClInclude Include="ride\TrainManager.h" />
@@ -631,7 +649,6 @@
     <ClInclude Include="scripting\bindings\ride\ScTrackIterator.h" />
     <ClInclude Include="scripting\bindings\ride\ScTrackSegment.h" />
     <ClInclude Include="scripting\bindings\world\ScAward.hpp" />
-    <ClInclude Include="scripting\bindings\world\ScClimate.hpp" />
     <ClInclude Include="scripting\bindings\world\ScDate.hpp" />
     <ClInclude Include="scripting\bindings\world\ScMap.hpp" />
     <ClInclude Include="scripting\bindings\world\ScPark.hpp" />
@@ -640,11 +657,12 @@
     <ClInclude Include="scripting\bindings\world\ScScenario.hpp" />
     <ClInclude Include="scripting\bindings\world\ScTile.hpp" />
     <ClInclude Include="scripting\bindings\world\ScTileElement.hpp" />
-    <ClInclude Include="scripting\Duktape.hpp" />
+    <ClInclude Include="scripting\bindings\world\ScWeather.hpp" />
     <ClInclude Include="scripting\HookEngine.h" />
     <ClInclude Include="scripting\IconNames.hpp" />
     <ClInclude Include="scripting\Plugin.h" />
     <ClInclude Include="scripting\ScriptEngine.h" />
+    <ClInclude Include="scripting\ScriptUtil.hpp" />
     <ClInclude Include="scripting\SoundNames.hpp" />
     <ClInclude Include="SpriteIds.h" />
     <ClInclude Include="System.hpp" />
@@ -656,7 +674,6 @@
     <ClInclude Include="windows\Intent.h" />
     <ClInclude Include="windows\TileInspectorGlobals.h" />
     <ClInclude Include="world\Banner.h" />
-    <ClInclude Include="world\Climate.h" />
     <ClInclude Include="world\ConstructionClearance.h" />
     <ClInclude Include="world\Entrance.h" />
     <ClInclude Include="world\Footpath.h" />
@@ -675,6 +692,7 @@
     <ClInclude Include="world\TileElementsView.h" />
     <ClInclude Include="world\TileInspector.h" />
     <ClInclude Include="world\TilePointerIndex.hpp" />
+    <ClInclude Include="world\Weather.h" />
     <ClInclude Include="world\map_generator\HeightMap.hpp" />
     <ClInclude Include="world\map_generator\MapGen.h" />
     <ClInclude Include="world\map_generator\MapHelpers.h" />
@@ -865,7 +883,6 @@
     <ClCompile Include="drawing\LightFX.cpp" />
     <ClCompile Include="drawing\Line.cpp" />
     <ClCompile Include="drawing\NewDrawing.cpp" />
-    <ClCompile Include="drawing\Weather.cpp" />
     <ClCompile Include="drawing\Rectangle.cpp" />
     <ClCompile Include="drawing\RenderTarget.cpp" />
     <ClCompile Include="drawing\ScrollingText.cpp" />
@@ -874,6 +891,7 @@
     <ClCompile Include="drawing\TextColour.cpp" />
     <ClCompile Include="drawing\TTF.cpp" />
     <ClCompile Include="drawing\TTFSDLPort.cpp" />
+    <ClCompile Include="drawing\WeatherDrawer.cpp" />
     <ClCompile Include="drawing\X8DrawingEngine.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="EditorObjectSelectionSession.cpp" />
@@ -976,6 +994,7 @@
     <ClCompile Include="paint\Paint.Entity.cpp" />
     <ClCompile Include="paint\Painter.cpp" />
     <ClCompile Include="paint\PaintHelpers.cpp" />
+    <ClCompile Include="paint\entity\Paint.Balloon.cpp" />
     <ClCompile Include="paint\entity\Paint.Guest.cpp" />
     <ClCompile Include="paint\entity\Paint.Peep.cpp" />
     <ClCompile Include="paint\entity\Paint.Staff.cpp" />
@@ -1070,6 +1089,8 @@
     <ClCompile Include="paint\track\water\RiverRapids.cpp" />
     <ClCompile Include="paint\track\water\SplashBoats.cpp" />
     <ClCompile Include="paint\track\water\SubmarineRide.cpp" />
+    <ClCompile Include="paint\track\TrackPaintGeneric.cpp" />
+    <ClCompile Include="paint\track_pieces\QuarterHelix.cpp" />
     <ClCompile Include="paint\vehicle\VehiclePaint.cpp" />
     <ClCompile Include="paint\vehicle\Vehicle.LaunchedFreefall.cpp" />
     <ClCompile Include="paint\vehicle\Vehicle.MiniGolf.cpp" />
@@ -1078,6 +1099,7 @@
     <ClCompile Include="paint\vehicle\Vehicle.RiverRapids.cpp" />
     <ClCompile Include="paint\vehicle\Vehicle.RotoDrop.cpp" />
     <ClCompile Include="paint\vehicle\Vehicle.SplashBoats.cpp" />
+    <ClCompile Include="paint\vehicle\Vehicle.ClassicMiniSpinning.cpp" />
     <ClCompile Include="paint\vehicle\Vehicle.Submarine.cpp" />
     <ClCompile Include="paint\vehicle\Vehicle.VirginiaReel.cpp" />
     <ClCompile Include="paint\VirtualFloor.cpp" />
@@ -1112,6 +1134,7 @@
     <ClCompile Include="rct2\T6Importer.cpp" />
     <ClCompile Include="ReplayManager.cpp" />
     <ClCompile Include="ride\ted\PitchAndRoll.cpp" />
+    <ClCompile Include="ride\ted\TrackElemType.cpp" />
     <ClCompile Include="ride\CableLift.cpp" />
     <ClCompile Include="ride\CarEntry.cpp" />
     <ClCompile Include="ride\MazeCost.cpp" />
@@ -1128,6 +1151,7 @@
     <ClCompile Include="ride\TrackDesign.cpp" />
     <ClCompile Include="ride\TrackDesignRepository.cpp" />
     <ClCompile Include="ride\TrackDesignSave.cpp" />
+    <ClCompile Include="ride\TrackIteration.cpp" />
     <ClCompile Include="ride\TrackPaint.cpp" />
     <ClCompile Include="ride\TrackStyle.cpp" />
     <ClCompile Include="ride\TrainManager.cpp" />
@@ -1175,6 +1199,7 @@
     <ClCompile Include="scenes\title\TitleSequence.cpp" />
     <ClCompile Include="scenes\title\TitleSequenceManager.cpp" />
     <ClCompile Include="scripting\bindings\entity\ScBalloon.cpp" />
+    <ClCompile Include="scripting\bindings\entity\ScEntity.cpp" />
     <ClCompile Include="scripting\bindings\entity\ScGuest.cpp" />
     <ClCompile Include="scripting\bindings\entity\ScLitter.cpp" />
     <ClCompile Include="scripting\bindings\entity\ScMoneyEffect.cpp" />
@@ -1207,7 +1232,6 @@
     <ClCompile Include="Version.cpp" />
     <ClCompile Include="windows\Intent.cpp" />
     <ClCompile Include="world\Banner.cpp" />
-    <ClCompile Include="world\Climate.cpp" />
     <ClCompile Include="world\ConstructionClearance.cpp" />
     <ClCompile Include="world\Entrance.cpp" />
     <ClCompile Include="world\Footpath.cpp" />
@@ -1219,6 +1243,7 @@
     <ClCompile Include="world\Scenery.cpp" />
     <ClCompile Include="world\SurfaceData.cpp" />
     <ClCompile Include="world\TileInspector.cpp" />
+    <ClCompile Include="world\Weather.cpp" />
     <ClCompile Include="world\map_generator\MapGen.cpp" />
     <ClCompile Include="world\map_generator\MapHelpers.cpp" />
     <ClCompile Include="world\map_generator\PngTerrainGenerator.cpp" />
@@ -1237,11 +1262,15 @@
     <ClCompile Include="world\tile_element\TrackElement.cpp" />
     <ClCompile Include="world\tile_element\WallElement.cpp" />
     <ClCompile Include="world\Wall.cpp" />
-    <ClCompile Include="..\thirdparty\duktape\duktape.cpp">
+    <ClCompile Include="..\thirdparty\quickjs-ng\quickjs-amalgam.c">
+      <CompileAs>CompileAsC</CompileAs>
+      <LanguageStandard_C>stdc11</LanguageStandard_C>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <ForcedIncludeFiles>
       </ForcedIncludeFiles>
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <SDLCheck>false</SDLCheck>
+      <AdditionalOptions>/experimental:c11atomics %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

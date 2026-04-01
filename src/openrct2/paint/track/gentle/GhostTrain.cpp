@@ -13,6 +13,7 @@
 #include "../../Paint.h"
 #include "../../support/MetalSupports.h"
 #include "../../support/WoodenSupports.h"
+#include "../../tile_element/Paint.Tunnel.h"
 #include "../../tile_element/Segment.h"
 #include "../../track/Segment.h"
 #include "../../track/Support.h"
@@ -20,12 +21,6 @@
 using namespace OpenRCT2;
 
 static constexpr TunnelGroup kTunnelGroupIncline = TunnelGroup::Standard;
-
-void TrackPaintUtilLeftQuarterTurn1TileTunnel(
-    PaintSession& session, Direction direction, uint16_t baseHeight, int8_t startOffset, TunnelType startTunnel,
-    int8_t endOffset, TunnelType endTunnel);
-void TrackPaintUtilRightQuarterTurn3TilesTunnel(
-    PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence, TunnelType tunnelType);
 
 enum
 {

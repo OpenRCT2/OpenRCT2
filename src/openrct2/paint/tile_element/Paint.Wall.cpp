@@ -21,7 +21,6 @@
 #include "../../localisation/StringIds.h"
 #include "../../object/WallSceneryEntry.h"
 #include "../../profiling/Profiling.h"
-#include "../../ride/Track.h"
 #include "../../ride/TrackDesign.h"
 #include "../../world/Scenery.h"
 #include "../../world/TileInspector.h"

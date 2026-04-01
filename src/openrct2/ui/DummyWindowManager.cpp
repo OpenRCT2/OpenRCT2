@@ -86,6 +86,7 @@ namespace OpenRCT2::Ui
         void CloseAllExceptFlags(WindowFlags flags) override {};
         void CloseAllExceptNumberAndClass(WindowNumber number, WindowClass cls) override {};
         void CloseConstructionWindows() override {};
+        void Cleanup() override {};
 
         WindowBase* FindByClass(WindowClass cls) override
         {

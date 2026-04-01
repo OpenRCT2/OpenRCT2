@@ -18,6 +18,7 @@
 #include <openrct2/core/BitSet.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/management/Marketing.h>
 #include <openrct2/ride/Ride.h>
@@ -75,6 +76,7 @@ namespace OpenRCT2::Ui::Windows
                 ObjectEntryIndex ShopItemId;
             };
         } Campaign;
+        u8string _dropdownCaption{};
 
         static bool RideValueCompare(const RideId& a, const RideId& b)
         {
@@ -326,10 +328,8 @@ namespace OpenRCT2::Ui::Windows
                         auto curRide = GetRide(Campaign.RideId);
                         if (curRide != nullptr)
                         {
-                            widgets[WIDX_RIDE_DROPDOWN].text = STR_STRINGID;
-
-                            auto ft = Formatter::Common();
-                            curRide->formatNameTo(ft);
+                            _dropdownCaption = curRide->getName();
+                            widgets[WIDX_RIDE_DROPDOWN].setString(_dropdownCaption.c_str());
                         }
                     }
                     break;
@@ -364,7 +364,7 @@ namespace OpenRCT2::Ui::Windows
             Widget* spinnerWidget = &widgets[WIDX_WEEKS_SPINNER];
             auto ft = Formatter();
             ft.Add<int16_t>(Campaign.no_weeks);
-            DrawTextBasic(
+            drawText(
                 rt, windowPos + ScreenCoordsXY{ spinnerWidget->left + 1, spinnerWidget->top },
                 Campaign.no_weeks == 1 ? STR_MARKETING_1_WEEK : STR_X_WEEKS, ft, { colours[0] });
 
@@ -373,13 +373,13 @@ namespace OpenRCT2::Ui::Windows
             // Price per week
             ft = Formatter();
             ft.Add<money64>(AdvertisingCampaignPricePerWeek[Campaign.campaign_type]);
-            DrawTextBasic(rt, screenCoords, STR_MARKETING_COST_PER_WEEK, ft);
+            drawText(rt, screenCoords, STR_MARKETING_COST_PER_WEEK, ft);
             screenCoords.y += 13;
 
             // Total price
             ft = Formatter();
             ft.Add<money64>(AdvertisingCampaignPricePerWeek[Campaign.campaign_type] * Campaign.no_weeks);
-            DrawTextBasic(rt, screenCoords, STR_MARKETING_TOTAL_COST, ft);
+            drawText(rt, screenCoords, STR_MARKETING_TOTAL_COST, ft);
         }
 
         int16_t getCampaignType() const

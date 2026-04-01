@@ -12,7 +12,6 @@
 #include "../../../SpriteIds.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
-#include "../../Track.h"
 
 // clang-format off
 namespace OpenRCT2
@@ -36,7 +35,7 @@ constexpr RideTypeDescriptor CrookedHouseRTD =
     .DefaultMode = RideMode::crookedHouse,
     .Naming = { STR_RIDE_NAME_CROOKED_HOUSE, STR_RIDE_DESCRIPTION_CROOKED_HOUSE },
     .NameConvention = { RideComponentType::Building, RideComponentType::Structure, RideComponentType::Station },
-    .AvailableBreakdowns = 0,
+    .availableBreakdowns = {},
     .Heights = { 16, 96, 3, 2, },
     .MaxMass = 255,
     .LiftData = { Audio::SoundId::null, 5, 5 },

@@ -11,7 +11,6 @@
 
 #include "../../RideData.h"
 #include "../../ShopItem.h"
-#include "../../Track.h"
 
 // clang-format off
 namespace OpenRCT2
@@ -35,7 +34,7 @@ constexpr RideTypeDescriptor FirstAidRTD =
     .OperatingSettings = { 8, 8 },
     .Naming = { STR_RIDE_NAME_FIRST_AID, STR_RIDE_DESCRIPTION_FIRST_AID },
     .NameConvention = { RideComponentType::Car, RideComponentType::Building, RideComponentType::Station },
-    .AvailableBreakdowns = 0,
+    .availableBreakdowns = {},
     .Heights = { 12, kDefaultFirstAidHeight, 0, 0, },
     .MaxMass = 255,
     .LiftData = { Audio::SoundId::null, 5, 5 },

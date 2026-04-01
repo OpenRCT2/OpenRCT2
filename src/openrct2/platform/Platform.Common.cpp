@@ -91,6 +91,51 @@ namespace OpenRCT2::Platform
         return outTime;
     }
 
+#ifndef __ANDROID__
+    AssetCheckResult CheckAssetDirectoryExists([[maybe_unused]] u8string_view path)
+    {
+        return AssetCheckResult::NotApplicable;
+    }
+
+    AssetCheckResult CheckAssetExists([[maybe_unused]] u8string_view path)
+    {
+        return AssetCheckResult::NotApplicable;
+    }
+
+    AssetFileOpenResult OpenAssetFile([[maybe_unused]] u8string_view path)
+    {
+        return AssetFileOpenResult{ AssetCheckResult::NotApplicable, nullptr, 0 };
+    }
+
+    void CloseAssetFile([[maybe_unused]] void* handle)
+    {
+    }
+
+    uint64_t GetAssetPosition([[maybe_unused]] void* handle)
+    {
+        return 0;
+    }
+
+    void SeekAsset([[maybe_unused]] void* handle, [[maybe_unused]] int64_t offset, [[maybe_unused]] int32_t origin)
+    {
+    }
+
+    uint64_t ReadAsset([[maybe_unused]] void* handle, [[maybe_unused]] void* buffer, [[maybe_unused]] uint64_t length)
+    {
+        return 0;
+    }
+
+    uint64_t TryReadAsset([[maybe_unused]] void* handle, [[maybe_unused]] void* buffer, [[maybe_unused]] uint64_t length)
+    {
+        return 0;
+    }
+
+    u8string GetAssetPath()
+    {
+        return {};
+    }
+#endif
+
     std::optional<RCT2Variant> classifyGamePath(std::string_view path)
     {
         auto combinedPath = Path::ResolveCasing(Path::Combine(path, u8"Data", u8"g1.dat"));

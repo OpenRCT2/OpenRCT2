@@ -10,10 +10,13 @@
 #pragma once
 
 #include <array>
+#include <functional>
 #include <openrct2-ui/UiStringIds.h>
+#include <openrct2/Limits.h>
 #include <openrct2/core/EnumUtils.hpp>
 #include <openrct2/core/StringTypes.h>
 #include <openrct2/interface/Window.h>
+#include <optional>
 #include <span>
 
 struct ImageId;
@@ -29,9 +32,13 @@ namespace OpenRCT2::Dropdown
     struct Item;
 
     constexpr StringId kSeparatorString = 0;
-    constexpr int32_t kItemsMaxSize = 512;
+    constexpr int32_t kItemsMaxSize = 1024;
+    static_assert(kItemsMaxSize >= Limits::kMaxRidesInPark);
 
     struct DropdownState;
+
+    using CellDrawFunction = std::function<void(Drawing::RenderTarget&, const Item&, int32_t)>;
+
 } // namespace OpenRCT2::Dropdown
 
 namespace OpenRCT2::Ui::Windows
@@ -54,6 +61,9 @@ namespace OpenRCT2::Ui::Windows
     void WindowDropdownShowImage(
         const ScreenCoordsXY& screenPos, int32_t extray, ColourWithFlags colour, uint8_t flags, int32_t numItems,
         int32_t itemWidth, int32_t itemHeight, int32_t numColumns);
+    void WindowDropdownShowCustom(
+        const ScreenCoordsXY& screenPos, int32_t extraY, ColourWithFlags colour, uint8_t flags,
+        Dropdown::CellDrawFunction drawFunction, int32_t numItems, int32_t itemWidth, int32_t itemHeight, int32_t numColumns);
 
     void WindowDropdownClose();
 
@@ -203,6 +213,8 @@ namespace OpenRCT2::Dropdown
         int32_t lastTooltipHover{};
         int32_t highlightedIndex{};
         int32_t defaultIndex{};
+
+        std::optional<CellDrawFunction> cellDrawFunction;
     };
 
     template<int N>

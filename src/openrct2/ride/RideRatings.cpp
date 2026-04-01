@@ -28,8 +28,8 @@
 #include "RideData.h"
 #include "RideManager.hpp"
 #include "Station.h"
-#include "Track.h"
 #include "TrackData.h"
+#include "TrackIteration.h"
 
 #include <iterator>
 
@@ -404,7 +404,7 @@ static void ride_ratings_update_state_2(RideRating::UpdateState& state)
 
             CoordsXYE trackElement = { state.Proximity, tileElement };
             CoordsXYE nextTrackElement;
-            if (!TrackBlockGetNext(&trackElement, &nextTrackElement, nullptr, nullptr))
+            if (!trackBlockGetNext(&trackElement, &nextTrackElement, nullptr, nullptr))
             {
                 state.State = RIDE_RATINGS_STATE_4;
                 return;
@@ -497,7 +497,7 @@ static void ride_ratings_update_state_5(RideRating::UpdateState& state)
             ride_ratings_score_close_proximity(state, tileElement);
 
             TrackBeginEnd trackBeginEnd;
-            if (!TrackBlockGetPrevious({ state.Proximity, tileElement }, &trackBeginEnd))
+            if (!trackBlockGetPrevious({ state.Proximity, tileElement }, &trackBeginEnd))
             {
                 state.State = RIDE_RATINGS_STATE_CALCULATE;
                 return;
@@ -865,11 +865,11 @@ static void ride_ratings_score_close_proximity(RideRating::UpdateState& state, T
     ride_ratings_score_close_proximity_in_direction(state, inputTileElement, (direction - 1) & 3);
     ride_ratings_score_close_proximity_loops(state, inputTileElement);
 
-    if (TrackTypeIsBrakes(state.ProximityTrackType))
+    if (trackTypeIsBrakes(state.ProximityTrackType))
         state.AmountOfBrakes++;
-    else if (TrackTypeIsBooster(state.ProximityTrackType))
+    else if (trackTypeIsBooster(state.ProximityTrackType))
         state.amountOfBoosters++;
-    else if (TrackTypeIsReverser(state.ProximityTrackType))
+    else if (trackTypeIsReverser(state.ProximityTrackType))
         state.AmountOfReversers++;
 }
 
@@ -1079,19 +1079,19 @@ static void RideRatingsCalculate(RideRating::UpdateState& state, Ride& ride)
             auto originalRatings = ride.ratings;
 
             // Create event args object
-            auto obj = DukObject(ctx);
-            obj.Set("rideId", ride.id.ToUnderlying());
-            obj.Set("excitement", originalRatings.excitement);
-            obj.Set("intensity", originalRatings.intensity);
-            obj.Set("nausea", originalRatings.nausea);
+            JSValue obj = JS_NewObject(ctx);
+            JS_SetPropertyStr(ctx, obj, "rideId", JS_NewInt32(ctx, ride.id.ToUnderlying()));
+            JS_SetPropertyStr(ctx, obj, "excitement", JS_NewInt32(ctx, originalRatings.excitement));
+            JS_SetPropertyStr(ctx, obj, "intensity", JS_NewInt32(ctx, originalRatings.intensity));
+            JS_SetPropertyStr(ctx, obj, "nausea", JS_NewInt32(ctx, originalRatings.nausea));
 
             // Call the subscriptions
-            auto e = obj.Take();
-            hookEngine.Call(HookType::rideRatingsCalculate, e, true);
+            hookEngine.Call(HookType::rideRatingsCalculate, obj, true, true);
 
-            auto scriptExcitement = AsOrDefault(e["excitement"], static_cast<int32_t>(originalRatings.excitement));
-            auto scriptIntensity = AsOrDefault(e["intensity"], static_cast<int32_t>(originalRatings.intensity));
-            auto scriptNausea = AsOrDefault(e["nausea"], static_cast<int32_t>(originalRatings.nausea));
+            auto scriptExcitement = AsOrDefault(ctx, obj, "excitement", static_cast<int32_t>(originalRatings.excitement));
+            auto scriptIntensity = AsOrDefault(ctx, obj, "intensity", static_cast<int32_t>(originalRatings.intensity));
+            auto scriptNausea = AsOrDefault(ctx, obj, "nausea", static_cast<int32_t>(originalRatings.nausea));
+            JS_FreeValue(ctx, obj);
 
             ride.ratings.excitement = std::clamp<int32_t>(scriptExcitement, 0, INT16_MAX);
             ride.ratings.intensity = std::clamp<int32_t>(scriptIntensity, 0, INT16_MAX);

@@ -13,7 +13,6 @@
 #include "../../../drawing/LightFX.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
-#include "../../Track.h"
 
 // clang-format off
 namespace OpenRCT2
@@ -38,7 +37,7 @@ constexpr RideTypeDescriptor DodgemsRTD =
     .OperatingSettings = { 20, 180 },
     .Naming = { STR_RIDE_NAME_DODGEMS, STR_RIDE_DESCRIPTION_DODGEMS },
     .NameConvention = { RideComponentType::Car, RideComponentType::Building, RideComponentType::Station },
-    .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
+    .availableBreakdowns = { Breakdown::safetyCutOut },
     .Heights = { 9, 48, 2, 2, },
     .MaxMass = 255,
     .LiftData = { Audio::SoundId::null, 5, 5 },

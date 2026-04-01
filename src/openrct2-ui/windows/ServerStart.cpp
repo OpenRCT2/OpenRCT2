@@ -19,6 +19,7 @@
     #include <openrct2/config/Config.h>
     #include <openrct2/core/String.hpp>
     #include <openrct2/drawing/Drawing.h>
+    #include <openrct2/drawing/Text.h>
     #include <openrct2/interface/Chat.h>
     #include <openrct2/network/Network.h>
     #include <openrct2/ui/WindowManager.h>
@@ -54,7 +55,7 @@ namespace OpenRCT2::Ui::Windows
         makeWidget({ 120, 52 }, { 173, 13 }, WidgetType::textBox, WindowColour::secondary), // description text box
         makeWidget({ 120, 68 }, { 173, 13 }, WidgetType::textBox, WindowColour::secondary), // greeting text box
         makeWidget({ 120, 84 }, { 173, 13 }, WidgetType::textBox, WindowColour::secondary), // password text box
-        makeSpinnerWidgets({ 120, 100 }, { 173, 12 }, WidgetType::spinner, WindowColour::secondary,STR_SERVER_MAX_PLAYERS_VALUE), // max players (3 widgets)
+        makeSpinnerWidgets({ 120, 100 }, { 173, 12 }, WidgetType::spinner, WindowColour::secondary,kStringIdEmpty), // max players (3 widgets)
         makeWidget({ 6, 117 }, { 287, 14 }, WidgetType::checkbox, WindowColour::secondary, STR_ADVERTISE,STR_ADVERTISE_SERVER_TIP), // advertise checkbox
         makeWidget({ 6, kWindowSize.height - 6 - 13 }, { 101, 14 }, WidgetType::button, WindowColour::secondary,STR_NEW_GAME), // start server button
         makeWidget({ 112, kWindowSize.height - 6 - 13 }, { 101, 14 }, WidgetType::button, WindowColour::secondary, STR_LOAD_GAME) // None
@@ -63,6 +64,8 @@ namespace OpenRCT2::Ui::Windows
 
     class ServerStartWindow final : public Window
     {
+        u8string _maxPlayersCaption{};
+
     public:
         void onOpen() override
         {
@@ -147,9 +150,9 @@ namespace OpenRCT2::Ui::Windows
             ColourSchemeUpdateByClass(this, WindowClass::serverList);
 
             setCheckboxValue(WIDX_ADVERTISE_CHECKBOX, Config::Get().network.advertise);
-            auto ft = Formatter::Common();
-            ft.Increment(18);
-            ft.Add<uint16_t>(Config::Get().network.maxplayers);
+
+            _maxPlayersCaption = std::to_string(Config::Get().network.maxplayers);
+            widgets[WIDX_MAXPLAYERS].setString(_maxPlayersCaption.c_str());
         }
         void onUpdate() override
         {
@@ -234,18 +237,15 @@ namespace OpenRCT2::Ui::Windows
         void onDraw(Drawing::RenderTarget& rt) override
         {
             drawWidgets(rt);
-            DrawTextBasic(rt, windowPos + ScreenCoordsXY{ 6, widgets[WIDX_PORT_INPUT].top }, STR_PORT, {}, { colours[1] });
-            DrawTextBasic(
-                rt, windowPos + ScreenCoordsXY{ 6, widgets[WIDX_NAME_INPUT].top }, STR_SERVER_NAME, {}, { colours[1] });
-            DrawTextBasic(
-                rt, windowPos + ScreenCoordsXY{ 6, widgets[WIDX_DESCRIPTION_INPUT].top }, STR_SERVER_DESCRIPTION, {},
+            drawText(rt, windowPos + ScreenCoordsXY{ 6, widgets[WIDX_PORT_INPUT].top }, STR_PORT, { colours[1] });
+            drawText(rt, windowPos + ScreenCoordsXY{ 6, widgets[WIDX_NAME_INPUT].top }, STR_SERVER_NAME, { colours[1] });
+            drawText(
+                rt, windowPos + ScreenCoordsXY{ 6, widgets[WIDX_DESCRIPTION_INPUT].top }, STR_SERVER_DESCRIPTION,
                 { colours[1] });
-            DrawTextBasic(
-                rt, windowPos + ScreenCoordsXY{ 6, widgets[WIDX_GREETING_INPUT].top }, STR_SERVER_GREETING, {}, { colours[1] });
-            DrawTextBasic(
-                rt, windowPos + ScreenCoordsXY{ 6, widgets[WIDX_PASSWORD_INPUT].top }, STR_PASSWORD, {}, { colours[1] });
-            DrawTextBasic(
-                rt, windowPos + ScreenCoordsXY{ 6, widgets[WIDX_MAXPLAYERS].top }, STR_MAX_PLAYERS, {}, { colours[1] });
+            drawText(
+                rt, windowPos + ScreenCoordsXY{ 6, widgets[WIDX_GREETING_INPUT].top }, STR_SERVER_GREETING, { colours[1] });
+            drawText(rt, windowPos + ScreenCoordsXY{ 6, widgets[WIDX_PASSWORD_INPUT].top }, STR_PASSWORD, { colours[1] });
+            drawText(rt, windowPos + ScreenCoordsXY{ 6, widgets[WIDX_MAXPLAYERS].top }, STR_MAX_PLAYERS, { colours[1] });
         }
 
     private:

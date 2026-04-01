@@ -13,7 +13,6 @@
 #include "../../../drawing/LightFX.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
-#include "../../Track.h"
 
 // clang-format off
 namespace OpenRCT2
@@ -39,7 +38,7 @@ constexpr RideTypeDescriptor ChairliftRTD =
     .OperatingSettings = { 1, 4 },
     .Naming = { STR_RIDE_NAME_CHAIRLIFT, STR_RIDE_DESCRIPTION_CHAIRLIFT },
     .NameConvention = { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station },
-    .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
+    .availableBreakdowns = { Breakdown::safetyCutOut },
     .Heights = { 40, 32, 28, 2, },
     .MaxMass = 18,
     .LiftData = { Audio::SoundId::null, 5, 5 },

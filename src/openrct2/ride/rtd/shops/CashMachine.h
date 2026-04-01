@@ -11,7 +11,6 @@
 
 #include "../../RideData.h"
 #include "../../ShopItem.h"
-#include "../../Track.h"
 
 // clang-format off
 namespace OpenRCT2
@@ -33,7 +32,7 @@ constexpr RideTypeDescriptor CashMachineRTD =
     .DefaultMode = RideMode::shopStall,
     .Naming = { STR_RIDE_NAME_CASH_MACHINE, STR_RIDE_DESCRIPTION_CASH_MACHINE },
     .NameConvention = { RideComponentType::Car, RideComponentType::Building, RideComponentType::Station },
-    .AvailableBreakdowns = 0,
+    .availableBreakdowns = {},
     .Heights = { 12, kDefaultCashMachineHeight, 0, 0, },
     .MaxMass = 255,
     .LiftData = { Audio::SoundId::null, 5, 5 },

@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+OUTPUT_DIR="${1:-}"
+
+if [[ -z "$OUTPUT_DIR" ]]; then
+    echo "Usage: $(basename "$0") <output-dir>" >&2
+    exit 2
+fi
+
+if ! command -v gxc >/dev/null 2>&1; then
+    echo "ERROR: gxc not found in PATH." >&2
+    echo "Download gxc from https://github.com/OpenRCT2/libsawyer/releases" >&2
+    exit 1
+fi
+
+mkdir -p "$OUTPUT_DIR"
+
+gxc build "$OUTPUT_DIR/g2.dat" "$ROOT_DIR/resources/g2/sprites.json"
+gxc build "$OUTPUT_DIR/palettes.dat" "$ROOT_DIR/resources/palettes/sprites.json"
+gxc build "$OUTPUT_DIR/fonts.dat" "$ROOT_DIR/resources/fonts/sprites.json"
+gxc build "$OUTPUT_DIR/tracks.dat" "$ROOT_DIR/resources/tracks/sprites.json"

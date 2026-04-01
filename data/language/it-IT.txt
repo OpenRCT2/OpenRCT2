@@ -240,7 +240,6 @@ STR_0832    :Ruota di 90° in senso orario
 STR_0833    :Metti in pausa
 STR_0834    :Opzioni di gioco e del disco
 STR_0839    :{UINT16} × {UINT16}
-STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} × {UINT16}
 STR_0847    :Informazioni su “OpenRCT2”
 STR_0850    :{WINDOW_COLOUR_2}Copyright © 2002 Chris Sawyer, tutti i diritti riservati
 STR_0851    :{WINDOW_COLOUR_2}Design e programmazione di Chris Sawyer
@@ -251,16 +250,6 @@ STR_0855    :{WINDOW_COLOUR_2}Rappresentanza di Jacqui Lyons presso Marjacq Ltd.
 STR_0856    :{WINDOW_COLOUR_2}Grazie a: 
 STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth e John Wardley
 STR_0865    :{STRINGID}
-STR_0866    :{POP16}{STRINGID}
-STR_0867    :{POP16}{POP16}{STRINGID}
-STR_0868    :{POP16}{POP16}{POP16}{STRINGID}
-STR_0869    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0870    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0872    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0873    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0874    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0875    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0876    :{BLACK}▼
 STR_0877    :Troppo basso!
 STR_0878    :Troppo alto!
@@ -279,7 +268,7 @@ STR_0892    :Schermata salvata su disco come “{STRINGID}”
 STR_0893    :Cattura della schermata fallita!
 STR_0894    :Area dati per i paesaggi piena!
 STR_0895    :Non si può costruire contemporaneamente sopra e sotto il livello del terreno
-STR_0896    :{POP16}{POP16}{STRINGID} Costruzione
+STR_0896    :{STRINGID} Costruzione
 STR_0897    :Direzione
 STR_0898    :Curva a sinistra
 STR_0899    :Curva a destra
@@ -404,8 +393,6 @@ STR_1018    :Impossibile effettuare modifiche…
 STR_1019    :Impossibile effettuare modifiche…
 STR_1020    :Impossibile effettuare modifiche…
 STR_1021    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_1022    :{POP16}{POP16}{POP16}{COMMA16} carrozza per treno
-STR_1023    :{POP16}{POP16}{POP16}{COMMA16} carrozze per treno
 STR_1024    :{COMMA16} carrozza per treno
 STR_1025    :{COMMA16} carrozze per treno
 STR_1026    :Piattaforma della stazione troppo lunga!
@@ -515,9 +502,7 @@ STR_1128    :Frenato dai freni di blocco
 STR_1129    :Tutti i veicoli degli stessi colori
 STR_1130    :Colori diversi per {STRINGID}
 STR_1131    :Colori diversi per ogni veicolo
-STR_1132    :Veicolo {POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1133    :Veicolo {POP16}{COMMA16}
-STR_1134    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID} {COMMA16}
+STR_1133    :Veicolo {COMMA16}
 STR_1135    :{STRINGID} {COMMA16}
 STR_1136    :Scegli il colore principale
 STR_1137    :Scegli il colore secondario 1
@@ -713,7 +698,6 @@ STR_1327    :Ruota gli oggetti di 90°
 STR_1328    :Prima è necessario livellare il terreno
 STR_1329    :{WINDOW_COLOUR_2}Veloc. di lancio:
 STR_1330    :Massima velocità alla partenza dalla stazione
-STR_1331    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_1332    :{VELOCITY}
 STR_1333    :{STRINGID} - {STRINGID}{POP16}
 STR_1334    :{STRINGID} - {STRINGID} {COMMA16}
@@ -811,7 +795,6 @@ STR_1425    :Sentiero
 STR_1426    :Corsia d’attesa
 STR_1427    :{WINDOW_COLOUR_2}Clienti: {BLACK}{COMMA32} l’ora
 STR_1428    :{WINDOW_COLOUR_2}Prezzo biglietto:
-STR_1429    :{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1430    :Gratis
 STR_1431    :Sta camminando
 STR_1432    :In cammino verso {STRINGID}
@@ -1055,7 +1038,6 @@ STR_1671    :{WINDOW_COLOUR_2}Profitto totale: {BLACK}{CURRENCY2DP}
 STR_1672    :Freni
 STR_1673    :Attivatore controllo di rotazione
 STR_1674    :Velocità freno
-STR_1675    :{POP16}{VELOCITY}
 STR_1676    :Fissa un limite di velocità per i freni
 STR_1677    :{WINDOW_COLOUR_2}Popolarità: {BLACK}Ignota
 STR_1678    :{WINDOW_COLOUR_2}Popolarità: {BLACK}{COMMA16}%
@@ -1115,18 +1097,15 @@ STR_1732    :Costruisci
 STR_1733    :Modalità
 STR_1734    :{WINDOW_COLOUR_2}Numero di giri:
 STR_1735    :Numero di giri del circuito
-STR_1736    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1738    :Impossibile cambiare il numero di giri…
 STR_1739    :Corsa vinta dal visitatore {INT32}
 STR_1740    :Corsa vinta da {STRINGID}
 STR_1741    :Ancora non è costruito!
 STR_1742    :{WINDOW_COLOUR_2}Max. persone a bordo:
 STR_1743    :Numero massimo di persone che possono salire contemporaneamente su quest’attrazione
-STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1746    :Impossibile modificarlo…
 STR_1747    :{WINDOW_COLOUR_2}Tempo limite:
 STR_1748    :Limite di tempo per attrazione
-STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DURATION}
 STR_1751    :Impossibile cambiare il limite di tempo per attrazione…
 STR_1752    :Mostra la lista completa dei visitatori del parco
 STR_1753    :Mostra il riassunto dei visitatori del parco
@@ -1147,7 +1126,6 @@ STR_1767    :Galleria rotante
 STR_1768    :Impossibile cambiare il numero di oscillazioni…
 STR_1769    :{WINDOW_COLOUR_2}Numero oscillaz.:
 STR_1770    :Numero di oscillazioni complete
-STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1773    :Può esserci soltanto una sezione di foto-in-corsa per attrazione
 STR_1774    :Può esserci soltanto una salita per il traino con cavo per attrazione
 STR_1777    :Musica attrazioni
@@ -1159,7 +1137,6 @@ STR_1794    :Sta riparando {STRINGID}
 STR_1795    :Sta rispondendo a una chiamata via radio
 STR_1796    :È guasto e ha bisogno di riparazioni
 STR_1798    :Vortice
-STR_1799    :{POP16}{POP16}{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1800    :Salvavita
 STR_1801    :Freni bloccati (chiusi)
 STR_1802    :Freni bloccati (aperti)
@@ -1231,7 +1208,6 @@ STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :Impossibile modificare il numero di rotazioni…
 STR_1869    :{WINDOW_COLOUR_2}Numero rotazioni:
 STR_1870    :Numero di rotazioni complete
-STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Entrate: {BLACK}{CURRENCY} all’ora
 STR_1874    :{WINDOW_COLOUR_2}Profitto: {BLACK}{CURRENCY} all’ora
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Ispeziona le attrazioni
@@ -1275,7 +1251,6 @@ STR_1913    :{BLACK}+{CURRENCY2DP}
 STR_1914    :{BLACK}{CURRENCY2DP}
 STR_1915    :{RED}{CURRENCY2DP}
 STR_1916    :{WINDOW_COLOUR_2}Prestito:
-STR_1917    :{POP16}{POP16}{POP16}{CURRENCY}
 STR_1918    :La banca non concede ulteriori prestiti!
 STR_1919    :Fondi insufficienti!
 STR_1920    :Il prestito non può essere restituito!
@@ -1313,7 +1288,6 @@ STR_1953    :Marketing
 STR_1954    :Fondi per la ricerca
 STR_1955    :{WINDOW_COLOUR_2}Numero dei circuiti:
 STR_1956    :Media dei circuiti del tracciato per attrazione
-STR_1957    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1958    :{COMMA16}
 STR_1959    :Impossibile modificare il numero dei circuiti…
 STR_1960    :{WINDOW_COLOUR_2}Prezzo dei palloncini:
@@ -2110,7 +2084,6 @@ STR_3092    :Non ti è permesso spostare o modificare la stazione di quest’att
 STR_3093    :{WINDOW_COLOUR_2}Preferito: {BLACK}{STRINGID}
 STR_3094    :N/A
 STR_3095    :{WINDOW_COLOUR_2}Velocità catena di traino:
-STR_3096    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_3097    :Seleziona la velocità della catena di traino sulla salita
 STR_3099    :Scegli il colore
 STR_3100    :Scegli il secondo colore
@@ -2203,7 +2176,6 @@ STR_3208    :Gestione tracciati salvati
 STR_3209    :Indietro al passo precedente:
 STR_3210    :Avanti al passo successivo:
 STR_3211    :Dimens. mappa:
-STR_3212    :{POP16}{COMMA16}
 STR_3213    :Impossibile rimpicciolire ulteriormente la mappa
 STR_3214    :Impossibile ingrandire ulteriormente la mappa
 STR_3215    :Troppo vicino al bordo della mappa
@@ -2997,12 +2969,11 @@ STR_5914    :Attrazione sconosciuta
 STR_5915    :Giocatore
 STR_5916    :{COMMA16} giocatore
 STR_5917    :{COMMA16} giocatori
-STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_5919    :{COMMA16}
 STR_5920    :Mostra effetti climatici
 STR_5921    :Se attivo, saranno mostrati pioggia e colori spenti durante i temporali.
-STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}Massimo {STRINGID}
-STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}Massimo {COMMA16} {STRINGID} per treno
+STR_5922    :Massimo {STRINGID}
+STR_5923    :Massimo {COMMA16} {STRINGID} per treno
 STR_5924    :Dettagli superficie
 STR_5925    :Dettagli sentiero
 STR_5926    :Dettagli percorso
@@ -3388,7 +3359,6 @@ STR_6355    :Densità alta
 STR_6356    :Fa apparire anatre se il parco contiene acqua
 STR_6357    :Rimuove tutte le anatre dalla mappa
 STR_6358    :Pagina {UINT16}
-STR_6359    :{POP16}{POP16}Pagina {UINT16}
 STR_6361    :Attiva effetti luce su attrazioni (sperimentale)
 STR_6362    :Se abilitato, i veicoli delle attrazioni con percorso saranno illuminati di notte.
 STR_6363    :Testo copiato negli appunti

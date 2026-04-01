@@ -35,10 +35,10 @@
     #include <openrct2/drawing/IDrawingEngine.h>
     #include <openrct2/drawing/InvalidationGrid.h>
     #include <openrct2/drawing/LightFX.h>
-    #include <openrct2/drawing/Weather.h>
+    #include <openrct2/drawing/WeatherDrawer.h>
     #include <openrct2/interface/Screenshot.h>
     #include <openrct2/ui/UiContext.h>
-    #include <openrct2/world/Climate.h>
+    #include <openrct2/world/Weather.h>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
@@ -127,7 +127,8 @@ public:
     void DrawSpriteSolid(RenderTarget& rt, ImageId image, int32_t x, int32_t y, PaletteIndex colour) override;
     void DrawGlyph(RenderTarget& rt, ImageId image, int32_t x, int32_t y, const PaletteMap& palette) override;
     void DrawTTFBitmap(
-        RenderTarget& rt, TextDrawInfo* info, TTFSurface* surface, int32_t x, int32_t y, uint8_t hintingThreshold) override;
+        RenderTarget& rt, const TextDrawInfo& info, TTFSurface* surface, int32_t x, int32_t y,
+        uint8_t hintingThreshold) override;
 
     void FlushCommandBuffers();
 
@@ -368,7 +369,7 @@ public:
 
     void PaintWindows() override
     {
-        if (ClimateHasWeatherEffect() || gPaintForceRedraw)
+        if (Weather::hasWeatherEffect() || gPaintForceRedraw)
         {
             WindowUpdateAllViewports();
             // OpenGL doesn't support restoring pixels, always redraw.
@@ -1163,7 +1164,7 @@ void OpenGLDrawingContext::DrawGlyph(RenderTarget& rt, const ImageId image, int3
 }
 
 void OpenGLDrawingContext::DrawTTFBitmap(
-    RenderTarget& rt, TextDrawInfo* info, TTFSurface* surface, int32_t x, int32_t y, uint8_t hintingThreshold)
+    RenderTarget& rt, const TextDrawInfo& info, TTFSurface* surface, int32_t x, int32_t y, uint8_t hintingThreshold)
 {
     Guard::Assert(_inDraw == true);
 
@@ -1203,7 +1204,7 @@ void OpenGLDrawingContext::DrawTTFBitmap(
     right += clip.GetLeft() - rt.x;
     bottom += clip.GetTop() - rt.y;
 
-    if (info->colourFlags.has(ColourFlag::withOutline))
+    if (info.colourFlags.has(ColourFlag::withOutline))
     {
         std::array<ivec4, 4> boundsArr = { {
             { left + 1, top, right + 1, bottom },
@@ -1221,13 +1222,13 @@ void OpenGLDrawingContext::DrawTTFBitmap(
             command.texMaskBounds = { 0.0f, 0.0f, 0.0f, 0.0f };
             command.palettes = { 0, 0, 0 };
             command.flags = DrawRectCommand::FLAG_TTF_TEXT;
-            command.colour = static_cast<GLuint>(info->palette.shadowOutline);
+            command.colour = static_cast<GLuint>(info.palette.shadowOutline);
             command.bounds = b;
             command.depth = _drawCount++;
             command.zoom = 1.0f;
         }
     }
-    if (info->colourFlags.has(ColourFlag::inset))
+    if (info.colourFlags.has(ColourFlag::inset))
     {
         DrawRectCommand& command = _commandBuffers.rects.allocate();
         command.clip = { clip.GetLeft(), clip.GetTop(), clip.GetRight(), clip.GetBottom() };
@@ -1237,7 +1238,7 @@ void OpenGLDrawingContext::DrawTTFBitmap(
         command.texMaskBounds = { 0.0f, 0.0f, 0.0f, 0.0f };
         command.palettes = { 0, 0, 0 };
         command.flags = DrawRectCommand::FLAG_TTF_TEXT;
-        command.colour = static_cast<GLuint>(info->palette.shadowOutline);
+        command.colour = static_cast<GLuint>(info.palette.shadowOutline);
         command.bounds = { left + 1, top + 1, right + 1, bottom + 1 };
         command.depth = _drawCount++;
         command.zoom = 1.0f;
@@ -1251,7 +1252,7 @@ void OpenGLDrawingContext::DrawTTFBitmap(
     command.texMaskBounds = { 0.0f, 0.0f, 0.0f, 0.0f };
     command.palettes = { 0, 0, 0 };
     command.flags = DrawRectCommand::FLAG_TTF_TEXT | (hintingThreshold << 8);
-    command.colour = static_cast<GLuint>(info->palette.fill);
+    command.colour = static_cast<GLuint>(info.palette.fill);
     command.bounds = { left, top, right, bottom };
     command.depth = _drawCount++;
     command.zoom = 1.0f;

@@ -17,7 +17,10 @@
 #include <string_view>
 #include <unordered_map>
 
-struct Peep;
+namespace OpenRCT2
+{
+    struct Peep;
+}
 
 namespace OpenRCT2::Network
 {

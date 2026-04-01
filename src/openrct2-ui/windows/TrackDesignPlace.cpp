@@ -24,6 +24,7 @@
 #include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/paint/VirtualFloor.h>
 #include <openrct2/ride/RideConstruction.h>
@@ -50,7 +51,7 @@ using OpenRCT2::GameActions::CommandFlags;
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr StringId kWindowTitle = STR_STRING;
+    static constexpr StringId kWindowTitle = kStringIdNone;
     static constexpr ScreenSize kWindowSize = { 200, 124 };
     static constexpr ScreenSize kTrackMiniPreviewSize = { 168, 78 };
 
@@ -126,7 +127,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onClose() override
         {
-            ClearProvisional();
+            clearProvisional();
             ViewportSetVisibility(ViewportVisibility::standard);
             gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
             gMapSelectFlags.unset(MapSelectFlag::enableArrow);
@@ -144,7 +145,7 @@ namespace OpenRCT2::Ui::Windows
                     close();
                     break;
                 case WIDX_ROTATE:
-                    ClearProvisional();
+                    clearProvisional();
                     _currentTrackPieceDirection = (_currentTrackPieceDirection + 1) & 3;
                     invalidate();
                     _placementLoc.SetNull();
@@ -196,16 +197,16 @@ namespace OpenRCT2::Ui::Windows
             CoordsXY mapCoords = ViewportInteractionGetTileStartAtCursor(targetScreenCoords);
             if (mapCoords.IsNull())
             {
-                ClearProvisional();
+                clearProvisional();
                 return;
             }
 
             // Get base Z position
             // NB: always use the actual screenCoords here, not the shifted ones
-            auto maybeMapZ = GetBaseZ(mapCoords, screenCoords);
+            auto maybeMapZ = getBaseZ(mapCoords, screenCoords);
             if (!maybeMapZ.has_value())
             {
-                ClearProvisional();
+                clearProvisional();
                 return;
             }
 
@@ -223,9 +224,9 @@ namespace OpenRCT2::Ui::Windows
             money64 cost = kMoney64Undefined;
             if (GameIsNotPaused() || getGameState().cheats.buildInPauseMode)
             {
-                ClearProvisional();
+                clearProvisional();
                 CoordsXYZD ghostTrackLoc = trackLoc;
-                auto res = FindValidTrackDesignPlaceHeight(ghostTrackLoc, { CommandFlag::noSpend, CommandFlag::ghost });
+                auto res = findValidTrackDesignPlaceHeight(ghostTrackLoc, { CommandFlag::noSpend, CommandFlag::ghost });
 
                 if (res.error == GameActions::Status::ok)
                 {
@@ -262,7 +263,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
-            ClearProvisional();
+            clearProvisional();
             gMapSelectFlags.unset(MapSelectFlag::enable);
             gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
             gMapSelectFlags.unset(MapSelectFlag::enableArrow);
@@ -276,21 +277,21 @@ namespace OpenRCT2::Ui::Windows
             CoordsXY mapCoords = ViewportInteractionGetTileStartAtCursor(targetScreenCoords);
             if (mapCoords.IsNull())
             {
-                ClearProvisional();
+                clearProvisional();
                 return;
             }
 
             // NB: always use the actual screenCoords here, not the shifted ones
-            auto maybeMapZ = GetBaseZ(mapCoords, screenCoords);
+            auto maybeMapZ = getBaseZ(mapCoords, screenCoords);
             if (!maybeMapZ.has_value())
             {
-                ClearProvisional();
+                clearProvisional();
                 return;
             }
 
             // Try increasing Z until a feasible placement is found
             CoordsXYZ trackLoc = { mapCoords, maybeMapZ.value() };
-            auto res = FindValidTrackDesignPlaceHeight(trackLoc, {});
+            auto res = findValidTrackDesignPlaceHeight(trackLoc, {});
             if (res.error != GameActions::Status::ok)
             {
                 // Unable to build track
@@ -346,7 +347,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onToolAbort(WidgetIndex widgetIndex) override
         {
-            ClearProvisional();
+            clearProvisional();
         }
 
         void onViewportRotate() override
@@ -361,8 +362,11 @@ namespace OpenRCT2::Ui::Windows
 
         void onDraw(Drawing::RenderTarget& rt) override
         {
-            auto ft = Formatter::Common();
-            ft.Add<char*>(_trackDesign->gameStateData.name.c_str());
+            if (_trackDesign != nullptr)
+                widgets[WIDX_TITLE].setString(_trackDesign->gameStateData.name.c_str());
+            else
+                widgets[WIDX_TITLE].setString("");
+
             WindowDrawWidgets(*this, rt);
 
             // Draw mini tile preview
@@ -383,11 +387,11 @@ namespace OpenRCT2::Ui::Windows
             // Price
             if (_placementCost != kMoney64Undefined && !(getGameState().park.flags & PARK_FLAGS_NO_MONEY))
             {
-                ft = Formatter();
+                auto ft = Formatter();
                 ft.Add<money64>(_placementCost);
                 const auto& priceWidget = widgets[WIDX_PRICE];
                 const auto priceCoords = windowPos + ScreenCoordsXY{ priceWidget.left, priceWidget.top };
-                DrawTextBasic(rt, priceCoords, STR_COST_LABEL, ft, { TextAlignment::centre });
+                drawText(rt, priceCoords, STR_COST_LABEL, ft, { TextAlignment::centre });
             }
         }
 
@@ -443,11 +447,11 @@ namespace OpenRCT2::Ui::Windows
                 const auto& rtd = GetRideTypeDescriptor(td.trackAndVehicle.rtdIndex);
                 if (rtd.specialType == RtdSpecialType::maze)
                 {
-                    DrawMiniPreviewMaze(td, pass, origin, min, max);
+                    drawMiniPreviewMaze(td, pass, origin, min, max);
                 }
                 else
                 {
-                    DrawMiniPreviewTrack(td, pass, origin, min, max);
+                    drawMiniPreviewTrack(td, pass, origin, min, max);
                 }
             }
         }
@@ -459,7 +463,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
     private:
-        void ClearProvisional()
+        void clearProvisional()
         {
             if (_hasPlacementGhost)
             {
@@ -474,7 +478,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        std::optional<int32_t> GetBaseZ([[maybe_unused]] const CoordsXY& loc, const ScreenCoordsXY& screenCoords)
+        std::optional<int32_t> getBaseZ([[maybe_unused]] const CoordsXY& loc, const ScreenCoordsXY& screenCoords)
         {
             CoordsXY mapCoords = ViewportInteractionGetTileStartAtCursor(screenCoords);
             auto surfaceElement = MapGetSurfaceElementAt(mapCoords);
@@ -593,7 +597,7 @@ namespace OpenRCT2::Ui::Windows
                        *_trackDesign, RideGetTemporaryForPreview(), { mapCoords, _trackPlaceZ, _currentTrackPieceDirection });
         }
 
-        void DrawMiniPreviewEntrances(
+        void drawMiniPreviewEntrances(
             const TrackDesign& td, int32_t pass, const CoordsXY& origin, CoordsXY& min, CoordsXY& max, Direction rotation)
         {
             for (const auto& entrance : td.entranceElements)
@@ -609,10 +613,10 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else
                 {
-                    auto pixelPosition = DrawMiniPreviewGetPixelPosition(rotatedAndOffsetEntrance);
-                    if (DrawMiniPreviewIsPixelInBounds(pixelPosition))
+                    auto pixelPosition = drawMiniPreviewGetPixelPosition(rotatedAndOffsetEntrance);
+                    if (drawMiniPreviewIsPixelInBounds(pixelPosition))
                     {
-                        PaletteIndex* pixel = DrawMiniPreviewGetPixelPtr(pixelPosition);
+                        PaletteIndex* pixel = drawMiniPreviewGetPixelPtr(pixelPosition);
                         auto colour = entrance.isExit ? kPaletteIndexColourExit : kPaletteIndexColourEntrance;
                         for (int32_t i = 0; i < 4; i++)
                         {
@@ -626,7 +630,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawMiniPreviewTrack(const TrackDesign& td, int32_t pass, const CoordsXY& origin, CoordsXY& min, CoordsXY& max)
+        void drawMiniPreviewTrack(const TrackDesign& td, int32_t pass, const CoordsXY& origin, CoordsXY& min, CoordsXY& max)
         {
             const uint8_t rotation = (_currentTrackPieceDirection + GetCurrentRotation()) & 3;
 
@@ -636,9 +640,9 @@ namespace OpenRCT2::Ui::Windows
             {
                 // Follow a single track piece shape
                 const auto& ted = GetTrackElementDescriptor(trackElement.type);
-                for (size_t sequenceIndex = 0; sequenceIndex < ted.numSequences; sequenceIndex++)
+                for (size_t sequenceIndex = 0; sequenceIndex < ted.sequenceData.numSequences; sequenceIndex++)
                 {
-                    const auto& trackBlock = ted.sequences[sequenceIndex].clearance;
+                    const auto& trackBlock = ted.sequenceData.sequences[sequenceIndex].clearance;
                     auto rotatedAndOffsetTrackBlock = curTrackStart
                         + CoordsXY{ trackBlock.x, trackBlock.y }.Rotate(curTrackRotation);
 
@@ -651,16 +655,17 @@ namespace OpenRCT2::Ui::Windows
                     }
                     else
                     {
-                        auto pixelPosition = DrawMiniPreviewGetPixelPosition(rotatedAndOffsetTrackBlock);
-                        if (DrawMiniPreviewIsPixelInBounds(pixelPosition))
+                        auto pixelPosition = drawMiniPreviewGetPixelPosition(rotatedAndOffsetTrackBlock);
+                        if (drawMiniPreviewIsPixelInBounds(pixelPosition))
                         {
-                            PaletteIndex* pixel = DrawMiniPreviewGetPixelPtr(pixelPosition);
+                            PaletteIndex* pixel = drawMiniPreviewGetPixelPtr(pixelPosition);
 
                             auto bits = trackBlock.quarterTile.Rotate(curTrackRotation & 3).GetBaseQuarterOccupied();
 
                             // Station track is a lighter colour
-                            auto colour = ted.sequences[0].flags.has(SequenceFlag::trackOrigin) ? kPaletteIndexColourStation
-                                                                                                : kPaletteIndexColourTrack;
+                            auto colour = ted.sequenceData.sequences[0].flags.has(SequenceFlag::trackOrigin)
+                                ? kPaletteIndexColourStation
+                                : kPaletteIndexColourTrack;
 
                             for (int32_t i = 0; i < 4; i++)
                             {
@@ -695,10 +700,10 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            DrawMiniPreviewEntrances(td, pass, origin, min, max, rotation);
+            drawMiniPreviewEntrances(td, pass, origin, min, max, rotation);
         }
 
-        void DrawMiniPreviewMaze(const TrackDesign& td, int32_t pass, const CoordsXY& origin, CoordsXY& min, CoordsXY& max)
+        void drawMiniPreviewMaze(const TrackDesign& td, int32_t pass, const CoordsXY& origin, CoordsXY& min, CoordsXY& max)
         {
             uint8_t rotation = (_currentTrackPieceDirection + GetCurrentRotation()) & 3;
             for (const auto& mazeElement : td.mazeElements)
@@ -714,10 +719,10 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else
                 {
-                    auto pixelPosition = DrawMiniPreviewGetPixelPosition(rotatedMazeCoords);
-                    if (DrawMiniPreviewIsPixelInBounds(pixelPosition))
+                    auto pixelPosition = drawMiniPreviewGetPixelPosition(rotatedMazeCoords);
+                    if (drawMiniPreviewIsPixelInBounds(pixelPosition))
                     {
-                        auto* pixel = DrawMiniPreviewGetPixelPtr(pixelPosition);
+                        auto* pixel = drawMiniPreviewGetPixelPtr(pixelPosition);
 
                         auto colour = kPaletteIndexColourTrack;
                         for (int32_t i = 0; i < 4; i++)
@@ -731,26 +736,26 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            DrawMiniPreviewEntrances(td, pass, origin, min, max, rotation);
+            drawMiniPreviewEntrances(td, pass, origin, min, max, rotation);
         }
 
-        ScreenCoordsXY DrawMiniPreviewGetPixelPosition(const CoordsXY& location)
+        ScreenCoordsXY drawMiniPreviewGetPixelPosition(const CoordsXY& location)
         {
             auto tilePos = TileCoordsXY(location);
             return { (80 + (tilePos.y - tilePos.x) * 4), (38 + (tilePos.y + tilePos.x) * 2) };
         }
 
-        bool DrawMiniPreviewIsPixelInBounds(const ScreenCoordsXY& pixel)
+        bool drawMiniPreviewIsPixelInBounds(const ScreenCoordsXY& pixel)
         {
             return pixel.x >= 0 && pixel.y >= 0 && pixel.x <= 160 && pixel.y <= 75;
         }
 
-        PaletteIndex* DrawMiniPreviewGetPixelPtr(const ScreenCoordsXY& pixel)
+        PaletteIndex* drawMiniPreviewGetPixelPtr(const ScreenCoordsXY& pixel)
         {
             return &_miniPreview[pixel.y * kTrackMiniPreviewSize.width + pixel.x];
         }
 
-        GameActions::Result FindValidTrackDesignPlaceHeight(CoordsXYZ& loc, CommandFlags newFlags)
+        GameActions::Result findValidTrackDesignPlaceHeight(CoordsXYZ& loc, CommandFlags newFlags)
         {
             GameActions::Result res;
             for (int32_t i = 0; i < 7; i++, loc.z += kCoordsZStep)

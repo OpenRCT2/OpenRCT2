@@ -86,8 +86,12 @@ enum class MetalSupportPlace : uint8_t
     none = 255,
 };
 
+namespace OpenRCT2
+{
+    struct PathRailingsDescriptor;
+}
+
 struct PaintSession;
-struct PathRailingsDescriptor;
 
 /** @deprecated */
 bool MetalASupportsPaintSetup(
@@ -108,4 +112,4 @@ void DrawSupportsSideBySide(
     int32_t heightExtra = 0);
 bool PathPoleSupportsPaintSetup(
     PaintSession& session, MetalSupportPlace supportPlace, bool isSloped, int32_t height, ImageId imageTemplate,
-    const PathRailingsDescriptor& railings);
+    const OpenRCT2::PathRailingsDescriptor& railings);

@@ -244,8 +244,8 @@ namespace OpenRCT2::Ui
 
             for (auto it = outFiltersStorage.begin(); it != outFiltersStorage.end();)
             {
-                const wchar_t* Name = (*it++).c_str();
-                const wchar_t* Pattern = (*it++).c_str();
+                const wchar_t* Name = (it++)->c_str();
+                const wchar_t* Pattern = (it++)->c_str();
                 result.push_back({ Name, Pattern });
             }
 

@@ -23,6 +23,7 @@
 #include <openrct2/actions/park/LandSetRightsAction.h>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Map.h>
@@ -404,8 +405,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto ft = Formatter();
                 ft.Add<uint16_t>(gLandToolSize);
-                DrawTextBasic(
-                    rt, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::centre });
+                drawText(rt, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::centre });
             }
 
             // Draw cost amount
@@ -419,7 +419,7 @@ namespace OpenRCT2::Ui::Windows
 
                 screenCoords = { widgets[WIDX_PREVIEW].midX() + windowPos.x,
                                  widgets[WIDX_PREVIEW].bottom + windowPos.y + offset };
-                DrawTextBasic(rt, screenCoords, STR_COST_AMOUNT, ft, { TextAlignment::centre });
+                drawText(rt, screenCoords, STR_COST_AMOUNT, ft, { TextAlignment::centre });
             }
         }
 

@@ -34,7 +34,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto kProgressWindowWidgets = makeWidgets(
-        makeWindowShim(STR_STRINGID, kWindowSize)
+        makeWindowShim(kStringIdNone, kWindowSize)
     );
 
     struct LoaderVehicleStyle
@@ -153,22 +153,15 @@ namespace OpenRCT2::Ui::Windows
         {
             if (_totalCount > 0)
             {
-                auto ft = Formatter();
-                ft.Add<const char*>(_progressTitle.c_str());
-                ft.Add<uint32_t>(_currentProgress);
-                ft.Add<uint32_t>(_totalCount);
-
-                _currentCaption = FormatStringIDLegacy(_progressFormat, ft.Data());
+                _currentCaption = FormatStringID(_progressFormat, _progressTitle.c_str(), _currentProgress, _totalCount);
             }
             else
+            {
                 _currentCaption = _progressTitle;
+            }
 
             // Set window title
-            {
-                auto ft = Formatter::Common();
-                ft.Add<StringId>(STR_STRING);
-                ft.Add<const char*>(_currentCaption.c_str());
-            }
+            widgets[WIDX_TITLE].setString(_currentCaption.c_str());
         }
 
         void onDraw(Drawing::RenderTarget& rt) override

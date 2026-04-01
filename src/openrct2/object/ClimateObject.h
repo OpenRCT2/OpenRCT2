@@ -9,19 +9,19 @@
 
 #pragma once
 
-#include "../world/Climate.h"
+#include "../world/Weather.h"
 #include "Object.h"
 
 namespace OpenRCT2
 {
     struct IReadObjectContext;
 
-    using YearlyDistribution = std::array<uint8_t, EnumValue(WeatherType::Count)>;
+    using YearlyDistribution = std::array<uint8_t, EnumValue(Weather::Type::Count)>;
 
     class ClimateObject final : public Object
     {
     private:
-        Climate _climate;
+        Weather::Climate _climate;
         std::string _scriptName;
 
     public:
@@ -33,8 +33,8 @@ namespace OpenRCT2
 
         void DrawPreview(Drawing::RenderTarget& rt, int32_t width, int32_t height) const override;
 
-        const TemperatureThresholds& getItemThresholds() const;
-        const WeatherPattern& getPatternForMonth(uint8_t month) const;
+        const Weather::TemperatureThresholds& getItemThresholds() const;
+        const Weather::Pattern& getPatternForMonth(uint8_t month) const;
         std::string getScriptName() const;
         YearlyDistribution getYearlyDistribution() const;
     };

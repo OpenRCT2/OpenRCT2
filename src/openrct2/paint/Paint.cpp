@@ -14,7 +14,9 @@
 #include "../core/Guard.hpp"
 #include "../core/Money.hpp"
 #include "../core/Numerics.hpp"
+#include "../drawing/Drawing.String.h"
 #include "../drawing/Drawing.h"
+#include "../drawing/Font.h"
 #include "../interface/Viewport.h"
 #include "../localisation/Currency.h"
 #include "../localisation/Formatting.h"
@@ -1098,7 +1100,7 @@ void PaintDrawMoneyStructs(RenderTarget& rt, PaintStringStruct* ps)
             forceSpriteFont = true;
         }
 
-        GfxDrawStringWithYOffsets(
+        drawStringWithYOffsets(
             rt, buffer, { Drawing::Colour::black }, ps->ScreenPos, reinterpret_cast<int8_t*>(ps->y_offsets), forceSpriteFont,
             FontStyle::medium);
     } while ((ps = ps->NextEntry) != nullptr);

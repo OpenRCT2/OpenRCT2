@@ -20,6 +20,7 @@
 #include "../core/Path.hpp"
 #include "../drawing/Drawing.h"
 #include "../drawing/Image.h"
+#include "../drawing/Text.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/StringIds.h"
 #include "../ride/Ride.h"
@@ -96,7 +97,7 @@ namespace OpenRCT2
         if (_hasPreview)
             GfxDrawSprite(rt, ImageId(_previewImageId), { 0, 0 });
         else
-            DrawTextBasic(rt, { x, y }, STR_WINDOW_NO_IMAGE, {}, { TextAlignment::centre });
+            drawText(rt, { x, y }, STR_WINDOW_NO_IMAGE, { TextAlignment::centre });
     }
 
     bool MusicObject::HasPreview() const

@@ -12,7 +12,6 @@
 #include "../../../SpriteIds.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
-#include "../../Track.h"
 
 // clang-format off
 namespace OpenRCT2 {
@@ -34,7 +33,7 @@ constexpr RideTypeDescriptor MiniGolfRTD =
     .DefaultMode = RideMode::continuousCircuit,
     .Naming = { STR_RIDE_NAME_MINI_GOLF, STR_RIDE_DESCRIPTION_MINI_GOLF },
     .NameConvention = { RideComponentType::Player, RideComponentType::Course, RideComponentType::Station },
-    .AvailableBreakdowns = 0,
+    .availableBreakdowns = {},
     .Heights = { 7, 32, 2, 2, },
     .MaxMass = 255,
     .LiftData = { Audio::SoundId::null, 5, 5 },

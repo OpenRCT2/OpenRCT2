@@ -1032,7 +1032,7 @@ namespace OpenRCT2::Ui::Windows
         for (WidgetIndex widgetIndex = 0; widgetIndex < w.widgets.size(); widgetIndex++)
         {
             auto& widget = w.widgets[widgetIndex];
-            if (!widget.IsVisible())
+            if (!widget.isVisible())
             {
                 continue;
             }

@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+ASSETS_DIR="$ROOT_DIR/src/openrct2-android/app/src/main/assets/openrct2"
+DATA_DIR="$ASSETS_DIR/data"
+
+mkdir -p "$DATA_DIR"
+
+DAT_DIR="${OPENRCT2_DAT_DIR:-}"
+if [[ -n "$DAT_DIR" && -f "$DAT_DIR/g2.dat" ]]; then
+    cp "$DAT_DIR"/*.dat "$DATA_DIR/"
+else
+    TMP_DIR="$(mktemp -d)"
+    "$ROOT_DIR/scripts/build-graphics-dat" "$TMP_DIR"
+    cp "$TMP_DIR"/*.dat "$DATA_DIR/"
+    rm -rf "$TMP_DIR"
+fi
+
+cp -r "$ROOT_DIR/data/language" "$DATA_DIR/"
+cp -r "$ROOT_DIR/data/shaders" "$DATA_DIR/"
+cp -r "$ROOT_DIR/data/scenario_patches" "$DATA_DIR/"
+cp "$ROOT_DIR/distribution/changelog.txt" "$DATA_DIR/"
+cp "$ROOT_DIR/contributors.md" "$DATA_DIR/"
+
+OBJECTS_URL=$(jq -r '.objects.url' "$ROOT_DIR/assets.json")
+TS_URL=$(jq -r '."title-sequences".url' "$ROOT_DIR/assets.json")
+
+curl -fL "$OBJECTS_URL" -o "$DATA_DIR/objects.zip"
+mkdir -p "$DATA_DIR/object"
+unzip -q "$DATA_DIR/objects.zip" -d "$DATA_DIR/object"
+rm -f "$DATA_DIR/objects.zip"
+
+curl -fL "$TS_URL" -o "$DATA_DIR/title-sequences.zip"
+mkdir -p "$DATA_DIR/sequence"
+unzip -q "$DATA_DIR/title-sequences.zip" -d "$DATA_DIR/sequence"
+rm -f "$DATA_DIR/title-sequences.zip"
+
+pushd "$ROOT_DIR/src/openrct2-android/app/src/main/assets" >/dev/null
+find openrct2 -type f ! -name manifest.txt -printf "%p|%s\n" > openrct2/manifest.txt
+popd >/dev/null

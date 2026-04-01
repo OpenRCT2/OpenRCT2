@@ -14,7 +14,10 @@
 
 struct Ride;
 
-enum class PeepThoughtType : uint8_t;
+namespace OpenRCT2
+{
+    enum class PeepThoughtType : uint8_t;
+}
 
 enum class ShopItem : uint8_t
 {
@@ -96,11 +99,11 @@ struct ShopItemDescriptor
     uint32_t Image;
     ShopItemStrings Naming;
     uint16_t Flags;
-    Litter::Type Type;
+    OpenRCT2::Litter::Type Type;
     uint8_t ConsumptionTime;
     ShopItem DiscardContainer;
-    PeepThoughtType TooMuchThought;
-    PeepThoughtType GoodValueThought;
+    OpenRCT2::PeepThoughtType TooMuchThought;
+    OpenRCT2::PeepThoughtType GoodValueThought;
 
     constexpr bool HasFlag(const uint16_t flag) const
     {

@@ -28,8 +28,20 @@ namespace OpenRCT2::File
 {
     bool Exists(u8string_view path)
     {
-        fs::path file = fs::u8path(path);
         LOG_VERBOSE("Checking if file exists: %s", u8string(path).c_str());
+        auto assetCheckResult = Platform::CheckAssetExists(path);
+        switch (assetCheckResult)
+        {
+            case Platform::AssetCheckResult::Found:
+                return true;
+            case Platform::AssetCheckResult::NotFound:
+                return false;
+            case Platform::AssetCheckResult::NotApplicable:
+            default:
+                break;
+        }
+
+        fs::path file = fs::u8path(path);
         std::error_code ec;
         const auto result = fs::exists(file, ec);
         return result && ec.value() == 0;
@@ -64,14 +76,9 @@ namespace OpenRCT2::File
 
     std::vector<uint8_t> ReadAllBytes(u8string_view path)
     {
-        std::ifstream fs(fs::u8path(u8string(path)), std::ios::in | std::ios::binary);
-        if (!fs.is_open())
-        {
-            throw IOException("Unable to open " + u8string(path));
-        }
-
+        FileStream fstream(path, FileMode::open);
         std::vector<uint8_t> result;
-        auto fsize = Platform::GetFileSize(path);
+        auto fsize = fstream.GetLength();
         if (fsize > SIZE_MAX)
         {
             u8string message = String::stdFormat(
@@ -80,9 +87,10 @@ namespace OpenRCT2::File
         }
         else
         {
-            result.resize(fsize);
-            fs.read(reinterpret_cast<char*>(result.data()), result.size());
-            fs.exceptions(fs.failbit);
+            // Reserve capacity for fsize + 1 to support the caller adding a null terminator if they want (needed for quickjs)
+            result.reserve(fsize + 1);
+            result.resize(static_cast<size_t>(fsize));
+            fstream.Read(result.data(), result.size());
         }
         return result;
     }
@@ -127,8 +135,8 @@ namespace OpenRCT2::File
 
     void WriteAllBytes(u8string_view path, const void* buffer, size_t length)
     {
-        auto fs = FileStream(path, FileMode::write);
-        fs.Write(buffer, length);
+        auto fstream = FileStream(path, FileMode::write);
+        fstream.Write(buffer, length);
     }
 
     uint64_t GetLastModified(u8string_view path)

@@ -61,6 +61,15 @@ struct TTFFontDescriptor;
 
 namespace OpenRCT2::Platform
 {
+    enum class AssetCheckResult
+    {
+        NotApplicable,
+        Found,
+        NotFound,
+    };
+
+    using AssetHandle = void*;
+
     struct SteamGameData
     {
         u8string nativeFolder;
@@ -112,6 +121,20 @@ namespace OpenRCT2::Platform
         u8"RCT Classic+.app" PATH_SEPARATOR "Contents" PATH_SEPARATOR "Resources";
     // clang-format on
 
+#ifdef __ANDROID__
+    // Android asset path prefix
+    constexpr u8string_view kAndroidAssetPathPrefix = u8"/android_asset/";
+    // Android asset path must end with slash
+    static_assert(kAndroidAssetPathPrefix.back() == '/', "kAndroidAssetPathPrefix must end with a slash");
+#endif // __ANDROID__
+
+    struct AssetFileOpenResult
+    {
+        AssetCheckResult result;
+        AssetHandle handle;
+        uint64_t size;
+    };
+
     std::string GetEnvironmentVariable(std::string_view name);
     std::string GetFolderPath(SpecialFolder folder);
     std::string GetInstallPath();
@@ -125,6 +148,15 @@ namespace OpenRCT2::Platform
     std::string ResolveCasing(std::string_view path, bool fileExists);
     std::string SanitiseFilename(std::string_view originalName);
     bool IsFilenameValid(u8string_view fileName);
+    AssetCheckResult CheckAssetDirectoryExists(u8string_view path);
+    AssetCheckResult CheckAssetExists(u8string_view path);
+    AssetFileOpenResult OpenAssetFile(u8string_view path);
+    void CloseAssetFile(AssetHandle handle);
+    uint64_t GetAssetPosition(AssetHandle handle);
+    void SeekAsset(AssetHandle handle, int64_t offset, int32_t origin);
+    uint64_t ReadAsset(AssetHandle handle, void* buffer, uint64_t length);
+    uint64_t TryReadAsset(AssetHandle handle, void* buffer, uint64_t length);
+    u8string GetAssetPath();
 
     uint16_t GetLocaleLanguage();
     CurrencyType GetLocaleCurrency();
@@ -169,7 +201,14 @@ namespace OpenRCT2::Platform
     bool SetupUriProtocol();
 #endif
 #ifdef __ANDROID__
+    struct AssetInfo
+    {
+        std::string Path;
+        uint64_t Size;
+    };
     jclass AndroidFindClass(JNIEnv* env, std::string_view name);
+    void* GetAssetManager();
+    const std::vector<AssetInfo>& GetAssetList();
 #endif
 
     bool IsRunningInWine();

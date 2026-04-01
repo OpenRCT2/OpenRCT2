@@ -253,16 +253,6 @@ STR_0855    :{WINDOW_COLOUR_2}Représentation : Jacqui Lyons, Marjacq Ltd.
 STR_0856    :{WINDOW_COLOUR_2}Remerciements :
 STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth, et John Wardley
 STR_0865    :{STRINGID}
-STR_0866    :{POP16}{STRINGID}
-STR_0867    :{POP16}{POP16}{STRINGID}
-STR_0868    :{POP16}{POP16}{POP16}{STRINGID}
-STR_0869    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0870    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0872    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0873    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0874    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0875    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0876    :{BLACK}▼
 STR_0877    :Trop bas !
 STR_0878    :Trop haut !
@@ -281,7 +271,7 @@ STR_0892    :Capture d’écran sauvegardée en tant que {SMALLFONT}{STRINGID}{M
 STR_0893    :Échec de la capture d’écran !
 STR_0894    :Zone de données du paysage pleine !
 STR_0895    :Impossible de construire à la fois au-dessus et en-dessous du sol
-STR_0896    :{POP16}{POP16}{STRINGID} Construction
+STR_0896    :{STRINGID} Construction
 STR_0897    :Direction
 STR_0898    :Virage à gauche
 STR_0899    :Virage à droite
@@ -406,8 +396,6 @@ STR_1018    :Modification impossible…
 STR_1019    :Modification impossible…
 STR_1020    :Modification impossible…
 STR_1021    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_1022    :{POP16}{POP16}{POP16}{COMMA16} voiture par train
-STR_1023    :{POP16}{POP16}{POP16}{COMMA16} voitures par train
 STR_1024    :{COMMA16} voiture par train
 STR_1025    :{COMMA16} voitures par train
 STR_1026    :Le quai est trop long !
@@ -516,9 +504,7 @@ STR_1128    :Arrêté par les freins de bloc
 STR_1129    :Tous les véhicules de la même couleur
 STR_1130    :Couleurs différentes par {STRINGID}
 STR_1131    :Couleurs différentes par véhicule
-STR_1132    :Véhicule {POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1133    :Véhicule {POP16}{COMMA16}
-STR_1134    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID} {COMMA16}
+STR_1133    :Véhicule {COMMA16}
 STR_1135    :{STRINGID} {COMMA16}
 STR_1136    :Sélectionnez la couleur principale
 STR_1137    :Sélectionnez la couleur supplémentaire 1
@@ -714,7 +700,6 @@ STR_1327    :Pivoter les objets de 90°
 STR_1328    :Terrain plat requis
 STR_1329    :{WINDOW_COLOUR_2}Vitesse de lancement :
 STR_1330    :Vitesse maximale en quittant la station
-STR_1331    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_1332    :{VELOCITY}
 STR_1333    :{STRINGID} — {STRINGID}{POP16}
 STR_1334    :{STRINGID} — {STRINGID} {COMMA16}
@@ -812,7 +797,6 @@ STR_1425    :Chemin
 STR_1426    :File d’attente
 STR_1427    :{WINDOW_COLOUR_2}Clients : {BLACK}{COMMA32} par heure
 STR_1428    :{WINDOW_COLOUR_2}Prix d’entrée :
-STR_1429    :{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1430    :Gratuit
 STR_1431    :Marche
 STR_1432    :Se dirige vers {STRINGID}
@@ -847,10 +831,10 @@ STR_1460    :Voie ouverte en forme de {SMALLFONT}U{MEDIUMFONT}
 STR_1461    :Voie fermée en forme de {SMALLFONT}O{MEDIUMFONT}
 STR_1462    :Trop abrupte pour une remontée
 STR_1463    :Visiteurs
-STR_1464    :Hélice montante (petite)
-STR_1465    :Hélice montante (grande)
-STR_1466    :Hélice descendante (petite)
-STR_1467    :Hélice descendante (grande)
+STR_1464    :Demi-hélice montante (petite)
+STR_1465    :Demi-hélice montante (grande)
+STR_1466    :Demi-hélice descendante (petite)
+STR_1467    :Demi-hélice descendante (grande)
 STR_1468    :Personnel
 STR_1469    :L’attraction doit commencer et finir avec une station
 STR_1470    :Station trop courte
@@ -1057,14 +1041,13 @@ STR_1671    :{WINDOW_COLOUR_2}Bénéfice total : {BLACK}{CURRENCY2DP}
 STR_1672    :Freins
 STR_1673    :Voie avec permutation de virage
 STR_1674    :Vitesse de freinage
-STR_1675    :{POP16}{VELOCITY}
 STR_1676    :Fixe une vitesse de déclenchement des freins
 STR_1677    :{WINDOW_COLOUR_2}Popularité : {BLACK}Inconnue
 STR_1678    :{WINDOW_COLOUR_2}Popularité : {BLACK}{COMMA16}%
-STR_1679    :Hélice montante (gauche)
-STR_1680    :Hélice montante (droite)
-STR_1681    :Hélice descendante (gauche)
-STR_1682    :Hélice descendante (droite)
+STR_1679    :Quart d’hélice montante (gauche)
+STR_1680    :Quart d’hélice montante (droite)
+STR_1681    :Quart d’hélice descendante (gauche)
+STR_1682    :Quart d’hélice descendante (droite)
 STR_1683    :Taille de base 2 x 2
 STR_1684    :Taille de base 4 x 4
 STR_1685    :Taille de base 2 x 4
@@ -1117,18 +1100,15 @@ STR_1732    :Construction
 STR_1733    :Mode
 STR_1734    :{WINDOW_COLOUR_2}Nombre de tours :
 STR_1735    :Nombre de tours de circuit
-STR_1736    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1738    :Impossible de changer le nombre de tours…
 STR_1739    :Course gagnée par le visiteur {INT32}
 STR_1740    :Course gagnée par {STRINGID}
 STR_1741    :Pas encore construit !
 STR_1742    :{WINDOW_COLOUR_2}Maximum de personnes :
 STR_1743    :Nombre maximum de personnes autorisées sur cette attraction en même temps
-STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1746    :Impossible de changer ceci…
 STR_1747    :{WINDOW_COLOUR_2}Limite de temps :
 STR_1748    :Limite de temps pour l’attraction
-STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DURATION}
 STR_1751    :Impossible de changer la limite de temps pour l’attraction…
 STR_1752    :Afficher la liste de tous les visiteurs dans le parc
 STR_1753    :Afficher la liste résumée des visiteurs dans le parc
@@ -1149,7 +1129,6 @@ STR_1767    :Tunnel tournoyant
 STR_1768    :Impossible de modifier le nombre de vrilles…
 STR_1769    :{WINDOW_COLOUR_2}Nombre de vrilles :
 STR_1770    :Nombre de vrilles complètes
-STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1773    :Une seule section photo sur le vif autorisée par attraction
 STR_1774    :Une seule remontée à chaîne autorisée par attraction
 STR_1777    :Musique de l’attraction
@@ -1161,7 +1140,6 @@ STR_1794    :Répare {STRINGID}
 STR_1795    :Répond à l’appel radio
 STR_1796    :Est en panne et nécessite une réparation
 STR_1798    :Tourbillon
-STR_1799    :{POP16}{POP16}{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1800    :Disjoncteurs de sécurité
 STR_1801    :Ceintures bloquées, fermées
 STR_1802    :Ceintures bloquées, ouvertes
@@ -1233,7 +1211,6 @@ STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :Impossible de changer le nombre de rotations…
 STR_1869    :{WINDOW_COLOUR_2}Nombre de rotations :
 STR_1870    :Nombre de rotations complètes
-STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Revenu : {BLACK}{CURRENCY2DP} par heure
 STR_1874    :{WINDOW_COLOUR_2}Bénéfice : {BLACK}{CURRENCY2DP} par heure
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Inspecter les attractions
@@ -1277,7 +1254,6 @@ STR_1913    :{BLACK}+{CURRENCY2DP}
 STR_1914    :{BLACK}{CURRENCY2DP}
 STR_1915    :{RED}{CURRENCY2DP}
 STR_1916    :{WINDOW_COLOUR_2}Emprunt:
-STR_1917    :{POP16}{POP16}{POP16}{CURRENCY}
 STR_1918    :Impossible d’emprunter d’avantage !
 STR_1919    :Pas assez d’argent disponible !
 STR_1920    :Impossible de rembourser l’emprunt !
@@ -1315,7 +1291,6 @@ STR_1953    :Marketing
 STR_1954    :Financement recherches
 STR_1955    :{WINDOW_COLOUR_2}Nombre de tours :
 STR_1956    :Nombre de tours de circuit à effectuer
-STR_1957    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1958    :{COMMA16}
 STR_1959    :Impossible de changer le nombre de circuits…
 STR_1960    :{WINDOW_COLOUR_2}Prix d’un ballon :
@@ -2113,7 +2088,6 @@ STR_3092    :Interdiction de déplacer ou modifier la station de cette attractio
 STR_3093    :{WINDOW_COLOUR_2}Préférée : {BLACK}{STRINGID}
 STR_3094    :N/A
 STR_3095    :{WINDOW_COLOUR_2}Vitesse remontée :
-STR_3096    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_3097    :Choisir vitesse remontée
 STR_3099    :Choisir la couleur
 STR_3100    :Choisir la deuxième couleur
@@ -2206,7 +2180,6 @@ STR_3208    :Gestionnaire de voies
 STR_3209    :Retour étape précédente :
 STR_3210    :Passer à l’étape suivante :
 STR_3211    :Taille carte :
-STR_3212    :{POP16}{COMMA16}
 STR_3213    :Impossible de diminuer davantage la taille de la carte
 STR_3214    :Impossible d’augmenter davantage la taille de le carte
 STR_3215    :Trop proche du bord de la carte
@@ -2999,12 +2972,11 @@ STR_5914    :Attraction inconnue
 STR_5915    :Joueur
 STR_5916    :{COMMA16} joueur
 STR_5917    :{COMMA16} joueurs
-STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_5919    :{COMMA16}
 STR_5920    :Afficher les effets de météo
 STR_5921    :Activé, la pluie et les couleurs orageuses seront affichées pendant les orages
-STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID} maximum
-STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16} {STRINGID} par train maximum
+STR_5922    :{STRINGID} maximum
+STR_5923    :{COMMA16} {STRINGID} par train maximum
 STR_5924    :Détails de la surface
 STR_5925    :Détails de l’allée
 STR_5926    :Détails du tracé
@@ -3389,7 +3361,6 @@ STR_6355    :Densité élevée
 STR_6356    :Fait apparaître des canards si le parc contient de l’eau.
 STR_6357    :Supprime tous les canards de la carte.
 STR_6358    :Page {UINT16}
-STR_6359    :{POP16}{POP16}Page {UINT16}
 STR_6361    :Activer les effets de lumières sur les{NEWLINE}attractions (expérimental)
 STR_6362    :Si activé, les véhicules sur les attractions sur rails seront éclairés la nuit
 STR_6363    :Texte copié dans le presse-papier
@@ -3847,3 +3818,9 @@ STR_7014    :Je possède le jeu dans Steam, mais je ne l’ai pas encore install
 STR_7015    :Veuillez quitter Steam s’il est lancé, puis cliquez « OK ».
 STR_7016    :OpenRCT2 a essayé de lancer un téléchargement dans Steam. Veuillez ouvrir Steam et laisser le jeu se télécharger. Quand Steam aura terminé, cliquez « OK ».
 STR_7017    :Quitter
+STR_7023    :Rendre invisible
+STR_7024    :Rend toute l’attraction invisible
+STR_7025    :Rendre visible
+STR_7026    :Rend toute l’attraction visible
+STR_7028    :Quart d’hélice montante
+STR_7029    :Quart d’hélice descendante

@@ -24,7 +24,6 @@
 #include "../entity/Peep.h"
 #include "../object/ObjectManager.h"
 #include "../ride/Ride.h"
-#include "../ride/Track.h"
 #include "../world/Footpath.h"
 #include "../world/Location.hpp"
 #include "../world/Map.h"

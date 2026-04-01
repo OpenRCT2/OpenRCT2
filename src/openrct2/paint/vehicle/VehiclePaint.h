@@ -61,4 +61,7 @@ namespace OpenRCT2
         PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle);
     void VehicleVisualMiniGolfBall(
         PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle);
+    void VehicleVisualClassicMiniSpinning(
+        PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
+        const CarEntry* carEntry);
 } // namespace OpenRCT2

@@ -11,7 +11,6 @@
 
 #include "../drawing/Drawing.h"
 #include "../drawing/LightFX.h"
-#include "../entity/Balloon.h"
 #include "../entity/Duck.h"
 #include "../entity/EntityList.h"
 #include "../entity/Fountain.h"
@@ -24,10 +23,11 @@
 #include "../ride/RideData.h"
 #include "../ride/TrackDesign.h"
 #include "../ride/Vehicle.h"
-#include "../world/Climate.h"
 #include "../world/Map.h"
 #include "../world/Park.h"
+#include "../world/Weather.h"
 #include "Paint.h"
+#include "entity/Paint.Balloon.h"
 #include "entity/Paint.Guest.h"
 #include "entity/Paint.Staff.h"
 #include "vehicle/VehiclePaint.h"
@@ -167,7 +167,7 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
                 entity->cast<JumpingFountain>()->Paint(session, image_direction);
                 break;
             case EntityType::balloon:
-                entity->cast<Balloon>()->Paint(session, image_direction);
+                PaintBalloon(session, *entity->cast<Balloon>(), image_direction);
                 break;
             case EntityType::duck:
                 entity->cast<Duck>()->Paint(session, image_direction);

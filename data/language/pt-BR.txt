@@ -242,7 +242,6 @@ STR_0832    :Girar visão em 90° no sentido horário
 STR_0833    :Pausar Jogo
 STR_0834    :Opções de disco e jogo
 STR_0839    :{UINT16} × {UINT16}
-STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} × {UINT16}
 STR_0847    :Sobre ‘OpenRCT2’
 STR_0850    :{WINDOW_COLOUR_2}Copyright © 2002 Chris Sawyer, Todos os direitos reservados
 STR_0851    :{WINDOW_COLOUR_2}Projetado e programado por Chris Sawyer
@@ -253,16 +252,6 @@ STR_0855    :{WINDOW_COLOUR_2}Representação de Jacqui Lyons da Marjacq Ltd.
 STR_0856    :{WINDOW_COLOUR_2}Obrigado a:
 STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth e John Wardley
 STR_0865    :{STRINGID}
-STR_0866    :{POP16}{STRINGID}
-STR_0867    :{POP16}{POP16}{STRINGID}
-STR_0868    :{POP16}{POP16}{POP16}{STRINGID}
-STR_0869    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0870    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0872    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0873    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0874    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0875    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0876    :{BLACK}▼
 STR_0877    :Muito baixo!
 STR_0878    :Muito alto!
@@ -281,7 +270,7 @@ STR_0892    :Captura de tela salva no disco como ‘{STRINGID}’
 STR_0893    :Captura de tela falhou!
 STR_0894    :Dados da área da paisagem cheios!
 STR_0895    :Impossível construir parcialmente acima e abaixo do chão
-STR_0896    :{POP16}{POP16}{STRINGID} Construção
+STR_0896    :{STRINGID} Construção
 STR_0897    :Sentido
 STR_0898    :Curva à Esquerda
 STR_0899    :Curva à Direita
@@ -406,8 +395,6 @@ STR_1018    :Impossível fazer alterações…
 STR_1019    :Impossível fazer alterações…
 STR_1020    :Impossível fazer alterações…
 STR_1021    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_1022    :{POP16}{POP16}{POP16}{COMMA16} carro por trem
-STR_1023    :{POP16}{POP16}{POP16}{COMMA16} carros por trens
 STR_1024    :{COMMA16} carro por trem
 STR_1025    :{COMMA16} carros por trens
 STR_1026    :Plataforma da estação é muito longa!
@@ -516,9 +503,7 @@ STR_1128    :Parado pelos freios bloqueadores
 STR_1129    :Todos os veículos com as mesmas cores
 STR_1130    :Diferentes cores por {STRINGID}
 STR_1131    :Diferentes cores por veículos
-STR_1132    :Veículo {POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1133    :Veículo {POP16}{COMMA16}
-STR_1134    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID} {COMMA16}
+STR_1133    :Veículo {COMMA16}
 STR_1135    :{STRINGID} {COMMA16}
 STR_1136    :Selecione a cor principal
 STR_1137    :Selecione a cor adicional 1
@@ -714,7 +699,6 @@ STR_1327    :Girar objetos em 90°
 STR_1328    :Necessário nivelar terreno
 STR_1329    :{WINDOW_COLOUR_2}Velocidade de lançamento:
 STR_1330    :Velocidade máxima quando sair da estação
-STR_1331    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_1332    :{VELOCITY}
 STR_1333    :{STRINGID} - {STRINGID}{POP16}
 STR_1334    :{STRINGID} - {STRINGID} {COMMA16}
@@ -812,7 +796,6 @@ STR_1425    :Calçada
 STR_1426    :Fila de espera
 STR_1427    :{WINDOW_COLOUR_2}Clientes: {BLACK}{COMMA32} por hora
 STR_1428    :{WINDOW_COLOUR_2}Preço de entrada:
-STR_1429    :{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1430    :Grátis
 STR_1431    :Andando
 STR_1432    :Indo para {STRINGID}
@@ -847,10 +830,10 @@ STR_1460    :Pista aberta em forma de ‘U’
 STR_1461    :Pista fechada em forma de ‘O’
 STR_1462    :Muito íngreme para uma subida de elevação
 STR_1463    :Visitantes
-STR_1464    :Espiral para cima (pequeno)
-STR_1465    :Espiral para cima (grande)
-STR_1466    :Espiral para baixo (pequeno)
-STR_1467    :Espiral para baixo (grande)
+STR_1464    :Meia Espiral para cima (pequena)
+STR_1465    :Meia Espiral para cima (grande)
+STR_1466    :Meia Espiral para baixo (pequena)
+STR_1467    :Meia Espiral para baixo (grande)
 STR_1468    :Funcionários
 STR_1469    :Atração deve começar e finalizar com estações
 STR_1470    :Estação não é longa o suficiente
@@ -1056,14 +1039,13 @@ STR_1671    :{WINDOW_COLOUR_2}Lucro total: {BLACK}{CURRENCY2DP}
 STR_1672    :Freios
 STR_1673    :Alternar controle de giro na pista
 STR_1674    :Velocidade do freio
-STR_1675    :{POP16}{VELOCITY}
 STR_1676    :Escolher limite de velocidade para os freios
 STR_1677    :{WINDOW_COLOUR_2}Popularidade: {BLACK}Desconhecido
 STR_1678    :{WINDOW_COLOUR_2}Popularidade: {BLACK}{COMMA16}%
-STR_1679    :Espiral para Cima (esquerda)
-STR_1680    :Espiral para Cima (direita)
-STR_1681    :Espiral para Baixo (esquerda)
-STR_1682    :Espiral para Baixo (direita)
+STR_1679    :Quarto de Espiral para Cima (esquerda)
+STR_1680    :Quarto de Espiral para Cima (direita)
+STR_1681    :Quarto de Espiral para Baixo (esquerda)
+STR_1682    :Quarto de Espiral para Baixo (direita)
 STR_1683    :Tamanho da base 2 × 2
 STR_1684    :Tamanho da base 4 × 4
 STR_1685    :Tamanho da base 2 × 4
@@ -1116,18 +1098,15 @@ STR_1732    :Construir
 STR_1733    :Modo
 STR_1734    :{WINDOW_COLOUR_2}Número de voltas:
 STR_1735    :Número de voltas do circuito
-STR_1736    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1738    :Impossível alterar o número de voltas…
 STR_1739    :Corrida ganha pelo visitante {INT32}
 STR_1740    :Corrida ganha por {STRINGID}
 STR_1741    :Ainda não construído!
 STR_1742    :{WINDOW_COLOUR_2}Máx. pessoas na atração:
 STR_1743    :Número máximo permitido de pessoas na atração por vez
-STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1746    :Impossível alterar isto…
 STR_1747    :{WINDOW_COLOUR_2}Tempo limite:
 STR_1748    :Tempo limite na atração
-STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DURATION}
 STR_1751    :Não é possível mudar o tempo limite na atração…
 STR_1752    :Mostrar listas de visitantes individuais no parque
 STR_1753    :Mostrar lista resumida de visitantes no parque
@@ -1148,7 +1127,6 @@ STR_1767    :Túnel Giratório
 STR_1768    :Não é possível mudar o número de balanços…
 STR_1769    :{WINDOW_COLOUR_2}Número de balanços:
 STR_1770    :Número de balanços completos
-STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1773    :Somente uma seção de fotos é permitida por atração
 STR_1774    :Somente uma subida com cabo de elevação é permitida por atração
 STR_1777    :Música da atração
@@ -1160,7 +1138,6 @@ STR_1794    :Reparando {STRINGID}
 STR_1795    :Respondendo a chamada do rádio
 STR_1796    :Está quebrado e requer conserto
 STR_1798    :Turbilhão
-STR_1799    :{POP16}{POP16}{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1800    :Segurança cortada
 STR_1801    :Travas presas fechadas
 STR_1802    :Travas presas abertas
@@ -1232,7 +1209,6 @@ STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :Impossível alterar o número de rotações…
 STR_1869    :{WINDOW_COLOUR_2}Número de rotações:
 STR_1870    :Número de rotações completas
-STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Receita: {BLACK}{CURRENCY2DP} por hora
 STR_1874    :{WINDOW_COLOUR_2}Lucro: {BLACK}{CURRENCY2DP} por hora
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Inspecionar Atrações
@@ -1274,7 +1250,6 @@ STR_1913    :{BLACK}+{CURRENCY2DP}
 STR_1914    :{BLACK}{CURRENCY2DP}
 STR_1915    :{RED}{CURRENCY2DP}
 STR_1916    :{WINDOW_COLOUR_2}Crédito:
-STR_1917    :{POP16}{POP16}{POP16}{CURRENCY}
 STR_1918    :O banco se nega a emprestar mais dinheiro!
 STR_1919    :Não possui dinheiro suficiente!
 STR_1920    :Impossível pagar o empréstimo!
@@ -1312,7 +1287,6 @@ STR_1953    :Marketing
 STR_1954    :Financiamento de Pesquisa
 STR_1955    :{WINDOW_COLOUR_2}Número de voltas:
 STR_1956    :Números de voltas por ingresso
-STR_1957    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1958    :{COMMA16}
 STR_1959    :Impossível mudar o número de voltas…
 STR_1960    :{WINDOW_COLOUR_2}Preço do balão:
@@ -2110,7 +2084,6 @@ STR_3092    :Você não tem permissão para mover ou modificar a estação desta
 STR_3093    :{WINDOW_COLOUR_2}Favorito: {BLACK}{STRINGID}
 STR_3094    :Indisponível
 STR_3095    :{WINDOW_COLOUR_2}Velocidade da Corrente:
-STR_3096    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_3097    :Selecione a velocidade da corrente de elevação
 STR_3099    :Selecionar cor
 STR_3100    :Selecionar segunda cor
@@ -2203,7 +2176,6 @@ STR_3208    :Gerenciador de Projetos de Pista
 STR_3209    :Voltar para o Passo Anterior:
 STR_3210    :Avançar para o Próximo Passo:
 STR_3211    :Tamanho do Mapa:
-STR_3212    :{POP16}{COMMA16}
 STR_3213    :Impossível diminuir ainda mais o tamanho do mapa
 STR_3214    :Impossível aumentar ainda mais o tamanho do mapa
 STR_3215    :Muito perto da borda do mapa
@@ -2994,12 +2966,11 @@ STR_5914    :Atração desconhecida
 STR_5915    :Jogador
 STR_5916    :{COMMA16} jogador
 STR_5917    :{COMMA16} jogadores
-STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_5919    :{COMMA16}
 STR_5920    :Renderizar efeitos climáticos
 STR_5921    :Se habilitado, chuva e cores escuras serão renderizadas durante tempestades.
-STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}Máx {STRINGID}
-STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}Máx {COMMA16} {STRINGID} por trem
+STR_5922    :Máx {STRINGID}
+STR_5923    :Máx {COMMA16} {STRINGID} por trem
 STR_5924    :Detalhes de superfície
 STR_5925    :Detalhes de caminho
 STR_5926    :Detalhes de pista
@@ -3384,7 +3355,6 @@ STR_6355    :Densidade alta
 STR_6356    :Gerar patos se o parque tiver água
 STR_6357    :Remover todos os patos do mapa
 STR_6358    :Página {UINT16}
-STR_6359    :{POP16}{POP16}Página {UINT16}
 STR_6361    :Habilitar efeitos luminosos em atrações (experimental)
 STR_6362    :Se habilitados, veículos de atrações com trilhos serão iluminados à noite.
 STR_6363    :Texto copiado para a área de transferência
@@ -3841,3 +3811,9 @@ STR_7014    :Tenho o jogo no Steam, mas ainda não o instalei.
 STR_7015    :Por favor, feche o Steam se ele estiver em execução e então clique ‘OK’.
 STR_7016    :O OpenRCT2 tentou iniciar a instalação no Steam. Por favor, abra o Steam e deixe-o baixar o jogo. Quando o Steam terminar, clique ‘OK’.
 STR_7017    :Sair
+STR_7023    :Tornar invisível
+STR_7024    :Tornar toda a atração invisível
+STR_7025    :Tornar visível
+STR_7026    :Tornar toda a atração visível
+STR_7028    :Quarto de Espiral para Cima
+STR_7029    :Quarto de Espiral para Baixo

@@ -124,7 +124,7 @@ BasicTextureInfo TextureCache::GetOrLoadGlyphTexture(const ImageId imageId, cons
     auto cacheInfo = LoadGlyphTexture(imageId, paletteMap);
     auto it = _glyphTextureMap.insert(std::make_pair(glyphId, cacheInfo));
 
-    return (*it.first).second;
+    return it.first->second;
 }
 
 BasicTextureInfo TextureCache::GetOrLoadBitmapTexture(ImageIndex image, const void* pixels, size_t width, size_t height)

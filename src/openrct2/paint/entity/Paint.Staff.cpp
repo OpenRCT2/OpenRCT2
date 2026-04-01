@@ -16,6 +16,8 @@
 #include "../Paint.h"
 #include "Paint.Peep.h"
 
+using namespace OpenRCT2;
+
 namespace LightFx = OpenRCT2::Drawing::LightFx;
 
 void PaintStaff(PaintSession& session, const Staff& staff, int32_t orientation)

@@ -18,7 +18,6 @@
 #include "../world/tile_element/TileElement.h"
 #include "../world/tile_element/TrackElement.h"
 #include "RideEntry.h"
-#include "Track.h"
 #include "Vehicle.h"
 
 using namespace OpenRCT2;

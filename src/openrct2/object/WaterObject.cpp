@@ -16,6 +16,7 @@
 #include "../core/Json.hpp"
 #include "../drawing/Drawing.h"
 #include "../drawing/ImageImporter.h"
+#include "../drawing/Text.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Language.h"
 #include "../localisation/StringIds.h"
@@ -62,7 +63,7 @@ namespace OpenRCT2
     {
         // Write (no image)
         auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
-        DrawTextBasic(rt, screenCoords, STR_WINDOW_NO_IMAGE, {}, { TextAlignment::centre });
+        drawText(rt, screenCoords, STR_WINDOW_NO_IMAGE, { TextAlignment::centre });
     }
 
     void WaterObject::ReadJson([[maybe_unused]] IReadObjectContext* context, json_t& root)

@@ -23,10 +23,6 @@ namespace OpenRCT2::SawyerCoding
     static size_t DecodeChunkRLE(const uint8_t* src_buffer, uint8_t* dst_buffer, size_t length);
     static size_t DecodeChunkRLEWithSize(const uint8_t* src_buffer, uint8_t* dst_buffer, size_t length, size_t dstSize);
 
-    static size_t EncodeChunkRLE(const uint8_t* src_buffer, uint8_t* dst_buffer, size_t length);
-    static size_t EncodeChunkRepeat(const uint8_t* src_buffer, uint8_t* dst_buffer, size_t length);
-    static void EncodeChunkRotate(uint8_t* buffer, size_t length);
-
     uint32_t CalculateChecksum(const uint8_t* buffer, size_t length)
     {
         uint32_t checksum = 0;
@@ -259,7 +255,7 @@ namespace OpenRCT2::SawyerCoding
      * Ensure dst_buffer is bigger than src_buffer then resize afterwards
      * returns length of dst_buffer
      */
-    static size_t EncodeChunkRLE(const uint8_t* src_buffer, uint8_t* dst_buffer, size_t length)
+    size_t EncodeChunkRLE(const uint8_t* src_buffer, uint8_t* dst_buffer, size_t length)
     {
         const uint8_t* src = src_buffer;
         uint8_t* dst = dst_buffer;
@@ -307,7 +303,7 @@ namespace OpenRCT2::SawyerCoding
         return dst - dst_buffer;
     }
 
-    static size_t EncodeChunkRepeat(const uint8_t* src_buffer, uint8_t* dst_buffer, size_t length)
+    size_t EncodeChunkRepeat(const uint8_t* src_buffer, uint8_t* dst_buffer, size_t length)
     {
         if (length == 0)
             return 0;
@@ -374,7 +370,7 @@ namespace OpenRCT2::SawyerCoding
         return outLength;
     }
 
-    static void EncodeChunkRotate(uint8_t* buffer, size_t length)
+    void EncodeChunkRotate(uint8_t* buffer, size_t length)
     {
         uint8_t code = 1;
         for (size_t i = 0; i < length; i++)

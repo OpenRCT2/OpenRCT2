@@ -14,7 +14,6 @@
 #include "../../RideData.h"
 #include "../../RideRatings.h"
 #include "../../ShopItem.h"
-#include "../../Track.h"
 
 // clang-format off
 namespace OpenRCT2
@@ -37,7 +36,7 @@ constexpr RideTypeDescriptor MazeRTD =
     .OperatingSettings = { 1, 64 },
     .Naming = { STR_RIDE_NAME_MAZE, STR_RIDE_DESCRIPTION_MAZE },
     .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
-    .AvailableBreakdowns = 0,
+    .availableBreakdowns = {},
     .Heights = { 6, 24, 0, 1, },
     .MaxMass = 18,
     .LiftData = { Audio::SoundId::null, 5, 5 },

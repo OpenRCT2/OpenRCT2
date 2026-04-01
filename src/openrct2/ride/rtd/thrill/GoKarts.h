@@ -13,7 +13,6 @@
 #include "../../../drawing/LightFX.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
-#include "../../Track.h"
 
 // clang-format off
 namespace OpenRCT2
@@ -37,7 +36,7 @@ constexpr RideTypeDescriptor GoKartsRTD =
     .OperatingSettings = { 1, 10 },
     .Naming = { STR_RIDE_NAME_GO_KARTS, STR_RIDE_DESCRIPTION_GO_KARTS },
     .NameConvention = { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station },
-    .AvailableBreakdowns = (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
+    .availableBreakdowns = { Breakdown::vehicleMalfunction },
     .Heights = { 8, 24, 2, 1, },
     .MaxMass = 255,
     .LiftData = { Audio::SoundId::null, 5, 5 },

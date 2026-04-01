@@ -26,7 +26,7 @@ namespace OpenRCT2::RCT12
     void convertFromTD46Flags(TrackDesignTrackElement& target, uint8_t flags, TD46Version version)
     {
         target.brakeBoosterSpeed = kRCT2DefaultBlockBrakeSpeed;
-        if (::TrackTypeIsStation(target.type))
+        if (trackTypeIsStation(target.type))
         {
             auto stationIndex = flags & TD46Flags::stationIdMask;
             target.stationIndex = StationIndex::FromUnderlying(stationIndex);
@@ -34,7 +34,7 @@ namespace OpenRCT2::RCT12
         else
         {
             auto speedOrSeatRotation = flags & TD46Flags::speedOrSeatRotationMask;
-            if (::TrackTypeHasSpeedSetting(target.type)
+            if (trackTypeHasSpeedSetting(target.type)
                 && (target.type != OpenRCT2::TrackElemType::blockBrakes || version == TD46Version::td7))
             {
                 target.brakeBoosterSpeed = speedOrSeatRotation << 1;
@@ -55,12 +55,12 @@ namespace OpenRCT2::RCT12
     uint8_t convertToTD46Flags(const TrackDesignTrackElement& source, TD46Version version)
     {
         uint8_t trackFlags = 0;
-        if (::TrackTypeIsStation(source.type))
+        if (trackTypeIsStation(source.type))
         {
             trackFlags = source.stationIndex.ToUnderlying() & TD46Flags::stationIdMask;
         }
         else if (
-            ::TrackTypeHasSpeedSetting(source.type)
+            trackTypeHasSpeedSetting(source.type)
             && (source.type != OpenRCT2::TrackElemType::blockBrakes || version == TD46Version::td7))
         {
             trackFlags = (source.brakeBoosterSpeed >> 1);

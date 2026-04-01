@@ -145,6 +145,17 @@ public:
         auto dirbase = GetDefaultBaseDirectory(pathid);
         auto basePath = GetDirectoryPath(dirbase);
         auto fileName = kFileNames[EnumValue(pathid)];
+
+        auto assetPath = Platform::GetAssetPath();
+        if (!assetPath.empty())
+        {
+            auto combinedAssetPath = Path::Combine(assetPath, basePath, fileName);
+            if (File::Exists(combinedAssetPath))
+            {
+                return combinedAssetPath;
+            }
+        }
+
         return Path::Combine(basePath, fileName);
     }
 

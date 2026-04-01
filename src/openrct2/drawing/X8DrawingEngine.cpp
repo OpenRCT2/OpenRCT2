@@ -25,7 +25,7 @@
 #include "IDrawingEngine.h"
 #include "InvalidationGrid.h"
 #include "LightFX.h"
-#include "Weather.h"
+#include "WeatherDrawer.h"
 
 #include <algorithm>
 #include <cassert>
@@ -652,20 +652,20 @@ static void DrawTTFBitmapInternal(
 #endif // DISABLE_TTF
 
 void X8DrawingContext::DrawTTFBitmap(
-    RenderTarget& rt, TextDrawInfo* info, TTFSurface* surface, int32_t x, int32_t y, uint8_t hintingThreshold)
+    RenderTarget& rt, const TextDrawInfo& info, TTFSurface* surface, int32_t x, int32_t y, uint8_t hintingThreshold)
 {
 #ifndef DISABLE_TTF
-    const auto fgColor = info->palette.fill;
-    const auto bgColor = info->palette.shadowOutline;
+    const auto fgColor = info.palette.fill;
+    const auto bgColor = info.palette.shadowOutline;
 
-    if (info->colourFlags.has(ColourFlag::withOutline))
+    if (info.colourFlags.has(ColourFlag::withOutline))
     {
         DrawTTFBitmapInternal<false>(rt, bgColor, surface, x + 1, y, 0);
         DrawTTFBitmapInternal<false>(rt, bgColor, surface, x - 1, y, 0);
         DrawTTFBitmapInternal<false>(rt, bgColor, surface, x, y + 1, 0);
         DrawTTFBitmapInternal<false>(rt, bgColor, surface, x, y - 1, 0);
     }
-    if (info->colourFlags.has(ColourFlag::inset))
+    if (info.colourFlags.has(ColourFlag::inset))
     {
         DrawTTFBitmapInternal<false>(rt, bgColor, surface, x + 1, y + 1, 0);
     }

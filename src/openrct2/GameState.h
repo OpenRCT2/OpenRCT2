@@ -22,10 +22,10 @@
 #include "ride/RideRatings.h"
 #include "scenario/ScenarioOptions.h"
 #include "world/Banner.h"
-#include "world/Climate.h"
 #include "world/Location.hpp"
 #include "world/ParkData.h"
 #include "world/ScenerySelection.h"
+#include "world/Weather.h"
 
 #include <array>
 #include <memory>
@@ -43,8 +43,8 @@ namespace OpenRCT2
         uint32_t currentTicks{};
         Date date;
 
-        WeatherState weatherCurrent;
-        WeatherState weatherNext;
+        Weather::State weatherCurrent;
+        Weather::State weatherNext;
         uint16_t weatherUpdateTimer;
 
         uint32_t nextGuestNumber;

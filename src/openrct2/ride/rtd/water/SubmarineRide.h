@@ -13,7 +13,6 @@
 #include "../../../drawing/LightFX.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
-#include "../../Track.h"
 
 // clang-format off
 namespace OpenRCT2
@@ -38,7 +37,7 @@ constexpr RideTypeDescriptor SubmarineRideRTD =
     .DefaultMode = RideMode::continuousCircuit,
     .Naming = { STR_RIDE_NAME_SUBMARINE_RIDE, STR_RIDE_DESCRIPTION_SUBMARINE_RIDE },
     .NameConvention = { RideComponentType::Boat, RideComponentType::Track, RideComponentType::DockingPlatform },
-    .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
+    .availableBreakdowns = { Breakdown::safetyCutOut, Breakdown::vehicleMalfunction },
     .Heights = { 255, 16, 0, 3, },
     .MaxMass = 255,
     .LiftData = { Audio::SoundId::null, 5, 5 },

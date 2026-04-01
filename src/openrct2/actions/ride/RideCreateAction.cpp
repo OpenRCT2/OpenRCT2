@@ -278,7 +278,7 @@ namespace OpenRCT2::GameActions
         ride->buildDate = GetDate().GetMonthsElapsed();
         ride->musicTuneId = kTuneIDNull;
 
-        ride->breakdownReason = BREAKDOWN_NONE;
+        ride->breakdownReason = Breakdown::none;
         ride->upkeepCost = kMoney64Undefined;
         ride->reliability = kRideInitialReliability;
         ride->unreliabilityFactor = 1;

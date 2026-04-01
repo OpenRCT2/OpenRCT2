@@ -16,6 +16,7 @@
 #include "../world/ParkData.h"
 #include "Limits.h"
 
+enum class Breakdown : uint8_t;
 enum class MechanicStatus : uint8_t;
 enum class VehicleColourSettings : uint8_t;
 
@@ -352,24 +353,24 @@ namespace OpenRCT2::RCT1
             uint16_t slidePeep; // 0x10E
             uint16_t mazeTiles; // 0x10E
         };
-        uint8_t pad110[0xE];            // 0x110
-        uint8_t slidePeepTshirtColour;  // 0x11E
-        uint8_t pad11F[0x7];            // 0x11F
-        uint8_t spiralSlideProgress;    // 0x126
-        uint8_t pad127[0x9];            // 0x127
-        int16_t buildDate;              // 0x130
-        money16 upkeepCost;             // 0x131
-        uint16_t raceWinner;            // 0x132
-        uint8_t unk134[2];              // 0x134
-        uint32_t musicPosition;         // 0x138
-        uint8_t breakdownReasonPending; // 0x13C
-        MechanicStatus mechanicStatus;  // 0x13D
-        uint16_t mechanic;              // 0x13E
-        uint8_t inspectionStation;      // 0x140
-        uint8_t brokenTrain;            // 0x141
-        uint8_t brokenCar;              // 0x142
-        uint8_t breakdownReason;        // 0x143
-        money16 priceSecondary;         // 0x144
+        uint8_t pad110[0xE];              // 0x110
+        uint8_t slidePeepTshirtColour;    // 0x11E
+        uint8_t pad11F[0x7];              // 0x11F
+        uint8_t spiralSlideProgress;      // 0x126
+        uint8_t pad127[0x9];              // 0x127
+        int16_t buildDate;                // 0x130
+        money16 upkeepCost;               // 0x131
+        uint16_t raceWinner;              // 0x132
+        uint8_t unk134[2];                // 0x134
+        uint32_t musicPosition;           // 0x138
+        Breakdown breakdownReasonPending; // 0x13C
+        MechanicStatus mechanicStatus;    // 0x13D
+        uint16_t mechanic;                // 0x13E
+        uint8_t inspectionStation;        // 0x140
+        uint8_t brokenTrain;              // 0x141
+        uint8_t brokenCar;                // 0x142
+        Breakdown breakdownReason;        // 0x143
+        money16 priceSecondary;           // 0x144
         union
         {
             struct

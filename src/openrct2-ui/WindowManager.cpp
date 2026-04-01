@@ -271,7 +271,7 @@ public:
                             callback(result, std::string(path).c_str());
                         }
                     },
-                    trackDesign);
+                    false, trackDesign);
                 return w;
             }
             case WindowClass::manageTrackDesign:
@@ -1111,6 +1111,12 @@ public:
         CloseByClass(WindowClass::trackDesignPlace);
     }
 
+    void Cleanup() override
+    {
+        CloseByCondition([](WindowBase* w) { return true; });
+        WindowCullDead();
+    }
+
     /**
      * Finds the first window with the specified window class.
      *  rct2: 0x006EA8A0
@@ -1200,7 +1206,7 @@ public:
         {
             const auto& widget = w.widgets[i];
 
-            if (widget.type != WidgetType::empty && widget.IsVisible())
+            if (widget.type != WidgetType::empty && widget.isVisible())
             {
                 if (screenCoords.x >= w.windowPos.x + widget.left && screenCoords.x <= w.windowPos.x + widget.right
                     && screenCoords.y >= w.windowPos.y + widget.top && screenCoords.y <= w.windowPos.y + widget.bottom)

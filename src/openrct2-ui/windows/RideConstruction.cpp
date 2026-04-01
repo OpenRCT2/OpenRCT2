@@ -7,9 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "openrct2-ui/ProvisionalElements.h"
-
 #include <limits>
+#include <openrct2-ui/ProvisionalElements.h>
 #include <openrct2-ui/UiContext.h>
 #include <openrct2-ui/input/InputManager.h>
 #include <openrct2-ui/interface/Dropdown.h>
@@ -37,8 +36,10 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/core/Numerics.hpp>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/Text.h>
 #include <openrct2/interface/Viewport.h>
 #include <openrct2/localisation/Formatter.h>
+#include <openrct2/localisation/Formatting.h>
 #include <openrct2/network/Network.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/paint/VirtualFloor.h>
@@ -49,6 +50,7 @@
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
 #include <openrct2/ride/TrackData.h>
+#include <openrct2/ride/TrackIteration.h>
 #include <openrct2/ride/ted/TrackElementDescriptor.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
@@ -87,7 +89,7 @@ namespace OpenRCT2::Ui::Windows
         const CoordsXYZ& trackPos);
     static std::pair<bool, TrackElemType> WindowRideConstructionUpdateStateGetTrackElement();
 
-    static constexpr StringId kWindowTitle = STR_RIDE_CONSTRUCTION_WINDOW_TITLE;
+    static constexpr StringId kWindowTitle = kStringIdNone;
     static constexpr ScreenSize kWindowSize = { 210, 394 };
 
     static constexpr uint16_t kArrowPulseDuration = 200;
@@ -166,7 +168,7 @@ namespace OpenRCT2::Ui::Windows
         makeWidget        ({138,  29}, {              22,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_RIGHT_CURVE),       STR_RIDE_CONSTRUCTION_RIGHT_CURVE_TIP               ),
         makeWidget        ({160,  29}, {              22,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_G2_ICON_MEDIUM_CURVE_RIGHT),          STR_RIDE_CONSTRUCTION_RIGHT_CURVE_SMALL_TIP         ),
         makeWidget        ({182,  29}, {              22,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_RIGHT_CURVE_SMALL), STR_RIDE_CONSTRUCTION_RIGHT_CURVE_VERY_SMALL_TIP    ),
-        makeWidget        ({  6,  55}, { kGroupWidth - 6,  14}, WidgetType::button,   WindowColour::secondary, STR_YELLOW_STRING,                                STR_RIDE_CONSTRUCTION_OTHER_TRACK_CONFIGURATIONS_TIP),
+        makeWidget        ({  6,  55}, { kGroupWidth - 6,  14}, WidgetType::button,   WindowColour::secondary, kStringIdEmpty,                                   STR_RIDE_CONSTRUCTION_OTHER_TRACK_CONFIGURATIONS_TIP),
         makeWidget        ({  6,  88}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_VERTICAL_DROP),     STR_RIDE_CONSTRUCTION_VERTICAL_DROP_TIP             ),
         makeWidget        ({ 30,  88}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_DOWN_STEEP),  STR_RIDE_CONSTRUCTION_STEEP_SLOPE_DOWN_TIP          ),
         makeWidget        ({ 54,  88}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_DOWN),        STR_RIDE_CONSTRUCTION_SLOPE_DOWN_TIP                ),
@@ -242,6 +244,9 @@ namespace OpenRCT2::Ui::Windows
         uint8_t _currentlyShowingBrakeOrBoosterSpeed{};
         SpecialElementsDropdownState _specialElementDropdownState;
         bool _autoOpeningShop{};
+        u8string _windowTitle{};
+        u8string _specialDropdownText{};
+        u8string _brakeSpeedText{};
 
     public:
         void onOpen() override
@@ -1620,21 +1625,18 @@ namespace OpenRCT2::Ui::Windows
                     stringId = STR_LOG_BUMPS;
                 }
             }
-            auto ft = Formatter::Common();
-            ft.Add<uint16_t>(stringId);
+            _specialDropdownText = FormatStringID(STR_YELLOW_STRING, stringId);
+            widgets[WIDX_SPECIAL_TRACK_DROPDOWN].setString(_specialDropdownText.c_str());
 
             if (_currentlyShowingBrakeOrBoosterSpeed)
             {
                 uint16_t brakeSpeed2 = ((_currentBrakeSpeed * 9) >> 2) & 0xFFFF;
-                if (TrackTypeIsBooster(_selectedTrackType) || TrackTypeIsBooster(_currentlySelectedTrack.trackType))
+                if (trackTypeIsBooster(_selectedTrackType) || trackTypeIsBooster(_currentlySelectedTrack.trackType))
                 {
                     brakeSpeed2 = GetUnifiedBoosterSpeed(currentRide->type, brakeSpeed2);
                 }
-                ft.Add<uint16_t>(brakeSpeed2);
-            }
-            else
-            {
-                ft.Increment(2);
+                _brakeSpeedText = FormatStringID(STR_VELOCITY, brakeSpeed2);
+                widgets[WIDX_SPEED_SETTING_SPINNER].setString(_brakeSpeedText.c_str());
             }
 
             widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER].text = kSeatAngleRotationStrings[_currentSeatRotationAngle];
@@ -1654,9 +1656,8 @@ namespace OpenRCT2::Ui::Windows
                     pressedWidgets &= ~(1uLL << WIDX_SIMULATE);
                 }
             }
-
-            // Set window title arguments
-            currentRide->formatNameTo(ft);
+            _windowTitle = FormatStringID(STR_RIDE_CONSTRUCTION_WINDOW_TITLE, currentRide->getName().c_str());
+            widgets[WIDX_TITLE].setString(_windowTitle.c_str());
         }
 
         static void onDrawUpdateCoveredPieces(const TrackDrawerDescriptor& trackDrawerDescriptor, std::span<Widget> widgets)
@@ -1721,14 +1722,14 @@ namespace OpenRCT2::Ui::Windows
             // Draw cost
             screenCoords = { windowPos.x + widget->midX(), windowPos.y + widget->bottom - 23 };
             if (_rideConstructionState != RideConstructionState::Place)
-                DrawTextBasic(rt, screenCoords, STR_BUILD_THIS, {}, { TextAlignment::centre });
+                drawText(rt, screenCoords, STR_BUILD_THIS, { TextAlignment::centre });
 
             screenCoords.y += 11;
             if (_currentTrackPrice != kMoney64Undefined && !(getGameState().park.flags & PARK_FLAGS_NO_MONEY))
             {
                 auto ft = Formatter();
                 ft.Add<money64>(_currentTrackPrice);
-                DrawTextBasic(rt, screenCoords, STR_COST_LABEL, ft, { TextAlignment::centre });
+                drawText(rt, screenCoords, STR_COST_LABEL, ft, { TextAlignment::centre });
             }
         }
 
@@ -1907,8 +1908,10 @@ namespace OpenRCT2::Ui::Windows
                 && _currentTrackPitchEnd == TrackPitch::none && _currentTrackRollEnd == TrackRoll::none
                 && (_currentlySelectedTrack == TrackCurve::left || _currentlySelectedTrack == TrackCurve::right))
             {
+                widgets[WIDX_SLOPE_DOWN_STEEP].type = WidgetType::flatBtn;
                 widgets[WIDX_SLOPE_DOWN_STEEP].image = ImageId(SPR_RIDE_CONSTRUCTION_HELIX_DOWN);
                 widgets[WIDX_SLOPE_DOWN_STEEP].tooltip = STR_RIDE_CONSTRUCTION_HELIX_DOWN_TIP;
+                widgets[WIDX_SLOPE_UP_STEEP].type = WidgetType::flatBtn;
                 widgets[WIDX_SLOPE_UP_STEEP].image = ImageId(SPR_RIDE_CONSTRUCTION_HELIX_UP);
                 widgets[WIDX_SLOPE_UP_STEEP].tooltip = STR_RIDE_CONSTRUCTION_HELIX_UP_TIP;
 
@@ -1988,10 +1991,10 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_U_TRACK].type = WidgetType::empty;
             widgets[WIDX_O_TRACK].type = WidgetType::empty;
 
-            bool trackHasSpeedSetting = TrackTypeHasSpeedSetting(_selectedTrackType)
-                || TrackTypeHasSpeedSetting(_currentlySelectedTrack.trackType);
-            bool boosterTrackSelected = TrackTypeIsBooster(_selectedTrackType)
-                || TrackTypeIsBooster(_currentlySelectedTrack.trackType);
+            bool trackHasSpeedSetting = trackTypeHasSpeedSetting(_selectedTrackType)
+                || trackTypeHasSpeedSetting(_currentlySelectedTrack.trackType);
+            bool boosterTrackSelected = trackTypeIsBooster(_selectedTrackType)
+                || trackTypeIsBooster(_currentlySelectedTrack.trackType);
 
             // only necessary because TD6 writes speed and seat rotation to the same bits. Remove for new track design format.
             bool trackHasSpeedAndSeatRotation = _selectedTrackType == TrackElemType::blockBrakes
@@ -2028,7 +2031,6 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 _currentlyShowingBrakeOrBoosterSpeed = true;
-                widgets[WIDX_SPEED_SETTING_SPINNER].text = STR_RIDE_CONSTRUCTION_BRAKE_SPEED_VELOCITY;
 
                 widgets[WIDX_SPEED_SETTING_SPINNER].type = WidgetType::spinner;
                 widgets[WIDX_SPEED_SETTING_SPINNER_UP].type = WidgetType::button;
@@ -2293,9 +2295,9 @@ namespace OpenRCT2::Ui::Windows
             const auto& ted = GetTrackElementDescriptor(trackType);
             trackDirection &= 3;
             MapSelection::clearSelectedTiles();
-            for (uint8_t i = 0; i < ted.numSequences; i++)
+            for (uint8_t i = 0; i < ted.sequenceData.numSequences; i++)
             {
-                CoordsXY offsets = { ted.sequences[i].clearance.x, ted.sequences[i].clearance.y };
+                CoordsXY offsets = { ted.sequenceData.sequences[i].clearance.x, ted.sequenceData.sequences[i].clearance.y };
                 CoordsXY currentTileCoords = tileCoords + offsets.Rotate(trackDirection);
 
                 MapSelection::addSelectedTile(currentTileCoords);
@@ -2371,7 +2373,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             const bool helixSelected = (_currentlySelectedTrack.isTrackType)
-                && TrackTypeIsHelix(_currentlySelectedTrack.trackType);
+                && trackTypeIsHelix(_currentlySelectedTrack.trackType);
             if (helixSelected || (_currentTrackPitchEnd != TrackPitch::none))
             {
                 ViewportSetVisibility(ViewportVisibility::trackHeights);
@@ -2426,14 +2428,14 @@ namespace OpenRCT2::Ui::Windows
             inputElement.x = newCoords->x;
             inputElement.y = newCoords->y;
             inputElement.element = tileElement;
-            if (TrackBlockGetPrevious({ *newCoords, tileElement }, &trackBeginEnd))
+            if (trackBlockGetPrevious({ *newCoords, tileElement }, &trackBeginEnd))
             {
                 *newCoords = { trackBeginEnd.begin_x, trackBeginEnd.begin_y, trackBeginEnd.begin_z };
                 direction = trackBeginEnd.begin_direction;
                 type = trackBeginEnd.begin_element->AsTrack()->GetTrackType();
                 _gotoStartPlacementMode = false;
             }
-            else if (TrackBlockGetNext(&inputElement, &outputElement, &newCoords->z, &direction))
+            else if (trackBlockGetNext(&inputElement, &outputElement, &newCoords->z, &direction))
             {
                 newCoords->x = outputElement.x;
                 newCoords->y = outputElement.y;
@@ -2455,7 +2457,7 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 const auto& ted = GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
-                newCoords->z = (tileElement->GetBaseZ()) - ted.sequences[0].clearance.z;
+                newCoords->z = (tileElement->GetBaseZ()) - ted.sequenceData.sequences[0].clearance.z;
                 _gotoStartPlacementMode = true;
             }
 
@@ -2712,9 +2714,9 @@ namespace OpenRCT2::Ui::Windows
             }
 
             const auto& ted = GetTrackElementDescriptor(trackType);
-            const auto trackBlock = ted.sequences[ted.numSequences - 1].clearance;
+            const auto trackBlock = ted.sequenceData.sequences[ted.sequenceData.numSequences - 1].clearance;
             CoordsXYZ mapCoords{ trackBlock.x, trackBlock.y, trackBlock.z };
-            if (trackBlock.flags & RCT_PREVIEW_TRACK_FLAG_1)
+            if (trackBlock.flags.has(ClearanceFlag::flag1))
             {
                 mapCoords.x = 0;
                 mapCoords.y = 0;
@@ -2781,9 +2783,9 @@ namespace OpenRCT2::Ui::Windows
             auto clearanceHeight = (rideEntry != nullptr) ? rideEntry->Clearance
                                                           : currentRide->getRideTypeDescriptor().Heights.ClearanceHeight;
 
-            for (uint8_t i = 0; i < ted.numSequences; i++)
+            for (uint8_t i = 0; i < ted.sequenceData.numSequences; i++)
             {
-                const auto& trackBlock = ted.sequences[i].clearance;
+                const auto& trackBlock = ted.sequenceData.sequences[i].clearance;
 
                 auto quarterTile = trackBlock.quarterTile.Rotate(trackDirection);
                 CoordsXY offsets = { trackBlock.x, trackBlock.y };
@@ -2861,7 +2863,7 @@ namespace OpenRCT2::Ui::Windows
 
                 // Non-default vehicle visuals do not use this system, so we have to assume it supports all the track pieces.
                 auto& firstCar = currentRideEntry->Cars[0];
-                if (firstCar.PaintStyle != VEHICLE_VISUAL_DEFAULT
+                if ((firstCar.PaintStyle != VEHICLE_VISUAL_DEFAULT && firstCar.PaintStyle != VEHICLE_VISUAL_SPINNING_CARS)
                     || firstCar.flags.hasAny(CarEntryFlag::isChairlift, CarEntryFlag::useSlideSwing))
                 {
                     disabledGroups.reset();
@@ -2971,7 +2973,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             CoordsXYE next_track;
-            if (TrackBlockGetNextFromZero(trackPos, *ride, trackDirection, &next_track, &trackPos.z, &trackDirection, false))
+            if (trackBlockGetNextFromZero(trackPos, *ride, trackDirection, &next_track, &trackPos.z, &trackDirection, false))
             {
                 _currentTrackBegin.x = next_track.x;
                 _currentTrackBegin.y = next_track.y;
@@ -3018,7 +3020,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             TrackBeginEnd trackBeginEnd;
-            if (TrackBlockGetPreviousFromZero(trackPos, *ride, trackDirection, &trackBeginEnd))
+            if (trackBlockGetPreviousFromZero(trackPos, *ride, trackDirection, &trackBeginEnd))
             {
                 _currentTrackBegin.x = trackBeginEnd.begin_x;
                 _currentTrackBegin.y = trackBeginEnd.begin_y;
@@ -3190,7 +3192,7 @@ namespace OpenRCT2::Ui::Windows
                 != std::nullopt)
             {
                 _selectedTrackType = tileElement->AsTrack()->GetTrackType();
-                if (TrackTypeHasSpeedSetting(tileElement->AsTrack()->GetTrackType()))
+                if (trackTypeHasSpeedSetting(tileElement->AsTrack()->GetTrackType()))
                     _currentBrakeSpeed = tileElement->AsTrack()->GetBrakeBoosterSpeed();
                 _currentColourScheme = static_cast<RideColourScheme>(tileElement->AsTrack()->GetColourScheme());
                 _currentSeatRotationAngle = tileElement->AsTrack()->GetSeatRotation();
@@ -3431,9 +3433,9 @@ namespace OpenRCT2::Ui::Windows
         // Loc6CC91B:
         const auto& ted = GetTrackElementDescriptor(trackType);
         int32_t bx = 0;
-        for (uint8_t i = 0; i < ted.numSequences; i++)
+        for (uint8_t i = 0; i < ted.sequenceData.numSequences; i++)
         {
-            bx = std::min<int32_t>(bx, ted.sequences[i].clearance.z);
+            bx = std::min<int32_t>(bx, ted.sequenceData.sequences[i].clearance.z);
         }
         z -= bx;
 
@@ -3660,9 +3662,9 @@ namespace OpenRCT2::Ui::Windows
         {
             const auto& ted = GetTrackElementDescriptor(_currentTrackPieceType);
             int32_t bx = 0;
-            for (uint8_t i = 0; i < ted.numSequences; i++)
+            for (uint8_t i = 0; i < ted.sequenceData.numSequences; i++)
             {
-                bx = std::min<int32_t>(bx, ted.sequences[i].clearance.z);
+                bx = std::min<int32_t>(bx, ted.sequenceData.sequences[i].clearance.z);
             }
             z -= bx;
 
@@ -5074,7 +5076,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        if (TrackTypeHasSpeedSetting(trackType))
+        if (trackTypeHasSpeedSetting(trackType))
         {
             properties = _currentBrakeSpeed;
         }
@@ -5163,7 +5165,7 @@ namespace OpenRCT2::Ui::Windows
                 y -= CoordsDirectionDelta[direction].y;
             }
             CoordsXYE next_track;
-            if (TrackBlockGetNextFromZero({ x, y, z }, *ride, direction, &next_track, &z, &direction, true))
+            if (trackBlockGetNextFromZero({ x, y, z }, *ride, direction, &next_track, &z, &direction, true))
             {
                 auto trackType = next_track.element->AsTrack()->GetTrackType();
                 int32_t trackSequence = next_track.element->AsTrack()->GetSequenceIndex();

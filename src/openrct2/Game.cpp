@@ -55,7 +55,6 @@
 #include "ride/Ride.h"
 #include "ride/RideRatings.h"
 #include "ride/Station.h"
-#include "ride/Track.h"
 #include "ride/TrackDesign.h"
 #include "ride/Vehicle.h"
 #include "sawyer_coding/SawyerCoding.h"
@@ -66,13 +65,13 @@
 #include "ui/WindowManager.h"
 #include "windows/Intent.h"
 #include "world/Banner.h"
-#include "world/Climate.h"
 #include "world/Entrance.h"
 #include "world/Footpath.h"
 #include "world/Map.h"
 #include "world/MapAnimation.h"
 #include "world/Park.h"
 #include "world/Scenery.h"
+#include "world/Weather.h"
 #include "world/tile_element/SurfaceElement.h"
 
 #include <cstdio>

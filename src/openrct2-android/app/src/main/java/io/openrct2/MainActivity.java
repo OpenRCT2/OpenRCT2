@@ -32,7 +32,6 @@ import java.io.InputStream;
 public class MainActivity extends AppCompatActivity {
 
     public static final String TAG = "OpenRCT2";
-    private boolean assetsCopied = false;
 
     @Override
     public void onRequestPermissionsResult(
@@ -144,7 +143,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startGame() {
-        copyAssets(); // TODO Don't copy/enumerate assets on every startup
         Intent intent = new Intent(this, GameActivity.class);
         if (getIntent().hasExtra("commandLineArgs")) {
             intent.putExtra("commandLineArgs", getIntent().getStringArrayExtra("commandLineArgs"));
@@ -152,50 +150,4 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
-
-    // TODO Don't copy/enumerate assets on every startup
-    // When building, ensure OpenRCT2 assets are inside their own directory within the APK assets,
-    // so that we do not attempt to copy files out of the standard Android asset folders - webkit, etc.
-    private void copyAssets() {
-        File dataDir = new File(Environment.getExternalStorageDirectory().toString()
-            + File.separator + "openrct2" + File.separator);
-
-        try {
-            copyAsset(getAssets(), "openrct2", dataDir, "");
-        } catch (IOException e) {
-            Log.e(TAG, "Error extracting files", e);
-            return;
-        }
-
-        assetsCopied = true;
-    }
-
-    // srcPath cannot be the empty string
-    private void copyAsset(AssetManager assets, String srcPath, File dataDir, String destPath) throws IOException {
-        String[] list = assets.list(srcPath);
-
-        if (list.length == 0) {
-            InputStream input = assets.open(srcPath);
-            File extractedFile = new File(dataDir, destPath);
-            File parentFile = extractedFile.getParentFile();
-            if (!parentFile.exists()) {
-                boolean success = parentFile.mkdirs();
-                if (!success) {
-                    Log.d(TAG, String.format("Error creating folder '%s'", parentFile));
-                }
-            }
-            FileOutputStream output = new FileOutputStream(extractedFile);
-            IOUtils.copyLarge(input, output);
-            output.close();
-            input.close();
-            return;
-        }
-
-        for (String fileName : list) {
-            // This ternary expression makes sure that this string does not begin with a slash
-            String destination = destPath + (destPath.isEmpty() ? "" : File.separator) + fileName;
-            copyAsset(assets, srcPath + File.separator + fileName, dataDir, destination);
-        }
-    }
-
 }

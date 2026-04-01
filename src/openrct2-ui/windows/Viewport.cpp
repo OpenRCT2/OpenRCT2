@@ -14,7 +14,7 @@
 #include <openrct2/Game.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/audio/Audio.h>
-#include <openrct2/localisation/Formatter.h>
+#include <openrct2/localisation/Formatting.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Map.h>
 
@@ -35,7 +35,7 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma region MEASUREMENTS
 
-    static constexpr StringId kWindowTitle = STR_VIEWPORT_NO;
+    static constexpr StringId kWindowTitle = kStringIdNone;
     static constexpr ScreenSize kWindowSize = { 200, 200 };
 
     static constexpr ScreenSize kButtonSize = { 24, 24 };
@@ -57,6 +57,8 @@ namespace OpenRCT2::Ui::Windows
     class ViewportWindow final : public Window
     {
     private:
+        u8string _windowTitle{};
+
         void GetFreeViewportNumber()
         {
             number = 1;
@@ -186,7 +188,8 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_VIEWPORT].bottom = widgets[WIDX_BACKGROUND].bottom - 3;
 
             // Set title
-            Formatter::Common().Add<uint32_t>(number);
+            _windowTitle = FormatStringID(STR_VIEWPORT_NO, static_cast<uint32_t>(number));
+            widgets[WIDX_TITLE].setString(_windowTitle.c_str());
 
             // Set disabled widgets
             disabledWidgets = 0;

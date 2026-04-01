@@ -14,6 +14,7 @@
 #include "../ReplayManager.h"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
+#include "../drawing/Drawing.String.h"
 #include "../drawing/Drawing.h"
 #include "../drawing/IDrawingEngine.h"
 #include "../drawing/Text.h"
@@ -91,11 +92,11 @@ void Painter::PaintReplayNotice(RenderTarget& rt, const char* text)
     char buffer[64]{};
     FormatStringToBuffer(buffer, sizeof(buffer), "{OUTLINE}{RED}{STRING}", text);
 
-    auto stringWidth = GfxGetStringWidth(buffer, FontStyle::medium);
+    auto stringWidth = getStringWidth(buffer, FontStyle::medium);
     screenCoords.x = screenCoords.x - stringWidth;
 
     if (((getGameState().currentTicks >> 1) & 0xF) > 4)
-        DrawText(rt, screenCoords, { OpenRCT2::Drawing::Colour::saturatedRed }, buffer);
+        drawText(rt, screenCoords, buffer, { OpenRCT2::Drawing::Colour::saturatedRed });
 
     // Make area dirty so the text doesn't get drawn over the last
     GfxSetDirtyBlocks({ screenCoords, screenCoords + ScreenCoordsXY{ stringWidth, 16 } });
@@ -119,7 +120,7 @@ void Painter::PaintFPS(RenderTarget& rt)
 
     char buffer[64]{};
     FormatStringToBuffer(buffer, sizeof(buffer), "{OUTLINE}{WHITE}{INT32}", _currentFPS);
-    const int32_t stringWidth = GfxGetStringWidth(buffer, FontStyle::medium);
+    const int32_t stringWidth = getStringWidth(buffer, FontStyle::medium);
 
     // Figure out where counter should be rendered
     ScreenCoordsXY screenCoords(_uiContext.GetWidth() / 2, 2);
@@ -132,7 +133,7 @@ void Painter::PaintFPS(RenderTarget& rt)
         screenCoords.y = kTopToolbarHeight + 3;
     }
 
-    DrawText(rt, screenCoords, { OpenRCT2::Drawing::Colour::white }, buffer);
+    drawText(rt, screenCoords, buffer, { OpenRCT2::Drawing::Colour::white });
 
     // Make area dirty so the text doesn't get drawn over the last
     GfxSetDirtyBlocks({ { screenCoords - ScreenCoordsXY{ 16, 4 } }, { rt.lastStringPos.x + 16, screenCoords.y + 16 } });

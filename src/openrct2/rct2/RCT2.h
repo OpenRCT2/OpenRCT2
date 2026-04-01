@@ -20,6 +20,7 @@
 #include <vector>
 
 struct RideObjectEntry;
+enum class Breakdown : uint8_t;
 enum class EditorStep : uint8_t;
 enum class MechanicStatus : uint8_t;
 enum class RideInvalidateFlag : uint8_t;
@@ -242,13 +243,13 @@ namespace OpenRCT2::RCT2
         uint16_t raceWinner;                   // 0x184
         uint8_t pad186[0x02];                  // 0x186
         uint32_t musicPosition;                // 0x188
-        uint8_t breakdownReasonPending;        // 0x18C
+        Breakdown breakdownReasonPending;      // 0x18C
         MechanicStatus mechanicStatus;         // 0x18D
         uint16_t mechanic;                     // 0x18E
         uint8_t inspectionStation;             // 0x190
         uint8_t brokenTrain;                   // 0x191
         uint8_t brokenCar;                     // 0x192
-        uint8_t breakdownReason;               // 0x193
+        Breakdown breakdownReason;             // 0x193
         money16 priceSecondary;                // 0x194
         union
         {

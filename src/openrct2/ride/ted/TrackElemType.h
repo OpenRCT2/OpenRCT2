@@ -385,4 +385,14 @@ namespace OpenRCT2
 
         none = 65535,
     };
-}
+
+    bool trackTypeIsCovered(TrackElemType trackElementType);
+    TrackElemType uncoverTrackType(TrackElemType trackElementType);
+    bool trackTypeIsStation(TrackElemType trackType);
+    bool trackTypeIsBrakes(TrackElemType trackType);
+    bool trackTypeIsBlockBrakes(TrackElemType trackType);
+    bool trackTypeIsBooster(TrackElemType trackType);
+    bool trackTypeIsReverser(TrackElemType trackType);
+    bool trackTypeHasSpeedSetting(TrackElemType trackType);
+    bool trackTypeIsHelix(TrackElemType trackType);
+} // namespace OpenRCT2

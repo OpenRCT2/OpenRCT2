@@ -91,7 +91,7 @@ namespace OpenRCT2
 
     const LargeSceneryEntry* LargeSceneryElement::GetEntry() const
     {
-        return OpenRCT2::ObjectManager::GetObjectEntry<LargeSceneryEntry>(GetEntryIndex());
+        return OpenRCT2::ObjectEntryManager::GetObjectEntry<LargeSceneryEntry>(GetEntryIndex());
     }
 
     uint8_t LargeSceneryElement::GetSequenceIndex() const
@@ -104,8 +104,8 @@ namespace OpenRCT2
         EntryIndex = newIndex;
     }
 
-    void LargeSceneryElement::SetSequenceIndex(uint8_t sequence)
+    void LargeSceneryElement::SetSequenceIndex(uint8_t newIndex)
     {
-        SequenceIndex = sequence;
+        SequenceIndex = newIndex;
     }
 } // namespace OpenRCT2

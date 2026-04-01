@@ -21,7 +21,7 @@ namespace OpenRCT2
 {
     struct GameState_t;
 
-    enum class TrackElemType : uint16_t;
+    struct TrackElement;
 
     namespace RCT12
     {
@@ -60,12 +60,11 @@ std::string_view GetClimateObjectIdFromLegacyClimateType(OpenRCT2::RCT12::Climat
  * To avoid this, this function will return true if the piece is question was added after the park was created,
  * so that import code can properly set the visibility.
  *
- * @param rideType The OpenRCT2 ride type
- * @param trackType The OpenRCT2 track type
+ * @param trackElement The track element
  * @param parkFileVersion The current park file version. Pass -1 when converting S4 or S6.
  * @return
  */
-bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, OpenRCT2::TrackElemType trackType, int32_t parkFileVersion = -1);
+bool TrackTypeMustBeMadeInvisible(const OpenRCT2::TrackElement& trackElement, int32_t parkFileVersion = -1);
 
 std::pair<uint8_t, SpecialElements> splitCombinedHelicesAndSpecialElements(uint8_t combinedValue);
 std::pair<uint8_t, uint8_t> splitCombinedNumDropsPoweredLifts(uint8_t combinedValue);

@@ -18,6 +18,7 @@
 #include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
+#include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/StringIds.h>
@@ -502,13 +503,13 @@ namespace OpenRCT2::Ui::Windows
             // Draw explanatory message
             auto ft = Formatter();
             ft.Add<StringId>(STR_OBJECT_ERROR_WINDOW_EXPLANATION);
-            DrawTextWrapped(rt, screenPos + ScreenCoordsXY{ 0, 4 }, kWindowSize.width - 10, STR_BLACK_STRING, ft);
+            drawTextWrapped(rt, screenPos + ScreenCoordsXY{ 0, 4 }, kWindowSize.width - 10, STR_BLACK_STRING, ft);
 
             // Draw file name
             ft = Formatter();
             ft.Add<StringId>(STR_OBJECT_ERROR_WINDOW_FILE);
             ft.Add<utf8*>(_filePath.c_str());
-            DrawTextEllipsised(rt, screenPos + ScreenCoordsXY{ 0, 29 }, kWindowSize.width - 5, STR_BLACK_STRING, ft);
+            drawTextEllipsised(rt, screenPos + ScreenCoordsXY{ 0, 29 }, kWindowSize.width - 5, STR_BLACK_STRING, ft);
         }
 
         void onScrollDraw(const int32_t scrollIndex, RenderTarget& rt) override
@@ -544,22 +545,18 @@ namespace OpenRCT2::Ui::Windows
 
                 const auto& entry = _invalidEntries[i];
 
-                auto name = entry.GetName();
-                char buffer[256];
-                String::set(buffer, sizeof(buffer), name.data(), name.size());
-                DrawText(rt, screenCoords, { Drawing::Colour::darkGreen }, buffer);
+                drawText(rt, screenCoords, entry.GetName(), { Colour::darkGreen });
 
                 if (entry.Generation == ObjectGeneration::DAT)
                 {
                     // ... source game ...
                     const auto sourceStringId = ObjectManagerGetSourceGameString(entry.Entry.GetSourceGame());
-                    DrawTextBasic(
-                        rt, { kSourceColLeft - 3, screenCoords.y }, sourceStringId, {}, { Drawing::Colour::darkGreen });
+                    drawText(rt, { kSourceColLeft - 3, screenCoords.y }, sourceStringId, { Drawing::Colour::darkGreen });
                 }
 
                 // ... and type
                 const auto type = GetStringFromObjectType(entry.GetType());
-                DrawTextBasic(rt, { kTypeColLeft - 3, screenCoords.y }, type, {}, { Drawing::Colour::darkGreen });
+                drawText(rt, { kTypeColLeft - 3, screenCoords.y }, type, { Drawing::Colour::darkGreen });
             }
         }
 

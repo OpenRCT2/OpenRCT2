@@ -16,13 +16,10 @@
 #include "ColourPalette.h"
 #include "Drawing.Sprite.h"
 #include "FilterPaletteIds.h"
-#include "Font.h"
 #include "G1Element.h"
 #include "ImageId.hpp"
 #include "PaletteMap.h"
 #include "RenderTarget.h"
-#include "Text.h"
-#include "TextColour.h"
 
 #include <array>
 #include <memory>
@@ -64,7 +61,6 @@ extern OpenRCT2::Drawing::GamePalette gPalette;
 extern OpenRCT2::Drawing::GamePalette gGamePalette;
 extern uint32_t gPaletteEffectFrame;
 
-extern OpenRCT2::Drawing::TextColours gTextPalette;
 extern const OpenRCT2::Drawing::TranslucentWindowPalette kTranslucentWindowPalettes[OpenRCT2::Drawing::kColourNumTotal];
 
 extern ImageId gPickupPeepImage;
@@ -105,29 +101,6 @@ void FASTCALL GfxDrawSpriteSolid(
     OpenRCT2::Drawing::RenderTarget& rt, ImageId image, const ScreenCoordsXY& coords, OpenRCT2::Drawing::PaletteIndex colour);
 void FASTCALL GfxDrawSpriteRawMasked(
     OpenRCT2::Drawing::RenderTarget& rt, const ScreenCoordsXY& coords, ImageId maskImage, ImageId colourImage);
-
-// string
-void GfxDrawStringLeftCentred(
-    OpenRCT2::Drawing::RenderTarget& rt, StringId format, void* args, ColourWithFlags colour, const ScreenCoordsXY& coords);
-void DrawStringCentredRaw(
-    OpenRCT2::Drawing::RenderTarget& rt, const ScreenCoordsXY& coords, int32_t numLines, const utf8* text, FontStyle fontStyle);
-void DrawNewsTicker(
-    OpenRCT2::Drawing::RenderTarget& rt, const ScreenCoordsXY& coords, int32_t width, OpenRCT2::Drawing::Colour colour,
-    StringId format, u8string_view args, int32_t ticks);
-void GfxDrawStringWithYOffsets(
-    OpenRCT2::Drawing::RenderTarget& rt, const utf8* text, ColourWithFlags colour, const ScreenCoordsXY& coords,
-    const int8_t* yOffsets, bool forceSpriteFont, FontStyle fontStyle);
-
-int32_t GfxWrapString(u8string_view text, int32_t width, FontStyle fontStyle, u8string* outWrappedText, int32_t* outNumLines);
-int32_t GfxGetStringWidth(std::string_view text, FontStyle fontStyle);
-int32_t GfxGetStringWidthNewLined(std::string_view text, FontStyle fontStyle);
-int32_t GfxGetStringWidthNoFormatting(std::string_view text, FontStyle fontStyle);
-int32_t StringGetHeightRaw(std::string_view text, FontStyle fontStyle);
-int32_t GfxClipString(char* buffer, int32_t width, FontStyle fontStyle);
-u8string ShortenPath(const u8string& path, int32_t availableWidth, FontStyle fontStyle);
-void TTFDrawString(
-    OpenRCT2::Drawing::RenderTarget& rt, const_utf8string text, ColourWithFlags colour, const ScreenCoordsXY& coords,
-    bool noFormatting, FontStyle fontStyle, TextDarkness darkness);
 
 void MaskSse4_1(
     int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc,

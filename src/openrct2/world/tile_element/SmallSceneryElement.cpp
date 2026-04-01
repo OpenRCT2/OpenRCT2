@@ -74,7 +74,7 @@ namespace OpenRCT2
             {
                 auto* sceneryEntry = GetEntry();
 
-                if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_CAN_WITHER))
+                if (sceneryEntry->flags.has(SmallSceneryFlag::canWither))
                 {
                     MapInvalidateTileZoom1({ sceneryPos, GetBaseZ(), GetClearanceZ() });
                 }
@@ -127,6 +127,6 @@ namespace OpenRCT2
 
     const SmallSceneryEntry* SmallSceneryElement::GetEntry() const
     {
-        return ObjectManager::GetObjectEntry<SmallSceneryEntry>(entryIndex);
+        return ObjectEntryManager::GetObjectEntry<SmallSceneryEntry>(entryIndex);
     }
 } // namespace OpenRCT2

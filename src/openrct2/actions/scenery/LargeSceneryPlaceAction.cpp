@@ -100,7 +100,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_POSITION_THIS_HERE, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 
-        auto* sceneryEntry = ObjectManager::GetObjectEntry<LargeSceneryEntry>(_sceneryType);
+        auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<LargeSceneryEntry>(_sceneryType);
         if (sceneryEntry == nullptr)
         {
             LOG_ERROR("Large scenery entry not found for sceneryType %u", _sceneryType);
@@ -137,7 +137,7 @@ namespace OpenRCT2::GameActions
             int32_t zHigh = tile.zClearance + zLow;
 
             QuarterTile quarterTile = QuarterTile{ tile.corners, 0 }.Rotate(_loc.direction);
-            const auto isTree = (sceneryEntry->flags & LARGE_SCENERY_FLAG_IS_TREE) != 0;
+            const auto isTree = sceneryEntry->flags.has(LargeSceneryFlag::isTree);
             auto canBuild = MapCanConstructWithClearAt(
                 { curTile, zLow, zHigh }, MapPlaceSceneryClearFunc, quarterTile, GetFlags(), kTileSlopeFlat,
                 CreateCrossingMode::none, isTree);
@@ -208,7 +208,7 @@ namespace OpenRCT2::GameActions
 
         money64 supportsCost = 0;
 
-        auto* sceneryEntry = ObjectManager::GetObjectEntry<LargeSceneryEntry>(_sceneryType);
+        auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<LargeSceneryEntry>(_sceneryType);
         if (sceneryEntry == nullptr)
         {
             LOG_ERROR("Large scenery entry not found for sceneryType = %u", _sceneryType);
@@ -269,7 +269,7 @@ namespace OpenRCT2::GameActions
             int32_t zHigh = tile.zClearance + zLow;
 
             QuarterTile quarterTile = QuarterTile{ tile.corners, 0 }.Rotate(_loc.direction);
-            const auto isTree = (sceneryEntry->flags & LARGE_SCENERY_FLAG_IS_TREE) != 0;
+            const auto isTree = sceneryEntry->flags.has(LargeSceneryFlag::isTree);
             auto canBuild = MapCanConstructWithClearAt(
                 { curTile, zLow, zHigh }, MapPlaceSceneryClearFunc, quarterTile, GetFlags(), kTileSlopeFlat,
                 CreateCrossingMode::none, isTree);

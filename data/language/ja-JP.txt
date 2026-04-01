@@ -238,7 +238,6 @@ STR_0832    :時計回90°りに移動させる
 STR_0833    :ゲームをポーズする
 STR_0834    :ディスクとゲームオプション
 STR_0839    :{UINT16} x {UINT16}
-STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
 STR_0847    :OpenRCT2について
 STR_0850    :{WINDOW_COLOUR_2}Copyright © 2002 Chris Sawyer, all rights reserved
 STR_0851    :{WINDOW_COLOUR_2}Designed and programmed by Chris Sawyer
@@ -249,16 +248,6 @@ STR_0855    :{WINDOW_COLOUR_2}Representation by Jacqui Lyons at Marjacq Ltd.
 STR_0856    :{WINDOW_COLOUR_2}Thanks to:
 STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth, and John Wardley
 STR_0865    :{STRINGID}
-STR_0866    :{POP16}{STRINGID}
-STR_0867    :{POP16}{POP16}{STRINGID}
-STR_0868    :{POP16}{POP16}{POP16}{STRINGID}
-STR_0869    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0870    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0872    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0873    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0874    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0875    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0876    :{BLACK}▼
 STR_0877    :低すぎる!
 STR_0878    :高すぎる!
@@ -277,7 +266,7 @@ STR_0892    :スクリーンショットが「{STRINGID}」でセーブしまし
 STR_0893    :スクリーンショット失敗しました!
 STR_0894    :地形データエリアがいっぱいです !
 STR_0895    :地上と地下にまたがって建設することはできません
-STR_0896    :{POP16}{POP16}{STRINGID}の建設
+STR_0896    :{STRINGID}の建設
 STR_0897    :方向
 STR_0898    :左手にカーブ
 STR_0899    :右手にカーブ
@@ -402,8 +391,6 @@ STR_1018    :変更を行うことができません…
 STR_1019    :変更を行うことができません…
 STR_1020    :変更を行うことができません…
 STR_1021    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_1022    :列車ごとの{POP16}{POP16}{POP16}{COMMA16}台
-STR_1023    :列車ごと{POP16}{POP16}{POP16}{COMMA16}台
 STR_1024    :列車ごと{COMMA16}台
 STR_1025    :列車ごと{COMMA16}台
 STR_1026    :乗り場は長すぎです！
@@ -512,9 +499,7 @@ STR_1128    :ブロック・ブレーキで停車した
 STR_1129    :全ての乗り物に同じ色を塗ります
 STR_1130    :{STRINGID}ごとに異なる色
 STR_1131    :乗り物ごとに異なる色
-STR_1132    :乗り物 {POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1133    :乗り物 {POP16}{COMMA16}
-STR_1134    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID} {COMMA16}
+STR_1133    :乗り物 {COMMA16}
 STR_1135    :{STRINGID} {COMMA16}
 STR_1136    :メインの色を選択
 STR_1137    :追加の色1を選択
@@ -710,7 +695,6 @@ STR_1327    :アイテムを90°回転
 STR_1328    :平地が必要
 STR_1329    :{WINDOW_COLOUR_2}発進速度:
 STR_1330    :発着所を出る時の最高速度
-STR_1331    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_1332    :{VELOCITY}
 STR_1333    :{STRINGID} - {STRINGID}{POP16}
 STR_1334    :{STRINGID} - {STRINGID} {COMMA16}
@@ -808,7 +792,6 @@ STR_1425    :歩道
 STR_1426    :行列
 STR_1427    :{WINDOW_COLOUR_2}顧客: {BLACK}{COMMA32}（時間あたり）
 STR_1428    :{WINDOW_COLOUR_2}入場料:
-STR_1429    :{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1430    :無料
 STR_1431    :歩行中
 STR_1432    :{STRINGID}へ移動中
@@ -1052,7 +1035,6 @@ STR_1671    :{WINDOW_COLOUR_2}総収益: {BLACK}{CURRENCY2DP}
 STR_1672    :ブレーキ
 STR_1673    :スピン・コントロール・スイッチ・トラック
 STR_1674    :ブレーキのスピード
-STR_1675    :{POP16}{VELOCITY}
 STR_1676    :ブレーキ速度の設定
 STR_1677    :{WINDOW_COLOUR_2}人気度: {BLACK}未知
 STR_1678    :{WINDOW_COLOUR_2}人気度: {BLACK}{COMMA16}%
@@ -1112,18 +1094,15 @@ STR_1732    :建設
 STR_1733    :モード
 STR_1734    :{WINDOW_COLOUR_2}ラップ数:
 STR_1735    :コースのラップ数
-STR_1736    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1738    :ラップ数が変更することはできません。
 STR_1739    :来客 {INT32} はレースに勝ちました!
 STR_1740    :{STRINGID} はレースに勝ちました!
 STR_1741    :まだ建設しませんでした！
 STR_1742    :{WINDOW_COLOUR_2}乗物の最大定員:
 STR_1743    :この乗物に一度に乗ることのできる最大人数
-STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1746    :これを変更することはできません。
 STR_1747    :{WINDOW_COLOUR_2}達成期限:
 STR_1748    :ライドの達成期限
-STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DURATION}
 STR_1751    :乗物のタイムリミットを変更できません…
 STR_1752    :園内の各入園客のリストを表示
 STR_1753    :園内の入園客の概要リストを表示
@@ -1144,7 +1123,6 @@ STR_1767    :スピン・トンネル
 STR_1768    :スイング回数を変更するはできません。
 STR_1769    :{WINDOW_COLOUR_2}スイング回数:
 STR_1770    :スイング回数の設定
-STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1773    :乗物からの写真の場所は、各乗物につき一箇所だけです
 STR_1774    :ケーブルリフトヒルは、各乗物につき一箇所だけです
 STR_1777    :音楽
@@ -1156,7 +1134,6 @@ STR_1794    :{STRINGID}を修理している
 STR_1795    :電話を返事中
 STR_1796    :故障中、修理するはず
 STR_1798    :回転プール
-STR_1799    :{POP16}{POP16}{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1800    :非常停止
 STR_1801    :制限　稼働に失敗
 STR_1802    :制限　閉鎖に失敗
@@ -1228,7 +1205,6 @@ STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :回転数が変更できない…
 STR_1869    :{WINDOW_COLOUR_2}回転数:
 STR_1870    :ライドの回転の数です。
-STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}毎時収入: {BLACK}{CURRENCY2DP}
 STR_1874    :{WINDOW_COLOUR_2}毎時利潤: {BLACK}{CURRENCY2DP}
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}ライドを点検する
@@ -1270,7 +1246,6 @@ STR_1913    :{BLACK}+{CURRENCY2DP}
 STR_1914    :{BLACK}{CURRENCY2DP}
 STR_1915    :{RED}{CURRENCY2DP}
 STR_1916    :{WINDOW_COLOUR_2}借入額:
-STR_1917    :{POP16}{POP16}{POP16}{CURRENCY}
 STR_1918    :もうお金を借りることはできません！
 STR_1919    :十分な資金がありません！
 STR_1920    :貸金を返済することはできません！
@@ -1308,7 +1283,6 @@ STR_1953    :広告宣伝費
 STR_1954    :費用合計
 STR_1955    :{WINDOW_COLOUR_2}周回数:
 STR_1956    :ライドのトラックの周回数です。
-STR_1957    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1958    :{COMMA16}
 STR_1959    :周回数が変更できません…
 STR_1960    :{WINDOW_COLOUR_2}風船の価格:
@@ -2106,7 +2080,6 @@ STR_3092    :この乗物の発着所の移動や改造はできません!
 STR_3093    :{WINDOW_COLOUR_2}お気に入り: {BLACK}{STRINGID}
 STR_3094    :非適用
 STR_3095    :{WINDOW_COLOUR_2}リフト巻き上げ速度:
-STR_3096    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_3097    :リフトヒルのチェーン速度を選択
 STR_3099    :色を選択
 STR_3100    :ふたつ目の色を選択
@@ -2199,7 +2172,6 @@ STR_3208    :トラックデザインマネージャー
 STR_3209    :前のステップに戻る:
 STR_3210    :次のステップに進む:
 STR_3211    :マップサイズ:
-STR_3212    :{POP16}{COMMA16}
 STR_3213    :これ以上マップサイズを小さくできません
 STR_3214    :これ以上マップサイズを大きくできません
 STR_3215    :マップの端に近すぎます
@@ -2990,12 +2962,11 @@ STR_5914    :不明なライド
 STR_5915    :プレイヤー
 STR_5916    :{COMMA16}プレイヤー
 STR_5917    :{COMMA16}プレイヤー
-STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_5919    :{COMMA16}
 STR_5920    :天気効果をレンダリングする
 STR_5921    :このオプションを有効にすると、暴風雨ある時に雨と湿っぽい色でレンダリングします。
-STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}最大{STRINGID}
-STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}列車ごとに最大{COMMA16}{STRINGID}の車両
+STR_5922    :最大{STRINGID}
+STR_5923    :列車ごとに最大{COMMA16}{STRINGID}の車両
 STR_5924    :面ディテール
 STR_5925    :歩道ディテール
 STR_5926    :トラック・ディテール
@@ -3380,7 +3351,6 @@ STR_6355    :高密度
 STR_6356    :パークに水があれば、カモを投入する
 STR_6357    :全部のカモを取り除く
 STR_6358    :{UINT16}ページ目
-STR_6359    :{POP16}{POP16}{UINT16}ページ目
 STR_6361    :乗り物のライトの効果を表示にする（試験的）
 STR_6362    :有効になっている場合、追跡された乗り物の車両は夜間にライトアップされます。
 STR_6363    :テキストをクリップボードにコピーしました。

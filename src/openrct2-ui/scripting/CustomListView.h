@@ -15,7 +15,6 @@
 
     #include <cstdint>
     #include <memory>
-    #include <openrct2/scripting/Duktape.hpp>
     #include <openrct2/scripting/ScriptEngine.h>
     #include <optional>
     #include <string>
@@ -119,8 +118,8 @@ namespace OpenRCT2::Ui::Windows
         bool IsMouseDown{};
         bool CanSelect{};
 
-        DukValue OnClick;
-        DukValue OnHighlight;
+        JSCallback OnClick;
+        JSCallback OnHighlight;
 
         CustomListView(WindowBase* parent, size_t scrollIndex);
         ScrollbarType GetScrollbars() const;
@@ -155,44 +154,29 @@ namespace OpenRCT2::Ui::Windows
     };
 } // namespace OpenRCT2::Ui::Windows
 
-class DukValue;
-
 namespace OpenRCT2::Scripting
 {
     using namespace OpenRCT2::Ui::Windows;
 
-    template<>
-    ColumnSortOrder FromDuk(const DukValue& d);
+    ColumnSortOrder ColumnSortOrderFromJS(JSContext* ctx, JSValue d);
 
-    template<>
-    std::optional<int32_t> FromDuk(const DukValue& d);
+    ListViewColumn ListViewColumnFromJS(JSContext* ctx, JSValue d);
 
-    template<>
-    ListViewColumn FromDuk(const DukValue& d);
+    ListViewItem ListViewItemFromJS(JSContext* ctx, JSValue d);
 
-    template<>
-    ListViewItem FromDuk(const DukValue& d);
+    std::vector<ListViewColumn> ListViewColumnVecFromJS(JSContext* ctx, JSValue d);
 
-    template<>
-    std::vector<ListViewColumn> FromDuk(const DukValue& d);
+    std::vector<ListViewItem> ListViewItemVecFromJS(JSContext* ctx, JSValue d);
 
-    template<>
-    std::vector<ListViewItem> FromDuk(const DukValue& d);
+    std::optional<RowColumn> RowColumnFromJS(JSContext* ctx, JSValue d);
 
-    template<>
-    std::optional<RowColumn> FromDuk(const DukValue& d);
+    JSValue RowColumnToJS(JSContext* ctx, RowColumn value);
 
-    template<>
-    DukValue ToDuk(duk_context* ctx, const RowColumn& value);
+    JSValue ListViewColumnToJS(JSContext* ctx, const ListViewColumn& value);
 
-    template<>
-    DukValue ToDuk(duk_context* ctx, const ListViewColumn& value);
+    ScrollbarType ScrollbarTypeFromJS(JSContext* ctx, JSValue d);
 
-    template<>
-    ScrollbarType FromDuk(const DukValue& d);
-
-    template<>
-    DukValue ToDuk(duk_context* ctx, const ScrollbarType& value);
+    JSValue ScrollbarTypeToJS(JSContext* ctx, ScrollbarType value);
 } // namespace OpenRCT2::Scripting
 
 #endif

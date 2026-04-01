@@ -164,17 +164,22 @@ static constexpr float kWindowScrollLocations[][2] = {
         }
     }
 
-    /**
-     *
-     *  rct2: 0x006E77A1
-     */
-    void WindowUpdateAll()
+    void WindowCullDead()
     {
         // Remove all windows in gWindowList that have the WindowFlag::dead flag
         gWindowList.erase(
             std::remove_if(
                 gWindowList.begin(), gWindowList.end(), [](auto&& w) -> bool { return w->flags.has(WindowFlag::dead); }),
             gWindowList.end());
+    }
+
+    /**
+     *
+     *  rct2: 0x006E77A1
+     */
+    void WindowUpdateAll()
+    {
+        WindowCullDead();
 
         // Periodic update happens every second so 40 ticks.
         if (gCurrentRealTimeTicks >= gWindowUpdateTicks)
@@ -376,7 +381,7 @@ static constexpr float kWindowScrollLocations[][2] = {
                     if ((*it)->flags.has(WindowFlag::dead))
                         continue;
 
-                    auto w2 = (*it).get();
+                    auto w2 = it->get();
                     auto x1 = w2->windowPos.x - 10;
                     auto y1 = w2->windowPos.y - 10;
                     if (x2 >= x1 && x2 <= w2->width + x1 + 20)
@@ -560,7 +565,7 @@ static constexpr float kWindowScrollLocations[][2] = {
         // Draw the window and any other overlapping transparent windows
         for (auto it = WindowGetIterator(&w); it != gWindowList.end(); it++)
         {
-            auto* v = (*it).get();
+            auto* v = it->get();
             if (v->flags.has(WindowFlag::dead))
                 continue;
             if ((&w == v || v->flags.has(WindowFlag::transparent)) && v->isVisible)

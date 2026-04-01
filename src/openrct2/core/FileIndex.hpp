@@ -135,7 +135,7 @@ protected:
     /**
      * Serialises/DeSerialises an index item to/from the given stream.
      */
-    virtual void Serialise(DataSerialiser& ds, const TItem& item) const = 0;
+    virtual void Serialise(OpenRCT2::DataSerialiser& ds, const TItem& item) const = 0;
 
 private:
     ScanResult Scan() const
@@ -233,7 +233,7 @@ private:
                     && header.Stats.PathChecksum == stats.PathChecksum)
                 {
                     items.reserve(header.NumItems);
-                    DataSerialiser ds(false, fs);
+                    OpenRCT2::DataSerialiser ds(false, fs);
                     // Directory is the same, just read the saved items
                     for (uint32_t i = 0; i < header.NumItems; i++)
                     {
@@ -275,7 +275,7 @@ private:
             header.NumItems = static_cast<uint32_t>(items.size());
             fs.WriteValue(header);
 
-            DataSerialiser ds(true, fs);
+            OpenRCT2::DataSerialiser ds(true, fs);
             // Write items
             for (const auto& item : items)
             {

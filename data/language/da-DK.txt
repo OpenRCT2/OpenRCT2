@@ -242,7 +242,6 @@ STR_0832    :Roter synsvinklen 90° med uret
 STR_0833    :Sæt spillet på pause
 STR_0834    :Disk og spil indstillinger
 STR_0839    :{UINT16} x {UINT16}
-STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
 STR_0847    :Om ‘OpenRCT2’
 STR_0850    :{WINDOW_COLOUR_2}Copyright © 2002 Chris Sawyer, alle rettigheder forbeholdt
 STR_0851    :{WINDOW_COLOUR_2}Designet og programmeret af Chris Sawyer
@@ -253,16 +252,6 @@ STR_0855    :{WINDOW_COLOUR_2}Representaion af Jacqui Lyons ved Marjacq Ltd.
 STR_0856    :{WINDOW_COLOUR_2}Tak til:
 STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth, og John Wardley
 STR_0865    :{STRINGID}
-STR_0866    :{POP16}{STRINGID}
-STR_0867    :{POP16}{POP16}{STRINGID}
-STR_0868    :{POP16}{POP16}{POP16}{STRINGID}
-STR_0869    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0870    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0872    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0873    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0874    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0875    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0876    :{BLACK}▼
 STR_0877    :For lavt !
 STR_0878    :For højt !
@@ -281,7 +270,7 @@ STR_0892    :Skærmbillede gemt på disken som ‘{STRINGID}’
 STR_0893    :Skærmbillede fejlet !
 STR_0894    :Landskab data område fuld !
 STR_0895    :Kan ikke bygge delvist over og under overfladen
-STR_0896    :{POP16}{POP16}{STRINGID} Konstruktion
+STR_0896    :{STRINGID} Konstruktion
 STR_0897    :Retning
 STR_0898    :Venstresving
 STR_0899    :Højresving
@@ -406,8 +395,6 @@ STR_1018    :Kan ikke udføre ændringer…
 STR_1019    :Kan ikke udføre ændringer…
 STR_1020    :Kan ikke udføre ændringer…
 STR_1021    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_1022    :{POP16}{POP16}{POP16}{COMMA16} vogn per togsæt
-STR_1023    :{POP16}{POP16}{POP16}{COMMA16} vogne per togsæt
 STR_1024    :{COMMA16} vogn per togsæt
 STR_1025    :{COMMA16} vogne per togsæt
 STR_1026    :Stations platformen er for lang!
@@ -516,9 +503,7 @@ STR_1128    :Stoppet af blok bremser
 STR_1129    :Alle vogne i samme farve
 STR_1130    :Forskellige farver per {STRINGID}
 STR_1131    :Forskellige farver per vogn
-STR_1132    :Vogn {POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1133    :Vogn {POP16}{COMMA16}
-STR_1134    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID} {COMMA16}
+STR_1133    :Vogn {COMMA16}
 STR_1135    :{STRINGID} {COMMA16}
 STR_1136    :Vælg hovedfarve
 STR_1137    :Vælg Sekundær farve 1
@@ -714,7 +699,6 @@ STR_1327    :Roter objekts med 90°
 STR_1328    :Fladt land påkrævet
 STR_1329    :{WINDOW_COLOUR_2}Afsendelses hastighed:
 STR_1330    :Maksimum hastighed ved afgang fra stationen
-STR_1331    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_1332    :{VELOCITY}
 STR_1333    :{STRINGID} - {STRINGID}{POP16}
 STR_1334    :{STRINGID} - {STRINGID} {COMMA16}
@@ -812,7 +796,6 @@ STR_1425    :Sti
 STR_1426    :Kø område
 STR_1427    :{WINDOW_COLOUR_2}Besøgende: {BLACK}{COMMA32} per time
 STR_1428    :{WINDOW_COLOUR_2}Adgangspris pris:
-STR_1429    :{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1430    :Gratis
 STR_1431    :Går
 STR_1432    :På vej til {STRINGID}
@@ -847,10 +830,10 @@ STR_1460    :‘U’ formet åben bane
 STR_1461    :‘O’ formet lukket bane
 STR_1462    :For stejl til løfte bakke
 STR_1463    :Gæster
-STR_1464    :Spiral op (lille)
-STR_1465    :Spiral op (stor)
-STR_1466    :Spiral ned (lille)
-STR_1467    :Spiral ned (stor)
+STR_1464    :Halv spiral op (lille)
+STR_1465    :Halv spiral op (stor)
+STR_1466    :Halv spiral ned (lille)
+STR_1467    :Halv spiral ned (stor)
 STR_1468    :Personale
 STR_1469    :Forlystelse skal starte og slutte med en station
 STR_1470    :Station er ikke lang nok
@@ -1056,14 +1039,13 @@ STR_1671    :{WINDOW_COLOUR_2}Total overskud: {BLACK}{CURRENCY2DP}
 STR_1672    :Bremser
 STR_1673    :Spinning kontrol skinne
 STR_1674    :Bremse hastighed
-STR_1675    :{POP16}{VELOCITY}
 STR_1676    :Sæt fart begrænsning for bremser
 STR_1677    :{WINDOW_COLOUR_2}Popularitet: {BLACK}Ukendt
 STR_1678    :{WINDOW_COLOUR_2}Popularitet: {BLACK}{COMMA16}%
-STR_1679    :Spiral op (venstre)
-STR_1680    :Spiral op (højre)
-STR_1681    :Spiral ned (venstre)
-STR_1682    :Spiral ned (højre)
+STR_1679    :Kvart spiral op (venstre)
+STR_1680    :Kvart spiral op (højre)
+STR_1681    :Kvart spiral ned (venstre)
+STR_1682    :Kvart spiral ned (højre)
 STR_1683    :Base størrelse 2 x 2
 STR_1684    :Base størrelse 4 x 4
 STR_1685    :Base størrelse 2 x 4
@@ -1116,18 +1098,15 @@ STR_1732    :Byg
 STR_1733    :Tilstand
 STR_1734    :{WINDOW_COLOUR_2}Antal omgange:
 STR_1735    :Antal omgange på banen
-STR_1736    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1738    :Kan ikke ændre antallet af omgange…
 STR_1739    :Løb vundet af gæst {INT32}
 STR_1740    :Løb vundet af {STRINGID}
 STR_1741    :Ikke konstrueret endnu !
 STR_1742    :{WINDOW_COLOUR_2}Max. personer på forlystelse:
 STR_1743    :Maksimum antal af personer på forlystelsen på samme tid
-STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1746    :Kan ikke ændre dette…
 STR_1747    :{WINDOW_COLOUR_2}Tidsbegrænsning:
 STR_1748    :Tidsbegrænsning for forlystelse
-STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DURATION}
 STR_1751    :Kan ikke ændre tidsbegrænsning for denne forlystelse…
 STR_1752    :Vis liste over individuelle gæster i parken
 STR_1753    :Vis en samlet liste over gæster i parken
@@ -1148,7 +1127,6 @@ STR_1767    :Spinnende tunnel
 STR_1768    :Kan ikke ændre antallet af gynger…
 STR_1769    :{WINDOW_COLOUR_2}Antal gynger:
 STR_1770    :Samlet antal gynger
-STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1773    :Kun en on-ride foto sektion, tilladt per forlystelse
 STR_1774    :Kun et trækspil er tilladt per forlystelse.
 STR_1777    :Forlystelses musik
@@ -1160,7 +1138,6 @@ STR_1794    :Reparerer {STRINGID}
 STR_1795    :Besvarer radiokald
 STR_1796    :Er brudt sammen og kræver reparation
 STR_1798    :Hvirvelstrøm
-STR_1799    :{POP16}{POP16}{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1800    :Sikkerheds-lukning
 STR_1801    :Sikkerhedsbøjler sidder fast i lukke tilstand
 STR_1802    :Sikkerhedsbøjler sidder fast i åben tilstand
@@ -1232,7 +1209,6 @@ STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :Kan ikke ændre antallet af rotationer…
 STR_1869    :{WINDOW_COLOUR_2}Antal rotationer:
 STR_1870    :Komplet antal af rotationer
-STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Indkomst: {BLACK}{CURRENCY2DP} per time
 STR_1874    :{WINDOW_COLOUR_2}Profit: {BLACK}{CURRENCY2DP} per time
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Inspicerer forlystelse
@@ -1274,7 +1250,6 @@ STR_1913    :{BLACK}+{CURRENCY2DP}
 STR_1914    :{BLACK}{CURRENCY2DP}
 STR_1915    :{RED}{CURRENCY2DP}
 STR_1916    :{WINDOW_COLOUR_2}Lån:
-STR_1917    :{POP16}{POP16}{POP16}{CURRENCY}
 STR_1918    :Kan ikke låne flere penge!
 STR_1919    :Ikke nok penge til rådighed!
 STR_1920    :Kan ikke tilbagebetale lån!
@@ -1312,7 +1287,6 @@ STR_1953    :Markedsføring
 STR_1954    :Forsknings finansiering
 STR_1955    :{WINDOW_COLOUR_2}Antal omgange:
 STR_1956    :Antallet af omgange per tur
-STR_1957    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1958    :{COMMA16}
 STR_1959    :Kan ikke ændre antal omgange…
 STR_1960    :{WINDOW_COLOUR_2}Ballon pris:
@@ -2110,7 +2084,6 @@ STR_3092    :Du har ikke lov til at flytte eller ændre stationen for denne forl
 STR_3093    :{WINDOW_COLOUR_2}Favorit: {BLACK}{STRINGID}
 STR_3094    :N/A
 STR_3095    :{WINDOW_COLOUR_2}Løftekæde hastighed:
-STR_3096    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_3097    :Vælg hastigheden på kæden der løfter vognen
 STR_3099    :Vælg farve
 STR_3100    :Vælg anden farve
@@ -2203,7 +2176,6 @@ STR_3208    :Banedesign Manager
 STR_3209    :Tilbage til tidligere skridt:
 STR_3210    :Videre til næste skridt:
 STR_3211    :Kortstørrelse:
-STR_3212    :{POP16}{COMMA16}
 STR_3213    :Kan ikke reducere kortstørrelsen yderligere
 STR_3214    :Kan ikke forøge kortstørrelsen yderligere
 STR_3215    :For tæt på kanten af kortet
@@ -2994,12 +2966,11 @@ STR_5914    :Ukendt forlystelse
 STR_5915    :Spiller
 STR_5916    :{COMMA16} spiller
 STR_5917    :{COMMA16} spillere
-STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_5919    :{COMMA16}
 STR_5920    :Gengiv vejreffekter
 STR_5921    :Hvis aktiveret, regn og dystre farver vil blive tegnet under storme.
-STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}Maks {STRINGID}
-STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}Maks {COMMA16} {STRINGID} per vogn
+STR_5922    :Maks {STRINGID}
+STR_5923    :Maks {COMMA16} {STRINGID} per vogn
 STR_5924    :Overflade detaljer
 STR_5925    :Sti detaljer
 STR_5926    :Bane detaljer
@@ -3384,7 +3355,6 @@ STR_6355    :Høj tæthed
 STR_6356    :Generer ænder hvis parken indeholder vand
 STR_6357    :Fjern alle ænder fra kortet
 STR_6358    :Side {UINT16}
-STR_6359    :{POP16}{POP16}Side {UINT16}
 STR_6361    :Aktiver lyseffekter på forlystelser (eksperimentel)
 STR_6362    :Hvis aktiv, vognene for spor-forlystelser vil lyse op om natten.
 STR_6363    :Kopierede tekst til udklipsholder
@@ -3843,4 +3813,9 @@ STR_7014    :Jeg ejer spillet på Steam, men har ikke installeret det endnu.
 STR_7015    :Luk venligst Steam, hvis det kører, og klik derefter på ‘OK’.
 STR_7016    :OpenRCT2 har forsøgt at starte en download i Steam. Åbn Steam og lad det hente spillet. Når Steam er færdig, klik på ‘OK’.
 STR_7017    :Afslut
-
+STR_7023    :Gør usynlig
+STR_7024    :Gør hele forlystelsen usynlig
+STR_7025    :Gør Synlig
+STR_7026    :Gør hele forlystelsen synlig
+STR_7028    :Kvart spiral op
+STR_7029    :Kvart spiral ned

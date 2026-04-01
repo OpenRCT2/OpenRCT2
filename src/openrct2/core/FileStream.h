@@ -28,6 +28,7 @@ namespace OpenRCT2
     {
     private:
         FILE* _file = nullptr;
+        void* _asset = nullptr;
         bool _ownsFilePtr = false;
         bool _canRead = false;
         bool _canWrite = false;

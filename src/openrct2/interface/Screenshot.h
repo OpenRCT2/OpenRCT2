@@ -10,8 +10,8 @@
 #pragma once
 
 #include "../core/FileSystem.hpp"
-#include "../world/Climate.h"
 #include "../world/Location.hpp"
+#include "../world/Weather.h"
 #include "ZoomLevel.h"
 
 #include <optional>
@@ -21,7 +21,7 @@ extern uint8_t gScreenshotCountdown;
 
 struct ScreenshotOptions
 {
-    WeatherType weather = WeatherType::Sunny;
+    OpenRCT2::Weather::Type weather = OpenRCT2::Weather::Type::Sunny;
     bool hide_guests = false;
     bool hide_sprites = false;
     bool clear_grass = false;

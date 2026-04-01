@@ -183,9 +183,9 @@ namespace OpenRCT2::GameActions
         const auto& ted = GetTrackElementDescriptor(_trackType);
         uint32_t numElements = 0;
         // First check if any of the track pieces are outside the park
-        for (uint8_t i = 0; i < ted.numSequences; i++)
+        for (uint8_t i = 0; i < ted.sequenceData.numSequences; i++)
         {
-            const auto& trackBlock = ted.sequences[i].clearance;
+            const auto& trackBlock = ted.sequenceData.sequences[i].clearance;
             auto rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock.x, trackBlock.y }.Rotate(_origin.direction), 0 };
             auto tileCoords = CoordsXYZ{ _origin.x, _origin.y, _origin.z } + rotatedTrack;
 
@@ -232,9 +232,9 @@ namespace OpenRCT2::GameActions
 
         money64 costs = 0;
         money64 supportCosts = 0;
-        for (int32_t blockIndex = 0; blockIndex < ted.numSequences; blockIndex++)
+        for (int32_t blockIndex = 0; blockIndex < ted.sequenceData.numSequences; blockIndex++)
         {
-            const auto& trackBlock = ted.sequences[blockIndex].clearance;
+            const auto& trackBlock = ted.sequenceData.sequences[blockIndex].clearance;
             auto rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock.x, trackBlock.y }.Rotate(_origin.direction), trackBlock.z };
             auto mapLoc = CoordsXYZ{ _origin.x, _origin.y, _origin.z } + rotatedTrack;
             auto quarterTile = trackBlock.quarterTile.Rotate(_origin.direction);
@@ -247,7 +247,7 @@ namespace OpenRCT2::GameActions
             int32_t baseZ = floor2(mapLoc.z, kCoordsZStep);
 
             int32_t clearanceZ = trackBlock.clearanceZ;
-            if (trackBlock.flags & RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL && clearanceHeight > 24)
+            if (trackBlock.flags.has(ClearanceFlag::isVertical) && clearanceHeight > 24)
             {
                 clearanceZ += 24;
             }
@@ -351,7 +351,7 @@ namespace OpenRCT2::GameActions
                 }
             }
 
-            if (ted.sequences[0].flags.has(SequenceFlag::trackOrigin) && blockIndex == 0)
+            if (ted.sequenceData.sequences[0].flags.has(SequenceFlag::trackOrigin) && blockIndex == 0)
             {
                 const auto addElementResult = TrackAddStationElement(
                     { mapLoc, baseZ, _origin.direction }, _rideIndex, {}, _fromTrackDesign);
@@ -443,13 +443,13 @@ namespace OpenRCT2::GameActions
 
         money64 costs = 0;
         money64 supportCosts = 0;
-        const auto& block0 = ted.sequences[0].clearance;
+        const auto& block0 = ted.sequenceData.sequences[0].clearance;
         auto clearanceHeight = rideEntry->Clearance;
         CoordsXYZ originLocation = CoordsXYZ{ _origin.x, _origin.y, _origin.z }
             + CoordsXYZ{ CoordsXY{ block0.x, block0.y }.Rotate(_origin.direction), block0.z };
-        for (int32_t blockIndex = 0; blockIndex < ted.numSequences; blockIndex++)
+        for (int32_t blockIndex = 0; blockIndex < ted.sequenceData.numSequences; blockIndex++)
         {
-            const auto& trackBlock = ted.sequences[blockIndex].clearance;
+            const auto& trackBlock = ted.sequenceData.sequences[blockIndex].clearance;
             auto rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock.x, trackBlock.y }.Rotate(_origin.direction), trackBlock.z };
             auto mapLoc = CoordsXYZ{ _origin.x, _origin.y, _origin.z } + rotatedTrack;
 
@@ -457,7 +457,7 @@ namespace OpenRCT2::GameActions
 
             int32_t baseZ = floor2(mapLoc.z, kCoordsZStep);
             int32_t clearanceZ = trackBlock.clearanceZ;
-            if (trackBlock.flags & RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL && clearanceHeight > 24)
+            if (trackBlock.flags.has(ClearanceFlag::isVertical) && clearanceHeight > 24)
             {
                 clearanceZ += 24;
             }
@@ -504,7 +504,7 @@ namespace OpenRCT2::GameActions
                 else
                 {
                     // Remove walls in the directions this track intersects
-                    uint8_t intersectingDirections = ted.sequences[blockIndex].allowedWallEdges;
+                    uint8_t intersectingDirections = ted.sequenceData.sequences[blockIndex].allowedWallEdges;
                     intersectingDirections ^= 0x0F;
                     intersectingDirections = rol4(intersectingDirections, _origin.direction);
                     for (int32_t i = 0; i < kNumOrthogonalDirections; i++)
@@ -552,7 +552,7 @@ namespace OpenRCT2::GameActions
             {
                 if (!GetFlags().has(CommandFlag::noSpend))
                 {
-                    isOrigin = ted.sequences[0].flags.has(SequenceFlag::trackOrigin);
+                    isOrigin = ted.sequenceData.sequences[0].flags.has(SequenceFlag::trackOrigin);
                 }
             }
 
@@ -593,7 +593,7 @@ namespace OpenRCT2::GameActions
                 default:
                     break;
             }
-            if (TrackTypeHasSpeedSetting(_trackType))
+            if (trackTypeHasSpeedSetting(_trackType))
             {
                 trackElement->SetBrakeBoosterSpeed(_brakeSpeed);
             }
@@ -614,9 +614,9 @@ namespace OpenRCT2::GameActions
             }
             trackElement->SetColourScheme(static_cast<RideColourScheme>(_colour));
 
-            if (ted.sequences[0].flags.has(SequenceFlag::connectsToPath))
+            if (ted.sequenceData.sequences[0].flags.has(SequenceFlag::connectsToPath))
             {
-                uint32_t connectionSides = ted.sequences[0].getEntranceConnectionSides();
+                uint32_t connectionSides = ted.sequenceData.sequences[0].getEntranceConnectionSides();
                 if (connectionSides != 0)
                 {
                     if (!GetFlags().has(CommandFlag::ghost) && !gameState.cheats.disableClearanceChecks)
@@ -639,7 +639,7 @@ namespace OpenRCT2::GameActions
             // If the placed tile is a station modify station properties.
             // Don't do this if the tile is a ghost to prevent desyncs
             // However, ghost tiles from track designs need to modify station data to display properly
-            if (ted.sequences[0].flags.has(SequenceFlag::trackOrigin)
+            if (ted.sequenceData.sequences[0].flags.has(SequenceFlag::trackOrigin)
                 && (!GetFlags().has(CommandFlag::ghost) || _fromTrackDesign))
             {
                 if (blockIndex == 0)
@@ -737,9 +737,9 @@ namespace OpenRCT2::GameActions
     bool TrackPlaceAction::CheckMapCapacity(int16_t numTiles) const
     {
         const auto& ted = GetTrackElementDescriptor(_trackType);
-        for (uint8_t i = 0; i < ted.numSequences; i++)
+        for (uint8_t i = 0; i < ted.sequenceData.numSequences; i++)
         {
-            const auto& trackBlock = ted.sequences[i].clearance;
+            const auto& trackBlock = ted.sequenceData.sequences[i].clearance;
             auto rotatedTrack = CoordsXY{ trackBlock.x, trackBlock.y }.Rotate(_origin.direction);
 
             auto tileCoords = CoordsXY{ _origin.x, _origin.y } + rotatedTrack;

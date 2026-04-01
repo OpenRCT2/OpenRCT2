@@ -29,6 +29,25 @@ extern int32_t _vehicleVelocityF64E0C;
 extern int32_t _vehicleUnkF64E10;
 extern CoordsXYZ _vehicleCurPosition;
 
+struct DodgemsTrackSize
+{
+    uint8_t left;
+    uint8_t top;
+    uint8_t right;
+    uint8_t bottom;
+};
+
+constexpr DodgemsTrackSize GetDodgemsTrackSize(TrackElemType type)
+{
+    if (type == TrackElemType::flatTrack2x2)
+        return { 4, 4, 59, 59 };
+    if (type == TrackElemType::flatTrack4x4)
+        return { 4, 4, 123, 123 };
+    if (type == TrackElemType::flatTrack2x4)
+        return { 4, 4, 59, 123 };
+    return { 0, 0, 0, 0 };
+}
+
 /** rct2: 0x009A37C4 */
 static constexpr CoordsXY kSurroundingTiles[] = {
     { 0, 0 },
@@ -99,7 +118,7 @@ int32_t Vehicle::UpdateMotionDodgems()
 
     int32_t nextVelocity = velocity + acceleration;
     if (curRide->flags.hasAny(RideFlag::breakdownPending, RideFlag::brokenDown)
-        && curRide->breakdownReasonPending == BREAKDOWN_SAFETY_CUT_OUT)
+        && curRide->breakdownReasonPending == Breakdown::safetyCutOut)
     {
         nextVelocity = 0;
     }
@@ -111,7 +130,7 @@ int32_t Vehicle::UpdateMotionDodgems()
 
     acceleration = 0;
     if (!curRide->flags.hasAny(RideFlag::breakdownPending, RideFlag::brokenDown)
-        || curRide->breakdownReasonPending != BREAKDOWN_SAFETY_CUT_OUT)
+        || curRide->breakdownReasonPending != Breakdown::safetyCutOut)
     {
         if ((getGameState().currentTicks & 1) && var_34 != 0)
         {

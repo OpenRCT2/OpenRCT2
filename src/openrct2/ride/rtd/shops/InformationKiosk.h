@@ -11,7 +11,6 @@
 
 #include "../../RideData.h"
 #include "../../ShopItem.h"
-#include "../../Track.h"
 
 // clang-format off
 namespace OpenRCT2
@@ -34,7 +33,7 @@ constexpr RideTypeDescriptor InformationKioskRTD =
     .DefaultMode = RideMode::shopStall,
     .Naming = { STR_RIDE_NAME_INFORMATION_KIOSK, STR_RIDE_DESCRIPTION_INFORMATION_KIOSK },
     .NameConvention = { RideComponentType::Car, RideComponentType::Building, RideComponentType::Station },
-    .AvailableBreakdowns = 0,
+    .availableBreakdowns = {},
     .Heights = { 12, kDefaultInformationKioskHeight, 0, 0, },
     .MaxMass = 255,
     .LiftData = { Audio::SoundId::null, 5, 5 },

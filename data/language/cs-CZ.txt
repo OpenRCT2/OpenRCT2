@@ -242,7 +242,6 @@ STR_0832    :Otočit o 90° po směru hod. ruč.
 STR_0833    :Pozastavit hru
 STR_0834    :Uložení a nastavení hry
 STR_0839    :{UINT16} × {UINT16}
-STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} × {UINT16}
 # The following six strings were used for display resolutions, but have been replaced.
 STR_0847    :O hře OpenRCT2
 STR_0850    :{WINDOW_COLOUR_2}Copyright © 2002 Chris Sawyer, všechna práva vyhrazena
@@ -254,16 +253,6 @@ STR_0855    :{WINDOW_COLOUR_2}Representation by Jacqui Lyons at Marjacq Ltd.
 STR_0856    :{WINDOW_COLOUR_2}Poděkování:
 STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth, a John Wardley
 STR_0865    :{STRINGID}
-STR_0866    :{POP16}{STRINGID}
-STR_0867    :{POP16}{POP16}{STRINGID}
-STR_0868    :{POP16}{POP16}{POP16}{STRINGID}
-STR_0869    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0870    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0872    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0873    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0874    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0875    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0876    :{BLACK}▼
 STR_0877    :Příliš nízko!
 STR_0878    :Moc vysoko!
@@ -282,7 +271,7 @@ STR_0892    :Snímek obrazovky byl uložen jako „{STRINGID}“
 STR_0893    :Snímaní obrazovky selhalo!
 STR_0894    :Datová oblast krajiny zaplněna!
 STR_0895    :Nelze stavět částečně pod a nad zemí
-STR_0896    :{POP16}{POP16}{STRINGID} - stavba
+STR_0896    :{STRINGID} - stavba
 STR_0897    :Směr
 STR_0898    :Zatáčka vlevo
 STR_0899    :Zatáčka vpravo
@@ -407,8 +396,6 @@ STR_1018    :Nelze vytvářet změny…
 STR_1019    :Nelze vytvářet změny…
 STR_1020    :Nelze vytvářet změny…
 STR_1021    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_1022    :{POP16}{POP16}{POP16}{COMMA16} vagon na vlak
-STR_1023    :{POP16}{POP16}{POP16}{COMMA16} vagónů na vlak
 STR_1024    :{COMMA16} vagon na vlak
 STR_1025    :{COMMA16} vagónů na vlak
 STR_1026    :Nástupiště je příliš dlouhé!
@@ -517,9 +504,7 @@ STR_1128    :Zastavuje na blokových brzdách
 STR_1129    :Všechny vozidla mají stejnou barvu
 STR_1130    :Rozdílné barvy pro každý {STRINGID}
 STR_1131    :Rozdílné barvy pro každé vozidlo
-STR_1132    :Vozidlo {POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1133    :Vozidlo {POP16}{COMMA16}
-STR_1134    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID} {COMMA16}
+STR_1133    :Vozidlo {COMMA16}
 STR_1135    :{STRINGID} {COMMA16}
 STR_1136    :Vybrat hlavní barvu
 STR_1137    :Vybrat doplňkovou barvu 1
@@ -716,7 +701,6 @@ STR_1327    :Otočit objekty o 90°
 STR_1328    :Vyžadována rovná zem
 STR_1329    :{WINDOW_COLOUR_2}Startovní rychlost:
 STR_1330    :Maximální rychlost opuštění stanice
-STR_1331    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_1332    :{VELOCITY}
 STR_1333    :{STRINGID} - {STRINGID}{POP16}
 STR_1334    :{STRINGID} - {STRINGID} {COMMA16}
@@ -814,7 +798,6 @@ STR_1425    :Pěší cesta
 STR_1426    :Fronta
 STR_1427    :{WINDOW_COLOUR_2}Návštěvníci: {BLACK}{COMMA32} za hodinu
 STR_1428    :{WINDOW_COLOUR_2}Cena vstupenky:
-STR_1429    :{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1430    :Zdarma
 STR_1431    :Prochází se
 STR_1432    :Jde na {STRINGID}
@@ -1059,7 +1042,6 @@ STR_1671    :{WINDOW_COLOUR_2}Výdělek celkem: {BLACK}{CURRENCY2DP}
 STR_1672    :Brzdy
 STR_1673    :Přepnutí točení trati
 STR_1674    :Rychlost brzd
-STR_1675    :{POP16}{VELOCITY}
 STR_1676    :Nastavit rychlostní omezení brzd
 STR_1677    :{WINDOW_COLOUR_2}Popularita: {BLACK}Neznámá
 STR_1678    :{WINDOW_COLOUR_2}Popularita: {BLACK}{COMMA16}%
@@ -1119,18 +1101,15 @@ STR_1732    :Stavět
 STR_1733    :Mód
 STR_1734    :{WINDOW_COLOUR_2}Počet kol:
 STR_1735    :Počet kol okruhu
-STR_1736    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1738    :Nelze změnit počet kol…
 STR_1739    :Závod vyhrál návštěvník {INT32}
 STR_1740    :Závod vyhrál návštěvník {STRINGID}
 STR_1741    :Zatím není postaveno!
 STR_1742    :{WINDOW_COLOUR_2}Max. návštěvníků na atrakci
 STR_1743    :Maximální povolený počet návštěvníků současně na atrakci
-STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1746    :Tohle nelze změnit…
 STR_1747    :{WINDOW_COLOUR_2}Časový limit:
 STR_1748    :Časový limit atrakce
-STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DURATION}
 STR_1751    :Časový limit atrakce nelze změnit…
 STR_1752    :Zobrazit seznam návštěvníků v parku
 STR_1753    :Zobrazit sumarizovaný seznam návštěvníků v parku
@@ -1151,7 +1130,6 @@ STR_1767    :Točící se tunel
 STR_1768    :Nelze změnit počet zhoupnutí…
 STR_1769    :{WINDOW_COLOUR_2}Počet zhoupnutí:
 STR_1770    :Počet zhoupnutí
-STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1773    :Je povolena jen jedna fotobuňka na atrakci
 STR_1774    :Je povolen pouze jeden výtah na atrakci
 STR_1777    :Hudba atrakcí
@@ -1163,7 +1141,6 @@ STR_1794    :Opravuje {STRINGID}
 STR_1795    :Odpovídá po telefonu
 STR_1796    :Atrakce se rozbila a vyžaduje opravu
 STR_1798    :Vír
-STR_1799    :{POP16}{POP16}{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1800    :Bezpečnostní zastavení
 STR_1801    :Zaseknuté pásy
 STR_1802    :Nejdou zapnout pásy
@@ -1235,7 +1212,6 @@ STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :Nelze změnit počet otoček…
 STR_1869    :{WINDOW_COLOUR_2}Počet otoček:
 STR_1870    :Počet celých otoček
-STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Příjem: {BLACK}{CURRENCY2DP} za hodinu
 STR_1874    :{WINDOW_COLOUR_2}Zisk: {BLACK}{CURRENCY2DP} za hodinu
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Inspekce atrakcí
@@ -1279,7 +1255,6 @@ STR_1913    :{BLACK}+{CURRENCY2DP}
 STR_1914    :{BLACK}{CURRENCY2DP}
 STR_1915    :{RED}{CURRENCY2DP}
 STR_1916    :{WINDOW_COLOUR_2}Půjčka:
-STR_1917    :{POP16}{POP16}{POP16}{CURRENCY}
 STR_1918    :Není možné si půjčit více peněz!
 STR_1919    :Nedostatek hotovosti!
 STR_1920    :Nelze splatit půjčku!
@@ -1317,7 +1292,6 @@ STR_1953    :Marketing
 STR_1954    :Financování vývoje
 STR_1955    :{WINDOW_COLOUR_2}Počet kol:
 STR_1956    :Počet kol za jednu jízdu
-STR_1957    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1958    :{COMMA16}
 STR_1959    :Počet kol nelze změnit…
 STR_1960    :{WINDOW_COLOUR_2}Cena balónku:
@@ -2115,7 +2089,6 @@ STR_3092    :Není dovoleno přesouvat nebo modifikovat tuto stanici
 STR_3093    :{WINDOW_COLOUR_2}Nejoblíbenější: {BLACK}{STRINGID}
 STR_3094    :N/A
 STR_3095    :{WINDOW_COLOUR_2}Rychl. řetězového vleku:
-STR_3096    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_3097    :Vyberte rychlost řetězového vleku
 STR_3099    :Vyberte barvu
 STR_3100    :Vyberte sekundární barvu
@@ -2208,7 +2181,6 @@ STR_3208    :Správa návrhů tratí
 STR_3209    :Zpět k předchozímu kroku:
 STR_3210    :Jít na následující krok:
 STR_3211    :Velikost mapy:
-STR_3212    :{POP16}{COMMA16}
 STR_3213    :Mapu nelze více zmenšit
 STR_3214    :Mapu nelze více zvětšit
 STR_3215    :Příliš blízko u kraje mapy
@@ -2997,12 +2969,11 @@ STR_5914    :Neznámá atrakce
 STR_5915    :Hráč
 STR_5916    :{COMMA16} hráč
 STR_5917    :{COMMA16} hráči
-STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_5919    :{COMMA16}
 STR_5920    :Vykreslovat efekty počasí
 STR_5921    :Pokud zaškrtnete, budou během bouřek barvy ponuřejší.
-STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}Max {STRINGID}
-STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}Max {COMMA16} {STRINGID} / vlak
+STR_5922    :Max {STRINGID}
+STR_5923    :Max {COMMA16} {STRINGID} / vlak
 STR_5924    :Detail povrchu
 STR_5925    :Detail cesty
 STR_5926    :Detail trati
@@ -3387,7 +3358,6 @@ STR_6355    :Vysoká hustota
 STR_6356    :Přivolat kachny (pokud park má vodní plochu)
 STR_6357    :Zmizet kachny z mapy
 STR_6358    :Strana {UINT16}
-STR_6359    :{POP16}{POP16}Strana {UINT16}
 STR_6361    :Povolit světelné efekty na atrakcích (experimentální)
 STR_6362    :Zapne noční osvětlené atrakcí na kolejích.
 STR_6363    :Text zkopírován do schránky

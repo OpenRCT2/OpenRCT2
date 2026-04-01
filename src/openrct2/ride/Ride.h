@@ -13,11 +13,11 @@
 #include "../core/BitSet.hpp"
 #include "../core/FixedPoint.hpp"
 #include "../core/FlagHolder.hpp"
+#include "../localisation/StringWithArgs.h"
 #include "RideColour.h"
 #include "RideEntry.h"
 #include "RideRatings.h"
 #include "RideTypes.h"
-#include "Track.h"
 #include "VehicleColour.h"
 #include "ted/TrackGroup.h"
 
@@ -30,15 +30,15 @@
 struct IObjectManager;
 struct Ride;
 struct RideTypeDescriptor;
-struct Guest;
-struct StringWithArgs;
-struct Staff;
 struct Vehicle;
 struct RideObjectEntry;
 struct ResultWithMessage;
 
 namespace OpenRCT2
 {
+    struct Guest;
+    struct Staff;
+
     class Formatter;
     class MusicObject;
     class StationObject;
@@ -133,6 +133,32 @@ enum class RideFlag : uint8_t
     reversedTrains,
 };
 using RideFlags = FlagHolder<uint32_t, RideFlag>;
+
+enum class Breakdown : uint8_t
+{
+    safetyCutOut,
+    restraintsStuckClosed,
+    restraintsStuckOpen,
+    doorsStuckClosed,
+    doorsStuckOpen,
+    vehicleMalfunction,
+    brakesFailure,
+    controlFailure,
+
+    none = 255,
+};
+constexpr auto kAllBreakdownTypes = std::to_array(
+    {
+        Breakdown::safetyCutOut,
+        Breakdown::restraintsStuckClosed,
+        Breakdown::restraintsStuckOpen,
+        Breakdown::doorsStuckClosed,
+        Breakdown::doorsStuckOpen,
+        Breakdown::vehicleMalfunction,
+        Breakdown::brakesFailure,
+        Breakdown::controlFailure,
+    });
+constexpr auto kBreakdownCount = kAllBreakdownTypes.size();
 
 struct RideStation
 {
@@ -320,13 +346,13 @@ struct Ride
     money64 upkeepCost{};
     EntityId raceWinner{};
     uint32_t musicPosition{};
-    uint8_t breakdownReasonPending{};
+    Breakdown breakdownReasonPending{};
     MechanicStatus mechanicStatus{};
     EntityId mechanic{ EntityId::GetNull() };
     StationIndex inspectionStation{ StationIndex::GetNull() };
     uint8_t brokenTrain{};
     uint8_t brokenCar{};
-    uint8_t breakdownReason{};
+    Breakdown breakdownReason{};
     union
     {
         struct
@@ -457,8 +483,8 @@ public:
     int32_t getTotalQueueLength() const;
     int32_t getMaxQueueTime() const;
 
-    void queueInsertGuestAtFront(StationIndex stationIndex, Guest* peep);
-    Guest* getQueueHeadGuest(StationIndex stationIndex) const;
+    void queueInsertGuestAtFront(StationIndex stationIndex, OpenRCT2::Guest* peep);
+    OpenRCT2::Guest* getQueueHeadGuest(StationIndex stationIndex) const;
 
     void setNameToDefault();
     std::string getName() const;
@@ -475,7 +501,7 @@ public:
     RideNaming getTypeNaming() const;
     OpenRCT2::TrackElement* getOriginElement(StationIndex stationIndex) const;
 
-    std::pair<RideMeasurement*, StringWithArgs> getMeasurement();
+    std::pair<RideMeasurement*, OpenRCT2::StringWithArgs> getMeasurement();
 
     uint8_t getNumShelteredSections() const;
     void increaseNumShelteredSections();
@@ -500,34 +526,12 @@ public:
     bool hasRecolourableShopItems() const;
     bool hasStation() const;
 
-    bool findTrackGap(const CoordsXYE& input, CoordsXYE* output) const;
-
     // TO-DO: those friend functions are temporary, find a way to not access the private fields
     friend void updateSpiralSlide(Ride& ride);
     friend void updateChairlift(Ride& ride);
 };
 void updateSpiralSlide(Ride& ride);
 void updateChairlift(Ride& ride);
-
-#pragma pack(push, 1)
-
-struct TrackBeginEnd
-{
-    int32_t begin_x;
-    int32_t begin_y;
-    int32_t begin_z;
-    int32_t begin_direction;
-    OpenRCT2::TileElement* begin_element;
-    int32_t end_x;
-    int32_t end_y;
-    int32_t end_direction;
-    OpenRCT2::TileElement* end_element;
-};
-#ifdef PLATFORM_32BIT
-static_assert(sizeof(TrackBeginEnd) == 36);
-#endif
-
-#pragma pack(pop)
 
 enum
 {
@@ -745,21 +749,6 @@ enum
 
 enum
 {
-    BREAKDOWN_NONE = 255,
-    BREAKDOWN_SAFETY_CUT_OUT = 0,
-    BREAKDOWN_RESTRAINTS_STUCK_CLOSED,
-    BREAKDOWN_RESTRAINTS_STUCK_OPEN,
-    BREAKDOWN_DOORS_STUCK_CLOSED,
-    BREAKDOWN_DOORS_STUCK_OPEN,
-    BREAKDOWN_VEHICLE_MALFUNCTION,
-    BREAKDOWN_BRAKES_FAILURE,
-    BREAKDOWN_CONTROL_FAILURE,
-
-    BREAKDOWN_COUNT
-};
-
-enum
-{
     RIDE_DEPART_WAIT_FOR_LOAD_MASK = 7,
     RIDE_DEPART_WAIT_FOR_LOAD = 1 << 3,
     RIDE_DEPART_LEAVE_WHEN_ANOTHER_ARRIVES = 1 << 4,
@@ -831,17 +820,17 @@ void RideCheckAllReachable();
 
 bool RideTryGetOriginElement(const Ride& ride, CoordsXYE* output);
 void RideClearBlockedTiles(const Ride& ride);
-Staff* RideGetMechanic(const Ride& ride);
-Staff* RideGetAssignedMechanic(const Ride& ride);
+OpenRCT2::Staff* RideGetMechanic(const Ride& ride);
+OpenRCT2::Staff* RideGetAssignedMechanic(const Ride& ride);
 VehicleColour RideGetVehicleColour(const Ride& ride, int32_t vehicleIndex);
 int32_t RideGetUnusedPresetVehicleColour(OpenRCT2::ObjectEntryIndex subType);
 void RideSetVehicleColoursToRandomPreset(Ride& ride, uint8_t preset_index);
 void RideMeasurementsUpdate();
 void RideBreakdownAddNewsItem(const Ride& ride);
-Staff* RideFindClosestMechanic(const Ride& ride, int32_t forInspection);
+OpenRCT2::Staff* RideFindClosestMechanic(const Ride& ride, int32_t forInspection);
 int32_t RideInitialiseConstructionWindow(Ride& ride);
 void RideSetMapTooltip(const OpenRCT2::TileElement& tileElement);
-void RidePrepareBreakdown(Ride& ride, int32_t breakdownReason);
+void RidePrepareBreakdown(Ride& ride, Breakdown breakdownReason);
 OpenRCT2::TileElement* RideGetStationStartTrackElement(const Ride& ride, StationIndex stationIndex);
 OpenRCT2::TileElement* RideGetStationExitElement(const CoordsXYZ& elementPos);
 money64 RideGetRefundPrice(const Ride& ride);
@@ -861,15 +850,6 @@ int32_t GetTurnCount3Elements(const Ride& ride, uint8_t type);
 int32_t GetTurnCount4PlusElements(const Ride& ride, uint8_t type);
 
 bool RideHasAnyTrackElements(const Ride& ride);
-
-bool TrackBlockGetNext(CoordsXYE* input, CoordsXYE* output, int32_t* z, int32_t* direction);
-bool TrackBlockGetNextFromZero(
-    const CoordsXYZ& startPos, const Ride& ride, uint8_t direction_start, CoordsXYE* output, int32_t* z, int32_t* direction,
-    bool isGhost);
-
-bool TrackBlockGetPrevious(const CoordsXYE& trackPos, TrackBeginEnd* outTrackBeginEnd);
-bool TrackBlockGetPreviousFromZero(
-    const CoordsXYZ& startPos, const Ride& ride, uint8_t direction, TrackBeginEnd* outTrackBeginEnd);
 
 void RideGetStartOfTrack(CoordsXYE* output);
 

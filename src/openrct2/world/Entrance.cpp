@@ -26,7 +26,6 @@
 #include "../object/ObjectManager.h"
 #include "../ride/RideConstruction.h"
 #include "../ride/Station.h"
-#include "../ride/Track.h"
 #include "Footpath.h"
 #include "Map.h"
 #include "MapAnimation.h"

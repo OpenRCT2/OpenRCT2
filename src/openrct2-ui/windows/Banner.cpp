@@ -291,7 +291,7 @@ namespace OpenRCT2::Ui::Windows
             Widget& colourBtn = widgets[WIDX_MAIN_COLOUR];
             colourBtn.type = WidgetType::empty;
 
-            auto* bannerEntry = OpenRCT2::ObjectManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
+            auto* bannerEntry = OpenRCT2::ObjectEntryManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
             if (bannerEntry != nullptr && (bannerEntry->flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR))
             {
                 colourBtn.type = WidgetType::colourBtn;

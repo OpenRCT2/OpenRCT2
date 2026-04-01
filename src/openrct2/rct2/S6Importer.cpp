@@ -39,18 +39,19 @@
 #include "../rct2/RCT2.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
+#include "../ride/Track.h"
 #include "../ride/Vehicle.h"
 #include "../sawyer_coding/SawyerChunkReader.h"
 #include "../scenario/Scenario.h"
 #include "../scenario/ScenarioRepository.h"
 #include "../scenario/ScenarioSources.h"
-#include "../world/Climate.h"
 #include "../world/Entrance.h"
 #include "../world/Map.h"
 #include "../world/MapAnimation.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
 #include "../world/TilePointerIndex.hpp"
+#include "../world/Weather.h"
 #include "../world/tile_element/BannerElement.h"
 #include "../world/tile_element/EntranceElement.h"
 #include "../world/tile_element/LargeSceneryElement.h"
@@ -575,18 +576,18 @@ namespace OpenRCT2::RCT2
             // Pad013CA747
             gameState.weatherUpdateTimer = _s6.WeatherUpdateTimer;
             gameState.weatherCurrent = {
-                .weatherType = WeatherType{ _s6.CurrentWeather },
+                .weatherType = Weather::Type{ _s6.CurrentWeather },
                 .temperature = static_cast<int8_t>(_s6.Temperature),
-                .weatherEffect = WeatherEffectType{ _s6.CurrentWeatherEffect },
+                .weatherEffect = Weather::EffectType{ _s6.CurrentWeatherEffect },
                 .weatherGloom = _s6.CurrentWeatherGloom,
-                .level = static_cast<WeatherLevel>(_s6.CurrentWeatherLevel),
+                .level = static_cast<Weather::Level>(_s6.CurrentWeatherLevel),
             };
             gameState.weatherNext = {
-                .weatherType = WeatherType{ _s6.NextWeather },
+                .weatherType = Weather::Type{ _s6.NextWeather },
                 .temperature = static_cast<int8_t>(_s6.NextTemperature),
-                .weatherEffect = WeatherEffectType{ _s6.NextWeatherEffect },
+                .weatherEffect = Weather::EffectType{ _s6.NextWeatherEffect },
                 .weatherGloom = _s6.NextWeatherGloom,
-                .level = static_cast<WeatherLevel>(_s6.NextWeatherLevel),
+                .level = static_cast<Weather::Level>(_s6.NextWeatherLevel),
             };
 
             // News items
@@ -1415,7 +1416,7 @@ namespace OpenRCT2::RCT2
                     {
                         dst2->SetBrakeBoosterSpeed(kRCT2DefaultBlockBrakeSpeed);
                     }
-                    else if (TrackTypeHasSpeedSetting(trackType))
+                    else if (trackTypeHasSpeedSetting(trackType))
                     {
                         dst2->SetBrakeBoosterSpeed(src2->GetBrakeBoosterSpeed());
                     }
@@ -1440,7 +1441,7 @@ namespace OpenRCT2::RCT2
                         dst2->SetSeatRotation(src2->GetSeatRotation());
                     }
 
-                    if (TrackTypeMustBeMadeInvisible(rideType, dst2->GetTrackType()))
+                    if (TrackTypeMustBeMadeInvisible(*dst2))
                     {
                         dst->SetInvisible(true);
                     }

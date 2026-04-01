@@ -29,8 +29,8 @@
 #include "../scenes/intro/IntroScene.h"
 #include "../ui/WindowManager.h"
 #include "../util/Util.h"
-#include "../world/Climate.h"
 #include "../world/Map.h"
+#include "../world/Weather.h"
 #include "../world/tile_element/SurfaceElement.h"
 #include "AudioChannel.h"
 #include "AudioContext.h"
@@ -326,7 +326,7 @@ namespace OpenRCT2::Audio
     {
         StopVehicleSounds();
         PeepStopCrowdNoise();
-        ClimateStopWeatherSound();
+        Weather::stopWeatherSound();
     }
 
     void StopAll()
@@ -399,7 +399,7 @@ namespace OpenRCT2::Audio
         PeepStopCrowdNoise();
         StopTitleMusic();
         RideAudio::StopAllChannels();
-        ClimateStopWeatherSound();
+        Weather::stopWeatherSound();
         _currentAudioDevice = -1;
     }
 
@@ -427,7 +427,7 @@ namespace OpenRCT2::Audio
 
     void Resume()
     {
-        gGameSoundsOff = false;
+        gGameSoundsOff = !Config::Get().sound.masterSoundEnabled;
         PlayTitleMusic();
     }
 

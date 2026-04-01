@@ -11,6 +11,7 @@
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/core/Guard.hpp>
+#include <openrct2/drawing/Drawing.String.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/ColourWithFlags.h>
 #include <openrct2/localisation/Language.h>
@@ -126,7 +127,7 @@ namespace OpenRCT2::Ui::Windows
                     const auto& stringIdx = widgets[widgetIndex].text;
                     auto string = ls.GetString(stringIdx);
                     Guard::ArgumentNotNull(string);
-                    const auto strWidth = GfxGetStringWidth(string, FontStyle::medium);
+                    const auto strWidth = Drawing::getStringWidth(string, FontStyle::medium);
                     newWidth = std::max<int16_t>(strWidth, newWidth);
                 }
 

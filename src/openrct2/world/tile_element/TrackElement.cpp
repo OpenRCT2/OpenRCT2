@@ -58,7 +58,7 @@ namespace OpenRCT2
 
     bool TrackElement::IsStation() const
     {
-        return TrackTypeIsStation(GetTrackType());
+        return trackTypeIsStation(GetTrackType());
     }
 
     uint8_t TrackElement::GetSeatRotation() const

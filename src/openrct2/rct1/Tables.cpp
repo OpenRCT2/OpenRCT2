@@ -806,7 +806,7 @@ namespace OpenRCT2::RCT1
             "rct1.ride.suspended_swinging_cars",           //  VehicleType::suspendedSwingingCars
             "rct1.ride.ladybird_trains",                   //  VehicleType::ladybirdCars
             "rct1.ride.stand_up_trains",                   //  VehicleType::standupRollerCoasterCars
-            "rct2.ride.wmspin",                            //  VehicleType::spinningCars
+            "rct1.ride.spinning_cars",                     //  VehicleType::spinningCars
             "rct1.ride.single_person_swinging_cars",       //  VehicleType::singlePersonSwingingChairs
             "rct2.ride.swans",                             //  VehicleType::swansPedalBoats
             "rct1.ride.streamlined_monorail_trains",       //  VehicleType::largeMonorailTrain

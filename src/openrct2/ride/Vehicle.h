@@ -19,6 +19,7 @@
 #include "CarEntry.h"
 #include "VehicleColour.h"
 #include "VehicleSubpositionData.h"
+#include "ted/PitchAndRoll.h"
 
 #include <cstddef>
 #include <optional>
@@ -26,13 +27,16 @@
 struct Ride;
 struct RideObjectEntry;
 struct CarEntry;
-class DataSerialiser;
 struct PaintSession;
+
+enum class Breakdown : uint8_t;
 
 namespace OpenRCT2
 {
+    class DataSerialiser;
+
     struct TrackElement;
-}
+} // namespace OpenRCT2
 
 struct GForces
 {
@@ -106,9 +110,9 @@ enum class MiniGolfFlag : uint8_t
 
 using MiniGolfFlags = FlagHolder<uint8_t, MiniGolfFlag>;
 
-struct Vehicle : EntityBase
+struct Vehicle : OpenRCT2::EntityBase
 {
-    static constexpr auto cEntityType = EntityType::vehicle;
+    static constexpr auto cEntityType = OpenRCT2::EntityType::vehicle;
 
     enum class Type : uint8_t
     {
@@ -318,7 +322,7 @@ struct Vehicle : EntityBase
         TrackTypeAndDirection |= trackDirection & kVehicleTrackDirectionMask;
     }
     void ApplyMass(int16_t appliedMass);
-    void Serialise(DataSerialiser& stream);
+    void Serialise(OpenRCT2::DataSerialiser& stream);
     void Paint(PaintSession& session, int32_t imageDirection) const;
     bool IsCableLift() const;
 
@@ -502,7 +506,8 @@ enum
     VEHICLE_VISUAL_SPLASH4_EFFECT,
     VEHICLE_VISUAL_SPLASH5_EFFECT,
     VEHICLE_VISUAL_VIRGINIA_REEL,
-    VEHICLE_VISUAL_SUBMARINE
+    VEHICLE_VISUAL_SUBMARINE,
+    VEHICLE_VISUAL_SPINNING_CARS,
 };
 
 enum : uint32_t
@@ -553,6 +558,9 @@ enum class SoundRange : uint8_t
 constexpr uint8_t kVehicleSeatPairFlag = 0x80;
 constexpr uint8_t kVehicleSeatNumMask = 0x7F;
 
+OpenRCT2::TrackMetadata::PitchAndRoll PitchAndRollStart(bool useInvertedSprites, OpenRCT2::TileElement* tileElement);
+int32_t GetAccelerationDecrease2(const int32_t velocity, const int32_t totalMass);
+
 Vehicle* TryGetVehicle(EntityId spriteIndex);
 void VehicleUpdateAll();
 void VehicleSoundsUpdate();
@@ -564,7 +572,7 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, OpenRCT2::TrackE
 void RideUpdateMeasurementsSpecialElements_WaterCoaster(Ride& ride, OpenRCT2::TrackElemType trackType);
 
 extern Vehicle* gCurrentVehicle;
-extern uint8_t _vehicleBreakdown;
+extern Breakdown _vehicleBreakdown;
 extern StationIndex _vehicleStationIndex;
 extern uint32_t _vehicleMotionTrackFlags;
 extern int32_t _vehicleVelocityF64E08;

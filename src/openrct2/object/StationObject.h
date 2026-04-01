@@ -56,6 +56,8 @@ namespace OpenRCT2
         ImageIndex shelterIndex = kImageIndexUndefined;
         ImageIndex shelterGlassIndex = kImageIndexUndefined;
 
+        ImageIndex iconIndex = kImageIndexUndefined;
+
         uint32_t Flags{};
         int32_t Height{};
         uint8_t ScrollingMode{};

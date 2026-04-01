@@ -12,15 +12,14 @@
 #include "../../Identifiers.h"
 #include "TileElementBase.h"
 
-struct PathRailingsDescriptor;
-struct PathSurfaceDescriptor;
-
 namespace OpenRCT2
 {
     class FootpathObject;
     class FootpathRailingsObject;
     class FootpathSurfaceObject;
     struct PathAdditionEntry;
+    struct PathRailingsDescriptor;
+    struct PathSurfaceDescriptor;
 
     using ObjectEntryIndex = uint16_t;
 

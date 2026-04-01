@@ -15,169 +15,171 @@
 
 #include <cassert>
 
-using namespace OpenRCT2;
-using namespace OpenRCT2::Core;
-
-static PatrolArea _consolidatedPatrolArea[EnumValue(StaffType::count)];
-static std::variant<StaffType, EntityId> _patrolAreaToRender;
-
-static bool CompareTileCoordsXY(const TileCoordsXY& lhs, const TileCoordsXY& rhs)
+namespace OpenRCT2
 {
-    if (lhs.y == rhs.y)
-        return lhs.x < rhs.x;
-    return lhs.y < rhs.y;
-}
+    using namespace OpenRCT2::Core;
 
-const PatrolArea::Cell* PatrolArea::GetCell(const TileCoordsXY& pos) const
-{
-    return const_cast<PatrolArea*>(this)->GetCell(pos);
-}
+    static PatrolArea _consolidatedPatrolArea[EnumValue(StaffType::count)];
+    static std::variant<StaffType, EntityId> _patrolAreaToRender;
 
-PatrolArea::Cell* PatrolArea::GetCell(const TileCoordsXY& pos)
-{
-    auto areaPos = TileCoordsXY(pos.x / Cell::Width, pos.y / Cell::Height);
-    if (areaPos.x < 0 || areaPos.x >= CellColumns || areaPos.y < 0 || areaPos.y >= CellRows)
-        return nullptr;
-
-    auto& area = Areas[(areaPos.y * CellColumns) + areaPos.x];
-    return &area;
-}
-
-bool PatrolArea::IsEmpty() const
-{
-    return TileCount == 0;
-}
-
-void PatrolArea::Clear()
-{
-    for (auto& area : Areas)
+    static bool CompareTileCoordsXY(const TileCoordsXY& lhs, const TileCoordsXY& rhs)
     {
-        area.SortedTiles.clear();
+        if (lhs.y == rhs.y)
+            return lhs.x < rhs.x;
+        return lhs.y < rhs.y;
     }
-}
 
-bool PatrolArea::Get(const TileCoordsXY& pos) const
-{
-    auto* area = GetCell(pos);
-    if (area == nullptr)
-        return false;
-
-    auto it = Algorithm::binaryFind(area->SortedTiles.begin(), area->SortedTiles.end(), pos, CompareTileCoordsXY);
-    auto found = it != area->SortedTiles.end();
-    return found;
-}
-
-bool PatrolArea::Get(const CoordsXY& pos) const
-{
-    return Get(TileCoordsXY(pos));
-}
-
-void PatrolArea::Set(const TileCoordsXY& pos, bool value)
-{
-    auto* area = GetCell(pos);
-    if (area == nullptr)
-        return;
-
-    auto it = std::lower_bound(area->SortedTiles.begin(), area->SortedTiles.end(), pos, CompareTileCoordsXY);
-    auto found = it != area->SortedTiles.end() && *it == pos;
-
-    if (!found && value)
+    const PatrolArea::Cell* PatrolArea::GetCell(const TileCoordsXY& pos) const
     {
-        area->SortedTiles.insert(it, pos);
-        TileCount++;
+        return const_cast<PatrolArea*>(this)->GetCell(pos);
     }
-    else if (found && !value)
+
+    PatrolArea::Cell* PatrolArea::GetCell(const TileCoordsXY& pos)
     {
-        area->SortedTiles.erase(it);
-        assert(TileCount != 0);
-        TileCount--;
+        auto areaPos = TileCoordsXY(pos.x / Cell::Width, pos.y / Cell::Height);
+        if (areaPos.x < 0 || areaPos.x >= CellColumns || areaPos.y < 0 || areaPos.y >= CellRows)
+            return nullptr;
+
+        auto& area = Areas[(areaPos.y * CellColumns) + areaPos.x];
+        return &area;
     }
-}
 
-void PatrolArea::Set(const CoordsXY& pos, bool value)
-{
-    Set(TileCoordsXY(pos), value);
-}
-
-void PatrolArea::Union(const PatrolArea& other)
-{
-    for (size_t i = 0; i < Areas.size(); i++)
+    bool PatrolArea::IsEmpty() const
     {
-        for (const auto& pos : other.Areas[i].SortedTiles)
+        return TileCount == 0;
+    }
+
+    void PatrolArea::Clear()
+    {
+        for (auto& area : Areas)
+        {
+            area.SortedTiles.clear();
+        }
+    }
+
+    bool PatrolArea::Get(const TileCoordsXY& pos) const
+    {
+        auto* area = GetCell(pos);
+        if (area == nullptr)
+            return false;
+
+        auto it = Algorithm::binaryFind(area->SortedTiles.begin(), area->SortedTiles.end(), pos, CompareTileCoordsXY);
+        auto found = it != area->SortedTiles.end();
+        return found;
+    }
+
+    bool PatrolArea::Get(const CoordsXY& pos) const
+    {
+        return Get(TileCoordsXY(pos));
+    }
+
+    void PatrolArea::Set(const TileCoordsXY& pos, bool value)
+    {
+        auto* area = GetCell(pos);
+        if (area == nullptr)
+            return;
+
+        auto it = std::lower_bound(area->SortedTiles.begin(), area->SortedTiles.end(), pos, CompareTileCoordsXY);
+        auto found = it != area->SortedTiles.end() && *it == pos;
+
+        if (!found && value)
+        {
+            area->SortedTiles.insert(it, pos);
+            TileCount++;
+        }
+        else if (found && !value)
+        {
+            area->SortedTiles.erase(it);
+            assert(TileCount != 0);
+            TileCount--;
+        }
+    }
+
+    void PatrolArea::Set(const CoordsXY& pos, bool value)
+    {
+        Set(TileCoordsXY(pos), value);
+    }
+
+    void PatrolArea::Union(const PatrolArea& other)
+    {
+        for (size_t i = 0; i < Areas.size(); i++)
+        {
+            for (const auto& pos : other.Areas[i].SortedTiles)
+            {
+                Set(pos, true);
+            }
+        }
+    }
+
+    void PatrolArea::Union(const std::vector<TileCoordsXY>& other)
+    {
+        for (const auto& pos : other)
         {
             Set(pos, true);
         }
     }
-}
 
-void PatrolArea::Union(const std::vector<TileCoordsXY>& other)
-{
-    for (const auto& pos : other)
+    std::vector<TileCoordsXY> PatrolArea::ToVector() const
     {
-        Set(pos, true);
-    }
-}
-
-std::vector<TileCoordsXY> PatrolArea::ToVector() const
-{
-    std::vector<TileCoordsXY> result;
-    for (const auto& area : Areas)
-    {
-        for (const auto& pos : area.SortedTiles)
+        std::vector<TileCoordsXY> result;
+        for (const auto& area : Areas)
         {
-            result.push_back(pos);
+            for (const auto& pos : area.SortedTiles)
+            {
+                result.push_back(pos);
+            }
+        }
+        return result;
+    }
+
+    const PatrolArea& GetMergedPatrolArea(const StaffType type)
+    {
+        return _consolidatedPatrolArea[EnumValue(type)];
+    }
+
+    void UpdateConsolidatedPatrolAreas()
+    {
+        for (int32_t staffType = 0; staffType < EnumValue(StaffType::count); ++staffType)
+        {
+            // Reset all of the merged data for the type.
+            auto& mergedArea = _consolidatedPatrolArea[staffType];
+            mergedArea.Clear();
+
+            for (auto staff : EntityList<Staff>())
+            {
+                if (EnumValue(staff->AssignedStaffType) != staffType)
+                    continue;
+
+                if (staff->PatrolInfo == nullptr)
+                    continue;
+
+                mergedArea.Union(*staff->PatrolInfo);
+            }
         }
     }
-    return result;
-}
 
-const PatrolArea& GetMergedPatrolArea(const StaffType type)
-{
-    return _consolidatedPatrolArea[EnumValue(type)];
-}
-
-void UpdateConsolidatedPatrolAreas()
-{
-    for (int32_t staffType = 0; staffType < EnumValue(StaffType::count); ++staffType)
+    bool IsPatrolAreaSetForStaffType(StaffType type, const CoordsXY& coords)
     {
-        // Reset all of the merged data for the type.
-        auto& mergedArea = _consolidatedPatrolArea[staffType];
-        mergedArea.Clear();
-
-        for (auto staff : EntityList<Staff>())
-        {
-            if (EnumValue(staff->AssignedStaffType) != staffType)
-                continue;
-
-            if (staff->PatrolInfo == nullptr)
-                continue;
-
-            mergedArea.Union(*staff->PatrolInfo);
-        }
+        return _consolidatedPatrolArea[EnumValue(type)].Get(coords);
     }
-}
 
-bool IsPatrolAreaSetForStaffType(StaffType type, const CoordsXY& coords)
-{
-    return _consolidatedPatrolArea[EnumValue(type)].Get(coords);
-}
+    std::variant<StaffType, EntityId> GetPatrolAreaToRender()
+    {
+        return _patrolAreaToRender;
+    }
 
-std::variant<StaffType, EntityId> GetPatrolAreaToRender()
-{
-    return _patrolAreaToRender;
-}
+    void ClearPatrolAreaToRender()
+    {
+        SetPatrolAreaToRender(EntityId::GetNull());
+    }
 
-void ClearPatrolAreaToRender()
-{
-    SetPatrolAreaToRender(EntityId::GetNull());
-}
+    void SetPatrolAreaToRender(EntityId staffId)
+    {
+        _patrolAreaToRender = staffId;
+    }
 
-void SetPatrolAreaToRender(EntityId staffId)
-{
-    _patrolAreaToRender = staffId;
-}
-
-void SetPatrolAreaToRender(StaffType staffType)
-{
-    _patrolAreaToRender = staffType;
-}
+    void SetPatrolAreaToRender(StaffType staffType)
+    {
+        _patrolAreaToRender = staffType;
+    }
+} // namespace OpenRCT2

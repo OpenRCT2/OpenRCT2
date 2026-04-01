@@ -16,7 +16,6 @@
 #include "../world/Location.hpp"
 #include "RideColour.h"
 #include "Station.h"
-#include "Track.h"
 
 #include <cstdint>
 #include <optional>
@@ -24,6 +23,7 @@
 namespace OpenRCT2
 {
     struct TileElement;
+    enum class TrackElemType : uint16_t;
 
     namespace TrackMetadata
     {

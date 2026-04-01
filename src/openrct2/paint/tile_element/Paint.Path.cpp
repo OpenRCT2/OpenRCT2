@@ -23,7 +23,6 @@
 #include "../../object/PathAdditionEntry.h"
 #include "../../profiling/Profiling.h"
 #include "../../ride/Ride.h"
-#include "../../ride/Track.h"
 #include "../../ride/TrackDesign.h"
 #include "../../world/Footpath.h"
 #include "../../world/Map.h"

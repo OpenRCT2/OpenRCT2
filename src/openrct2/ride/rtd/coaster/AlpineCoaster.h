@@ -11,7 +11,6 @@
 
 #include "../../../SpriteIds.h"
 #include "../../RideData.h"
-#include "../../Track.h"
 
 // clang-format off
 namespace OpenRCT2
@@ -23,8 +22,8 @@ constexpr RideTypeDescriptor AlpineCoasterRTD =
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::alpineCoaster,
         .supportType = MetalSupportType::fork,
-        .enabledTrackGroups = { TrackGroup::flat, TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::flatToSteepSlope, TrackGroup::slopeCurve, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedHalf, TrackGroup::diagSlope },
-        .extraTrackGroups =  {TrackGroup::helixUpBankedHalf},
+        .enabledTrackGroups = { TrackGroup::flat, TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::flatToSteepSlope, TrackGroup::slopeCurve, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedHalf, TrackGroup::diagSlope, TrackGroup::helixDownUnbankedQuarter, TrackGroup::helixDownBankedQuarter },
+        .extraTrackGroups =  { TrackGroup::helixUpBankedHalf, TrackGroup::helixUpUnbankedQuarter, TrackGroup::helixUpBankedQuarter },
     }),
     .InvertedTrackPaintFunctions = {},
     .flags = RtdFlags(RtdFlag::hasTrackColourMain, RtdFlag::hasTrackColourSupports,
@@ -39,7 +38,7 @@ constexpr RideTypeDescriptor AlpineCoasterRTD =
     .TrackSpeedSettings = { 10, 10 },
     .Naming = { STR_RIDE_NAME_ALPINE_COASTER, STR_RIDE_DESCRIPTION_ALPINE_COASTER },
     .NameConvention = { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station },
-    .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
+    .availableBreakdowns = { Breakdown::safetyCutOut, Breakdown::vehicleMalfunction },
     .Heights = {18, 24, 3, 7},
     .MaxMass = 4,
     .LiftData = { Audio::SoundId::null, 4, 5 },

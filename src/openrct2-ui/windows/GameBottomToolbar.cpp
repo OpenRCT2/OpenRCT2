@@ -18,8 +18,10 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/drawing/Drawing.String.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
+#include <openrct2/drawing/Text.h>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/entity/Guest.h>
 #include <openrct2/entity/Staff.h>
@@ -117,7 +119,7 @@ namespace OpenRCT2::Ui::Windows
                 StringId stringId = gameState.park.cash < 0 ? STR_BOTTOM_TOOLBAR_CASH_NEGATIVE : STR_BOTTOM_TOOLBAR_CASH;
                 auto ft = Formatter();
                 ft.Add<money64>(gameState.park.cash);
-                DrawTextBasic(rt, screenCoords, stringId, ft, { colour, TextAlignment::centre });
+                drawText(rt, screenCoords, stringId, ft, { colour, TextAlignment::centre });
             }
 
             static constexpr StringId _guestCountFormats[] = {
@@ -143,7 +145,7 @@ namespace OpenRCT2::Ui::Windows
                 auto colour = GetHoverWidgetColour(WIDX_GUESTS);
                 auto ft = Formatter();
                 ft.Add<uint32_t>(gameState.park.numGuestsInPark);
-                DrawTextBasic(rt, screenCoords, stringId, ft, { colour, TextAlignment::centre });
+                drawText(rt, screenCoords, stringId, ft, { colour, TextAlignment::centre });
             }
 
             // Draw park rating
@@ -203,7 +205,7 @@ namespace OpenRCT2::Ui::Windows
             ft.Add<StringId>(DateDayNames[day]);
             ft.Add<int16_t>(month);
             ft.Add<int16_t>(year);
-            DrawTextBasic(rt, screenCoords, stringId, ft, { colour, TextAlignment::centre });
+            drawText(rt, screenCoords, stringId, ft, { colour, TextAlignment::centre });
 
             // Figure out how much line height we have to work with.
             uint32_t line_height = FontGetLineHeight(FontStyle::medium);
@@ -215,20 +217,20 @@ namespace OpenRCT2::Ui::Windows
             StringId format = STR_CELSIUS_VALUE;
             if (Config::Get().general.temperatureFormat == TemperatureUnit::Fahrenheit)
             {
-                temperature = ClimateCelsiusToFahrenheit(temperature);
+                temperature = Weather::celsiusToFahrenheit(temperature);
                 format = STR_FAHRENHEIT_VALUE;
             }
             ft = Formatter();
             ft.Add<int16_t>(temperature);
-            DrawTextBasic(rt, screenCoords + ScreenCoordsXY{ 0, 6 }, format, ft);
+            drawText(rt, screenCoords + ScreenCoordsXY{ 0, 6 }, format, ft);
             screenCoords.x += 30;
 
             // Current weather
-            auto currentWeatherSpriteId = ClimateGetWeatherSpriteId(getGameState().weatherCurrent.weatherType);
+            auto currentWeatherSpriteId = Weather::getWeatherSpriteId(getGameState().weatherCurrent.weatherType);
             GfxDrawSprite(rt, ImageId(currentWeatherSpriteId), screenCoords);
 
             // Next weather
-            auto nextWeatherSpriteId = ClimateGetWeatherSpriteId(getGameState().weatherNext.weatherType);
+            auto nextWeatherSpriteId = Weather::getWeatherSpriteId(getGameState().weatherNext.weatherType);
             if (currentWeatherSpriteId != nextWeatherSpriteId)
             {
                 if (getGameState().weatherUpdateTimer < 960)
@@ -255,7 +257,7 @@ namespace OpenRCT2::Ui::Windows
             // Text
             auto screenCoords = windowPos + ScreenCoordsXY{ middleOutsetWidget.midX(), middleOutsetWidget.top + 11 };
             int32_t itemWidth = middleOutsetWidget.width() - 63;
-            DrawNewsTicker(
+            drawNewsTicker(
                 rt, screenCoords, itemWidth, Drawing::Colour::brightGreen, STR_BOTTOM_TOOLBAR_NEWS_TEXT, newsItem->text,
                 newsItem->ticks);
 
@@ -379,13 +381,13 @@ namespace OpenRCT2::Ui::Windows
             if (stringId == kStringIdNone)
             {
                 // TODO: this string probably shouldn't be reused for this
-                DrawTextWrapped(
+                drawTextWrapped(
                     rt, middleWidgetCoords, panelWidth, STR_TITLE_SEQUENCE_OPENRCT2, ft, { colours[0], TextAlignment::centre });
             }
             else
             {
                 // Show tooltip in bottom toolbar
-                DrawTextWrapped(rt, middleWidgetCoords, panelWidth, STR_STRINGID, ft, { colours[0], TextAlignment::centre });
+                drawTextWrapped(rt, middleWidgetCoords, panelWidth, STR_STRINGID, ft, { colours[0], TextAlignment::centre });
             }
         }
 

@@ -28,6 +28,12 @@ namespace OpenRCT2::TrackMetadata
 
     using TrackComputeFunction = int32_t (*)(int16_t);
 
+    template<int32_t TConstant>
+    static int32_t EvaluatorConst(const int16_t)
+    {
+        return TConstant;
+    }
+
     enum class TrackElementFlag : uint8_t
     {
         onlyUnderwater,
@@ -178,6 +184,14 @@ namespace OpenRCT2::TrackMetadata
         TypeOrCurve previous;
     };
 
+    enum class ClearanceFlag : uint8_t
+    {
+        flag0,
+        flag1,
+        isVertical,
+    };
+    using ClearanceFlags = FlagHolder<uint8_t, ClearanceFlag>;
+
     struct SequenceClearance
     {
         int16_t x{};
@@ -185,19 +199,50 @@ namespace OpenRCT2::TrackMetadata
         int16_t z{};
         uint8_t clearanceZ{};
         QuarterTile quarterTile = { 0, 0 };
-        uint8_t flags{};
+        ClearanceFlags flags{};
     };
 
     struct SequenceWoodenSupport
     {
         WoodenSupportSubType subType = WoodenSupportSubType::null;
         WoodenSupportTransitionType transitionType = WoodenSupportTransitionType::none;
+        int8_t height = 0;
     };
 
     struct SequenceMetalSupport
     {
         MetalSupportPlace place = MetalSupportPlace::none;
         uint8_t alternates = false;
+        int8_t height = 0;
+    };
+
+    using BlockedSegmentsPerType = std::array<uint16_t, kBlockedSegmentsTypeCount>;
+    constexpr BlockedSegmentsPerType kFlatStraightBlockedSegments = { {
+        EnumsToFlags(PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft), // narrow
+        EnumsToFlags(PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft), // inverted
+        kSegmentsAll,                                                                         // wide
+    } };
+
+    static constexpr int16_t kDoNotSetGeneralSupportHeight = std::numeric_limits<int16_t>::min();
+
+    constexpr int16_t calculateGeneralSupportHeight(
+        const SequenceClearance& sequenceClearance, const int32_t clearanceOffset, bool startsAtHalfHeight)
+    {
+        const int16_t trackHeight = sequenceClearance.z + (startsAtHalfHeight * kCoordsZStep);
+        startsAtHalfHeight = trackHeight % kLandHeightStep == kCoordsZStep;
+
+        int32_t trackClearance = 0;
+        if (!startsAtHalfHeight)
+        {
+            trackClearance = Numerics::ceil2(sequenceClearance.clearanceZ, kLandHeightStep);
+        }
+        else
+        {
+            trackClearance = Numerics::ceil2(sequenceClearance.clearanceZ, kCoordsZStep);
+            trackClearance += (trackClearance + kCoordsZStep) % kLandHeightStep;
+        }
+
+        return trackClearance + (clearanceOffset * kLandHeightStep);
     };
 
     struct SequenceDescriptor
@@ -211,7 +256,9 @@ namespace OpenRCT2::TrackMetadata
         SequenceMetalSupport metalSupports{};
         int8_t extraSupportRotation = 0;
         bool invertSegmentBlocking = false;
-        std::array<uint16_t, kBlockedSegmentsTypeCount> blockedSegments{ kSegmentsNone, kSegmentsNone, kSegmentsNone };
+        BlockedSegmentsPerType blockedSegments{ kSegmentsNone, kSegmentsNone, kSegmentsNone };
+        int16_t generalSupportHeight = kDoNotSetGeneralSupportHeight;
+        uint8_t reversedTrackSequence = 0;
 
         constexpr uint8_t getEntranceConnectionSides() const
         {
@@ -229,9 +276,15 @@ namespace OpenRCT2::TrackMetadata
         int8_t previewZOffset;
     };
 
+    struct SequenceTable
+    {
+        uint8_t numSequences{};
+        std::array<SequenceDescriptor, kMaxSequencesPerPiece> sequences;
+    };
+
     struct TrackElementDescriptor
     {
-        StringId description;
+        StringId description = kStringIdEmpty;
         TrackCoordinates coordinates;
 
         // Used to estimate the ride length for number of powered vehicle trains
@@ -239,20 +292,21 @@ namespace OpenRCT2::TrackMetadata
         // Piece the ride construction window automatically selects next
         TrackCurveChain curveChain;
         // Track element to build when building "covered"/"splashdown" track
-        TrackElemType alternativeType;
+        TrackElemType alternativeType = TrackElemType::none;
         // Price Modifier should be used as in the following calculation:
         // (RideTrackPrice * TED::PriceModifier) / 65536
         uint32_t priceModifier;
         TrackElemType mirrorElement;
         TrackFlags flags;
 
-        uint8_t numSequences{};
-        std::array<SequenceDescriptor, kMaxSequencesPerPiece> sequences;
-
         TrackDefinition definition;
-        SpinFunction spinFunction;
+        SpinFunction spinFunction = SpinFunction::none;
 
-        TrackComputeFunction verticalFactor;
-        TrackComputeFunction lateralFactor;
+        TrackComputeFunction verticalFactor = EvaluatorConst<0>;
+        TrackComputeFunction lateralFactor = EvaluatorConst<0>;
+
+        int8_t reversedRotationOffset = 0;
+
+        SequenceTable sequenceData;
     };
 } // namespace OpenRCT2::TrackMetadata

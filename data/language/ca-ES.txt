@@ -242,7 +242,6 @@ STR_0832    :Gira la càmera 90° en sentit horari.
 STR_0833    :Posa la partida en pausa.
 STR_0834    :Opcions del joc i de la partida
 STR_0839    :{UINT16} × {UINT16}
-STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} × {UINT16}
 # The following six strings were used for display resolutions, but have been replaced.
 STR_0847    :Quant a l’«OpenRCT2»
 STR_0850    :{WINDOW_COLOUR_2}Copyright © 2002 Chris Sawyer. Tots els drets reservats.
@@ -254,16 +253,6 @@ STR_0855    :{WINDOW_COLOUR_2}Representació per la Jacqui Lyons de Marjacq Ltd.
 STR_0856    :{WINDOW_COLOUR_2}Agraïments:
 STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth i John Wardley.
 STR_0865    :{STRINGID}
-STR_0866    :{POP16}{STRINGID}
-STR_0867    :{POP16}{POP16}{STRINGID}
-STR_0868    :{POP16}{POP16}{POP16}{STRINGID}
-STR_0869    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0870    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0872    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0873    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0874    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0875    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0876    :{BLACK}▼
 STR_0877    :Massa baix!
 STR_0878    :Massa alt!
@@ -282,7 +271,7 @@ STR_0892    :S’ha desat la captura de pantalla com a «{STRINGID}».
 STR_0893    :La captura de pantalla no s’ha pogut fer.
 STR_0894    :L’àrea de dades de paisatge està plena.
 STR_0895    :No es pot construir part a sobre i part sota terra.
-STR_0896    :Construcció de {POP16}{POP16}{STRINGID}
+STR_0896    :Construcció de {STRINGID}
 STR_0897    :Direcció
 STR_0898    :Corba a l’esquerra
 STR_0899    :Corba a la dreta
@@ -407,8 +396,6 @@ STR_1018    :No s’hi poden fer canvis…
 STR_1019    :No s’hi poden fer canvis…
 STR_1020    :No s’hi poden fer canvis…
 STR_1021    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_1022    :{POP16}{POP16}{POP16}{COMMA16} vagó per tren
-STR_1023    :{POP16}{POP16}{POP16}{COMMA16} vagons per tren
 STR_1024    :{COMMA16} vagó per tren
 STR_1025    :{COMMA16} vagons per tren
 STR_1026    :L’andana és massa llarga!
@@ -517,9 +504,7 @@ STR_1128    :Parat pels frens del bloc
 STR_1129    :Tots els vagons del mateix color
 STR_1130    :Colors diferents per {STRINGID}
 STR_1131    :Colors diferents per cada vagó
-STR_1132    :Vagó {POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1133    :Vagó {POP16}{COMMA16}
-STR_1134    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID} {COMMA16}
+STR_1133    :Vagó {COMMA16}
 STR_1135    :{STRINGID} {COMMA16}
 STR_1136    :Seleccioneu el color principal
 STR_1137    :Seleccioneu el 1r color addicional
@@ -715,7 +700,6 @@ STR_1327    :Gira els objectes 90°.
 STR_1328    :Fa falta que el terreny estigui anivellat.
 STR_1329    :{WINDOW_COLOUR_2}Velocitat de llançament:
 STR_1330    :Velocitat màxima durant la sortida de l’estació.
-STR_1331    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_1332    :{VELOCITY}
 STR_1333    :{STRINGID} - {STRINGID}{POP16}
 STR_1334    :{STRINGID} - {STRINGID} {COMMA16}
@@ -813,7 +797,6 @@ STR_1425    :Camí
 STR_1426    :Cua
 STR_1427    :{WINDOW_COLOUR_2}Clients: {BLACK}{COMMA32} per hora
 STR_1428    :{WINDOW_COLOUR_2}Preu de l’entrada:
-STR_1429    :{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1430    :Gratuïta
 STR_1431    :Camina
 STR_1432    :Es dirigeix cap a {STRINGID}
@@ -1057,7 +1040,6 @@ STR_1671    :{WINDOW_COLOUR_2}Benefici total: {BLACK}{CURRENCY2DP}
 STR_1672    :Frens
 STR_1673    :Secció de canvi del control de gir
 STR_1674    :Velocitat dels frens
-STR_1675    :{POP16}{VELOCITY}
 STR_1676    :Estableix el límit de velocitat per als frens.
 STR_1677    :{WINDOW_COLOUR_2}Popularitat: {BLACK}desconeguda
 STR_1678    :{WINDOW_COLOUR_2}Popularitat: {BLACK}{COMMA16} %
@@ -1117,18 +1099,15 @@ STR_1732    :Construeix
 STR_1733    :Mode
 STR_1734    :{WINDOW_COLOUR_2}Nombre de voltes:
 STR_1735    :Nombre de voltes del circuit
-STR_1736    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1738    :El nombre de voltes no es pot canviar…
 STR_1739    :La carrera l’ha guanyat el visitant {INT32}
 STR_1740    :La carrera l’ha guanyada {STRINGID}
 STR_1741    :Encara no està construït!
 STR_1742    :{WINDOW_COLOUR_2}Nombre màxim d’usuaris:
 STR_1743    :Nombre màxim de visitants dels parc que poden pujar en aquesta atracció al mateix temps.
-STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1746    :No es pot canviar…
 STR_1747    :{WINDOW_COLOUR_2}Temps límit:
 STR_1748    :Temps límit de l’atracció
-STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DURATION}
 STR_1751    :No es pot canviar el temps límit de l’atracció…
 STR_1752    :Mostra una llista amb tots els visitants del parc
 STR_1753    :Mostra una llista resumida dels visitants del parc
@@ -1149,7 +1128,6 @@ STR_1767    :Túnel giratori
 STR_1768    :El nombre de balancejos no es pot canviar…
 STR_1769    :{WINDOW_COLOUR_2}Nombre de balancejos:
 STR_1770    :Nombre de balancejos complets
-STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1773    :Només es permet una secció de fotos de record per atracció.
 STR_1774    :Només es permet un cable d’elevació per atracció.
 STR_1777    :Música de l’atracció
@@ -1161,7 +1139,6 @@ STR_1794    :Arreglant {STRINGID}
 STR_1795    :Responent la trucada de ràdio
 STR_1796    :S’ha avariat i cal reparar-la
 STR_1798    :Remolí
-STR_1799    :{POP16}{POP16}{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1800    :Parada de seguretat
 STR_1801    :Retencions encallades (tancades)
 STR_1802    :Retencions encallades (obertes)
@@ -1233,7 +1210,6 @@ STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :El nombre de voltes no es pot canviar…
 STR_1869    :{WINDOW_COLOUR_2}Nombre de voltes:
 STR_1870    :Nombre de voltes completes
-STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Ingressos: {BLACK}{CURRENCY2DP} per hora
 STR_1874    :{WINDOW_COLOUR_2}Benefici: {BLACK}{CURRENCY2DP} per hora
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Inspecciona atraccions
@@ -1277,7 +1253,6 @@ STR_1913    :{BLACK}+{CURRENCY2DP}
 STR_1914    :{BLACK}{CURRENCY2DP}
 STR_1915    :{RED}{CURRENCY2DP}
 STR_1916    :{WINDOW_COLOUR_2}Préstec:
-STR_1917    :{POP16}{POP16}{POP16}{CURRENCY}
 STR_1918    :No podeu demanar més diners!
 STR_1919    :No teniu prou diners!
 STR_1920    :No podeu tornar el préstec!
@@ -1315,7 +1290,6 @@ STR_1953    :Màrqueting
 STR_1954    :Inversió en recerca
 STR_1955    :{WINDOW_COLOUR_2}Nombre de circuits:
 STR_1956    :Nombre de circuits per atracció
-STR_1957    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1958    :{COMMA16}
 STR_1959    :El nombre de circuits no es pot canviar…
 STR_1960    :{WINDOW_COLOUR_2}Preu dels globus:
@@ -2113,7 +2087,6 @@ STR_3092    :No teniu permís per a moure o modificar l’estació d’aquesta a
 STR_3093    :{WINDOW_COLOUR_2}Preferida: {BLACK}{STRINGID}
 STR_3094    :Cap
 STR_3095    :{WINDOW_COLOUR_2}Velocitat de cadenes d’elevació:
-STR_3096    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_3097    :Seleccioneu la velocitat de les cadenes d’elevació.
 STR_3099    :Seleccioneu el color
 STR_3100    :Seleccioneu el segon color
@@ -2206,7 +2179,6 @@ STR_3208    :Gestor dels dissenys de via
 STR_3209    :Torna al pas anterior:
 STR_3210    :Avança al pas següent:
 STR_3211    :Mida del mapa:
-STR_3212    :{POP16}{COMMA16}
 STR_3213    :La mida del mapa no es pot baixar més.
 STR_3214    :La mida del mapa no es pot augmentar més.
 STR_3215    :Massa prop de la vora del mapa.
@@ -2999,12 +2971,11 @@ STR_5914    :Atracció desconeguda
 STR_5915    :Jugador
 STR_5916    :{COMMA16} jugador
 STR_5917    :{COMMA16} jugadors
-STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_5919    :{COMMA16}
 STR_5920    :Mostra efectes meteorològics
 STR_5921    :Si s’activa, durant les tempestes es mostrarà pluja i colors més foscos.
-STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}Max {STRINGID}
-STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}Màx. {COMMA16} {STRINGID} per tren
+STR_5922    :Max {STRINGID}
+STR_5923    :Màx. {COMMA16} {STRINGID} per tren
 STR_5924    :Detalls de la superfície
 STR_5925    :Detalls del camí
 STR_5926    :Detalls de la via
@@ -3389,7 +3360,6 @@ STR_6355    :Densitat alta
 STR_6356    :Apareixeran ànecs si el parc té aigua.
 STR_6357    :Treu tots els ànecs del mapa.
 STR_6358    :Pàgina {UINT16}
-STR_6359    :{POP16}{POP16}Pàgina {UINT16}
 STR_6361    :Activa els efectes d’enllumenat de les atraccions (experimental)
 STR_6362    :Si s’activa, els vehicles de les atraccions amb vies s’encendran durant la nit.
 STR_6363    :S’ha copiat el text al porta-retalls.

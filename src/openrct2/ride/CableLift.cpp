@@ -18,6 +18,7 @@
 #include "../world/tile_element/TrackElement.h"
 #include "Ride.h"
 #include "RideData.h"
+#include "TrackIteration.h"
 #include "Vehicle.h"
 #include "VehicleData.h"
 #include "VehicleGeometry.h"
@@ -262,7 +263,7 @@ bool Vehicle::CableLiftUpdateTrackMotionForwards()
 
             auto input = CoordsXYE{ TrackLocation, trackElement };
 
-            if (!TrackBlockGetNext(&input, &output, &outputZ, &outputDirection))
+            if (!trackBlockGetNext(&input, &output, &outputZ, &outputDirection))
                 return false;
 
             if (TrackPitchAndRollEnd(trackType) != TrackPitchAndRollStart(output.element->AsTrack()->GetTrackType()))
@@ -313,7 +314,7 @@ bool Vehicle::CableLiftUpdateTrackMotionBackwards()
             auto input = CoordsXYE{ TrackLocation, trackElement };
             TrackBeginEnd output;
 
-            if (!TrackBlockGetPrevious(input, &output))
+            if (!trackBlockGetPrevious(input, &output))
                 return false;
 
             if (TrackPitchAndRollStart(trackType) != TrackPitchAndRollEnd(output.begin_element->AsTrack()->GetTrackType()))

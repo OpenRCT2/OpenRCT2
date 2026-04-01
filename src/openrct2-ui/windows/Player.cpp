@@ -19,6 +19,7 @@
 #include <openrct2/actions/network/PlayerKickAction.h>
 #include <openrct2/actions/network/PlayerSetGroupAction.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/network/Network.h>
 #include <openrct2/network/NetworkAction.h>
@@ -55,7 +56,7 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
 
     static constexpr auto kCommonPlayerWidgets = makeWidgets(
-        makeWindowShim(STR_STRING, kWindowSize),
+        makeWindowShim(kStringIdNone, kWindowSize),
         makeWidget({ 0, 43}, {192, 114}, WidgetType::resize, WindowColour::secondary),
         makeTab   ({ 3, 17}                                                         ),
         makeTab   ({34, 17}                                                         )
@@ -328,15 +329,14 @@ namespace OpenRCT2::Ui::Windows
 
         void UpdateTitle()
         {
-            auto ft = Formatter::Common();
             int32_t player = Network::GetPlayerIndex(static_cast<uint8_t>(number));
             if (player != -1)
             {
-                ft.Add<const char*>(Network::GetPlayerName(player)); // set title caption to player name
+                widgets[WIDX_TITLE].setString(Network::GetPlayerName(player));
             }
             else
             {
-                ft.Add<const char*>("");
+                widgets[WIDX_TITLE].setString("");
             }
         }
 
@@ -436,11 +436,9 @@ namespace OpenRCT2::Ui::Windows
                 thread_local std::string _buffer;
                 _buffer.assign("{WINDOW_COLOUR_2}");
                 _buffer += Network::GetGroupName(groupindex);
-                auto ft = Formatter();
-                ft.Add<const char*>(_buffer.c_str());
 
-                DrawTextEllipsised(
-                    rt, windowPos + ScreenCoordsXY{ widget->midX() - 5, widget->top }, widget->width() - 9, STR_STRING, ft,
+                drawTextEllipsised(
+                    rt, windowPos + ScreenCoordsXY{ widget->midX() - 5, widget->top }, widget->width() - 9, _buffer,
                     { TextAlignment::centre });
             }
 
@@ -449,10 +447,10 @@ namespace OpenRCT2::Ui::Windows
 
             auto ft = Formatter();
             ft.Add<StringId>(STR_PING);
-            DrawTextBasic(rt, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
+            drawText(rt, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
             char ping[64];
             snprintf(ping, 64, "%d ms", Network::GetPlayerPing(player));
-            DrawText(rt, screenCoords + ScreenCoordsXY(30, 0), { colours[2] }, ping);
+            drawText(rt, screenCoords + ScreenCoordsXY(30, 0), ping, { colours[2] });
 
             // Draw last action
             screenCoords = windowPos + ScreenCoordsXY{ width / 2, height - 13 };
@@ -467,7 +465,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 ft.Add<StringId>(STR_ACTION_NA);
             }
-            DrawTextEllipsised(rt, screenCoords, updatedWidth, STR_LAST_ACTION_RAN, ft, { TextAlignment::centre });
+            drawTextEllipsised(rt, screenCoords, updatedWidth, STR_LAST_ACTION_RAN, ft, { TextAlignment::centre });
 
             if (viewport != nullptr && _drawViewport)
             {
@@ -616,13 +614,13 @@ namespace OpenRCT2::Ui::Windows
 
             auto ft = Formatter();
             ft.Add<uint32_t>(Network::GetPlayerCommandsRan(player));
-            DrawTextBasic(rt, screenCoords, STR_COMMANDS_RAN, ft);
+            drawText(rt, screenCoords, STR_COMMANDS_RAN, ft);
 
             screenCoords.y += kListRowHeight;
 
             ft = Formatter();
             ft.Add<uint32_t>(Network::GetPlayerMoneySpent(player));
-            DrawTextBasic(rt, screenCoords, STR_MONEY_SPENT, ft);
+            drawText(rt, screenCoords, STR_MONEY_SPENT, ft);
         }
 
 #pragma endregion

@@ -11,47 +11,47 @@
 
 #ifdef ENABLE_SCRIPTING
 
-    #include "../../Duktape.hpp"
+    #include "../../ScriptEngine.h"
     #include "../ride/ScRide.hpp"
     #include "../ride/ScTrackIterator.h"
     #include "../world/ScTile.hpp"
 
 namespace OpenRCT2::Scripting
 {
-    class ScMap
+    class ScMap;
+    extern ScMap gScMap;
+
+    class ScMap final : public ScBase
     {
     private:
-        duk_context* _context;
+        static JSValue size_get(JSContext* ctx, JSValue thisVal);
+
+        static JSValue numRides_get(JSContext* ctx, JSValue thisVal);
+
+        static JSValue numEntities_get(JSContext* ctx, JSValue thisVal);
+
+        static JSValue rides_get(JSContext* ctx, JSValue thisVal);
+
+        static JSValue getRide(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
+
+        static JSValue getTile(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
+
+        static JSValue getEntity(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
+
+        static JSValue getAllEntities(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
+
+        static JSValue getAllEntitiesOnTile(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
+
+        static JSValue createEntity(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
+
+        static JSValue getTrackIterator(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
+
+        static JSValue GetEntityAsDukValue(JSContext* ctx, const EntityBase* sprite);
 
     public:
-        ScMap(duk_context* ctx);
+        JSValue New(JSContext* ctx);
 
-        DukValue size_get() const;
-
-        int32_t numRides_get() const;
-
-        int32_t numEntities_get() const;
-
-        std::vector<std::shared_ptr<ScRide>> rides_get() const;
-
-        std::shared_ptr<ScRide> getRide(int32_t id) const;
-
-        std::shared_ptr<ScTile> getTile(int32_t x, int32_t y) const;
-
-        DukValue getEntity(int32_t id) const;
-
-        std::vector<DukValue> getAllEntities(const std::string& type) const;
-
-        std::vector<DukValue> getAllEntitiesOnTile(const std::string& type, const DukValue& tilePos) const;
-
-        DukValue createEntity(const std::string& type, const DukValue& initializer);
-
-        DukValue getTrackIterator(const DukValue& position, int32_t elementIndex) const;
-
-        static void Register(duk_context* ctx);
-
-    private:
-        DukValue GetEntityAsDukValue(const EntityBase* sprite) const;
+        void Register(JSContext* ctx);
     };
 
 } // namespace OpenRCT2::Scripting

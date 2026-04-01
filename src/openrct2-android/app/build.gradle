@@ -68,6 +68,52 @@ android {
     lintOptions {
         abortOnError = false
     }
+
+    androidResources {
+        noCompress 'parkseq', 'zip', 'dat', 'parkobj'
+    }
+}
+
+def prepareAndroidAssetsScript = "${rootProject.projectDir}/../../scripts/prepare-android-assets"
+tasks.register('prepareOpenRCT2Assets', Exec) {
+    workingDir rootProject.projectDir
+    commandLine 'bash', prepareAndroidAssetsScript
+    inputs.file(prepareAndroidAssetsScript)
+    inputs.file("${rootProject.projectDir}/../../assets.json")
+    inputs.file("${rootProject.projectDir}/../../contributors.md")
+    inputs.file("${rootProject.projectDir}/../../distribution/changelog.txt")
+    inputs.file("${rootProject.projectDir}/../../resources/fonts/sprites.json")
+    inputs.file("${rootProject.projectDir}/../../resources/g2/sprites.json")
+    inputs.file("${rootProject.projectDir}/../../resources/palettes/sprites.json")
+    inputs.file("${rootProject.projectDir}/../../resources/tracks/sprites.json")
+    inputs.dir("${rootProject.projectDir}/../../data/language")
+    inputs.dir("${rootProject.projectDir}/../../data/shaders")
+    inputs.dir("${rootProject.projectDir}/../../data/scenario_patches")
+    outputs.dir("${projectDir}/src/main/assets/openrct2")
+}
+
+if (!project.hasProperty('skipAssets')) {
+    preBuild.dependsOn(tasks.named('prepareOpenRCT2Assets'))
+}
+
+// When the `skipJava` property is set, skip all Java-related tasks.
+// This is used in CI so native libraries can be built in separate jobs for each ABI to speed up our builds.
+if (project.hasProperty('skipJava')) {
+    tasks.withType(JavaCompile).configureEach {
+        enabled = false
+    }
+    def skippablePrefixes = ["process", "merge", "generate", "compile", "lint", "check"]
+    def skippableKeywords = ["Java", "Resources", "Manifest", "Asset", "Lint", "Runtime"]
+    tasks.configureEach { task ->
+        def name = task.name
+        def hasPrefix = skippablePrefixes.any { name.startsWith(it) }
+        def hasKeyword = skippableKeywords.any { name.contains(it) }
+        if (hasPrefix && hasKeyword) {
+            if (!name.contains("externalNativeBuild") && !name.contains("CMake") && !name.contains("Ninja")) {
+                task.enabled = false
+            }
+        }
+    }
 }
 
 dependencies {

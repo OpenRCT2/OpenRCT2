@@ -14,11 +14,18 @@
     #include "../Diagnostic.h"
     #include "../core/File.h"
     #include "../core/Guard.hpp"
+    #include "../core/IStream.hpp"
+    #include "../core/String.hpp"
     #include "../localisation/Language.h"
 
     #include <SDL.h>
+    #include <algorithm>
+    #include <android/asset_manager.h>
+    #include <android/asset_manager_jni.h>
     #include <jni.h>
     #include <memory>
+    #include <mutex>
+    #include <sys/stat.h>
 
 AndroidClassLoader::~AndroidClassLoader()
 {
@@ -28,6 +35,10 @@ AndroidClassLoader::~AndroidClassLoader()
 
 jobject AndroidClassLoader::_classLoader;
 jmethodID AndroidClassLoader::_findClassMethod;
+static AAssetManager* _assetManager;
+static std::vector<OpenRCT2::Platform::AssetInfo> _assetList;
+static std::once_flag _assetManagerInitialized;
+static std::once_flag _assetListInitialized;
 
 // Initialized in JNI_OnLoad. Cannot be initialized here as JVM is not
 // available until after JNI_OnLoad is called.
@@ -57,7 +68,14 @@ namespace OpenRCT2::Platform
 
     std::string GetInstallPath()
     {
-        return "/sdcard/openrct2";
+        // If assets are bundled, use them as install path
+        if (File::Exists(std::string(Platform::kAndroidAssetPathPrefix) + "openrct2/data/g2.dat"))
+        {
+            return std::string(Platform::kAndroidAssetPathPrefix) + "openrct2/data";
+        }
+
+        // Fallback to external storage for backward compatibility
+        return GetFolderPath(SpecialFolder::userData);
     }
 
     std::string GetCurrentExecutablePath()
@@ -153,6 +171,51 @@ namespace OpenRCT2::Platform
         return {};
     }
 
+    uint64_t GetLastModified(std::string_view path)
+    {
+        if (String::startsWith(path, Platform::kAndroidAssetPathPrefix))
+        {
+            // Assets don't have a modification time in the traditional sense.
+            return 0;
+        }
+
+        uint64_t lastModified = 0;
+        struct stat statInfo{};
+        if (stat(std::string(path).c_str(), &statInfo) == 0)
+        {
+            lastModified = statInfo.st_mtime;
+        }
+        return lastModified;
+    }
+
+    uint64_t GetFileSize(std::string_view path)
+    {
+        if (String::startsWith(path, Platform::kAndroidAssetPathPrefix))
+        {
+            auto assetManager = static_cast<AAssetManager*>(GetAssetManager());
+            if (assetManager != nullptr)
+            {
+                std::string assetPath = std::string(path).substr(Platform::kAndroidAssetPathPrefix.length());
+                auto asset = AAssetManager_open(assetManager, assetPath.c_str(), AASSET_MODE_UNKNOWN);
+                if (asset != nullptr)
+                {
+                    auto size = AAsset_getLength64(asset);
+                    AAsset_close(asset);
+                    return size;
+                }
+            }
+            return 0;
+        }
+
+        uint64_t size = 0;
+        struct stat statInfo{};
+        if (stat(std::string(path).c_str(), &statInfo) == 0)
+        {
+            size = statInfo.st_size;
+        }
+        return size;
+    }
+
     #ifndef DISABLE_TTF
     std::string GetFontPath(const TTFFontDescriptor& font)
     {
@@ -189,6 +252,225 @@ namespace OpenRCT2::Platform
             env->NewStringUTF(std::string(name).c_str())));
     }
 
+    void* GetAssetManager()
+    {
+        std::call_once(_assetManagerInitialized, []() {
+            JNIEnv* env = static_cast<JNIEnv*>(SDL_AndroidGetJNIEnv());
+            jobject activity = static_cast<jobject>(SDL_AndroidGetActivity());
+            jclass activityClass = env->GetObjectClass(activity);
+            jmethodID getAssetsMethod = env->GetMethodID(activityClass, "getAssets", "()Landroid/content/res/AssetManager;");
+            jobject assetManagerObj = env->CallObjectMethod(activity, getAssetsMethod);
+            _assetManager = AAssetManager_fromJava(env, assetManagerObj);
+
+            env->DeleteLocalRef(assetManagerObj);
+            env->DeleteLocalRef(activityClass);
+            env->DeleteLocalRef(activity);
+        });
+
+        return _assetManager;
+    }
+
+    static AssetCheckResult CheckAssetExistsInList(u8string_view path, bool directoryOnly)
+    {
+        if (!String::startsWith(path, Platform::kAndroidAssetPathPrefix))
+        {
+            return AssetCheckResult::NotApplicable;
+        }
+
+        const auto& assetList = GetAssetList();
+        std::string assetPath = std::string(path.substr(Platform::kAndroidAssetPathPrefix.length()));
+        if (assetPath.empty())
+        {
+            return assetList.empty() ? AssetCheckResult::NotFound : AssetCheckResult::Found;
+        }
+
+        if (!directoryOnly)
+        {
+            auto it = std::lower_bound(
+                assetList.begin(), assetList.end(), assetPath,
+                [](const AssetInfo& a, const std::string& b) { return a.Path < b; });
+            if (it != assetList.end() && it->Path == assetPath)
+            {
+                return AssetCheckResult::Found;
+            }
+            return AssetCheckResult::NotFound;
+        }
+
+        // Only check for directory/prefix matches if directoryOnly is true
+        std::string prefix = assetPath;
+        if (!prefix.empty() && prefix.back() != '/')
+        {
+            prefix += '/';
+        }
+
+        auto it = std::lower_bound(
+            assetList.begin(), assetList.end(), prefix, [](const AssetInfo& a, const std::string& b) { return a.Path < b; });
+        if (it != assetList.end() && String::startsWith(it->Path, prefix))
+        {
+            return AssetCheckResult::Found;
+        }
+
+        return AssetCheckResult::NotFound;
+    }
+
+    AssetCheckResult CheckAssetDirectoryExists(u8string_view path)
+    {
+        return CheckAssetExistsInList(path, true);
+    }
+
+    AssetCheckResult CheckAssetExists(u8string_view path)
+    {
+        return CheckAssetExistsInList(path, false);
+    }
+
+    AssetFileOpenResult OpenAssetFile(u8string_view path)
+    {
+        if (!String::startsWith(path, Platform::kAndroidAssetPathPrefix))
+        {
+            return AssetFileOpenResult{ AssetCheckResult::NotApplicable, nullptr, 0 };
+        }
+
+        auto assetManager = static_cast<AAssetManager*>(GetAssetManager());
+        if (assetManager == nullptr)
+        {
+            return AssetFileOpenResult{ AssetCheckResult::NotFound, nullptr, 0 };
+        }
+
+        std::string assetPath = std::string(path.substr(Platform::kAndroidAssetPathPrefix.length()));
+        auto asset = AAssetManager_open(assetManager, assetPath.c_str(), AASSET_MODE_RANDOM);
+        if (asset == nullptr)
+        {
+            return AssetFileOpenResult{ AssetCheckResult::NotFound, nullptr, 0 };
+        }
+
+        uint64_t assetSize = AAsset_getLength64(asset);
+        return AssetFileOpenResult{ AssetCheckResult::Found, asset, assetSize };
+    }
+
+    void CloseAssetFile(AssetHandle handle)
+    {
+        if (handle != nullptr)
+        {
+            AAsset_close(static_cast<AAsset*>(handle));
+        }
+    }
+
+    uint64_t GetAssetPosition(AssetHandle handle)
+    {
+        if (handle == nullptr)
+        {
+            return 0;
+        }
+        return static_cast<uint64_t>(AAsset_seek64(static_cast<AAsset*>(handle), 0, SEEK_CUR));
+    }
+
+    void SeekAsset(AssetHandle handle, int64_t offset, int32_t origin)
+    {
+        if (handle == nullptr)
+        {
+            return;
+        }
+
+        int whence;
+        switch (origin)
+        {
+            case STREAM_SEEK_BEGIN:
+                whence = SEEK_SET;
+                break;
+            case STREAM_SEEK_CURRENT:
+                whence = SEEK_CUR;
+                break;
+            case STREAM_SEEK_END:
+                whence = SEEK_END;
+                break;
+            default:
+                return;
+        }
+        AAsset_seek64(static_cast<AAsset*>(handle), static_cast<off64_t>(offset), whence);
+    }
+
+    uint64_t ReadAsset(AssetHandle handle, void* buffer, uint64_t length)
+    {
+        if (handle == nullptr)
+        {
+            return 0;
+        }
+        int readBytes = AAsset_read(static_cast<AAsset*>(handle), buffer, static_cast<size_t>(length));
+        if (readBytes < 0)
+        {
+            return 0;
+        }
+        return static_cast<uint64_t>(readBytes);
+    }
+
+    uint64_t TryReadAsset(AssetHandle handle, void* buffer, uint64_t length)
+    {
+        return ReadAsset(handle, buffer, length);
+    }
+
+    u8string GetAssetPath()
+    {
+        return std::string(Platform::kAndroidAssetPathPrefix);
+    }
+
+    const std::vector<AssetInfo>& GetAssetList()
+    {
+        std::call_once(_assetListInitialized, []() {
+            AAssetManager* am = static_cast<AAssetManager*>(GetAssetManager());
+            if (am != nullptr)
+            {
+                AAsset* asset = AAssetManager_open(am, "openrct2/manifest.txt", AASSET_MODE_BUFFER);
+                if (asset != nullptr)
+                {
+                    size_t size = AAsset_getLength64(asset);
+                    std::string content;
+                    content.resize(size);
+                    AAsset_read(asset, content.data(), size);
+                    AAsset_close(asset);
+
+                    auto processLine = [](std::string line) {
+                        if (!line.empty() && line.back() == '\r')
+                        {
+                            line.pop_back();
+                        }
+                        if (!line.empty())
+                        {
+                            auto sep = line.find('|');
+                            if (sep != std::string::npos)
+                            {
+                                try
+                                {
+                                    AssetInfo info;
+                                    info.Path = line.substr(0, sep);
+                                    info.Size = std::stoull(line.substr(sep + 1));
+                                    _assetList.push_back(std::move(info));
+                                }
+                                catch (const std::exception&)
+                                {
+                                    LOG_WARNING("Failed to parse asset entry: %s", line.c_str());
+                                }
+                            }
+                        }
+                    };
+
+                    size_t start = 0;
+                    size_t end = content.find('\n');
+                    while (end != std::string::npos)
+                    {
+                        processLine(content.substr(start, end - start));
+                        start = end + 1;
+                        end = content.find('\n', start);
+                    }
+                    processLine(content.substr(start));
+                    std::sort(_assetList.begin(), _assetList.end(), [](const AssetInfo& a, const AssetInfo& b) {
+                        return a.Path < b.Path;
+                    });
+                }
+            }
+        });
+        return _assetList;
+    }
+
     std::vector<std::string_view> GetSearchablePathsRCT1()
     {
         return { "/sdcard/rct1" };
@@ -198,7 +480,22 @@ namespace OpenRCT2::Platform
     {
         return { "/sdcard/rct2" };
     }
+
+    time_t FileGetModifiedTime(u8string_view path)
+    {
+        return static_cast<time_t>(GetLastModified(path));
+    }
 } // namespace OpenRCT2::Platform
+
+/**
+ * JNI function to expose the Android asset path prefix constant to Java.
+ * Called from io.openrct2.PlatformConstants.getAndroidAssetPathPrefix()
+ */
+extern "C" JNIEXPORT jstring JNICALL
+    Java_io_openrct2_PlatformConstants_getAndroidAssetPathPrefix(JNIEnv* env, jclass /* clazz */)
+{
+    return env->NewStringUTF(std::string(OpenRCT2::Platform::kAndroidAssetPathPrefix).c_str());
+}
 
 JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* pjvm, void* reserved)
 {

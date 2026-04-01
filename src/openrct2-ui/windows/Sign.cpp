@@ -252,7 +252,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (_isSmall)
             {
-                auto* wallEntry = OpenRCT2::ObjectManager::GetObjectEntry<WallSceneryEntry>(_sceneryEntry);
+                auto* wallEntry = OpenRCT2::ObjectEntryManager::GetObjectEntry<WallSceneryEntry>(_sceneryEntry);
 
                 main_colour_btn->type = WidgetType::empty;
                 text_colour_btn->type = WidgetType::empty;
@@ -271,7 +271,7 @@ namespace OpenRCT2::Ui::Windows
             }
             else
             {
-                auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<LargeSceneryEntry>(_sceneryEntry);
+                auto* sceneryEntry = OpenRCT2::ObjectEntryManager::GetObjectEntry<LargeSceneryEntry>(_sceneryEntry);
 
                 main_colour_btn->type = WidgetType::empty;
                 text_colour_btn->type = WidgetType::empty;
@@ -279,11 +279,11 @@ namespace OpenRCT2::Ui::Windows
                 {
                     return;
                 }
-                if (sceneryEntry->flags & LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR)
+                if (sceneryEntry->flags.has(LargeSceneryFlag::hasPrimaryColour))
                 {
                     main_colour_btn->type = WidgetType::colourBtn;
                 }
-                if (sceneryEntry->flags & LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR)
+                if (sceneryEntry->flags.has(LargeSceneryFlag::hasSecondaryColour))
                 {
                     text_colour_btn->type = WidgetType::colourBtn;
                 }

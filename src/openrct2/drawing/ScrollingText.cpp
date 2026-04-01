@@ -20,6 +20,7 @@
 #include "../localisation/LocalisationService.h"
 #include "../paint/Paint.h"
 #include "BlendColourMap.h"
+#include "Drawing.String.h"
 #include "Drawing.h"
 #include "TTF.h"
 
@@ -1425,7 +1426,7 @@ static constexpr const int16_t* kScrollPositions[kMaxModes] = {
         {
             formattedString = String::toUpper(formattedString);
         }
-        auto stringWidth = GfxGetStringWidth(formattedString, FontStyle::tiny);
+        auto stringWidth = getStringWidth(formattedString, FontStyle::tiny);
         auto scroll = stringWidth > 0 ? (getGameState().currentTicks / 2) % stringWidth : 0;
 
         std::scoped_lock<std::mutex> lock(_mutex);

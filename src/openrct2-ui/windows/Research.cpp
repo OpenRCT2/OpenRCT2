@@ -17,6 +17,7 @@
 #include <openrct2/actions/GameActionRunner.h>
 #include <openrct2/actions/park/ParkSetResearchFundingAction.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.Date.h>
 #include <openrct2/management/Finance.h>
@@ -355,19 +356,19 @@ namespace OpenRCT2::Ui::Windows
             // Research type
             auto ft = Formatter();
             ft.Add<StringId>(STR_RESEARCH_UNKNOWN);
-            DrawTextWrapped(rt, screenCoords, 296, STR_RESEARCH_TYPE_LABEL, ft);
+            drawTextWrapped(rt, screenCoords, 296, STR_RESEARCH_TYPE_LABEL, ft);
             screenCoords.y += 25;
 
             // Progress
             ft = Formatter();
             ft.Add<StringId>(STR_RESEARCH_COMPLETED_AL);
-            DrawTextWrapped(rt, screenCoords, 296, STR_RESEARCH_PROGRESS_LABEL, ft);
+            drawTextWrapped(rt, screenCoords, 296, STR_RESEARCH_PROGRESS_LABEL, ft);
             screenCoords.y += 15;
 
             // Expected
             ft = Formatter();
             ft.Add<StringId>(STR_RESEARCH_STAGE_UNKNOWN);
-            DrawTextBasic(rt, screenCoords, STR_RESEARCH_EXPECTED_LABEL, ft);
+            drawText(rt, screenCoords, STR_RESEARCH_EXPECTED_LABEL, ft);
         }
         else
         {
@@ -404,13 +405,13 @@ namespace OpenRCT2::Ui::Windows
             {
                 ft.Add<StringId>(gameState.researchNextItem->GetName());
             }
-            DrawTextWrapped(rt, screenCoords, 296, label, ft);
+            drawTextWrapped(rt, screenCoords, 296, label, ft);
             screenCoords.y += 25;
 
             // Progress
             ft = Formatter();
             ft.Add<StringId>(ResearchStageNames[gameState.researchProgressStage]);
-            DrawTextWrapped(rt, screenCoords, 296, STR_RESEARCH_PROGRESS_LABEL, ft);
+            drawTextWrapped(rt, screenCoords, 296, STR_RESEARCH_PROGRESS_LABEL, ft);
             screenCoords.y += 15;
 
             // Expected
@@ -426,7 +427,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 ft.Add<StringId>(STR_RESEARCH_STAGE_UNKNOWN);
             }
-            DrawTextBasic(rt, screenCoords, STR_RESEARCH_EXPECTED_LABEL, ft);
+            drawText(rt, screenCoords, STR_RESEARCH_EXPECTED_LABEL, ft);
         }
 
         // Last development
@@ -461,7 +462,7 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            DrawTextWrapped(rt, screenCoords, 266, lastDevelopmentFormat, ft);
+            drawTextWrapped(rt, screenCoords, 266, lastDevelopmentFormat, ft);
         }
     }
 
@@ -584,8 +585,7 @@ namespace OpenRCT2::Ui::Windows
         int32_t currentResearchLevel = gameState.researchFundingLevel;
         auto ft = Formatter();
         ft.Add<money64>(kResearchCosts[currentResearchLevel]);
-        DrawTextBasic(
-            rt, w->windowPos + ScreenCoordsXY{ 10, w->widgets[WIDX_TAB_1].top + 60 }, STR_RESEARCH_COST_PER_MONTH, ft);
+        drawText(rt, w->windowPos + ScreenCoordsXY{ 10, w->widgets[WIDX_TAB_1].top + 60 }, STR_RESEARCH_COST_PER_MONTH, ft);
     }
 
 #pragma endregion

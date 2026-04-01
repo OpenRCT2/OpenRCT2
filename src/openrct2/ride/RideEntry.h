@@ -51,7 +51,11 @@ enum class RideEntryFlag : uint8_t
     hasEnterpriseRotationType,
     disableWanderingDeprecated,
     playSplashSound,
-    playSplashSoundSlide,
+    /**
+     * Since the Water Coaster water channel pieces share the same TrackElemType as the Dinghy Slide covered track pieces,
+     * this flag was originally named playSplashSoundSlide
+     */
+    coveredTrackIsWaterChannel,
     isACoveredRide,
     limitAirTimeBonus,
     // Both flags below were made redundant by ride groups and deprecated in favour of it
@@ -67,6 +71,9 @@ enum class RideEntryFlag : uint8_t
     magicCarpetSwingMode,
     riderControlsSpeed,
     hideEmptyTrains,
+    // Hide the ‘Reverse trains’ checkbox in the Ride window. Used for symmetrical spinning trains and legacy pre-reversed
+    // vehicles (to avoid double-dipping on the reverse bonus).
+    noReverseOption,
 };
 using RideEntryFlags = FlagHolder<uint32_t, RideEntryFlag>;
 

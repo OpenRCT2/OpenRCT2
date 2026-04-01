@@ -64,7 +64,7 @@ namespace OpenRCT2::World::MapGenerator
 
     static void placeTree(ObjectEntryIndex type, const CoordsXY& loc)
     {
-        auto* sceneryEntry = ObjectManager::GetObjectEntry<SmallSceneryEntry>(type);
+        auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<SmallSceneryEntry>(type);
         if (sceneryEntry == nullptr)
         {
             return;
@@ -124,7 +124,7 @@ namespace OpenRCT2::World::MapGenerator
 
         for (auto i = 0u; i < getObjectEntryGroupCount(ObjectType::smallScenery); i++)
         {
-            auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(i);
+            auto* sceneryEntry = OpenRCT2::ObjectEntryManager::GetObjectEntry<SmallSceneryEntry>(i);
             auto entry = ObjectEntryGetObject(ObjectType::smallScenery, i);
 
             if (sceneryEntry == nullptr)

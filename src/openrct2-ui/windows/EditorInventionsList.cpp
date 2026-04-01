@@ -19,6 +19,7 @@
 #include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
+#include <openrct2/drawing/Text.h>
 #include <openrct2/interface/ColourWithFlags.h>
 #include <openrct2/interface/Cursors.h>
 #include <openrct2/localisation/Formatter.h>
@@ -122,12 +123,12 @@ namespace OpenRCT2::Ui::Windows
             // Draw group name
             auto ft = Formatter();
             ft.Add<StringId>(rideTypeName);
-            DrawTextEllipsised(rt, screenCoords, columnSplitOffset - 11, format, ft, textPaint);
+            drawTextEllipsised(rt, screenCoords, columnSplitOffset - 11, format, ft, textPaint);
 
             // Draw vehicle name
             ft = Formatter();
             ft.Add<StringId>(itemNameId);
-            DrawTextEllipsised(
+            drawTextEllipsised(
                 rt, { screenCoords + ScreenCoordsXY{ columnSplitOffset, 0 } }, columnSplitOffset - 11, format, ft, textPaint);
         }
         else
@@ -135,7 +136,7 @@ namespace OpenRCT2::Ui::Windows
             // Scenery group, flat ride or shopdis
             auto ft = Formatter();
             ft.Add<StringId>(itemNameId);
-            DrawTextEllipsised(rt, screenCoords, width, format, ft, textPaint);
+            drawTextEllipsised(rt, screenCoords, width, format, ft, textPaint);
         }
     }
 
@@ -367,12 +368,12 @@ namespace OpenRCT2::Ui::Windows
             // Pre-researched items label
             screenPos = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_PRE_RESEARCHED_SCROLL].left, widgets[WIDX_PRE_RESEARCHED_SCROLL].top - 11 };
-            DrawTextBasic(rt, screenPos - ScreenCoordsXY{ 0, 1 }, STR_INVENTION_PREINVENTED_ITEMS);
+            drawText(rt, screenPos - ScreenCoordsXY{ 0, 1 }, STR_INVENTION_PREINVENTED_ITEMS);
 
             // Research order label
             screenPos = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_RESEARCH_ORDER_SCROLL].left, widgets[WIDX_RESEARCH_ORDER_SCROLL].top - 11 };
-            DrawTextBasic(rt, screenPos - ScreenCoordsXY{ 0, 1 }, STR_INVENTION_TO_BE_INVENTED_ITEMS);
+            drawText(rt, screenPos - ScreenCoordsXY{ 0, 1 }, STR_INVENTION_TO_BE_INVENTED_ITEMS);
 
             // Preview background
             auto& bkWidget = widgets[WIDX_PREVIEW];
@@ -434,14 +435,14 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<StringId>(stringId);
             }
 
-            DrawTextEllipsised(rt, screenPos, itemWidth, drawString, ft, { TextAlignment::centre });
+            drawTextEllipsised(rt, screenPos, itemWidth, drawString, ft, { TextAlignment::centre });
             screenPos.y += 15;
 
             // Item category
             screenPos.x = windowPos.x + widgets[WIDX_RESEARCH_ORDER_SCROLL].right + 4;
             ft = Formatter();
             ft.Add<StringId>(researchItem->GetCategoryInventionString());
-            DrawTextBasic(rt, screenPos, STR_INVENTION_RESEARCH_GROUP, ft);
+            drawText(rt, screenPos, STR_INVENTION_RESEARCH_GROUP, ft);
         }
 
         void onPrepareDraw() override

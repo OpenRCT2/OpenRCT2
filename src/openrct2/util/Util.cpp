@@ -39,9 +39,9 @@ uint8_t Lerp(uint8_t a, uint8_t b, float t)
     return static_cast<uint8_t>(a + amount);
 }
 
-float FLerp(float a, float b, float f)
+float FLerp(float a, float b, float t)
 {
-    return (a * (1.0f - f)) + (b * f);
+    return (a * (1.0f - t)) + (b * t);
 }
 
 uint8_t SoftLight(uint8_t a, uint8_t b)

@@ -114,7 +114,7 @@ void Vehicle::UpdateSceneryDoor() const
 {
     auto trackType = GetTrackType();
     const auto& ted = GetTrackElementDescriptor(trackType);
-    const auto& trackBlock = ted.sequences[ted.numSequences - 1].clearance;
+    const auto& trackBlock = ted.sequenceData.sequences[ted.sequenceData.numSequences - 1].clearance;
     const TrackCoordinates* trackCoordinates = &ted.coordinates;
     auto wallCoords = CoordsXYZ{ x, y, TrackLocation.z - trackBlock.z + trackCoordinates->zEnd }.ToTileStart();
     int32_t direction = (GetTrackDirection() + trackCoordinates->rotationEnd) & 3;
@@ -212,7 +212,8 @@ void Vehicle::UpdateSceneryDoorBackwards() const
     auto trackType = GetTrackType();
     const auto& ted = GetTrackElementDescriptor(trackType);
     const TrackCoordinates* trackCoordinates = &ted.coordinates;
-    auto wallCoords = CoordsXYZ{ TrackLocation, TrackLocation.z - ted.sequences[0].clearance.z + trackCoordinates->zBegin };
+    auto wallCoords = CoordsXYZ{ TrackLocation,
+                                 TrackLocation.z - ted.sequenceData.sequences[0].clearance.z + trackCoordinates->zBegin };
     int32_t direction = (GetTrackDirection() + trackCoordinates->rotationBegin) & 3;
     direction = DirectionReverse(direction);
 

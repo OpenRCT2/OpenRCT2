@@ -12,13 +12,14 @@
         #define WIN32_LEAN_AND_MEAN
     #endif
     #include <windows.h>
-#elif defined(__unix__) || defined(__HAIKU__) || (defined(__APPLE__) && defined(__MACH__))
+#elif defined(__unix__) || defined(__HAIKU__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__ANDROID__)
     #include <dirent.h>
     #include <sys/stat.h>
     #include <sys/types.h>
     #include <unistd.h>
 #endif
 
+#include "../platform/Platform.h"
 #include "FileScanner.h"
 #include "Memory.hpp"
 #include "Numerics.hpp"
@@ -26,6 +27,7 @@
 #include "String.hpp"
 
 #include <memory>
+#include <set>
 #include <stack>
 #include <string>
 #include <vector>
@@ -251,6 +253,63 @@ private:
 
 #endif // _WIN32
 
+#ifdef __ANDROID__
+
+class FileScannerAndroidAssets final : public FileScannerBase
+{
+public:
+    FileScannerAndroidAssets(u8string_view pattern, bool recurse)
+        : FileScannerBase(pattern, recurse)
+    {
+    }
+
+    void GetDirectoryChildren(std::vector<DirectoryChild>& children, const std::string& path) override
+    {
+        const auto& assetList = Platform::GetAssetList();
+        std::string prefix = path.substr(Platform::kAndroidAssetPathPrefix.length());
+        if (!prefix.empty() && prefix.back() != '/')
+        {
+            prefix += '/';
+        }
+
+        std::set<std::string> seen;
+
+        for (const auto& entry : assetList)
+        {
+            if (entry.Path.size() > prefix.size() && String::startsWith(entry.Path, prefix))
+            {
+                std::string_view relative = std::string_view(entry.Path).substr(prefix.size());
+                auto slashPos = relative.find('/');
+                if (slashPos != std::string_view::npos)
+                {
+                    std::string dirName = std::string(relative.substr(0, slashPos));
+                    if (seen.insert(dirName).second)
+                    {
+                        DirectoryChild child;
+                        child.Name = dirName;
+                        child.Type = DirectoryChildType::directory;
+                        children.push_back(child);
+                    }
+                }
+                else
+                {
+                    std::string fileName = std::string(relative);
+                    if (seen.insert(fileName).second)
+                    {
+                        DirectoryChild child;
+                        child.Name = fileName;
+                        child.Type = DirectoryChildType::file;
+                        child.Size = entry.Size;
+
+                        children.push_back(child);
+                    }
+                }
+            }
+        }
+    }
+};
+#endif // __ANDROID__
+
 #if defined(__unix__) || defined(__HAIKU__) || (defined(__APPLE__) && defined(__MACH__))
 
 class FileScannerUnix final : public FileScannerBase
@@ -328,6 +387,12 @@ private:
 
 std::unique_ptr<IFileScanner> Path::ScanDirectory(const std::string& pattern, bool recurse)
 {
+#ifdef __ANDROID__
+    if (String::startsWith(pattern, Platform::kAndroidAssetPathPrefix))
+    {
+        return std::make_unique<FileScannerAndroidAssets>(pattern, recurse);
+    }
+#endif
 #ifdef _WIN32
     return std::make_unique<FileScannerWindows>(pattern, recurse);
 #elif defined(__unix__) || defined(__HAIKU__) || (defined(__APPLE__) && defined(__MACH__))

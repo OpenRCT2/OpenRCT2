@@ -20,6 +20,7 @@
 #include <openrct2/core/UnitConversion.h>
 #include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/TerrainEdgeObject.h>
@@ -128,53 +129,53 @@ namespace OpenRCT2::Ui::Windows
         );
     };
 
-    static constexpr auto BaseWidgets = makeWidgets(
+    static constexpr auto kBaseWidgets = makeWidgets(
         makeMapGenWidgets(STR_MAPGEN_CAPTION_GENERATOR),
-        makeSpinnerWidgets ({165, 52}, { 50, 12}, WidgetType::spinner,      WindowColour::secondary, STR_COMMA16                                                ), // NB: 3 widgets
+        makeSpinnerWidgets ({165, 52}, { 50, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                                ), // NB: 3 widgets
         makeWidget         ({216, 52}, { 21, 12}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_G2_LINK_CHAIN), STR_MAINTAIN_SQUARE_MAP_TOOLTIP),
-        makeSpinnerWidgets ({238, 52}, { 50, 12}, WidgetType::spinner,      WindowColour::secondary, STR_POP16_COMMA16                                          ), // NB: 3 widgets
-        makeDropdownWidgets({155, 70}, {133, 14}, WidgetType::dropdownMenu, WindowColour::secondary, STR_HEIGHTMAP_FLATLAND                                     ),
+        makeSpinnerWidgets ({238, 52}, { 50, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                          ), // NB: 3 widgets
+        makeDropdownWidgets({155, 72}, {133, 14}, WidgetType::dropdownMenu, WindowColour::secondary, STR_HEIGHTMAP_FLATLAND                                     ),
 
-        makeWidget        ({  5,  90}, {290, 55}, WidgetType::groupbox, WindowColour::secondary, STR_MAPGEN_SIMPLEX_NOISE), // WIDX_SIMPLEX_GROUP
-        makeSpinnerWidgets({179, 107}, {109, 12}, WidgetType::spinner,  WindowColour::secondary                          ), // WIDX_SIMPLEX_BASE_FREQ{,_UP,_DOWN}
-        makeSpinnerWidgets({179, 125}, {109, 12}, WidgetType::spinner,  WindowColour::secondary                          ), // WIDX_SIMPLEX_OCTAVES{,_UP,_DOWN}
+        makeWidget        ({  5,  94}, {290, 57}, WidgetType::groupbox, WindowColour::secondary, STR_MAPGEN_SIMPLEX_NOISE), // WIDX_SIMPLEX_GROUP
+        makeSpinnerWidgets({179, 111}, {109, 14}, WidgetType::spinner,  WindowColour::secondary                          ), // WIDX_SIMPLEX_BASE_FREQ{,_UP,_DOWN}
+        makeSpinnerWidgets({179, 129}, {109, 14}, WidgetType::spinner,  WindowColour::secondary                          ), // WIDX_SIMPLEX_OCTAVES{,_UP,_DOWN}
 
-        makeWidget        ({  5,  90}, {290, 86}, WidgetType::groupbox, WindowColour::secondary, STR_MAPGEN_SELECT_HEIGHTMAP), // WIDX_HEIGHTMAP_GROUP
-        makeWidget        ({223, 107}, { 65, 14}, WidgetType::button,   WindowColour::secondary, STR_BROWSE                 ), // WIDX_HEIGHTMAP_BROWSE
-        makeWidget        ({ 10, 125}, {150, 12}, WidgetType::checkbox, WindowColour::secondary, STR_MAPGEN_NORMALIZE       ), // WIDX_HEIGHTMAP_NORMALIZE
-        makeWidget        ({ 10, 141}, {150, 12}, WidgetType::checkbox, WindowColour::secondary, STR_MAPGEN_SMOOTH_HEIGHTMAP), // WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP
-        makeSpinnerWidgets({179, 157}, {109, 12}, WidgetType::spinner,  WindowColour::secondary                             )  // WIDX_HEIGHTMAP_STRENGTH{,_UP,_DOWN}
+        makeWidget        ({  5,  90+8}, {290, 88}, WidgetType::groupbox, WindowColour::secondary, STR_MAPGEN_SELECT_HEIGHTMAP), // WIDX_HEIGHTMAP_GROUP
+        makeWidget        ({223, 107+8}, { 65, 14}, WidgetType::button,   WindowColour::secondary, STR_BROWSE                 ), // WIDX_HEIGHTMAP_BROWSE
+        makeWidget        ({ 10, 125+8}, {150, 12}, WidgetType::checkbox, WindowColour::secondary, STR_MAPGEN_NORMALIZE       ), // WIDX_HEIGHTMAP_NORMALIZE
+        makeWidget        ({ 10, 141+8}, {150, 12}, WidgetType::checkbox, WindowColour::secondary, STR_MAPGEN_SMOOTH_HEIGHTMAP), // WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP
+        makeSpinnerWidgets({179, 157+8}, {109, 14}, WidgetType::spinner,  WindowColour::secondary                             )  // WIDX_HEIGHTMAP_STRENGTH{,_UP,_DOWN}
     );
 
-    static constexpr auto TerrainWidgets = makeWidgets(
+    static constexpr auto kTerrainWidgets = makeWidgets(
         makeMapGenWidgets(STR_MAPGEN_CAPTION_TERRAIN),
-        makeSpinnerWidgets({179,  52}, {109, 12}, WidgetType::spinner,  WindowColour::secondary                                          ), // WIDX_HEIGHTMAP_LOW{,_UP,_DOWN}
-        makeSpinnerWidgets({179,  70}, {109, 12}, WidgetType::spinner,  WindowColour::secondary                                          ), // WIDX_HEIGHTMAP_HIGH{,_UP,_DOWN}
+        makeSpinnerWidgets({179,  52}, {109, 14}, WidgetType::spinner,  WindowColour::secondary                                          ), // WIDX_HEIGHTMAP_LOW{,_UP,_DOWN}
+        makeSpinnerWidgets({179,  70}, {109, 14}, WidgetType::spinner,  WindowColour::secondary                                          ), // WIDX_HEIGHTMAP_HIGH{,_UP,_DOWN}
         makeWidget        ({179,  88}, { 47, 36}, WidgetType::flatBtn,  WindowColour::secondary, 0xFFFFFFFF, STR_CHANGE_BASE_LAND_TIP    ),
         makeWidget        ({236,  88}, { 47, 36}, WidgetType::flatBtn,  WindowColour::secondary, 0xFFFFFFFF, STR_CHANGE_VERTICAL_LAND_TIP),
         makeWidget        ({ 10, 106}, {150, 12}, WidgetType::checkbox, WindowColour::secondary, STR_MAPGEN_OPTION_RANDOM_TERRAIN        ),
         makeWidget        ({ 10, 122}, {150, 12}, WidgetType::checkbox, WindowColour::secondary, STR_MAPGEN_SMOOTH_TILE                  )  // WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES
     );
 
-    static constexpr auto WaterWidgets = makeWidgets(
+    static constexpr auto kWaterWidgets = makeWidgets(
         makeMapGenWidgets(STR_MAPGEN_CAPTION_WATER),
-        makeSpinnerWidgets({179,  52}, {109, 12}, WidgetType::spinner,  WindowColour::secondary                          ), // NB: 3 widgets
+        makeSpinnerWidgets({179,  52}, {109, 14}, WidgetType::spinner,  WindowColour::secondary                          ), // NB: 3 widgets
         makeWidget        ({ 10,  70}, {255, 12}, WidgetType::checkbox, WindowColour::secondary, STR_BEACHES_WATER_BODIES)
     );
 
-    static constexpr auto ForestsWidgets = makeWidgets(
+    static constexpr auto kForestsWidgets = makeWidgets(
         makeMapGenWidgets(STR_MAPGEN_CAPTION_FORESTS),
         makeWidget        ({ 10,  52}, {255, 12}, WidgetType::checkbox, WindowColour::secondary, STR_MAPGEN_OPTION_PLACE_TREES),
-        makeSpinnerWidgets({179,  70}, {109, 12}, WidgetType::spinner,  WindowColour::secondary                               ), // WIDX_TREE_LAND_RATIO{,_UP,_DOWN}
-        makeSpinnerWidgets({179,  88}, {109, 12}, WidgetType::spinner,  WindowColour::secondary                               ), // WIDX_TREE_ALTITUDE_MIN{,_UP,_DOWN}
-        makeSpinnerWidgets({179, 106}, {109, 12}, WidgetType::spinner,  WindowColour::secondary                               )  // WIDX_TREE_ALTITUDE_MAX{,_UP,_DOWN}
+        makeSpinnerWidgets({179,  70}, {109, 14}, WidgetType::spinner,  WindowColour::secondary                               ), // WIDX_TREE_LAND_RATIO{,_UP,_DOWN}
+        makeSpinnerWidgets({179,  88}, {109, 14}, WidgetType::spinner,  WindowColour::secondary                               ), // WIDX_TREE_ALTITUDE_MIN{,_UP,_DOWN}
+        makeSpinnerWidgets({179, 106}, {109, 14}, WidgetType::spinner,  WindowColour::secondary                               )  // WIDX_TREE_ALTITUDE_MAX{,_UP,_DOWN}
     );
 
     static std::span<const Widget> PageWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
-        BaseWidgets,
-        TerrainWidgets,
-        WaterWidgets,
-        ForestsWidgets,
+        kBaseWidgets,
+        kTerrainWidgets,
+        kWaterWidgets,
+        kForestsWidgets,
     };
     // clang-format on
 
@@ -275,6 +276,9 @@ namespace OpenRCT2::Ui::Windows
         bool _heightmapLoaded = false;
         std::string _heightmapFilename{};
 
+        u8string _xSpinnerCaption{};
+        u8string _ySpinnerCaption{};
+
         void setPage(int32_t newPage)
         {
             // Skip setting page if we're already on this page, unless we're initialising the window
@@ -292,6 +296,7 @@ namespace OpenRCT2::Ui::Windows
 
             initScrollWidgets();
             invalidate();
+            onResize();
         }
 
         void SetPressedTab()
@@ -544,10 +549,10 @@ namespace OpenRCT2::Ui::Windows
 
             SetPressedTab();
 
-            // Push width (Y) and height (X) to the common formatter arguments for the map size spinners to use
-            auto ft = Formatter::Common();
-            ft.Add<uint16_t>(_settings.mapSize.y - 2);
-            ft.Add<uint16_t>(_settings.mapSize.x - 2);
+            _xSpinnerCaption = std::to_string(_settings.mapSize.x - 2);
+            widgets[WIDX_MAP_SIZE_X].setString(_xSpinnerCaption.c_str());
+            _ySpinnerCaption = std::to_string(_settings.mapSize.y - 2);
+            widgets[WIDX_MAP_SIZE_Y].setString(_ySpinnerCaption.c_str());
 
             auto& sourceWidget = widgets[WIDX_HEIGHTMAP_SOURCE];
             switch (_settings.algorithm)
@@ -615,14 +620,13 @@ namespace OpenRCT2::Ui::Windows
 
             {
                 auto textColour = isWidgetDisabled(WIDX_MAP_SIZE_Y) ? disabledColour : enabledColour;
-                DrawTextBasic(
-                    rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_MAP_SIZE_Y].top + 1 }, STR_MAP_SIZE, {}, { textColour });
+                drawText(rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_MAP_SIZE_Y].top + 1 }, STR_MAP_SIZE, { textColour });
             }
 
             {
                 auto textColour = enabledColour;
-                DrawTextBasic(
-                    rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_HEIGHTMAP_SOURCE].top + 1 }, STR_HEIGHTMAP_SOURCE, {},
+                drawText(
+                    rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_HEIGHTMAP_SOURCE].top + 1 }, STR_HEIGHTMAP_SOURCE,
                     { textColour });
             }
         }
@@ -772,24 +776,24 @@ namespace OpenRCT2::Ui::Windows
             const auto textColour = _settings.trees ? enabledColour : disabledColour;
 
             // Tree to land ratio, label and value
-            DrawTextBasic(
-                rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_TREE_LAND_RATIO].top + 1 }, STR_MAPGEN_TREE_TO_LAND_RATIO, {},
+            drawText(
+                rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_TREE_LAND_RATIO].top + 1 }, STR_MAPGEN_TREE_TO_LAND_RATIO,
                 { textColour });
 
             auto ft = Formatter();
             ft.Add<uint16_t>(_settings.treeToLandRatio);
-            DrawTextBasic(
+            drawText(
                 rt, windowPos + ScreenCoordsXY{ widgets[WIDX_TREE_LAND_RATIO].left + 1, widgets[WIDX_TREE_LAND_RATIO].top + 1 },
                 STR_MAPGEN_TREE_TO_LAND_RATIO_PCT, ft, { textColour });
 
             // Minimum tree altitude, label and value
-            DrawTextBasic(
-                rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_TREE_ALTITUDE_MIN].top + 1 }, STR_MAPGEN_TREE_MIN_ALTITUDE, {},
+            drawText(
+                rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_TREE_ALTITUDE_MIN].top + 1 }, STR_MAPGEN_TREE_MIN_ALTITUDE,
                 { textColour });
 
             ft = Formatter();
             ft.Add<int16_t>(BaseZToMetres(_settings.minTreeAltitude));
-            DrawTextBasic(
+            drawText(
                 rt,
                 windowPos + ScreenCoordsXY{ widgets[WIDX_TREE_ALTITUDE_MIN].left + 1, widgets[WIDX_TREE_ALTITUDE_MIN].top + 1 },
                 STR_RIDE_LENGTH_ENTRY, ft, { textColour });
@@ -798,13 +802,13 @@ namespace OpenRCT2::Ui::Windows
             const bool isFlatland = _settings.algorithm == MapGenerator::Algorithm::blank;
             const auto maxTreeTextColour = _settings.trees && !isFlatland ? enabledColour : disabledColour;
 
-            DrawTextBasic(
-                rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_TREE_ALTITUDE_MAX].top + 1 }, STR_MAPGEN_TREE_MAX_ALTITUDE, {},
+            drawText(
+                rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_TREE_ALTITUDE_MAX].top + 1 }, STR_MAPGEN_TREE_MAX_ALTITUDE,
                 { maxTreeTextColour });
 
             ft = Formatter();
             ft.Add<int16_t>(BaseZToMetres(_settings.maxTreeAltitude));
-            DrawTextBasic(
+            drawText(
                 rt,
                 windowPos + ScreenCoordsXY{ widgets[WIDX_TREE_ALTITUDE_MAX].left + 1, widgets[WIDX_TREE_ALTITUDE_MAX].top + 1 },
                 STR_RIDE_LENGTH_ENTRY, ft, { maxTreeTextColour });
@@ -872,23 +876,23 @@ namespace OpenRCT2::Ui::Windows
 
             const auto textColour = colours[1];
 
-            DrawTextBasic(
+            drawText(
                 rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_SIMPLEX_BASE_FREQ].top + 1 },
-                STR_MAPGEN_SIMPLEX_NOISE_BASE_FREQUENCY, {}, { textColour });
-            DrawTextBasic(
+                STR_MAPGEN_SIMPLEX_NOISE_BASE_FREQUENCY, { textColour });
+            drawText(
                 rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_SIMPLEX_OCTAVES].top + 1 }, STR_MAPGEN_SIMPLEX_NOISE_OCTAVES,
                 {}, { textColour });
 
             auto ft = Formatter();
             ft.Add<uint16_t>(_settings.simplex_base_freq);
-            DrawTextBasic(
+            drawText(
                 rt,
                 windowPos + ScreenCoordsXY{ widgets[WIDX_SIMPLEX_BASE_FREQ].left + 1, widgets[WIDX_SIMPLEX_BASE_FREQ].top + 1 },
                 STR_WINDOW_COLOUR_2_COMMA2DP32, ft, { textColour });
 
             ft = Formatter();
             ft.Add<uint16_t>(_settings.simplex_octaves);
-            DrawTextBasic(
+            drawText(
                 rt, windowPos + ScreenCoordsXY{ widgets[WIDX_SIMPLEX_OCTAVES].left + 1, widgets[WIDX_SIMPLEX_OCTAVES].top + 1 },
                 STR_COMMA16, ft, { textColour });
         }
@@ -985,15 +989,15 @@ namespace OpenRCT2::Ui::Windows
             const auto strengthColour = strengthDisabled ? disabledColour : enabledColour;
 
             // Smooth strength label
-            DrawTextBasic(
-                rt, windowPos + ScreenCoordsXY{ 24, widgets[WIDX_HEIGHTMAP_STRENGTH].top + 1 }, STR_MAPGEN_SMOOTH_STRENGTH, {},
+            drawText(
+                rt, windowPos + ScreenCoordsXY{ 24, widgets[WIDX_HEIGHTMAP_STRENGTH].top + 1 }, STR_MAPGEN_SMOOTH_STRENGTH,
                 { strengthColour });
 
             // Smooth strength value
             auto ft = Formatter();
             ft.Add<uint16_t>(_settings.smooth_strength);
             auto pos = ScreenCoordsXY{ widgets[WIDX_HEIGHTMAP_STRENGTH].left + 1, widgets[WIDX_HEIGHTMAP_STRENGTH].top + 1 };
-            DrawTextBasic(rt, windowPos + pos, STR_COMMA16, ft, { strengthColour });
+            drawText(rt, windowPos + pos, STR_COMMA16, ft, { strengthColour });
 
             // Current heightmap image filename
             ft = Formatter();
@@ -1004,7 +1008,7 @@ namespace OpenRCT2::Ui::Windows
 
             pos = ScreenCoordsXY{ 10, widgets[WIDX_HEIGHTMAP_BROWSE].top + 1 };
             auto textWidth = widgets[WIDX_HEIGHTMAP_BROWSE].left - 11;
-            DrawTextEllipsised(rt, windowPos + pos, textWidth, STR_MAPGEN_CURRENT_HEIGHTMAP_FILE, ft);
+            drawTextEllipsised(rt, windowPos + pos, textWidth, STR_MAPGEN_CURRENT_HEIGHTMAP_FILE, ft);
         }
 
         void HeightmapTextInput(WidgetIndex widgetIndex, int32_t value)
@@ -1235,31 +1239,31 @@ namespace OpenRCT2::Ui::Windows
             const auto disabledColour = enabledColour.withFlag(ColourFlag::inset, true);
 
             // Floor texture label
-            DrawTextBasic(
-                rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_FLOOR_TEXTURE].top + 1 }, STR_TERRAIN_LABEL, {},
+            drawText(
+                rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_FLOOR_TEXTURE].top + 1 }, STR_TERRAIN_LABEL,
                 { enabledColour });
 
             // Minimum land height label and value
-            DrawTextBasic(
-                rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_HEIGHTMAP_LOW].top + 1 }, STR_MAPGEN_MIN_LAND_HEIGHT, {},
+            drawText(
+                rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_HEIGHTMAP_LOW].top + 1 }, STR_MAPGEN_MIN_LAND_HEIGHT,
                 { enabledColour });
 
             auto ft = Formatter();
             ft.Add<int32_t>(BaseZToMetres(_settings.heightmapLow));
-            DrawTextBasic(
+            drawText(
                 rt, windowPos + ScreenCoordsXY{ widgets[WIDX_HEIGHTMAP_LOW].left + 1, widgets[WIDX_HEIGHTMAP_LOW].top + 1 },
                 STR_RIDE_LENGTH_ENTRY, ft, { enabledColour });
 
             const auto maxLandColour = isWidgetDisabled(WIDX_HEIGHTMAP_HIGH) ? disabledColour : enabledColour;
 
             // Maximum land height label and value
-            DrawTextBasic(
-                rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_HEIGHTMAP_HIGH].top + 1 }, STR_MAPGEN_MAX_LAND_HEIGHT, {},
+            drawText(
+                rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_HEIGHTMAP_HIGH].top + 1 }, STR_MAPGEN_MAX_LAND_HEIGHT,
                 { maxLandColour });
 
             ft = Formatter();
             ft.Add<int32_t>(BaseZToMetres(_settings.heightmapHigh));
-            DrawTextBasic(
+            drawText(
                 rt, windowPos + ScreenCoordsXY{ widgets[WIDX_HEIGHTMAP_HIGH].left + 1, widgets[WIDX_HEIGHTMAP_HIGH].top + 1 },
                 STR_RIDE_LENGTH_ENTRY, ft, { maxLandColour });
         }
@@ -1343,13 +1347,12 @@ namespace OpenRCT2::Ui::Windows
 
             const auto textColour = colours[1];
 
-            DrawTextBasic(
-                rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_WATER_LEVEL].top + 1 }, STR_WATER_LEVEL_LABEL, {},
-                { textColour });
+            drawText(
+                rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_WATER_LEVEL].top + 1 }, STR_WATER_LEVEL_LABEL, { textColour });
 
             auto ft = Formatter();
             ft.Add<int32_t>(BaseZToMetres(_settings.waterLevel));
-            DrawTextBasic(
+            drawText(
                 rt, windowPos + ScreenCoordsXY{ widgets[WIDX_WATER_LEVEL].left + 1, widgets[WIDX_WATER_LEVEL].top + 1 },
                 STR_RIDE_LENGTH_ENTRY, ft, { colours[1] });
         }

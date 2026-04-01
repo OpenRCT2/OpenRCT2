@@ -11,7 +11,7 @@
 
 #include "core/EnumUtils.hpp"
 #include "core/FlagHolder.hpp"
-#include "localisation/StringIdType.h"
+#include "core/StringTypes.h"
 #include "object/ObjectTypes.h"
 
 #include <optional>
@@ -23,7 +23,7 @@ namespace OpenRCT2
     struct ObjectRepositoryItem;
 } // namespace OpenRCT2
 
-struct ResultWithMessage;
+struct ResultWithMessageString;
 
 enum class EditorInputFlag : uint8_t
 {
@@ -34,7 +34,7 @@ enum class EditorInputFlag : uint8_t
 };
 using EditorInputFlags = FlagHolder<uint8_t, EditorInputFlag>;
 
-extern std::optional<StringId> _gSceneryGroupPartialSelectError;
+extern u8string gSceneryGroupPartialSelectError;
 extern std::vector<uint8_t> _objectSelectionFlags;
 extern uint32_t _numSelectedObjectsForType[EnumValue(OpenRCT2::ObjectType::count)];
 
@@ -46,9 +46,10 @@ void UnloadUnselectedObjects();
 void Sub6AB211();
 void ResetSelectedObjectCountAndSize();
 void FinishObjectSelection();
-ResultWithMessage WindowEditorObjectSelectionSelectObject(
+
+ResultWithMessageString WindowEditorObjectSelectionSelectObject(
     uint8_t isMasterObject, EditorInputFlags flags, const OpenRCT2::ObjectRepositoryItem* item);
-ResultWithMessage WindowEditorObjectSelectionSelectObject(
+ResultWithMessageString WindowEditorObjectSelectionSelectObject(
     uint8_t isMasterObject, EditorInputFlags flags, const OpenRCT2::ObjectEntryDescriptor& descriptor);
 
 /**

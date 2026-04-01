@@ -302,6 +302,12 @@ static void OverrideElementOffsets(size_t index, G1Element& element)
         case 25802:
             element.yOffset += 2;
             break;
+        case 28733:
+        case 28734:
+        case 28735:
+        case 28736:
+            element.xOffset -= 1; // Steeplechase leftEighthToDiag angle 2
+            break;
     }
 }
 

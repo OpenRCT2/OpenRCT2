@@ -32,14 +32,18 @@
 #include <openrct2/core/File.h>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/ColourMap.h>
+#include <openrct2/drawing/Drawing.String.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/IDrawingEngine.h>
 #include <openrct2/drawing/ScrollingText.h>
+#include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Currency.h>
 #include <openrct2/localisation/Formatter.h>
+#include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/Language.h>
 #include <openrct2/localisation/Localisation.Date.h>
 #include <openrct2/localisation/LocalisationService.h>
+#include <openrct2/localisation/StringWithArgs.h>
 #include <openrct2/network/Network.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/rct1/Csg.h>
@@ -277,45 +281,45 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr auto window_options_display_widgets = makeWidgets(
         kMainOptionsWidgets,
-        makeWidget        ({  5,  53}, {300,  64}, WidgetType::groupbox,     WindowColour::secondary, STR_GROUP_WINDOW                                                                ), // Window group
-        makeWidget        ({ 10,  67}, {145,  12}, WidgetType::label,        WindowColour::secondary, STR_FULLSCREEN_MODE,                   STR_FULLSCREEN_MODE_TIP                  ), // Fullscreen
-        makeWidget        ({155,  68}, {145,  12}, WidgetType::dropdownMenu, WindowColour::secondary                                                                                  ),
-        makeWidget        ({288,  69}, { 11,  10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,                    STR_FULLSCREEN_MODE_TIP                  ),
-        makeWidget        ({ 24,  82}, {145,  12}, WidgetType::label,        WindowColour::secondary, STR_DISPLAY_RESOLUTION,                STR_DISPLAY_RESOLUTION_TIP               ), // Resolution
-        makeWidget        ({155,  83}, {145,  12}, WidgetType::dropdownMenu, WindowColour::secondary, STR_ARG_16_RESOLUTION_X_BY_Y                                                    ),
-        makeWidget        ({288,  84}, { 11,  10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,                    STR_DISPLAY_RESOLUTION_TIP               ),
-        makeWidget        ({ 10,  98}, {145,  12}, WidgetType::label,        WindowColour::secondary, STR_UI_SCALING_DESC,                   STR_WINDOW_SCALE_TIP                     ), // Scale
-        makeSpinnerWidgets({155,  98}, {145,  12}, WidgetType::spinner,      WindowColour::secondary, kStringIdNone,                         STR_WINDOW_SCALE_TIP                     ), // Scale spinner (3 widgets)
+        makeWidget        ({  5,  53}, {300,  70}, WidgetType::groupbox,     WindowColour::secondary, STR_GROUP_WINDOW                                                                ), // Window group
+        makeWidget        ({ 10,  69}, {145,  12}, WidgetType::label,        WindowColour::secondary, STR_FULLSCREEN_MODE,                   STR_FULLSCREEN_MODE_TIP                  ), // Fullscreen
+        makeWidget        ({155,  68}, {145,  14}, WidgetType::dropdownMenu, WindowColour::secondary                                                                                  ),
+        makeWidget        ({288,  69}, { 11,  12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,                    STR_FULLSCREEN_MODE_TIP                  ),
+        makeWidget        ({ 24,  86}, {145,  12}, WidgetType::label,        WindowColour::secondary, STR_DISPLAY_RESOLUTION,                STR_DISPLAY_RESOLUTION_TIP               ), // Resolution
+        makeWidget        ({155,  85}, {145,  14}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdEmpty                                                    ),
+        makeWidget        ({288,  86}, { 11,  12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,                    STR_DISPLAY_RESOLUTION_TIP               ),
+        makeWidget        ({ 10, 102}, {145,  12}, WidgetType::label,        WindowColour::secondary, STR_UI_SCALING_DESC,                   STR_WINDOW_SCALE_TIP                     ), // Scale
+        makeSpinnerWidgets({155, 102}, {145,  14}, WidgetType::spinner,      WindowColour::secondary, kStringIdNone,                         STR_WINDOW_SCALE_TIP                     ), // Scale spinner (3 widgets)
 
-        makeWidget        ({  5, 121}, {300,  64}, WidgetType::groupbox,     WindowColour::secondary, STR_GROUP_RENDERING                                                             ), // Rendering group
-        makeWidget        ({ 10, 135}, {145,  12}, WidgetType::label,        WindowColour::secondary, STR_DRAWING_ENGINE,                    STR_DRAWING_ENGINE_TIP                   ), // Drawing engine (label)
-        makeWidget        ({155, 135}, {145,  12}, WidgetType::dropdownMenu, WindowColour::secondary                                                                                  ), // Drawing engine (dropdown label)
-        makeWidget        ({288, 136}, { 11,  10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,                    STR_DRAWING_ENGINE_TIP                   ), // Drawing engine (chevron)
-        makeWidget        ({ 10, 150}, {145,  12}, WidgetType::label,        WindowColour::secondary, STR_FRAME_RATE_LIMIT_LABEL                                                      ), // Frame rate limit (label)
-        makeWidget        ({155, 150}, {145,  12}, WidgetType::dropdownMenu, WindowColour::secondary                                                                                  ), // Frame rate limit (dropdown label)
-        makeWidget        ({288, 151}, { 11,  10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH                                                              ), // Frame rate limit (chevron)
-        makeWidget        ({ 10, 166}, {136,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_SHOW_FPS,                          STR_SHOW_FPS_TIP                         ), // Show fps
-        makeWidget        ({155, 166}, {136,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_MULTITHREADING,                    STR_MULTITHREADING_TIP                   ), // Multithreading
+        makeWidget        ({  5, 129}, {300,  68}, WidgetType::groupbox,     WindowColour::secondary, STR_GROUP_RENDERING                                                             ), // Rendering group
+        makeWidget        ({ 10, 146}, {145,  12}, WidgetType::label,        WindowColour::secondary, STR_DRAWING_ENGINE,                    STR_DRAWING_ENGINE_TIP                   ), // Drawing engine (label)
+        makeWidget        ({155, 145}, {145,  14}, WidgetType::dropdownMenu, WindowColour::secondary                                                                                  ), // Drawing engine (dropdown label)
+        makeWidget        ({288, 146}, { 11,  12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,                    STR_DRAWING_ENGINE_TIP                   ), // Drawing engine (chevron)
+        makeWidget        ({ 10, 161}, {145,  12}, WidgetType::label,        WindowColour::secondary, STR_FRAME_RATE_LIMIT_LABEL                                                      ), // Frame rate limit (label)
+        makeWidget        ({155, 160}, {145,  14}, WidgetType::dropdownMenu, WindowColour::secondary                                                                                  ), // Frame rate limit (dropdown label)
+        makeWidget        ({288, 161}, { 11,  12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH                                                              ), // Frame rate limit (chevron)
+        makeWidget        ({ 11, 178}, {136,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_SHOW_FPS,                          STR_SHOW_FPS_TIP                         ), // Show fps
+        makeWidget        ({155, 178}, {136,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_MULTITHREADING,                    STR_MULTITHREADING_TIP                   ), // Multithreading
 
-        makeWidget        ({  5, 188}, {300,  49}, WidgetType::groupbox,     WindowColour::secondary, STR_GROUP_BEHAVIOUR                                                             ), // Behaviour group
-        makeWidget        ({ 11, 203}, {280,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS_TIP), // Minimise fullscreen focus loss
-        makeWidget        ({ 11, 218}, {280,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_DISABLE_SCREENSAVER,               STR_DISABLE_SCREENSAVER_TIP              )  // Disable screensaver
+        makeWidget        ({  5, 200}, {300,  49}, WidgetType::groupbox,     WindowColour::secondary, STR_GROUP_BEHAVIOUR                                                             ), // Behaviour group
+        makeWidget        ({ 11, 215}, {280,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS_TIP), // Minimise fullscreen focus loss
+        makeWidget        ({ 11, 230}, {280,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_DISABLE_SCREENSAVER,               STR_DISABLE_SCREENSAVER_TIP              )  // Disable screensaver
     );
 
     constexpr int32_t kFrameRenderingStart = 53;
-    constexpr int32_t kFrameEffectStart = 163;
+    constexpr int32_t kFrameEffectStart = 165;
 
     static constexpr auto window_options_rendering_widgets = makeWidgets(
         kMainOptionsWidgets,
-        makeWidget({  5,  kFrameRenderingStart + 0}, {300, 108}, WidgetType::groupbox,     WindowColour::secondary, STR_RENDERING_GROUP                                       ), // Rendering group
+        makeWidget({  5,  kFrameRenderingStart + 0}, {300, 110}, WidgetType::groupbox,     WindowColour::secondary, STR_RENDERING_GROUP                                       ), // Rendering group
         makeWidget({ 10, kFrameRenderingStart + 15}, {281,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_TILE_SMOOTHING,         STR_TILE_SMOOTHING_TIP        ), // Landscape smoothing
         makeWidget({ 10, kFrameRenderingStart + 30}, {281,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_GRIDLINES,              STR_GRIDLINES_TIP             ), // Gridlines
         makeWidget({ 10, kFrameRenderingStart + 45}, {281,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_UPPERCASE_BANNERS,      STR_UPPERCASE_BANNERS_TIP     ), // Uppercase banners
         makeWidget({ 10, kFrameRenderingStart + 60}, {281,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_SHOW_GUEST_PURCHASES,   STR_SHOW_GUEST_PURCHASES_TIP  ), // Guest purchases
         makeWidget({ 10, kFrameRenderingStart + 75}, {281,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_TRANSPARENT_SCREENSHOT, STR_TRANSPARENT_SCREENSHOT_TIP), // Transparent screenshot
-        makeWidget({ 10, kFrameRenderingStart + 90}, {281,  12}, WidgetType::label,        WindowColour::secondary, STR_VIRTUAL_FLOOR_STYLE,    STR_VIRTUAL_FLOOR_STYLE_TIP   ), // Virtual floor
-        makeWidget({155, kFrameRenderingStart + 90}, {145,  12}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdNone,              STR_VIRTUAL_FLOOR_STYLE_TIP   ), // Virtual floor dropdown
-        makeWidget({288, kFrameRenderingStart + 91}, { 11,  10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,         STR_VIRTUAL_FLOOR_STYLE_TIP   ), // Virtual floor dropdown
+        makeWidget({ 10, kFrameRenderingStart + 91}, {281,  12}, WidgetType::label,        WindowColour::secondary, STR_VIRTUAL_FLOOR_STYLE,    STR_VIRTUAL_FLOOR_STYLE_TIP   ), // Virtual floor
+        makeWidget({155, kFrameRenderingStart + 90}, {145,  14}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdNone,              STR_VIRTUAL_FLOOR_STYLE_TIP   ), // Virtual floor dropdown
+        makeWidget({288, kFrameRenderingStart + 91}, { 11,  12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,         STR_VIRTUAL_FLOOR_STYLE_TIP   ), // Virtual floor dropdown
 
         makeWidget({ 5,  kFrameEffectStart + 0}, {300, 94}, WidgetType::groupbox, WindowColour::secondary, STR_EFFECTS_GROUP                                             ), // Rendering group
         makeWidget({10, kFrameEffectStart + 15}, {281, 12}, WidgetType::checkbox, WindowColour::secondary, STR_CYCLE_DAY_NIGHT,          STR_CYCLE_DAY_NIGHT_TIP         ), // Cycle day-night
@@ -327,59 +331,59 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr auto window_options_culture_widgets = makeWidgets(
         kMainOptionsWidgets,
-        makeWidget({ 10,  53}, {145, 12}, WidgetType::label,        WindowColour::secondary, STR_OPTIONS_LANGUAGE,   STR_LANGUAGE_TIP           ), // language
-        makeWidget({155,  53}, {145, 12}, WidgetType::dropdownMenu, WindowColour::secondary, STR_STRING                                         ),
-        makeWidget({288,  54}, { 11, 10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,     STR_LANGUAGE_TIP           ),
-        makeWidget({ 10,  68}, {145, 12}, WidgetType::label,        WindowColour::secondary, STR_CURRENCY,           STR_CURRENCY_TIP           ), // Currency
-        makeWidget({155,  68}, {145, 12}, WidgetType::dropdownMenu, WindowColour::secondary                                                     ),
-        makeWidget({288,  69}, { 11, 10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,     STR_CURRENCY_TIP           ),
-        makeWidget({ 10,  83}, {145, 12}, WidgetType::label,        WindowColour::secondary, STR_DISTANCE_AND_SPEED, STR_DISTANCE_AND_SPEED_TIP ), // Distance and speed
-        makeWidget({155,  83}, {145, 12}, WidgetType::dropdownMenu, WindowColour::secondary                                                     ),
-        makeWidget({288,  84}, { 11, 10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,     STR_DISTANCE_AND_SPEED_TIP ),
-        makeWidget({ 10,  98}, {145, 12}, WidgetType::label,        WindowColour::secondary, STR_TEMPERATURE,        STR_TEMPERATURE_FORMAT_TIP ), // Temperature
-        makeWidget({155,  98}, {145, 12}, WidgetType::dropdownMenu, WindowColour::secondary                                                     ),
-        makeWidget({288,  99}, { 11, 10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,     STR_TEMPERATURE_FORMAT_TIP ),
-        makeWidget({ 10, 113}, {145, 12}, WidgetType::label,        WindowColour::secondary, STR_HEIGHT_LABELS,      STR_HEIGHT_LABELS_UNITS_TIP), // Height labels
-        makeWidget({155, 113}, {145, 12}, WidgetType::dropdownMenu, WindowColour::secondary                                                     ),
-        makeWidget({288, 114}, { 11, 10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,     STR_HEIGHT_LABELS_UNITS_TIP),
-        makeWidget({ 10, 128}, {145, 12}, WidgetType::label,        WindowColour::secondary, STR_DATE_FORMAT,        STR_DATE_FORMAT_TIP        ), // Date format
-        makeWidget({155, 128}, {145, 12}, WidgetType::dropdownMenu, WindowColour::secondary                                                     ),
-        makeWidget({288, 129}, { 11, 10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,     STR_DATE_FORMAT_TIP        )
+        makeWidget({ 10,  54}, {145, 12}, WidgetType::label,        WindowColour::secondary, STR_OPTIONS_LANGUAGE,   STR_LANGUAGE_TIP           ), // language
+        makeWidget({155,  53}, {145, 14}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdEmpty                                         ),
+        makeWidget({288,  54}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,     STR_LANGUAGE_TIP           ),
+        makeWidget({ 10,  71}, {145, 12}, WidgetType::label,        WindowColour::secondary, STR_CURRENCY,           STR_CURRENCY_TIP           ), // Currency
+        makeWidget({155,  70}, {145, 14}, WidgetType::dropdownMenu, WindowColour::secondary                                                     ),
+        makeWidget({288,  71}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,     STR_CURRENCY_TIP           ),
+        makeWidget({ 10,  88}, {145, 12}, WidgetType::label,        WindowColour::secondary, STR_DISTANCE_AND_SPEED, STR_DISTANCE_AND_SPEED_TIP ), // Distance and speed
+        makeWidget({155,  87}, {145, 14}, WidgetType::dropdownMenu, WindowColour::secondary                                                     ),
+        makeWidget({288,  88}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,     STR_DISTANCE_AND_SPEED_TIP ),
+        makeWidget({ 10, 105}, {145, 12}, WidgetType::label,        WindowColour::secondary, STR_TEMPERATURE,        STR_TEMPERATURE_FORMAT_TIP ), // Temperature
+        makeWidget({155, 104}, {145, 14}, WidgetType::dropdownMenu, WindowColour::secondary                                                     ),
+        makeWidget({288, 105}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,     STR_TEMPERATURE_FORMAT_TIP ),
+        makeWidget({ 10, 122}, {145, 12}, WidgetType::label,        WindowColour::secondary, STR_HEIGHT_LABELS,      STR_HEIGHT_LABELS_UNITS_TIP), // Height labels
+        makeWidget({155, 121}, {145, 14}, WidgetType::dropdownMenu, WindowColour::secondary                                                     ),
+        makeWidget({288, 122}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,     STR_HEIGHT_LABELS_UNITS_TIP),
+        makeWidget({ 10, 139}, {145, 12}, WidgetType::label,        WindowColour::secondary, STR_DATE_FORMAT,        STR_DATE_FORMAT_TIP        ), // Date format
+        makeWidget({155, 138}, {145, 14}, WidgetType::dropdownMenu, WindowColour::secondary                                                     ),
+        makeWidget({288, 139}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,     STR_DATE_FORMAT_TIP        )
     );
 
     static constexpr auto window_options_audio_widgets = makeWidgets(
         kMainOptionsWidgets,
-        makeWidget({ 10,  53}, {290, 12}, WidgetType::dropdownMenu, WindowColour::secondary                                                ), // Audio device
-        makeWidget({288,  54}, { 11, 10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,      STR_AUDIO_DEVICE_TIP ),
-        makeWidget({ 10,  69}, {220, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_MASTER_VOLUME,       STR_MASTER_VOLUME_TIP), // Enable / disable master sound
-        makeWidget({ 10,  84}, {220, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_SOUND_EFFECTS,       STR_SOUND_EFFECTS_TIP), // Enable / disable sound effects
-        makeWidget({ 10,  99}, {220, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_RIDE_MUSIC,          STR_RIDE_MUSIC_TIP   ), // Enable / disable ride music
-        makeWidget({ 10, 113}, {290, 13}, WidgetType::checkbox,     WindowColour::secondary, STR_AUDIO_FOCUS,         STR_AUDIO_FOCUS_TIP  ), // Enable / disable audio disabled on focus lost
-        makeWidget({ 10, 128}, {145, 13}, WidgetType::label,        WindowColour::secondary, STR_OPTIONS_MUSIC_LABEL, STR_TITLE_MUSIC_TIP  ), // Title music label
-        makeWidget({155, 127}, {145, 13}, WidgetType::dropdownMenu, WindowColour::secondary                                                ), // Title music
-        makeWidget({288, 128}, { 11, 11}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,      STR_TITLE_MUSIC_TIP  ),
-        makeWidget({155,  68}, {145, 13}, WidgetType::scroll,       WindowColour::secondary, SCROLL_HORIZONTAL                             ), // Master volume
-        makeWidget({155,  83}, {145, 13}, WidgetType::scroll,       WindowColour::secondary, SCROLL_HORIZONTAL                             ), // Sound effect volume
-        makeWidget({155,  98}, {145, 13}, WidgetType::scroll,       WindowColour::secondary, SCROLL_HORIZONTAL                             )  // Music volume
+        makeWidget({ 10,  53}, {290, 14}, WidgetType::dropdownMenu, WindowColour::secondary                                                ), // Audio device
+        makeWidget({288,  54}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,      STR_AUDIO_DEVICE_TIP ),
+        makeWidget({ 10,  71}, {220, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_MASTER_VOLUME,       STR_MASTER_VOLUME_TIP), // Enable / disable master sound
+        makeWidget({ 10,  86}, {220, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_SOUND_EFFECTS,       STR_SOUND_EFFECTS_TIP), // Enable / disable sound effects
+        makeWidget({ 10, 101}, {220, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_RIDE_MUSIC,          STR_RIDE_MUSIC_TIP   ), // Enable / disable ride music
+        makeWidget({ 10, 115}, {290, 13}, WidgetType::checkbox,     WindowColour::secondary, STR_AUDIO_FOCUS,         STR_AUDIO_FOCUS_TIP  ), // Enable / disable audio disabled on focus lost
+        makeWidget({ 10, 130}, {145, 12}, WidgetType::label,        WindowColour::secondary, STR_OPTIONS_MUSIC_LABEL, STR_TITLE_MUSIC_TIP  ), // Title music label
+        makeWidget({155, 129}, {145, 14}, WidgetType::dropdownMenu, WindowColour::secondary                                                ), // Title music
+        makeWidget({288, 130}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,      STR_TITLE_MUSIC_TIP  ),
+        makeWidget({155,  72}, {145, 13}, WidgetType::scroll,       WindowColour::secondary, SCROLL_HORIZONTAL                             ), // Master volume
+        makeWidget({155,  87}, {145, 13}, WidgetType::scroll,       WindowColour::secondary, SCROLL_HORIZONTAL                             ), // Sound effect volume
+        makeWidget({155, 102}, {145, 13}, WidgetType::scroll,       WindowColour::secondary, SCROLL_HORIZONTAL                             )  // Music volume
     );
 
     constexpr int32_t kControlsGroupStart = 53;
-    constexpr int32_t kGamepadGroupStart = kControlsGroupStart + 150;
+    constexpr int32_t kGamepadGroupStart = kControlsGroupStart + 142;
 
     static constexpr auto window_options_controls_widgets = makeWidgets(
         kMainOptionsWidgets,
-        makeWidget({  5, kControlsGroupStart +  0},  {300,137}, WidgetType::groupbox, WindowColour::secondary, STR_CONTROLS_GROUP                                                ), // Controls group
-        makeWidget({ 10, kControlsGroupStart + 13},  {290, 14}, WidgetType::checkbox, WindowColour::tertiary , STR_SCREEN_EDGE_SCROLLING,      STR_SCREEN_EDGE_SCROLLING_TIP     ), // Edge scrolling
-        makeWidget({ 10, kControlsGroupStart + 30},  {290, 12}, WidgetType::checkbox, WindowColour::tertiary , STR_TRAP_MOUSE,                 STR_TRAP_MOUSE_TIP                ), // Trap mouse
-        makeWidget({ 10, kControlsGroupStart + 45},  {290, 12}, WidgetType::checkbox, WindowColour::tertiary , STR_INVERT_RIGHT_MOUSE_DRAG,    STR_INVERT_RIGHT_MOUSE_DRAG_TIP   ), // Invert right mouse dragging
-        makeWidget({ 10, kControlsGroupStart + 60},  {290, 12}, WidgetType::checkbox, WindowColour::tertiary , STR_ZOOM_TO_CURSOR,             STR_ZOOM_TO_CURSOR_TIP            ), // Zoom to cursor
+        makeWidget({  5, kControlsGroupStart +  0},  {300,139}, WidgetType::groupbox, WindowColour::secondary, STR_CONTROLS_GROUP                                                ), // Controls group
+        makeWidget({ 10, kControlsGroupStart + 13},  {290, 14}, WidgetType::checkbox, WindowColour::tertiary,  STR_SCREEN_EDGE_SCROLLING,      STR_SCREEN_EDGE_SCROLLING_TIP     ), // Edge scrolling
+        makeWidget({ 10, kControlsGroupStart + 30},  {290, 12}, WidgetType::checkbox, WindowColour::tertiary,  STR_TRAP_MOUSE,                 STR_TRAP_MOUSE_TIP                ), // Trap mouse
+        makeWidget({ 10, kControlsGroupStart + 45},  {290, 12}, WidgetType::checkbox, WindowColour::tertiary,  STR_INVERT_RIGHT_MOUSE_DRAG,    STR_INVERT_RIGHT_MOUSE_DRAG_TIP   ), // Invert right mouse dragging
+        makeWidget({ 10, kControlsGroupStart + 60},  {290, 12}, WidgetType::checkbox, WindowColour::tertiary,  STR_ZOOM_TO_CURSOR,             STR_ZOOM_TO_CURSOR_TIP            ), // Zoom to cursor
         makeWidget({ 10, kControlsGroupStart + 75},  {290, 12}, WidgetType::checkbox, WindowColour::tertiary,  STR_WINDOW_BUTTONS_ON_THE_LEFT, STR_WINDOW_BUTTONS_ON_THE_LEFT_TIP), // Window buttons on the left
         makeWidget({ 10, kControlsGroupStart + 90},  {290, 12}, WidgetType::checkbox, WindowColour::tertiary,  STR_ENLARGED_UI,                STR_ENLARGED_UI_TIP               ),
         makeWidget({ 25, kControlsGroupStart + 105}, {275, 12}, WidgetType::checkbox, WindowColour::tertiary,  STR_TOUCH_ENHANCEMENTS,         STR_TOUCH_ENHANCEMENTS_TIP        ),
-        makeWidget({155, kControlsGroupStart + 120}, {145, 13}, WidgetType::button,   WindowColour::secondary, STR_HOTKEY,                     STR_HOTKEY_TIP                    ), // Set hotkeys buttons
+        makeWidget({155, kControlsGroupStart + 120}, {144, 13}, WidgetType::button,   WindowColour::secondary, STR_HOTKEY,                     STR_HOTKEY_TIP                    ), // Set hotkeys buttons
 
         // Gamepad group
-        makeWidget({  5, kGamepadGroupStart +  0},   {300, 45}, WidgetType::groupbox, WindowColour::secondary, STR_GAMEPAD_GROUP                                                 ), // Gamepad group
+        makeWidget({  5, kGamepadGroupStart +  0},   {300, 46}, WidgetType::groupbox, WindowColour::secondary, STR_GAMEPAD_GROUP                                                 ), // Gamepad group
         makeWidget({ 10, kGamepadGroupStart + 13},   { 90, 12}, WidgetType::label,    WindowColour::secondary, STR_GAMEPAD_DEADZONE_LABEL,     STR_GAMEPAD_DEADZONE_TIP          ), // Deadzone label
         makeWidget({105, kGamepadGroupStart + 13},   {190, 13}, WidgetType::scroll,   WindowColour::secondary, SCROLL_HORIZONTAL,              STR_GAMEPAD_DEADZONE_TOOLTIP_FORMAT), // Deadzone slider
         makeWidget({ 10, kGamepadGroupStart + 28},   { 90, 12}, WidgetType::label,    WindowColour::secondary, STR_GAMEPAD_SENSITIVITY_LABEL,  STR_GAMEPAD_SENSITIVITY_TIP       ), // Sensitivity label
@@ -387,15 +391,15 @@ namespace OpenRCT2::Ui::Windows
     );
 
     constexpr int32_t kThemesGroupStart = 53;
-    constexpr int32_t kToolbarGroupStart = kThemesGroupStart + 52;
+    constexpr int32_t kToolbarGroupStart = kThemesGroupStart + 53;
 
     static constexpr auto window_options_interface_widgets = makeWidgets(
         kMainOptionsWidgets,
-        makeWidget({  5, kThemesGroupStart +  0}, {300, 48}, WidgetType::groupbox,     WindowColour::secondary, STR_THEMES_GROUP                                          ), // Themes group
+        makeWidget({  5, kThemesGroupStart +  0}, {300, 50}, WidgetType::groupbox,     WindowColour::secondary, STR_THEMES_GROUP                                          ), // Themes group
         makeWidget({ 10, kThemesGroupStart + 14}, {145, 12}, WidgetType::label,        WindowColour::secondary, STR_THEMES_LABEL_CURRENT_THEME, STR_CURRENT_THEME_TIP     ), // Themes
-        makeWidget({155, kThemesGroupStart + 14}, {145, 12}, WidgetType::dropdownMenu, WindowColour::secondary, STR_STRING                                                ),
-        makeWidget({288, kThemesGroupStart + 15}, { 11, 10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,             STR_CURRENT_THEME_TIP     ),
-        makeWidget({155, kThemesGroupStart + 30}, {145, 13}, WidgetType::button,       WindowColour::secondary, STR_EDIT_THEMES_BUTTON,         STR_EDIT_THEMES_BUTTON_TIP), // Themes button
+        makeWidget({155, kThemesGroupStart + 14}, {145, 14}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdEmpty                                                ),
+        makeWidget({288, kThemesGroupStart + 15}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,             STR_CURRENT_THEME_TIP     ),
+        makeWidget({155, kThemesGroupStart + 30}, {145, 14}, WidgetType::button,       WindowColour::secondary, STR_EDIT_THEMES_BUTTON,         STR_EDIT_THEMES_BUTTON_TIP), // Themes button
 
         makeWidget({  5, kToolbarGroupStart +  0}, {300,107}, WidgetType::groupbox, WindowColour::secondary, STR_TOOLBAR_BUTTONS_GROUP                                                         ), // Toolbar buttons group
         makeWidget({ 10, kToolbarGroupStart + 14}, {280, 12}, WidgetType::checkbox, WindowColour::tertiary,  STR_OPTIONS_TOOLBAR_BUTTONS_CENTRED, STR_OPTIONS_TOOLBAR_BUTTONS_CENTRED_TIP      ),
@@ -411,20 +415,20 @@ namespace OpenRCT2::Ui::Windows
     );
 
     constexpr int32_t kTitleSequenceStart = 53;
-    constexpr int32_t kScenarioOptionsGroupStart = kTitleSequenceStart + 35;
-    constexpr int32_t kTweaksStart = kScenarioOptionsGroupStart + 70;
+    constexpr int32_t kScenarioOptionsGroupStart = kTitleSequenceStart + 39;
+    constexpr int32_t kTweaksStart = kScenarioOptionsGroupStart + 72;
 
     static constexpr auto window_options_misc_widgets = makeWidgets(
         kMainOptionsWidgets,
-        makeWidget(         {  5, kTitleSequenceStart +  0}, {300, 31}, WidgetType::groupbox,     WindowColour::secondary, STR_OPTIONS_TITLE_SEQUENCE                              ),
-        makeDropdownWidgets({ 10, kTitleSequenceStart + 15}, {290, 12}, WidgetType::dropdownMenu, WindowColour::secondary, STR_STRINGID,                 STR_TITLE_SEQUENCE_TIP    ), // Title sequence dropdown
+        makeWidget(         {  5, kTitleSequenceStart +  0}, {300, 35}, WidgetType::groupbox,     WindowColour::secondary, STR_OPTIONS_TITLE_SEQUENCE                              ),
+        makeDropdownWidgets({ 10, kTitleSequenceStart + 15}, {290, 14}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdEmpty,               STR_TITLE_SEQUENCE_TIP    ), // Title sequence dropdown
 
         makeWidget({ 5,  kScenarioOptionsGroupStart +  0}, {300, 66}, WidgetType::groupbox,     WindowColour::secondary, STR_SCENARIO_OPTIONS                                      ),
         makeWidget({ 10, kScenarioOptionsGroupStart + 16}, {165, 12}, WidgetType::label,        WindowColour::secondary, STR_SCENARIO_PREVIEWS_LABEL,    STR_SCENARIO_PREVIEWS_TIP ),
-        makeWidget({175, kScenarioOptionsGroupStart + 15}, {125, 12}, WidgetType::dropdownMenu, WindowColour::secondary                                                            ), // Scenario previews
-        makeWidget({288, kScenarioOptionsGroupStart + 16}, { 11, 10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,             STR_SCENARIO_PREVIEWS_TIP ),
-        makeWidget({ 10, kScenarioOptionsGroupStart + 30}, {275, 16}, WidgetType::checkbox,     WindowColour::tertiary,  STR_OPTIONS_SCENARIO_UNLOCKING, STR_SCENARIO_UNLOCKING_TIP), // Unlocking of scenarios
-        makeWidget({ 10, kScenarioOptionsGroupStart + 45}, {290, 15}, WidgetType::checkbox,     WindowColour::tertiary,  STR_ALLOW_EARLY_COMPLETION,     STR_EARLY_COMPLETION_TIP  ), // Allow early scenario completion
+        makeWidget({175, kScenarioOptionsGroupStart + 15}, {125, 14}, WidgetType::dropdownMenu, WindowColour::secondary                                                            ), // Scenario previews
+        makeWidget({288, kScenarioOptionsGroupStart + 16}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,             STR_SCENARIO_PREVIEWS_TIP ),
+        makeWidget({ 10, kScenarioOptionsGroupStart + 32}, {275, 16}, WidgetType::checkbox,     WindowColour::tertiary,  STR_OPTIONS_SCENARIO_UNLOCKING, STR_SCENARIO_UNLOCKING_TIP), // Unlocking of scenarios
+        makeWidget({ 10, kScenarioOptionsGroupStart + 47}, {290, 15}, WidgetType::checkbox,     WindowColour::tertiary,  STR_ALLOW_EARLY_COMPLETION,     STR_EARLY_COMPLETION_TIP  ), // Allow early scenario completion
 
         makeWidget({  5,  kTweaksStart + 0}, {300, 96}, WidgetType::groupbox,     WindowColour::secondary, STR_OPTIONS_TWEAKS                                                  ),
         makeWidget({ 10, kTweaksStart + 15}, {290, 15}, WidgetType::checkbox,     WindowColour::tertiary , STR_REAL_NAME_GUESTS,     STR_REAL_NAME_GUESTS_TIP                  ), // Show 'real' names of guests
@@ -432,8 +436,8 @@ namespace OpenRCT2::Ui::Windows
         makeWidget({ 10, kTweaksStart + 45}, {290, 15}, WidgetType::checkbox,     WindowColour::tertiary , STR_AUTO_STAFF_PLACEMENT, STR_AUTO_STAFF_PLACEMENT_TIP              ), // Auto staff placement
         makeWidget({ 10, kTweaksStart + 60}, {290, 15}, WidgetType::checkbox,     WindowColour::tertiary , STR_AUTO_OPEN_SHOPS,      STR_AUTO_OPEN_SHOPS_TIP                   ), // Automatically open shops & stalls
         makeWidget({ 10, kTweaksStart + 77}, {165, 12}, WidgetType::label,        WindowColour::secondary, STR_DEFAULT_INSPECTION_INTERVAL, STR_DEFAULT_INSPECTION_INTERVAL_TIP),
-        makeWidget({175, kTweaksStart + 76}, {125, 12}, WidgetType::dropdownMenu, WindowColour::secondary                                                                      ), // Default inspection time dropdown
-        makeWidget({288, kTweaksStart + 77}, { 11, 10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,       STR_DEFAULT_INSPECTION_INTERVAL_TIP       )  // Default inspection time dropdown button
+        makeWidget({175, kTweaksStart + 76}, {125, 14}, WidgetType::dropdownMenu, WindowColour::secondary                                                                      ), // Default inspection time dropdown
+        makeWidget({288, kTweaksStart + 77}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,       STR_DEFAULT_INSPECTION_INTERVAL_TIP       )  // Default inspection time dropdown button
     );
 
     constexpr int32_t kRCT1Start = 53;
@@ -448,14 +452,14 @@ namespace OpenRCT2::Ui::Windows
         makeWidget        ({239, kRCT1Start + 15}, { 60, 14}, WidgetType::button,       WindowColour::secondary, STR_BROWSE                                                                              ), // RCT 1 path browse
         makeWidget        ({249, kRCT1Start + 15}, { 50, 14}, WidgetType::button,       WindowColour::secondary, STR_CLEAR_BUTTON,                          STR_PATH_TO_RCT1_CLEAR_TIP                   ), // RCT 1 path clear
 
-        makeWidget        ({  5, kSavingStart +  0}, {300, 80}, WidgetType::groupbox,     WindowColour::secondary, STR_GROUP_SAVING                                                                        ),
+        makeWidget        ({  5, kSavingStart +  0}, {300, 82}, WidgetType::groupbox,     WindowColour::secondary, STR_GROUP_SAVING                                                                        ),
         makeWidget        ({ 10, kSavingStart + 16}, {290, 12}, WidgetType::checkbox,     WindowColour::tertiary,  STR_SAVE_PLUGIN_DATA,                      STR_SAVE_PLUGIN_DATA_TIP                     ), // Export plug-in objects with saved games
         makeWidget        ({ 10, kSavingStart + 30}, {290, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_ALWAYS_NATIVE_LOADSAVE,                STR_ALWAYS_NATIVE_LOADSAVE_TIP               ), // Use native load/save window
         makeWidget        ({ 23, kSavingStart + 46}, {135, 12}, WidgetType::label,        WindowColour::secondary, STR_OPTIONS_AUTOSAVE_FREQUENCY_LABEL,      STR_AUTOSAVE_FREQUENCY_TIP                   ),
-        makeWidget        ({165, kSavingStart + 45}, {135, 13}, WidgetType::dropdownMenu, WindowColour::secondary                                                                                          ), // Autosave dropdown
-        makeWidget        ({288, kSavingStart + 46}, { 11, 11}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,                        STR_AUTOSAVE_FREQUENCY_TIP                   ), // Autosave dropdown button
-        makeWidget        ({ 23, kSavingStart + 60}, {135, 12}, WidgetType::label,        WindowColour::secondary, STR_AUTOSAVE_AMOUNT,                       STR_AUTOSAVE_AMOUNT_TIP                      ),
-        makeSpinnerWidgets({165, kSavingStart + 60}, {135, 12}, WidgetType::spinner,      WindowColour::secondary, kStringIdNone,                             STR_AUTOSAVE_AMOUNT_TIP                      ), // Autosave amount spinner
+        makeWidget        ({165, kSavingStart + 45}, {135, 14}, WidgetType::dropdownMenu, WindowColour::secondary                                                                                          ), // Autosave dropdown
+        makeWidget        ({288, kSavingStart + 46}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,                        STR_AUTOSAVE_FREQUENCY_TIP                   ), // Autosave dropdown button
+        makeWidget        ({ 23, kSavingStart + 63}, {135, 12}, WidgetType::label,        WindowColour::secondary, STR_AUTOSAVE_AMOUNT,                       STR_AUTOSAVE_AMOUNT_TIP                      ),
+        makeSpinnerWidgets({165, kSavingStart + 62}, {135, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdNone,                             STR_AUTOSAVE_AMOUNT_TIP                      ), // Autosave amount spinner
 
         makeWidget        ({  5, kAdvancedStart +  0}, {300, 97}, WidgetType::groupbox,     WindowColour::secondary, STR_GROUP_ADVANCED                                                                      ),
         makeWidget        ({ 10, kAdvancedStart + 16}, {295, 12}, WidgetType::checkbox,     WindowColour::tertiary,  STR_ENABLE_DEBUGGING_TOOLS,                STR_ENABLE_DEBUGGING_TOOLS_TIP               ), // Enable debugging tools
@@ -490,6 +494,8 @@ namespace OpenRCT2::Ui::Windows
 
     class OptionsWindow final : public Window
     {
+        u8string _dropdownCaption{};
+
     public:
         void onOpen() override
         {
@@ -978,11 +984,10 @@ namespace OpenRCT2::Ui::Windows
 
         void DisplayPrepareDraw()
         {
-            // Resolution dropdown caption.
-            auto ft = Formatter::Common();
-            ft.Increment(16);
-            ft.Add<uint16_t>(static_cast<uint16_t>(Config::Get().general.fullscreenWidth));
-            ft.Add<uint16_t>(static_cast<uint16_t>(Config::Get().general.fullscreenHeight));
+            auto& generalConfig = Config::Get().general;
+            _dropdownCaption = FormatStringID(
+                STR_RESOLUTION_X_BY_Y, generalConfig.fullscreenWidth, generalConfig.fullscreenHeight);
+            widgets[WIDX_RESOLUTION].setString(_dropdownCaption.c_str());
 
             // Disable resolution dropdown on "Windowed" and "Fullscreen (desktop)"
             if (Config::Get().general.fullscreenMode != static_cast<int32_t>(FullscreenMode::fullscreen))
@@ -1026,7 +1031,7 @@ namespace OpenRCT2::Ui::Windows
         {
             auto ft = Formatter();
             ft.Add<int32_t>(static_cast<int32_t>(Config::Get().general.windowScale * 100));
-            DrawTextBasic(
+            drawText(
                 rt, windowPos + ScreenCoordsXY{ widgets[WIDX_SCALE].left + 1, widgets[WIDX_SCALE].top + 1 },
                 STR_WINDOW_COLOUR_2_COMMA2DP32, ft, { colours[1] });
         }
@@ -1352,8 +1357,8 @@ namespace OpenRCT2::Ui::Windows
         void CulturePrepareDraw()
         {
             // Language
-            auto ft = Formatter::Common();
-            ft.Add<char*>(LanguagesDescriptors[LocalisationService_GetCurrentLanguage()].native_name);
+            _dropdownCaption = LanguagesDescriptors[LocalisationService_GetCurrentLanguage()].native_name;
+            widgets[WIDX_LANGUAGE].setString(_dropdownCaption.c_str());
 
             // Currency: pounds, dollars, etc. (10 total)
             widgets[WIDX_CURRENCY].text = CurrencyDescriptors[EnumValue(Config::Get().general.currencyFormat)].stringId;
@@ -1609,34 +1614,22 @@ namespace OpenRCT2::Ui::Windows
             return STR_OPENRCT2_DROPDOWN;
         }
 
-        void AudioPrepareDraw()
+        static u8string getCurrentAudioDeviceName()
         {
-            // Sound device
-            StringId audioDeviceStringId = STR_OPTIONS_SOUND_VALUE_DEFAULT;
-            const char* audioDeviceName = nullptr;
             const int32_t currentDeviceIndex = GetCurrentDeviceIndex();
             if (currentDeviceIndex == -1 || GetDeviceCount() == 0)
             {
-                audioDeviceStringId = STR_SOUND_NONE;
-            }
-            else
-            {
-                audioDeviceStringId = STR_STRING;
-#ifndef __linux__
-                if (currentDeviceIndex == 0)
-                {
-                    audioDeviceStringId = STR_OPTIONS_SOUND_VALUE_DEFAULT;
-                }
-#endif // __linux__
-                if (audioDeviceStringId == STR_STRING)
-                {
-                    audioDeviceName = GetDeviceName(currentDeviceIndex).c_str();
-                }
+                return LanguageGetString(STR_SOUND_NONE);
             }
 
-            widgets[WIDX_SOUND].text = audioDeviceStringId;
-            auto ft = Formatter::Common();
-            ft.Add<char*>(audioDeviceName);
+            return GetDeviceName(currentDeviceIndex).c_str();
+        }
+
+        void AudioPrepareDraw()
+        {
+            // Sound device
+            _dropdownCaption = getCurrentAudioDeviceName();
+            widgets[WIDX_SOUND].setString(_dropdownCaption.c_str());
 
             widgets[WIDX_TITLE_MUSIC].text = GetTitleMusicName();
 
@@ -1842,9 +1835,8 @@ namespace OpenRCT2::Ui::Windows
             setCheckboxValue(WIDX_TOOLBAR_SHOW_ROTATE_ANTI_CLOCKWISE, Config::Get().interface.toolbarShowRotateAnticlockwise);
 
             size_t activeAvailableThemeIndex = ThemeManagerGetAvailableThemeIndex();
-            const utf8* activeThemeName = ThemeManagerGetAvailableThemeName(activeAvailableThemeIndex);
-            auto ft = Formatter::Common();
-            ft.Add<utf8*>(activeThemeName);
+            _dropdownCaption = ThemeManagerGetAvailableThemeName(activeAvailableThemeIndex);
+            widgets[WIDX_THEMES].setString(_dropdownCaption.c_str());
         }
 
 #pragma endregion
@@ -2001,17 +1993,15 @@ namespace OpenRCT2::Ui::Windows
 
         void MiscPrepareDraw()
         {
-            auto ft = Formatter::Common();
             if (Config::Get().interface.randomTitleSequence)
             {
-                ft.Add<StringId>(STR_TITLE_SEQUENCE_RANDOM);
+                _dropdownCaption = LanguageGetString(STR_TITLE_SEQUENCE_RANDOM);
             }
             else
             {
-                auto name = TitleSequenceManager::GetName(TitleGetConfigSequence());
-                ft.Add<StringId>(STR_STRING);
-                ft.Add<utf8*>(name);
+                _dropdownCaption = TitleSequenceManager::GetName(TitleGetConfigSequence());
             }
+            widgets[WIDX_TITLE_SEQUENCE].setString(_dropdownCaption.c_str());
 
             // The real name setting of clients is fixed to that of the server
             // and the server cannot change the setting during gameplay to prevent desyncs
@@ -2192,7 +2182,7 @@ namespace OpenRCT2::Ui::Windows
 
                 // Get 'Clear' button string width
                 auto clearLabel = LanguageGetString(STR_CLEAR_BUTTON);
-                auto clearLabelWidth = GfxGetStringWidth(clearLabel, FontStyle::medium) + 12;
+                auto clearLabelWidth = getStringWidth(clearLabel, FontStyle::medium) + 12;
 
                 widgets[WIDX_PATH_TO_RCT1_CLEAR].right = widgets[WIDX_PAGE_BACKGROUND].right - 12;
                 widgets[WIDX_PATH_TO_RCT1_CLEAR].left = widgets[WIDX_PATH_TO_RCT1_BROWSE].right - clearLabelWidth;
@@ -2205,7 +2195,7 @@ namespace OpenRCT2::Ui::Windows
 
                 // Get 'Browse' button string width
                 auto browseLabel = LanguageGetString(STR_BROWSE);
-                auto browseLabelWidth = GfxGetStringWidth(browseLabel, FontStyle::medium) + 12;
+                auto browseLabelWidth = getStringWidth(browseLabel, FontStyle::medium) + 12;
 
                 widgets[WIDX_PATH_TO_RCT1_BROWSE].right = widgets[WIDX_PAGE_BACKGROUND].right - 12;
                 widgets[WIDX_PATH_TO_RCT1_BROWSE].left = widgets[WIDX_PATH_TO_RCT1_BROWSE].right - browseLabelWidth;
@@ -2232,7 +2222,7 @@ namespace OpenRCT2::Ui::Windows
         {
             auto ft = Formatter();
             ft.Add<int32_t>(Config::Get().general.autosaveAmount);
-            DrawTextBasic(
+            drawText(
                 rt, windowPos + ScreenCoordsXY{ widgets[WIDX_AUTOSAVE_AMOUNT].left + 1, widgets[WIDX_AUTOSAVE_AMOUNT].top + 1 },
                 STR_WINDOW_COLOUR_2_COMMA32, ft, { colours[1] });
 
@@ -2250,7 +2240,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t padding = widgetHeight > lineHeight ? (widgetHeight - lineHeight) / 2 : 0;
 
             auto screenCoords = windowPos + ScreenCoordsXY{ pathWidget.left + 1, pathWidget.top + padding };
-            DrawTextEllipsised(rt, screenCoords, pathWidget.width() - 1, STR_BLACK_STRING, ft);
+            drawTextEllipsised(rt, screenCoords, pathWidget.width() - 1, STR_BLACK_STRING, ft);
         }
 
         StringWithArgs AdvancedTooltip(WidgetIndex widgetIndex, StringId fallback)

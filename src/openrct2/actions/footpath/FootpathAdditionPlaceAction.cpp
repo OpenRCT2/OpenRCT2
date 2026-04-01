@@ -97,7 +97,7 @@ namespace OpenRCT2::GameActions
             return res;
         }
 
-        auto* pathAdditionEntry = ObjectManager::GetObjectEntry<PathAdditionEntry>(_entryIndex);
+        auto* pathAdditionEntry = ObjectEntryManager::GetObjectEntry<PathAdditionEntry>(_entryIndex);
         if (pathAdditionEntry == nullptr)
         {
             LOG_ERROR("Unknown footpath addition entry for entryIndex %d", _entryIndex);
@@ -162,7 +162,7 @@ namespace OpenRCT2::GameActions
             return res;
         }
 
-        auto* pathAdditionEntry = ObjectManager::GetObjectEntry<PathAdditionEntry>(_entryIndex);
+        auto* pathAdditionEntry = ObjectEntryManager::GetObjectEntry<PathAdditionEntry>(_entryIndex);
         if (pathAdditionEntry == nullptr)
         {
             LOG_ERROR("Unknown footpath addition entry for entryIndex %d", _entryIndex);

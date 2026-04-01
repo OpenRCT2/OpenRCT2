@@ -1270,6 +1270,6 @@ namespace OpenRCT2::RCT12
      * Handles single and multi-byte strings.
      */
     size_t GetRCTStringBufferLen(const char* buffer, size_t maxBufferLen);
-    bool TrackTypeHasSpeedSetting(TrackElemType trackType);
-    bool TrackTypeIsStation(TrackElemType trackType);
+    bool trackTypeHasSpeedSetting(TrackElemType trackType);
+    bool trackTypeIsStation(TrackElemType trackType);
 } // namespace OpenRCT2::RCT12

@@ -17,6 +17,7 @@
 #include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Currency.h>
 #include <openrct2/localisation/Formatter.h>
+#include <openrct2/localisation/Formatting.h>
 #include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
@@ -40,7 +41,7 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr auto window_custom_currency_widgets = makeWidgets(
         makeWindowShim(kWindowTitle, kWindowSize),
-        makeSpinnerWidgets({100, 30}, {101, 11}, WidgetType::spinner,      WindowColour::secondary, STR_CURRENCY_FORMAT), // NB: 3 widgets
+        makeSpinnerWidgets({100, 30}, {101, 11}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty     ), // NB: 3 widgets
         makeWidget        ({120, 50}, { 81, 11}, WidgetType::button,       WindowColour::secondary, kStringIdEmpty     ),
         makeWidget        ({220, 50}, {131, 11}, WidgetType::dropdownMenu, WindowColour::secondary                     ),
         makeWidget        ({339, 51}, { 11,  9}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH )
@@ -49,6 +50,8 @@ namespace OpenRCT2::Ui::Windows
 
     class CustomCurrencyWindow final : public Window
     {
+        u8string _spinnerValue{};
+
     public:
         void onOpen() override
         {
@@ -188,34 +191,33 @@ namespace OpenRCT2::Ui::Windows
 
         void onDraw(Drawing::RenderTarget& rt) override
         {
-            auto ft = Formatter::Common();
-            ft.Add<money64>(10.00_GBP);
-
+            _spinnerValue = FormatStringID(STR_CURRENCY_FORMAT, 10.00_GBP);
+            widgets[WIDX_RATE].setString(_spinnerValue.c_str());
             drawWidgets(rt);
 
             auto screenCoords = windowPos + ScreenCoordsXY{ 10, 18 + widgets[WIDX_TITLE].height() - 1 };
 
-            DrawTextBasic(rt, screenCoords, STR_RATE, {}, { colours[1] });
+            drawText(rt, screenCoords, STR_RATE, { colours[1] });
 
             int32_t baseExchange = CurrencyDescriptors[EnumValue(CurrencyType::pounds)].rate;
-            ft = Formatter();
+            auto ft = Formatter();
             ft.Add<int32_t>(baseExchange);
-            DrawTextBasic(rt, screenCoords + ScreenCoordsXY{ 200, 0 }, STR_CUSTOM_CURRENCY_EQUIVALENCY, ft, { colours[1] });
+            drawText(rt, screenCoords + ScreenCoordsXY{ 200, 0 }, STR_CUSTOM_CURRENCY_EQUIVALENCY, ft, { colours[1] });
 
             screenCoords.y += 20;
 
-            DrawTextBasic(rt, screenCoords, STR_CURRENCY_SYMBOL_TEXT, {}, { colours[1] });
+            drawText(rt, screenCoords, STR_CURRENCY_SYMBOL_TEXT, { colours[1] });
 
             screenCoords = windowPos + ScreenCoordsXY{ widgets[WIDX_SYMBOL_TEXT].left + 1, widgets[WIDX_SYMBOL_TEXT].top };
 
-            DrawText(rt, screenCoords, { colours[1] }, CurrencyDescriptors[EnumValue(CurrencyType::custom)].symbol_unicode);
+            drawText(rt, screenCoords, CurrencyDescriptors[EnumValue(CurrencyType::custom)].symbol_unicode, { colours[1] });
 
             auto drawPos = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_AFFIX_DROPDOWN].left + 1, widgets[WIDX_AFFIX_DROPDOWN].top };
             StringId stringId = (CurrencyDescriptors[EnumValue(CurrencyType::custom)].affix_unicode == CurrencyAffix::prefix)
                 ? STR_PREFIX
                 : STR_SUFFIX;
-            DrawTextBasic(rt, drawPos, stringId, {}, { colours[1] });
+            drawText(rt, drawPos, stringId, { colours[1] });
         }
     };
 
