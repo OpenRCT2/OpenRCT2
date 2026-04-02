@@ -24,6 +24,7 @@
 - Fix: [#26196] The sprites of one angle of the Steeplechase left large turn are misaligned (original bug).
 - Fix: [#26214] The wrong sprite is used for one angle of the gentle diagonal slope of Alpine, Hybrid and Single Rail tracks.
 - Fix: [#26243] Increase max dropdown size from 512 to 1024 to accommodate parks with more than 512 rides.
+- Fix: [#26306] Platform::FindApp fails to locate Homebrew-installed tools on macOS.
 
 0.4.32 (2026-03-01)
 ------------------------------------------------------------------------

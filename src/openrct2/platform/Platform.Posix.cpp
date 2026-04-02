@@ -115,14 +115,31 @@ namespace OpenRCT2::Platform
 
     bool FindApp(std::string_view app, std::string* output)
     {
+        auto tryPath = [&](const std::string& path) -> bool {
+            const char* args[] = { path.c_str(), "--version", nullptr };
+            if (Execute(args, nullptr) == 0)
+            {
+                if (output)
+                    *output = path;
+                return true;
+            }
+            return false;
+        };
+
         std::string appStr = std::string(app);
-        const char* args[] = { appStr.c_str(), "--version", nullptr };
-        int result = Execute(args, nullptr);
-        if (result == 0 && output)
+        if (tryPath(appStr))
+            return true;
+
+    #ifdef __APPLE__
+        // Apps on macOS don't inherit the shell PATH, so check common Homebrew install locations as a fallback.
+        for (const char* prefix : { "/opt/homebrew/bin/", "/usr/local/bin/" })
         {
-            *output = appStr;
+            if (tryPath(std::string(prefix) + appStr))
+                return true;
         }
-        return result == 0;
+    #endif
+
+        return false;
     }
 
     int32_t Execute(const char* args[], std::string* output)
