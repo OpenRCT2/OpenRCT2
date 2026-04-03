@@ -11,9 +11,6 @@
 #include "../core/EnumMap.hpp"
 #include "Ride.h"
 
-#include <cassert>
-#include <string>
-
 #ifdef ENABLE_SCRIPTING
 static const EnumMap<Breakdown> BreakdownMap // The types of breakdowns.
     ({ { "safety_cut_out", Breakdown::safetyCutOut },
