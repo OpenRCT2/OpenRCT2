@@ -6,6 +6,7 @@
 
 0.5.0 (2026-04-12)
 ------------------------------------------------------------------------
+- Feature: [#24242] [Plugin] Add ride-breakdown hooktype.
 - Feature: [#23465] Change plugin JavaScript engine from Duktape to QuickJS-NG, allowing ES6+ features to be used in plugins.
 - Feature: [#26178] Port of the Spinning Cars from RollerCoaster Tycoon 1.
 - Improved: [#25314] Add unbanked and banked quarter helices to the Alpine, Corkscrew, Giga, Hybrid, Looping, Mine Ride, Mini, Multi-Dimension, Single Rail, Stand Up, Steeplechase and Twister tracks.
@@ -385,7 +386,6 @@
 0.4.22 (2025-05-04)
 ------------------------------------------------------------------------
 - Feature: [#24206] [Plugin] Add APIs for breaking down rides, reading the current breakdown, and for fixing broken down rides.
-- Feature: [#24242] [Plugin] Add ride-breakdown hooktype.
 - Improved: [#20073] The OpenGL drawing engine now supports screen invalidation which avoids the redrawing of unchanged regions.
 - Improved: [#21767] RCT Classic for macOS can now be used as the source game.
 - Improved: [#23590] Title bars are now drawn bigger when “Enlarged UI” is enabled.

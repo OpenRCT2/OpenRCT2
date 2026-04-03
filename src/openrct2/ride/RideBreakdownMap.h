@@ -15,13 +15,13 @@
 #include <string>
 
 #ifdef ENABLE_SCRIPTING
-static const EnumMap<uint8_t> BreakdownMap // The types of breakdowns.
-    ({ { "safety_cut_out", BREAKDOWN_SAFETY_CUT_OUT },
-       { "restraints_stuck_closed", BREAKDOWN_RESTRAINTS_STUCK_CLOSED },
-       { "restraints_stuck_open", BREAKDOWN_RESTRAINTS_STUCK_OPEN },
-       { "doors_stuck_closed", BREAKDOWN_DOORS_STUCK_CLOSED },
-       { "doors_stuck_open", BREAKDOWN_DOORS_STUCK_OPEN },
-       { "vehicle_malfunction", BREAKDOWN_VEHICLE_MALFUNCTION },
-       { "brakes_failure", BREAKDOWN_BRAKES_FAILURE },
-       { "control_failure", BREAKDOWN_CONTROL_FAILURE } });
+static const EnumMap<Breakdown> BreakdownMap // The types of breakdowns.
+    ({ { "safety_cut_out", Breakdown::safetyCutOut },
+       { "restraints_stuck_closed", Breakdown::restraintsStuckClosed },
+       { "restraints_stuck_open", Breakdown::restraintsStuckOpen },
+       { "doors_stuck_closed", Breakdown::doorsStuckClosed },
+       { "doors_stuck_open", Breakdown::doorsStuckOpen },
+       { "vehicle_malfunction", Breakdown::vehicleMalfunction },
+       { "brakes_failure", Breakdown::brakesFailure },
+       { "control_failure", Breakdown::controlFailure } });
 #endif
