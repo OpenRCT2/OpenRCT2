@@ -1328,7 +1328,7 @@ void RidePrepareBreakdown(Ride& ride, Breakdown breakdownReason)
         auto it = BreakdownMap.find(breakdownReason);
         if (it != BreakdownMap.end())
             JS_SetPropertyStr(ctx, obj, "breakdownReason", JS_NewString(ctx, it->first.data()));
-        else 
+        else
             JS_SetPropertyStr(ctx, obj, "breakdownReason", JS_NewString(ctx, "none"));
 
         hookEngine.Call(HookType::rideBreakDown, obj, true);
