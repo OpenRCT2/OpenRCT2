@@ -122,7 +122,16 @@ void HookEngine::Call(HookType type, const JSValue arg, bool isGameStateMutable,
     auto& hookList = GetHookList(type);
     for (auto& hook : hookList.Hooks)
     {
-        _scriptEngine.ExecutePluginCall(hook.Owner, hook.Function.callback, { arg }, isGameStateMutable, keepArgsAlive);
+        JSContext* ctx = hook.Owner ? hook.Owner->GetContext() : _scriptEngine.GetContext();
+        _scriptEngine.ExecutePluginCall(
+            hook.Owner, hook.Function.callback, { JS_DupValue(ctx, arg) }, isGameStateMutable, false);
+    }
+
+    if (!keepArgsAlive)
+    {
+        // One final free as we are the "owner" of the passed arg
+        JSContext* ctx = _scriptEngine.GetContext();
+        JS_FreeValue(ctx, arg);
     }
 }
 
