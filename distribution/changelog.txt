@@ -6,8 +6,8 @@
 
 0.5.0 (2026-04-12)
 ------------------------------------------------------------------------
-- Feature: [#24242] [Plugin] Add ride-breakdown hooktype.
 - Feature: [#23465] Change plugin JavaScript engine from Duktape to QuickJS-NG, allowing ES6+ features to be used in plugins.
+- Feature: [#24242] [Plugin] Add ride-breakdown hooktype.
 - Feature: [#26178] Port of the Spinning Cars from RollerCoaster Tycoon 1.
 - Improved: [#25314] Add unbanked and banked quarter helices to the Alpine, Corkscrew, Giga, Hybrid, Looping, Mine Ride, Mini, Multi-Dimension, Single Rail, Stand Up, Steeplechase and Twister tracks.
 - Improved: [#26044] Simplify Android installation by bundling OpenRCT2 assets in APK.
