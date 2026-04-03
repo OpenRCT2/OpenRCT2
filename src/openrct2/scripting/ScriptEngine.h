@@ -12,14 +12,11 @@
 #ifdef ENABLE_SCRIPTING
 
     #include "../actions/general/CustomAction.h"
-    #include "../core/FileWatcher.h"
-    #include "../core/Guard.hpp"
     #include "../management/Finance.h"
     #include "HookEngine.h"
     #include "Plugin.h"
 
     #include <future>
-    #include <list>
     #include <memory>
     #include <mutex>
     #include <queue>

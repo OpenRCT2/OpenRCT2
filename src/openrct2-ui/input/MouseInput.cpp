@@ -9,15 +9,13 @@
 
 #include "MouseInput.h"
 
-#include "../UiStringIds.h"
-
+#include <algorithm>
 #include <cassert>
 #include <cmath>
 #include <iterator>
 #include <openrct2-ui/UiContext.h>
 #include <openrct2-ui/input/InputManager.h>
 #include <openrct2-ui/interface/Dropdown.h>
-#include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/ViewportInteraction.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
@@ -28,15 +26,10 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
-#include <openrct2/interface/Chat.h>
 #include <openrct2/interface/Cursors.h>
-#include <openrct2/platform/Platform.h>
-#include <openrct2/ride/RideData.h>
-#include <openrct2/ui/UiContext.h>
+#include <openrct2/interface/Viewport.h>
 #include <openrct2/ui/WindowManager.h>
-#include <openrct2/world/Banner.h>
 #include <openrct2/world/Map.h>
-#include <openrct2/world/Scenery.h>
 #include <optional>
 
 namespace OpenRCT2

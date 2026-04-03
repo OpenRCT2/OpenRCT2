@@ -11,7 +11,6 @@
 
 #ifdef ENABLE_SCRIPTING
 
-    #include "../interface/Window.h"
     #include "../windows/Windows.h"
     #include "CustomMenu.h"
     #include "CustomWindow.h"
@@ -24,6 +23,7 @@
     #include <memory>
     #include <openrct2/Context.h>
     #include <openrct2/Input.h>
+    #include <openrct2/interface/Window.h>
     #include <openrct2/scenario/ScenarioCategory.h>
     #include <openrct2/scenario/ScenarioRepository.h>
     #include <openrct2/scripting/ScriptEngine.h>
