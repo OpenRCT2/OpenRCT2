@@ -20,13 +20,16 @@ namespace OpenRCT2
 
 namespace OpenRCT2::Scripting
 {
+    class ScBalloon;
+    extern ScBalloon gScBalloon;
+
     class ScBalloon final : public ScEntity
     {
     public:
         static JSValue New(JSContext* ctx, EntityId entityId);
+        void Register(JSContext* ctx);
 
     private:
-        static void AddFuncs(JSContext* ctx, JSValue obj);
         static Balloon* GetBalloon(JSValue thisVal);
 
         static JSValue colour_get(JSContext* ctx, JSValue thisVal);

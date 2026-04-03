@@ -15,18 +15,18 @@
 
 namespace OpenRCT2::Scripting
 {
+    ScBalloon gScBalloon;
+
     JSValue ScBalloon::New(JSContext* ctx, EntityId entityId)
     {
-        JSValue obj = gScEntity.New(ctx, entityId);
-        AddFuncs(ctx, obj);
-        return obj;
+        return gScEntity.NewDerivedInstance(ctx, entityId, gScBalloon.GetProto());
     }
 
-    void ScBalloon::AddFuncs(JSContext* ctx, JSValue obj)
+    void ScBalloon::Register(JSContext* ctx)
     {
         static constexpr JSCFunctionListEntry funcs[] = { JS_CGETSET_DEF(
             "colour", &ScBalloon::colour_get, &ScBalloon::colour_set) };
-        JS_SetPropertyFunctionList(ctx, obj, funcs, std::size(funcs));
+        gScBalloon.RegisterDerived(ctx, gScEntity, funcs);
     }
 
     Balloon* ScBalloon::GetBalloon(JSValue thisVal)

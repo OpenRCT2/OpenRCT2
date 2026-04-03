@@ -32,20 +32,20 @@ namespace OpenRCT2::Scripting
             { "empty_bowl_blue", Litter::Type::emptyBowlBlue },
         });
 
+    ScLitter gScLitter;
+
     JSValue ScLitter::New(JSContext* ctx, EntityId entityId)
     {
-        JSValue obj = gScEntity.New(ctx, entityId);
-        AddFuncs(ctx, obj);
-        return obj;
+        return gScEntity.NewDerivedInstance(ctx, entityId, gScLitter.GetProto());
     }
 
-    void ScLitter::AddFuncs(JSContext* ctx, JSValue obj)
+    void ScLitter::Register(JSContext* ctx)
     {
         static constexpr JSCFunctionListEntry funcs[] = {
             JS_CGETSET_DEF("litterType", &ScLitter::litterType_get, &ScLitter::litterType_set),
             JS_CGETSET_DEF("creationTick", &ScLitter::creationTick_get, nullptr)
         };
-        JS_SetPropertyFunctionList(ctx, obj, funcs, std::size(funcs));
+        gScLitter.RegisterDerived(ctx, gScEntity, funcs);
     }
 
     Litter* ScLitter::GetLitter(JSValue thisVal)

@@ -51,6 +51,7 @@ namespace OpenRCT2::Scripting
 
     public:
         JSValue NewInstance(JSContext* ctx, EntityId entityId);
+        JSValue NewDerivedInstance(JSContext* ctx, EntityId entityId, JSValue derivedProto);
         static JSValue New(JSContext* ctx, EntityId entityId);
 
         void Register(JSContext* ctx);

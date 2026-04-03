@@ -59,14 +59,14 @@ namespace OpenRCT2::Scripting
             { "stopped_by_block_brake", Vehicle::Status::stoppedByBlockBrakes },
         });
 
+    ScVehicle gScVehicle;
+
     JSValue ScVehicle::New(JSContext* ctx, EntityId entityId)
     {
-        JSValue obj = gScEntity.New(ctx, entityId);
-        AddFuncs(ctx, obj);
-        return obj;
+        return gScEntity.NewDerivedInstance(ctx, entityId, gScVehicle.GetProto());
     }
 
-    void ScVehicle::AddFuncs(JSContext* ctx, JSValue obj)
+    void ScVehicle::Register(JSContext* ctx)
     {
         static constexpr JSCFunctionListEntry funcs[] = {
             JS_CGETSET_DEF("ride", &ScVehicle::ride_get, &ScVehicle::ride_set),
@@ -101,7 +101,7 @@ namespace OpenRCT2::Scripting
             JS_CFUNC_DEF("travelBy", 1, &ScVehicle::travelBy),
             JS_CFUNC_DEF("moveToTrack", 3, &ScVehicle::moveToTrack),
         };
-        JS_SetPropertyFunctionList(ctx, obj, funcs, std::size(funcs));
+        gScVehicle.RegisterDerived(ctx, gScEntity, funcs);
     }
 
     Vehicle* ScVehicle::GetVehicle(JSValue thisVal)

@@ -151,14 +151,14 @@ namespace OpenRCT2::Scripting
             { "here_we_are", PeepThoughtType::HereWeAre },
         });
 
+    ScGuest gScGuest;
+
     JSValue ScGuest::New(JSContext* ctx, EntityId entityId)
     {
-        JSValue obj = ScPeep::New(ctx, entityId);
-        AddFuncs(ctx, obj);
-        return obj;
+        return gScEntity.NewDerivedInstance(ctx, entityId, gScGuest.GetProto());
     }
 
-    void ScGuest::AddFuncs(JSContext* ctx, JSValue obj)
+    void ScGuest::Register(JSContext* ctx)
     {
         static constexpr JSCFunctionListEntry funcs[] = {
             JS_CGETSET_DEF("tshirtColour", &ScGuest::tshirtColour_get, &ScGuest::tshirtColour_set),
@@ -194,7 +194,7 @@ namespace OpenRCT2::Scripting
             JS_CFUNC_DEF("removeItem", 1, &ScGuest::remove_item),
             JS_CFUNC_DEF("removeAllItems", 0, &ScGuest::remove_all_items),
         };
-        JS_SetPropertyFunctionList(ctx, obj, funcs, std::size(funcs));
+        gScGuest.RegisterDerived(ctx, gScPeep, funcs);
     }
 
     Guest* ScGuest::GetGuest(JSValue thisVal)
@@ -923,7 +923,7 @@ namespace OpenRCT2::Scripting
             return spriteIds;
         }
 
-        auto peep = GetPeep(thisVal);
+        auto peep = GetGuest(thisVal);
         if (peep != nullptr)
         {
             auto& objManager = GetContext()->GetObjectManager();

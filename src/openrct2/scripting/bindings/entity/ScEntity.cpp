@@ -207,6 +207,11 @@ namespace OpenRCT2::Scripting
         return MakeWithOpaque(ctx, new OpaqueEntityData{ entityId });
     }
 
+    JSValue ScEntity::NewDerivedInstance(JSContext* ctx, EntityId entityId, JSValue derivedProto)
+    {
+        return MakeWithOpaqueAndProto(ctx, new OpaqueEntityData{ entityId }, derivedProto);
+    }
+
     // this one exists as a hack to make a template work in ScMap
     JSValue ScEntity::New(JSContext* ctx, EntityId entityId)
     {

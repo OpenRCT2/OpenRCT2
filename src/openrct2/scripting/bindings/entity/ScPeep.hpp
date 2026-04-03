@@ -47,32 +47,16 @@ namespace OpenRCT2::Scripting
             { "animationFrozen", PEEP_FLAGS_ANIMATION_FROZEN },
         });
 
+    class ScPeep;
+    extern ScPeep gScPeep;
+
     class ScPeep : public ScEntity
     {
     public:
-        static JSValue New(JSContext* ctx, EntityId entityId)
-        {
-            JSValue obj = gScEntity.New(ctx, entityId);
-            AddFuncs(ctx, obj);
-            return obj;
-        }
+        static JSValue New(JSContext* ctx, EntityId entityId);
+        void Register(JSContext* ctx);
 
     private:
-        static void AddFuncs(JSContext* ctx, JSValue obj)
-        {
-            static constexpr JSCFunctionListEntry funcs[] = {
-                JS_CGETSET_DEF("peepType", &ScPeep::peepType_get, nullptr),
-                JS_CGETSET_DEF("name", &ScPeep::name_get, &ScPeep::name_set),
-                JS_CGETSET_DEF("destination", &ScPeep::destination_get, &ScPeep::destination_set),
-                JS_CGETSET_DEF("direction", &ScPeep::direction_get, &ScPeep::direction_set),
-                JS_CGETSET_DEF("energy", &ScPeep::energy_get, &ScPeep::energy_set),
-                JS_CGETSET_DEF("energyTarget", &ScPeep::energyTarget_get, &ScPeep::energyTarget_set),
-                JS_CFUNC_DEF("getFlag", 1, &ScPeep::getFlag),
-                JS_CFUNC_DEF("setFlag", 2, &ScPeep::setFlag),
-            };
-            JS_SetPropertyFunctionList(ctx, obj, funcs, std::size(funcs));
-        }
-
         static JSValue peepType_get(JSContext* ctx, JSValue thisVal)
         {
             auto peep = GetPeep(thisVal);

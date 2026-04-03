@@ -21,14 +21,14 @@
 
 namespace OpenRCT2::Scripting
 {
+    ScStaff gScStaff;
+
     JSValue ScStaff::New(JSContext* ctx, EntityId entityId)
     {
-        JSValue obj = ScPeep::New(ctx, entityId);
-        AddFuncs(ctx, obj);
-        return obj;
+        return gScEntity.NewDerivedInstance(ctx, entityId, gScStaff.GetProto());
     }
 
-    void ScStaff::AddFuncs(JSContext* ctx, JSValue obj)
+    void ScStaff::Register(JSContext* ctx)
     {
         static constexpr JSCFunctionListEntry funcs[] = {
             JS_CGETSET_DEF("staffType", &ScStaff::staffType_get, &ScStaff::staffType_set),
@@ -44,7 +44,7 @@ namespace OpenRCT2::Scripting
             JS_CFUNC_DEF("getAnimationSpriteIds", 2, &ScStaff::getAnimationSpriteIds),
             JS_CFUNC_DEF("getCostumeStrings", 0, &ScStaff::getCostumeStrings)
         };
-        JS_SetPropertyFunctionList(ctx, obj, funcs, std::size(funcs));
+        gScStaff.RegisterDerived(ctx, gScPeep, funcs);
     }
 
     Staff* ScStaff::GetStaff(JSValue thisVal)
@@ -433,14 +433,14 @@ namespace OpenRCT2::Scripting
         return JS_NewUint32(ctx, length);
     }
 
+    ScHandyman gScHandyman;
+
     JSValue ScHandyman::New(JSContext* ctx, EntityId entityId)
     {
-        JSValue obj = ScStaff::New(ctx, entityId);
-        AddFuncs(ctx, obj);
-        return obj;
+        return gScEntity.NewDerivedInstance(ctx, entityId, gScHandyman.GetProto());
     }
 
-    void ScHandyman::AddFuncs(JSContext* ctx, JSValue obj)
+    void ScHandyman::Register(JSContext* ctx)
     {
         static constexpr JSCFunctionListEntry funcs[] = {
             JS_CGETSET_DEF("lawnsMown", &ScHandyman::lawnsMown_get, nullptr),
@@ -448,7 +448,7 @@ namespace OpenRCT2::Scripting
             JS_CGETSET_DEF("litterSwept", &ScHandyman::litterSwept_get, nullptr),
             JS_CGETSET_DEF("binsEmptied", &ScHandyman::binsEmptied_get, nullptr),
         };
-        JS_SetPropertyFunctionList(ctx, obj, funcs, std::size(funcs));
+        gScHandyman.RegisterDerived(ctx, gScStaff, funcs);
     }
 
     JSValue ScHandyman::lawnsMown_get(JSContext* ctx, JSValue thisVal)
@@ -503,20 +503,20 @@ namespace OpenRCT2::Scripting
         }
     }
 
+    ScMechanic gScMechanic;
+
     JSValue ScMechanic::New(JSContext* ctx, EntityId entityId)
     {
-        JSValue obj = ScStaff::New(ctx, entityId);
-        AddFuncs(ctx, obj);
-        return obj;
+        return gScEntity.NewDerivedInstance(ctx, entityId, gScMechanic.GetProto());
     }
 
-    void ScMechanic::AddFuncs(JSContext* ctx, JSValue obj)
+    void ScMechanic::Register(JSContext* ctx)
     {
         static constexpr JSCFunctionListEntry funcs[] = {
             JS_CGETSET_DEF("ridesFixed", &ScMechanic::ridesFixed_get, nullptr),
             JS_CGETSET_DEF("ridesInspected", &ScMechanic::ridesInspected_get, nullptr),
         };
-        JS_SetPropertyFunctionList(ctx, obj, funcs, std::size(funcs));
+        gScMechanic.RegisterDerived(ctx, gScStaff, funcs);
     }
 
     JSValue ScMechanic::ridesFixed_get(JSContext* ctx, JSValue thisVal)
@@ -545,19 +545,19 @@ namespace OpenRCT2::Scripting
         }
     }
 
+    ScSecurity gScSecurity;
+
     JSValue ScSecurity::New(JSContext* ctx, EntityId entityId)
     {
-        JSValue obj = ScStaff::New(ctx, entityId);
-        AddFuncs(ctx, obj);
-        return obj;
+        return gScEntity.NewDerivedInstance(ctx, entityId, gScSecurity.GetProto());
     }
 
-    void ScSecurity::AddFuncs(JSContext* ctx, JSValue obj)
+    void ScSecurity::Register(JSContext* ctx)
     {
         static constexpr JSCFunctionListEntry funcs[] = {
             JS_CGETSET_DEF("vandalsStopped", &ScSecurity::vandalsStopped_get, nullptr),
         };
-        JS_SetPropertyFunctionList(ctx, obj, funcs, std::size(funcs));
+        gScSecurity.RegisterDerived(ctx, gScStaff, funcs);
     }
 
     JSValue ScSecurity::vandalsStopped_get(JSContext* ctx, JSValue thisVal)

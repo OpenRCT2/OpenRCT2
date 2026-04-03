@@ -30,9 +30,14 @@
     #include "../platform/Platform.h"
     #include "../profiling/Profiling.h"
     #include "../ride/ted/PitchAndRoll.h"
+    #include "bindings/entity/ScBalloon.hpp"
     #include "bindings/entity/ScEntity.hpp"
     #include "bindings/entity/ScGuest.hpp"
+    #include "bindings/entity/ScLitter.hpp"
+    #include "bindings/entity/ScMoneyEffect.hpp"
+    #include "bindings/entity/ScParticle.hpp"
     #include "bindings/entity/ScStaff.hpp"
+    #include "bindings/entity/ScVehicle.hpp"
     #include "bindings/game/ScCheats.hpp"
     #include "bindings/game/ScConsole.hpp"
     #include "bindings/game/ScContext.hpp"
@@ -573,6 +578,17 @@ void ScriptEngine::RegisterClasses(JSContext* ctx)
     gScTrackIterator.Register(ctx);
     gScTrackSegment.Register(ctx);
     gScEntity.Register(ctx);
+    gScPeep.Register(ctx);
+    gScGuest.Register(ctx);
+    gScStaff.Register(ctx);
+    gScHandyman.Register(ctx);
+    gScMechanic.Register(ctx);
+    gScSecurity.Register(ctx);
+    gScBalloon.Register(ctx);
+    gScLitter.Register(ctx);
+    gScMoneyEffect.Register(ctx);
+    gScCrashedVehicleParticle.Register(ctx);
+    gScVehicle.Register(ctx);
     gScThought.Register(ctx);
     #ifndef DISABLE_NETWORK
     gScSocket.Register(ctx);
@@ -615,6 +631,17 @@ void ScriptEngine::UnregisterClasses()
     gScTrackIterator.Unregister();
     gScTrackSegment.Unregister();
     gScEntity.Unregister();
+    gScPeep.Unregister();
+    gScGuest.Unregister();
+    gScStaff.Unregister();
+    gScHandyman.Unregister();
+    gScMechanic.Unregister();
+    gScSecurity.Unregister();
+    gScBalloon.Unregister();
+    gScLitter.Unregister();
+    gScMoneyEffect.Unregister();
+    gScCrashedVehicleParticle.Unregister();
+    gScVehicle.Unregister();
     gScThought.Unregister();
     #ifndef DISABLE_NETWORK
     gScSocket.Unregister();

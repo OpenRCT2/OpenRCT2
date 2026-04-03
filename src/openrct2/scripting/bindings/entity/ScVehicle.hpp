@@ -20,13 +20,16 @@
 
 namespace OpenRCT2::Scripting
 {
+    class ScVehicle;
+    extern ScVehicle gScVehicle;
+
     class ScVehicle final : public ScEntity
     {
     public:
         static JSValue New(JSContext* ctx, EntityId entityId);
+        void Register(JSContext* ctx);
 
     private:
-        static void AddFuncs(JSContext* ctx, JSValue obj);
         static Vehicle* GetVehicle(JSValue thisVal);
 
         static JSValue rideObject_get(JSContext* ctx, JSValue thisVal);

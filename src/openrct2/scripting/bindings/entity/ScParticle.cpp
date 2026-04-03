@@ -25,14 +25,14 @@ namespace OpenRCT2::Scripting
             { "seat", 4 },
         });
 
+    ScCrashedVehicleParticle gScCrashedVehicleParticle;
+
     JSValue ScCrashedVehicleParticle::New(JSContext* ctx, EntityId entityId)
     {
-        JSValue obj = gScEntity.New(ctx, entityId);
-        AddFuncs(ctx, obj);
-        return obj;
+        return gScEntity.NewDerivedInstance(ctx, entityId, gScCrashedVehicleParticle.GetProto());
     }
 
-    void ScCrashedVehicleParticle::AddFuncs(JSContext* ctx, JSValue obj)
+    void ScCrashedVehicleParticle::Register(JSContext* ctx)
     {
         static constexpr JSCFunctionListEntry funcs[] = {
             JS_CGETSET_DEF(
@@ -46,7 +46,7 @@ namespace OpenRCT2::Scripting
             JS_CGETSET_DEF("frame", &ScCrashedVehicleParticle::frame_get, &ScCrashedVehicleParticle::frame_set),
             JS_CFUNC_DEF("launch", 1, &ScCrashedVehicleParticle::Launch),
         };
-        JS_SetPropertyFunctionList(ctx, obj, funcs, std::size(funcs));
+        gScCrashedVehicleParticle.RegisterDerived(ctx, gScEntity, funcs);
     }
 
     VehicleCrashParticle* ScCrashedVehicleParticle::GetCrashedVehicleParticle(JSValue thisVal)

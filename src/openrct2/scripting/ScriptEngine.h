@@ -323,7 +323,30 @@ namespace OpenRCT2::Scripting
                 JS_FreeValue(protoCtx, proto);
         }
 
+        [[nodiscard]] JSValue GetProto() const
+        {
+            return proto;
+        }
+
+        void RegisterDerived(JSContext* ctx, const ScBase& parent, std::span<const JSCFunctionListEntry> classFuncs)
+        {
+            proto = JS_NewObject(ctx);
+            protoCtx = ctx;
+            JS_SetPrototype(ctx, proto, parent.GetProto());
+            JS_SetPropertyFunctionList(ctx, proto, classFuncs.data(), static_cast<int>(classFuncs.size()));
+        }
+
     protected:
+        [[nodiscard]] JSValue MakeWithOpaqueAndProto(JSContext* ctx, void* opaque, JSValue customProto) const
+        {
+            assert(opaque == nullptr || hasFinalizer);
+            JSValue obj = JS_NewObjectProtoClass(ctx, customProto, classId);
+            if (JS_IsException(obj))
+                throw std::runtime_error("Failed to create new object for class.");
+            JS_SetOpaque(obj, opaque);
+            return obj;
+        }
+
         [[nodiscard]] JSValue MakeWithOpaque(JSContext* ctx, void* opaque) const
         {
             // If you fail this assert you probably need a finalizer to free the opaque ptr.
