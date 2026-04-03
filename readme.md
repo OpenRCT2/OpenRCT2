@@ -12,7 +12,8 @@
 
 ---
 
-![OpenRCT2.org Group Park 5](https://i.imgur.com/e7CK5Sc.png)
+![Still from the v0.5.0 title sequence](https://github.com/user-attachments/assets/fa893cc8-1484-4751-94be-4ead00a6c8f9)
+
 
 ---
 
