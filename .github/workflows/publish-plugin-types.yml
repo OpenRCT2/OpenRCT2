@@ -19,7 +19,7 @@ env:
 jobs:
   publish:
     name: Publish @openrct2/types
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     permissions:
       contents: read
       id-token: write
@@ -32,7 +32,7 @@ jobs:
             src/openrct2/scripting/ScriptEngine.h
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 24
           registry-url: https://registry.npmjs.org
