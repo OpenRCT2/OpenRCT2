@@ -207,8 +207,11 @@ namespace OpenRCT2::GameActions
                 return Result(Status::invalidParameters, errTitle, kStringIdNone);
         }
 
-        ride->numCircuits = 1;
         ride->updateMaxVehicles();
+        if (ride->numTrains > 1)
+        {
+            ride->numCircuits = 1;
+        }
 
         auto res = Result();
         if (!ride->overallView.IsNull())
