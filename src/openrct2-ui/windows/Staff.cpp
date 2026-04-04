@@ -988,6 +988,10 @@ namespace OpenRCT2::Ui::Windows
                     drawText(rt, screenCoords, STR_STAFF_STAT_VANDALS_STOPPED, ft);
                     break;
                 case StaffType::entertainer:
+                    ft = Formatter();
+                    ft.Add<uint32_t>(staff->StaffGuestsEntertained);
+                    drawText(rt, screenCoords, STR_STAFF_STAT_GUESTS_ENTERTAINED, ft);
+                    break;
                 case StaffType::count:
                     break;
             }

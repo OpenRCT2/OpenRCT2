@@ -68,8 +68,12 @@ namespace OpenRCT2
             uint32_t StaffLitterSwept;
             uint32_t StaffVandalsStopped;
         };
-        uint32_t StaffBinsEmptied;
-
+        union
+        {
+            uint32_t StaffBinsEmptied;
+            uint32_t StaffGuestsEntertained;
+        };
+        
         void Update();
         void Tick128UpdateStaff();
         bool IsMechanic() const;
@@ -122,7 +126,7 @@ namespace OpenRCT2
 
         Direction HandymanDirectionRandSurface(uint8_t validDirections) const;
 
-        void EntertainerUpdateNearbyPeeps() const;
+        void EntertainerUpdateNearbyPeeps();
         bool SecurityGuardPathIsCrowded() const;
 
         uint8_t GetValidPatrolDirections(const CoordsXY& loc) const;

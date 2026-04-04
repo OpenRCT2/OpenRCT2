@@ -252,6 +252,7 @@ namespace OpenRCT2
             peep->StaffLitterSwept = 0;
             peep->StaffVandalsStopped = 0;
             peep->StaffBinsEmptied = 0;
+            peep->StaffGuestsEntertained = 0;
         }
     }
 
@@ -865,7 +866,7 @@ namespace OpenRCT2
      *
      *  rct2: 0x006C086D
      */
-    void Staff::EntertainerUpdateNearbyPeeps() const
+    void Staff::EntertainerUpdateNearbyPeeps()
     {
         // Iterate over tiles within a 3-tile radius (96 units)
         constexpr auto kTileRadius = 3;
@@ -896,11 +897,15 @@ namespace OpenRCT2
                     if (guest->State == PeepState::walking)
                     {
                         guest->HappinessTarget = std::min(guest->HappinessTarget + 4, kPeepMaxHappiness);
+                        StaffGuestsEntertained = AddClamp(StaffGuestsEntertained, 1u);
+                        WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
                     }
                     else if (guest->State == PeepState::queuing)
                     {
                         guest->TimeInQueue = std::max(0, guest->TimeInQueue - 200);
                         guest->HappinessTarget = std::min(guest->HappinessTarget + 3, kPeepMaxHappiness);
+                        StaffGuestsEntertained = AddClamp(StaffGuestsEntertained, 1u);
+                        WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
                     }
                 }
             }
@@ -2635,5 +2640,6 @@ namespace OpenRCT2
         stream << StaffGardensWatered;
         stream << StaffLitterSwept;
         stream << StaffBinsEmptied;
+        stream << StaffGuestsEntertained;
     }
 } // namespace OpenRCT2
