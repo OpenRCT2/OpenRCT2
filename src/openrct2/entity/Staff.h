@@ -73,7 +73,7 @@ namespace OpenRCT2
             uint32_t StaffBinsEmptied;
             uint32_t StaffGuestsEntertained;
         };
-        
+
         void Update();
         void Tick128UpdateStaff();
         bool IsMechanic() const;
