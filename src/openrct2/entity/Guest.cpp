@@ -2061,7 +2061,7 @@ namespace OpenRCT2
                     return false;
                 }
 
-                // TOOD: get park based on guest
+                // TODO: get park based on guest
                 auto& gameState = getGameState();
                 auto& park = getUpdatingPark(gameState);
 
@@ -2362,7 +2362,10 @@ namespace OpenRCT2
      */
     void Guest::SpendMoney(money64& peep_expend_type, money64 amount, ExpenditureType expenditure)
     {
-        assert(!(getGameState().park.flags & PARK_FLAGS_NO_MONEY));
+        // TODO: get park based on guest
+        auto& gameState = getGameState();
+        auto& park = getUpdatingPark(gameState);
+        assert(!(park.flags & PARK_FLAGS_NO_MONEY));
 
         CashInPocket = std::max(0.00_GBP, CashInPocket - amount);
         CashSpent = AddClamp(CashSpent, amount);
@@ -2680,7 +2683,7 @@ namespace OpenRCT2
             && guest.VoucherRideId == guest.CurrentRide)
             return true;
 
-        // TOOD: get park based on guest
+        // TODO: get park based on guest
         auto& gameState = getGameState();
         auto& park = getUpdatingPark(gameState);
 
@@ -2778,7 +2781,7 @@ namespace OpenRCT2
     /* rct2: 0x00695555 */
     static int16_t GuestCalculateRideValueSatisfaction(Guest& guest, const Ride& ride)
     {
-        // TOOD: get park based on guest
+        // TODO: get park based on guest
         auto& gameState = getGameState();
         auto& park = getUpdatingPark(gameState);
 
@@ -2956,7 +2959,7 @@ namespace OpenRCT2
 
     static bool GuestShouldPreferredIntensityIncrease(Guest& guest)
     {
-        // TOOD: get park based on guest
+        // TODO: get park based on guest
         auto& gameState = getGameState();
         auto& park = getUpdatingPark(gameState);
 
@@ -3125,7 +3128,7 @@ namespace OpenRCT2
      */
     static void GuestDecideWhetherToLeavePark(Guest& guest)
     {
-        // TOOD: get park based on guest
+        // TODO: get park based on guest
         auto& gameState = getGameState();
         auto& park = getUpdatingPark(gameState);
 
@@ -7272,7 +7275,7 @@ namespace OpenRCT2
      */
     Guest* Guest::Generate(const CoordsXYZ& coords)
     {
-        // TOOD: pass park by ref
+        // TODO: pass park by ref
         auto& gameState = getGameState();
         auto& park = getUpdatingPark(gameState);
 

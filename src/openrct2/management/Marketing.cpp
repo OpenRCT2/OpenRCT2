@@ -189,7 +189,7 @@ void MarketingSetGuestCampaign(Guest* peep, int32_t campaignType)
 
 bool MarketingIsCampaignTypeApplicable(int32_t campaignType)
 {
-    // TOOD: pass park by ref
+    // TODO: pass park by ref
     auto& gameState = getGameState();
     auto& park = gameState.parks[0];
 
