@@ -139,6 +139,10 @@ namespace OpenRCT2::GameActions
                 ride->removePeeps();
                 ride->vehicleChangeTimeout = 100;
 
+                if (ride->numCircuits > 1)
+                {
+                    InvalidateTestResults(*ride);
+                }
                 ride->proposedNumTrains = _value;
                 break;
             case RideSetVehicleType::numCarsPerTrain:
