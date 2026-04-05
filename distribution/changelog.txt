@@ -6,6 +6,7 @@
 - Improved: [#26044] Simplify Android installation by bundling OpenRCT2 assets in APK.
 - Improved: [#26293] Objects extracted from saves now have more information in their filenames.
 - Improved: [objects#432] Allow saving scenery from RCT1 with track designs.
+- Change: [#24511] [Plugin] Separated new seatedInPairs field from numSeats field on vehicles and vehicle objects; seatedInPairs can now be set on vehicle entities.
 - Change: [#25962] The station style dropdown now shows entrance icons next to the labels for easier selection.
 - Change: [#26175] The ride colour tab is made more compact by collapsing unavailable sections instead of only hiding them.
 - Change: [#26178] Symmetric spinning trains and legacy ‘pre-reversed’ trains can no longer be reversed.
@@ -349,7 +350,6 @@
 - Change: [#24342, #24484] g2.dat is now split into g2.dat, fonts.dat and tracks.dat.
 - Change: [#24362] The Windows installer now prevents installing to the same folder as RollerCoaster Tycoon 2 or Classic.
 - Change: [#24418] Small & Large Zero G Rolls can now be built on the LIM Launched RC without cheats if vehicle sprites are available.
-- Change: [#24511] [Plugin] Separated new seatedInPairs field from numSeats field on vehicles and vehicle objects; seatedInPairs can now be set on vehicle entities.
 - Fix: [#5269] Font bugs when using the Russian release of RCT2 as the base game.
 - Fix: [#11071, #22958] The virtual floor does not always draw correctly.
 - Fix: [#18220] Some custom RCT1 scenarios are detected as competition DLC scenarios.
