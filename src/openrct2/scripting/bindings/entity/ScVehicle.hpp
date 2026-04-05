@@ -47,7 +47,7 @@ namespace OpenRCT2::Scripting
         static JSValue numSeats_get(JSContext* ctx, JSValue thisVal);
         static JSValue numSeats_set(JSContext* ctx, JSValue thisVal, JSValue jsValue);
 
-        static JSValue seatedInPairs_get(JSContext* ctx, JSValue thisVal) const;
+        static JSValue seatedInPairs_get(JSContext* ctx, JSValue thisVal);
         static JSValue seatedInPairs_set(JSContext* ctx, JSValue thisVal, JSValue jsValue);
 
         static JSValue nextCarOnTrain_get(JSContext* ctx, JSValue thisVal);

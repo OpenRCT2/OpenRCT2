@@ -74,7 +74,7 @@ namespace OpenRCT2::Scripting
             JS_CGETSET_DEF("vehicleObject", &ScVehicle::vehicleObject_get, &ScVehicle::vehicleObject_set),
             JS_CGETSET_DEF("spriteType", &ScVehicle::spriteType_get, &ScVehicle::spriteType_set),
             JS_CGETSET_DEF("numSeats", &ScVehicle::numSeats_get, &ScVehicle::numSeats_set),
-            JS_CGETSET_DEF("seatedInPairs", &ScVehicle::seatedInPairs_get, &ScVehicle::seatedInPairs_set);
+            JS_CGETSET_DEF("seatedInPairs", &ScVehicle::seatedInPairs_get, &ScVehicle::seatedInPairs_set),
             JS_CGETSET_DEF("nextCarOnTrain", &ScVehicle::nextCarOnTrain_get, &ScVehicle::nextCarOnTrain_set),
             JS_CGETSET_DEF("previousCarOnRide", &ScVehicle::previousCarOnRide_get, &ScVehicle::previousCarOnRide_set),
             JS_CGETSET_DEF("nextCarOnRide", &ScVehicle::nextCarOnRide_get, &ScVehicle::nextCarOnRide_set),
@@ -204,9 +204,9 @@ namespace OpenRCT2::Scripting
     JSValue ScVehicle::seatedInPairs_get(JSContext* ctx, JSValue thisVal)
     {
         auto vehicle = GetVehicle(thisVal);
-        return JS_NewBool(vehicle != nullptr ? vehicle->IsseatedInPairs() : 0);
+        return JS_NewBool(ctx, vehicle != nullptr ? vehicle->IsSeatedInPairs() : 0);
     }
-    JSValue ScVehicle::seatedInPairs_set(bool value)
+    JSValue ScVehicle::seatedInPairs_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
         JS_UNPACK_UINT32(value, ctx, jsValue);
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
