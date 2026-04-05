@@ -204,7 +204,7 @@ namespace OpenRCT2::Scripting
     JSValue ScVehicle::seatedInPairs_get(JSContext* ctx, JSValue thisVal)
     {
         auto vehicle = GetVehicle(thisVal);
-        return JS_NewBool(ctx, vehicle != nullptr ? vehicle->IsSeatedInPairs() : 0);
+        return JS_NewBool(ctx, vehicle != nullptr ? vehicle->IsSeatedInPairs() : false);
     }
     JSValue ScVehicle::seatedInPairs_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
