@@ -46,7 +46,8 @@ jobs:
             VERSION="${GITHUB_REF#refs/tags/v}"
           elif [[ "$GITHUB_REF" == refs/heads/develop ]]; then
             API_VERSION=$(grep -oP 'kPluginApiVersion\s*=\s*\K[0-9]+' src/openrct2/scripting/ScriptEngine.h)
-            VERSION="${{ env.OPENRCT2_VERSION }}-dev.${API_VERSION}"
+            TIMESTAMP=$(date -u +%Y%m%d%H%M%S)
+            VERSION="${{ env.OPENRCT2_VERSION }}-dev.${API_VERSION}.${TIMESTAMP}"
           else
             echo "::error::No version could be determined. Run on a tag or provide a version input."
             exit 1
