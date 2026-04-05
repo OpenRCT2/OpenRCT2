@@ -2637,7 +2637,7 @@ namespace OpenRCT2
                     car_array.push_back(i);
                     return true;
                 }
-                }
+            }
             if (num_seats == vehicle->next_free_seat)
                 continue;
 
