@@ -435,6 +435,7 @@
     <ClInclude Include="peep\PeepThoughts.h" />
     <ClInclude Include="peep\RideUseSystem.h" />
     <ClInclude Include="PlatformEnvironment.h" />
+    <ClInclude Include="platform\oobe\GOG.h" />
     <ClInclude Include="platform\Crash.h" />
     <ClInclude Include="platform\Memory.h" />
     <ClInclude Include="platform\Platform.h" />
@@ -1112,6 +1113,7 @@
     <ClCompile Include="peep\PeepThoughts.cpp" />
     <ClCompile Include="peep\RideUseSystem.cpp" />
     <ClCompile Include="PlatformEnvironment.cpp" />
+    <ClCompile Include="platform\oobe\GOG.cpp" />
     <ClCompile Include="platform\Crash.cpp" />
     <ClCompile Include="platform\Platform.Android.cpp" />
     <ClCompile Include="platform\Platform.Common.cpp" />

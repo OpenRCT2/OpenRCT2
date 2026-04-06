@@ -29,6 +29,7 @@
 #include "../network/Network.h"
 #include "../paint/VirtualFloor.h"
 #include "../platform/Platform.h"
+#include "../platform/oobe/GOG.h"
 #include "../rct1/Csg.h"
 #include "../ride/Ride.h"
 #include "../scenario/Scenario.h"
@@ -729,6 +730,15 @@ namespace OpenRCT2::Config
             }
         }
 
+        const auto extractLocations = GetContext()->GetPlatformEnvironment().getRCT1ExtractPaths();
+        for (const auto& location : extractLocations)
+        {
+            if (RCT1DataPresentAtLocation(location))
+            {
+                return location;
+            }
+        }
+
         auto steamPaths = Platform::GetSteamPaths();
         if (steamPaths.isSteamPresent())
         {
@@ -810,6 +820,15 @@ namespace OpenRCT2::Config
             }
         }
 
+        const auto extractLocations = GetContext()->GetPlatformEnvironment().getRCT2ExtractPaths();
+        for (const auto& location : extractLocations)
+        {
+            if (Platform::OriginalGameDataExists(location))
+            {
+                return location;
+            }
+        }
+
         // Will only return a path if the RCT2 data is present, so no need to check twice.
         auto steamPath = FindRCT2SteamPath();
         if (!steamPath.empty())
@@ -836,7 +855,7 @@ namespace OpenRCT2::Config
         FileDialogDesc desc{};
         desc.Type = FileDialogType::Open;
         desc.Title = LanguageGetString(STR_SELECT_GOG_INSTALLER);
-        desc.Filters.emplace_back(LanguageGetString(STR_GOG_INSTALLER), "*.exe");
+        desc.Filters.emplace_back(LanguageGetString(STR_GOG_INSTALLER), "*.exe;*.bin");
         desc.Filters.emplace_back(LanguageGetString(STR_ALL_FILES), "*");
 
         const auto userHomePath = Platform::GetFolderPath(SpecialFolder::userHome);
@@ -966,16 +985,8 @@ namespace OpenRCT2::Config
                     }
                     else if (chosenOption == gog)
                     {
-                        // Check if innoextract is installed. If not, prompt the user to install it.
-                        std::string dummy;
-                        if (!Platform::FindApp("innoextract", &dummy))
-                        {
-                            uiContext.ShowMessageBox(LanguageGetString(STR_INSTALL_INNOEXTRACT));
-                            return false;
-                        }
-
-                        const std::string dest = Path::Combine(
-                            GetContext()->GetPlatformEnvironment().GetDirectoryPath(DirBase::config), "rct2");
+                        const auto extractPaths = GetContext()->GetPlatformEnvironment().getRCT2ExtractPaths();
+                        auto dest = extractPaths[0];
 
                         while (true)
                         {
@@ -987,17 +998,34 @@ namespace OpenRCT2::Config
                                 return false;
                             }
 
-                            uiContext.ShowMessageBox(LanguageGetString(STR_THIS_WILL_TAKE_A_FEW_MINUTES));
+                            if (Platform::OOBE::GOG::isRCT2BinFile(gogPath))
+                            {
+                                if (Platform::OOBE::GOG::extractRCT2Files(gogPath, dest))
+                                    break;
+                            }
+                            else
+                            {
+                                // Check if innoextract is installed. If not, prompt the user to install it.
+                                std::string dummy;
+                                if (!Platform::FindApp("innoextract", &dummy))
+                                {
+                                    uiContext.ShowMessageBox(LanguageGetString(STR_INSTALL_INNOEXTRACT));
+                                    return false;
+                                }
 
-                            if (ExtractGogInstaller(gogPath, dest))
-                                break;
+                                uiContext.ShowMessageBox(LanguageGetString(STR_THIS_WILL_TAKE_A_FEW_MINUTES));
+
+                                if (ExtractGogInstaller(gogPath, dest))
+                                    break;
+                            }
 
                             uiContext.ShowMessageBox(LanguageGetString(STR_NOT_THE_GOG_INSTALLER));
                         }
 
-                        // New installer extracts to ‘dest’, old installer installs in ‘dest/app’.
-                        possibleInstallPaths.emplace_back(dest);
-                        possibleInstallPaths.emplace_back(Path::Combine(dest, u8"app"));
+                        for (const auto& extractPath : extractPaths)
+                        {
+                            possibleInstallPaths.emplace_back(extractPath);
+                        }
                     }
                     else if (chosenOption == steam)
                     {

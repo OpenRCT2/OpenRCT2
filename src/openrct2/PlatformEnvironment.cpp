@@ -208,6 +208,24 @@ public:
         return _rct2Variant != RCT2Variant::rct2Original;
     }
 
+    std::array<u8string, 2> getRCTExtractPaths(u8string dir) const override
+    {
+        // New GOG installer extracts to ‘dest’, old GOG installer installs in ‘dest/app’.
+        auto path1 = Path::Combine(GetDirectoryPath(DirBase::config), dir);
+        auto path2 = Path::Combine(path1, u8"app");
+        return { path1, path2 };
+    }
+
+    std::array<u8string, 2> getRCT2ExtractPaths() const override
+    {
+        return getRCTExtractPaths("rct2");
+    }
+
+    std::array<u8string, 2> getRCT1ExtractPaths() const override
+    {
+        return getRCTExtractPaths("rct1");
+    }
+
 private:
     static DirBase GetDefaultBaseDirectory(PathId pathid)
     {

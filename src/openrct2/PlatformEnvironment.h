@@ -12,6 +12,7 @@
 #include "Diagnostic.h"
 #include "core/StringTypes.h"
 
+#include <array>
 #include <memory>
 
 namespace OpenRCT2
@@ -86,6 +87,11 @@ namespace OpenRCT2
         virtual u8string FindFile(DirBase base, DirId did, u8string_view fileName) const = 0;
         virtual void SetBasePath(DirBase base, u8string_view path) = 0;
         virtual bool IsUsingClassic() const = 0;
+        virtual std::array<u8string, 2> getRCT2ExtractPaths() const = 0;
+        virtual std::array<u8string, 2> getRCT1ExtractPaths() const = 0;
+
+    private:
+        virtual std::array<u8string, 2> getRCTExtractPaths(u8string dir) const = 0;
     };
 
     [[nodiscard]] std::unique_ptr<IPlatformEnvironment> CreatePlatformEnvironment(DirBaseValues basePaths);

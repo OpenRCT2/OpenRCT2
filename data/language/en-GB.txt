@@ -3400,7 +3400,6 @@ STR_6401    :I have RollerCoaster Tycoon 2 or RollerCoaster Tycoon Classic insta
 STR_6402    :OpenRCT2 Data Setup
 STR_6403    :Select which applies best to you
 STR_6404    :Please select the GOG RollerCoaster Tycoon 2 installer.
-STR_6405    :Select GOG Installer
 STR_6406    :GOG RollerCoaster Tycoon 2 Installer
 STR_6407    :This may take a few minutes.
 STR_6408    :Please install “innoextract” to extract GOG Installer, then restart OpenRCT2.
@@ -3826,3 +3825,4 @@ STR_7026    :Makes the whole ride visible
 STR_7027    :{MOVE_X}{29}{STRINGID}
 STR_7028    :Quarter Helix up
 STR_7029    :Quarter Helix down
+STR_7030    :If your installer has a file with a .bin extension, please select it. If your install only has a .exe file, select that instead.
