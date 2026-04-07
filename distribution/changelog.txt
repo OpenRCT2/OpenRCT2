@@ -27,7 +27,7 @@
 - Fix: [#26214] The wrong sprite is used for one angle of the gentle diagonal slope of Alpine, Hybrid and Single Rail tracks.
 - Fix: [#26243] Increase max dropdown size from 512 to 1024 to accommodate parks with more than 512 rides.
 - Fix: [#26306] Platform::FindApp fails to locate Homebrew-installed tools on macOS.
-- Fix: [#26339] Access to invalid shop items in marketing window.
+- Fix: [#26339] Crash when setting up a marketing campaign.
 - Fix: [objects#430] The RCT1 Reverse Freefall car can be reversed and show broken sprites when doing so.
 
 0.4.32 (2026-03-01)
