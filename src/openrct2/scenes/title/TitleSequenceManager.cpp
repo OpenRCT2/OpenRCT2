@@ -101,7 +101,7 @@ namespace OpenRCT2::TitleSequenceManager
         auto newPath = Path::Combine(Path::GetDirectory(oldPath), newName);
         if (item->IsZip)
         {
-            newPath += Title::TITLE_SEQUENCE_EXTENSION;
+            newPath += Title::kTitleSequenceExtension;
             File::Move(oldPath, newPath);
         }
         else
@@ -157,7 +157,7 @@ namespace OpenRCT2::TitleSequenceManager
         auto path = Path::Combine(GetUserSequencesPath(), name);
         if (isZip)
         {
-            path += Title::TITLE_SEQUENCE_EXTENSION;
+            path += Title::kTitleSequenceExtension;
         }
         return path;
     }

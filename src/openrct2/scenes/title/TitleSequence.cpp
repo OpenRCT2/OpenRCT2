@@ -56,7 +56,7 @@ namespace OpenRCT2::Title
         LOG_VERBOSE("Loading title sequence: %s", path.c_str());
 
         auto ext = Path::GetExtension(path);
-        if (String::equals(ext, TITLE_SEQUENCE_EXTENSION))
+        if (String::equals(ext, kTitleSequenceExtension))
         {
             auto zip = Zip::TryOpen(path, ZipAccess::read);
             if (zip == nullptr)
@@ -282,7 +282,7 @@ namespace OpenRCT2::Title
                         if (command.SaveIndex == index)
                         {
                             // Park no longer exists, so reset load command to invalid
-                            command.SaveIndex = SAVE_INDEX_INVALID;
+                            command.SaveIndex = kSaveIndexInvalid;
                         }
                         else if (command.SaveIndex > index)
                         {
@@ -342,7 +342,7 @@ namespace OpenRCT2::Title
             {
                 if (String::iequals(token, "LOAD"))
                 {
-                    auto saveIndex = SAVE_INDEX_INVALID;
+                    auto saveIndex = kSaveIndexInvalid;
                     const std::string relativePath = parts[1].data();
                     for (size_t i = 0; i < saves.size(); i++)
                     {
