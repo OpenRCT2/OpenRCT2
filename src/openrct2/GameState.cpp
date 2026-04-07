@@ -26,6 +26,7 @@
 #include "scenario/Scenario.h"
 #include "scenes/title/TitleScene.h"
 #include "scenes/title/TitleSequencePlayer.h"
+#include "scripting/CompetitionScoring.h"
 #include "scripting/ScriptEngine.h"
 #include "ui/UiContext.h"
 #include "windows/Intent.h"
@@ -364,6 +365,23 @@ namespace OpenRCT2
         if (day != gameState.date.GetDay())
         {
             hookEngine.Call(HookType::intervalDay, true);
+        }
+
+        // Competition tick processing.
+        if (gameState.Competition.IsActive())
+        {
+            Scripting::UpdateCompetitionScores(gameState);
+            const auto remaining = gameState.Competition.TicksRemaining(gameState.currentTicks);
+            if (remaining == 0)
+            {
+                gameState.Competition.Status = Scripting::CompetitionStatus::Finished;
+                hookEngine.Call(HookType::competitionEnd, true);
+            }
+            else if (gameState.Competition.UpdateIntervalTicks > 0
+                     && (gameState.currentTicks % gameState.Competition.UpdateIntervalTicks) == 0)
+            {
+                hookEngine.Call(HookType::competitionTick, true);
+            }
         }
 #endif
 

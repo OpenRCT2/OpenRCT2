@@ -23,6 +23,8 @@ declare global {
      */
     /** APIs for cheats. */
     var cheats: Cheats;
+    /** APIs for multiplayer competitions. */
+    var competition: Competition;
     /** APIs for interacting with the stdout console. */
     var console: Console;
     /** Core APIs for plugins. */
@@ -845,7 +847,7 @@ declare global {
         object: number;
         railingsObject: number;
         /** 0 if flat, 1 if sloped */
-        slopeType: number; // 
+        slopeType: number; //
         /** direction if sloped, otherwise ignored */
         slopeDirection: Direction;
         constructFlags: number;
@@ -3903,6 +3905,56 @@ declare global {
          * The value of the money effect.
          */
         value: number;
+    }
+
+    /**
+     * Options for starting a competition.
+     */
+    interface CompetitionOptions {
+        /** Display name for the competition. */
+        name: string;
+        /** The metric used for scoring. */
+        metric: 'parkValue' | 'guestCount' | 'parkRating' | 'rideCount' | 'moneyEarned' | 'custom';
+        /** Duration of the competition in game days. */
+        durationDays: number;
+        /** How often (in ticks) the leaderboard is broadcast. Default: 100. */
+        updateIntervalTicks?: number;
+    }
+
+    /**
+     * Represents a player's score entry on the competition leaderboard.
+     */
+    interface CompetitionPlayerScore {
+        readonly playerId: number;
+        readonly playerName: string;
+        readonly score: number;
+        readonly rank: number;
+    }
+
+    /**
+     * Competition APIs for managing multiplayer competitions.
+     * Use `competition.status` to check the current state.
+     */
+    interface Competition {
+        /** The current status of the competition. */
+        readonly status: 'idle' | 'active' | 'finished';
+        /** Ticks remaining in the competition. 0 if not active. */
+        readonly timeRemaining: number;
+        /** Current leaderboard sorted by rank. */
+        readonly leaderboard: CompetitionPlayerScore[];
+        /**
+         * Start a new competition with the given options.
+         * Only callable on the server.
+         */
+        start(options: CompetitionOptions): void;
+        /** Stop the current competition early. */
+        stop(): void;
+        /**
+         * Manually set a player's score. Only valid when metric is 'custom'.
+         */
+        setPlayerScore(playerId: number, score: number): void;
+        /** Force an immediate leaderboard broadcast to all subscribers. */
+        broadcastLeaderboard(): void;
     }
 
     /**

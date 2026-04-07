@@ -86,6 +86,7 @@ namespace OpenRCT2::Network
         scriptsData,
         heartbeat,
         beginMap,
+        competitionUpdate,
         max,
         invalid = static_cast<uint32_t>(-1),
     };

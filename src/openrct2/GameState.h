@@ -27,6 +27,10 @@
 #include "world/ScenerySelection.h"
 #include "world/Weather.h"
 
+#ifdef ENABLE_SCRIPTING
+    #include "scripting/CompetitionState.h"
+#endif
+
 #include <array>
 #include <memory>
 #include <vector>
@@ -99,6 +103,10 @@ namespace OpenRCT2
         ObjectEntryIndex lastEntranceStyle;
 
         CheatsState cheats;
+
+#ifdef ENABLE_SCRIPTING
+        Scripting::CompetitionState Competition{};
+#endif
     };
 
     GameState_t& getGameState();

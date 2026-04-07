@@ -138,6 +138,7 @@ namespace OpenRCT2::Network
         client_command_handlers[Command::objectsList] = &NetworkBase::Client_Handle_OBJECTS_LIST;
         client_command_handlers[Command::scriptsData] = &NetworkBase::Client_Handle_SCRIPTS_DATA;
         client_command_handlers[Command::gameState] = &NetworkBase::Client_Handle_GAMESTATE;
+        client_command_handlers[Command::competitionUpdate] = &NetworkBase::Client_Handle_COMPETITION_UPDATE;
 
         server_command_handlers[Command::auth] = &NetworkBase::ServerHandleAuth;
         server_command_handlers[Command::chat] = &NetworkBase::ServerHandleChat;
@@ -4092,6 +4093,67 @@ namespace OpenRCT2::Network
     {
         auto& network = GetContext()->GetNetwork();
         return network.GetServerInfoAsJson();
+    }
+
+    void NetworkBase::ServerSendCompetitionUpdate()
+    {
+#ifdef ENABLE_SCRIPTING
+        auto& gameState = getGameState();
+        auto& comp = gameState.Competition;
+
+        Packet packet(Command::competitionUpdate);
+        packet.WriteString(comp.Name);
+        packet << comp.TicksRemaining(gameState.currentTicks);
+        packet << static_cast<uint8_t>(comp.Scores.size());
+
+        for (const auto& [id, score] : comp.Scores)
+        {
+            packet << score.PlayerId;
+            packet.WriteString(score.PlayerName);
+            packet << score.Score;
+            packet << score.Rank;
+        }
+
+        SendPacketToClients(packet);
+#endif
+    }
+
+    void NetworkBase::Client_Handle_COMPETITION_UPDATE([[maybe_unused]] Connection& connection, Packet& packet)
+    {
+#ifdef ENABLE_SCRIPTING
+        auto& gameState = getGameState();
+        auto& comp = gameState.Competition;
+
+        auto name = packet.ReadString();
+        comp.Name = std::string(name);
+
+        uint32_t ticksRemaining{};
+        packet >> ticksRemaining;
+
+        uint8_t playerCount{};
+        packet >> playerCount;
+
+        comp.Scores.clear();
+        for (uint8_t i = 0; i < playerCount; i++)
+        {
+            PlayerScore entry;
+            packet >> entry.PlayerId;
+            auto playerName = packet.ReadString();
+            entry.PlayerName = std::string(playerName);
+            packet >> entry.Score;
+            packet >> entry.Rank;
+            comp.Scores[entry.PlayerId] = std::move(entry);
+        }
+
+        // Mark as active on client so JS can read status/leaderboard.
+        if (!comp.Scores.empty())
+        {
+            comp.Status = Scripting::CompetitionStatus::Active;
+        }
+
+        auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
+        hookEngine.Call(Scripting::HookType::competitionTick, true);
+#endif
     }
 
 } // namespace OpenRCT2::Network

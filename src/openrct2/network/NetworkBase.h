@@ -108,6 +108,7 @@ namespace OpenRCT2::Network
         void ServerSendEventPlayerDisconnected(const char* playerName, const char* reason);
         void ServerSendObjectsList(Connection& connection, const std::vector<const ObjectRepositoryItem*>& objects) const;
         void ServerSendScripts(Connection& connection);
+        void ServerSendCompetitionUpdate();
 
         // Handlers
         void ServerHandleRequestGamestate(Connection& connection, Packet& packet);
@@ -174,6 +175,7 @@ namespace OpenRCT2::Network
         void Client_Handle_OBJECTS_LIST(Connection& connection, Packet& packet);
         void Client_Handle_SCRIPTS_DATA(Connection& connection, Packet& packet);
         void Client_Handle_GAMESTATE(Connection& connection, Packet& packet);
+        void Client_Handle_COMPETITION_UPDATE(Connection& connection, Packet& packet);
         std::vector<uint8_t> _challenge;
         std::map<uint32_t, GameActions::GameAction::Callback_t> _gameActionCallbacks;
         Key _key;

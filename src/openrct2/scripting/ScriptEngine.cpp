@@ -39,6 +39,7 @@
     #include "bindings/entity/ScStaff.hpp"
     #include "bindings/entity/ScVehicle.hpp"
     #include "bindings/game/ScCheats.hpp"
+    #include "bindings/game/ScCompetition.hpp"
     #include "bindings/game/ScConsole.hpp"
     #include "bindings/game/ScContext.hpp"
     #include "bindings/game/ScDisposable.hpp"
@@ -510,6 +511,7 @@ void ScriptEngine::Initialise()
 JSRuntime* ScriptEngine::_runtime = nullptr;
 ScAward Scripting::gScAward;
 ScCheats Scripting::gScCheats;
+ScCompetition Scripting::gScCompetition;
 ScWeather Scripting::gScWeather;
 ScWeatherState Scripting::gScWeatherState;
 ScConfiguration Scripting::gScConfiguration;
@@ -674,6 +676,7 @@ void ScriptEngine::InitialiseContext(JSContext* ctx) const
     JSValue glb = JS_GetGlobalObject(ctx);
     JS_SetPropertyStr(ctx, glb, "cheats", gScCheats.New(ctx));
     JS_SetPropertyStr(ctx, glb, "climate", gScWeather.New(ctx));
+    JS_SetPropertyStr(ctx, glb, "competition", gScCompetition.New(ctx));
     JS_SetPropertyStr(ctx, glb, "console", gScConsole.New(ctx, _console));
     JS_SetPropertyStr(ctx, glb, "context", gScContext.New(ctx));
     JS_SetPropertyStr(ctx, glb, "date", gScDate.New(ctx));

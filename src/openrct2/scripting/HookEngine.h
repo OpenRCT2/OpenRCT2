@@ -43,6 +43,9 @@ namespace OpenRCT2::Scripting
         mapChanged,
         mapSave,
         parkCalculateGuestCap,
+        competitionStart,
+        competitionEnd,
+        competitionTick,
         count,
         notDefined = -1,
     };
