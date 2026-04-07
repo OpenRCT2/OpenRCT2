@@ -376,11 +376,13 @@ namespace OpenRCT2
             {
                 gameState.Competition.Status = Scripting::CompetitionStatus::Finished;
                 hookEngine.Call(HookType::competitionEnd, true);
+                Network::SendCompetitionUpdate();
             }
             else if (gameState.Competition.UpdateIntervalTicks > 0
                      && (gameState.currentTicks % gameState.Competition.UpdateIntervalTicks) == 0)
             {
                 hookEngine.Call(HookType::competitionTick, true);
+                Network::SendCompetitionUpdate();
             }
         }
 #endif

@@ -56,6 +56,7 @@ namespace OpenRCT2::Network
     bool CheckDesynchronisation();
     void RequestGamestateSnapshot();
     void SendTick();
+    void SendCompetitionUpdate();
     bool GamestateSnapshotsEnabled();
     void Update();
     void Tick();

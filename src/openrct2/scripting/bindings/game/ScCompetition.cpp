@@ -13,6 +13,7 @@
 
     #include "../../../Context.h"
     #include "../../../GameState.h"
+    #include "../../../network/Network.h"
     #include "../../CompetitionScoring.h"
     #include "../../CompetitionState.h"
 
@@ -160,9 +161,13 @@ namespace OpenRCT2::Scripting
         }
 
         comp.Status = CompetitionStatus::Finished;
+        comp.Scores.clear();
+        comp.DurationTicks = 0;
+        comp.StartTick = 0;
 
         auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
         hookEngine.Call(HookType::competitionEnd, true);
+        Network::SendCompetitionUpdate();
 
         return JS_UNDEFINED;
     }
@@ -204,7 +209,9 @@ namespace OpenRCT2::Scripting
             return JS_UNDEFINED;
         }
 
-        // Fire the competitionTick hook so subscribers can read the leaderboard.
+        // Broadcast state to connected clients, then fire the local hook.
+        Network::SendCompetitionUpdate();
+
         auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
         hookEngine.Call(HookType::competitionTick, true);
 

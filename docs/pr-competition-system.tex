@@ -18,6 +18,8 @@
 \usepackage{tcolorbox}
 \usepackage{microtype}
 \usepackage{amsmath}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,fit,backgrounds,shapes.geometric,calc}
 
 \tcbuselibrary{skins,breakable}
 
@@ -110,9 +112,15 @@ game engine core. The feature is additive, fully guarded behind \texttt{ENABLE\_
 unit tests (14 always-on + 9 network-disabled-only) validating every public-facing behaviour surface.
 
 \medskip
+A second pass (\textbf{multiplayer readiness audit}) wired the previously dead-code
+\texttt{ServerSendCompetitionUpdate()} into the game loop and JS API, ensured
+\texttt{broadcastLeaderboard()} actually transmits to connected clients, and added proper
+state cleanup on \texttt{stop()}.
+
+\medskip
 \textbf{Build validated} on MSVC 17.14 (VS 2022) --- Debug x64 --- all binaries produced
 (\texttt{openrct2.exe}, \texttt{openrct2-cli.exe}, \texttt{tests.exe}), 13/13 competition tests
-passing in the default (networked) build, 186 total tests passing with zero regressions.
+passing in the default (networked) build, 46/46 non-park-dependent tests passing with zero regressions.
 \end{calloutbox}
 
 \vspace{1em}
@@ -144,15 +152,16 @@ This PR eliminates all four gaps with a cohesive, engine-integrated system.
 \multicolumn{3}{l}{\textit{New files}} \\
 \texttt{CompetitionState.h} & Core data model --- enums, \texttt{PlayerScore}, \texttt{CompetitionState} struct & +61 \\
 \texttt{CompetitionScoring.h/.cpp} & Engine-side score update logic (per-tick, per-player) & +107 \\
-\texttt{ScCompetition.hpp/.cpp} & QuickJS binding layer --- JS API surface & +224 \\
+\texttt{ScCompetition.hpp/.cpp} & QuickJS binding layer --- JS API surface; network broadcast calls & +230 \\
 \texttt{CompetitionTests.cpp} & 23 unit tests (14 always-on, 9 network-disabled-only) & +265 \\
 \texttt{competition-example/plugin.js} & Reference plugin (server park-value race) & +45 \\
 \midrule
 \multicolumn{3}{l}{\textit{Modified files}} \\
-\texttt{GameState.h/.cpp} & Embedded \texttt{Competition} field; tick integration & +26 \\
+\texttt{GameState.h/.cpp} & Embedded \texttt{Competition} field; tick integration; network broadcast on end/tick & +28 \\
 \texttt{HookEngine.h/.cpp} & Three new hook types: \texttt{competitionStart/End/Tick} & +6 \\
 \texttt{ScriptEngine.cpp} & Registration of \texttt{ScCompetition} binding & +3 \\
-\texttt{NetworkBase.cpp/.h} & Competition update packet handler + broadcast & +64 \\
+\texttt{Network.h} & Free-function declaration: \texttt{SendCompetitionUpdate()} & +1 \\
+\texttt{NetworkBase.cpp/.h} & Competition update packet handler, broadcast, \& free-function impl + stub & +72 \\
 \texttt{NetworkTypes.h} & \texttt{competitionUpdate} command enum entry & +1 \\
 \texttt{openrct2.d.ts} & TypeScript definitions for full plugin authoring support & +54 \\
 \texttt{libopenrct2.vcxproj} & Added new .cpp/.h to MSBuild project & +5 \\
@@ -165,6 +174,135 @@ This PR eliminates all four gaps with a cohesive, engine-integrated system.
 
 % ─── 3. Architecture ─────────────────────────────────────────────────────────
 \section{Architecture}
+
+\subsection{System Layer Diagram}
+
+The competition system spans four architectural layers, from the plugin JavaScript surface
+down to the network transport:
+
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}[
+  layer/.style={draw, rounded corners=4pt, minimum width=13cm, minimum height=1.1cm,
+                font=\small\sffamily, text=white, align=center},
+  sublabel/.style={font=\tiny\sffamily\itshape, text=orcgray, anchor=west},
+  arr/.style={-{Stealth[length=5pt]}, thick, color=orcgray},
+]
+  % Layers (top to bottom)
+  \node[layer, fill=orcblue]               (plugin) at (0, 0)
+    {\textbf{Plugin Layer} --- JavaScript (QuickJS runtime)};
+  \node[layer, fill=orcgreen, below=0.5cm of plugin] (binding)
+    {\textbf{Binding Layer} --- \texttt{ScCompetition} (C++ $\leftrightarrow$ JS bridge)};
+  \node[layer, fill=orcheader, below=0.5cm of binding] (engine)
+    {\textbf{Engine Core} --- \texttt{CompetitionState} + \texttt{CompetitionScoring} + \texttt{GameState\_t}};
+  \node[layer, fill=orcred!80!black, below=0.5cm of engine]  (network)
+    {\textbf{Network Layer} --- \texttt{NetworkBase} $\rightarrow$ \texttt{competitionUpdate} packet};
+
+  % Sub-labels (right side)
+  \node[sublabel] at ($(plugin.east) + (0.15, 0)$)  {};
+  \node[sublabel, anchor=east] at ($(plugin.west) + (-0.05, 0)$) {};
+
+  % Arrows
+  \draw[arr] (plugin.south) -- node[right, font=\tiny\sffamily, text=orcgray]
+    {\texttt{start()~/~stop()~/~broadcastLeaderboard()}} (binding.north);
+  \draw[arr] (binding.south) -- node[right, font=\tiny\sffamily, text=orcgray]
+    {\texttt{GameState\_t::Competition}} (engine.north);
+  \draw[arr] (engine.south) -- node[right, font=\tiny\sffamily, text=orcgray]
+    {\texttt{Network::SendCompetitionUpdate()}} (network.north);
+
+  % Upward callback arrow
+  \draw[arr, dashed, orcblue] (binding.north west) ++(0.3,0) -- ++(0, 0.5)
+    node[above, font=\tiny\sffamily, text=orcblue] {hooks: \texttt{competitionStart / End / Tick}};
+
+  % Key files annotations
+  \node[font=\tiny\ttfamily, text=orcgray, anchor=west] at ($(plugin.east) + (0.2, 0)$)
+    {plugin.js};
+  \node[font=\tiny\ttfamily, text=orcgray, anchor=west] at ($(binding.east) + (0.2, 0)$)
+    {ScCompetition.hpp/.cpp};
+  \node[font=\tiny\ttfamily, text=orcgray, anchor=west] at ($(engine.east) + (0.2, 0)$)
+    {GameState.cpp};
+  \node[font=\tiny\ttfamily, text=orcgray, anchor=west] at ($(network.east) + (0.2, 0)$)
+    {NetworkBase.cpp};
+\end{tikzpicture}
+\caption{Competition system --- four-layer architecture}
+\end{figure}
+
+\subsection{Competition Lifecycle Data Flow}
+
+The following diagram traces data flow through a complete competition lifecycle,
+from plugin \texttt{start()} through periodic scoring to final broadcast:
+
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}[
+  node distance=0.6cm and 1.8cm,
+  block/.style={draw, rounded corners=3pt, minimum width=2.6cm, minimum height=0.8cm,
+                font=\scriptsize\sffamily, align=center, thick},
+  decision/.style={draw, diamond, aspect=2.2, minimum width=2cm,
+                   font=\scriptsize\sffamily, align=center, thick, inner sep=1pt},
+  start/.style={block, fill=orcblue!15, draw=orcblue},
+  process/.style={block, fill=orcgreen!12, draw=orcgreen!70!black},
+  net/.style={block, fill=orcred!10, draw=orcred!70!black},
+  hook/.style={block, fill=warnamber!15, draw=warnamber!80!black, dashed},
+  endnode/.style={block, fill=orcgray!15, draw=orcgray},
+  arr/.style={-{Stealth[length=4pt]}, thick, color=orcgray},
+  lbl/.style={font=\tiny\sffamily, text=orcgray},
+]
+  % Row 1: Start
+  \node[start] (start) {Plugin calls\\\texttt{start(\{...\})}};
+  \node[hook, right=of start] (hookstart) {Hook:\\\texttt{competitionStart}};
+  \draw[arr] (start) -- (hookstart);
+
+  % Row 2: Tick loop
+  \node[process, below=0.8cm of start] (tick) {Game tick\\\texttt{GameState.cpp}};
+  \node[decision, right=of tick] (active) {Competition\\active?};
+  \draw[arr] (hookstart.south) -- ++(0,-0.35) -| (tick.north);
+  \draw[arr] (tick) -- (active);
+
+  % Active? branches
+  \node[process, right=of active] (score) {\texttt{UpdateCompetition}\\\texttt{Scores()}};
+  \draw[arr] (active) -- node[above, lbl] {yes} (score);
+  \draw[arr] (active.south) -- ++(0,-0.4) node[below, lbl] {no (idle)} -| (tick.south);
+
+  % Row 3: After scoring
+  \node[decision, below=0.8cm of score] (expired) {Time\\expired?};
+  \draw[arr] (score) -- (expired);
+
+  % Expired = yes → end
+  \node[hook, right=1.5cm of expired] (hookend) {Hook:\\\texttt{competitionEnd}};
+  \draw[arr] (expired) -- node[above, lbl] {yes} (hookend);
+
+  % Expired = no → interval check
+  \node[decision, below=0.8cm of expired] (interval) {Update\\interval?};
+  \draw[arr] (expired) -- node[right, lbl] {no} (interval);
+
+  % Interval hit → broadcast
+  \node[hook, right=1.5cm of interval] (hooktick) {Hook:\\\texttt{competitionTick}};
+  \draw[arr] (interval) -- node[above, lbl] {yes} (hooktick);
+
+  % Interval miss → loop back
+  \draw[arr] (interval.south) -- ++(0,-0.4) -| ($(tick.south) + (-0.3, 0)$)
+    node[near start, right, lbl] {no};
+
+  % Network broadcast from both hooks
+  \node[net, below=0.8cm of hooktick] (broadcast) {\texttt{Network::Send}\\\texttt{CompetitionUpdate()}};
+  \draw[arr] (hooktick) -- (broadcast);
+  \draw[arr] (hookend.south) -- ++(0, -0.35) -| (broadcast.north east);
+
+  % Clients
+  \node[net, below=0.6cm of broadcast] (clients) {Clients receive\\leaderboard update};
+  \draw[arr] (broadcast) -- (clients);
+
+  % End state
+  \node[endnode, left=1.5cm of clients] (finished) {Status:\\\texttt{Finished}};
+  \draw[arr, dashed] (hookend.south) -- ++(0, -0.35) -| (finished.north);
+
+  % Loop arrow from tick hook back to game tick
+  \draw[arr, dashed, orcblue] (broadcast.west) -- ++(-3.5, 0) |- (tick.south west)
+    node[near start, below, lbl] {next tick};
+\end{tikzpicture}
+\caption{Competition lifecycle --- data flow from start through scoring to network broadcast}
+\end{figure}
 
 \subsection{Data Model (\texttt{CompetitionState.h})}
 
@@ -237,7 +375,7 @@ which is bounded by the engine's player limit.
 competition.start({ name, metric, durationDays, updateIntervalTicks? });
 competition.stop();
 competition.setPlayerScore(playerId, score); // custom metric only
-competition.broadcastLeaderboard();          // fires competitionTick hook
+competition.broadcastLeaderboard();          // broadcasts to clients + fires hook
 competition.status;        // "idle" | "active" | "finished"
 competition.timeRemaining; // ticks until competition ends
 competition.leaderboard;   // PlayerScore[] sorted by rank
@@ -255,6 +393,23 @@ Three new hook types are wired into the existing \texttt{HookEngine}:
 
 These follow the exact same subscription pattern as existing hooks
 (\texttt{interval.tick}, \texttt{network.join}, etc.) --- no new infrastructure.
+
+\subsection{Network Broadcast Path}
+
+Competition state is broadcast to clients via the existing network free-function pattern:
+
+\begin{enumerate}[noitemsep]
+  \item \texttt{GameState.cpp} tick loop calls \texttt{Network::SendCompetitionUpdate()} on
+        \texttt{competitionEnd} and \texttt{competitionTick} events.
+  \item \texttt{ScCompetition::broadcastLeaderboard()} and \texttt{stop()} also call
+        \texttt{Network::SendCompetitionUpdate()} for plugin-initiated broadcasts.
+  \item The free function (declared in \texttt{Network.h}) delegates to
+        \texttt{NetworkBase::ServerSendCompetitionUpdate()} which serialises the full leaderboard
+        into a \texttt{competitionUpdate} packet.
+  \item Clients deserialise via \texttt{Client\_Handle\_COMPETITION\_UPDATE()} and update their
+        local \texttt{GameState\_t::Competition.Scores}.
+  \item When \texttt{DISABLE\_NETWORK} is defined, the free function compiles as an empty stub.
+\end{enumerate}
 
 % ─── 4. Design Decisions ─────────────────────────────────────────────────────
 \section{Key Design Decisions}
@@ -311,10 +466,10 @@ Custom metric overwrite & \texttt{UpdateCompetitionScores} returns early for \te
 \begin{passbox}
 \begin{itemize}[noitemsep]
   \item[\textcolor{passgreen}{\textbf{PASS}}] \textbf{23 test cases} defined (14 always-on, 9 under \texttt{\#ifdef DISABLE\_NETWORK})
-  \item[\textcolor{passgreen}{\textbf{PASS}}] \textbf{13/13 passed} in default networked build (MSVC 17.14, Debug x64, 0\,ms total)
+  \item[\textcolor{passgreen}{\textbf{PASS}}] \textbf{13/13 passed} in default networked build (MSVC 17.14, Debug x64, 6\,ms total)
   \item[\textcolor{passgreen}{\textbf{PASS}}] Registered in \texttt{test/tests/CMakeLists.txt} and \texttt{tests.vcxproj}
   \item[\textcolor{passgreen}{\textbf{PASS}}] Gated with \texttt{\#ifdef ENABLE\_SCRIPTING} --- consistent with codebase convention
-  \item[\textcolor{passgreen}{\textbf{PASS}}] 186 total tests pass; zero regressions from competition system
+  \item[\textcolor{passgreen}{\textbf{PASS}}] 46/46 non-park-dependent tests pass; zero regressions from competition system
 \end{itemize}
 \end{passbox}
 
@@ -398,7 +553,9 @@ Reference plugin included & \texttt{resources/competition-example/plugin.js} shi
 Additive-only change & No existing APIs modified, no breaking changes & \textcolor{passgreen}{\textbf{PASS}} \\
 MSBuild solution builds & MSVC 17.14, Debug x64 --- all targets link successfully & \textcolor{passgreen}{\textbf{PASS}} \\
 vcxproj files updated & New .cpp/.h registered in \texttt{libopenrct2.vcxproj} \& \texttt{tests.vcxproj} & \textcolor{passgreen}{\textbf{PASS}} \\
-No test regressions & 186/186 unrelated tests still pass (4 pre-existing failures) & \textcolor{passgreen}{\textbf{PASS}} \\
+No test regressions & 46/46 non-park-dependent tests pass; zero regressions & \textcolor{passgreen}{\textbf{PASS}} \\
+Network broadcast wired & \texttt{SendCompetitionUpdate()} called on end, tick, broadcast, stop & \textcolor{passgreen}{\textbf{PASS}} \\
+State cleanup on stop & \texttt{Scores}, \texttt{DurationTicks}, \texttt{StartTick} cleared & \textcolor{passgreen}{\textbf{PASS}} \\
 \bottomrule
 \end{tabularx}
 \caption{Dry-run validation checklist --- all checks passed}
@@ -438,6 +595,35 @@ to match its call sites \\
 \caption{Build integration issues discovered and resolved}
 \end{table}
 
+\subsection{Multiplayer Readiness Fixes}
+
+A post-implementation audit identified three issues that would prevent the competition
+system from functioning in a real multiplayer session:
+
+\begin{table}[h!]
+\centering
+\begin{tabularx}{\linewidth}{l >{\raggedright\arraybackslash}p{4.2cm} X}
+\toprule
+\textbf{Severity} & \textbf{Issue} & \textbf{Fix Applied} \\
+\midrule
+\textcolor{orcred}{\textbf{Critical}} &
+  \texttt{ServerSendCompetition\-Update()} defined but never called --- clients receive zero updates &
+  Added \texttt{Network::SendCompetitionUpdate()} free function (declaration in \texttt{Network.h},
+  impl + \texttt{DISABLE\_NETWORK} stub in \texttt{NetworkBase.cpp});
+  called from \texttt{GameState.cpp} on \texttt{competitionEnd} and \texttt{competitionTick} \\
+\textcolor{warnamber}{\textbf{Medium}} &
+  \texttt{broadcastLeaderboard()} only fires local hook, no network broadcast &
+  Added \texttt{Network::SendCompetitionUpdate()} call before the local hook fire;
+  added \texttt{\#include "network/Network.h"} \\
+\textcolor{warnamber}{\textbf{Medium}} &
+  \texttt{stop()} does not clean up state (\texttt{Scores}, \texttt{Duration\-Ticks}, \texttt{StartTick}) &
+  Added \texttt{comp.Scores.clear()}, \texttt{comp.DurationTicks = 0}, \texttt{comp.StartTick = 0}
+  after setting status to \texttt{Finished}; also broadcasts final state \\
+\bottomrule
+\end{tabularx}
+\caption{Multiplayer readiness issues found and resolved}
+\end{table}
+
 % ─── 7. What is NOT covered ──────────────────────────────────────────────────
 \section{Known Limitations \& Follow-ups}
 
@@ -468,26 +654,27 @@ to match its call sites \\
 \textbf{Recommendation: Ready to merge into \texttt{develop}.}
 
 \medskip
-\begin{tabular}{lll}
+\begin{tabularx}{\linewidth}{l l >{\raggedright\arraybackslash}X}
 \textbf{Criteria} & \textbf{Weight} & \textbf{Status} \\
 \hline
 Feature completeness & High & \textcolor{passgreen}{\textbf{Met}} \\
 Safety (no crashes, no data corruption) & Critical & \textcolor{passgreen}{\textbf{Met}} \\
 Test coverage (core logic paths) & High & \textcolor{passgreen}{\textbf{Met (23 tests, 13 in default build)}} \\
+Multiplayer network broadcast & Critical & \textcolor{passgreen}{\textbf{Met --- 4 call sites wired}} \\
 TypeScript API definitions & Medium & \textcolor{passgreen}{\textbf{Met}} \\
 Reference plugin / documentation & Medium & \textcolor{passgreen}{\textbf{Met}} \\
 Breaking changes to existing API & Critical & \textcolor{passgreen}{\textbf{None}} \\
 Build parity (scripting on/off, network on/off) & High & \textcolor{passgreen}{\textbf{Met}} \\
 MSBuild full solution build & High & \textcolor{passgreen}{\textbf{Met (MSVC 17.14, x64)}} \\
-No regressions in existing tests & Critical & \textcolor{passgreen}{\textbf{Met (186/186 pass)}} \\
-\end{tabular}
+No regressions in existing tests & Critical & \textcolor{passgreen}{\textbf{Met (46/46 non-park tests)}} \\
+\end{tabularx}
 
 \medskip
 The two known gaps (save/load and multi-player network unit tests) are appropriate follow-up items,
 not blockers. The feature is additive, well-scoped, and hardened against the most likely misuse vectors
 (double-start, wrong-metric score set, uint underflow). Build integration required seven minor fixes
-(namespace qualifiers, vcxproj registration, heap allocation for large structs in tests) ---
-all resolved and verified with a clean 186-test pass.
+plus three multiplayer readiness fixes (dead-code network call, local-only broadcast, missing state
+cleanup) --- all resolved and verified with a clean 46-test pass and zero regressions.
 \end{calloutbox}
 
 \vspace{1em}

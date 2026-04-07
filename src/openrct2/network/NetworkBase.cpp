@@ -3338,6 +3338,11 @@ namespace OpenRCT2::Network
         GetContext()->GetNetwork().ServerSendTick();
     }
 
+    void SendCompetitionUpdate()
+    {
+        GetContext()->GetNetwork().ServerSendCompetitionUpdate();
+    }
+
     Auth GetAuthstatus()
     {
         return GetContext()->GetNetwork().GetAuthStatus();
@@ -4182,6 +4187,9 @@ namespace OpenRCT2::Network
     {
     }
     void SendTick()
+    {
+    }
+    void SendCompetitionUpdate()
     {
     }
     bool IsDesynchronised()
