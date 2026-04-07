@@ -2363,9 +2363,7 @@ namespace OpenRCT2
     void Guest::SpendMoney(money64& peep_expend_type, money64 amount, ExpenditureType expenditure)
     {
         // TODO: get park based on guest
-        auto& gameState = getGameState();
-        auto& park = getUpdatingPark(gameState);
-        assert(!(park.flags & PARK_FLAGS_NO_MONEY));
+        assert(!(getUpdatingPark(getGameState()).flags & PARK_FLAGS_NO_MONEY));
 
         CashInPocket = std::max(0.00_GBP, CashInPocket - amount);
         CashSpent = AddClamp(CashSpent, amount);
