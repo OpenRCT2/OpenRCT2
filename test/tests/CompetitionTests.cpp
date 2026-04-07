@@ -10,9 +10,11 @@
 #ifdef ENABLE_SCRIPTING
 
     #include <gtest/gtest.h>
+    #include <memory>
     #include <openrct2/GameState.h>
     #include <openrct2/scripting/CompetitionScoring.h>
     #include <openrct2/scripting/CompetitionState.h>
+    #include <openrct2/world/tile_element/TileElement.h>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Scripting;
@@ -123,119 +125,124 @@ TEST(PlayerScoreTests, DefaultValues)
 // without a running game context.
 // ---------------------------------------------------------------------------
 
+    #ifdef DISABLE_NETWORK
+
 // Helpers to build a minimal GameState_t for scoring tests.
-static GameState_t MakeGameState(
+static void InitGameState(
+    GameState_t& gs,
     CompetitionMetric metric,
     money64 parkValue = 0,
     uint32_t guestCount = 0,
     uint16_t rating = 0)
 {
-    GameState_t gs{};
     gs.Competition.Status = CompetitionStatus::Active;
     gs.Competition.Metric = metric;
     gs.park.value = parkValue;
     gs.park.numGuestsInPark = static_cast<uint32_t>(guestCount);
     gs.park.rating = rating;
-    return gs;
 }
-
-    #ifdef DISABLE_NETWORK
 
 TEST(UpdateCompetitionScoresTests, IdleCompetitionIsSkipped)
 {
-    GameState_t gs{};
-    gs.Competition.Status = CompetitionStatus::Idle;
-    gs.park.value = 99999;
+    auto gs = std::make_unique<GameState_t>();
+    gs->Competition.Status = CompetitionStatus::Idle;
+    gs->park.value = 99999;
 
-    UpdateCompetitionScores(gs);
+    UpdateCompetitionScores(*gs);
 
-    EXPECT_TRUE(gs.Competition.Scores.empty());
+    EXPECT_TRUE(gs->Competition.Scores.empty());
 }
 
 TEST(UpdateCompetitionScoresTests, FinishedCompetitionIsSkipped)
 {
-    GameState_t gs{};
-    gs.Competition.Status = CompetitionStatus::Finished;
-    gs.park.value = 99999;
+    auto gs = std::make_unique<GameState_t>();
+    gs->Competition.Status = CompetitionStatus::Finished;
+    gs->park.value = 99999;
 
-    UpdateCompetitionScores(gs);
+    UpdateCompetitionScores(*gs);
 
-    EXPECT_TRUE(gs.Competition.Scores.empty());
+    EXPECT_TRUE(gs->Competition.Scores.empty());
 }
 
 TEST(UpdateCompetitionScoresTests, ParkValueMetricSetsScore)
 {
-    auto gs = MakeGameState(CompetitionMetric::ParkValue, /*parkValue=*/12345);
+    auto gs = std::make_unique<GameState_t>();
+    InitGameState(*gs, CompetitionMetric::ParkValue, /*parkValue=*/12345);
 
-    UpdateCompetitionScores(gs);
+    UpdateCompetitionScores(*gs);
 
-    ASSERT_EQ(gs.Competition.Scores.count(0), 1u);
-    EXPECT_EQ(gs.Competition.Scores.at(0).Score, 12345);
+    ASSERT_EQ(gs->Competition.Scores.count(0), 1u);
+    EXPECT_EQ(gs->Competition.Scores.at(0).Score, 12345);
 }
 
 TEST(UpdateCompetitionScoresTests, GuestCountMetricSetsScore)
 {
-    auto gs = MakeGameState(CompetitionMetric::GuestCount, 0, /*guestCount=*/500);
+    auto gs = std::make_unique<GameState_t>();
+    InitGameState(*gs, CompetitionMetric::GuestCount, 0, /*guestCount=*/500);
 
-    UpdateCompetitionScores(gs);
+    UpdateCompetitionScores(*gs);
 
-    ASSERT_EQ(gs.Competition.Scores.count(0), 1u);
-    EXPECT_EQ(gs.Competition.Scores.at(0).Score, 500);
+    ASSERT_EQ(gs->Competition.Scores.count(0), 1u);
+    EXPECT_EQ(gs->Competition.Scores.at(0).Score, 500);
 }
 
 TEST(UpdateCompetitionScoresTests, ParkRatingMetricSetsScore)
 {
-    auto gs = MakeGameState(CompetitionMetric::ParkRating, 0, 0, /*rating=*/850);
+    auto gs = std::make_unique<GameState_t>();
+    InitGameState(*gs, CompetitionMetric::ParkRating, 0, 0, /*rating=*/850);
 
-    UpdateCompetitionScores(gs);
+    UpdateCompetitionScores(*gs);
 
-    ASSERT_EQ(gs.Competition.Scores.count(0), 1u);
-    EXPECT_EQ(gs.Competition.Scores.at(0).Score, 850);
+    ASSERT_EQ(gs->Competition.Scores.count(0), 1u);
+    EXPECT_EQ(gs->Competition.Scores.at(0).Score, 850);
 }
 
 TEST(UpdateCompetitionScoresTests, CustomMetricDoesNotOverwriteScores)
 {
-    GameState_t gs{};
-    gs.Competition.Status = CompetitionStatus::Active;
-    gs.Competition.Metric = CompetitionMetric::Custom;
+    auto gs = std::make_unique<GameState_t>();
+    gs->Competition.Status = CompetitionStatus::Active;
+    gs->Competition.Metric = CompetitionMetric::Custom;
 
     // Plugin pre-set a score
     PlayerScore ps{};
     ps.PlayerId = 0;
     ps.Score = 9999;
-    gs.Competition.Scores[0] = ps;
+    gs->Competition.Scores[0] = ps;
 
-    UpdateCompetitionScores(gs);
+    UpdateCompetitionScores(*gs);
 
     // Score must remain plugin-owned; UpdateCompetitionScores must not touch it.
-    EXPECT_EQ(gs.Competition.Scores.at(0).Score, 9999);
+    EXPECT_EQ(gs->Competition.Scores.at(0).Score, 9999);
 }
 
 TEST(UpdateCompetitionScoresTests, SinglePlayerRankIsAlwaysOne)
 {
-    auto gs = MakeGameState(CompetitionMetric::ParkValue, 5000);
+    auto gs = std::make_unique<GameState_t>();
+    InitGameState(*gs, CompetitionMetric::ParkValue, 5000);
 
-    UpdateCompetitionScores(gs);
+    UpdateCompetitionScores(*gs);
 
-    EXPECT_EQ(gs.Competition.Scores.at(0).Rank, 1);
+    EXPECT_EQ(gs->Competition.Scores.at(0).Rank, 1);
 }
 
 TEST(UpdateCompetitionScoresTests, SinglePlayerNameIsPlayer)
 {
-    auto gs = MakeGameState(CompetitionMetric::ParkValue, 1000);
+    auto gs = std::make_unique<GameState_t>();
+    InitGameState(*gs, CompetitionMetric::ParkValue, 1000);
 
-    UpdateCompetitionScores(gs);
+    UpdateCompetitionScores(*gs);
 
-    EXPECT_EQ(gs.Competition.Scores.at(0).PlayerName, "Player");
+    EXPECT_EQ(gs->Competition.Scores.at(0).PlayerName, "Player");
 }
 
 TEST(UpdateCompetitionScoresTests, ZeroParkValueGivesZeroScore)
 {
-    auto gs = MakeGameState(CompetitionMetric::ParkValue, 0);
+    auto gs = std::make_unique<GameState_t>();
+    InitGameState(*gs, CompetitionMetric::ParkValue, 0);
 
-    UpdateCompetitionScores(gs);
+    UpdateCompetitionScores(*gs);
 
-    EXPECT_EQ(gs.Competition.Scores.at(0).Score, 0);
+    EXPECT_EQ(gs->Competition.Scores.at(0).Score, 0);
 }
 
     #endif // DISABLE_NETWORK
@@ -247,13 +254,13 @@ TEST(UpdateCompetitionScoresTests, ZeroParkValueGivesZeroScore)
 
 TEST(CompetitionRankTests, HigherScoreGetsLowerRank)
 {
-    GameState_t gs{};
-    gs.Competition.Status = CompetitionStatus::Active;
-    gs.Competition.Metric = CompetitionMetric::Custom;
+    CompetitionState comp{};
+    comp.Status = CompetitionStatus::Active;
+    comp.Metric = CompetitionMetric::Custom;
 
-    gs.Competition.Scores[0] = { 0, "Alice", 100, 0 };
-    gs.Competition.Scores[1] = { 1, "Bob", 200, 0 };
-    gs.Competition.Scores[2] = { 2, "Carol", 150, 0 };
+    comp.Scores[0] = { 0, "Alice", 100, 0 };
+    comp.Scores[1] = { 1, "Bob", 200, 0 };
+    comp.Scores[2] = { 2, "Carol", 150, 0 };
 
     // Custom metric returns early without updating scores — call UpdateCompetitionScores
     // just to trigger rank computation... except UpdateCompetitionScores returns early for
@@ -262,36 +269,36 @@ TEST(CompetitionRankTests, HigherScoreGetsLowerRank)
 
     // Sort descending by score.
     std::vector<std::pair<uint8_t, int64_t>> entries;
-    for (auto& [id, ps] : gs.Competition.Scores)
+    for (auto& [id, ps] : comp.Scores)
         entries.emplace_back(id, ps.Score);
     std::sort(entries.begin(), entries.end(), [](auto& a, auto& b) { return a.second > b.second; });
 
     for (int32_t rank = 0; rank < static_cast<int32_t>(entries.size()); rank++)
-        gs.Competition.Scores[entries[rank].first].Rank = rank + 1;
+        comp.Scores[entries[rank].first].Rank = rank + 1;
 
-    EXPECT_EQ(gs.Competition.Scores.at(1).Rank, 1); // Bob: 200 → rank 1
-    EXPECT_EQ(gs.Competition.Scores.at(2).Rank, 2); // Carol: 150 → rank 2
-    EXPECT_EQ(gs.Competition.Scores.at(0).Rank, 3); // Alice: 100 → rank 3
+    EXPECT_EQ(comp.Scores.at(1).Rank, 1); // Bob: 200 → rank 1
+    EXPECT_EQ(comp.Scores.at(2).Rank, 2); // Carol: 150 → rank 2
+    EXPECT_EQ(comp.Scores.at(0).Rank, 3); // Alice: 100 → rank 3
 }
 
 TEST(CompetitionRankTests, AllEqualScoresAllGetDistinctRanks)
 {
     // Tie-breaking: all equal scores still produce distinct ranks 1-3 (order stable by id).
-    GameState_t gs{};
-    gs.Competition.Scores[0] = { 0, "A", 500, 0 };
-    gs.Competition.Scores[1] = { 1, "B", 500, 0 };
-    gs.Competition.Scores[2] = { 2, "C", 500, 0 };
+    CompetitionState comp{};
+    comp.Scores[0] = { 0, "A", 500, 0 };
+    comp.Scores[1] = { 1, "B", 500, 0 };
+    comp.Scores[2] = { 2, "C", 500, 0 };
 
     std::vector<uint8_t> ids = { 0, 1, 2 };
-    std::stable_sort(ids.begin(), ids.end(), [&gs](uint8_t a, uint8_t b) {
-        return gs.Competition.Scores[a].Score > gs.Competition.Scores[b].Score;
+    std::stable_sort(ids.begin(), ids.end(), [&comp](uint8_t a, uint8_t b) {
+        return comp.Scores[a].Score > comp.Scores[b].Score;
     });
     for (int32_t r = 0; r < static_cast<int32_t>(ids.size()); r++)
-        gs.Competition.Scores[ids[r]].Rank = r + 1;
+        comp.Scores[ids[r]].Rank = r + 1;
 
     // All ranks assigned and unique
     std::set<int32_t> ranks;
-    for (auto& [id, ps] : gs.Competition.Scores)
+    for (auto& [id, ps] : comp.Scores)
         ranks.insert(ps.Rank);
 
     EXPECT_EQ(ranks.size(), 3u);

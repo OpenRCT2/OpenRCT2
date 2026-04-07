@@ -658,6 +658,9 @@
     <ClInclude Include="scripting\bindings\world\ScTile.hpp" />
     <ClInclude Include="scripting\bindings\world\ScTileElement.hpp" />
     <ClInclude Include="scripting\bindings\world\ScWeather.hpp" />
+    <ClInclude Include="scripting\CompetitionScoring.h" />
+    <ClInclude Include="scripting\CompetitionState.h" />
+    <ClInclude Include="scripting\bindings\game\ScCompetition.hpp" />
     <ClInclude Include="scripting\HookEngine.h" />
     <ClInclude Include="scripting\IconNames.hpp" />
     <ClInclude Include="scripting\Plugin.h" />
@@ -1223,6 +1226,8 @@
     <ClCompile Include="scripting\bindings\world\ScResearch.cpp" />
     <ClCompile Include="scripting\bindings\world\ScTile.cpp" />
     <ClCompile Include="scripting\bindings\world\ScTileElement.cpp" />
+    <ClCompile Include="scripting\CompetitionScoring.cpp" />
+    <ClCompile Include="scripting\bindings\game\ScCompetition.cpp" />
     <ClCompile Include="scripting\HookEngine.cpp" />
     <ClCompile Include="scripting\Plugin.cpp" />
     <ClCompile Include="scripting\ScriptEngine.cpp" />

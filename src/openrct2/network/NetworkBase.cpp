@@ -4136,7 +4136,7 @@ namespace OpenRCT2::Network
         comp.Scores.clear();
         for (uint8_t i = 0; i < playerCount; i++)
         {
-            PlayerScore entry;
+            Scripting::PlayerScore entry;
             packet >> entry.PlayerId;
             auto playerName = packet.ReadString();
             entry.PlayerName = std::string(playerName);
@@ -4151,7 +4151,7 @@ namespace OpenRCT2::Network
             comp.Status = Scripting::CompetitionStatus::Active;
         }
 
-        auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
+        auto& hookEngine = GetContext().GetScriptEngine().GetHookEngine();
         hookEngine.Call(Scripting::HookType::competitionTick, true);
 #endif
     }
