@@ -223,6 +223,8 @@ bool MarketingIsCampaignTypeApplicable(int32_t campaignType)
                 {
                     for (auto& item : rideEntry->shop_item)
                     {
+                        if (item == ShopItem::none)
+                            continue;
                         if (GetShopItemDescriptor(item).IsFoodOrDrink())
                         {
                             return true;
