@@ -77,7 +77,7 @@ namespace OpenRCT2::Network
 
     const uint8_t* Packet::Read(size_t size)
     {
-        if (BytesRead + size > Data.size())
+        if (BytesRead > Data.size() || size > (Data.size() - BytesRead))
         {
             return nullptr;
         }

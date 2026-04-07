@@ -111,6 +111,16 @@ namespace OpenRCT2::Network
     static u8string GetPrivateKeyPath(u8string_view playerName);
     static u8string GetPublicKeyPath(u8string_view playerName, u8string_view hash);
 
+    static const uint8_t* ReadRequired(Packet& packet, size_t size)
+    {
+        const auto* data = packet.Read(size);
+        if (data == nullptr)
+        {
+            throw std::runtime_error("Failed to read packet.");
+        }
+        return data;
+    }
+
     NetworkBase::NetworkBase(IContext& context)
         : System(context)
     {
@@ -2299,7 +2309,7 @@ namespace OpenRCT2::Network
 
         uint32_t challenge_size;
         packet >> challenge_size;
-        const char* challenge = reinterpret_cast<const char*>(packet.Read(challenge_size));
+        const char* challenge = reinterpret_cast<const char*>(ReadRequired(packet, challenge_size));
 
         std::vector<uint8_t> signature;
         const std::string pubkey = _key.PublicKeyString();
@@ -2523,7 +2533,7 @@ namespace OpenRCT2::Network
             uint32_t codeSize{};
             packet >> codeSize;
 
-            const uint8_t* scriptData = packet.Read(codeSize);
+            const uint8_t* scriptData = ReadRequired(packet, codeSize);
 
             auto code = std::string_view(reinterpret_cast<const char*>(scriptData), codeSize);
             scriptEngine.AddNetworkPlugin(code);
@@ -2553,7 +2563,7 @@ namespace OpenRCT2::Network
 
         _serverGameState.SetPosition(offset);
 
-        const uint8_t* data = packet.Read(dataSize);
+        const uint8_t* data = ReadRequired(packet, dataSize);
         _serverGameState.Write(data, dataSize);
 
         LOG_VERBOSE(
@@ -2620,7 +2630,7 @@ namespace OpenRCT2::Network
             const ObjectRepositoryItem* item{};
             if (generation == static_cast<uint8_t>(ObjectGeneration::DAT))
             {
-                const auto* entry = reinterpret_cast<const RCTObjectEntry*>(packet.Read(sizeof(RCTObjectEntry)));
+                const auto* entry = reinterpret_cast<const RCTObjectEntry*>(ReadRequired(packet, sizeof(RCTObjectEntry)));
                 objectName = std::string(entry->GetName());
                 LOG_VERBOSE("Client requested object %s", objectName.c_str());
                 item = repo.FindObject(entry);
@@ -2967,7 +2977,7 @@ namespace OpenRCT2::Network
 
         MemoryStream stream;
         const size_t size = packet.Header.size - packet.BytesRead;
-        stream.WriteArray(packet.Read(size), size);
+        stream.WriteArray(ReadRequired(packet, size), size);
         stream.SetPosition(0);
 
         DataSerialiser ds(false, stream);
@@ -3057,7 +3067,7 @@ namespace OpenRCT2::Network
 
         DataSerialiser stream(false);
         const size_t size = packet.Header.size - packet.BytesRead;
-        stream.GetStream().WriteArray(packet.Read(size), size);
+        stream.GetStream().WriteArray(ReadRequired(packet, size), size);
         stream.GetStream().SetPosition(0);
 
         ga->Serialise(stream);
