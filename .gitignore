@@ -321,3 +321,6 @@ discord-rpc
 
 # CMake
 cmake-build-*/
+
+# PR review documents
+docs/pr-competition-system.tex

@@ -81,9 +81,7 @@ namespace OpenRCT2::Scripting
         {
             sorted.push_back(&score);
         }
-        std::sort(sorted.begin(), sorted.end(), [](const PlayerScore* a, const PlayerScore* b) {
-            return a->Rank < b->Rank;
-        });
+        std::sort(sorted.begin(), sorted.end(), [](const PlayerScore* a, const PlayerScore* b) { return a->Rank < b->Rank; });
 
         JSValue arr = JS_NewArray(ctx);
         for (size_t i = 0; i < sorted.size(); i++)
@@ -150,7 +148,8 @@ namespace OpenRCT2::Scripting
         return JS_UNDEFINED;
     }
 
-    JSValue ScCompetition::stop(JSContext* ctx, [[maybe_unused]] JSValue thisVal, [[maybe_unused]] int argc, [[maybe_unused]] JSValue* argv)
+    JSValue ScCompetition::stop(
+        JSContext* ctx, [[maybe_unused]] JSValue thisVal, [[maybe_unused]] int argc, [[maybe_unused]] JSValue* argv)
     {
         auto& comp = getGameState().Competition;
 
@@ -200,8 +199,8 @@ namespace OpenRCT2::Scripting
     }
 
     JSValue ScCompetition::broadcastLeaderboard(
-        [[maybe_unused]] JSContext* ctx, [[maybe_unused]] JSValue thisVal,
-        [[maybe_unused]] int argc, [[maybe_unused]] JSValue* argv)
+        [[maybe_unused]] JSContext* ctx, [[maybe_unused]] JSValue thisVal, [[maybe_unused]] int argc,
+        [[maybe_unused]] JSValue* argv)
     {
         auto& comp = getGameState().Competition;
         if (!comp.IsActive() && comp.Status != CompetitionStatus::Finished)

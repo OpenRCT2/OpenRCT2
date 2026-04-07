@@ -378,8 +378,9 @@ namespace OpenRCT2
                 hookEngine.Call(HookType::competitionEnd, true);
                 Network::SendCompetitionUpdate();
             }
-            else if (gameState.Competition.UpdateIntervalTicks > 0
-                     && (gameState.currentTicks % gameState.Competition.UpdateIntervalTicks) == 0)
+            else if (
+                gameState.Competition.UpdateIntervalTicks > 0
+                && (gameState.currentTicks % gameState.Competition.UpdateIntervalTicks) == 0)
             {
                 hookEngine.Call(HookType::competitionTick, true);
                 Network::SendCompetitionUpdate();

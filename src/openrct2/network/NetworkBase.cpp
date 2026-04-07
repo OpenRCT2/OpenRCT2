@@ -4102,7 +4102,7 @@ namespace OpenRCT2::Network
 
     void NetworkBase::ServerSendCompetitionUpdate()
     {
-#ifdef ENABLE_SCRIPTING
+    #ifdef ENABLE_SCRIPTING
         auto& gameState = getGameState();
         auto& comp = gameState.Competition;
 
@@ -4120,12 +4120,12 @@ namespace OpenRCT2::Network
         }
 
         SendPacketToClients(packet);
-#endif
+    #endif
     }
 
     void NetworkBase::Client_Handle_COMPETITION_UPDATE([[maybe_unused]] Connection& connection, Packet& packet)
     {
-#ifdef ENABLE_SCRIPTING
+    #ifdef ENABLE_SCRIPTING
         auto& gameState = getGameState();
         auto& comp = gameState.Competition;
 
@@ -4158,7 +4158,7 @@ namespace OpenRCT2::Network
 
         auto& hookEngine = GetContext().GetScriptEngine().GetHookEngine();
         hookEngine.Call(Scripting::HookType::competitionTick, true);
-#endif
+    #endif
     }
 
 } // namespace OpenRCT2::Network

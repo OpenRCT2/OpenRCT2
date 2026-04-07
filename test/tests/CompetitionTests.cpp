@@ -129,11 +129,7 @@ TEST(PlayerScoreTests, DefaultValues)
 
 // Helpers to build a minimal GameState_t for scoring tests.
 static void InitGameState(
-    GameState_t& gs,
-    CompetitionMetric metric,
-    money64 parkValue = 0,
-    uint32_t guestCount = 0,
-    uint16_t rating = 0)
+    GameState_t& gs, CompetitionMetric metric, money64 parkValue = 0, uint32_t guestCount = 0, uint16_t rating = 0)
 {
     gs.Competition.Status = CompetitionStatus::Active;
     gs.Competition.Metric = metric;
@@ -290,9 +286,8 @@ TEST(CompetitionRankTests, AllEqualScoresAllGetDistinctRanks)
     comp.Scores[2] = { 2, "C", 500, 0 };
 
     std::vector<uint8_t> ids = { 0, 1, 2 };
-    std::stable_sort(ids.begin(), ids.end(), [&comp](uint8_t a, uint8_t b) {
-        return comp.Scores[a].Score > comp.Scores[b].Score;
-    });
+    std::stable_sort(
+        ids.begin(), ids.end(), [&comp](uint8_t a, uint8_t b) { return comp.Scores[a].Score > comp.Scores[b].Score; });
     for (int32_t r = 0; r < static_cast<int32_t>(ids.size()); r++)
         comp.Scores[ids[r]].Rank = r + 1;
 
@@ -321,12 +316,9 @@ TEST(CompetitionStatusTests, EnumValuesAreDistinct)
 TEST(CompetitionMetricTests, EnumValuesAreDistinct)
 {
     std::set<uint8_t> vals = {
-        static_cast<uint8_t>(CompetitionMetric::ParkValue),
-        static_cast<uint8_t>(CompetitionMetric::GuestCount),
-        static_cast<uint8_t>(CompetitionMetric::ParkRating),
-        static_cast<uint8_t>(CompetitionMetric::RideCount),
-        static_cast<uint8_t>(CompetitionMetric::MoneyEarned),
-        static_cast<uint8_t>(CompetitionMetric::Custom),
+        static_cast<uint8_t>(CompetitionMetric::ParkValue),   static_cast<uint8_t>(CompetitionMetric::GuestCount),
+        static_cast<uint8_t>(CompetitionMetric::ParkRating),  static_cast<uint8_t>(CompetitionMetric::RideCount),
+        static_cast<uint8_t>(CompetitionMetric::MoneyEarned), static_cast<uint8_t>(CompetitionMetric::Custom),
     };
     EXPECT_EQ(vals.size(), 6u);
 }

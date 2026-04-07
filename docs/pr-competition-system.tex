@@ -121,6 +121,11 @@ state cleanup on \texttt{stop()}.
 \textbf{Build validated} on MSVC 17.14 (VS 2022) --- Debug x64 --- all binaries produced
 (\texttt{openrct2.exe}, \texttt{openrct2-cli.exe}, \texttt{tests.exe}), 13/13 competition tests
 passing in the default (networked) build, 46/46 non-park-dependent tests passing with zero regressions.
+
+\medskip
+A final \textbf{code style compliance} pass applied 11 \texttt{clang-format} fixes across 4 files
+(\texttt{GameState.cpp}, \texttt{NetworkBase.cpp}, \texttt{ScCompetition.cpp},
+\texttt{CompetitionTests.cpp}) --- the formatter now exits cleanly with zero diff.
 \end{calloutbox}
 
 \vspace{1em}
@@ -556,6 +561,7 @@ vcxproj files updated & New .cpp/.h registered in \texttt{libopenrct2.vcxproj} \
 No test regressions & 46/46 non-park-dependent tests pass; zero regressions & \textcolor{passgreen}{\textbf{PASS}} \\
 Network broadcast wired & \texttt{SendCompetitionUpdate()} called on end, tick, broadcast, stop & \textcolor{passgreen}{\textbf{PASS}} \\
 State cleanup on stop & \texttt{Scores}, \texttt{DurationTicks}, \texttt{StartTick} cleared & \textcolor{passgreen}{\textbf{PASS}} \\
+Code style (\texttt{clang-format}) & 11 suggestions applied across 4 files; formatter exits 0 & \textcolor{passgreen}{\textbf{PASS}} \\
 \bottomrule
 \end{tabularx}
 \caption{Dry-run validation checklist --- all checks passed}
@@ -594,6 +600,31 @@ to match its call sites \\
 \end{tabularx}
 \caption{Build integration issues discovered and resolved}
 \end{table}
+
+\subsection{Code Style Compliance (\texttt{clang-format})}
+
+CI flagged 11 formatting suggestions via \texttt{parkerbxyz/suggest-changes@v3}.
+All 11 were applied in a single pass across four files:
+
+\begin{table}[h!]
+\centering
+\begin{tabularx}{\linewidth}{lrX}
+\toprule
+\textbf{File} & \textbf{Fixes} & \textbf{Nature of changes} \\
+\midrule
+\texttt{GameState.cpp} & 1 & \texttt{else if} condition line wrapping \\
+\texttt{NetworkBase.cpp} & 4 & \texttt{\#ifdef}/\texttt{\#endif} indentation inside function bodies \\
+\texttt{ScCompetition.cpp} & 3 & Lambda one-lining, function signature wrapping \\
+\texttt{CompetitionTests.cpp} & 3 & Parameter packing, lambda one-lining, initialiser list compaction \\
+\midrule
+\textbf{Total} & \textbf{11} & \textit{Cosmetic only --- zero semantic changes} \\
+\bottomrule
+\end{tabularx}
+\caption{\texttt{clang-format} fixes applied (11 suggestions from CI)}
+\end{table}
+
+Post-fix verification: rebuild succeeded (exit code 0), 13/13 competition tests passed,
+formatter exits cleanly with zero remaining diff.
 
 \subsection{Multiplayer Readiness Fixes}
 
@@ -672,9 +703,10 @@ No regressions in existing tests & Critical & \textcolor{passgreen}{\textbf{Met 
 \medskip
 The two known gaps (save/load and multi-player network unit tests) are appropriate follow-up items,
 not blockers. The feature is additive, well-scoped, and hardened against the most likely misuse vectors
-(double-start, wrong-metric score set, uint underflow). Build integration required seven minor fixes
-plus three multiplayer readiness fixes (dead-code network call, local-only broadcast, missing state
-cleanup) --- all resolved and verified with a clean 46-test pass and zero regressions.
+(double-start, wrong-metric score set, uint underflow). Build integration required seven minor fixes,
+three multiplayer readiness fixes (dead-code network call, local-only broadcast, missing state
+cleanup), and 11 \texttt{clang-format} cosmetic fixes --- all resolved and verified with a clean
+46-test pass, zero regressions, and a passing formatter check.
 \end{calloutbox}
 
 \vspace{1em}

@@ -22,6 +22,10 @@ Branch: `develop` | Commits: `babbb696e0`, `83e98f1a7b` | Date: April 7, 2026
 > **Build validated** on MSVC 17.14 (VS 2022) — Debug x64 — all binaries produced
 > (`openrct2.exe`, `openrct2-cli.exe`, `tests.exe`), 13/13 competition tests
 > passing in the default (networked) build, 46/46 non-park-dependent tests passing with zero regressions.
+>
+> A final **code style compliance** pass applied 11 `clang-format` fixes across 4 files
+> (`GameState.cpp`, `NetworkBase.cpp`, `ScCompetition.cpp`, `CompetitionTests.cpp`) —
+> the formatter now exits cleanly with zero diff.
 
 ---
 
@@ -312,8 +316,25 @@ Competition state is broadcast to clients via the existing network free-function
 | No test regressions | 46/46 non-park-dependent tests pass; zero regressions | **PASS** |
 | Network broadcast wired | `SendCompetitionUpdate()` called on end, tick, broadcast, stop | **PASS** |
 | State cleanup on stop | `Scores`, `DurationTicks`, `StartTick` cleared | **PASS** |
+| Code style (`clang-format`) | 11 suggestions applied across 4 files; formatter exits 0 | **PASS** |
 
-### 6.5 Build Issues Resolved During Integration
+### 6.5 Code Style Compliance (`clang-format`)
+
+CI flagged 11 formatting suggestions via `parkerbxyz/suggest-changes@v3`.
+All 11 were applied in a single pass across four files:
+
+| File | Fixes | Nature of changes |
+|---|---:|---|
+| `GameState.cpp` | 1 | `else if` condition line wrapping |
+| `NetworkBase.cpp` | 4 | `#ifdef`/`#endif` indentation inside function bodies |
+| `ScCompetition.cpp` | 3 | Lambda one-lining, function signature wrapping |
+| `CompetitionTests.cpp` | 3 | Parameter packing, lambda one-lining, initialiser list compaction |
+| **Total** | **11** | *Cosmetic only — zero semantic changes* |
+
+Post-fix verification: rebuild succeeded (exit code 0), 13/13 competition tests passed,
+formatter exits cleanly with zero remaining diff.
+
+### 6.6 Build Issues Resolved During Integration
 
 | Issue | Fix Applied |
 |---|---|
@@ -325,7 +346,7 @@ Competition state is broadcast to clients via the existing network free-function
 | Incomplete type `TileElement` | Added `#include <openrct2/world/tile_element/TileElement.h>` to test file |
 | Unreferenced function warning (C4505 + /WX) | Moved `InitGameState()` helper inside `#ifdef DISABLE_NETWORK` guard to match its call sites |
 
-### 6.6 Multiplayer Readiness Fixes
+### 6.7 Multiplayer Readiness Fixes
 
 | Severity | Issue | Fix Applied |
 |---|---|---|
@@ -368,9 +389,10 @@ Competition state is broadcast to clients via the existing network free-function
 >
 > The two known gaps (save/load and multi-player network unit tests) are appropriate follow-up items,
 > not blockers. The feature is additive, well-scoped, and hardened against the most likely misuse vectors
-> (double-start, wrong-metric score set, uint underflow). Build integration required seven minor fixes
-> plus three multiplayer readiness fixes (dead-code network call, local-only broadcast, missing state
-> cleanup) — all resolved and verified with a clean 46-test pass and zero regressions.
+> (double-start, wrong-metric score set, uint underflow). Build integration required seven minor fixes,
+> three multiplayer readiness fixes (dead-code network call, local-only broadcast, missing state
+> cleanup), and 11 `clang-format` cosmetic fixes — all resolved and verified with a clean
+> 46-test pass, zero regressions, and a passing formatter check.
 
 ---
 
