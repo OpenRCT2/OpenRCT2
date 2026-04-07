@@ -103,7 +103,7 @@ namespace OpenRCT2
         kPreview                 = 0x39,
         kPackedObjects           = 0x80
         // clang-format on
-    }; // namespace ParkFileChunkType
+    }; // enum ParkFileChunkType : uint32_t
 
     class ParkFile
     {
