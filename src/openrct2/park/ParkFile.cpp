@@ -81,29 +81,29 @@ namespace OpenRCT2
     namespace ParkFileChunkType
     {
         // clang-format off
-//      constexpr uint32_t kReserved0            = 0x00;
-        constexpr uint32_t kAuthoring            = 0x01;
-        constexpr uint32_t kObjects              = 0x02;
-        constexpr uint32_t kScenario             = 0x03;
-        constexpr uint32_t kGeneral              = 0x04;
-        constexpr uint32_t kClimate              = 0x05;
-        constexpr uint32_t kPark                 = 0x06;
-//      constexpr uint32_t kHistory              = 0x07;
-        constexpr uint32_t kResearch             = 0x08;
-        constexpr uint32_t kNotifications        = 0x09;
-        constexpr uint32_t kInterface            = 0x20;
-        constexpr uint32_t kTiles                = 0x30;
-        constexpr uint32_t kEntities             = 0x31;
-        constexpr uint32_t kRides                = 0x32;
-        constexpr uint32_t kBanners              = 0x33;
-//      constexpr uint32_t kStaff                = 0x35;
-        constexpr uint32_t kCheats               = 0x36;
-        constexpr uint32_t kRestrictedObjects   = 0x37;
-        constexpr uint32_t kPluginStorage       = 0x38;
-        constexpr uint32_t kPreview              = 0x39;
-        constexpr uint32_t kPackedObjects       = 0x80;
+//      constexpr uint32_t kReserved0               = 0x00;
+        constexpr uint32_t kAuthoring               = 0x01;
+        constexpr uint32_t kObjects                 = 0x02;
+        constexpr uint32_t kScenario                = 0x03;
+        constexpr uint32_t kGeneral                 = 0x04;
+        constexpr uint32_t kClimate                 = 0x05;
+        constexpr uint32_t kPark                    = 0x06;
+//      constexpr uint32_t kHistory                 = 0x07;
+        constexpr uint32_t kResearch                = 0x08;
+        constexpr uint32_t kNotifications           = 0x09;
+        constexpr uint32_t kInterface               = 0x20;
+        constexpr uint32_t kTitles                  = 0x30;
+        constexpr uint32_t kEntities                = 0x31;
+        constexpr uint32_t kRides                   = 0x32;
+        constexpr uint32_t kBanners                 = 0x33;
+//      constexpr uint32_t kStaff                   = 0x35;
+        constexpr uint32_t kCheats                  = 0x36;
+        constexpr uint32_t kRestrictedObjects       = 0x37;
+        constexpr uint32_t kPluginStorage           = 0x38;
+        constexpr uint32_t kPreview                 = 0x39;
+        constexpr uint32_t kPackedObjects           = 0x80;
         // clang-format on
-    } // namespace ParkFileChunkType
+    }; // namespace ParkFileChunkType
 
     class ParkFile
     {
