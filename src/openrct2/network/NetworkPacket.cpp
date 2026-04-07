@@ -14,6 +14,7 @@
     #include "NetworkTypes.h"
 
     #include <memory>
+    #include <stdexcept>
 
 namespace OpenRCT2::Network
 {
@@ -77,9 +78,9 @@ namespace OpenRCT2::Network
 
     const uint8_t* Packet::Read(size_t size)
     {
-        if (BytesRead + size > Data.size())
+        if (BytesRead > Data.size() || size > (Data.size() - BytesRead))
         {
-            return nullptr;
+            throw std::out_of_range("Failed to read packet data.");
         }
 
         const uint8_t* data = Data.data() + BytesRead;

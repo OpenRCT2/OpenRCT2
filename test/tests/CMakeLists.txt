@@ -21,6 +21,7 @@ set(test_files
    "${CMAKE_CURRENT_SOURCE_DIR}/LanguagePackTest.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/LocalisationTest.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/MultiLaunch.cpp"
+   "${CMAKE_CURRENT_SOURCE_DIR}/NetworkPacketTests.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/Pathfinding.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/Platform.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/PlayTests.cpp"
@@ -47,4 +48,3 @@ set_target_properties(OpenRCT2Tests PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_
 gtest_discover_tests(OpenRCT2Tests
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
     DISCOVERY_MODE PRE_TEST)
-
