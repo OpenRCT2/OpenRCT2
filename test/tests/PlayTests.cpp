@@ -21,6 +21,7 @@
 #include <openrct2/actions/park/ParkSetParameterAction.h>
 #include <openrct2/actions/ride/RideSetPriceAction.h>
 #include <openrct2/actions/ride/RideSetStatusAction.h>
+#include <openrct2/actions/ride/RideSetVehicleAction.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/entity/EntityTweener.h>
@@ -198,4 +199,38 @@ TEST_F(PlayTests, CarRideWithOneCarOnlyAcceptsTwoGuests)
         ASSERT_LE(numRiding, 2);
         gameStateUpdateLogic();
     }
+}
+
+TEST_F(PlayTests, ChangingTrainCountInvalidatesForcedCircuitReset)
+{
+    auto context = localStartGame(TestData::GetParkPath("bpb.sv6"));
+    ASSERT_NE(context.get(), nullptr);
+
+    auto& gameState = getGameState();
+    auto rideManager = RideManager(gameState);
+    auto it = std::find_if(rideManager.begin(), rideManager.end(), [](Ride& ride) {
+        return ride.canHaveMultipleCircuits() && ride.maxTrains > 1;
+    });
+
+    ASSERT_NE(it, rideManager.end());
+    Ride& ride = *it;
+
+    ride.status = RideStatus::closed;
+    ride.flags.unset(RideFlag::brokenDown, RideFlag::testInProgress);
+    ride.flags.set(RideFlag::tested);
+    ride.numCircuits = 3;
+    ride.ratings = {
+        RideRating::make(4, 20),
+        RideRating::make(5, 10),
+        RideRating::make(2, 60),
+    };
+
+    GameActions::RideSetVehicleAction action(ride.id, GameActions::RideSetVehicleType::NumTrains, 2);
+    auto result = GameActions::Execute(&action, gameState);
+
+    ASSERT_EQ(result.error, GameActions::Status::ok);
+    EXPECT_EQ(ride.numCircuits, 1);
+    EXPECT_TRUE(ride.ratings.isNull());
+    EXPECT_FALSE(ride.flags.has(RideFlag::tested));
+    EXPECT_FALSE(ride.flags.has(RideFlag::testInProgress));
 }
