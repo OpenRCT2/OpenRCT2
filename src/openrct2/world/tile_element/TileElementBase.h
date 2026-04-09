@@ -56,7 +56,7 @@ namespace OpenRCT2
         uint8_t flags;           // 1. Upper nibble: flags. Lower nibble: occupied quadrants (one bit per quadrant).
         uint8_t baseHeight;      // 2
         uint8_t clearanceHeight; // 3
-        uint8_t owner;           // 4
+        uint8_t owner;           // 4. Lower nibble: owner/park index. Upper nibble: unassigned as of yet.
 
         void remove();
 
