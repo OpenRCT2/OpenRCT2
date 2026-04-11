@@ -940,7 +940,7 @@ namespace OpenRCT2::Scripting
             if (listView != nullptr)
             {
                 listView->ShowColumnHeaders = valueBool;
-                WindowUpdateScrollWidgets(GetWindow(thisVal));
+                WindowUpdateScrollWidgets(*GetWindow(thisVal));
                 Invalidate(thisVal);
             }
             return JS_UNDEFINED;
