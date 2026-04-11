@@ -918,7 +918,6 @@ namespace OpenRCT2::Scripting
             if (listView != nullptr)
             {
                 listView->SetScrollbars(ScrollbarTypeFromJS(ctx, value));
-                Invalidate(thisVal);
             }
             return JS_UNDEFINED;
         }
@@ -941,6 +940,7 @@ namespace OpenRCT2::Scripting
             if (listView != nullptr)
             {
                 listView->ShowColumnHeaders = valueBool;
+                WindowUpdateScrollWidgets(GetWindow(thisVal));
                 Invalidate(thisVal);
             }
             return JS_UNDEFINED;
@@ -1004,7 +1004,6 @@ namespace OpenRCT2::Scripting
             if (listView != nullptr)
             {
                 listView->SetItems(ListViewItemVecFromJS(ctx, value));
-                Invalidate(thisVal);
             }
             return JS_UNDEFINED;
         }
@@ -1030,7 +1029,6 @@ namespace OpenRCT2::Scripting
             if (listView != nullptr)
             {
                 listView->SetColumns(ListViewColumnVecFromJS(ctx, value));
-                Invalidate(thisVal);
             }
             return JS_UNDEFINED;
         }
