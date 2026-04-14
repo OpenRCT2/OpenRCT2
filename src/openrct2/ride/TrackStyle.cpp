@@ -72,7 +72,7 @@ static constexpr TrackPaintFunctionGetter kPaintFunctionMap[] = {
     GetTrackPaintFunctionMonorailCycles,           // monorailCycles
     GetTrackPaintFunctionMotionsimulator,          // motionSimulator
     GetTrackPaintFunctionMultiDimensionRC,         // multiDimensionRollerCoaster
-    GetTrackPaintFunctionMultiDimensionRC,         // multiDimensionRollerCoasterInverted
+    getTrackPaintFunctionMultiDimensionRCInverted, // multiDimensionRollerCoasterInverted
     GetTrackPaintFunctionObservationTower,         // observationTower
     GetTrackPaintFunctionReverseFreefallRC,        // reverseFreefallCoaster
     GetTrackPaintFunctionReverserRC,               // reverserRollerCoaster
