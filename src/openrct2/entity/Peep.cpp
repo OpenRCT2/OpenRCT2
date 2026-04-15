@@ -868,6 +868,15 @@ namespace OpenRCT2
             if (z <= 1)
             {
                 // Remove peep if it has gone to the void
+                if (Config::Get().notifications.guestDied)
+                {
+                    auto ft = Formatter();
+                    FormatNameTo(ft);
+                    News::AddItemToQueue(News::ItemType::blank, STR_NEWS_ITEM_GUEST_VOIDED_OUT, x | (y << 16), ft);
+                }
+
+                auto& gameState = getGameState();
+                gameState.park.ratingCasualtyPenalty = std::min(gameState.park.ratingCasualtyPenalty + 25, 1000);
                 Remove();
                 return;
             }
