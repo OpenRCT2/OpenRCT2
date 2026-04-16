@@ -5,6 +5,7 @@
 - Improved: [#26386] Initial window scale and toolbar options on fresh Android installations.
 - Fix: [#26019] Inverted and Inverted Flying Roller Coaster large half loops glitch with the train and don't draw in tunnels at some angles (original bug).
 - Fix: [#26183] The ride stat graph placeholder text is not drawn in the expected position.
+- Fix: [#26287] Game crashes upon connect/disconnect of physical keyboard. 
 - Fix: [#26299] Single Rail S-Bend sprites don't fully connect to the next track piece at certain angles.
 - Fix: [#26352] Large scenery items are incorrectly labelled as 'banners' in the tile inspector.
 - Fix: [#26352] The label for path additions is using the wrong text colour in the tile inspector.
