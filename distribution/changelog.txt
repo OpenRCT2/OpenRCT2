@@ -12,10 +12,12 @@
 - Improved: [#26044] Simplify Android installation by bundling OpenRCT2 assets in APK.
 - Improved: [#26293] Objects extracted from saves now have more information in their filenames.
 - Improved: [objects#432] Allow saving scenery from RCT1 with track designs.
+- Change: [#24511] [Plugin] Separated new seatedInPairs field from numSeats field on vehicles and vehicle objects; seatedInPairs can now be set on vehicle entities.
 - Change: [#25962] The station style dropdown now shows entrance icons next to the labels for easier selection.
 - Change: [#26175] The ride colour tab is made more compact by collapsing unavailable sections instead of only hiding them.
 - Change: [#26178] Symmetric spinning trains and legacy ‘pre-reversed’ trains can no longer be reversed.
 - Fix: [#10616] Quarter-tile trees cannot be placed on dry portions of half-water tiles.
+- Fix: [#24510] Ride vehicles that load in pairs do not load properly when the ride is in either Race or Dodgems mode.
 - Fix: [#25128] Mute button displayed in wrong state after load.
 - Fix: [#25460] Infinite loop when moving track design ghost queue over queue loop with zero clearances.
 - Fix: [#25735] Ride synchronisation z-check works incorrectly.

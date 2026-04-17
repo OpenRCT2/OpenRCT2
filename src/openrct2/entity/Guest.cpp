@@ -2602,7 +2602,7 @@ namespace OpenRCT2
                 if (vehicle == nullptr)
                     continue;
 
-                if (vehicle->next_free_seat >= vehicle->num_seats)
+                if (vehicle->next_free_seat >= vehicle->getNumSeatsWithPairing())
                     continue;
 
                 if (vehicle->status != Vehicle::Status::waitingForPassengers)
@@ -2628,8 +2628,8 @@ namespace OpenRCT2
         for (Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle_id); vehicle != nullptr;
              vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train), ++i)
         {
-            uint8_t num_seats = vehicle->num_seats;
-            if (vehicle->IsUsedInPairs())
+            uint8_t num_seats = vehicle->getNumSeatsWithPairing();
+            if (vehicle->IsSeatedInPairs())
             {
                 if (vehicle->next_free_seat & 1)
                 {
@@ -2637,7 +2637,6 @@ namespace OpenRCT2
                     car_array.push_back(i);
                     return true;
                 }
-                num_seats &= kVehicleSeatNumMask;
             }
             if (num_seats == vehicle->next_free_seat)
                 continue;
@@ -4058,7 +4057,7 @@ namespace OpenRCT2
             }
         }
 
-        if (!vehicle->IsUsedInPairs())
+        if (!vehicle->IsSeatedInPairs())
         {
             UpdateRideFreeVehicleEnterRide(*ride);
             return;
@@ -4136,7 +4135,7 @@ namespace OpenRCT2
                         return;
                 }
 
-                if (vehicle->IsUsedInPairs())
+                if (vehicle->IsSeatedInPairs())
                 {
                     auto* seatedGuest = gameState.entities.GetEntity<Guest>(vehicle->peep[CurrentSeat ^ 1]);
                     if (seatedGuest != nullptr)

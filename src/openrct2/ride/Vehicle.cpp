@@ -1264,9 +1264,20 @@ Vehicle* Vehicle::TrainTail() const
     return const_cast<Vehicle*>(vehicle);
 }
 
-int32_t Vehicle::IsUsedInPairs() const
+uint8_t Vehicle::getNumSeats() const
 {
-    return num_seats & kVehicleSeatPairFlag;
+    return num_seats & kVehicleSeatNumMask;
+}
+
+uint8_t Vehicle::getNumSeatsWithPairing() const
+{
+    // If the vehicle is seated in pairs, force the reported number of seats to an even number
+    return num_seats & kVehicleSeatNumMask & ~(IsSeatedInPairs() ? 1 : 0);
+}
+
+bool Vehicle::IsSeatedInPairs() const
+{
+    return (num_seats & kVehicleSeatPairFlag) > 0;
 }
 
 bool Vehicle::IsCableLift() const

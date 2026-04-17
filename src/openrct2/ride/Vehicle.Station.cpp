@@ -564,10 +564,11 @@ void Vehicle::UpdateWaitingForPassengers()
         {
             num_peeps_on_train += trainCar->num_peeps;
             num_used_seats_on_train += trainCar->next_free_seat;
-            num_seats_on_train += trainCar->num_seats;
+            num_seats_on_train += trainCar->getNumSeatsWithPairing();
         }
 
-        num_seats_on_train &= 0x7F;
+        // Left in despite using the new getNumSeats to account for possible overflow
+        num_seats_on_train &= kVehicleSeatNumMask;
 
         if (curRide->supportsStatus(RideStatus::testing))
         {
