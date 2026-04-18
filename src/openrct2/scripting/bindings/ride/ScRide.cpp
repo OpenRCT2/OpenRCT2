@@ -776,8 +776,8 @@ namespace OpenRCT2::Scripting
             {
                 return JSFromStdString(ctx, "none");
             }
-            auto it = BreakdownMap.find(ride->breakdownReason);
-            if (it != BreakdownMap.end())
+            auto it = kBreakdownMap.find(ride->breakdownReason);
+            if (it != kBreakdownMap.end())
                 return JSFromStdString(ctx, std::string(it->first));
         }
         return JSFromStdString(ctx, "");
@@ -791,8 +791,8 @@ namespace OpenRCT2::Scripting
         auto ride = GetRide(thisVal);
         if (ride != nullptr && ride->canBreakDown() && ride->status == RideStatus::open)
         {
-            auto it = BreakdownMap.find(breakDown);
-            if (it != BreakdownMap.end())
+            auto it = kBreakdownMap.find(breakDown);
+            if (it != kBreakdownMap.end())
             {
                 RidePrepareBreakdown(*ride, it->second);
             }

@@ -1325,8 +1325,8 @@ void RidePrepareBreakdown(Ride& ride, Breakdown breakdownReason)
 
         JS_SetPropertyStr(ctx, obj, "rideId", JS_NewInt32(ctx, ride.id.ToUnderlying()));
 
-        auto it = BreakdownMap.find(breakdownReason);
-        if (it != BreakdownMap.end())
+        auto it = kBreakdownMap.find(breakdownReason);
+        if (it != kBreakdownMap.end())
             JS_SetPropertyStr(ctx, obj, "breakdownReason", JS_NewString(ctx, it->first.data()));
         else
             JS_SetPropertyStr(ctx, obj, "breakdownReason", JS_NewString(ctx, "none"));
