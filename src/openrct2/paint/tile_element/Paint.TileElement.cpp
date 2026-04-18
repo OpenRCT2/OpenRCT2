@@ -188,19 +188,17 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
     if (screenMinY + 52 <= session.rt.WorldY())
         return;
 
-    const TileElement* element = tile_element; // push tile_element
-
     uint16_t maxHeight = 0;
-    do
     {
-        maxHeight = std::max(maxHeight, static_cast<uint16_t>(element->GetClearanceZ()));
-    } while (!(element++)->IsLastForTile());
-
-    element--;
-
-    if (element->GetType() == TileElementType::Surface && (element->AsSurface()->GetWaterHeight() > 0))
-    {
-        maxHeight = std::max(maxHeight, static_cast<uint16_t>(element->AsSurface()->GetWaterHeight()));
+        const TileElement* element = tile_element;
+        do
+        {
+            maxHeight = std::max(maxHeight, static_cast<uint16_t>(element->GetClearanceZ()));
+            if (element->GetType() == TileElementType::Surface)
+            {
+                maxHeight = std::max(maxHeight, static_cast<uint16_t>(element->AsSurface()->GetWaterHeight()));
+            }
+        } while (!(element++)->IsLastForTile());
     }
 
     if (partOfVirtualFloor)
