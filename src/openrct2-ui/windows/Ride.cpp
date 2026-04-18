@@ -6278,7 +6278,7 @@ namespace OpenRCT2::Ui::Windows
             if (measurement == nullptr)
             {
                 // No measurement message
-                ScreenCoordsXY stringCoords(widget->width() / 2, widget->height() - 1 / 2 - 5);
+                ScreenCoordsXY stringCoords(widget->width() / 2, widget->height() / 2 - 5);
                 int32_t txtWidth = widget->width() - 3;
                 drawTextWrapped(rt, stringCoords, txtWidth, message.str, message.args, { TextAlignment::centre });
                 return;

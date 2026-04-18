@@ -42,7 +42,7 @@ namespace OpenRCT2
 
 namespace OpenRCT2::Scripting
 {
-    static constexpr int32_t kPluginApiVersion = 111;
+    static constexpr int32_t kPluginApiVersion = 113;
 
     // Versions marking breaking changes.
     static constexpr int32_t kApiVersionPeepDeprecation = 33;

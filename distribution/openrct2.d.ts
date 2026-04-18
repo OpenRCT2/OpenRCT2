@@ -514,6 +514,7 @@ declare global {
         subscribe(hook: "network.join", callback: (e: NetworkEventArgs) => void): IDisposable;
         subscribe(hook: "network.leave", callback: (e: NetworkEventArgs) => void): IDisposable;
         subscribe(hook: "park.guest.softcap.calculate", callback: (e: ParkCalculateGuestCapArgs) => void): IDisposable;
+        subscribe(hook: "ride.breakdown", callback: (e: RideBreakdownArgs) => void): IDisposable;
         subscribe(hook: "ride.ratings.calculate", callback: (e: RideRatingsCalculateArgs) => void): IDisposable;
         subscribe(hook: "vehicle.crash", callback: (e: VehicleCrashArgs) => void): IDisposable;
 
@@ -1641,6 +1642,11 @@ declare global {
         cancel: boolean;
     }
 
+	interface RideBreakdownArgs {
+		readonly rideId: number;
+		breakdownReason: string;
+	}
+ 
     interface RideRatingsCalculateArgs {
         readonly rideId: number;
         excitement: number;
@@ -4758,6 +4764,17 @@ declare global {
         registerToolboxMenuItem(text: string, callback: () => void): void;
 
         registerShortcut(desc: ShortcutDesc): void;
+
+        /**
+         * Show gridlines on the landscape for this plugin.
+         */
+        showGridlines(): void;
+
+        /**
+         * Hide gridlines on the landscape for this plugin. Gridlines may stay shown if the
+         * game or other plugins have also requested gridlines.
+         */
+        hideGridlines(): void;
     }
 
     /**

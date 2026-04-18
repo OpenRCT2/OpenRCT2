@@ -15,24 +15,13 @@
     #include "../../../core/EnumMap.hpp"
     #include "../../../core/UnitConversion.h"
     #include "../../../ride/Ride.h"
+    #include "../../../ride/RideBreakdownMap.h"
     #include "../../../ride/RideData.h"
     #include "../../ScriptEngine.h"
     #include "../object/ScObject.hpp"
 
 namespace OpenRCT2::Scripting
 {
-    static const EnumMap<Breakdown> BreakdownMap(
-        {
-            { "safety_cut_out", Breakdown::safetyCutOut },
-            { "restraints_stuck_closed", Breakdown::restraintsStuckClosed },
-            { "restraints_stuck_open", Breakdown::restraintsStuckOpen },
-            { "doors_stuck_closed", Breakdown::doorsStuckClosed },
-            { "doors_stuck_open", Breakdown::doorsStuckOpen },
-            { "vehicle_malfunction", Breakdown::vehicleMalfunction },
-            { "brakes_failure", Breakdown::brakesFailure },
-            { "control_failure", Breakdown::controlFailure },
-        });
-
     void ScRide::Register(JSContext* ctx)
     {
         static constexpr JSCFunctionListEntry funcs[] = {
@@ -787,8 +776,8 @@ namespace OpenRCT2::Scripting
             {
                 return JSFromStdString(ctx, "none");
             }
-            auto it = BreakdownMap.find(ride->breakdownReason);
-            if (it != BreakdownMap.end())
+            auto it = kBreakdownMap.find(ride->breakdownReason);
+            if (it != kBreakdownMap.end())
                 return JSFromStdString(ctx, std::string(it->first));
         }
         return JSFromStdString(ctx, "");
@@ -802,8 +791,8 @@ namespace OpenRCT2::Scripting
         auto ride = GetRide(thisVal);
         if (ride != nullptr && ride->canBreakDown() && ride->status == RideStatus::open)
         {
-            auto it = BreakdownMap.find(breakDown);
-            if (it != BreakdownMap.end())
+            auto it = kBreakdownMap.find(breakDown);
+            if (it != kBreakdownMap.end())
             {
                 RidePrepareBreakdown(*ride, it->second);
             }
