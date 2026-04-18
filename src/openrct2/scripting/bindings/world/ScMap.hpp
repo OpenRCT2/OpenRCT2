@@ -43,6 +43,10 @@ namespace OpenRCT2::Scripting
 
         static JSValue getTrackIterator(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
 
+        static JSValue getPathNavigator(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
+
+        static JSValue getPathNavigatorAt(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
+
         static JSValue GetEntityAsDukValue(JSContext* ctx, const EntityBase* sprite);
 
     public:
