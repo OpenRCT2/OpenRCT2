@@ -2636,10 +2636,9 @@ namespace OpenRCT2
         stream << HireDate;
         stream << StaffOrders;
         stream << StaffMowingTimeout;
-        stream << StaffLawnsMown;
-        stream << StaffGardensWatered;
-        stream << StaffLitterSwept;
-        stream << StaffBinsEmptied;
-        stream << StaffGuestsEntertained;
+        stream << StaffLawnsMown;      // union with StaffRidesFixed
+        stream << StaffGardensWatered; // union with StaffRidesInspected
+        stream << StaffLitterSwept;    // union with StaffVandalsStopped
+        stream << StaffBinsEmptied;    // union with StaffGuestsEntertained
     }
 } // namespace OpenRCT2
