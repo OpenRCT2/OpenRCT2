@@ -989,7 +989,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case StaffType::entertainer:
                     ft = Formatter();
-                    ft.Add<uint32_t>(staff->StaffGuestsEntertained);
+                    ft.Add<uint32_t>(staff->staffGuestsEntertained);
                     drawText(rt, screenCoords, STR_STAFF_STAT_GUESTS_ENTERTAINED, ft);
                     break;
                 case StaffType::count:

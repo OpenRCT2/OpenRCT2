@@ -252,7 +252,7 @@ namespace OpenRCT2
             peep->StaffLitterSwept = 0;
             peep->StaffVandalsStopped = 0;
             peep->StaffBinsEmptied = 0;
-            peep->StaffGuestsEntertained = 0;
+            peep->staffGuestsEntertained = 0;
         }
     }
 
@@ -897,14 +897,14 @@ namespace OpenRCT2
                     if (guest->State == PeepState::walking)
                     {
                         guest->HappinessTarget = std::min(guest->HappinessTarget + 4, kPeepMaxHappiness);
-                        StaffGuestsEntertained = AddClamp(StaffGuestsEntertained, 1u);
+                        staffGuestsEntertained = AddClamp(staffGuestsEntertained, 1u);
                         WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
                     }
                     else if (guest->State == PeepState::queuing)
                     {
                         guest->TimeInQueue = std::max(0, guest->TimeInQueue - 200);
                         guest->HappinessTarget = std::min(guest->HappinessTarget + 3, kPeepMaxHappiness);
-                        StaffGuestsEntertained = AddClamp(StaffGuestsEntertained, 1u);
+                        staffGuestsEntertained = AddClamp(staffGuestsEntertained, 1u);
                         WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
                     }
                 }
@@ -2636,9 +2636,9 @@ namespace OpenRCT2
         stream << HireDate;
         stream << StaffOrders;
         stream << StaffMowingTimeout;
-        stream << StaffLawnsMown;      // union with StaffRidesFixed
+        stream << StaffLawnsMown;      // union with StaffRidesFixed, staffGuestsEntertained
         stream << StaffGardensWatered; // union with StaffRidesInspected
         stream << StaffLitterSwept;    // union with StaffVandalsStopped
-        stream << StaffBinsEmptied;    // union with StaffGuestsEntertained
+        stream << StaffBinsEmptied;
     }
 } // namespace OpenRCT2
