@@ -81,27 +81,27 @@ namespace OpenRCT2
     enum class ParkFileChunkType : uint32_t
     {
         // clang-format off
-//      kReserved0               = 0x00,
-        kAuthoring               = 0x01,
-        kObjects                 = 0x02,
-        kScenario                = 0x03,
-        kGeneral                 = 0x04,
-        kClimate                 = 0x05,
-        kPark                    = 0x06,
-//      kHistory                 = 0x07,
-        kResearch                = 0x08,
-        kNotifications           = 0x09,
-        kInterface               = 0x20,
-        kTitles                  = 0x30,
-        kEntities                = 0x31,
-        kRides                   = 0x32,
-        kBanners                 = 0x33,
-//      kStaff                   = 0x35,
-        kCheats                  = 0x36,
-        kRestrictedObjects       = 0x37,
-        kPluginStorage           = 0x38,
-        kPreview                 = 0x39,
-        kPackedObjects           = 0x80
+//      Reserved0               = 0x00,
+        Authoring               = 0x01,
+        Objects                 = 0x02,
+        Scenario                = 0x03,
+        General                 = 0x04,
+        Climate                 = 0x05,
+        Park                    = 0x06,
+//      History                 = 0x07,
+        Research                = 0x08,
+        Notifications           = 0x09,
+        Interface               = 0x20,
+        Titles                  = 0x30,
+        Entities                = 0x31,
+        Rides                   = 0x32,
+        Banners                 = 0x33,
+//      Staff                   = 0x35,
+        Cheats                  = 0x36,
+        RestrictedObjects       = 0x37,
+        PluginStorage           = 0x38,
+        Preview                 = 0x39,
+        PackedObjects           = 0x80
         // clang-format on
     }; // enum class ParkFileChunkType : uint32_t
 
@@ -220,7 +220,7 @@ namespace OpenRCT2
         {
             ScenarioIndexEntry entry{};
             auto& os = *_os;
-            os.readWriteChunk(EnumValue(ParkFileChunkType::kScenario), [&entry](OrcaStream::ChunkStream& cs) {
+            os.readWriteChunk(EnumValue(ParkFileChunkType::Scenario), [&entry](OrcaStream::ChunkStream& cs) {
                 entry.Category = cs.read<Scenario::Category>();
 
                 std::string name;
@@ -250,7 +250,7 @@ namespace OpenRCT2
         {
             ParkPreview preview{};
             auto& os = *_os;
-            os.readWriteChunk(EnumValue(ParkFileChunkType::kPreview), [&preview](OrcaStream::ChunkStream& cs) {
+            os.readWriteChunk(EnumValue(ParkFileChunkType::Preview), [&preview](OrcaStream::ChunkStream& cs) {
                 cs.readWrite(preview.parkName);
                 cs.readWrite(preview.parkRating);
                 cs.readWrite(preview.year);
@@ -290,7 +290,7 @@ namespace OpenRCT2
             // Write-only for now
             if (os.getMode() == OrcaStream::Mode::writing)
             {
-                os.readWriteChunk(EnumValue(ParkFileChunkType::kAuthoring), [](OrcaStream::ChunkStream& cs) {
+                os.readWriteChunk(EnumValue(ParkFileChunkType::Authoring), [](OrcaStream::ChunkStream& cs) {
                     cs.write(std::string_view(gVersionInfoFull));
                     std::vector<std::string> authors;
                     cs.readWriteVector(authors, [](std::string& s) {});
@@ -434,7 +434,7 @@ namespace OpenRCT2
                 if (version < kClimateObjectsVersion)
                 {
                     RCT12::ClimateType legacyClimate{};
-                    os.readWriteChunk(EnumValue(ParkFileChunkType::kClimate), [&legacyClimate](OrcaStream::ChunkStream& cs) {
+                    os.readWriteChunk(EnumValue(ParkFileChunkType::Climate), [&legacyClimate](OrcaStream::ChunkStream& cs) {
                         cs.readWrite(legacyClimate);
                     });
 
@@ -446,7 +446,7 @@ namespace OpenRCT2
             }
             else
             {
-                os.readWriteChunk(EnumValue(ParkFileChunkType::kObjects), [](OrcaStream::ChunkStream& cs) {
+                os.readWriteChunk(EnumValue(ParkFileChunkType::Objects), [](OrcaStream::ChunkStream& cs) {
                     auto& objManager = GetContext()->GetObjectManager();
                     auto objectList = objManager.GetLoadedObjects();
 
@@ -486,7 +486,7 @@ namespace OpenRCT2
 
         void ReadWriteScenarioChunk(GameState_t& gameState, OrcaStream& os)
         {
-            os.readWriteChunk(EnumValue(ParkFileChunkType::kScenario), [&gameState, &os](OrcaStream::ChunkStream& cs) {
+            os.readWriteChunk(EnumValue(ParkFileChunkType::Scenario), [&gameState, &os](OrcaStream::ChunkStream& cs) {
                 cs.readWrite(gameState.scenarioOptions.category);
                 ReadWriteStringTable(cs, gameState.scenarioOptions.name, "en-GB");
                 ReadWriteStringTable(cs, gameState.park.name, "en-GB");
@@ -532,7 +532,7 @@ namespace OpenRCT2
 
         void ReadWritePreviewChunk(GameState_t& gameState, OrcaStream& os)
         {
-            os.readWriteChunk(EnumValue(ParkFileChunkType::kPreview), [&gameState](OrcaStream::ChunkStream& cs) {
+            os.readWriteChunk(EnumValue(ParkFileChunkType::Preview), [&gameState](OrcaStream::ChunkStream& cs) {
                 auto preview = generatePreviewFromGameState(gameState);
 
                 cs.readWrite(preview.parkName);
@@ -560,7 +560,7 @@ namespace OpenRCT2
         void ReadWriteGeneralChunk(GameState_t& gameState, OrcaStream& os)
         {
             const auto version = os.getHeader().targetVersion;
-            auto found = os.readWriteChunk(EnumValue(ParkFileChunkType::kGeneral), [&](OrcaStream::ChunkStream& cs) {
+            auto found = os.readWriteChunk(EnumValue(ParkFileChunkType::General), [&](OrcaStream::ChunkStream& cs) {
                 // Only GAME_PAUSED_NORMAL from gGamePaused is relevant.
                 if (cs.getMode() == OrcaStream::Mode::reading)
                 {
@@ -695,7 +695,7 @@ namespace OpenRCT2
 
         void ReadWriteInterfaceChunk(GameState_t& gameState, OrcaStream& os)
         {
-            os.readWriteChunk(EnumValue(ParkFileChunkType::kInterface), [&gameState](OrcaStream::ChunkStream& cs) {
+            os.readWriteChunk(EnumValue(ParkFileChunkType::Interface), [&gameState](OrcaStream::ChunkStream& cs) {
                 cs.readWrite(gameState.savedView.x);
                 cs.readWrite(gameState.savedView.y);
                 if (cs.getMode() == OrcaStream::Mode::reading)
@@ -715,7 +715,7 @@ namespace OpenRCT2
 
         void ReadWriteCheatsChunk(GameState_t& gameState, OrcaStream& os)
         {
-            os.readWriteChunk(EnumValue(ParkFileChunkType::kCheats), [](OrcaStream::ChunkStream& cs) {
+            os.readWriteChunk(EnumValue(ParkFileChunkType::Cheats), [](OrcaStream::ChunkStream& cs) {
                 DataSerialiser ds(cs.getMode() == OrcaStream::Mode::writing, cs.getStream());
                 CheatsSerialise(ds);
             });
@@ -723,7 +723,7 @@ namespace OpenRCT2
 
         void ReadWriteRestrictedObjectsChunk(GameState_t& gameState, OrcaStream& os)
         {
-            os.readWriteChunk(EnumValue(ParkFileChunkType::kRestrictedObjects), [](OrcaStream::ChunkStream& cs) {
+            os.readWriteChunk(EnumValue(ParkFileChunkType::RestrictedObjects), [](OrcaStream::ChunkStream& cs) {
                 auto& restrictedScenery = GetRestrictedScenery();
 
                 // We are want to support all object types in the future, so convert scenery type
@@ -759,7 +759,7 @@ namespace OpenRCT2
                 }
             }
 
-            os.readWriteChunk(EnumValue(ParkFileChunkType::kPluginStorage), [&gameState](OrcaStream::ChunkStream& cs) {
+            os.readWriteChunk(EnumValue(ParkFileChunkType::PluginStorage), [&gameState](OrcaStream::ChunkStream& cs) {
                 cs.readWrite(gameState.pluginStorage);
             });
 
@@ -783,7 +783,7 @@ namespace OpenRCT2
                 return;
             }
 
-            os.readWriteChunk(EnumValue(ParkFileChunkType::kPackedObjects), [this](OrcaStream::ChunkStream& cs) {
+            os.readWriteChunk(EnumValue(ParkFileChunkType::PackedObjects), [this](OrcaStream::ChunkStream& cs) {
                 if (cs.getMode() == OrcaStream::Mode::reading)
                 {
                     auto& objRepository = GetContext()->GetObjectRepository();
@@ -870,7 +870,7 @@ namespace OpenRCT2
 
         void ReadWriteClimateChunk(GameState_t& gameState, OrcaStream& os)
         {
-            os.readWriteChunk(EnumValue(ParkFileChunkType::kClimate), [&os, &gameState](OrcaStream::ChunkStream& cs) {
+            os.readWriteChunk(EnumValue(ParkFileChunkType::Climate), [&os, &gameState](OrcaStream::ChunkStream& cs) {
                 auto version = os.getHeader().targetVersion;
                 if (version < kClimateObjectsVersion)
                 {
@@ -1084,7 +1084,7 @@ namespace OpenRCT2
 
         void ReadWriteResearchChunk(GameState_t& gameState, OrcaStream& os)
         {
-            os.readWriteChunk(EnumValue(ParkFileChunkType::kResearch), [&gameState](OrcaStream::ChunkStream& cs) {
+            os.readWriteChunk(EnumValue(ParkFileChunkType::Research), [&gameState](OrcaStream::ChunkStream& cs) {
                 // Research status
                 cs.readWrite(gameState.researchFundingLevel);
                 cs.readWrite(gameState.researchPriorities);
@@ -1140,7 +1140,7 @@ namespace OpenRCT2
 
         void ReadWriteNotificationsChunk(GameState_t& gameState, OrcaStream& os)
         {
-            os.readWriteChunk(EnumValue(ParkFileChunkType::kNotifications), [&gameState](OrcaStream::ChunkStream& cs) {
+            os.readWriteChunk(EnumValue(ParkFileChunkType::Notifications), [&gameState](OrcaStream::ChunkStream& cs) {
                 if (cs.getMode() == OrcaStream::Mode::reading)
                 {
                     std::vector<News::Item> recent;
@@ -1190,7 +1190,7 @@ namespace OpenRCT2
             auto* pathToRailingsMap = _pathToRailingsMap;
 
             auto found = os.readWriteChunk(
-                EnumValue(ParkFileChunkType::kTiles),
+                EnumValue(ParkFileChunkType::Titles),
                 [pathToSurfaceMap, pathToQueueSurfaceMap, pathToRailingsMap, &os, &gameState](OrcaStream::ChunkStream& cs) {
                     cs.readWrite(gameState.mapSize.x);
                     cs.readWrite(gameState.mapSize.y);
@@ -1302,7 +1302,7 @@ namespace OpenRCT2
 
         void ReadWriteBannersChunk(GameState_t& gameState, OrcaStream& os)
         {
-            os.readWriteChunk(EnumValue(ParkFileChunkType::kBanners), [&os](OrcaStream::ChunkStream& cs) {
+            os.readWriteChunk(EnumValue(ParkFileChunkType::Banners), [&os](OrcaStream::ChunkStream& cs) {
                 auto version = os.getHeader().targetVersion;
                 if (cs.getMode() == OrcaStream::Mode::writing)
                 {
@@ -2692,7 +2692,7 @@ namespace OpenRCT2
 
     void ParkFile::ReadWriteEntitiesChunk(GameState_t& gameState, OrcaStream& os)
     {
-        os.readWriteChunk(EnumValue(ParkFileChunkType::kEntities), [this, &gameState, &os](OrcaStream::ChunkStream& cs) {
+        os.readWriteChunk(EnumValue(ParkFileChunkType::Entities), [this, &gameState, &os](OrcaStream::ChunkStream& cs) {
             if (cs.getMode() == OrcaStream::Mode::reading)
             {
                 getGameState().entities.ResetAllEntities();
