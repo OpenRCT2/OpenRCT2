@@ -923,19 +923,13 @@ namespace OpenRCT2::Ui
 
     bool widgetIsPressed(const WindowBase& w, WidgetIndex widgetIndex)
     {
-        if (w.classification == WindowClass::custom)
+        if (w.widgets[widgetIndex].flags.has(WidgetFlag::isPressed))
         {
-            if (w.widgets[widgetIndex].flags.has(WidgetFlag::isPressed))
-            {
-                return true;
-            }
+            return true;
         }
-        else
+        if (widgetIndex < 64 && (w.pressedWidgets & (1uLL << widgetIndex)))
         {
-            if (w.pressedWidgets & (1LL << widgetIndex))
-            {
-                return true;
-            }
+            return true;
         }
 
         if (InputGetState() == InputState::WidgetPressed || InputGetState() == InputState::DropdownActive)
@@ -1144,6 +1138,8 @@ namespace OpenRCT2::Ui
     void widgetSetPressed(WindowBase& w, WidgetIndex widgetIndex, bool value)
     {
         SafeSetWidgetFlag(w, widgetIndex, WidgetFlag::isPressed, value);
+        if (widgetIndex >= 64)
+            return;
         if (value)
             w.pressedWidgets |= (1uLL << widgetIndex);
         else

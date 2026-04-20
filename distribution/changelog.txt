@@ -8,6 +8,7 @@
 - Fix: [#26352] Large scenery items are incorrectly labelled as 'banners' in the tile inspector.
 - Fix: [#26352] The label for path additions is using the wrong text colour in the tile inspector.
 - Fix: [#26360] Inverted Lay-down Roller Coaster helices are invisible when loading old saves.
+- Fix: [#26421] Active scenery selection overflows when 64 or more scenery groups are selected.
 
 0.5.0 (2026-04-12)
 ------------------------------------------------------------------------

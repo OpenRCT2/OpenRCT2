@@ -712,7 +712,10 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_FILTER_TEXT_BOX].string = _filteredSceneryTab.Filter.data();
 
             pressedWidgets = 0;
-            pressedWidgets |= 1uLL << (tabIndex + WIDX_SCENERY_TAB_1);
+            for (size_t i = 0; i < _tabEntries.size(); i++)
+            {
+                widgets[WIDX_SCENERY_TAB_1 + i].flags.set(WidgetFlag::isPressed, i == tabIndex);
+            }
             if (_sceneryPaintEnabled)
                 pressedWidgets |= (1uLL << WIDX_SCENERY_REPAINT_SCENERY_BUTTON);
             if (gWindowSceneryEyedropperEnabled)
