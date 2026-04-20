@@ -653,6 +653,7 @@
     <ClInclude Include="scripting\bindings\world\ScDate.hpp" />
     <ClInclude Include="scripting\bindings\world\ScMap.hpp" />
     <ClInclude Include="scripting\bindings\world\ScPark.hpp" />
+    <ClInclude Include="scripting\bindings\world\ScPathConnection.h" />
     <ClInclude Include="scripting\bindings\world\ScPathNavigator.h" />
     <ClInclude Include="scripting\bindings\world\ScParkMessage.hpp" />
     <ClInclude Include="scripting\bindings\world\ScResearch.hpp" />
@@ -1220,6 +1221,7 @@
     <ClCompile Include="scripting\bindings\ride\ScTrackSegment.cpp" />
     <ClCompile Include="scripting\bindings\world\ScAward.cpp" />
     <ClCompile Include="scripting\bindings\world\ScMap.cpp" />
+    <ClCompile Include="scripting\bindings\world\ScPathConnection.cpp" />
     <ClCompile Include="scripting\bindings\world\ScPathNavigator.cpp" />
     <ClCompile Include="scripting\bindings\world\ScPark.cpp" />
     <ClCompile Include="scripting\bindings\world\ScParkMessage.cpp" />

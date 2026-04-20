@@ -536,6 +536,7 @@ ScTile Scripting::gScTile;
 ScTileElement Scripting::gScTileElement;
 ScTrackIterator Scripting::gScTrackIterator;
 ScTrackSegment Scripting::gScTrackSegment;
+ScPathConnection Scripting::gScPathConnection;
 ScPathNavigator Scripting::gScPathNavigator;
 ScEntity Scripting::gScEntity;
 ScThought Scripting::gScThought;
@@ -578,6 +579,7 @@ void ScriptEngine::RegisterClasses(JSContext* ctx)
     gScTileElement.Register(ctx);
     gScTrackIterator.Register(ctx);
     gScTrackSegment.Register(ctx);
+    gScPathConnection.Register(ctx);
     gScPathNavigator.Register(ctx);
     gScEntity.Register(ctx);
     gScPeep.Register(ctx);
@@ -632,6 +634,7 @@ void ScriptEngine::UnregisterClasses()
     gScTileElement.Unregister();
     gScTrackIterator.Unregister();
     gScTrackSegment.Unregister();
+    gScPathConnection.Unregister();
     gScPathNavigator.Unregister();
     gScEntity.Unregister();
     gScPeep.Unregister();

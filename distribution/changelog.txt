@@ -2,6 +2,7 @@
 ------------------------------------------------------------------------
 - Feature: [#24242] [Plugin] Add ride-breakdown hooktype.
 - Feature: [#24879] [Plugin] Add methods for showing and hiding gridlines.
+- Feature: [#26423] [Plugin] Add `PathNavigator` and `PathConnection` for exploring the footpath network as a graph.
 - Fix: [#26019] Inverted and Inverted Flying Roller Coaster large half loops glitch with the train and don't draw in tunnels at some angles (original bug).
 - Fix: [#26183] The ride stat graph placeholder text is not drawn in the expected position.
 - Fix: [#26299] Single Rail S-Bend sprites don't fully connect to the next track piece at certain angles.

@@ -11,6 +11,7 @@
 
 #ifdef ENABLE_SCRIPTING
 
+    #include "../../../world/Location.hpp"
     #include "../../ScriptEngine.h"
 
     #include <cstdint>
@@ -26,30 +27,26 @@ namespace OpenRCT2::Scripting
         struct PathNavigatorData
         {
             TileCoordsXYZ _position;
+            int32_t _elementIndex;
+            int32_t _lastDirection; // -1 if navigator has not moved yet
         };
 
     public:
         static JSValue FromElement(JSContext* ctx, const CoordsXY& position, int32_t elementIndex);
         static JSValue FromPosition(JSContext* ctx, const CoordsXYZ& position);
         void Register(JSContext* ctx);
-        JSValue New(JSContext* ctx, const TileCoordsXYZ& position);
+        JSValue New(JSContext* ctx, const TileCoordsXYZ& position, int32_t elementIndex, int32_t lastDirection);
 
     private:
         static void Finalize(JSRuntime* rt, JSValue thisVal);
         static PathNavigatorData* GetPathNavigatorData(JSValue thisVal);
 
-        static const PathElement* FindPathElement(const TileCoordsXYZ& pos);
+        static const PathElement* FindPathElement(const PathNavigatorData* data);
         static int32_t GetPermittedEdges(const PathElement* pathElement);
 
-        static JSValue position_get(JSContext* ctx, JSValue thisVal);
+        static JSValue current_get(JSContext* ctx, JSValue thisVal);
         static JSValue edges_get(JSContext* ctx, JSValue thisVal);
         static JSValue permittedEdges_get(JSContext* ctx, JSValue thisVal);
-        static JSValue isSloped_get(JSContext* ctx, JSValue thisVal);
-        static JSValue slopeDirection_get(JSContext* ctx, JSValue thisVal);
-        static JSValue isQueue_get(JSContext* ctx, JSValue thisVal);
-        static JSValue isWide_get(JSContext* ctx, JSValue thisVal);
-        static JSValue ride_get(JSContext* ctx, JSValue thisVal);
-        static JSValue station_get(JSContext* ctx, JSValue thisVal);
 
         static JSValue getConnectedPaths(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
         static JSValue moveTo(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);

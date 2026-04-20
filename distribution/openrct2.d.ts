@@ -1770,7 +1770,7 @@ declare global {
          * This is a convenience method for A* pathfinding where the element index is not known.
          * @param position The world coordinates (x, y, z) of the footpath.
          */
-        getPathNavigatorAt(position: CoordsXYZ): PathNavigator | null;
+        getPathNavigator(position: CoordsXYZ): PathNavigator | null;
 
     }
 
@@ -2821,24 +2821,32 @@ declare global {
     }
 
     /**
-     * Describes a connection from a {@link PathNavigator}'s current position
-     * to an adjacent reachable footpath tile.
+     * Describes a footpath tile, either the {@link PathNavigator}'s current
+     * position or an adjacent reachable neighbor returned by
+     * {@link PathNavigator.getConnectedPaths}.
      */
     interface PathConnection {
-        /** World coordinates of the connected path tile. */
+        /** World coordinates of the path tile. */
         readonly position: CoordsXYZ;
-        /** The cardinal direction (0-3) from the source tile to this neighbor. */
-        readonly direction: Direction;
-        /** Whether the connected path is sloped. */
+        /** The index of the footpath element on the tile. */
+        readonly elementIndex: number;
+        /**
+         * The cardinal direction (0-3) of entry into this tile, or null if
+         * this represents a navigator's starting position.
+         */
+        readonly direction: Direction | null;
+        /** Whether the path is sloped. */
         readonly isSloped: boolean;
-        /** The slope direction of the connected path, if sloped. */
+        /** The slope direction, if sloped. */
         readonly slopeDirection: Direction | null;
-        /** Whether the connected path is a queue line. */
+        /** Whether the path is a queue line. */
         readonly isQueue: boolean;
-        /** Whether the connected path is wide. */
+        /** Whether the path is wide. */
         readonly isWide: boolean;
         /** The ride index if this is a queue path, otherwise null. */
         readonly ride: number | null;
+        /** The station index if this is a queue path, otherwise null. */
+        readonly station: number | null;
     }
 
     /**
@@ -2848,24 +2856,12 @@ declare global {
      * connected neighbors for graph traversal (e.g. A* pathfinding).
      */
     interface PathNavigator {
-        /** The world coordinates (x, y, z) of the current path tile. */
-        readonly position: CoordsXYZ;
+        /** The current path tile as a {@link PathConnection}. */
+        readonly current: PathConnection;
         /** The raw edge connection bitmask (lower 4 bits, directions 0-3). */
         readonly edges: number;
         /** Edge bitmask after applying no-entry sign / banner restrictions. */
         readonly permittedEdges: number;
-        /** Whether the current path tile is sloped. */
-        readonly isSloped: boolean;
-        /** The slope direction (0-3) if sloped, otherwise null. */
-        readonly slopeDirection: Direction | null;
-        /** Whether the current path tile is a queue line. */
-        readonly isQueue: boolean;
-        /** Whether the current path tile is wide. */
-        readonly isWide: boolean;
-        /** The ride index if this is a queue path, otherwise null. */
-        readonly ride: number | null;
-        /** The station index if this is a queue path, otherwise null. */
-        readonly station: number | null;
 
         /**
          * Returns all reachable neighboring path tiles from the current position.
