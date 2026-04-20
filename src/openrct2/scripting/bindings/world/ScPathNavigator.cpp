@@ -16,6 +16,7 @@
     #include "../../../world/tile_element/BannerElement.h"
     #include "../../../world/tile_element/PathElement.h"
     #include "../../ScriptEngine.h"
+    #include "ScPathConnection.h"
 
 namespace OpenRCT2::Scripting
 {
@@ -31,40 +32,47 @@ namespace OpenRCT2::Scripting
             return JS_NULL;
 
         TileCoordsXYZ tilePos(TileCoordsXY(position), el->BaseHeight);
-        return gScPathNavigator.New(ctx, tilePos);
+        return gScPathNavigator.New(ctx, tilePos, elementIndex, -1);
     }
 
     JSValue ScPathNavigator::FromPosition(JSContext* ctx, const CoordsXYZ& position)
     {
         TileCoordsXYZ tilePos(position);
-        auto* pathEl = FindPathElement(tilePos);
-        if (pathEl == nullptr)
+        auto coords = tilePos.ToCoordsXY();
+        TileElement* tileElement = MapGetFirstElementAt(coords);
+        if (tileElement == nullptr)
             return JS_NULL;
 
-        return gScPathNavigator.New(ctx, tilePos);
+        int32_t index = 0;
+        do
+        {
+            if (tileElement->GetType() != TileElementType::Path || tileElement->BaseHeight != tilePos.z
+                || tileElement->IsGhost())
+            {
+                index++;
+                continue;
+            }
+            return gScPathNavigator.New(ctx, tilePos, index, -1);
+        } while (!(tileElement++)->IsLastForTile());
+
+        return JS_NULL;
     }
 
     void ScPathNavigator::Register(JSContext* ctx)
     {
         static constexpr JSCFunctionListEntry funcs[] = {
-            JS_CGETSET_DEF("position", ScPathNavigator::position_get, nullptr),
+            JS_CGETSET_DEF("current", ScPathNavigator::current_get, nullptr),
             JS_CGETSET_DEF("edges", ScPathNavigator::edges_get, nullptr),
             JS_CGETSET_DEF("permittedEdges", ScPathNavigator::permittedEdges_get, nullptr),
-            JS_CGETSET_DEF("isSloped", ScPathNavigator::isSloped_get, nullptr),
-            JS_CGETSET_DEF("slopeDirection", ScPathNavigator::slopeDirection_get, nullptr),
-            JS_CGETSET_DEF("isQueue", ScPathNavigator::isQueue_get, nullptr),
-            JS_CGETSET_DEF("isWide", ScPathNavigator::isWide_get, nullptr),
-            JS_CGETSET_DEF("ride", ScPathNavigator::ride_get, nullptr),
-            JS_CGETSET_DEF("station", ScPathNavigator::station_get, nullptr),
             JS_CFUNC_DEF("getConnectedPaths", 0, ScPathNavigator::getConnectedPaths),
             JS_CFUNC_DEF("moveTo", 1, ScPathNavigator::moveTo),
         };
         RegisterBase(ctx, "PathNavigator", Finalize, funcs);
     }
 
-    JSValue ScPathNavigator::New(JSContext* ctx, const TileCoordsXYZ& position)
+    JSValue ScPathNavigator::New(JSContext* ctx, const TileCoordsXYZ& position, int32_t elementIndex, int32_t lastDirection)
     {
-        return MakeWithOpaque(ctx, new PathNavigatorData{ position });
+        return MakeWithOpaque(ctx, new PathNavigatorData{ position, elementIndex, lastDirection });
     }
 
     void ScPathNavigator::Finalize(JSRuntime* rt, JSValue thisVal)
@@ -79,23 +87,29 @@ namespace OpenRCT2::Scripting
         return gScPathNavigator.GetOpaque<PathNavigatorData*>(thisVal);
     }
 
-    const PathElement* ScPathNavigator::FindPathElement(const TileCoordsXYZ& pos)
+    const PathElement* ScPathNavigator::FindPathElement(const PathNavigatorData* data)
     {
-        auto coords = pos.ToCoordsXY();
-        TileElement* tileElement = MapGetFirstElementAt(coords);
-        if (tileElement == nullptr)
-            return nullptr;
+        auto coords = data->_position.ToCoordsXY();
+        auto* el = MapGetNthElementAt(coords, data->_elementIndex);
+        if (el != nullptr && el->GetType() == TileElementType::Path && el->BaseHeight == data->_position.z && !el->IsGhost())
+        {
+            return el->AsPath();
+        }
 
+        // Fall back to scanning in case the tile was re-ordered.
+        TileElement* scan = MapGetFirstElementAt(coords);
+        if (scan == nullptr)
+            return nullptr;
         do
         {
-            if (tileElement->GetType() != TileElementType::Path)
+            if (scan->GetType() != TileElementType::Path)
                 continue;
-            if (tileElement->BaseHeight != pos.z)
+            if (scan->BaseHeight != data->_position.z)
                 continue;
-            if (tileElement->IsGhost())
+            if (scan->IsGhost())
                 continue;
-            return tileElement->AsPath();
-        } while (!(tileElement++)->IsLastForTile());
+            return scan->AsPath();
+        } while (!(scan++)->IsLastForTile());
 
         return nullptr;
     }
@@ -131,12 +145,12 @@ namespace OpenRCT2::Scripting
         return edges;
     }
 
-    JSValue ScPathNavigator::position_get(JSContext* ctx, JSValue thisVal)
+    JSValue ScPathNavigator::current_get(JSContext* ctx, JSValue thisVal)
     {
         auto* data = GetPathNavigatorData(thisVal);
         if (data == nullptr)
             return JS_NULL;
-        return ToJSValue(ctx, data->_position.ToCoordsXYZ());
+        return gScPathConnection.New(ctx, data->_position, data->_elementIndex, data->_lastDirection);
     }
 
     JSValue ScPathNavigator::edges_get(JSContext* ctx, JSValue thisVal)
@@ -144,7 +158,7 @@ namespace OpenRCT2::Scripting
         auto* data = GetPathNavigatorData(thisVal);
         if (data == nullptr)
             return JS_NULL;
-        auto* pathEl = FindPathElement(data->_position);
+        auto* pathEl = FindPathElement(data);
         if (pathEl == nullptr)
             return JS_NULL;
         return JS_NewInt32(ctx, pathEl->GetEdges());
@@ -155,88 +169,10 @@ namespace OpenRCT2::Scripting
         auto* data = GetPathNavigatorData(thisVal);
         if (data == nullptr)
             return JS_NULL;
-        auto* pathEl = FindPathElement(data->_position);
+        auto* pathEl = FindPathElement(data);
         if (pathEl == nullptr)
             return JS_NULL;
         return JS_NewInt32(ctx, GetPermittedEdges(pathEl));
-    }
-
-    JSValue ScPathNavigator::isSloped_get(JSContext* ctx, JSValue thisVal)
-    {
-        auto* data = GetPathNavigatorData(thisVal);
-        if (data == nullptr)
-            return JS_NULL;
-        auto* pathEl = FindPathElement(data->_position);
-        if (pathEl == nullptr)
-            return JS_NULL;
-        return JS_NewBool(ctx, pathEl->IsSloped());
-    }
-
-    JSValue ScPathNavigator::slopeDirection_get(JSContext* ctx, JSValue thisVal)
-    {
-        auto* data = GetPathNavigatorData(thisVal);
-        if (data == nullptr)
-            return JS_NULL;
-        auto* pathEl = FindPathElement(data->_position);
-        if (pathEl == nullptr)
-            return JS_NULL;
-        if (!pathEl->IsSloped())
-            return JS_NULL;
-        return JS_NewInt32(ctx, pathEl->GetSlopeDirection());
-    }
-
-    JSValue ScPathNavigator::isQueue_get(JSContext* ctx, JSValue thisVal)
-    {
-        auto* data = GetPathNavigatorData(thisVal);
-        if (data == nullptr)
-            return JS_NULL;
-        auto* pathEl = FindPathElement(data->_position);
-        if (pathEl == nullptr)
-            return JS_NULL;
-        return JS_NewBool(ctx, pathEl->IsQueue());
-    }
-
-    JSValue ScPathNavigator::isWide_get(JSContext* ctx, JSValue thisVal)
-    {
-        auto* data = GetPathNavigatorData(thisVal);
-        if (data == nullptr)
-            return JS_NULL;
-        auto* pathEl = FindPathElement(data->_position);
-        if (pathEl == nullptr)
-            return JS_NULL;
-        return JS_NewBool(ctx, pathEl->IsWide());
-    }
-
-    JSValue ScPathNavigator::ride_get(JSContext* ctx, JSValue thisVal)
-    {
-        auto* data = GetPathNavigatorData(thisVal);
-        if (data == nullptr)
-            return JS_NULL;
-        auto* pathEl = FindPathElement(data->_position);
-        if (pathEl == nullptr)
-            return JS_NULL;
-        if (!pathEl->IsQueue())
-            return JS_NULL;
-        auto rideIndex = pathEl->GetRideIndex();
-        if (rideIndex.IsNull())
-            return JS_NULL;
-        return JS_NewInt32(ctx, rideIndex.ToUnderlying());
-    }
-
-    JSValue ScPathNavigator::station_get(JSContext* ctx, JSValue thisVal)
-    {
-        auto* data = GetPathNavigatorData(thisVal);
-        if (data == nullptr)
-            return JS_NULL;
-        auto* pathEl = FindPathElement(data->_position);
-        if (pathEl == nullptr)
-            return JS_NULL;
-        if (!pathEl->IsQueue())
-            return JS_NULL;
-        auto stationIndex = pathEl->GetStationIndex();
-        if (stationIndex.IsNull())
-            return JS_NULL;
-        return JS_NewInt32(ctx, stationIndex.ToUnderlying());
     }
 
     JSValue ScPathNavigator::getConnectedPaths(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
@@ -245,7 +181,7 @@ namespace OpenRCT2::Scripting
         if (data == nullptr)
             return JS_NULL;
 
-        auto* pathElement = FindPathElement(data->_position);
+        auto* pathElement = FindPathElement(data);
         if (pathElement == nullptr)
             return JS_NULL;
 
@@ -261,7 +197,6 @@ namespace OpenRCT2::Scripting
 
             TileCoordsXYZ neighborPos = data->_position;
 
-            // Adjust Z for slope when moving in the slope direction
             if (pathElement->IsSloped() && pathElement->GetSlopeDirection() == direction)
             {
                 neighborPos.z += 2;
@@ -270,42 +205,29 @@ namespace OpenRCT2::Scripting
             neighborPos.x += TileDirectionDelta[direction].x;
             neighborPos.y += TileDirectionDelta[direction].y;
 
-            // Find path element at neighbor position
             auto neighborCoords = neighborPos.ToCoordsXY();
             TileElement* nextEl = MapGetFirstElementAt(neighborCoords);
             if (nextEl == nullptr)
                 continue;
 
+            int32_t nextIndex = 0;
             do
             {
-                if (nextEl->IsGhost())
+                if (nextEl->IsGhost() || nextEl->GetType() != TileElementType::Path)
+                {
+                    nextIndex++;
                     continue;
-                if (nextEl->GetType() != TileElementType::Path)
-                    continue;
+                }
 
                 const auto* nextPath = nextEl->AsPath();
                 if (!FootpathIsZAndDirectionValid(*nextPath, neighborPos.z, direction))
+                {
+                    nextIndex++;
                     continue;
+                }
 
-                // Found a valid connected path — build result object
-                // Use the actual base height of the found element for the position
                 TileCoordsXYZ actualPos(neighborPos.x, neighborPos.y, nextEl->BaseHeight);
-
-                JSValue conn = JS_NewObject(ctx);
-                JS_SetPropertyStr(ctx, conn, "position", ToJSValue(ctx, actualPos.ToCoordsXYZ()));
-                JS_SetPropertyStr(ctx, conn, "direction", JS_NewInt32(ctx, direction));
-                JS_SetPropertyStr(ctx, conn, "isSloped", JS_NewBool(ctx, nextPath->IsSloped()));
-                JS_SetPropertyStr(
-                    ctx, conn, "slopeDirection",
-                    nextPath->IsSloped() ? JS_NewInt32(ctx, nextPath->GetSlopeDirection()) : JS_NULL);
-                JS_SetPropertyStr(ctx, conn, "isQueue", JS_NewBool(ctx, nextPath->IsQueue()));
-                JS_SetPropertyStr(ctx, conn, "isWide", JS_NewBool(ctx, nextPath->IsWide()));
-
-                auto rideIndex = nextPath->GetRideIndex();
-                JS_SetPropertyStr(
-                    ctx, conn, "ride",
-                    (nextPath->IsQueue() && !rideIndex.IsNull()) ? JS_NewInt32(ctx, rideIndex.ToUnderlying()) : JS_NULL);
-
+                JSValue conn = gScPathConnection.New(ctx, actualPos, nextIndex, direction);
                 JS_SetPropertyUint32(ctx, result, resultIndex++, conn);
                 break;
             } while (!(nextEl++)->IsLastForTile());
@@ -324,7 +246,7 @@ namespace OpenRCT2::Scripting
         if (direction < 0 || direction > 3)
             return JS_NewBool(ctx, false);
 
-        auto* pathElement = FindPathElement(data->_position);
+        auto* pathElement = FindPathElement(data);
         if (pathElement == nullptr)
             return JS_NewBool(ctx, false);
 
@@ -347,19 +269,25 @@ namespace OpenRCT2::Scripting
         if (nextEl == nullptr)
             return JS_NewBool(ctx, false);
 
+        int32_t nextIndex = 0;
         do
         {
-            if (nextEl->IsGhost())
+            if (nextEl->IsGhost() || nextEl->GetType() != TileElementType::Path)
+            {
+                nextIndex++;
                 continue;
-            if (nextEl->GetType() != TileElementType::Path)
-                continue;
+            }
 
             const auto* nextPath = nextEl->AsPath();
             if (!FootpathIsZAndDirectionValid(*nextPath, neighborPos.z, direction))
+            {
+                nextIndex++;
                 continue;
+            }
 
-            // Move to the neighbor
             data->_position = TileCoordsXYZ(neighborPos.x, neighborPos.y, nextEl->BaseHeight);
+            data->_elementIndex = nextIndex;
+            data->_lastDirection = direction;
             return JS_NewBool(ctx, true);
         } while (!(nextEl++)->IsLastForTile());
 
