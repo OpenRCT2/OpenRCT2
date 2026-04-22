@@ -30,6 +30,7 @@
 #include "entity/Paint.Guest.h"
 #include "entity/Paint.Staff.h"
 #include "entity/Paint.Litter.h"
+#include "entity/Paint.Duck.h"
 #include "vehicle/VehiclePaint.h"
 
 #include <cassert>
@@ -170,7 +171,7 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
                 PaintBalloon(session, *entity->cast<Balloon>(), image_direction);
                 break;
             case EntityType::duck:
-                entity->cast<Duck>()->Paint(session, image_direction);
+                PaintDuck(session, *entity->cast<Duck>(), image_direction);
                 break;
             case EntityType::litter:
                 PaintLitter(session, *entity->cast<Litter>(), image_direction);
