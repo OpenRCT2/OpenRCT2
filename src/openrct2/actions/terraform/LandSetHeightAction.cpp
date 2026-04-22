@@ -346,6 +346,25 @@ namespace OpenRCT2::GameActions
         }
 
         MapInvalidateTileFull(_coords);
+
+        // Invalidate adjacent tiles containing track elements, as tunnel portals
+        // on neighbouring tiles may be visually affected by the ground height change.
+        // Fixes: https://github.com/OpenRCT2/OpenRCT2/issues/25557
+        constexpr CoordsXY adjacentOffsets[] = {
+            { -kCoordsXYStep, 0 },
+            { kCoordsXYStep, 0 },
+            { 0, -kCoordsXYStep },
+            { 0, kCoordsXYStep },
+        };
+        for (const auto& offset : adjacentOffsets)
+        {
+            CoordsXY adjacentCoords = _coords + offset;
+            for ([[maybe_unused]] auto* trackElement : TileElementsView<TrackElement>(adjacentCoords))
+            {
+                MapInvalidateTileFull(adjacentCoords);
+                break;
+            }
+        }
     }
 
     bool LandSetHeightAction::MapSetLandHeightClearFunc(
