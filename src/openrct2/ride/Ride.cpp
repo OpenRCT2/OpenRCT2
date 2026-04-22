@@ -46,6 +46,7 @@
 #include "../profiling/Profiling.h"
 #include "../rct1/RCT1.h"
 #include "../scenario/Scenario.h"
+#include "../scripting/ScriptEngine.h"
 #include "../ui/WindowManager.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
@@ -61,6 +62,7 @@
 #include "../world/tile_element/TrackElement.h"
 #include "CableLift.h"
 #include "RideAudio.h"
+#include "RideBreakdownMap.h"
 #include "RideConstruction.h"
 #include "RideData.h"
 #include "RideEntry.h"
@@ -80,6 +82,7 @@
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::TrackMetadata;
+using namespace OpenRCT2::Scripting;
 
 static constexpr auto kRideModeBlockSectionedCounterpart = std::to_array(
     {
@@ -1313,6 +1316,24 @@ void RidePrepareBreakdown(Ride& ride, Breakdown breakdownReason)
         default:
             break;
     }
+#ifdef ENABLE_SCRIPTING
+    auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
+    if (hookEngine.HasSubscriptions(HookType::rideBreakDown))
+    {
+        auto ctx = GetContext()->GetScriptEngine().GetContext();
+        JSValue obj = JS_NewObject(ctx);
+
+        JS_SetPropertyStr(ctx, obj, "rideId", JS_NewInt32(ctx, ride.id.ToUnderlying()));
+
+        auto it = kBreakdownMap.find(breakdownReason);
+        if (it != kBreakdownMap.end())
+            JS_SetPropertyStr(ctx, obj, "breakdownReason", JS_NewString(ctx, it->first.data()));
+        else
+            JS_SetPropertyStr(ctx, obj, "breakdownReason", JS_NewString(ctx, "none"));
+
+        hookEngine.Call(HookType::rideBreakDown, obj, true);
+    }
+#endif
 }
 
 /**
