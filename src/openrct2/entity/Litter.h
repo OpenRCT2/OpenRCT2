@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../localisation/StringIds.h"
 #include "../localisation/StringIdType.h"
 #include "EntityBase.h"
 
@@ -46,6 +47,5 @@ namespace OpenRCT2
         void Serialise(DataSerialiser& stream);
         StringId GetName() const;
         uint32_t GetAge() const;
-        void Paint(PaintSession& session, int32_t imageDirection) const;
     };
 } // namespace OpenRCT2
