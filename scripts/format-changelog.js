@@ -127,7 +127,8 @@ function readVersionEntry(ctx, rawEntry, versionInfo) {
         }
     }
     
-    if (text.includes('"') || text.includes('\'')) {
+    const textWithoutCode = text.replaceAll(/`.*`/g, '');
+    if (textWithoutCode.includes('"') || textWithoutCode.includes('\'')) {
         reportLineError(rawEntry, `Use of typewriter quotes (' or "), please use typographical quotes (‘ ’ and “ ”)`);
     }
 
