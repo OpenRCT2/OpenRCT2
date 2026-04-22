@@ -10,6 +10,7 @@
 - Fix: [#26360] Inverted Lay-down Roller Coaster helices are invisible when loading old saves.
 - Fix: [#26410] Tiles with water can draw incorrectly when there is something underwater and nothing above water.
 - Fix: [#26425] Benches don't reduce watching spots from 4 to 2 while other path additions do (should be reversed).
+- Fix: [#26432] Guests choose to head for rides they have already ridden if they don't have a map.
 
 0.5.0 (2026-04-12)
 ------------------------------------------------------------------------
