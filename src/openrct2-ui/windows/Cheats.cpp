@@ -371,29 +371,22 @@ static constexpr std::span<const Widget> window_cheats_page_widgets[] =
     window_cheats_weather_widgets,
 };
 
-static uint64_t window_cheats_page_holdDownWidgets[] = {
-    (1uLL << WIDX_MONEY_SPINNER_INCREMENT) |
-    (1uLL << WIDX_MONEY_SPINNER_DECREMENT) |
-    (1uLL << WIDX_ADD_MONEY),
-
-    (1uLL << WIDX_YEAR_UP) |
-    (1uLL << WIDX_YEAR_DOWN) |
-    (1uLL << WIDX_MONTH_UP) |
-    (1uLL << WIDX_MONTH_DOWN) |
-    (1uLL << WIDX_DAY_UP) |
-    (1uLL << WIDX_DAY_DOWN),
-
-    0,
-
-    0,
-
-    (1uLL << WIDX_INCREASE_PARK_RATING) |
-    (1uLL << WIDX_DECREASE_PARK_RATING),
-
-    0,
-
-    0,
-};
+static void setPageHoldableWidgets(WindowBase& w, int32_t page)
+{
+    switch (page)
+    {
+        case WINDOW_CHEATS_PAGE_MONEY:
+            widgetsSetHoldable(w, { WIDX_MONEY_SPINNER_INCREMENT, WIDX_MONEY_SPINNER_DECREMENT, WIDX_ADD_MONEY });
+            break;
+        case WINDOW_CHEATS_PAGE_DATE:
+            widgetsSetHoldable(
+                w, { WIDX_YEAR_UP, WIDX_YEAR_DOWN, WIDX_MONTH_UP, WIDX_MONTH_DOWN, WIDX_DAY_UP, WIDX_DAY_DOWN });
+            break;
+        case WINDOW_CHEATS_PAGE_PARK:
+            widgetsSetHoldable(w, { WIDX_INCREASE_PARK_RATING, WIDX_DECREASE_PARK_RATING });
+            break;
+    }
+}
 
 static StringId window_cheats_page_titles[] = {
     STR_CHEAT_TITLE_FINANCIAL,
@@ -421,6 +414,7 @@ static StringId window_cheats_page_titles[] = {
     public:
         void onOpen() override
         {
+            useWidgetFlags = true;
             setPage(WINDOW_CHEATS_PAGE_MONEY);
             _parkRatingSpinnerValue = Park::GetForcedRating() >= 0 ? Park::GetForcedRating() : 999;
         }
@@ -509,14 +503,6 @@ static StringId window_cheats_page_titles[] = {
 
         void onPrepareDraw() override
         {
-            pressedWidgets = 0;
-            disabledWidgets = 0;
-
-            // Set correct active tab
-            for (auto i = 0; i < WINDOW_CHEATS_PAGE_COUNT; i++)
-                setWidgetPressed(WIDX_TAB_1 + i, false);
-            setWidgetPressed(WIDX_TAB_1 + page, true);
-
             // Set title
             widgets[WIDX_TITLE].text = window_cheats_page_titles[page];
 
@@ -525,10 +511,7 @@ static StringId window_cheats_page_titles[] = {
             {
                 case WINDOW_CHEATS_PAGE_MONEY:
                 {
-                    if (isInEditorMode())
-                    {
-                        setWidgetDisabled(WIDX_NO_MONEY, true);
-                    }
+                    setWidgetDisabled(WIDX_NO_MONEY, isInEditorMode());
 
                     auto moneyDisabled = (gameState.park.flags & PARK_FLAGS_NO_MONEY) != 0;
                     setCheckboxValue(WIDX_NO_MONEY, moneyDisabled);
@@ -598,10 +581,10 @@ static StringId window_cheats_page_titles[] = {
                 widgets[WIDX_STAFF_SPEED].text = _staffSpeedNames[EnumValue(gameState.cheats.selectedStaffSpeed)];
             }
 
+            setWidgetDisabled(WIDX_TAB_2, isInEditorMode());
+            setWidgetDisabled(WIDX_TAB_3, isInEditorMode());
             if (isInEditorMode())
             {
-                setWidgetDisabled(WIDX_TAB_2, true);
-                setWidgetDisabled(WIDX_TAB_3, true);
                 UpdateTabPositions();
             }
         }
@@ -748,9 +731,12 @@ static StringId window_cheats_page_titles[] = {
             page = p;
             currentFrame = 0;
 
-            holdDownWidgets = window_cheats_page_holdDownWidgets[p];
-            pressedWidgets = 0;
             setWidgets(window_cheats_page_widgets[p]);
+            setPageHoldableWidgets(*this, p);
+            widgetSetPressedExclusive(
+                *this,
+                { WIDX_TAB_1, WIDX_TAB_2, WIDX_TAB_3, WIDX_TAB_4, WIDX_TAB_5, WIDX_TAB_6, WIDX_TAB_7 },
+                WIDX_TAB_1 + p);
 
             auto maxY = 0;
             for (WidgetIndex widgetIdx = WIDX_TAB_CONTENT; widgetIdx < widgets.size(); widgetIdx++)
