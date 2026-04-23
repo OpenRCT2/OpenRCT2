@@ -1151,6 +1151,24 @@ namespace OpenRCT2::Ui
         widgetSetPressed(w, widgetIndex, value);
     }
 
+    void widgetsClearPressed(WindowBase& w, std::initializer_list<WidgetIndex> indices)
+    {
+        for (auto i : indices)
+            widgetSetPressed(w, i, false);
+    }
+
+    void widgetSetPressedExclusive(WindowBase& w, std::initializer_list<WidgetIndex> group, WidgetIndex pressed)
+    {
+        for (auto i : group)
+            widgetSetPressed(w, i, i == pressed);
+    }
+
+    void widgetsSetHoldable(WindowBase& w, std::initializer_list<WidgetIndex> indices)
+    {
+        for (auto i : indices)
+            widgetSetHoldable(w, i, true);
+    }
+
     static void WidgetTextBoxDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex)
     {
         // Get the widget

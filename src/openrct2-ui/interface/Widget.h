@@ -11,6 +11,7 @@
 
 #include "Window.h"
 
+#include <initializer_list>
 #include <openrct2-ui/UiStringIds.h>
 #include <openrct2/drawing/FilterPaletteIds.h>
 #include <openrct2/interface/Widget.h>
@@ -89,6 +90,19 @@ namespace OpenRCT2::Ui
         const auto content = ImageId(kImageIndexUndefined);
 
         return makeWidget(origin, size, type, colour, content, tooltip);
+    }
+
+    constexpr Widget withFlag(Widget w, WidgetFlag flag)
+    {
+        w.flags.set(flag);
+        return w;
+    }
+
+    constexpr Widget makeHoldableWidget(
+        const ScreenCoordsXY& origin, const ScreenSize& size, WidgetType type, WindowColour colour,
+        uint32_t content = kWidgetContentEmpty, StringId tooltip = kStringIdNone)
+    {
+        return withFlag(makeWidget(origin, size, type, colour, content, tooltip), WidgetFlag::isHoldable);
     }
 
     constexpr Widget makeProgressBar(
@@ -265,6 +279,10 @@ namespace OpenRCT2::Ui
     void widgetSetVisible(WindowBase& w, WidgetIndex widgetIndex, bool value);
     void widgetSetPressed(WindowBase& w, WidgetIndex widgetIndex, bool value);
     void widgetSetCheckboxValue(WindowBase& w, WidgetIndex widgetIndex, bool value);
+
+    void widgetsClearPressed(WindowBase& w, std::initializer_list<WidgetIndex> indices);
+    void widgetSetPressedExclusive(WindowBase& w, std::initializer_list<WidgetIndex> group, WidgetIndex pressed);
+    void widgetsSetHoldable(WindowBase& w, std::initializer_list<WidgetIndex> indices);
 
     void widgetProgressBarSetNewPercentage(Widget& widget, uint8_t newPercentage);
 

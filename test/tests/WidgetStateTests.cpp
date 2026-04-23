@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include <gtest/gtest.h>
+#include <openrct2-ui/interface/Widget.h>
 #include <openrct2/core/FlagHolder.hpp>
 #include <openrct2/interface/Widget.h>
 #include <openrct2/interface/WindowBase.h>
@@ -194,4 +195,151 @@ TEST(WidgetStateTest, SetWidgetsPreservesFlags)
     ASSERT_TRUE(w.widgets[1].flags.has(WidgetFlag::isHoldable));
     ASSERT_FALSE(w.widgets[0].flags.has(WidgetFlag::isPressed));
     ASSERT_FALSE(w.widgets[2].flags.has(WidgetFlag::isPressed));
+}
+
+TEST(WidgetStateTest, WithFlagSetsFlagWithoutDisturbingOthers)
+{
+    using Ui::withFlag;
+
+    Widget base{};
+    base.flags.set(WidgetFlag::isPressed);
+
+    auto holdable = withFlag(base, WidgetFlag::isHoldable);
+    ASSERT_TRUE(holdable.flags.has(WidgetFlag::isPressed));
+    ASSERT_TRUE(holdable.flags.has(WidgetFlag::isHoldable));
+    ASSERT_FALSE(holdable.flags.has(WidgetFlag::isDisabled));
+}
+
+TEST(WidgetStateTest, MakeHoldableWidgetHasHoldableFlag)
+{
+    using Ui::makeHoldableWidget;
+    using Ui::WindowColour;
+
+    constexpr auto w = makeHoldableWidget({ 0, 0 }, { 10, 10 }, WidgetType::button, WindowColour::primary);
+    static_assert(w.flags.has(WidgetFlag::isHoldable));
+    static_assert(!w.flags.has(WidgetFlag::isPressed));
+    static_assert(!w.flags.has(WidgetFlag::isDisabled));
+    ASSERT_TRUE(w.flags.has(WidgetFlag::isHoldable));
+}
+
+TEST(WidgetStateTest, MakeWidgetDefaultHasNoFlags)
+{
+    using Ui::makeWidget;
+    using Ui::WindowColour;
+
+    constexpr auto w = makeWidget({ 0, 0 }, { 10, 10 }, WidgetType::button, WindowColour::primary);
+    static_assert(w.flags.isEmpty());
+    ASSERT_TRUE(w.flags.isEmpty());
+}
+
+// Stage 1 bulk helpers live in libopenrct2ui, which the test binary does not
+// link against. The behaviour is tested here via local mirrors that replicate
+// the bulk-helper bodies from src/openrct2-ui/interface/Widget.cpp. The
+// single-widget setters they wrap (widgetSetPressed/widgetSetHoldable) are
+// covered by the coexistence and high-index tests above.
+namespace
+{
+    void ClearPressedMirror(WindowBase& w, std::initializer_list<WidgetIndex> indices)
+    {
+        for (auto i : indices)
+        {
+            w.widgets[i].flags.unset(WidgetFlag::isPressed);
+            if (i < 64)
+                w.pressedWidgets &= ~(1uLL << i);
+        }
+    }
+
+    void SetPressedExclusiveMirror(WindowBase& w, std::initializer_list<WidgetIndex> group, WidgetIndex pressed)
+    {
+        for (auto i : group)
+        {
+            const bool on = (i == pressed);
+            w.widgets[i].flags.set(WidgetFlag::isPressed, on);
+            if (i < 64)
+            {
+                if (on)
+                    w.pressedWidgets |= (1uLL << i);
+                else
+                    w.pressedWidgets &= ~(1uLL << i);
+            }
+        }
+    }
+
+    void SetHoldableMirror(WindowBase& w, std::initializer_list<WidgetIndex> indices)
+    {
+        for (auto i : indices)
+        {
+            w.widgets[i].flags.set(WidgetFlag::isHoldable);
+            if (i < 64)
+                w.holdDownWidgets |= (1uLL << i);
+        }
+    }
+} // namespace
+
+TEST(WidgetStateTest, ClearPressedOnlyTouchesListedIndices)
+{
+    WindowBase w;
+    w.widgets.resize(6);
+    for (WidgetIndex i = 0; i < 6; i++)
+        w.widgets[i].flags.set(WidgetFlag::isPressed);
+    w.pressedWidgets = 0b111111;
+
+    ClearPressedMirror(w, { 1, 3 });
+
+    ASSERT_TRUE(w.widgets[0].flags.has(WidgetFlag::isPressed));
+    ASSERT_FALSE(w.widgets[1].flags.has(WidgetFlag::isPressed));
+    ASSERT_TRUE(w.widgets[2].flags.has(WidgetFlag::isPressed));
+    ASSERT_FALSE(w.widgets[3].flags.has(WidgetFlag::isPressed));
+    ASSERT_TRUE(w.widgets[4].flags.has(WidgetFlag::isPressed));
+    ASSERT_TRUE(w.widgets[5].flags.has(WidgetFlag::isPressed));
+    ASSERT_EQ(w.pressedWidgets, 0b110101uLL);
+}
+
+TEST(WidgetStateTest, SetPressedExclusivePressesOneAndClearsRest)
+{
+    WindowBase w;
+    w.widgets.resize(10);
+    // Seed two pressed; neither is the one we'll select.
+    w.widgets[2].flags.set(WidgetFlag::isPressed);
+    w.widgets[7].flags.set(WidgetFlag::isPressed);
+    w.pressedWidgets = (1uLL << 2) | (1uLL << 7);
+
+    SetPressedExclusiveMirror(w, { 2, 4, 6, 7 }, 6);
+
+    for (WidgetIndex i : { 2, 4, 7 })
+        ASSERT_FALSE(w.widgets[i].flags.has(WidgetFlag::isPressed)) << "index " << i;
+    ASSERT_TRUE(w.widgets[6].flags.has(WidgetFlag::isPressed));
+    // Widgets outside the group are untouched.
+    ASSERT_FALSE(w.widgets[0].flags.has(WidgetFlag::isPressed));
+    ASSERT_FALSE(w.widgets[9].flags.has(WidgetFlag::isPressed));
+    ASSERT_EQ(w.pressedWidgets, 1uLL << 6);
+}
+
+TEST(WidgetStateTest, SetPressedExclusiveWorksForHighIndices)
+{
+    WindowBase w;
+    w.widgets.resize(300);
+    SetPressedExclusiveMirror(w, { 15, 79, 143, 271 }, 79);
+
+    ASSERT_FALSE(w.widgets[15].flags.has(WidgetFlag::isPressed));
+    ASSERT_TRUE(w.widgets[79].flags.has(WidgetFlag::isPressed));
+    ASSERT_FALSE(w.widgets[143].flags.has(WidgetFlag::isPressed));
+    ASSERT_FALSE(w.widgets[271].flags.has(WidgetFlag::isPressed));
+    // Bitmask must stay clean for the high-index selection (no shift wrap).
+    ASSERT_EQ(w.pressedWidgets, 0uLL);
+}
+
+TEST(WidgetStateTest, SetHoldableMarksListedIndices)
+{
+    WindowBase w;
+    w.widgets.resize(8);
+    SetHoldableMirror(w, { 2, 3, 5 });
+
+    ASSERT_FALSE(w.widgets[0].flags.has(WidgetFlag::isHoldable));
+    ASSERT_FALSE(w.widgets[1].flags.has(WidgetFlag::isHoldable));
+    ASSERT_TRUE(w.widgets[2].flags.has(WidgetFlag::isHoldable));
+    ASSERT_TRUE(w.widgets[3].flags.has(WidgetFlag::isHoldable));
+    ASSERT_FALSE(w.widgets[4].flags.has(WidgetFlag::isHoldable));
+    ASSERT_TRUE(w.widgets[5].flags.has(WidgetFlag::isHoldable));
+    ASSERT_EQ(w.holdDownWidgets, (1uLL << 2) | (1uLL << 3) | (1uLL << 5));
 }
