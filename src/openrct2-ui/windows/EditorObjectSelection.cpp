@@ -281,6 +281,7 @@ namespace OpenRCT2::Ui::Windows
          */
         void onOpen() override
         {
+            useWidgetFlags = true;
             initWidgets();
 
             Sub6AB211();
@@ -299,7 +300,7 @@ namespace OpenRCT2::Ui::Windows
             _listSortType = RIDE_SORT_TYPE;
             _listSortDescending = false;
 
-            disabledWidgets |= 1u << WIDX_FILTER_RIDE_TAB_FRAME;
+            setWidgetDisabled(WIDX_FILTER_RIDE_TAB_FRAME, true);
 
             VisibleListRefresh();
         }
@@ -857,7 +858,7 @@ namespace OpenRCT2::Ui::Windows
             installTrackWidget.moveToX(dropdownWidget.left - installTrackWidget.width() - 11);
 
             // Set pressed widgets
-            pressedWidgets |= 1uLL << WIDX_PREVIEW;
+            setWidgetPressed(WIDX_PREVIEW, true);
             SetPressedTab();
 
             // Set window title and buttons
@@ -962,13 +963,13 @@ namespace OpenRCT2::Ui::Windows
             {
                 widgets[WIDX_SUB_TAB_0 + i].tooltip = i < numSubTabs ? currentPage.subTabs[i].tooltip : kStringIdNone;
                 widgets[WIDX_SUB_TAB_0 + i].type = i < numSubTabs ? WidgetType::tab : WidgetType::empty;
-                pressedWidgets &= ~(1uLL << (WIDX_SUB_TAB_0 + i));
+                setWidgetPressed(WIDX_SUB_TAB_0 + i, false);
             }
 
             // Mark current sub-tab as active, and toggle tab frame
             if (hasSubTabs)
             {
-                pressedWidgets |= (1uLL << (WIDX_SUB_TAB_0 + _selectedSubTab));
+                setWidgetPressed(WIDX_SUB_TAB_0 + _selectedSubTab, true);
                 widgets[WIDX_FILTER_RIDE_TAB_FRAME].type = WidgetType::imgBtn;
             }
             else
@@ -1597,9 +1598,8 @@ namespace OpenRCT2::Ui::Windows
         {
             for (size_t i = 0; i < std::size(ObjectSelectionPages); i++)
             {
-                pressedWidgets &= ~(1ull << (WIDX_TAB_1 + i));
+                setWidgetPressed(WIDX_TAB_1 + static_cast<WidgetIndex>(i), static_cast<int32_t>(i) == selectedTab);
             }
-            pressedWidgets |= 1LL << (WIDX_TAB_1 + selectedTab);
         }
 
         /**

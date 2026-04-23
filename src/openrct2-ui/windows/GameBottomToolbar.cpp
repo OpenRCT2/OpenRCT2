@@ -427,6 +427,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         GameBottomToolbar()
         {
+            useWidgetFlags = true;
             setWidgets(window_game_bottom_toolbar_widgets);
 
             currentFrame = 0;
@@ -601,25 +602,25 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_NEWS_LOCATE].type = WidgetType::flatBtn;
                 widgets[WIDX_MIDDLE_OUTSET].colour = 2;
                 widgets[WIDX_MIDDLE_INSET].colour = 2;
-                disabledWidgets &= ~(1uLL << WIDX_NEWS_SUBJECT);
-                disabledWidgets &= ~(1uLL << WIDX_NEWS_LOCATE);
+                setWidgetDisabled(WIDX_NEWS_SUBJECT, false);
+                setWidgetDisabled(WIDX_NEWS_LOCATE, false);
 
                 // Find out if the news item is no longer valid
                 auto subjectLoc = News::GetSubjectLocation(newsItem->type, newsItem->assoc);
 
                 if (!subjectLoc.has_value())
-                    disabledWidgets |= (1uLL << WIDX_NEWS_LOCATE);
+                    setWidgetDisabled(WIDX_NEWS_LOCATE, true);
 
                 if (!(newsItem->typeHasSubject()))
                 {
-                    disabledWidgets |= (1uLL << WIDX_NEWS_SUBJECT);
+                    setWidgetDisabled(WIDX_NEWS_SUBJECT, true);
                     widgets[WIDX_NEWS_SUBJECT].type = WidgetType::empty;
                 }
 
                 if (newsItem->hasButton())
                 {
-                    disabledWidgets |= (1uLL << WIDX_NEWS_SUBJECT);
-                    disabledWidgets |= (1uLL << WIDX_NEWS_LOCATE);
+                    setWidgetDisabled(WIDX_NEWS_SUBJECT, true);
+                    setWidgetDisabled(WIDX_NEWS_LOCATE, true);
                 }
             }
         }
