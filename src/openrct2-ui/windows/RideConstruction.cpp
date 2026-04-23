@@ -1009,7 +1009,7 @@ namespace OpenRCT2::Ui::Windows
                 newDisabledWidgets &= ~(1uLL << WIDX_CHAIN_LIFT);
             }
 
-            // Apply the new disabled state to widget flags, invalidating only the ones that changed.
+            // Invalidate only widgets whose disabled state changes.
             const auto widgetCount = static_cast<WidgetIndex>(widgets.size());
             for (WidgetIndex i = 0; i < widgetCount && i < 64; i++)
             {

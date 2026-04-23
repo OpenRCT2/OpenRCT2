@@ -48,9 +48,9 @@ TEST(WidgetStateTest, FlagsAreIndependent)
 }
 
 // Regression guard for #26421: widgets at index >= 64 must round-trip cleanly.
-// The scenery window's 65th tab has widget index 79, which under the old uint64
-// bitmask wrapped (1uLL << 79 == 1uLL << 15), falsely reporting the first tab
-// as pressed. Per-widget flags have no such cap.
+// The scenery window's 65th tab has widget index 79. A uint64 bitmask indexed
+// by widget index would wrap (1uLL << 79 == 1uLL << 15) and cause the first
+// tab to falsely report as pressed. Per-widget flags have no such cap.
 TEST(WidgetStateTest, HighIndexRoundTripsWithoutShiftWrap)
 {
     WindowBase w;
