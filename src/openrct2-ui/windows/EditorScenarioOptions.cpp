@@ -351,6 +351,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void onOpen() override
         {
+            useWidgetFlags = true;
             setPage(WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_OBJECTIVE);
         }
 
@@ -669,11 +670,15 @@ namespace OpenRCT2::Ui::Windows
 
             page = newPage;
             currentFrame = 0;
-            disabledWidgets = 0;
-            holdDownWidgets = window_editor_scenario_options_page_holdDownWidgets[page];
-            pressedWidgets = 0;
 
             setWidgets(window_editor_scenario_options_widgets[page]);
+            const uint64_t holdable = window_editor_scenario_options_page_holdDownWidgets[page];
+            const auto widgetCount = static_cast<WidgetIndex>(widgets.size());
+            for (WidgetIndex i = 0; i < widgetCount && i < 64; i++)
+            {
+                if ((holdable >> i) & 1uLL)
+                    widgets[i].flags.set(WidgetFlag::isHoldable);
+            }
             invalidate();
             onResize();
             onPrepareDraw();
