@@ -518,8 +518,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_OPEN_LIGHT].image = ImageId(openLightImage);
 
             // only allow closing of park for guest / rating objective
-            const bool disableOpenClose
-                = gameState.scenarioOptions.objective.Type == Scenario::ObjectiveType::guestsAndRating;
+            const bool disableOpenClose = gameState.scenarioOptions.objective.Type == Scenario::ObjectiveType::guestsAndRating;
             setWidgetDisabled(WIDX_OPEN_OR_CLOSE, disableOpenClose);
             setWidgetDisabled(WIDX_CLOSE_LIGHT, disableOpenClose);
             setWidgetDisabled(WIDX_OPEN_LIGHT, disableOpenClose);

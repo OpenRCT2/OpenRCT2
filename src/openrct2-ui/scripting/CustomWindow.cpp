@@ -401,7 +401,6 @@ namespace OpenRCT2::Ui::Windows
         {
             number = GetNewWindowNumber();
 
-
             // Set window tab
             page = _info.Desc.TabIndex.value_or(0);
 

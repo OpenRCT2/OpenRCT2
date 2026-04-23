@@ -733,9 +733,7 @@ static StringId window_cheats_page_titles[] = {
             setWidgets(window_cheats_page_widgets[p]);
             setPageHoldableWidgets(*this, p);
             widgetSetPressedExclusive(
-                *this,
-                { WIDX_TAB_1, WIDX_TAB_2, WIDX_TAB_3, WIDX_TAB_4, WIDX_TAB_5, WIDX_TAB_6, WIDX_TAB_7 },
-                WIDX_TAB_1 + p);
+                *this, { WIDX_TAB_1, WIDX_TAB_2, WIDX_TAB_3, WIDX_TAB_4, WIDX_TAB_5, WIDX_TAB_6, WIDX_TAB_7 }, WIDX_TAB_1 + p);
 
             auto maxY = 0;
             for (WidgetIndex widgetIdx = WIDX_TAB_CONTENT; widgetIdx < widgets.size(); widgetIdx++)

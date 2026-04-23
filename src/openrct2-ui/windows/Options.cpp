@@ -990,8 +990,8 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_RESOLUTION].setString(_dropdownCaption.c_str());
 
             // Disable resolution dropdown on "Windowed" and "Fullscreen (desktop)"
-            const bool disableResolution
-                = Config::Get().general.fullscreenMode != static_cast<int32_t>(FullscreenMode::fullscreen);
+            const bool disableResolution = Config::Get().general.fullscreenMode
+                != static_cast<int32_t>(FullscreenMode::fullscreen);
             setWidgetDisabled(WIDX_RESOLUTION_DROPDOWN, disableResolution);
             setWidgetDisabled(WIDX_RESOLUTION, disableResolution);
             setWidgetDisabled(WIDX_RESOLUTION_LABEL, disableResolution);
@@ -1163,8 +1163,7 @@ namespace OpenRCT2::Ui::Windows
                 WIDX_RENDER_WEATHER_EFFECTS_CHECKBOX,
                 Config::Get().general.renderWeatherEffects || Config::Get().general.renderWeatherGloom);
             setCheckboxValue(WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX, Config::Get().general.disableLightningEffect);
-            const bool noWeather
-                = !Config::Get().general.renderWeatherEffects && !Config::Get().general.renderWeatherGloom;
+            const bool noWeather = !Config::Get().general.renderWeatherEffects && !Config::Get().general.renderWeatherGloom;
             if (noWeather)
                 setCheckboxValue(WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX, true);
             setWidgetDisabled(WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX, noWeather);

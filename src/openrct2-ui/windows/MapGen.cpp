@@ -196,8 +196,7 @@ namespace OpenRCT2::Ui::Windows
                 break;
             case WINDOW_MAPGEN_PAGE_TERRAIN:
                 widgetsSetHoldable(
-                    w,
-                    { WIDX_HEIGHTMAP_LOW_UP, WIDX_HEIGHTMAP_LOW_DOWN, WIDX_HEIGHTMAP_HIGH_UP, WIDX_HEIGHTMAP_HIGH_DOWN });
+                    w, { WIDX_HEIGHTMAP_LOW_UP, WIDX_HEIGHTMAP_LOW_DOWN, WIDX_HEIGHTMAP_HIGH_UP, WIDX_HEIGHTMAP_HIGH_DOWN });
                 break;
             case WINDOW_MAPGEN_PAGE_WATER:
                 widgetsSetHoldable(w, { WIDX_WATER_LEVEL_UP, WIDX_WATER_LEVEL_DOWN });
@@ -268,8 +267,7 @@ namespace OpenRCT2::Ui::Windows
 
             setWidgets(PageWidgets[newPage]);
             setPageHoldableWidgets(*this, newPage);
-            widgetSetPressedExclusive(
-                *this, { WIDX_TAB_1, WIDX_TAB_2, WIDX_TAB_3, WIDX_TAB_4 }, WIDX_TAB_1 + newPage);
+            widgetSetPressedExclusive(*this, { WIDX_TAB_1, WIDX_TAB_2, WIDX_TAB_3, WIDX_TAB_4 }, WIDX_TAB_1 + newPage);
 
             initScrollWidgets();
             invalidate();
