@@ -37,6 +37,7 @@ struct CheatsState
     bool freezeWeather;
     bool disableTrainLengthLimit;
     bool disablePlantAging;
+    bool disableGrassGrowing;
     bool disableRideValueAging;
     bool enableChainLiftOnAllTrack;
     bool allowArbitraryRideTypeChanges;
@@ -78,6 +79,7 @@ enum class CheatType : int32_t
     setGrassLength,
     waterPlants,
     disablePlantAging,
+    disableGrassGrowing,
     fixVandalism,
     removeLitter,
     setStaffSpeed,

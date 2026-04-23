@@ -1765,6 +1765,8 @@ enum : StringId
     STR_QUARTER_HELIX_UP = 7028,
     STR_QUARTER_HELIX_DOWN = 7029,
 
+    STR_CHEAT_DISABLE_GRASS_GROWING = 7030,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };

@@ -4680,6 +4680,7 @@ declare global {
         disableClearanceChecks: boolean;
         disableLittering: boolean;
         disablePlantAging: boolean;
+        disableGrassGrowing: boolean;
         disableRideValueAging: boolean;
         disableSupportLimits: boolean;
         disableTrainLengthLimit: boolean;
