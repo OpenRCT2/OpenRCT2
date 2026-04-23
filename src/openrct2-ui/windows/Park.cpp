@@ -161,19 +161,6 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma endregion
 
-    // clang-format off
-    static std::array<uint32_t, WINDOW_PARK_PAGE_COUNT> _pagedHoldDownWidgets = {
-        0,
-        0,
-        0,
-        (1uLL << WIDX_INCREASE_PRICE) |
-        (1uLL << WIDX_DECREASE_PRICE),
-        0,
-        0,
-        0,
-    };
-    // clang-format on
-
     class ParkWindow final : public Window
     {
         int32_t _numberOfStaff = -1;

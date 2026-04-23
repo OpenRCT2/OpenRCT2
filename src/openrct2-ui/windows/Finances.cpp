@@ -206,17 +206,6 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr int32_t kExpenditureColumnWidth = 80;
 
-    static constexpr uint32_t _windowFinancesPageHoldDownWidgets[] = {
-        (1uLL << WIDX_LOAN_INCREASE) | (1uLL << WIDX_LOAN_DECREASE), // WINDOW_FINANCES_PAGE_SUMMARY
-
-        0, // WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH
-        0, // WINDOW_FINANCES_PAGE_VALUE_GRAPH
-        0, // WINDOW_FINANCES_PAGE_PROFIT_GRAPH
-        0, // WINDOW_FINANCES_PAGE_MARKETING
-        0, // WINDOW_FINANCES_PAGE_RESEARCH
-    };
-    static_assert(std::size(_windowFinancesPageHoldDownWidgets) == WINDOW_FINANCES_PAGE_COUNT);
-
     static constexpr ScreenCoordsXY kGraphTopLeftPadding{ 88, 20 };
     static constexpr ScreenCoordsXY kGraphBottomRightPadding{ 15, 18 };
     static constexpr uint8_t kGraphNumYLabels = 5;
