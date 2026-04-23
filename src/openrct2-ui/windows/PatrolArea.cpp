@@ -60,9 +60,10 @@ namespace OpenRCT2::Ui::Windows
     public:
         void onOpen() override
         {
+            useWidgetFlags = true;
             setWidgets(PatrolAreaWidgets);
 
-            holdDownWidgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
+            widgetsSetHoldable(*this, { WIDX_INCREMENT, WIDX_DECREMENT });
             WindowInitScrollWidgets(*this);
             WindowPushOthersBelow(*this);
             gLandToolSize = 4;

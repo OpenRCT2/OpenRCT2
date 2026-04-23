@@ -177,8 +177,9 @@ namespace OpenRCT2::Ui::Windows
 
         void onOpen() override
         {
+            useWidgetFlags = true;
             setWidgets(window_new_campaign_widgets);
-            holdDownWidgets = (1uLL << WIDX_WEEKS_INCREASE_BUTTON) | (1uLL << WIDX_WEEKS_DECREASE_BUTTON);
+            widgetsSetHoldable(*this, { WIDX_WEEKS_INCREASE_BUTTON, WIDX_WEEKS_DECREASE_BUTTON });
             WindowInitScrollWidgets(*this);
         }
 
