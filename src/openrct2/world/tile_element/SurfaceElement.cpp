@@ -10,6 +10,7 @@
 #include "SurfaceElement.h"
 
 #include "../../Context.h"
+#include "../../GameState.h"
 #include "../../object/ObjectManager.h"
 #include "../../object/TerrainEdgeObject.h"
 #include "../../object/TerrainSurfaceObject.h"
@@ -116,11 +117,9 @@ namespace OpenRCT2
      *  rct2: 0x006647A1
      */
     void SurfaceElement::UpdateGrassLength(const CoordsXY& coords)
-    {
-        auto& gameState = getGameState();
-
+    {  
         // Check if tile is grass and if it's allowed to grow
-        if (!CanGrassGrow() || gameState.cheats.disableGrassGrowing)
+        if (!CanGrassGrow() || getGameState().cheats.disableGrassGrowing)
             return;
 
         uint8_t grassLengthTmp = GrassLength & 7;
