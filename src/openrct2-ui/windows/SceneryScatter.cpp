@@ -162,12 +162,20 @@ namespace OpenRCT2::Ui::Windows
         void onPrepareDraw() override
         {
             // Set density buttons' pressed state.
-            widgetSetPressedExclusive(
-                *this, { WIDX_DENSITY_LOW, WIDX_DENSITY_MEDIUM, WIDX_DENSITY_HIGH },
-                gWindowSceneryScatterDensity == ScatterToolDensity::LowDensity ? WIDX_DENSITY_LOW
-                    : gWindowSceneryScatterDensity == ScatterToolDensity::MediumDensity
-                    ? WIDX_DENSITY_MEDIUM
-                    : WIDX_DENSITY_HIGH);
+            WidgetIndex pressedDensity = WIDX_DENSITY_HIGH;
+            switch (gWindowSceneryScatterDensity)
+            {
+                case ScatterToolDensity::LowDensity:
+                    pressedDensity = WIDX_DENSITY_LOW;
+                    break;
+                case ScatterToolDensity::MediumDensity:
+                    pressedDensity = WIDX_DENSITY_MEDIUM;
+                    break;
+                case ScatterToolDensity::HighDensity:
+                    pressedDensity = WIDX_DENSITY_HIGH;
+                    break;
+            }
+            widgetSetPressedExclusive(*this, { WIDX_DENSITY_LOW, WIDX_DENSITY_MEDIUM, WIDX_DENSITY_HIGH }, pressedDensity);
 
             // Update the preview image (for tool sizes up to 7)
             widgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gWindowSceneryScatterSize));
