@@ -116,6 +116,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void onOpen() override
         {
+            useWidgetFlags = true;
             setPage(WINDOW_ABOUT_PAGE_OPENRCT2);
         }
 
@@ -205,20 +206,13 @@ namespace OpenRCT2::Ui::Windows
 
             page = p;
             currentFrame = 0;
-            pressedWidgets = 0;
 
             WindowSetResize(*this, kWindowSize, kWindowSize);
             setWidgets(_windowAboutPageWidgets[p]);
 
-            switch (p)
-            {
-                case WINDOW_ABOUT_PAGE_OPENRCT2:
-                    pressedWidgets |= (1uLL << WIDX_TAB_ABOUT_OPENRCT2);
-                    break;
-                case WINDOW_ABOUT_PAGE_RCT2:
-                    pressedWidgets |= (1uLL << WIDX_TAB_ABOUT_RCT2);
-                    break;
-            }
+            widgetSetPressedExclusive(
+                *this, { WIDX_TAB_ABOUT_OPENRCT2, WIDX_TAB_ABOUT_RCT2 },
+                p == WINDOW_ABOUT_PAGE_OPENRCT2 ? WIDX_TAB_ABOUT_OPENRCT2 : WIDX_TAB_ABOUT_RCT2);
         }
 
         int32_t DrawOpenRCT2Info(Drawing::RenderTarget& rt)

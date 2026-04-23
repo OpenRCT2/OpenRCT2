@@ -517,6 +517,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void onOpen() override
         {
+            useWidgetFlags = true;
             WindowSetResize(*this, kMinimumWindowSize, kMaximumWindowSize);
 
             windowTileInspectorSelectedIndex = -1;
@@ -1799,9 +1800,16 @@ namespace OpenRCT2::Ui::Windows
             tileInspectorPage = p;
             auto pageIndex = EnumValue(p);
             setWidgets(kWidgetsByPage[pageIndex]);
-            holdDownWidgets = kHoldableWidgetsByPage[pageIndex];
-            disabledWidgets = kDisabledWidgetsByPage[pageIndex];
-            pressedWidgets = 0;
+            const uint64_t holdable = kHoldableWidgetsByPage[pageIndex];
+            const uint64_t disabled = kDisabledWidgetsByPage[pageIndex];
+            const auto widgetCount = static_cast<WidgetIndex>(widgets.size());
+            for (WidgetIndex i = 0; i < widgetCount && i < 64; i++)
+            {
+                if ((holdable >> i) & 1uLL)
+                    widgets[i].flags.set(WidgetFlag::isHoldable);
+                setWidgetDisabled(i, ((disabled >> i) & 1uLL) != 0);
+                setWidgetPressed(i, false);
+            }
             invalidate();
         }
 

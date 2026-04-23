@@ -234,12 +234,13 @@ namespace OpenRCT2::Ui::Windows
 
         void SetDisabledTabs()
         {
-            disabledWidgets = (getGameState().park.flags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN) ? (1uLL << WIDX_TAB_5) : 0;
+            setWidgetDisabled(WIDX_TAB_5, (getGameState().park.flags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN) != 0);
         }
 
     public:
         void onOpen() override
         {
+            useWidgetFlags = true;
             setPage(WINDOW_FINANCES_PAGE_SUMMARY);
             _lastPaintedMonth = std::numeric_limits<uint32_t>::max();
             ResearchUpdateUncompletedTypes();
@@ -525,8 +526,11 @@ namespace OpenRCT2::Ui::Windows
             setWidgets(_windowFinancesPageWidgets[p]);
             SetDisabledTabs();
 
-            holdDownWidgets = _windowFinancesPageHoldDownWidgets[p];
-            pressedWidgets = 0;
+            if (p == WINDOW_FINANCES_PAGE_SUMMARY)
+                widgetsSetHoldable(*this, { WIDX_LOAN_INCREASE, WIDX_LOAN_DECREASE });
+
+            widgetSetPressedExclusive(
+                *this, { WIDX_TAB_1, WIDX_TAB_2, WIDX_TAB_3, WIDX_TAB_4, WIDX_TAB_5, WIDX_TAB_6 }, WIDX_TAB_1 + p);
 
             resizeFrame();
             onPrepareDraw();
