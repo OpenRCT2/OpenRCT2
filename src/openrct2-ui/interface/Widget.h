@@ -234,6 +234,16 @@ namespace OpenRCT2::Ui
             makeSpinnerDecreaseWidget(origin, size, type, colour, content, tooltip));
     };
 
+    constexpr std::array<Widget, 3> makeHoldableSpinnerWidgets(
+        const ScreenCoordsXY& origin, const ScreenSize& size, WidgetType type, WindowColour colour,
+        uint32_t content = kWidgetContentEmpty, StringId tooltip = kStringIdNone)
+    {
+        return makeWidgets(
+            makeWidget(origin, size, type, colour, content, tooltip),
+            withFlag(makeSpinnerIncreaseWidget(origin, size, type, colour, content, tooltip), WidgetFlag::isHoldable),
+            withFlag(makeSpinnerDecreaseWidget(origin, size, type, colour, content, tooltip), WidgetFlag::isHoldable));
+    };
+
     constexpr Widget makeDropdownBoxWidget(
         const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] WidgetType type, WindowColour colour,
         [[maybe_unused]] uint32_t content = kWidgetContentEmpty, StringId tooltip = kStringIdNone)
