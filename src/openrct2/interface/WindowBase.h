@@ -81,6 +81,10 @@ namespace OpenRCT2
         uint64_t pressedWidgets{};
         uint64_t holdDownWidgets{};
         std::vector<Widget> widgets{};
+        // When true, reads/writes for pressed/disabled/holdable widget state go through Widget::flags
+        // instead of the bitmask fields above. Custom (scripted) windows and migrated built-in windows
+        // opt in. Bitmask fields remain for unmigrated windows until the migration completes.
+        bool useWidgetFlags{ false };
         ScreenCoordsXY windowPos;
         int16_t width{};
         int16_t height{};

@@ -904,20 +904,16 @@ namespace OpenRCT2::Ui
 
     bool widgetIsDisabled(const WindowBase& w, WidgetIndex widgetIndex)
     {
-        if (w.widgets[widgetIndex].flags.has(WidgetFlag::isDisabled))
-            return true;
-        if (widgetIndex < 64 && (w.disabledWidgets & (1uLL << widgetIndex)) != 0)
-            return true;
-        return false;
+        if (w.useWidgetFlags)
+            return w.widgets[widgetIndex].flags.has(WidgetFlag::isDisabled);
+        return widgetIndex < 64 && (w.disabledWidgets & (1uLL << widgetIndex)) != 0;
     }
 
     bool widgetIsHoldable(const WindowBase& w, WidgetIndex widgetIndex)
     {
-        if (w.widgets[widgetIndex].flags.has(WidgetFlag::isHoldable))
-            return true;
-        if (widgetIndex < 64 && (w.holdDownWidgets & (1uLL << widgetIndex)) != 0)
-            return true;
-        return false;
+        if (w.useWidgetFlags)
+            return w.widgets[widgetIndex].flags.has(WidgetFlag::isHoldable);
+        return widgetIndex < 64 && (w.holdDownWidgets & (1uLL << widgetIndex)) != 0;
     }
 
     bool widgetIsVisible(const WindowBase& w, WidgetIndex widgetIndex)
@@ -927,11 +923,12 @@ namespace OpenRCT2::Ui
 
     bool widgetIsPressed(const WindowBase& w, WidgetIndex widgetIndex)
     {
-        if (w.widgets[widgetIndex].flags.has(WidgetFlag::isPressed))
+        if (w.useWidgetFlags)
         {
-            return true;
+            if (w.widgets[widgetIndex].flags.has(WidgetFlag::isPressed))
+                return true;
         }
-        if (widgetIndex < 64 && (w.pressedWidgets & (1uLL << widgetIndex)))
+        else if (widgetIndex < 64 && (w.pressedWidgets & (1uLL << widgetIndex)))
         {
             return true;
         }
@@ -1110,7 +1107,11 @@ namespace OpenRCT2::Ui
 
     void widgetSetDisabled(WindowBase& w, WidgetIndex widgetIndex, bool value)
     {
-        SafeSetWidgetFlag(w, widgetIndex, WidgetFlag::isDisabled, value);
+        if (w.useWidgetFlags)
+        {
+            SafeSetWidgetFlag(w, widgetIndex, WidgetFlag::isDisabled, value);
+            return;
+        }
         if (widgetIndex >= 64)
             return;
         if (value)
@@ -1121,7 +1122,11 @@ namespace OpenRCT2::Ui
 
     void widgetSetHoldable(WindowBase& w, WidgetIndex widgetIndex, bool value)
     {
-        SafeSetWidgetFlag(w, widgetIndex, WidgetFlag::isHoldable, value);
+        if (w.useWidgetFlags)
+        {
+            SafeSetWidgetFlag(w, widgetIndex, WidgetFlag::isHoldable, value);
+            return;
+        }
         if (widgetIndex >= 64)
             return;
         if (value)
@@ -1137,7 +1142,11 @@ namespace OpenRCT2::Ui
 
     void widgetSetPressed(WindowBase& w, WidgetIndex widgetIndex, bool value)
     {
-        SafeSetWidgetFlag(w, widgetIndex, WidgetFlag::isPressed, value);
+        if (w.useWidgetFlags)
+        {
+            SafeSetWidgetFlag(w, widgetIndex, WidgetFlag::isPressed, value);
+            return;
+        }
         if (widgetIndex >= 64)
             return;
         if (value)
