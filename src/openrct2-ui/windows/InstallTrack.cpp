@@ -88,7 +88,6 @@ namespace OpenRCT2::Ui::Windows
 
         void onOpen() override
         {
-            useWidgetFlags = true;
             setWidgets(window_install_track_widgets);
             setWidgetPressed(WIDX_TRACK_PREVIEW, true);
 

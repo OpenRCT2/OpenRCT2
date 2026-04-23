@@ -189,7 +189,6 @@ namespace OpenRCT2::Ui::Windows
     public:
         void onOpen() override
         {
-            useWidgetFlags = true;
             number = 0;
             currentFrame = 0;
             _numberOfRides = -1;

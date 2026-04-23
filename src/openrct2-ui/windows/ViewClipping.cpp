@@ -353,7 +353,6 @@ namespace OpenRCT2::Ui::Windows
 
         void onOpen() override
         {
-            useWidgetFlags = true;
             setWidgets(_viewClippingWidgets);
 
             widgetsSetHoldable(*this, { WIDX_CLIP_HEIGHT_INCREASE, WIDX_CLIP_HEIGHT_DECREASE });

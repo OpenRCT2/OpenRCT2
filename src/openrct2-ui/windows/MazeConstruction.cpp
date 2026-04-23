@@ -115,7 +115,6 @@ namespace OpenRCT2::Ui::Windows
     public:
         void onOpen() override
         {
-            useWidgetFlags = true;
             setWidgets(window_maze_construction_widgets);
             WindowInitScrollWidgets(*this);
             rideId = _currentRideIndex;

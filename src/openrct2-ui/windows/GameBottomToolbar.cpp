@@ -427,7 +427,6 @@ namespace OpenRCT2::Ui::Windows
     public:
         GameBottomToolbar()
         {
-            useWidgetFlags = true;
             setWidgets(window_game_bottom_toolbar_widgets);
 
             currentFrame = 0;

@@ -152,7 +152,6 @@ namespace OpenRCT2::Ui::Windows
 
         void onOpen() override
         {
-            useWidgetFlags = true;
             setPage(WINDOW_STAFF_OVERVIEW);
         }
 

@@ -257,7 +257,6 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            useWidgetFlags = true;
             setWidgets(kRideConstructionWidgets);
             number = _currentRideIndex.ToUnderlying();
 

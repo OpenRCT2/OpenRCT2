@@ -191,7 +191,6 @@ namespace OpenRCT2::Ui::Windows
     public:
         void onOpen() override
         {
-            useWidgetFlags = true;
             setWidgets(_rideListWidgets);
             WindowInitScrollWidgets(*this);
             WindowSetResize(*this, kWindowSize, kWindowSize * 2);

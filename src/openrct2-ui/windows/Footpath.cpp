@@ -236,7 +236,6 @@ namespace OpenRCT2::Ui::Windows
 
         void onOpen() override
         {
-            useWidgetFlags = true;
             setWidgets(kWindowFootpathWidgets);
             widgetsSetHoldable(*this, { WIDX_CONSTRUCT, WIDX_REMOVE });
 

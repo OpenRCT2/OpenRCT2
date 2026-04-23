@@ -99,7 +99,6 @@ namespace OpenRCT2::Ui::Windows
 
         void onOpen() override
         {
-            useWidgetFlags = true;
             setWidgets(window_shortcut_change_widgets);
             WindowInitScrollWidgets(*this);
         }
@@ -188,7 +187,6 @@ namespace OpenRCT2::Ui::Windows
     public:
         void onOpen() override
         {
-            useWidgetFlags = true;
             initialiseTabs();
             initialiseWidgets();
             initialiseList();

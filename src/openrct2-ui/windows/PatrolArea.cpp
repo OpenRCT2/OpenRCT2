@@ -60,7 +60,6 @@ namespace OpenRCT2::Ui::Windows
     public:
         void onOpen() override
         {
-            useWidgetFlags = true;
             setWidgets(PatrolAreaWidgets);
 
             widgetsSetHoldable(*this, { WIDX_INCREMENT, WIDX_DECREMENT });

@@ -132,7 +132,6 @@ namespace OpenRCT2::Ui::Windows
     public:
         void onOpen() override
         {
-            useWidgetFlags = true;
             setWidgets(window_land_rights_widgets);
 
             widgetsSetHoldable(*this, { WIDX_INCREMENT, WIDX_DECREMENT });

@@ -89,7 +89,6 @@ namespace OpenRCT2::Ui::Windows
     public:
         void onOpen() override
         {
-            useWidgetFlags = true;
             setWidgets(_transparancyWidgets);
             WindowPushOthersBelow(*this);
 

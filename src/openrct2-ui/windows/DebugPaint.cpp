@@ -58,7 +58,6 @@ namespace OpenRCT2::Ui::Windows
     public:
         void onOpen() override
         {
-            useWidgetFlags = true;
             setWidgets(window_debug_paint_widgets);
 
             initScrollWidgets();

@@ -134,7 +134,6 @@ namespace OpenRCT2::Ui::Windows
     public:
         void onOpen() override
         {
-            useWidgetFlags = true;
             setWidgets(window_banner_widgets);
             WindowInitScrollWidgets(*this);
         }

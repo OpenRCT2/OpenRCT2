@@ -414,7 +414,6 @@ static StringId window_cheats_page_titles[] = {
     public:
         void onOpen() override
         {
-            useWidgetFlags = true;
             setPage(WINDOW_CHEATS_PAGE_MONEY);
             _parkRatingSpinnerValue = Park::GetForcedRating() >= 0 ? Park::GetForcedRating() : 999;
         }

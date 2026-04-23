@@ -156,7 +156,6 @@ namespace OpenRCT2::Ui::Windows
         {
             ResearchRidesSetup();
 
-            useWidgetFlags = true;
             setWidgets(_inventionListWidgets);
             widgetSetPressed(*this, WIDX_PREVIEW, true);
             widgetSetPressed(*this, WIDX_TAB_1, true);

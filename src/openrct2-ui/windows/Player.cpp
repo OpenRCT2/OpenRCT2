@@ -100,7 +100,6 @@ namespace OpenRCT2::Ui::Windows
 
         void onOpen() override
         {
-            useWidgetFlags = true;
             page = 0;
             currentFrame = 0;
             listInformationType = 0;

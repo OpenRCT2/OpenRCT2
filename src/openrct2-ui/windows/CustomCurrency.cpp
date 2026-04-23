@@ -55,7 +55,6 @@ namespace OpenRCT2::Ui::Windows
     public:
         void onOpen() override
         {
-            useWidgetFlags = true;
             setWidgets(window_custom_currency_widgets);
             widgetsSetHoldable(*this, { WIDX_RATE_UP, WIDX_RATE_DOWN });
             WindowInitScrollWidgets(*this);

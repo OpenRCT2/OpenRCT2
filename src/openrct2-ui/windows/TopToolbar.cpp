@@ -1498,7 +1498,6 @@ namespace OpenRCT2::Ui::Windows
             WindowClass::topToolbar, ScreenCoordsXY(0, 0), { ContextGetWidth(), kTopToolbarHeight + 1 },
             { WindowFlag::stickToFront, WindowFlag::transparent, WindowFlag::noBackground, WindowFlag::noTitleBar });
 
-        window->useWidgetFlags = true;
         window->setWidgets(_topToolbarWidgets);
 
         WindowInitScrollWidgets(*window);

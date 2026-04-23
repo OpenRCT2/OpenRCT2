@@ -223,7 +223,6 @@ namespace OpenRCT2::Ui::Windows
 
         void onOpen() override
         {
-            useWidgetFlags = true;
             String::set(_filterString, sizeof(_filterString), "");
             setWidgets(_trackListWidgets);
             widgets[WIDX_FILTER_STRING].string = _filterString;

@@ -315,7 +315,6 @@ namespace OpenRCT2::Ui::Windows
 
         void onOpen() override
         {
-            useWidgetFlags = true;
             setWidgets(window_new_ride_widgets);
             PopulateRideList();
             initScrollWidgets();

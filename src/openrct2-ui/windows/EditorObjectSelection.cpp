@@ -281,7 +281,6 @@ namespace OpenRCT2::Ui::Windows
          */
         void onOpen() override
         {
-            useWidgetFlags = true;
             initWidgets();
 
             Sub6AB211();

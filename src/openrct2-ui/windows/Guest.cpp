@@ -219,7 +219,6 @@ namespace OpenRCT2::Ui::Windows
     public:
         void onOpen() override
         {
-            useWidgetFlags = true;
             setWidgets(_guestWindowWidgetsOverview);
             page = WINDOW_GUEST_OVERVIEW;
             currentFrame = 0;

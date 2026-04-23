@@ -776,7 +776,6 @@ namespace OpenRCT2::Ui::Windows
 
         void onOpen() override
         {
-            useWidgetFlags = true;
             setWidgets(PageWidgets[WINDOW_RIDE_PAGE_MAIN]);
 
             setPage(WINDOW_RIDE_PAGE_MAIN);
