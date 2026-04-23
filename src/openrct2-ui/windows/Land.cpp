@@ -99,9 +99,11 @@ namespace OpenRCT2::Ui::Windows
     public:
         void onOpen() override
         {
+            useWidgetFlags = true;
             setWidgets(window_land_widgets);
 
-            holdDownWidgets = (1uLL << WIDX_DECREMENT) | (1uLL << WIDX_INCREMENT);
+            widgetsSetHoldable(*this, { WIDX_DECREMENT, WIDX_INCREMENT });
+            setWidgetPressed(WIDX_PREVIEW, true);
             WindowInitScrollWidgets(*this);
             WindowPushOthersBelow(*this);
 
@@ -246,16 +248,10 @@ namespace OpenRCT2::Ui::Windows
 
         void onPrepareDraw() override
         {
-            pressedWidgets = 0;
-            setWidgetPressed(WIDX_PREVIEW, true);
-            if (gLandToolTerrainSurface != kObjectEntryIndexNull)
-                setWidgetPressed(WIDX_FLOOR, true);
-            if (gLandToolTerrainEdge != kObjectEntryIndexNull)
-                setWidgetPressed(WIDX_WALL, true);
-            if (_landToolMountainMode)
-                setWidgetPressed(WIDX_MOUNTAINMODE, true);
-            if (_landToolPaintMode)
-                setWidgetPressed(WIDX_PAINTMODE, true);
+            setWidgetPressed(WIDX_FLOOR, gLandToolTerrainSurface != kObjectEntryIndexNull);
+            setWidgetPressed(WIDX_WALL, gLandToolTerrainEdge != kObjectEntryIndexNull);
+            setWidgetPressed(WIDX_MOUNTAINMODE, _landToolMountainMode);
+            setWidgetPressed(WIDX_PAINTMODE, _landToolPaintMode);
 
             // Update the preview image (for tool sizes up to 7)
             widgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gLandToolSize));

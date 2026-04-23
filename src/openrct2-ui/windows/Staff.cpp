@@ -152,6 +152,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onOpen() override
         {
+            useWidgetFlags = true;
             setPage(WINDOW_STAFF_OVERVIEW);
         }
 
@@ -349,7 +350,6 @@ namespace OpenRCT2::Ui::Windows
         {
             ColourSchemeUpdateByClass(this, static_cast<WindowClass>(WindowClass::staff));
 
-            SetPressedTab();
             DisableWidgets();
 
             auto staff = GetStaff();
@@ -1073,9 +1073,8 @@ namespace OpenRCT2::Ui::Windows
 
             page = newPage;
             currentFrame = 0;
-            pressedWidgets = 0;
-            holdDownWidgets = 0;
             setWidgets(window_staff_page_widgets[page]);
+            SetPressedTab();
 
             removeViewport();
 
