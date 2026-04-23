@@ -499,6 +499,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void onOpen() override
         {
+            useWidgetFlags = true;
             setPage(WINDOW_OPTIONS_PAGE_DISPLAY);
         }
 
@@ -752,12 +753,12 @@ namespace OpenRCT2::Ui::Windows
         {
             SetPressedTab();
 
-            disabledWidgets = 0;
             auto hasFilePicker = GetContext()->GetUiContext().HasFilePicker();
             const bool advancedTabSelected = (WIDX_FIRST_TAB + page) == WIDX_TAB_ADVANCED;
-            if (!hasFilePicker && advancedTabSelected)
+            const bool disableAlwaysNative = !hasFilePicker && advancedTabSelected;
+            setWidgetDisabled(WIDX_ALWAYS_NATIVE_LOADSAVE, disableAlwaysNative);
+            if (disableAlwaysNative)
             {
-                disabledWidgets |= (1uLL << WIDX_ALWAYS_NATIVE_LOADSAVE);
                 widgets[WIDX_ALWAYS_NATIVE_LOADSAVE].type = WidgetType::empty;
             }
         }
@@ -990,18 +991,11 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_RESOLUTION].setString(_dropdownCaption.c_str());
 
             // Disable resolution dropdown on "Windowed" and "Fullscreen (desktop)"
-            if (Config::Get().general.fullscreenMode != static_cast<int32_t>(FullscreenMode::fullscreen))
-            {
-                disabledWidgets |= (1uLL << WIDX_RESOLUTION_DROPDOWN);
-                disabledWidgets |= (1uLL << WIDX_RESOLUTION);
-                disabledWidgets |= (1uLL << WIDX_RESOLUTION_LABEL);
-            }
-            else
-            {
-                disabledWidgets &= ~(1uLL << WIDX_RESOLUTION_DROPDOWN);
-                disabledWidgets &= ~(1uLL << WIDX_RESOLUTION);
-                disabledWidgets &= ~(1uLL << WIDX_RESOLUTION_LABEL);
-            }
+            const bool disableResolution
+                = Config::Get().general.fullscreenMode != static_cast<int32_t>(FullscreenMode::fullscreen);
+            setWidgetDisabled(WIDX_RESOLUTION_DROPDOWN, disableResolution);
+            setWidgetDisabled(WIDX_RESOLUTION, disableResolution);
+            setWidgetDisabled(WIDX_RESOLUTION_LABEL, disableResolution);
 
             setCheckboxValue(WIDX_SHOW_FPS_CHECKBOX, Config::Get().general.showFPS);
             setCheckboxValue(WIDX_MULTITHREADING_CHECKBOX, Config::Get().general.multiThreading);
@@ -1154,43 +1148,27 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_VIRTUAL_FLOOR].text = _virtualFloorStyleStrings[EnumValue(Config::Get().general.virtualFloorStyle)];
 
             setCheckboxValue(WIDX_ENABLE_LIGHT_FX_CHECKBOX, Config::Get().general.enableLightFx);
-            if (Config::Get().general.dayNightCycle
-                && Config::Get().general.drawingEngine == DrawingEngine::SoftwareWithHardwareDisplay)
-            {
-                disabledWidgets &= ~(1uLL << WIDX_ENABLE_LIGHT_FX_CHECKBOX);
-            }
-            else
-            {
-                disabledWidgets |= (1uLL << WIDX_ENABLE_LIGHT_FX_CHECKBOX);
+            const bool lightFxEnabled = Config::Get().general.dayNightCycle
+                && Config::Get().general.drawingEngine == DrawingEngine::SoftwareWithHardwareDisplay;
+            setWidgetDisabled(WIDX_ENABLE_LIGHT_FX_CHECKBOX, !lightFxEnabled);
+            if (!lightFxEnabled)
                 Config::Get().general.enableLightFx = false;
-            }
 
             setCheckboxValue(WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX, Config::Get().general.enableLightFxForVehicles);
-            if (Config::Get().general.dayNightCycle
-                && Config::Get().general.drawingEngine == DrawingEngine::SoftwareWithHardwareDisplay
-                && Config::Get().general.enableLightFx)
-            {
-                disabledWidgets &= ~(1uLL << WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX);
-            }
-            else
-            {
-                disabledWidgets |= (1uLL << WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX);
+            const bool lightFxForVehiclesEnabled = lightFxEnabled && Config::Get().general.enableLightFx;
+            setWidgetDisabled(WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX, !lightFxForVehiclesEnabled);
+            if (!lightFxForVehiclesEnabled)
                 Config::Get().general.enableLightFxForVehicles = false;
-            }
 
             setCheckboxValue(
                 WIDX_RENDER_WEATHER_EFFECTS_CHECKBOX,
                 Config::Get().general.renderWeatherEffects || Config::Get().general.renderWeatherGloom);
             setCheckboxValue(WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX, Config::Get().general.disableLightningEffect);
-            if (!Config::Get().general.renderWeatherEffects && !Config::Get().general.renderWeatherGloom)
-            {
+            const bool noWeather
+                = !Config::Get().general.renderWeatherEffects && !Config::Get().general.renderWeatherGloom;
+            if (noWeather)
                 setCheckboxValue(WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX, true);
-                disabledWidgets |= (1uLL << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
-            }
-            else
-            {
-                disabledWidgets &= ~(1uLL << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
-            }
+            setWidgetDisabled(WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX, noWeather);
         }
 
 #pragma endregion
@@ -2005,9 +1983,12 @@ namespace OpenRCT2::Ui::Windows
 
             // The real name setting of clients is fixed to that of the server
             // and the server cannot change the setting during gameplay to prevent desyncs
-            if (Network::GetMode() != Network::Mode::none)
+            const bool inNetwork = Network::GetMode() != Network::Mode::none;
+            setWidgetDisabled(WIDX_REAL_NAMES_GUESTS_CHECKBOX, inNetwork);
+            setWidgetDisabled(WIDX_REAL_NAMES_STAFF_CHECKBOX, inNetwork);
+            setWidgetDisabled(WIDX_ALLOW_EARLY_COMPLETION, Network::GetMode() == Network::Mode::client);
+            if (inNetwork)
             {
-                disabledWidgets |= (1uLL << WIDX_REAL_NAMES_GUESTS_CHECKBOX) | (1uLL << WIDX_REAL_NAMES_STAFF_CHECKBOX);
                 widgets[WIDX_REAL_NAMES_GUESTS_CHECKBOX].tooltip = STR_OPTION_DISABLED_DURING_NETWORK_PLAY;
                 widgets[WIDX_REAL_NAMES_STAFF_CHECKBOX].tooltip = STR_OPTION_DISABLED_DURING_NETWORK_PLAY;
 
@@ -2016,7 +1997,6 @@ namespace OpenRCT2::Ui::Windows
                 // the way scenarios are completed during this network-session
                 if (Network::GetMode() == Network::Mode::client)
                 {
-                    disabledWidgets |= (1uLL << WIDX_ALLOW_EARLY_COMPLETION);
                     widgets[WIDX_ALLOW_EARLY_COMPLETION].tooltip = STR_OPTION_DISABLED_DURING_NETWORK_PLAY;
                 }
             }
@@ -2270,7 +2250,6 @@ namespace OpenRCT2::Ui::Windows
 
             page = p;
             currentFrame = 0;
-            pressedWidgets = 0;
             setWidgets(window_options_page_widgets[page]);
 
             invalidate();
@@ -2283,8 +2262,7 @@ namespace OpenRCT2::Ui::Windows
         void SetPressedTab()
         {
             for (int32_t i = 0; i < WINDOW_OPTIONS_PAGE_COUNT; i++)
-                pressedWidgets &= ~(1 << (WIDX_FIRST_TAB + i));
-            pressedWidgets |= 1LL << (WIDX_FIRST_TAB + page);
+                setWidgetPressed(WIDX_FIRST_TAB + i, i == page);
         }
 
         void ShowDropdown(Widget* widget, int32_t num_items)

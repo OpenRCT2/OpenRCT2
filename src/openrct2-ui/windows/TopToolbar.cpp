@@ -1224,31 +1224,16 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            if (mainWindow->viewport->zoom == ZoomLevel::min())
-            {
-                disabledWidgets |= (1uLL << WIDX_ZOOM_IN);
-            }
-            else if (mainWindow->viewport->zoom >= ZoomLevel::max())
-            {
-                disabledWidgets |= (1uLL << WIDX_ZOOM_OUT);
-            }
-            else
-            {
-                disabledWidgets &= ~((1uLL << WIDX_ZOOM_IN) | (1uLL << WIDX_ZOOM_OUT));
-            }
+            setWidgetDisabled(WIDX_ZOOM_IN, mainWindow->viewport->zoom == ZoomLevel::min());
+            setWidgetDisabled(WIDX_ZOOM_OUT, mainWindow->viewport->zoom >= ZoomLevel::max());
         }
 
         void ApplyPausedState()
         {
             bool paused = (gGamePaused & GAME_PAUSED_NORMAL);
-            if (paused || _waitingForPause)
-            {
-                pressedWidgets |= (1uLL << WIDX_PAUSE);
-                if (paused)
-                    _waitingForPause = false;
-            }
-            else
-                pressedWidgets &= ~(1uLL << WIDX_PAUSE);
+            if (paused)
+                _waitingForPause = false;
+            setWidgetPressed(WIDX_PAUSE, paused || _waitingForPause);
         }
 
         void ApplyMapRotation()
@@ -1280,10 +1265,7 @@ namespace OpenRCT2::Ui::Windows
         {
             // Footpath button pressed down
             auto* windowMgr = GetWindowManager();
-            if (windowMgr->FindByClass(WindowClass::footpath) == nullptr)
-                pressedWidgets &= ~(1uLL << WIDX_PATH);
-            else
-                pressedWidgets |= (1uLL << WIDX_PATH);
+            setWidgetPressed(WIDX_PATH, windowMgr->FindByClass(WindowClass::footpath) != nullptr);
         }
 
         // TODO: look into using std::span
@@ -1516,6 +1498,7 @@ namespace OpenRCT2::Ui::Windows
             WindowClass::topToolbar, ScreenCoordsXY(0, 0), { ContextGetWidth(), kTopToolbarHeight + 1 },
             { WindowFlag::stickToFront, WindowFlag::transparent, WindowFlag::noBackground, WindowFlag::noTitleBar });
 
+        window->useWidgetFlags = true;
         window->setWidgets(_topToolbarWidgets);
 
         WindowInitScrollWidgets(*window);
