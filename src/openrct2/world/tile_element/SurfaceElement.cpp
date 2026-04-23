@@ -117,7 +117,7 @@ namespace OpenRCT2
      *  rct2: 0x006647A1
      */
     void SurfaceElement::UpdateGrassLength(const CoordsXY& coords)
-    {  
+    {
         // Check if tile is grass and if it's allowed to grow
         if (!CanGrassGrow() || getGameState().cheats.disableGrassGrowing)
             return;
