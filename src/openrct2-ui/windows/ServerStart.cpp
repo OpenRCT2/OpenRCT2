@@ -69,6 +69,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void onOpen() override
         {
+            useWidgetFlags = true;
             setWidgets(_windowServerStartWidgets);
             widgets[WIDX_PORT_INPUT].string = _port;
             widgets[WIDX_NAME_INPUT].string = _name;

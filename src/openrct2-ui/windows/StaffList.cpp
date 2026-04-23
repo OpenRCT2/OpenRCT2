@@ -125,6 +125,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void onOpen() override
         {
+            useWidgetFlags = true;
             setWidgets(_staffListWidgets);
             WindowInitScrollWidgets(*this);
             WindowSetResize(*this, kWindowSize, { kMaximumWindowWidth, kMaximumWindowHeight });
