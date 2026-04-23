@@ -61,9 +61,11 @@ namespace OpenRCT2::Ui::Windows
     public:
         void onOpen() override
         {
+            useWidgetFlags = true;
             setWidgets(_sceneryScatterWidgets);
+            setWidgetPressed(WIDX_PREVIEW, true);
 
-            holdDownWidgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
+            widgetsSetHoldable(*this, { WIDX_INCREMENT, WIDX_DECREMENT });
             WindowInitScrollWidgets(*this);
             WindowPushOthersBelow(*this);
 
@@ -160,24 +162,13 @@ namespace OpenRCT2::Ui::Windows
 
         void onPrepareDraw() override
         {
-            // Set the preview image button to be pressed down
-            pressedWidgets = (1uLL << WIDX_PREVIEW);
-
             // Set density buttons' pressed state.
-            switch (gWindowSceneryScatterDensity)
-            {
-                case ScatterToolDensity::LowDensity:
-                    pressedWidgets |= (1uLL << WIDX_DENSITY_LOW);
-                    break;
-
-                case ScatterToolDensity::MediumDensity:
-                    pressedWidgets |= (1uLL << WIDX_DENSITY_MEDIUM);
-                    break;
-
-                case ScatterToolDensity::HighDensity:
-                    pressedWidgets |= (1uLL << WIDX_DENSITY_HIGH);
-                    break;
-            }
+            widgetSetPressedExclusive(
+                *this, { WIDX_DENSITY_LOW, WIDX_DENSITY_MEDIUM, WIDX_DENSITY_HIGH },
+                gWindowSceneryScatterDensity == ScatterToolDensity::LowDensity ? WIDX_DENSITY_LOW
+                    : gWindowSceneryScatterDensity == ScatterToolDensity::MediumDensity
+                    ? WIDX_DENSITY_MEDIUM
+                    : WIDX_DENSITY_HIGH);
 
             // Update the preview image (for tool sizes up to 7)
             widgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gWindowSceneryScatterSize));
