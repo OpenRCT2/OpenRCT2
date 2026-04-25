@@ -2871,7 +2871,7 @@ STR_5811    :If checked, you can have up to{NEWLINE}255 cars per train and 31{NE
 STR_5812    :Show multiplayer window
 STR_5813    :“{STRING}”
 STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
-STR_7030    :Default patrol area
+STR_7030    :Default patrol area:
 
 #tooltips
 STR_5815    :Display FPS counter in-game
