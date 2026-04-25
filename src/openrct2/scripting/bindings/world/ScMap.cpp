@@ -449,19 +449,56 @@ namespace OpenRCT2::Scripting
         return ScTrackIterator::FromElement(ctx, position, elementIndex);
     }
 
+    static PathNavigationOptions ParsePathNavigationOptions(JSContext* ctx, JSValue obj)
+    {
+        PathNavigationOptions options;
+        if (!JS_IsObject(obj))
+            return options;
+
+        options.RespectBanners = AsOrDefault(ctx, obj, "respectBanners", false);
+        options.ExcludeGhosts = AsOrDefault(ctx, obj, "excludeGhosts", false);
+        options.ExcludeQueues = AsOrDefault(ctx, obj, "excludeQueues", false);
+        options.ExcludeWidePaths = AsOrDefault(ctx, obj, "excludeWidePaths", false);
+        return options;
+    }
+
     JSValue ScMap::getPathNavigator(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
     {
         JS_UNPACK_OBJECT(pos, ctx, argv[0]);
 
-        if (argc > 1)
+        // Overloads:
+        //   (pos: CoordsXYZ)
+        //   (pos: CoordsXY, elementIndex: number)
+        //   (pos: CoordsXYZ, options: PathNavigationOptions)
+        //   (pos: CoordsXY, elementIndex: number, options: PathNavigationOptions)
+        // The second arg is the elementIndex iff it's a number; otherwise it's options.
+        bool hasElementIndex = false;
+        uint32_t elementIndex = 0;
+        JSValue optionsArg = JS_UNDEFINED;
+
+        if (argc >= 2 && JS_IsNumber(argv[1]))
         {
-            JS_UNPACK_UINT32(elementIndex, ctx, argv[1]);
+            if (JS_ToUint32(ctx, &elementIndex, argv[1]) < 0)
+                return JS_EXCEPTION;
+            hasElementIndex = true;
+            if (argc >= 3)
+                optionsArg = argv[2];
+        }
+        else if (argc >= 2)
+        {
+            optionsArg = argv[1];
+        }
+
+        const auto options = ParsePathNavigationOptions(ctx, optionsArg);
+
+        if (hasElementIndex)
+        {
             const auto position = JSToCoordsXY(ctx, pos);
-            return ScPathNavigator::FromElement(ctx, position, elementIndex);
+            return ScPathNavigator::FromElement(ctx, position, elementIndex, options);
         }
 
         const auto position = JSToCoordsXYZ(ctx, pos);
-        return ScPathNavigator::FromPosition(ctx, position);
+        return ScPathNavigator::FromPosition(ctx, position, options);
     }
 
     void ScMap::Register(JSContext* ctx)
@@ -478,7 +515,7 @@ namespace OpenRCT2::Scripting
             JS_CFUNC_DEF("getAllEntitiesOnTile", 2, ScMap::getAllEntitiesOnTile),
             JS_CFUNC_DEF("createEntity", 2, ScMap::createEntity),
             JS_CFUNC_DEF("getTrackIterator", 2, ScMap::getTrackIterator),
-            JS_CFUNC_DEF("getPathNavigator", 1, ScMap::getPathNavigator),
+            JS_CFUNC_DEF("getPathNavigator", 3, ScMap::getPathNavigator),
         };
         RegisterBase(ctx, "Map", nullptr, funcs);
     }

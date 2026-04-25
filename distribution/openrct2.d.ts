@@ -1762,15 +1762,20 @@ declare global {
          * to explore the footpath network as a graph for pathfinding.
          * @param location The tile coordinates.
          * @param elementIndex The index of the footpath element on the tile.
+         * @param options Optional traversal rules; persist for the lifetime of the navigator
+         *                and apply to {@link PathNavigator.getConnectedPaths},
+         *                {@link PathNavigator.moveTo}, and {@link PathNavigator.permittedEdges}.
          */
-        getPathNavigator(location: CoordsXY, elementIndex: number): PathNavigator | null;
+        getPathNavigator(
+            location: CoordsXY, elementIndex: number, options?: PathNavigationOptions): PathNavigator | null;
 
         /**
          * Gets a {@link PathNavigator} for the footpath at the given world coordinates.
          * This is a convenience method for A* pathfinding where the element index is not known.
          * @param position The world coordinates (x, y, z) of the footpath.
+         * @param options Optional traversal rules; see the other overload for details.
          */
-        getPathNavigator(position: CoordsXYZ): PathNavigator | null;
+        getPathNavigator(position: CoordsXYZ, options?: PathNavigationOptions): PathNavigator | null;
 
     }
 
@@ -2850,28 +2855,55 @@ declare global {
     }
 
     /**
+     * Traversal rules for a {@link PathNavigator}. By default the navigator is
+     * fully permissive — banners are ignored and ghost, queue, and wide path
+     * tiles are all included. Set any option to `true` to opt out of one form
+     * of permissiveness. All fields are optional and default to `false`.
+     */
+    interface PathNavigationOptions {
+        /** If true, no-entry signs (banners) block traversal. Default: false. */
+        respectBanners?: boolean;
+
+        /** If true, ghost (preview / not-yet-built) path elements are skipped. Default: false. */
+        excludeGhosts?: boolean;
+
+        /** If true, queue paths are skipped during traversal. Default: false. */
+        excludeQueues?: boolean;
+
+        /** If true, wide paths are skipped during traversal. Default: false. */
+        excludeWidePaths?: boolean;
+    }
+
+    /**
      * Allows exploring the footpath network as a graph.
      * Unlike {@link TrackIterator} which follows a linear circuit,
      * PathNavigator sits on a path tile and lets you discover all
      * connected neighbors for graph traversal (e.g. A* pathfinding).
+     *
+     * Traversal behavior is controlled by the {@link PathNavigationOptions}
+     * passed to {@link Map.getPathNavigator}.
      */
     interface PathNavigator {
         /** The current path tile as a {@link PathConnection}. */
         readonly current: PathConnection;
         /** The raw edge connection bitmask (lower 4 bits, directions 0-3). */
         readonly edges: number;
-        /** Edge bitmask after applying no-entry sign / banner restrictions. */
+        /**
+         * Edge bitmask after applying the navigator's banner rules.
+         * If `respectBanners` is false (the default), this returns the raw edges.
+         */
         readonly permittedEdges: number;
 
         /**
          * Returns all reachable neighboring path tiles from the current position.
          * Takes into account edge connections, slopes, height differences,
-         * and no-entry signs (banners).
+         * and the {@link PathNavigationOptions} the navigator was created with.
          */
         getConnectedPaths(): PathConnection[];
 
         /**
          * Moves the navigator to the connected path in the given direction.
+         * Honours the navigator's {@link PathNavigationOptions}.
          * @param direction The cardinal direction (0-3) to move.
          * @returns true if the move was successful, false otherwise.
          */
