@@ -21,6 +21,14 @@ namespace OpenRCT2::Scripting
     class ScPathNavigator;
     extern ScPathNavigator gScPathNavigator;
 
+    struct PathNavigationOptions
+    {
+        bool RespectBanners = false;
+        bool ExcludeGhosts = false;
+        bool ExcludeQueues = false;
+        bool ExcludeWidePaths = false;
+    };
+
     class ScPathNavigator final : public ScBase
     {
     private:
@@ -29,20 +37,25 @@ namespace OpenRCT2::Scripting
             TileCoordsXYZ _position;
             int32_t _elementIndex;
             int32_t _lastDirection; // -1 if navigator has not moved yet
+            PathNavigationOptions _options;
         };
 
     public:
-        static JSValue FromElement(JSContext* ctx, const CoordsXY& position, int32_t elementIndex);
-        static JSValue FromPosition(JSContext* ctx, const CoordsXYZ& position);
+        static JSValue FromElement(
+            JSContext* ctx, const CoordsXY& position, int32_t elementIndex, const PathNavigationOptions& options);
+        static JSValue FromPosition(JSContext* ctx, const CoordsXYZ& position, const PathNavigationOptions& options);
         void Register(JSContext* ctx);
-        JSValue New(JSContext* ctx, const TileCoordsXYZ& position, int32_t elementIndex, int32_t lastDirection);
+        JSValue New(
+            JSContext* ctx, const TileCoordsXYZ& position, int32_t elementIndex, int32_t lastDirection,
+            const PathNavigationOptions& options);
 
     private:
         static void Finalize(JSRuntime* rt, JSValue thisVal);
         static PathNavigatorData* GetPathNavigatorData(JSValue thisVal);
 
         static const PathElement* FindPathElement(const PathNavigatorData* data);
-        static int32_t GetPermittedEdges(const PathElement* pathElement);
+        static int32_t GetPermittedEdges(const PathElement* pathElement, const PathNavigationOptions& options);
+        static bool IsTraversableNeighbor(const PathElement* pathElement, const PathNavigationOptions& options);
 
         static JSValue current_get(JSContext* ctx, JSValue thisVal);
         static JSValue edges_get(JSContext* ctx, JSValue thisVal);

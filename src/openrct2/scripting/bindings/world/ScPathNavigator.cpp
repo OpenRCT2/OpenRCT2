@@ -21,7 +21,8 @@
 namespace OpenRCT2::Scripting
 {
 
-    JSValue ScPathNavigator::FromElement(JSContext* ctx, const CoordsXY& position, int32_t elementIndex)
+    JSValue ScPathNavigator::FromElement(
+        JSContext* ctx, const CoordsXY& position, int32_t elementIndex, const PathNavigationOptions& options)
     {
         auto el = MapGetNthElementAt(position, elementIndex);
         if (el == nullptr)
@@ -32,10 +33,10 @@ namespace OpenRCT2::Scripting
             return JS_NULL;
 
         TileCoordsXYZ tilePos(TileCoordsXY(position), el->BaseHeight);
-        return gScPathNavigator.New(ctx, tilePos, elementIndex, -1);
+        return gScPathNavigator.New(ctx, tilePos, elementIndex, -1, options);
     }
 
-    JSValue ScPathNavigator::FromPosition(JSContext* ctx, const CoordsXYZ& position)
+    JSValue ScPathNavigator::FromPosition(JSContext* ctx, const CoordsXYZ& position, const PathNavigationOptions& options)
     {
         TileCoordsXYZ tilePos(position);
         auto coords = tilePos.ToCoordsXY();
@@ -47,12 +48,12 @@ namespace OpenRCT2::Scripting
         do
         {
             if (tileElement->GetType() != TileElementType::Path || tileElement->BaseHeight != tilePos.z
-                || tileElement->IsGhost())
+                || (tileElement->IsGhost() && options.ExcludeGhosts))
             {
                 index++;
                 continue;
             }
-            return gScPathNavigator.New(ctx, tilePos, index, -1);
+            return gScPathNavigator.New(ctx, tilePos, index, -1, options);
         } while (!(tileElement++)->IsLastForTile());
 
         return JS_NULL;
@@ -70,9 +71,11 @@ namespace OpenRCT2::Scripting
         RegisterBase(ctx, "PathNavigator", Finalize, funcs);
     }
 
-    JSValue ScPathNavigator::New(JSContext* ctx, const TileCoordsXYZ& position, int32_t elementIndex, int32_t lastDirection)
+    JSValue ScPathNavigator::New(
+        JSContext* ctx, const TileCoordsXYZ& position, int32_t elementIndex, int32_t lastDirection,
+        const PathNavigationOptions& options)
     {
-        return MakeWithOpaque(ctx, new PathNavigatorData{ position, elementIndex, lastDirection });
+        return MakeWithOpaque(ctx, new PathNavigatorData{ position, elementIndex, lastDirection, options });
     }
 
     void ScPathNavigator::Finalize(JSRuntime* rt, JSValue thisVal)
@@ -89,9 +92,11 @@ namespace OpenRCT2::Scripting
 
     const PathElement* ScPathNavigator::FindPathElement(const PathNavigatorData* data)
     {
+        const bool excludeGhost = data->_options.ExcludeGhosts;
         auto coords = data->_position.ToCoordsXY();
         auto* el = MapGetNthElementAt(coords, data->_elementIndex);
-        if (el != nullptr && el->GetType() == TileElementType::Path && el->BaseHeight == data->_position.z && !el->IsGhost())
+        if (el != nullptr && el->GetType() == TileElementType::Path && el->BaseHeight == data->_position.z
+            && (!excludeGhost || !el->IsGhost()))
         {
             return el->AsPath();
         }
@@ -106,7 +111,7 @@ namespace OpenRCT2::Scripting
                 continue;
             if (scan->BaseHeight != data->_position.z)
                 continue;
-            if (scan->IsGhost())
+            if (scan->IsGhost() && excludeGhost)
                 continue;
             return scan->AsPath();
         } while (!(scan++)->IsLastForTile());
@@ -133,9 +138,12 @@ namespace OpenRCT2::Scripting
         return nullptr;
     }
 
-    int32_t ScPathNavigator::GetPermittedEdges(const PathElement* pathElement)
+    int32_t ScPathNavigator::GetPermittedEdges(const PathElement* pathElement, const PathNavigationOptions& options)
     {
         int32_t edges = pathElement->GetEdgesAndCorners() & 0x0F;
+        if (!options.RespectBanners)
+            return edges;
+
         const TileElement* bannerElement = GetBannerOnPath(reinterpret_cast<const TileElement*>(pathElement));
         while (bannerElement != nullptr)
         {
@@ -143,6 +151,15 @@ namespace OpenRCT2::Scripting
             bannerElement = GetBannerOnPath(bannerElement);
         }
         return edges;
+    }
+
+    bool ScPathNavigator::IsTraversableNeighbor(const PathElement* pathElement, const PathNavigationOptions& options)
+    {
+        if (pathElement->IsQueue() && options.ExcludeQueues)
+            return false;
+        if (pathElement->IsWide() && options.ExcludeWidePaths)
+            return false;
+        return true;
     }
 
     JSValue ScPathNavigator::current_get(JSContext* ctx, JSValue thisVal)
@@ -172,7 +189,7 @@ namespace OpenRCT2::Scripting
         auto* pathEl = FindPathElement(data);
         if (pathEl == nullptr)
             return JS_NULL;
-        return JS_NewInt32(ctx, GetPermittedEdges(pathEl));
+        return JS_NewInt32(ctx, GetPermittedEdges(pathEl, data->_options));
     }
 
     JSValue ScPathNavigator::getConnectedPaths(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
@@ -185,7 +202,8 @@ namespace OpenRCT2::Scripting
         if (pathElement == nullptr)
             return JS_NULL;
 
-        int32_t edges = GetPermittedEdges(pathElement);
+        const auto& options = data->_options;
+        int32_t edges = GetPermittedEdges(pathElement, options);
 
         JSValue result = JS_NewArray(ctx);
         int32_t resultIndex = 0;
@@ -213,7 +231,7 @@ namespace OpenRCT2::Scripting
             int32_t nextIndex = 0;
             do
             {
-                if (nextEl->IsGhost() || nextEl->GetType() != TileElementType::Path)
+                if ((nextEl->IsGhost() && options.ExcludeGhosts) || nextEl->GetType() != TileElementType::Path)
                 {
                     nextIndex++;
                     continue;
@@ -221,6 +239,12 @@ namespace OpenRCT2::Scripting
 
                 const auto* nextPath = nextEl->AsPath();
                 if (!FootpathIsZAndDirectionValid(*nextPath, neighborPos.z, direction))
+                {
+                    nextIndex++;
+                    continue;
+                }
+
+                if (!IsTraversableNeighbor(nextPath, options))
                 {
                     nextIndex++;
                     continue;
@@ -250,7 +274,8 @@ namespace OpenRCT2::Scripting
         if (pathElement == nullptr)
             return JS_NewBool(ctx, false);
 
-        int32_t edges = GetPermittedEdges(pathElement);
+        const auto& options = data->_options;
+        int32_t edges = GetPermittedEdges(pathElement, options);
         if (!(edges & (1 << direction)))
             return JS_NewBool(ctx, false);
 
@@ -272,7 +297,7 @@ namespace OpenRCT2::Scripting
         int32_t nextIndex = 0;
         do
         {
-            if (nextEl->IsGhost() || nextEl->GetType() != TileElementType::Path)
+            if ((nextEl->IsGhost() && options.ExcludeGhosts) || nextEl->GetType() != TileElementType::Path)
             {
                 nextIndex++;
                 continue;
@@ -280,6 +305,12 @@ namespace OpenRCT2::Scripting
 
             const auto* nextPath = nextEl->AsPath();
             if (!FootpathIsZAndDirectionValid(*nextPath, neighborPos.z, direction))
+            {
+                nextIndex++;
+                continue;
+            }
+
+            if (!IsTraversableNeighbor(nextPath, options))
             {
                 nextIndex++;
                 continue;
