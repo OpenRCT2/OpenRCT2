@@ -233,6 +233,10 @@ namespace OpenRCT2::Ui::Windows
         WIDX_DEFAULT_INSPECTION_INTERVAL_LABEL,
         WIDX_DEFAULT_INSPECTION_INTERVAL,
         WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN,
+        WIDX_DEFAILT_PATROL_AREA_LABEL,
+        WIDX_DEFAULT_PATROL_AREA_SPINNER,
+        WIDX_INCREASE_DEFAULT_PATROL_AREA,
+        WIDX_DECREASE_DEFAULT_PATROL_AREA,
 
         // Advanced
         WIDX_GROUP_RCT1_PATH = WIDX_PAGE_START,
@@ -430,14 +434,16 @@ namespace OpenRCT2::Ui::Windows
         makeWidget({ 10, kScenarioOptionsGroupStart + 32}, {275, 16}, WidgetType::checkbox,     WindowColour::tertiary,  STR_OPTIONS_SCENARIO_UNLOCKING, STR_SCENARIO_UNLOCKING_TIP), // Unlocking of scenarios
         makeWidget({ 10, kScenarioOptionsGroupStart + 47}, {290, 15}, WidgetType::checkbox,     WindowColour::tertiary,  STR_ALLOW_EARLY_COMPLETION,     STR_EARLY_COMPLETION_TIP  ), // Allow early scenario completion
 
-        makeWidget({  5,  kTweaksStart + 0}, {300, 96}, WidgetType::groupbox,     WindowColour::secondary, STR_OPTIONS_TWEAKS                                                  ),
+        makeWidget({  5, kTweaksStart + 0}, {300, 116}, WidgetType::groupbox,     WindowColour::secondary, STR_OPTIONS_TWEAKS                                                  ),
         makeWidget({ 10, kTweaksStart + 15}, {290, 15}, WidgetType::checkbox,     WindowColour::tertiary , STR_REAL_NAME_GUESTS,     STR_REAL_NAME_GUESTS_TIP                  ), // Show 'real' names of guests
         makeWidget({ 10, kTweaksStart + 30}, {290, 15}, WidgetType::checkbox,     WindowColour::tertiary , STR_REAL_NAME_STAFF,      STR_REAL_NAME_STAFF_TIP                   ), // Show 'real' names of staff
         makeWidget({ 10, kTweaksStart + 45}, {290, 15}, WidgetType::checkbox,     WindowColour::tertiary , STR_AUTO_STAFF_PLACEMENT, STR_AUTO_STAFF_PLACEMENT_TIP              ), // Auto staff placement
         makeWidget({ 10, kTweaksStart + 60}, {290, 15}, WidgetType::checkbox,     WindowColour::tertiary , STR_AUTO_OPEN_SHOPS,      STR_AUTO_OPEN_SHOPS_TIP                   ), // Automatically open shops & stalls
         makeWidget({ 10, kTweaksStart + 77}, {165, 12}, WidgetType::label,        WindowColour::secondary, STR_DEFAULT_INSPECTION_INTERVAL, STR_DEFAULT_INSPECTION_INTERVAL_TIP),
         makeWidget({175, kTweaksStart + 76}, {125, 14}, WidgetType::dropdownMenu, WindowColour::secondary                                                                      ), // Default inspection time dropdown
-        makeWidget({288, kTweaksStart + 77}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,       STR_DEFAULT_INSPECTION_INTERVAL_TIP       )  // Default inspection time dropdown button
+        makeWidget({288, kTweaksStart + 77}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,       STR_DEFAULT_INSPECTION_INTERVAL_TIP       ), // Default inspection time dropdown button
+        makeWidget(        {10,  kTweaksStart + 94}, {281,  12}, WidgetType::label,   WindowColour::secondary, STR_DEFAULT_PATROL_AREA,  STR_DEFAULT_PATROL_AREA_TIP           ), // Default Patrol Area
+        makeSpinnerWidgets({175, kTweaksStart + 95}, {125,  14}, WidgetType::spinner, WindowColour::secondary, kWidgetContentEmpty,      STR_DEFAULT_PATROL_AREA_TIP           )  // Default Patrol Area (3 widgets)
     );
 
     constexpr int32_t kRCT1Start = 53;
@@ -651,7 +657,12 @@ namespace OpenRCT2::Ui::Windows
                 case WINDOW_OPTIONS_PAGE_ADVANCED:
                     AdvancedDraw(rt);
                     break;
-                default:
+                case WINDOW_OPTIONS_PAGE_MISC:
+                    auto ft = Formatter();
+                    ft.Add<int32_t>(Config::Get().general.defaultPatrolArea);
+                    auto& widget = widgets[WIDX_DEFAULT_PATROL_AREA_SPINNER];
+                    drawText(
+                        rt, windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 2 }, STR_FORMAT_INTEGER, ft, { colours[1] });
                     break;
             }
         }
@@ -1936,6 +1947,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 }
                 case WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN:
+                {
                     for (size_t i = 0; i < 7; i++)
                     {
                         gDropdown.items[i] = Dropdown::MenuLabel(kRideInspectionIntervalNames[i]);
@@ -1945,6 +1957,17 @@ namespace OpenRCT2::Ui::Windows
                     auto selectedIndex = EnumValue(Config::Get().general.defaultInspectionInterval);
                     gDropdown.items[selectedIndex].setChecked(true);
                     break;
+                }
+                case WIDX_INCREASE_DEFAULT_PATROL_AREA:
+                {
+                    Config::Get().general.defaultPatrolArea = std::min(64, Config::Get().general.defaultPatrolArea + 1);
+                    break;
+                }
+                case WIDX_DECREASE_DEFAULT_PATROL_AREA:
+                {
+                    Config::Get().general.defaultPatrolArea = std::max(1, Config::Get().general.defaultPatrolArea - 1);
+                    break;
+                }
             }
         }
 

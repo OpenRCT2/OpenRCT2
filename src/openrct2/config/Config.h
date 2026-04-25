@@ -101,6 +101,7 @@ namespace OpenRCT2::Config
         bool handymenMowByDefault;
         bool autoOpenShops;
         RideInspection defaultInspectionInterval;
+        int8_t defaultPatrolArea;
         int32_t windowLimit;
         bool scenarioUnlockingEnabled;
         bool scenarioHideMegaPark;

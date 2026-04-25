@@ -21,6 +21,7 @@
 #include <openrct2/actions/GameActionRunner.h>
 #include <openrct2/actions/peep/StaffSetPatrolAreaAction.h>
 #include <openrct2/core/String.hpp>
+#include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/entity/EntityRegistry.h>
@@ -65,7 +66,7 @@ namespace OpenRCT2::Ui::Windows
             holdDownWidgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
             WindowInitScrollWidgets(*this);
             WindowPushOthersBelow(*this);
-            gLandToolSize = 4;
+            gLandToolSize = Config::Get().general.defaultPatrolArea;
         }
 
         void onClose() override

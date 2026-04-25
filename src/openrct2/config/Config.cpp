@@ -223,6 +223,7 @@ namespace OpenRCT2::Config
             model->handymenMowByDefault = reader->GetBoolean("handymen_mow_default", false);
             model->defaultInspectionInterval = reader->GetEnum<RideInspection>(
                 "default_inspection_interval", RideInspection::every30Minutes, Enum_RideInspectionInterval);
+            model->defaultPatrolArea = reader->GetInt32("default_patrol_area", 4);
             model->lastRunVersion = reader->GetString("last_run_version", "");
             model->invertViewportDrag = reader->GetBoolean("invert_viewport_drag", false);
             model->loadSaveSort = reader->GetEnum<FileBrowserSort>(
@@ -329,6 +330,7 @@ namespace OpenRCT2::Config
         writer->WriteBoolean("handymen_mow_default", model->handymenMowByDefault);
         writer->WriteEnum<RideInspection>(
             "default_inspection_interval", model->defaultInspectionInterval, Enum_RideInspectionInterval);
+        writer->WriteInt32("default_patrol_area", model->defaultPatrolArea);
         writer->WriteString("last_run_version", model->lastRunVersion);
         writer->WriteBoolean("invert_viewport_drag", model->invertViewportDrag);
         writer->WriteEnum<FileBrowserSort>("load_save_sort", model->loadSaveSort, Enum_FileBrowserSort);
