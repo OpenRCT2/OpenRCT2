@@ -3309,7 +3309,7 @@ STR_6304    :Abrir selector de escenografía
 STR_6305    :Multithreading
 STR_6306    :Opción experimental para usar múltiples núcleos en el renderizado, puede ser inestable.
 STR_6307    :Esquema de color: {BLACK}{STRINGID}
-STR_6308    :{TOPAZ}“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
+STR_6308    :{TOPAZ}“{STRINGID}{TOPAZ}”{NEWLINE}{STRINGID}
 STR_6309    :Reconectar
 STR_6310    :{WINDOW_COLOUR_2}Posición: {BLACK}{INT32} {INT32} {INT32}
 STR_6311    :{WINDOW_COLOUR_2}Siguiente: {BLACK}{INT32} {INT32} {INT32}

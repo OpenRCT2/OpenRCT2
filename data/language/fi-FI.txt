@@ -3309,7 +3309,7 @@ STR_6304    :Avaa maisemointivalitsin
 STR_6305    :Monisäikeisyys
 STR_6306    :Kokeellinen asetus, jossa piirtoon käytetään useampaa säiettä. Saattaa olla epävakaa.
 STR_6307    :Värimalli: {BLACK}{STRINGID}
-STR_6308    :{TOPAZ}“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
+STR_6308    :{TOPAZ}“{STRINGID}{TOPAZ}”{NEWLINE}{STRINGID}
 STR_6309    :Yhdistä uudelleen
 STR_6310    :{WINDOW_COLOUR_2}Sijainti: {BLACK}{INT32} {INT32} {INT32}
 STR_6311    :{WINDOW_COLOUR_2}Seur: {BLACK}{INT32} {INT32} {INT32}

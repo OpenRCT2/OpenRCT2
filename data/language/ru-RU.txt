@@ -3295,7 +3295,7 @@ STR_6304    :Открыть выбор пейзажа
 STR_6305    :Многопоточность
 STR_6306    :Экспериментальная опция для многопоточного отображения графики.{NEWLINE}Может вызвать нестабильность.
 STR_6307    :Цветовая схема: {BLACK}{STRINGID}
-STR_6308    :{TOPAZ}“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
+STR_6308    :{TOPAZ}“{STRINGID}{TOPAZ}”{NEWLINE}{STRINGID}
 STR_6309    :Переподключиться
 STR_6310    :{WINDOW_COLOUR_2}Позиция: {BLACK}{INT32} {INT32} {INT32}
 STR_6311    :{WINDOW_COLOUR_2}Следующая: {BLACK}{INT32} {INT32} {INT32}

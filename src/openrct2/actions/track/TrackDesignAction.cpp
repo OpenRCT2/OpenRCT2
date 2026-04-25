@@ -58,7 +58,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_inspectionInterval);
     }
 
-    Result TrackDesignAction::Query(GameState_t& gameState) const
+    Result TrackDesignAction::Query(GameState_t& gameState, Park::ParkData& park) const
     {
         auto res = Result();
         res.position.x = _loc.x + 16;
@@ -140,7 +140,7 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    Result TrackDesignAction::Execute(GameState_t& gameState) const
+    Result TrackDesignAction::Execute(GameState_t& gameState, Park::ParkData& park) const
     {
         auto res = Result();
         res.position.x = _loc.x + 16;

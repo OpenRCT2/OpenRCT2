@@ -27,8 +27,8 @@ namespace OpenRCT2::GameActions
         uint16_t GetActionFlags() const override;
 
         void Serialise(DataSerialiser& stream) override;
-        Result Query(GameState_t& gameState) const override;
-        Result Execute(GameState_t& gameState) const override;
+        Result Query(GameState_t& gameState, Park::ParkData& park) const override;
+        Result Execute(GameState_t& gameState, Park::ParkData& park) const override;
 
     private:
         Result QueryExecute(GameState_t& gameState, bool isExecuting) const;

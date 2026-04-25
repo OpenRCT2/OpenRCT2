@@ -462,6 +462,7 @@
     <ClInclude Include="ride\Ride.h" />
     <ClInclude Include="ride\RideAudio.h" />
     <ClInclude Include="ride\RideColour.h" />
+    <ClInclude Include="ride\RideBreakdownMap.h" />
     <ClInclude Include="ride\RideConstruction.h" />
     <ClInclude Include="ride\RideData.h" />
     <ClInclude Include="ride\RideEntry.h" />
@@ -658,11 +659,11 @@
     <ClInclude Include="scripting\bindings\world\ScTile.hpp" />
     <ClInclude Include="scripting\bindings\world\ScTileElement.hpp" />
     <ClInclude Include="scripting\bindings\world\ScWeather.hpp" />
-    <ClInclude Include="scripting\Duktape.hpp" />
     <ClInclude Include="scripting\HookEngine.h" />
     <ClInclude Include="scripting\IconNames.hpp" />
     <ClInclude Include="scripting\Plugin.h" />
     <ClInclude Include="scripting\ScriptEngine.h" />
+    <ClInclude Include="scripting\ScriptUtil.hpp" />
     <ClInclude Include="scripting\SoundNames.hpp" />
     <ClInclude Include="SpriteIds.h" />
     <ClInclude Include="System.hpp" />
@@ -1199,10 +1200,12 @@
     <ClCompile Include="scenes\title\TitleSequence.cpp" />
     <ClCompile Include="scenes\title\TitleSequenceManager.cpp" />
     <ClCompile Include="scripting\bindings\entity\ScBalloon.cpp" />
+    <ClCompile Include="scripting\bindings\entity\ScEntity.cpp" />
     <ClCompile Include="scripting\bindings\entity\ScGuest.cpp" />
     <ClCompile Include="scripting\bindings\entity\ScLitter.cpp" />
     <ClCompile Include="scripting\bindings\entity\ScMoneyEffect.cpp" />
     <ClCompile Include="scripting\bindings\entity\ScParticle.cpp" />
+    <ClCompile Include="scripting\bindings\entity\ScPeep.cpp" />
     <ClCompile Include="scripting\bindings\entity\ScStaff.cpp" />
     <ClCompile Include="scripting\bindings\entity\ScVehicle.cpp" />
     <ClCompile Include="scripting\bindings\network\ScNetwork.cpp" />
@@ -1261,11 +1264,15 @@
     <ClCompile Include="world\tile_element\TrackElement.cpp" />
     <ClCompile Include="world\tile_element\WallElement.cpp" />
     <ClCompile Include="world\Wall.cpp" />
-    <ClCompile Include="..\thirdparty\duktape\duktape.cpp">
+    <ClCompile Include="..\thirdparty\quickjs-ng\quickjs-amalgam.c">
+      <CompileAs>CompileAsC</CompileAs>
+      <LanguageStandard_C>stdc11</LanguageStandard_C>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <ForcedIncludeFiles>
       </ForcedIncludeFiles>
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <SDLCheck>false</SDLCheck>
+      <AdditionalOptions>/experimental:c11atomics %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -57,12 +57,12 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_coords) << DS_TAG(_range) << DS_TAG(_selectionType);
     }
 
-    Result LandRaiseAction::Query(GameState_t& gameState) const
+    Result LandRaiseAction::Query(GameState_t& gameState, Park::ParkData& park) const
     {
         return QueryExecute(gameState, false);
     }
 
-    Result LandRaiseAction::Execute(GameState_t& gameState) const
+    Result LandRaiseAction::Execute(GameState_t& gameState, Park::ParkData& park) const
     {
         return QueryExecute(gameState, true);
     }

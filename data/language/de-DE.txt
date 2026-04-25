@@ -830,10 +830,10 @@ STR_1460    :U-förmige offene Strecke
 STR_1461    :O-förmige geschlossene Strecke
 STR_1462    :Zu steil für Lifthügel
 STR_1463    :Besucher
-STR_1464    :Spirale n. oben (klein)
-STR_1465    :Spirale n. oben (groß)
-STR_1466    :Spirale n. unten (klein)
-STR_1467    :Spirale n. unten (groß)
+STR_1464    :Halbspirale n. oben (klein)
+STR_1465    :Halbspirale n. oben (groß)
+STR_1466    :Halbspirale n. unten (klein)
+STR_1467    :Halbspirale n. unten (groß)
 STR_1468    :Personal
 STR_1469    :Fahrt muss mit Stationen anfangen und enden
 STR_1470    :Station nicht lang genug
@@ -1043,10 +1043,10 @@ STR_1674    :Bremsgeschwindigkeit
 STR_1676    :Geschwindigkeitsgrenze{NEWLINE}für Bremsen einstellen
 STR_1677    :{WINDOW_COLOUR_2}Popularität: {BLACK}Unbekannt
 STR_1678    :{WINDOW_COLOUR_2}Popularität: {BLACK}{COMMA16}%
-STR_1679    :Spirale n. oben (links)
-STR_1680    :Spirale n. oben (rechts)
-STR_1681    :Spirale n. unten (links)
-STR_1682    :Spirale n. unten (rechts)
+STR_1679    :Viertelspirale n. oben (links)
+STR_1680    :Viertelspirale n. oben (rechts)
+STR_1681    :Viertelspirale n. unten (links)
+STR_1682    :Viertelspirale n. unten (rechts)
 STR_1683    :Grundflächengröße 2 × 2
 STR_1684    :Grundflächengröße 4 × 4
 STR_1685    :Grundflächengröße 2 × 4
@@ -3302,7 +3302,7 @@ STR_6304    :Szeneriewähler öffnen
 STR_6305    :Multithreading
 STR_6306    :Experimentelle Option, um mehrere Threads für das Rendern zu verwenden, kann Instabilität verursachen
 STR_6307    :Farbschema: {BLACK}{STRINGID}
-STR_6308    :{TOPAZ}„{STRINGID}{OUTLINE}{TOPAZ}“{NEWLINE}{STRINGID}
+STR_6308    :{TOPAZ}„{STRINGID}{TOPAZ}“{NEWLINE}{STRINGID}
 STR_6309    :Neu verbinden
 STR_6310    :{WINDOW_COLOUR_2}Position: {BLACK}{INT32} {INT32} {INT32}
 STR_6311    :{WINDOW_COLOUR_2}Nächste: {BLACK}{INT32} {INT32} {INT32}
@@ -3808,3 +3808,9 @@ STR_7014    :Mir gehört das Spiel auf Steam, habe es aber noch nicht installier
 STR_7015    :Bitte schließen Sie Steam, falls es läuft, dann klicken Sie auf „OK“.
 STR_7016    :OpenRCT2 hat versucht, einen Download in Steam auszulösen. Bitte öffen Sie Steam und lassen Sie es das Spiel herunterladen. Wenn Steam fertig ist, klicken Sie auf „OK“.
 STR_7017    :Verlassen
+STR_7023    :Unsichtbar machen
+STR_7024    :Macht das gesamte Fahrgeschäft unsichtbar
+STR_7025    :Sichtbar machen
+STR_7026    :Macht das gesamte Fahrgeschäft sichtbar
+STR_7028    :Viertelspirale n. oben
+STR_7029    :Viertelspirale n. unten

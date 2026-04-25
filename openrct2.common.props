@@ -69,7 +69,8 @@
       <RuntimeLibrary Condition="'$(UseSharedLibs)'=='true'">MultiThreadedDLL</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalOptions>/utf-8 /std:c++20 /permissive- /Zc:externConstexpr /Zc:char8_t-</AdditionalOptions>
+      <AdditionalOptions>/utf-8 /permissive- /Zc:externConstexpr /Zc:char8_t-</AdditionalOptions>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <LargeAddressAware Condition="'$(Platform)'=='Win32'">true</LargeAddressAware>
@@ -119,7 +120,7 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
 
   <PropertyGroup>
-    <IncludePath>$(SolutionDir)src;$(SolutionDir)src\thirdparty;$(SolutionDir)src\thirdparty\duktape;$(SolutionDir)lib\$(Platform)\include;$(SolutionDir)lib\$(Platform)\include\SDL2;$(SolutionDir)lib\$(Platform)\include\crashpad;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)src;$(SolutionDir)src\thirdparty;$(SolutionDir)src\thirdparty\quickjs-ng;$(SolutionDir)lib\$(Platform)\include;$(SolutionDir)lib\$(Platform)\include\SDL2;$(SolutionDir)lib\$(Platform)\include\crashpad;$(IncludePath)</IncludePath>
     <LibraryPath Condition="'$(Configuration)'=='Debug'">$(SolutionDir)lib\$(Platform)\debug\lib;$(LibraryPath)</LibraryPath>
     <LibraryPath Condition="'$(Configuration)'!='Debug'">$(SolutionDir)lib\$(Platform)\lib;$(LibraryPath)</LibraryPath>
     <LinkIncremental />

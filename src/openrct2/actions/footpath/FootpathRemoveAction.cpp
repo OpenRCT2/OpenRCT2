@@ -49,7 +49,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_loc);
     }
 
-    Result FootpathRemoveAction::Query(GameState_t& gameState) const
+    Result FootpathRemoveAction::Query(GameState_t& gameState, Park::ParkData& park) const
     {
         auto res = Result();
         res.cost = 0;
@@ -77,7 +77,7 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    Result FootpathRemoveAction::Execute(GameState_t& gameState) const
+    Result FootpathRemoveAction::Execute(GameState_t& gameState, Park::ParkData& park) const
     {
         auto res = Result();
         res.cost = 0;

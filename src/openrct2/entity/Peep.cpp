@@ -1886,7 +1886,7 @@ namespace OpenRCT2
                 return true;
             }
 
-            auto entranceFee = Park::GetEntranceFee();
+            auto entranceFee = Park::GetEntranceFee(gameState.park);
             if (entranceFee != 0)
             {
                 if (guest->HasItem(ShopItem::voucher))

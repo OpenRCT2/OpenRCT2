@@ -41,7 +41,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_parameter) << DS_TAG(_value);
     }
 
-    Result ParkSetParameterAction::Query(GameState_t& gameState) const
+    Result ParkSetParameterAction::Query(GameState_t& gameState, Park::ParkData& park) const
     {
         if (_parameter >= ParkParameter::Count)
         {
@@ -54,9 +54,8 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    Result ParkSetParameterAction::Execute(GameState_t& gameState) const
+    Result ParkSetParameterAction::Execute(GameState_t& gameState, Park::ParkData& park) const
     {
-        auto& park = gameState.park;
         auto* windowMgr = Ui::GetWindowManager();
 
         switch (_parameter)

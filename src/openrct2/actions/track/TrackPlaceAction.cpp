@@ -81,7 +81,7 @@ namespace OpenRCT2::GameActions
                << DS_TAG(_colour) << DS_TAG(_seatRotation) << DS_TAG(_trackPlaceFlags.holder);
     }
 
-    Result TrackPlaceAction::Query(GameState_t& gameState) const
+    Result TrackPlaceAction::Query(GameState_t& gameState, Park::ParkData& park) const
     {
         auto ride = GetRide(_rideIndex);
         if (ride == nullptr)
@@ -413,7 +413,7 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    Result TrackPlaceAction::Execute(GameState_t& gameState) const
+    Result TrackPlaceAction::Execute(GameState_t& gameState, Park::ParkData& park) const
     {
         auto ride = GetRide(_rideIndex);
         if (ride == nullptr)

@@ -61,7 +61,7 @@ namespace OpenRCT2
         gameState.currentTicks = 0;
 
         MapInit(mapSize);
-        Park::Initialise(gameState);
+        Park::Initialise(gameState.park, gameState);
         FinanceInit();
         BannerInit(gameState);
         RideInitAll();

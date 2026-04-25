@@ -828,10 +828,10 @@ STR_1460    :Open baan in U-vorm
 STR_1461    :Gesloten baan in O-vorm
 STR_1462    :Te steil voor een kettinglift
 STR_1463    :Bezoekers
-STR_1464    :Spiraal omhoog (klein)
-STR_1465    :Spiraal omhoog (groot)
-STR_1466    :Spiraal omlaag (klein)
-STR_1467    :Spiraal omlaag (groot)
+STR_1464    :Halve spiraal omhoog (klein)
+STR_1465    :Halve spiraal omhoog (groot)
+STR_1466    :Halve spiraal omlaag (klein)
+STR_1467    :Halve spiraal omlaag (groot)
 STR_1468    :Werknemers
 STR_1469    :Attracties moeten beginnen en eindigen met stations
 STR_1470    :Station is niet lang genoeg
@@ -1041,10 +1041,10 @@ STR_1674    :Remsnelheid
 STR_1676    :Snelheidslimiet voor remmen instellen
 STR_1677    :{WINDOW_COLOUR_2}Populariteit: {BLACK}onbekend
 STR_1678    :{WINDOW_COLOUR_2}Populariteit: {BLACK}{COMMA16}%
-STR_1679    :Spiraal omhoog (links)
-STR_1680    :Spiraal omhoog (rechts)
-STR_1681    :Spiraal omlaag (links)
-STR_1682    :Spiraal omlaag (rechts)
+STR_1679    :Halve spiraal omhoog (links)
+STR_1680    :Halve spiraal omhoog (rechts)
+STR_1681    :Halve spiraal omlaag (links)
+STR_1682    :Halve spiraal omlaag (rechts)
 STR_1683    :Oppervlakte 2 × 2
 STR_1684    :Oppervlakte 4 × 4
 STR_1685    :Oppervlakte 2 × 4
@@ -3304,7 +3304,7 @@ STR_6304    :Decorselector openen
 STR_6305    :Multithreading
 STR_6306    :Experimentele optie om met meerdere threads te renderen. Dit kan de snelheid verhogen, maar ook instabiliteit veroorzaken.
 STR_6307    :Kleurenschema: {BLACK}{STRINGID}
-STR_6308    :{TOPAZ}“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
+STR_6308    :{TOPAZ}“{STRINGID}{TOPAZ}”{NEWLINE}{STRINGID}
 STR_6309    :Opnieuw verbinden
 STR_6310    :{WINDOW_COLOUR_2}Positie: {BLACK}{INT32} {INT32} {INT32}
 STR_6311    :{WINDOW_COLOUR_2}Volgende: {BLACK}{INT32} {INT32} {INT32}
@@ -3810,3 +3810,10 @@ STR_7014    :Ik heb het spel op Steam, maar ik heb het nog niet geïnstalleerd.
 STR_7015    :Sluit Steam volledig af en klik daarna op ‘OK’.
 STR_7016    :OpenRCT2 heeft een download getriggerd in Steam. Start nu Steam op en wacht tot de download voltooid is. Klik daarna op ‘OK’.
 STR_7017    :Afsluiten
+STR_7023    :Onzichtb. maken 
+STR_7024    :Hele attractie onzichtbaar maken
+STR_7025    :Zichtb. maken
+STR_7026    :Hele attractie zichtbaar maken
+STR_7028    :Kwartspiraal omhoog
+STR_7029    :Kwartspiraal omlaag
+

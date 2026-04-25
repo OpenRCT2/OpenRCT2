@@ -34,14 +34,14 @@ namespace OpenRCT2::GameActions
         uint32_t GetCooldownTime() const final;
 
         void Serialise(DataSerialiser& stream) override;
-        Result Query(GameState_t& gameState) const override;
-        Result Execute(GameState_t& gameState) const override;
+        Result Query(GameState_t& gameState, Park::ParkData& park) const override;
+        Result Execute(GameState_t& gameState, Park::ParkData& park) const override;
 
     private:
-        Result DemolishRide(GameState_t& gameState, Ride& ride) const;
+        Result DemolishRide(GameState_t& gameState, Park::ParkData& park, Ride& ride) const;
         money64 MazeRemoveTrack(GameState_t& gameState, const CoordsXYZD& coords) const;
         money64 DemolishTracks(GameState_t& gameState) const;
-        Result RefurbishRide(GameState_t& gameState, Ride& ride) const;
+        Result RefurbishRide(GameState_t& gameState, Park::ParkData& park, Ride& ride) const;
         money64 GetRefurbishPrice(const Ride& ride) const;
         money64 GetRefundPrice(const Ride& ride) const;
     };

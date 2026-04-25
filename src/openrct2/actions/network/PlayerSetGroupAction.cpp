@@ -36,12 +36,12 @@ namespace OpenRCT2::GameActions
 
         stream << DS_TAG(_playerId) << DS_TAG(_groupId);
     }
-    Result PlayerSetGroupAction::Query(GameState_t& gameState) const
+    Result PlayerSetGroupAction::Query(GameState_t& gameState, Park::ParkData& park) const
     {
         return Network::SetPlayerGroup(GetPlayer(), _playerId, _groupId, false);
     }
 
-    Result PlayerSetGroupAction::Execute(GameState_t& gameState) const
+    Result PlayerSetGroupAction::Execute(GameState_t& gameState, Park::ParkData& park) const
     {
         return Network::SetPlayerGroup(GetPlayer(), _playerId, _groupId, true);
     }

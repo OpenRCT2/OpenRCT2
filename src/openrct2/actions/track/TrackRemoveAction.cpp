@@ -68,7 +68,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_trackType) << DS_TAG(_sequence) << DS_TAG(_origin);
     }
 
-    Result TrackRemoveAction::Query(GameState_t& gameState) const
+    Result TrackRemoveAction::Query(GameState_t& gameState, Park::ParkData& park) const
     {
         auto res = Result();
         res.position.x = _origin.x + 16;
@@ -252,7 +252,7 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    Result TrackRemoveAction::Execute(GameState_t& gameState) const
+    Result TrackRemoveAction::Execute(GameState_t& gameState, Park::ParkData& park) const
     {
         auto res = Result();
         res.position.x = _origin.x + 16;

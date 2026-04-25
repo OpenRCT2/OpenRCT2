@@ -20,8 +20,8 @@ namespace OpenRCT2::GameActions
 
         uint16_t GetActionFlags() const override;
 
-        Result Query(GameState_t& gameState) const override;
-        Result Execute(GameState_t& gameState) const override;
+        Result Query(GameState_t& gameState, Park::ParkData& park) const override;
+        Result Execute(GameState_t& gameState, Park::ParkData& park) const override;
     };
     // clang-format on
 } // namespace OpenRCT2::GameActions

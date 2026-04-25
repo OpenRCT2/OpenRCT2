@@ -73,7 +73,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_cheatType) << DS_TAG(_param1) << DS_TAG(_param2);
     }
 
-    Result CheatSetAction::Query(GameState_t& gameState) const
+    Result CheatSetAction::Query(GameState_t& gameState, Park::ParkData& park) const
     {
         if (static_cast<uint32_t>(_cheatType) >= static_cast<uint32_t>(CheatType::count))
         {
@@ -101,7 +101,7 @@ namespace OpenRCT2::GameActions
         return Result();
     }
 
-    Result CheatSetAction::Execute(GameState_t& gameState) const
+    Result CheatSetAction::Execute(GameState_t& gameState, Park::ParkData& park) const
     {
         auto* windowMgr = Ui::GetWindowManager();
 
@@ -157,16 +157,16 @@ namespace OpenRCT2::GameActions
                 gameState.cheats.disableLittering = _param1 != 0;
                 break;
             case CheatType::noMoney:
-                SetScenarioNoMoney(gameState, _param1 != 0);
+                SetScenarioNoMoney(park, _param1 != 0);
                 break;
             case CheatType::addMoney:
-                AddMoney(gameState, _param1);
+                AddMoney(park, _param1);
                 break;
             case CheatType::setMoney:
-                SetMoney(gameState, _param1);
+                SetMoney(park, _param1);
                 break;
             case CheatType::clearLoan:
-                ClearLoan(gameState);
+                ClearLoan(gameState, park);
                 break;
             case CheatType::setGuestParameter:
                 SetGuestParameter(_param1, _param2);
@@ -228,13 +228,13 @@ namespace OpenRCT2::GameActions
                 gameState.cheats.neverendingMarketing = _param1 != 0;
                 break;
             case CheatType::openClosePark:
-                ParkSetOpen(!Park::IsOpen(gameState.park), gameState);
+                ParkSetOpen(!Park::IsOpen(park), gameState);
                 break;
             case CheatType::haveFun:
                 gameState.scenarioOptions.objective.Type = Scenario::ObjectiveType::haveFun;
                 break;
             case CheatType::setForcedParkRating:
-                Park::SetForcedRating(_param1);
+                Park::SetForcedRating(park, _param1);
                 break;
             case CheatType::allowArbitraryRideTypeChanges:
                 gameState.cheats.allowArbitraryRideTypeChanges = _param1 != 0;
@@ -577,9 +577,8 @@ namespace OpenRCT2::GameActions
         windowMgr->InvalidateByClass(WindowClass::ride);
     }
 
-    void CheatSetAction::SetScenarioNoMoney(GameState_t& gameState, bool enabled) const
+    void CheatSetAction::SetScenarioNoMoney(Park::ParkData& park, bool enabled) const
     {
-        auto& park = gameState.park;
         if (enabled)
         {
             park.flags |= PARK_FLAGS_NO_MONEY;
@@ -600,18 +599,17 @@ namespace OpenRCT2::GameActions
         windowMgr->InvalidateByClass(WindowClass::cheats);
     }
 
-    void CheatSetAction::SetMoney(GameState_t& gameState, money64 amount) const
+    void CheatSetAction::SetMoney(Park::ParkData& park, money64 amount) const
     {
-        gameState.park.cash = amount;
+        park.cash = amount;
 
         auto* windowMgr = Ui::GetWindowManager();
         windowMgr->InvalidateByClass(WindowClass::finances);
         windowMgr->InvalidateByClass(WindowClass::bottomToolbar);
     }
 
-    void CheatSetAction::AddMoney(GameState_t& gameState, money64 amount) const
+    void CheatSetAction::AddMoney(Park::ParkData& park, money64 amount) const
     {
-        auto& park = gameState.park;
         park.cash = AddClamp(park.cash, amount);
 
         auto* windowMgr = Ui::GetWindowManager();
@@ -619,10 +617,10 @@ namespace OpenRCT2::GameActions
         windowMgr->InvalidateByClass(WindowClass::bottomToolbar);
     }
 
-    void CheatSetAction::ClearLoan(GameState_t& gameState) const
+    void CheatSetAction::ClearLoan(GameState_t& gameState, Park::ParkData& park) const
     {
         // First give money
-        AddMoney(gameState, gameState.park.bankLoan);
+        AddMoney(park, park.bankLoan);
 
         // Then pay the loan
         auto gameAction = ParkSetLoanAction(0.00_GBP);

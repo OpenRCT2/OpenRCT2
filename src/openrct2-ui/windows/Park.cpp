@@ -412,6 +412,7 @@ namespace OpenRCT2::Ui::Windows
 #pragma region Entrance page
         void onMouseUpEntrance(WidgetIndex widgetIndex)
         {
+            auto& park = getGameState().park;
             switch (widgetIndex)
             {
                 case WIDX_BUY_LAND_RIGHTS:
@@ -422,16 +423,15 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_RENAME:
                 {
-                    auto& park = getGameState().park;
                     WindowTextInputRawOpen(
                         this, WIDX_RENAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, {}, park.name.c_str(), kUserStringMaxLength);
                     break;
                 }
                 case WIDX_CLOSE_LIGHT:
-                    Park::SetOpen(false);
+                    Park::SetOpen(park, false);
                     break;
                 case WIDX_OPEN_LIGHT:
-                    Park::SetOpen(true);
+                    Park::SetOpen(park, true);
                     break;
             }
         }
@@ -468,6 +468,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onDropdownEntrance(WidgetIndex widgetIndex, int32_t dropdownIndex)
         {
+            auto& park = getGameState().park;
             if (widgetIndex == WIDX_OPEN_OR_CLOSE)
             {
                 if (dropdownIndex == -1)
@@ -475,11 +476,11 @@ namespace OpenRCT2::Ui::Windows
 
                 if (dropdownIndex != 0)
                 {
-                    Park::SetOpen(true);
+                    Park::SetOpen(park, true);
                 }
                 else
                 {
-                    Park::SetOpen(false);
+                    Park::SetOpen(park, false);
                 }
             }
         }
@@ -812,6 +813,8 @@ namespace OpenRCT2::Ui::Windows
         void onMouseDownPrice(WidgetIndex widgetIndex)
         {
             auto& gameState = getGameState();
+            auto& park = gameState.park;
+
             switch (widgetIndex)
             {
                 case WIDX_INCREASE_PRICE:
@@ -831,7 +834,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_PRICE:
                 {
                     utf8 _moneyInputText[kMoneyStringMaxlength] = {};
-                    MoneyToString(Park::GetEntranceFee(), _moneyInputText, kMoneyStringMaxlength, false);
+                    MoneyToString(Park::GetEntranceFee(park), _moneyInputText, kMoneyStringMaxlength, false);
                     WindowTextInputRawOpen(
                         this, WIDX_PRICE, STR_ENTER_NEW_VALUE, STR_ENTER_NEW_VALUE, {}, _moneyInputText, kMoneyStringMaxlength);
                 }
@@ -853,14 +856,16 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_PRICE_LABEL].tooltip = kStringIdNone;
             widgets[WIDX_PRICE].tooltip = kStringIdNone;
 
-            if (!Park::EntranceFeeUnlocked())
+            auto& park = getGameState().park;
+
+            if (!Park::EntranceFeeUnlocked(park))
             {
                 widgets[WIDX_PRICE_LABEL].tooltip = STR_ADMISSION_PRICE_PAY_PER_RIDE_TIP;
                 widgets[WIDX_PRICE].tooltip = STR_ADMISSION_PRICE_PAY_PER_RIDE_TIP;
             }
 
             // If the entry price is locked at free, disable the widget, unless the unlock_all_prices cheat is active.
-            if ((getGameState().park.flags & PARK_FLAGS_NO_MONEY) || !Park::EntranceFeeUnlocked())
+            if ((park.flags & PARK_FLAGS_NO_MONEY) || !Park::EntranceFeeUnlocked(park))
             {
                 widgets[WIDX_PRICE].type = WidgetType::labelCentred;
                 widgets[WIDX_INCREASE_PRICE].type = WidgetType::empty;
@@ -887,7 +892,9 @@ namespace OpenRCT2::Ui::Windows
             ft.Add<money64>(getGameState().park.totalIncomeFromAdmissions);
             drawText(rt, screenCoords, STR_INCOME_FROM_ADMISSIONS, ft);
 
-            money64 parkEntranceFee = Park::GetEntranceFee();
+            auto& park = getGameState().park;
+
+            money64 parkEntranceFee = Park::GetEntranceFee(park);
             ft = Formatter();
             ft.Add<money64>(parkEntranceFee);
 

@@ -45,7 +45,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_range) << DS_TAG(_surfaceStyle) << DS_TAG(_edgeStyle);
     }
 
-    Result SurfaceSetStyleAction::Query(GameState_t& gameState) const
+    Result SurfaceSetStyleAction::Query(GameState_t& gameState, Park::ParkData& park) const
     {
         auto res = Result();
         res.errorTitle = STR_CANT_CHANGE_LAND_TYPE;
@@ -85,7 +85,7 @@ namespace OpenRCT2::GameActions
 
         // Do nothing if not in editor, sandbox mode or landscaping is forbidden
         if (gLegacyScene != LegacyScene::scenarioEditor && !gameState.cheats.sandboxMode
-            && (gameState.park.flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES))
+            && (park.flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES))
         {
             return Result(Status::disallowed, STR_CANT_CHANGE_LAND_TYPE, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY);
         }
@@ -142,7 +142,7 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    Result SurfaceSetStyleAction::Execute(GameState_t& gameState) const
+    Result SurfaceSetStyleAction::Execute(GameState_t& gameState, Park::ParkData& park) const
     {
         auto res = Result();
         res.errorTitle = STR_CANT_CHANGE_LAND_TYPE;

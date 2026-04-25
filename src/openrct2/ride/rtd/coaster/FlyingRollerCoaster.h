@@ -72,7 +72,7 @@ constexpr RideTypeDescriptor FlyingRollerCoasterRTD =
         { RideRating::make(4, 35), RideRating::make(1, 85), RideRating::make(4, 33) },
         17,
         kDynamicRideShelterRating,
-        false,
+        true,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
             { RatingsModifierType::BonusSynchronisation,  0,                RideRating::make(0, 40), RideRating::make(0, 05), 0 },
@@ -143,7 +143,7 @@ constexpr RideTypeDescriptor FlyingRollerCoasterAltRTD =
         { RideRating::make(4, 35), RideRating::make(1, 85), RideRating::make(4, 33) },
         17,
         kDynamicRideShelterRating,
-        false,
+        true,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
             { RatingsModifierType::BonusSynchronisation,  0,                RideRating::make(0, 40), RideRating::make(0, 05), 0 },

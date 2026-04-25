@@ -38,7 +38,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_speed);
     }
 
-    Result GameSetSpeedAction::Query(GameState_t& gameState) const
+    Result GameSetSpeedAction::Query(GameState_t& gameState, Park::ParkData& park) const
     {
         Result res = Result();
 
@@ -51,7 +51,7 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    Result GameSetSpeedAction::Execute(GameState_t& gameState) const
+    Result GameSetSpeedAction::Execute(GameState_t& gameState, Park::ParkData& park) const
     {
         Result res = Result();
 

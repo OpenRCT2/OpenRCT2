@@ -350,7 +350,7 @@ namespace OpenRCT2::Ui::Windows
         makeWidget({289,  68}, { 24, 24}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_PAINTBRUSH),       STR_PAINT_INDIVIDUAL_AREA_TIP                ),
 
         makeWidget({245, 101}, { 68, 49}, WidgetType::spinner,      WindowColour::secondary                                                                              ),
-        makeWidget({  3, 105}, { 97, 12}, WidgetType::label,        WindowColour::secondary, STR_STATION_STYLE                                                           ),
+        makeWidget({  3, 104}, { 97, 12}, WidgetType::label,        WindowColour::secondary, STR_STATION_STYLE                                                           ),
         makeWidget({103, 102}, {139, 14}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdEmpty                                                              ),
         makeWidget({230, 103}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,            STR_SELECT_STYLE_OF_ENTRANCE_EXIT_STATION_TIP),
 
@@ -398,11 +398,11 @@ namespace OpenRCT2::Ui::Windows
     // 0x009AE844
     static constexpr auto _incomeWidgets = makeWidgets(
         kMainRideWidgets,
-        makeWidget        ({ 19,  50}, {126, 14}, WidgetType::label,    WindowColour::secondary                                                                    ),
-        makeSpinnerWidgets({147,  50}, {162, 14}, WidgetType::spinner,  WindowColour::secondary, kStringIdEmpty                                             ), // NB: 3 widgets
+        makeWidget        ({ 19,  51}, {126, 14}, WidgetType::label,    WindowColour::secondary                                                                    ),
+        makeSpinnerWidgets({147,  50}, {162, 14}, WidgetType::spinner,  WindowColour::secondary, kStringIdEmpty                                                    ), // NB: 3 widgets
         makeWidget        ({  5,  62}, {306, 13}, WidgetType::checkbox, WindowColour::secondary, STR_SAME_PRICE_THROUGHOUT_PARK, STR_SAME_PRICE_THROUGHOUT_PARK_TIP),
-        makeWidget        ({ 19,  94}, {126, 14}, WidgetType::label,    WindowColour::secondary                                                                    ),
-        makeSpinnerWidgets({147,  94}, {162, 14}, WidgetType::spinner,  WindowColour::secondary, kStringIdEmpty                                    ), // NB: 3 widgets
+        makeWidget        ({ 19,  95}, {126, 14}, WidgetType::label,    WindowColour::secondary                                                                    ),
+        makeSpinnerWidgets({147,  94}, {162, 14}, WidgetType::spinner,  WindowColour::secondary, kStringIdEmpty                                                    ), // NB: 3 widgets
         makeWidget        ({  5, 106}, {306, 13}, WidgetType::checkbox, WindowColour::secondary, STR_SAME_PRICE_THROUGHOUT_PARK, STR_SAME_PRICE_THROUGHOUT_PARK_TIP)
     );
 
@@ -669,6 +669,7 @@ namespace OpenRCT2::Ui::Windows
         std::vector<VehicleTypeLabel> _vehicleDropdownData;
         int16_t _vehicleIndex = 0;
         uint16_t _rideColour = 0;
+        int32_t _colourPanelHeight = kWindowSize.height;
         std::vector<EntranceTypeLabel> _entranceDropdownData;
         bool _autoScrollGraph = true;
         bool _lastAllowArbitraryRideTypeChanges = false;
@@ -4374,7 +4375,7 @@ namespace OpenRCT2::Ui::Windows
 
         void ColourResize()
         {
-            auto bottom = widgets[WIDX_VEHICLE_PREVIEW].bottom + 6 - getTitleBarDiffNormal();
+            auto bottom = _colourPanelHeight - getTitleBarDiffNormal();
             WindowSetResize(*this, { kMinimumWindowWidth, bottom }, { kMinimumWindowWidth, bottom });
         }
 
@@ -4650,10 +4651,8 @@ namespace OpenRCT2::Ui::Windows
 
         void ColourOnPrepareDraw()
         {
-            TrackColour trackColour;
-            VehicleColour vehicleColour;
-
             SetPressedTab();
+            WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
 
             auto ride = GetRide(rideId);
             if (ride == nullptr)
@@ -4663,12 +4662,24 @@ namespace OpenRCT2::Ui::Windows
             if (rideEntry == nullptr)
                 return;
 
-            // Track colours
+            auto startY = 49 + getTitleBarDiffNormal();
+            startY = colourOnPrepareDrawTrack(startY, ride, rideEntry);
+            startY = colourOnPrepareDrawEntrance(startY, ride);
+            startY = colourOnPrepareDrawVehicles(startY, ride, rideEntry);
+
+            _colourPanelHeight = startY;
+            if (_colourPanelHeight != height)
+                onResize();
+        }
+
+        int32_t colourOnPrepareDrawTrack(int32_t startY, const Ride* ride, const RideObjectEntry* rideEntry)
+        {
             int32_t colourScheme = _rideColour;
-            trackColour = ride->trackColours[colourScheme];
+            TrackColour trackColour = ride->trackColours[colourScheme];
+
+            const auto& rtd = ride->getRideTypeDescriptor();
 
             // Maze style
-            const auto& rtd = ride->getRideTypeDescriptor();
             if (rtd.specialType == RtdSpecialType::maze)
             {
                 widgets[WIDX_MAZE_STYLE].type = WidgetType::dropdownMenu;
@@ -4694,6 +4705,10 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_TRACK_COLOUR_SCHEME_DROPDOWN].type = WidgetType::empty;
                 widgets[WIDX_PAINT_INDIVIDUAL_AREA].type = WidgetType::empty;
             }
+
+            // Set colour scheme caption
+            _spinnerCaption0 = LanguageGetString(ColourSchemeNames[colourScheme]);
+            widgets[WIDX_TRACK_COLOUR_SCHEME].setString(_spinnerCaption0.c_str());
 
             // Track main colour
             if (HasTrackColour(*ride, 0))
@@ -4747,126 +4762,64 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Track preview
-            if (rtd.flags.hasAny(
+            if (!rtd.flags.hasAny(
                     RtdFlag::hasTrackColourMain, RtdFlag::hasTrackColourAdditional, RtdFlag::hasTrackColourSupports))
-                widgets[WIDX_PRIMARY_PREVIEW].type = WidgetType::spinner;
-            else
-                widgets[WIDX_PRIMARY_PREVIEW].type = WidgetType::empty;
-
-            // Entrance style
-            if (ride->getRideTypeDescriptor().flags.has(RtdFlag::hasEntranceAndExit))
             {
-                widgets[WIDX_SECONDARY_PREVIEW].type = WidgetType::spinner;
-                widgets[WIDX_ENTRANCE_STYLE_LABEL].type = WidgetType::label;
-                widgets[WIDX_ENTRANCE_STYLE].type = WidgetType::dropdownMenu;
-                widgets[WIDX_ENTRANCE_STYLE_DROPDOWN].type = WidgetType::button;
+                widgets[WIDX_PRIMARY_PREVIEW].type = WidgetType::empty;
+                return startY;
             }
-            else
+
+            widgets[WIDX_PRIMARY_PREVIEW].type = WidgetType::spinner;
+
+            // clang-format off
+            widgets[WIDX_PRIMARY_PREVIEW].moveTo                 ({  3, startY + 0});
+            widgets[WIDX_TRACK_COLOUR_SCHEME].moveTo             ({ 74, startY + 0});
+            widgets[WIDX_TRACK_COLOUR_SCHEME_DROPDOWN].moveTo    ({301, startY + 1});
+            widgets[WIDX_TRACK_MAIN_COLOUR].moveTo               ({ 79, startY + 25});
+            widgets[WIDX_TRACK_ADDITIONAL_COLOUR].moveTo         ({ 99, startY + 25});
+            widgets[WIDX_TRACK_SUPPORT_COLOUR].moveTo            ({119, startY + 25});
+            widgets[WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX].moveTo({100, startY + 25});
+            widgets[WIDX_MAZE_STYLE].moveTo                      ({ 74, startY + 0});
+            widgets[WIDX_MAZE_STYLE_DROPDOWN].moveTo             ({301, startY + 1});
+            widgets[WIDX_PAINT_INDIVIDUAL_AREA].moveTo           ({289, startY + 19});
+            // clang-format on
+
+            return startY + 52;
+        }
+
+        int32_t colourOnPrepareDrawEntrance(int32_t startY, const Ride* ride)
+        {
+            // Entrance style
+            if (!ride->getRideTypeDescriptor().flags.has(RtdFlag::hasEntranceAndExit))
             {
                 widgets[WIDX_SECONDARY_PREVIEW].type = WidgetType::empty;
                 widgets[WIDX_ENTRANCE_STYLE_LABEL].type = WidgetType::empty;
                 widgets[WIDX_ENTRANCE_STYLE].type = WidgetType::empty;
                 widgets[WIDX_ENTRANCE_STYLE_DROPDOWN].type = WidgetType::empty;
+
+                return startY;
             }
 
-            // Vehicle colours
-            if (!rtd.flags.has(RtdFlag::noVehicles) && rtd.flags.has(RtdFlag::hasVehicleColours))
-            {
-                if (ride->vehicleColourSettings == VehicleColourSettings::same)
-                {
-                    _vehicleIndex = 0;
-                    widgets[WIDX_RANDOMISE_VEHICLE_COLOURS].type = WidgetType::empty;
-                }
-                else
-                {
-                    widgets[WIDX_RANDOMISE_VEHICLE_COLOURS].type = WidgetType::button;
-                }
+            widgets[WIDX_SECONDARY_PREVIEW].type = WidgetType::spinner;
+            widgets[WIDX_ENTRANCE_STYLE_LABEL].type = WidgetType::label;
+            widgets[WIDX_ENTRANCE_STYLE].type = WidgetType::dropdownMenu;
+            widgets[WIDX_ENTRANCE_STYLE_DROPDOWN].type = WidgetType::button;
 
-                vehicleColour = RideGetVehicleColour(*ride, _vehicleIndex);
+            // clang-format off
+            widgets[WIDX_SECONDARY_PREVIEW].moveTo      ({245, startY + 0});
+            widgets[WIDX_ENTRANCE_STYLE_LABEL].moveTo   ({  3, startY + 3});
+            widgets[WIDX_ENTRANCE_STYLE].moveTo         ({103, startY + 1});
+            widgets[WIDX_ENTRANCE_STYLE_DROPDOWN].moveTo({230, startY + 2});
+            // clang-format on
 
-                widgets[WIDX_VEHICLE_PREVIEW].type = WidgetType::scroll;
-                widgets[WIDX_VEHICLE_BODY_COLOUR].type = WidgetType::colourBtn;
-                widgets[WIDX_VEHICLE_BODY_COLOUR].image = getColourButtonImage(vehicleColour.Body);
+            return startY + 56;
+        }
 
-                bool allowChangingBodyColour = false;
-                bool allowChangingTrimColour = false;
-                bool allowChangingTertiaryColour = false;
+        int32_t colourOnPrepareDrawVehicles(int32_t startY, const Ride* ride, const RideObjectEntry* rideEntry)
+        {
+            const auto& rtd = ride->getRideTypeDescriptor();
 
-                for (int32_t i = 0; i < ride->numCarsPerTrain; i++)
-                {
-                    uint8_t vehicleTypeIndex = RideEntryGetVehicleAtPosition(ride->subtype, ride->numCarsPerTrain, i);
-
-                    if (rideEntry->Cars[vehicleTypeIndex].flags.has(CarEntryFlag::enableBodyColour))
-                        allowChangingBodyColour = true;
-
-                    if (rideEntry->Cars[vehicleTypeIndex].flags.has(CarEntryFlag::enableTrimColour))
-                        allowChangingTrimColour = true;
-
-                    if (rideEntry->Cars[vehicleTypeIndex].flags.has(CarEntryFlag::enableTertiaryColour))
-                        allowChangingTertiaryColour = true;
-                }
-
-                widgets[WIDX_VEHICLE_BODY_COLOUR].type = WidgetType::empty;
-                widgets[WIDX_VEHICLE_TRIM_COLOUR].type = WidgetType::empty;
-                widgets[WIDX_VEHICLE_TERTIARY_COLOUR].type = WidgetType::empty;
-
-                if (allowChangingBodyColour)
-                {
-                    widgets[WIDX_VEHICLE_BODY_COLOUR].type = WidgetType::colourBtn;
-                    widgets[WIDX_VEHICLE_BODY_COLOUR].image = getColourButtonImage(vehicleColour.Body);
-                }
-                if (allowChangingTrimColour)
-                {
-                    widgets[WIDX_VEHICLE_TRIM_COLOUR].type = WidgetType::colourBtn;
-                    widgets[WIDX_VEHICLE_TRIM_COLOUR].image = getColourButtonImage(vehicleColour.Trim);
-                }
-                if (allowChangingTertiaryColour)
-                {
-                    widgets[WIDX_VEHICLE_TERTIARY_COLOUR].type = WidgetType::colourBtn;
-                    widgets[WIDX_VEHICLE_TERTIARY_COLOUR].image = getColourButtonImage(vehicleColour.Tertiary);
-                }
-
-                // Vehicle colour scheme type
-                if (!ride->getRideTypeDescriptor().flags.has(RtdFlag::vehicleIsIntegral)
-                    && (ride->numCarsPerTrain | ride->numTrains) > 1)
-                {
-                    widgets[WIDX_VEHICLE_COLOUR_SCHEME].type = WidgetType::dropdownMenu;
-                    widgets[WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN].type = WidgetType::button;
-                }
-                else
-                {
-                    widgets[WIDX_VEHICLE_COLOUR_SCHEME].type = WidgetType::empty;
-                    widgets[WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN].type = WidgetType::empty;
-                }
-
-                auto vehicleNameStandard = GetRideComponentName(ride->getRideTypeDescriptor().NameConvention.vehicle);
-                _spinnerCaption1 = FormatStringID(
-                    VehicleColourSchemeNames[EnumValue(ride->vehicleColourSettings)], vehicleNameStandard.singular);
-                widgets[WIDX_VEHICLE_COLOUR_SCHEME].setString(_spinnerCaption1.c_str());
-
-                // Vehicle index
-                if (ride->vehicleColourSettings != VehicleColourSettings::same)
-                {
-                    widgets[WIDX_VEHICLE_COLOUR_INDEX].type = WidgetType::dropdownMenu;
-                    widgets[WIDX_VEHICLE_COLOUR_INDEX_DROPDOWN].type = WidgetType::button;
-
-                    uint16_t friendlyVehicleIndex = carIndexToDropdownIndex(_vehicleIndex) + 1;
-                    if (ride->vehicleColourSettings == VehicleColourSettings::perTrain)
-                        _spinnerCaption2 = FormatStringID(
-                            STR_RIDE_COLOUR_TRAIN_OPTION, vehicleNameStandard.capitalised, friendlyVehicleIndex);
-                    else
-                        _spinnerCaption2 = FormatStringID(STR_RIDE_COLOUR_VEHICLE_OPTION, friendlyVehicleIndex);
-
-                    widgets[WIDX_VEHICLE_COLOUR_INDEX].setString(_spinnerCaption2.c_str());
-                }
-                else
-                {
-                    widgets[WIDX_VEHICLE_COLOUR_INDEX].type = WidgetType::empty;
-                    widgets[WIDX_VEHICLE_COLOUR_INDEX_DROPDOWN].type = WidgetType::empty;
-                }
-            }
-            else
-            {
+            auto disableVehicleRecolour = [this]() {
                 widgets[WIDX_VEHICLE_PREVIEW].type = WidgetType::empty;
                 widgets[WIDX_VEHICLE_COLOUR_SCHEME].type = WidgetType::empty;
                 widgets[WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN].type = WidgetType::empty;
@@ -4876,12 +4829,126 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_VEHICLE_TRIM_COLOUR].type = WidgetType::empty;
                 widgets[WIDX_VEHICLE_TERTIARY_COLOUR].type = WidgetType::empty;
                 widgets[WIDX_RANDOMISE_VEHICLE_COLOURS].type = WidgetType::empty;
+            };
+
+            if (rtd.flags.has(RtdFlag::noVehicles) || !rtd.flags.has(RtdFlag::hasVehicleColours))
+            {
+                disableVehicleRecolour();
+                return startY;
             }
 
-            _spinnerCaption0 = LanguageGetString(ColourSchemeNames[colourScheme]);
-            widgets[WIDX_TRACK_COLOUR_SCHEME].setString(_spinnerCaption0.c_str());
+            if (ride->vehicleColourSettings == VehicleColourSettings::same)
+            {
+                _vehicleIndex = 0;
+                widgets[WIDX_RANDOMISE_VEHICLE_COLOURS].type = WidgetType::empty;
+            }
+            else
+            {
+                widgets[WIDX_RANDOMISE_VEHICLE_COLOURS].type = WidgetType::button;
+            }
 
-            WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
+            VehicleColour vehicleColour = RideGetVehicleColour(*ride, _vehicleIndex);
+
+            widgets[WIDX_VEHICLE_PREVIEW].type = WidgetType::scroll;
+            widgets[WIDX_VEHICLE_BODY_COLOUR].type = WidgetType::colourBtn;
+            widgets[WIDX_VEHICLE_BODY_COLOUR].image = getColourButtonImage(vehicleColour.Body);
+
+            bool allowChangingBodyColour = false;
+            bool allowChangingTrimColour = false;
+            bool allowChangingTertiaryColour = false;
+
+            for (int32_t i = 0; i < ride->numCarsPerTrain; i++)
+            {
+                uint8_t vehicleTypeIndex = RideEntryGetVehicleAtPosition(ride->subtype, ride->numCarsPerTrain, i);
+
+                if (rideEntry->Cars[vehicleTypeIndex].flags.has(CarEntryFlag::enableBodyColour))
+                    allowChangingBodyColour = true;
+
+                if (rideEntry->Cars[vehicleTypeIndex].flags.has(CarEntryFlag::enableTrimColour))
+                    allowChangingTrimColour = true;
+
+                if (rideEntry->Cars[vehicleTypeIndex].flags.has(CarEntryFlag::enableTertiaryColour))
+                    allowChangingTertiaryColour = true;
+            }
+
+            if (!(allowChangingBodyColour || allowChangingTrimColour || allowChangingTertiaryColour))
+            {
+                disableVehicleRecolour();
+                return startY;
+            }
+
+            widgets[WIDX_VEHICLE_BODY_COLOUR].type = WidgetType::empty;
+            widgets[WIDX_VEHICLE_TRIM_COLOUR].type = WidgetType::empty;
+            widgets[WIDX_VEHICLE_TERTIARY_COLOUR].type = WidgetType::empty;
+
+            if (allowChangingBodyColour)
+            {
+                widgets[WIDX_VEHICLE_BODY_COLOUR].type = WidgetType::colourBtn;
+                widgets[WIDX_VEHICLE_BODY_COLOUR].image = getColourButtonImage(vehicleColour.Body);
+            }
+            if (allowChangingTrimColour)
+            {
+                widgets[WIDX_VEHICLE_TRIM_COLOUR].type = WidgetType::colourBtn;
+                widgets[WIDX_VEHICLE_TRIM_COLOUR].image = getColourButtonImage(vehicleColour.Trim);
+            }
+            if (allowChangingTertiaryColour)
+            {
+                widgets[WIDX_VEHICLE_TERTIARY_COLOUR].type = WidgetType::colourBtn;
+                widgets[WIDX_VEHICLE_TERTIARY_COLOUR].image = getColourButtonImage(vehicleColour.Tertiary);
+            }
+
+            // Vehicle colour scheme type
+            if (!ride->getRideTypeDescriptor().flags.has(RtdFlag::vehicleIsIntegral)
+                && (ride->numCarsPerTrain | ride->numTrains) > 1)
+            {
+                widgets[WIDX_VEHICLE_COLOUR_SCHEME].type = WidgetType::dropdownMenu;
+                widgets[WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN].type = WidgetType::button;
+            }
+            else
+            {
+                widgets[WIDX_VEHICLE_COLOUR_SCHEME].type = WidgetType::empty;
+                widgets[WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN].type = WidgetType::empty;
+            }
+
+            auto vehicleNameStandard = GetRideComponentName(ride->getRideTypeDescriptor().NameConvention.vehicle);
+            _spinnerCaption1 = FormatStringID(
+                VehicleColourSchemeNames[EnumValue(ride->vehicleColourSettings)], vehicleNameStandard.singular);
+            widgets[WIDX_VEHICLE_COLOUR_SCHEME].setString(_spinnerCaption1.c_str());
+
+            // Vehicle index
+            if (ride->vehicleColourSettings != VehicleColourSettings::same)
+            {
+                widgets[WIDX_VEHICLE_COLOUR_INDEX].type = WidgetType::dropdownMenu;
+                widgets[WIDX_VEHICLE_COLOUR_INDEX_DROPDOWN].type = WidgetType::button;
+
+                uint16_t friendlyVehicleIndex = carIndexToDropdownIndex(_vehicleIndex) + 1;
+                if (ride->vehicleColourSettings == VehicleColourSettings::perTrain)
+                    _spinnerCaption2 = FormatStringID(
+                        STR_RIDE_COLOUR_TRAIN_OPTION, vehicleNameStandard.capitalised, friendlyVehicleIndex);
+                else
+                    _spinnerCaption2 = FormatStringID(STR_RIDE_COLOUR_VEHICLE_OPTION, friendlyVehicleIndex);
+
+                widgets[WIDX_VEHICLE_COLOUR_INDEX].setString(_spinnerCaption2.c_str());
+            }
+            else
+            {
+                widgets[WIDX_VEHICLE_COLOUR_INDEX].type = WidgetType::empty;
+                widgets[WIDX_VEHICLE_COLOUR_INDEX_DROPDOWN].type = WidgetType::empty;
+            }
+
+            // clang-format off
+            widgets[WIDX_VEHICLE_PREVIEW].moveTo               ({  3, startY + 0});
+            widgets[WIDX_VEHICLE_COLOUR_SCHEME].moveTo         ({ 74, startY + 0});
+            widgets[WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN].moveTo({301, startY + 1});
+            widgets[WIDX_VEHICLE_COLOUR_INDEX].moveTo          ({ 74, startY + 16});
+            widgets[WIDX_VEHICLE_COLOUR_INDEX_DROPDOWN].moveTo ({301, startY + 17});
+            widgets[WIDX_VEHICLE_BODY_COLOUR].moveTo           ({ 79, startY + 33});
+            widgets[WIDX_VEHICLE_TRIM_COLOUR].moveTo           ({ 99, startY + 33});
+            widgets[WIDX_VEHICLE_TERTIARY_COLOUR].moveTo       ({119, startY + 33});
+            widgets[WIDX_RANDOMISE_VEHICLE_COLOURS].moveTo     ({139, startY + 33});
+            // clang-format on
+
+            return startY + 53;
         }
 
         void ColourOnDraw(RenderTarget& rt)
@@ -6211,7 +6278,7 @@ namespace OpenRCT2::Ui::Windows
             if (measurement == nullptr)
             {
                 // No measurement message
-                ScreenCoordsXY stringCoords(widget->width() / 2, widget->height() - 1 / 2 - 5);
+                ScreenCoordsXY stringCoords(widget->width() / 2, widget->height() / 2 - 5);
                 int32_t txtWidth = widget->width() - 3;
                 drawTextWrapped(rt, stringCoords, txtWidth, message.str, message.args, { TextAlignment::centre });
                 return;
@@ -6506,7 +6573,10 @@ namespace OpenRCT2::Ui::Windows
 
             auto rideEntry = ride->getRideEntry();
             const auto& rtd = ride->getRideTypeDescriptor();
-            return Park::RidePricesUnlocked() || rtd.specialType == RtdSpecialType::toilet
+
+            auto& park = getGameState().park;
+
+            return Park::RidePricesUnlocked(park) || rtd.specialType == RtdSpecialType::toilet
                 || (rideEntry != nullptr && rideEntry->shop_item[0] != ShopItem::none);
         }
 
@@ -6667,9 +6737,11 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_PRIMARY_PRICE_LABEL].tooltip = kStringIdNone;
             widgets[WIDX_PRIMARY_PRICE].tooltip = kStringIdNone;
 
+            auto& park = getGameState().park;
+
             // If ride prices are locked, do not allow setting the price, unless we're dealing with a shop or toilet.
             const auto& rtd = ride->getRideTypeDescriptor();
-            if (!Park::RidePricesUnlocked() && rideEntry->shop_item[0] == ShopItem::none
+            if (!Park::RidePricesUnlocked(park) && rideEntry->shop_item[0] == ShopItem::none
                 && rtd.specialType != RtdSpecialType::toilet)
             {
                 disabledWidgets |= (1uLL << WIDX_PRIMARY_PRICE);

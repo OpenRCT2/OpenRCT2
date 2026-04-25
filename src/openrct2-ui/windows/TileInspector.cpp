@@ -63,19 +63,19 @@ using namespace OpenRCT2::Drawing;
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr StringId EntranceTypeStringIds[] = {
+    static constexpr StringId kEntranceTypeStringIds[] = {
         STR_TILE_INSPECTOR_ENTRANCE_TYPE_RIDE_ENTRANCE,
         STR_TILE_INSPECTOR_ENTRANCE_TYPE_RIDE_EXIT,
         STR_TILE_INSPECTOR_ENTRANCE_TYPE_PARK_ENTRANC,
     };
 
-    static constexpr StringId ParkEntrancePartStringIds[] = {
+    static constexpr StringId kParkEntrancePartStringIds[] = {
         STR_TILE_INSPECTOR_ENTRANCE_MIDDLE,
         STR_TILE_INSPECTOR_ENTRANCE_LEFT,
         STR_TILE_INSPECTOR_ENTRANCE_RIGHT,
     };
 
-    static constexpr StringId WallSlopeStringIds[] = {
+    static constexpr StringId kWallSlopeStringIds[] = {
         STR_TILE_INSPECTOR_WALL_FLAT,
         STR_TILE_INSPECTOR_WALL_SLOPED_LEFT,
         STR_TILE_INSPECTOR_WALL_SLOPED_RIGHT,
@@ -260,6 +260,7 @@ namespace OpenRCT2::Ui::Windows
     constexpr int32_t kGroupboxPadding = 6;
     constexpr int32_t kHorizontalGroupboxPadding = 5;
     constexpr int32_t kVerticalGroupboxPadding = 4;
+    constexpr auto kPropertySpinnerSize = ScreenSize{ 130, 14 };
     constexpr auto kPropertyButtonSize = ScreenSize{ 130, 18 };
     constexpr auto kPropertyFullWidth = ScreenSize{ 370, 18 };
 
@@ -278,18 +279,14 @@ namespace OpenRCT2::Ui::Windows
         return anchorPoint + ScreenCoordsXY{ 14 * horizontalMultiplier, 7 * verticalMultiplier };
     }
 
-    // Macros for easily obtaining the top and bottom of a widget inside a properties group box
-    #define GBBT(GROUPTOP, row)     ((GROUPTOP) + 14 + row * (kPropertyButtonSize.height + kVerticalGroupboxPadding))
-    #define GBBB(GROUPTOP, row)     (GBBT((GROUPTOP), row) + kPropertyButtonSize.height)
-
     static constexpr auto kMainTileInspectorWidgets = makeWidgets(
         makeWindowShim(kWindowTitle, kWindowSize),
         makeWidget({3, 57}, {kWindowSize.width - 6, kWindowSize.height - kBottomPadding - 58}, WidgetType::scroll, WindowColour::secondary, SCROLL_VERTICAL), /* Element list */
         /* X and Y spinners */
-        makeWidget        ({ 4, 24}, {38, 14}, WidgetType::label,   WindowColour::secondary,  STR_TILE_INSPECTOR_X_LABEL),
-        makeSpinnerWidgets({20, 23}, {51, 12}, WidgetType::spinner, WindowColour::secondary), /* Spinner X (3 widgets) */
-        makeWidget        ({74, 24}, {38, 14}, WidgetType::label,   WindowColour::secondary,  STR_TILE_INSPECTOR_Y_LABEL),
-        makeSpinnerWidgets({90, 23}, {51, 12}, WidgetType::spinner, WindowColour::secondary), /* Spinner Y (3 widgets) */
+        makeWidget        ({ 4, 24}, {38, 12}, WidgetType::label,   WindowColour::secondary,  STR_TILE_INSPECTOR_X_LABEL),
+        makeSpinnerWidgets({20, 23}, {51, 14}, WidgetType::spinner, WindowColour::secondary), /* Spinner X (3 widgets) */
+        makeWidget        ({74, 24}, {38, 12}, WidgetType::label,   WindowColour::secondary,  STR_TILE_INSPECTOR_Y_LABEL),
+        makeSpinnerWidgets({90, 23}, {51, 14}, WidgetType::spinner, WindowColour::secondary), /* Spinner Y (3 widgets) */
         /* Top buttons */
         makeWidget(kToolbarButtonAnchor + kToolbarButtonOffsetX * 0,                     kToolbarButtonSize,     WidgetType::flatBtn,     WindowColour::secondary, ImageId(SPR_DEMOLISH),     STR_REMOVE_SELECTED_ELEMENT_TIP ),    /* Remove button */
         makeWidget(kToolbarButtonAnchor + kToolbarButtonOffsetX * 1,                     kToolbarButtonHalfSize, WidgetType::button,      WindowColour::secondary, STR_UP,                    STR_MOVE_SELECTED_ELEMENT_UP_TIP),    /* Move up */
@@ -311,33 +308,33 @@ namespace OpenRCT2::Ui::Windows
         makeWidget({6, 0},             {kWindowSize.width - 12, 0}, WidgetType::groupbox,    WindowColour::secondary, STR_TILE_INSPECTOR_GROUPBOX_PROPERTIES, kStringIdNone )  /* Properties group box */
     );
 
-    static constexpr auto DefaultWidgets = makeWidgets(
+    static constexpr auto kDefaultWidgets = makeWidgets(
         kMainTileInspectorWidgets
     );
 
-    constexpr int32_t NumSurfaceProperties = 4;
-    constexpr int32_t NumSurfaceDetails = 4;
-    constexpr int32_t SurfacePropertiesHeight = 16 + NumSurfaceProperties * 21;
-    constexpr int32_t SurfaceDetailsHeight = 20 + NumSurfaceDetails * 11;
-    static constexpr auto SurfaceWidgets = makeWidgets(
+    constexpr int32_t kNumSurfaceProperties = 4;
+    constexpr int32_t kNumSurfaceDetails = 4;
+    constexpr int32_t kSurfacePropertiesHeight = 20 + kNumSurfaceProperties * 21;
+    constexpr int32_t kSurfaceDetailsHeight = 20 + kNumSurfaceDetails * 11;
+    static constexpr auto kSurfaceWidgets = makeWidgets(
         kMainTileInspectorWidgets,
-        makeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 0, 1), kPropertyButtonSize, WidgetType::spinner, WindowColour::secondary), // WIDX_SURFACE_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
+        makeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 0, 1), kPropertySpinnerSize, WidgetType::spinner, WindowColour::secondary), // WIDX_SURFACE_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
         makeWidget(PropertyRowCol({ 12, 0 }, 1, 0),         kPropertyButtonSize, WidgetType::button,  WindowColour::secondary, STR_TILE_INSPECTOR_SURFACE_REMOVE_FENCES), // WIDX_SURFACE_BUTTON_REMOVE_FENCES
         makeWidget(PropertyRowCol({ 12, 0 }, 1, 1),         kPropertyButtonSize, WidgetType::button,  WindowColour::secondary, STR_TILE_INSPECTOR_SURFACE_RESTORE_FENCES), // WIDX_SURFACE_BUTTON_RESTORE_FENCES
-        makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 3, 1), 1, 0), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_SURFACE_CHECK_CORNER_N
-        makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 3, 1), 2, 1), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_SURFACE_CHECK_CORNER_E
-        makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 3, 1), 1, 2), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_SURFACE_CHECK_CORNER_S
-        makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 3, 1), 0, 1), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_SURFACE_CHECK_CORNER_W
-        makeWidget(PropertyRowCol({ 12, 0 }, 4, 0), kPropertyFullWidth, WidgetType::checkbox, WindowColour::secondary, STR_TILE_INSPECTOR_SURFACE_DIAGONAL) // WIDX_SURFACE_CHECK_DIAGONAL
+        makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 2, 1), 1, 0), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_SURFACE_CHECK_CORNER_N
+        makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 2, 1), 2, 1), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_SURFACE_CHECK_CORNER_E
+        makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 2, 1), 1, 2), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_SURFACE_CHECK_CORNER_S
+        makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 2, 1), 0, 1), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_SURFACE_CHECK_CORNER_W
+        makeWidget(PropertyRowCol({ 12, 0 }, 3, 0), kPropertyFullWidth, WidgetType::checkbox, WindowColour::secondary, STR_TILE_INSPECTOR_SURFACE_DIAGONAL) // WIDX_SURFACE_CHECK_DIAGONAL
     );
 
-    constexpr int32_t NumPathProperties = 6;
-    constexpr int32_t NumPathDetails = 3;
-    constexpr int32_t PathPropertiesHeight = 16 + NumPathProperties * 21;
-    constexpr int32_t PathDetailsHeight = 20 + NumPathDetails * 11;
-    static constexpr auto PathWidgets = makeWidgets(
+    constexpr int32_t kNumPathProperties = 6;
+    constexpr int32_t kNumPathDetails = 3;
+    constexpr int32_t kPathPropertiesHeight = 20 + kNumPathProperties * 21;
+    constexpr int32_t kPathDetailsHeight = 20 + kNumPathDetails * 11;
+    static constexpr auto kPathWidgets = makeWidgets(
         kMainTileInspectorWidgets,
-        makeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 0, 1), kPropertyButtonSize, WidgetType::spinner, WindowColour::secondary), // WIDX_PATH_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
+        makeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 0, 1), kPropertySpinnerSize, WidgetType::spinner, WindowColour::secondary), // WIDX_PATH_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
         makeWidget(PropertyRowCol({ 12, 0 }, 1, 0), kPropertyFullWidth, WidgetType::checkbox, WindowColour::secondary, STR_TILE_INSPECTOR_PATH_BROKEN), // WIDX_PATH_CHECK_BROKEN
         makeWidget(PropertyRowCol({ 12, 0 }, 2, 0), kPropertyFullWidth, WidgetType::checkbox, WindowColour::secondary, STR_TILE_INSPECTOR_PATH_SLOPED), // WIDX_PATH_CHECK_SLOPED
         makeWidget(PropertyRowCol({ 12, 0 }, 3, 0), kPropertyFullWidth, WidgetType::checkbox, WindowColour::secondary, STR_TILE_INSPECTOR_PATH_JUNCTION_RAILINGS), // WIDX_PATH_CHECK_JUNCTION_RAILINGS
@@ -351,95 +348,95 @@ namespace OpenRCT2::Ui::Windows
         makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 4, 1), 2, 0), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary)  // WIDX_PATH_CHECK_EDGE_N
     );
 
-    constexpr int32_t NumTrackProperties = 5;
-    constexpr int32_t NumTrackDetails = 7;
-    constexpr int32_t TrackPropertiesHeight = 16 + NumTrackProperties * 21;
-    constexpr int32_t TrackDetailsHeight = 20 + NumTrackDetails * 11;
-    static constexpr auto TrackWidgets = makeWidgets(
+    constexpr int32_t kNumTrackProperties = 5;
+    constexpr int32_t kNumTrackDetails = 7;
+    constexpr int32_t kTrackPropertiesHeight = 20 + kNumTrackProperties * 21;
+    constexpr int32_t kTrackDetailsHeight = 20 + kNumTrackDetails * 11;
+    static constexpr auto kTrackWidgets = makeWidgets(
         kMainTileInspectorWidgets,
         makeWidget(PropertyRowCol({ 12, 0}, 0, 0),          kPropertyFullWidth, WidgetType::checkbox, WindowColour::secondary, STR_TILE_INSPECTOR_TRACK_ENTIRE_TRACK_PIECE), // WIDX_TRACK_CHECK_APPLY_TO_ALL
-        makeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 1, 1), kPropertyButtonSize, WidgetType::spinner, WindowColour::secondary), // WIDX_TRACK_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
+        makeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 1, 1), kPropertySpinnerSize, WidgetType::spinner, WindowColour::secondary), // WIDX_TRACK_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
         makeWidget(PropertyRowCol({ 12, 0}, 2, 0),          kPropertyFullWidth, WidgetType::checkbox, WindowColour::secondary, STR_TILE_INSPECTOR_TRACK_CHAIN_LIFT), // WIDX_TRACK_CHECK_CHAIN_LIFT
         makeWidget(PropertyRowCol({ 12, 0}, 3, 0),          kPropertyFullWidth, WidgetType::checkbox, WindowColour::secondary, STR_TILE_INSPECTOR_TRACK_BRAKE_CLOSED), // WIDX_TRACK_CHECK_BRAKE_CLOSED
         makeWidget(PropertyRowCol({ 12, 0}, 4, 0),          kPropertyFullWidth, WidgetType::checkbox, WindowColour::secondary, STR_TILE_INSPECTOR_TRACK_IS_INDESTRUCTIBLE) // WIDX_TRACK_CHECK_IS_INDESTRUCTIBLE
     );
 
-    constexpr int32_t NumSceneryProperties = 4; // The checkbox groups both count for 2 rows
-    constexpr int32_t NumSceneryDetails = 3;
-    constexpr int32_t SceneryPropertiesHeight = 16 + NumSceneryProperties * 21;
-    constexpr int32_t SceneryDetailsHeight = 20 + NumSceneryDetails * 11;
-    static constexpr auto SceneryWidgets = makeWidgets(
+    constexpr int32_t kNumSceneryProperties = 4; // The checkbox groups both count for 2 rows
+    constexpr int32_t kNumSceneryDetails = 3;
+    constexpr int32_t kSceneryPropertiesHeight = 20 + kNumSceneryProperties * 21;
+    constexpr int32_t kSceneryDetailsHeight = 20 + kNumSceneryDetails * 11;
+    static constexpr auto kSceneryWidgets = makeWidgets(
         kMainTileInspectorWidgets,
-        makeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 0, 1), kPropertyButtonSize, WidgetType::spinner, WindowColour::secondary), // WIDX_SCENERY_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
-        makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 1, 1), 1, 0), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_SCENERY_CHECK_QUARTER_N
-        makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 1, 1), 2, 1), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_SCENERY_CHECK_QUARTER_E
-        makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 1, 1), 1, 2), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_SCENERY_CHECK_QUARTER_S
-        makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 1, 1), 0, 1), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_SCENERY_CHECK_QUARTER_W
-        makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 2, 1), 1, 0), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_SCENERY_CHECK_COLLISION_N
-        makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 2, 1), 2, 1), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_SCENERY_CHECK_COLLISION_E
-        makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 2, 1), 1, 2), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_SCENERY_CHECK_COLLISION_S
-        makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 2, 1), 0, 1), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary)  // WIDX_SCENERY_CHECK_COLLISION_W
+        makeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 0, 1), kPropertySpinnerSize, WidgetType::spinner, WindowColour::secondary), // WIDX_SCENERY_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
+        makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 1, 1), 1, 0 + 0), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_SCENERY_CHECK_QUARTER_N
+        makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 1, 1), 2, 0 + 1), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_SCENERY_CHECK_QUARTER_E
+        makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 1, 1), 1, 0 + 2), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_SCENERY_CHECK_QUARTER_S
+        makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 1, 1), 0, 0 + 1), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_SCENERY_CHECK_QUARTER_W
+        makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 2, 1), 1, 1 + 0), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_SCENERY_CHECK_COLLISION_N
+        makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 2, 1), 2, 1 + 1), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_SCENERY_CHECK_COLLISION_E
+        makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 2, 1), 1, 1 + 2), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_SCENERY_CHECK_COLLISION_S
+        makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 2, 1), 0, 1 + 1), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary)  // WIDX_SCENERY_CHECK_COLLISION_W
     );
 
-    constexpr int32_t NumEntranceProperties = 2;
-    constexpr int32_t NumEntranceDetails = 4;
-    constexpr int32_t EntrancePropertiesHeight = 16 + NumEntranceProperties * 21;
-    constexpr int32_t EntranceDetailsHeight = 20 + NumEntranceDetails * 11;
-    static constexpr auto EntranceWidgets = makeWidgets(
+    constexpr int32_t kNumEntranceProperties = 2;
+    constexpr int32_t kNumEntranceDetails = 4;
+    constexpr int32_t kEntrancePropertiesHeight = 20 + kNumEntranceProperties * 21;
+    constexpr int32_t kEntranceDetailsHeight = 20 + kNumEntranceDetails * 11;
+    static constexpr auto kEntranceWidgets = makeWidgets(
         kMainTileInspectorWidgets,
-        makeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 0, 1), kPropertyButtonSize, WidgetType::spinner, WindowColour::secondary), // WIDX_ENTRANCE_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
+        makeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 0, 1), kPropertySpinnerSize, WidgetType::spinner, WindowColour::secondary), // WIDX_ENTRANCE_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
         makeWidget(PropertyRowCol({ 12, 0 }, 1, 0),         kPropertyButtonSize, WidgetType::button,  WindowColour::secondary, STR_TILE_INSPECTOR_ENTRANCE_MAKE_USABLE, STR_TILE_INSPECTOR_ENTRANCE_MAKE_USABLE_TIP) // WIDX_ENTRANCE_BUTTON_MAKE_USABLE
     );
 
-    constexpr int32_t NumWallProperties = 4;
-    constexpr int32_t NumWallDetails = 2;
-    constexpr int32_t WallPropertiesHeight = 16 + NumWallProperties * 21;
-    constexpr int32_t WallDetailsHeight = 20 + NumWallDetails * 11;
-    static constexpr auto WallWidgets = makeWidgets(
+    constexpr int32_t kNumWallProperties = 4;
+    constexpr int32_t kNumWallDetails = 2;
+    constexpr int32_t kWallPropertiesHeight = 20 + kNumWallProperties * 21;
+    constexpr int32_t kWallDetailsHeight = 20 + kNumWallDetails * 11;
+    static constexpr auto kWallWidgets = makeWidgets(
         kMainTileInspectorWidgets,
-        makeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 0, 1),                          kPropertyButtonSize, WidgetType::spinner,      WindowColour::secondary), // WIDX_WALL_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
+        makeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 0, 1),                          kPropertySpinnerSize, WidgetType::spinner,      WindowColour::secondary), // WIDX_WALL_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
         makeWidget(PropertyRowCol({ 12, 0 }, 1, 1),                                  kPropertyButtonSize, WidgetType::dropdownMenu, WindowColour::secondary), // WIDX_WALL_DROPDOWN_SLOPE
         makeWidget(PropertyRowCol({ 12 + kPropertyButtonSize.width - 12, 0 }, 1, 1), { 11,  12},          WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH), // WIDX_WALL_DROPDOWN_SLOPE_BUTTON
-        makeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 2, 1),                          kPropertyButtonSize, WidgetType::spinner,      WindowColour::secondary), // WIDX_WALL_SPINNER_ANIMATION_FRAME{,_INCREASE,_DECREASE}
+        makeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 2, 1),                          kPropertySpinnerSize, WidgetType::spinner,      WindowColour::secondary), // WIDX_WALL_SPINNER_ANIMATION_FRAME{,_INCREASE,_DECREASE}
         makeWidget(PropertyRowCol({ 12, 0 }, 3, 0),                                  kPropertyFullWidth,  WidgetType::checkbox,     WindowColour::secondary, STR_TILE_INSPECTOR_WALL_ANIMATION_IS_BACKWARDS) // WIDX_WALL_ANIMATION_IS_BACKWARDS
     );
 
-    constexpr int32_t NumLargeSceneryProperties = 1;
-    constexpr int32_t NumLargeSceneryDetails = 3;
-    constexpr int32_t LargeSceneryPropertiesHeight = 16 + NumLargeSceneryProperties * 21;
-    constexpr int32_t LargeSceneryDetailsHeight = 20 + NumLargeSceneryDetails * 11;
-    static constexpr auto LargeSceneryWidgets = makeWidgets(
+    constexpr int32_t kNumLargeSceneryProperties = 1;
+    constexpr int32_t kNumLargeSceneryDetails = 3;
+    constexpr int32_t kLargeSceneryPropertiesHeight = 20 + kNumLargeSceneryProperties * 21;
+    constexpr int32_t kLargeSceneryDetailsHeight = 20 + kNumLargeSceneryDetails * 11;
+    static constexpr auto kLargeSceneryWidgets = makeWidgets(
         kMainTileInspectorWidgets,
-        makeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 0, 1), kPropertyButtonSize, WidgetType::spinner, WindowColour::secondary) // WIDX_LARGE_SCENERY_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
+        makeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 0, 1), kPropertySpinnerSize, WidgetType::spinner, WindowColour::secondary) // WIDX_LARGE_SCENERY_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
     );
 
-    constexpr int32_t NumBannerProperties = 3;
-    constexpr int32_t NumBannerDetails = 1;
-    constexpr int32_t BannerPropertiesHeight = 16 + NumBannerProperties * 21;
-    constexpr int32_t BannerDetailsHeight = 20 + NumBannerDetails * 11;
-    static constexpr auto BannerWidgets = makeWidgets(
+    constexpr int32_t kNumBannerProperties = 3;
+    constexpr int32_t kNumBannerDetails = 1;
+    constexpr int32_t kBannerPropertiesHeight = 20 + kNumBannerProperties * 21;
+    constexpr int32_t kBannerDetailsHeight = 20 + kNumBannerDetails * 11;
+    static constexpr auto kBannerWidgets = makeWidgets(
         kMainTileInspectorWidgets,
-        makeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 0, 1), kPropertyButtonSize, WidgetType::spinner, WindowColour::secondary), // WIDX_BANNER_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
+        makeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 0, 1), kPropertySpinnerSize, WidgetType::spinner, WindowColour::secondary), // WIDX_BANNER_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
         makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 1, 1), 3, 1), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_BANNER_CHECK_BLOCK_NE
         makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 1, 1), 3, 3), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_BANNER_CHECK_BLOCK_SE
         makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 1, 1), 1, 3), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_BANNER_CHECK_BLOCK_SW
         makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 1, 1), 1, 1), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary)  // WIDX_BANNER_CHECK_BLOCK_NW
     );
 
-    static constexpr std::span<const Widget> PageWidgets[] = {
-        DefaultWidgets,
-        SurfaceWidgets,
-        PathWidgets,
-        TrackWidgets,
-        SceneryWidgets,
-        EntranceWidgets,
-        WallWidgets,
-        LargeSceneryWidgets,
-        BannerWidgets,
+    static constexpr std::span<const Widget> kWidgetsByPage[] = {
+        kDefaultWidgets,
+        kSurfaceWidgets,
+        kPathWidgets,
+        kTrackWidgets,
+        kSceneryWidgets,
+        kEntranceWidgets,
+        kWallWidgets,
+        kLargeSceneryWidgets,
+        kBannerWidgets,
     };
     // clang-format on
 
-    struct TileInspectorGroupboxSettings
+    struct GroupboxSettings
     {
         // Offsets from the bottom of the window
         int16_t details_top_offset, details_bottom_offset;
@@ -448,10 +445,9 @@ namespace OpenRCT2::Ui::Windows
         StringId string_id;
     };
 
-    static constexpr TileInspectorGroupboxSettings MakeGroupboxSettings(
-        int16_t detailsHeight, int16_t propertiesHeight, StringId stringId)
+    static constexpr GroupboxSettings MakeGroupboxSettings(int16_t detailsHeight, int16_t propertiesHeight, StringId stringId)
     {
-        TileInspectorGroupboxSettings settings{};
+        GroupboxSettings settings{};
         decltype(settings.properties_bottom_offset) offsetSum = 0;
         settings.properties_bottom_offset = (offsetSum += kBottomPadding);
         settings.properties_top_offset = (offsetSum += propertiesHeight);
@@ -461,46 +457,47 @@ namespace OpenRCT2::Ui::Windows
         return settings;
     }
 
-    static constexpr TileInspectorGroupboxSettings PageGroupBoxSettings[] = {
-        MakeGroupboxSettings(SurfaceDetailsHeight, SurfacePropertiesHeight, STR_TILE_INSPECTOR_GROUPBOX_SURFACE_INFO),
-        MakeGroupboxSettings(PathDetailsHeight, PathPropertiesHeight, STR_TILE_INSPECTOR_GROUPBOX_PATH_INFO),
-        MakeGroupboxSettings(TrackDetailsHeight, TrackPropertiesHeight, STR_TILE_INSPECTOR_GROUPBOX_TRACK_INFO),
-        MakeGroupboxSettings(SceneryDetailsHeight, SceneryPropertiesHeight, STR_TILE_INSPECTOR_GROUPBOX_SCENERY_INFO),
-        MakeGroupboxSettings(EntranceDetailsHeight, EntrancePropertiesHeight, STR_TILE_INSPECTOR_GROUPBOX_ENTRANCE_INFO),
-        MakeGroupboxSettings(WallDetailsHeight, WallPropertiesHeight, STR_TILE_INSPECTOR_GROUPBOX_WALL_INFO),
-        MakeGroupboxSettings(LargeSceneryDetailsHeight, LargeSceneryPropertiesHeight, STR_TILE_INSPECTOR_GROUPBOX_BANNER_INFO),
-        MakeGroupboxSettings(BannerDetailsHeight, BannerPropertiesHeight, STR_TILE_INSPECTOR_GROUPBOX_BANNER_INFO),
+    static constexpr GroupboxSettings kPageGroupBoxSettings[] = {
+        MakeGroupboxSettings(kSurfaceDetailsHeight, kSurfacePropertiesHeight, STR_TILE_INSPECTOR_GROUPBOX_SURFACE_INFO),
+        MakeGroupboxSettings(kPathDetailsHeight, kPathPropertiesHeight, STR_TILE_INSPECTOR_GROUPBOX_PATH_INFO),
+        MakeGroupboxSettings(kTrackDetailsHeight, kTrackPropertiesHeight, STR_TILE_INSPECTOR_GROUPBOX_TRACK_INFO),
+        MakeGroupboxSettings(kSceneryDetailsHeight, kSceneryPropertiesHeight, STR_TILE_INSPECTOR_GROUPBOX_SCENERY_INFO),
+        MakeGroupboxSettings(kEntranceDetailsHeight, kEntrancePropertiesHeight, STR_TILE_INSPECTOR_GROUPBOX_ENTRANCE_INFO),
+        MakeGroupboxSettings(kWallDetailsHeight, kWallPropertiesHeight, STR_TILE_INSPECTOR_GROUPBOX_WALL_INFO),
+        MakeGroupboxSettings(
+            kLargeSceneryDetailsHeight, kLargeSceneryPropertiesHeight, STR_TILE_INSPECTOR_GROUPBOX_LARGE_SCENERY_INFO),
+        MakeGroupboxSettings(kBannerDetailsHeight, kBannerPropertiesHeight, STR_TILE_INSPECTOR_GROUPBOX_BANNER_INFO),
     };
 
     static constexpr int32_t ViewportInteractionFlags = EnumsToFlags(
         ViewportInteractionItem::terrain, ViewportInteractionItem::ride, ViewportInteractionItem::scenery,
         ViewportInteractionItem::footpath, ViewportInteractionItem::pathAddition, ViewportInteractionItem::parkEntrance,
         ViewportInteractionItem::wall, ViewportInteractionItem::largeScenery, ViewportInteractionItem::banner);
+
     // clang-format off
+    static uint64_t kHoldableWidgetsByPage[] = {
+        (1uLL << WIDX_SPINNER_X_INCREASE) | (1uLL << WIDX_SPINNER_X_DECREASE) | (1uLL << WIDX_SPINNER_Y_INCREASE) | (1uLL << WIDX_SPINNER_Y_DECREASE),
+        (1uLL << WIDX_SPINNER_X_INCREASE) | (1uLL << WIDX_SPINNER_X_DECREASE) | (1uLL << WIDX_SPINNER_Y_INCREASE) | (1uLL << WIDX_SPINNER_Y_DECREASE) | (1uLL << WIDX_SURFACE_SPINNER_HEIGHT_INCREASE) | (1uLL << WIDX_SURFACE_SPINNER_HEIGHT_DECREASE),
+        (1uLL << WIDX_SPINNER_X_INCREASE) | (1uLL << WIDX_SPINNER_X_DECREASE) | (1uLL << WIDX_SPINNER_Y_INCREASE) | (1uLL << WIDX_SPINNER_Y_DECREASE) | (1uLL << WIDX_PATH_SPINNER_HEIGHT_INCREASE) | (1uLL << WIDX_PATH_SPINNER_HEIGHT_DECREASE),
+        (1uLL << WIDX_SPINNER_X_INCREASE) | (1uLL << WIDX_SPINNER_X_DECREASE) | (1uLL << WIDX_SPINNER_Y_INCREASE) | (1uLL << WIDX_SPINNER_Y_DECREASE) | (1uLL << WIDX_TRACK_SPINNER_HEIGHT_INCREASE) | (1uLL << WIDX_TRACK_SPINNER_HEIGHT_DECREASE),
+        (1uLL << WIDX_SPINNER_X_INCREASE) | (1uLL << WIDX_SPINNER_X_DECREASE) | (1uLL << WIDX_SPINNER_Y_INCREASE) | (1uLL << WIDX_SPINNER_Y_DECREASE) | (1uLL << WIDX_SCENERY_SPINNER_HEIGHT_INCREASE) | (1uLL << WIDX_SCENERY_SPINNER_HEIGHT_DECREASE),
+        (1uLL << WIDX_SPINNER_X_INCREASE) | (1uLL << WIDX_SPINNER_X_DECREASE) | (1uLL << WIDX_SPINNER_Y_INCREASE) | (1uLL << WIDX_SPINNER_Y_DECREASE) | (1uLL << WIDX_ENTRANCE_SPINNER_HEIGHT_INCREASE) | (1uLL << WIDX_ENTRANCE_SPINNER_HEIGHT_DECREASE),
+        (1uLL << WIDX_SPINNER_X_INCREASE) | (1uLL << WIDX_SPINNER_X_DECREASE) | (1uLL << WIDX_SPINNER_Y_INCREASE) | (1uLL << WIDX_SPINNER_Y_DECREASE) | (1uLL << WIDX_WALL_SPINNER_HEIGHT_INCREASE) | (1uLL << WIDX_WALL_SPINNER_HEIGHT_DECREASE) | (1uLL << WIDX_WALL_SPINNER_ANIMATION_FRAME_INCREASE) | (1uLL << WIDX_WALL_SPINNER_ANIMATION_FRAME_DECREASE),
+        (1uLL << WIDX_SPINNER_X_INCREASE) | (1uLL << WIDX_SPINNER_X_DECREASE) | (1uLL << WIDX_SPINNER_Y_INCREASE) | (1uLL << WIDX_SPINNER_Y_DECREASE) | (1uLL << WIDX_LARGE_SCENERY_SPINNER_HEIGHT_INCREASE) | (1uLL << WIDX_LARGE_SCENERY_SPINNER_HEIGHT_DECREASE),
+        (1uLL << WIDX_SPINNER_X_INCREASE) | (1uLL << WIDX_SPINNER_X_DECREASE) | (1uLL << WIDX_SPINNER_Y_INCREASE) | (1uLL << WIDX_SPINNER_Y_DECREASE) | (1uLL << WIDX_BANNER_SPINNER_HEIGHT_INCREASE) | (1uLL << WIDX_BANNER_SPINNER_HEIGHT_DECREASE),
+    };
 
-static uint64_t PageHoldDownWidgets[] = {
-    (1uLL << WIDX_SPINNER_X_INCREASE) | (1uLL << WIDX_SPINNER_X_DECREASE) | (1uLL << WIDX_SPINNER_Y_INCREASE) | (1uLL << WIDX_SPINNER_Y_DECREASE),
-    (1uLL << WIDX_SPINNER_X_INCREASE) | (1uLL << WIDX_SPINNER_X_DECREASE) | (1uLL << WIDX_SPINNER_Y_INCREASE) | (1uLL << WIDX_SPINNER_Y_DECREASE) | (1uLL << WIDX_SURFACE_SPINNER_HEIGHT_INCREASE) | (1uLL << WIDX_SURFACE_SPINNER_HEIGHT_DECREASE),
-    (1uLL << WIDX_SPINNER_X_INCREASE) | (1uLL << WIDX_SPINNER_X_DECREASE) | (1uLL << WIDX_SPINNER_Y_INCREASE) | (1uLL << WIDX_SPINNER_Y_DECREASE) | (1uLL << WIDX_PATH_SPINNER_HEIGHT_INCREASE) | (1uLL << WIDX_PATH_SPINNER_HEIGHT_DECREASE),
-    (1uLL << WIDX_SPINNER_X_INCREASE) | (1uLL << WIDX_SPINNER_X_DECREASE) | (1uLL << WIDX_SPINNER_Y_INCREASE) | (1uLL << WIDX_SPINNER_Y_DECREASE) | (1uLL << WIDX_TRACK_SPINNER_HEIGHT_INCREASE) | (1uLL << WIDX_TRACK_SPINNER_HEIGHT_DECREASE),
-    (1uLL << WIDX_SPINNER_X_INCREASE) | (1uLL << WIDX_SPINNER_X_DECREASE) | (1uLL << WIDX_SPINNER_Y_INCREASE) | (1uLL << WIDX_SPINNER_Y_DECREASE) | (1uLL << WIDX_SCENERY_SPINNER_HEIGHT_INCREASE) | (1uLL << WIDX_SCENERY_SPINNER_HEIGHT_DECREASE),
-    (1uLL << WIDX_SPINNER_X_INCREASE) | (1uLL << WIDX_SPINNER_X_DECREASE) | (1uLL << WIDX_SPINNER_Y_INCREASE) | (1uLL << WIDX_SPINNER_Y_DECREASE) | (1uLL << WIDX_ENTRANCE_SPINNER_HEIGHT_INCREASE) | (1uLL << WIDX_ENTRANCE_SPINNER_HEIGHT_DECREASE),
-    (1uLL << WIDX_SPINNER_X_INCREASE) | (1uLL << WIDX_SPINNER_X_DECREASE) | (1uLL << WIDX_SPINNER_Y_INCREASE) | (1uLL << WIDX_SPINNER_Y_DECREASE) | (1uLL << WIDX_WALL_SPINNER_HEIGHT_INCREASE) | (1uLL << WIDX_WALL_SPINNER_HEIGHT_DECREASE) | (1uLL << WIDX_WALL_SPINNER_ANIMATION_FRAME_INCREASE) | (1uLL << WIDX_WALL_SPINNER_ANIMATION_FRAME_DECREASE),
-    (1uLL << WIDX_SPINNER_X_INCREASE) | (1uLL << WIDX_SPINNER_X_DECREASE) | (1uLL << WIDX_SPINNER_Y_INCREASE) | (1uLL << WIDX_SPINNER_Y_DECREASE) | (1uLL << WIDX_LARGE_SCENERY_SPINNER_HEIGHT_INCREASE) | (1uLL << WIDX_LARGE_SCENERY_SPINNER_HEIGHT_DECREASE),
-    (1uLL << WIDX_SPINNER_X_INCREASE) | (1uLL << WIDX_SPINNER_X_DECREASE) | (1uLL << WIDX_SPINNER_Y_INCREASE) | (1uLL << WIDX_SPINNER_Y_DECREASE) | (1uLL << WIDX_BANNER_SPINNER_HEIGHT_INCREASE) | (1uLL << WIDX_BANNER_SPINNER_HEIGHT_DECREASE),
-};
-
-static uint64_t PageDisabledWidgets[] = {
-    (1uLL << WIDX_BUTTON_MOVE_UP) | (1uLL << WIDX_BUTTON_MOVE_DOWN) | (1uLL << WIDX_BUTTON_REMOVE) | (1uLL << WIDX_BUTTON_ROTATE) | (1uLL << WIDX_BUTTON_COPY),
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    (1uLL << WIDX_BUTTON_ROTATE),
-    0,
-};
+    static uint64_t kDisabledWidgetsByPage[] = {
+        (1uLL << WIDX_BUTTON_MOVE_UP) | (1uLL << WIDX_BUTTON_MOVE_DOWN) | (1uLL << WIDX_BUTTON_REMOVE) | (1uLL << WIDX_BUTTON_ROTATE) | (1uLL << WIDX_BUTTON_COPY),
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        (1uLL << WIDX_BUTTON_ROTATE),
+        0,
+    };
     // clang-format on
 
     class TileInspector final : public Window
@@ -1054,7 +1051,7 @@ static uint64_t PageDisabledWidgets[] = {
             ScreenCoordsXY screenCoords(windowPos.x, windowPos.y);
 
             // Draw coordinates
-            auto yOffset = widgets[WIDX_SPINNER_X_LABEL].top;
+            auto yOffset = widgets[WIDX_SPINNER_X_LABEL].textTop();
             if (_tileSelected)
             {
                 auto tileCoords = TileCoordsXY{ _toolMap };
@@ -1090,495 +1087,56 @@ static uint64_t PageDisabledWidgets[] = {
                 {
                     case TileElementType::Surface:
                     {
-                        // Details
-                        // Terrain texture name
-                        StringId terrainNameId = kStringIdEmpty;
-                        auto surfaceStyle = tileElement->AsSurface()->GetSurfaceObject();
-                        if (surfaceStyle != nullptr)
-                            terrainNameId = surfaceStyle->NameStringId;
-                        auto ft = Formatter();
-                        ft.Add<StringId>(terrainNameId);
-                        drawText(rt, screenCoords, STR_TILE_INSPECTOR_SURFACE_TERAIN, ft, { colours[1] });
-
-                        // Edge texture name
-                        StringId terrainEdgeNameId = kStringIdEmpty;
-                        auto edgeStyle = tileElement->AsSurface()->GetEdgeObject();
-                        if (edgeStyle != nullptr)
-                            terrainEdgeNameId = edgeStyle->NameStringId;
-                        ft = Formatter();
-                        ft.Add<StringId>(terrainEdgeNameId);
-                        drawText(
-                            rt, screenCoords + ScreenCoordsXY{ 0, 11 }, STR_TILE_INSPECTOR_SURFACE_EDGE, ft, { colours[1] });
-
-                        // Land ownership
-                        StringId landOwnership;
-                        if (tileElement->AsSurface()->GetOwnership() & OWNERSHIP_OWNED)
-                            landOwnership = STR_LAND_OWNED;
-                        else if (tileElement->AsSurface()->GetOwnership() & OWNERSHIP_AVAILABLE)
-                            landOwnership = STR_LAND_SALE;
-                        else if (tileElement->AsSurface()->GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)
-                            landOwnership = STR_CONSTRUCTION_RIGHTS_OWNED;
-                        else if (tileElement->AsSurface()->GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE)
-                            landOwnership = STR_CONSTRUCTION_RIGHTS_SALE;
-                        else
-                            landOwnership = STR_TILE_INSPECTOR_LAND_NOT_OWNED_AND_NOT_AVAILABLE;
-
-                        ft = Formatter();
-                        ft.Add<StringId>(landOwnership);
-                        drawText(
-                            rt, screenCoords + ScreenCoordsXY{ 0, 22 }, STR_TILE_INSPECTOR_SURFACE_OWNERSHIP, ft,
-                            { colours[1] });
-
-                        // Water level
-                        ft = Formatter();
-                        ft.Add<uint32_t>(tileElement->AsSurface()->GetWaterHeight());
-                        drawText(
-                            rt, screenCoords + ScreenCoordsXY{ 0, 33 }, STR_TILE_INSPECTOR_SURFACE_WATER_LEVEL, ft,
-                            { colours[1] });
-
-                        // Properties
-                        // Raise / lower label
-                        screenCoords = windowPos
-                            + ScreenCoordsXY{ widgets[WIDX_GROUPBOX_DETAILS].left + 7,
-                                              widgets[WIDX_SURFACE_SPINNER_HEIGHT].top };
-                        drawText(rt, screenCoords, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, { colours[1] });
-
-                        // Current base height
-                        screenCoords.x = windowPos.x + widgets[WIDX_SURFACE_SPINNER_HEIGHT].left + 3;
-                        ft = Formatter();
-                        ft.Add<int32_t>(tileElement->BaseHeight);
-                        drawText(rt, screenCoords, STR_FORMAT_INTEGER, ft, { colours[1] });
-
-                        // Raised corners
-                        screenCoords = windowPos
-                            + ScreenCoordsXY{ widgets[WIDX_GROUPBOX_DETAILS].left + 7,
-                                              widgets[WIDX_SURFACE_CHECK_CORNER_E].top };
-                        drawText(rt, screenCoords, STR_TILE_INSPECTOR_SURFACE_CORNERS, { colours[1] });
+                        auto* surfaceEl = tileElement->AsSurface();
+                        onDrawSurface(rt, screenCoords, *surfaceEl);
                         break;
                     }
                     case TileElementType::Path:
                     {
-                        // Details
-                        auto pathEl = tileElement->AsPath();
-                        auto footpathObj = pathEl->GetLegacyPathEntry();
-                        if (footpathObj == nullptr)
-                        {
-                            // Surface name
-                            auto surfaceObj = pathEl->GetSurfaceEntry();
-                            if (surfaceObj != nullptr)
-                            {
-                                auto ft = Formatter();
-                                ft.Add<StringId>(surfaceObj->NameStringId);
-                                drawText(
-                                    rt, screenCoords, STR_TILE_INSPECTOR_FOOTPATH_SURFACE_NAME, ft, { Drawing::Colour::white });
-                            }
-
-                            // Railings name
-                            auto railingsObj = pathEl->GetRailingsEntry();
-                            if (railingsObj != nullptr)
-                            {
-                                auto ft = Formatter();
-                                ft.Add<StringId>(railingsObj->NameStringId);
-                                drawText(
-                                    rt, screenCoords + ScreenCoordsXY{ 0, 11 }, STR_TILE_INSPECTOR_FOOTPATH_RAILINGS_NAME, ft,
-                                    { Drawing::Colour::white });
-                            }
-                        }
-                        else
-                        {
-                            // Legacy path name
-                            auto footpathEntry = reinterpret_cast<const FootpathEntry*>(footpathObj->GetLegacyData());
-                            auto ft = Formatter();
-                            ft.Add<StringId>(footpathEntry->string_idx);
-                            drawText(rt, screenCoords, STR_TILE_INSPECTOR_PATH_NAME, ft, { Drawing::Colour::white });
-                        }
-
-                        // Path addition
-                        if (tileElement->AsPath()->HasAddition())
-                        {
-                            const auto pathAdditionEntry = tileElement->AsPath()->GetAdditionEntry();
-                            StringId additionNameId = pathAdditionEntry != nullptr
-                                ? pathAdditionEntry->name
-                                : static_cast<StringId>(STR_UNKNOWN_OBJECT_TYPE);
-                            auto ft = Formatter();
-                            ft.Add<StringId>(additionNameId);
-                            drawText(
-                                rt, screenCoords + ScreenCoordsXY{ 0, 2 * 11 }, STR_TILE_INSPECTOR_PATH_ADDITIONS, ft,
-                                { Drawing::Colour::white });
-                        }
-                        else
-                        {
-                            drawText(
-                                rt, screenCoords + ScreenCoordsXY{ 0, 2 * 11 }, STR_TILE_INSPECTOR_PATH_ADDITIONS_NONE,
-                                { Drawing::Colour::white });
-                        }
-
-                        // Properties
-                        // Raise / lower label
-                        screenCoords = windowPos
-                            + ScreenCoordsXY{ widgets[WIDX_GROUPBOX_DETAILS].left + 7, widgets[WIDX_PATH_SPINNER_HEIGHT].top };
-                        drawText(rt, screenCoords, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, { colours[1] });
-
-                        // Current base height
-                        screenCoords.x = windowPos.x + widgets[WIDX_PATH_SPINNER_HEIGHT].left + 3;
-                        auto ft = Formatter();
-                        ft.Add<int32_t>(tileElement->BaseHeight);
-                        drawText(rt, screenCoords, STR_FORMAT_INTEGER, ft, { colours[1] });
-
-                        // Path connections
-                        screenCoords = windowPos
-                            + ScreenCoordsXY{ widgets[WIDX_GROUPBOX_DETAILS].left + 7, widgets[WIDX_PATH_CHECK_EDGE_W].top };
-                        drawText(rt, screenCoords, STR_TILE_INSPECTOR_PATH_CONNECTED_EDGES, { colours[1] });
+                        auto* pathEl = tileElement->AsPath();
+                        onDrawPath(rt, screenCoords, *pathEl);
                         break;
                     }
 
                     case TileElementType::Track:
                     {
-                        auto trackElement = tileElement->AsTrack();
-                        RideId id = trackElement->GetRideIndex();
-                        auto rideTile = GetRide(id);
-
-                        // Ride ID
-                        auto ft = Formatter();
-                        ft.Add<int16_t>(id);
-                        drawText(rt, screenCoords, STR_TILE_INSPECTOR_TRACK_RIDE_ID, ft, { colours[1] });
-
-                        // Ride name
-                        if (rideTile != nullptr)
-                        {
-                            ft = Formatter();
-                            rideTile->formatNameTo(ft);
-                            drawText(
-                                rt, screenCoords + ScreenCoordsXY{ 0, 11 }, STR_TILE_INSPECTOR_TRACK_RIDE_NAME, ft,
-                                { colours[1] });
-                        }
-
-                        // Ride type. Individual pieces may be of a different ride type from the ride it belongs to.
-                        const auto& rtd = GetRideTypeDescriptor(trackElement->GetRideType());
-                        ft = Formatter();
-                        ft.Add<StringId>(rtd.Naming.Name);
-                        drawText(
-                            rt, screenCoords + ScreenCoordsXY{ 0, 22 }, STR_TILE_INSPECTOR_TRACK_RIDE_TYPE, ft, { colours[1] });
-
-                        // Track
-                        ft = Formatter();
-                        ft.Add<uint16_t>(trackElement->GetTrackType());
-                        drawText(
-                            rt, screenCoords + ScreenCoordsXY{ 0, 33 }, STR_TILE_INSPECTOR_TRACK_PIECE_ID, ft, { colours[1] });
-
-                        ft = Formatter();
-                        ft.Add<uint16_t>(trackElement->GetSequenceIndex());
-                        drawText(
-                            rt, screenCoords + ScreenCoordsXY{ 0, 44 }, STR_TILE_INSPECTOR_TRACK_SEQUENCE, ft, { colours[1] });
-                        if (trackElement->IsStation())
-                        {
-                            auto stationIndex = trackElement->GetStationIndex();
-                            ft = Formatter();
-                            ft.Add<StringId>(STR_COMMA16);
-                            ft.Add<int16_t>(stationIndex.ToUnderlying());
-                            drawText(
-                                rt, screenCoords + ScreenCoordsXY{ 0, 55 }, STR_TILE_INSPECTOR_STATION_INDEX, ft,
-                                { colours[1] });
-                        }
-                        else
-                        {
-                            const char* stationNone = "-";
-                            ft = Formatter();
-                            ft.Add<StringId>(STR_STRING);
-                            ft.Add<char*>(stationNone);
-                            drawText(
-                                rt, screenCoords + ScreenCoordsXY{ 0, 55 }, STR_TILE_INSPECTOR_STATION_INDEX, ft,
-                                { colours[1] });
-                        }
-
-                        ft = Formatter();
-                        ft.Add<StringId>(ColourSchemeNames[trackElement->GetColourScheme()]);
-                        drawText(
-                            rt, screenCoords + ScreenCoordsXY{ 0, 66 }, STR_TILE_INSPECTOR_COLOUR_SCHEME, ft, { colours[1] });
-
-                        // Properties
-                        // Raise / lower label
-                        screenCoords.y = windowPos.y + widgets[WIDX_TRACK_SPINNER_HEIGHT].top;
-                        drawText(rt, screenCoords, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, { colours[1] });
-
-                        // Current base height
-                        screenCoords.x = windowPos.x + widgets[WIDX_TRACK_SPINNER_HEIGHT].left + 3;
-                        ft = Formatter();
-                        ft.Add<int32_t>(tileElement->BaseHeight);
-                        drawText(rt, screenCoords, STR_FORMAT_INTEGER, ft, { colours[1] });
+                        auto* trackEl = tileElement->AsTrack();
+                        onDrawTrack(rt, screenCoords, *trackEl);
                         break;
                     }
 
                     case TileElementType::SmallScenery:
                     {
-                        // Details
-                        // Age
-                        auto ft = Formatter();
-                        ft.Add<int16_t>(tileElement->AsSmallScenery()->GetAge());
-                        drawText(rt, screenCoords, STR_TILE_INSPECTOR_SCENERY_AGE, ft, { colours[1] });
-
-                        // Quadrant value
-                        const auto* sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
-                        if (sceneryEntry != nullptr && !sceneryEntry->flags.has(SmallSceneryFlag::occupiesFullTile))
-                        {
-                            int16_t quadrant = tileElement->AsSmallScenery()->GetSceneryQuadrant();
-                            static constexpr StringId _quadrantStringIdx[] = {
-                                STR_TILE_INSPECTOR_SCENERY_QUADRANT_SW,
-                                STR_TILE_INSPECTOR_SCENERY_QUADRANT_NW,
-                                STR_TILE_INSPECTOR_SCENERY_QUADRANT_NE,
-                                STR_TILE_INSPECTOR_SCENERY_QUADRANT_SE,
-                            };
-                            ft = Formatter();
-                            ft.Add<StringId>(_quadrantStringIdx[quadrant]);
-                            drawText(
-                                rt, screenCoords + ScreenCoordsXY{ 0, 11 }, STR_TILE_INSPECTOR_SCENERY_QUADRANT, ft,
-                                { colours[1] });
-                        }
-
-                        // Scenery ID
-                        ft = Formatter();
-                        ft.Add<ObjectEntryIndex>(tileElement->AsSmallScenery()->GetEntryIndex());
-                        drawText(
-                            rt, screenCoords + ScreenCoordsXY{ 0, 22 }, STR_TILE_INSPECTOR_SCENERY_ENTRY_IDX, ft,
-                            { colours[1] });
-
-                        // Properties
-                        // Raise / Lower
-                        screenCoords.y = windowPos.y + widgets[WIDX_SCENERY_SPINNER_HEIGHT].top;
-                        drawText(rt, screenCoords, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, { colours[1] });
-
-                        // Current base height
-                        screenCoords.x = windowPos.x + widgets[WIDX_SCENERY_SPINNER_HEIGHT].left + 3;
-                        ft = Formatter();
-                        ft.Add<int32_t>(tileElement->BaseHeight);
-                        drawText(rt, screenCoords, STR_FORMAT_INTEGER, ft, { colours[1] });
-
-                        // Quarter tile
-                        screenCoords = windowPos
-                            + ScreenCoordsXY{ widgets[WIDX_GROUPBOX_DETAILS].left + 7,
-                                              widgets[WIDX_SCENERY_CHECK_QUARTER_E].top };
-                        drawText(rt, screenCoords, STR_TILE_INSPECTOR_SCENERY_QUADRANT_LABEL, { colours[1] });
-
-                        // Collision
-                        screenCoords.y = windowPos.y + widgets[WIDX_SCENERY_CHECK_COLLISION_E].top;
-                        drawText(rt, screenCoords, STR_TILE_INSPECTOR_COLLISSION, { colours[1] });
+                        auto* smallSceneryEl = tileElement->AsSmallScenery();
+                        onDrawSmallScenery(rt, screenCoords, *smallSceneryEl);
                         break;
                     }
 
                     case TileElementType::Entrance:
                     {
-                        // Details
-                        // Entrance type
-                        auto ft = Formatter();
-                        ft.Add<StringId>(EntranceTypeStringIds[tileElement->AsEntrance()->GetEntranceType()]);
-                        drawText(rt, screenCoords, STR_TILE_INSPECTOR_ENTRANCE_TYPE, ft, { colours[1] });
-
-                        if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
-                        {
-                            // TODO: Make this work with Left/Right park entrance parts
-                            ft = Formatter();
-                            ft.Add<StringId>(ParkEntranceGetIndex({ _toolMap, tileElement->GetBaseZ() }));
-                            drawText(
-                                rt, screenCoords + ScreenCoordsXY{ 0, 11 }, STR_TILE_INSPECTOR_ENTRANCE_ENTRANCE_ID, ft,
-                                { colours[1] });
-                        }
-                        else
-                        {
-                            ft = Formatter();
-                            ft.Add<int16_t>(tileElement->AsEntrance()->GetStationIndex().ToUnderlying());
-                            if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
-                            {
-                                // Ride entrance ID
-                                drawText(
-                                    rt, screenCoords + ScreenCoordsXY{ 0, 11 }, STR_TILE_INSPECTOR_ENTRANCE_ENTRANCE_ID, ft,
-                                    { colours[1] });
-                            }
-                            else
-                            {
-                                // Ride exit ID
-                                drawText(
-                                    rt, screenCoords + ScreenCoordsXY{ 0, 11 }, STR_TILE_INSPECTOR_ENTRANCE_EXIT_ID, ft,
-                                    { colours[1] });
-                            }
-                        }
-
-                        if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
-                        {
-                            // Entrance part
-                            ft = Formatter();
-                            ft.Add<StringId>(ParkEntrancePartStringIds[tileElement->AsEntrance()->GetSequenceIndex()]);
-                            drawText(
-                                rt, screenCoords + ScreenCoordsXY{ 0, 22 }, STR_TILE_INSPECTOR_ENTRANCE_PART, ft,
-                                { colours[1] });
-                        }
-                        else
-                        {
-                            // Ride ID
-                            ft = Formatter();
-                            ft.Add<RideId>(tileElement->AsEntrance()->GetRideIndex());
-                            drawText(
-                                rt, screenCoords + ScreenCoordsXY{ 0, 22 }, STR_TILE_INSPECTOR_ENTRANCE_RIDE_ID, ft,
-                                { colours[1] });
-                            // Station index
-                            auto stationIndex = tileElement->AsEntrance()->GetStationIndex();
-                            ft = Formatter();
-                            ft.Add<StringId>(STR_COMMA16);
-                            ft.Add<int16_t>(stationIndex.ToUnderlying());
-                            drawText(
-                                rt, screenCoords + ScreenCoordsXY{ 0, 33 }, STR_TILE_INSPECTOR_STATION_INDEX, ft,
-                                { colours[1] });
-                        }
-
-                        // Properties
-                        // Raise / Lower
-                        screenCoords.y = windowPos.y + widgets[WIDX_ENTRANCE_SPINNER_HEIGHT].top;
-                        drawText(rt, screenCoords, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, { colours[1] });
-
-                        // Current base height
-                        screenCoords.x = windowPos.x + widgets[WIDX_ENTRANCE_SPINNER_HEIGHT].left + 3;
-                        ft = Formatter();
-                        ft.Add<int32_t>(tileElement->BaseHeight);
-                        drawText(rt, screenCoords, STR_FORMAT_INTEGER, ft, { colours[1] });
+                        auto* entranceEl = tileElement->AsEntrance();
+                        onDrawEntrance(rt, screenCoords, *entranceEl);
                         break;
                     }
 
                     case TileElementType::Wall:
                     {
-                        // Details
-                        // Type
-                        auto ft = Formatter();
-                        ft.Add<ObjectEntryIndex>(tileElement->AsWall()->GetEntryIndex());
-                        drawText(rt, screenCoords, STR_TILE_INSPECTOR_WALL_TYPE, ft, { colours[1] });
-
-                        // Banner info
-                        auto banner = tileElement->AsWall()->GetBanner();
-                        if (banner != nullptr)
-                        {
-                            ft = Formatter();
-                            banner->formatTextTo(ft);
-                            drawText(
-                                rt, screenCoords + ScreenCoordsXY{ 0, 11 }, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, ft,
-                                { colours[1] });
-                        }
-                        else
-                        {
-                            drawText(
-                                rt, screenCoords + ScreenCoordsXY{ 0, 11 }, STR_TILE_INSPECTOR_ENTRY_BANNER_NONE,
-                                { colours[1] });
-                        }
-
-                        // Properties
-                        // Raise / lower label
-                        screenCoords.y = windowPos.y + widgets[WIDX_WALL_SPINNER_HEIGHT].top;
-                        drawText(rt, screenCoords, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, { colours[1] });
-
-                        // Current base height
-                        screenCoords.x = windowPos.x + widgets[WIDX_WALL_SPINNER_HEIGHT].left + 3;
-                        ft = Formatter();
-                        ft.Add<int32_t>(tileElement->BaseHeight);
-                        drawText(rt, screenCoords, STR_FORMAT_INTEGER, ft, { colours[1] });
-
-                        // Slope label
-                        screenCoords = windowPos
-                            + ScreenCoordsXY{ widgets[WIDX_GROUPBOX_DETAILS].left + 7, widgets[WIDX_WALL_DROPDOWN_SLOPE].top };
-                        drawText(rt, screenCoords, STR_TILE_INSPECTOR_WALL_SLOPE, { colours[1] });
-
-                        // Animation frame label
-                        screenCoords.y = windowPos.y + widgets[WIDX_WALL_SPINNER_ANIMATION_FRAME].top;
-                        drawText(rt, screenCoords, STR_TILE_INSPECTOR_WALL_ANIMATION_FRAME, { colours[1] });
-
-                        // Current animation frame
-                        auto colour = colours[1];
-                        if (isWidgetDisabled(WIDX_WALL_SPINNER_ANIMATION_FRAME))
-                        {
-                            colour = colours[0].withFlag(ColourFlag::inset, true);
-                        }
-                        screenCoords.x = windowPos.x + widgets[WIDX_WALL_SPINNER_ANIMATION_FRAME].left + 3;
-                        ft = Formatter();
-                        ft.Add<int32_t>(tileElement->AsWall()->GetAnimationFrame());
-                        drawText(rt, screenCoords, STR_FORMAT_INTEGER, ft, { colour });
+                        auto* wallEl = tileElement->AsWall();
+                        onDrawWall(rt, screenCoords, *wallEl);
                         break;
                     }
 
                     case TileElementType::LargeScenery:
                     {
-                        // Details
-                        // Type
-                        auto sceneryElement = tileElement->AsLargeScenery();
-                        ObjectEntryIndex largeSceneryType = sceneryElement->GetEntryIndex();
-                        auto ft = Formatter();
-                        ft.Add<ObjectEntryIndex>(largeSceneryType);
-                        drawText(rt, screenCoords, STR_TILE_INSPECTOR_LARGE_SCENERY_TYPE, ft, { colours[1] });
-
-                        // Part ID
-                        ft = Formatter();
-                        ft.Add<int16_t>(sceneryElement->GetSequenceIndex());
-                        drawText(
-                            rt, screenCoords + ScreenCoordsXY{ 0, 11 }, STR_TILE_INSPECTOR_LARGE_SCENERY_PIECE_ID, ft,
-                            { colours[1] });
-
-                        // Banner info
-                        auto* largeSceneryEntry = OpenRCT2::ObjectEntryManager::GetObjectEntry<LargeSceneryEntry>(
-                            largeSceneryType);
-                        if (largeSceneryEntry != nullptr && largeSceneryEntry->scrolling_mode != kScrollingModeNone)
-                        {
-                            auto banner = sceneryElement->GetBanner();
-                            if (banner != nullptr)
-                            {
-                                ft = Formatter();
-                                banner->formatTextTo(ft);
-                                drawText(
-                                    rt, screenCoords + ScreenCoordsXY{ 0, 22 }, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, ft,
-                                    { colours[1] });
-                            }
-                        }
-                        else
-                        {
-                            drawText(
-                                rt, screenCoords + ScreenCoordsXY{ 0, 22 }, STR_TILE_INSPECTOR_ENTRY_BANNER_NONE,
-                                { colours[1] });
-                        }
-
-                        // Properties
-                        // Raise / lower label
-                        screenCoords.y = windowPos.y + widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT].top;
-                        drawText(rt, screenCoords, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, { colours[1] });
-
-                        // Current base height
-                        screenCoords.x = windowPos.x + widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT].left + 3;
-                        ft = Formatter();
-                        ft.Add<int32_t>(tileElement->BaseHeight);
-                        drawText(rt, screenCoords, STR_FORMAT_INTEGER, ft, { colours[1] });
+                        auto* largeSceneryEl = tileElement->AsLargeScenery();
+                        onDrawLargeScenery(rt, screenCoords, *largeSceneryEl);
                         break;
                     }
 
                     case TileElementType::Banner:
                     {
-                        // Details
-                        // Banner info
-                        auto banner = tileElement->AsBanner()->GetBanner();
-                        if (banner != nullptr)
-                        {
-                            Formatter ft;
-                            banner->formatTextTo(ft);
-                            drawText(rt, screenCoords, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, ft, { colours[1] });
-                        }
-
-                        // Properties
-                        // Raise / lower label
-                        screenCoords.y = windowPos.y + widgets[WIDX_BANNER_SPINNER_HEIGHT].top;
-                        drawText(rt, screenCoords, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, { colours[1] });
-
-                        // Current base height
-                        screenCoords.x = windowPos.x + widgets[WIDX_BANNER_SPINNER_HEIGHT].left + 3;
-                        auto ft = Formatter();
-                        ft.Add<int32_t>(tileElement->BaseHeight);
-                        drawText(rt, screenCoords, STR_FORMAT_INTEGER, ft, { colours[1] });
-
-                        // Blocked paths
-                        screenCoords.y += 28;
-                        screenCoords.x = windowPos.x + widgets[WIDX_GROUPBOX_DETAILS].left + 7;
-                        drawText(rt, screenCoords, STR_TILE_INSPECTOR_BANNER_BLOCKED_PATHS, { colours[1] });
+                        auto* bannerEl = tileElement->AsBanner();
+                        onDrawBanner(rt, screenCoords, *bannerEl);
                         break;
                     }
 
@@ -1586,6 +1144,458 @@ static uint64_t PageDisabledWidgets[] = {
                         break;
                 }
             }
+        }
+
+        void onDrawSurface(RenderTarget& rt, ScreenCoordsXY screenCoords, const SurfaceElement& surfaceEl)
+        {
+            // Details
+            // Terrain texture name
+            StringId terrainNameId = kStringIdEmpty;
+            auto surfaceStyle = surfaceEl.GetSurfaceObject();
+            if (surfaceStyle != nullptr)
+                terrainNameId = surfaceStyle->NameStringId;
+            auto ft = Formatter();
+            ft.Add<StringId>(terrainNameId);
+            drawText(rt, screenCoords, STR_TILE_INSPECTOR_SURFACE_TERAIN, ft, { colours[1] });
+
+            // Edge texture name
+            StringId terrainEdgeNameId = kStringIdEmpty;
+            auto edgeStyle = surfaceEl.GetEdgeObject();
+            if (edgeStyle != nullptr)
+                terrainEdgeNameId = edgeStyle->NameStringId;
+            ft = Formatter();
+            ft.Add<StringId>(terrainEdgeNameId);
+            drawText(rt, screenCoords + ScreenCoordsXY{ 0, 11 }, STR_TILE_INSPECTOR_SURFACE_EDGE, ft, { colours[1] });
+
+            // Land ownership
+            StringId landOwnership;
+            if (surfaceEl.GetOwnership() & OWNERSHIP_OWNED)
+                landOwnership = STR_LAND_OWNED;
+            else if (surfaceEl.GetOwnership() & OWNERSHIP_AVAILABLE)
+                landOwnership = STR_LAND_SALE;
+            else if (surfaceEl.GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)
+                landOwnership = STR_CONSTRUCTION_RIGHTS_OWNED;
+            else if (surfaceEl.GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE)
+                landOwnership = STR_CONSTRUCTION_RIGHTS_SALE;
+            else
+                landOwnership = STR_TILE_INSPECTOR_LAND_NOT_OWNED_AND_NOT_AVAILABLE;
+
+            ft = Formatter();
+            ft.Add<StringId>(landOwnership);
+            drawText(rt, screenCoords + ScreenCoordsXY{ 0, 22 }, STR_TILE_INSPECTOR_SURFACE_OWNERSHIP, ft, { colours[1] });
+
+            // Water level
+            ft = Formatter();
+            ft.Add<uint32_t>(surfaceEl.GetWaterHeight());
+            drawText(rt, screenCoords + ScreenCoordsXY{ 0, 33 }, STR_TILE_INSPECTOR_SURFACE_WATER_LEVEL, ft, { colours[1] });
+
+            // Properties
+            // Raise / lower label
+            screenCoords = windowPos
+                + ScreenCoordsXY{ widgets[WIDX_GROUPBOX_DETAILS].left + 7, widgets[WIDX_SURFACE_SPINNER_HEIGHT].top + 1 };
+            drawText(rt, screenCoords, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, { colours[1] });
+
+            // Current base height
+            screenCoords = windowPos
+                + ScreenCoordsXY{ widgets[WIDX_SURFACE_SPINNER_HEIGHT].left + 3,
+                                  widgets[WIDX_SURFACE_SPINNER_HEIGHT].textTop() };
+            ft = Formatter();
+            ft.Add<int32_t>(surfaceEl.BaseHeight);
+            drawText(rt, screenCoords, STR_FORMAT_INTEGER, ft, { colours[1] });
+
+            // Raised corners
+            screenCoords = windowPos
+                + ScreenCoordsXY{ widgets[WIDX_GROUPBOX_DETAILS].left + 7, widgets[WIDX_SURFACE_CHECK_CORNER_E].top };
+            drawText(rt, screenCoords, STR_TILE_INSPECTOR_SURFACE_CORNERS, { colours[1] });
+        }
+
+        void onDrawPath(RenderTarget& rt, ScreenCoordsXY screenCoords, const PathElement& pathEl)
+        {
+            // Details
+            auto footpathObj = pathEl.GetLegacyPathEntry();
+            if (footpathObj == nullptr)
+            {
+                // Surface name
+                auto surfaceObj = pathEl.GetSurfaceEntry();
+                if (surfaceObj != nullptr)
+                {
+                    auto ft = Formatter();
+                    ft.Add<StringId>(surfaceObj->NameStringId);
+                    drawText(rt, screenCoords, STR_TILE_INSPECTOR_FOOTPATH_SURFACE_NAME, ft, { Drawing::Colour::white });
+                }
+
+                // Railings name
+                auto railingsObj = pathEl.GetRailingsEntry();
+                if (railingsObj != nullptr)
+                {
+                    auto ft = Formatter();
+                    ft.Add<StringId>(railingsObj->NameStringId);
+                    drawText(
+                        rt, screenCoords + ScreenCoordsXY{ 0, 11 }, STR_TILE_INSPECTOR_FOOTPATH_RAILINGS_NAME, ft,
+                        { Drawing::Colour::white });
+                }
+            }
+            else
+            {
+                // Legacy path name
+                auto footpathEntry = reinterpret_cast<const FootpathEntry*>(footpathObj->GetLegacyData());
+                auto ft = Formatter();
+                ft.Add<StringId>(footpathEntry->string_idx);
+                drawText(rt, screenCoords, STR_TILE_INSPECTOR_PATH_NAME, ft, { Drawing::Colour::white });
+            }
+
+            // Path addition
+            if (pathEl.HasAddition())
+            {
+                const auto pathAdditionEntry = pathEl.GetAdditionEntry();
+                StringId additionNameId = pathAdditionEntry != nullptr ? pathAdditionEntry->name
+                                                                       : static_cast<StringId>(STR_UNKNOWN_OBJECT_TYPE);
+                auto ft = Formatter();
+                ft.Add<StringId>(additionNameId);
+                drawText(rt, screenCoords + ScreenCoordsXY{ 0, 2 * 11 }, STR_TILE_INSPECTOR_PATH_ADDITIONS, ft, { colours[1] });
+            }
+            else
+            {
+                drawText(
+                    rt, screenCoords + ScreenCoordsXY{ 0, 2 * 11 }, STR_TILE_INSPECTOR_PATH_ADDITIONS_NONE, { colours[1] });
+            }
+
+            // Properties
+            // Raise / lower label
+            screenCoords = windowPos
+                + ScreenCoordsXY{ widgets[WIDX_GROUPBOX_DETAILS].left + 7, widgets[WIDX_PATH_SPINNER_HEIGHT].top + 1 };
+            drawText(rt, screenCoords, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, { colours[1] });
+
+            // Current base height
+            screenCoords = windowPos
+                + ScreenCoordsXY{ widgets[WIDX_PATH_SPINNER_HEIGHT].left + 3, widgets[WIDX_PATH_SPINNER_HEIGHT].textTop() };
+            auto ft = Formatter();
+            ft.Add<int32_t>(pathEl.BaseHeight);
+            drawText(rt, screenCoords, STR_FORMAT_INTEGER, ft, { colours[1] });
+
+            // Path connections
+            screenCoords = windowPos
+                + ScreenCoordsXY{ widgets[WIDX_GROUPBOX_DETAILS].left + 7, widgets[WIDX_PATH_CHECK_EDGE_W].top };
+            drawText(rt, screenCoords, STR_TILE_INSPECTOR_PATH_CONNECTED_EDGES, { colours[1] });
+        }
+
+        void onDrawTrack(RenderTarget& rt, ScreenCoordsXY screenCoords, const TrackElement& trackEl)
+        {
+            RideId id = trackEl.GetRideIndex();
+            auto rideTile = GetRide(id);
+
+            // Ride ID
+            auto ft = Formatter();
+            ft.Add<int16_t>(id);
+            drawText(rt, screenCoords, STR_TILE_INSPECTOR_TRACK_RIDE_ID, ft, { colours[1] });
+
+            // Ride name
+            if (rideTile != nullptr)
+            {
+                ft = Formatter();
+                rideTile->formatNameTo(ft);
+                drawText(rt, screenCoords + ScreenCoordsXY{ 0, 11 }, STR_TILE_INSPECTOR_TRACK_RIDE_NAME, ft, { colours[1] });
+            }
+
+            // Ride type. Individual pieces may be of a different ride type from the ride it belongs to.
+            const auto& rtd = GetRideTypeDescriptor(trackEl.GetRideType());
+            ft = Formatter();
+            ft.Add<StringId>(rtd.Naming.Name);
+            drawText(rt, screenCoords + ScreenCoordsXY{ 0, 22 }, STR_TILE_INSPECTOR_TRACK_RIDE_TYPE, ft, { colours[1] });
+
+            // Track
+            ft = Formatter();
+            ft.Add<uint16_t>(trackEl.GetTrackType());
+            drawText(rt, screenCoords + ScreenCoordsXY{ 0, 33 }, STR_TILE_INSPECTOR_TRACK_PIECE_ID, ft, { colours[1] });
+
+            ft = Formatter();
+            ft.Add<uint16_t>(trackEl.GetSequenceIndex());
+            drawText(rt, screenCoords + ScreenCoordsXY{ 0, 44 }, STR_TILE_INSPECTOR_TRACK_SEQUENCE, ft, { colours[1] });
+            if (trackEl.IsStation())
+            {
+                auto stationIndex = trackEl.GetStationIndex();
+                ft = Formatter();
+                ft.Add<StringId>(STR_COMMA16);
+                ft.Add<int16_t>(stationIndex.ToUnderlying());
+                drawText(rt, screenCoords + ScreenCoordsXY{ 0, 55 }, STR_TILE_INSPECTOR_STATION_INDEX, ft, { colours[1] });
+            }
+            else
+            {
+                const char* stationNone = "-";
+                ft = Formatter();
+                ft.Add<StringId>(STR_STRING);
+                ft.Add<char*>(stationNone);
+                drawText(rt, screenCoords + ScreenCoordsXY{ 0, 55 }, STR_TILE_INSPECTOR_STATION_INDEX, ft, { colours[1] });
+            }
+
+            ft = Formatter();
+            ft.Add<StringId>(ColourSchemeNames[trackEl.GetColourScheme()]);
+            drawText(rt, screenCoords + ScreenCoordsXY{ 0, 66 }, STR_TILE_INSPECTOR_COLOUR_SCHEME, ft, { colours[1] });
+
+            // Properties
+            // Raise / lower label
+            screenCoords.y = windowPos.y + widgets[WIDX_TRACK_SPINNER_HEIGHT].top + 1;
+            drawText(rt, screenCoords, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, { colours[1] });
+
+            // Current base height
+            screenCoords = windowPos
+                + ScreenCoordsXY{ widgets[WIDX_TRACK_SPINNER_HEIGHT].left + 3, widgets[WIDX_TRACK_SPINNER_HEIGHT].textTop() };
+            ft = Formatter();
+            ft.Add<int32_t>(trackEl.BaseHeight);
+            drawText(rt, screenCoords, STR_FORMAT_INTEGER, ft, { colours[1] });
+        }
+
+        void onDrawSmallScenery(RenderTarget& rt, ScreenCoordsXY screenCoords, const SmallSceneryElement& smallSceneryEl)
+        {
+            // Details
+            // Age
+            auto ft = Formatter();
+            ft.Add<int16_t>(smallSceneryEl.GetAge());
+            drawText(rt, screenCoords, STR_TILE_INSPECTOR_SCENERY_AGE, ft, { colours[1] });
+
+            // Quadrant value
+            const auto* sceneryEntry = smallSceneryEl.GetEntry();
+            if (sceneryEntry != nullptr && !sceneryEntry->flags.has(SmallSceneryFlag::occupiesFullTile))
+            {
+                int16_t quadrant = smallSceneryEl.GetSceneryQuadrant();
+                static constexpr StringId _quadrantStringIdx[] = {
+                    STR_TILE_INSPECTOR_SCENERY_QUADRANT_SW,
+                    STR_TILE_INSPECTOR_SCENERY_QUADRANT_NW,
+                    STR_TILE_INSPECTOR_SCENERY_QUADRANT_NE,
+                    STR_TILE_INSPECTOR_SCENERY_QUADRANT_SE,
+                };
+                ft = Formatter();
+                ft.Add<StringId>(_quadrantStringIdx[quadrant]);
+                drawText(rt, screenCoords + ScreenCoordsXY{ 0, 11 }, STR_TILE_INSPECTOR_SCENERY_QUADRANT, ft, { colours[1] });
+            }
+
+            // Scenery ID
+            ft = Formatter();
+            ft.Add<ObjectEntryIndex>(smallSceneryEl.GetEntryIndex());
+            drawText(rt, screenCoords + ScreenCoordsXY{ 0, 22 }, STR_TILE_INSPECTOR_SCENERY_ENTRY_IDX, ft, { colours[1] });
+
+            // Properties
+            // Raise / Lower
+            screenCoords.y = windowPos.y + widgets[WIDX_SCENERY_SPINNER_HEIGHT].top + 1;
+            drawText(rt, screenCoords, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, { colours[1] });
+
+            // Current base height
+            screenCoords = windowPos
+                + ScreenCoordsXY{ widgets[WIDX_SCENERY_SPINNER_HEIGHT].left + 3,
+                                  widgets[WIDX_SCENERY_SPINNER_HEIGHT].textTop() };
+            ft = Formatter();
+            ft.Add<int32_t>(smallSceneryEl.BaseHeight);
+            drawText(rt, screenCoords, STR_FORMAT_INTEGER, ft, { colours[1] });
+
+            // Quarter tile
+            screenCoords = windowPos
+                + ScreenCoordsXY{ widgets[WIDX_GROUPBOX_DETAILS].left + 7, widgets[WIDX_SCENERY_CHECK_QUARTER_E].top };
+            drawText(rt, screenCoords, STR_TILE_INSPECTOR_SCENERY_QUADRANT_LABEL, { colours[1] });
+
+            // Collision
+            screenCoords.y = windowPos.y + widgets[WIDX_SCENERY_CHECK_COLLISION_E].top;
+            drawText(rt, screenCoords, STR_TILE_INSPECTOR_COLLISSION, { colours[1] });
+        }
+
+        void onDrawEntrance(RenderTarget& rt, ScreenCoordsXY screenCoords, const EntranceElement& entranceEl)
+        {
+            // Details
+            // Entrance type
+            auto ft = Formatter();
+            ft.Add<StringId>(kEntranceTypeStringIds[entranceEl.GetEntranceType()]);
+            drawText(rt, screenCoords, STR_TILE_INSPECTOR_ENTRANCE_TYPE, ft, { colours[1] });
+
+            if (entranceEl.GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
+            {
+                // TODO: Make this work with Left/Right park entrance parts
+                ft = Formatter();
+                ft.Add<uint16_t>(ParkEntranceGetIndex({ _toolMap, entranceEl.GetBaseZ() }));
+                drawText(
+                    rt, screenCoords + ScreenCoordsXY{ 0, 11 }, STR_TILE_INSPECTOR_ENTRANCE_ENTRANCE_ID, ft, { colours[1] });
+            }
+            else
+            {
+                ft = Formatter();
+                ft.Add<int16_t>(entranceEl.GetStationIndex().ToUnderlying());
+                if (entranceEl.GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
+                {
+                    // Ride entrance ID
+                    drawText(
+                        rt, screenCoords + ScreenCoordsXY{ 0, 11 }, STR_TILE_INSPECTOR_ENTRANCE_ENTRANCE_ID, ft,
+                        { colours[1] });
+                }
+                else
+                {
+                    // Ride exit ID
+                    drawText(
+                        rt, screenCoords + ScreenCoordsXY{ 0, 11 }, STR_TILE_INSPECTOR_ENTRANCE_EXIT_ID, ft, { colours[1] });
+                }
+            }
+
+            if (entranceEl.GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
+            {
+                // Entrance part
+                ft = Formatter();
+                ft.Add<StringId>(kParkEntrancePartStringIds[entranceEl.GetSequenceIndex()]);
+                drawText(rt, screenCoords + ScreenCoordsXY{ 0, 22 }, STR_TILE_INSPECTOR_ENTRANCE_PART, ft, { colours[1] });
+            }
+            else
+            {
+                // Ride ID
+                ft = Formatter();
+                ft.Add<RideId>(entranceEl.GetRideIndex());
+                drawText(rt, screenCoords + ScreenCoordsXY{ 0, 22 }, STR_TILE_INSPECTOR_ENTRANCE_RIDE_ID, ft, { colours[1] });
+                // Station index
+                auto stationIndex = entranceEl.GetStationIndex();
+                ft = Formatter();
+                ft.Add<StringId>(STR_COMMA16);
+                ft.Add<int16_t>(stationIndex.ToUnderlying());
+                drawText(rt, screenCoords + ScreenCoordsXY{ 0, 33 }, STR_TILE_INSPECTOR_STATION_INDEX, ft, { colours[1] });
+            }
+
+            // Properties
+            // Raise / Lower
+            screenCoords.y = windowPos.y + widgets[WIDX_ENTRANCE_SPINNER_HEIGHT].top + 1;
+            drawText(rt, screenCoords, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, { colours[1] });
+
+            // Current base height
+            screenCoords = windowPos
+                + ScreenCoordsXY{ widgets[WIDX_ENTRANCE_SPINNER_HEIGHT].left + 3,
+                                  widgets[WIDX_ENTRANCE_SPINNER_HEIGHT].textTop() };
+            ft = Formatter();
+            ft.Add<int32_t>(entranceEl.BaseHeight);
+            drawText(rt, screenCoords, STR_FORMAT_INTEGER, ft, { colours[1] });
+        }
+
+        void onDrawWall(RenderTarget& rt, ScreenCoordsXY screenCoords, const WallElement& wallEl)
+        {
+            // Details
+            // Type
+            auto ft = Formatter();
+            ft.Add<ObjectEntryIndex>(wallEl.GetEntryIndex());
+            drawText(rt, screenCoords, STR_TILE_INSPECTOR_WALL_TYPE, ft, { colours[1] });
+
+            // Banner info
+            auto banner = wallEl.GetBanner();
+            if (banner != nullptr)
+            {
+                ft = Formatter();
+                banner->formatTextTo(ft);
+                drawText(rt, screenCoords + ScreenCoordsXY{ 0, 11 }, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, ft, { colours[1] });
+            }
+            else
+            {
+                drawText(rt, screenCoords + ScreenCoordsXY{ 0, 11 }, STR_TILE_INSPECTOR_ENTRY_BANNER_NONE, { colours[1] });
+            }
+
+            // Properties
+            // Raise / lower label
+            screenCoords.y = windowPos.y + widgets[WIDX_WALL_SPINNER_HEIGHT].top + 1;
+            drawText(rt, screenCoords, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, { colours[1] });
+
+            // Current base height
+            screenCoords = windowPos
+                + ScreenCoordsXY{ widgets[WIDX_WALL_SPINNER_HEIGHT].left + 3, widgets[WIDX_WALL_SPINNER_HEIGHT].textTop() };
+            ft = Formatter();
+            ft.Add<int32_t>(wallEl.BaseHeight);
+            drawText(rt, screenCoords, STR_FORMAT_INTEGER, ft, { colours[1] });
+
+            // Slope label
+            screenCoords = windowPos
+                + ScreenCoordsXY{ widgets[WIDX_GROUPBOX_DETAILS].left + 7, widgets[WIDX_WALL_DROPDOWN_SLOPE].top };
+            drawText(rt, screenCoords, STR_TILE_INSPECTOR_WALL_SLOPE, { colours[1] });
+
+            // Animation frame label
+            screenCoords.y = windowPos.y + widgets[WIDX_WALL_SPINNER_ANIMATION_FRAME].top;
+            drawText(rt, screenCoords, STR_TILE_INSPECTOR_WALL_ANIMATION_FRAME, { colours[1] });
+
+            // Current animation frame
+            auto colour = colours[1];
+            if (isWidgetDisabled(WIDX_WALL_SPINNER_ANIMATION_FRAME))
+            {
+                colour = colours[0].withFlag(ColourFlag::inset, true);
+            }
+            screenCoords = windowPos
+                + ScreenCoordsXY{ widgets[WIDX_WALL_SPINNER_ANIMATION_FRAME].left + 3,
+                                  widgets[WIDX_WALL_SPINNER_ANIMATION_FRAME].textTop() };
+            ft = Formatter();
+            ft.Add<int32_t>(wallEl.GetAnimationFrame());
+            drawText(rt, screenCoords, STR_FORMAT_INTEGER, ft, { colour });
+        }
+
+        void onDrawLargeScenery(RenderTarget& rt, ScreenCoordsXY screenCoords, const LargeSceneryElement& largeSceneryEl)
+        {
+            // Details
+            // Type
+            ObjectEntryIndex largeSceneryType = largeSceneryEl.GetEntryIndex();
+            auto ft = Formatter();
+            ft.Add<ObjectEntryIndex>(largeSceneryType);
+            drawText(rt, screenCoords, STR_TILE_INSPECTOR_LARGE_SCENERY_TYPE, ft, { colours[1] });
+
+            // Part ID
+            ft = Formatter();
+            ft.Add<int16_t>(largeSceneryEl.GetSequenceIndex());
+            drawText(rt, screenCoords + ScreenCoordsXY{ 0, 11 }, STR_TILE_INSPECTOR_LARGE_SCENERY_PIECE_ID, ft, { colours[1] });
+
+            // Banner info
+            auto* largeSceneryEntry = OpenRCT2::ObjectEntryManager::GetObjectEntry<LargeSceneryEntry>(largeSceneryType);
+            if (largeSceneryEntry != nullptr && largeSceneryEntry->scrolling_mode != kScrollingModeNone)
+            {
+                auto banner = largeSceneryEl.GetBanner();
+                if (banner != nullptr)
+                {
+                    ft = Formatter();
+                    banner->formatTextTo(ft);
+                    drawText(
+                        rt, screenCoords + ScreenCoordsXY{ 0, 22 }, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, ft, { colours[1] });
+                }
+            }
+            else
+            {
+                drawText(rt, screenCoords + ScreenCoordsXY{ 0, 22 }, STR_TILE_INSPECTOR_ENTRY_BANNER_NONE, { colours[1] });
+            }
+
+            // Properties
+            // Raise / lower label
+            screenCoords.y = windowPos.y + widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT].top + 1;
+            drawText(rt, screenCoords, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, { colours[1] });
+
+            // Current base height
+            screenCoords.x = windowPos.x + widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT].left + 3;
+
+            ft = Formatter();
+            ft.Add<int32_t>(largeSceneryEl.BaseHeight);
+            drawText(rt, screenCoords, STR_FORMAT_INTEGER, ft, { colours[1] });
+        }
+
+        void onDrawBanner(RenderTarget& rt, ScreenCoordsXY screenCoords, const BannerElement& bannerEl)
+        {
+            // Details
+            // Banner info
+            auto* banner = bannerEl.GetBanner();
+            if (banner != nullptr)
+            {
+                Formatter ft;
+                banner->formatTextTo(ft);
+                drawText(rt, screenCoords, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, ft, { colours[1] });
+            }
+
+            // Properties
+            // Raise / lower label
+            screenCoords.y = windowPos.y + widgets[WIDX_BANNER_SPINNER_HEIGHT].top + 1;
+            drawText(rt, screenCoords, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, { colours[1] });
+
+            // Current base height
+            screenCoords = windowPos
+                + ScreenCoordsXY{ widgets[WIDX_BANNER_SPINNER_HEIGHT].left + 3, widgets[WIDX_BANNER_SPINNER_HEIGHT].textTop() };
+            auto ft = Formatter();
+            ft.Add<int32_t>(bannerEl.BaseHeight);
+            drawText(rt, screenCoords, STR_FORMAT_INTEGER, ft, { colours[1] });
+
+            // Blocked paths
+            screenCoords.y += 28;
+            screenCoords.x = windowPos.x + widgets[WIDX_GROUPBOX_DETAILS].left + 7;
+            drawText(rt, screenCoords, STR_TILE_INSPECTOR_BANNER_BLOCKED_PATHS, { colours[1] });
         }
 
         void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
@@ -1776,20 +1786,21 @@ static uint64_t PageDisabledWidgets[] = {
             if (tileInspectorPage != TileInspectorPage::Default)
             {
                 auto index = EnumValue(tileInspectorPage) - 1;
-                height -= PageGroupBoxSettings[index].details_top_offset - kGroupboxPadding - 3;
-                minHeight -= PageGroupBoxSettings[index].details_top_offset - kGroupboxPadding - 3;
+                height -= kPageGroupBoxSettings[index].details_top_offset - kGroupboxPadding - 3;
+                minHeight -= kPageGroupBoxSettings[index].details_top_offset - kGroupboxPadding - 3;
             }
             if (p != TileInspectorPage::Default)
             {
                 auto index = EnumValue(p) - 1;
-                height += PageGroupBoxSettings[index].details_top_offset - kGroupboxPadding - 3;
-                minHeight += PageGroupBoxSettings[index].details_top_offset - kGroupboxPadding - 3;
+                height += kPageGroupBoxSettings[index].details_top_offset - kGroupboxPadding - 3;
+                minHeight += kPageGroupBoxSettings[index].details_top_offset - kGroupboxPadding - 3;
             }
+
             tileInspectorPage = p;
             auto pageIndex = EnumValue(p);
-            setWidgets(PageWidgets[pageIndex]);
-            holdDownWidgets = PageHoldDownWidgets[pageIndex];
-            disabledWidgets = PageDisabledWidgets[pageIndex];
+            setWidgets(kWidgetsByPage[pageIndex]);
+            holdDownWidgets = kHoldableWidgetsByPage[pageIndex];
+            disabledWidgets = kDisabledWidgetsByPage[pageIndex];
             pressedWidgets = 0;
             invalidate();
         }
@@ -2173,12 +2184,14 @@ static uint64_t PageDisabledWidgets[] = {
             {
                 widgets[WIDX_GROUPBOX_DETAILS].type = WidgetType::groupbox;
                 widgets[WIDX_GROUPBOX_PROPERTIES].type = WidgetType::groupbox;
+
                 auto pageIndex = EnumValue(tileInspectorPage) - 1;
-                widgets[WIDX_GROUPBOX_DETAILS].text = PageGroupBoxSettings[pageIndex].string_id;
-                widgets[WIDX_GROUPBOX_DETAILS].top = height - PageGroupBoxSettings[pageIndex].details_top_offset;
-                widgets[WIDX_GROUPBOX_DETAILS].bottom = height - PageGroupBoxSettings[pageIndex].details_bottom_offset;
-                widgets[WIDX_GROUPBOX_PROPERTIES].top = height - PageGroupBoxSettings[pageIndex].properties_top_offset;
-                widgets[WIDX_GROUPBOX_PROPERTIES].bottom = height - PageGroupBoxSettings[pageIndex].properties_bottom_offset;
+                auto& settings = kPageGroupBoxSettings[pageIndex];
+                widgets[WIDX_GROUPBOX_DETAILS].text = settings.string_id;
+                widgets[WIDX_GROUPBOX_DETAILS].top = height - settings.details_top_offset;
+                widgets[WIDX_GROUPBOX_DETAILS].bottom = height - settings.details_bottom_offset;
+                widgets[WIDX_GROUPBOX_PROPERTIES].top = height - settings.properties_top_offset;
+                widgets[WIDX_GROUPBOX_PROPERTIES].bottom = height - settings.properties_bottom_offset;
                 widgets[WIDX_LIST].bottom = widgets[WIDX_GROUPBOX_DETAILS].top - kGroupboxPadding;
             }
 
@@ -2188,31 +2201,29 @@ static uint64_t PageDisabledWidgets[] = {
 
             // Using a switch, because I don't think giving each page their own callbacks is
             // needed here, as only the mouseup and invalidate functions are different.
-            const int32_t propertiesAnchor = widgets[WIDX_GROUPBOX_PROPERTIES].top;
+            const auto propertiesAnchor = ScreenCoordsXY{ widgets[WIDX_GROUPBOX_PROPERTIES].left + 6,
+                                                          widgets[WIDX_GROUPBOX_PROPERTIES].top + 17 };
 
             switch (tileElement->GetType())
             {
                 case TileElementType::Surface:
-                    widgets[WIDX_SURFACE_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 0) + 3;
-                    widgets[WIDX_SURFACE_SPINNER_HEIGHT].bottom = GBBB(propertiesAnchor, 0) - 3;
-                    widgets[WIDX_SURFACE_SPINNER_HEIGHT_INCREASE].top = GBBT(propertiesAnchor, 0) + 4;
-                    widgets[WIDX_SURFACE_SPINNER_HEIGHT_INCREASE].bottom = GBBB(propertiesAnchor, 0) - 4;
-                    widgets[WIDX_SURFACE_SPINNER_HEIGHT_DECREASE].top = GBBT(propertiesAnchor, 0) + 4;
-                    widgets[WIDX_SURFACE_SPINNER_HEIGHT_DECREASE].bottom = GBBB(propertiesAnchor, 0) - 4;
-                    widgets[WIDX_SURFACE_BUTTON_REMOVE_FENCES].top = GBBT(propertiesAnchor, 1);
-                    widgets[WIDX_SURFACE_BUTTON_REMOVE_FENCES].bottom = GBBB(propertiesAnchor, 1);
-                    widgets[WIDX_SURFACE_BUTTON_RESTORE_FENCES].top = GBBT(propertiesAnchor, 1);
-                    widgets[WIDX_SURFACE_BUTTON_RESTORE_FENCES].bottom = GBBB(propertiesAnchor, 1);
-                    widgets[WIDX_SURFACE_CHECK_CORNER_N].top = GBBT(propertiesAnchor, 2) + 7 * 0;
-                    widgets[WIDX_SURFACE_CHECK_CORNER_N].bottom = widgets[WIDX_SURFACE_CHECK_CORNER_N].top + 13;
-                    widgets[WIDX_SURFACE_CHECK_CORNER_E].top = GBBT(propertiesAnchor, 2) + 7 * 1;
-                    widgets[WIDX_SURFACE_CHECK_CORNER_E].bottom = widgets[WIDX_SURFACE_CHECK_CORNER_E].top + 13;
-                    widgets[WIDX_SURFACE_CHECK_CORNER_S].top = GBBT(propertiesAnchor, 2) + 7 * 2;
-                    widgets[WIDX_SURFACE_CHECK_CORNER_S].bottom = widgets[WIDX_SURFACE_CHECK_CORNER_S].top + 13;
-                    widgets[WIDX_SURFACE_CHECK_CORNER_W].top = GBBT(propertiesAnchor, 2) + 7 * 1;
-                    widgets[WIDX_SURFACE_CHECK_CORNER_W].bottom = widgets[WIDX_SURFACE_CHECK_CORNER_W].top + 13;
-                    widgets[WIDX_SURFACE_CHECK_DIAGONAL].top = GBBT(propertiesAnchor, 3) + 7 * 1;
-                    widgets[WIDX_SURFACE_CHECK_DIAGONAL].bottom = widgets[WIDX_SURFACE_CHECK_DIAGONAL].top + 13;
+                    widgets[WIDX_SURFACE_SPINNER_HEIGHT].moveTo(PropertyRowCol(propertiesAnchor, 0, 1));
+                    widgets[WIDX_SURFACE_SPINNER_HEIGHT_INCREASE].moveTo(
+                        PropertyRowCol(propertiesAnchor, 0, 1) + ScreenCoordsXY{ kPropertySpinnerSize.width - 13, 1 });
+                    widgets[WIDX_SURFACE_SPINNER_HEIGHT_DECREASE].moveTo(
+                        PropertyRowCol(propertiesAnchor, 0, 1) + ScreenCoordsXY{ kPropertySpinnerSize.width - 26, 1 });
+                    widgets[WIDX_SURFACE_BUTTON_REMOVE_FENCES].moveTo(PropertyRowCol(propertiesAnchor, 1, 0));
+                    widgets[WIDX_SURFACE_BUTTON_RESTORE_FENCES].moveTo(PropertyRowCol(propertiesAnchor, 1, 1));
+                    widgets[WIDX_SURFACE_CHECK_CORNER_N].moveTo(
+                        CheckboxGroupOffset(PropertyRowCol(propertiesAnchor, 2, 1), 1, 0));
+                    widgets[WIDX_SURFACE_CHECK_CORNER_E].moveTo(
+                        CheckboxGroupOffset(PropertyRowCol(propertiesAnchor, 2, 1), 2, 1));
+                    widgets[WIDX_SURFACE_CHECK_CORNER_S].moveTo(
+                        CheckboxGroupOffset(PropertyRowCol(propertiesAnchor, 2, 1), 1, 2));
+                    widgets[WIDX_SURFACE_CHECK_CORNER_W].moveTo(
+                        CheckboxGroupOffset(PropertyRowCol(propertiesAnchor, 2, 1), 0, 1));
+                    widgets[WIDX_SURFACE_CHECK_DIAGONAL].moveTo(PropertyRowCol(propertiesAnchor, 3, 0));
+
                     setCheckboxValue(
                         WIDX_SURFACE_CHECK_CORNER_N,
                         tileElement->AsSurface()->GetSlope() & (1 << ((2 - GetCurrentRotation()) & 3)));
@@ -2230,34 +2241,23 @@ static uint64_t PageDisabledWidgets[] = {
                     break;
 
                 case TileElementType::Path:
-                    widgets[WIDX_PATH_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 0) + 3;
-                    widgets[WIDX_PATH_SPINNER_HEIGHT].bottom = GBBB(propertiesAnchor, 0) - 3;
-                    widgets[WIDX_PATH_SPINNER_HEIGHT_INCREASE].top = GBBT(propertiesAnchor, 0) + 4;
-                    widgets[WIDX_PATH_SPINNER_HEIGHT_INCREASE].bottom = GBBB(propertiesAnchor, 0) - 4;
-                    widgets[WIDX_PATH_SPINNER_HEIGHT_DECREASE].top = GBBT(propertiesAnchor, 0) + 4;
-                    widgets[WIDX_PATH_SPINNER_HEIGHT_DECREASE].bottom = GBBB(propertiesAnchor, 0) - 4;
-                    widgets[WIDX_PATH_CHECK_BROKEN].top = GBBT(propertiesAnchor, 1);
-                    widgets[WIDX_PATH_CHECK_BROKEN].bottom = GBBB(propertiesAnchor, 1);
-                    widgets[WIDX_PATH_CHECK_SLOPED].top = GBBT(propertiesAnchor, 2);
-                    widgets[WIDX_PATH_CHECK_SLOPED].bottom = GBBB(propertiesAnchor, 2);
-                    widgets[WIDX_PATH_CHECK_JUNCTION_RAILINGS].top = GBBT(propertiesAnchor, 3);
-                    widgets[WIDX_PATH_CHECK_JUNCTION_RAILINGS].bottom = GBBB(propertiesAnchor, 3);
-                    widgets[WIDX_PATH_CHECK_EDGE_N].top = GBBT(propertiesAnchor, 4) + 7 * 0;
-                    widgets[WIDX_PATH_CHECK_EDGE_N].bottom = widgets[WIDX_PATH_CHECK_EDGE_N].top + 13;
-                    widgets[WIDX_PATH_CHECK_EDGE_NE].top = GBBT(propertiesAnchor, 4) + 7 * 1;
-                    widgets[WIDX_PATH_CHECK_EDGE_NE].bottom = widgets[WIDX_PATH_CHECK_EDGE_NE].top + 13;
-                    widgets[WIDX_PATH_CHECK_EDGE_E].top = GBBT(propertiesAnchor, 4) + 7 * 2;
-                    widgets[WIDX_PATH_CHECK_EDGE_E].bottom = widgets[WIDX_PATH_CHECK_EDGE_E].top + 13;
-                    widgets[WIDX_PATH_CHECK_EDGE_SE].top = GBBT(propertiesAnchor, 4) + 7 * 3;
-                    widgets[WIDX_PATH_CHECK_EDGE_SE].bottom = widgets[WIDX_PATH_CHECK_EDGE_SE].top + 13;
-                    widgets[WIDX_PATH_CHECK_EDGE_S].top = GBBT(propertiesAnchor, 4) + 7 * 4;
-                    widgets[WIDX_PATH_CHECK_EDGE_S].bottom = widgets[WIDX_PATH_CHECK_EDGE_S].top + 13;
-                    widgets[WIDX_PATH_CHECK_EDGE_SW].top = GBBT(propertiesAnchor, 4) + 7 * 3;
-                    widgets[WIDX_PATH_CHECK_EDGE_SW].bottom = widgets[WIDX_PATH_CHECK_EDGE_SW].top + 13;
-                    widgets[WIDX_PATH_CHECK_EDGE_W].top = GBBT(propertiesAnchor, 4) + 7 * 2;
-                    widgets[WIDX_PATH_CHECK_EDGE_W].bottom = widgets[WIDX_PATH_CHECK_EDGE_W].top + 13;
-                    widgets[WIDX_PATH_CHECK_EDGE_NW].top = GBBT(propertiesAnchor, 4) + 7 * 1;
-                    widgets[WIDX_PATH_CHECK_EDGE_NW].bottom = widgets[WIDX_PATH_CHECK_EDGE_NW].top + 13;
+                    widgets[WIDX_PATH_SPINNER_HEIGHT].moveTo(PropertyRowCol(propertiesAnchor, 0, 1));
+                    widgets[WIDX_PATH_SPINNER_HEIGHT_INCREASE].moveTo(
+                        PropertyRowCol(propertiesAnchor, 0, 1) + ScreenCoordsXY{ kPropertySpinnerSize.width - 13, 1 });
+                    widgets[WIDX_PATH_SPINNER_HEIGHT_DECREASE].moveTo(
+                        PropertyRowCol(propertiesAnchor, 0, 1) + ScreenCoordsXY{ kPropertySpinnerSize.width - 26, 1 });
+                    widgets[WIDX_PATH_CHECK_BROKEN].moveTo(PropertyRowCol(propertiesAnchor, 1, 0));
+                    widgets[WIDX_PATH_CHECK_SLOPED].moveTo(PropertyRowCol(propertiesAnchor, 2, 0));
+                    widgets[WIDX_PATH_CHECK_JUNCTION_RAILINGS].moveTo(PropertyRowCol(propertiesAnchor, 3, 0));
+                    widgets[WIDX_PATH_CHECK_EDGE_NE].moveTo(CheckboxGroupOffset(PropertyRowCol(propertiesAnchor, 4, 1), 3, 1));
+                    widgets[WIDX_PATH_CHECK_EDGE_E].moveTo(CheckboxGroupOffset(PropertyRowCol(propertiesAnchor, 4, 1), 4, 2));
+                    widgets[WIDX_PATH_CHECK_EDGE_SE].moveTo(CheckboxGroupOffset(PropertyRowCol(propertiesAnchor, 4, 1), 3, 3));
+                    widgets[WIDX_PATH_CHECK_EDGE_S].moveTo(CheckboxGroupOffset(PropertyRowCol(propertiesAnchor, 4, 1), 2, 4));
+                    widgets[WIDX_PATH_CHECK_EDGE_SW].moveTo(CheckboxGroupOffset(PropertyRowCol(propertiesAnchor, 4, 1), 1, 3));
+                    widgets[WIDX_PATH_CHECK_EDGE_W].moveTo(CheckboxGroupOffset(PropertyRowCol(propertiesAnchor, 4, 1), 0, 2));
+                    widgets[WIDX_PATH_CHECK_EDGE_NW].moveTo(CheckboxGroupOffset(PropertyRowCol(propertiesAnchor, 4, 1), 1, 1));
+                    widgets[WIDX_PATH_CHECK_EDGE_N].moveTo(CheckboxGroupOffset(PropertyRowCol(propertiesAnchor, 4, 1), 2, 0));
+
                     setCheckboxValue(WIDX_PATH_CHECK_SLOPED, tileElement->AsPath()->IsSloped());
                     setCheckboxValue(WIDX_PATH_CHECK_JUNCTION_RAILINGS, tileElement->AsPath()->HasJunctionRailings());
                     setCheckboxValue(WIDX_PATH_CHECK_BROKEN, tileElement->AsPath()->IsBroken());
@@ -2280,20 +2280,16 @@ static uint64_t PageDisabledWidgets[] = {
                     break;
 
                 case TileElementType::Track:
-                    widgets[WIDX_TRACK_CHECK_APPLY_TO_ALL].top = GBBT(propertiesAnchor, 0);
-                    widgets[WIDX_TRACK_CHECK_APPLY_TO_ALL].bottom = GBBB(propertiesAnchor, 0);
-                    widgets[WIDX_TRACK_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 1) + 3;
-                    widgets[WIDX_TRACK_SPINNER_HEIGHT].bottom = GBBB(propertiesAnchor, 1) - 3;
-                    widgets[WIDX_TRACK_SPINNER_HEIGHT_INCREASE].top = GBBT(propertiesAnchor, 1) + 4;
-                    widgets[WIDX_TRACK_SPINNER_HEIGHT_INCREASE].bottom = GBBB(propertiesAnchor, 1) - 4;
-                    widgets[WIDX_TRACK_SPINNER_HEIGHT_DECREASE].top = GBBT(propertiesAnchor, 1) + 4;
-                    widgets[WIDX_TRACK_SPINNER_HEIGHT_DECREASE].bottom = GBBB(propertiesAnchor, 1) - 4;
-                    widgets[WIDX_TRACK_CHECK_CHAIN_LIFT].top = GBBT(propertiesAnchor, 2);
-                    widgets[WIDX_TRACK_CHECK_CHAIN_LIFT].bottom = GBBB(propertiesAnchor, 2);
-                    widgets[WIDX_TRACK_CHECK_BRAKE_CLOSED].top = GBBT(propertiesAnchor, 3);
-                    widgets[WIDX_TRACK_CHECK_BRAKE_CLOSED].bottom = GBBB(propertiesAnchor, 3);
-                    widgets[WIDX_TRACK_CHECK_IS_INDESTRUCTIBLE].top = GBBT(propertiesAnchor, 4);
-                    widgets[WIDX_TRACK_CHECK_IS_INDESTRUCTIBLE].bottom = GBBB(propertiesAnchor, 4);
+                    widgets[WIDX_TRACK_CHECK_APPLY_TO_ALL].moveTo(PropertyRowCol(propertiesAnchor, 0, 0));
+                    widgets[WIDX_TRACK_SPINNER_HEIGHT].moveTo(PropertyRowCol(propertiesAnchor, 1, 1));
+                    widgets[WIDX_TRACK_SPINNER_HEIGHT_INCREASE].moveTo(
+                        PropertyRowCol(propertiesAnchor, 1, 1) + ScreenCoordsXY{ kPropertySpinnerSize.width - 13, 1 });
+                    widgets[WIDX_TRACK_SPINNER_HEIGHT_DECREASE].moveTo(
+                        PropertyRowCol(propertiesAnchor, 1, 1) + ScreenCoordsXY{ kPropertySpinnerSize.width - 26, 1 });
+                    widgets[WIDX_TRACK_CHECK_CHAIN_LIFT].moveTo(PropertyRowCol(propertiesAnchor, 2, 0));
+                    widgets[WIDX_TRACK_CHECK_BRAKE_CLOSED].moveTo(PropertyRowCol(propertiesAnchor, 3, 0));
+                    widgets[WIDX_TRACK_CHECK_IS_INDESTRUCTIBLE].moveTo(PropertyRowCol(propertiesAnchor, 4, 0));
+
                     setCheckboxValue(WIDX_TRACK_CHECK_APPLY_TO_ALL, _applyToAll);
                     setCheckboxValue(WIDX_TRACK_CHECK_CHAIN_LIFT, tileElement->AsTrack()->HasChain());
                     setCheckboxValue(WIDX_TRACK_CHECK_BRAKE_CLOSED, tileElement->AsTrack()->IsBrakeClosed());
@@ -2306,22 +2302,22 @@ static uint64_t PageDisabledWidgets[] = {
                 case TileElementType::SmallScenery:
                 {
                     // Raise / Lower
-                    widgets[WIDX_SCENERY_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 0) + 3;
-                    widgets[WIDX_SCENERY_SPINNER_HEIGHT].bottom = GBBB(propertiesAnchor, 0) - 3;
-                    widgets[WIDX_SCENERY_SPINNER_HEIGHT_INCREASE].top = GBBT(propertiesAnchor, 0) + 4;
-                    widgets[WIDX_SCENERY_SPINNER_HEIGHT_INCREASE].bottom = GBBB(propertiesAnchor, 0) - 4;
-                    widgets[WIDX_SCENERY_SPINNER_HEIGHT_DECREASE].top = GBBT(propertiesAnchor, 0) + 4;
-                    widgets[WIDX_SCENERY_SPINNER_HEIGHT_DECREASE].bottom = GBBB(propertiesAnchor, 0) - 4;
+                    widgets[WIDX_SCENERY_SPINNER_HEIGHT].moveTo(PropertyRowCol(propertiesAnchor, 0, 1));
+                    widgets[WIDX_SCENERY_SPINNER_HEIGHT_INCREASE].moveTo(
+                        PropertyRowCol(propertiesAnchor, 0, 1) + ScreenCoordsXY{ kPropertySpinnerSize.width - 13, 1 });
+                    widgets[WIDX_SCENERY_SPINNER_HEIGHT_DECREASE].moveTo(
+                        PropertyRowCol(propertiesAnchor, 0, 1) + ScreenCoordsXY{ kPropertySpinnerSize.width - 26, 1 });
 
                     // Quadrant checkboxes
-                    widgets[WIDX_SCENERY_CHECK_QUARTER_N].top = GBBT(propertiesAnchor, 1) - 5 + 7 * 0;
-                    widgets[WIDX_SCENERY_CHECK_QUARTER_N].bottom = widgets[WIDX_SCENERY_CHECK_QUARTER_N].top + 13;
-                    widgets[WIDX_SCENERY_CHECK_QUARTER_E].top = GBBT(propertiesAnchor, 1) - 5 + 7 * 1;
-                    widgets[WIDX_SCENERY_CHECK_QUARTER_E].bottom = widgets[WIDX_SCENERY_CHECK_QUARTER_E].top + 13;
-                    widgets[WIDX_SCENERY_CHECK_QUARTER_S].top = GBBT(propertiesAnchor, 1) - 5 + 7 * 2;
-                    widgets[WIDX_SCENERY_CHECK_QUARTER_S].bottom = widgets[WIDX_SCENERY_CHECK_QUARTER_S].top + 13;
-                    widgets[WIDX_SCENERY_CHECK_QUARTER_W].top = GBBT(propertiesAnchor, 1) - 5 + 7 * 1;
-                    widgets[WIDX_SCENERY_CHECK_QUARTER_W].bottom = widgets[WIDX_SCENERY_CHECK_QUARTER_W].top + 13;
+                    widgets[WIDX_SCENERY_CHECK_QUARTER_N].moveTo(
+                        CheckboxGroupOffset(PropertyRowCol(propertiesAnchor, 1, 1), 1, 0 + 0));
+                    widgets[WIDX_SCENERY_CHECK_QUARTER_E].moveTo(
+                        CheckboxGroupOffset(PropertyRowCol(propertiesAnchor, 1, 1), 2, 0 + 1));
+                    widgets[WIDX_SCENERY_CHECK_QUARTER_S].moveTo(
+                        CheckboxGroupOffset(PropertyRowCol(propertiesAnchor, 1, 1), 1, 0 + 2));
+                    widgets[WIDX_SCENERY_CHECK_QUARTER_W].moveTo(
+                        CheckboxGroupOffset(PropertyRowCol(propertiesAnchor, 1, 1), 0, 0 + 1));
+
                     // This gets the relative rotation, by subtracting the camera's rotation, and wrapping it between 0-3
                     // inclusive
                     bool N = tileElement->AsSmallScenery()->GetSceneryQuadrant() == ((0 - GetCurrentRotation()) & 3);
@@ -2334,14 +2330,15 @@ static uint64_t PageDisabledWidgets[] = {
                     setCheckboxValue(WIDX_SCENERY_CHECK_QUARTER_W, W);
 
                     // Collision checkboxes
-                    widgets[WIDX_SCENERY_CHECK_COLLISION_N].top = GBBT(propertiesAnchor, 2) + 5 + 7 * 0;
-                    widgets[WIDX_SCENERY_CHECK_COLLISION_N].bottom = widgets[WIDX_SCENERY_CHECK_COLLISION_N].top + 13;
-                    widgets[WIDX_SCENERY_CHECK_COLLISION_E].top = GBBT(propertiesAnchor, 2) + 5 + 7 * 1;
-                    widgets[WIDX_SCENERY_CHECK_COLLISION_E].bottom = widgets[WIDX_SCENERY_CHECK_COLLISION_E].top + 13;
-                    widgets[WIDX_SCENERY_CHECK_COLLISION_S].top = GBBT(propertiesAnchor, 2) + 5 + 7 * 2;
-                    widgets[WIDX_SCENERY_CHECK_COLLISION_S].bottom = widgets[WIDX_SCENERY_CHECK_COLLISION_S].top + 13;
-                    widgets[WIDX_SCENERY_CHECK_COLLISION_W].top = GBBT(propertiesAnchor, 2) + 5 + 7 * 1;
-                    widgets[WIDX_SCENERY_CHECK_COLLISION_W].bottom = widgets[WIDX_SCENERY_CHECK_COLLISION_W].top + 13;
+                    widgets[WIDX_SCENERY_CHECK_COLLISION_N].moveTo(
+                        CheckboxGroupOffset(PropertyRowCol(propertiesAnchor, 2, 1), 1, 1 + 0));
+                    widgets[WIDX_SCENERY_CHECK_COLLISION_E].moveTo(
+                        CheckboxGroupOffset(PropertyRowCol(propertiesAnchor, 2, 1), 2, 1 + 1));
+                    widgets[WIDX_SCENERY_CHECK_COLLISION_S].moveTo(
+                        CheckboxGroupOffset(PropertyRowCol(propertiesAnchor, 2, 1), 1, 1 + 2));
+                    widgets[WIDX_SCENERY_CHECK_COLLISION_W].moveTo(
+                        CheckboxGroupOffset(PropertyRowCol(propertiesAnchor, 2, 1), 0, 1 + 1));
+
                     auto occupiedQuadrants = tileElement->GetOccupiedQuadrants();
                     N = (occupiedQuadrants & (1 << ((2 - GetCurrentRotation()) & 3))) != 0;
                     E = (occupiedQuadrants & (1 << ((3 - GetCurrentRotation()) & 3))) != 0;
@@ -2355,14 +2352,13 @@ static uint64_t PageDisabledWidgets[] = {
                 }
 
                 case TileElementType::Entrance:
-                    widgets[WIDX_ENTRANCE_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 0) + 3;
-                    widgets[WIDX_ENTRANCE_SPINNER_HEIGHT].bottom = GBBB(propertiesAnchor, 0) - 3;
-                    widgets[WIDX_ENTRANCE_SPINNER_HEIGHT_INCREASE].top = GBBT(propertiesAnchor, 0) + 4;
-                    widgets[WIDX_ENTRANCE_SPINNER_HEIGHT_INCREASE].bottom = GBBB(propertiesAnchor, 0) - 4;
-                    widgets[WIDX_ENTRANCE_SPINNER_HEIGHT_DECREASE].top = GBBT(propertiesAnchor, 0) + 4;
-                    widgets[WIDX_ENTRANCE_SPINNER_HEIGHT_DECREASE].bottom = GBBB(propertiesAnchor, 0) - 4;
-                    widgets[WIDX_ENTRANCE_BUTTON_MAKE_USABLE].top = GBBT(propertiesAnchor, 1);
-                    widgets[WIDX_ENTRANCE_BUTTON_MAKE_USABLE].bottom = GBBB(propertiesAnchor, 1);
+                    widgets[WIDX_ENTRANCE_SPINNER_HEIGHT].moveTo(PropertyRowCol(propertiesAnchor, 0, 1));
+                    widgets[WIDX_ENTRANCE_SPINNER_HEIGHT_INCREASE].moveTo(
+                        PropertyRowCol(propertiesAnchor, 0, 1) + ScreenCoordsXY{ kPropertyButtonSize.width - 13, 1 });
+                    widgets[WIDX_ENTRANCE_SPINNER_HEIGHT_DECREASE].moveTo(
+                        PropertyRowCol(propertiesAnchor, 0, 1) + ScreenCoordsXY{ kPropertyButtonSize.width - 26, 1 });
+                    widgets[WIDX_ENTRANCE_BUTTON_MAKE_USABLE].moveTo(PropertyRowCol(propertiesAnchor, 1, 0));
+
                     setWidgetDisabled(
                         WIDX_ENTRANCE_BUTTON_MAKE_USABLE,
                         tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE);
@@ -2379,25 +2375,21 @@ static uint64_t PageDisabledWidgets[] = {
                         hasAnimation = wallEntry->flags & WALL_SCENERY_IS_DOOR;
                     }
 
-                    widgets[WIDX_WALL_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 0) + 3;
-                    widgets[WIDX_WALL_SPINNER_HEIGHT].bottom = GBBB(propertiesAnchor, 0) - 3;
-                    widgets[WIDX_WALL_SPINNER_HEIGHT_INCREASE].top = GBBT(propertiesAnchor, 0) + 4;
-                    widgets[WIDX_WALL_SPINNER_HEIGHT_INCREASE].bottom = GBBB(propertiesAnchor, 0) - 4;
-                    widgets[WIDX_WALL_SPINNER_HEIGHT_DECREASE].top = GBBT(propertiesAnchor, 0) + 4;
-                    widgets[WIDX_WALL_SPINNER_HEIGHT_DECREASE].bottom = GBBB(propertiesAnchor, 0) - 4;
-                    widgets[WIDX_WALL_DROPDOWN_SLOPE].top = GBBT(propertiesAnchor, 1) + 3;
-                    widgets[WIDX_WALL_DROPDOWN_SLOPE].bottom = GBBB(propertiesAnchor, 1) - 3;
-                    widgets[WIDX_WALL_DROPDOWN_SLOPE].text = WallSlopeStringIds[tileElement->AsWall()->GetSlope()];
-                    widgets[WIDX_WALL_DROPDOWN_SLOPE_BUTTON].top = GBBT(propertiesAnchor, 1) + 4;
-                    widgets[WIDX_WALL_DROPDOWN_SLOPE_BUTTON].bottom = GBBB(propertiesAnchor, 1) - 4;
-                    widgets[WIDX_WALL_SPINNER_ANIMATION_FRAME].top = GBBT(propertiesAnchor, 2) + 3;
-                    widgets[WIDX_WALL_SPINNER_ANIMATION_FRAME].bottom = GBBB(propertiesAnchor, 2) - 3;
-                    widgets[WIDX_WALL_SPINNER_ANIMATION_FRAME_INCREASE].top = GBBT(propertiesAnchor, 2) + 4;
-                    widgets[WIDX_WALL_SPINNER_ANIMATION_FRAME_INCREASE].bottom = GBBB(propertiesAnchor, 2) - 4;
-                    widgets[WIDX_WALL_SPINNER_ANIMATION_FRAME_DECREASE].top = GBBT(propertiesAnchor, 2) + 4;
-                    widgets[WIDX_WALL_SPINNER_ANIMATION_FRAME_DECREASE].bottom = GBBB(propertiesAnchor, 2) - 4;
-                    widgets[WIDX_WALL_ANIMATION_IS_BACKWARDS].top = GBBT(propertiesAnchor, 3);
-                    widgets[WIDX_WALL_ANIMATION_IS_BACKWARDS].bottom = GBBB(propertiesAnchor, 3);
+                    widgets[WIDX_WALL_SPINNER_HEIGHT].moveTo(PropertyRowCol(propertiesAnchor, 0, 1));
+                    widgets[WIDX_WALL_SPINNER_HEIGHT_INCREASE].moveTo(
+                        PropertyRowCol(propertiesAnchor, 0, 1) + ScreenCoordsXY{ kPropertyButtonSize.width - 13, 1 });
+                    widgets[WIDX_WALL_SPINNER_HEIGHT_DECREASE].moveTo(
+                        PropertyRowCol(propertiesAnchor, 0, 1) + ScreenCoordsXY{ kPropertyButtonSize.width - 26, 1 });
+                    widgets[WIDX_WALL_DROPDOWN_SLOPE].moveTo(PropertyRowCol(propertiesAnchor, 1, 1));
+                    widgets[WIDX_WALL_DROPDOWN_SLOPE_BUTTON].moveTo(
+                        PropertyRowCol(propertiesAnchor + ScreenCoordsXY{ kPropertyButtonSize.width - 12, 0 }, 1, 1));
+                    widgets[WIDX_WALL_DROPDOWN_SLOPE].text = kWallSlopeStringIds[tileElement->AsWall()->GetSlope()];
+                    widgets[WIDX_WALL_SPINNER_ANIMATION_FRAME].moveTo(PropertyRowCol(propertiesAnchor, 2, 1));
+                    widgets[WIDX_WALL_SPINNER_ANIMATION_FRAME_INCREASE].moveTo(
+                        PropertyRowCol(propertiesAnchor, 2, 1) + ScreenCoordsXY{ kPropertyButtonSize.width - 13, 1 });
+                    widgets[WIDX_WALL_SPINNER_ANIMATION_FRAME_DECREASE].moveTo(
+                        PropertyRowCol(propertiesAnchor, 2, 1) + ScreenCoordsXY{ kPropertyButtonSize.width - 26, 1 });
+                    widgets[WIDX_WALL_ANIMATION_IS_BACKWARDS].moveTo(PropertyRowCol(propertiesAnchor, 3, 0));
 
                     // Wall slope dropdown
                     setWidgetDisabled(WIDX_WALL_DROPDOWN_SLOPE, !canBeSloped);
@@ -2415,29 +2407,28 @@ static uint64_t PageDisabledWidgets[] = {
                 }
 
                 case TileElementType::LargeScenery:
-                    widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 0) + 3;
-                    widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT].bottom = GBBB(propertiesAnchor, 0) - 3;
-                    widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT_INCREASE].top = GBBT(propertiesAnchor, 0) + 4;
-                    widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT_INCREASE].bottom = GBBB(propertiesAnchor, 0) - 4;
-                    widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT_DECREASE].top = GBBT(propertiesAnchor, 0) + 4;
-                    widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT_DECREASE].bottom = GBBB(propertiesAnchor, 0) - 4;
+                    widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT].moveTo(PropertyRowCol(propertiesAnchor, 0, 1));
+                    widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT_INCREASE].moveTo(
+                        PropertyRowCol(propertiesAnchor, 0, 1) + ScreenCoordsXY{ kPropertyButtonSize.width - 13, 1 });
+                    widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT_DECREASE].moveTo(
+                        PropertyRowCol(propertiesAnchor, 0, 1) + ScreenCoordsXY{ kPropertyButtonSize.width - 26, 1 });
                     break;
 
                 case TileElementType::Banner:
-                    widgets[WIDX_BANNER_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 0) + 3;
-                    widgets[WIDX_BANNER_SPINNER_HEIGHT].bottom = GBBB(propertiesAnchor, 0) - 3;
-                    widgets[WIDX_BANNER_SPINNER_HEIGHT_INCREASE].top = GBBT(propertiesAnchor, 0) + 4;
-                    widgets[WIDX_BANNER_SPINNER_HEIGHT_INCREASE].bottom = GBBB(propertiesAnchor, 0) - 4;
-                    widgets[WIDX_BANNER_SPINNER_HEIGHT_DECREASE].top = GBBT(propertiesAnchor, 0) + 4;
-                    widgets[WIDX_BANNER_SPINNER_HEIGHT_DECREASE].bottom = GBBB(propertiesAnchor, 0) - 4;
-                    widgets[WIDX_BANNER_CHECK_BLOCK_NE].top = GBBT(propertiesAnchor, 1);
-                    widgets[WIDX_BANNER_CHECK_BLOCK_NE].bottom = GBBB(propertiesAnchor, 1);
-                    widgets[WIDX_BANNER_CHECK_BLOCK_SE].top = GBBT(propertiesAnchor, 2);
-                    widgets[WIDX_BANNER_CHECK_BLOCK_SE].bottom = GBBB(propertiesAnchor, 2);
-                    widgets[WIDX_BANNER_CHECK_BLOCK_SW].top = GBBT(propertiesAnchor, 2);
-                    widgets[WIDX_BANNER_CHECK_BLOCK_SW].bottom = GBBB(propertiesAnchor, 2);
-                    widgets[WIDX_BANNER_CHECK_BLOCK_NW].top = GBBT(propertiesAnchor, 1);
-                    widgets[WIDX_BANNER_CHECK_BLOCK_NW].bottom = GBBB(propertiesAnchor, 1);
+                    widgets[WIDX_BANNER_SPINNER_HEIGHT].moveTo(PropertyRowCol(propertiesAnchor, 0, 1));
+                    widgets[WIDX_BANNER_SPINNER_HEIGHT_INCREASE].moveTo(
+                        PropertyRowCol(propertiesAnchor, 0, 1) + ScreenCoordsXY{ kPropertyButtonSize.width - 13, 1 });
+                    widgets[WIDX_BANNER_SPINNER_HEIGHT_DECREASE].moveTo(
+                        PropertyRowCol(propertiesAnchor, 0, 1) + ScreenCoordsXY{ kPropertyButtonSize.width - 26, 1 });
+                    widgets[WIDX_BANNER_CHECK_BLOCK_NE].moveTo(
+                        CheckboxGroupOffset(PropertyRowCol(propertiesAnchor, 1, 1), 3, 1));
+                    widgets[WIDX_BANNER_CHECK_BLOCK_SE].moveTo(
+                        CheckboxGroupOffset(PropertyRowCol(propertiesAnchor, 1, 1), 3, 3));
+                    widgets[WIDX_BANNER_CHECK_BLOCK_SW].moveTo(
+                        CheckboxGroupOffset(PropertyRowCol(propertiesAnchor, 1, 1), 1, 3));
+                    widgets[WIDX_BANNER_CHECK_BLOCK_NW].moveTo(
+                        CheckboxGroupOffset(PropertyRowCol(propertiesAnchor, 1, 1), 1, 1));
+
                     setCheckboxValue(
                         WIDX_BANNER_CHECK_BLOCK_NE,
                         (tileElement->AsBanner()->GetAllowedEdges() & (1 << ((0 - GetCurrentRotation()) & 3))));

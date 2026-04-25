@@ -23,7 +23,6 @@
 #include "../platform/Platform.h"
 #include "../profiling/Profiling.h"
 #include "../scenario/Scenario.h"
-#include "../scripting/Duktape.hpp"
 #include "../scripting/HookEngine.h"
 #include "../scripting/ScriptEngine.h"
 #include "../ui/WindowManager.h"
@@ -187,8 +186,10 @@ namespace OpenRCT2::GameActions
             return result;
         }
 
-        auto result = action->Query(gameState);
+        // TODO: pass different park based on player
+        auto& park = gameState.park;
 
+        auto result = action->Query(gameState, park);
         if (result.error == Status::ok)
         {
             if (!FinanceCheckAffordability(result.cost, action->GetFlags()))
@@ -338,8 +339,11 @@ namespace OpenRCT2::GameActions
                 LogActionBegin(gameState, logContext, action);
             }
 
+            // TODO: pass different park based on player
+            auto& park = gameState.park;
+
             // Execute the action, changing the game state
-            result = action->Execute(gameState);
+            result = action->Execute(gameState, park);
 #ifdef ENABLE_SCRIPTING
             if (result.error == Status::ok)
             {

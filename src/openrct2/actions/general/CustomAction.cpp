@@ -8,7 +8,6 @@
  *****************************************************************************/
 
 #ifdef ENABLE_SCRIPTING
-
     #include "CustomAction.h"
 
     #include "../../Context.h"
@@ -23,17 +22,17 @@ namespace OpenRCT2::GameActions
     {
     }
 
-    std::string CustomAction::GetId() const
+    const std::string& CustomAction::GetId() const
     {
         return _id;
     }
 
-    std::string CustomAction::GetJson() const
+    const std::string& CustomAction::GetJson() const
     {
         return _json;
     }
 
-    std::string CustomAction::GetPluginName() const
+    const std::string& CustomAction::GetPluginName() const
     {
         return _pluginName;
     }
@@ -49,13 +48,13 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_id) << DS_TAG(_json);
     }
 
-    Result CustomAction::Query(GameState_t& gameState) const
+    Result CustomAction::Query(GameState_t& gameState, Park::ParkData& park) const
     {
         auto& scriptingEngine = GetContext()->GetScriptEngine();
         return scriptingEngine.QueryOrExecuteCustomGameAction(*this, false);
     }
 
-    Result CustomAction::Execute(GameState_t& gameState) const
+    Result CustomAction::Execute(GameState_t& gameState, Park::ParkData& park) const
     {
         auto& scriptingEngine = GetContext()->GetScriptEngine();
         return scriptingEngine.QueryOrExecuteCustomGameAction(*this, true);

@@ -49,7 +49,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_loc) << DS_TAG(_rideIndex) << DS_TAG(_mazeEntry);
     }
 
-    Result MazePlaceTrackAction::Query(GameState_t& gameState) const
+    Result MazePlaceTrackAction::Query(GameState_t& gameState, Park::ParkData& park) const
     {
         auto res = Result();
 
@@ -147,7 +147,7 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    Result MazePlaceTrackAction::Execute(GameState_t& gameState) const
+    Result MazePlaceTrackAction::Execute(GameState_t& gameState, Park::ParkData& park) const
     {
         auto res = Result();
 

@@ -74,7 +74,7 @@ namespace OpenRCT2::GameActions
                << DS_TAG(_tertiaryColour);
     }
 
-    Result WallPlaceAction::Query(GameState_t& gameState) const
+    Result WallPlaceAction::Query(GameState_t& gameState, Park::ParkData& park) const
     {
         auto res = Result();
         res.errorTitle = STR_CANT_BUILD_THIS_HERE;
@@ -276,7 +276,7 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    Result WallPlaceAction::Execute(GameState_t& gameState) const
+    Result WallPlaceAction::Execute(GameState_t& gameState, Park::ParkData& park) const
     {
         auto res = Result();
         res.errorTitle = STR_CANT_BUILD_THIS_HERE;

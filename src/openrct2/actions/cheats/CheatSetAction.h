@@ -31,8 +31,8 @@ namespace OpenRCT2::GameActions
         uint16_t GetActionFlags() const override;
 
         void Serialise(DataSerialiser& stream) override;
-        Result Query(GameState_t& gameState) const override;
-        Result Execute(GameState_t& gameState) const override;
+        Result Query(GameState_t& gameState, Park::ParkData& park) const override;
+        Result Execute(GameState_t& gameState, Park::ParkData& park) const override;
 
     private:
         ParametersRange GetParameterRange(CheatType cheatType) const;
@@ -44,10 +44,10 @@ namespace OpenRCT2::GameActions
         void RenewRides(GameState_t& gameState) const;
         void ResetRideCrashStatus(GameState_t& gameState) const;
         void Set10MinuteInspection(GameState_t& gameState) const;
-        void SetScenarioNoMoney(GameState_t& gameState, bool enabled) const;
-        void SetMoney(GameState_t& gameState, money64 amount) const;
-        void AddMoney(GameState_t& gameState, money64 amount) const;
-        void ClearLoan(GameState_t& gameState) const;
+        void SetScenarioNoMoney(Park::ParkData& park, bool enabled) const;
+        void SetMoney(Park::ParkData& park, money64 amount) const;
+        void AddMoney(Park::ParkData& park, money64 amount) const;
+        void ClearLoan(GameState_t& gameState, Park::ParkData& park) const;
         void GenerateGuests(int32_t count) const;
         void SetGuestParameter(int32_t parameter, int32_t value) const;
         void GiveObjectToGuests(int32_t object) const;

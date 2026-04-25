@@ -44,7 +44,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_location.x) << DS_TAG(_location.y) << DS_TAG(_location.z) << DS_TAG(_location.direction);
     }
 
-    Result PeepSpawnPlaceAction::Query(GameState_t& gameState) const
+    Result PeepSpawnPlaceAction::Query(GameState_t& gameState, Park::ParkData& park) const
     {
         if (!isInEditorMode() && !gameState.cheats.sandboxMode)
         {
@@ -84,7 +84,7 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    Result PeepSpawnPlaceAction::Execute(GameState_t& gameState) const
+    Result PeepSpawnPlaceAction::Execute(GameState_t& gameState, Park::ParkData& park) const
     {
         auto res = Result();
         res.expenditure = ExpenditureType::landPurchase;

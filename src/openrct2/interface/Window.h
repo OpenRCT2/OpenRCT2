@@ -295,6 +295,7 @@ namespace OpenRCT2
 
     void WindowDispatchUpdateAll();
     void WindowUpdateAllViewports();
+    void WindowCullDead();
     void WindowUpdateAll();
     void WindowNotifyLanguageChange();
 

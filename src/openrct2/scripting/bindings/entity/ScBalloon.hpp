@@ -20,19 +20,20 @@ namespace OpenRCT2
 
 namespace OpenRCT2::Scripting
 {
+    class ScBalloon;
+    extern ScBalloon gScBalloon;
 
-    class ScBalloon : public ScEntity
+    class ScBalloon final : public ScEntity
     {
     public:
-        ScBalloon(EntityId Id);
-
-        static void Register(duk_context* ctx);
+        static JSValue New(JSContext* ctx, EntityId entityId);
+        void Register(JSContext* ctx);
 
     private:
-        Balloon* GetBalloon() const;
+        static Balloon* GetBalloon(JSValue thisVal);
 
-        uint8_t colour_get() const;
-        void colour_set(uint8_t);
+        static JSValue colour_get(JSContext* ctx, JSValue thisVal);
+        static JSValue colour_set(JSContext* ctx, JSValue thisVal, JSValue value);
     };
 } // namespace OpenRCT2::Scripting
 #endif

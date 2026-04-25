@@ -3310,7 +3310,7 @@ STR_6304    :Öppen dekorationsväljare
 STR_6305    :Flertrådsprocess
 STR_6306    :Experiment att använda flera processortrådar för rendering, kan orsaka instabilitet.
 STR_6307    :Färgschema: {BLACK}{STRINGID}
-STR_6308    :{TOPAZ}”{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
+STR_6308    :{TOPAZ}”{STRINGID}{TOPAZ}”{NEWLINE}{STRINGID}
 STR_6309    :Återanslut
 STR_6310    :{WINDOW_COLOUR_2}Position: {BLACK}{INT32} {INT32} {INT32}
 STR_6311    :{WINDOW_COLOUR_2}Nästa: {BLACK}{INT32} {INT32} {INT32}

@@ -44,7 +44,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_loc);
     }
 
-    Result BannerRemoveAction::Query(GameState_t& gameState) const
+    Result BannerRemoveAction::Query(GameState_t& gameState, Park::ParkData& park) const
     {
         auto res = Result();
         res.expenditure = ExpenditureType::landscaping;
@@ -93,7 +93,7 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    Result BannerRemoveAction::Execute(GameState_t& gameState) const
+    Result BannerRemoveAction::Execute(GameState_t& gameState, Park::ParkData& park) const
     {
         auto res = Result();
         res.expenditure = ExpenditureType::landscaping;

@@ -22,8 +22,8 @@ android {
         minSdkVersion = 24
         targetSdkVersion = 36
 
-        versionCode = 19
-        versionName = '0.4.32'
+        versionCode = 20
+        versionName = '0.5.0'
         if (!project.hasProperty('skipNativeBuild')) {
             externalNativeBuild {
                 cmake {

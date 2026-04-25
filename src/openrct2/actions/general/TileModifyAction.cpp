@@ -49,12 +49,12 @@ namespace OpenRCT2::GameActions
                << DS_TAG(_pasteBanner);
     }
 
-    Result TileModifyAction::Query(GameState_t& gameState) const
+    Result TileModifyAction::Query(GameState_t& gameState, Park::ParkData& park) const
     {
         return QueryExecute(false);
     }
 
-    Result TileModifyAction::Execute(GameState_t& gameState) const
+    Result TileModifyAction::Execute(GameState_t& gameState, Park::ParkData& park) const
     {
         return QueryExecute(true);
     }

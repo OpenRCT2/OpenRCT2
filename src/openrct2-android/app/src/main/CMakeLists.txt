@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(openrct2-android CXX)
+project(openrct2-android CXX C)
 
 set(CMAKE_VERBOSE_MAKEFILE on)
 
@@ -226,7 +226,7 @@ if (CCache_FOUND)
 endif (CCache_FOUND)
 
 file(GLOB_RECURSE LIBOPENRCT2_SOURCES
-    "${ORCT2_ROOT}/src/thirdparty/duktape/duktape.cpp"
+    "${ORCT2_ROOT}/src/thirdparty/quickjs-ng/quickjs-amalgam.c"
     "${ORCT2_ROOT}/src/openrct2/*.cpp"
     "${ORCT2_ROOT}/src/openrct2/*.h"
     "${ORCT2_ROOT}/src/openrct2/*.hpp")
@@ -255,9 +255,9 @@ target_link_libraries(openrct2-ui openrct2 android stdc++ GLESv1_CM GLESv2 SDL2m
 add_executable(openrct2-cli ${OPENRCT2_CLI_SOURCES})
 target_link_libraries(openrct2-cli openrct2 android stdc++ GLESv1_CM GLESv2)
 
-target_include_directories(openrct2 PRIVATE "${ORCT2_ROOT}/src/thirdparty/duktape/")
+target_include_directories(openrct2 SYSTEM PRIVATE "${ORCT2_ROOT}/src/thirdparty/quickjs-ng")
 target_include_directories(openrct2 SYSTEM PRIVATE "${ORCT2_ROOT}/src/thirdparty")
-target_include_directories(openrct2-ui PRIVATE "${ORCT2_ROOT}/src/thirdparty/duktape/")
+target_include_directories(openrct2-ui SYSTEM PRIVATE "${ORCT2_ROOT}/src/thirdparty/quickjs-ng")
 target_include_directories(openrct2-ui PRIVATE "${ORCT2_ROOT}/src")
 target_include_directories(openrct2-ui SYSTEM PRIVATE "${ORCT2_ROOT}/src/thirdparty")
 target_include_directories(openrct2-cli PRIVATE "${ORCT2_ROOT}/src")

@@ -737,7 +737,9 @@ namespace OpenRCT2::Ui::Windows
         void ShowObjectiveDropdown()
         {
             const auto& gameState = getGameState();
+            const auto& park = gameState.park;
             const auto& scenarioOptions = gameState.scenarioOptions;
+
             auto objectiveType = EnumValue(scenarioOptions.objective.Type);
 
             int32_t numItems = 0;
@@ -752,7 +754,7 @@ namespace OpenRCT2::Ui::Windows
 
                 // This objective can only work if the player can ask money for rides.
                 const bool objectiveAllowedByPaymentSettings = (obj != Scenario::ObjectiveType::monthlyRideIncome)
-                    || Park::RidePricesUnlocked();
+                    || Park::RidePricesUnlocked(park);
 
                 if (objectiveAllowedByMoneyUsage && objectiveAllowedByPaymentSettings)
                 {
@@ -1036,15 +1038,18 @@ namespace OpenRCT2::Ui::Windows
             onPrepareDraw();
             invalidateWidget(WIDX_TAB_1);
 
-            auto objectiveType = getGameState().scenarioOptions.objective.Type;
+            auto& gameState = getGameState();
+            auto& park = gameState.park;
+
+            auto objectiveType = gameState.scenarioOptions.objective.Type;
 
             // Check if objective is allowed by money and pay-per-ride settings.
-            const bool objectiveAllowedByMoneyUsage = !(getGameState().park.flags & PARK_FLAGS_NO_MONEY)
+            const bool objectiveAllowedByMoneyUsage = !(park.flags & PARK_FLAGS_NO_MONEY)
                 || !ObjectiveNeedsMoney(objectiveType);
 
             // This objective can only work if the player can ask money for rides.
             const bool objectiveAllowedByPaymentSettings = (objectiveType != Scenario::ObjectiveType::monthlyRideIncome)
-                || Park::RidePricesUnlocked();
+                || Park::RidePricesUnlocked(park);
 
             if (!objectiveAllowedByMoneyUsage || !objectiveAllowedByPaymentSettings)
             {
@@ -1616,7 +1621,9 @@ namespace OpenRCT2::Ui::Windows
             SetPressedTab();
 
             auto& gameState = getGameState();
-            bool noMoney = gameState.park.flags & PARK_FLAGS_NO_MONEY;
+            auto& park = gameState.park;
+
+            bool noMoney = park.flags & PARK_FLAGS_NO_MONEY;
             setWidgetPressed(WIDX_NO_MONEY, noMoney);
 
             setWidgetDisabled(WIDX_GROUP_LOAN, noMoney);
@@ -1629,7 +1636,7 @@ namespace OpenRCT2::Ui::Windows
             setWidgetDisabled(WIDX_MAXIMUM_LOAN_INCREASE, noMoney);
             setWidgetDisabled(WIDX_MAXIMUM_LOAN_DECREASE, noMoney);
 
-            if (gameState.park.flags & PARK_FLAGS_RCT1_INTEREST)
+            if (park.flags & PARK_FLAGS_RCT1_INTEREST)
             {
                 widgets[WIDX_INTEREST_RATE_LABEL].type = WidgetType::empty;
                 widgets[WIDX_INTEREST_RATE].type = WidgetType::empty;
@@ -1662,7 +1669,7 @@ namespace OpenRCT2::Ui::Windows
             setWidgetDisabled(WIDX_PAY_FOR_PARK_OR_RIDES_DROPDOWN, noMoney);
             setWidgetDisabled(WIDX_FORBID_MARKETING, noMoney);
 
-            if (!Park::EntranceFeeUnlocked())
+            if (!Park::EntranceFeeUnlocked(park))
             {
                 widgets[WIDX_ENTRY_PRICE_LABEL].type = WidgetType::empty;
                 widgets[WIDX_ENTRY_PRICE].type = WidgetType::empty;
@@ -1681,7 +1688,7 @@ namespace OpenRCT2::Ui::Windows
                 setWidgetDisabled(WIDX_ENTRY_PRICE_DECREASE, noMoney);
             }
 
-            setWidgetPressed(WIDX_FORBID_MARKETING, gameState.park.flags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN);
+            setWidgetPressed(WIDX_FORBID_MARKETING, park.flags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN);
 
             widgets[WIDX_CLOSE].type = gLegacyScene == LegacyScene::scenarioEditor ? WidgetType::empty : WidgetType::closeBox;
         }

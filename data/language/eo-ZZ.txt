@@ -3,34 +3,34 @@
 # Use # at the beginning of a line to leave a comment.
 STR_0000    :
 STR_0001    :{STRINGID} {COMMA16}
-STR_0002    :Spirala Onda Fervojo
-STR_0003    :Staranta Onda Fervojo
-STR_0004    :Pendita Svingiĝanta Onda Fervojo
-STR_0005    :Inversigita Onda Fervojo
-STR_0006    :Onda Fervojeto
-STR_0007    :Miniatura Fervojo
+STR_0002    :Spirala onda fervojo
+STR_0003    :Staranta onda fervojo
+STR_0004    :Pendita svingiĝanta onda fervojo
+STR_0005    :Inversigita onda fervojo
+STR_0006    :Onda fervojeto
+STR_0007    :Miniatura fervojo
 STR_0008    :Monorelo
-STR_0009    :Pendita Miniatura Onda Fervojo
+STR_0009    :Pendita miniatura onda fervojo
 STR_0010    :Boatluo
-STR_0011    :Ligna Sovaĝa Muŝo
+STR_0011    :Ligna Sovaĝa Muso
 STR_0012    :Stipoĉejso
 STR_0013    :Aŭtrajdo
-STR_0014    :Lanĉita Libera Falo
-STR_0015    :Bobsleda Onda Fervojo
-STR_0016    :Turo por Observadi
-STR_0017    :Lopanta Onda Fervojo
-STR_0018    :Boatet-Tobagano
-STR_0019    :Mintrajna Onda Fervojo
+STR_0014    :Lanĉita libera falo
+STR_0015    :Bobsleda onda fervojo
+STR_0016    :Observa turo
+STR_0017    :Lopanta onda fervojo
+STR_0018    :Boatet-tobagano
+STR_0019    :Mintrajna onda fervojo
 STR_0020    :Seĝlifto
-STR_0021    :Korktirila Onda Fervojo
+STR_0021    :Korktirila onda fervojo
 STR_0022    :Labirinto
-STR_0023    :Spirala Tobagano
-STR_0024    :Gokartoj
+STR_0023    :Spirala tobagano
+STR_0024    :Vetkuraj aŭtetoj
 STR_0025    :Ŝtiprajdo
 STR_0026    :Rapidfluorajdo
-STR_0027    :Doĝemoj
-STR_0028    :Svingiĝanta Ŝipo
-STR_0029    :Svingiĝanta Inversiĝanta Ŝipo
+STR_0027    :Kunfrapemaj aŭtetoj
+STR_0028    :Svingiĝanta ŝipo
+STR_0029    :Svingiĝanta inversiĝanta ŝipo
 STR_0030    :Manĝaĵbudo
 STR_0032    :Trinkaĵbudo
 STR_0034    :Vendejo
@@ -39,59 +39,59 @@ STR_0037    :Informokiosko
 STR_0038    :Necesejo
 STR_0039    :Spektoradego
 STR_0040    :Moviĝadosimulilo
-STR_0041    :Tri-Dimensia Kinejo
-STR_0042    :Tuniĝanta Gondolo
-STR_0043    :Eksterteraj Ringoj
-STR_0044    :Onda Fervojo kun Dorsantaŭa Libera Falo
+STR_0041    :Tri-dimensia kinejo
+STR_0042    :Turniĝanta gondolo
+STR_0043    :Eksterteraj ringoj
+STR_0044    :Onda fervojo kun dorsantaŭa libera falo
 STR_0045    :Lifto
-STR_0046    :Onda Fervojo kun Vertikalaj Malleviĝoj
+STR_0046    :Onda fervojo kun vertikalaj malleviĝoj
 STR_0047    :Bankaŭtomato
 STR_0048    :Tvisto
-STR_0049    :Fantomita Domo
+STR_0049    :Fantomita domo
 STR_0050    :Sukurejo
 STR_0051    :Cirko
 STR_0052    :Fantomtrajno
-STR_0053    :Ŝtala Onda Fervojo
-STR_0054    :Ligna Onda Fervojo
-STR_0055    :Onda Fervojo kun Flanka Froto
-STR_0056    :Ŝtala Sovaĝa Muŝo
-STR_0057    :Onda Fervojo kun Multaj Dimensioj
-STR_0058    :Nekonata Atrakcio (38)
-STR_0059    :Fluganta Onda Fervojo
-STR_0060    :Nekonata Atrakcio (3A)
+STR_0053    :Ŝtala onda fervojo
+STR_0054    :Ligna onda fervojo
+STR_0055    :Onda fervojo kun flanka froto
+STR_0056    :Ŝtala Sovaĝa Muso
+STR_0057    :Multadimensia onda fervojo
+STR_0058    :Nekonata atrakcio (38)
+STR_0059    :Fluganta onda fervojo
+STR_0060    :Nekonata atrakcio (3A)
 STR_0061    :Virginia Reel
 STR_0062    :Plaŭdoboatoj
-STR_0063    :Miniaturaj Helikopteroj
-STR_0064    :Kuŝiĝanta Onda Fervojo
-STR_0065    :Pendita Monorelo
-STR_0066    :Nekonata Atrakcio (40)
-STR_0067    :Posteniĝanta Onda Fervojo
-STR_0068    :Ĉe-Kore Ruliĝanta Onda Fervojo
-STR_0069    :Miniatura Golfo
-STR_0070    :Altega Onda Fervojo
-STR_0071    :Turno-Falo
+STR_0063    :Miniaturaj helikopteroj
+STR_0064    :Kuŝiĝanta onda fervojo
+STR_0065    :Pendita monorelo
+STR_0066    :Nekonata atrakcio (40)
+STR_0067    :Posteniĝanta onda fervojo
+STR_0068    :Ĉe-kore ruliĝanta onda fervojo
+STR_0069    :Miniatura golfo
+STR_0070    :Altega onda fervojo
+STR_0071    :Turno-falo
 STR_0072    :Flugantaj Nifoj
-STR_0073    :Malrekta Domo
-STR_0074    :Monorelaj Bicikloj
-STR_0075    :Kompakta Inversigita Onda Fervojo
-STR_0076    :Akva Onda Fervojo
-STR_0077    :Aerofunkciigita Vertikala Onda Fervojo
-STR_0078    :Inversigita Onda Fervojo kun Harpingloformaj Kurboj
-STR_0079    :Magia Tapiŝo
+STR_0073    :Malrekta domo
+STR_0074    :Monorelaj bicikloj
+STR_0075    :Kompakta inversigita onda fervojo
+STR_0076    :Akva onda fervojo
+STR_0077    :Aerofunkciigita vertikala onda fervojo
+STR_0078    :Inversigita onda fervojo kun harpingloformaj kurboj
+STR_0079    :Magia tapiŝo
 STR_0080    :Submarŝiprajdo
 STR_0081    :Riverflosoj
 STR_0083    :Centrifugilo
-STR_0088    :Inversigita Lanĉita Onda Fervojo
-STR_0089    :Miniatura Onda Fervojo
+STR_0088    :Inversigita lanĉita onda fervojo
+STR_0089    :Miniatura onda fervojo
 STR_0090    :Minrajdo
-STR_0092    :Onda Fervojo Lanĉita per Linearaj Induktaj Motoroj
-STR_0093    :Hibrida Onda Fervojo
-STR_0094    :Onda Fervojo kun Unuopa Relo
-STR_0095    :Alpa Onda Fervojo
-STR_0096    :Klasika Ligna Onda Fervojo
-STR_0097    :Klasika Staranta Onda Fervojo
-STR_0098    :Onda Fervojo Lanĉita per Linearaj Sinkronaj Motoroj
-STR_0099    :Klasika Ligna Kurboplena Onda Fervojo
+STR_0092    :Onda fervojo lanĉita per linearaj induktaj motoroj
+STR_0093    :Hibrida onda fervojo
+STR_0094    :Unurela onda fervojo
+STR_0095    :Alpeca onda fervojo
+STR_0096    :Klasika ligna onda fervojo
+STR_0097    :Klasika staranta onda fervojo
+STR_0098    :Onda fervojo lanĉita per linearaj sinkronaj motoroj
+STR_0099    :Klasika ligna kurboplena onda fervojo
 STR_0512    :Onda fervojo kompakta kun helikforma lifto kaj glataj kurboplenaj malleviĝoj.
 STR_0513    :Onda fervojo kun lopoj, sur kiun la rajdantoj rajdas starante
 STR_0514    :Trajnoj penditaj sub la trako de la onda fervojo svingiĝas flanken ĉe anguloj
@@ -258,13 +258,13 @@ STR_0878    :Tro alte!
 STR_0879    :Ne eblas malaltigi teron ĉi tie…
 STR_0880    :Ne eblas altigi teron ĉi tie…
 STR_0881    :Objekto obstrukcas
-STR_0882    :Ŝargi Ludon
-STR_0883    :Konservi Ludon
-STR_0884    :Ŝargi Pejzaĝon
-STR_0885    :Konservi Pejzaĝon
-STR_0887    :Forlasi Scenaroredaktilon
-STR_0888    :Forlasi Trakdesegnilon
-STR_0889    :Forlasi Administrilon de Trakdesegnaĵoj
+STR_0882    :Ŝargi ludon
+STR_0883    :Konservi ludon
+STR_0884    :Ŝargi pejzaĝon
+STR_0885    :Konservi pejzaĝon
+STR_0887    :Forlasi scenaroredaktilon
+STR_0888    :Forlasi trakdesegnilon
+STR_0889    :Forlasi administrilon de trakdesegnaĵoj
 STR_0891    :Ekrankopii
 STR_0892    :Ekrankopio estis konservita al la disko kiel ‘{STRINGID}’
 STR_0893    :Malsukcesis konservi ekrankopion!
@@ -282,8 +282,8 @@ STR_0904    :Maldekstra kurbo (granda radiuso)
 STR_0905    :Dekstra kurbo (granda radiuso)
 STR_0906    :Rekta trako
 STR_0907    :Dekliveco
-STR_0908    :Ruliĝoj/Turnkliniĝoj
-STR_0909    :Direkto de Seĝoj
+STR_0908    :Ruliĝoj/turnkliniĝoj
+STR_0909    :Direkto de seĝoj
 STR_0910    :Ruliĝi por maldekstra kurbo
 STR_0911    :Ruliĝi por dekstra kurbo
 STR_0912    :Ne ruliĝi
@@ -303,31 +303,31 @@ STR_0925    :Kreska helico
 STR_0926    :Ne eblas forigi tion…
 STR_0927    :Ne eblas konstrui tion ĉi tie…
 STR_0928    :Ĉenlifto, por tiri ĉarojn sur kreskaj deklivoj
-STR_0929    :‘S’ Kurbo (maldekstre)
-STR_0930    :‘S’ Kurbo (dekstre)
-STR_0931    :Vertikala Lopo (maldekstre)
-STR_0932    :Vertikala Lopo (dekstre)
+STR_0929    :‘S’-forma kurbo (maldekstre)
+STR_0930    :‘S’-forma kurbo (dekstre)
+STR_0931    :Vertikala lopo (maldekstre)
+STR_0932    :Vertikala lopo (dekstre)
 STR_0933    :Unue altigi aŭ malaltigi teron
 STR_0934    :Enirejo de atrakcio obstrukcas
 STR_0935    :Elirejo de atrakcio obstrukcas
 STR_0936    :Parkenirejo obstrukcas
 STR_0937    :Vidi agordojn
 STR_0938    :Agordi altecon kaj deklivecon de tero
-STR_0939    :Subtera/Interna Vido
-STR_0940    :Kaŝi Bazan Teron
-STR_0941    :Kaŝi Vertikalajn Facojn
-STR_0942    :Travideblaj Atrakcioj
-STR_0943    :Travidebla Pejzaĝo
+STR_0939    :Subtera/interna vido
+STR_0940    :Kaŝi bazan teron
+STR_0941    :Kaŝi vertikalajn facojn
+STR_0942    :Travideblaj atrakcioj
+STR_0943    :Travidebla pejzaĝo
 STR_0944    :Konservi
-STR_0945    :Ne Konservi
+STR_0945    :Ne konservi
 STR_0946    :Nuligi
-STR_0947    :Konservi ĉi tiun antaŭ ol ŝargado?
-STR_0948    :Konservi ĉi tiun antaŭ ol forlasado?
-STR_0949    :Konservi ĉi tiun antaŭ ol forlasado?
-STR_0950    :Ŝargi Ludon
-STR_0951    :Forlasi Ludon
-STR_0952    :Forlasi Ludon
-STR_0953    :Ŝargi Pejzaĝo
+STR_0947    :Ĉu konservi ĉi tiun antaŭ ol ŝargado?
+STR_0948    :Ĉu konservi ĉi tiun antaŭ ol forlasado?
+STR_0949    :Ĉu konservi ĉi tiun antaŭ ol forlasado?
+STR_0950    :Ŝargi ludon
+STR_0951    :Forlasi ludon
+STR_0952    :Forlasi ludon
+STR_0953    :Ŝargi pejzaĝon
 STR_0955    :Elekti direkton de seĝoj ĉe ĉi tiu parto de trako
 STR_0956    :-180°
 STR_0957    :-135°
@@ -348,15 +348,15 @@ STR_0971    :+495°
 STR_0972    :Nuligi
 STR_0973    :Daŭrigi
 STR_0974    :Atrakcioj
-STR_0975    :Vendejoj kaj Budoj
-STR_0976    :Necesejoj kaj Informokioskoj
-STR_0977    :Novaj Transport-Atrakcioj
-STR_0978    :Novaj Mildaj Atrakcioj
-STR_0979    :Novaj Ondaj Fervojoj
-STR_0980    :Novaj Ekscitaj Atrakcioj
-STR_0981    :Novaj Akvo-Atrakcioj
-STR_0982    :Novaj Vendejoj k Budoj
-STR_0983    :Esplorado k Disvolvado
+STR_0975    :Vendejoj kaj budoj
+STR_0976    :Necesejoj kaj informokioskoj
+STR_0977    :Novaj transport-atrakcioj
+STR_0978    :Novaj mildaj atrakcioj
+STR_0979    :Novaj ondaj fervojoj
+STR_0980    :Novaj ekscitaj atrakcioj
+STR_0981    :Novaj akvo-atrakcioj
+STR_0982    :Novaj vendejoj k budoj
+STR_0983    :Esplorado k disvolvado
 STR_0984    :{WINDOW_COLOUR_2}▲{BLACK}  {CURRENCY2DP}
 STR_0985    :{WINDOW_COLOUR_2}▼{BLACK}  {CURRENCY2DP}
 STR_0986    :{BLACK}{CURRENCY2DP}
@@ -398,7 +398,7 @@ STR_1021    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_1024    :Po {COMMA16} ĉaro por trajno
 STR_1025    :Po {COMMA16} ĉaroj por trajno
 STR_1026    :Staciplatformo estas tro longa!
-STR_1027    :Trovi ĉi tion en Ĉefa Vido
+STR_1027    :Trovi ĉi tion en ĉefa vido
 STR_1028    :Ekster bordoj de mapo!
 STR_1029    :Ne eblas konstrui ĉi tion kaj subakve kaj superakve!
 STR_1030    :Eblas konstrui ĉi tion nur subakve!
@@ -407,23 +407,23 @@ STR_1032    :Eblas konstrui ĉi tion nur sur akvo!
 STR_1033    :Eblas konstrui ĉi tion nur surtere!
 STR_1034    :Eblas konstrui ĉi tion nur sur tero!
 STR_1035    :La loka aŭtoritato ne permesas konstruadon pli alta ol arbalteco!
-STR_1036    :Ŝargi Ludon
-STR_1037    :Ŝargi Pejzaĝon
+STR_1036    :Ŝargi ludon
+STR_1037    :Ŝargi pejzaĝon
 STR_1038    :Ŝanĝi konservitan ludon al scenaro
 STR_1039    :Instali novan trakdesegnaĵon
-STR_1040    :Konservi Ludon
-STR_1041    :Konservi Scenaron
-STR_1042    :Konservi Pejzaĝon
-STR_1043    :OpenRCT2 Ludo Konservita
-STR_1044    :OpenRCT2 Dosiero de Scenaro
-STR_1045    :OpenRCT2 Dosiero de Pejzaĝo
-STR_1046    :OpenRCT2 Dosiero de Trakdesegnaĵo
+STR_1040    :Konservi ludon
+STR_1041    :Konservi scenaron
+STR_1042    :Konservi pejzaĝon
+STR_1043    :Konservita OpenRCT2-ludo
+STR_1044    :Dosiero de OpenRCT2-scenaro
+STR_1045    :Dosiero de OpenRCT2-pejzaĝo
+STR_1046    :Dosiero de OpenRCT2-trakdesegnaĵo
 STR_1047    :Konservado de ludo malsukcesis!
 STR_1048    :Konservado de scenaro malsukcesis!
 STR_1049    :Konservado de pejzaĝo malsukcesis!
 STR_1050    :Malsukcesis ŝargi…{NEWLINE}La dosiero enhavas nevalidajn datumojn!
-STR_1051    :Nevideblaj Apogiloj
-STR_1052    :Nevideblaj Homoj
+STR_1051    :Nevideblaj apogiloj
+STR_1052    :Nevideblaj homoj
 STR_1053    :Atrakcioj en parko
 STR_1054    :Nomi atrakcion
 STR_1055    :Nomi homon
@@ -445,7 +445,7 @@ STR_1070    :Po unu fojo por bileto
 STR_1071    :Po senlimaj fojoj por bileto
 STR_1072    :Labirinta reĝimo
 STR_1073    :Vetkura reĝimo
-STR_1074    :Doĝemoj-reĝimo
+STR_1074    :Reĝimo de kunfrapemaj aŭtetoj
 STR_1075    :Svingiĝanta reĝimo
 STR_1076    :Vendejbudo-reĝimo
 STR_1077    :Turnada reĝimo
@@ -522,9 +522,9 @@ STR_1149    :Duonan ŝarĝon
 STR_1150    :Tri-kvaronan ŝarĝon
 STR_1151    :Plenan ŝarĝon
 STR_1152    :Iom ajn ŝarĝon
-STR_1153    :Notoj de alteco sur Atrakcio-Trakoj
-STR_1154    :Notoj de alteco sur Tero
-STR_1155    :Notoj de alteco sur Trotuaroj
+STR_1153    :Notoj de alteco sur atrakcio-trakoj
+STR_1154    :Notoj de alteco sur tero
+STR_1155    :Notoj de alteco sur trotuaroj
 STR_1156    :{MOVE_X}{10}{STRING}
 STR_1157    :✓{MOVE_X}{10}{STRING}
 STR_1158    :Ne eblas forigi ĉi tion…
@@ -532,8 +532,8 @@ STR_1159    :Meti pejzaĝon, ĝardenojn, kaj aliajn akcesoraĵojn
 STR_1160    :Krei/redakti lagojn k akvon
 STR_1161    :Ne eblas meti tion ĉi tie…
 STR_1162    :{OUTLINE}{TOPAZ}{STRINGID}
-STR_1163    :{STRINGID}{NEWLINE}(Alklaku dekstre por Redakti)
-STR_1164    :{STRINGID}{NEWLINE}(Alklaku dekstre por Forigi)
+STR_1163    :{STRINGID}{NEWLINE}(Alklaku dekstre por redakti)
+STR_1164    :{STRINGID}{NEWLINE}(Alklaku dekstre por forigi)
 STR_1165    :{STRINGID} - {STRINGID} {COMMA16}
 STR_1166    :Ne eblas malaltigi akvonivelon ĉi tie…
 STR_1167    :Ne eblas altigi akvonivelon ĉi tie…
@@ -591,11 +591,11 @@ STR_1219    :{BLACK}-
 STR_1220    :Nur por eliri
 STR_1221    :Sen enirejo
 STR_1222    :Sen elirejo
-STR_1223    :Transport-Atrakcioj
-STR_1224    :Mildaj Atrakcioj
-STR_1225    :Ondaj Fervojoj
-STR_1226    :Ekscitaj Atrakcioj
-STR_1227    :Akvo-Atrakcioj
+STR_1223    :Transport-atrakcioj
+STR_1224    :Mildaj atrakcioj
+STR_1225    :Ondaj fervojoj
+STR_1226    :Ekscitaj atrakcioj
+STR_1227    :Akvo-atrakcioj
 STR_1228    :Vendejoj k Budoj
 STR_1229    :trajno
 STR_1230    :trajnoj
@@ -703,9 +703,9 @@ STR_1332    :{VELOCITY}
 STR_1333    :{STRINGID} - {STRINGID}{POP16}
 STR_1334    :{STRINGID} - {STRINGID} {COMMA16}
 STR_1335    :{STRINGID} - Enirejo{POP16}{POP16}
-STR_1336    :{STRINGID} - Enirejo de Stacio {POP16}{COMMA16}
+STR_1336    :{STRINGID} - Enirejo de stacio {POP16}{COMMA16}
 STR_1337    :{STRINGID} - Elirejo{POP16}{POP16}
-STR_1338    :{STRINGID} - Elirejo de Stacio {POP16}{COMMA16}
+STR_1338    :{STRINGID} - Elirejo de stacio {POP16}{COMMA16}
 STR_1339    :{BLACK}Neniuj testrezultoj ankoraŭ…
 STR_1340    :{WINDOW_COLOUR_2}Maks. rapideco: {BLACK}{VELOCITY}
 STR_1341    :{WINDOW_COLOUR_2}Daŭro de atrakcio: {BLACK}{STRINGID}{STRINGID}{STRINGID}{STRINGID}
@@ -732,25 +732,25 @@ STR_1361    :Ne eblas ŝanĝi rapidecon…
 STR_1362    :Ne eblas ŝanĝi rapidecon de lanĉo…
 STR_1363    :Tro alta por apogiloj!
 STR_1364    :Apogiloj de trako supera ne eblas esti etenditaj plu!
-STR_1365    :Ĉirkaŭtraka Ruliĝo (maldesktre)
-STR_1366    :Ĉirkaŭtraka Ruliĝo (dekstre)
-STR_1367    :Malgranda Duona Lopo
-STR_1368    :Duona Korktirilo (maldekstre)
-STR_1369    :Duona Korktirilo (dekstre)
-STR_1370    :Barelforma Ruliĝo (maldekstre)
-STR_1371    :Barelforma Ruliĝo (dekstre)
-STR_1372    :Lanĉanta Liftparto
-STR_1373    :Granda Duona Lopo (maldekstre)
-STR_1374    :Granda Duona Lopo (dekstre)
-STR_1375    :Supra Transportilo
-STR_1376    :Malsupra Transportilo
-STR_1377    :Ĉe-Kora Ruliĝo (maldekstre)
-STR_1378    :Ĉe-Kora Ruliĝo (dekstre)
+STR_1365    :Ĉirkaŭtraka ruliĝo (maldesktre)
+STR_1366    :Ĉirkaŭtraka ruliĝo (dekstre)
+STR_1367    :Malgranda duona lopo
+STR_1368    :Duona korktirilo (maldekstre)
+STR_1369    :Duona korktirilo (dekstre)
+STR_1370    :Barelforma ruliĝo (maldekstre)
+STR_1371    :Barelforma ruliĝo (dekstre)
+STR_1372    :Lanĉanta liftparto
+STR_1373    :Granda duona lopo (maldekstre)
+STR_1374    :Granda duona lopo (dekstre)
+STR_1375    :Supra transportilo
+STR_1376    :Malsupra transportilo
+STR_1377    :Ĉe-kora ruliĝo (maldekstre)
+STR_1378    :Ĉe-kora ruliĝo (dekstre)
 STR_1379    :Postenigilo (maldekstre)
 STR_1380    :Postenigilo (dekstre)
-STR_1381    :Kurba Liftparto (maldekstre)
-STR_1382    :Kurba Liftparto (dekstre)
-STR_1383    :Kvarona Lopo
+STR_1381    :Kurba liftparto (maldekstre)
+STR_1382    :Kurba liftparto (dekstre)
+STR_1383    :Kvarona lopo
 STR_1384    :{YELLOW}{STRINGID}
 STR_1385    :Aliaj trakokonfiguroj
 STR_1386    :Specialaĵoj…
@@ -776,16 +776,16 @@ STR_1405    :Speguli bildon
 STR_1406    :Baskuligi pejzaĝon (se disponebla)
 STR_1407    :{WINDOW_COLOUR_2}Konstrui ĉi tion…
 STR_1408    :{WINDOW_COLOUR_2}Kosto: {BLACK}{CURRENCY}
-STR_1409    :Platformo por Eniri/Eliri
-STR_1410    :Vertikala Turo
+STR_1409    :Enira/elira platformo
+STR_1410    :Vertikala turo
 STR_1411    :{STRINGID} obstrukcas
 STR_1412    :{WINDOW_COLOUR_3}Protokolado de datumoj ne disponeblas por ĉi tia atrakcio
 STR_1413    :{WINDOW_COLOUR_3}Protokolado de datumoj komenciĝos kiam la sekva {STRINGID} ekveturas el {STRINGID}
 STR_1414    :{BLACK}{DURATION}
 STR_1415    :{WINDOW_COLOUR_2}Rapideco
 STR_1416    :{WINDOW_COLOUR_2}Alteco
-STR_1417    :{WINDOW_COLOUR_2}Vertikala Graviteco
-STR_1418    :{WINDOW_COLOUR_2}Flanka Graviteco
+STR_1417    :{WINDOW_COLOUR_2}Vertikala graviteco
+STR_1418    :{WINDOW_COLOUR_2}Flanka graviteco
 STR_1419    :{BLACK}{VELOCITY}
 STR_1420    :{BLACK}{LENGTH}
 STR_1421    :{BLACK}{COMMA16}g
@@ -826,26 +826,26 @@ STR_1456    :{WINDOW_COLOUR_2}Kontanto elspezita: {BLACK}{CURRENCY2DP}
 STR_1457    :{WINDOW_COLOUR_2}Kontanto en poŝo: {BLACK}{CURRENCY2DP}
 STR_1458    :{WINDOW_COLOUR_2}Daŭro en parko: {BLACK}{REALTIME}
 STR_1459    :Trakstilo
-STR_1460    :‘U’-trakformo
-STR_1461    :‘O’-trakformo
+STR_1460    :‘U’-forma trako
+STR_1461    :‘O’-forma trako
 STR_1462    :Tro krute por liftparto
 STR_1463    :Gastoj
-STR_1464    :Duona Kreska Helico (malgranda)
-STR_1465    :Duona Kreska Helico (granda)
-STR_1466    :Duona Malkreska Helico (malgranda)
-STR_1467    :Duona Malkreska Helico (granda)
+STR_1464    :Duona kreska helico (malgranda)
+STR_1465    :Duona kreska helico (granda)
+STR_1466    :Duona malkreska helico (malgranda)
+STR_1467    :Duona malkreska helico (granda)
 STR_1468    :Dungitaro
 STR_1469    :Atrakcio devas havi staciojn ĉe ĝiaj komencejo kaj finejo
 STR_1470    :Stacio ne estas sufiĉe longa
 STR_1471    :{WINDOW_COLOUR_2}Rapideco:
 STR_1472    :Rapideco de ĉi tiu atrakcio
 STR_1473    :{WINDOW_COLOUR_2}Pritakso de eksciteco: {BLACK}{COMMA2DP32}  ({STRINGID})
-STR_1474    :{WINDOW_COLOUR_2}Pritakso de eksciteco: {BLACK}Ankoraŭ ne disponebla
+STR_1474    :{WINDOW_COLOUR_2}Pritakso de eksciteco: {BLACK}ankoraŭ ne disponebla
 STR_1475    :{WINDOW_COLOUR_2}Pritakso de intenseco: {BLACK}{COMMA2DP32}  ({STRINGID})
-STR_1476    :{WINDOW_COLOUR_2}Pritakso de intenseco: {BLACK}Ankoraŭ ne disponebla
+STR_1476    :{WINDOW_COLOUR_2}Pritakso de intenseco: {BLACK}ankoraŭ ne disponebla
 STR_1477    :{WINDOW_COLOUR_2}Pritakso de intenseco: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
 STR_1478    :{WINDOW_COLOUR_2}Pritakso de naŭzo: {BLACK}{COMMA2DP32}  ({STRINGID})
-STR_1479    :{WINDOW_COLOUR_2}Pritakso de naŭzo: {BLACK}Ankoraŭ ne disponebla
+STR_1479    :{WINDOW_COLOUR_2}Pritakso de naŭzo: {BLACK}ankoraŭ ne disponebla
 STR_1480    :“Mi ne havas sufiĉe da mono por rajdi sur {STRINGID}”
 STR_1481    :“Mi elspezis mian tutan monon”
 STR_1482    :“Mi sentas min malsana”
@@ -1037,15 +1037,15 @@ STR_1669    :{WINDOW_COLOUR_2}Kontento: {BLACK}{COMMA16}%
 STR_1670    :{WINDOW_COLOUR_2}Totalaj klientoj: {BLACK}{COMMA32}
 STR_1671    :{WINDOW_COLOUR_2}Totala profito: {BLACK}{CURRENCY2DP}
 STR_1672    :Bremsoj
-STR_1673    :Turnadoreĝimo-Baskulo
+STR_1673    :Turnadoreĝimo-baskulo
 STR_1674    :Rapideco de bremsoj
 STR_1676    :Agordi rapidlimon de bremsoj
 STR_1677    :{WINDOW_COLOUR_2}Populareco: {BLACK}Nekonata
 STR_1678    :{WINDOW_COLOUR_2}Populareco: {BLACK}{COMMA16}%
-STR_1679    :Kvarona Kreska Helico (maldekstre)
-STR_1680    :Kvarona Kreska Helico (dekstre)
-STR_1681    :Kvarona Malkreska Helico (maldekstre)
-STR_1682    :Kvarona Malkreska Helico (dekstre)
+STR_1679    :Kvarona kreska helico (maldekstre)
+STR_1680    :Kvarona kreska helico (dekstre)
+STR_1681    :Kvarona malkreska helico (maldekstre)
+STR_1682    :Kvarona malkreska helico (dekstre)
 STR_1683    :Bazdimensioj 2 x 2
 STR_1684    :Bazdimensioj 4 x 4
 STR_1685    :Bazdimensioj 2 x 4
@@ -1058,15 +1058,15 @@ STR_1691    :{WINDOW_COLOUR_2}  Kosto: {BLACK}{CURRENCY}
 STR_1692    :{WINDOW_COLOUR_2}  Kosto: {BLACK}almenaŭ {CURRENCY}
 STR_1693    :Gastoj
 STR_1694    :Dungitaro
-STR_1695    :Enspezoj kaj Elspezoj
+STR_1695    :Enspezoj kaj elspezoj
 STR_1696    :Klientinformo
 STR_1697    :Ne eblas meti ĉi tion ĉe atendovicoj
 STR_1698    :Eblas meti ĉi tion nur ĉe atendovicoj
 STR_1699    :Tro da homoj en ludo
-STR_1700    :Dungi novan Faktoton
-STR_1701    :Dungi novan Mekanikiston
-STR_1702    :Dungi novan Gardiston
-STR_1703    :Dungi novan Amuziston
+STR_1700    :Dungi novan faktoton
+STR_1701    :Dungi novan mekanikiston
+STR_1702    :Dungi novan gardiston
+STR_1703    :Dungi novan amuziston
 STR_1704    :Ne eblas dungi novan dungiton…
 STR_1705    :Maldungi ĉi tiun dungiton
 STR_1706    :Movi ĉi tiun homon al nova loko
@@ -1081,7 +1081,7 @@ STR_1714    :{INLINE_SPRITE}{249}{19}{00}{00}{WINDOW_COLOUR_2}Malplenigas rubujo
 STR_1715    :{INLINE_SPRITE}{250}{19}{00}{00}{WINDOW_COLOUR_2}Falĉas herbon
 STR_1716    :Nevalida nomo de parko
 STR_1717    :Ne eblas renomi parkon…
-STR_1718    :Nomo de Parko
+STR_1718    :Nomo de parko
 STR_1719    :Entajpu nomon de parko:
 STR_1720    :Nomi parkon
 STR_1721    :Parko fermita
@@ -1173,9 +1173,9 @@ STR_1831    :Daŭro de vicatendado
 STR_1832    :Fidindo
 STR_1833    :Periodo de nefunkciado
 STR_1834    :Plej ŝatataj de tiom da gastoj
-STR_1835    :Populareco: Nekonata
+STR_1835    :Populareco: nekonata
 STR_1836    :Populareco: {COMMA16}%
-STR_1837    :Kontento: Nekonata
+STR_1837    :Kontento: nekonata
 STR_1838    :Kontento: {COMMA16}%
 STR_1839    :Fidindo: {COMMA16}%
 STR_1840    :Periodo de nefunkciado: {COMMA16}%
@@ -1211,8 +1211,8 @@ STR_1869    :{WINDOW_COLOUR_2}Nombro de turnadoj:
 STR_1870    :Nombro de plenaj turnadoj
 STR_1873    :{WINDOW_COLOUR_2}Enspezo: {BLACK}po {CURRENCY2DP} por horo
 STR_1874    :{WINDOW_COLOUR_2}Profito: {BLACK}po {CURRENCY2DP} por horo
-STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Inspekti Atrakciojn
-STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Ripari Atrakciojn
+STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Inspekti atrakciojn
+STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Ripari atrakciojn
 STR_1878    :{WINDOW_COLOUR_2}Inspekto:
 STR_1879    :Ĉiu 10 minutoj
 STR_1880    :Ĉiu 20 minutoj
@@ -1279,57 +1279,57 @@ STR_1945    :Montri komandojn kaj agordojn de ĉi tiu dungito
 STR_1946    :Elekti kostumon de ĉi tiu amuzisto
 STR_1947    :Montri la zonojn patrolatajn de la elektita dungitotipo, kaj trovi la plej proksiman dungiton
 STR_1948    :Dungi novan dungiton de la elektita tipo
-STR_1949    :Resumo de Financoj
-STR_1950    :Diagramo de Financoj
-STR_1951    :Diagramo de Parkvaloro
-STR_1952    :Diagramo de Profito
+STR_1949    :Resumo de financoj
+STR_1950    :Diagramo de financoj
+STR_1951    :Diagramo de parkvaloro
+STR_1952    :Diagramo de profito
 STR_1953    :Vendado
 STR_1954    :Financado de Esplorado
 STR_1955    :{WINDOW_COLOUR_2}Nombro de cirkvitoj:
 STR_1956    :Nombro de cirkvitoj de trako po rajdanto
 STR_1958    :{COMMA16}
 STR_1959    :Ne eblas ŝanĝi nombron de cirkvitoj…
-STR_1960    :{WINDOW_COLOUR_2}Prezo de Balono:
-STR_1961    :{WINDOW_COLOUR_2}Prezo de Pluŝludilo:
-STR_1962    :{WINDOW_COLOUR_2}Prezo de Mapo de Parko:
-STR_1963    :{WINDOW_COLOUR_2}Prezo de Foto sur Atrakcio:
-STR_1964    :{WINDOW_COLOUR_2}Prezo de Ombrelo:
-STR_1965    :{WINDOW_COLOUR_2}Prezo de Trinkaĵo:
-STR_1966    :{WINDOW_COLOUR_2}Prezo de Burgero:
-STR_1967    :{WINDOW_COLOUR_2}Prezo de Fritoj:
-STR_1968    :{WINDOW_COLOUR_2}Prezo de Glaciaĵo:
-STR_1969    :{WINDOW_COLOUR_2}Prezo de Sukerŝpinaĵo:
+STR_1960    :{WINDOW_COLOUR_2}Prezo de balono:
+STR_1961    :{WINDOW_COLOUR_2}Prezo de pluŝludilo:
+STR_1962    :{WINDOW_COLOUR_2}Prezo de mapo de parko:
+STR_1963    :{WINDOW_COLOUR_2}Prezo de foto sur atrakcio:
+STR_1964    :{WINDOW_COLOUR_2}Prezo de ombrelo:
+STR_1965    :{WINDOW_COLOUR_2}Prezo de trinkaĵo:
+STR_1966    :{WINDOW_COLOUR_2}Prezo de burgero:
+STR_1967    :{WINDOW_COLOUR_2}Prezo de fritoj:
+STR_1968    :{WINDOW_COLOUR_2}Prezo de glaciaĵo:
+STR_1969    :{WINDOW_COLOUR_2}Prezo de sukerŝpinaĵo:
 STR_1970    :{WINDOW_COLOUR_2}
 STR_1971    :{WINDOW_COLOUR_2}
 STR_1972    :{WINDOW_COLOUR_2}
-STR_1973    :{WINDOW_COLOUR_2}Prezo de Pico:
+STR_1973    :{WINDOW_COLOUR_2}Prezo de pico:
 STR_1974    :{WINDOW_COLOUR_2}
-STR_1975    :{WINDOW_COLOUR_2}Prezo de Krevmaizo:
-STR_1976    :{WINDOW_COLOUR_2}Prezo de Kolbasobulko:
-STR_1977    :{WINDOW_COLOUR_2}Prezo de Tentaklo:
-STR_1978    :{WINDOW_COLOUR_2}Prezo de Ĉapelo:
-STR_1979    :{WINDOW_COLOUR_2}Prezo de Sukerpomo:
+STR_1975    :{WINDOW_COLOUR_2}Prezo de krevmaizo:
+STR_1976    :{WINDOW_COLOUR_2}Prezo de kolbasobulko:
+STR_1977    :{WINDOW_COLOUR_2}Prezo de tentaklo:
+STR_1978    :{WINDOW_COLOUR_2}Prezo de ĉapelo:
+STR_1979    :{WINDOW_COLOUR_2}Prezo de sukerpomo:
 STR_1980    :{WINDOW_COLOUR_2}Prezo de T-ĉemizo:
-STR_1981    :{WINDOW_COLOUR_2}Prezo de Benjeto:
-STR_1982    :{WINDOW_COLOUR_2}Prezo de Kafo:
+STR_1981    :{WINDOW_COLOUR_2}Prezo de benjeto:
+STR_1982    :{WINDOW_COLOUR_2}Prezo de kafo:
 STR_1983    :{WINDOW_COLOUR_2}
-STR_1984    :{WINDOW_COLOUR_2}Prezo de Fritita Kokaĵo:
-STR_1985    :{WINDOW_COLOUR_2}Prezo de Limonado:
+STR_1984    :{WINDOW_COLOUR_2}Prezo de fritita kokaĵo:
+STR_1985    :{WINDOW_COLOUR_2}Prezo de limonado:
 STR_1986    :{WINDOW_COLOUR_2}
 STR_1987    :{WINDOW_COLOUR_2}
 STR_1988    :Balono
 STR_1989    :Pluŝludilo
-STR_1990    :Mapo de Parko
-STR_1991    :Foto sur Atrakcio
+STR_1990    :Mapo de parko
+STR_1991    :Foto sur atrakcio
 STR_1992    :Ombrelo
 STR_1993    :Trinkaĵo
 STR_1994    :Burgero
 STR_1995    :Fritoj
 STR_1996    :Glaciaĵo
 STR_1997    :Sukerŝpinaĵo
-STR_1998    :Malplena Ladskatolo
+STR_1998    :Malplena ladskatolo
 STR_1999    :Rubo
-STR_2000    :Malplena Burgerujo
+STR_2000    :Malplena burgerujo
 STR_2001    :Pico
 STR_2002    :Kupono
 STR_2003    :Krevmaizo
@@ -1337,27 +1337,27 @@ STR_2004    :Kolbasobulko
 STR_2005    :Tentaklo
 STR_2006    :Ĉapelo
 STR_2007    :Sukerpomo
-STR_2008    :T-Ĉemizo
+STR_2008    :T-ĉemizo
 STR_2009    :Benjeto
 STR_2010    :Kafo
-STR_2011    :Malplena Taso
-STR_2012    :Fritita Kokaĵo
+STR_2011    :Malplena taso
+STR_2012    :Fritita kokaĵo
 STR_2013    :Limonado
-STR_2014    :Malplena Skatolo
-STR_2015    :Malplena Botelo
+STR_2014    :Malplena skatolo
+STR_2015    :Malplena botelo
 STR_2016    :Balonoj
 STR_2017    :Pluŝludiloj
-STR_2018    :Mapoj de Parko
-STR_2019    :Fotoj sur Atrakcio
+STR_2018    :Mapoj de parko
+STR_2019    :Fotoj sur atrakcio
 STR_2020    :Ombreloj
 STR_2021    :Trinkaĵoj
 STR_2022    :Burgeroj
 STR_2023    :Fritoj
 STR_2024    :Glaciaĵoj
 STR_2025    :Sukerŝpinaĵoj
-STR_2026    :Malplenaj Ladskatoloj
+STR_2026    :Malplenaj ladskatoloj
 STR_2027    :Ruboj
-STR_2028    :Malplenaj Burgerujoj
+STR_2028    :Malplenaj burgerujoj
 STR_2029    :Picoj
 STR_2030    :Kuponoj
 STR_2031    :Krevmaizoj
@@ -1365,42 +1365,42 @@ STR_2032    :Kolbasobulkoj
 STR_2033    :Tentakloj
 STR_2034    :Ĉapeloj
 STR_2035    :Sukerpomoj
-STR_2036    :T-Ĉemizoj
+STR_2036    :T-ĉemizoj
 STR_2037    :Benjetoj
 STR_2038    :Kafoj
-STR_2039    :Malplenaj Tasoj
-STR_2040    :Frititaj Kokaĵoj
+STR_2039    :Malplenaj tasoj
+STR_2040    :Frititaj kokaĵoj
 STR_2041    :Limonadoj
-STR_2042    :Malplenaj Skatoloj
-STR_2043    :Malplenaj Boteloj
+STR_2042    :Malplenaj skatoloj
+STR_2043    :Malplenaj boteloj
 STR_2044    :Balonon
 STR_2045    :Pluŝludilon
-STR_2046    :Mapon de Parko
-STR_2047    :Foton sur Atrakcio
+STR_2046    :Mapon de parko
+STR_2047    :Foton sur atrakcio
 STR_2048    :Ombrelon
 STR_2049    :Trinkaĵon
 STR_2050    :Burgeron
-STR_2051    :iom da Fritoj
+STR_2051    :iom da fritoj
 STR_2052    :Glaciaĵon
-STR_2053    :iom da Sukerŝpinaĵo
-STR_2054    :Malplenan Ladskatolon
-STR_2055    :iom da Rubo
-STR_2056    :Malplenan Burgerujon
+STR_2053    :iom da sukerŝpinaĵo
+STR_2054    :Malplenan ladskatolon
+STR_2055    :iom da rubo
+STR_2056    :Malplenan burgerujon
 STR_2057    :Picon
 STR_2058    :Kuponon
-STR_2059    :iom da Krevmaizo
+STR_2059    :iom da krevmaizo
 STR_2060    :Kolbasobulkon
 STR_2061    :Tentaklon
 STR_2062    :Ĉapelon
 STR_2063    :Sukerpomon
-STR_2064    :T-Ĉemizon
+STR_2064    :T-ĉemizon
 STR_2065    :Benjeton
 STR_2066    :Kafon
-STR_2067    :Malplenan Tason
-STR_2068    :iom da Fritita Kokaĵo
-STR_2069    :iom da Limonado
-STR_2070    :Malplenan Skatolon
-STR_2071    :Malplenan Botelon
+STR_2067    :Malplenan tason
+STR_2068    :iom da fritita kokaĵo
+STR_2069    :iom da limonado
+STR_2070    :Malplenan skatolon
+STR_2071    :Malplenan botelon
 STR_2072    :Balonon de “{STRINGID}”
 STR_2073    :Pluŝludilon de “{STRINGID}”
 STR_2074    :Mapon de {STRINGID}
@@ -1411,9 +1411,9 @@ STR_2078    :Burgeron
 STR_2079    :Fritojn
 STR_2080    :Glaciaĵon
 STR_2081    :Sukerŝpinaĵon
-STR_2082    :Malplenan Ladskatolon
+STR_2082    :Malplenan ladskatolon
 STR_2083    :Rubon
-STR_2084    :Malplenan Burgerujon
+STR_2084    :Malplenan burgerujon
 STR_2085    :Picon
 STR_2086    :Kuponon por {STRINGID}
 STR_2087    :Krevmaizon
@@ -1421,109 +1421,109 @@ STR_2088    :Kolbasobulkon
 STR_2089    :Tentaklon
 STR_2090    :Ĉapelon de “{STRINGID}”
 STR_2091    :Sukerpomon
-STR_2092    :T-Ĉemizon de “{STRINGID}”
+STR_2092    :T-ĉemizon de “{STRINGID}”
 STR_2093    :Benjeton
 STR_2094    :Kafon
-STR_2095    :Malplenan Tason
-STR_2096    :Frititan Kokaĵon
+STR_2095    :Malplenan tason
+STR_2096    :Frititan kokaĵon
 STR_2097    :Limonadon
-STR_2098    :Malplenan Skatolon
-STR_2099    :Malplenan Botelon
-STR_2103    :{WINDOW_COLOUR_2}Prezo de Breco:
-STR_2104    :{WINDOW_COLOUR_2}Prezo de Varma Ĉokolado:
-STR_2105    :{WINDOW_COLOUR_2}Prezo de Glacia Teo:
-STR_2106    :{WINDOW_COLOUR_2}Prezo de Funelkuko:
-STR_2107    :{WINDOW_COLOUR_2}Prezo de Sunokulvitroj:
-STR_2108    :{WINDOW_COLOUR_2}Prezo de Bovaĵaj Nudeloj:
-STR_2109    :{WINDOW_COLOUR_2}Prezo de Frititaj Riznudeloj:
-STR_2110    :{WINDOW_COLOUR_2}Prezo de Huntuna Supo:
-STR_2111    :{WINDOW_COLOUR_2}Prezo de Knela Supo:
-STR_2112    :{WINDOW_COLOUR_2}Prezo de Fruktosuko:
-STR_2113    :{WINDOW_COLOUR_2}Prezo de Sojlakto:
-STR_2114    :{WINDOW_COLOUR_2}Prezo de Suĝongvao:
-STR_2115    :{WINDOW_COLOUR_2}Prezo de Subsandviĉo:
-STR_2116    :{WINDOW_COLOUR_2}Prezo de Kekso:
+STR_2098    :Malplenan skatolon
+STR_2099    :Malplenan botelon
+STR_2103    :{WINDOW_COLOUR_2}Prezo de breco:
+STR_2104    :{WINDOW_COLOUR_2}Prezo de varma ĉokolado:
+STR_2105    :{WINDOW_COLOUR_2}Prezo de glacia teo:
+STR_2106    :{WINDOW_COLOUR_2}Prezo de funelkuko:
+STR_2107    :{WINDOW_COLOUR_2}Prezo de sunokulvitroj:
+STR_2108    :{WINDOW_COLOUR_2}Prezo de bovaĵaj nudeloj:
+STR_2109    :{WINDOW_COLOUR_2}Prezo de frititaj riznudeloj:
+STR_2110    :{WINDOW_COLOUR_2}Prezo de huntuna supo:
+STR_2111    :{WINDOW_COLOUR_2}Prezo de knela supo:
+STR_2112    :{WINDOW_COLOUR_2}Prezo de fruktosuko:
+STR_2113    :{WINDOW_COLOUR_2}Prezo de sojlakto:
+STR_2114    :{WINDOW_COLOUR_2}Prezo de suĝongvao:
+STR_2115    :{WINDOW_COLOUR_2}Prezo de subsandviĉo:
+STR_2116    :{WINDOW_COLOUR_2}Prezo de kekso:
 STR_2117    :{WINDOW_COLOUR_2}
 STR_2118    :{WINDOW_COLOUR_2}
 STR_2119    :{WINDOW_COLOUR_2}
-STR_2120    :{WINDOW_COLOUR_2}Prezo de Rostita Kolbaso:
+STR_2120    :{WINDOW_COLOUR_2}Prezo de rostita kolbaso:
 STR_2121    :{WINDOW_COLOUR_2}
 STR_2125    :Breco
-STR_2126    :Varma Ĉokolado
-STR_2127    :Glacia Teo
+STR_2126    :Varma ĉokolado
+STR_2127    :Glacia teo
 STR_2128    :Funelkuko
 STR_2129    :Sunokulvitroj
-STR_2130    :Bovaĵaj Nudeloj
-STR_2131    :Frititaj Riznudeloj
-STR_2132    :Huntuna Supo
-STR_2133    :Knela Supo
+STR_2130    :Bovaĵaj nudeloj
+STR_2131    :Frititaj riznudeloj
+STR_2132    :Huntuna supo
+STR_2133    :Knela supo
 STR_2134    :Fruktosuko
 STR_2135    :Sojlakto
 STR_2136    :Suĝongvao
 STR_2137    :Subsandviĉo
 STR_2138    :Kekso
-STR_2139    :Malplena Bovlo
-STR_2140    :Malplena Trinkaĵoskatolo
-STR_2141    :Malplena Sukotaso
-STR_2142    :Rostita Kolbaso
-STR_2143    :Malplena Bovlo
+STR_2139    :Malplena bovlo
+STR_2140    :Malplena trinkaĵoskatolo
+STR_2141    :Malplena sukotaso
+STR_2142    :Rostita kolbaso
+STR_2143    :Malplena bovlo
 STR_2147    :Brecoj
-STR_2148    :Varmaj Ĉokoladoj
-STR_2149    :Glaciaj Teoj
+STR_2148    :Varmaj ĉokoladoj
+STR_2149    :Glaciaj teoj
 STR_2150    :Funelkukoj
 STR_2151    :Sunokulvitroj
-STR_2152    :Bovaĵaj Nudeloj
-STR_2153    :Frititaj Riznudeloj
-STR_2154    :Huntunaj Supoj
-STR_2155    :Knelaj Supoj
+STR_2152    :Bovaĵaj nudeloj
+STR_2153    :Frititaj riznudeloj
+STR_2154    :Huntunaj supoj
+STR_2155    :Knelaj supoj
 STR_2156    :Fruktosukoj
 STR_2157    :Sojlaktoj
 STR_2158    :Suĝongvaoj
 STR_2159    :Subsandviĉoj
 STR_2160    :Keksoj
-STR_2161    :Malplenaj Bovloj
-STR_2162    :Malplenaj Trinkaĵoskatoloj
-STR_2163    :Malplenaj Sukotasoj
-STR_2164    :Rostitaj Kolbasoj
-STR_2165    :Malplenaj Bovloj
+STR_2161    :Malplenaj bovloj
+STR_2162    :Malplenaj trinkaĵoskatoloj
+STR_2163    :Malplenaj sukotasoj
+STR_2164    :Rostitaj kolbasoj
+STR_2165    :Malplenaj bovloj
 STR_2169    :Brecon
-STR_2170    :Varman Ĉokoladon
-STR_2171    :Glacian Teon
+STR_2170    :Varman ĉokoladon
+STR_2171    :Glacian teon
 STR_2172    :Funelkukon
-STR_2173    :paron da Sunokulvitroj
-STR_2174    :iom da Bovaĵaj Nudeloj
-STR_2175    :iom da Frititaj Riznudeloj
-STR_2176    :iom da Huntuna Supo
-STR_2177    :iom da Knela Supo
+STR_2173    :paron da sunokulvitroj
+STR_2174    :iom da bovaĵaj nudeloj
+STR_2175    :iom da frititaj riznudeloj
+STR_2176    :iom da huntuna supo
+STR_2177    :iom da knela supo
 STR_2178    :Fruktosukon
-STR_2179    :iom da Sojlakto
-STR_2180    :iom da Suĝongvao
+STR_2179    :iom da sojlakto
+STR_2180    :iom da suĝongvao
 STR_2181    :Subsandviĉon
 STR_2182    :Kekson
-STR_2183    :Malplenan Bovlon
-STR_2184    :Malplenan Trinkaĵoskatolon
-STR_2185    :Malplenan Sukotason
-STR_2186    :Rostitan Kolbason
-STR_2187    :Malplenan Bovlon
+STR_2183    :Malplenan bovlon
+STR_2184    :Malplenan trinkaĵoskatolon
+STR_2185    :Malplenan sukotason
+STR_2186    :Rostitan kolbason
+STR_2187    :Malplenan bovlon
 STR_2191    :Brecon
-STR_2192    :Varman Ĉokoladon
-STR_2193    :Glacian Teon
+STR_2192    :Varman ĉokoladon
+STR_2193    :Glacian teon
 STR_2194    :Funelkukon
 STR_2195    :Sunokulvitrojn
-STR_2196    :Bovaĵajn Nudelojn
-STR_2197    :Frititajn Riznudelojn
-STR_2198    :Huntunan Supon
-STR_2199    :Knelan Supon
+STR_2196    :Bovaĵajn nudelojn
+STR_2197    :Frititajn riznudelojn
+STR_2198    :Huntunan supon
+STR_2199    :Knelan supon
 STR_2200    :Fruktsukon
 STR_2201    :Sojlakton
 STR_2202    :Suĝongvaon
 STR_2203    :Subsandviĉon
 STR_2204    :Kekson
-STR_2205    :Malplenan Bovlon
-STR_2206    :Malplenan Trinkaĵoskatolon
-STR_2207    :Malplenan Sukotason
-STR_2208    :Rostitan Kolbason
-STR_2209    :Malplenan Bovlon
+STR_2205    :Malplenan bovlon
+STR_2206    :Malplenan trinkaĵoskatolon
+STR_2207    :Malplenan sukotason
+STR_2208    :Rostitan kolbason
+STR_2209    :Malplenan bovlon
 STR_2210    :Montri liston de faktotoj en parko
 STR_2211    :Montri liston de mekanikistoj en parko
 STR_2212    :Montri liston de gardistoj en parko
@@ -1534,8 +1534,8 @@ STR_2216    :{WINDOW_COLOUR_1}{COMMA16}°C
 STR_2217    :{WINDOW_COLOUR_1}{COMMA16}°F
 STR_2218    :{RED}{STRINGID} sur {STRINGID} ne jam revenis al la {STRINGID}!{NEWLINE}Kontrolu se ĝi ne povas reveni, aŭ staŭlis
 STR_2219    :{RED}{COMMA16} homoj mortis pro akcidento sur {STRINGID}
-STR_2220    :{WINDOW_COLOUR_2}Pritakso de Parko: {BLACK}{COMMA16}
-STR_2221    :Pritakso de Parko: {COMMA16}
+STR_2220    :{WINDOW_COLOUR_2}Pritakso de parko: {BLACK}{COMMA16}
+STR_2221    :Pritakso de parko: {COMMA16}
 STR_2222    :{BLACK}{STRINGID}
 STR_2223    :{WINDOW_COLOUR_2}Gastoj en parko: {BLACK}{COMMA32}
 STR_2224    :{WINDOW_COLOUR_2}Mono: {BLACK}{CURRENCY2DP}
@@ -1547,8 +1547,8 @@ STR_2229    :Deklivo al vertikala parto
 STR_2230    :Vertikala trako
 STR_2231    :Bremsoj ĉe malleviĝo
 STR_2232    :Kablolifto monteto
-STR_2233    :Informoj de Parko
-STR_2234    :Lastaj Mesaĝoj
+STR_2233    :Informoj de parko
+STR_2234    :Lastaj mesaĝoj
 STR_2235    :{STRINGID} {STRINGID}
 STR_2236    :Januaro
 STR_2237    :Februaro
@@ -1567,13 +1567,13 @@ STR_2249    :{BABYBLUE}Nova atrakcio nun estas disponebla:{NEWLINE}{STRINGID}
 STR_2250    :{BABYBLUE}Nova pejzaĝo/temaĵo nun estas disponebla:{NEWLINE}{STRINGID}
 STR_2251    :Eblas konstrui ĝin nur sur trotuaroj!
 STR_2252    :Eblas konstrui ĝin nur horizontale de trotuaroj!
-STR_2253    :Transport-Atrakcioj
-STR_2254    :Mildaj Atrakcioj
-STR_2255    :Ondaj Fervojoj
-STR_2256    :Ekscitaj Atrakcioj
-STR_2257    :Akvo-Atrakcioj
-STR_2258    :Vendejoj k Budoj
-STR_2259    :Pejzaĝo k Temaĵoj
+STR_2253    :Transport-atrakcioj
+STR_2254    :Mildaj atrakcioj
+STR_2255    :Ondaj fervojoj
+STR_2256    :Ekscitaj atrakcioj
+STR_2257    :Akvo-atrakcioj
+STR_2258    :Vendejoj k budoj
+STR_2259    :Pejzaĝo k temaĵoj
 STR_2260    :Neniu financado
 STR_2261    :Minimuma financado
 STR_2262    :Normala financado
@@ -1592,13 +1592,13 @@ STR_2274    :Montri detalojn de ĉi tiu inventaĵo aŭ disvolvado
 STR_2275    :Montri financadon kaj agordojn de esplorado k disvolvado
 STR_2276    :Montri staton de esplorado k disvolvado
 STR_2277    :Nekonata
-STR_2278    :Transport-Atrakcio
-STR_2279    :Milda Atrakcio
-STR_2280    :Onda Fervojo
-STR_2281    :Ekscita Atrakcio
-STR_2282    :Akvo-Atrakcio
-STR_2283    :Vendejo/Budo
-STR_2284    :Pejzaĝo/Temaĵo
+STR_2278    :Transport-atrakcio
+STR_2279    :Milda atrakcio
+STR_2280    :Onda fervojo
+STR_2281    :Ekscita atrakcio
+STR_2282    :Akvo-atrakcio
+STR_2283    :Vendejo/budo
+STR_2284    :Pejzaĝo/temaĵo
 STR_2285    :Komenca esplorado
 STR_2286    :Desegnado
 STR_2287    :Finado de desegnaĵo
@@ -1624,9 +1624,9 @@ STR_2307    :Elekti desegnaĵon de {STRINGID}
 STR_2308    :Trakdesegnaĵoj de {STRINGID}
 STR_2309    :Instali Novan Trakdesegnaĵon
 STR_2310    :Konstrui propran desegnaĵon
-STR_2311    :{WINDOW_COLOUR_2}Pritakso de Eksciteco: {BLACK}{COMMA2DP32} (ĉ.)
-STR_2312    :{WINDOW_COLOUR_2}Pritakso de Intenseco: {BLACK}{COMMA2DP32} (ĉ.)
-STR_2313    :{WINDOW_COLOUR_2}Pritakso de Naŭzo: {BLACK}{COMMA2DP32} (ĉ.)
+STR_2311    :{WINDOW_COLOUR_2}Pritakso de eksciteco: {BLACK}{COMMA2DP32} (ĉ.)
+STR_2312    :{WINDOW_COLOUR_2}Pritakso de intenseco: {BLACK}{COMMA2DP32} (ĉ.)
+STR_2313    :{WINDOW_COLOUR_2}Pritakso de naŭzo: {BLACK}{COMMA2DP32} (ĉ.)
 STR_2314    :{WINDOW_COLOUR_2}Longeco de atrakcio: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Kosto: {BLACK}almenaŭ {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Spaco bezonata: {BLACK}{COMMA16} x {COMMA16} blokoj
@@ -1638,9 +1638,9 @@ STR_2325    :Aĉeti bienon por etendi parkon
 STR_2326    :Aĉeti konstruado-rajtojn por ebligi konstruadon surtere aŭ subtere ĉe tero ekster de la parko
 STR_2327    :Agordoj
 STR_2328    :{WINDOW_COLOUR_2}Valuto:
-STR_2329    :{WINDOW_COLOUR_2}Longeco kaj Rapideco:
+STR_2329    :{WINDOW_COLOUR_2}Longeco kaj rapideco:
 STR_2330    :{WINDOW_COLOUR_2}Temperaturo:
-STR_2331    :{WINDOW_COLOUR_2}Notoj de Alteco:
+STR_2331    :{WINDOW_COLOUR_2}Notoj de alteco:
 STR_2332    :Unuoj
 STR_2333    :Sonefikoj
 STR_2334    :Pundo (£)
@@ -1666,11 +1666,11 @@ STR_2354    :{WINDOW_COLOUR_2}Rubujoj malplenigitaj: {BLACK}{COMMA32}
 STR_2355    :{WINDOW_COLOUR_2}Atrakcioj riparitaj: {BLACK}{COMMA32}
 STR_2356    :{WINDOW_COLOUR_2}Atrakcioj inspektitaj: {BLACK}{COMMA32}
 STR_2358    :Unuoj
-STR_2359    :Faktaj Nombroj
-STR_2360    :Distingivo de Ekrano:
-STR_2361    :Glatigo de Tero
+STR_2359    :Faktaj nombroj
+STR_2360    :Distingivo de ekrano:
+STR_2361    :Glatigo de tero
 STR_2362    :Baskuligi glatigon de randoj de teroblokoj
-STR_2363    :Kradlinioj sur Tero
+STR_2363    :Kradlinioj sur tero
 STR_2364    :Baskuligi kradliniojn sur tero
 STR_2365    :La banko rifuzas pliigon de via prunto!
 STR_2366    :Celsio (°C)
@@ -1682,9 +1682,9 @@ STR_2371    :Alta
 STR_2372    :Malalta
 STR_2373    :Meza
 STR_2374    :Alta
-STR_2375    :Tre Alta
+STR_2375    :Tre alta
 STR_2376    :Ekstrema
-STR_2377    :Ultra-Ekstrema
+STR_2377    :Ultra-ekstrema
 STR_2378    :Agordi pli malgrandan areon da tero
 STR_2379    :Agordi pli grandan areon da tero
 STR_2380    :Agordi pli malgrandan areon da akvo
@@ -1695,7 +1695,7 @@ STR_2384    :{WINDOW_COLOUR_2}Via celo:
 STR_2385    :{BLACK}Neniu
 STR_2386    :{BLACK}Havi almenaŭ {COMMA32} gastojn en via parko al la fino de {MONTHYEAR}, kun pritakso de parko ne malpli ol 600
 STR_2387    :{BLACK}Atingi parkvaloron ne malpli ol {POP16}{POP16}{CURRENCY} al la fino de {PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
-STR_2388    :{BLACK}Amuzi Vin!
+STR_2388    :{BLACK}Amuzi vin!
 STR_2389    :{BLACK}Konstrui je la plej bona {STRINGID}, kiun vi povas konstrui!
 STR_2390    :{BLACK}Havi 10 malsamajn tipojn de ondaj fervojoj funkciantajn en via parko, kiuj havas po pritakson de eksciteco ne malpli ol 6.00
 STR_2391    :{BLACK}Havi almenaŭ {COMMA32} gastojn en via parko. Ankaŭ, necesas ke la pritakso de la parko neniam falu sub 700!
@@ -1866,9 +1866,9 @@ STR_2684    :Granda amaso da gastoj alvenas
 STR_2685    :Parametroj de simplaĵa bruo
 STR_2686    :Min. alteco de tero:
 STR_2687    :Maks. alteco de tero:
-STR_2688    :Baza Frekvenco:
+STR_2688    :Baza frekvenco:
 STR_2689    :Oktavoj:
-STR_2690    :Generado de Mapo
+STR_2690    :Generado de mapo
 STR_2691    :Baza alteco:
 STR_2692    :Akvonivelo:
 STR_2693    :Tereno:
@@ -1901,8 +1901,8 @@ STR_2732    :{COMMA32} futoj
 STR_2733    :{COMMA32} metroj
 STR_2734    :Po {COMMA16} mejloj hore
 STR_2735    :Po {COMMA16} km hore
-STR_2736    :{MONTH}, Jaro {COMMA16}
-STR_2737    :{STRINGID} {MONTH}, Jaro {COMMA16}
+STR_2736    :{MONTH}, jaro {COMMA16}
+STR_2737    :{STRINGID} {MONTH}, jaro {COMMA16}
 STR_2738    :Muziko de titola ekrano:
 STR_2739    :Neniu
 STR_2740    :RollerCoaster Tycoon 1
@@ -1932,8 +1932,8 @@ STR_2779    :Vidujo #{COMMA16}
 STR_2780    :Plia vidujo
 # End of new strings
 STR_2781    :{STRINGID}:
-STR_2782    :SHIFT + 
-STR_2783    :CTRL + 
+STR_2782    :MAJ + 
+STR_2783    :STIR + 
 STR_2784    :Ŝanĝi klavararanĝon
 STR_2785    :{WINDOW_COLOUR_2}Premi novan klavarokomandon de:{NEWLINE}“{STRINGID}”
 STR_2786    :Alklaku priskribon de klavarokomando por elekti novan klavon
@@ -2064,13 +2064,13 @@ STR_3060    :Blokoj de glacio
 STR_3061    :Lignaj bariloj
 STR_3062    :Normala trako de ondaj fervojoj
 STR_3063    :Akvokanalo (subakva trako)
-STR_3064    :Facilaj Parkoj
-STR_3065    :Malfacilaj Parkoj
-STR_3066    :Ekspertaj Parkoj
-STR_3067    :“Faktaj” Parkoj
-STR_3068    :Aliaj Parkoj
-STR_3069    :Supra Parto
-STR_3070    :Deklivo al Ebena Parto
+STR_3064    :Facilaj parkoj
+STR_3065    :Malfacilaj parkoj
+STR_3066    :Ekspertaj parkoj
+STR_3067    :“Faktaj” parkoj
+STR_3068    :Aliaj parkoj
+STR_3069    :Supra parto
+STR_3070    :Deklivo al ebena parto
 STR_3071    :{WINDOW_COLOUR_2}Sama kosto tra parko
 STR_3072    :Elekti ĉu ĉi tiu kosto estas uzata tra la tuta parko
 STR_3073    :{RED}AVERTO: Via pritakso de parko falis sub 700!{NEWLINE}Se vi ne plibonigas la pritakson de parko dum 4 semajnoj, via parko estos fermita
@@ -2111,11 +2111,11 @@ STR_3121    :Ne eblas trovi mekanikiston, aŭ ĉiuj proksimaj mekanikistoj okupi
 STR_3122    :{WINDOW_COLOUR_2}Plej ŝatata atrakcio de: {BLACK}{COMMA32} gasto
 STR_3123    :{WINDOW_COLOUR_2}Plej ŝatata atrakcio de: {BLACK}{COMMA32} gastoj
 STR_3124    :Rompita {STRINGID}
-STR_3125    :{WINDOW_COLOUR_2}Faktoro de Eksciteco: {BLACK}+{COMMA16}%
-STR_3126    :{WINDOW_COLOUR_2}Faktoro de Intenseco: {BLACK}+{COMMA16}%
-STR_3127    :{WINDOW_COLOUR_2}Faktoro de Naŭzo: {BLACK}+{COMMA16}%
-STR_3128    :Konservi Trakdesegnaĵon
-STR_3129    :Konservi Trakdesegnaĵon kun Pejzaĝo
+STR_3125    :{WINDOW_COLOUR_2}Faktoro de eksciteco: {BLACK}+{COMMA16}%
+STR_3126    :{WINDOW_COLOUR_2}Faktoro de intenseco: {BLACK}+{COMMA16}%
+STR_3127    :{WINDOW_COLOUR_2}Faktoro de naŭzo: {BLACK}+{COMMA16}%
+STR_3128    :Konservi trakdesegnaĵon
+STR_3129    :Konservi trakdesegnaĵon kun pejzaĝo
 STR_3130    :Konservi
 STR_3131    :Nuligi
 STR_3132    :{BLACK}Alklaku erojn de pejzaĝo por konservi ĝin kun trakdesegnaĵon…
@@ -2123,8 +2123,8 @@ STR_3133    :Ne eblas konstrui ĉi tion sur deklivo
 STR_3134    :{RED}(Desegnaĵo enhavas pejzaĝon, kiu ne estas disponebla)
 STR_3135    :{RED}(Desegnaĵo de veturilo ne disponeblas. Rendimento de atrakcio povas esti afekciita.)
 STR_3136    :Averto: Ĉi tiu desegnaĵo estos konstruita per alternativa tipo de veturilo, kaj eble ne faros kiel atendite
-STR_3137    :Elekti Proksiman Pejzaĝon
-STR_3138    :Vakigi Elektaĵon
+STR_3137    :Elekti proksiman pejzaĝon
+STR_3138    :Vakigi elektaĵon
 STR_3139    :Kablolifto ne funkciiĝas kun ĉi tiu reĝimo de funkciado
 STR_3141    :Reĝimo de multaj cirkvitoj ne eblas kun kablolifto-monteto
 STR_3142    :{WINDOW_COLOUR_2}Kapacito: {BLACK}{STRINGID}
@@ -2146,44 +2146,44 @@ STR_3176    :Ne eblas elekti ĉi tiun objekton
 STR_3177    :Ne eblas malelekti ĉi tiun objekton
 STR_3179    :Almenaŭ unu objekto de atrakcio aŭ atrakcioveturilo elektendas
 STR_3180    :Nevalida elektaĵo de objektoj
-STR_3181    :Elektaro de Objektoj - {STRINGID}
+STR_3181    :Elektaro de objektoj - {STRINGID}
 STR_3182    :Tipo de parkeniro elektendas
 STR_3183    :Tipo de akvo elektendas
-STR_3184    :Atrakcioveturiloj/Atrakcioj
-STR_3185    :Malgranda Pejzaĝo
-STR_3186    :Granda Pejzaĝo
-STR_3187    :Muroj/Bariloj
-STR_3188    :Trotuaro-Surskribaĵoj
+STR_3184    :Atrakcioveturiloj/atrakcioj
+STR_3185    :Malgranda pejzaĝo
+STR_3186    :Granda pejzaĝo
+STR_3187    :Muroj/bariloj
+STR_3188    :Trotuaro-surskribaĵoj
 STR_3189    :Heredaĵaj trotuaroj
-STR_3190    :Trotuaro-Diversaĵoj
-STR_3191    :Pejzaĝo-Grupoj
+STR_3190    :Trotuaro-diversaĵoj
+STR_3191    :Pejzaĝo-grupoj
 STR_3192    :Parkeniroj
 STR_3193    :Akvo
-STR_3195    :Listo da Inventaĵoj
-STR_3196    :{WINDOW_COLOUR_2}Inventaĵo-Kategorio: {BLACK}{STRINGID}
-STR_3197    :{WINDOW_COLOUR_2}Aferoj inventitaj al komenco de ludo:
+STR_3195    :Listo da inventaĵoj
+STR_3196    :{WINDOW_COLOUR_2}Inventaĵo-kategorio: {BLACK}{STRINGID}
+STR_3197    :{WINDOW_COLOUR_2}Aferoj, inventitaj antaŭ komenco de ludo:
 STR_3198    :{WINDOW_COLOUR_2}Aferoj, kiuj estos inventitaj dum ludo:
-STR_3199    :Hazarda Ordo
-STR_3200    :Ordi hazarde la liston de aferoj inventotaj dum la ludo
-STR_3201    :Elektaro de Objektoj
-STR_3202    :Tero-Redaktilo
-STR_3203    :Instalado de Inventaĵolisto
-STR_3204    :Elektaro de Agordoj
-STR_3205    :Elektaro de Celo
-STR_3206    :Konservi Scenaron
+STR_3199    :Hazarda ordigo
+STR_3200    :Ordigi hazarde la liston de aferoj inventotaj dum la ludo
+STR_3201    :Elektaro de objektoj
+STR_3202    :Tero-redaktilo
+STR_3203    :Instalado de inventaĵolisto
+STR_3204    :Elektaro de agordoj
+STR_3205    :Elektaro de celo
+STR_3206    :Konservi scenaron
 STR_3207    :Trakdesegnilo
-STR_3208    :Administrilo de Trakdesegnaĵoj
-STR_3209    :Reiri al Pasinta Etapo:
-STR_3210    :Iri al Sekva Etapo:
+STR_3208    :Administrilo de trakdesegnaĵoj
+STR_3209    :Reiri al pasinta etapo:
+STR_3210    :Iri al sekva etapo:
 STR_3211    :Dimensioj de mapo:
 STR_3213    :Ne eblas malpliigi mapodimensiojn plu
 STR_3214    :Ne eblas pliigi mapodimensiojn plu
 STR_3215    :Tro proksime al mapbordo
 STR_3216    :Elekti bienon posedatan de parko, ktp.
-STR_3217    :Bieno Posedata
-STR_3218    :Konstruado-Rajtoj Posedataj
-STR_3219    :Bieno Vendata
-STR_3220    :Konstruado-Rajtoj Vendata
+STR_3217    :Bieno posedata
+STR_3218    :Konstruado-rajtoj posedataj
+STR_3219    :Bieno vendata
+STR_3220    :Konstruado-rajtoj vendata
 STR_3221    :Agordi bienon posedatan de la parko
 STR_3222    :Agordi konstruado-rajtojn posedatajn nur de la parko
 STR_3223    :Agordi bienon, kiun la parko povas aĉeti
@@ -2192,14 +2192,14 @@ STR_3225    :Baskuligi konstruadon de hazarda objektaro ĉirkau la ejo elektita
 STR_3226    :Konstrui parkenirejon
 STR_3227    :Tro da parkenirejoj!
 STR_3228    :Agordi ekirejojn de homoj
-STR_3229    :Bremsojn de Blokparto ne uzeblas rekte post stacio
-STR_3230    :Bremsojn de Blokparto ne uzeblas rekte post unu la alian
-STR_3231    :Bremsojn de Blokparto ne uzeblas rekte post la supro de ĉi tiu liftmonteto
+STR_3229    :Bremsojn de blokparto ne uzeblas rekte post stacio
+STR_3230    :Bremsojn de blokparto ne uzeblas rekte post unu la alian
+STR_3231    :Bremsojn de blokparto ne uzeblas rekte post la supro de ĉi tiu liftmonteto
 STR_3232    :Agordoj de scenaro - Financiaj
 STR_3233    :Agordoj de scenaro - Gastoj
 STR_3235    :Montri financiajn agordojn
 STR_3236    :Montri agordojn de gastoj
-STR_3238    :Neniu Mono
+STR_3238    :Neniu mono
 STR_3239    :Agordi ĉi tiun parkon kiel parko de ‘neniu mono’, kun neniuj limigoj financaj
 STR_3240    :Komenca mono:
 STR_3241    :Komenca prunto:
@@ -2247,10 +2247,10 @@ STR_3294    :Ŝanĝi…
 STR_3295    :Ŝanĝi nomon de parko
 STR_3296    :Ŝanĝi nomon de scenaro
 STR_3297    :Ŝanĝi detalo-notojn pri parko/scenaro
-STR_3298    :{WINDOW_COLOUR_2}Nomo de Parko: {BLACK}{STRINGID}
-STR_3299    :{WINDOW_COLOUR_2}Detaloj pri Parko/Scenaro:
-STR_3300    :{WINDOW_COLOUR_2}Nomo de Scenaro: {BLACK}{STRINGID}
-STR_3301    :{WINDOW_COLOUR_2}Dato de Celo:
+STR_3298    :{WINDOW_COLOUR_2}Nomo de parko: {BLACK}{STRINGID}
+STR_3299    :{WINDOW_COLOUR_2}Detaloj pri parko/scenaro:
+STR_3300    :{WINDOW_COLOUR_2}Nomo de scenaro: {BLACK}{STRINGID}
+STR_3301    :{WINDOW_COLOUR_2}Dato de celo:
 STR_3302    :{WINDOW_COLOUR_2}{MONTHYEAR}
 STR_3303    :{WINDOW_COLOUR_2}Nombro de gastoj:
 STR_3304    :{WINDOW_COLOUR_2}Parkvaloro:
@@ -2264,11 +2264,11 @@ STR_3311    :{WINDOW_COLOUR_2}{COMMA2DP32}
 STR_3312    :{WINDOW_COLOUR_2}Atrakcioj, kiujn oni ne eblas ŝanĝi dum la scenaro:
 STR_3313    :Nomo de Scenaro
 STR_3314    :Entajpu nomon de scenaro:
-STR_3315    :Detaloj de Parko/Scenaro
+STR_3315    :Detaloj de parko/scenaro
 STR_3316    :Entajpu priskribon de ĉi tiu scenaro:
 STR_3317    :Ankoraŭ neniuj detaloj
 STR_3318    :Elekti en kiu grupo ĉi tiu scenaro aperas
-STR_3319    :{WINDOW_COLOUR_2}Scenaro-Grupo:
+STR_3319    :{WINDOW_COLOUR_2}Scenaro-grupo:
 STR_3320    :Ne eblas konservi doserion de scenaro…
 STR_3321    :Novaj objektoj instalis sukcese
 STR_3322    :{WINDOW_COLOUR_2}Celo: {BLACK}{STRINGID}
@@ -2281,8 +2281,8 @@ STR_3331    :Vojo de parkenirejo ĝis mapbordo estas aŭ nekompleta aŭ tro komp
 STR_3332    :Parkenirejo estas dorsantaŭa, aŭ ne havas vojon al la mapbordo
 STR_3333    :Eksporti proprajn objektojn kun konservitaj ludoj
 STR_3334    :Elekti ĉu programo konservas datumojn de aldonaj bezonataj propraj objektoj (aldonaj datumoj, kiuj ne estas provizitaj per la ĉefa produktaĵo) en dosierojn de konservitaj ludoj aŭ scenaroj. Se jes, iu, kiu ne havas la aldonajn objektodatumojn, povas ŝargi ludon.
-STR_3335    :Trakdesegnilo - Elekti Tipojn de Atrakcioj k Veturiloj
-STR_3336    :Administrilo de Trakdesegnaĵoj - Elekti Tipon de Atrakcio
+STR_3335    :Trakdesegnilo - elekti tipojn de atrakcioj k veturiloj
+STR_3336    :Administrilo de trakdesegnaĵoj - elekti tipon de atrakcio
 STR_3338    :{BLACK}Propra desegnaĵo
 STR_3339    :{BLACK}{COMMA16} desegnaĵo estas disponebla, aŭ uzu propran desegnaĵon
 STR_3340    :{BLACK}{COMMA16} desegnaĵoj estas disponebla, aŭ uzu propran desegnaĵon
@@ -2310,9 +2310,9 @@ STR_3361    :Tro da trakdesegnaĵoj de ĉi tiu tipo. Iuj ne aperos en listo.
 STR_3364    :Altnivela
 STR_3365    :Permesi elektadon de individuaj eroj da pejzaĝoj kun pejzaĝo-grupoj
 STR_3366    :{BLACK}= Atrakcio
-STR_3367    :{BLACK}= Budo de Manĝaĵo
-STR_3368    :{BLACK}= Budo de Trinkaĵo
-STR_3369    :{BLACK}= Budo de Memoraĵo
+STR_3367    :{BLACK}= Budo de manĝaĵo
+STR_3368    :{BLACK}= Budo de trinkaĵo
+STR_3369    :{BLACK}= Budo de memoraĵo
 STR_3370    :{BLACK}= Informokiosko
 STR_3371    :{BLACK}= Sukurejo
 STR_3372    :{BLACK}= Monaŭtomato
@@ -2332,9 +2332,9 @@ STR_3389    :Ne eblas elekti plian eron da pejzaĝo…
 STR_3390    :Tro da eroj elektitaj
 STR_3437    :Vakigi grandajn areojn da pejzaĝo
 STR_3438    :Ne eblas forigi tutan pejzaĝon tie…
-STR_3439    :Vakigi Pejzaĝon
-STR_3445    :Agordi Patrolzonon
-STR_3446    :Vakigi Patrolzonon
+STR_3439    :Vakigi pejzaĝon
+STR_3445    :Agordi patrolzonon
+STR_3446    :Vakigi patrolzonon
 
 # New strings, cleaner
 STR_5120    :Financoj
@@ -2358,18 +2358,18 @@ STR_5138    :{WINDOW_COLOUR_2}{STRINGID}
 STR_5139    :{WHITE}{STRINGID}
 STR_5140    :Malŝalti paneon de bremsoj
 STR_5141    :Malŝalti ĉiajn paneojn
-STR_5142    :Normala Rapideco
-STR_5143    :Rapideta Rapideco
-STR_5144    :Rapida Rapideco
-STR_5145    :Rapidega Rapideco
-STR_5146    :Ekstrema Rapideco
+STR_5142    :Normala rapideco
+STR_5143    :Rapideta rapideco
+STR_5144    :Rapida rapideco
+STR_5145    :Rapidega rapideco
+STR_5146    :Ekstrema rapideco
 STR_5147    :Trompoj
 STR_5148    :Ŝanĝi la rapidecon de ludon
 STR_5149    :Montri trompo-agordojn
 STR_5150    :Ŝalti sencimigilojn
 STR_5151    :,
 STR_5152    :.
-STR_5153    :Redakti Temojn…
+STR_5153    :Redakti temojn…
 STR_5154    :Aparataro-ekrano
 STR_5155    :Permesi elprovadon de nefinitaj trakoj
 STR_5156    :Permesas elprovadon de plejparto da atrakciotipoj, eĉ kiam la trako estas nefinita. Ne validas por reĝimoj de blokpartoj.
@@ -2377,8 +2377,8 @@ STR_5158    :Forlasi al menuo
 STR_5159    :Eliri je OpenRCT2
 STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, Jaro {POP16}{COMMA16}
 STR_5161    :Datoprezento:
-STR_5162    :Tago/Monato/Jaro
-STR_5163    :Monato/Tago/Jaro
+STR_5162    :tago/monato/jaro
+STR_5163    :monato/tago/jaro
 STR_5177    :Reĝimo de ekrano:
 STR_5178    :Montri trompojn financajn
 STR_5179    :Montri trompojn de gasto
@@ -2390,21 +2390,21 @@ STR_5184    :Entajpu bazan altecon inter {COMMA16} kaj {COMMA16}
 STR_5185    :Akvonivelo
 STR_5186    :Entajpu akvonivelon inter {COMMA16} kaj {COMMA16} 
 STR_5187    :Financoj
-STR_5188    :Nova Kampanjo
+STR_5188    :Nova kampanjo
 STR_5189    :Esplorado
 STR_5190    :Mapo
 STR_5191    :Vidujo
-STR_5192    :Lastaj Novaĵoj
+STR_5192    :Lastaj novaĵoj
 STR_5193    :Tero
 STR_5194    :Akvo
-STR_5195    :Vakigi Pejzaĝon
+STR_5195    :Vakigi pejzaĝon
 STR_5196    :Bienorajtojn
 STR_5197    :Pejzaĝo
 STR_5198    :Trotuaro
-STR_5199    :Konstruado de Atrakcio
-STR_5200    :Ejo de Trakdesegnaĵoj
-STR_5201    :Nova Atrakcio
-STR_5202    :Elektaro de Trakdesegnaĵo
+STR_5199    :Konstruado de atrakcio
+STR_5200    :Ejo de trakdesegnaĵoj
+STR_5201    :Nova atrakcio
+STR_5202    :Elektaro de trakdesegnaĵo
 STR_5203    :Atrakcio
 STR_5204    :Atrakciolisto
 STR_5205    :Gasto
@@ -2412,13 +2412,13 @@ STR_5206    :Gastolisto
 STR_5207    :Dungitaro
 STR_5208    :Dungitarolisto
 STR_5209    :Rubando
-STR_5210    :Elektaro de Objektoj
-STR_5211    :Listo de Inventaĵoj
-STR_5212    :Agordoj de Scenaro
-STR_5213    :Agordoj de Celo
-STR_5214    :Generado de Mapo
-STR_5215    :Admin-ilo de Trakdesegnaĵoj
-STR_5216    :Listo de Admin-iloj de Trakdesegnaĵoj
+STR_5210    :Elektaro de objektoj
+STR_5211    :Listo de inventaĵoj
+STR_5212    :Agordoj de scenaro
+STR_5213    :Agordoj de celo
+STR_5214    :Generado de mapo
+STR_5215    :Admin-ilo de trakdesegnaĵoj
+STR_5216    :Listo de admin-iloj de trakdesegnaĵoj
 STR_5217    :Trompoj
 STR_5218    :Temoj
 STR_5219    :Agordoj
@@ -2433,57 +2433,57 @@ STR_5227    :Averto por anstataŭigi konservaĵon
 STR_5228    :Ĉefa fasado
 STR_5229    :Parko
 STR_5230    :Iloj
-STR_5231    :Atrakcioj kaj Gastoj
+STR_5231    :Atrakcioj kaj gastoj
 STR_5232    :Redaktiloj
 STR_5233    :Diversaĵoj
-STR_5234    :Avertoj per Dialogo
+STR_5234    :Avertoj per dialogo
 STR_5235    :Agordoj
 STR_5236    :Fenestro
 STR_5237    :Paletro
-STR_5238    :Nuna Temo:
+STR_5238    :Nuna temo:
 STR_5239    :Duobligi
 STR_5240    :Entajpu nomon de la temo
 STR_5241    :Ne eblas ŝanĝi ĉi tiun temon
 STR_5242    :Ĉi tiu nomo de temo jam ekzistas
 STR_5243    :Nevalidaj signoj estis uzitaj
 STR_5244    :Temoj
-STR_5245    :Supra Ilobreto
-STR_5246    :Malsupra Ilobreto
-STR_5247    :Malsupra Ilobreto de Trakredaktilo
-STR_5248    :Malsupra Ilobreto de Scenaroredaktilo
-STR_5249    :Menuo-Butonoj de Titolozono
-STR_5250    :Eliri-Butono de Titolozono
-STR_5251    :Agordoj-Butono de Titolozono
-STR_5252    :Scenaro-Elektaro de Titolozono
+STR_5245    :Supra ilobreto
+STR_5246    :Malsupra ilobreto
+STR_5247    :Malsupra ilobreto de trakredaktilo
+STR_5248    :Malsupra ilobreto de scenaroredaktilo
+STR_5249    :Menuo-butonoj de titolozono
+STR_5250    :Eliri-butono de titolozono
+STR_5251    :Agordoj-butono de titolozono
+STR_5252    :Scenaro-elektaro de titolozono
 STR_5253    :Parkinformoj
 STR_5256    :Krei novan temon por fari ŝanĝojn
 STR_5257    :Krei novan temon surbaze de la nuna
 STR_5258    :Forigi la nunan temon
 STR_5259    :Renomi la nunan temon
-STR_5260    :Preni Gigantan Ekrankopion
+STR_5260    :Preni gigantan ekrankopion
 STR_5261    :Filtri
 STR_5262    :Wacky Worlds
 STR_5263    :Time Twister
 STR_5264    :Propra
 STR_5265    :Elekti la enhavo-fontojn kiuj estas videblaj
 STR_5266    :Ekrano
-STR_5267    :Kulturo kaj Unuoj
+STR_5267    :Kulturo kaj unuoj
 STR_5268    :Aŭdaĵoj
 STR_5269    :Regiloj
 STR_5270    :Diversaĵoj
-STR_5272    :Malgranda Pejzaĝo
-STR_5273    :Granda Pejzaĝo
+STR_5272    :Malgranda pejzaĝo
+STR_5273    :Granda pejzaĝo
 STR_5274    :Trotuaro
-STR_5275    :Serĉi por Objektoj
+STR_5275    :Serĉi por objektoj
 STR_5276    :Entajpu la nomon de objekto serĉata
 STR_5277    :Vakigi
 STR_5278    :Ŝalti provejo-reĝimon
 STR_5279    :Malŝalti provejo-reĝimon
 STR_5280    :Permesi redaktadon de agordoj de bieno-proprieto per la Map-fenestro, kaj aliajn agordojn, kiuj normale estas limigitaj je la Redaktilo de Scenaro
 STR_5281    :Funkcioj
-STR_5282    :Uzi RCT1 lumojn por ŝalti/malŝalti atrakciojn
-STR_5283    :Uzi RCT1 lumojn por ŝalti/malŝalti parkon
-STR_5284    :Uzi RCT1 tiparo dum elekti scenaron
+STR_5282    :Uzi RCT1-stilajn lumojn por ŝalti/malŝalti atrakciojn
+STR_5283    :Uzi RCT1-stilajn lumojn por ŝalti/malŝalti parkon
+STR_5284    :Uzi RCT1-stilan tiparon dum elektado de scenaro
 STR_5287    :Atrakcio jam paneis
 STR_5288    :Atrakcio estas fermita
 STR_5289    :Neniuj paneoj disponeblaj por ĉi tiu atrakcio
@@ -2554,7 +2554,7 @@ STR_5404    :Nomo jam ekzistas
 STR_5440    :Minimumigi plenekranan reĝimon dum defokusigoj
 STR_5442    :Devigi pritakson de parko:
 STR_5447    :Tipo {STRINGID}
-STR_5448    :Atrakcio / Veturilo {STRINGID}
+STR_5448    :Atrakcio / veturilo {STRINGID}
 STR_5449    :Malpliigi rapidecon de ludo
 STR_5450    :Pliigi rapidecon de ludo
 STR_5451    :Malfermi fenestron de trompoj
@@ -2603,9 +2603,9 @@ STR_5495    :Ludantolisto
 STR_5496    :Ludanto
 STR_5497    :Eĥosondo
 STR_5498    :Servilolisto
-STR_5499    :Nomo de Ludanto:
-STR_5500    :Aldoni Servilon
-STR_5501    :Komenci Servilon
+STR_5499    :Nomo de ludanto:
+STR_5500    :Aldoni servilon
+STR_5501    :Komenci servilon
 STR_5502    :Plurludanta
 STR_5503    :Entajpu servilonomon aŭ IP-adreson:
 STR_5504    :Montri staton plurludantan
@@ -2613,7 +2613,7 @@ STR_5505    :Ne eblas aliĝi al servilo.
 STR_5506    :Gastoj malatentas intensecojn
 STR_5510    :Defaŭlta sonludilo
 STR_5511    :(NEKONATA)
-STR_5512    :Konservi Ludon Kiel
+STR_5512    :Konservi ludon kiel
 STR_5513    :(Rapide) konservi ludon
 STR_5514    :Malŝalti vandalismon
 STR_5515    :Antaŭhaltigi vandalaĵojn de gastoj kiam ili estas koleraj
@@ -2650,15 +2650,15 @@ STR_5545    :Malhela rozkoloro
 STR_5546    :Brila rozkoloro
 STR_5547    :Hela rozkoloro
 STR_5548    :Montri ĉiujn reĝimojn de funkciado
-STR_5549    :Jaro/Monato/Tago
+STR_5549    :Jaro/monato/tago
 STR_5550    :{POP16}{POP16}Jaro {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
-STR_5551    :Jaro/Tago/Monato
+STR_5551    :Jaro/tago/monato
 STR_5552    :{POP16}{POP16}Jaro {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
 STR_5554    :Ŝalti montilon
 STR_5555    :Montri veturilojn de aliaj traktipoj
 STR_5556    :Forigi ludanton
 STR_5557    :Resti konektita post desinkronigo (Plurludanta)
-STR_5558    :Ĉi tiu agordo fariĝas valida nur post vi reŝargas OpenRCT2
+STR_5558    :Ĉi tiu agordo fariĝas valida nur je la sekva lanĉo de OpenRCT2
 STR_5559    :Inspekti post ĉiuj 10 minutoj
 STR_5560    :Agordas la inspekton al ‘Post ĉiuj 10 minutoj’ por ĉiu atrakcio
 STR_5561    :Malsukcesis ŝargi lingvon
@@ -2666,19 +2666,19 @@ STR_5562    :AVERTO!
 STR_5563    :Ĉi tiu funkcio estas nune nestabila. Estu singarda.
 STR_5566    :Pasvorto:
 STR_5567    :Anonci
-STR_5568    :Pasvorto Bezonata
+STR_5568    :Pasvorto bezonata
 STR_5569    :Ĉi tiu servilo bezonas pasvorton
-STR_5570    :Venigi Servilojn
-STR_5571    :Aliĝi al Ludo
-STR_5572    :Aldoni Al Preferatoj
-STR_5573    :Forigi El Preferatoj
+STR_5570    :Venigi servilojn
+STR_5571    :Aliĝi al ludo
+STR_5572    :Aldoni al preferatoj
+STR_5573    :Forigi el preferatoj
 STR_5574    :Servilonomo:
-STR_5575    :Maks. Ludantoj:
+STR_5575    :Maks. ludantoj:
 STR_5576    :Pordo:
-STR_5577    :Sud-Koreia Vono (W)
-STR_5578    :Rusa Rublo (₽)
+STR_5577    :Sud-Koreia vono (W)
+STR_5578    :Rusa rublo (₽)
 STR_5579    :Skalo de fenestro:
-STR_5580    :Ĉeĥia Krono (Kč)
+STR_5580    :Ĉeĥia krono (Kč)
 STR_5581    :Montri bildrapidon
 STR_5582    :Kapti musmontrilon en fenestro
 STR_5583    :{COMMA1DP16} m/s
@@ -2687,7 +2687,7 @@ STR_5585    :Malŝlosas limojn de funkciado de atrakcioj por permesi aferojn kie
 STR_5586    :Malfermi aŭtomate vendejojn kaj budojn
 STR_5587    :Vendejoj kaj budoj estos aŭtomate malfermitaj post iliaj konstruoj
 STR_5588    :Ludi kun aliaj ludantoj
-STR_5589    :Agordoj de Sciigo
+STR_5589    :Agordoj de sciigoj
 STR_5590    :Premioj de parko
 STR_5591    :Kampanjo surmerkatiga finis
 STR_5592    :Avertoj de parko
@@ -2722,66 +2722,66 @@ STR_5621    :Loopy Landscapes
 STR_5622    :RollerCoaster Tycoon 2
 STR_5623    :Wacky Worlds
 STR_5624    :Time Twister
-STR_5625    :“Faktaj” Parkoj
-STR_5626    :Aliaj Parkoj
+STR_5625    :“Faktaj” parkoj
+STR_5626    :Aliaj parkoj
 STR_5630    :Ŝalti progresivan malŝlosadon
-STR_5631    :Originala Elŝutebla-Enhavo-Parkoj
+STR_5631    :Originalaj parkoj de elŝutebla enhavo
 STR_5632    :Konstrui vian propran…
-STR_5633    :CMD + 
-STR_5634    :OPTION + 
+STR_5633    :KOMANDO + 
+STR_5634    :OPCIO + 
 STR_5635    :{WINDOW_COLOUR_2}Mono elspezita: {BLACK}{CURRENCY2DP}
 STR_5636    :{WINDOW_COLOUR_2}Komandoj rulitaj: {BLACK}{COMMA16}
 STR_5637    :Ne eblas fari ĉi tion…
 STR_5638    :Permeso negita
 STR_5639    :Montri liston da ludantoj
 STR_5640    :Administri grupojn
-STR_5641    :Defaŭlta Grupo:
+STR_5641    :Defaŭlta grupo:
 STR_5642    :Grupo
-STR_5643    :Aldoni Grupon
-STR_5644    :Forigi Grupon
+STR_5643    :Aldoni grupon
+STR_5644    :Forigi grupon
 STR_5645    :Babili
 STR_5646    :Terecigi
-STR_5647    :Baskuligi Paŭzon
-STR_5648    :Agordi Akvonivelon
-STR_5649    :Krei Atrakcion
-STR_5650    :Forigi Atrakcion
-STR_5651    :Konstrui Atrakcion
-STR_5652    :Ecoj de Atrakcio
+STR_5647    :Baskuligi paŭzon
+STR_5648    :Agordi akvonivelon
+STR_5649    :Krei atrakcion
+STR_5650    :Forigi atrakcion
+STR_5651    :Konstrui atrakcion
+STR_5652    :Ecoj de atrakcio
 STR_5653    :Pejzaĵo
 STR_5654    :Vojo
 STR_5655    :Gasto
 STR_5656    :Dungitaro
-STR_5657    :Ecoj de Parko
-STR_5658    :Financado de Parko
-STR_5659    :Forpeli Ludanton
-STR_5660    :Modifi Grupojn
-STR_5661    :Agordi Ludantogrupon
+STR_5657    :Ecoj de parko
+STR_5658    :Financado de parko
+STR_5659    :Forpeli ludanton
+STR_5660    :Modifi grupojn
+STR_5661    :Agordi ludantogrupon
 STR_5662    :Ne disponebla
-STR_5663    :Vakigi Pejzaĝon
+STR_5663    :Vakigi pejzaĝon
 STR_5664    :Trompi
-STR_5665    :Baskuligi Pejzaĝaron
-STR_5666    :Senpasvorta Ensaluto 
+STR_5665    :Baskuligi pejzaĝaron
+STR_5666    :Senpasvorta ensaluto 
 STR_5701    :{WINDOW_COLOUR_2}Lasta ago: {BLACK}{STRINGID}
 STR_5702    :Loki plej lastan agon de ludanto
 STR_5703    :Ne eblas forpeli la gastiganton
-STR_5704    :Lasta Ago
+STR_5704    :Lasta ago
 STR_5705    :Ne eblas agordi al ĉi tiu grupo
 STR_5706    :Ne eblas forigi grupon, al kiu ludantoj apartenas
 STR_5707    :Ne eblas modifi ĉi tiun grupon
 STR_5708    :Ne eblas ŝanĝi la grupon, al kiu la gastiganto apartenas
-STR_5709    :Renomi Grupon
+STR_5709    :Renomi grupon
 STR_5710    :Nomo de grupo
 STR_5711    :Entajpu novan nomon de ĉi tiu grupo:
 STR_5712    :Ne eblas modifi permeson, kiun vi ne havas mem
 STR_5713    :Forpeli Ludanton
 STR_5714    :Montri fenestron de agordoj
-STR_5715    :Nova Ludo
+STR_5715    :Nova ludo
 STR_5716    :Ne permesita en plurludanta reĝimo
 # For identifying client network version in server list window
 STR_5717    :Reta versio: {STRING}
 STR_5718    :Reta versio: {STRING}
 STR_5719    :Suna
-STR_5720    :Parte Nuba
+STR_5720    :Parte nuba
 STR_5721    :Nuba
 STR_5722    :Pluvo
 STR_5723    :Pluvego
@@ -2790,38 +2790,38 @@ STR_5725    :{BLACK}Ŝanĝi veteron al:
 STR_5726    :Agordas la nunan veteron en la parko
 # tooltip for tab in options window
 STR_5734    :Bildigo
-STR_5735    :Stato de Reto
+STR_5735    :Stato de reto
 STR_5736    :Ludanto
 STR_5737    :Fermita, ankoraŭ {COMMA16} homo sur atrakcio
 STR_5738    :Fermita, ankoraŭ {COMMA16} homoj sur atrakcio
 STR_5739    :{WINDOW_COLOUR_2}Klientoj sur atrakcio: {BLACK}{COMMA16}
 STR_5740    :Eternaj surmerkatigaj kampanjoj
 STR_5741    :Surmerkatigaj kampanjoj neniam ĉesas
-STR_5742    :Aŭtentigas …
-STR_5743    :Konektas …
-STR_5744    :Adrestrovilas …
+STR_5742    :Aŭtentigado …
+STR_5743    :Konektado …
+STR_5744    :Adrestrovilado …
 STR_5745    :Reta desinkronigo detektita
-STR_5746    :Nekonektita
-STR_5747    :Nekonektita: {STRING}
+STR_5746    :Malkonektita
+STR_5747    :Malkonektita: {STRING}
 STR_5748    :Forpelita
 STR_5749    :Ekiru de la servilo!
-STR_5750    :Konekto Fermita
-STR_5751    :Neniu Datumon
-STR_5752    :{OUTLINE}{RED}{STRING} nekonektis
-STR_5753    :{OUTLINE}{RED}{STRING} nekonektis je ({STRING})
-STR_5754    :Malbona Nomo de Ludanto
-STR_5755    :Malĝusta Versio de Programo (Servilo uzas je {STRING})
-STR_5756    :Malbona Pasvorto
-STR_5757    :Servilo Plena
+STR_5750    :Konekto fermita
+STR_5751    :Neniuj datumoj
+STR_5752    :{OUTLINE}{RED}{STRING} malkonektis
+STR_5753    :{OUTLINE}{RED}{STRING} malkonektis je ({STRING})
+STR_5754    :Malbona momo de ludanto
+STR_5755    :Malĝusta versio de programo (Servilo uzas je {STRING})
+STR_5756    :Malbona pasvorto
+STR_5757    :Servilo plena
 STR_5758    :{OUTLINE}{GREEN}{STRING} aliĝis al la ludo
 STR_5759    :Elŝutas mapon …
-STR_5760    :Honkongaj Dolaroj (HK$)
-STR_5761    :Nova Tajvana Dolaro (NT$)
-STR_5762    :Ĉina Juano (CN¥)
+STR_5760    :Honkongaj dolaroj (HK$)
+STR_5761    :Nova tajvana dolaro (NT$)
+STR_5762    :Ĉina juano (CN¥)
 STR_5763    :Ĉiuj dosieroj
 STR_5764    :Nevalida atrakciotipo
 STR_5765    :Ne eblas redakti atrakciojn de nevalida tipo
-STR_5766    :Hungara Forinto (Ft)
+STR_5766    :Hungara forinto (Ft)
 STR_5767    :Enspezo
 STR_5768    :Totalaj klientoj: 
 STR_5769    :Totala profito: 
@@ -2831,9 +2831,9 @@ STR_5772    :Aĝo
 STR_5773    :Totalaj klientoj: {COMMA32}
 STR_5774    :Totala profito: {CURRENCY2DP}
 STR_5775    :Klientoj: po {COMMA32} por horo
-STR_5776    :Konstruita: Ĉi-jare
-STR_5777    :Konstruita: Pasintjare
-STR_5778    :Konstruita: Antaŭ {COMMA16} jaroj
+STR_5776    :Konstruita: ĉi-jare
+STR_5777    :Konstruita: pasintjare
+STR_5778    :Konstruita: antaŭ {COMMA16} jaroj
 STR_5779    :Enspezo: po {CURRENCY2DP} por horo
 STR_5780    :Kosto de funkciado: po {CURRENCY2DP} por horo
 STR_5781    :Kosto de funkciado: Nekonata
@@ -2917,23 +2917,23 @@ STR_5863    :Permesi, ke nur ludantoj kun konataj ŝlosiloj aliĝu.
 STR_5864    :Ĉi tiu servilo nur permesas blanklistajn ludantojn.
 STR_5865    :Protokoli babilejo-historion
 STR_5866    :{BLACK}Protokolas tutan babilejo-historion al dosieroj en via uzantdosierujo.
-STR_5867    :{WINDOW_COLOUR_2}Nomo de Provizanto: {BLACK}{STRING}
-STR_5868    :{WINDOW_COLOUR_2}Retpoŝtadreso de Provizanto: {BLACK}{STRING}
-STR_5869    :{WINDOW_COLOUR_2}Retejo de Provizanto: {BLACK}{STRING}
+STR_5867    :{WINDOW_COLOUR_2}Nomo de provizanto: {BLACK}{STRING}
+STR_5868    :{WINDOW_COLOUR_2}Retpoŝtadreso de provizanto: {BLACK}{STRING}
+STR_5869    :{WINDOW_COLOUR_2}Retejo de provizanto: {BLACK}{STRING}
 STR_5870    :Montri servilo-informojn
 STR_5871    :Malŝalti ŝrumpadon de kreskaĵoj
 STR_5872    :Malŝalti maljuniĝon de kreskaĵoj tiel, ke ili ne ŝrumpu.
 STR_5873    :Permesi ĉenliftojn sur ĉiuj trakpartoj
 STR_5874    :Permesas ĉian trakparton fariĝi ĉenlifto
-STR_5875    :Desegnomotoro:
-STR_5876    :La motoro uzata por desegni la ludon.
-STR_5877    :Programaro
-STR_5878    :Programaro (aparatara ekrano)
+STR_5875    :Modulo de bildigo:
+STR_5876    :La modulo uzata por bildigi la ludon.
+STR_5877    :Programara
+STR_5878    :Programara (aparatara ekrano)
 STR_5879    :OpenGL (eksperimenta)
 STR_5880    :Nur elektita
-STR_5881    :Nur Ne-elektita
+STR_5881    :Nur ne-elektita
 STR_5882    :Propra valuto
-STR_5883    :Konfiguro de propra valuto
+STR_5883    :Agordado de propra valuto
 STR_5884    :{WINDOW_COLOUR_2}Kurzo: 
 STR_5885    :{WINDOW_COLOUR_2}ekvivalentas al {COMMA32} GBP (£)
 STR_5886    :{WINDOW_COLOUR_2}Valuta simbolo:
@@ -2944,7 +2944,7 @@ STR_5890    :Entajpu la valuto-simbolon por elmontri
 STR_5892    :Iri al la defaŭlta dosierujo
 STR_5893    :Kurzo
 STR_5894    :Entajpu la kurzon
-STR_5895    :Konservi Trakon
+STR_5895    :Konservi trakon
 STR_5896    :Konservado de trako malsukcesis!
 STR_5898    :{BLACK}Ne eblas ŝargi la trakon, la dosiero povus esti{newline}difektita, rompita aŭ mankanta!
 STR_5899    :Baskuligi fenestron de farbo-sencimigo
@@ -2959,7 +2959,7 @@ STR_5907    :Kiam ŝaltita, zomigo centros ĉirkaŭ la musmontrilo, ne la ekrano
 STR_5908    :Permesi arbitrajn ŝanĝojn de atrakciotipo
 STR_5909    :Permesas libere ŝanĝadon de atrakciotipo. Povas kaŭzi programo-paneojn.
 STR_5910    :Apliki
-STR_5911    :Travideblaj Trotuaroj
+STR_5911    :Travideblaj trotuaroj
 STR_5912    :Baskuligi travideblajn trotuarojn
 STR_5913    :Babili
 STR_5914    :Nekonata atrakcio
@@ -3049,9 +3049,9 @@ STR_5998    :Aldoni monon
 STR_5999    :Agordi monon
 STR_6000    :Entajpu novan valoron
 STR_6001    :Ŝalti lumigajn efektojn (eksperimenta)
-STR_6002    :Lampoj kaj atrakcioj lumiĝos nokte.{NEWLINE}Bezonas, ke bildiga motoro estu agordita por aparataran ekranon.
-STR_6003    :Tranĉita Vido
-STR_6004    :Tranĉita Vido
+STR_6002    :Lampoj kaj atrakcioj lumiĝos nokte.{NEWLINE}Bezonas, ke bildiga modulo estu agordita por aparataran ekranon.
+STR_6003    :Tranĉita vido
+STR_6004    :Tranĉita vido
 STR_6005    :Ŝalti tranĉitan vidon
 STR_6006    :Tranĉita vido nur montras mapelementojn ĉe aŭ sub la tranĉita alteco (vertikala tondado) kaj en la elektita areo (horizontala tondado).
 STR_6007    :Alteco por tranĉi
@@ -3063,7 +3063,7 @@ STR_6012    :{COMMA1DP16}
 STR_6013    :{Gastoj nur pagos la bileton por eniri la parkon kaj servojn.{NEWLINE}Atrakcio-eniro estas senpaga.
 STR_6014    :Gastoj pagos nur enirbiletojn por atrakcioj kaj servoj.{NEWLINE}Ili pagos neniom por eniri la parkon.
 STR_6015    :Dekliva
-STR_6016    :Modifi Blokon
+STR_6016    :Modifi blokon
 STR_6017    :Bonvolu malakceli
 STR_6018    :Konstruado - Turni maldekstren
 STR_6019    :Konstruado - Turni dekstren
@@ -3087,7 +3087,7 @@ STR_6036    :Vakigi
 STR_6037    :La elektita dosierujo ne enhavas validan instalon de RollerCoaster Tycoon 1.
 STR_6038    :Se vi havas RCT1 instalitan, agordu ĉi tiun opcion al ĝia dosierujo por ŝargi scenojn, muzikon, ktp.
 STR_6039    :{Rapide malkonstrui atrakcion
-STR_6040    :Redakti Scenaro-Agordojn
+STR_6040    :Redakti scenaro-agordojn
 STR_6041    :{BLACK}Neniuj mekanikistoj estas dungitaj!
 STR_6042    :Ŝargi altmapon
 STR_6043    :Elekti altmapon
@@ -3096,17 +3096,17 @@ STR_6045    :Forteco:
 STR_6046    :Normigi altmapon
 STR_6047    :Glatigi randojn de blokoj
 STR_6048    :Eraro de altmapo
-STR_6049    :Eraro legante PNG
-STR_6050    :Eraro legante rastrumon
+STR_6049    :Eraro dum legado de PNG
+STR_6050    :Eraro dum legado de rastrumo
 STR_6052    :La altmapo estas tro granda, kaj estos fortranĉita
 STR_6053    :La altmapo ne eblas esti normaligita
 STR_6054    :Nur 24-bitoj-rastrumoj estas subtenataj
-STR_6055    :Altmapo-Dosiero de OpenRCT2
+STR_6055    :Altmapo-dosiero de OpenRCT2
 STR_6056    :Silentigi
-STR_6057    :Montri apartan butonon por la Silentigo-Opcio en la ilobreto
+STR_6057    :Montri apartan butonon por la silentigo-opcio en la ilobreto
 STR_6058    :Silentigi
 STR_6059    :»
-STR_6060    :Montri gasto-aĉetojn kiel animacion
+STR_6060    :Montri gasto-aĉetojn per animacio
 STR_6061    :Montri animitan monefekton kiam gasto aĉetas ion.
 STR_6062    :{OUTLINE}{GREEN}+ {CURRENCY2DP}
 STR_6063    :{OUTLINE}{RED}- {CURRENCY2DP}
@@ -3123,7 +3123,7 @@ STR_6073    :{STRING} redaktis permesojn por ludantogrupo ‘{STRING}’.
 STR_6074    :{STRING} ŝanĝis nomon de ludantogrupo de ‘{STRING}’ al ‘{STRING}’.
 STR_6075    :{STRING} ŝanĝis la defaŭltan ludantogrupon al ‘{STRING}’.
 STR_6076    :{STRING} uzis/baskuligis trompon de ‘{STRING}’.
-STR_6077    :Aldoni Monon
+STR_6077    :Aldoni monon
 STR_6078    :{STRING} kreis je atrakcio ‘{STRING}’.
 STR_6079    :{STRING} malkonstruis je atrakcio ‘{STRING}’.
 STR_6080    :{STRING} ŝanĝis la aspekton de atrakcio ‘{STRING}’.
@@ -3150,10 +3150,10 @@ STR_6100    :Vi malaliĝis de la servilo.
 STR_6101    :Atrakciovaloro ne malpliiĝas tempe
 STR_6102    :La valoro de atrakcio ne malpliiĝos tempe, do gastoj ne subite pensos, ke atrakcio estas tro multekosta.
 STR_6103    :Ĉi tiu opcio estas malŝaltita dum reĝimo plurludanta.
-STR_6105    :Hipergiganta Onda Fervojo
-STR_6107    :Monstraj Kamionoj
-STR_6109    :Hiper-Tvista Onda Fervojo
-STR_6111    :Klasika Miniatura Onda Fervojo
+STR_6105    :Hipergiganta onda fervojo
+STR_6107    :Monstraj kamionoj
+STR_6109    :Hiper-tvista onda fervojo
+STR_6111    :Klasika miniatura onda fervojo
 STR_6113    :Alta onda fervojo kun neniu inversigo, kiu havas grandajn malaltiĝojn, altan rapidecon, kaj komfortajn trajnojn kun nur sinobridoj
 STR_6115    :Ŝaltitaj gigantaj 4 x 4 kamionoj, kiuj povas eskaladi krutajn deklivojn
 STR_6116    :Larĝaj ĉaroj de onda fervojo glisas laŭ glata ŝtala trako kaj veturas trans diversaj inversigoj
@@ -3172,21 +3172,21 @@ STR_6130    :Kopii ĉiujn
 STR_6131    :Objektofonto
 STR_6132    :Ignori staton de esplorado
 STR_6133    :Atingi atrakciojn kaj pejzaĝon, kiuj ne estis jam inventitaj
-STR_6134    :Vakigi Pejzaĝon
+STR_6134    :Vakigi pejzaĝon
 STR_6135    :Kliento sendis nevalidan peton
 STR_6136    :Servilo sendis nevalidan peton
 STR_6137    :OpenRCT2 estas libera kaj malfermitkoda aliformigo kaj kompletigo de Roller Coaster Tycoon 2.
 STR_6138    :OpenRCT2 estas la verko de multaj aŭtoroj, kompleta listo troviĝas ene de la “Kontribuantoj” butono. Por pli da informaĵoj, vizitu http://github.com/OpenRCT2/OpenRCT2
 STR_6139    :Ĉiuj produktonomoj kaj firmnomoj apartenas al siaj respektivaj posedantoj. Uzo de ili ne signifas iun ajn filion kun aŭ endosaĵon de ili.
 STR_6140    :Ŝanĝoprotokolo…
-STR_6141    :RCT1 Malsupra Ilobreto
+STR_6141    :RCT1-stila malsupra ilobreto
 STR_6142    :{WINDOW_COLOUR_2}Trakonomo: {BLACK}{STRING}
 STR_6143    :{WINDOW_COLOUR_2}Atrakciotipo: {BLACK}{STRINGID}
 STR_6144    :Montri senpolurajn bildojn
 STR_6145    :Agordi rapidlimon de plirapidigiloj
 STR_6146    :Ŝalti ĉiujn desegneblajn trakpartojn
 STR_6147    :Ŝaltas ĉiujn trakpartojn, kiujn la atrakciotipo povas havi, en la fenestro de konstruado, sendistinge ĉu la veturilo subtenas ilin.
-STR_6148    :Konektas al ĉefa servilo…
+STR_6148    :Konektado al ĉefa servilo…
 STR_6149    :Ne eblas konekti al ĉefa servilo
 STR_6150    :Nevalida respondo de ĉefa servilo (neniu JSON-numero)
 STR_6151    :Ĉefa servilo ne eblis respondi kun servilolisto
@@ -3227,7 +3227,7 @@ STR_6203    :Se ŝaltita, virtuala planko bildigos per premteni Ctrl aŭ Shift, 
 STR_6215    :Konstruado
 STR_6216    :Funkciado
 STR_6217    :Havebleco de atrakcio / trako
-STR_6218    :OpenRCT2 Oficiala
+STR_6218    :Oficialaj de OpenRCT2
 STR_6219    :Emfazi problemojn de trotuaroj
 STR_6220    :Uzebligi
 STR_6221    :Ĉi tio agordos la konitan lokon de enirejo aŭ elirejo de la atrakcio al la nune elektita bloko. Nur unu enirejo kaj elirejo povas esti uzebligata por ĉiu stacio.
@@ -3237,19 +3237,19 @@ STR_6224    :{STRING} metis gasto-enirpunkton.
 STR_6225    :Ne subtenata kun OpenGL-bildigilo
 STR_6226    :Ebligi fruan kompletigon de scenaro
 STR_6227    :Ekagigas kompletigon de scenaro kiam ĉiuj scenaroceloj estas atingitaj antaŭ la celodato.
-STR_6228    :Agordoj de Scenaro
+STR_6228    :Agordoj de scenaro
 STR_6229    :{WINDOW_COLOUR_2}{STRINGID}: {STRINGID}
 STR_6230    :{BLACK}{STRINGID}:
 STR_6231    :{WINDOW_COLOUR_2}{STRINGID}: {MOVE_X}{185}{STRINGID}
 STR_6232    :Frostigita
 STR_6233    :Tranĉita vido
 STR_6234    :Emfazi problemojn de trotuaroj
-STR_6235    :Informo de Servilo
+STR_6235    :Informo de servilo
 STR_6236    :Ludantoj
 STR_6237    :Grupoj
-STR_6238    :Plurludantaj Agordoj
-STR_6239    :Vertikala Tondado
-STR_6240    :Horizontala Tondado
+STR_6238    :Plurludantaj agordoj
+STR_6239    :Vertikala tondado
+STR_6240    :Horizontala tondado
 STR_6241    :Elekti areon
 STR_6242    :Nuligi elektaron
 STR_6243    :Renovigas la atrakcion,{NEWLINE}igas ĝin nova
@@ -3276,8 +3276,8 @@ STR_6266    :Malfermi dosierujon de propra enhavo
 STR_6267    :Malfermi ekzamenilo de bloko
 STR_6268    :Antaŭeniri al sekva tiktako
 STR_6269    :Nevalida identigilo de klimato
-STR_6270    :Tereno-Surfacoj
-STR_6271    :Tereno-Flankoj
+STR_6270    :Tereno-surfacoj
+STR_6271    :Tereno-flankoj
 STR_6272    :Stacioj
 STR_6273    :Muziko
 STR_6274    :Ne eblas agordi kolorskemon…
@@ -3305,7 +3305,7 @@ STR_6304    :Malfermi elektilon de pejzaĝo
 STR_6305    :Disfadenigo
 STR_6306    :Opcio eksperimenta por uzi multoblajn fadenojn por bildigi. Povas kaŭzi nestabilecon.
 STR_6307    :Kolorskemo: {BLACK}{STRINGID}
-STR_6308    :{TOPAZ}“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
+STR_6308    :{TOPAZ}“{STRINGID}{TOPAZ}”{NEWLINE}{STRINGID}
 STR_6309    :Rekonektiĝi
 STR_6310    :{WINDOW_COLOUR_2}Pozicio: {BLACK}{INT32} {INT32} {INT32}
 STR_6311    :{WINDOW_COLOUR_2}Sekva: {BLACK}{INT32} {INT32} {INT32}
@@ -3316,7 +3316,7 @@ STR_6315    :{WINDOW_COLOUR_2}Celo de vojotrovo: {BLACK}{INT32}, {INT32}, {INT32
 STR_6316    :{WINDOW_COLOUR_2}Historio de vojotrovo:
 STR_6317    :{BLACK}{INT32}, {INT32}, {INT32} dir {INT32}
 STR_6318    :Dissinkronigo de reto detektita.{NEWLINE}Protokolo-dosiero: {STRING}
-STR_6319    :Bremso de Blokparto Fermita
+STR_6319    :Bremso de blokparto fermita
 STR_6320    :Nemalkonstruebla
 STR_6321    :Aldonaĵo difektas
 STR_6322    :{WINDOW_COLOUR_2}Identigilo de ento: {BLACK}{INT32}
@@ -3332,17 +3332,17 @@ STR_6331    :Krei anasojn
 STR_6332    :Forigi anasojn
 STR_6333    :Pliigi skalfaktoron
 STR_6334    :Malpliigi skalfaktoron
-STR_6336    :Inspektilo de Bloko: Kopii eron
-STR_6337    :Inspektilo de Bloko: Alglui eron
-STR_6338    :Inspektilo de Bloko: Forigi eron
-STR_6339    :Inspektilo de Bloko: Movi eron supren
-STR_6340    :Inspektilo de Bloko: Movi eron malsupren
-STR_6341    :Inspektilo de Bloko: Pliigi X koordinaton
-STR_6342    :Inspektilo de Bloko: Malpliigi X koordinaton
-STR_6343    :Inspektilo de Bloko: Pliigi Y koordinaton
-STR_6344    :Inspektilo de Bloko: Malpliigi Y koordinaton
-STR_6345    :Inspektilo de Bloko: Pliigi altecon de ero
-STR_6346    :Inspektilo de Bloko: Malpliigi altecon de ero
+STR_6336    :Inspektilo de bloko: Kopii eron
+STR_6337    :Inspektilo de bloko: Alglui eron
+STR_6338    :Inspektilo de bloko: Forigi eron
+STR_6339    :Inspektilo de bloko: Movi eron supren
+STR_6340    :Inspektilo de bloko: Movi eron malsupren
+STR_6341    :Inspektilo de bloko: Pliigi X-koordinaton
+STR_6342    :Inspektilo de bloko: Malpliigi X-koordinaton
+STR_6343    :Inspektilo de bloko: Pliigi Y-koordinaton
+STR_6344    :Inspektilo de bloko: Malpliigi Y-koordinaton
+STR_6345    :Inspektilo de bloko: Pliigi altecon de ero
+STR_6346    :Inspektilo de bloko: Malpliigi altecon de ero
 STR_6347    :Adicioj de trotuaro ne meteblas ĉe traknivelaj pasejoj!
 STR_6348    :Unue forigu traknivelan pasejon!
 STR_6349    :Hazarda titolosekvenco
@@ -3369,10 +3369,10 @@ STR_6371    :La dosierindiko enhavas instalaĵon de RollerCoaster Tycoon 1, sed 
 STR_6372    :La dosierindiko enhavas instalaĵon de RollerCoaster Tycoon 1, sed ĉi tiu versio ne taŭgas. OpenRCT2 bezonas instalaĵon de Loopy Landscapes aŭ RCT Deluxe por uzi la havaĵojn de RollerCoaster Tycoon 1.
 STR_6373    :Baskuli kontroladon de interspaco
 STR_6374    :I
-STR_6375    :Nekonata Atrakcio
+STR_6375    :Nekonata atrakcio
 STR_6376    :{WINDOW_COLOUR_2}Atrakcioveturilo:{NEWLINE}{BLACK}{STRINGID} por {STRINGID}
 STR_6377    :{WINDOW_COLOUR_2}Tipo: {BLACK}{STRINGID} por {STRINGID}
-STR_6378    :Ricevas liston de objektoj:
+STR_6378    :Ricevado de objektolisto…
 STR_6379    :Ricevis nevalidan datumon
 STR_6380    :Ĝisdatigo disponeblas!
 STR_6381    :Aliĝi al la Diskordo de OpenRCT2!
@@ -3387,45 +3387,45 @@ STR_6389    :Nevalida interspaco
 STR_6390    :OpenRCT2 bezonas dosierojn de la originala RollerCoaster Tycoon 2 por funkcii. Bonvolu elekti la dosierujon, kie vi instalis je RollerCoaster Tycoon 2.
 STR_6391    :Bonvolu elekti vian RCT2-dosierujon
 STR_6392    :Ne eblis trovi je {STRING} ĉe tiu ĉi dosierindiko.
-STR_6393    :Elektado de Celo
+STR_6393    :Elektado de celo
 STR_6394    :Celo
 STR_6395    :Prizorgado
 STR_6396    :Malŝalti ekrankurtenon kaj energiŝparon de ekrano
 STR_6397    :Se elektita, ekrankurteno kaj aliaj energiŝparaj funkcioj estos malebligitaj dum OpenRCT2 funkcias.
 STR_6398    :Dosiero enhavas nesubtenatajn atrakciotipojn. Bonvolu ĝisdatigi al pli nova versio de OpenRCT2.
-STR_6399    :OpenRCT2 bezonas dosierojn de la originala RollerCoaster Tycoon 2 por funkcii. Bonvolu agordi la “game_path” variablon en “config.ini” al la dosierujon, kie vi instalis je RollerCoaster Tycoon 2, kaj tiam rekomencu je OpenRCT2.
-STR_6400    :Mi elŝutis la GOG eksterretan instalilon de RollerCoaster Tycoon 2, sed mi ne jam instalis la ludon
-STR_6401    :Mi jam instalis je RollerCoaster Tycoon 2
-STR_6402    :Agordo de Datumoj de OpenRCT2
+STR_6399    :OpenRCT2 bezonas dosierojn de la originala ludo RollerCoaster Tycoon 2 aŭ RollerCoaster Tycoon Classic por funkcii. Bonvolu agordi la variablon “game_path” en la dosiero “config.ini” kiel la dosierujo, kie vi instalis la ludon RollerCoaster Tycoon 2 aŭ RollerCoaster Tycoon Classic, kaj tiam rekomencu je OpenRCT2.
+STR_6400    :Mi elŝutis la eksterretan instalilon de RollerCoaster Tycoon 2 de GOG, sed mi ne jam instalis la ludon
+STR_6401    :Mi jam instalis la ludon RollerCoaster Tycoon 2 aŭ RollerCoaster Tycoon Classic
+STR_6402    :Agordo de datumoj de OpenRCT2
 STR_6403    :Elektu la opcion, kiu taŭgas al vi
-STR_6404    :Bonvolu elekti la GOG instalilon de RollerCoaster Tycoon 2.
-STR_6405    :Elekti GOG Instalilon
-STR_6406    :GOG Instalilo de RollerCoaster Tycoon 2
+STR_6404    :Bonvolu elekti la instalilon de RollerCoaster Tycoon 2 de GOG.
+STR_6405    :Elekti GOG-instalilon
+STR_6406    :GOG-instalilo de RollerCoaster Tycoon 2
 STR_6407    :Ĉi tiu funkciado povas daŭri kelkajn minutojn.
-STR_6408    :Bonvolu instali “innoextract” por eltiri la Instalilon GOG, tiam restartigi OpenRCT2.
-STR_6409    :La elektita doserio ne estas la eksterreta GOG Instalilo de RollerCoaster Tycoon 2. Eble vi elŝutis la elŝutilon de GOG Galaxy, aŭ vi elektis malpravan doserion.
+STR_6408    :Bonvolu instali la programon “innoextract” por eltiri la GOG-instalilon, tiam restartigi OpenRCT2.
+STR_6409    :La elektita doserio ne estas la eksterreta GOG-instalilo de RollerCoaster Tycoon 2. Eble vi elŝutis la elŝutilon de GOG Galaxy, aŭ vi elektis malpravan doserion.
 STR_6410    :Zomi/malzomi
 STR_6411    :Montri butonojn por zomigi kaj malzomigi en la ilobreto
-STR_6412    :Enen-klavo de Nombra Klavaro
-STR_6413    :Majuskliga Klavo
-STR_6414    :Maldeks. Majuskliga Klavo
-STR_6415    :Deks. Majuskliga Klavo
+STR_6412    :Enen-klavo de nombra klavaro
+STR_6413    :Majuskliga klavo
+STR_6414    :Maldeks. majuskliga klavo
+STR_6415    :Deks. majuskliga klavo
 STR_6416    :Stirklavo
-STR_6417    :Maldeks. Stirklavo
-STR_6418    :Deks. Stirklavo
+STR_6417    :Maldeks. stirklavo
+STR_6418    :Deks. stirklavo
 STR_6419    :Alt-klavo
-STR_6420    :Maldeks. Alt-klavo
-STR_6421    :Deks. Alt-klavo
-STR_6422    :Komanda Klavo
-STR_6423    :Maldeks. Komanda Klavo
-STR_6424    :Deks. Komanda Klavo
-STR_6425    :Stirstango Maldekstren
-STR_6426    :Stirstango Dekstren
-STR_6427    :Stirstango Supren
-STR_6428    :Stirstango Malsupren
+STR_6420    :Maldeks. alt-klavo
+STR_6421    :Deks. alt-klavo
+STR_6422    :Komanda klavo
+STR_6423    :Maldeks. komanda klavo
+STR_6424    :Deks. komanda klavo
+STR_6425    :Stirstango maldekstren
+STR_6426    :Stirstango dekstren
+STR_6427    :Stirstango supren
+STR_6428    :Stirstango malsupren
 STR_6429    :Stirstango {INT32}
-STR_6430    :Maldeks. Musbutono
-STR_6431    :Deks. Musbutono
+STR_6430    :Maldeks. musbutono
+STR_6431    :Deks. musbutono
 STR_6432    :Muso {INT32}
 STR_6433    :Forigi
 STR_6434    :Forigi ĉiujn bindaĵojn por ĉi tiu klavarokomando.
@@ -3433,13 +3433,13 @@ STR_6435    :{WINDOW_COLOUR_2}Vandaloj haltigitaj: {BLACK}{COMMA32}
 STR_6436    :Baskuligi nevideblecon
 STR_6437    :Videbla
 STR_6438    :{MOVE_X}{2}👁
-STR_6439    :Inspektilo de Bloko: Baskuligi nevideblecon
+STR_6439    :Inspektilo de bloko: Baskuligi nevideblecon
 STR_6440    :Travidebla akvo
 STR_6441    :Almenaŭ unu surfacobjekto de ne-atendovico-trotuaro elektendas.
 STR_6442    :Almenaŭ unu surfacobjekto de atendovico-trotuaro elektendas.
 STR_6443    :Almenaŭ unu balustradobjekto de trotuaro elektendas.
-STR_6444    :Surfacoj de Trotuaro
-STR_6445    :Balustradoj de Trotuaro
+STR_6444    :Surfacoj de trotuaro
+STR_6445    :Balustradoj de trotuaro
 STR_6446    :{WINDOW_COLOUR_2}Nomo de surfaco: {BLACK}{STRINGID}
 STR_6447    :{WINDOW_COLOUR_2}Nomo de balustrado: {BLACK}{STRINGID}
 STR_6448    :Nesubtenata formato de objekto
@@ -3450,9 +3450,9 @@ STR_6452    :{WINDOW_COLOUR_2}Vendas: {BLACK}{STRING}
 STR_6453    :Kopii informojn de versio
 STR_6454    :Ne povas renomi rubandon…
 STR_6455    :Ne povas renomi surskribaĵon…
-STR_6456    :Giganta Ekrankopio
+STR_6456    :Giganta ekrankopio
 STR_6457    :Raporti cimon sur GitHub
-STR_6458    :Sekvi ĉi tion en Ĉefa Vido
+STR_6458    :Sekvi ĉi tion en ĉefa vido
 STR_6460    :D
 STR_6461    :Direkto
 STR_6462    :Eksciteco
@@ -3461,29 +3461,29 @@ STR_6464    :Intenseco
 STR_6465    :Intenseco: {COMMA2DP32}
 STR_6466    :Naŭzo
 STR_6467    :Naŭzo: {COMMA2DP32}
-STR_6468    :Ne Ankoraŭ Konita
+STR_6468    :Ne ankoraŭ konita
 STR_6469    :Agordi pli malgrandan areon da patrolzono
 STR_6470    :Agordi pli grandan areon da patrolzono
-STR_6471    :Travidebla Vegetaĵaro
-STR_6472    :Travideblaj Veturiloj
-STR_6473    :Travideblaj Apogiloj
-STR_6474    :Nevideblaj Gastoj
-STR_6475    :Nevidebla Dungitaro
-STR_6476    :Nevideba Vegetaĵaro
-STR_6477    :Nevideba Pejzaĝo
-STR_6478    :Nevidebaj Trotuaroj
-STR_6479    :Nevidebaj Atrakcioj
-STR_6480    :Nevidebaj Veturiloj
-STR_6481    :Agordoj de Travidebleco
-STR_6482    :Agordoj de Travidebleco
+STR_6471    :Travidebla vegetaĵaro
+STR_6472    :Travideblaj veturiloj
+STR_6473    :Travideblaj apogiloj
+STR_6474    :Nevideblaj gastoj
+STR_6475    :Nevidebla dungitaro
+STR_6476    :Nevideba vegetaĵaro
+STR_6477    :Nevideba pejzaĝo
+STR_6478    :Nevidebaj trotuaroj
+STR_6479    :Nevidebaj atrakcioj
+STR_6480    :Nevidebaj veturiloj
+STR_6481    :Agordoj de travidebleco
+STR_6482    :Agordoj de travidebleco
 STR_6483    :Malfermi agordojn de travidebleco
 STR_6484    :Baskuligi travideblan vegetaĵaron
 STR_6485    :Baskuligi travideblajn veturilojn
 STR_6486    :Baskuligi nevideblajn gastojn
 STR_6487    :Baskuligi nevideblan dungitaron
 STR_6488    :{RED}Gastoj plendas pri la longeco de la atendovicoj en via parko.{NEWLINE}Konsideru mallongigi problemajn atendovicojn, aŭ pliigi la flukvanton de la atrakcioj.
-STR_6489    :Eraro: Malkongrua Versio de Parko
-STR_6490    :Averto: Parte Kongrua Versio de Parko
+STR_6489    :Eraro: Malkongrua versio de parko
+STR_6490    :Averto: Parte kongrua versio de parko
 STR_6491    :Ĉi tiu parko estis konservita en pli nova versio de OpenRCT2. La parko estis konservita en v{INT32} kaj bezonas almenaŭ v{INT32}. Vi nune estas en v{INT32}.
 STR_6492    :Ĉi tiu parko estis konservita en malnova versio de OpenRCT2, kaj ne povas esti malfermita per ĉi tiu versio de OpenRCT2. Parko estas v{INT32}.
 STR_6493    :Ĉi tiu parko estis konservita en pli nova versio de OpenRCT2, kelkaj datumoj eble estas perditaj. La parko estis konservita en v{INT32}. Vi nune estas en v{INT32}.
@@ -3499,23 +3499,23 @@ STR_6502    :Entajpu valoron inter {COMMA16} kaj {COMMA16}
 STR_6503    :Almenaŭ unu staciobjekto elektendas
 STR_6504    :Almenaŭ unu tereno-surfaco elektendas
 STR_6505    :Almenaŭ unu tereno-flanko elektendas
-STR_6506    :Granda Duona Korktirilo (maldekstre)
-STR_6507    :Granda Duona Korktirilo (dekstre)
-STR_6508    :Meza Duona Lopo (maldekstre)
-STR_6509    :Meza Duona Lopo (dekstre)
-STR_6510    :Sengravida Ruliĝo (maldekstre)
-STR_6511    :Sengravida Ruliĝo (dekstre)
-STR_6512    :Granda Sengravida Ruliĝo (maldekstre)
-STR_6513    :Granda Sengravida Ruliĝo (dekstre)
+STR_6506    :Granda duona korktirilo (maldekstre)
+STR_6507    :Granda duona korktirilo (dekstre)
+STR_6508    :Meza duona lopo (maldekstre)
+STR_6509    :Meza duona lopo (dekstre)
+STR_6510    :Sengravida ruliĝo (maldekstre)
+STR_6511    :Sengravida ruliĝo (dekstre)
+STR_6512    :Granda sengravida ruliĝo (maldekstre)
+STR_6513    :Granda sengravida ruliĝo (dekstre)
 STR_6514    :Nevalida alteco!
 STR_6515    :{BLACK}RollerCoaster Tycoon 1 ne estas ligita - retropaŝaj bildoj estos uzitaj.
 STR_6516    :Unu aŭ pli objektoj aldonitaj bezonas je RollerCoaster Tycoon 1 ligita por ĝusta montrado. Retropaŝaj bildoj estos uzitaj.
 STR_6517    :Unu aŭ pli objektoj en ĉi tiu parko bezonas je RollerCoaster Tycoon 1 ligita por ĝusta montrado. Retropaŝaj bildoj estos uzitaj.
 STR_6518    :{BLACK}Musumu super scenaro por vidi ĝian priskribon kaj celon. Alklaku ĝin por ekludi.
 STR_6519    :Ekstraĵoj
-STR_6520    :Havaĵo-Pakoj
-STR_6521    :Malalta Prioritato
-STR_6522    :Alta Prioritato
+STR_6520    :Havaĵo-pakoj
+STR_6521    :Malalta prioritato
+STR_6522    :Alta prioritato
 STR_6523    :Malkreskigi la prioritaton de la elektita havaĵo-pako.
 STR_6524    :Kreskigi ka prioritaton de la elektita havaĵo-pako.
 STR_6525    :Reŝargi ĉiujn havaĵojn en la ludo kontraŭ la ŝaltitaj havaĵo-pakoj.
@@ -3523,16 +3523,16 @@ STR_6526    :(bazaj grafikoj, muziko kaj sonefikoj)
 STR_6527    :Konkursoj
 STR_6528    :Nevalidaj parametroj de trako!
 STR_6529    :Nevalida parametro de kolorskemo!
-STR_6530    :Uzantkreita Kompletiga Aro
+STR_6530    :Uzantkreita kompletiga aro
 STR_6531    :La Tempomaŝino
 STR_6532    :La Revomondo de Katia
-STR_6533    :{WINDOW_COLOUR_2}Faktoro de Eksciteco: {BLACK}-{COMMA16}%
-STR_6534    :{WINDOW_COLOUR_2}Faktoro de Intenseco: {BLACK}-{COMMA16}%
-STR_6535    :{WINDOW_COLOUR_2}Faktoro de Naŭzo: {BLACK}-{COMMA16}%
+STR_6533    :{WINDOW_COLOUR_2}Faktoro de eksciteco: {BLACK}-{COMMA16}%
+STR_6534    :{WINDOW_COLOUR_2}Faktoro de intenseco: {BLACK}-{COMMA16}%
+STR_6535    :{WINDOW_COLOUR_2}Faktoro de naŭzo: {BLACK}-{COMMA16}%
 STR_6536    :Ĉi tiu parko estis konservita en pli nova versio de OpenRCT2. La parko estis konservita en v{INT32}, vi nune estas en v{INT32}.
 STR_6537    :Permesi uzante regulajn trotuarojn kiel atendovico
-STR_6538    :Montras regulajn trotuarojn en la atendovicoj-fallisto de la Trotuaroj-fenestro.
-STR_6539    :Bremso Fermita
+STR_6538    :Montras regulajn trotuarojn en la atendovicoj-fallisto de la trotuaro-fenestro.
+STR_6539    :Bremso fermita
 STR_6540    :{WINDOW_COLOUR_2}Specialan dankon al la sekvantaj firmaoj por permesi ilian similecon:
 STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG, Intamin Amusement Rides Int. Corp. Est.
 STR_6542    :Kontribuantoj
@@ -3540,7 +3540,7 @@ STR_6543    :Kontribuantoj…
 STR_6544    :Prunto ne povas esti negativa!
 STR_6545    :Uzi interezan kalkulon de RCT1
 STR_6546    :Uzi la interezan kalkulan algoritmon de RollerCoaster Tycoon 1, kiu uzis fiksitan procenton de proksimume 1.33%.
-STR_6547    :Ĉiuj Pejzaĝoj
+STR_6547    :Ĉiuj pejzaĝoj
 STR_6548    :Montri balustradojn ĉe kuniĝo
 STR_6549    :Kongruaj objektoj ne povas esti elektitaj!
 STR_6550    :Ĉi tiu elemento estas inkluzivita por retrokongruo kun malnovaj aŭ difektitaj objektoj. Ĝi ne povas esti elektita, nur malelektita.
@@ -3576,7 +3576,7 @@ STR_6579    :Blokparto-bremsoj estos agorditaj al defaŭlta rapideco, kiam konse
 STR_6580    :Restarigi
 STR_6581    :Ĉu vi certas, ke vi volas restarigi ĉiujn klavarokomandojn sur ĉi tiu langeto?
 STR_6582    :Malfermi klavarokomandoj-fenestron
-STR_6583    :{WINDOW_COLOUR_2}Inversaj Trajnoj
+STR_6583    :{WINDOW_COLOUR_2}Inversaj trajnoj
 STR_6584    :Elektu por funkciigi trajnojn inverse
 STR_6585    :Ne eblas ŝanĝi tion…
 STR_6586    :OpenRCT2
@@ -3587,7 +3587,7 @@ STR_6590    :Montri la fenestro-butonojn (ekz. fermi la fenestron) maldekstre de
 STR_6591    :Dungito nune estas riparanta atrakcion kaj ne povas esti maldungita.
 STR_6592    :Dungito nune estas inspektanta atrakcion kaj ne povas esti maldungita.
 STR_6593    :Forigi parkobarilojn
-STR_6594    :Inspektilo de Bloko: Baskuligi deklivecon de muro
+STR_6594    :Inspektilo de bloko: Baskuligi deklivecon de muro
 STR_6595    :{WINDOW_COLOUR_2}Aŭtoro: {BLACK}{STRING}
 STR_6596    :{WINDOW_COLOUR_2}Aŭtoroj: {BLACK}{STRING}
 STR_6597    :Nevalida parametro
@@ -3625,11 +3625,11 @@ STR_6628    :Nur meteblas sur bordoj de trotuaroj!
 STR_6629    :Ĝisrandigi butonojn de ilobreto horizontale centren
 STR_6630    :Ĉi tiu agordo ĝisrandigos la butonojn de ilobreto horizontale centren de la ekrano. La tradicia maniero ĝisrandigi ilin estas al la dekstre kaj maldeksre anguloj.
 STR_6631    :Ŝargado…
-STR_6632    :Kontrolas dosierojn de objektoj…
-STR_6633    :Kontrolas dosierojn de scenaroj…
-STR_6634    :Kontrolas dosierojn de trakdesegnaĵoj…
-STR_6635    :Kontrolas havaĵo-pakojn…
-STR_6636    :Kontrolas titolosekvencojn…
+STR_6632    :Kontrolado de objektodosieroj…
+STR_6633    :Kontrolado de scenarodosieroj…
+STR_6634    :Kontrolado de trakdesegnaĵodosieroj…
+STR_6635    :Kontrolado de havaĵo-pakoj…
+STR_6636    :Kontrolado de titolosekvencoj…
 STR_6637    :Ŝargas titolosekvencon…
 STR_6638    :Pligrandigita fasado
 STR_6639    :Modifas la fasadon por esti pli taŭga por tuŝekranoj
@@ -3641,16 +3641,16 @@ STR_6644    :Tuŝekranaj plibonigoj
 STR_6645    :Pligrandigas kelkajn elementojn de la fasado, por ke ili estas pli facile klakeblaj aŭ tuŝeblaj.
 STR_6646    :Aŭtoro: {STRING}
 STR_6647    :Aŭtoroj: {STRING}
-STR_6648    :Ŝargas kromprograman motoron…
+STR_6648    :Ŝargas kromprograman modulon…
 STR_6649    :Ŝargas scenaron…
 STR_6650    :Ŝargas konservitan ludon…
 STR_6651    :{STRING} ({COMMA32}%)
 STR_6652    :Erarfenestro
 STR_6653    :Ĉiuj fontoj montritaj
-STR_6654    :Montras {POP16}{UINT16} fontojn
+STR_6654    :{POP16}{UINT16} fontoj montritaj
 STR_6655    :Nur ‘{POP16}{STRINGID}’
 STR_6656    :Forigi ĉiujn barilojn de la parko
-STR_6657    :Bieno Ne Posedata
+STR_6657    :Bieno ne posedata
 STR_6658    :Agordi bienon ne posedatan de la parko, nek aĉeteblan
 STR_6659    :Gastoj ignoras prezojn
 STR_6660    :Gastoj ignoros la prezojn de atrakcioj kaj budoj.
@@ -3667,7 +3667,7 @@ STR_6670    :Konduto de gastoj
 STR_6671    :Montri ‘faktajn’ nomojn de dungitaro
 STR_6672    :Baskuligi inter montrado de ‘faktaj’ dungitonomoj kaj dungitonumeroj
 STR_6673    :Travidebla
-STR_6674    :{MONTH}, Jaro {COMMA16}
+STR_6674    :{MONTH}, jaro {COMMA16}
 STR_6675    :Nomoj de Hometoj
 STR_6676    :Almenaŭ unu objecto de hometonomo elektendas
 STR_6677    :Aldoni strandojn ĉirkaŭ amasoj de akvo
@@ -3746,15 +3746,15 @@ STR_6749    :Nur pli intensaj atrakcioj
 STR_6750    :Elekti kian atrakcio-intensecon, ke nove generitaj gastoj preferas.
 STR_6751    :Atendovico-trotuaroj ne uzeblas por traknivelaj pasejoj!
 STR_6752    :Agordoj de scenaro - Celo
-STR_6753    :Agordoj de scenaro - Detaloj de Scenaro
-STR_6754    :Agordoj de scenaro - Limigoj de Bieno
+STR_6753    :Agordoj de scenaro - Detaloj de scenaro
+STR_6754    :Agordoj de scenaro - Limigoj de bieno
 STR_6755    :Montri agordojn de celo
 STR_6756    :Montri agordojn de detaloj de scenaro
 STR_6757    :Montri agordojn de limigoj de bieno
 STR_6758    :Prunto-agordoj
 STR_6759    :Komerca modelo
 STR_6760    :Perlaboraĵoj:
-STR_6761    :Detaloj de Scenaro
+STR_6761    :Detaloj de scenaro
 STR_6762    :Interfaco
 STR_6763    :RollerCoaster Tycoon 1
 STR_6764    :Konservado kaj aŭtokonservado
@@ -3785,9 +3785,9 @@ STR_6788    :Sentemo:
 STR_6789    :Sentema obligilo de stirstango
 STR_6790    :Morta zono: {COMMA32}%
 STR_6791    :Sentemo: {COMMA32}%
-STR_6792    :Enirejo-Konstruaĵoj
-STR_6793    :Gastoj kaj Dungitaro
-STR_6794    :Pejzaĝo kaj Temoj
+STR_6792    :Enirejo-konstruaĵoj
+STR_6793    :Gastoj kaj dungitaro
+STR_6794    :Pejzaĝo kaj temoj
 STR_6795    :{MOVE_X}{10}{STRINGID}
 STR_6796    :•{MOVE_X}{10}{STRINGID}
 STR_6797    :Neniu antaŭrigardo
@@ -3802,18 +3802,18 @@ STR_7005    :Treni areon de trotuaro
 STR_7006    :Desegni borderon ĉirkaŭ bildo-butonoj
 STR_7007    :Atrakciotipo
 STR_7008    :Nekonata atrakciotipo ({INT32})
-STR_7009    :Ricevas skriptojn…
+STR_7009    :Ricevado de skriptoj…
 STR_7010    :Ne povas komenci reludigon, la dosiero ‘{STRING}’ ne ekzistas aŭ ne validas
 STR_7011    :Ne povas komenci reludigon
 STR_7012    :Pola zloto (PLN)
 STR_7013    :Treni areojn de trotuaro
-STR_7014    :Mi posedas la ludon de Steam, sed mi ankoraŭ ne instalis ĝin.
-STR_7015    :Bonvolu fermi je Steam se ĝi rulas, tiam alklaki la ‘OK’ butonon.
-STR_7016    :OpenRCT2 provis ekagigi elŝutaĵon en Steam. Bonvolu malfermi je Steam kaj lasu ĝin elŝuti la ludon. Kiam Steam estas finita, alklaku la ‘OK’ butonon.
+STR_7014    :Mi posedas la ludon per Steam, sed mi ankoraŭ ne instalis ĝin.
+STR_7015    :Bonvolu fermi je Steam se ĝi rulas, tiam alklaki la butonon ‘OK’.
+STR_7016    :OpenRCT2 provis ekagigi elŝutaĵon en Steam. Bonvolu malfermi je Steam kaj lasu ĝin elŝuti la ludon. Kiam Steam estas finita, alklaku la butonon ‘OK’.
 STR_7017    :Forlasi
 STR_7023    :Nevidebligi
 STR_7024    :Nevidebligas la tutan atrakcion
 STR_7025    :Videbligi
 STR_7026    :Videbligas la tutan atrakcion
-STR_7028    :Kvarona Kreska Helico
-STR_7029    :Kvarona Malkreska Helico
+STR_7028    :Kvarona kreska helico
+STR_7029    :Kvarona malkreska helico

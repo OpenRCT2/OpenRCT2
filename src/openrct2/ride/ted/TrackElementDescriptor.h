@@ -13,6 +13,7 @@
 #include "../../localisation/StringIdType.h"
 #include "../../paint/support/MetalSupports.h"
 #include "../../paint/support/WoodenSupports.h"
+#include "../../paint/tile_element/Paint.Tunnel.h"
 #include "../../paint/tile_element/Segment.h"
 #include "../../world/QuarterTile.h"
 #include "PitchAndRoll.h"
@@ -223,6 +224,68 @@ namespace OpenRCT2::TrackMetadata
         kSegmentsAll,                                                                         // wide
     } };
 
+    static constexpr int16_t kDoNotSetGeneralSupportHeight = std::numeric_limits<int16_t>::min();
+
+    constexpr int16_t calculateGeneralSupportHeight(
+        const SequenceClearance& sequenceClearance, const int32_t clearanceOffset, bool startsAtHalfHeight)
+    {
+        const int16_t trackHeight = sequenceClearance.z + (startsAtHalfHeight * kCoordsZStep);
+        startsAtHalfHeight = trackHeight % kLandHeightStep == kCoordsZStep;
+
+        int32_t trackClearance = 0;
+        if (!startsAtHalfHeight)
+        {
+            trackClearance = Numerics::ceil2(sequenceClearance.clearanceZ, kLandHeightStep);
+        }
+        else
+        {
+            trackClearance = Numerics::ceil2(sequenceClearance.clearanceZ, kCoordsZStep);
+            trackClearance += (trackClearance + kCoordsZStep) % kLandHeightStep;
+        }
+
+        return trackClearance + (clearanceOffset * kLandHeightStep);
+    };
+
+    enum class SequenceTunnelType : uint8_t
+    {
+        upright,
+        inverted,
+        invertedFlying,
+    };
+    constexpr size_t kSequenceTunnelTypeCount = 3;
+
+    struct SequenceTunnelInfo
+    {
+        int8_t height = 0;
+        TunnelSubType type = TunnelSubType::Flat;
+    };
+
+    struct SequenceTunnel
+    {
+        Direction direction = kInvalidDirection;
+        std::array<SequenceTunnelInfo, kSequenceTunnelTypeCount> tunnelInfo{};
+    };
+
+    constexpr uint8_t kSequenceTunnelMaxPerSequence = 2;
+
+    constexpr SequenceTunnel sequenceTunnelAllTypes(const Direction direction, const int8_t height, const TunnelSubType type)
+    {
+        const SequenceTunnelInfo tunnelInfo{ height, type };
+        return SequenceTunnel{ direction, { tunnelInfo, tunnelInfo, tunnelInfo } };
+    }
+
+    using SequenceTunnels = std::array<SequenceTunnel, kSequenceTunnelMaxPerSequence>;
+
+    template<Direction (&directionFunction)(Direction)>
+    constexpr SequenceTunnels sequenceTunnelsModify(SequenceTunnels sequenceTunnels)
+    {
+        for (auto& tunnel : sequenceTunnels)
+        {
+            tunnel.direction = directionFunction(tunnel.direction);
+        }
+        return sequenceTunnels;
+    }
+
     struct SequenceDescriptor
     {
         SequenceClearance clearance{};
@@ -235,6 +298,8 @@ namespace OpenRCT2::TrackMetadata
         int8_t extraSupportRotation = 0;
         bool invertSegmentBlocking = false;
         BlockedSegmentsPerType blockedSegments{ kSegmentsNone, kSegmentsNone, kSegmentsNone };
+        int16_t generalSupportHeight = kDoNotSetGeneralSupportHeight;
+        SequenceTunnels tunnels{};
         uint8_t reversedTrackSequence = 0;
 
         constexpr uint8_t getEntranceConnectionSides() const

@@ -52,12 +52,12 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_range) << DS_TAG(_itemsToClear);
     }
 
-    Result ClearAction::Query(GameState_t& gameState) const
+    Result ClearAction::Query(GameState_t& gameState, Park::ParkData& park) const
     {
         return QueryExecute(gameState, false);
     }
 
-    Result ClearAction::Execute(GameState_t& gameState) const
+    Result ClearAction::Execute(GameState_t& gameState, Park::ParkData& park) const
     {
         return QueryExecute(gameState, true);
     }

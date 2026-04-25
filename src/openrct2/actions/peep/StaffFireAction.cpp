@@ -39,7 +39,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_spriteId);
     }
 
-    Result StaffFireAction::Query(GameState_t& gameState) const
+    Result StaffFireAction::Query(GameState_t& gameState, Park::ParkData& park) const
     {
         if (_spriteId.ToUnderlying() >= kMaxEntities || _spriteId.IsNull())
         {
@@ -66,7 +66,7 @@ namespace OpenRCT2::GameActions
         return Result();
     }
 
-    Result StaffFireAction::Execute(GameState_t& gameState) const
+    Result StaffFireAction::Execute(GameState_t& gameState, Park::ParkData& park) const
     {
         auto staff = gameState.entities.TryGetEntity<Staff>(_spriteId);
         if (staff == nullptr)

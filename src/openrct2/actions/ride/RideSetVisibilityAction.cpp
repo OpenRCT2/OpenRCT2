@@ -40,7 +40,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_rideIndex) << DS_TAG(_visibility);
     }
 
-    Result RideSetVisibilityAction::Query(GameState_t& gameState) const
+    Result RideSetVisibilityAction::Query(GameState_t& gameState, Park::ParkData& park) const
     {
         if (EnumValue(_visibility) >= 2)
         {
@@ -51,7 +51,7 @@ namespace OpenRCT2::GameActions
         return Result();
     }
 
-    Result RideSetVisibilityAction::Execute(GameState_t& gameState) const
+    Result RideSetVisibilityAction::Execute(GameState_t& gameState, Park::ParkData& park) const
     {
         for (int32_t y = 1; y <= gameState.mapSize.y; y++)
         {

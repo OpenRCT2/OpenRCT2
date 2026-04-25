@@ -40,9 +40,8 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_value);
     }
 
-    Result ParkSetLoanAction::Query(GameState_t& gameState) const
+    Result ParkSetLoanAction::Query(GameState_t& gameState, Park::ParkData& park) const
     {
-        auto& park = gameState.park;
         if (_value > park.bankLoan && _value > park.maxBankLoan)
         {
             return Result(Status::disallowed, STR_CANT_BORROW_ANY_MORE_MONEY, STR_BANK_REFUSES_TO_INCREASE_LOAN);
@@ -61,10 +60,8 @@ namespace OpenRCT2::GameActions
         return Result();
     }
 
-    Result ParkSetLoanAction::Execute(GameState_t& gameState) const
+    Result ParkSetLoanAction::Execute(GameState_t& gameState, Park::ParkData& park) const
     {
-        auto& park = gameState.park;
-
         park.cash -= (park.bankLoan - _value);
         park.bankLoan = _value;
 

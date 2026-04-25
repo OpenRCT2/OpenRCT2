@@ -46,7 +46,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_loc);
     }
 
-    Result FootpathAdditionRemoveAction::Query(GameState_t& gameState) const
+    Result FootpathAdditionRemoveAction::Query(GameState_t& gameState, Park::ParkData& park) const
     {
         if (!LocationValid(_loc))
         {
@@ -93,7 +93,7 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    Result FootpathAdditionRemoveAction::Execute(GameState_t& gameState) const
+    Result FootpathAdditionRemoveAction::Execute(GameState_t& gameState, Park::ParkData& park) const
     {
         auto* pathElement = MapGetFootpathElement(_loc);
         if (!GetFlags().has(CommandFlag::ghost))

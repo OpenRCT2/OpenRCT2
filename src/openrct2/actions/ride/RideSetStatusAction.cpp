@@ -54,7 +54,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_rideIndex) << DS_TAG(_status);
     }
 
-    Result RideSetStatusAction::Query(GameState_t& gameState) const
+    Result RideSetStatusAction::Query(GameState_t& gameState, Park::ParkData& park) const
     {
         Result res = Result();
 
@@ -117,7 +117,7 @@ namespace OpenRCT2::GameActions
         return Result();
     }
 
-    Result RideSetStatusAction::Execute(GameState_t& gameState) const
+    Result RideSetStatusAction::Execute(GameState_t& gameState, Park::ParkData& park) const
     {
         Result res = Result();
         res.expenditure = ExpenditureType::rideRunningCosts;

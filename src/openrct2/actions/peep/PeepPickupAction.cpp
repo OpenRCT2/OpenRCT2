@@ -47,7 +47,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_type) << DS_TAG(_entityId) << DS_TAG(_loc) << DS_TAG(_owner);
     }
 
-    Result PeepPickupAction::Query(GameState_t& gameState) const
+    Result PeepPickupAction::Query(GameState_t& gameState, Park::ParkData& park) const
     {
         if (_entityId.ToUnderlying() >= kMaxEntities || _entityId.IsNull())
         {
@@ -116,7 +116,7 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    Result PeepPickupAction::Execute(GameState_t& gameState) const
+    Result PeepPickupAction::Execute(GameState_t& gameState, Park::ParkData& park) const
     {
         Peep* const peep = gameState.entities.TryGetEntity<Peep>(_entityId);
         if (peep == nullptr)

@@ -23,6 +23,11 @@ namespace OpenRCT2
     struct GameState_t;
 }
 
+namespace OpenRCT2::Park
+{
+    struct ParkData;
+}
+
 namespace OpenRCT2::GameActions
 {
     namespace Flags
@@ -162,12 +167,12 @@ namespace OpenRCT2::GameActions
         /**
          * Query the result of the game action without changing the game state.
          */
-        virtual Result Query(GameState_t& gameState) const = 0;
+        virtual Result Query(GameState_t& gameState, Park::ParkData& park) const = 0;
 
         /**
          * Apply the game action and change the game state.
          */
-        virtual Result Execute(GameState_t& gameState) const = 0;
+        virtual Result Execute(GameState_t& gameState, Park::ParkData& park) const = 0;
 
         bool LocationValid(const CoordsXY& coords) const;
     };

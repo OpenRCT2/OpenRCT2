@@ -1,3 +1,35 @@
+openrct2 (0.5.0-develop-1) unstable; urgency=medium
+
+ * Feature: [#23465] Change plugin JavaScript engine from Duktape to QuickJS-NG, allowing ES6+ features to be used in plugins.
+ * Feature: [#26178] Port of the Spinning Cars from RollerCoaster Tycoon 1.
+ * Improved: [#25314] Add unbanked and banked quarter helices to the Alpine, Corkscrew, Giga, Hybrid, Looping, Mine Ride, Mini, Multi-Dimension, Single Rail, Stand Up, Steeplechase and Twister tracks.
+ * Improved: [#26044] Simplify Android installation by bundling OpenRCT2 assets in APK.
+ * Improved: [#26293] Objects extracted from saves now have more information in their filenames.
+ * Improved: [objects#432] Allow saving scenery from RCT1 with track designs.
+ * Change: [#25962] The station style dropdown now shows entrance icons next to the labels for easier selection.
+ * Change: [#26175] The ride colour tab is made more compact by collapsing unavailable sections instead of only hiding them.
+ * Change: [#26178] Symmetric spinning trains and legacy ‘pre-reversed’ trains can no longer be reversed.
+ * Fix: [#10616] Quarter-tile trees cannot be placed on dry portions of half-water tiles.
+ * Fix: [#25128] Mute button displayed in wrong state after load.
+ * Fix: [#25460] Infinite loop when moving track design ghost queue over queue loop with zero clearances.
+ * Fix: [#25735] Ride synchronisation z-check works incorrectly.
+ * Fix: [#25919] Path drag tool error sound stacks when placement fails.
+ * Fix: [#25926] Path drag tool shows cost for single tile instead of total.
+ * Fix: [#25927] Wall drag tool error sound stacks and shows wrong cost.
+ * Fix: [#25962] Dropdown triangle glyphs are not optically centred.
+ * Fix: [#25993] Toggling “allow arbitrary ride type changes” does not resize open ride windows.
+ * Fix: [#26111] Vehicle colours tab can go out of bounds in certain edge cases.
+ * Fix: [#26118] Windows installers for releases are not signed properly.
+ * Fix: [#26128] The loan spinner widget does not appear on the same baseline as the text around it.
+ * Fix: [#26140] The time a guest has spent in a queue overflows back to 0 after it reaches 65535 (about a year).
+ * Fix: [#26159] The map generator window is not resized correctly in Enlarged UI mode.
+ * Fix: [#26196] The sprites of one angle of the Steeplechase left large turn are misaligned (original bug).
+ * Fix: [#26214] The wrong sprite is used for one angle of the gentle diagonal slope of Alpine, Hybrid and Single Rail tracks.
+ * Fix: [#26243] Increase max dropdown size from 512 to 1024 to accommodate parks with more than 512 rides.
+ * Fix: [#26306] Platform::FindApp fails to locate Homebrew-installed tools on macOS.
+ * Fix: [#26339] Crash when setting up a marketing campaign.
+ * Fix: [objects#430] The RCT1 Reverse Freefall car can be reversed and show broken sprites when doing so.
+
 openrct2 (0.4.32-develop-1) unstable; urgency=medium
 
  * Feature: [#22704] Rides can be made invisible more easily.

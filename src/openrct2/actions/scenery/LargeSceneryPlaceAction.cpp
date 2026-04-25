@@ -65,7 +65,7 @@ namespace OpenRCT2::GameActions
                << DS_TAG(_tertiaryColour);
     }
 
-    Result LargeSceneryPlaceAction::Query(GameState_t& gameState) const
+    Result LargeSceneryPlaceAction::Query(GameState_t& gameState, Park::ParkData& park) const
     {
         auto res = Result();
         res.errorTitle = STR_CANT_POSITION_THIS_HERE;
@@ -193,7 +193,7 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    Result LargeSceneryPlaceAction::Execute(GameState_t& gameState) const
+    Result LargeSceneryPlaceAction::Execute(GameState_t& gameState, Park::ParkData& park) const
     {
         auto res = Result();
         res.errorTitle = STR_CANT_POSITION_THIS_HERE;

@@ -20,22 +20,23 @@ namespace OpenRCT2
 
 namespace OpenRCT2::Scripting
 {
-    class ScLitter : public ScEntity
+    class ScLitter;
+    extern ScLitter gScLitter;
+
+    class ScLitter final : public ScEntity
     {
     public:
-        ScLitter(EntityId Id);
-
-        static void Register(duk_context* ctx);
+        static JSValue New(JSContext* ctx, EntityId entityId);
+        void Register(JSContext* ctx);
 
     private:
-        Litter* GetLitter() const;
+        static Litter* GetLitter(JSValue thisVal);
 
-        std::string litterType_get() const;
-        void litterType_set(const std::string& litterType);
+        static JSValue litterType_get(JSContext* ctx, JSValue thisVal);
+        static JSValue litterType_set(JSContext* ctx, JSValue thisVal, JSValue value);
 
-        uint32_t creationTick_get() const;
+        static JSValue creationTick_get(JSContext* ctx, JSValue thisVal);
     };
-
 } // namespace OpenRCT2::Scripting
 
 #endif

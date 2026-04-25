@@ -1,6 +1,6 @@
 file(GLOB_RECURSE OPENRCT2_CORE_SOURCES "${CMAKE_CURRENT_LIST_DIR}/*.cpp")
 file(GLOB_RECURSE OPENRCT2_CORE_HEADERS "${CMAKE_CURRENT_LIST_DIR}/*.h"
-                                        "${CMAKE_CURRENT_LIST_DIR}/*.hpp")
+        "${CMAKE_CURRENT_LIST_DIR}/*.hpp")
 
 if (APPLE)
     file(GLOB_RECURSE OPENRCT2_CORE_MM_SOURCES "${CMAKE_CURRENT_LIST_DIR}/*.mm")
@@ -8,14 +8,14 @@ if (APPLE)
 endif ()
 
 if (ENABLE_SCRIPTING)
-    include_directories("${CMAKE_CURRENT_LIST_DIR}/../thirdparty/duktape")
+    include_directories(SYSTEM "${CMAKE_CURRENT_LIST_DIR}/../thirdparty/quickjs-ng")
 
-    # duktape is third party, ignore all warnings
-    set(OPENRCT2_DUKTAPE_SOURCES "${CMAKE_CURRENT_LIST_DIR}/../thirdparty/duktape/duktape.cpp")
+    # quickjs-ng is third party, ignore all warnings
+    set(OPENRCT2_QUICKJS_NG_SOURCES "${CMAKE_CURRENT_LIST_DIR}/../thirdparty/quickjs-ng/quickjs-amalgam.c")
     if (MSVC)
-        set_source_files_properties(${OPENRCT2_DUKTAPE_SOURCES} PROPERTIES COMPILE_FLAGS "/w")
+        set_source_files_properties(${OPENRCT2_QUICKJS_NG_SOURCES} PROPERTIES COMPILE_FLAGS "/w")
     else ()
-        set_source_files_properties(${OPENRCT2_DUKTAPE_SOURCES} PROPERTIES COMPILE_FLAGS "-w")
+        set_source_files_properties(${OPENRCT2_QUICKJS_NG_SOURCES} PROPERTIES COMPILE_FLAGS "-w")
     endif ()
 endif ()
 
@@ -26,17 +26,17 @@ endif ()
 # https://github.com/OpenRCT2/OpenRCT2/issues/24936
 set(LIBOPENRCT2_LINKAGE)
 if (APPLE)
-  set(LIBOPENRCT2_LINKAGE STATIC)
+    set(LIBOPENRCT2_LINKAGE STATIC)
 endif()
-add_library(libopenrct2 ${LIBOPENRCT2_LINKAGE} ${OPENRCT2_CORE_SOURCES} ${OPENRCT2_CORE_MM_SOURCES} ${OPENRCT2_DUKTAPE_SOURCES})
+add_library(libopenrct2 ${LIBOPENRCT2_LINKAGE} ${OPENRCT2_CORE_SOURCES} ${OPENRCT2_CORE_MM_SOURCES} ${OPENRCT2_QUICKJS_NG_SOURCES})
 add_library(OpenRCT2::libopenrct2 ALIAS libopenrct2)
 
 if (CMAKE_COMPILER_IS_GNUCXX AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS "13")
-	message(WARNING "Buggy GCC 12 detected! Disabling some warnings")
-	set_source_files_properties("${CMAKE_CURRENT_LIST_DIR}/localisation/FormatCodes.cpp" PROPERTIES COMPILE_FLAGS "-Wno-restrict")
-	set_source_files_properties("${CMAKE_CURRENT_LIST_DIR}/platform/Platform.Posix.cpp" PROPERTIES COMPILE_FLAGS "-Wno-restrict")
-	set_source_files_properties("${CMAKE_CURRENT_LIST_DIR}/ride/Ride.cpp" PROPERTIES COMPILE_FLAGS "-Wno-null-dereference")
-	set_source_files_properties("${CMAKE_CURRENT_LIST_DIR}/scenario/Scenario.cpp" PROPERTIES COMPILE_FLAGS "-Wno-restrict")
+    message(WARNING "Buggy GCC 12 detected! Disabling some warnings")
+    set_source_files_properties("${CMAKE_CURRENT_LIST_DIR}/localisation/FormatCodes.cpp" PROPERTIES COMPILE_FLAGS "-Wno-restrict")
+    set_source_files_properties("${CMAKE_CURRENT_LIST_DIR}/platform/Platform.Posix.cpp" PROPERTIES COMPILE_FLAGS "-Wno-restrict")
+    set_source_files_properties("${CMAKE_CURRENT_LIST_DIR}/ride/Ride.cpp" PROPERTIES COMPILE_FLAGS "-Wno-null-dereference")
+    set_source_files_properties("${CMAKE_CURRENT_LIST_DIR}/scenario/Scenario.cpp" PROPERTIES COMPILE_FLAGS "-Wno-restrict")
 endif()
 if (APPLE)
     target_link_platform_libraries(libopenrct2)
@@ -152,23 +152,23 @@ endif ()
 
 if (STATIC)
     target_link_libraries(libopenrct2
-                                     ${PNG_STATIC_LIBRARIES}
-                                     ${ZLIB_STATIC_LIBRARIES}
-                                     ${LIBZIP_STATIC_LIBRARIES}
-                                     ${ZSTD_STATIC_LIBRARIES})
+            ${PNG_STATIC_LIBRARIES}
+            ${ZLIB_STATIC_LIBRARIES}
+            ${LIBZIP_STATIC_LIBRARIES}
+            ${ZSTD_STATIC_LIBRARIES})
 else ()
     if (NOT MSVC AND NOT EMSCRIPTEN)
         target_link_libraries(libopenrct2
-                                     PkgConfig::PNG
-                                     PkgConfig::ZLIB
-                                     PkgConfig::LIBZIP
-                                     PkgConfig::ZSTD)
+                PkgConfig::PNG
+                PkgConfig::ZLIB
+                PkgConfig::LIBZIP
+                PkgConfig::ZSTD)
     else ()
         target_link_libraries(libopenrct2
-                                     ${PNG_LIBRARIES}
-                                     ${ZLIB_LIBRARIES}
-                                     ${LIBZIP_LIBRARIES}
-                                     ${ZSTD_LIBRARIES})
+                ${PNG_LIBRARIES}
+                ${ZLIB_LIBRARIES}
+                ${LIBZIP_LIBRARIES}
+                ${ZSTD_LIBRARIES})
     endif ()
 endif ()
 
@@ -247,7 +247,7 @@ endif()
 # Includes
 target_include_directories(libopenrct2 SYSTEM PRIVATE ${LIBZIP_INCLUDE_DIRS})
 target_include_directories(libopenrct2 SYSTEM PRIVATE ${PNG_INCLUDE_DIRS}
-                                                          ${ZLIB_INCLUDE_DIRS})
+        ${ZLIB_INCLUDE_DIRS})
 target_include_directories(libopenrct2 SYSTEM PRIVATE ${ZSTD_INCLUDE_DIRS})
 include_directories(libopenrct2 SYSTEM ${CMAKE_CURRENT_LIST_DIR}/../thirdparty)
 
@@ -256,20 +256,20 @@ include_directories(libopenrct2 SYSTEM ${CMAKE_CURRENT_LIST_DIR}/../thirdparty)
 # definitions: Version.cpp and Crash/Platform.cpp
 if (NOT OPENRCT2_VERSION_TAG STREQUAL "")
     set_property(SOURCE ${CMAKE_CURRENT_LIST_DIR}/Version.cpp ${CMAKE_CURRENT_LIST_DIR}/Crash/Platform.cpp
-        PROPERTY COMPILE_DEFINITIONS
-        OPENRCT2_VERSION_TAG="${OPENRCT2_VERSION_TAG}")
+            PROPERTY COMPILE_DEFINITIONS
+            OPENRCT2_VERSION_TAG="${OPENRCT2_VERSION_TAG}")
 endif()
 
 if (NOT OPENRCT2_BRANCH STREQUAL "master" AND NOT OPENRCT2_BRANCH STREQUAL "")
     set_property(SOURCE ${CMAKE_CURRENT_LIST_DIR}/Version.cpp ${CMAKE_CURRENT_LIST_DIR}/Crash/Platform.cpp
-        APPEND PROPERTY COMPILE_DEFINITIONS
-        OPENRCT2_BRANCH="${OPENRCT2_BRANCH}")
+            APPEND PROPERTY COMPILE_DEFINITIONS
+            OPENRCT2_BRANCH="${OPENRCT2_BRANCH}")
 endif()
 
 if (NOT OPENRCT2_COMMIT_SHA1_SHORT STREQUAL "HEAD" AND NOT OPENRCT2_COMMIT_SHA1_SHORT STREQUAL "")
     set_property(SOURCE ${CMAKE_CURRENT_LIST_DIR}/Version.cpp ${CMAKE_CURRENT_LIST_DIR}/Crash/Platform.cpp
-        APPEND PROPERTY COMPILE_DEFINITIONS
-        OPENRCT2_COMMIT_SHA1_SHORT="${OPENRCT2_COMMIT_SHA1_SHORT}")
+            APPEND PROPERTY COMPILE_DEFINITIONS
+            OPENRCT2_COMMIT_SHA1_SHORT="${OPENRCT2_COMMIT_SHA1_SHORT}")
 endif()
 
 if((X86 OR X86_64) AND NOT MSVC AND NOT EMSCRIPTEN)
@@ -285,7 +285,7 @@ if (ENABLE_HEADERS_CHECK AND "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     add_library(libopenrct2-headers-check OBJECT ${OPENRCT2_CORE_HEADERS})
     set_target_properties(libopenrct2-headers-check PROPERTIES LINKER_LANGUAGE CXX)
     set_source_files_properties(${OPENRCT2_CORE_HEADERS} PROPERTIES LANGUAGE CXX)
-    add_definitions("-x c++ -Wno-pragma-once-outside-header -Wno-unused-const-variable")
+    target_compile_options(libopenrct2-headers-check PRIVATE -Wno-pragma-once-outside-header -Wno-unused-const-variable)
     get_target_property(LIBOPENRCT2_INCLUDE_DIRS libopenrct2 INCLUDE_DIRECTORIES)
     set_target_properties(libopenrct2-headers-check PROPERTIES INCLUDE_DIRECTORIES "${LIBOPENRCT2_INCLUDE_DIRS}")
 else ()
@@ -299,12 +299,12 @@ endif ()
 
 # Defines
 target_compile_definitions(libopenrct2 PUBLIC
-    $<$<BOOL:${USE_MMAP}>:USE_MMAP>
-    $<$<BOOL:${DISABLE_NETWORK}>:DISABLE_NETWORK>
-    $<$<BOOL:${DISABLE_HTTP}>:DISABLE_HTTP>
-    $<$<BOOL:${DISABLE_TTF}>:DISABLE_TTF>
-    $<$<BOOL:${DISABLE_VERSION_CHECKER}>:DISABLE_VERSION_CHECKER>
-    $<$<BOOL:${ENABLE_SCRIPTING}>:ENABLE_SCRIPTING>
+        $<$<BOOL:${USE_MMAP}>:USE_MMAP>
+        $<$<BOOL:${DISABLE_NETWORK}>:DISABLE_NETWORK>
+        $<$<BOOL:${DISABLE_HTTP}>:DISABLE_HTTP>
+        $<$<BOOL:${DISABLE_TTF}>:DISABLE_TTF>
+        $<$<BOOL:${DISABLE_VERSION_CHECKER}>:DISABLE_VERSION_CHECKER>
+        $<$<BOOL:${ENABLE_SCRIPTING}>:ENABLE_SCRIPTING>
 )
 
 target_compile_options(libopenrct2 PUBLIC $<$<BOOL:${ENABLE_ASAN}>:-fsanitize=address>)

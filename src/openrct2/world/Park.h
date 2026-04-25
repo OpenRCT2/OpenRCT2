@@ -22,7 +22,7 @@ namespace OpenRCT2::Park
 {
     struct ParkData;
 
-    void Initialise(GameState_t& gameState);
+    void Initialise(ParkData& park, GameState_t& gameState);
     void Update(ParkData& park, GameState_t& gameState);
 
     uint32_t CalculateParkSize(ParkData& park);
@@ -34,7 +34,7 @@ namespace OpenRCT2::Park
 
     void ResetHistories(ParkData& park);
     void UpdateHistories(ParkData& park);
-    void SetForcedRating(int32_t rating);
+    void SetForcedRating(ParkData& park, int32_t rating);
     int32_t GetForcedRating();
 
     uint32_t UpdateSize(ParkData& park);
@@ -45,9 +45,9 @@ namespace OpenRCT2::Park
     uint8_t CalculateGuestInitialHappiness(uint8_t percentage);
 
     bool IsOpen(const ParkData& park);
-    void SetOpen(bool open);
-    money64 GetEntranceFee();
+    void SetOpen(const ParkData& park, bool open);
+    money64 GetEntranceFee(const ParkData& park);
 
-    bool RidePricesUnlocked();
-    bool EntranceFeeUnlocked();
+    bool RidePricesUnlocked(const ParkData& park);
+    bool EntranceFeeUnlocked(const ParkData& park);
 } // namespace OpenRCT2::Park

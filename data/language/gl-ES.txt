@@ -830,10 +830,10 @@ STR_1460    :Vía en forma de ‘U’
 STR_1461    :Vía en forma de ‘O’
 STR_1462    :Inclinación excesiva para a subida
 STR_1463    :Visitantes
-STR_1464    :Hélice ascendente (pequena)
-STR_1465    :Hélice ascendente (grande)
-STR_1466    :Hélice descendente (pequena)
-STR_1467    :Hélice descendente (grande)
+STR_1464    :Media hélice ascendente (pequena)
+STR_1465    :Media hélice ascendente (grande)
+STR_1466    :Media hélice descendente (pequena)
+STR_1467    :Media hélice descendente (grande)
 STR_1468    :Persoal
 STR_1469    :A atracción debe comezar e rematar con estacións
 STR_1470    :A estación non é suficientemente longa
@@ -1043,10 +1043,10 @@ STR_1674    :Velocidade do freo
 STR_1676    :Establecer límite de velocidade para os freos
 STR_1677    :{WINDOW_COLOUR_2}Popularidade: {BLACK}Descoñecida
 STR_1678    :{WINDOW_COLOUR_2}Popularidade: {BLACK}{COMMA16}%
-STR_1679    :Hélice arriba (esquerda)
-STR_1680    :Hélice arriba (dereita)
-STR_1681    :Hélice abaixo (esquerda)
-STR_1682    :Hélice abaixo (dereita)
+STR_1679    :Cuarto de hélice ascendente (esquerda)
+STR_1680    :Cuarto de hélice ascendente (dereita)
+STR_1681    :Cuarto de hélice descendente (esquerda)
+STR_1682    :Cuarto de hélice descendente (dereita)
 STR_1683    :Tamaño da base 2 × 2
 STR_1684    :Tamaño da base 4×4
 STR_1685    :Tamaño da base 2 × 4
@@ -3306,7 +3306,7 @@ STR_6304    :Abrir o selector de decoración
 STR_6305    :Fíos múltiples
 STR_6306    :Opción experimental que utiliza varios fíos para debuxar, pode causar inestabilidade.
 STR_6307    :Esquema de cores: {BLACK}{STRINGID}
-STR_6308    :{TOPAZ}“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
+STR_6308    :{TOPAZ}“{STRINGID}{TOPAZ}”{NEWLINE}{STRINGID}
 STR_6309    :Volver conectar
 STR_6310    :{WINDOW_COLOUR_2}Posición: {BLACK}{INT32} {INT32} {INT32}
 STR_6311    :{WINDOW_COLOUR_2}Seguinte: {BLACK}{INT32} {INT32} {INT32}
@@ -3812,3 +3812,9 @@ STR_7014    :Teño o xogo en Steam, pero aínda non o instalei.
 STR_7015    :Pecha Steam se está en execución e logo preme en "Aceptar".
 STR_7016    :OpenRCT2 tentou iniciar unha descarga en Steam. Abre Steam e deixa que se descargue o xogo. Cando Steam remate, preme en "Aceptar".
 STR_7017    :Saír
+STR_7023    :Facer invisible
+STR_7024    :Fai toda a atracción invisible
+STR_7025    :Facer visible
+STR_7026    :Fai toda a atracción visible
+STR_7028    :Cuarto de hélice ascendente
+STR_7029    :Cuarto de hélice descendente

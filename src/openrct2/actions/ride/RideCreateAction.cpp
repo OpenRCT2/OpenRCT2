@@ -75,7 +75,7 @@ namespace OpenRCT2::GameActions
                << DS_TAG(_vehicleColourPreset) << DS_TAG(_inspectionInterval);
     }
 
-    Result RideCreateAction::Query(GameState_t& gameState) const
+    Result RideCreateAction::Query(GameState_t& gameState, Park::ParkData& park) const
     {
         if (_inspectionInterval > RideInspection::never)
         {
@@ -129,7 +129,7 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    Result RideCreateAction::Execute(GameState_t& gameState) const
+    Result RideCreateAction::Execute(GameState_t& gameState, Park::ParkData& park) const
     {
         auto res = Result();
 
@@ -206,7 +206,7 @@ namespace OpenRCT2::GameActions
 
         ride->ratings.setNull();
 
-        if (!(gameState.park.flags & PARK_FLAGS_NO_MONEY))
+        if (!(park.flags & PARK_FLAGS_NO_MONEY))
         {
             for (auto i = 0; i < RCT2::ObjectLimits::kMaxShopItemsPerRideEntry; i++)
             {
@@ -215,7 +215,7 @@ namespace OpenRCT2::GameActions
 
             if (rideEntry->shop_item[0] == ShopItem::none)
             {
-                if (!Park::RidePricesUnlocked() || gameState.park.entranceFee > 0)
+                if (!Park::RidePricesUnlocked(park) || park.entranceFee > 0)
                 {
                     ride->price[0] = 0;
                 }

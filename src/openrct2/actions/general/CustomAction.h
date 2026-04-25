@@ -26,15 +26,15 @@ namespace OpenRCT2::GameActions
         CustomAction() = default;
         CustomAction(const std::string& id, const std::string& json, const std::string& pluginName);
 
-        std::string GetId() const;
-        std::string GetJson() const;
-        std::string GetPluginName() const;
+        const std::string& GetId() const;
+        const std::string& GetJson() const;
+        const std::string& GetPluginName() const;
 
         uint16_t GetActionFlags() const override;
 
         void Serialise(DataSerialiser& stream) override;
-        Result Query(GameState_t& gameState) const override;
-        Result Execute(GameState_t& gameState) const override;
+        Result Query(GameState_t& gameState, Park::ParkData& park) const override;
+        Result Execute(GameState_t& gameState, Park::ParkData& park) const override;
     };
 } // namespace OpenRCT2::GameActions
 

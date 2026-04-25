@@ -56,7 +56,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_spriteIndex) << DS_TAG(_name);
     }
 
-    Result GuestSetNameAction::Query(GameState_t& gameState) const
+    Result GuestSetNameAction::Query(GameState_t& gameState, Park::ParkData& park) const
     {
         if (_spriteIndex.ToUnderlying() >= kMaxEntities || _spriteIndex.IsNull())
         {
@@ -73,7 +73,7 @@ namespace OpenRCT2::GameActions
         return Result();
     }
 
-    Result GuestSetNameAction::Execute(GameState_t& gameState) const
+    Result GuestSetNameAction::Execute(GameState_t& gameState, Park::ParkData& park) const
     {
         auto guest = gameState.entities.TryGetEntity<Guest>(_spriteIndex);
         if (guest == nullptr)

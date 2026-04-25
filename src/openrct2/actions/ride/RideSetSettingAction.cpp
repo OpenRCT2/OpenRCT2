@@ -48,7 +48,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_rideIndex) << DS_TAG(_setting) << DS_TAG(_value);
     }
 
-    Result RideSetSettingAction::Query(GameState_t& gameState) const
+    Result RideSetSettingAction::Query(GameState_t& gameState, Park::ParkData& park) const
     {
         auto ride = GetRide(_rideIndex);
         if (ride == nullptr)
@@ -155,7 +155,7 @@ namespace OpenRCT2::GameActions
         return Result();
     }
 
-    Result RideSetSettingAction::Execute(GameState_t& gameState) const
+    Result RideSetSettingAction::Execute(GameState_t& gameState, Park::ParkData& park) const
     {
         auto ride = GetRide(_rideIndex);
         if (ride == nullptr)

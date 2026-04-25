@@ -78,7 +78,7 @@ namespace OpenRCT2::GameActions
                << DS_TAG(_secondaryColour) << DS_TAG(_tertiaryColour);
     }
 
-    Result SmallSceneryPlaceAction::Query(GameState_t& gameState) const
+    Result SmallSceneryPlaceAction::Query(GameState_t& gameState, Park::ParkData& park) const
     {
         bool isOnWater = false;
         bool supportsRequired = false;
@@ -287,7 +287,7 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    Result SmallSceneryPlaceAction::Execute(GameState_t& gameState) const
+    Result SmallSceneryPlaceAction::Execute(GameState_t& gameState, Park::ParkData& park) const
     {
         bool supportsRequired = false;
         if (_loc.z != 0)

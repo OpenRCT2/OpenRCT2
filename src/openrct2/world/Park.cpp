@@ -81,7 +81,7 @@ namespace OpenRCT2::Park
     static money64 calculateTotalRideValueForMoney(const ParkData& park, const GameState_t& gameState)
     {
         money64 totalRideValue = 0;
-        bool ridePricesUnlocked = RidePricesUnlocked() && !(gameState.park.flags & PARK_FLAGS_NO_MONEY);
+        bool ridePricesUnlocked = RidePricesUnlocked(park) && !(gameState.park.flags & PARK_FLAGS_NO_MONEY);
         for (auto& ride : RideManager(gameState))
         {
             if (ride.status != RideStatus::open)
@@ -152,14 +152,15 @@ namespace OpenRCT2::Park
         auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
         if (hookEngine.HasSubscriptions(HookType::parkCalculateGuestCap))
         {
-            auto ctx = GetContext()->GetScriptEngine().GetContext();
-            auto obj = DukObject(ctx);
-            obj.Set("suggestedGuestMaximum", suggestedMaxGuests);
-            auto e = obj.Take();
-            hookEngine.Call(HookType::parkCalculateGuestCap, e, true);
+            JSContext* ctx = GetContext()->GetScriptEngine().GetContext();
+            JSValue obj = JS_NewObject(ctx);
+            JS_SetPropertyStr(ctx, obj, "suggestedGuestMaximum", JS_NewInt64(ctx, suggestedMaxGuests));
+            hookEngine.Call(HookType::parkCalculateGuestCap, obj, true, true);
 
-            suggestedMaxGuests = AsOrDefault(e["suggestedGuestMaximum"], static_cast<int32_t>(suggestedMaxGuests));
+            suggestedMaxGuests = AsOrDefault(ctx, obj, "suggestedGuestMaximum", static_cast<int32_t>(suggestedMaxGuests));
             suggestedMaxGuests = std::clamp<uint16_t>(suggestedMaxGuests, 0, UINT16_MAX);
+
+            JS_FreeValue(ctx, obj);
         }
 #endif
         return suggestedMaxGuests;
@@ -189,7 +190,7 @@ namespace OpenRCT2::Park
         }
 
         // Penalty for overpriced entrance fee relative to total ride value
-        auto entranceFee = GetEntranceFee();
+        auto entranceFee = GetEntranceFee(park);
         if (entranceFee > park.totalRideValueForMoney)
         {
             probability /= 4;
@@ -262,10 +263,8 @@ namespace OpenRCT2::Park
         history[0] = newItem;
     }
 
-    void Initialise(GameState_t& gameState)
+    void Initialise(ParkData& park, GameState_t& gameState)
     {
-        auto& park = gameState.park;
-
         park.name = LanguageGetString(STR_UNNAMED_PARK);
         gameState.pluginStorage = {};
         park.staffHandymanColour = Drawing::Colour::brightRed;
@@ -626,7 +625,7 @@ namespace OpenRCT2::Park
         return tiles;
     }
 
-    void SetOpen(bool open)
+    void SetOpen(const ParkData& park, bool open)
     {
         auto parkSetParameter = GameActions::ParkSetParameterAction(
             open ? GameActions::ParkParameter::Open : GameActions::ParkParameter::Close);
@@ -712,12 +711,11 @@ namespace OpenRCT2::Park
         UpdateFences({ coords.x, coords.y - kCoordsXYStep });
     }
 
-    void SetForcedRating(int32_t rating)
+    void SetForcedRating(ParkData& park, int32_t rating)
     {
         auto& gameState = getGameState();
         gameState.cheats.forcedParkRating = rating;
 
-        auto& park = gameState.park;
         park.rating = CalculateParkRating(park, gameState);
 
         auto intent = Intent(INTENT_ACTION_UPDATE_PARK_RATING);
@@ -729,16 +727,13 @@ namespace OpenRCT2::Park
         return getGameState().cheats.forcedParkRating;
     }
 
-    money64 GetEntranceFee()
+    money64 GetEntranceFee(const ParkData& park)
     {
-        // TODO: pass park by ref
-        auto& park = getGameState().park;
-
         if (park.flags & PARK_FLAGS_NO_MONEY)
         {
             return 0;
         }
-        if (!EntranceFeeUnlocked())
+        if (!EntranceFeeUnlocked(park))
         {
             return 0;
         }
@@ -746,11 +741,8 @@ namespace OpenRCT2::Park
         return park.entranceFee;
     }
 
-    bool RidePricesUnlocked()
+    bool RidePricesUnlocked(const ParkData& park)
     {
-        // TODO: pass park by ref
-        auto& park = getGameState().park;
-
         if (park.flags & PARK_FLAGS_UNLOCK_ALL_PRICES)
         {
             return true;
@@ -762,11 +754,8 @@ namespace OpenRCT2::Park
         return false;
     }
 
-    bool EntranceFeeUnlocked()
+    bool EntranceFeeUnlocked(const ParkData& park)
     {
-        // TODO: pass park by ref
-        auto& park = getGameState().park;
-
         if (park.flags & PARK_FLAGS_UNLOCK_ALL_PRICES)
         {
             return true;

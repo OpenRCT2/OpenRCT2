@@ -58,7 +58,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_rideIndex) << DS_TAG(_modifyType);
     }
 
-    Result RideDemolishAction::Query(GameState_t& gameState) const
+    Result RideDemolishAction::Query(GameState_t& gameState, Park::ParkData& park) const
     {
         auto ride = GetRide(_rideIndex);
         if (ride == nullptr)
@@ -102,7 +102,7 @@ namespace OpenRCT2::GameActions
         return result;
     }
 
-    Result RideDemolishAction::Execute(GameState_t& gameState) const
+    Result RideDemolishAction::Execute(GameState_t& gameState, Park::ParkData& park) const
     {
         auto ride = GetRide(_rideIndex);
         if (ride == nullptr)
@@ -114,16 +114,16 @@ namespace OpenRCT2::GameActions
         switch (_modifyType)
         {
             case RideModifyType::demolish:
-                return DemolishRide(gameState, *ride);
+                return DemolishRide(gameState, park, *ride);
             case RideModifyType::renew:
-                return RefurbishRide(gameState, *ride);
+                return RefurbishRide(gameState, park, *ride);
             default:
                 LOG_ERROR("Unknown ride demolish type %d", _modifyType);
                 return Result(Status::invalidParameters, STR_CANT_DO_THIS, STR_ERR_VALUE_OUT_OF_RANGE);
         }
     }
 
-    Result RideDemolishAction::DemolishRide(GameState_t& gameState, Ride& ride) const
+    Result RideDemolishAction::DemolishRide(GameState_t& gameState, Park::ParkData& park, Ride& ride) const
     {
         money64 refundPrice = DemolishTracks(gameState);
 
@@ -158,7 +158,6 @@ namespace OpenRCT2::GameActions
         }
 
         ride.remove();
-        auto& park = gameState.park;
         park.value = Park::CalculateParkValue(park, gameState);
 
         // Close windows related to the demolished ride
@@ -270,7 +269,7 @@ namespace OpenRCT2::GameActions
         return refundPrice;
     }
 
-    Result RideDemolishAction::RefurbishRide(GameState_t& gameState, Ride& ride) const
+    Result RideDemolishAction::RefurbishRide(GameState_t& gameState, Park::ParkData& park, Ride& ride) const
     {
         auto res = Result();
         res.expenditure = ExpenditureType::rideConstruction;

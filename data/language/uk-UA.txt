@@ -3299,7 +3299,7 @@ STR_6304    :Open scenery picker
 STR_6305    :Багатопотоковий режим
 STR_6306    :Експериментальний функція використання кількох потоків ЦП може спричинити нестабільність.
 STR_6307    :Кольорова схема: {BLACK}{STRINGID}
-STR_6308    :{TOPAZ}“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
+STR_6308    :{TOPAZ}“{STRINGID}{TOPAZ}”{NEWLINE}{STRINGID}
 STR_6309    :Під’єднатися знову
 STR_6310    :{WINDOW_COLOUR_2}Позиція: {BLACK}{INT32} {INT32} {INT32}
 STR_6311    :{WINDOW_COLOUR_2}Далі: {BLACK}{INT32} {INT32} {INT32}

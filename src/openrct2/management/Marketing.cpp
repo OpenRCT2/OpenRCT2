@@ -57,16 +57,18 @@ uint16_t MarketingGetCampaignGuestGenerationProbability(int32_t campaignType)
     if (campaign == nullptr)
         return 0;
 
+    auto& park = getGameState().park;
+
     // Lower probability of guest generation if price was already low
     auto probability = AdvertisingCampaignGuestGenerationProbabilities[campaign->Type];
     switch (campaign->Type)
     {
         case ADVERTISING_CAMPAIGN_PARK_ENTRY_FREE:
-            if (Park::GetEntranceFee() < 4.00_GBP)
+            if (Park::GetEntranceFee(park) < 4.00_GBP)
                 probability /= 8;
             break;
         case ADVERTISING_CAMPAIGN_PARK_ENTRY_HALF_PRICE:
-            if (Park::GetEntranceFee() < 6.00_GBP)
+            if (Park::GetEntranceFee(park) < 6.00_GBP)
                 probability /= 8;
             break;
         case ADVERTISING_CAMPAIGN_RIDE_FREE:
@@ -186,17 +188,18 @@ void MarketingSetGuestCampaign(Guest* peep, int32_t campaignType)
 bool MarketingIsCampaignTypeApplicable(int32_t campaignType)
 {
     auto& gameState = getGameState();
+    auto& park = gameState.park;
 
     switch (campaignType)
     {
         case ADVERTISING_CAMPAIGN_PARK_ENTRY_FREE:
         case ADVERTISING_CAMPAIGN_PARK_ENTRY_HALF_PRICE:
-            if (!Park::EntranceFeeUnlocked())
+            if (!Park::EntranceFeeUnlocked(park))
                 return false;
             return true;
 
         case ADVERTISING_CAMPAIGN_RIDE_FREE:
-            if (!Park::RidePricesUnlocked())
+            if (!Park::RidePricesUnlocked(park))
                 return false;
 
             [[fallthrough]];
@@ -220,6 +223,8 @@ bool MarketingIsCampaignTypeApplicable(int32_t campaignType)
                 {
                     for (auto& item : rideEntry->shop_item)
                     {
+                        if (item == ShopItem::none)
+                            continue;
                         if (GetShopItemDescriptor(item).IsFoodOrDrink())
                         {
                             return true;

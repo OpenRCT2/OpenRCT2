@@ -41,7 +41,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_peepId) << DS_TAG(_newFlags);
     }
 
-    Result GuestSetFlagsAction::Query(GameState_t& gameState) const
+    Result GuestSetFlagsAction::Query(GameState_t& gameState, Park::ParkData& park) const
     {
         auto* peep = gameState.entities.TryGetEntity<Guest>(_peepId);
         if (peep == nullptr)
@@ -52,7 +52,7 @@ namespace OpenRCT2::GameActions
         return Result();
     }
 
-    Result GuestSetFlagsAction::Execute(GameState_t& gameState) const
+    Result GuestSetFlagsAction::Execute(GameState_t& gameState, Park::ParkData& park) const
     {
         auto* peep = gameState.entities.TryGetEntity<Guest>(_peepId);
         if (peep == nullptr)

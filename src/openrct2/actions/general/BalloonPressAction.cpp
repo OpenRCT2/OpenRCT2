@@ -38,7 +38,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_spriteIndex);
     }
 
-    Result BalloonPressAction::Query(GameState_t& gameState) const
+    Result BalloonPressAction::Query(GameState_t& gameState, Park::ParkData& park) const
     {
         auto balloon = gameState.entities.TryGetEntity<Balloon>(_spriteIndex);
         if (balloon == nullptr)
@@ -49,7 +49,7 @@ namespace OpenRCT2::GameActions
         return Result();
     }
 
-    Result BalloonPressAction::Execute(GameState_t& gameState) const
+    Result BalloonPressAction::Execute(GameState_t& gameState, Park::ParkData& park) const
     {
         auto balloon = gameState.entities.TryGetEntity<Balloon>(_spriteIndex);
         if (balloon == nullptr)

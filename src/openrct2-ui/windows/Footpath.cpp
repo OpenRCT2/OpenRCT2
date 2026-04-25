@@ -1283,9 +1283,53 @@ namespace OpenRCT2::Ui::Windows
             auto selectedType = gFootpathSelection.getSelectedSurface();
             PathConstructFlags constructFlags = FootpathCreateConstructFlags(selectedType);
 
+            CoordsXYZ lastLocation = _provisionalFootpath.tiles.back().position;
+
+            // First query all tiles to get total cost and check for errors
+            money64 totalCost = 0;
+            GameActions::Result lastError;
+            bool anyQueryFailed = false;
+
+            for (const auto& tile : _provisionalFootpath.tiles)
+            {
+                auto footpathPlaceAction = GameActions::FootpathPlaceAction(
+                    tile.position, tile.slope, selectedType, gFootpathSelection.railings, kInvalidDirection, constructFlags);
+                auto result = GameActions::Query(&footpathPlaceAction, getGameState());
+                totalCost += result.cost;
+                if (result.error != GameActions::Status::ok)
+                {
+                    anyQueryFailed = true;
+                    lastError = result;
+                }
+            }
+
+            // If any query failed, show a single combined error with total cost
+            if (anyQueryFailed)
+            {
+                Audio::Play3D(Audio::SoundId::error, lastLocation);
+                _footpathErrorOccured = true;
+
+                // Show error with accumulated cost for insufficient funds
+                auto* windowMgr = GetWindowManager();
+                if (lastError.error == GameActions::Status::insufficientFunds)
+                {
+                    Formatter ft;
+                    ft.Add<money64>(totalCost);
+                    windowMgr->ShowError(STR_CANT_BUILD_FOOTPATH_HERE, STR_NOT_ENOUGH_CASH_REQUIRES, ft);
+                }
+                else
+                {
+                    windowMgr->ShowError(lastError.getErrorTitle(), lastError.getErrorMessage());
+                }
+                return;
+            }
+
+            // All queries passed, now execute
             bool anySuccess = false;
             money64 cost = 0;
-            CoordsXYZ lastLocation;
+
+            // Disable error sound during loop to prevent stacking sounds for each failed tile
+            gDisableErrorWindowSound = true;
 
             for (const auto& tile : _provisionalFootpath.tiles)
             {
@@ -1300,6 +1344,8 @@ namespace OpenRCT2::Ui::Windows
                 lastLocation = tile.position;
             }
 
+            gDisableErrorWindowSound = false;
+
             if (anySuccess)
             {
                 // Don't play sound if it is no cost to prevent multiple sounds. TODO: make this work in no
@@ -1311,6 +1357,8 @@ namespace OpenRCT2::Ui::Windows
             }
             else
             {
+                // Play error sound once for the entire failed operation
+                Audio::Play3D(Audio::SoundId::error, lastLocation);
                 _footpathErrorOccured = true;
             }
         }

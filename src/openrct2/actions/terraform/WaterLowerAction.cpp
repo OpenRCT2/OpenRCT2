@@ -42,12 +42,12 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_range);
     }
 
-    Result WaterLowerAction::Query(GameState_t& gameState) const
+    Result WaterLowerAction::Query(GameState_t& gameState, Park::ParkData& park) const
     {
         return QueryExecute(gameState, false);
     }
 
-    Result WaterLowerAction::Execute(GameState_t& gameState) const
+    Result WaterLowerAction::Execute(GameState_t& gameState, Park::ParkData& park) const
     {
         return QueryExecute(gameState, true);
     }

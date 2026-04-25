@@ -34,12 +34,12 @@ namespace OpenRCT2::GameActions
 
         stream << DS_TAG(_playerId);
     }
-    Result PlayerKickAction::Query(GameState_t& gameState) const
+    Result PlayerKickAction::Query(GameState_t& gameState, Park::ParkData& park) const
     {
         return Network::KickPlayer(_playerId, false);
     }
 
-    Result PlayerKickAction::Execute(GameState_t& gameState) const
+    Result PlayerKickAction::Execute(GameState_t& gameState, Park::ParkData& park) const
     {
         return Network::KickPlayer(_playerId, true);
     }

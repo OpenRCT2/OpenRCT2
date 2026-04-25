@@ -655,13 +655,13 @@ static void ApplyPathFixes(const json_t& scenarioPatch)
 
         for (auto coordinate : coordinates)
         {
-            auto slope = FootpathSlope(FootpathSlopeType::flat, 0);
+            auto slope = FootpathSlope{ FootpathSlopeType::flat, Direction{} };
             if (direction != kInvalidDirection)
                 slope = { FootpathSlopeType::sloped, direction };
             auto footpathPlaceAction = GameActions::FootpathPlaceAction(
                 coordinate.ToCoordsXYZ(), slope, surfaceObjIndex, railingsObjIndex, direction, constructionFlags);
             auto& gameState = getGameState();
-            auto result = footpathPlaceAction.Execute(gameState);
+            auto result = footpathPlaceAction.Execute(gameState, gameState.park);
             if (result.error != GameActions::Status::ok)
             {
                 Guard::Assert(false, "Could not patch path");

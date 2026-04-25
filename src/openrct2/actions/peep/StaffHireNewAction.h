@@ -36,11 +36,11 @@ namespace OpenRCT2::GameActions
         uint16_t GetActionFlags() const override;
 
         void Serialise(DataSerialiser& stream) override;
-        Result Query(GameState_t& gameState) const override;
-        Result Execute(GameState_t& gameState) const override;
+        Result Query(GameState_t& gameState, Park::ParkData& park) const override;
+        Result Execute(GameState_t& gameState, Park::ParkData& park) const override;
 
     private:
-        Result QueryExecute(GameState_t& gameState, bool execute) const;
-        void AutoPositionNewStaff(GameState_t& gameState, Peep* newPeep) const;
+        Result QueryExecute(GameState_t& gameState, Park::ParkData& park, bool execute) const;
+        void AutoPositionNewStaff(GameState_t& gameState, Park::ParkData& park, Peep* newPeep) const;
     };
 } // namespace OpenRCT2::GameActions

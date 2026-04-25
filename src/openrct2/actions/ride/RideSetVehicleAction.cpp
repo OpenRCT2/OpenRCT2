@@ -61,7 +61,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_rideIndex) << DS_TAG(_type) << DS_TAG(_value) << DS_TAG(_colour);
     }
 
-    Result RideSetVehicleAction::Query(GameState_t& gameState) const
+    Result RideSetVehicleAction::Query(GameState_t& gameState, Park::ParkData& park) const
     {
         if (_type >= RideSetVehicleType::Count)
         {
@@ -124,7 +124,7 @@ namespace OpenRCT2::GameActions
         return Result();
     }
 
-    Result RideSetVehicleAction::Execute(GameState_t& gameState) const
+    Result RideSetVehicleAction::Execute(GameState_t& gameState, Park::ParkData& park) const
     {
         auto errTitle = kSetVehicleTypeErrorTitle[EnumValue(_type)];
         auto ride = GetRide(_rideIndex);

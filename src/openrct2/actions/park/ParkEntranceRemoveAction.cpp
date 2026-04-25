@@ -42,7 +42,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_loc);
     }
 
-    Result ParkEntranceRemoveAction::Query(GameState_t& gameState) const
+    Result ParkEntranceRemoveAction::Query(GameState_t& gameState, Park::ParkData& park) const
     {
         if (!isInEditorMode() && !gameState.cheats.sandboxMode)
         {
@@ -66,7 +66,7 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    Result ParkEntranceRemoveAction::Execute(GameState_t& gameState) const
+    Result ParkEntranceRemoveAction::Execute(GameState_t& gameState, Park::ParkData& park) const
     {
         auto res = Result();
         res.expenditure = ExpenditureType::landPurchase;
@@ -80,7 +80,6 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_REMOVE_THIS, kStringIdNone);
         }
 
-        auto& park = gameState.park;
         auto direction = (park.entrances[entranceIndex].direction - 1) & 3;
 
         // Centre (sign)

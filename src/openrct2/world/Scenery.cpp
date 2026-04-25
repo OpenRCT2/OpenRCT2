@@ -242,7 +242,7 @@ void SceneryRemoveGhostToolPlacement()
         auto removeSceneryAction = GameActions::SmallSceneryRemoveAction(
             gSceneryGhostPosition, gSceneryQuadrant, gSceneryPlaceObject.EntryIndex);
         removeSceneryAction.SetFlags({ CommandFlag::allowDuringPaused, CommandFlag::noSpend, CommandFlag::ghost });
-        removeSceneryAction.Execute(gameState);
+        GameActions::Execute(&removeSceneryAction, gameState);
     }
 
     if (gSceneryGhostType & SCENERY_GHOST_FLAG_1)
@@ -275,7 +275,7 @@ void SceneryRemoveGhostToolPlacement()
         CoordsXYZD wallLocation = { gSceneryGhostPosition, gSceneryGhostWallRotation };
         auto wallRemoveAction = GameActions::WallRemoveAction(wallLocation);
         wallRemoveAction.SetFlags({ CommandFlag::allowDuringPaused, CommandFlag::noSpend, CommandFlag::ghost });
-        wallRemoveAction.Execute(gameState);
+        GameActions::Execute(&wallRemoveAction, gameState);
     }
 
     if (gSceneryGhostType & SCENERY_GHOST_FLAG_3)
@@ -284,7 +284,7 @@ void SceneryRemoveGhostToolPlacement()
 
         auto removeSceneryAction = GameActions::LargeSceneryRemoveAction({ gSceneryGhostPosition, gSceneryPlaceRotation }, 0);
         removeSceneryAction.SetFlags({ CommandFlag::allowDuringPaused, CommandFlag::noSpend, CommandFlag::ghost });
-        removeSceneryAction.Execute(gameState);
+        GameActions::Execute(&removeSceneryAction, gameState);
     }
 
     if (gSceneryGhostType & SCENERY_GHOST_FLAG_4)

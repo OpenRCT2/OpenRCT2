@@ -43,7 +43,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_shift);
     }
 
-    Result MapChangeSizeAction::Query(GameState_t& gameState) const
+    Result MapChangeSizeAction::Query(GameState_t& gameState, Park::ParkData& park) const
     {
         if (_targetSize.x > kMaximumMapSizeTechnical || _targetSize.y > kMaximumMapSizeTechnical)
         {
@@ -56,7 +56,7 @@ namespace OpenRCT2::GameActions
         return Result();
     }
 
-    Result MapChangeSizeAction::Execute(GameState_t& gameState) const
+    Result MapChangeSizeAction::Execute(GameState_t& gameState, Park::ParkData& park) const
     {
         // Expand map
         while (_targetSize.x > gameState.mapSize.x)
@@ -84,7 +84,6 @@ namespace OpenRCT2::GameActions
         auto& uiContext = ctx->GetUiContext();
         auto* windowManager = uiContext.GetWindowManager();
 
-        auto& park = gameState.park;
         Park::UpdateSize(park);
 
         windowManager->BroadcastIntent(Intent(INTENT_ACTION_MAP));

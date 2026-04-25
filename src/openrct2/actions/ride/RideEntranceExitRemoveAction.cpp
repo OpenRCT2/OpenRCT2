@@ -67,7 +67,7 @@ namespace OpenRCT2::GameActions
         return nullptr;
     }
 
-    Result RideEntranceExitRemoveAction::Query(GameState_t& gameState) const
+    Result RideEntranceExitRemoveAction::Query(GameState_t& gameState, Park::ParkData& park) const
     {
         auto ride = GetRide(_rideIndex);
         if (ride == nullptr)
@@ -110,7 +110,7 @@ namespace OpenRCT2::GameActions
         return Result();
     }
 
-    Result RideEntranceExitRemoveAction::Execute(GameState_t& gameState) const
+    Result RideEntranceExitRemoveAction::Execute(GameState_t& gameState, Park::ParkData& park) const
     {
         auto ride = GetRide(_rideIndex);
         if (ride == nullptr)

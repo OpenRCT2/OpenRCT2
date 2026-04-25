@@ -87,6 +87,8 @@ namespace OpenRCT2::File
         }
         else
         {
+            // Reserve capacity for fsize + 1 to support the caller adding a null terminator if they want (needed for quickjs)
+            result.reserve(fsize + 1);
             result.resize(static_cast<size_t>(fsize));
             fstream.Read(result.data(), result.size());
         }

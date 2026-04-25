@@ -3247,7 +3247,7 @@ STR_6304    :Mở bộ chọn cảnh quan
 STR_6305    :Đa luồng
 STR_6306    :Tùy chọn thử nghiệm để sử dụng nhiều luồng để kết xuất, có thể gây mất ổn định.
 STR_6307    :Bảng màu: {BLACK}{STRINGID}
-STR_6308    :{TOPAZ}“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
+STR_6308    :{TOPAZ}“{STRINGID}{TOPAZ}”{NEWLINE}{STRINGID}
 STR_6309    :Kết nối lại
 STR_6310    :{WINDOW_COLOUR_2}Vị trí: {BLACK}{INT32} {INT32} {INT32}
 STR_6311    :{WINDOW_COLOUR_2}Tiếp theo: {BLACK}{INT32} {INT32} {INT32}

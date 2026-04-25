@@ -48,13 +48,13 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_type) << DS_TAG(_item) << DS_TAG(_numWeeks);
     }
 
-    Result ParkMarketingAction::Query(GameState_t& gameState) const
+    Result ParkMarketingAction::Query(GameState_t& gameState, Park::ParkData& park) const
     {
         if (static_cast<size_t>(_type) >= std::size(AdvertisingCampaignPricePerWeek) || _numWeeks >= 256)
         {
             return Result(Status::invalidParameters, STR_CANT_START_MARKETING_CAMPAIGN, STR_ERR_VALUE_OUT_OF_RANGE);
         }
-        if (gameState.park.flags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN)
+        if (park.flags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN)
         {
             return Result(
                 Status::disallowed, STR_CANT_START_MARKETING_CAMPAIGN, STR_MARKETING_CAMPAIGNS_FORBIDDEN_BY_LOCAL_AUTHORITY);
@@ -63,7 +63,7 @@ namespace OpenRCT2::GameActions
         return CreateResult();
     }
 
-    Result ParkMarketingAction::Execute(GameState_t& gameState) const
+    Result ParkMarketingAction::Execute(GameState_t& gameState, Park::ParkData& park) const
     {
         MarketingCampaign campaign{};
         campaign.Type = _type;

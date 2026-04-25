@@ -11,11 +11,6 @@
 
 #include "GameAction.hpp"
 
-namespace OpenRCT2
-{
-    struct GameState_t;
-}
-
 namespace OpenRCT2::GameActions
 {
     // Halts the queue processing until ResumeQueue is called, any calls to ProcessQueue

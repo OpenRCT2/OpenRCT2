@@ -259,6 +259,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Marcel Vos (MarcelVos96)
 * Jonas Doggart
 * (pg805)
+* Sjoerd de Bruin (sjoerddebruin)
 
 ## Toolchain
 * (Balletie) - macOS

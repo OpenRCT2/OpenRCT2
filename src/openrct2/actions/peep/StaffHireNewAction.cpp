@@ -62,17 +62,17 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_autoPosition) << DS_TAG(_staffType) << DS_TAG(_costumeIndex) << DS_TAG(_staffOrders);
     }
 
-    Result StaffHireNewAction::Query(GameState_t& gameState) const
+    Result StaffHireNewAction::Query(GameState_t& gameState, Park::ParkData& park) const
     {
-        return QueryExecute(gameState, false);
+        return QueryExecute(gameState, park, false);
     }
 
-    Result StaffHireNewAction::Execute(GameState_t& gameState) const
+    Result StaffHireNewAction::Execute(GameState_t& gameState, Park::ParkData& park) const
     {
-        return QueryExecute(gameState, true);
+        return QueryExecute(gameState, park, true);
     }
 
-    Result StaffHireNewAction::QueryExecute(GameState_t& gameState, bool execute) const
+    Result StaffHireNewAction::QueryExecute(GameState_t& gameState, Park::ParkData& park, bool execute) const
     {
         auto res = Result();
         res.expenditure = ExpenditureType::wages;
@@ -171,7 +171,7 @@ namespace OpenRCT2::GameActions
 
             if (_autoPosition)
             {
-                AutoPositionNewStaff(gameState, newPeep);
+                AutoPositionNewStaff(gameState, park, newPeep);
             }
             else
             {
@@ -221,7 +221,7 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    void StaffHireNewAction::AutoPositionNewStaff(GameState_t& gameState, Peep* newPeep) const
+    void StaffHireNewAction::AutoPositionNewStaff(GameState_t& gameState, Park::ParkData& park, Peep* newPeep) const
     {
         // Find a location to place new staff member
         newPeep->State = PeepState::falling;
@@ -281,7 +281,6 @@ namespace OpenRCT2::GameActions
         else
         {
             // No walking guests; pick random park entrance
-            const auto& park = gameState.park;
             if (!park.entrances.empty())
             {
                 auto rand = ScenarioRandMax(static_cast<uint32_t>(park.entrances.size()));
