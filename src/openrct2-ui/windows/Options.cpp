@@ -434,16 +434,16 @@ namespace OpenRCT2::Ui::Windows
         makeWidget({ 10, kScenarioOptionsGroupStart + 32}, {275, 16}, WidgetType::checkbox,     WindowColour::tertiary,  STR_OPTIONS_SCENARIO_UNLOCKING, STR_SCENARIO_UNLOCKING_TIP), // Unlocking of scenarios
         makeWidget({ 10, kScenarioOptionsGroupStart + 47}, {290, 15}, WidgetType::checkbox,     WindowColour::tertiary,  STR_ALLOW_EARLY_COMPLETION,     STR_EARLY_COMPLETION_TIP  ), // Allow early scenario completion
 
-        makeWidget({  5, kTweaksStart + 0}, {300, 116}, WidgetType::groupbox,     WindowColour::secondary, STR_OPTIONS_TWEAKS                                                  ),
-        makeWidget({ 10, kTweaksStart + 15}, {290, 15}, WidgetType::checkbox,     WindowColour::tertiary , STR_REAL_NAME_GUESTS,     STR_REAL_NAME_GUESTS_TIP                  ), // Show 'real' names of guests
-        makeWidget({ 10, kTweaksStart + 30}, {290, 15}, WidgetType::checkbox,     WindowColour::tertiary , STR_REAL_NAME_STAFF,      STR_REAL_NAME_STAFF_TIP                   ), // Show 'real' names of staff
-        makeWidget({ 10, kTweaksStart + 45}, {290, 15}, WidgetType::checkbox,     WindowColour::tertiary , STR_AUTO_STAFF_PLACEMENT, STR_AUTO_STAFF_PLACEMENT_TIP              ), // Auto staff placement
-        makeWidget({ 10, kTweaksStart + 60}, {290, 15}, WidgetType::checkbox,     WindowColour::tertiary , STR_AUTO_OPEN_SHOPS,      STR_AUTO_OPEN_SHOPS_TIP                   ), // Automatically open shops & stalls
-        makeWidget({ 10, kTweaksStart + 77}, {165, 12}, WidgetType::label,        WindowColour::secondary, STR_DEFAULT_INSPECTION_INTERVAL, STR_DEFAULT_INSPECTION_INTERVAL_TIP),
-        makeWidget({175, kTweaksStart + 76}, {125, 14}, WidgetType::dropdownMenu, WindowColour::secondary                                                                      ), // Default inspection time dropdown
-        makeWidget({288, kTweaksStart + 77}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,       STR_DEFAULT_INSPECTION_INTERVAL_TIP       ), // Default inspection time dropdown button
-        makeWidget(        {10,  kTweaksStart + 94}, {281,  12}, WidgetType::label,   WindowColour::secondary, STR_DEFAULT_PATROL_AREA,  STR_DEFAULT_PATROL_AREA_TIP           ), // Default Patrol Area
-        makeSpinnerWidgets({175, kTweaksStart + 95}, {125,  14}, WidgetType::spinner, WindowColour::secondary, kWidgetContentEmpty,      STR_DEFAULT_PATROL_AREA_TIP           )  // Default Patrol Area (3 widgets)
+        makeWidget({  5, kTweaksStart + 0},  {300, 112}, WidgetType::groupbox,     WindowColour::secondary, STR_OPTIONS_TWEAKS                                                  ),
+        makeWidget({ 10, kTweaksStart + 15}, {290,  15}, WidgetType::checkbox,     WindowColour::tertiary , STR_REAL_NAME_GUESTS,     STR_REAL_NAME_GUESTS_TIP                  ), // Show 'real' names of guests
+        makeWidget({ 10, kTweaksStart + 30}, {290,  15}, WidgetType::checkbox,     WindowColour::tertiary , STR_REAL_NAME_STAFF,      STR_REAL_NAME_STAFF_TIP                   ), // Show 'real' names of staff
+        makeWidget({ 10, kTweaksStart + 45}, {290,  15}, WidgetType::checkbox,     WindowColour::tertiary , STR_AUTO_STAFF_PLACEMENT, STR_AUTO_STAFF_PLACEMENT_TIP              ), // Auto staff placement
+        makeWidget({ 10, kTweaksStart + 60}, {290,  15}, WidgetType::checkbox,     WindowColour::tertiary , STR_AUTO_OPEN_SHOPS,      STR_AUTO_OPEN_SHOPS_TIP                   ), // Automatically open shops & stalls
+        makeWidget({ 10, kTweaksStart + 77}, {165,  12}, WidgetType::label,        WindowColour::secondary, STR_DEFAULT_INSPECTION_INTERVAL, STR_DEFAULT_INSPECTION_INTERVAL_TIP),
+        makeWidget({175, kTweaksStart + 76}, {125,  14}, WidgetType::dropdownMenu, WindowColour::secondary                                                                      ), // Default inspection time dropdown
+        makeWidget({288, kTweaksStart + 77}, { 11,  12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,       STR_DEFAULT_INSPECTION_INTERVAL_TIP       ), // Default inspection time dropdown button
+        makeWidget(        {10,  kTweaksStart + 94}, {281, 12}, WidgetType::label,   WindowColour::secondary, STR_DEFAULT_PATROL_AREA,  STR_DEFAULT_PATROL_AREA_TIP           ), // Default Patrol Area
+        makeSpinnerWidgets({175, kTweaksStart + 93}, {125, 14}, WidgetType::spinner, WindowColour::secondary, kWidgetContentEmpty,      STR_DEFAULT_PATROL_AREA_TIP           )  // Default Patrol Area (3 widgets)
     );
 
     constexpr int32_t kRCT1Start = 53;
@@ -662,7 +662,8 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<int32_t>(Config::Get().general.defaultPatrolArea);
                     auto& widget = widgets[WIDX_DEFAULT_PATROL_AREA_SPINNER];
                     drawText(
-                        rt, windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 2 }, STR_FORMAT_INTEGER, ft, { colours[1] });
+                        rt, windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 2 }, STR_FORMAT_INTEGER, ft,
+                        { colours[1] });
                     break;
             }
         }
