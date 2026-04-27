@@ -14,12 +14,57 @@ OpenRCT2 will load every single file with the extension `.js` in this directory 
 
 ## Writing Scripts
 
-Scripts are written in ECMAScript 5 compatible JavaScript. OpenRCT2 currently uses the [duktape](https://duktape.org) library to execute scripts. This however does not mean you need to write your plugin in JavaScript, there are many transpilers that allow you to write in a language of your choice and then compile it to JavaScript allowing it to be executed by OpenRCT2. JavaScript or [TypeScript](https://www.typescriptlang.org) is recommended however, as that will allow you to utilise the type definition file we supply (`openrct2.d.ts`). If you would like to use ECMAScript 6 or later which contain features such as arrow functions, the `let` keyword or classes, then you will need to use a transpiler such as [Babel](https://babeljs.io) or [TypeScript](https://www.typescriptlang.org).
+Scripts are written in JavaScript. OpenRCT2 uses [QuickJS-NG](https://github.com/quickjs-ng/quickjs) to execute scripts, which supports ES2023 and later with near-complete spec compliance. This means you can use modern JavaScript features directly without a transpiler, including:
+
+- `let` / `const`, arrow functions, classes, template literals
+- Destructuring, default parameters, rest/spread operator
+- `for...of`, generators, iterators
+- `Promise`, `async` / `await`, async generators
+- `Map` / `Set` / `WeakMap` / `WeakSet`
+- `Symbol`, `Proxy`, `Reflect`
+- Optional chaining (`?.`), nullish coalescing (`??`)
+- `BigInt`
+- Private class fields (`#field`)
+- Modern array methods: `.at()`, `.findLast()`, `.toSorted()`, `.toReversed()`, `.toSpliced()`
+- `Object.hasOwn()`
+- `Promise.allSettled()`, `Promise.any()`
+
+JavaScript or [TypeScript](https://www.typescriptlang.org) is recommended, as that will allow you to utilise the type definition file we supply (`openrct2.d.ts`). TypeScript still requires a transpiler such as [TypeScript](https://www.typescriptlang.org), but you no longer need one just for modern JavaScript syntax.
+
+**Note:** ES module syntax (`import` / `export`) is not supported in the plugin system. Plugins are evaluated as global scripts. If you want to use modules or bundle third-party libraries, use a bundler like [esbuild](https://esbuild.github.io), [rollup](https://rollupjs.org), or [webpack](https://webpack.js.org). The `Intl` API is also not available.
+
+**Note:** OpenRCT2 versions prior to v0.5.0 used [Duktape](https://duktape.org) (ES5 only) instead of QuickJS-NG. If you are writing plugins that need to support older versions, see the [previous version of this document](https://github.com/OpenRCT2/OpenRCT2/blob/v0.4.19/distribution/scripting.md).
 
 Official references for writing plugins are:
 * The API: `openrct2.d.ts` distributed with OpenRCT2.
 * Our collection of sample scripts: [OpenRCT2/plugin-samples](https://github.com/OpenRCT2/plugin-samples)
 * A TypeScript plugin comprised of multiple sources: [IntelOrca/OpenRCT2-ParkManager](https://github.com/IntelOrca/OpenRCT2-ParkManager)
+
+Plugin templates to get you started:
+* [openrct2-plugin-boilerplate](https://openrct2plugins.org/plugin/MDEwOlJlcG9zaXRvcnkyNjI4MTA2NTA=/openrct2-plugin-boilerplate)
+* [openrct2-plugin-boilerplate (fork of the one above)](https://openrct2plugins.org/plugin/R_kgDORs8WCQ/openrct2-plugin-boilerplate)
+* [OpenRCT2-Simple-Typescript-Template](https://openrct2plugins.org/plugin/R_kgDOJc_Ctg/OpenRCT2-Simple-Typescript-Template)
+* [openrct2-starter](https://openrct2plugins.org/plugin/R_kgDOLiJFVg/openrct2-starter)
+
+Start by copying this template script into a new file in your `plugin` directory:
+```js
+function main() {
+    console.log("Your plugin has started!");
+}
+
+registerPlugin({
+    name: 'Your Plugin',
+    version: '1.0',
+    authors: ['Your Name'],
+    type: 'remote',
+    licence: 'MIT',
+    targetApiVersion: 114,
+    minApiVersion: 10,
+    main: main
+});
+```
+
+This will log a message to the terminal screen (`stdout`) when you open any park. If you are on Windows, make sure to run `openrct2.com` instead of `openrct2.exe` so you can interact with the `stdin` / `stdout` console. The console is a JavaScript interpreter (REPL), this means you can write and test expressions similar to the console found in web browsers when you press `F12`. When you make changes to your script, you must exit your current game and open it again for the script to reload... unless you use the hot reload feature.
 
 ### TypeScript types
 
@@ -40,26 +85,6 @@ Then add it to your `tsconfig.json`:
 ```
 
 The package version follows OpenRCT2 releases (e.g. `0.4.32` matches OpenRCT2 `v0.4.32`).
-
-Start by copying this template script into a new file in your `plugin` directory:
-```js
-function main() {
-    console.log("Your plugin has started!");
-}
-
-registerPlugin({
-    name: 'Your Plugin',
-    version: '1.0',
-    authors: ['Your Name'],
-    type: 'remote',
-    licence: 'MIT',
-    targetApiVersion: 34,
-    minApiVersion: 10,
-    main: main
-});
-```
-
-This will log a message to the terminal screen (`stdout`) when you open any park. If you are on Windows, make sure to run `openrct2.com` instead of `openrct2.exe` so you can interact with the `stdin` / `stdout` console. The console is a JavaScript interpreter (REPL), this means you can write and test expressions similar to the console found in web browsers when you press `F12`. When you make changes to your script, you must exit your current game and open it again for the script to reload... unless you use the hot reload feature.
 
 ### Hot reload
 
@@ -157,7 +182,7 @@ Another benefit of using JavaScript is that you get rich editor features such as
 
 Scripts are executed in a sandbox container with no direct access to your computer. Scripts can only use the APIs we provide which only consist of interactions to OpenRCT2 and a limited API for storing data. It is technically possible for a script to freeze the game, or fill your disc up with data, but these aren't particularly severe issues and are noticed quite quickly.
 
-The [duktape](https://duktape.org) library is used to execute scripts, it is a very mature library for executing scripts, but no library can promise 100% security. If any security vulnerabilities are found, they will likely be fixed promptly and OpenRCT2 can then be updated to use the new version of `duktape`.
+The [QuickJS-NG](https://github.com/quickjs-ng/quickjs) library is used to execute scripts. It is a well-maintained library, but no library can promise 100% security. If any security vulnerabilities are found, they will likely be fixed promptly and OpenRCT2 can then be updated to use the new version.
 
 ---
 
@@ -169,7 +194,7 @@ Yes, but the performance would be so dire that it would be a waste of their time
 
 > What are the limits?
 
-Scripts can consist of any behaviour and have a large memory pool available to them. The speed will vary depending on the hardware and system executing them. The scripts are interpreted, so do not expect anywhere close to the performance of native code. In most scenarios this should be satisfactory, but a random map generator, or genetic algorithm for building roller coasters might struggle. Like any language, there will be tricks to optimising JavaScript and the use of the OpenRCT2 APIs. [Duktape also provides some engine-specific performance tips](https://wiki.duktape.org/performance).
+Scripts can consist of any behaviour and have a large memory pool available to them. The speed will vary depending on the hardware and system executing them. The scripts are interpreted (QuickJS-NG does not use a JIT compiler), so do not expect anywhere close to the performance of native code. In most scenarios this should be satisfactory, but a random map generator, or genetic algorithm for building roller coasters might struggle.
 
 The APIs for OpenRCT2 try to provide access to the game’s data structures as much as possible but we can only add so many at a time. The best way to grow the plugin system is to add APIs on-demand. So if you find an API is missing, please raise an issue for it on GitHub and also feel free to discuss it on our Discord and to submit a pull request afterwards.
 
@@ -322,13 +347,13 @@ server.listen(8080);
 
 > Can I use third party JavaScript libraries?
 
-Absolutely, as long as you embed the library in your JavaScript file. There are a number of tools to help you do this. Raw module statements like `import` and `require` are not supported unless transpiled by other bundling tools.
+Absolutely, as long as you embed the library in your JavaScript file. There are a number of tools to help you do this such as [esbuild](https://esbuild.github.io), [rollup](https://rollupjs.org), or [webpack](https://webpack.js.org). Note that ES module syntax (`import` / `export`) and CommonJS (`require`) are not supported directly by the plugin system (plugins are evaluated as global scripts, not modules) so you must use a bundler to combine everything into a single file.
 
 ---
 
 > Can I share code across multiple scripts?
 
-Yes, and there are two ways this can be done. If you are just sharing helper routines or libraries, the best thing is to embed it in each plugin. There are a number of tools for JavaScript to help you do this. Raw module statements like `import` and `require` are not supported unless transpiled by other bundling tools.
+Yes, and there are two ways this can be done. If you are just sharing helper routines or libraries, the best thing is to embed it in each plugin using a bundler (see above).
 
 If you would like two plugins to communicate with each other, perhaps to share data, then you can do use custom actions, or use the shared storage APIs.
 
@@ -344,12 +369,7 @@ Adding new APIs is most of time straight forward, so they can be added to new de
 
 > Why do array/string functions like `find` and `includes` give me an error?
 
-OpenRCT2 uses Duktape as the script engine and Duktape only has full support for ES5 Javascript and limited support for ES6+ features. Functions like `find` and `includes` are ES6 functions and not yet supported by Duktape. As an alternative you can implement these yourself, or use a polyfill.
-
-- [List of object and functions in ES5](https://github.com/microsoft/TypeScript/blob/main/src/lib/es5.d.ts)
-- [List of ES6+ features that are implemented in Duktape.](https://wiki.duktape.org/postes5features)
-
-Some ES6 features that are not supported: arrow functions, classes, `let` keyword, async/await, spread operator, destructuring, template literals, default parameters. To use these features anyway, it is recommended to use a transpiler and/or polyfills.
+If you are seeing this error, you may be running an older version of OpenRCT2 that used the Duktape engine (ES5 only). Since version 0.5.0, OpenRCT2 uses QuickJS-NG which supports ES2023+, meaning `find`, `includes`, and all other modern Array and String methods work out of the box. Please update to the latest version of OpenRCT2.
 
 ---
 
