@@ -18,4 +18,4 @@ namespace OpenRCT2
     struct Litter;
 
     void PaintLitter(PaintSession& session, const Litter& litter, int32_t imageDirection);
-}
+} // namespace OpenRCT2

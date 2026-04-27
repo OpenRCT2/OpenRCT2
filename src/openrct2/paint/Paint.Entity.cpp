@@ -27,10 +27,10 @@
 #include "../world/Weather.h"
 #include "Paint.h"
 #include "entity/Paint.Balloon.h"
-#include "entity/Paint.Guest.h"
-#include "entity/Paint.Staff.h"
-#include "entity/Paint.Litter.h"
 #include "entity/Paint.Duck.h"
+#include "entity/Paint.Guest.h"
+#include "entity/Paint.Litter.h"
+#include "entity/Paint.Staff.h"
 #include "vehicle/VehiclePaint.h"
 
 #include <cassert>

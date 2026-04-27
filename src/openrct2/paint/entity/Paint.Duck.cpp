@@ -29,4 +29,4 @@ namespace OpenRCT2
             PaintAddImageAsParent(session, ImageId(imageId), { 0, 0, duck.z }, { 1, 1, 0 });
         }
     }
-}
+} // namespace OpenRCT2

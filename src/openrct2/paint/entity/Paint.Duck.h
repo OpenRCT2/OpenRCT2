@@ -18,4 +18,4 @@ namespace OpenRCT2
     struct Duck;
 
     void PaintDuck(PaintSession& session, const Duck& duck, int32_t imageDirection);
-}
+} // namespace OpenRCT2

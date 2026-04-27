@@ -9,8 +9,8 @@
 
 #pragma once
 
-#include "../localisation/StringIds.h"
 #include "../localisation/StringIdType.h"
+#include "../localisation/StringIds.h"
 #include "EntityBase.h"
 
 struct CoordsXYZ;
