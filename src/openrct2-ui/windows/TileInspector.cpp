@@ -474,16 +474,21 @@ namespace OpenRCT2::Ui::Windows
         ViewportInteractionItem::footpath, ViewportInteractionItem::pathAddition, ViewportInteractionItem::parkEntrance,
         ViewportInteractionItem::wall, ViewportInteractionItem::largeScenery, ViewportInteractionItem::banner);
 
+    static constexpr WidgetIndex kDisabledWidgetsDefault[] = {
+        WIDX_BUTTON_MOVE_UP, WIDX_BUTTON_MOVE_DOWN, WIDX_BUTTON_REMOVE, WIDX_BUTTON_ROTATE, WIDX_BUTTON_COPY,
+    };
+    static constexpr WidgetIndex kDisabledWidgetsLargeScenery[] = { WIDX_BUTTON_ROTATE };
+
     // clang-format off
-    static constexpr std::initializer_list<WidgetIndex> kDisabledWidgetsByPage[] = {
-        { WIDX_BUTTON_MOVE_UP, WIDX_BUTTON_MOVE_DOWN, WIDX_BUTTON_REMOVE, WIDX_BUTTON_ROTATE, WIDX_BUTTON_COPY },
+    static constexpr std::span<const WidgetIndex> kDisabledWidgetsByPage[] = {
+        kDisabledWidgetsDefault,
         {},
         {},
         {},
         {},
         {},
         {},
-        { WIDX_BUTTON_ROTATE },
+        kDisabledWidgetsLargeScenery,
         {},
     };
     // clang-format on
