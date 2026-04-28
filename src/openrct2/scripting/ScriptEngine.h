@@ -42,6 +42,7 @@ namespace OpenRCT2
 
 namespace OpenRCT2::Scripting
 {
+    // Grepped from CI (.github/workflows/publish-plugin-types.yml); keep the format `kPluginApiVersion = N`.
     static constexpr int32_t kPluginApiVersion = 113;
 
     // Versions marking breaking changes.
