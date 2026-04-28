@@ -45,6 +45,7 @@
 #include "../ride/TrackData.h"
 #include "../ride/TrackDesign.h"
 #include "../windows/Intent.h"
+#include "../world/MapRangeView.hpp"
 #include "../world/TilePointerIndex.hpp"
 #include "Banner.h"
 #include "Entrance.h"
@@ -941,29 +942,22 @@ namespace OpenRCT2
 
     uint8_t MapGetLowestLandHeight(const MapRange& range)
     {
-        auto mapSizeMax = GetMapSizeMaxXY();
-        MapRange validRange = { std::max(range.GetX1(), 32), std::max(range.GetY1(), 32), std::min(range.GetX2(), mapSizeMax.x),
-                                std::min(range.GetY2(), mapSizeMax.y) };
-
         uint8_t minHeight = 0xFF;
-        for (int32_t yi = validRange.GetY1(); yi <= validRange.GetY2(); yi += kCoordsXYStep)
+        for (auto tileCoords : Map::getDrawableTileRange())
         {
-            for (int32_t xi = validRange.GetX1(); xi <= validRange.GetX2(); xi += kCoordsXYStep)
+            auto* surfaceElement = MapGetSurfaceElementAt(tileCoords);
+
+            if (surfaceElement != nullptr && minHeight > surfaceElement->baseHeight)
             {
-                auto* surfaceElement = MapGetSurfaceElementAt(CoordsXY{ xi, yi });
-
-                if (surfaceElement != nullptr && minHeight > surfaceElement->baseHeight)
+                if (gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
                 {
-                    if (gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
+                    if (!MapIsLocationInPark(tileCoords.ToCoordsXY()))
                     {
-                        if (!MapIsLocationInPark(CoordsXY{ xi, yi }))
-                        {
-                            continue;
-                        }
+                        continue;
                     }
-
-                    minHeight = surfaceElement->baseHeight;
                 }
+
+                minHeight = surfaceElement->baseHeight;
             }
         }
         return minHeight;
@@ -971,34 +965,27 @@ namespace OpenRCT2
 
     uint8_t MapGetHighestLandHeight(const MapRange& range)
     {
-        auto mapSizeMax = GetMapSizeMaxXY();
-        MapRange validRange = { std::max(range.GetX1(), 32), std::max(range.GetY1(), 32), std::min(range.GetX2(), mapSizeMax.x),
-                                std::min(range.GetY2(), mapSizeMax.y) };
-
-        uint8_t maxHeight = 0;
-        for (int32_t yi = validRange.GetY1(); yi <= validRange.GetY2(); yi += kCoordsXYStep)
+        uint8_t maxHeight = 0xFF;
+        for (auto tileCoords : Map::getDrawableTileRange())
         {
-            for (int32_t xi = validRange.GetX1(); xi <= validRange.GetX2(); xi += kCoordsXYStep)
+            auto* surfaceElement = MapGetSurfaceElementAt(tileCoords);
+            if (surfaceElement != nullptr)
             {
-                auto* surfaceElement = MapGetSurfaceElementAt(CoordsXY{ xi, yi });
-                if (surfaceElement != nullptr)
+                if (gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
                 {
-                    if (gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
+                    if (!MapIsLocationInPark(tileCoords.ToCoordsXY()))
                     {
-                        if (!MapIsLocationInPark(CoordsXY{ xi, yi }))
-                        {
-                            continue;
-                        }
+                        continue;
                     }
-
-                    uint8_t BaseHeight = surfaceElement->baseHeight;
-                    if (surfaceElement->GetSlope() & kTileSlopeRaisedCornersMask)
-                        BaseHeight += 2;
-                    if (surfaceElement->GetSlope() & kTileSlopeDiagonalFlag)
-                        BaseHeight += 2;
-                    if (maxHeight < BaseHeight)
-                        maxHeight = BaseHeight;
                 }
+
+                uint8_t BaseHeight = surfaceElement->baseHeight;
+                if (surfaceElement->GetSlope() & kTileSlopeRaisedCornersMask)
+                    BaseHeight += 2;
+                if (surfaceElement->GetSlope() & kTileSlopeDiagonalFlag)
+                    BaseHeight += 2;
+                if (maxHeight < BaseHeight)
+                    maxHeight = BaseHeight;
             }
         }
         return maxHeight;
