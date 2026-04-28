@@ -18,6 +18,7 @@
 #include "../../world/ConstructionClearance.h"
 #include "../../world/Footpath.h"
 #include "../../world/Map.h"
+#include "../../world/Park.h"
 #include "../../world/QuarterTile.h"
 #include "../../world/Wall.h"
 #include "../../world/tile_element/Slope.h"
@@ -195,6 +196,7 @@ namespace OpenRCT2::GameActions
         trackElement->SetRideIndex(_rideIndex);
         trackElement->SetMazeEntry(_mazeEntry);
         trackElement->setGhost(flags.has(CommandFlag::ghost));
+        trackElement->setOwner(Park::kDefaultParkOwnerId);
 
         MapInvalidateTileFull(startLoc);
 

@@ -23,6 +23,7 @@
 #include "../../world/Footpath.h"
 #include "../../world/Map.h"
 #include "../../world/MapAnimation.h"
+#include "../../world/Park.h"
 #include "../../world/QuarterTile.h"
 #include "../../world/Wall.h"
 #include "../../world/tile_element/LargeSceneryElement.h"
@@ -300,6 +301,7 @@ namespace OpenRCT2::GameActions
                 CoordsXYZ{ curTile.x, curTile.y, zLow }, quarterTile.GetBaseQuarterOccupied());
             Guard::Assert(newSceneryElement != nullptr);
             newSceneryElement->setClearanceZ(zHigh);
+            newSceneryElement->setOwner(Park::kDefaultParkOwnerId);
 
             SetNewLargeSceneryElement(*newSceneryElement, tile.index);
             if (banner != nullptr)

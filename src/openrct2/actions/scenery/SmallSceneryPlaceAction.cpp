@@ -22,6 +22,7 @@
 #include "../../world/Footpath.h"
 #include "../../world/Map.h"
 #include "../../world/MapAnimation.h"
+#include "../../world/Park.h"
 #include "../../world/QuarterTile.h"
 #include "../../world/Scenery.h"
 #include "../../world/Wall.h"
@@ -432,6 +433,8 @@ namespace OpenRCT2::GameActions
         sceneryElement->SetTertiaryColour(_tertiaryColour);
         sceneryElement->setClearanceZ(sceneryElement->getBaseZ() + sceneryEntry->height + 7);
         sceneryElement->setGhost(GetFlags().has(CommandFlag::ghost));
+        sceneryElement->setOwner(Park::kDefaultParkOwnerId);
+
         if (supportsRequired)
         {
             sceneryElement->SetNeedsSupports();
