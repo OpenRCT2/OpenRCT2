@@ -1139,7 +1139,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        const char* getOwnerString(uint8_t owner)
+        const char* getOwnerString(ParkId owner)
         {
             // TODO: rework for multiple parks
             return owner != Park::kNullOwnerId ? getGameState().park.name.c_str()

@@ -9,10 +9,9 @@
 
 #pragma once
 
+#include "../../Identifiers.h"
 #include "../Location.hpp"
 #include "TileElementType.h"
-
-#include <cstdint>
 
 namespace OpenRCT2
 {
@@ -83,8 +82,8 @@ namespace OpenRCT2
         int32_t getClearanceZ() const;
         void setClearanceZ(int32_t newZ);
 
-        uint8_t getOwner() const;
-        void setOwner(uint8_t newOwner);
+        ParkId getOwner() const;
+        void setOwner(ParkId newOwner);
 
         template<typename TType>
         const TType* as() const
