@@ -129,15 +129,15 @@ namespace OpenRCT2
         clearanceHeight = (newZ / kCoordsZStep);
     }
 
-    uint8_t TileElementBase::getOwner() const
+    ParkId TileElementBase::getOwner() const
     {
-        return owner & kTileElementOwnerMask;
+        return ParkId::FromUnderlying(owner & kTileElementOwnerMask);
     }
 
-    void TileElementBase::setOwner(uint8_t newOwner)
+    void TileElementBase::setOwner(ParkId newOwner)
     {
         owner &= ~kTileElementOwnerMask;
-        owner |= (newOwner & kTileElementOwnerMask);
+        owner |= (newOwner.ToUnderlying() & kTileElementOwnerMask);
     }
 
     const SurfaceElement* TileElementBase::asSurface() const

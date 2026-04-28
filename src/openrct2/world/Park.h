@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../Identifiers.h"
 #include "../core/Money.hpp"
 #include "Location.hpp"
 
@@ -21,8 +22,8 @@ namespace OpenRCT2
 namespace OpenRCT2::Park
 {
     // Park ownership constants (nibbles), used for e.g. legacy park conversion
-    constexpr uint8_t kDefaultParkOwnerId = 0x00;
-    constexpr uint8_t kNullOwnerId = 0x0F;
+    constexpr auto kDefaultParkOwnerId = ParkId::FromUnderlying(0);
+    constexpr auto kNullOwnerId = ParkId::GetNull();
 
     struct ParkData;
 
