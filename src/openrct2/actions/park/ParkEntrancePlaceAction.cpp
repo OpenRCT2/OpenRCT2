@@ -163,6 +163,8 @@ namespace OpenRCT2::GameActions
             entranceElement->SetSequenceIndex(index);
             entranceElement->SetEntranceType(ENTRANCE_TYPE_PARK_ENTRANCE);
             entranceElement->setEntryIndex(_entranceType);
+            entranceElement->setOwner(Park::kDefaultParkOwnerId);
+
             if (!_pathTypeIsLegacy)
             {
                 entranceElement->SetSurfaceEntryIndex(_pathType);

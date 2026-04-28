@@ -436,6 +436,8 @@ namespace OpenRCT2::GameActions
         sceneryElement->SetTertiaryColour(_tertiaryColour);
         sceneryElement->setClearanceZ(sceneryElement->getBaseZ() + sceneryEntry->height + 7);
         sceneryElement->setGhost(GetFlags().has(CommandFlag::ghost));
+        sceneryElement->setOwner(Park::kDefaultParkOwnerId);
+
         if (supportsRequired)
         {
             sceneryElement->SetNeedsSupports();
