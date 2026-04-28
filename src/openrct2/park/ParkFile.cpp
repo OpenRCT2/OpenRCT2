@@ -893,193 +893,211 @@ namespace OpenRCT2
 
         void ReadWriteParkChunk(GameState_t& gameState, OrcaStream& os)
         {
-            // TODO: load/save all parks
-            auto& park = gameState.parks[0];
+            os.readWriteChunk(ParkFileChunkType::park, [&gameState, &os, this](OrcaStream::ChunkStream& cs) {
+                auto version = os.getHeader().targetVersion;
 
-            os.readWriteChunk(
-                ParkFileChunkType::park, [version = os.getHeader().targetVersion, &park](OrcaStream::ChunkStream& cs) {
-                    cs.readWrite(park.name);
-                    cs.readWrite(park.cash);
-                    cs.readWrite(park.bankLoan);
-                    cs.readWrite(park.maxBankLoan);
-                    cs.readWrite(park.bankLoanInterestRate);
-                    cs.readWrite(park.flags);
-                    if (version <= 18)
-                    {
-                        money16 tempParkEntranceFee{};
-                        cs.readWrite(tempParkEntranceFee);
-                        park.entranceFee = ToMoney64(tempParkEntranceFee);
-                    }
-                    else
-                    {
-                        cs.readWrite(park.entranceFee);
-                    }
-
-                    cs.readWrite(park.staffHandymanColour);
-                    cs.readWrite(park.staffMechanicColour);
-                    cs.readWrite(park.staffSecurityColour);
-                    cs.readWrite(park.samePriceThroughoutPark);
-
-                    // Finances
+                if (version >= kParkIdAsTileOwner)
+                {
+                    // Park file supports storing data for multiple parks
+                    cs.readWriteVector(
+                        gameState.parks, [&cs, &version, this](Park::ParkData& park) { ReadWritePark(park, cs, version); });
+                }
+                else
+                {
+                    // Park file only has data for one park; read existing into a vector element
                     if (cs.getMode() == OrcaStream::Mode::reading)
                     {
-                        auto numMonths = std::min<uint32_t>(kExpenditureTableMonthCount, cs.read<uint32_t>());
-                        auto numTypes = std::min<uint32_t>(static_cast<uint32_t>(ExpenditureType::count), cs.read<uint32_t>());
-                        for (uint32_t i = 0; i < numMonths; i++)
-                        {
-                            for (uint32_t j = 0; j < numTypes; j++)
-                            {
-                                park.expenditureTable[i][j] = cs.read<money64>();
-                            }
-                        }
+                        gameState.parks.clear();
+                        gameState.parks.push_back(Park::ParkData{});
                     }
-                    else
-                    {
-                        auto numMonths = static_cast<uint32_t>(kExpenditureTableMonthCount);
-                        auto numTypes = static_cast<uint32_t>(ExpenditureType::count);
 
-                        cs.write(numMonths);
-                        cs.write(numTypes);
-                        for (uint32_t i = 0; i < numMonths; i++)
-                        {
-                            for (uint32_t j = 0; j < numTypes; j++)
-                            {
-                                cs.write(park.expenditureTable[i][j]);
-                            }
-                        }
-                    }
-                    cs.readWrite(park.historicalProfit);
+                    auto& park = gameState.parks[0];
+                    ReadWritePark(park, cs, version);
+                }
+            });
+        }
 
-                    // Marketing
-                    cs.readWriteVector(park.marketingCampaigns, [&cs](MarketingCampaign& campaign) {
-                        cs.readWrite(campaign.type);
-                        cs.readWrite(campaign.weeksLeft);
-                        cs.readWrite(campaign.flags.holder);
-                        cs.readWrite(campaign.rideId);
-                    });
+        void ReadWritePark(Park::ParkData& park, OrcaStream::ChunkStream& cs, uint16_t version)
+        {
+            cs.readWrite(park.name);
+            cs.readWrite(park.cash);
+            cs.readWrite(park.bankLoan);
+            cs.readWrite(park.maxBankLoan);
+            cs.readWrite(park.bankLoanInterestRate);
+            cs.readWrite(park.flags);
+            if (version <= 18)
+            {
+                money16 tempParkEntranceFee{};
+                cs.readWrite(tempParkEntranceFee);
+                park.entranceFee = ToMoney64(tempParkEntranceFee);
+            }
+            else
+            {
+                cs.readWrite(park.entranceFee);
+            }
 
-                    // Awards
-                    auto& currentAwards = park.currentAwards;
-                    if (version <= 6)
-                    {
-                        Award awards[RCT2::Limits::kMaxAwards]{};
-                        cs.readWriteArray(awards, [&cs, &currentAwards](Award& award) {
-                            if (award.time != 0)
-                            {
-                                cs.readWrite(award.time);
-                                cs.readWrite(award.type);
-                                currentAwards.push_back(award);
-                                return true;
-                            }
+            cs.readWrite(park.staffHandymanColour);
+            cs.readWrite(park.staffMechanicColour);
+            cs.readWrite(park.staffSecurityColour);
+            cs.readWrite(park.samePriceThroughoutPark);
 
-                            return false;
-                        });
-                    }
-                    else
+            // Finances
+            if (cs.getMode() == OrcaStream::Mode::reading)
+            {
+                auto numMonths = std::min<uint32_t>(kExpenditureTableMonthCount, cs.read<uint32_t>());
+                auto numTypes = std::min<uint32_t>(static_cast<uint32_t>(ExpenditureType::count), cs.read<uint32_t>());
+                for (uint32_t i = 0; i < numMonths; i++)
+                {
+                    for (uint32_t j = 0; j < numTypes; j++)
                     {
-                        cs.readWriteVector(currentAwards, [&cs](Award& award) {
-                            cs.readWrite(award.time);
-                            cs.readWrite(award.type);
-                        });
+                        park.expenditureTable[i][j] = cs.read<money64>();
                     }
-                    cs.readWrite(park.value);
-                    cs.readWrite(park.companyValue);
-                    cs.readWrite(park.size);
-                    cs.readWrite(park.numGuestsInPark);
-                    cs.readWrite(park.numGuestsHeadingForPark);
-                    cs.readWrite(park.rating);
-                    cs.readWrite(park.ratingCasualtyPenalty);
-                    cs.readWrite(park.currentExpenditure);
-                    cs.readWrite(park.currentProfit);
-                    cs.readWrite(park.weeklyProfitAverageDividend);
-                    cs.readWrite(park.weeklyProfitAverageDivisor);
-                    cs.readWrite(park.totalAdmissions);
-                    cs.readWrite(park.totalIncomeFromAdmissions);
-                    if (version <= 16)
-                    {
-                        money16 legacyTotalRideValueForMoney = 0;
-                        cs.readWrite(legacyTotalRideValueForMoney);
-                        park.totalRideValueForMoney = legacyTotalRideValueForMoney;
-                    }
-                    else
-                    {
-                        cs.readWrite(park.totalRideValueForMoney);
-                    }
-                    cs.readWrite(park.numGuestsInParkLastWeek);
-                    cs.readWrite(park.guestChangeModifier);
-                    cs.readWrite(park.guestGenerationProbability);
-                    cs.readWrite(park.suggestedGuestMaximum);
+                }
+            }
+            else
+            {
+                auto numMonths = static_cast<uint32_t>(kExpenditureTableMonthCount);
+                auto numTypes = static_cast<uint32_t>(ExpenditureType::count);
 
-                    cs.readWriteArray(park.peepWarningThrottle, [&cs](uint8_t& value) {
+                cs.write(numMonths);
+                cs.write(numTypes);
+                for (uint32_t i = 0; i < numMonths; i++)
+                {
+                    for (uint32_t j = 0; j < numTypes; j++)
+                    {
+                        cs.write(park.expenditureTable[i][j]);
+                    }
+                }
+            }
+            cs.readWrite(park.historicalProfit);
+
+            // Marketing
+            cs.readWriteVector(park.marketingCampaigns, [&cs](MarketingCampaign& campaign) {
+                cs.readWrite(campaign.type);
+                cs.readWrite(campaign.weeksLeft);
+                cs.readWrite(campaign.flags.holder);
+                cs.readWrite(campaign.rideId);
+            });
+
+            // Awards
+            auto& currentAwards = park.currentAwards;
+            if (version <= 6)
+            {
+                Award awards[RCT2::Limits::kMaxAwards]{};
+                cs.readWriteArray(awards, [&cs, &currentAwards](Award& award) {
+                    if (award.time != 0)
+                    {
+                        cs.readWrite(award.time);
+                        cs.readWrite(award.type);
+                        currentAwards.push_back(award);
+                        return true;
+                    }
+
+                    return false;
+                });
+            }
+            else
+            {
+                cs.readWriteVector(currentAwards, [&cs](Award& award) {
+                    cs.readWrite(award.time);
+                    cs.readWrite(award.type);
+                });
+            }
+            cs.readWrite(park.value);
+            cs.readWrite(park.companyValue);
+            cs.readWrite(park.size);
+            cs.readWrite(park.numGuestsInPark);
+            cs.readWrite(park.numGuestsHeadingForPark);
+            cs.readWrite(park.rating);
+            cs.readWrite(park.ratingCasualtyPenalty);
+            cs.readWrite(park.currentExpenditure);
+            cs.readWrite(park.currentProfit);
+            cs.readWrite(park.weeklyProfitAverageDividend);
+            cs.readWrite(park.weeklyProfitAverageDivisor);
+            cs.readWrite(park.totalAdmissions);
+            cs.readWrite(park.totalIncomeFromAdmissions);
+            if (version <= 16)
+            {
+                money16 legacyTotalRideValueForMoney = 0;
+                cs.readWrite(legacyTotalRideValueForMoney);
+                park.totalRideValueForMoney = legacyTotalRideValueForMoney;
+            }
+            else
+            {
+                cs.readWrite(park.totalRideValueForMoney);
+            }
+            cs.readWrite(park.numGuestsInParkLastWeek);
+            cs.readWrite(park.guestChangeModifier);
+            cs.readWrite(park.guestGenerationProbability);
+            cs.readWrite(park.suggestedGuestMaximum);
+
+            cs.readWriteArray(park.peepWarningThrottle, [&cs](uint8_t& value) {
+                cs.readWrite(value);
+                return true;
+            });
+
+            if (version < k16BitParkHistoryVersion)
+            {
+                if (cs.getMode() == OrcaStream::Mode::reading)
+                {
+                    uint8_t smallHistory[kParkRatingHistorySize];
+                    cs.readWriteArray(smallHistory, [&cs](uint8_t& value) {
                         cs.readWrite(value);
                         return true;
                     });
-
-                    if (version < k16BitParkHistoryVersion)
+                    for (int i = 0; i < kParkRatingHistorySize; i++)
                     {
-                        if (cs.getMode() == OrcaStream::Mode::reading)
-                        {
-                            uint8_t smallHistory[kParkRatingHistorySize];
-                            cs.readWriteArray(smallHistory, [&cs](uint8_t& value) {
-                                cs.readWrite(value);
-                                return true;
-                            });
-                            for (int i = 0; i < kParkRatingHistorySize; i++)
-                            {
-                                if (smallHistory[i] == kRCT12ParkHistoryUndefined)
-                                    park.ratingHistory[i] = kParkRatingHistoryUndefined;
-                                else
-                                {
-                                    park.ratingHistory[i] = static_cast<uint16_t>(
-                                        smallHistory[i] * kRCT12ParkRatingHistoryFactor);
-                                }
-                            }
-                        }
+                        if (smallHistory[i] == kRCT12ParkHistoryUndefined)
+                            park.ratingHistory[i] = kParkRatingHistoryUndefined;
                         else
                         {
-                            uint8_t smallHistory[kParkRatingHistorySize];
-                            for (int i = 0; i < kParkRatingHistorySize; i++)
-                            {
-                                if (park.ratingHistory[i] == kParkRatingHistoryUndefined)
-                                    smallHistory[i] = kRCT12ParkHistoryUndefined;
-                                else
-                                {
-                                    smallHistory[i] = static_cast<uint8_t>(
-                                        park.ratingHistory[i] / kRCT12ParkRatingHistoryFactor);
-                                }
-                            }
-                            cs.readWriteArray(smallHistory, [&cs](uint8_t& value) {
-                                cs.readWrite(value);
-                                return true;
-                            });
+                            park.ratingHistory[i] = static_cast<uint16_t>(smallHistory[i] * kRCT12ParkRatingHistoryFactor);
                         }
                     }
-                    else
+                }
+                else
+                {
+                    uint8_t smallHistory[kParkRatingHistorySize];
+                    for (int i = 0; i < kParkRatingHistorySize; i++)
                     {
-                        cs.readWriteArray(park.ratingHistory, [&cs](uint16_t& value) {
-                            cs.readWrite(value);
-                            return true;
-                        });
+                        if (park.ratingHistory[i] == kParkRatingHistoryUndefined)
+                            smallHistory[i] = kRCT12ParkHistoryUndefined;
+                        else
+                        {
+                            smallHistory[i] = static_cast<uint8_t>(park.ratingHistory[i] / kRCT12ParkRatingHistoryFactor);
+                        }
                     }
-
-                    cs.readWriteArray(park.guestsInParkHistory, [&cs](uint32_t& value) {
+                    cs.readWriteArray(smallHistory, [&cs](uint8_t& value) {
                         cs.readWrite(value);
                         return true;
                     });
-
-                    cs.readWriteArray(park.cashHistory, [&cs](money64& value) {
-                        cs.readWrite(value);
-                        return true;
-                    });
-                    cs.readWriteArray(park.weeklyProfitHistory, [&cs](money64& value) {
-                        cs.readWrite(value);
-                        return true;
-                    });
-                    cs.readWriteArray(park.valueHistory, [&cs](money64& value) {
-                        cs.readWrite(value);
-                        return true;
-                    });
+                }
+            }
+            else
+            {
+                cs.readWriteArray(park.ratingHistory, [&cs](uint16_t& value) {
+                    cs.readWrite(value);
+                    return true;
                 });
+            }
+
+            cs.readWriteArray(park.guestsInParkHistory, [&cs](uint32_t& value) {
+                cs.readWrite(value);
+                return true;
+            });
+
+            cs.readWriteArray(park.cashHistory, [&cs](money64& value) {
+                cs.readWrite(value);
+                return true;
+            });
+            cs.readWriteArray(park.weeklyProfitHistory, [&cs](money64& value) {
+                cs.readWrite(value);
+                return true;
+            });
+            cs.readWriteArray(park.valueHistory, [&cs](money64& value) {
+                cs.readWrite(value);
+                return true;
+            });
         }
 
         void ReadWriteResearchChunk(GameState_t& gameState, OrcaStream& os)
