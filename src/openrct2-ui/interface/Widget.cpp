@@ -1073,6 +1073,7 @@ namespace OpenRCT2::Ui
         if (widgetIndex >= w.widgets.size())
         {
             LOG_ERROR("Widget index %i out of bounds for window class %u", widgetIndex, w.classification);
+            return nullptr;
         }
 
         return &w.widgets[widgetIndex];
