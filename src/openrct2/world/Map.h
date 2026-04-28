@@ -173,3 +173,9 @@ namespace OpenRCT2
     MapRange ClampRangeWithinMap(const MapRange& range);
     void ShiftMap(const TileCoordsXY& amount);
 } // namespace OpenRCT2
+
+namespace OpenRCT2::Map
+{
+    void resetOwnerIdForAllElementsOnTile(TileCoordsXY tileCoords, ParkId newOwner);
+    void resetOwnerIdForAllElementsOnTile(CoordsXY tileCoords, ParkId newOwner);
+} // namespace OpenRCT2::Map

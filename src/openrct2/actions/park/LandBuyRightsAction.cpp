@@ -134,6 +134,7 @@ namespace OpenRCT2::GameActions
                 if (isExecuting)
                 {
                     surfaceElement->SetOwnership(OWNERSHIP_OWNED);
+                    Map::resetOwnerIdForAllElementsOnTile(loc, Park::kDefaultParkOwnerId);
                     Park::UpdateFencesAroundTile(loc);
                 }
                 res.cost = gameState.scenarioOptions.landPrice;
@@ -154,6 +155,7 @@ namespace OpenRCT2::GameActions
                 if (isExecuting)
                 {
                     surfaceElement->SetOwnership(surfaceElement->GetOwnership() | OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
+                    Map::resetOwnerIdForAllElementsOnTile(loc, Park::kDefaultParkOwnerId);
                     uint16_t baseZ = surfaceElement->getBaseZ();
                     MapInvalidateTile({ loc, baseZ, baseZ + 16 });
                 }

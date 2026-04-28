@@ -785,13 +785,7 @@ namespace OpenRCT2::Park
             bool isOwned = (ownership & (OWNERSHIP_OWNED | OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)) != 0;
             auto newOwner = isOwned ? kDefaultParkOwnerId : kNullOwnerId;
 
-            // Assign park id to all elements on this tile
-            for (auto* tileEl = MapGetFirstElementAt(tileCoords); tileEl != nullptr; tileEl++)
-            {
-                tileEl->setOwner(newOwner);
-                if (tileEl->isLastForTile())
-                    break;
-            }
+            Map::resetOwnerIdForAllElementsOnTile(tileCoords, newOwner);
         }
     }
 } // namespace OpenRCT2::Park
