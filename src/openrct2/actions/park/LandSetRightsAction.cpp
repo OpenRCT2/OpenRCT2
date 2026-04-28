@@ -131,6 +131,7 @@ namespace OpenRCT2::GameActions
                 {
                     surfaceElement->SetOwnership(
                         surfaceElement->GetOwnership() & ~(OWNERSHIP_OWNED | OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED));
+                    Map::resetOwnerIdForAllElementsOnTile(loc, Park::kNullOwnerId);
                     Park::UpdateFencesAroundTile(loc);
                 }
                 return res;
@@ -138,6 +139,7 @@ namespace OpenRCT2::GameActions
                 if (isExecuting)
                 {
                     surfaceElement->SetOwnership(surfaceElement->GetOwnership() & ~OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
+                    Map::resetOwnerIdForAllElementsOnTile(loc, Park::kNullOwnerId);
                     uint16_t baseZ = surfaceElement->getBaseZ();
                     MapInvalidateTile({ loc, baseZ, baseZ + 16 });
                 }
@@ -146,6 +148,7 @@ namespace OpenRCT2::GameActions
                 if (isExecuting)
                 {
                     surfaceElement->SetOwnership(surfaceElement->GetOwnership() | OWNERSHIP_AVAILABLE);
+                    Map::resetOwnerIdForAllElementsOnTile(loc, Park::kDefaultParkOwnerId);
                     uint16_t baseZ = surfaceElement->getBaseZ();
                     MapInvalidateTile({ loc, baseZ, baseZ + 16 });
                 }
@@ -154,6 +157,7 @@ namespace OpenRCT2::GameActions
                 if (isExecuting)
                 {
                     surfaceElement->SetOwnership(surfaceElement->GetOwnership() | OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE);
+                    Map::resetOwnerIdForAllElementsOnTile(loc, Park::kDefaultParkOwnerId);
                     uint16_t baseZ = surfaceElement->getBaseZ();
                     MapInvalidateTile({ loc, baseZ, baseZ + 16 });
                 }
@@ -225,7 +229,10 @@ namespace OpenRCT2::GameActions
                                 }),
                             gameState.peepSpawns.end());
                     }
+
                     surfaceElement->SetOwnership(_ownership);
+                    Map::resetOwnerIdForAllElementsOnTile(loc, _ownership ? Park::kDefaultParkOwnerId : Park::kNullOwnerId);
+
                     Park::UpdateFencesAroundTile(loc);
                     gMapLandRightsUpdateSuccess = true;
                 }

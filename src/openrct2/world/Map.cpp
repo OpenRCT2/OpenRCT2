@@ -2366,3 +2366,21 @@ namespace OpenRCT2
         MapAnimations::ShiftAll(amount);
     }
 } // namespace OpenRCT2
+
+namespace OpenRCT2::Map
+{
+    void resetOwnerIdForAllElementsOnTile(TileCoordsXY tileCoords, ParkId newOwner)
+    {
+        for (auto* tileEl = MapGetFirstElementAt(tileCoords); tileEl != nullptr; tileEl++)
+        {
+            tileEl->setOwner(newOwner);
+            if (tileEl->isLastForTile())
+                break;
+        }
+    }
+
+    void resetOwnerIdForAllElementsOnTile(CoordsXY coords, ParkId newOwner)
+    {
+        resetOwnerIdForAllElementsOnTile(TileCoordsXY(coords), newOwner);
+    }
+} // namespace OpenRCT2::Map
