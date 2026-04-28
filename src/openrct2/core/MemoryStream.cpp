@@ -12,6 +12,7 @@
 #include "Guard.hpp"
 #include "Memory.hpp"
 
+#include <cinttypes>
 #include <cstring>
 
 namespace OpenRCT2
@@ -100,7 +101,12 @@ namespace OpenRCT2
     void MemoryStream::SetPosition(uint64_t position)
     {
         if (position > _dataSize)
-            throw IOException("New position out of bounds.");
+        {
+            char msg[256];
+            std::snprintf(
+                msg, sizeof(msg), "Attempted to set position to %" PRIu64 ", stream length %zu.", position, _dataSize);
+            throw IOException(msg);
+        }
         _position = static_cast<size_t>(position);
     }
 
@@ -124,7 +130,13 @@ namespace OpenRCT2
     void MemoryStream::Read(void* buffer, uint64_t length)
     {
         if (_position + length > _dataSize)
-            throw IOException("Attempted to read past end of stream.");
+        {
+            char msg[256];
+            std::snprintf(
+                msg, sizeof(msg), "Attempted to read past end of stream. Position: %zu, Length: %" PRIu64 ", DataSize: %zu.",
+                _position, length, _dataSize);
+            throw IOException(msg);
+        }
 
         std::memcpy(buffer, _data + _position, length);
         _position += static_cast<size_t>(length);
@@ -155,7 +167,13 @@ namespace OpenRCT2
     const void* MemoryStream::ReadDirect(size_t length)
     {
         if (_position + length > _dataSize)
-            throw IOException("Attempted to read past end of stream.");
+        {
+            char msg[256];
+            std::snprintf(
+                msg, sizeof(msg), "Attempted to read past end of stream. Position: %zu, Length: %zu, DataSize: %zu.", _position,
+                length, _dataSize);
+            throw IOException(msg);
+        }
 
         const void* readPosition = _data + _position;
         _position += length;
