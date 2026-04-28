@@ -396,18 +396,22 @@ namespace OpenRCT2::Ui::Windows
         void SetDisabledTabs()
         {
             // Disable price tab if money is disabled
-            setWidgetDisabled(WIDX_TAB_4, (getGameState().park.flags & PARK_FLAGS_NO_MONEY) != 0);
+            setWidgetDisabled(WIDX_TAB_4, (getGameState().parks[0].flags & PARK_FLAGS_NO_MONEY) != 0);
         }
 
         void PrepareWindowTitleText()
         {
-            widgets[WIDX_TITLE].setString(getGameState().park.name.c_str());
+            const auto& gameState = getGameState();
+            auto parkName = gameState.parks[0].name.c_str();
+            widgets[WIDX_TITLE].setString(parkName);
         }
 
 #pragma region Entrance page
         void onMouseUpEntrance(WidgetIndex widgetIndex)
         {
-            auto& park = getGameState().park;
+            // TODO: use window-specific park
+            auto& gameState = getGameState();
+            auto& park = gameState.parks[0];
             switch (widgetIndex)
             {
                 case WIDX_BUY_LAND_RIGHTS:
@@ -448,7 +452,9 @@ namespace OpenRCT2::Ui::Windows
                 WindowDropdownShowText(
                     { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height(), colours[1], 0, 2);
 
-                if (Park::IsOpen(getGameState().park))
+                // TODO: use window-specific park
+                const auto& gameState = getGameState();
+                if (Park::IsOpen(gameState.parks[0]))
                 {
                     gDropdown.defaultIndex = 0;
                     gDropdown.items[1].setChecked(true);
@@ -463,7 +469,8 @@ namespace OpenRCT2::Ui::Windows
 
         void onDropdownEntrance(WidgetIndex widgetIndex, int32_t dropdownIndex)
         {
-            auto& park = getGameState().park;
+            auto& gameState = getGameState();
+            auto& park = gameState.parks[0];
             if (widgetIndex == WIDX_OPEN_OR_CLOSE)
             {
                 if (dropdownIndex == -1)
@@ -497,10 +504,11 @@ namespace OpenRCT2::Ui::Windows
 
         void onPrepareDrawEntrance()
         {
-            const auto& gameState = getGameState();
             initScrollWidgets();
 
             SetPressedTab();
+
+            auto& gameState = getGameState();
 
             widgets[WIDX_TITLE].setString(_parkData.name.c_str());
             // Set open / close park button state
@@ -589,8 +597,10 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Draw park closed / open label
+            // TODO: use window-specific park
+            const auto& gameState = getGameState();
             auto ft = Formatter();
-            ft.Add<StringId>(Park::IsOpen(getGameState().park) ? STR_PARK_OPEN : STR_PARK_CLOSED);
+            ft.Add<StringId>(Park::IsOpen(gameState.parks[0]) ? STR_PARK_OPEN : STR_PARK_CLOSED);
 
             auto* labelWidget = &widgets[WIDX_STATUS];
             drawTextEllipsised(
@@ -671,9 +681,12 @@ namespace OpenRCT2::Ui::Windows
 
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
 
+            const auto& gameState = getGameState();
+            const auto& park = gameState.parks[0];
+
             _ratingProps.min = 0;
             _ratingProps.max = 1000;
-            _ratingProps.series = getGameState().park.ratingHistory;
+            _ratingProps.series = park.ratingHistory;
             const Widget* background = &widgets[WIDX_PAGE_BACKGROUND];
             _ratingGraphBounds = { windowPos + ScreenCoordsXY{ background->left + 4, background->top + 15 },
                                    windowPos + ScreenCoordsXY{ background->right - 4, background->bottom - 4 } };
@@ -695,9 +708,12 @@ namespace OpenRCT2::Ui::Windows
 
             Widget* widget = &widgets[WIDX_PAGE_BACKGROUND];
 
+            const auto& gameState = getGameState();
+            const auto& park = gameState.parks[0];
+
             // Current value
             Formatter ft;
-            ft.Add<uint16_t>(getGameState().park.rating);
+            ft.Add<uint16_t>(park.rating);
             drawText(rt, windowPos + ScreenCoordsXY{ widget->left + 3, widget->top + 2 }, STR_PARK_RATING_LABEL, ft);
 
             // Graph border
@@ -775,9 +791,12 @@ namespace OpenRCT2::Ui::Windows
 
             Widget* widget = &widgets[WIDX_PAGE_BACKGROUND];
 
+            const auto& gameState = getGameState();
+            const auto& park = gameState.parks[0];
+
             // Current value
             Formatter ft;
-            ft.Add<uint32_t>(getGameState().park.numGuestsInPark);
+            ft.Add<uint32_t>(park.numGuestsInPark);
             drawText(rt, windowPos + ScreenCoordsXY{ widget->left + 3, widget->top + 2 }, STR_GUESTS_IN_PARK_LABEL, ft);
 
             // Graph border
@@ -805,8 +824,6 @@ namespace OpenRCT2::Ui::Windows
         void onMouseDownPrice(WidgetIndex widgetIndex)
         {
             auto& gameState = getGameState();
-            auto& park = _parkData;
-
             switch (widgetIndex)
             {
                 case WIDX_INCREASE_PRICE:
@@ -826,7 +843,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_PRICE:
                 {
                     utf8 _moneyInputText[kMoneyStringMaxlength] = {};
-                    MoneyToString(Park::GetEntranceFee(park), _moneyInputText, kMoneyStringMaxlength, false);
+                    MoneyToString(Park::GetEntranceFee(_parkData), _moneyInputText, kMoneyStringMaxlength, false);
                     WindowTextInputRawOpen(
                         this, WIDX_PRICE, STR_ENTER_NEW_VALUE, STR_ENTER_NEW_VALUE, {}, _moneyInputText, kMoneyStringMaxlength);
                 }
@@ -848,7 +865,9 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_PRICE_LABEL].tooltip = kStringIdNone;
             widgets[WIDX_PRICE].tooltip = kStringIdNone;
 
-            auto& park = getGameState().park;
+            // TODO: use window-specific park
+            const auto& gameState = getGameState();
+            const auto& park = gameState.parks[0];
 
             if (!Park::EntranceFeeUnlocked(park))
             {
@@ -878,13 +897,14 @@ namespace OpenRCT2::Ui::Windows
             drawWidgets(rt);
             DrawTabImages(rt);
 
+            const auto& gameState = getGameState();
+            const auto& park = gameState.parks[0];
+
             auto screenCoords = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, widgets[WIDX_PAGE_BACKGROUND].top + 30 };
             auto ft = Formatter();
-            ft.Add<money64>(getGameState().park.totalIncomeFromAdmissions);
+            ft.Add<money64>(park.totalIncomeFromAdmissions);
             drawText(rt, screenCoords, STR_INCOME_FROM_ADMISSIONS, ft);
-
-            auto& park = getGameState().park;
 
             money64 parkEntranceFee = Park::GetEntranceFee(park);
             ft = Formatter();
@@ -1047,8 +1067,11 @@ namespace OpenRCT2::Ui::Windows
             SetPressedTab();
             PrepareWindowTitleText();
 
+            const auto& gameState = getGameState();
+            const auto& park = gameState.parks[0];
+
             // Show name input button on scenario completion.
-            if (getGameState().park.flags & PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT)
+            if (park.flags & PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT)
             {
                 widgets[WIDX_ENTER_NAME].type = WidgetType::button;
                 widgets[WIDX_ENTER_NAME].top = height - 19;
@@ -1134,7 +1157,9 @@ namespace OpenRCT2::Ui::Windows
             auto screenCoords = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, widgets[WIDX_PAGE_BACKGROUND].top + 4 };
 
-            auto& currentAwards = getGameState().park.currentAwards;
+            const auto& gameState = getGameState();
+            const auto& park = gameState.parks[0];
+            const auto& currentAwards = park.currentAwards;
 
             for (const auto& award : currentAwards)
             {
@@ -1289,7 +1314,7 @@ namespace OpenRCT2::Ui::Windows
         if (wnd == nullptr)
         {
             // TODO: get parkData from parameter (park id)
-            auto& parkData = getGameState().park;
+            auto& parkData = getGameState().parks[0];
             wnd = windowMgr->Create<ParkWindow>(
                 WindowClass::parkInformation, { 230, 174 + 9 }, WindowFlag::higherContrastOnPress, parkData);
         }

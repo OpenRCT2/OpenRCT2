@@ -47,7 +47,9 @@ namespace OpenRCT2::Scripting
 
     JSValue ScPark::cash_get(JSContext* ctx, JSValue thisVal)
     {
-        return JS_NewInt64(ctx, getGameState().park.cash);
+        auto& gameState = getGameState();
+        auto& park = gameState.parks[0];
+        return JS_NewInt64(ctx, park.cash);
     }
     JSValue ScPark::cash_set(JSContext* ctx, JSValue thisVal, JSValue value)
     {
@@ -55,9 +57,10 @@ namespace OpenRCT2::Scripting
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
 
         auto& gameState = getGameState();
-        if (gameState.park.cash != valueInt)
+        auto& park = gameState.parks[0];
+        if (park.cash != valueInt)
         {
-            gameState.park.cash = valueInt;
+            park.cash = valueInt;
             auto intent = Intent(INTENT_ACTION_UPDATE_CASH);
             ContextBroadcastIntent(&intent);
         }
@@ -66,7 +69,8 @@ namespace OpenRCT2::Scripting
 
     JSValue ScPark::rating_get(JSContext* ctx, JSValue thisVal)
     {
-        return JS_NewInt32(ctx, getGameState().park.rating);
+        const auto& gameState = getGameState();
+        return JS_NewInt32(ctx, gameState.parks[0].rating);
     }
     JSValue ScPark::rating_set(JSContext* ctx, JSValue thisVal, JSValue value)
     {
@@ -74,10 +78,12 @@ namespace OpenRCT2::Scripting
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
 
         auto valueClamped = std::min(std::max(0, valueInt), 999);
+
         auto& gameState = getGameState();
-        if (gameState.park.rating != valueClamped)
+        auto& park = gameState.parks[0];
+        if (park.rating != valueClamped)
         {
-            gameState.park.rating = std::min(std::max(0, valueInt), 999);
+            park.rating = std::min(std::max(0, valueInt), 999);
             auto intent = Intent(INTENT_ACTION_UPDATE_PARK_RATING);
             ContextBroadcastIntent(&intent);
         }
@@ -86,7 +92,8 @@ namespace OpenRCT2::Scripting
 
     JSValue ScPark::bankLoan_get(JSContext* ctx, JSValue thisVal)
     {
-        return JS_NewInt64(ctx, getGameState().park.bankLoan);
+        const auto& gameState = getGameState();
+        return JS_NewInt64(ctx, gameState.parks[0].bankLoan);
     }
     JSValue ScPark::bankLoan_set(JSContext* ctx, JSValue thisVal, JSValue value)
     {
@@ -94,10 +101,11 @@ namespace OpenRCT2::Scripting
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
 
         auto& gameState = getGameState();
+        auto& park = gameState.parks[0];
 
-        if (gameState.park.bankLoan != valueInt)
+        if (park.bankLoan != valueInt)
         {
-            gameState.park.bankLoan = valueInt;
+            park.bankLoan = valueInt;
             auto intent = Intent(INTENT_ACTION_UPDATE_CASH);
             ContextBroadcastIntent(&intent);
         }
@@ -106,7 +114,8 @@ namespace OpenRCT2::Scripting
 
     JSValue ScPark::maxBankLoan_get(JSContext* ctx, JSValue thisVal)
     {
-        return JS_NewInt64(ctx, getGameState().park.maxBankLoan);
+        const auto& gameState = getGameState();
+        return JS_NewInt64(ctx, gameState.parks[0].maxBankLoan);
     }
     JSValue ScPark::maxBankLoan_set(JSContext* ctx, JSValue thisVal, JSValue value)
     {
@@ -114,9 +123,11 @@ namespace OpenRCT2::Scripting
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE()
 
         auto& gameState = getGameState();
-        if (gameState.park.maxBankLoan != valueInt)
+        auto& park = gameState.parks[0];
+
+        if (park.maxBankLoan != valueInt)
         {
-            gameState.park.maxBankLoan = valueInt;
+            park.maxBankLoan = valueInt;
             auto intent = Intent(INTENT_ACTION_UPDATE_CASH);
             ContextBroadcastIntent(&intent);
         }
@@ -125,7 +136,8 @@ namespace OpenRCT2::Scripting
 
     JSValue ScPark::entranceFee_get(JSContext* ctx, JSValue thisVal)
     {
-        return JS_NewInt64(ctx, getGameState().park.entranceFee);
+        const auto& gameState = getGameState();
+        return JS_NewInt64(ctx, gameState.parks[0].entranceFee);
     }
     JSValue ScPark::entranceFee_set(JSContext* ctx, JSValue thisVal, JSValue value)
     {
@@ -133,9 +145,11 @@ namespace OpenRCT2::Scripting
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
 
         auto& gameState = getGameState();
-        if (gameState.park.entranceFee != valueInt)
+        auto& park = gameState.parks[0];
+
+        if (park.entranceFee != valueInt)
         {
-            gameState.park.entranceFee = valueInt;
+            park.entranceFee = valueInt;
             auto* windowMgr = Ui::GetWindowManager();
             windowMgr->InvalidateByClass(WindowClass::parkInformation);
         }
@@ -144,17 +158,20 @@ namespace OpenRCT2::Scripting
 
     JSValue ScPark::guests_get(JSContext* ctx, JSValue thisVal)
     {
-        return JS_NewInt64(ctx, getGameState().park.numGuestsInPark);
+        const auto& gameState = getGameState();
+        return JS_NewInt64(ctx, gameState.parks[0].numGuestsInPark);
     }
 
     JSValue ScPark::suggestedGuestMaximum_get(JSContext* ctx, JSValue thisVal)
     {
-        return JS_NewInt64(ctx, getGameState().park.suggestedGuestMaximum);
+        const auto& gameState = getGameState();
+        return JS_NewInt64(ctx, gameState.parks[0].suggestedGuestMaximum);
     }
 
     JSValue ScPark::guestGenerationProbability_get(JSContext* ctx, JSValue thisVal)
     {
-        return JS_NewInt32(ctx, getGameState().park.guestGenerationProbability);
+        const auto& gameState = getGameState();
+        return JS_NewInt32(ctx, gameState.parks[0].guestGenerationProbability);
     }
 
     JSValue ScPark::generateGuest(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
@@ -186,7 +203,8 @@ namespace OpenRCT2::Scripting
 
     JSValue ScPark::value_get(JSContext* ctx, JSValue thisVal)
     {
-        return JS_NewInt64(ctx, getGameState().park.value);
+        const auto& gameState = getGameState();
+        return JS_NewInt64(ctx, gameState.parks[0].value);
     }
     JSValue ScPark::value_set(JSContext* ctx, JSValue thisVal, JSValue value)
     {
@@ -194,9 +212,10 @@ namespace OpenRCT2::Scripting
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
 
         auto& gameState = getGameState();
-        if (gameState.park.value != valueInt)
+        auto& park = gameState.parks[0];
+        if (park.value != valueInt)
         {
-            gameState.park.value = valueInt;
+            park.value = valueInt;
             auto intent = Intent(INTENT_ACTION_UPDATE_CASH);
             ContextBroadcastIntent(&intent);
         }
@@ -205,7 +224,8 @@ namespace OpenRCT2::Scripting
 
     JSValue ScPark::companyValue_get(JSContext* ctx, JSValue thisVal)
     {
-        return JS_NewInt64(ctx, getGameState().park.companyValue);
+        const auto& gameState = getGameState();
+        return JS_NewInt64(ctx, gameState.parks[0].companyValue);
     }
     JSValue ScPark::companyValue_set(JSContext* ctx, JSValue thisVal, JSValue value)
     {
@@ -213,10 +233,11 @@ namespace OpenRCT2::Scripting
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
 
         auto& gameState = getGameState();
+        auto& park = gameState.parks[0];
 
-        if (gameState.park.companyValue != valueInt)
+        if (park.companyValue != valueInt)
         {
-            gameState.park.companyValue = valueInt;
+            park.companyValue = valueInt;
             auto intent = Intent(INTENT_ACTION_UPDATE_CASH);
             ContextBroadcastIntent(&intent);
         }
@@ -225,12 +246,14 @@ namespace OpenRCT2::Scripting
 
     JSValue ScPark::totalRideValueForMoney_get(JSContext* ctx, JSValue thisVal)
     {
-        return JS_NewInt64(ctx, getGameState().park.totalRideValueForMoney);
+        const auto& gameState = getGameState();
+        return JS_NewInt64(ctx, gameState.parks[0].totalRideValueForMoney);
     }
 
     JSValue ScPark::totalAdmissions_get(JSContext* ctx, JSValue thisVal)
     {
-        return JS_NewInt64(ctx, getGameState().park.totalAdmissions);
+        const auto& gameState = getGameState();
+        return JS_NewInt64(ctx, gameState.parks[0].totalAdmissions);
     }
     JSValue ScPark::totalAdmissions_set(JSContext* ctx, JSValue thisVal, JSValue value)
     {
@@ -238,10 +261,11 @@ namespace OpenRCT2::Scripting
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
 
         auto& gameState = getGameState();
+        auto& park = gameState.parks[0];
 
-        if (gameState.park.totalAdmissions != static_cast<uint64_t>(valueInt))
+        if (park.totalAdmissions != static_cast<uint64_t>(valueInt))
         {
-            gameState.park.totalAdmissions = static_cast<uint64_t>(valueInt);
+            park.totalAdmissions = static_cast<uint64_t>(valueInt);
             auto* windowMgr = Ui::GetWindowManager();
             windowMgr->InvalidateByClass(WindowClass::parkInformation);
         }
@@ -250,7 +274,8 @@ namespace OpenRCT2::Scripting
 
     JSValue ScPark::totalIncomeFromAdmissions_get(JSContext* ctx, JSValue thisVal)
     {
-        return JS_NewInt64(ctx, getGameState().park.totalIncomeFromAdmissions);
+        const auto& gameState = getGameState();
+        return JS_NewInt64(ctx, gameState.parks[0].totalIncomeFromAdmissions);
     }
     JSValue ScPark::totalIncomeFromAdmissions_set(JSContext* ctx, JSValue thisVal, JSValue value)
     {
@@ -258,10 +283,11 @@ namespace OpenRCT2::Scripting
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
 
         auto& gameState = getGameState();
+        auto& park = gameState.parks[0];
 
-        if (gameState.park.totalIncomeFromAdmissions != valueInt)
+        if (park.totalIncomeFromAdmissions != valueInt)
         {
-            gameState.park.totalIncomeFromAdmissions = valueInt;
+            park.totalIncomeFromAdmissions = valueInt;
             auto* windowMgr = Ui::GetWindowManager();
             windowMgr->InvalidateByClass(WindowClass::parkInformation);
         }
@@ -294,31 +320,37 @@ namespace OpenRCT2::Scripting
 
     JSValue ScPark::casualtyPenalty_get(JSContext* ctx, JSValue thisVal)
     {
-        return JS_NewInt32(ctx, getGameState().park.ratingCasualtyPenalty);
+        const auto& gameState = getGameState();
+        return JS_NewInt32(ctx, gameState.parks[0].ratingCasualtyPenalty);
     }
     JSValue ScPark::casualtyPenalty_set(JSContext* ctx, JSValue thisVal, JSValue value)
     {
         JS_UNPACK_INT32(valueInt, ctx, value);
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
-        getGameState().park.ratingCasualtyPenalty = valueInt;
+
+        auto& gameState = getGameState();
+        gameState.parks[0].ratingCasualtyPenalty = valueInt;
         return JS_UNDEFINED;
     }
 
     JSValue ScPark::parkSize_get(JSContext* ctx, JSValue thisVal)
     {
-        return JS_NewInt64(ctx, getGameState().park.size);
+        const auto& gameState = getGameState();
+        return JS_NewInt64(ctx, gameState.parks[0].size);
     }
 
     JSValue ScPark::name_get(JSContext* ctx, JSValue thisVal)
     {
-        return JSFromStdString(ctx, getGameState().park.name);
+        const auto& gameState = getGameState();
+        return JSFromStdString(ctx, gameState.parks[0].name);
     }
     JSValue ScPark::name_set(JSContext* ctx, JSValue thisVal, JSValue value)
     {
         JS_UNPACK_STR(valueStr, ctx, value);
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
 
-        auto& park = getGameState().park;
+        auto& gameState = getGameState();
+        auto& park = gameState.parks[0];
         if (park.name != valueStr)
         {
             park.name = std::move(valueStr);
@@ -331,7 +363,9 @@ namespace OpenRCT2::Scripting
     {
         JS_UNPACK_STR(key, ctx, argv[0])
         auto mask = ParkFlagMap[key];
-        return JS_NewBool(ctx, (getGameState().park.flags & mask) != 0);
+
+        const auto& gameState = getGameState();
+        return JS_NewBool(ctx, (gameState.parks[0].flags & mask) != 0);
     }
 
     JSValue ScPark::setFlag(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
@@ -341,11 +375,14 @@ namespace OpenRCT2::Scripting
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
 
         auto mask = ParkFlagMap[key];
+
         auto& gameState = getGameState();
+        auto& park = gameState.parks[0];
         if (value)
-            gameState.park.flags |= mask;
+            park.flags |= mask;
         else
-            gameState.park.flags &= ~mask;
+            park.flags &= ~mask;
+
         GfxInvalidateScreen();
         return JS_UNDEFINED;
     }
@@ -457,10 +494,11 @@ namespace OpenRCT2::Scripting
         auto type = ScriptEngine::StringToExpenditureType(expenditureType);
         if (type != ExpenditureType::count)
         {
-            auto& gameState = getGameState();
+            const auto& gameState = getGameState();
+            const auto& park = gameState.parks[0];
             for (size_t i = 0; i < recordedMonths; ++i)
             {
-                JS_SetPropertyInt64(ctx, result, i, JS_NewInt64(ctx, gameState.park.expenditureTable[i][EnumValue(type)]));
+                JS_SetPropertyInt64(ctx, result, i, JS_NewInt64(ctx, park.expenditureTable[i][EnumValue(type)]));
             }
         }
         return result;
@@ -470,8 +508,8 @@ namespace OpenRCT2::Scripting
     {
         JSValue result = JS_NewArray(ctx);
 
-        auto& gameState = getGameState();
-        for (size_t i = 0; i < gameState.park.currentAwards.size(); i++)
+        const auto& gameState = getGameState();
+        for (size_t i = 0; i < gameState.parks[0].currentAwards.size(); i++)
         {
             JS_SetPropertyInt64(ctx, result, i, gScAward.New(ctx, i));
         }

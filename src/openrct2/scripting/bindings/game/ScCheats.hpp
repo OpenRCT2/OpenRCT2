@@ -406,7 +406,7 @@ namespace OpenRCT2::Scripting
             int32_t adjusted = std::max(-1, std::min(valueInt, 999));
 
             auto& gameState = getGameState();
-            auto& park = gameState.park;
+            auto& park = gameState.parks[0];
 
             gameState.cheats.forcedParkRating = adjusted;
 

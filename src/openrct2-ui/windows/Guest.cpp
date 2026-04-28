@@ -495,7 +495,7 @@ namespace OpenRCT2::Ui::Windows
                 setWidgetDisabled(WIDX_PICKUP, disablePickup);
             }
 
-            setWidgetDisabled(WIDX_TAB_4, (getGameState().park.flags & PARK_FLAGS_NO_MONEY) != 0);
+            setWidgetDisabled(WIDX_TAB_4, (getGameState().parks[0].flags & PARK_FLAGS_NO_MONEY) != 0);
             setWidgetDisabled(WIDX_TAB_7, !Config::Get().general.debuggingTools);
         }
 
@@ -1625,7 +1625,8 @@ namespace OpenRCT2::Ui::Windows
 
         std::pair<ImageId, Formatter> InventoryFormatItem(Guest& guest, ShopItem item) const
         {
-            auto parkName = getGameState().park.name.c_str();
+            const auto& gameState = getGameState();
+            auto parkName = gameState.parks[0].name.c_str();
 
             // Default item image
             auto& itemDesc = GetShopItemDescriptor(item);

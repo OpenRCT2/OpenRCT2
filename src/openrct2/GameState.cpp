@@ -61,7 +61,12 @@ namespace OpenRCT2
         gameState.currentTicks = 0;
 
         MapInit(mapSize);
-        Park::Initialise(gameState.park, gameState);
+
+        gameState.parks.clear();
+        Park::ParkData park{};
+        gameState.parks.push_back(park);
+        Park::Initialise(park, gameState);
+
         FinanceInit();
         BannerInit(gameState);
         RideInitAll();
@@ -324,8 +329,8 @@ namespace OpenRCT2
 
         if (!isInEditorMode())
         {
-            auto& park = gameState.park;
-            Park::Update(park, gameState);
+            for (auto& park : gameState.parks)
+                Park::Update(park, gameState);
         }
 
         ResearchUpdate();

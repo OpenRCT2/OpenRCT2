@@ -966,7 +966,9 @@ namespace OpenRCT2
 
     Drawing::Colour StaffGetColour(StaffType staffType)
     {
-        const auto& park = getGameState().park;
+        // TODO: pass park by ref
+        const auto& gameState = getGameState();
+        const auto& park = gameState.parks[0];
         switch (staffType)
         {
             case StaffType::handyman:
@@ -985,7 +987,9 @@ namespace OpenRCT2
 
     GameActions::Result StaffSetColour(StaffType staffType, OpenRCT2::Drawing::Colour value)
     {
-        auto& park = getGameState().park;
+        // TODO: pass park by ref
+        auto& gameState = getGameState();
+        auto& park = gameState.parks[0];
         switch (staffType)
         {
             case StaffType::handyman:
