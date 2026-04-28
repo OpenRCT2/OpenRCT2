@@ -302,7 +302,7 @@ static void ride_train_crash(Ride& ride, uint16_t numFatalities)
         }
 
         // TODO: get park id from ride/vehicle
-        auto& park = getGameState().park;
+        auto& park = getGameState().parks[0];
         if (park.ratingCasualtyPenalty < 500)
         {
             park.ratingCasualtyPenalty += 200;

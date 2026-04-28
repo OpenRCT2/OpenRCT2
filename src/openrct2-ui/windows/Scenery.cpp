@@ -904,7 +904,8 @@ namespace OpenRCT2::Ui::Windows
             }
 
             auto [name, price] = GetNameAndPrice(selectedSceneryEntry);
-            if (price != kMoney64Undefined && !(getGameState().park.flags & PARK_FLAGS_NO_MONEY))
+            const auto& gameState = getGameState();
+            if (price != kMoney64Undefined && !(gameState.parks[0].flags & PARK_FLAGS_NO_MONEY))
             {
                 auto ft = Formatter();
                 ft.Add<money64>(price);
@@ -3291,7 +3292,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            if (!(getGameState().park.flags & PARK_FLAGS_NO_MONEY) && totalCost > getGameState().park.cash)
+            if (!(getGameState().parks[0].flags & PARK_FLAGS_NO_MONEY) && totalCost > getGameState().parks[0].cash)
             {
                 Audio::Play3D(Audio::SoundId::error, lastLocation);
 

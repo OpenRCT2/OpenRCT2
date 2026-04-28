@@ -81,7 +81,7 @@ namespace OpenRCT2::Park
     static money64 calculateTotalRideValueForMoney(const ParkData& park, const GameState_t& gameState)
     {
         money64 totalRideValue = 0;
-        bool ridePricesUnlocked = RidePricesUnlocked(park) && !(gameState.park.flags & PARK_FLAGS_NO_MONEY);
+        bool ridePricesUnlocked = RidePricesUnlocked(park) && !(park.flags & PARK_FLAGS_NO_MONEY);
         for (auto& ride : RideManager(gameState))
         {
             if (ride.status != RideStatus::open)

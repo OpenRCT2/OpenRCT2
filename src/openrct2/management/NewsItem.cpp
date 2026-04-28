@@ -111,7 +111,7 @@ void News::InitQueue(GameState_t& gameState)
     assert(gameState.newsItems.isEmpty());
 
     // Throttles for warning types (PEEP_*_WARNING)
-    for (auto& warningThrottle : gameState.park.peepWarningThrottle)
+    for (auto& warningThrottle : gameState.parks[0].peepWarningThrottle)
     {
         warningThrottle = 0;
     }

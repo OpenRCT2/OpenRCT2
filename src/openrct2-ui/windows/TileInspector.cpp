@@ -1142,7 +1142,7 @@ namespace OpenRCT2::Ui::Windows
         const char* getOwnerString(ParkId owner)
         {
             // TODO: rework for multiple parks
-            return owner != Park::kNullOwnerId ? getGameState().park.name.c_str()
+            return owner != Park::kNullOwnerId ? getGameState().parks[0].name.c_str()
                                                : LanguageGetString(STR_TILE_INSPECTOR_OWNED_BY_NA);
         }
 

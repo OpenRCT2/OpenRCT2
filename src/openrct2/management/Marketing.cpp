@@ -57,7 +57,8 @@ uint16_t MarketingGetCampaignGuestGenerationProbability(int32_t campaignType)
     if (campaign == nullptr)
         return 0;
 
-    auto& park = getGameState().park;
+    // TODO: pass park by ref
+    auto& park = getGameState().parks[0];
 
     // Lower probability of guest generation if price was already low
     auto probability = AdvertisingCampaignGuestGenerationProbabilities[campaign->type];
@@ -119,7 +120,7 @@ void MarketingUpdate()
     if (gameState.cheats.neverendingMarketing)
         return;
 
-    for (auto it = gameState.park.marketingCampaigns.begin(); it != gameState.park.marketingCampaigns.end();)
+    for (auto it = gameState.parks[0].marketingCampaigns.begin(); it != gameState.parks[0].marketingCampaigns.end();)
     {
         auto& campaign = *it;
         if (campaign.flags.has(MarketingCampaignFlag::firstWeek))
@@ -136,7 +137,7 @@ void MarketingUpdate()
         if (campaign.weeksLeft == 0)
         {
             MarketingRaiseFinishedNotification(campaign);
-            it = gameState.park.marketingCampaigns.erase(it);
+            it = gameState.parks[0].marketingCampaigns.erase(it);
         }
         else
         {
@@ -187,8 +188,9 @@ void MarketingSetGuestCampaign(Guest* peep, int32_t campaignType)
 
 bool MarketingIsCampaignTypeApplicable(int32_t campaignType)
 {
+    // TODO: pass park by ref
     auto& gameState = getGameState();
-    auto& park = gameState.park;
+    auto& park = gameState.parks[0];
 
     switch (campaignType)
     {
@@ -241,7 +243,8 @@ bool MarketingIsCampaignTypeApplicable(int32_t campaignType)
 
 MarketingCampaign* MarketingGetCampaign(int32_t campaignType)
 {
-    for (auto& campaign : getGameState().park.marketingCampaigns)
+    auto& gameState = getGameState();
+    for (auto& campaign : gameState.parks[0].marketingCampaigns)
     {
         if (campaign.type == campaignType)
         {
@@ -261,7 +264,8 @@ void MarketingNewCampaign(const MarketingCampaign& campaign)
     }
     else
     {
-        getGameState().park.marketingCampaigns.push_back(campaign);
+        auto& gameState = getGameState();
+        gameState.parks[0].marketingCampaigns.push_back(campaign);
     }
 }
 
@@ -275,7 +279,8 @@ void MarketingCancelCampaignsForRide(const RideId rideId)
         return false;
     };
 
-    auto& v = getGameState().park.marketingCampaigns;
+    auto& gameState = getGameState();
+    auto& v = gameState.parks[0].marketingCampaigns;
     auto removedIt = std::remove_if(v.begin(), v.end(), isCampaignForRideFn);
     v.erase(removedIt, v.end());
 }

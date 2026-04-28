@@ -2853,7 +2853,8 @@ namespace OpenRCT2::Network
                 GameActions::LoadOrQuitModes::openSavePrompt, PromptMode::saveBeforeQuit);
 
             auto& gameState = getGameState();
-            loadOrQuitAction.Execute(gameState, gameState.park);
+            auto& park = gameState.parks[0];
+            loadOrQuitAction.Execute(gameState, park);
         }
     }
 

@@ -179,7 +179,7 @@ namespace OpenRCT2::GameActions
         }
 
         // TODO: pass different park based on player
-        auto& park = gameState.park;
+        auto& park = gameState.parks[0];
 
         auto result = action->Query(gameState, park);
         if (result.error == Status::ok)
@@ -332,7 +332,7 @@ namespace OpenRCT2::GameActions
             }
 
             // TODO: pass different park based on player
-            auto& park = gameState.park;
+            auto& park = gameState.parks[0];
 
             // Execute the action, changing the game state
             result = action->Execute(gameState, park);

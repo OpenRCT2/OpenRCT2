@@ -270,8 +270,11 @@ static void ShortcutShowFinancialInformation()
         return;
 
     if (!(isInTrackDesignerOrManager()))
-        if (!(getGameState().park.flags & PARK_FLAGS_NO_MONEY))
+    {
+        const auto& gameState = getGameState();
+        if (!(gameState.parks[0].flags & PARK_FLAGS_NO_MONEY))
             ContextOpenWindow(WindowClass::finances);
+    }
 }
 
 static void ShortcutShowResearchInformation()

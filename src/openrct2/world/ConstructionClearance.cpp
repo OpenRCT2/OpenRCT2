@@ -49,7 +49,8 @@ static bool MapPlaceClearFunc(
 
     auto* scenery = (*tile_element)->asSmallScenery()->GetEntry();
 
-    auto& park = getGameState().park;
+    const auto& gameState = getGameState();
+    const auto& park = gameState.parks[0];
     if (park.flags & PARK_FLAGS_FORBID_TREE_REMOVAL)
     {
         if (scenery != nullptr && scenery->flags.has(SmallSceneryFlag::isTree))
@@ -257,7 +258,8 @@ GameActions::Result MapCanConstructWithClearAt(
             }
         }
 
-        if (getGameState().park.flags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION && !isTree)
+        auto& gameState = getGameState();
+        if (gameState.parks[0].flags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION && !isTree)
         {
             const auto heightFromGround = pos.clearanceZ - tileElement->getBaseZ();
 

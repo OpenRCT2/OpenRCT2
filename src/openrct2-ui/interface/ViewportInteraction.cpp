@@ -148,8 +148,10 @@ namespace OpenRCT2::Ui
                 break;
             case ViewportInteractionItem::parkEntrance:
             {
-                auto& gameState = getGameState();
-                auto parkName = gameState.park.name.c_str();
+                // TODO: get park id from element
+                const auto& gameState = getGameState();
+                auto& park = gameState.parks[0];
+                auto parkName = park.name.c_str();
 
                 auto ft = Formatter();
                 ft.Add<StringId>(STR_STRING);
