@@ -20,6 +20,10 @@ namespace OpenRCT2
 
 namespace OpenRCT2::Park
 {
+    // Park ownership constants (nibbles), used for e.g. legacy park conversion
+    constexpr uint8_t kDefaultParkOwnerId = 0x00;
+    constexpr uint8_t kNullOwnerId = 0x0F;
+
     struct ParkData;
 
     void Initialise(ParkData& park, GameState_t& gameState);
@@ -50,4 +54,6 @@ namespace OpenRCT2::Park
 
     bool RidePricesUnlocked(const ParkData& park);
     bool EntranceFeeUnlocked(const ParkData& park);
+
+    void resetTileOwnerData(GameState_t& gameState);
 } // namespace OpenRCT2::Park

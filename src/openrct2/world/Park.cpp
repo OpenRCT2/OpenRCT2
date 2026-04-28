@@ -39,6 +39,7 @@
 #include "../windows/Intent.h"
 #include "Entrance.h"
 #include "Map.h"
+#include "MapRangeView.hpp"
 #include "tile_element/EntranceElement.h"
 #include "tile_element/SurfaceElement.h"
 
@@ -769,5 +770,28 @@ namespace OpenRCT2::Park
     bool IsOpen(const ParkData& park)
     {
         return (park.flags & PARK_FLAGS_PARK_OPEN) != 0;
+    }
+
+    void resetTileOwnerData(GameState_t& gameState)
+    {
+        for (auto tileCoords : Map::getWorldRange())
+        {
+            // Fetch surface element to identify if the tile is owned by the park
+            auto* surface = MapGetSurfaceElementAt(tileCoords);
+            if (surface == nullptr)
+                continue;
+
+            auto ownership = surface->GetOwnership();
+            bool isOwned = (ownership & (OWNERSHIP_OWNED | OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)) != 0;
+            auto newOwner = isOwned ? kDefaultParkOwnerId : kNullOwnerId;
+
+            // Assign park id to all elements on this tile
+            for (auto* tileEl = MapGetFirstElementAt(tileCoords); tileEl != nullptr; tileEl++)
+            {
+                tileEl->setOwner(newOwner);
+                if (tileEl->isLastForTile())
+                    break;
+            }
+        }
     }
 } // namespace OpenRCT2::Park

@@ -1211,6 +1211,8 @@ namespace OpenRCT2
                     cs.read(tileElements.data(), tileElements.size() * sizeof(TileElement));
                     SetTileElements(gameState, std::move(tileElements));
 
+                    const auto targetVersion = os.getHeader().targetVersion;
+
                     TileElementIterator it;
                     TileElementIteratorBegin(&it);
                     while (TileElementIteratorNext(&it))
@@ -1236,11 +1238,11 @@ namespace OpenRCT2
                         {
                             auto* trackElement = it.element->asTrack();
                             auto trackType = trackElement->GetTrackType();
-                            if (TrackTypeMustBeMadeInvisible(*trackElement, os.getHeader().targetVersion))
+                            if (TrackTypeMustBeMadeInvisible(*trackElement, targetVersion))
                             {
                                 it.element->setInvisible(true);
                             }
-                            if (os.getHeader().targetVersion < kBlockBrakeImprovementsVersion)
+                            if (targetVersion < kBlockBrakeImprovementsVersion)
                             {
                                 if (trackType == TrackElemType::brakes)
                                     trackElement->SetBrakeClosed(true);
@@ -1248,7 +1250,7 @@ namespace OpenRCT2
                                     trackElement->SetBrakeBoosterSpeed(kRCT2DefaultBlockBrakeSpeed);
                             }
                         }
-                        else if (it.element->getType() == TileElementType::SmallScenery && os.getHeader().targetVersion < 23)
+                        else if (it.element->getType() == TileElementType::SmallScenery && targetVersion < 23)
                         {
                             auto* sceneryElement = it.element->asSmallScenery();
                             // Previous formats stored the needs supports flag in the primary colour
@@ -1266,6 +1268,13 @@ namespace OpenRCT2
                     }
 
                     ParkEntranceUpdateLocations();
+
+                    if (targetVersion < kParkIdAsTileOwner)
+                    {
+                        // Before this version, the tile owner byte is assumed to either be uninitialised,
+                        // or containing now-illegal data previously set by a plugin.
+                        Park::resetTileOwnerData(gameState);
+                    }
                 });
             if (!found)
             {
