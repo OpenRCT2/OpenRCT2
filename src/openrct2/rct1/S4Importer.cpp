@@ -1628,6 +1628,9 @@ namespace OpenRCT2::RCT1
             SetTileElements(gameState, std::move(tileElements));
             FixEntrancePositions(gameState);
             FixSupportsOnGroundPath(gameState);
+
+            // S4 saves do not contain tile owner data, so we infer this based on (park) tile ownership flags.
+            Park::resetTileOwnerData(gameState);
         }
 
         size_t ImportTileElement(TileElement* dst, const RCT12TileElement* src)

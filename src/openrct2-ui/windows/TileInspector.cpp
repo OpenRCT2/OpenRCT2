@@ -1142,7 +1142,8 @@ namespace OpenRCT2::Ui::Windows
         const char* getOwnerString(uint8_t owner)
         {
             // TODO: rework for multiple parks
-            return owner != 0xFF ? getGameState().park.name.c_str() : LanguageGetString(STR_TILE_INSPECTOR_OWNED_BY_NA);
+            return owner != Park::kNullOwnerId ? getGameState().park.name.c_str()
+                                               : LanguageGetString(STR_TILE_INSPECTOR_OWNED_BY_NA);
         }
 
         void onDrawSurface(RenderTarget& rt, ScreenCoordsXY screenCoords, const SurfaceElement& surfaceEl)

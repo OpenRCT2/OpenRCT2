@@ -1313,6 +1313,9 @@ namespace OpenRCT2::RCT2
                 }
             }
             SetTileElements(gameState, std::move(tileElements));
+
+            // S6 saves do not contain tile owner data, so we infer this based on (park) tile ownership flags
+            Park::resetTileOwnerData(gameState);
         }
 
         void ImportTileElement(TileElement* dst, const RCT12TileElement* src, bool invisible)
