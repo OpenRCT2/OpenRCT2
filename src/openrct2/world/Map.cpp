@@ -946,19 +946,16 @@ namespace OpenRCT2
         for (auto tileCoords : Map::getDrawableTileRange())
         {
             auto* surfaceElement = MapGetSurfaceElementAt(tileCoords);
+            if (surfaceElement == nullptr || minHeight <= surfaceElement->baseHeight)
+                continue;
 
-            if (surfaceElement != nullptr && minHeight > surfaceElement->baseHeight)
-            {
-                if (gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
-                {
-                    if (!MapIsLocationInPark(tileCoords.ToCoordsXY()))
-                    {
-                        continue;
-                    }
-                }
+            if (gLegacyScene == LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
+                continue;
 
-                minHeight = surfaceElement->baseHeight;
-            }
+            if (!MapIsLocationInPark(tileCoords.ToCoordsXY()))
+                continue;
+
+            minHeight = surfaceElement->baseHeight;
         }
         return minHeight;
     }
@@ -969,24 +966,23 @@ namespace OpenRCT2
         for (auto tileCoords : Map::getDrawableTileRange())
         {
             auto* surfaceElement = MapGetSurfaceElementAt(tileCoords);
-            if (surfaceElement != nullptr)
-            {
-                if (gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
-                {
-                    if (!MapIsLocationInPark(tileCoords.ToCoordsXY()))
-                    {
-                        continue;
-                    }
-                }
+            if (surfaceElement == nullptr)
+                continue;
 
-                uint8_t BaseHeight = surfaceElement->baseHeight;
-                if (surfaceElement->GetSlope() & kTileSlopeRaisedCornersMask)
-                    BaseHeight += 2;
-                if (surfaceElement->GetSlope() & kTileSlopeDiagonalFlag)
-                    BaseHeight += 2;
-                if (maxHeight < BaseHeight)
-                    maxHeight = BaseHeight;
-            }
+            if (gLegacyScene == LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
+                continue;
+
+            if (!MapIsLocationInPark(tileCoords.ToCoordsXY()))
+                continue;
+
+            uint8_t height = surfaceElement->baseHeight;
+            if (surfaceElement->GetSlope() & kTileSlopeRaisedCornersMask)
+                height += 2;
+            if (surfaceElement->GetSlope() & kTileSlopeDiagonalFlag)
+                height += 2;
+
+            if (maxHeight < height)
+                maxHeight = height;
         }
         return maxHeight;
     }
