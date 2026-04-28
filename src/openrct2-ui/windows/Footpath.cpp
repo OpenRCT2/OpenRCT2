@@ -237,6 +237,7 @@ namespace OpenRCT2::Ui::Windows
         void onOpen() override
         {
             setWidgets(kWindowFootpathWidgets);
+            widgetsSetHoldable(*this, { WIDX_CONSTRUCT, WIDX_REMOVE });
 
             WindowInitScrollWidgets(*this);
             WindowPushOthersRight(*this);
@@ -251,8 +252,6 @@ namespace OpenRCT2::Ui::Windows
 
             _footpathPlaceCtrlState = false;
             _footpathPlaceShiftState = false;
-
-            holdDownWidgets = (1u << WIDX_CONSTRUCT) | (1u << WIDX_REMOVE);
         }
 
         void onClose() override
@@ -527,9 +526,8 @@ namespace OpenRCT2::Ui::Windows
         void onPrepareDraw() override
         {
             // Press / unpress footpath and queue type buttons
-            pressedWidgets &= ~(1uLL << WIDX_FOOTPATH_TYPE);
-            pressedWidgets &= ~(1uLL << WIDX_QUEUELINE_TYPE);
-            pressedWidgets |= gFootpathSelection.isQueueSelected ? (1uLL << WIDX_QUEUELINE_TYPE) : (1uLL << WIDX_FOOTPATH_TYPE);
+            setWidgetPressed(WIDX_FOOTPATH_TYPE, !gFootpathSelection.isQueueSelected);
+            setWidgetPressed(WIDX_QUEUELINE_TYPE, gFootpathSelection.isQueueSelected);
 
             // Enable / disable construct button
             widgets[WIDX_CONSTRUCT].type = _footpathConstructionMode == PathConstructionMode::bridgeOrTunnel
@@ -542,10 +540,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 canDrag = Network::CanPerformAction(Network::GetCurrentPlayerGroupIndex(), Network::Permission::dragPathArea);
             }
-            if (canDrag)
-                disabledWidgets &= ~(1uLL << WIDX_CONSTRUCT_DRAG_AREA);
-            else
-                disabledWidgets |= (1uLL << WIDX_CONSTRUCT_DRAG_AREA);
+            setWidgetDisabled(WIDX_CONSTRUCT_DRAG_AREA, !canDrag);
 #endif
 
             if (gFootpathSelection.legacyPath == kObjectEntryIndexNull)
@@ -1666,53 +1661,47 @@ namespace OpenRCT2::Ui::Windows
                       _footpathConstructFromPosition.y + CoordsDirectionDelta[direction].y });
             }
 
-            uint64_t newPressedWidgets = pressedWidgets
-                & ~((1LL << WIDX_DIRECTION_NW) | (1LL << WIDX_DIRECTION_NE) | (1LL << WIDX_DIRECTION_SW)
-                    | (1LL << WIDX_DIRECTION_SE) | (1LL << WIDX_SLOPEDOWN) | (1LL << WIDX_LEVEL) | (1LL << WIDX_SLOPEUP));
-            uint64_t newDisabledWidgets = 0;
-            int32_t currentRotation = GetCurrentRotation();
-            if (_footpathConstructionMode == PathConstructionMode::bridgeOrTunnel)
-            {
-                // Set pressed directional widget
-                int32_t direction = (_footpathConstructDirection + currentRotation) & 3;
-                newPressedWidgets |= (1LL << (WIDX_DIRECTION_NW + direction));
+            const int32_t currentRotation = GetCurrentRotation();
+            const bool bridgeMode = _footpathConstructionMode == PathConstructionMode::bridgeOrTunnel;
 
-                // Set pressed slope widget
-                switch (_footpathConstructSlope)
-                {
-                    case SlopePitch::flat:
-                        newPressedWidgets |= (1uLL << WIDX_LEVEL);
-                        break;
-                    case SlopePitch::upwards:
-                        newPressedWidgets |= (1uLL << WIDX_SLOPEUP);
-                        break;
-                    case SlopePitch::downwards:
-                        newPressedWidgets |= (1uLL << WIDX_SLOPEDOWN);
-                        break;
-                }
+            // Pressed directional widgets
+            const int32_t pressedDir = bridgeMode ? ((_footpathConstructDirection + currentRotation) & 3) : -1;
+            setWidgetPressed(WIDX_DIRECTION_NW, pressedDir == 0);
+            setWidgetPressed(WIDX_DIRECTION_NE, pressedDir == 1);
+            setWidgetPressed(WIDX_DIRECTION_SW, pressedDir == 2);
+            setWidgetPressed(WIDX_DIRECTION_SE, pressedDir == 3);
 
-                // Enable / disable directional widgets
-                direction = _footpathConstructValidDirections;
-                if (direction != kInvalidDirection)
-                {
-                    newDisabledWidgets |= (1uLL << WIDX_DIRECTION_NW) | (1uLL << WIDX_DIRECTION_NE)
-                        | (1uLL << WIDX_DIRECTION_SW) | (1uLL << WIDX_DIRECTION_SE);
+            // Pressed slope widget
+            setWidgetPressed(WIDX_LEVEL, bridgeMode && _footpathConstructSlope == SlopePitch::flat);
+            setWidgetPressed(WIDX_SLOPEUP, bridgeMode && _footpathConstructSlope == SlopePitch::upwards);
+            setWidgetPressed(WIDX_SLOPEDOWN, bridgeMode && _footpathConstructSlope == SlopePitch::downwards);
 
-                    direction = (direction + currentRotation) & 3;
-                    newDisabledWidgets &= ~(1 << (WIDX_DIRECTION_NW + direction));
-                }
-            }
-            else
-            {
-                // Disable all bridge mode widgets
-                newDisabledWidgets |= (1uLL << WIDX_DIRECTION_GROUP) | (1uLL << WIDX_DIRECTION_NW) | (1uLL << WIDX_DIRECTION_NE)
-                    | (1uLL << WIDX_DIRECTION_SW) | (1uLL << WIDX_DIRECTION_SE) | (1uLL << WIDX_SLOPE_GROUP)
-                    | (1uLL << WIDX_SLOPEDOWN) | (1uLL << WIDX_LEVEL) | (1uLL << WIDX_SLOPEUP) | (1uLL << WIDX_CONSTRUCT)
-                    | (1uLL << WIDX_REMOVE);
-            }
+            // Enabled directional widgets
+            int32_t validDirections = bridgeMode ? _footpathConstructValidDirections : kInvalidDirection;
+            const int32_t onlyEnabledDir = (bridgeMode && validDirections != kInvalidDirection)
+                ? ((validDirections + currentRotation) & 3)
+                : -1;
+            auto directionDisabled = [&](int32_t idx) {
+                if (!bridgeMode)
+                    return true;
+                if (onlyEnabledDir < 0)
+                    return false;
+                return idx != onlyEnabledDir;
+            };
+            setWidgetDisabled(WIDX_DIRECTION_NW, directionDisabled(0));
+            setWidgetDisabled(WIDX_DIRECTION_NE, directionDisabled(1));
+            setWidgetDisabled(WIDX_DIRECTION_SW, directionDisabled(2));
+            setWidgetDisabled(WIDX_DIRECTION_SE, directionDisabled(3));
 
-            pressedWidgets = newPressedWidgets;
-            disabledWidgets = newDisabledWidgets;
+            // Bridge-mode group / slope widgets
+            setWidgetDisabled(WIDX_DIRECTION_GROUP, !bridgeMode);
+            setWidgetDisabled(WIDX_SLOPE_GROUP, !bridgeMode);
+            setWidgetDisabled(WIDX_SLOPEDOWN, !bridgeMode);
+            setWidgetDisabled(WIDX_LEVEL, !bridgeMode);
+            setWidgetDisabled(WIDX_SLOPEUP, !bridgeMode);
+            setWidgetDisabled(WIDX_CONSTRUCT, !bridgeMode);
+            setWidgetDisabled(WIDX_REMOVE, !bridgeMode);
+
             invalidate();
         }
 

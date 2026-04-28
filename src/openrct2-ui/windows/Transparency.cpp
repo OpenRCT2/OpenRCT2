@@ -115,9 +115,6 @@ namespace OpenRCT2::Ui::Windows
             uint32_t wflags = 0;
             WindowBase* w = WindowGetMain();
 
-            pressedWidgets = 0;
-            disabledWidgets = 0;
-
             if (w != nullptr)
                 wflags = w->viewport->flags;
 

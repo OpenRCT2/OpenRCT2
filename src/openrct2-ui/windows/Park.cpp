@@ -161,19 +161,6 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma endregion
 
-    // clang-format off
-    static std::array<uint32_t, WINDOW_PARK_PAGE_COUNT> _pagedHoldDownWidgets = {
-        0,
-        0,
-        0,
-        (1uLL << WIDX_INCREASE_PRICE) |
-        (1uLL << WIDX_DECREASE_PRICE),
-        0,
-        0,
-        0,
-    };
-    // clang-format on
-
     class ParkWindow final : public Window
     {
         int32_t _numberOfStaff = -1;
@@ -401,7 +388,7 @@ namespace OpenRCT2::Ui::Windows
         void SetDisabledTabs()
         {
             // Disable price tab if money is disabled
-            disabledWidgets = (getGameState().park.flags & PARK_FLAGS_NO_MONEY) ? (1uLL << WIDX_TAB_4) : 0;
+            setWidgetDisabled(WIDX_TAB_4, (getGameState().park.flags & PARK_FLAGS_NO_MONEY) != 0);
         }
 
         void PrepareWindowTitleText()
@@ -518,10 +505,10 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_OPEN_LIGHT].image = ImageId(openLightImage);
 
             // only allow closing of park for guest / rating objective
-            if (gameState.scenarioOptions.objective.Type == Scenario::ObjectiveType::guestsAndRating)
-                disabledWidgets |= (1uLL << WIDX_OPEN_OR_CLOSE) | (1uLL << WIDX_CLOSE_LIGHT) | (1uLL << WIDX_OPEN_LIGHT);
-            else
-                disabledWidgets &= ~((1uLL << WIDX_OPEN_OR_CLOSE) | (1uLL << WIDX_CLOSE_LIGHT) | (1uLL << WIDX_OPEN_LIGHT));
+            const bool disableOpenClose = gameState.scenarioOptions.objective.Type == Scenario::ObjectiveType::guestsAndRating;
+            setWidgetDisabled(WIDX_OPEN_OR_CLOSE, disableOpenClose);
+            setWidgetDisabled(WIDX_CLOSE_LIGHT, disableOpenClose);
+            setWidgetDisabled(WIDX_OPEN_LIGHT, disableOpenClose);
 
             // only allow purchase of land when there is money
             if (gameState.park.flags & PARK_FLAGS_NO_MONEY)
@@ -1181,8 +1168,9 @@ namespace OpenRCT2::Ui::Windows
             _peepAnimationFrame = 0;
             removeViewport();
 
-            holdDownWidgets = _pagedHoldDownWidgets[newPage];
             setWidgets(_pagedWidgets[newPage]);
+            if (newPage == WINDOW_PARK_PAGE_PRICE)
+                widgetsSetHoldable(*this, { WIDX_INCREASE_PRICE, WIDX_DECREASE_PRICE });
             SetDisabledTabs();
             invalidate();
             initScrollWidgets();
@@ -1204,9 +1192,9 @@ namespace OpenRCT2::Ui::Windows
 
         void SetPressedTab()
         {
-            for (int32_t i = WIDX_TAB_1; i <= WIDX_TAB_7; i++)
-                pressedWidgets &= ~(1 << i);
-            pressedWidgets |= 1LL << (WIDX_TAB_1 + page);
+            widgetSetPressedExclusive(
+                *this, { WIDX_TAB_1, WIDX_TAB_2, WIDX_TAB_3, WIDX_TAB_4, WIDX_TAB_5, WIDX_TAB_6, WIDX_TAB_7 },
+                WIDX_TAB_1 + page);
         }
 
         void DrawTabImages(RenderTarget& rt)

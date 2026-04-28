@@ -178,7 +178,8 @@ namespace OpenRCT2::Ui::Windows
             if (directory.empty() && drives)
             {
                 // List Windows drives
-                disabledWidgets |= (1uLL << WIDX_NEW_FOLDER) | (1uLL << WIDX_PARENT_FOLDER);
+                setWidgetDisabled(WIDX_NEW_FOLDER, true);
+                setWidgetDisabled(WIDX_PARENT_FOLDER, true);
                 static constexpr auto NumDriveLetters = 26;
                 for (int32_t x = 0; x < NumDriveLetters; x++)
                 {
@@ -222,13 +223,10 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 // Disable the Up button if the current directory is the root directory
-                if (String::isNullOrEmpty(_parentDirectory) && !drives)
-                    disabledWidgets |= (1uLL << WIDX_PARENT_FOLDER);
-                else
-                    disabledWidgets &= ~(1uLL << WIDX_PARENT_FOLDER);
+                setWidgetDisabled(WIDX_PARENT_FOLDER, String::isNullOrEmpty(_parentDirectory) && !drives);
 
                 // Re-enable the "new" button if it was disabled
-                disabledWidgets &= ~(1uLL << WIDX_NEW_FOLDER);
+                setWidgetDisabled(WIDX_NEW_FOLDER, false);
 
                 // List all directories
                 auto subDirectories = Path::GetDirectories(absoluteDirectory);
@@ -547,7 +545,7 @@ namespace OpenRCT2::Ui::Windows
             const auto& uiContext = GetContext()->GetUiContext();
             if (!uiContext.HasFilePicker())
             {
-                disabledWidgets |= (1uLL << WIDX_SYSTEM_BROWSER);
+                setWidgetDisabled(WIDX_SYSTEM_BROWSER, true);
                 widgets[WIDX_SYSTEM_BROWSER].type = WidgetType::empty;
             }
 

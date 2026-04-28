@@ -77,9 +77,6 @@ namespace OpenRCT2
     struct WindowBase
     {
         Viewport* viewport{};
-        uint64_t disabledWidgets{};
-        uint64_t pressedWidgets{};
-        uint64_t holdDownWidgets{};
         std::vector<Widget> widgets{};
         ScreenCoordsXY windowPos;
         int16_t width{};

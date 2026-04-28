@@ -411,10 +411,7 @@ namespace OpenRCT2::Ui::Windows
         {
             SetPressedTab();
 
-            if (!Config::Get().interface.listRideVehiclesSeparately)
-                pressedWidgets |= (1LL << WIDX_GROUP_BY_TRACK_TYPE);
-            else
-                pressedWidgets &= ~(1LL << WIDX_GROUP_BY_TRACK_TYPE);
+            setWidgetPressed(WIDX_GROUP_BY_TRACK_TYPE, !Config::Get().interface.listRideVehiclesSeparately);
 
             widgets[WIDX_TITLE].text = RideTitles[_currentTab];
             widgets[WIDX_TAB_7].type = WidgetType::tab;
@@ -815,24 +812,15 @@ namespace OpenRCT2::Ui::Windows
 
         void SetPressedTab()
         {
-            int32_t i{};
-            for (i = 0; i < TAB_COUNT; i++)
+            for (int32_t i = 0; i < TAB_COUNT; i++)
             {
-                pressedWidgets &= ~(1 << (WIDX_TAB_1 + i));
+                setWidgetPressed(WIDX_TAB_1 + i, i == static_cast<int32_t>(_currentTab));
             }
-            pressedWidgets |= 1LL << (WIDX_TAB_1 + static_cast<int32_t>(_currentTab));
         }
 
         void RefreshWidgetSizing()
         {
-            if (_currentTab < SHOP_TAB)
-            {
-                disabledWidgets &= ~(1 << WIDX_GROUP_BY_TRACK_TYPE);
-            }
-            else
-            {
-                disabledWidgets |= 1LL << WIDX_GROUP_BY_TRACK_TYPE;
-            }
+            setWidgetDisabled(WIDX_GROUP_BY_TRACK_TYPE, _currentTab >= SHOP_TAB);
 
             // Show or hide unrelated widgets
 

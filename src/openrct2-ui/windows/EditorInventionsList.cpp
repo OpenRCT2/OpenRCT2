@@ -157,6 +157,8 @@ namespace OpenRCT2::Ui::Windows
             ResearchRidesSetup();
 
             setWidgets(_inventionListWidgets);
+            widgetSetPressed(*this, WIDX_PREVIEW, true);
+            widgetSetPressed(*this, WIDX_TAB_1, true);
             initScrollWidgets();
             selectedTab = 0;
             _selectedResearchItem = nullptr;
@@ -447,9 +449,6 @@ namespace OpenRCT2::Ui::Windows
 
         void onPrepareDraw() override
         {
-            pressedWidgets |= 1uLL << WIDX_PREVIEW;
-            pressedWidgets |= 1uLL << WIDX_TAB_1;
-
             widgets[WIDX_CLOSE].type = gLegacyScene == LegacyScene::scenarioEditor ? WidgetType::empty : WidgetType::closeBox;
 
             int16_t scrollListHeight = (height - 88) / 2;

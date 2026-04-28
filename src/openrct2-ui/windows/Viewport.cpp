@@ -192,11 +192,8 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_TITLE].setString(_windowTitle.c_str());
 
             // Set disabled widgets
-            disabledWidgets = 0;
-            if (viewport != nullptr && viewport->zoom == ZoomLevel::min())
-                disabledWidgets |= 1uLL << WIDX_ZOOM_IN;
-            if (viewport != nullptr && viewport->zoom >= ZoomLevel::max())
-                disabledWidgets |= 1uLL << WIDX_ZOOM_OUT;
+            setWidgetDisabled(WIDX_ZOOM_IN, viewport != nullptr && viewport->zoom == ZoomLevel::min());
+            setWidgetDisabled(WIDX_ZOOM_OUT, viewport != nullptr && viewport->zoom >= ZoomLevel::max());
 
             if (viewport != nullptr)
             {

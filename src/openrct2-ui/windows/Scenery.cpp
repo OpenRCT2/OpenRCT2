@@ -271,9 +271,16 @@ namespace OpenRCT2::Ui::Windows
             {
                 _activeTabIndex = 0;
             }
+            updatePressedTab();
 
             WindowMovePosition(*this, { ContextGetWidth() - GetRequiredWidth(), 0x1D });
             WindowPushOthersBelow(*this);
+        }
+
+        void updatePressedTab()
+        {
+            for (size_t i = 0; i < _tabEntries.size(); i++)
+                widgetSetPressed(*this, static_cast<WidgetIndex>(WIDX_SCENERY_TAB_1 + i), i == _activeTabIndex);
         }
 
         void onClose() override
@@ -423,6 +430,7 @@ namespace OpenRCT2::Ui::Windows
             if (widgetIndex >= WIDX_SCENERY_TAB_1)
             {
                 _activeTabIndex = widgetIndex - WIDX_SCENERY_TAB_1;
+                updatePressedTab();
                 invalidate();
                 gSceneryPlaceCost = kMoney64Undefined;
 
@@ -711,14 +719,9 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_SCENERY_TITLE].text = titleStringId;
             widgets[WIDX_FILTER_TEXT_BOX].string = _filteredSceneryTab.Filter.data();
 
-            pressedWidgets = 0;
-            pressedWidgets |= 1uLL << (tabIndex + WIDX_SCENERY_TAB_1);
-            if (_sceneryPaintEnabled)
-                pressedWidgets |= (1uLL << WIDX_SCENERY_REPAINT_SCENERY_BUTTON);
-            if (gWindowSceneryEyedropperEnabled)
-                pressedWidgets |= (1uLL << WIDX_SCENERY_EYEDROPPER_BUTTON);
-            if (gWindowSceneryScatterEnabled)
-                pressedWidgets |= (1uLL << WIDX_SCENERY_BUILD_CLUSTER_BUTTON);
+            setWidgetPressed(WIDX_SCENERY_REPAINT_SCENERY_BUTTON, _sceneryPaintEnabled);
+            setWidgetPressed(WIDX_SCENERY_EYEDROPPER_BUTTON, gWindowSceneryEyedropperEnabled);
+            setWidgetPressed(WIDX_SCENERY_BUILD_CLUSTER_BUTTON, gWindowSceneryScatterEnabled);
 
             widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type = WidgetType::empty;
             widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].type = WidgetType::empty;
@@ -745,10 +748,7 @@ namespace OpenRCT2::Ui::Windows
                 if (gLegacyScene == LegacyScene::scenarioEditor || getGameState().cheats.sandboxMode)
                 {
                     widgets[WIDX_RESTRICT_SCENERY].type = WidgetType::button;
-                    if (IsSceneryItemRestricted(tabSelectedScenery))
-                        pressedWidgets |= (1uLL << WIDX_RESTRICT_SCENERY);
-                    else
-                        pressedWidgets &= ~(1uLL << WIDX_RESTRICT_SCENERY);
+                    setWidgetPressed(WIDX_RESTRICT_SCENERY, IsSceneryItemRestricted(tabSelectedScenery));
                 }
             }
 
@@ -956,6 +956,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             _activeTabIndex = tabIndex.value();
+            updatePressedTab();
             SetSelectedScenery(tabIndex.value(), scenery);
             if (primary.has_value())
             {
@@ -1089,6 +1090,7 @@ namespace OpenRCT2::Ui::Windows
             _requiredWidth = std::min(static_cast<int32_t>(_tabEntries.size()), kMaxTabsPerRow) * kTabWidth + 5;
 
             PrepareWidgets();
+            updatePressedTab();
 
             auto* windowMgr = GetWindowManager();
             windowMgr->InvalidateByClass(WindowClass::scenery);

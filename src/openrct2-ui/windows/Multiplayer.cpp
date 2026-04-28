@@ -155,14 +155,6 @@ namespace OpenRCT2::Ui::Windows
         uint8_t _selectedGroup{ 0 };
 
     private:
-        void resetPressedWidgets()
-        {
-            for (int32_t i = WIDX_TAB1; i <= WIDX_TAB4; i++)
-            {
-                setWidgetPressed(i, false);
-            }
-        }
-
         void showGroupDropdown(WidgetIndex widgetIndex)
         {
             auto widget = &widgets[widgetIndex];
@@ -523,10 +515,9 @@ namespace OpenRCT2::Ui::Windows
             numListItems = 0;
             selectedListItem = -1;
 
-            holdDownWidgets = 0;
-            pressedWidgets = 0;
             setWidgets(window_multiplayer_page_widgets[page]);
             widgets[WIDX_TITLE].text = WindowMultiplayerPageTitles[page];
+            setWidgetPressed(WIDX_TAB1 + page, true);
 
             onResize();
             onPrepareDraw();
@@ -654,8 +645,6 @@ namespace OpenRCT2::Ui::Windows
 
         void onPrepareDraw() override
         {
-            resetPressedWidgets();
-            setWidgetPressed(WIDX_TAB1 + page, true);
             switch (page)
             {
                 case WINDOW_MULTIPLAYER_PAGE_INFORMATION:

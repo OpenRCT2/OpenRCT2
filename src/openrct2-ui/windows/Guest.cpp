@@ -465,7 +465,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onPrepareDrawCommon()
         {
-            pressedWidgets |= 1uLL << (page + WIDX_TAB_1);
+            setWidgetPressed(page + WIDX_TAB_1, true);
 
             const auto peep = GetGuest();
             if (peep == nullptr)
@@ -486,28 +486,13 @@ namespace OpenRCT2::Ui::Windows
             {
                 return;
             }
-            uint64_t newDisabledWidgets = 0;
 
-            if (peep->CanBePickedUp())
-            {
-                if (widgetIsDisabled(*this, WIDX_PICKUP))
-                    invalidate();
-            }
-            else
-            {
-                newDisabledWidgets = (1uLL << WIDX_PICKUP);
-                if (!widgetIsDisabled(*this, WIDX_PICKUP))
-                    invalidate();
-            }
-            if (getGameState().park.flags & PARK_FLAGS_NO_MONEY)
-            {
-                newDisabledWidgets |= (1uLL << WIDX_TAB_4); // Disable finance tab if no money
-            }
-            if (!Config::Get().general.debuggingTools)
-            {
-                newDisabledWidgets |= (1uLL << WIDX_TAB_7); // Disable debug tab when debug tools not turned on
-            }
-            disabledWidgets = newDisabledWidgets;
+            const bool disablePickup = !peep->CanBePickedUp();
+            if (disablePickup != isWidgetDisabled(WIDX_PICKUP))
+                invalidate();
+            setWidgetDisabled(WIDX_PICKUP, disablePickup);
+            setWidgetDisabled(WIDX_TAB_4, (getGameState().park.flags & PARK_FLAGS_NO_MONEY) != 0);
+            setWidgetDisabled(WIDX_TAB_7, !Config::Get().general.debuggingTools);
         }
 
         void setPage(int32_t newPage)
@@ -533,8 +518,6 @@ namespace OpenRCT2::Ui::Windows
 
             removeViewport();
 
-            holdDownWidgets = 0;
-            pressedWidgets = 0;
             setWidgets(_guestWindowPageWidgets[page]);
             DisableWidgets();
             invalidate();
@@ -870,11 +853,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 return;
             }
-            pressedWidgets &= ~(1uLL << WIDX_TRACK);
-            if (peep->PeepFlags & PEEP_FLAGS_TRACKING)
-            {
-                pressedWidgets |= (1uLL << WIDX_TRACK);
-            }
+            setWidgetPressed(WIDX_TRACK, (peep->PeepFlags & PEEP_FLAGS_TRACKING) != 0);
 
             widgets[WIDX_VIEWPORT].right = width - 26;
             widgets[WIDX_VIEWPORT].bottom = height - 14;

@@ -13,6 +13,7 @@
 - Fix: [#26374] Add higher resolution app icons for Android.
 - Fix: [#26410] Tiles with water can draw incorrectly when there is something underwater and nothing above water.
 - Fix: [#26419] Drop count & negative g’s stat requirements for Flying Roller Coaster don’t get nullified by having an inversion.
+- Fix: [#26421] Wrong scenery tab highlighted when more than 64 scenery groups are selected.
 - Fix: [#26425] Benches don't reduce watching spots from 4 to 2 while other path additions do (should be reversed).
 - Fix: [#26432] Guests choose to head for rides they have already ridden if they don't have a map.
 
