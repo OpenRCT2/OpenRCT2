@@ -2079,7 +2079,7 @@ namespace OpenRCT2::Ui::Windows
                                          WIDX_BANKING_GROUPBOX, WIDX_CONSTRUCT, WIDX_DEMOLISH, WIDX_PREVIOUS_SECTION,
                                          WIDX_NEXT_SECTION, WIDX_ENTRANCE_EXIT_GROUPBOX, WIDX_ENTRANCE, WIDX_EXIT })
             {
-                if (isWidgetPressed(preservedIndex))
+                if (widgets[preservedIndex].flags.has(WidgetFlag::isPressed))
                     newPressedWidgets |= (1uLL << preservedIndex);
             }
 
