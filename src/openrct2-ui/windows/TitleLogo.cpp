@@ -72,9 +72,8 @@ namespace OpenRCT2::Ui::Windows
         if (window == nullptr)
         {
             window = windowMgr->Create<TitleLogoWindow>(
-                WindowClass::titleLogo,
-                ScreenCoordsXY(Platform::GetSafeAreaInsetLeft(), Platform::GetSafeAreaInsetTop()), kWindowSize,
-                { WindowFlag::stickToBack, WindowFlag::transparent, WindowFlag::noTitleBar });
+                WindowClass::titleLogo, ScreenCoordsXY(Platform::GetSafeAreaInsetLeft(), Platform::GetSafeAreaInsetTop()),
+                kWindowSize, { WindowFlag::stickToBack, WindowFlag::transparent, WindowFlag::noTitleBar });
         }
         return window;
     }

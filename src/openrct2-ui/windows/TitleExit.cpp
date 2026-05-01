@@ -63,7 +63,6 @@ namespace OpenRCT2::Ui::Windows
             ScreenCoordsXY(
                 ContextGetWidth() - Platform::GetSafeAreaInsetRight() - kWindowSize.width,
                 ContextGetHeight() - Platform::GetSafeAreaInsetBottom() - kWindowSize.height),
-            kWindowSize,
-            { WindowFlag::stickToBack, WindowFlag::transparent, WindowFlag::noTitleBar });
+            kWindowSize, { WindowFlag::stickToBack, WindowFlag::transparent, WindowFlag::noTitleBar });
     }
 } // namespace OpenRCT2::Ui::Windows

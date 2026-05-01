@@ -205,7 +205,8 @@ namespace OpenRCT2::Platform
             auto assetManager = static_cast<AAssetManager*>(GetAssetManager());
             if (assetManager != nullptr)
             {
-                std::string assetPath = NormalizeAssetPath(std::string(path).substr(Platform::kAndroidAssetPathPrefix.length()));
+                std::string assetPath = NormalizeAssetPath(
+                    std::string(path).substr(Platform::kAndroidAssetPathPrefix.length()));
                 auto asset = AAssetManager_open(assetManager, assetPath.c_str(), AASSET_MODE_UNKNOWN);
                 if (asset != nullptr)
                 {

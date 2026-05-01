@@ -359,8 +359,8 @@ public:
                     break;
                 case SDL_WINDOWEVENT:
                 {
-                    const bool isResizeEvent
-                        = e.window.event == SDL_WINDOWEVENT_RESIZED || e.window.event == SDL_WINDOWEVENT_SIZE_CHANGED;
+                    const bool isResizeEvent = e.window.event == SDL_WINDOWEVENT_RESIZED
+                        || e.window.event == SDL_WINDOWEVENT_SIZE_CHANGED;
                     if (isResizeEvent)
                     {
                         LOG_VERBOSE("New Window size: %ux%u\n", e.window.data1, e.window.data2);
