@@ -218,7 +218,6 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Cory Sanin (CorySanin)
 * Vinícius Hashimoto (vkhashimoto)
 * Gal B. (GalBr)
-* Gareth Hubball (londospark)
 * Rik Smeets (rik-smeets)
 * Charles Machalow (csm10495)
 * Alexander Czarnecki (alcz/zuczek4793)
@@ -261,6 +260,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Jonas Doggart
 * (pg805)
 * Sjoerd de Bruin (sjoerddebruin)
+* Gareth Hubball (londospark)
 
 ## Toolchain
 * (Balletie) - macOS
