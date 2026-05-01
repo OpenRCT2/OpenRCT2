@@ -44,6 +44,7 @@
 #include <openrct2/interface/Screenshot.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/network/Network.h>
+#include <openrct2/platform/Platform.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
@@ -1315,22 +1316,29 @@ namespace OpenRCT2::Ui::Windows
 
         void AlignButtonsLeftRight()
         {
+            const auto safeAreaInsetLeft = Platform::GetSafeAreaInsetLeft();
+            const auto safeAreaInsetRight = Platform::GetSafeAreaInsetRight();
+
             // Align left hand side toolbar buttons
-            AlignButtons(kWidgetOrderLeftGroup, 0);
+            AlignButtons(kWidgetOrderLeftGroup, safeAreaInsetLeft);
 
             // Align right hand side toolbar buttons
             auto totalWidth = GetToolbarWidth(kWidgetOrderRightGroup);
-            auto xPos = ContextGetWidth() - totalWidth;
+            auto xPos = ContextGetWidth() - safeAreaInsetRight - totalWidth;
             AlignButtons(kWidgetOrderRightGroup, xPos);
         }
 
         void AlignButtonsCentre()
         {
+            const auto safeAreaInsetLeft = Platform::GetSafeAreaInsetLeft();
+            const auto safeAreaInsetRight = Platform::GetSafeAreaInsetRight();
+
             // First, we figure out how much space we'll be needing
             auto totalWidth = GetToolbarWidth(kWidgetOrderCombined);
 
             // We'll start from the centre of the UI...
-            auto xPos = (ContextGetWidth() - totalWidth) / 2;
+            auto safeAreaWidth = ContextGetWidth() - safeAreaInsetLeft - safeAreaInsetRight;
+            auto xPos = safeAreaInsetLeft + (safeAreaWidth - totalWidth) / 2;
 
             // And finally, align the buttons in the centre
             AlignButtons(kWidgetOrderCombined, xPos);

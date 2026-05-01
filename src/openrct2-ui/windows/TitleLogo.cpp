@@ -12,6 +12,7 @@
 #include <openrct2/SpriteIds.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/ColourWithFlags.h>
+#include <openrct2/platform/Platform.h>
 #include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
@@ -71,7 +72,8 @@ namespace OpenRCT2::Ui::Windows
         if (window == nullptr)
         {
             window = windowMgr->Create<TitleLogoWindow>(
-                WindowClass::titleLogo, ScreenCoordsXY(0, 0), kWindowSize,
+                WindowClass::titleLogo,
+                ScreenCoordsXY(Platform::GetSafeAreaInsetLeft(), Platform::GetSafeAreaInsetTop()), kWindowSize,
                 { WindowFlag::stickToBack, WindowFlag::transparent, WindowFlag::noTitleBar });
         }
         return window;

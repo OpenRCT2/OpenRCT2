@@ -171,6 +171,10 @@ namespace OpenRCT2::Platform
     int32_t Execute(const char* args[], std::string* output = nullptr);
     bool ProcessIsElevated();
     float GetDefaultScale();
+    int32_t GetSafeAreaInsetLeft();
+    int32_t GetSafeAreaInsetTop();
+    int32_t GetSafeAreaInsetRight();
+    int32_t GetSafeAreaInsetBottom();
 
     std::optional<RCT2Variant> classifyGamePath(std::string_view path);
     bool OriginalGameDataExists(std::string_view path);

@@ -218,6 +218,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Cory Sanin (CorySanin)
 * Vinícius Hashimoto (vkhashimoto)
 * Gal B. (GalBr)
+* Gareth Hubball (londospark)
 * Rik Smeets (rik-smeets)
 * Charles Machalow (csm10495)
 * Alexander Czarnecki (alcz/zuczek4793)
