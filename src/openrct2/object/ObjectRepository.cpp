@@ -489,15 +489,16 @@ namespace OpenRCT2
                     const auto extraBytes = calculateExtraBytesToFixChecksum(realChecksum, entry->checksum);
 
                     // Create new data blob with appended bytes
-                    size_t newDataSize = dataSize + extraBytes.size();
-                    uint8_t* newData = Memory::Allocate<uint8_t>(newDataSize);
-                    uint8_t* newDataSaltOffset = newData + dataSize;
-                    std::copy_n(static_cast<const uint8_t*>(data), dataSize, newData);
-                    std::copy_n(extraBytes.data(), extraBytes.size(), newDataSaltOffset);
+                    std::vector<uint8_t> newData;
+                    newData.reserve(dataSize + extraBytes.size());
+
+                    const auto dataSpan = std::span(static_cast<const uint8_t*>(data), dataSize);
+                    newData.insert(newData.end(), dataSpan.begin(), dataSpan.end());
+                    newData.insert(newData.end(), extraBytes.begin(), extraBytes.end());
 
                     try
                     {
-                        uint32_t newRealChecksum = ObjectCalculateChecksum(entry, newData, newDataSize);
+                        uint32_t newRealChecksum = ObjectCalculateChecksum(entry, newData.data(), newData.size());
                         if (newRealChecksum != entry->checksum)
                         {
                             Console::Error::WriteLine("CalculateExtraBytesToFixChecksum failed to fix checksum.");
@@ -508,13 +509,11 @@ namespace OpenRCT2
                         else
                         {
                             // Save new data form
-                            SaveObject(path, entry, newData, newDataSize, false);
+                            SaveObject(path, entry, newData.data(), newData.size(), false);
                         }
-                        Memory::Free(newData);
                     }
                     catch (const std::exception&)
                     {
-                        Memory::Free(newData);
                         throw;
                     }
                     return;
