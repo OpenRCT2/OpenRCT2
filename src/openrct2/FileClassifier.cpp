@@ -12,7 +12,6 @@
 #include "Diagnostic.h"
 #include "core/Console.hpp"
 #include "core/FileStream.h"
-#include "core/Memory.hpp"
 #include "core/Path.hpp"
 #include "core/String.hpp"
 #include "park/ParkFile.h"
@@ -176,8 +175,7 @@ static bool TryClassifyAsTD4_TD6(IStream* stream, ClassifiedFileInfo* result)
 
         if (ValidateTrackChecksum(data.get(), dataLength))
         {
-            std::unique_ptr<uint8_t, decltype(&Memory::Free<uint8_t>)> td6data(
-                Memory::Allocate<uint8_t>(0x10000), &Memory::Free<uint8_t>);
+            const auto td6data = std::make_unique_for_overwrite<uint8_t[]>(0x10000);
             size_t td6len = DecodeTD6(data.get(), td6data.get(), dataLength);
             if (td6data != nullptr && td6len >= 8)
             {
