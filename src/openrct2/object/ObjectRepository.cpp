@@ -496,25 +496,18 @@ namespace OpenRCT2
                     newData.insert(newData.end(), dataSpan.begin(), dataSpan.end());
                     newData.insert(newData.end(), extraBytes.begin(), extraBytes.end());
 
-                    try
+                    uint32_t newRealChecksum = ObjectCalculateChecksum(entry, newData.data(), newData.size());
+                    if (newRealChecksum != entry->checksum)
                     {
-                        uint32_t newRealChecksum = ObjectCalculateChecksum(entry, newData.data(), newData.size());
-                        if (newRealChecksum != entry->checksum)
-                        {
-                            Console::Error::WriteLine("CalculateExtraBytesToFixChecksum failed to fix checksum.");
+                        Console::Error::WriteLine("CalculateExtraBytesToFixChecksum failed to fix checksum.");
 
-                            // Save old data form
-                            SaveObject(path, entry, data, dataSize, false);
-                        }
-                        else
-                        {
-                            // Save new data form
-                            SaveObject(path, entry, newData.data(), newData.size(), false);
-                        }
+                        // Save old data form
+                        SaveObject(path, entry, data, dataSize, false);
                     }
-                    catch (const std::exception&)
+                    else
                     {
-                        throw;
+                        // Save new data form
+                        SaveObject(path, entry, newData.data(), newData.size(), false);
                     }
                     return;
                 }
