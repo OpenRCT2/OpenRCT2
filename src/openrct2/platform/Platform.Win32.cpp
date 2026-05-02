@@ -70,10 +70,9 @@ namespace OpenRCT2::Platform
         }
         else
         {
-            auto wlvalue = new wchar_t[valueSize];
-            GetEnvironmentVariableW(wname.c_str(), wlvalue, valueSize);
-            result = wlvalue;
-            delete[] wlvalue;
+            const auto buffer = std::make_unique_for_overwrite<wchar_t[]>(valueSize);
+            GetEnvironmentVariableW(wname.c_str(), buffer.get(), valueSize);
+            result = buffer.get();
         }
         return String::toUtf8(result);
     }
