@@ -15,7 +15,6 @@
 #include "../GameState.h"
 #include "../ReplayManager.h"
 #include "../core/Guard.hpp"
-#include "../core/Memory.hpp"
 #include "../core/MemoryStream.h"
 #include "../entity/MoneyEffect.h"
 #include "../localisation/Formatter.h"
