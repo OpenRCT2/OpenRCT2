@@ -20,7 +20,6 @@
 #include "../core/FileStream.h"
 #include "../core/Guard.hpp"
 #include "../core/IStream.hpp"
-#include "../core/Memory.hpp"
 #include "../core/MemoryStream.h"
 #include "../core/Numerics.hpp"
 #include "../core/Path.hpp"
@@ -518,23 +517,14 @@ namespace OpenRCT2
             ChunkHeader chunkHeader;
             chunkHeader.encoding = kLegacyObjectEntryGroupEncoding[EnumValue(objectType)];
             chunkHeader.length = static_cast<uint32_t>(dataSize);
-            uint8_t* encodedDataBuffer = Memory::Allocate<uint8_t>(0x600000);
-            size_t encodedDataSize = WriteChunkBuffer(encodedDataBuffer, reinterpret_cast<const uint8_t*>(data), chunkHeader);
+            const auto encodedDataBuffer = std::make_unique_for_overwrite<uint8_t[]>(0x600000);
+            const size_t encodedDataSize = WriteChunkBuffer(
+                encodedDataBuffer.get(), reinterpret_cast<const uint8_t*>(data), chunkHeader);
 
             // Save to file
-            try
-            {
-                auto fs = FileStream(std::string(path), FileMode::write);
-                fs.Write(entry, sizeof(RCTObjectEntry));
-                fs.Write(encodedDataBuffer, encodedDataSize);
-
-                Memory::Free(encodedDataBuffer);
-            }
-            catch (const std::exception&)
-            {
-                Memory::Free(encodedDataBuffer);
-                throw;
-            }
+            auto fs = FileStream(std::string(path), FileMode::write);
+            fs.Write(entry, sizeof(RCTObjectEntry));
+            fs.Write(encodedDataBuffer.get(), encodedDataSize);
         }
 
         static std::array<uint8_t, 11> calculateExtraBytesToFixChecksum(
