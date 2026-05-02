@@ -486,15 +486,14 @@ namespace OpenRCT2
 
                     // Calculate the value of extra bytes that can be appended to the data so that the
                     // data is then valid for the object's checksum
-                    size_t extraBytesCount = 0;
-                    void* extraBytes = CalculateExtraBytesToFixChecksum(realChecksum, entry->checksum, &extraBytesCount);
+                    const auto extraBytes = calculateExtraBytesToFixChecksum(realChecksum, entry->checksum);
 
                     // Create new data blob with appended bytes
-                    size_t newDataSize = dataSize + extraBytesCount;
+                    size_t newDataSize = dataSize + extraBytes.size();
                     uint8_t* newData = Memory::Allocate<uint8_t>(newDataSize);
                     uint8_t* newDataSaltOffset = newData + dataSize;
                     std::copy_n(static_cast<const uint8_t*>(data), dataSize, newData);
-                    std::copy_n(static_cast<const uint8_t*>(extraBytes), extraBytesCount, newDataSaltOffset);
+                    std::copy_n(extraBytes.data(), extraBytes.size(), newDataSaltOffset);
 
                     try
                     {
@@ -512,12 +511,10 @@ namespace OpenRCT2
                             SaveObject(path, entry, newData, newDataSize, false);
                         }
                         Memory::Free(newData);
-                        Memory::Free(extraBytes);
                     }
                     catch (const std::exception&)
                     {
                         Memory::Free(newData);
-                        Memory::Free(extraBytes);
                         throw;
                     }
                     return;
@@ -548,14 +545,12 @@ namespace OpenRCT2
             }
         }
 
-        static void* CalculateExtraBytesToFixChecksum(int32_t currentChecksum, int32_t targetChecksum, size_t* outSize)
+        static std::array<uint8_t, 11> calculateExtraBytesToFixChecksum(
+            const int32_t currentChecksum, const int32_t targetChecksum)
         {
-            // Allocate 11 extra bytes to manipulate the checksum
-            uint8_t* salt = Memory::Allocate<uint8_t>(11);
-            if (outSize != nullptr)
-                *outSize = 11;
+            std::array<uint8_t, 11> salt{};
 
-            // Next work out which bits need to be flipped to make the current checksum match the one in the file
+            // Work out which bits need to be flipped to make the current checksum match the one in the file
             // The bitwise rotation compensates for the rotation performed during the checksum calculation*/
             int32_t bitsToFlip = targetChecksum ^ ((currentChecksum << 25) | (currentChecksum >> 7));
 
