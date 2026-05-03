@@ -20,6 +20,10 @@ public class GameActivity extends SDLActivity {
 
     private static native void nativeSetSafeAreaInsets(int left, int top, int right, int bottom);
 
+    public float getDefaultScale() {
+        return getResources().getDisplayMetrics().density;
+    }
+
     private void updateSafeAreaInsets(WindowInsets windowInsets) {
         int left = 0;
         int top = 0;
