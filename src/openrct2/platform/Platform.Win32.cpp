@@ -70,9 +70,9 @@ namespace OpenRCT2::Platform
         }
         else
         {
-            const auto buffer = std::make_unique_for_overwrite<wchar_t[]>(valueSize);
-            GetEnvironmentVariableW(wname.c_str(), buffer.get(), valueSize);
-            result = buffer.get();
+            const auto wBuffer = std::make_unique_for_overwrite<wchar_t[]>(valueSize);
+            GetEnvironmentVariableW(wname.c_str(), wBuffer.get(), valueSize);
+            result = wBuffer.get();
         }
         return String::toUtf8(result);
     }
@@ -754,12 +754,12 @@ namespace OpenRCT2::Platform
         }
 
         std::string outPath = "";
-        const auto steamPath = std::make_unique_for_overwrite<wchar_t[]>(size);
+        const auto wSteamPath = std::make_unique_for_overwrite<wchar_t[]>(size);
         const auto result = RegQueryValueExW(
-            hKey, L"SteamPath", nullptr, &type, reinterpret_cast<LPBYTE>(steamPath.get()), &size);
+            hKey, L"SteamPath", nullptr, &type, reinterpret_cast<LPBYTE>(wSteamPath.get()), &size);
         if (result == ERROR_SUCCESS)
         {
-            outPath = String::toUtf8(steamPath.get());
+            outPath = String::toUtf8(wSteamPath.get());
         }
         RegCloseKey(hKey);
 
