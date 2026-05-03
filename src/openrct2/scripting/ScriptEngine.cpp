@@ -490,8 +490,7 @@ void ScriptEngine::Initialise()
     #endif
     }
 
-    // Disable maximum stack size limit for the JS engine.
-    JS_SetMaxStackSize(_runtime, 0);
+    JS_SetMaxStackSize(_runtime, kJsStackSize);
 
     _replContext = JS_NewContext(_runtime);
     if (!_replContext)

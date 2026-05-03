@@ -51,6 +51,13 @@ namespace OpenRCT2::Scripting
     static constexpr int32_t kApiVersionCustomActionArgs = 68;
     static constexpr int32_t kApiVersionNetworkIDs = 77;
 
+    // This stack limit is not precise as quickjs-ng just sets a hard boundary offset from the stack frame
+    // where the limit is updated. The actual limit available to quickjs will be more or less depending on
+    // how big the native stack is relative to its size when the limit was first set.
+    // Calculating a precise limit is possible but requires platform specifc code for all possible platforms
+    // to get the end of the reserved stack space.
+    static constexpr size_t kJsStackSize = 1024 * 1024 * 7;
+
     #ifndef DISABLE_NETWORK
     struct SocketDataBase;
     #endif
