@@ -992,8 +992,16 @@ namespace OpenRCT2::Ui::Windows
 
                 if (_footpathPlaceShiftState)
                 {
-                    auto res = FootpathGetPlacementFromInfo(info);
-                    auto mapZ = res.baseZ + _footpathPlaceShiftZ;
+                    int32_t mapZ = info.Element->GetBaseZ();
+                    if (info.Element->GetType() == TileElementType::Surface)
+                    {
+                        uint8_t slope = info.Element->AsSurface()->GetSlope();
+                        if (slope & kTileSlopeRaisedCornersMask)
+                            mapZ += kPathHeightStep;
+                        if (slope & kTileSlopeDiagonalFlag)
+                            mapZ += kPathHeightStep;
+                    }
+                    mapZ += _footpathPlaceShiftZ;
                     mapZ = std::max<int16_t>(mapZ, 16);
                     _footpathPlaceZ = mapZ;
                 }
