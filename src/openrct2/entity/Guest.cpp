@@ -6554,6 +6554,7 @@ namespace OpenRCT2
             return false;
         }
 
+        // TODO: Extract loop A
         do
         {
             // Ghosts are purely this-client-side and should not cause any interaction,
