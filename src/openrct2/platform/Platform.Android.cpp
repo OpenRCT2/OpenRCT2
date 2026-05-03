@@ -175,12 +175,6 @@ namespace OpenRCT2::Platform
         return {};
     }
 
-    static std::string NormalizeAssetPath(std::string path)
-    {
-        std::replace(path.begin(), path.end(), '\\', '/');
-        return path;
-    }
-
     uint64_t GetLastModified(std::string_view path)
     {
         if (String::startsWith(path, Platform::kAndroidAssetPathPrefix))
@@ -205,8 +199,7 @@ namespace OpenRCT2::Platform
             auto assetManager = static_cast<AAssetManager*>(GetAssetManager());
             if (assetManager != nullptr)
             {
-                std::string assetPath = NormalizeAssetPath(
-                    std::string(path).substr(Platform::kAndroidAssetPathPrefix.length()));
+                std::string assetPath = std::string(path).substr(Platform::kAndroidAssetPathPrefix.length());
                 auto asset = AAssetManager_open(assetManager, assetPath.c_str(), AASSET_MODE_UNKNOWN);
                 if (asset != nullptr)
                 {
@@ -242,7 +235,18 @@ namespace OpenRCT2::Platform
 
     float GetDefaultScale()
     {
-        return 1.5f;
+        JNIEnv* env = static_cast<JNIEnv*>(SDL_AndroidGetJNIEnv());
+
+        jobject activity = static_cast<jobject>(SDL_AndroidGetActivity());
+        jclass activityClass = env->GetObjectClass(activity);
+        jmethodID getDefaultScale = env->GetMethodID(activityClass, "getDefaultScale", "()F");
+
+        jfloat displayScale = env->CallFloatMethod(activity, getDefaultScale);
+
+        env->DeleteLocalRef(activity);
+        env->DeleteLocalRef(activityClass);
+
+        return displayScale;
     }
 
     int32_t GetSafeAreaInsetLeft()
@@ -298,7 +302,7 @@ namespace OpenRCT2::Platform
         }
 
         const auto& assetList = GetAssetList();
-        std::string assetPath = NormalizeAssetPath(std::string(path.substr(Platform::kAndroidAssetPathPrefix.length())));
+        std::string assetPath = std::string(path.substr(Platform::kAndroidAssetPathPrefix.length()));
         if (assetPath.empty())
         {
             return assetList.empty() ? AssetCheckResult::NotFound : AssetCheckResult::Found;
@@ -356,7 +360,7 @@ namespace OpenRCT2::Platform
             return AssetFileOpenResult{ AssetCheckResult::NotFound, nullptr, 0 };
         }
 
-        std::string assetPath = NormalizeAssetPath(std::string(path.substr(Platform::kAndroidAssetPathPrefix.length())));
+        std::string assetPath = std::string(path.substr(Platform::kAndroidAssetPathPrefix.length()));
         auto asset = AAssetManager_open(assetManager, assetPath.c_str(), AASSET_MODE_RANDOM);
         if (asset == nullptr)
         {
@@ -461,7 +465,7 @@ namespace OpenRCT2::Platform
                                 try
                                 {
                                     AssetInfo info;
-                                    info.Path = NormalizeAssetPath(line.substr(0, sep));
+                                    info.Path = line.substr(0, sep);
                                     info.Size = std::stoull(line.substr(sep + 1));
                                     _assetList.push_back(std::move(info));
                                 }
