@@ -6570,8 +6570,7 @@ namespace OpenRCT2
             auto wallEntry = tileElement->AsWall()->GetEntry();
             if (wallEntry == nullptr || (wallEntry->flags2 & WALL_SCENERY_2_IS_OPAQUE))
                 continue;
-            // TODO: Check whether this shouldn't be <=, as the other loops use. If so, also extract as loop A.
-            if (guest.NextLoc.z + (4 * kCoordsZStep) >= tileElement->GetBaseZ())
+            if (guest.NextLoc.z + (4 * kCoordsZStep) <= tileElement->GetBaseZ())
                 continue;
             if (guest.NextLoc.z + (1 * kCoordsZStep) >= tileElement->GetClearanceZ())
                 continue;
