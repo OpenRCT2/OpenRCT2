@@ -46,7 +46,7 @@ namespace OpenRCT2
     std::string gNetworkStartAddress;
 
     static uint32_t _port = 0;
-    static char* _address = nullptr;
+    static u8string _address;
 #endif
 
     static bool _help = false;
@@ -307,7 +307,7 @@ namespace OpenRCT2
 
         gNetworkStart = Network::Mode::server;
         gNetworkStartPort = _port;
-        gNetworkStartAddress = String::toStd(_address);
+        gNetworkStartAddress = _address;
 
         return EXITCODE_CONTINUE;
     }

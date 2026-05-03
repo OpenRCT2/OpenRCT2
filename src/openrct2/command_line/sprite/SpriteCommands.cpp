@@ -11,7 +11,6 @@
 
 #include "../../Context.h"
 #include "../../OpenRCT2.h"
-#include "../../core/Memory.hpp"
 #include "../../core/String.hpp"
 #include "../../drawing/Drawing.h"
 #include "../../object/ObjectFactory.h"
@@ -36,7 +35,7 @@ namespace OpenRCT2::CommandLine::Sprite
 {
     using namespace OpenRCT2::Drawing;
 
-    static const char* _mode;
+    static u8string _mode;
 
     // clang-format off
     static constexpr CommandLineOptionDefinition kSpriteOptions[]
@@ -70,7 +69,6 @@ namespace OpenRCT2::CommandLine::Sprite
             spriteMode = ImportMode::Closest;
         else if (String::iequals(_mode, SZ_DITHERING))
             spriteMode = ImportMode::Dithering;
-        Memory::Free(_mode);
 
         const char** argv = const_cast<const char**>(argEnumerator->GetArguments()) + argEnumerator->GetIndex() - 1;
         int32_t argc = argEnumerator->GetCount() - argEnumerator->GetIndex() + 1;
