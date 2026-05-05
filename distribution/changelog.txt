@@ -2,6 +2,7 @@
 ------------------------------------------------------------------------
 - Feature: [#24242] [Plugin] Add ride-breakdown hooktype.
 - Feature: [#24879] [Plugin] Add methods for showing and hiding gridlines.
+- Feature: [#26442] Add cheat to disable grass growing.
 - Improved: [#26374] Add higher resolution app icons for Android.
 - Improved: [#26386] Initial window scale and toolbar options on fresh Android installations.
 - Change: [#26476] Limit creation of new station styles to prepare for more flexibility with ride stations and entrances.
