@@ -252,8 +252,10 @@ namespace OpenRCT2::Ui::Windows
         {
             setWidgets(window_map_widgets);
 
-            holdDownWidgets = (1uLL << WIDX_MAP_SIZE_SPINNER_Y_UP) | (1uLL << WIDX_MAP_SIZE_SPINNER_Y_DOWN)
-                | (1uLL << WIDX_MAP_SIZE_SPINNER_X_UP) | (1uLL << WIDX_MAP_SIZE_SPINNER_X_DOWN);
+            widgetsSetHoldable(
+                *this,
+                { WIDX_MAP_SIZE_SPINNER_Y_UP, WIDX_MAP_SIZE_SPINNER_Y_DOWN, WIDX_MAP_SIZE_SPINNER_X_UP,
+                  WIDX_MAP_SIZE_SPINNER_X_DOWN });
 
             flags |= WindowFlag::resizable;
 
@@ -613,18 +615,11 @@ namespace OpenRCT2::Ui::Windows
             auto* windowMgr = GetWindowManager();
 
             // Set the pressed widgets
-            pressedWidgets = 0;
             setWidgetPressed(WIDX_MAP_SIZE_LINK, _mapWidthAndHeightLinked);
-            pressedWidgets |= (1uLL << (WIDX_PEOPLE_TAB + selectedTab));
-
-            if (windowMgr->FindByClass(WindowClass::editorParkEntrance))
-                pressedWidgets |= (1uLL << WIDX_BUILD_PARK_ENTRANCE);
-
-            if (windowMgr->FindByClass(WindowClass::landRights))
-                pressedWidgets |= (1uLL << WIDX_SET_LAND_RIGHTS);
-
-            if (windowMgr->FindByClass(WindowClass::mapgen))
-                pressedWidgets |= (1uLL << WIDX_MAP_GENERATOR);
+            widgetSetPressedExclusive(*this, { WIDX_PEOPLE_TAB, WIDX_RIDES_TAB }, WIDX_PEOPLE_TAB + selectedTab);
+            setWidgetPressed(WIDX_BUILD_PARK_ENTRANCE, windowMgr->FindByClass(WindowClass::editorParkEntrance) != nullptr);
+            setWidgetPressed(WIDX_SET_LAND_RIGHTS, windowMgr->FindByClass(WindowClass::landRights) != nullptr);
+            setWidgetPressed(WIDX_MAP_GENERATOR, windowMgr->FindByClass(WindowClass::mapgen) != nullptr);
 
             // Set disabled widgets
             auto& gameState = getGameState();

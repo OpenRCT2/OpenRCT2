@@ -279,14 +279,7 @@ namespace OpenRCT2::Ui::Windows
                     WIDX_CLIP_SEE_THROUGH_CHECKBOX_ENABLE, mainWindow->viewport->flags & VIEWPORT_FLAG_CLIP_VIEW_SEE_THROUGH);
             }
 
-            if (IsActive())
-            {
-                this->pressedWidgets |= 1uLL << WIDX_CLIP_SELECTOR;
-            }
-            else
-            {
-                this->pressedWidgets &= ~(1uLL << WIDX_CLIP_SELECTOR);
-            }
+            setWidgetPressed(WIDX_CLIP_SELECTOR, IsActive());
         }
 
         void onDraw(Drawing::RenderTarget& rt) override
@@ -362,7 +355,7 @@ namespace OpenRCT2::Ui::Windows
         {
             setWidgets(_viewClippingWidgets);
 
-            this->holdDownWidgets = (1uLL << WIDX_CLIP_HEIGHT_INCREASE) | (1uL << WIDX_CLIP_HEIGHT_DECREASE);
+            widgetsSetHoldable(*this, { WIDX_CLIP_HEIGHT_INCREASE, WIDX_CLIP_HEIGHT_DECREASE });
             WindowInitScrollWidgets(*this);
 
             _clipHeightDisplayType = DisplayType::DisplayUnits;

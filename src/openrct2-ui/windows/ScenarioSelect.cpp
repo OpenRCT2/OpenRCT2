@@ -149,6 +149,7 @@ namespace OpenRCT2::Ui::Windows
 
             _highlightedScenario = nullptr;
             initTabs();
+            updatePressedTab();
             initialiseListItems();
             initScrollWidgets();
         }
@@ -179,6 +180,7 @@ namespace OpenRCT2::Ui::Windows
                 _highlightedScenario = nullptr;
                 _preview = {};
 
+                updatePressedTab();
                 initialiseListItems();
                 invalidate();
                 onResize();
@@ -429,13 +431,6 @@ namespace OpenRCT2::Ui::Windows
 
         void onPrepareDraw() override
         {
-            pressedWidgets &= ~(
-                (1uLL << WIDX_CLOSE) | (1uLL << WIDX_TAB1) | (1uLL << WIDX_TAB2) | (1uLL << WIDX_TAB3) | (1uLL << WIDX_TAB4)
-                | (1uLL << WIDX_TAB5) | (1uLL << WIDX_TAB6) | (1uLL << WIDX_TAB7) | (1uLL << WIDX_TAB8) | (1uLL << WIDX_TAB9)
-                | (1uLL << WIDX_TAB10));
-
-            pressedWidgets |= 1LL << (selectedTab + WIDX_TAB1);
-
             const int32_t bottomMargin = Config::Get().general.debuggingTools ? 17 : 5;
             widgets[WIDX_SCENARIOLIST].right = width - GetPreviewPaneWidth() - 2 * kPadding;
             widgets[WIDX_SCENARIOLIST].bottom = height - bottomMargin;
@@ -637,6 +632,15 @@ namespace OpenRCT2::Ui::Windows
         }
 
     private:
+        void updatePressedTab()
+        {
+            widgetSetPressedExclusive(
+                *this,
+                { WIDX_TAB1, WIDX_TAB2, WIDX_TAB3, WIDX_TAB4, WIDX_TAB5, WIDX_TAB6, WIDX_TAB7, WIDX_TAB8, WIDX_TAB9,
+                  WIDX_TAB10 },
+                selectedTab + WIDX_TAB1);
+        }
+
         void DrawCategoryHeading(RenderTarget& rt, int32_t left, int32_t right, int32_t y, StringId stringId) const
         {
             auto baseColour = colours[1];

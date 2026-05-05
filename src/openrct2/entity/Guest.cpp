@@ -1898,10 +1898,7 @@ namespace OpenRCT2
             auto& gameState = getGameState();
             for (auto& ride : RideManager(gameState))
             {
-                if (!guest.HasRidden(ride))
-                {
-                    rideConsideration[ride.id.ToUnderlying()] = true;
-                }
+                rideConsideration[ride.id.ToUnderlying()] = true;
             }
         }
         else
@@ -1952,6 +1949,10 @@ namespace OpenRCT2
         auto& gameState = getGameState();
         for (auto& ride : RideManager(gameState))
         {
+            if (guest.HasRidden(ride))
+            {
+                continue;
+            }
             const auto rideIndex = ride.id.ToUnderlying();
             if (rideConsideration.size() > rideIndex && rideConsideration[rideIndex])
             {
@@ -5652,7 +5653,7 @@ namespace OpenRCT2
                     return;
                 }
 
-                if (!(pathAddEntry->flags & PATH_ADDITION_FLAG_IS_BENCH))
+                if ((pathAddEntry->flags & PATH_ADDITION_FLAG_IS_BENCH))
                     positions_free = 9;
             }
         }

@@ -47,8 +47,14 @@ static constexpr bool kWindowButtonsOnTheLeftDefault = false;
 #endif
 #ifdef __ANDROID__
 static constexpr bool kEnlargedUiDefault = true;
+// Android phones can come with rounded screen corners, making corner buttons harder to access.
+static constexpr bool kToolbarButtonsCentredDefault = true;
+// Android platform code returns a more appropiate default than SDL.
+static constexpr bool kInferDisplayDPIDefault = false;
 #else
 static constexpr bool kEnlargedUiDefault = false;
+static constexpr bool kToolbarButtonsCentredDefault = false;
+static constexpr bool kInferDisplayDPIDefault = true;
 #endif
 
 namespace OpenRCT2::Config
@@ -232,7 +238,7 @@ namespace OpenRCT2::Config
             model->upperCaseBanners = reader->GetBoolean("upper_case_banners", false);
             model->disableLightningEffect = reader->GetBoolean("disable_lightning_effect", false);
             model->windowScale = reader->GetFloat("window_scale", Platform::GetDefaultScale());
-            model->inferDisplayDPI = reader->GetBoolean("infer_display_dpi", true);
+            model->inferDisplayDPI = reader->GetBoolean("infer_display_dpi", kInferDisplayDPIDefault);
             model->showFPS = reader->GetBoolean("show_fps", false);
 #ifdef _DEBUG
             // Always have multi-threading disabled in debug builds, this makes things slower.
@@ -382,7 +388,7 @@ namespace OpenRCT2::Config
         if (reader->ReadSection("interface"))
         {
             auto model = &_config.interface;
-            model->toolbarButtonsCentred = reader->GetBoolean("toolbar_buttons_centred", false);
+            model->toolbarButtonsCentred = reader->GetBoolean("toolbar_buttons_centred", kToolbarButtonsCentredDefault);
             model->toolbarShowFinances = reader->GetBoolean("toolbar_show_finances", true);
             model->toolbarShowResearch = reader->GetBoolean("toolbar_show_research", true);
             model->toolbarShowCheats = reader->GetBoolean("toolbar_show_cheats", false);

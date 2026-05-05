@@ -20,7 +20,6 @@
 #include "../core/FileStream.h"
 #include "../core/Guard.hpp"
 #include "../core/IStream.hpp"
-#include "../core/Memory.hpp"
 #include "../core/MemoryStream.h"
 #include "../core/Numerics.hpp"
 #include "../core/Path.hpp"
@@ -486,39 +485,28 @@ namespace OpenRCT2
 
                     // Calculate the value of extra bytes that can be appended to the data so that the
                     // data is then valid for the object's checksum
-                    size_t extraBytesCount = 0;
-                    void* extraBytes = CalculateExtraBytesToFixChecksum(realChecksum, entry->checksum, &extraBytesCount);
+                    const auto extraBytes = calculateExtraBytesToFixChecksum(realChecksum, entry->checksum);
 
                     // Create new data blob with appended bytes
-                    size_t newDataSize = dataSize + extraBytesCount;
-                    uint8_t* newData = Memory::Allocate<uint8_t>(newDataSize);
-                    uint8_t* newDataSaltOffset = newData + dataSize;
-                    std::copy_n(static_cast<const uint8_t*>(data), dataSize, newData);
-                    std::copy_n(static_cast<const uint8_t*>(extraBytes), extraBytesCount, newDataSaltOffset);
+                    std::vector<uint8_t> newData;
+                    newData.reserve(dataSize + extraBytes.size());
 
-                    try
+                    const auto dataSpan = std::span(static_cast<const uint8_t*>(data), dataSize);
+                    newData.insert(newData.end(), dataSpan.begin(), dataSpan.end());
+                    newData.insert(newData.end(), extraBytes.begin(), extraBytes.end());
+
+                    uint32_t newRealChecksum = ObjectCalculateChecksum(entry, newData.data(), newData.size());
+                    if (newRealChecksum != entry->checksum)
                     {
-                        uint32_t newRealChecksum = ObjectCalculateChecksum(entry, newData, newDataSize);
-                        if (newRealChecksum != entry->checksum)
-                        {
-                            Console::Error::WriteLine("CalculateExtraBytesToFixChecksum failed to fix checksum.");
+                        Console::Error::WriteLine("CalculateExtraBytesToFixChecksum failed to fix checksum.");
 
-                            // Save old data form
-                            SaveObject(path, entry, data, dataSize, false);
-                        }
-                        else
-                        {
-                            // Save new data form
-                            SaveObject(path, entry, newData, newDataSize, false);
-                        }
-                        Memory::Free(newData);
-                        Memory::Free(extraBytes);
+                        // Save old data form
+                        SaveObject(path, entry, data, dataSize, false);
                     }
-                    catch (const std::exception&)
+                    else
                     {
-                        Memory::Free(newData);
-                        Memory::Free(extraBytes);
-                        throw;
+                        // Save new data form
+                        SaveObject(path, entry, newData.data(), newData.size(), false);
                     }
                     return;
                 }
@@ -529,33 +517,22 @@ namespace OpenRCT2
             ChunkHeader chunkHeader;
             chunkHeader.encoding = kLegacyObjectEntryGroupEncoding[EnumValue(objectType)];
             chunkHeader.length = static_cast<uint32_t>(dataSize);
-            uint8_t* encodedDataBuffer = Memory::Allocate<uint8_t>(0x600000);
-            size_t encodedDataSize = WriteChunkBuffer(encodedDataBuffer, reinterpret_cast<const uint8_t*>(data), chunkHeader);
+            const auto encodedDataBuffer = std::make_unique_for_overwrite<uint8_t[]>(0x600000);
+            const size_t encodedDataSize = WriteChunkBuffer(
+                encodedDataBuffer.get(), reinterpret_cast<const uint8_t*>(data), chunkHeader);
 
             // Save to file
-            try
-            {
-                auto fs = FileStream(std::string(path), FileMode::write);
-                fs.Write(entry, sizeof(RCTObjectEntry));
-                fs.Write(encodedDataBuffer, encodedDataSize);
-
-                Memory::Free(encodedDataBuffer);
-            }
-            catch (const std::exception&)
-            {
-                Memory::Free(encodedDataBuffer);
-                throw;
-            }
+            auto fs = FileStream(std::string(path), FileMode::write);
+            fs.Write(entry, sizeof(RCTObjectEntry));
+            fs.Write(encodedDataBuffer.get(), encodedDataSize);
         }
 
-        static void* CalculateExtraBytesToFixChecksum(int32_t currentChecksum, int32_t targetChecksum, size_t* outSize)
+        static std::array<uint8_t, 11> calculateExtraBytesToFixChecksum(
+            const int32_t currentChecksum, const int32_t targetChecksum)
         {
-            // Allocate 11 extra bytes to manipulate the checksum
-            uint8_t* salt = Memory::Allocate<uint8_t>(11);
-            if (outSize != nullptr)
-                *outSize = 11;
+            std::array<uint8_t, 11> salt{};
 
-            // Next work out which bits need to be flipped to make the current checksum match the one in the file
+            // Work out which bits need to be flipped to make the current checksum match the one in the file
             // The bitwise rotation compensates for the rotation performed during the checksum calculation*/
             int32_t bitsToFlip = targetChecksum ^ ((currentChecksum << 25) | (currentChecksum >> 7));
 

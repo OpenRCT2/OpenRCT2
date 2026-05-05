@@ -21,6 +21,26 @@ Official references for writing plugins are:
 * Our collection of sample scripts: [OpenRCT2/plugin-samples](https://github.com/OpenRCT2/plugin-samples)
 * A TypeScript plugin comprised of multiple sources: [IntelOrca/OpenRCT2-ParkManager](https://github.com/IntelOrca/OpenRCT2-ParkManager)
 
+### TypeScript types
+
+The Plugin API type definitions are available on npm as [`@openrct2/types`](https://www.npmjs.com/package/@openrct2/types). This gives you autocomplete and type checking in your editor.
+
+```
+npm install @openrct2/types --save-dev
+```
+
+Then add it to your `tsconfig.json`:
+
+```json
+{
+  "compilerOptions": {
+    "types": ["@openrct2/types"]
+  }
+}
+```
+
+The package version follows OpenRCT2 releases (e.g. `0.4.32` matches OpenRCT2 `v0.4.32`).
+
 Start by copying this template script into a new file in your `plugin` directory:
 ```js
 function main() {

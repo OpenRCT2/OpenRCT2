@@ -1,0 +1,79 @@
+name: Publish plugin API types to npm
+on:
+  push:
+    tags:
+      - 'v*'
+    branches:
+      - develop
+    paths:
+      - 'distribution/scripting/openrct2.d.ts'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to publish (e.g. 0.4.32). Leave empty to use the tag version.'
+        required: false
+
+jobs:
+  publish:
+    name: Publish @openrct2/types
+    runs-on: ubuntu-slim
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          sparse-checkout: |
+            distribution/scripting
+            src/openrct2/scripting/ScriptEngine.h
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+
+      - name: Get latest release tag
+        if: github.ref == 'refs/heads/develop'
+        id: describe
+        uses: proudust/gh-describe@v2
+        with:
+          match: 'v*'
+
+      - name: Determine version
+        id: version
+        run: |
+          if [[ -n "${{ github.event.inputs.version }}" ]]; then
+            VERSION="${{ github.event.inputs.version }}"
+          elif [[ "$GITHUB_REF" == refs/tags/v* ]]; then
+            VERSION="${GITHUB_REF#refs/tags/v}"
+          elif [[ "$GITHUB_REF" == refs/heads/develop ]]; then
+            BASE_VERSION="${{ steps.describe.outputs.tag }}"
+            BASE_VERSION="${BASE_VERSION#v}"
+            API_VERSION=$(grep -oP 'kPluginApiVersion\s*=\s*\K[0-9]+' src/openrct2/scripting/ScriptEngine.h)
+            TIMESTAMP=$(date -u +%Y%m%d%H%M%S)
+            VERSION="${BASE_VERSION}-dev.${API_VERSION}.${TIMESTAMP}"
+          else
+            echo "::error::No version could be determined. Run on a tag or provide a version input."
+            exit 1
+          fi
+          echo "version=$VERSION"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          if [[ "$VERSION" == *-* ]]; then
+            echo "tag=dev" >> "$GITHUB_OUTPUT"
+          else
+            echo "tag=latest" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Prepare README for npm
+        working-directory: distribution/scripting
+        run: cp scripting.md README.md
+
+      - name: Set package version
+        working-directory: distribution/scripting
+        run: npm version "${{ steps.version.outputs.version }}" --no-git-tag-version
+
+      - name: Publish
+        working-directory: distribution/scripting
+        run: npm publish --access public --tag "${{ steps.version.outputs.tag }}"

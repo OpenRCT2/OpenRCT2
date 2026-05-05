@@ -275,10 +275,21 @@ namespace OpenRCT2::Ui::Windows
             WindowThemesInitVars();
             WindowInitScrollWidgets(*this);
             WindowSetResize(*this, kWindowSize, kWindowSize);
+            updatePressedTab();
 
             listInformationType = 0;
             _classIndex = -1;
             _buttonIndex = -1;
+        }
+
+        void updatePressedTab()
+        {
+            widgetSetPressedExclusive(
+                *this,
+                { WIDX_THEMES_SETTINGS_TAB, WIDX_THEMES_MAIN_UI_TAB, WIDX_THEMES_PARK_TAB, WIDX_THEMES_TOOLS_TAB,
+                  WIDX_THEMES_RIDE_PEEPS_TAB, WIDX_THEMES_EDITORS_TAB, WIDX_THEMES_MISC_TAB, WIDX_THEMES_PROMPTS_TAB,
+                  WIDX_THEMES_FEATURES_TAB },
+                _selectedTab + WIDX_THEMES_SETTINGS_TAB);
         }
 
         void onResize() override
@@ -310,14 +321,6 @@ namespace OpenRCT2::Ui::Windows
 
         void onPrepareDraw() override
         {
-            int32_t newPressedWidgets = pressedWidgets
-                & ~((1LL << WIDX_THEMES_SETTINGS_TAB) | (1LL << WIDX_THEMES_MAIN_UI_TAB) | (1LL << WIDX_THEMES_PARK_TAB)
-                    | (1LL << WIDX_THEMES_TOOLS_TAB) | (1LL << WIDX_THEMES_RIDE_PEEPS_TAB) | (1LL << WIDX_THEMES_EDITORS_TAB)
-                    | (1LL << WIDX_THEMES_MISC_TAB) | (1LL << WIDX_THEMES_PROMPTS_TAB) | (1LL << WIDX_THEMES_FEATURES_TAB));
-            WidgetIndex widgetIndex = _selectedTab + WIDX_THEMES_SETTINGS_TAB;
-
-            pressedWidgets = newPressedWidgets | (1 << widgetIndex);
-
             auto* windowMgr = GetWindowManager();
             if (windowMgr->FindByClass(WindowClass::dropdown) == nullptr)
             {
@@ -438,6 +441,7 @@ namespace OpenRCT2::Ui::Windows
                     _selectedTab = static_cast<uint8_t>(newSelectedTab);
                     scrolls[0].contentOffsetY = 0;
                     currentFrame = 0;
+                    updatePressedTab();
                     onResize();
                     invalidate();
                     break;

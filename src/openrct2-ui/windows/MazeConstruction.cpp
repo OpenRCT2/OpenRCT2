@@ -189,19 +189,17 @@ namespace OpenRCT2::Ui::Windows
                     | (1uLL << WIDX_MAZE_DIRECTION_SW) | (1uLL << WIDX_MAZE_DIRECTION_SE);
             }
 
-            // Set and invalidate the changed widgets
-            uint64_t currentDisabledWidgets = disabledWidgets;
-            if (currentDisabledWidgets == newDisabledWidgets)
-                return;
-
-            for (WidgetIndex i = 0; i < 64; i++)
+            // Invalidate only widgets whose disabled state changes.
+            const auto widgetCount = static_cast<WidgetIndex>(widgets.size());
+            for (WidgetIndex i = 0; i < widgetCount && i < 64; i++)
             {
-                if ((newDisabledWidgets & (1uLL << i)) != (currentDisabledWidgets & (1uLL << i)))
+                const bool shouldBeDisabled = (newDisabledWidgets & (1uLL << i)) != 0;
+                if (isWidgetDisabled(i) != shouldBeDisabled)
                 {
+                    setWidgetDisabled(i, shouldBeDisabled);
                     invalidateWidget(i);
                 }
             }
-            disabledWidgets = newDisabledWidgets;
         }
 
         void onMouseDown(WidgetIndex widgetIndex) override
@@ -461,41 +459,15 @@ namespace OpenRCT2::Ui::Windows
         if (w == nullptr)
             return;
 
-        uint64_t newPressedWidgets = w->pressedWidgets;
+        const bool isEntranceExit = _rideConstructionState == RideConstructionState::EntranceExit;
+        const bool entranceToolActive = isToolActive(WindowClass::rideConstruction, WIDX_MAZE_ENTRANCE);
 
-        // Unpress all the mode buttons
-        newPressedWidgets &= ~EnumToFlag(WIDX_MAZE_BUILD_MODE);
-        newPressedWidgets &= ~EnumToFlag(WIDX_MAZE_MOVE_MODE);
-        newPressedWidgets &= ~EnumToFlag(WIDX_MAZE_FILL_MODE);
-        newPressedWidgets &= ~EnumToFlag(WIDX_MAZE_ENTRANCE);
-        newPressedWidgets &= ~EnumToFlag(WIDX_MAZE_EXIT);
+        widgetSetPressed(*w, WIDX_MAZE_BUILD_MODE, _rideConstructionState == RideConstructionState::MazeBuild);
+        widgetSetPressed(*w, WIDX_MAZE_MOVE_MODE, _rideConstructionState == RideConstructionState::MazeMove);
+        widgetSetPressed(*w, WIDX_MAZE_FILL_MODE, _rideConstructionState == RideConstructionState::MazeFill);
+        widgetSetPressed(*w, WIDX_MAZE_ENTRANCE, isEntranceExit && entranceToolActive);
+        widgetSetPressed(*w, WIDX_MAZE_EXIT, isEntranceExit && !entranceToolActive);
 
-        switch (_rideConstructionState)
-        {
-            case RideConstructionState::EntranceExit:
-                if (isToolActive(WindowClass::rideConstruction, WIDX_MAZE_ENTRANCE))
-                {
-                    newPressedWidgets |= EnumToFlag(WIDX_MAZE_ENTRANCE);
-                }
-                else
-                {
-                    newPressedWidgets |= EnumToFlag(WIDX_MAZE_EXIT);
-                }
-                break;
-            case RideConstructionState::MazeBuild:
-                newPressedWidgets |= EnumToFlag(WIDX_MAZE_BUILD_MODE);
-                break;
-            case RideConstructionState::MazeMove:
-                newPressedWidgets |= EnumToFlag(WIDX_MAZE_MOVE_MODE);
-                break;
-            case RideConstructionState::MazeFill:
-                newPressedWidgets |= EnumToFlag(WIDX_MAZE_FILL_MODE);
-                break;
-            default:
-                break;
-        }
-
-        w->pressedWidgets = newPressedWidgets;
         w->invalidate();
     }
 } // namespace OpenRCT2::Ui::Windows

@@ -126,6 +126,11 @@ function readVersionEntry(ctx, rawEntry, versionInfo) {
             reportLineError(rawEntry, `Invalid reference '${ref}', must be '#123' or 'project#123'`);
         }
     }
+    
+    const textWithoutCode = text.replaceAll(/`.*`/g, '');
+    if (textWithoutCode.includes('"') || textWithoutCode.includes('\'')) {
+        reportLineError(rawEntry, `Use of typewriter quotes (' or "), please use typographical quotes (‘ ’ and “ ”)`);
+    }
 
     const result = {
         changeType: changeType,
