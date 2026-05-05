@@ -48,7 +48,7 @@ namespace OpenRCT2::Scripting
         do
         {
             if (tileElement->GetType() != TileElementType::Path || tileElement->BaseHeight != tilePos.z
-                || (tileElement->IsGhost() && options.ExcludeGhosts))
+                || (tileElement->IsGhost() && !options.IncludeGhosts))
             {
                 index++;
                 continue;
@@ -92,11 +92,11 @@ namespace OpenRCT2::Scripting
 
     const PathElement* ScPathNavigator::FindPathElement(const PathNavigatorData* data)
     {
-        const bool excludeGhost = data->_options.ExcludeGhosts;
+        const bool includeGhost = data->_options.IncludeGhosts;
         auto coords = data->_position.ToCoordsXY();
         auto* el = MapGetNthElementAt(coords, data->_elementIndex);
         if (el != nullptr && el->GetType() == TileElementType::Path && el->BaseHeight == data->_position.z
-            && (!excludeGhost || !el->IsGhost()))
+            && (includeGhost || !el->IsGhost()))
         {
             return el->AsPath();
         }
@@ -111,7 +111,7 @@ namespace OpenRCT2::Scripting
                 continue;
             if (scan->BaseHeight != data->_position.z)
                 continue;
-            if (scan->IsGhost() && excludeGhost)
+            if (scan->IsGhost() && !includeGhost)
                 continue;
             return scan->AsPath();
         } while (!(scan++)->IsLastForTile());
@@ -155,9 +155,9 @@ namespace OpenRCT2::Scripting
 
     bool ScPathNavigator::IsTraversableNeighbor(const PathElement* pathElement, const PathNavigationOptions& options)
     {
-        if (pathElement->IsQueue() && options.ExcludeQueues)
+        if (pathElement->IsQueue() && !options.IncludeQueues)
             return false;
-        if (pathElement->IsWide() && options.ExcludeWidePaths)
+        if (pathElement->IsWide() && !options.IncludeWidePaths)
             return false;
         return true;
     }
@@ -231,7 +231,7 @@ namespace OpenRCT2::Scripting
             int32_t nextIndex = 0;
             do
             {
-                if ((nextEl->IsGhost() && options.ExcludeGhosts) || nextEl->GetType() != TileElementType::Path)
+                if ((nextEl->IsGhost() && !options.IncludeGhosts) || nextEl->GetType() != TileElementType::Path)
                 {
                     nextIndex++;
                     continue;
@@ -297,7 +297,7 @@ namespace OpenRCT2::Scripting
         int32_t nextIndex = 0;
         do
         {
-            if ((nextEl->IsGhost() && options.ExcludeGhosts) || nextEl->GetType() != TileElementType::Path)
+            if ((nextEl->IsGhost() && !options.IncludeGhosts) || nextEl->GetType() != TileElementType::Path)
             {
                 nextIndex++;
                 continue;

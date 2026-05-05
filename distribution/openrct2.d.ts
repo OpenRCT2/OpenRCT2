@@ -1767,7 +1767,10 @@ declare global {
          *                {@link PathNavigator.moveTo}, and {@link PathNavigator.permittedEdges}.
          */
         getPathNavigator(
-            location: CoordsXY, elementIndex: number, options?: PathNavigationOptions): PathNavigator | null;
+            location: CoordsXY,
+            elementIndex: number,
+            options?: PathNavigationOptions
+        ): PathNavigator | null;
 
         /**
          * Gets a {@link PathNavigator} for the footpath at the given world coordinates.
@@ -1775,7 +1778,10 @@ declare global {
          * @param position The world coordinates (x, y, z) of the footpath.
          * @param options Optional traversal rules; see the other overload for details.
          */
-        getPathNavigator(position: CoordsXYZ, options?: PathNavigationOptions): PathNavigator | null;
+        getPathNavigator(
+            position: CoordsXYZ,
+            options?: PathNavigationOptions
+        ): PathNavigator | null;
 
     }
 
@@ -2855,23 +2861,22 @@ declare global {
     }
 
     /**
-     * Traversal rules for a {@link PathNavigator}. By default the navigator is
-     * fully permissive — banners are ignored and ghost, queue, and wide path
-     * tiles are all included. Set any option to `true` to opt out of one form
-     * of permissiveness. All fields are optional and default to `false`.
+     * Traversal rules for a {@link PathNavigator}. By default the navigator only
+     * traverses regular paths. Set any option to `true` to include that kind of path.
+     * All fields are optional and default to `false`.
      */
     interface PathNavigationOptions {
         /** If true, no-entry signs (banners) block traversal. Default: false. */
         respectBanners?: boolean;
 
-        /** If true, ghost (preview / not-yet-built) path elements are skipped. Default: false. */
-        excludeGhosts?: boolean;
+        /** If true, ghost (preview / not-yet-built) path elements are included. Default: false. */
+        includeGhosts?: boolean;
 
-        /** If true, queue paths are skipped during traversal. Default: false. */
-        excludeQueues?: boolean;
+        /** If true, queue paths are included during traversal. Default: false. */
+        includeQueues?: boolean;
 
-        /** If true, wide paths are skipped during traversal. Default: false. */
-        excludeWidePaths?: boolean;
+        /** If true, wide paths are included during traversal. Default: false. */
+        includeWidePaths?: boolean;
     }
 
     /**

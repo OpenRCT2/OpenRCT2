@@ -456,9 +456,9 @@ namespace OpenRCT2::Scripting
             return options;
 
         options.RespectBanners = AsOrDefault(ctx, obj, "respectBanners", false);
-        options.ExcludeGhosts = AsOrDefault(ctx, obj, "excludeGhosts", false);
-        options.ExcludeQueues = AsOrDefault(ctx, obj, "excludeQueues", false);
-        options.ExcludeWidePaths = AsOrDefault(ctx, obj, "excludeWidePaths", false);
+        options.IncludeGhosts = AsOrDefault(ctx, obj, "includeGhosts", false);
+        options.IncludeQueues = AsOrDefault(ctx, obj, "includeQueues", false);
+        options.IncludeWidePaths = AsOrDefault(ctx, obj, "includeWidePaths", false);
         return options;
     }
 
