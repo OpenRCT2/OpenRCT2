@@ -24,9 +24,9 @@ namespace OpenRCT2::Scripting
     struct PathNavigationOptions
     {
         bool RespectBanners = false;
-        bool ExcludeGhosts = false;
-        bool ExcludeQueues = false;
-        bool ExcludeWidePaths = false;
+        bool IncludeGhosts = false;
+        bool IncludeQueues = false;
+        bool IncludeWidePaths = false;
     };
 
     class ScPathNavigator final : public ScBase
