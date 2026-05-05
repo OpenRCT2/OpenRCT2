@@ -3,6 +3,7 @@
 - Feature: [#26308] Add all new track pieces to the inverted roller coaster.
 - Feature: [#26442] Add cheat to disable grass growing.
 - Fix: [#26494] The limits for where walls on the path side of the first tile block the view of rides/scenery are wrong (original bug).
+- Fix: [#26504] The boosts/penalties to excitement and nausea that air time provides are calculated wrong.
 
 0.5.2 (2026-06-07)
 ------------------------------------------------------------------------
