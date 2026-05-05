@@ -17,6 +17,7 @@
 - Fix: [#26421] Wrong scenery tab highlighted when more than 64 scenery groups are selected.
 - Fix: [#26425] Benches don’t reduce watching spots from 4 to 2 while other path additions do (should be reversed).
 - Fix: [#26432] Guests choose to head for rides they have already ridden if they don’t have a map.
+- Fix: [#26492] Drag tool shows per-tile error instead of total cost when running out of money midway through placement.
 
 0.5.0 (2026-04-12)
 ------------------------------------------------------------------------

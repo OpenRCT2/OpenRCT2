@@ -3291,6 +3291,20 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
+            if (!(getGameState().park.flags & PARK_FLAGS_NO_MONEY) && totalCost > getGameState().park.cash)
+            {
+                Audio::Play3D(Audio::SoundId::error, lastLocation);
+
+                auto* windowMgr = GetWindowManager();
+                Formatter ft;
+                ft.Add<money64>(totalCost);
+                windowMgr->ShowError(STR_CANT_BUILD_THIS_HERE, STR_NOT_ENOUGH_CASH_REQUIRES, ft);
+
+                _provisionalTiles.clear();
+                _inDragMode = false;
+                return;
+            }
+
             // All queries passed, now execute
             bool anySuccessful = false;
 
