@@ -24,7 +24,7 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-    enum
+    enum WindowErrorWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
     };

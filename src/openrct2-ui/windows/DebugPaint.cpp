@@ -23,7 +23,7 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-    enum WindowDebugPaintWidgetIdx
+    enum WindowDebugPaintWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TOGGLE_SHOW_WIDE_PATHS,

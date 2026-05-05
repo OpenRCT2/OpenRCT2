@@ -42,7 +42,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr ScreenSize kWindowSize = { 600, 400 };
     static constexpr StringId kWindowTitle = STR_INVENTION_LIST;
 
-    enum
+    enum WindowEditorInventionsListWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,

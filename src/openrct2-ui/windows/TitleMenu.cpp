@@ -29,7 +29,7 @@ namespace OpenRCT2::Ui::Windows
 {
     using namespace OpenRCT2::Drawing;
 
-    enum
+    enum WindowTitleMenuWidgetIdx : WidgetIndex
     {
         WIDX_START_NEW_GAME,
         WIDX_CONTINUE_SAVED_GAME,

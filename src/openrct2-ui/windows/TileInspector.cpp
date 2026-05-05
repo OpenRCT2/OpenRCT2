@@ -82,7 +82,7 @@ namespace OpenRCT2::Ui::Windows
         STR_TILE_INSPECTOR_WALL_ANIMATION_FRAME,
     };
 
-    enum WindowTileInspectorWidgetIdx
+    enum WindowTileInspectorWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,

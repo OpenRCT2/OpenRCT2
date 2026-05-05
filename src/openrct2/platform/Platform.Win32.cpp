@@ -70,10 +70,9 @@ namespace OpenRCT2::Platform
         }
         else
         {
-            auto wlvalue = new wchar_t[valueSize];
-            GetEnvironmentVariableW(wname.c_str(), wlvalue, valueSize);
-            result = wlvalue;
-            delete[] wlvalue;
+            const auto wBuffer = std::make_unique_for_overwrite<wchar_t[]>(valueSize);
+            GetEnvironmentVariableW(wname.c_str(), wBuffer.get(), valueSize);
+            result = wBuffer.get();
         }
         return String::toUtf8(result);
     }
@@ -741,10 +740,8 @@ namespace OpenRCT2::Platform
 
     SteamPaths GetSteamPaths()
     {
-        wchar_t* wSteamPath;
         HKEY hKey;
         DWORD type, size;
-        LRESULT result;
 
         if (RegOpenKeyW(HKEY_CURRENT_USER, L"Software\\Valve\\Steam", &hKey) != ERROR_SUCCESS)
             return {};
@@ -757,13 +754,13 @@ namespace OpenRCT2::Platform
         }
 
         std::string outPath = "";
-        wSteamPath = reinterpret_cast<wchar_t*>(malloc(size));
-        result = RegQueryValueExW(hKey, L"SteamPath", nullptr, &type, reinterpret_cast<LPBYTE>(wSteamPath), &size);
+        const auto wSteamPath = std::make_unique_for_overwrite<wchar_t[]>(size);
+        const auto result = RegQueryValueExW(
+            hKey, L"SteamPath", nullptr, &type, reinterpret_cast<LPBYTE>(wSteamPath.get()), &size);
         if (result == ERROR_SUCCESS)
         {
-            outPath = String::toUtf8(wSteamPath);
+            outPath = String::toUtf8(wSteamPath.get());
         }
-        free(wSteamPath);
         RegCloseKey(hKey);
 
         SteamPaths ret = {};

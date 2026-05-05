@@ -20,7 +20,7 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-    enum WindowViewportWidgetIdx
+    enum WindowViewportWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,

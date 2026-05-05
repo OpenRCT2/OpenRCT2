@@ -25,7 +25,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr StringId kWindowTitle = STR_CUSTOM_CURRENCY_WINDOW_TITLE;
     static constexpr ScreenSize kWindowSize = { 400, 100 };
 
-    enum WindowCustomCurrencyWidgetIdx
+    enum WindowCustomCurrencyWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,
