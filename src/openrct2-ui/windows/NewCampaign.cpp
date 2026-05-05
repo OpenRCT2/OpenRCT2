@@ -34,7 +34,7 @@ namespace OpenRCT2::Ui::Windows
 
     constexpr uint16_t kSelectedItemUndefined = 0xFFFF;
 
-    enum WindowNewCampaignWidgetIdx
+    enum WindowNewCampaignWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,

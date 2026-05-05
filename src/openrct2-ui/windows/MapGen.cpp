@@ -44,7 +44,7 @@ namespace OpenRCT2::Ui::Windows
         WINDOW_MAPGEN_PAGE_COUNT
     };
 
-    enum
+    enum WindowMapGenWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,

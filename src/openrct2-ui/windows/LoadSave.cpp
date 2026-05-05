@@ -83,7 +83,7 @@ namespace OpenRCT2::Ui::Windows
     static u8string _defaultPath;
     static TrackDesign* _trackDesign;
 
-    enum
+    enum WindowLoadSaveWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,

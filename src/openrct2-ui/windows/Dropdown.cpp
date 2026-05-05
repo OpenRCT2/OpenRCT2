@@ -48,7 +48,7 @@ namespace OpenRCT2::Ui::Windows
         9, 9, 9, 9, 9, 9, 9,          // 56
     };
 
-    enum
+    enum WindowDropdownWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
     };

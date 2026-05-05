@@ -42,7 +42,7 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr size_t kMaxPlayerNameLength = 32;
 
-    enum
+    enum WindowServerListWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,

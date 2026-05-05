@@ -36,7 +36,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr StringId kWindowTitle = STR_SIGN;
     static constexpr ScreenSize kWindowSize = { 113, 96 };
 
-    enum WindowSignWidgetIdx
+    enum WindowSignWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,

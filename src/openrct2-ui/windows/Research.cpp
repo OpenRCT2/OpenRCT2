@@ -40,7 +40,7 @@ namespace OpenRCT2::Ui::Windows
         WINDOW_RESEARCH_PAGE_COUNT
     };
 
-    enum
+    enum WindowResearchWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,

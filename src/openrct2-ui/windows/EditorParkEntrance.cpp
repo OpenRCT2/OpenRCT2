@@ -54,7 +54,7 @@ namespace OpenRCT2::Ui::Windows
         ImageIndex imageId = kImageIndexUndefined;
     };
 
-    enum WindowEditorParkEntranceListWidgetIdx
+    enum WindowEditorParkEntranceListWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,

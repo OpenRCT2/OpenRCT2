@@ -56,7 +56,7 @@ namespace OpenRCT2::Ui::Windows
         WINDOW_STAFF_PAGE_COUNT,
     };
 
-    enum WindowStaffWidgetIdx
+    enum WindowStaffWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,

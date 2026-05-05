@@ -60,7 +60,7 @@ namespace OpenRCT2::Ui::Windows
         WINDOW_STAFF_LIST_TAB_ENTERTAINERS
     };
 
-    enum WindowStaffListWidgetIdx
+    enum WindowStaffListWidgetIdx : WidgetIndex
     {
         WIDX_STAFF_LIST_BACKGROUND,
         WIDX_STAFF_LIST_TITLE,

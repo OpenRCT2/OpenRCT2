@@ -21,7 +21,7 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-    enum WindowSceneryScatterWidgetIdx
+    enum WindowSceneryScatterWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,

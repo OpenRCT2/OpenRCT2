@@ -41,7 +41,7 @@ using namespace OpenRCT2::Drawing;
 
 namespace OpenRCT2::Ui::Windows
 {
-    enum WindowGameBottomToolbarWidgetIdx
+    enum WindowGameBottomToolbarWidgetIdx : WidgetIndex
     {
         WIDX_LEFT_OUTSET,
         WIDX_LEFT_INSET,

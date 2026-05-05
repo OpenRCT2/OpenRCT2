@@ -108,7 +108,7 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma region Widgets
 
-    enum
+    enum WindowRideWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,
