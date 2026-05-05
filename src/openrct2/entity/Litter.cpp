@@ -155,5 +155,4 @@ namespace OpenRCT2
         stream << SubType;
         stream << creationTick;
     }
-    /** rct2: 0x0097EF6C */
 } // namespace OpenRCT2
