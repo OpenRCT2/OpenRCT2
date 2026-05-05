@@ -678,6 +678,7 @@
     <ClInclude Include="world\ConstructionClearance.h" />
     <ClInclude Include="world\Entrance.h" />
     <ClInclude Include="world\Footpath.h" />
+    <ClInclude Include="world\FootpathDragSlope.h" />
     <ClInclude Include="world\LargeScenery.h" />
     <ClInclude Include="world\Location.hpp" />
     <ClInclude Include="world\Map.h" />
@@ -1238,6 +1239,7 @@
     <ClCompile Include="world\ConstructionClearance.cpp" />
     <ClCompile Include="world\Entrance.cpp" />
     <ClCompile Include="world\Footpath.cpp" />
+    <ClCompile Include="world\FootpathDragSlope.cpp" />
     <ClCompile Include="world\Map.cpp" />
     <ClCompile Include="world\MapAnimation.cpp" />
     <ClCompile Include="world\MapSelection.cpp" />
