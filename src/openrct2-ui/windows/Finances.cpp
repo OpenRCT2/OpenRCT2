@@ -44,7 +44,7 @@ namespace OpenRCT2::Ui::Windows
         WINDOW_FINANCES_PAGE_COUNT
     };
 
-    enum
+    enum WindowFinancesWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,

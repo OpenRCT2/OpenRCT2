@@ -26,7 +26,7 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-    enum WindowViewClippingWidgetIdx
+    enum WindowViewClippingWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,

@@ -46,7 +46,7 @@ namespace OpenRCT2::Ui::Windows
         WINDOW_THEMES_TAB_COUNT
     };
 
-    enum WindowThemesWidgetIdx
+    enum WindowThemesWidgetIdx : WidgetIndex
     {
         WIDX_THEMES_BACKGROUND,
         WIDX_THEMES_TITLE,

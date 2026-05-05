@@ -17,7 +17,7 @@ namespace OpenRCT2::Ui::Windows
 {
     static constexpr ScreenSize kWindowSize = { 40, 64 };
 
-    enum WindowTitleExitWidgetIdx
+    enum WindowTitleExitWidgetIdx : WidgetIndex
     {
         WIDX_EXIT,
     };

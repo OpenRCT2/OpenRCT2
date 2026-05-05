@@ -233,8 +233,11 @@ static RenderTarget CreateRT(const Viewport& viewport)
     RenderTarget rt;
     rt.width = viewport.width;
     rt.height = viewport.height;
-    rt.bits = new (std::nothrow) PaletteIndex[rt.width * rt.height];
-    if (rt.bits == nullptr)
+    try
+    {
+        rt.bits = new PaletteIndex[rt.width * rt.height];
+    }
+    catch (...)
     {
         throw std::runtime_error("Giant screenshot failed, unable to allocate memory for image.");
     }

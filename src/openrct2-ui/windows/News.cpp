@@ -35,7 +35,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr ScreenSize kWindowSize = { 400, 300 };
     static constexpr uint8_t kItemSeparatorHeight = 2;
 
-    enum WindowNewsWidgetIdx
+    enum WindowNewsWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,

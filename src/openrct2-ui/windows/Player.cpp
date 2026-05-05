@@ -36,7 +36,7 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma region Widgets
 
-    enum WindowPlayerWidgetIdx
+    enum WindowPlayerWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,

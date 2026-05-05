@@ -24,7 +24,7 @@ namespace OpenRCT2::Ui::Windows
 {
     static constexpr ScreenSize kWindowSize = { 200, 100 };
 
-    enum WindowRideDemolishWidgetIdx
+    enum WindowRideDemolishWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,

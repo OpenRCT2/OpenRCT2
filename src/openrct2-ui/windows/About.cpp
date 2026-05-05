@@ -36,7 +36,7 @@ namespace OpenRCT2::Ui::Windows
         WINDOW_ABOUT_PAGE_RCT2,
     };
 
-    enum WindowAboutWidgetIdx
+    enum WindowAboutWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,
