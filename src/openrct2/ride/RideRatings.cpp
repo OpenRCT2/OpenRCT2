@@ -1305,7 +1305,7 @@ static void RideRatingsApplyAdjustments(const Ride& ride, RideRating::Tuple& rat
             {
                 totalAirTime -= 96;
             }
-            excitementModifier = -1 * ( std::min<uint16_t>(totalAirTime, 200) / 8 );
+            excitementModifier = -1 * (std::min<uint16_t>(totalAirTime, 200) / 8);
         }
         else
         {
