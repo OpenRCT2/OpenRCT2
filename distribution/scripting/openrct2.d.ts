@@ -1794,11 +1794,7 @@ declare global {
          *                and apply to {@link PathNavigator.getConnectedPaths},
          *                {@link PathNavigator.moveTo}, and {@link PathNavigator.permittedEdges}.
          */
-        getPathNavigator(
-            location: CoordsXY,
-            elementIndex: number,
-            options?: PathNavigationOptions
-        ): PathNavigator | null;
+        getPathNavigator(location: CoordsXY, elementIndex: number, options?: PathNavigationOptions): PathNavigator | null;
 
         /**
          * Gets a {@link PathNavigator} for the footpath at the given world coordinates.
@@ -1806,10 +1802,7 @@ declare global {
          * @param position The world coordinates (x, y, z) of the footpath.
          * @param options Optional traversal rules; see the other overload for details.
          */
-        getPathNavigator(
-            position: CoordsXYZ,
-            options?: PathNavigationOptions
-        ): PathNavigator | null;
+        getPathNavigator(position: CoordsXYZ, options?: PathNavigationOptions): PathNavigator | null;
 
     }
 
