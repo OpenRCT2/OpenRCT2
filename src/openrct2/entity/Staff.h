@@ -68,7 +68,7 @@ namespace OpenRCT2
         union // 3rd statistic
         {
             uint32_t StaffLitterSwept;
-            uint32_t StaffVandalsStopped; // TODO: move to 1st pos
+            uint32_t StaffVandalsStopped;
         };
         union // 4th statistic
         {
