@@ -10,7 +10,6 @@
 #pragma once
 
 #include "../localisation/StringIdType.h"
-#include "../localisation/StringIds.h"
 #include "EntityBase.h"
 
 struct CoordsXYZ;
