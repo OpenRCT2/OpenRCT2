@@ -32,7 +32,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr ScreenSize kWindowSize = { 420, 280 };
     static constexpr ScreenSize kMaximumWindowSize = { 1200, 800 };
 
-    enum WindowShortcutWidgetIdx
+    enum WindowShortcutWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,

@@ -39,7 +39,7 @@ namespace OpenRCT2::Ui::Windows
         WINDOW_MULTIPLAYER_PAGE_OPTIONS
     };
 
-    enum WindowMultiplayerWidgetIdx
+    enum WindowMultiplayerWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,

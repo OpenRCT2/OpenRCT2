@@ -27,7 +27,7 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma region Widgets
 
-    enum
+    enum WindowTrackManageWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,

@@ -61,7 +61,7 @@ namespace OpenRCT2::Ui::Windows
         WINDOW_PARK_PAGE_COUNT,
     };
 
-    enum WindowParkWidgetIdx
+    enum WindowParkWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,

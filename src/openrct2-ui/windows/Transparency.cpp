@@ -30,7 +30,7 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-    enum WindowTransparencyWidgetIndex
+    enum WindowTransparencyWidgetIndex : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,

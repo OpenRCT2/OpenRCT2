@@ -23,7 +23,7 @@ namespace OpenRCT2::Ui::Windows
 {
     static constexpr ScreenSize kWindowSize = { 200, 100 };
 
-    enum
+    enum WindowOverwritePromptWidgetIdx : WidgetIndex
     {
         WIDX_OVERWRITE_BACKGROUND,
         WIDX_OVERWRITE_TITLE,

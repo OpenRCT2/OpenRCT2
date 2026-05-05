@@ -79,7 +79,7 @@ static constexpr auto kWeatherTypes = std::to_array<WeatherInfo>({
     { SPR_G2_WEATHER_BLIZZARD_SMALL, SPR_G2_WEATHER_BLIZZARD, STR_BLIZZARD },
 });
 
-enum WindowCheatsWidgetIdx
+enum WindowCheatsWidgetIdx : WidgetIndex
 {
     WIDX_BACKGROUND,
     WIDX_TITLE,

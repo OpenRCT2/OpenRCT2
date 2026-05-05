@@ -80,7 +80,7 @@ namespace OpenRCT2::Ui::Windows
         };
     };
 
-    enum
+    enum WindowScenarioSelectWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLEBAR,

@@ -68,7 +68,7 @@ namespace OpenRCT2::Ui::Windows
         WINDOW_GUEST_PAGE_COUNT,
     };
 
-    enum WindowGuestWidgetIdx
+    enum WindowGuestWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,

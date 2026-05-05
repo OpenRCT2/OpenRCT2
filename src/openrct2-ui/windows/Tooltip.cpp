@@ -26,7 +26,7 @@ using namespace OpenRCT2::Drawing;
 
 namespace OpenRCT2::Ui::Windows
 {
-    enum
+    enum WindowTooltipWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND
     };

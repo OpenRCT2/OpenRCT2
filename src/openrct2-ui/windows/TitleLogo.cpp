@@ -18,7 +18,7 @@ namespace OpenRCT2::Ui::Windows
 {
     static constexpr ScreenSize kWindowSize = { 232, 136 };
 
-    enum
+    enum WindowTitleLogoWidgetIdx : WidgetIndex
     {
         WIDX_LOGO
     };

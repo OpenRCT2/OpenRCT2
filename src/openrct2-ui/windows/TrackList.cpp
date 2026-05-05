@@ -43,7 +43,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t kRotateAndSceneryButtonSize = 24;
     static constexpr int32_t kWindowPadding = 5;
 
-    enum
+    enum WindowTrackListWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,

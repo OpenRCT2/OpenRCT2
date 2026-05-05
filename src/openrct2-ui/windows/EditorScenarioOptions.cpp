@@ -102,7 +102,7 @@ namespace OpenRCT2::Ui::Windows
         STR_OBJECTIVE_DROPDOWN_MONTHLY_PROFIT_FROM_FOOD_MERCHANDISE,
     };
 
-    enum
+    enum WindowEditorScenarioOptionsWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,
