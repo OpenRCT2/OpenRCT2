@@ -471,7 +471,7 @@ namespace OpenRCT2::Scripting
         //   (pos: CoordsXY, elementIndex: number)
         //   (pos: CoordsXYZ, options: PathNavigationOptions)
         //   (pos: CoordsXY, elementIndex: number, options: PathNavigationOptions)
-        // The second arg is the elementIndex iff it's a number; otherwise it's options.
+        // The second arg is the elementIndex if it's a number; otherwise it's options.
         bool hasElementIndex = false;
         uint32_t elementIndex = 0;
         JSValue optionsArg = JS_UNDEFINED;
