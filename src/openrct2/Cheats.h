@@ -79,7 +79,6 @@ enum class CheatType : int32_t
     setGrassLength,
     waterPlants,
     disablePlantAging,
-    disableGrassGrowing,
     fixVandalism,
     removeLitter,
     setStaffSpeed,
@@ -108,6 +107,7 @@ enum class CheatType : int32_t
     allowSpecialColourSchemes,
     removeParkFences,
     ignorePrice,
+    disableGrassGrowing,
     count,
 };
 
