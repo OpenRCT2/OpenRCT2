@@ -3826,3 +3826,4 @@ STR_7026    :Makes the whole ride visible
 STR_7027    :{MOVE_X}{29}{STRINGID}
 STR_7028    :Quarter Helix up
 STR_7029    :Quarter Helix down
+STR_7030    :{WINDOW_COLOUR_2}Guests entertained: {BLACK}{COMMA32}
