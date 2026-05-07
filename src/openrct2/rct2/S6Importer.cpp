@@ -1825,10 +1825,10 @@ namespace OpenRCT2::RCT2
             dst->x = src->x;
             dst->y = src->y;
             dst->z = src->z;
-            dst->SpriteData.Width = src->SpriteWidth;
-            dst->SpriteData.HeightMin = src->SpriteHeightNegative;
-            dst->SpriteData.HeightMax = src->SpriteHeightPositive;
-            dst->SpriteData.SpriteRect = ScreenRect(src->SpriteLeft, src->SpriteTop, src->SpriteRight, src->SpriteBottom);
+            dst->SpriteData.width = src->SpriteWidth;
+            dst->SpriteData.heightMin = src->SpriteHeightNegative;
+            dst->SpriteData.heightMax = src->SpriteHeightPositive;
+            dst->SpriteData.spriteRect = ScreenRect(src->SpriteLeft, src->SpriteTop, src->SpriteRight, src->SpriteBottom);
             dst->Orientation = src->EntityDirection;
         }
 

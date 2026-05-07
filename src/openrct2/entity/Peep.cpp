@@ -409,9 +409,9 @@ namespace OpenRCT2
         auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(AnimationObjectIndex);
 
         const auto& spriteBounds = animObj->GetSpriteBounds(AnimationGroup, AnimationType);
-        SpriteData.Width = spriteBounds.spriteWidth;
-        SpriteData.HeightMin = spriteBounds.spriteHeightNegative;
-        SpriteData.HeightMax = spriteBounds.spriteHeightPositive;
+        SpriteData.width = spriteBounds.spriteWidth;
+        SpriteData.heightMin = spriteBounds.spriteHeightNegative;
+        SpriteData.heightMax = spriteBounds.spriteHeightPositive;
     }
 
     /* rct2: 0x00693BE5 */
@@ -1192,13 +1192,13 @@ namespace OpenRCT2
         {
             if (peep->x == kLocationNull)
                 continue;
-            if (viewport->viewPos.x > peep->SpriteData.SpriteRect.GetRight())
+            if (viewport->viewPos.x > peep->SpriteData.spriteRect.GetRight())
                 continue;
-            if (viewport->viewPos.x + viewport->ViewWidth() < peep->SpriteData.SpriteRect.GetLeft())
+            if (viewport->viewPos.x + viewport->ViewWidth() < peep->SpriteData.spriteRect.GetLeft())
                 continue;
-            if (viewport->viewPos.y > peep->SpriteData.SpriteRect.GetBottom())
+            if (viewport->viewPos.y > peep->SpriteData.spriteRect.GetBottom())
                 continue;
-            if (viewport->viewPos.y + viewport->ViewHeight() < peep->SpriteData.SpriteRect.GetTop())
+            if (viewport->viewPos.y + viewport->ViewHeight() < peep->SpriteData.spriteRect.GetTop())
                 continue;
 
             visiblePeeps += peep->State == PeepState::queuing ? 1 : 2;
@@ -1606,9 +1606,9 @@ namespace OpenRCT2
             auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(AnimationObjectIndex);
 
             const auto& spriteBounds = animObj->GetSpriteBounds(AnimationGroup, NextAnimationType);
-            SpriteData.Width = spriteBounds.spriteWidth;
-            SpriteData.HeightMin = spriteBounds.spriteHeightNegative;
-            SpriteData.HeightMax = spriteBounds.spriteHeightPositive;
+            SpriteData.width = spriteBounds.spriteWidth;
+            SpriteData.heightMin = spriteBounds.spriteHeightNegative;
+            SpriteData.heightMax = spriteBounds.spriteHeightPositive;
             Invalidate();
         }
     }

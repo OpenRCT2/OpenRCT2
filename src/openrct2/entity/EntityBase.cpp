@@ -57,7 +57,7 @@ namespace OpenRCT2
                 break;
         }
 
-        ViewportsInvalidate(GetLocation(), SpriteData.Width, SpriteData.HeightMin, SpriteData.HeightMax, maxZoom);
+        ViewportsInvalidate(GetLocation(), SpriteData.width, SpriteData.heightMin, SpriteData.heightMax, maxZoom);
     }
 
     void EntityBase::Serialise(DataSerialiser& stream)

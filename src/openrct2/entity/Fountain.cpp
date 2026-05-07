@@ -151,9 +151,9 @@ namespace OpenRCT2
             jumpingFountain->Iteration = iteration;
             jumpingFountain->fountainFlags = newFlags;
             jumpingFountain->Orientation = direction << 3;
-            jumpingFountain->SpriteData.Width = 33;
-            jumpingFountain->SpriteData.HeightMin = 36;
-            jumpingFountain->SpriteData.HeightMax = 12;
+            jumpingFountain->SpriteData.width = 33;
+            jumpingFountain->SpriteData.heightMin = 36;
+            jumpingFountain->SpriteData.heightMax = 12;
             jumpingFountain->MoveTo(newLoc);
             jumpingFountain->FountainType = newType;
             jumpingFountain->NumTicksAlive = 0;

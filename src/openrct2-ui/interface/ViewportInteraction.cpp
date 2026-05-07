@@ -748,8 +748,8 @@ namespace OpenRCT2::Ui
 
             auto screenCoords = Translate3DTo2DWithZ(rotation, peep->GetLocation());
             auto spriteRect = ScreenRect(
-                screenCoords - ScreenCoordsXY{ peep->SpriteData.Width, peep->SpriteData.HeightMin },
-                screenCoords + ScreenCoordsXY{ peep->SpriteData.Width, peep->SpriteData.HeightMax });
+                screenCoords - ScreenCoordsXY{ peep->SpriteData.width, peep->SpriteData.heightMin },
+                screenCoords + ScreenCoordsXY{ peep->SpriteData.width, peep->SpriteData.heightMax });
 
             auto distance = abs(((spriteRect.GetLeft() + spriteRect.GetRight()) / 2) - viewportCoords.x)
                 + abs(((spriteRect.GetTop() + spriteRect.GetBottom()) / 2) - viewportCoords.y);

@@ -97,9 +97,9 @@ namespace OpenRCT2
     void MoneyEffect::SetValue(money64 newValue)
     {
         value = newValue;
-        SpriteData.Width = 64;
-        SpriteData.HeightMin = 20;
-        SpriteData.HeightMax = 30;
+        SpriteData.width = 64;
+        SpriteData.heightMin = 20;
+        SpriteData.heightMax = 30;
         moveDelay = 0;
         numMovements = 0;
 
