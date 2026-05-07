@@ -66,7 +66,7 @@ namespace OpenRCT2
         return (baseSpeed * 9) >> 18;
     }
 
-    uint16_t ToHumanReadableAirTime(uint16_t airTime)
+    int32_t ToHumanReadableAirTime(uint16_t airTime)
     {
         return airTime * 3;
     }

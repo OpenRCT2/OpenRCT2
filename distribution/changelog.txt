@@ -2,6 +2,7 @@
 ------------------------------------------------------------------------
 - Feature: [#24242] [Plugin] Add ride-breakdown hooktype.
 - Feature: [#24879] [Plugin] Add methods for showing and hiding gridlines.
+- Feature: [#26327] Add ‘guests entertained’ statistic to entertainers.
 - Improved: [#26374] Add higher resolution app icons for Android.
 - Improved: [#26386] Initial window scale and toolbar options on fresh Android installations.
 - Change: [#26476] Limit creation of new station styles to prepare for more flexibility with ride stations and entrances.
@@ -19,6 +20,7 @@
 - Fix: [#26432] Guests choose to head for rides they have already ridden if they don’t have a map.
 - Fix: [#26492] Drag tool shows per-tile error instead of total cost when running out of money midway through placement.
 - Fix: [#26504] The boosts/penalties to excitement and nausea that air time provides are calculated wrong.
+- Fix: [#26510] Displayed air time overflows after 655.35 seconds instead of the internal maximum of 1966.05 seconds.
 
 0.5.0 (2026-04-12)
 ------------------------------------------------------------------------
