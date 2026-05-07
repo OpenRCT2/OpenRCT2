@@ -1257,9 +1257,9 @@ namespace OpenRCT2::RCT1
             for (auto* peep : EntityList<Guest>())
             {
                 const auto& spriteBounds = animObj->GetSpriteBounds(peep->AnimationGroup, peep->AnimationType);
-                peep->SpriteData.width = spriteBounds.spriteWidth;
-                peep->SpriteData.heightMin = spriteBounds.spriteHeightNegative;
-                peep->SpriteData.heightMax = spriteBounds.spriteHeightPositive;
+                peep->spriteData.width = spriteBounds.spriteWidth;
+                peep->spriteData.heightMin = spriteBounds.spriteHeightNegative;
+                peep->spriteData.heightMax = spriteBounds.spriteHeightPositive;
             }
 
             auto& objManager = GetContext()->GetObjectManager();
@@ -1267,9 +1267,9 @@ namespace OpenRCT2::RCT1
             {
                 animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
                 const auto& spriteBounds = animObj->GetSpriteBounds(peep->AnimationGroup, peep->AnimationType);
-                peep->SpriteData.width = spriteBounds.spriteWidth;
-                peep->SpriteData.heightMin = spriteBounds.spriteHeightNegative;
-                peep->SpriteData.heightMax = spriteBounds.spriteHeightPositive;
+                peep->spriteData.width = spriteBounds.spriteWidth;
+                peep->spriteData.heightMin = spriteBounds.spriteHeightNegative;
+                peep->spriteData.heightMax = spriteBounds.spriteHeightPositive;
             }
         }
 
@@ -1429,9 +1429,9 @@ namespace OpenRCT2::RCT1
         void ImportEntityCommonProperties(EntityBase* dst, const RCT12EntityBase* src)
         {
             dst->Orientation = src->EntityDirection;
-            dst->SpriteData.width = src->SpriteWidth;
-            dst->SpriteData.heightMin = src->SpriteHeightNegative;
-            dst->SpriteData.heightMax = src->SpriteHeightPositive;
+            dst->spriteData.width = src->SpriteWidth;
+            dst->spriteData.heightMin = src->SpriteHeightNegative;
+            dst->spriteData.heightMax = src->SpriteHeightPositive;
             dst->x = src->x;
             dst->y = src->y;
             dst->z = src->z;
@@ -2817,12 +2817,12 @@ namespace OpenRCT2::RCT1
         dst->remaining_distance = src->RemainingDistance;
 
         // Properties from vehicle entry
-        dst->SpriteData.width = src->SpriteWidth;
-        dst->SpriteData.heightMin = src->SpriteHeightNegative;
-        dst->SpriteData.heightMax = src->SpriteHeightPositive;
+        dst->spriteData.width = src->SpriteWidth;
+        dst->spriteData.heightMin = src->SpriteHeightNegative;
+        dst->spriteData.heightMax = src->SpriteHeightPositive;
         dst->Orientation = src->EntityDirection;
 
-        dst->SpriteData.spriteRect = ScreenRect(src->SpriteLeft, src->SpriteTop, src->SpriteRight, src->SpriteBottom);
+        dst->spriteData.spriteRect = ScreenRect(src->SpriteLeft, src->SpriteTop, src->SpriteRight, src->SpriteBottom);
 
         dst->mass = src->Mass;
         dst->num_seats = src->NumSeats;

@@ -61,9 +61,9 @@ namespace OpenRCT2
 
     void VehicleCrashParticle::SetSpriteData()
     {
-        SpriteData.width = 8;
-        SpriteData.heightMin = 8;
-        SpriteData.heightMax = 8;
+        spriteData.width = 8;
+        spriteData.heightMin = 8;
+        spriteData.heightMax = 8;
     }
 
     void VehicleCrashParticle::Launch()
@@ -196,9 +196,9 @@ namespace OpenRCT2
         auto* sprite = getGameState().entities.CreateEntity<CrashSplashParticle>();
         if (sprite != nullptr)
         {
-            sprite->SpriteData.width = 33;
-            sprite->SpriteData.heightMin = 51;
-            sprite->SpriteData.heightMax = 16;
+            sprite->spriteData.width = 33;
+            sprite->spriteData.heightMin = 51;
+            sprite->spriteData.heightMax = 16;
             sprite->MoveTo(splashPos + CoordsXYZ{ 0, 0, 3 });
             sprite->frame = 0;
         }
@@ -245,9 +245,9 @@ namespace OpenRCT2
             if (steam == nullptr)
                 return;
 
-            steam->SpriteData.width = 20;
-            steam->SpriteData.heightMin = 18;
-            steam->SpriteData.heightMax = 16;
+            steam->spriteData.width = 20;
+            steam->spriteData.heightMin = 18;
+            steam->spriteData.heightMax = 16;
             steam->frame = 256;
             steam->time_to_move = 0;
             steam->MoveTo(coords);
@@ -299,9 +299,9 @@ namespace OpenRCT2
         auto* entity = getGameState().entities.CreateEntity<ExplosionCloud>();
         if (entity != nullptr)
         {
-            entity->SpriteData.width = 44;
-            entity->SpriteData.heightMin = 32;
-            entity->SpriteData.heightMax = 34;
+            entity->spriteData.width = 44;
+            entity->spriteData.heightMin = 32;
+            entity->spriteData.heightMax = 34;
             entity->MoveTo(cloudPos + CoordsXYZ{ 0, 0, 4 });
             entity->frame = 0;
         }
@@ -344,9 +344,9 @@ namespace OpenRCT2
         auto* entity = getGameState().entities.CreateEntity<ExplosionFlare>();
         if (entity != nullptr)
         {
-            entity->SpriteData.width = 25;
-            entity->SpriteData.heightMin = 85;
-            entity->SpriteData.heightMax = 8;
+            entity->spriteData.width = 25;
+            entity->spriteData.heightMin = 85;
+            entity->spriteData.heightMax = 8;
             entity->MoveTo(flarePos + CoordsXYZ{ 0, 0, 4 });
             entity->frame = 0;
         }

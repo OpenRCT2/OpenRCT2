@@ -7267,9 +7267,9 @@ namespace OpenRCT2
         auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
 
         const auto& spriteBounds = animObj->GetSpriteBounds(peep->AnimationGroup, peep->AnimationType);
-        peep->SpriteData.width = spriteBounds.spriteWidth;
-        peep->SpriteData.heightMin = spriteBounds.spriteHeightNegative;
-        peep->SpriteData.heightMax = spriteBounds.spriteHeightPositive;
+        peep->spriteData.width = spriteBounds.spriteWidth;
+        peep->spriteData.heightMin = spriteBounds.spriteHeightNegative;
+        peep->spriteData.heightMax = spriteBounds.spriteHeightPositive;
         peep->Orientation = 0;
 
         peep->MoveTo(coords);

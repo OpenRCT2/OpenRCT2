@@ -1757,12 +1757,12 @@ namespace OpenRCT2
         static void ReadWriteEntityCommon(OrcaStream::ChunkStream& cs, EntityBase& entity)
         {
             cs.readWrite(entity.Id);
-            cs.readWrite(entity.SpriteData.heightMin);
+            cs.readWrite(entity.spriteData.heightMin);
             cs.readWrite(entity.x);
             cs.readWrite(entity.y);
             cs.readWrite(entity.z);
-            cs.readWrite(entity.SpriteData.width);
-            cs.readWrite(entity.SpriteData.heightMax);
+            cs.readWrite(entity.spriteData.width);
+            cs.readWrite(entity.spriteData.heightMax);
             cs.readWrite(entity.Orientation);
         }
 

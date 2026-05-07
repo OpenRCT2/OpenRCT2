@@ -137,9 +137,9 @@ void Vehicle::UpdateCollisionSetup()
         train->animationState = ScenarioRand() & 0xFFFF;
 
         train->animation_frame = ScenarioRand() & 0x7;
-        train->SpriteData.width = 13;
-        train->SpriteData.heightMin = 45;
-        train->SpriteData.heightMax = 5;
+        train->spriteData.width = 13;
+        train->spriteData.heightMin = 45;
+        train->spriteData.heightMax = 5;
 
         train->MoveTo(trainLoc);
 
@@ -406,7 +406,7 @@ void Vehicle::CrashOnLand()
     ExplosionCloud::Create(curLoc);
     ExplosionFlare::Create(curLoc);
 
-    uint8_t numParticles = std::min(SpriteData.width, static_cast<uint8_t>(7));
+    uint8_t numParticles = std::min(spriteData.width, static_cast<uint8_t>(7));
 
     while (numParticles-- != 0)
         VehicleCrashParticle::Create(colours, curLoc);
@@ -414,9 +414,9 @@ void Vehicle::CrashOnLand()
     flags.set(VehicleFlag::crashed);
     animation_frame = 0;
     animationState = 0;
-    SpriteData.width = 13;
-    SpriteData.heightMin = 45;
-    SpriteData.heightMax = 5;
+    spriteData.width = 13;
+    spriteData.heightMin = 45;
+    spriteData.heightMax = 5;
 
     MoveTo(curLoc);
 
@@ -483,9 +483,9 @@ void Vehicle::CrashOnWater()
     flags.set(VehicleFlag::crashed);
     animation_frame = 0;
     animationState = 0;
-    SpriteData.width = 13;
-    SpriteData.heightMin = 45;
-    SpriteData.heightMax = 5;
+    spriteData.width = 13;
+    spriteData.heightMin = 45;
+    spriteData.heightMax = 5;
 
     MoveTo(curLoc);
 

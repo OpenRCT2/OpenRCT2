@@ -302,9 +302,9 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
         targetPos.x += offsetXY;
         targetPos.y += offsetXY;
 
-        duck->SpriteData.width = 9;
-        duck->SpriteData.heightMin = 12;
-        duck->SpriteData.heightMax = 9;
+        duck->spriteData.width = 9;
+        duck->spriteData.heightMin = 12;
+        duck->spriteData.heightMax = 9;
         duck->target_x = targetPos.x;
         duck->target_y = targetPos.y;
         uint8_t direction = ScenarioRand() & 3;

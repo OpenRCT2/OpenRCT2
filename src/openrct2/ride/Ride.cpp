@@ -2994,9 +2994,9 @@ static Vehicle* VehicleCreateCar(
     }
 
     // Loc6DD9A5:
-    vehicle->SpriteData.width = carEntry.spriteWidth;
-    vehicle->SpriteData.heightMin = carEntry.spriteHeightNegative;
-    vehicle->SpriteData.heightMax = carEntry.spriteHeightPositive;
+    vehicle->spriteData.width = carEntry.spriteWidth;
+    vehicle->spriteData.heightMin = carEntry.spriteHeightNegative;
+    vehicle->spriteData.heightMax = carEntry.spriteHeightPositive;
     vehicle->mass = carEntry.car_mass;
     vehicle->num_seats = carEntry.num_seats;
     vehicle->speed = carEntry.powered_max_speed;
@@ -5239,17 +5239,17 @@ void FixInvalidVehicleSpriteSizes()
                     break;
                 }
 
-                if (vehicle->SpriteData.width == 0)
+                if (vehicle->spriteData.width == 0)
                 {
-                    vehicle->SpriteData.width = carEntry->spriteWidth;
+                    vehicle->spriteData.width = carEntry->spriteWidth;
                 }
-                if (vehicle->SpriteData.heightMin == 0)
+                if (vehicle->spriteData.heightMin == 0)
                 {
-                    vehicle->SpriteData.heightMin = carEntry->spriteHeightNegative;
+                    vehicle->spriteData.heightMin = carEntry->spriteHeightNegative;
                 }
-                if (vehicle->SpriteData.heightMax == 0)
+                if (vehicle->spriteData.heightMax == 0)
                 {
-                    vehicle->SpriteData.heightMax = carEntry->spriteHeightPositive;
+                    vehicle->spriteData.heightMax = carEntry->spriteHeightPositive;
                 }
             }
         }

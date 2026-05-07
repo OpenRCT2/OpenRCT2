@@ -42,9 +42,9 @@ Vehicle* CableLiftSegmentCreate(
     current->SubType = head ? Vehicle::Type::head : Vehicle::Type::tail;
     current->var_44 = var_44;
     current->remaining_distance = remaining_distance;
-    current->SpriteData.width = 10;
-    current->SpriteData.heightMin = 10;
-    current->SpriteData.heightMax = 10;
+    current->spriteData.width = 10;
+    current->spriteData.heightMin = 10;
+    current->spriteData.heightMax = 10;
     current->mass = 100;
     current->num_seats = 0;
     current->speed = 20;

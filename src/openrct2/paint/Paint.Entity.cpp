@@ -108,8 +108,8 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
 
         auto screenCoords = Translate3DTo2DWithZ(session.CurrentRotation, entity->GetLocation());
         auto spriteRect = ScreenRect(
-            screenCoords - ScreenCoordsXY{ entity->SpriteData.width, entity->SpriteData.heightMin },
-            screenCoords + ScreenCoordsXY{ entity->SpriteData.width, entity->SpriteData.heightMax });
+            screenCoords - ScreenCoordsXY{ entity->spriteData.width, entity->spriteData.heightMin },
+            screenCoords + ScreenCoordsXY{ entity->spriteData.width, entity->spriteData.heightMax });
 
         const ZoomLevel zoom = session.rt.zoom_level;
         if (session.rt.y + session.rt.height <= zoom.ApplyInversedTo(spriteRect.GetTop())

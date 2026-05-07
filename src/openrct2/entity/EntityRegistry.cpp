@@ -285,10 +285,10 @@ namespace OpenRCT2
         base.x = kLocationNull;
         base.y = kLocationNull;
         base.z = 0;
-        base.SpriteData.width = 0x10;
-        base.SpriteData.heightMin = 0x14;
-        base.SpriteData.heightMax = 0x8;
-        base.SpriteData.spriteRect = {};
+        base.spriteData.width = 0x10;
+        base.spriteData.heightMin = 0x14;
+        base.spriteData.heightMax = 0x8;
+        base.spriteData.spriteRect = {};
         base.SpatialIndex = kInvalidSpatialIndex;
 
         EntitySpatialInsert(base, { kLocationNull, 0 });
@@ -543,9 +543,9 @@ static void EntitySetCoordinates(const CoordsXYZ& entityPos, EntityBase* entity)
 {
     auto screenCoords = Translate3DTo2DWithZ(GetCurrentRotation(), entityPos);
 
-    entity->SpriteData.spriteRect = ScreenRect(
-        screenCoords - ScreenCoordsXY{ entity->SpriteData.width, entity->SpriteData.heightMin },
-        screenCoords + ScreenCoordsXY{ entity->SpriteData.width, entity->SpriteData.heightMax });
+    entity->spriteData.spriteRect = ScreenRect(
+        screenCoords - ScreenCoordsXY{ entity->spriteData.width, entity->spriteData.heightMin },
+        screenCoords + ScreenCoordsXY{ entity->spriteData.width, entity->spriteData.heightMax });
     entity->SetLocation(entityPos);
 }
 
