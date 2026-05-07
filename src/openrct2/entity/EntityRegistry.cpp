@@ -61,7 +61,7 @@ namespace OpenRCT2
 
     static constexpr uint32_t GetSpatialIndex(EntityBase& entity)
     {
-        return entity.SpatialIndex & ~kSpatialIndexDirtyMask;
+        return entity.spatialIndex & ~kSpatialIndexDirtyMask;
     }
 
     static constexpr bool EntityTypeIsMiscEntity(const EntityType type)
@@ -289,7 +289,7 @@ namespace OpenRCT2
         base.SpriteData.HeightMin = 0x14;
         base.SpriteData.HeightMax = 0x8;
         base.SpriteData.SpriteRect = {};
-        base.SpatialIndex = kInvalidSpatialIndex;
+        base.spatialIndex = kInvalidSpatialIndex;
 
         EntitySpatialInsert(base, { kLocationNull, 0 });
     }
@@ -376,7 +376,7 @@ namespace OpenRCT2
 
         Algorithm::sortedInsert(spatialVector, entity.Id);
 
-        entity.SpatialIndex = newIndex;
+        entity.spatialIndex = newIndex;
     }
 
     void EntityRegistry::EntitySpatialRemove(EntityBase& entity)
@@ -395,14 +395,14 @@ namespace OpenRCT2
             ResetEntitySpatialIndices();
         }
 
-        entity.SpatialIndex = kInvalidSpatialIndex;
+        entity.spatialIndex = kInvalidSpatialIndex;
     }
 
     void EntityRegistry::UpdateEntitySpatialIndex(EntityBase& entity)
     {
-        if (entity.SpatialIndex & kSpatialIndexDirtyMask)
+        if (entity.spatialIndex & kSpatialIndexDirtyMask)
         {
-            if (entity.SpatialIndex != kInvalidSpatialIndex)
+            if (entity.spatialIndex != kInvalidSpatialIndex)
             {
                 EntitySpatialRemove(entity);
             }
@@ -523,7 +523,7 @@ void EntityBase::SetLocation(const CoordsXYZ& newLocation)
     y = newLocation.y;
     z = newLocation.z;
 
-    if (SpatialIndex & kSpatialIndexDirtyMask)
+    if (spatialIndex & kSpatialIndexDirtyMask)
     {
         // Already marked as dirty.
         return;
@@ -536,7 +536,7 @@ void EntityBase::SetLocation(const CoordsXYZ& newLocation)
         return;
     }
 
-    SpatialIndex |= kSpatialIndexDirtyMask;
+    spatialIndex |= kSpatialIndexDirtyMask;
 }
 
 static void EntitySetCoordinates(const CoordsXYZ& entityPos, EntityBase* entity)

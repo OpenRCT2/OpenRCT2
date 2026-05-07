@@ -48,7 +48,7 @@ namespace OpenRCT2
         EntitySpriteData SpriteData;
         // Used as direction or rotation depending on the entity.
         uint8_t Orientation;
-        uint32_t SpatialIndex;
+        uint32_t spatialIndex;
 
         /**
          * Moves a sprite to a new location, invalidates the current position if valid
