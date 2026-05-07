@@ -194,14 +194,16 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          # Compiling with VS2026 yields an executable that will only work on Windows 10 and higher.
+          # This is fine for ARM as the only Windows version to support it before W10 was Windows RT,
+          # which we don’t support. Using VS2022 for x86 and VS2026 ensures support for W7+ while
+          # also ensuring the game will compile on both MSVC versions.
           - platform: win32
-            runs_on: windows-2025-vs2026
+            runs_on: windows-2025
           - platform: x64
-            runs_on: windows-2025-vs2026
-          # keep arm64 on vs2022 for now. VS2026 is a bit slower and we can maintain
-          # compatibility with vs2022
+            runs_on: windows-2025
           - platform: arm64
-            runs_on: windows-latest
+            runs_on: windows-2025-vs2026
     env:
       PLATFORM: ${{ matrix.platform }}
       DISTANCE_FROM_TAG: ${{ needs.build_variables.outputs.distance }}
