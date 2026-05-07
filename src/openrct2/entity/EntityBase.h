@@ -29,13 +29,13 @@ namespace OpenRCT2
     struct EntitySpriteData
     {
         // Width from centre of sprite to edge
-        uint8_t Width;
+        uint8_t width;
         // Height from centre of sprite to bottom
-        uint8_t HeightMin;
+        uint8_t heightMin;
         // Height from centre of sprite to top
-        uint8_t HeightMax;
+        uint8_t heightMax;
         // Screen Coordinates of sprite
-        ScreenRect SpriteRect;
+        ScreenRect spriteRect;
     };
 
     struct EntityBase

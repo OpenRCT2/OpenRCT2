@@ -105,9 +105,9 @@ namespace OpenRCT2
         if (balloon == nullptr)
             return;
 
-        balloon->SpriteData.Width = 13;
-        balloon->SpriteData.HeightMin = 22;
-        balloon->SpriteData.HeightMax = 11;
+        balloon->SpriteData.width = 13;
+        balloon->SpriteData.heightMin = 22;
+        balloon->SpriteData.heightMax = 11;
         balloon->MoveTo(balloonPos);
         balloon->time_to_move = 0;
         balloon->frame = 0;

@@ -165,9 +165,9 @@ namespace OpenRCT2::GameActions
                 newPeep->PeepFlags |= PEEP_FLAGS_SLOW_WALK;
 
             const auto& spriteBounds = animObj->GetSpriteBounds(newPeep->AnimationGroup);
-            newPeep->SpriteData.Width = spriteBounds.spriteWidth;
-            newPeep->SpriteData.HeightMin = spriteBounds.spriteHeightNegative;
-            newPeep->SpriteData.HeightMax = spriteBounds.spriteHeightPositive;
+            newPeep->SpriteData.width = spriteBounds.spriteWidth;
+            newPeep->SpriteData.heightMin = spriteBounds.spriteHeightNegative;
+            newPeep->SpriteData.heightMax = spriteBounds.spriteHeightPositive;
 
             if (_autoPosition)
             {

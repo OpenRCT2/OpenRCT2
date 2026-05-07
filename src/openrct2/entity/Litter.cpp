@@ -87,9 +87,9 @@ namespace OpenRCT2
             return;
 
         litter->Orientation = offsetLitterPos.direction;
-        litter->SpriteData.Width = 6;
-        litter->SpriteData.HeightMin = 6;
-        litter->SpriteData.HeightMax = 3;
+        litter->SpriteData.width = 6;
+        litter->SpriteData.heightMin = 6;
+        litter->SpriteData.heightMax = 3;
         litter->SubType = type;
         litter->MoveTo(offsetLitterPos);
         litter->creationTick = gameState.currentTicks;
