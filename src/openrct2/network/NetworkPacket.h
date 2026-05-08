@@ -84,9 +84,7 @@ namespace OpenRCT2::Network
 
         Packet& operator<<(DataSerialiser& serialiser)
         {
-            write(
-                static_cast<const uint8_t*>(serialiser.GetStream().GetData()),
-                serialiser.GetStream().GetLength());
+            write(static_cast<const uint8_t*>(serialiser.GetStream().GetData()), serialiser.GetStream().GetLength());
             return *this;
         }
 
