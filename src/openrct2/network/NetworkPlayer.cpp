@@ -25,7 +25,7 @@ namespace OpenRCT2::Network
 
     void Player::read(Packet& packet)
     {
-        auto newName = packet.ReadString();
+        auto newName = packet.readString();
         setName(newName);
         packet >> id >> flags >> group >> lastAction >> lastActionCoord.x >> lastActionCoord.y >> lastActionCoord.z
             >> moneySpent >> commandsRan;
@@ -33,7 +33,7 @@ namespace OpenRCT2::Network
 
     void Player::write(Packet& packet)
     {
-        packet.WriteString(name);
+        packet.writeString(name);
         packet << id << flags << group << lastAction << lastActionCoord.x << lastActionCoord.y << lastActionCoord.z
                << moneySpent << commandsRan;
     }

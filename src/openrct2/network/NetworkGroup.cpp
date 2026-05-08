@@ -80,7 +80,7 @@ namespace OpenRCT2::Network
     void NetworkGroup::read(Packet& packet)
     {
         packet >> id;
-        setName(packet.ReadString());
+        setName(packet.readString());
         for (auto& action : actionsAllowed)
         {
             packet >> action;
@@ -90,7 +90,7 @@ namespace OpenRCT2::Network
     void NetworkGroup::write(Packet& packet) const
     {
         packet << id;
-        packet.WriteString(getName().c_str());
+        packet.writeString(getName().c_str());
         for (const auto& action : actionsAllowed)
         {
             packet << action;
