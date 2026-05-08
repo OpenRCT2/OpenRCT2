@@ -3480,7 +3480,7 @@ namespace OpenRCT2::Network
         auto& network = GetContext()->GetNetwork();
         Guard::IndexInRange(index, network.player_list);
 
-        network.player_list[index]->lastAction = static_cast<int32_t>(NetworkActions::FindCommand(command));
+        network.player_list[index]->lastAction = static_cast<int32_t>(NetworkActions::findCommand(command));
         network.player_list[index]->lastActionTime = Platform::GetTicks();
     }
 
@@ -3837,14 +3837,14 @@ namespace OpenRCT2::Network
 
     int32_t GetNumActions()
     {
-        return static_cast<int32_t>(NetworkActions::Actions.size());
+        return static_cast<int32_t>(NetworkActions::kActions.size());
     }
 
     StringId GetActionNameStringID(uint32_t index)
     {
-        if (index < NetworkActions::Actions.size())
+        if (index < NetworkActions::kActions.size())
         {
-            return NetworkActions::Actions[index].name;
+            return NetworkActions::kActions[index].name;
         }
 
         return kStringIdNone;

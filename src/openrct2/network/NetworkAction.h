@@ -59,9 +59,9 @@ namespace OpenRCT2::Network
     class NetworkActions final
     {
     public:
-        static const std::array<NetworkAction, static_cast<size_t>(Permission::count)> Actions;
+        static const std::array<NetworkAction, static_cast<size_t>(Permission::count)> kActions;
 
-        static Permission FindCommand(GameCommand command);
-        static Permission FindCommandByPermissionName(const std::string& permission_name);
+        static Permission findCommand(GameCommand command);
+        static Permission findCommandByPermissionName(const std::string& permission_name);
     };
 } // namespace OpenRCT2::Network

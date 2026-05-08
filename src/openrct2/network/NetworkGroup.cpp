@@ -40,7 +40,7 @@ namespace OpenRCT2::Network
         {
             const std::string permission = Json::GetString(jsonValue);
 
-            Permission action_id = NetworkActions::FindCommandByPermissionName(permission);
+            Permission action_id = NetworkActions::findCommandByPermissionName(permission);
             if (action_id != Permission::count)
             {
                 group.toggleActionPermission(action_id);
@@ -56,11 +56,11 @@ namespace OpenRCT2::Network
             { "name", getName() },
         };
         json_t actionsArray = json_t::array();
-        for (size_t i = 0; i < NetworkActions::Actions.size(); i++)
+        for (size_t i = 0; i < NetworkActions::kActions.size(); i++)
         {
             if (canPerformAction(static_cast<Permission>(i)))
             {
-                actionsArray.emplace_back(NetworkActions::Actions[i].permissionName);
+                actionsArray.emplace_back(NetworkActions::kActions[i].permissionName);
             }
         }
         jsonGroup["permissions"] = actionsArray;
@@ -123,7 +123,7 @@ namespace OpenRCT2::Network
 
     bool NetworkGroup::canPerformCommand(GameCommand command) const
     {
-        Permission action = NetworkActions::FindCommand(command);
+        Permission action = NetworkActions::findCommand(command);
         if (action != Permission::count)
         {
             return canPerformAction(action);
