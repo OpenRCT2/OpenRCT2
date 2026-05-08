@@ -60,7 +60,7 @@ namespace OpenRCT2::Network
         {
             if (canPerformAction(static_cast<Permission>(i)))
             {
-                actionsArray.emplace_back(NetworkActions::Actions[i].PermissionName);
+                actionsArray.emplace_back(NetworkActions::Actions[i].permissionName);
             }
         }
         jsonGroup["permissions"] = actionsArray;

@@ -21,7 +21,7 @@ namespace OpenRCT2::Network
     Permission NetworkActions::FindCommand(GameCommand command)
     {
         auto it = std::find_if(Actions.begin(), Actions.end(), [&command](NetworkAction const& action) {
-            for (GameCommand currentCommand : action.Commands)
+            for (GameCommand currentCommand : action.commands)
             {
                 if (currentCommand == command)
                 {
@@ -40,7 +40,7 @@ namespace OpenRCT2::Network
     Permission NetworkActions::FindCommandByPermissionName(const std::string& permission_name)
     {
         auto it = std::find_if(Actions.begin(), Actions.end(), [&permission_name](NetworkAction const& action) {
-            return action.PermissionName == permission_name;
+            return action.permissionName == permission_name;
         });
         if (it != Actions.end())
         {

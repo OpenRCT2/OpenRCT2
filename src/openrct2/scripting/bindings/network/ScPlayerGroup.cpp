@@ -98,7 +98,7 @@ namespace OpenRCT2::Scripting
         {
             if (Network::CanPerformAction(index, static_cast<Network::Permission>(permissionIndex)))
             {
-                JS_SetPropertyInt64(ctx, result, resultIdx++, TransformPermissionKeyToJS(ctx, action.PermissionName));
+                JS_SetPropertyInt64(ctx, result, resultIdx++, TransformPermissionKeyToJS(ctx, action.permissionName));
             }
             permissionIndex++;
         }
@@ -129,7 +129,7 @@ namespace OpenRCT2::Scripting
             auto permissionIndex = 0;
             for (const auto& action : Network::NetworkActions::Actions)
             {
-                if (action.PermissionName == permissionName)
+                if (action.permissionName == permissionName)
                 {
                     enabledPermissions[permissionIndex] = true;
                 }

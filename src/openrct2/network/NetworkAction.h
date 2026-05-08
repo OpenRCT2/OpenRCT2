@@ -51,9 +51,9 @@ namespace OpenRCT2::Network
     class NetworkAction final
     {
     public:
-        StringId Name;
-        std::string PermissionName;
-        std::vector<GameCommand> Commands;
+        StringId name;
+        std::string permissionName;
+        std::vector<GameCommand> commands;
     };
 
     class NetworkActions final

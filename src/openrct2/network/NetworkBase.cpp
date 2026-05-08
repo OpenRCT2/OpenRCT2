@@ -3844,7 +3844,7 @@ namespace OpenRCT2::Network
     {
         if (index < NetworkActions::Actions.size())
         {
-            return NetworkActions::Actions[index].Name;
+            return NetworkActions::Actions[index].name;
         }
 
         return kStringIdNone;
