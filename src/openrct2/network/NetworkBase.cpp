@@ -358,7 +358,7 @@ namespace OpenRCT2::Network
 
         mode = Mode::server;
 
-        _userManager.Load();
+        _userManager.load();
 
         LOG_VERBOSE("Begin listening for clients");
 
@@ -395,10 +395,10 @@ namespace OpenRCT2::Network
         if (GetMode() == Mode::server)
         {
             // Add SERVER to users.json and save.
-            User* networkUser = _userManager.GetOrAddUser(player->keyHash);
+            User* networkUser = _userManager.getOrAddUser(player->keyHash);
             networkUser->groupId = player->group;
             networkUser->name = player->name;
-            _userManager.Save();
+            _userManager.save();
         }
 
         auto* szAddress = address.empty() ? "*" : address.c_str();
@@ -1016,14 +1016,14 @@ namespace OpenRCT2::Network
 
         if (GetMode() == Mode::server)
         {
-            _userManager.UnsetUsersOfGroup(id);
-            _userManager.Save();
+            _userManager.unsetUsersOfGroup(id);
+            _userManager.save();
         }
     }
 
     uint8_t NetworkBase::GetGroupIDByHash(const std::string& keyhash)
     {
-        const User* networkUser = _userManager.GetUserByHash(keyhash);
+        const User* networkUser = _userManager.getUserByHash(keyhash);
 
         uint8_t groupId = GetDefaultGroup();
         if (networkUser != nullptr && networkUser->groupId.has_value())
@@ -2199,10 +2199,10 @@ namespace OpenRCT2::Network
             if (GetMode() == Mode::server)
             {
                 // Load keys host may have added manually
-                _userManager.Load();
+                _userManager.load();
 
                 // Check if the key is registered
-                const User* networkUser = _userManager.GetUserByHash(keyhash);
+                const User* networkUser = _userManager.getUserByHash(keyhash);
 
                 player = std::make_unique<Player>();
                 player->id = newid;
@@ -2262,7 +2262,7 @@ namespace OpenRCT2::Network
             if (unique)
             {
                 // Check if there is already a registered player with this name
-                if (_userManager.GetUserByName(new_name) != nullptr)
+                if (_userManager.getUserByName(new_name) != nullptr)
                 {
                     unique = false;
                 }
@@ -2721,7 +2721,7 @@ namespace OpenRCT2::Network
                     if (verified)
                     {
                         LOG_VERBOSE("Connection %s: Signature verification ok. Hash %s", hostName, hash.c_str());
-                        if (Config::Get().network.knownKeysOnly && _userManager.GetUserByHash(hash) == nullptr)
+                        if (Config::Get().network.knownKeysOnly && _userManager.getUserByHash(hash) == nullptr)
                         {
                             LOG_VERBOSE("Connection %s: Hash %s, not known", hostName, hash.c_str());
                             connection.authStatus = Auth::unknownKeyDisallowed;
@@ -3633,10 +3633,10 @@ namespace OpenRCT2::Network
             {
                 // Add or update saved user
                 UserManager& userManager = network._userManager;
-                User* networkUser = userManager.GetOrAddUser(player->keyHash);
+                User* networkUser = userManager.getOrAddUser(player->keyHash);
                 networkUser->groupId = groupId;
                 networkUser->name = player->name;
-                userManager.Save();
+                userManager.save();
             }
 
             auto* windowMgr = Ui::GetWindowManager();
@@ -3821,9 +3821,9 @@ namespace OpenRCT2::Network
                 network.KickPlayer(playerId);
 
                 UserManager& networkUserManager = network._userManager;
-                networkUserManager.Load();
-                networkUserManager.RemoveUser(player->keyHash);
-                networkUserManager.Save();
+                networkUserManager.load();
+                networkUserManager.removeUser(player->keyHash);
+                networkUserManager.save();
             }
         }
         return GameActions::Result();

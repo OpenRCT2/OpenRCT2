@@ -45,26 +45,26 @@ namespace OpenRCT2::Network
     class UserManager final
     {
     public:
-        void Load();
+        void load();
 
         /**
-         * @brief UserManager::Save
+         * @brief UserManager::save
          * Reads mappings from JSON, updates them in-place and saves JSON.
          *
          * Useful for retaining custom entries in JSON file.
          */
-        void Save();
+        void save();
 
-        void UnsetUsersOfGroup(uint8_t groupId);
-        void RemoveUser(const std::string& hash);
+        void unsetUsersOfGroup(uint8_t groupId);
+        void removeUser(const std::string& hash);
 
-        const User* GetUserByHash(const std::string& hash) const;
-        const User* GetUserByName(const std::string& name) const;
-        User* GetOrAddUser(const std::string& hash);
+        const User* getUserByHash(const std::string& hash) const;
+        const User* getUserByName(const std::string& name) const;
+        User* getOrAddUser(const std::string& hash);
 
     private:
         std::unordered_map<std::string, std::unique_ptr<User>> _usersByHash;
 
-        static u8string GetStorePath();
+        static u8string getStorePath();
     };
 } // namespace OpenRCT2::Network
