@@ -35,13 +35,13 @@ namespace OpenRCT2::Network
 
     void Connection::update()
     {
-        if (!IsValid())
+        if (!isValid())
         {
             return;
         }
 
         receiveData();
-        SendQueuedData();
+        sendQueuedData();
     }
 
     void Connection::receiveData()
@@ -49,10 +49,10 @@ namespace OpenRCT2::Network
         uint8_t buffer[kBufferSize];
         size_t bytesRead = 0;
 
-        ReadPacket status = Socket->ReceiveData(buffer, sizeof(buffer), &bytesRead);
+        ReadPacket status = socket->ReceiveData(buffer, sizeof(buffer), &bytesRead);
         if (status == ReadPacket::disconnected)
         {
-            Disconnect();
+            disconnect();
             return;
         }
 
@@ -83,7 +83,7 @@ namespace OpenRCT2::Network
         if (magic == PacketHeader::kMagic)
         {
             // New format.
-            auto& header = InboundPacket.Header;
+            auto& header = inboundPacket.Header;
             std::memcpy(&header, _inboundBuffer.data(), sizeof(header));
 
             header.magic = magic;
@@ -112,18 +112,18 @@ namespace OpenRCT2::Network
                 // This is a malformed packet, disconnect.
                 LOG_INFO(
                     "Received malformed packet (size: %u) from {%s}, disconnecting.", header.Size,
-                    Socket->GetIpAddress().c_str());
+                    socket->GetIpAddress().c_str());
 
-                Disconnect();
+                disconnect();
                 return ReadPacket::disconnected;
             }
 
             header.Size -= sizeof(header.Id);
 
             // Fill in new header format.
-            InboundPacket.Header.magic = PacketHeader::kMagic;
-            InboundPacket.Header.size = header.Size;
-            InboundPacket.Header.id = header.Id;
+            inboundPacket.Header.magic = PacketHeader::kMagic;
+            inboundPacket.Header.size = header.Size;
+            inboundPacket.Header.id = header.Id;
 
             headerSize = sizeof(header);
             totalPacketLength = sizeof(header) + header.Size;
@@ -133,18 +133,18 @@ namespace OpenRCT2::Network
 
         if (_inboundBuffer.size() < totalPacketLength)
         {
-            InboundPacket.BytesTransferred = _inboundBuffer.size();
+            inboundPacket.BytesTransferred = _inboundBuffer.size();
             return ReadPacket::moreData;
         }
 
         // Read packet body.
-        InboundPacket.BytesTransferred = totalPacketLength;
-        InboundPacket.Write(_inboundBuffer.data() + headerSize, totalPacketLength - headerSize);
+        inboundPacket.BytesTransferred = totalPacketLength;
+        inboundPacket.Write(_inboundBuffer.data() + headerSize, totalPacketLength - headerSize);
 
         // Remove read data from buffer.
         _inboundBuffer.erase(_inboundBuffer.begin(), _inboundBuffer.begin() + totalPacketLength);
 
-        RecordPacketStats(InboundPacket, false);
+        recordPacketStats(inboundPacket, false);
 
         return ReadPacket::success;
     }
@@ -186,9 +186,9 @@ namespace OpenRCT2::Network
         return buffer;
     }
 
-    void Connection::QueuePacket(const Packet& packet, bool front)
+    void Connection::queuePacket(const Packet& packet, bool front)
     {
-        if (AuthStatus == Auth::ok || !packet.CommandRequiresAuth())
+        if (authStatus == Auth::ok || !packet.CommandRequiresAuth())
         {
             const auto payload = serializePacket(_isLegacyProtocol, packet);
             if (front)
@@ -200,28 +200,28 @@ namespace OpenRCT2::Network
                 _outboundBuffer.insert(_outboundBuffer.end(), payload.begin(), payload.end());
             }
 
-            RecordPacketStats(packet, true);
+            recordPacketStats(packet, true);
         }
     }
 
-    void Connection::Disconnect() noexcept
+    void Connection::disconnect() noexcept
     {
-        ShouldDisconnect = true;
+        shouldDisconnect = true;
     }
 
-    bool Connection::IsValid() const
+    bool Connection::isValid() const
     {
-        return !ShouldDisconnect && Socket->GetStatus() == SocketStatus::connected;
+        return !shouldDisconnect && socket->GetStatus() == SocketStatus::connected;
     }
 
-    void Connection::SendQueuedData()
+    void Connection::sendQueuedData()
     {
         if (_outboundBuffer.empty())
         {
             return;
         }
 
-        const auto bytesSent = Socket->SendData(_outboundBuffer.data(), _outboundBuffer.size());
+        const auto bytesSent = socket->SendData(_outboundBuffer.data(), _outboundBuffer.size());
 
         if (bytesSent > 0)
         {
@@ -229,7 +229,7 @@ namespace OpenRCT2::Network
         }
     }
 
-    bool Connection::ReceivedDataRecently() const noexcept
+    bool Connection::receivedDataRecently() const noexcept
     {
         constexpr auto kTimeoutMs = kNoDataTimeout * 1000;
 
@@ -242,24 +242,24 @@ namespace OpenRCT2::Network
         return true;
     }
 
-    const utf8* Connection::GetLastDisconnectReason() const noexcept
+    const utf8* Connection::getLastDisconnectReason() const noexcept
     {
         return this->_lastDisconnectReason.c_str();
     }
 
-    void Connection::SetLastDisconnectReason(std::string_view src)
+    void Connection::setLastDisconnectReason(std::string_view src)
     {
         _lastDisconnectReason = src;
     }
 
-    void Connection::SetLastDisconnectReason(const StringId string_id, void* args)
+    void Connection::setLastDisconnectReason(const StringId string_id, void* args)
     {
         char buffer[kDisconnectReasonBufSize];
         FormatStringLegacy(buffer, kDisconnectReasonBufSize, string_id, args);
-        SetLastDisconnectReason(buffer);
+        setLastDisconnectReason(buffer);
     }
 
-    void Connection::RecordPacketStats(const Packet& packet, bool sending)
+    void Connection::recordPacketStats(const Packet& packet, bool sending)
     {
         uint32_t packetSize = static_cast<uint32_t>(packet.BytesTransferred);
         StatisticsGroup trafficGroup;
@@ -291,17 +291,17 @@ namespace OpenRCT2::Network
 
     Command Connection::getPendingPacketCommand() const noexcept
     {
-        return InboundPacket.GetCommand();
+        return inboundPacket.GetCommand();
     }
 
     size_t Connection::getPendingPacketSize() const noexcept
     {
-        return InboundPacket.Header.size;
+        return inboundPacket.Header.size;
     }
 
     size_t Connection::getPendingPacketAvailable() const noexcept
     {
-        return InboundPacket.BytesTransferred;
+        return inboundPacket.BytesTransferred;
     }
 
 } // namespace OpenRCT2::Network

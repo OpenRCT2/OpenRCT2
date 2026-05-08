@@ -267,8 +267,8 @@ namespace OpenRCT2::Network
         _port = port;
 
         _serverConnection = std::make_unique<Connection>();
-        _serverConnection->Socket = CreateTcpSocket();
-        _serverConnection->Socket->ConnectAsync(host, port);
+        _serverConnection->socket = CreateTcpSocket();
+        _serverConnection->socket->ConnectAsync(host, port);
         _serverState.gamestateSnapshotsEnabled = false;
 
         status = Status::connecting;
@@ -431,7 +431,7 @@ namespace OpenRCT2::Network
     {
         if (GetMode() == Mode::client)
         {
-            return _serverConnection->AuthStatus;
+            return _serverConnection->authStatus;
         }
         if (GetMode() == Mode::server)
         {
@@ -515,13 +515,13 @@ namespace OpenRCT2::Network
     {
         if (GetMode() == Mode::client)
         {
-            _serverConnection->SendQueuedData();
+            _serverConnection->sendQueuedData();
         }
         else
         {
             for (auto& it : client_connection_list)
             {
-                it->SendQueuedData();
+                it->sendQueuedData();
             }
         }
     }
@@ -531,7 +531,7 @@ namespace OpenRCT2::Network
         for (auto& connection : client_connection_list)
         {
             // This can be called multiple times before the connection is removed.
-            if (!connection->IsValid())
+            if (!connection->isValid())
                 continue;
 
             connection->update();
@@ -543,7 +543,7 @@ namespace OpenRCT2::Network
         for (auto& connection : client_connection_list)
         {
             // This can be called multiple times before the connection is removed.
-            if (!connection->IsValid())
+            if (!connection->isValid())
                 continue;
 
             if (!ProcessConnection(*connection))
@@ -552,7 +552,7 @@ namespace OpenRCT2::Network
                     LOG_INFO("Disconnecting player %s", connection->player->name.c_str());
                 else
                     LOG_INFO("Disconnecting unknown player");
-                connection->Disconnect();
+                connection->disconnect();
             }
             else
             {
@@ -592,7 +592,7 @@ namespace OpenRCT2::Network
         {
             case Status::connecting:
             {
-                switch (_serverConnection->Socket->GetStatus())
+                switch (_serverConnection->socket->GetStatus())
                 {
                     case SocketStatus::resolving:
                     {
@@ -643,7 +643,7 @@ namespace OpenRCT2::Network
                     }
                     default:
                     {
-                        const char* error = _serverConnection->Socket->GetError();
+                        const char* error = _serverConnection->socket->GetError();
                         if (error != nullptr)
                         {
                             Console::Error::WriteLine(error);
@@ -662,7 +662,7 @@ namespace OpenRCT2::Network
                 if (!ProcessConnection(*_serverConnection))
                 {
                     // Do not show disconnect message window when password window closed/canceled
-                    if (_serverConnection->AuthStatus == Auth::requirePassword)
+                    if (_serverConnection->authStatus == Auth::requirePassword)
                     {
                         ContextForceCloseWindowByClass(WindowClass::networkStatus);
                     }
@@ -670,9 +670,9 @@ namespace OpenRCT2::Network
                     {
                         char str_disconnected[256];
 
-                        if (_serverConnection->GetLastDisconnectReason())
+                        if (_serverConnection->getLastDisconnectReason())
                         {
-                            const char* disconnect_reason = _serverConnection->GetLastDisconnectReason();
+                            const char* disconnect_reason = _serverConnection->getLastDisconnectReason();
                             FormatStringLegacy(
                                 str_disconnected, 256, STR_MULTIPLAYER_DISCONNECTED_WITH_REASON, &disconnect_reason);
                         }
@@ -838,7 +838,7 @@ namespace OpenRCT2::Network
                     continue;
                 }
             }
-            client_connection->QueuePacket(packet, front);
+            client_connection->queuePacket(packet, front);
         }
     }
 
@@ -929,11 +929,11 @@ namespace OpenRCT2::Network
             if (client_connection->player->id == playerId)
             {
                 // Disconnect the client gracefully
-                client_connection->SetLastDisconnectReason(STR_MULTIPLAYER_KICKED);
+                client_connection->setLastDisconnectReason(STR_MULTIPLAYER_KICKED);
                 char str_disconnect_msg[256];
                 FormatStringLegacy(str_disconnect_msg, 256, STR_MULTIPLAYER_KICKED_REASON, nullptr);
                 ServerSendSetDisconnectMsg(*client_connection, str_disconnect_msg);
-                client_connection->Disconnect();
+                client_connection->disconnect();
                 break;
             }
         }
@@ -948,7 +948,7 @@ namespace OpenRCT2::Network
     {
         if (GetMode() == Mode::client)
         {
-            _serverConnection->Disconnect();
+            _serverConnection->disconnect();
         }
     }
 
@@ -1293,15 +1293,15 @@ namespace OpenRCT2::Network
 
         Packet packet(Command::requestGameState);
         packet << tick;
-        _serverConnection->QueuePacket(std::move(packet));
+        _serverConnection->queuePacket(std::move(packet));
     }
 
     void NetworkBase::Client_Send_TOKEN()
     {
         LOG_VERBOSE("requesting token");
         Packet packet(Command::token);
-        _serverConnection->AuthStatus = Auth::requested;
-        _serverConnection->QueuePacket(std::move(packet));
+        _serverConnection->authStatus = Auth::requested;
+        _serverConnection->queuePacket(std::move(packet));
     }
 
     void NetworkBase::Client_Send_AUTH(
@@ -1315,8 +1315,8 @@ namespace OpenRCT2::Network
         assert(signature.size() <= static_cast<size_t>(UINT32_MAX));
         packet << static_cast<uint32_t>(signature.size());
         packet.Write(signature.data(), signature.size());
-        _serverConnection->AuthStatus = Auth::requested;
-        _serverConnection->QueuePacket(std::move(packet));
+        _serverConnection->authStatus = Auth::requested;
+        _serverConnection->queuePacket(std::move(packet));
     }
 
     void NetworkBase::Client_Send_MAPREQUEST(const std::vector<ObjectEntryDescriptor>& objects)
@@ -1339,15 +1339,15 @@ namespace OpenRCT2::Network
                 packet.WriteString(name);
             }
         }
-        _serverConnection->QueuePacket(std::move(packet));
+        _serverConnection->queuePacket(std::move(packet));
     }
 
     void NetworkBase::ServerSendToken(Connection& connection)
     {
         Packet packet(Command::token);
-        packet << static_cast<uint32_t>(connection.Challenge.size());
-        packet.Write(connection.Challenge.data(), connection.Challenge.size());
-        connection.QueuePacket(std::move(packet));
+        packet << static_cast<uint32_t>(connection.challenge.size());
+        packet.Write(connection.challenge.data(), connection.challenge.size());
+        connection.queuePacket(std::move(packet));
     }
 
     void NetworkBase::ServerSendObjectsList(
@@ -1381,7 +1381,7 @@ namespace OpenRCT2::Network
             }
         }
 
-        connection.QueuePacket(std::move(packet));
+        connection.queuePacket(std::move(packet));
     }
 
     void NetworkBase::ServerSendScripts(Connection& connection)
@@ -1411,7 +1411,7 @@ namespace OpenRCT2::Network
         packet << static_cast<uint32_t>(0);
     #endif
 
-        connection.QueuePacket(std::move(packet));
+        connection.queuePacket(std::move(packet));
     }
 
     void NetworkBase::Client_Send_HEARTBEAT(Connection& connection) const
@@ -1419,7 +1419,7 @@ namespace OpenRCT2::Network
         LOG_VERBOSE("Sending heartbeat");
 
         Packet packet(Command::heartbeat);
-        connection.QueuePacket(std::move(packet));
+        connection.queuePacket(std::move(packet));
     }
 
     Stats NetworkBase::GetStats() const
@@ -1451,15 +1451,15 @@ namespace OpenRCT2::Network
             new_playerid = connection.player->id;
         }
         Packet packet(Command::auth);
-        packet << static_cast<uint32_t>(connection.AuthStatus) << new_playerid;
-        if (connection.AuthStatus == Auth::badVersion)
+        packet << static_cast<uint32_t>(connection.authStatus) << new_playerid;
+        if (connection.authStatus == Auth::badVersion)
         {
             packet.WriteString(GetVersion());
         }
-        connection.QueuePacket(std::move(packet));
-        if (connection.AuthStatus != Auth::ok && connection.AuthStatus != Auth::requirePassword)
+        connection.queuePacket(std::move(packet));
+        if (connection.authStatus != Auth::ok && connection.authStatus != Auth::requirePassword)
         {
-            connection.Disconnect();
+            connection.disconnect();
         }
     }
 
@@ -1468,7 +1468,7 @@ namespace OpenRCT2::Network
         std::vector<const ObjectRepositoryItem*> objects;
         if (connection != nullptr)
         {
-            objects = connection->RequestedObjects;
+            objects = connection->requestedObjects;
         }
         else
         {
@@ -1484,8 +1484,8 @@ namespace OpenRCT2::Network
         {
             if (connection != nullptr)
             {
-                connection->SetLastDisconnectReason(STR_MULTIPLAYER_CONNECTION_CLOSED);
-                connection->Disconnect();
+                connection->setLastDisconnectReason(STR_MULTIPLAYER_CONNECTION_CLOSED);
+                connection->disconnect();
             }
             return;
         }
@@ -1497,8 +1497,8 @@ namespace OpenRCT2::Network
 
         if (connection != nullptr)
         {
-            connection->QueuePacket(std::move(packetBeginMap));
-            connection->QueuePacket(std::move(packetMap));
+            connection->queuePacket(std::move(packetBeginMap));
+            connection->queuePacket(std::move(packetMap));
         }
         else
         {
@@ -1527,7 +1527,7 @@ namespace OpenRCT2::Network
     {
         Packet packet(Command::chat);
         packet.WriteString(text);
-        _serverConnection->QueuePacket(std::move(packet));
+        _serverConnection->queuePacket(std::move(packet));
     }
 
     void NetworkBase::ServerSendChat(const char* text, const std::vector<uint8_t>& playerIds)
@@ -1547,7 +1547,7 @@ namespace OpenRCT2::Network
                 auto conn = GetPlayerConnection(playerId);
                 if (conn != nullptr)
                 {
-                    conn->QueuePacket(packet);
+                    conn->queuePacket(packet);
                 }
             }
         }
@@ -1571,7 +1571,7 @@ namespace OpenRCT2::Network
         action->Serialise(stream);
 
         packet << getGameState().currentTicks << action->GetType() << stream;
-        _serverConnection->QueuePacket(std::move(packet));
+        _serverConnection->queuePacket(std::move(packet));
     }
 
     void NetworkBase::ServerSendGameAction(const GameActions::GameAction* action)
@@ -1642,7 +1642,7 @@ namespace OpenRCT2::Network
     void NetworkBase::Client_Send_PING()
     {
         Packet packet(Command::ping);
-        _serverConnection->QueuePacket(std::move(packet));
+        _serverConnection->queuePacket(std::move(packet));
     }
 
     void NetworkBase::ServerSendPing()
@@ -1651,7 +1651,7 @@ namespace OpenRCT2::Network
         Packet packet(Command::ping);
         for (auto& client_connection : client_connection_list)
         {
-            client_connection->PingTime = Platform::GetTicks();
+            client_connection->pingTime = Platform::GetTicks();
         }
         SendPacketToClients(packet, true);
     }
@@ -1671,7 +1671,7 @@ namespace OpenRCT2::Network
     {
         Packet packet(Command::disconnectMessage);
         packet.WriteString(msg);
-        connection.QueuePacket(std::move(packet));
+        connection.queuePacket(std::move(packet));
     }
 
     json_t NetworkBase::GetServerInfoAsJson() const
@@ -1709,14 +1709,14 @@ namespace OpenRCT2::Network
         packet << IsServerPlayerInvisible;
 
     #endif
-        connection.QueuePacket(std::move(packet));
+        connection.queuePacket(std::move(packet));
     }
 
     void NetworkBase::ServerSendShowError(Connection& connection, StringId title, StringId message)
     {
         Packet packet(Command::showError);
         packet << title << message;
-        connection.QueuePacket(std::move(packet));
+        connection.queuePacket(std::move(packet));
     }
 
     void NetworkBase::ServerSendGroupList(Connection& connection)
@@ -1727,7 +1727,7 @@ namespace OpenRCT2::Network
         {
             group->write(packet);
         }
-        connection.QueuePacket(std::move(packet));
+        connection.queuePacket(std::move(packet));
     }
 
     void NetworkBase::ServerSendEventPlayerJoined(const char* playerName)
@@ -1751,7 +1751,7 @@ namespace OpenRCT2::Network
     {
         connection.update();
 
-        return connection.IsValid();
+        return connection.isValid();
     }
 
     static void displayNetworkProgress(StringId captionStringId)
@@ -1810,16 +1810,16 @@ namespace OpenRCT2::Network
             {
                 case ReadPacket::disconnected:
                     // closed connection or network error
-                    if (!connection.GetLastDisconnectReason())
+                    if (!connection.getLastDisconnectReason())
                     {
-                        connection.SetLastDisconnectReason(STR_MULTIPLAYER_CONNECTION_CLOSED);
+                        connection.setLastDisconnectReason(STR_MULTIPLAYER_CONNECTION_CLOSED);
                     }
                     return false;
                 case ReadPacket::success:
                     // done reading in packet
                     reportPacketProgress(*this, connection);
-                    ProcessPacket(connection, connection.InboundPacket);
-                    if (!connection.IsValid())
+                    ProcessPacket(connection, connection.inboundPacket);
+                    if (!connection.isValid())
                     {
                         return false;
                     }
@@ -1834,15 +1834,15 @@ namespace OpenRCT2::Network
             }
         } while (packetStatus == ReadPacket::success && countProcessed < kMaxPacketsPerTick);
 
-        if (!connection.ReceivedDataRecently())
+        if (!connection.receivedDataRecently())
         {
             LOG_INFO(
                 "No data received recently from connection %s, disconnecting connection.",
-                connection.Socket->GetIpAddress().c_str());
+                connection.socket->GetIpAddress().c_str());
 
-            if (!connection.GetLastDisconnectReason())
+            if (!connection.getLastDisconnectReason())
             {
-                connection.SetLastDisconnectReason(STR_MULTIPLAYER_NO_DATA);
+                connection.setLastDisconnectReason(STR_MULTIPLAYER_NO_DATA);
             }
             return false;
         }
@@ -1858,7 +1858,7 @@ namespace OpenRCT2::Network
         if (it != handlerList.end())
         {
             auto commandHandler = it->second;
-            if (connection.AuthStatus == Auth::ok || !packet.CommandRequiresAuth())
+            if (connection.authStatus == Auth::ok || !packet.CommandRequiresAuth())
             {
                 try
                 {
@@ -1910,7 +1910,7 @@ namespace OpenRCT2::Network
             JSValue obj = JS_NewObject(ctx);
             JS_SetPropertyStr(ctx, obj, "name", JSFromStdString(ctx, name));
             JS_SetPropertyStr(ctx, obj, "publicKeyHash", JSFromStdString(ctx, publicKeyHash));
-            JS_SetPropertyStr(ctx, obj, "ipAddress", JSFromStdString(ctx, connection.Socket->GetIpAddress()));
+            JS_SetPropertyStr(ctx, obj, "ipAddress", JSFromStdString(ctx, connection.socket->GetIpAddress()));
             JS_SetPropertyStr(ctx, obj, "cancel", JS_NewBool(ctx, false));
 
             // Call the subscriptions
@@ -2085,15 +2085,15 @@ namespace OpenRCT2::Network
         {
             auto& connection = *it;
 
-            if (!connection->ShouldDisconnect)
+            if (!connection->shouldDisconnect)
             {
                 it++;
                 continue;
             }
 
             // Make sure to send all remaining packets out before disconnecting.
-            connection->SendQueuedData();
-            connection->Socket->Disconnect();
+            connection->sendQueuedData();
+            connection->socket->Disconnect();
 
             ServerClientDisconnected(connection);
             RemovePlayer(connection);
@@ -2111,7 +2111,7 @@ namespace OpenRCT2::Network
 
         // Store connection
         auto connection = std::make_unique<Connection>();
-        connection->Socket = std::move(socket);
+        connection->socket = std::move(socket);
 
         client_connection_list.push_back(std::move(connection));
     }
@@ -2125,7 +2125,7 @@ namespace OpenRCT2::Network
         char text[256];
         const char* has_disconnected_args[2] = {
             connection_player->name.c_str(),
-            connection->GetLastDisconnectReason(),
+            connection->getLastDisconnectReason(),
         };
         if (has_disconnected_args[1] != nullptr)
         {
@@ -2146,7 +2146,7 @@ namespace OpenRCT2::Network
             auto res = GameActions::Execute(&pickupAction, getGameState());
         }
         ServerSendEventPlayerDisconnected(
-            const_cast<char*>(connection_player->name.c_str()), connection->GetLastDisconnectReason());
+            const_cast<char*>(connection_player->name.c_str()), connection->getLastDisconnectReason());
 
         // Log player disconnected event
         AppendServerLog(text);
@@ -2298,8 +2298,8 @@ namespace OpenRCT2::Network
         catch (const std::exception&)
         {
             LOG_ERROR("Failed to load key %s", keyPath.c_str());
-            connection.SetLastDisconnectReason(STR_MULTIPLAYER_VERIFICATION_FAILURE);
-            connection.Disconnect();
+            connection.setLastDisconnectReason(STR_MULTIPLAYER_VERIFICATION_FAILURE);
+            connection.disconnect();
             return;
         }
 
@@ -2315,8 +2315,8 @@ namespace OpenRCT2::Network
         if (!ok)
         {
             LOG_ERROR("Failed to sign server's challenge.");
-            connection.SetLastDisconnectReason(STR_MULTIPLAYER_VERIFICATION_FAILURE);
-            connection.Disconnect();
+            connection.setLastDisconnectReason(STR_MULTIPLAYER_VERIFICATION_FAILURE);
+            connection.disconnect();
             return;
         }
         // Don't keep private key in memory. There's no need and it may get leaked
@@ -2361,7 +2361,7 @@ namespace OpenRCT2::Network
                 packetGameStateChunk << tick << length << bytesSent << dataSize;
                 packetGameStateChunk.Write(static_cast<const uint8_t*>(snapshotMemory.GetData()) + bytesSent, dataSize);
 
-                connection.QueuePacket(std::move(packetGameStateChunk));
+                connection.queuePacket(std::move(packetGameStateChunk));
 
                 bytesSent += dataSize;
             }
@@ -2370,53 +2370,53 @@ namespace OpenRCT2::Network
 
     void NetworkBase::ServerHandleHeartbeat(Connection& connection, Packet& packet)
     {
-        LOG_VERBOSE("Client %s heartbeat", connection.Socket->GetIpAddress().c_str());
+        LOG_VERBOSE("Client %s heartbeat", connection.socket->GetIpAddress().c_str());
     }
 
     void NetworkBase::Client_Handle_AUTH(Connection& connection, Packet& packet)
     {
         uint32_t auth_status;
         packet >> auth_status >> const_cast<uint8_t&>(player_id);
-        connection.AuthStatus = static_cast<Auth>(auth_status);
-        switch (connection.AuthStatus)
+        connection.authStatus = static_cast<Auth>(auth_status);
+        switch (connection.authStatus)
         {
             case Auth::ok:
                 Client_Send_GAMEINFO();
                 break;
             case Auth::badName:
-                connection.SetLastDisconnectReason(STR_MULTIPLAYER_BAD_PLAYER_NAME);
-                connection.Disconnect();
+                connection.setLastDisconnectReason(STR_MULTIPLAYER_BAD_PLAYER_NAME);
+                connection.disconnect();
                 break;
             case Auth::badVersion:
             {
                 auto version = std::string(packet.ReadString());
                 auto versionp = version.c_str();
-                connection.SetLastDisconnectReason(STR_MULTIPLAYER_INCORRECT_SOFTWARE_VERSION, &versionp);
-                connection.Disconnect();
+                connection.setLastDisconnectReason(STR_MULTIPLAYER_INCORRECT_SOFTWARE_VERSION, &versionp);
+                connection.disconnect();
                 break;
             }
             case Auth::badPassword:
-                connection.SetLastDisconnectReason(STR_MULTIPLAYER_BAD_PASSWORD);
-                connection.Disconnect();
+                connection.setLastDisconnectReason(STR_MULTIPLAYER_BAD_PASSWORD);
+                connection.disconnect();
                 break;
             case Auth::verificationFailure:
-                connection.SetLastDisconnectReason(STR_MULTIPLAYER_VERIFICATION_FAILURE);
-                connection.Disconnect();
+                connection.setLastDisconnectReason(STR_MULTIPLAYER_VERIFICATION_FAILURE);
+                connection.disconnect();
                 break;
             case Auth::full:
-                connection.SetLastDisconnectReason(STR_MULTIPLAYER_SERVER_FULL);
-                connection.Disconnect();
+                connection.setLastDisconnectReason(STR_MULTIPLAYER_SERVER_FULL);
+                connection.disconnect();
                 break;
             case Auth::requirePassword:
                 ContextOpenWindowView(WindowView::networkPassword);
                 break;
             case Auth::unknownKeyDisallowed:
-                connection.SetLastDisconnectReason(STR_MULTIPLAYER_UNKNOWN_KEY_DISALLOWED);
-                connection.Disconnect();
+                connection.setLastDisconnectReason(STR_MULTIPLAYER_UNKNOWN_KEY_DISALLOWED);
+                connection.disconnect();
                 break;
             default:
-                connection.SetLastDisconnectReason(STR_MULTIPLAYER_RECEIVED_INVALID_DATA);
-                connection.Disconnect();
+                connection.setLastDisconnectReason(STR_MULTIPLAYER_RECEIVED_INVALID_DATA);
+                connection.disconnect();
                 break;
         }
     }
@@ -2451,10 +2451,10 @@ namespace OpenRCT2::Network
     void NetworkBase::ServerHandleToken(Connection& connection, [[maybe_unused]] Packet& packet)
     {
         uint8_t token_size = 10 + (rand() & 0x7f);
-        connection.Challenge.resize(token_size);
+        connection.challenge.resize(token_size);
         for (int32_t i = 0; i < token_size; i++)
         {
-            connection.Challenge[i] = static_cast<uint8_t>(rand() & 0xff);
+            connection.challenge[i] = static_cast<uint8_t>(rand() & 0xff);
         }
         ServerSendToken(connection);
     }
@@ -2537,7 +2537,7 @@ namespace OpenRCT2::Network
             LOG_VERBOSE("Received and loaded network script plugin %u/%u", i + 1, count);
         }
     #else
-        connection.SetLastDisconnectReason("The client requires plugin support.");
+        connection.setLastDisconnectReason("The client requires plugin support.");
         Close();
     #endif
     }
@@ -2649,7 +2649,7 @@ namespace OpenRCT2::Network
             }
             else
             {
-                connection.RequestedObjects.push_back(item);
+                connection.requestedObjects.push_back(item);
             }
         }
 
@@ -2673,9 +2673,9 @@ namespace OpenRCT2::Network
 
     void NetworkBase::ServerHandleAuth(Connection& connection, Packet& packet)
     {
-        if (connection.AuthStatus != Auth::ok)
+        if (connection.authStatus != Auth::ok)
         {
-            auto* hostName = connection.Socket->GetHostName();
+            auto* hostName = connection.socket->GetHostName();
             auto gameversion = packet.ReadString();
             auto name = packet.ReadString();
             auto password = packet.ReadString();
@@ -2684,7 +2684,7 @@ namespace OpenRCT2::Network
             packet >> sigsize;
             if (pubkey.empty())
             {
-                connection.AuthStatus = Auth::verificationFailure;
+                connection.authStatus = Auth::verificationFailure;
             }
             else
             {
@@ -2716,7 +2716,7 @@ namespace OpenRCT2::Network
                         throw std::runtime_error("Failed to load public key.");
                     }
 
-                    bool verified = connection.key.Verify(connection.Challenge.data(), connection.Challenge.size(), signature);
+                    bool verified = connection.key.Verify(connection.challenge.data(), connection.challenge.size(), signature);
                     const std::string hash = connection.key.PublicKeyHash();
                     if (verified)
                     {
@@ -2724,28 +2724,28 @@ namespace OpenRCT2::Network
                         if (Config::Get().network.knownKeysOnly && _userManager.GetUserByHash(hash) == nullptr)
                         {
                             LOG_VERBOSE("Connection %s: Hash %s, not known", hostName, hash.c_str());
-                            connection.AuthStatus = Auth::unknownKeyDisallowed;
+                            connection.authStatus = Auth::unknownKeyDisallowed;
                         }
                         else
                         {
-                            connection.AuthStatus = Auth::verified;
+                            connection.authStatus = Auth::verified;
                         }
                     }
                     else
                     {
-                        connection.AuthStatus = Auth::verificationFailure;
+                        connection.authStatus = Auth::verificationFailure;
                         LOG_VERBOSE("Connection %s: Signature verification failed!", hostName);
                     }
                 }
                 catch (const std::exception&)
                 {
-                    connection.AuthStatus = Auth::verificationFailure;
+                    connection.authStatus = Auth::verificationFailure;
                     LOG_VERBOSE("Connection %s: Signature verification failed, invalid data!", hostName);
                 }
             }
 
             bool passwordless = false;
-            if (connection.AuthStatus == Auth::verified)
+            if (connection.authStatus == Auth::verified)
             {
                 const NetworkGroup* group = GetGroupByID(GetGroupIDByHash(connection.key.PublicKeyHash()));
                 if (group != nullptr)
@@ -2755,44 +2755,44 @@ namespace OpenRCT2::Network
             }
             if (gameversion != GetVersion())
             {
-                connection.AuthStatus = Auth::badVersion;
+                connection.authStatus = Auth::badVersion;
                 LOG_INFO("Connection %s: Bad version.", hostName);
             }
             else if (name.empty())
             {
-                connection.AuthStatus = Auth::badName;
-                LOG_INFO("Connection %s: Bad name.", connection.Socket->GetHostName());
+                connection.authStatus = Auth::badName;
+                LOG_INFO("Connection %s: Bad name.", connection.socket->GetHostName());
             }
             else if (!passwordless)
             {
                 if (password.empty() && !_password.empty())
                 {
-                    connection.AuthStatus = Auth::requirePassword;
+                    connection.authStatus = Auth::requirePassword;
                     LOG_INFO("Connection %s: Requires password.", hostName);
                 }
                 else if (!password.empty() && _password != password)
                 {
-                    connection.AuthStatus = Auth::badPassword;
+                    connection.authStatus = Auth::badPassword;
                     LOG_INFO("Connection %s: Bad password.", hostName);
                 }
             }
 
             if (GetNumVisiblePlayers() >= Config::Get().network.maxplayers)
             {
-                connection.AuthStatus = Auth::full;
+                connection.authStatus = Auth::full;
                 LOG_INFO("Connection %s: Server is full.", hostName);
             }
-            else if (connection.AuthStatus == Auth::verified)
+            else if (connection.authStatus == Auth::verified)
             {
                 const std::string hash = connection.key.PublicKeyHash();
                 if (ProcessPlayerAuthenticatePluginHooks(connection, name, hash))
                 {
-                    connection.AuthStatus = Auth::ok;
+                    connection.authStatus = Auth::ok;
                     ServerClientJoined(name, hash, connection);
                 }
                 else
                 {
-                    connection.AuthStatus = Auth::verificationFailure;
+                    connection.authStatus = Auth::verificationFailure;
                     LOG_INFO("Connection %s: Denied by plugin.", hostName);
                 }
             }
@@ -3157,7 +3157,7 @@ namespace OpenRCT2::Network
 
     void NetworkBase::ServerHandlePing(Connection& connection, [[maybe_unused]] Packet& packet)
     {
-        int32_t ping = Platform::GetTicks() - connection.PingTime;
+        int32_t ping = Platform::GetTicks() - connection.pingTime;
         if (ping < 0)
         {
             ping = 0;
@@ -3195,7 +3195,7 @@ namespace OpenRCT2::Network
         auto disconnectmsg = packet.ReadString();
         if (!disconnectmsg.empty())
         {
-            connection.SetLastDisconnectReason(disconnectmsg);
+            connection.setLastDisconnectReason(disconnectmsg);
         }
     }
 
@@ -3261,7 +3261,7 @@ namespace OpenRCT2::Network
     {
         LOG_VERBOSE("requesting gameinfo");
         Packet packet(Command::gameInfo);
-        _serverConnection->QueuePacket(std::move(packet));
+        _serverConnection->queuePacket(std::move(packet));
     }
 
     void NetworkBase::Client_Handle_GAMEINFO([[maybe_unused]] Connection& connection, Packet& packet)
@@ -3429,9 +3429,9 @@ namespace OpenRCT2::Network
     {
         auto& network = GetContext()->GetNetwork();
         auto conn = network.GetPlayerConnection(id);
-        if (conn != nullptr && conn->Socket != nullptr)
+        if (conn != nullptr && conn->socket != nullptr)
         {
-            return conn->Socket->GetIpAddress();
+            return conn->socket->GetIpAddress();
         }
         return {};
     }
