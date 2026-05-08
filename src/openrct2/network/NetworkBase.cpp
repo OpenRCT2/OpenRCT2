@@ -727,7 +727,7 @@ namespace OpenRCT2::Network
     auto NetworkBase::GetGroupIteratorByID(uint8_t id) const
     {
         return std::find_if(
-            group_list.begin(), group_list.end(), [id](std::unique_ptr<NetworkGroup> const& group) { return group->Id == id; });
+            group_list.begin(), group_list.end(), [id](std::unique_ptr<NetworkGroup> const& group) { return group->id == id; });
     }
 
     NetworkGroup* NetworkBase::GetGroupByID(uint8_t id) const
@@ -765,7 +765,7 @@ namespace OpenRCT2::Network
             std::vector<std::string> colours;
             if (it != nullptr)
             {
-                groupName = it->GetName();
+                groupName = it->getName();
                 if (groupName[0] != '{')
                 {
                     colours.push_back("{WHITE}");
@@ -988,7 +988,7 @@ namespace OpenRCT2::Network
         {
             if (std::find_if(
                     group_list.begin(), group_list.end(),
-                    [&id](std::unique_ptr<NetworkGroup> const& group) { return group->Id == id; })
+                    [&id](std::unique_ptr<NetworkGroup> const& group) { return group->id == id; })
                 == group_list.end())
             {
                 newid = id;
@@ -998,8 +998,8 @@ namespace OpenRCT2::Network
         if (newid != -1)
         {
             auto group = std::make_unique<NetworkGroup>();
-            group->Id = newid;
-            group->SetName("Group #" + std::to_string(newid));
+            group->id = newid;
+            group->setName("Group #" + std::to_string(newid));
             addedgroup = group.get();
             group_list.push_back(std::move(group));
         }
@@ -1066,7 +1066,7 @@ namespace OpenRCT2::Network
             json_t jsonGroups = json_t::array();
             for (auto& group : group_list)
             {
-                jsonGroups.push_back(group->ToJson());
+                jsonGroups.push_back(group->toJson());
             }
             json_t jsonGroupsCfg = {
                 { "default_group", default_group },
@@ -1087,30 +1087,30 @@ namespace OpenRCT2::Network
     {
         // Admin group
         auto admin = std::make_unique<NetworkGroup>();
-        admin->SetName("Admin");
-        admin->ActionsAllowed.fill(0xFF);
-        admin->Id = 0;
+        admin->setName("Admin");
+        admin->actionsAllowed.fill(0xFF);
+        admin->id = 0;
         group_list.push_back(std::move(admin));
 
         // Spectator group
         auto spectator = std::make_unique<NetworkGroup>();
-        spectator->SetName("Spectator");
-        spectator->ToggleActionPermission(Permission::chat);
-        spectator->Id = 1;
+        spectator->setName("Spectator");
+        spectator->toggleActionPermission(Permission::chat);
+        spectator->id = 1;
         group_list.push_back(std::move(spectator));
 
         // User group
         auto user = std::make_unique<NetworkGroup>();
-        user->SetName("User");
-        user->ActionsAllowed.fill(0xFF);
-        user->ToggleActionPermission(Permission::kickPlayer);
-        user->ToggleActionPermission(Permission::modifyGroups);
-        user->ToggleActionPermission(Permission::setPlayerGroup);
-        user->ToggleActionPermission(Permission::cheat);
-        user->ToggleActionPermission(Permission::passwordlessLogin);
-        user->ToggleActionPermission(Permission::modifyTile);
-        user->ToggleActionPermission(Permission::editScenarioOptions);
-        user->Id = 2;
+        user->setName("User");
+        user->actionsAllowed.fill(0xFF);
+        user->toggleActionPermission(Permission::kickPlayer);
+        user->toggleActionPermission(Permission::modifyGroups);
+        user->toggleActionPermission(Permission::setPlayerGroup);
+        user->toggleActionPermission(Permission::cheat);
+        user->toggleActionPermission(Permission::passwordlessLogin);
+        user->toggleActionPermission(Permission::modifyTile);
+        user->toggleActionPermission(Permission::editScenarioOptions);
+        user->id = 2;
         group_list.push_back(std::move(user));
 
         SetDefaultGroup(1);
@@ -1147,7 +1147,7 @@ namespace OpenRCT2::Network
             {
                 for (auto& jsonGroup : jsonGroups)
                 {
-                    group_list.emplace_back(std::make_unique<NetworkGroup>(NetworkGroup::FromJson(jsonGroup)));
+                    group_list.emplace_back(std::make_unique<NetworkGroup>(NetworkGroup::fromJson(jsonGroup)));
                 }
             }
 
@@ -1159,7 +1159,7 @@ namespace OpenRCT2::Network
         }
 
         // Host group should always contain all permissions.
-        group_list.at(0)->ActionsAllowed.fill(0xFF);
+        group_list.at(0)->actionsAllowed.fill(0xFF);
     }
 
     std::string NetworkBase::BeginLog(
@@ -1725,7 +1725,7 @@ namespace OpenRCT2::Network
         packet << static_cast<uint8_t>(group_list.size()) << default_group;
         for (auto& group : group_list)
         {
-            group->Write(packet);
+            group->write(packet);
         }
         connection.QueuePacket(std::move(packet));
     }
@@ -2750,7 +2750,7 @@ namespace OpenRCT2::Network
                 const NetworkGroup* group = GetGroupByID(GetGroupIDByHash(connection.key.PublicKeyHash()));
                 if (group != nullptr)
                 {
-                    passwordless = group->CanPerformAction(Permission::passwordlessLogin);
+                    passwordless = group->canPerformAction(Permission::passwordlessLogin);
                 }
             }
             if (gameversion != GetVersion())
@@ -2961,7 +2961,7 @@ namespace OpenRCT2::Network
         if (connection.player != nullptr)
         {
             NetworkGroup* group = GetGroupByID(connection.player->group);
-            if (group == nullptr || !group->CanPerformAction(Permission::chat))
+            if (group == nullptr || !group->canPerformAction(Permission::chat))
             {
                 return;
             }
@@ -3041,7 +3041,7 @@ namespace OpenRCT2::Network
         {
             // Check if player's group permission allows command to run
             NetworkGroup* group = GetGroupByID(connection.player->group);
-            if (group == nullptr || group->CanPerformCommand(actionType) == false)
+            if (group == nullptr || group->canPerformCommand(actionType) == false)
             {
                 ServerSendShowError(connection, STR_CANT_DO_THIS, STR_PERMISSION_DENIED);
                 return;
@@ -3219,7 +3219,7 @@ namespace OpenRCT2::Network
         for (uint32_t i = 0; i < size; i++)
         {
             NetworkGroup group;
-            group.Read(packet);
+            group.read(packet);
             auto newgroup = std::make_unique<NetworkGroup>(group);
             group_list.push_back(std::move(newgroup));
         }
@@ -3536,7 +3536,7 @@ namespace OpenRCT2::Network
         Guard::IndexInRange(index, network.player_list);
         Guard::IndexInRange(groupindex, network.group_list);
 
-        network.player_list[index]->group = network.group_list[groupindex]->Id;
+        network.player_list[index]->group = network.group_list[groupindex]->id;
     }
 
     int32_t GetGroupIndex(uint8_t id)
@@ -3555,7 +3555,7 @@ namespace OpenRCT2::Network
         auto& network = GetContext()->GetNetwork();
         Guard::IndexInRange(index, network.group_list);
 
-        return network.group_list[index]->Id;
+        return network.group_list[index]->id;
     }
 
     int32_t GetNumGroups()
@@ -3567,7 +3567,7 @@ namespace OpenRCT2::Network
     const char* GetGroupName(uint32_t index)
     {
         auto& network = GetContext()->GetNetwork();
-        return network.group_list[index]->GetName().c_str();
+        return network.group_list[index]->getName().c_str();
     }
 
     void ChatShowConnectedMessage()
@@ -3620,7 +3620,7 @@ namespace OpenRCT2::Network
                 GameActions::Status::invalidParameters, STR_CANT_CHANGE_GROUP_THAT_THE_HOST_BELONGS_TO, kStringIdNone);
         }
 
-        if (groupId == 0 && fromgroup != nullptr && fromgroup->Id != 0)
+        if (groupId == 0 && fromgroup != nullptr && fromgroup->id != 0)
         {
             return GameActions::Result(GameActions::Status::invalidParameters, STR_CANT_SET_TO_THIS_GROUP, kStringIdNone);
         }
@@ -3648,7 +3648,7 @@ namespace OpenRCT2::Network
             char log_msg[256];
             const char* args[3] = {
                 player->name.c_str(),
-                new_player_group->GetName().c_str(),
+                new_player_group->getName().c_str(),
                 game_command_player->name.c_str(),
             };
             FormatStringLegacy(log_msg, 256, STR_LOG_SET_PLAYER_GROUP, args);
@@ -3710,7 +3710,7 @@ namespace OpenRCT2::Network
                 if (player != nullptr && permissionState == GameActions::PermissionState::Toggle)
                 {
                     mygroup = network.GetGroupByID(player->group);
-                    if (mygroup == nullptr || !mygroup->CanPerformAction(networkPermission))
+                    if (mygroup == nullptr || !mygroup->canPerformAction(networkPermission))
                     {
                         return GameActions::Result(
                             GameActions::Status::disallowed, STR_CANT_MODIFY_PERMISSION_THAT_YOU_DO_NOT_HAVE_YOURSELF,
@@ -3728,17 +3728,17 @@ namespace OpenRCT2::Network
                             {
                                 if (permissionState == GameActions::PermissionState::SetAll)
                                 {
-                                    group->ActionsAllowed = mygroup->ActionsAllowed;
+                                    group->actionsAllowed = mygroup->actionsAllowed;
                                 }
                                 else
                                 {
-                                    group->ActionsAllowed.fill(0x00);
+                                    group->actionsAllowed.fill(0x00);
                                 }
                             }
                         }
                         else
                         {
-                            group->ToggleActionPermission(networkPermission);
+                            group->toggleActionPermission(networkPermission);
                         }
                     }
                 }
@@ -3752,7 +3752,7 @@ namespace OpenRCT2::Network
                     return GameActions::Result(GameActions::Status::invalidParameters, STR_CANT_RENAME_GROUP, kStringIdNone);
                 }
 
-                const char* oldName = group->GetName().c_str();
+                const char* oldName = group->getName().c_str();
 
                 if (strcmp(oldName, name.c_str()) == 0)
                 {
@@ -3769,7 +3769,7 @@ namespace OpenRCT2::Network
                 {
                     if (group != nullptr)
                     {
-                        group->SetName(name);
+                        group->setName(name);
                     }
                 }
             }
@@ -3856,7 +3856,7 @@ namespace OpenRCT2::Network
         if (groupindex >= network.group_list.size())
             return false;
 
-        return network.group_list[groupindex]->CanPerformAction(index);
+        return network.group_list[groupindex]->canPerformAction(index);
     }
 
     bool CanPerformCommand(uint32_t groupindex, int32_t index)
@@ -3865,7 +3865,7 @@ namespace OpenRCT2::Network
         if (groupindex >= network.group_list.size())
             return false;
 
-        return network.group_list[groupindex]->CanPerformCommand(static_cast<GameCommand>(index)); // TODO
+        return network.group_list[groupindex]->canPerformCommand(static_cast<GameCommand>(index)); // TODO
     }
 
     void SetPickupPeep(uint8_t playerid, Peep* peep)
