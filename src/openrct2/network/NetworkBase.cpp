@@ -569,7 +569,7 @@ namespace OpenRCT2::Network
 
         if (_advertiser != nullptr)
         {
-            _advertiser->Update();
+            _advertiser->update();
         }
 
         std::unique_ptr<ITcpSocket> tcpSocket = _listenSocket->Accept();
