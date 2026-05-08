@@ -1820,16 +1820,16 @@ namespace OpenRCT2::RCT2
 
         void ImportEntityCommonProperties(EntityBase* dst, const RCT12EntityBase* src)
         {
-            dst->Type = GetEntityTypeFromRCT2Sprite(src);
-            dst->Id = EntityId::FromUnderlying(src->EntityIndex);
+            dst->type = GetEntityTypeFromRCT2Sprite(src);
+            dst->id = EntityId::FromUnderlying(src->EntityIndex);
             dst->x = src->x;
             dst->y = src->y;
             dst->z = src->z;
-            dst->SpriteData.width = src->SpriteWidth;
-            dst->SpriteData.heightMin = src->SpriteHeightNegative;
-            dst->SpriteData.heightMax = src->SpriteHeightPositive;
-            dst->SpriteData.spriteRect = ScreenRect(src->SpriteLeft, src->SpriteTop, src->SpriteRight, src->SpriteBottom);
-            dst->Orientation = src->EntityDirection;
+            dst->spriteData.width = src->SpriteWidth;
+            dst->spriteData.heightMin = src->SpriteHeightNegative;
+            dst->spriteData.heightMax = src->SpriteHeightPositive;
+            dst->spriteData.spriteRect = ScreenRect(src->SpriteLeft, src->SpriteTop, src->SpriteRight, src->SpriteBottom);
+            dst->orientation = src->EntityDirection;
         }
 
         void ImportEntity(GameState_t& gameState, const RCT12EntityBase& src);
@@ -2126,8 +2126,8 @@ namespace OpenRCT2::RCT2
         dst->NauseaTolerance = static_cast<PeepNauseaTolerance>(src->NauseaTolerance);
         dst->PaidOnDrink = src->PaidOnDrink;
 
-        RideUse::GetHistory().Set(dst->Id, RCT12GetRidesBeenOn(src));
-        RideUse::GetTypeHistory().Set(dst->Id, RCT12GetRideTypesBeenOn(src));
+        RideUse::GetHistory().Set(dst->id, RCT12GetRidesBeenOn(src));
+        RideUse::GetTypeHistory().Set(dst->id, RCT12GetRideTypesBeenOn(src));
 
         dst->SetItemFlags(src->GetItemFlags());
         dst->Photo1RideRef = RCT12RideIdToOpenRCT2RideId(src->Photo1RideRef);

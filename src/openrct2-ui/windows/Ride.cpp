@@ -1990,7 +1990,7 @@ namespace OpenRCT2::Ui::Windows
                             Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(ride->vehicles[_viewIndex - 1]);
                             if (vehicle != nullptr)
                             {
-                                auto headVehicleSpriteIndex = vehicle->Id;
+                                auto headVehicleSpriteIndex = vehicle->id;
                                 WindowBase* w_main = WindowGetMain();
                                 WindowFollowSprite(*w_main, headVehicleSpriteIndex);
                             }
@@ -7199,7 +7199,7 @@ namespace OpenRCT2::Ui::Windows
         if (headVehicle == nullptr)
             return nullptr;
 
-        EntityId headVehicleSpriteIndex = headVehicle->Id;
+        EntityId headVehicleSpriteIndex = headVehicle->id;
         auto ride = headVehicle->GetRide();
         if (ride == nullptr)
             return nullptr;
@@ -7278,7 +7278,7 @@ namespace OpenRCT2::Ui::Windows
         if (ride == nullptr || viewVehicleIndex < 0 || viewVehicleIndex >= ride->numTrains)
             return;
 
-        if (vehicle.Id != ride->vehicles[viewVehicleIndex])
+        if (vehicle.id != ride->vehicles[viewVehicleIndex])
             return;
 
         w->invalidate();

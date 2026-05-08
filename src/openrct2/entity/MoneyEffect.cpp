@@ -35,9 +35,9 @@ namespace OpenRCT2
     };
 
     template<>
-    bool EntityBase::Is<MoneyEffect>() const
+    bool EntityBase::is<MoneyEffect>() const
     {
-        return Type == EntityType::moneyEffect;
+        return type == EntityType::moneyEffect;
     }
 
     /**
@@ -54,7 +54,7 @@ namespace OpenRCT2
             return;
 
         moneyEffect->guestPurchase = (guestPurchase ? 1 : 0);
-        moneyEffect->MoveTo(effectPos);
+        moneyEffect->moveTo(effectPos);
         moneyEffect->SetValue(value);
     }
 
@@ -97,9 +97,9 @@ namespace OpenRCT2
     void MoneyEffect::SetValue(money64 newValue)
     {
         value = newValue;
-        SpriteData.width = 64;
-        SpriteData.heightMin = 20;
-        SpriteData.heightMax = 30;
+        spriteData.width = 64;
+        spriteData.heightMin = 20;
+        spriteData.heightMax = 30;
         moveDelay = 0;
         numMovements = 0;
 
@@ -145,7 +145,7 @@ namespace OpenRCT2
         newY += kMoneyEffectMoveOffset[GetCurrentRotation()].y;
         newX += kMoneyEffectMoveOffset[GetCurrentRotation()].x;
 
-        MoveTo({ newX, newY, newZ });
+        moveTo({ newX, newY, newZ });
 
         numMovements++;
         if (numMovements < 55)
@@ -173,7 +173,7 @@ namespace OpenRCT2
 
     void MoneyEffect::Serialise(DataSerialiser& stream)
     {
-        EntityBase::Serialise(stream);
+        EntityBase::serialise(stream);
         stream << frame;
         stream << moveDelay;
         stream << numMovements;

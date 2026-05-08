@@ -40,15 +40,15 @@ namespace OpenRCT2
 
     struct EntityBase
     {
-        EntityType Type;
-        EntityId Id;
+        EntityType type;
+        EntityId id;
         int32_t x;
         int32_t y;
         int32_t z;
-        EntitySpriteData SpriteData;
+        EntitySpriteData spriteData;
         // Used as direction or rotation depending on the entity.
-        uint8_t Orientation;
-        uint32_t SpatialIndex;
+        uint8_t orientation;
+        uint32_t spatialIndex;
 
         /**
          * Moves a sprite to a new location, invalidates the current position if valid
@@ -56,32 +56,32 @@ namespace OpenRCT2
          *
          *  rct2: 0x0069E9D3
          */
-        void MoveTo(const CoordsXYZ& newLocation);
+        void moveTo(const CoordsXYZ& newLocation);
 
-        void MoveToAndUpdateSpatialIndex(const CoordsXYZ& newLocation);
+        void moveToAndUpdateSpatialIndex(const CoordsXYZ& newLocation);
 
         /**
          * Sets the entity location without screen invalidation.
          */
-        void SetLocation(const CoordsXYZ& newLocation);
+        void setLocation(const CoordsXYZ& newLocation);
 
         /**
          * Gets the entity current location.
          */
-        CoordsXYZ GetLocation() const;
+        CoordsXYZ getLocation() const;
 
-        void Invalidate();
+        void invalidate();
         template<typename T>
-        bool Is() const;
+        bool is() const;
         template<typename T>
-        T* As()
+        T* as()
         {
-            return Is<T>() ? reinterpret_cast<T*>(this) : nullptr;
+            return is<T>() ? reinterpret_cast<T*>(this) : nullptr;
         }
         template<typename T>
-        const T* As() const
+        const T* as() const
         {
-            return Is<T>() ? reinterpret_cast<const T*>(this) : nullptr;
+            return is<T>() ? reinterpret_cast<const T*>(this) : nullptr;
         }
 
         template<typename T>
@@ -96,8 +96,8 @@ namespace OpenRCT2
             return reinterpret_cast<const T*>(this);
         }
 
-        void Serialise(class DataSerialiser& stream);
+        void serialise(class DataSerialiser& stream);
 
-        void Paint() const;
+        void paint() const;
     };
 } // namespace OpenRCT2

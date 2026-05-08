@@ -17,18 +17,18 @@ namespace OpenRCT2
 {
     // Required for GetEntity to return a default
     template<>
-    bool EntityBase::Is<EntityBase>() const
+    bool EntityBase::is<EntityBase>() const
     {
         return true;
     }
 
-    void EntityBase::Invalidate()
+    void EntityBase::invalidate()
     {
         if (x == kLocationNull)
             return;
 
         ZoomLevel maxZoom{ 0 };
-        switch (Type)
+        switch (type)
         {
             case EntityType::vehicle:
             case EntityType::guest:
@@ -57,21 +57,21 @@ namespace OpenRCT2
                 break;
         }
 
-        ViewportsInvalidate(GetLocation(), SpriteData.width, SpriteData.heightMin, SpriteData.heightMax, maxZoom);
+        ViewportsInvalidate(getLocation(), spriteData.width, spriteData.heightMin, spriteData.heightMax, maxZoom);
     }
 
-    void EntityBase::Serialise(DataSerialiser& stream)
+    void EntityBase::serialise(DataSerialiser& stream)
     {
-        stream << Type;
-        stream << Id;
+        stream << type;
+        stream << id;
         stream << x;
         stream << y;
         stream << z;
-        stream << Orientation;
+        stream << orientation;
     }
 
     // Exists only for signature
-    void EntityBase::Paint() const
+    void EntityBase::paint() const
     {
         Guard::Assert(false, "You are not supposed to call this");
     }

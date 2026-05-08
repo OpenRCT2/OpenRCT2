@@ -64,7 +64,7 @@ namespace OpenRCT2::Scripting
         {
             entity->frame = std::clamp<uint16_t>(value, 0, kCrashedVehicleParticleNumberSprites - 1)
                 * kCrashedVehicleParticleFrameToSprite;
-            entity->Invalidate();
+            entity->invalidate();
         }
         return JS_UNDEFINED;
     }
@@ -83,7 +83,7 @@ namespace OpenRCT2::Scripting
         if (entity != nullptr)
         {
             entity->crashed_sprite_base = CrashParticleTypeMap[value];
-            entity->Invalidate();
+            entity->invalidate();
         }
         return JS_UNDEFINED;
     }
@@ -215,7 +215,7 @@ namespace OpenRCT2::Scripting
                 auto key = JSToStdString(ctx, crashParticleType);
                 entity->crashed_sprite_base = CrashParticleTypeMap[key];
             }
-            entity->Invalidate();
+            entity->invalidate();
 
             JS_FreeValue(ctx, colours);
             JS_FreeValue(ctx, acceleration);
@@ -248,7 +248,7 @@ namespace OpenRCT2::Scripting
         {
             entity->colour[0] = static_cast<Drawing::Colour>(JSToUint(ctx, obj, "body"));
             entity->colour[1] = static_cast<Drawing::Colour>(JSToUint(ctx, obj, "trim"));
-            entity->Invalidate();
+            entity->invalidate();
         }
         return JS_UNDEFINED;
     }

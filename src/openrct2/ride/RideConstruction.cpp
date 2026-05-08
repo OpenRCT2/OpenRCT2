@@ -368,7 +368,7 @@ static void ride_remove_cable_lift(Ride& ride)
             {
                 return;
             }
-            vehicle->Invalidate();
+            vehicle->invalidate();
             spriteIndex = vehicle->next_vehicle_on_train;
             getGameState().entities.EntityRemove(vehicle);
         } while (!spriteIndex.IsNull());
@@ -395,7 +395,7 @@ void Ride::removeVehicles()
                 {
                     break;
                 }
-                vehicle->Invalidate();
+                vehicle->invalidate();
                 spriteIndex = vehicle->next_vehicle_on_train;
                 getGameState().entities.EntityRemove(vehicle);
             }
@@ -411,7 +411,7 @@ void Ride::removeVehicles()
         {
             if (vehicle->ride == id)
             {
-                vehicle->Invalidate();
+                vehicle->invalidate();
                 getGameState().entities.EntityRemove(vehicle);
             }
         }
@@ -501,12 +501,12 @@ void Ride::removePeeps()
                 if (peep->GetNextIsSloped())
                     newLoc.z += kCoordsZStep;
                 newLoc.z++;
-                peep->MoveTo(newLoc);
+                peep->moveTo(newLoc);
             }
             else
             {
-                peep->MoveTo(exitPosition);
-                peep->Orientation = exitPosition.direction;
+                peep->moveTo(exitPosition);
+                peep->orientation = exitPosition.direction;
             }
 
             peep->State = PeepState::falling;
@@ -531,12 +531,12 @@ void Ride::removePeeps()
                 if (peep->GetNextIsSloped())
                     newLoc.z += kCoordsZStep;
                 newLoc.z++;
-                peep->MoveTo(newLoc);
+                peep->moveTo(newLoc);
             }
             else
             {
-                peep->MoveTo(exitPosition);
-                peep->Orientation = exitPosition.direction;
+                peep->moveTo(exitPosition);
+                peep->orientation = exitPosition.direction;
             }
 
             peep->State = PeepState::falling;

@@ -2272,16 +2272,16 @@ namespace OpenRCT2
                 // Do not tween the entity
                 entityTweener.RemoveEntity(entity);
 
-                auto location = entity->GetLocation();
+                auto location = entity->getLocation();
                 shiftIfNotNull(location, amountToMove);
-                entity->MoveTo(location);
+                entity->moveTo(location);
 
                 switch (entityType)
                 {
                     case EntityType::guest:
                     case EntityType::staff:
                     {
-                        auto peep = entity->As<Peep>();
+                        auto peep = entity->as<Peep>();
                         if (peep != nullptr)
                         {
                             shiftIfNotNull(peep->NextLoc, amountToMove);
@@ -2295,7 +2295,7 @@ namespace OpenRCT2
                     }
                     case EntityType::vehicle:
                     {
-                        auto vehicle = entity->As<Vehicle>();
+                        auto vehicle = entity->as<Vehicle>();
                         if (vehicle != nullptr)
                         {
                             shiftIfNotNull(vehicle->TrackLocation, amountToMove);
@@ -2305,7 +2305,7 @@ namespace OpenRCT2
                     }
                     case EntityType::duck:
                     {
-                        auto duck = entity->As<Duck>();
+                        auto duck = entity->as<Duck>();
                         if (duck != nullptr)
                         {
                             duck->target_x += amountToMove.x;
@@ -2315,7 +2315,7 @@ namespace OpenRCT2
                     }
                     case EntityType::jumpingFountain:
                     {
-                        auto fountain = entity->As<JumpingFountain>();
+                        auto fountain = entity->as<JumpingFountain>();
                         if (fountain != nullptr)
                         {
                             fountain->TargetX += amountToMove.x;
@@ -2328,7 +2328,7 @@ namespace OpenRCT2
                 }
                 if (entityType == EntityType::staff)
                 {
-                    auto staff = entity->As<Staff>();
+                    auto staff = entity->as<Staff>();
                     if (staff != nullptr)
                     {
                         auto patrol = staff->PatrolInfo;

@@ -50,9 +50,9 @@
 namespace OpenRCT2
 {
     template<>
-    bool EntityBase::Is<Staff>() const
+    bool EntityBase::is<Staff>() const
     {
-        return Type == EntityType::staff;
+        return type == EntityType::staff;
     }
 
     /**
@@ -479,7 +479,7 @@ namespace OpenRCT2
         Direction litterDirection = kInvalidDirection;
         uint8_t validDirections = GetValidPatrolDirections(NextLoc);
 
-        if ((StaffOrders & STAFF_ORDERS_SWEEPING) && ((getGameState().currentTicks + Id.ToUnderlying()) & 0xFFF) > 110)
+        if ((StaffOrders & STAFF_ORDERS_SWEEPING) && ((getGameState().currentTicks + id.ToUnderlying()) & 0xFFF) > 110)
         {
             litterDirection = HandymanDirectionToNearestLitter();
         }
@@ -1024,7 +1024,7 @@ namespace OpenRCT2
             if (auto loc = UpdateAction(); loc.has_value())
             {
                 int16_t checkZ = TileElementHeight(*loc);
-                MoveTo({ loc.value(), checkZ });
+                moveTo({ loc.value(), checkZ });
                 return;
             }
 
@@ -1074,7 +1074,7 @@ namespace OpenRCT2
             if (!(pathingResult & PATHING_DESTINATION_REACHED))
                 return;
 
-            Orientation = (Var37 & 3) << 3;
+            orientation = (Var37 & 3) << 3;
             Action = PeepActionType::staffWatering;
             AnimationFrameNum = 0;
             AnimationImageIdOffset = 0;
@@ -1087,7 +1087,7 @@ namespace OpenRCT2
             if (!IsActionWalking())
             {
                 UpdateAction();
-                Invalidate();
+                invalidate();
                 return;
             }
 
@@ -1137,7 +1137,7 @@ namespace OpenRCT2
             if (!(pathingResult & PATHING_DESTINATION_REACHED))
                 return;
 
-            Orientation = (Var37 & 3) << 3;
+            orientation = (Var37 & 3) << 3;
             Action = PeepActionType::staffEmptyBin;
             AnimationFrameNum = 0;
             AnimationImageIdOffset = 0;
@@ -1154,7 +1154,7 @@ namespace OpenRCT2
             }
 
             UpdateAction();
-            Invalidate();
+            invalidate();
 
             if (AnimationFrameNum != 11)
                 return;
@@ -1213,14 +1213,14 @@ namespace OpenRCT2
         if (Action == PeepActionType::staffSweep && AnimationFrameNum == 8)
         {
             // Remove sick at this location
-            Litter::RemoveAt(GetLocation());
+            Litter::RemoveAt(getLocation());
             StaffLitterSwept = AddClamp(StaffLitterSwept, 1u);
             WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
         }
         if (auto loc = UpdateAction(); loc.has_value())
         {
             int16_t actionZ = GetZOnSlope(loc->x, loc->y);
-            MoveTo({ loc.value(), actionZ });
+            moveTo({ loc.value(), actionZ });
             return;
         }
 
@@ -1313,14 +1313,14 @@ namespace OpenRCT2
 
             auto newDestination = CoordsXY{ 16, 16 } + NextLoc + (DirectionOffsets[PeepDirection] * 53);
             SetDestination(newDestination, 2);
-            Orientation = PeepDirection << 3;
+            orientation = PeepDirection << 3;
 
             z = rideEntranceExitElement->BaseHeight * 4;
             SubState = 4;
             // Falls through into SubState 4
         }
 
-        int16_t delta_y = abs(GetLocation().y - GetDestination().y);
+        int16_t delta_y = abs(getLocation().y - GetDestination().y);
         if (auto loc = UpdateAction(); loc.has_value())
         {
             auto newZ = ride->getStation(CurrentRideStation).GetBaseZ();
@@ -1329,7 +1329,7 @@ namespace OpenRCT2
                 newZ += ride->getRideTypeDescriptor().Heights.PlatformHeight;
             }
 
-            MoveTo({ loc.value(), newZ });
+            moveTo({ loc.value(), newZ });
             return;
         }
 
@@ -1373,7 +1373,7 @@ namespace OpenRCT2
                 return;
             }
             UpdateAction();
-            Invalidate();
+            invalidate();
             return;
         }
         if (SubState <= 3)
@@ -1420,7 +1420,7 @@ namespace OpenRCT2
             int32_t destY = NextLoc.y + 16 + DirectionOffsets[PeepDirection].y * 53;
 
             SetDestination({ destX, destY }, 2);
-            Orientation = PeepDirection << 3;
+            orientation = PeepDirection << 3;
 
             z = rideEntranceExitElement->BaseHeight * 4;
             SubState = 4;
@@ -1436,7 +1436,7 @@ namespace OpenRCT2
                 newZ += ride->getRideTypeDescriptor().Heights.PlatformHeight;
             }
 
-            MoveTo({ loc.value(), newZ });
+            moveTo({ loc.value(), newZ });
             return;
         }
 
@@ -1511,7 +1511,7 @@ namespace OpenRCT2
                 Var37 = chosen_position;
 
                 SubState = 0;
-                auto destination = kWateringUseOffsets[chosen_position] + GetLocation().ToTileStart();
+                auto destination = kWateringUseOffsets[chosen_position] + getLocation().ToTileStart();
                 SetDestination(destination, 3);
 
                 return true;
@@ -1579,7 +1579,7 @@ namespace OpenRCT2
         SetState(PeepState::emptyingBin);
 
         SubState = 0;
-        auto destination = BinUseOffsets[chosen_position] + GetLocation().ToTileStart();
+        auto destination = BinUseOffsets[chosen_position] + getLocation().ToTileStart();
         SetDestination(destination, 3);
         return true;
     }
@@ -1635,7 +1635,7 @@ namespace OpenRCT2
             SetState(PeepState::sweeping);
 
             Var37 = 0;
-            SetDestination(litter->GetLocation(), 5);
+            SetDestination(litter->getLocation(), 5);
             return true;
         }
 
@@ -1741,7 +1741,7 @@ namespace OpenRCT2
                         UpdateWalkingAnimation();
                     else
                         UpdateActionAnimation();
-                    Invalidate();
+                    invalidate();
                 }
             }
             return;
@@ -1843,7 +1843,7 @@ namespace OpenRCT2
                 int32_t water_height = surfaceElement->GetWaterHeight();
                 if (water_height > 0)
                 {
-                    MoveTo({ x, y, water_height });
+                    moveTo({ x, y, water_height });
                     SetState(PeepState::falling);
                     return;
                 }
@@ -2122,13 +2122,13 @@ namespace OpenRCT2
             }
 
             CoordsXY offset = DirectionOffsets[PeepDirection];
-            auto destination = (offset * -12) + vehicle->GetLocation();
+            auto destination = (offset * -12) + vehicle->getLocation();
             SetDestination(destination, 2);
         }
 
         if (auto loc = UpdateAction(); loc.has_value())
         {
-            MoveTo({ loc.value(), z });
+            moveTo({ loc.value(), z });
             return false;
         }
 
@@ -2148,7 +2148,7 @@ namespace OpenRCT2
     {
         if (!firstRun)
         {
-            Orientation = PeepDirection << 3;
+            orientation = PeepDirection << 3;
 
             Action = (ScenarioRand() & 1) ? PeepActionType::staffFix2 : PeepActionType::staffFix;
             AnimationImageIdOffset = 0;
@@ -2162,7 +2162,7 @@ namespace OpenRCT2
         }
 
         UpdateAction();
-        Invalidate();
+        invalidate();
 
         uint8_t actionFrame = (Action == PeepActionType::staffFix) ? 0x25 : 0x50;
         if (AnimationFrameNum != actionFrame)
@@ -2190,7 +2190,7 @@ namespace OpenRCT2
     {
         if (!firstRun)
         {
-            Orientation = PeepDirection << 3;
+            orientation = PeepDirection << 3;
             Action = PeepActionType::staffFix3;
             AnimationImageIdOffset = 0;
             AnimationFrameNum = 0;
@@ -2204,7 +2204,7 @@ namespace OpenRCT2
         }
 
         UpdateAction();
-        Invalidate();
+        invalidate();
 
         if (AnimationFrameNum != 0x65)
         {
@@ -2279,7 +2279,7 @@ namespace OpenRCT2
 
         if (auto loc = UpdateAction(); loc.has_value())
         {
-            MoveTo({ loc.value(), z });
+            moveTo({ loc.value(), z });
             return false;
         }
 
@@ -2296,7 +2296,7 @@ namespace OpenRCT2
     {
         if (!firstRun)
         {
-            Orientation = PeepDirection << 3;
+            orientation = PeepDirection << 3;
             Action = PeepActionType::staffCheckBoard;
             AnimationFrameNum = 0;
             AnimationImageIdOffset = 0;
@@ -2310,7 +2310,7 @@ namespace OpenRCT2
         }
 
         UpdateAction();
-        Invalidate();
+        invalidate();
 
         return false;
     }
@@ -2386,7 +2386,7 @@ namespace OpenRCT2
 
         if (auto loc = UpdateAction(); loc.has_value())
         {
-            MoveTo({ loc.value(), z });
+            moveTo({ loc.value(), z });
             return false;
         }
 
@@ -2410,7 +2410,7 @@ namespace OpenRCT2
                 return true;
             }
 
-            Orientation = PeepDirection << 3;
+            orientation = PeepDirection << 3;
 
             Action = PeepActionType::staffFix;
             AnimationFrameNum = 0;
@@ -2438,7 +2438,7 @@ namespace OpenRCT2
     {
         if (!firstRun)
         {
-            Orientation = PeepDirection << 3;
+            orientation = PeepDirection << 3;
 
             Action = PeepActionType::staffFixGround;
             AnimationFrameNum = 0;
@@ -2453,7 +2453,7 @@ namespace OpenRCT2
         }
 
         UpdateAction();
-        Invalidate();
+        invalidate();
 
         if (AnimationFrameNum == 0x28)
         {
@@ -2464,7 +2464,7 @@ namespace OpenRCT2
         if (AnimationFrameNum == 0x13 || AnimationFrameNum == 0x19 || AnimationFrameNum == 0x1F || AnimationFrameNum == 0x25
             || AnimationFrameNum == 0x2B)
         {
-            Audio::Play3D(Audio::SoundId::mechanicFix, GetLocation());
+            Audio::Play3D(Audio::SoundId::mechanicFix, getLocation());
         }
 
         return false;
@@ -2501,7 +2501,7 @@ namespace OpenRCT2
 
         if (auto loc = UpdateAction(); loc.has_value())
         {
-            MoveTo({ loc.value(), z });
+            moveTo({ loc.value(), z });
             return false;
         }
 
@@ -2530,7 +2530,7 @@ namespace OpenRCT2
             StaffRidesFixed = AddClamp(StaffRidesFixed, 1u);
             WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
 
-            Orientation = PeepDirection << 3;
+            orientation = PeepDirection << 3;
             Action = PeepActionType::staffAnswerCall2;
             AnimationFrameNum = 0;
             AnimationImageIdOffset = 0;
@@ -2541,7 +2541,7 @@ namespace OpenRCT2
         if (!IsActionWalking())
         {
             UpdateAction();
-            Invalidate();
+            invalidate();
             return false;
         }
 
@@ -2589,7 +2589,7 @@ namespace OpenRCT2
                 stationHeight += ride.getRideTypeDescriptor().Heights.PlatformHeight;
             }
 
-            MoveTo({ loc.value(), stationHeight });
+            moveTo({ loc.value(), stationHeight });
             return false;
         }
         SetState(PeepState::falling);

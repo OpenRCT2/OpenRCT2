@@ -161,7 +161,7 @@ namespace OpenRCT2::Scripting
     {
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
         auto guest = Park::GenerateGuest();
-        return ScGuest::New(ctx, guest->Id);
+        return ScGuest::New(ctx, guest->id);
     }
 
     JSValue ScPark::guestInitialCash_get(JSContext* ctx, JSValue thisVal)

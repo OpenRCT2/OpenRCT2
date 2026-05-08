@@ -183,7 +183,7 @@ static std::optional<UpdateType> UpdateSmallSceneryAnimation(
                     peep->UpdateCurrentAnimationType();
                     if constexpr (invalidate)
                     {
-                        peep->Invalidate();
+                        peep->invalidate();
                     }
                     break;
                 }

@@ -1257,9 +1257,9 @@ namespace OpenRCT2::RCT1
             for (auto* peep : EntityList<Guest>())
             {
                 const auto& spriteBounds = animObj->GetSpriteBounds(peep->AnimationGroup, peep->AnimationType);
-                peep->SpriteData.width = spriteBounds.spriteWidth;
-                peep->SpriteData.heightMin = spriteBounds.spriteHeightNegative;
-                peep->SpriteData.heightMax = spriteBounds.spriteHeightPositive;
+                peep->spriteData.width = spriteBounds.spriteWidth;
+                peep->spriteData.heightMin = spriteBounds.spriteHeightNegative;
+                peep->spriteData.heightMax = spriteBounds.spriteHeightPositive;
             }
 
             auto& objManager = GetContext()->GetObjectManager();
@@ -1267,9 +1267,9 @@ namespace OpenRCT2::RCT1
             {
                 animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
                 const auto& spriteBounds = animObj->GetSpriteBounds(peep->AnimationGroup, peep->AnimationType);
-                peep->SpriteData.width = spriteBounds.spriteWidth;
-                peep->SpriteData.heightMin = spriteBounds.spriteHeightNegative;
-                peep->SpriteData.heightMax = spriteBounds.spriteHeightPositive;
+                peep->spriteData.width = spriteBounds.spriteWidth;
+                peep->spriteData.heightMin = spriteBounds.spriteHeightNegative;
+                peep->spriteData.heightMax = spriteBounds.spriteHeightPositive;
             }
         }
 
@@ -1341,9 +1341,9 @@ namespace OpenRCT2::RCT1
 
             // Peep sprite bounds used to be set here. These are now set in a finishing step after loading peep anim objects.
 
-            dst->MoveTo({ src->x, src->y, src->z });
+            dst->moveTo({ src->x, src->y, src->z });
 
-            dst->Orientation = src->EntityDirection;
+            dst->orientation = src->EntityDirection;
 
             // Peep name
             if (IsUserStringID(src->NameStringID))
@@ -1428,10 +1428,10 @@ namespace OpenRCT2::RCT1
 
         void ImportEntityCommonProperties(EntityBase* dst, const RCT12EntityBase* src)
         {
-            dst->Orientation = src->EntityDirection;
-            dst->SpriteData.width = src->SpriteWidth;
-            dst->SpriteData.heightMin = src->SpriteHeightNegative;
-            dst->SpriteData.heightMax = src->SpriteHeightPositive;
+            dst->orientation = src->EntityDirection;
+            dst->spriteData.width = src->SpriteWidth;
+            dst->spriteData.heightMin = src->SpriteHeightNegative;
+            dst->spriteData.heightMax = src->SpriteHeightPositive;
             dst->x = src->x;
             dst->y = src->y;
             dst->z = src->z;
@@ -2817,12 +2817,12 @@ namespace OpenRCT2::RCT1
         dst->remaining_distance = src->RemainingDistance;
 
         // Properties from vehicle entry
-        dst->SpriteData.width = src->SpriteWidth;
-        dst->SpriteData.heightMin = src->SpriteHeightNegative;
-        dst->SpriteData.heightMax = src->SpriteHeightPositive;
-        dst->Orientation = src->EntityDirection;
+        dst->spriteData.width = src->SpriteWidth;
+        dst->spriteData.heightMin = src->SpriteHeightNegative;
+        dst->spriteData.heightMax = src->SpriteHeightPositive;
+        dst->orientation = src->EntityDirection;
 
-        dst->SpriteData.spriteRect = ScreenRect(src->SpriteLeft, src->SpriteTop, src->SpriteRight, src->SpriteBottom);
+        dst->spriteData.spriteRect = ScreenRect(src->SpriteLeft, src->SpriteTop, src->SpriteRight, src->SpriteBottom);
 
         dst->mass = src->Mass;
         dst->num_seats = src->NumSeats;
@@ -2903,7 +2903,7 @@ namespace OpenRCT2::RCT1
         dst->mini_golf_current_animation = MiniGolfAnimation(src->MiniGolfCurrentAnimation);
         dst->miniGolfFlags.holder = src->MiniGolfFlags;
 
-        dst->MoveTo({ src->x, src->y, src->z });
+        dst->moveTo({ src->x, src->y, src->z });
 
         dst->num_peeps = src->NumPeeps;
         dst->next_free_seat = src->NextFreeSeat;
@@ -2974,8 +2974,8 @@ namespace OpenRCT2::RCT1
         dst->Angriness = src->Angriness;
         dst->TimeLost = src->TimeLost;
 
-        RideUse::GetHistory().Set(dst->Id, RCT12GetRidesBeenOn(src));
-        RideUse::GetTypeHistory().Set(dst->Id, RCT12GetRideTypesBeenOn(src));
+        RideUse::GetHistory().Set(dst->id, RCT12GetRidesBeenOn(src));
+        RideUse::GetTypeHistory().Set(dst->id, RCT12GetRideTypesBeenOn(src));
 
         dst->Photo1RideRef = RCT12RideIdToOpenRCT2RideId(src->Photo1RideRef);
         dst->PeepFlags = src->getPeepFlags(_gameVersion == FILE_VERSION_RCT1_LL);

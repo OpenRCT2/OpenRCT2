@@ -18,9 +18,9 @@
 namespace OpenRCT2
 {
     template<>
-    bool EntityBase::Is<Litter>() const
+    bool EntityBase::is<Litter>() const
     {
-        return Type == EntityType::litter;
+        return type == EntityType::litter;
     }
 
     static bool IsLocationLitterable(const CoordsXYZ& mapPos)
@@ -77,7 +77,7 @@ namespace OpenRCT2
 
             if (newestLitter != nullptr)
             {
-                newestLitter->Invalidate();
+                newestLitter->invalidate();
                 gameState.entities.EntityRemove(newestLitter);
             }
         }
@@ -86,12 +86,12 @@ namespace OpenRCT2
         if (litter == nullptr)
             return;
 
-        litter->Orientation = offsetLitterPos.direction;
-        litter->SpriteData.width = 6;
-        litter->SpriteData.heightMin = 6;
-        litter->SpriteData.heightMax = 3;
+        litter->orientation = offsetLitterPos.direction;
+        litter->spriteData.width = 6;
+        litter->spriteData.heightMin = 6;
+        litter->spriteData.heightMax = 3;
         litter->SubType = type;
-        litter->MoveTo(offsetLitterPos);
+        litter->moveTo(offsetLitterPos);
         litter->creationTick = gameState.currentTicks;
     }
 
@@ -116,7 +116,7 @@ namespace OpenRCT2
         }
         for (auto* litter : removals)
         {
-            litter->Invalidate();
+            litter->invalidate();
             getGameState().entities.EntityRemove(litter);
         }
     }
@@ -150,7 +150,7 @@ namespace OpenRCT2
 
     void Litter::Serialise(DataSerialiser& stream)
     {
-        EntityBase::Serialise(stream);
+        EntityBase::serialise(stream);
 
         stream << SubType;
         stream << creationTick;

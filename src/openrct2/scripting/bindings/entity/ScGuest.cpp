@@ -216,7 +216,7 @@ namespace OpenRCT2::Scripting
         if (peep != nullptr)
         {
             peep->TshirtColour = static_cast<Drawing::Colour>(value);
-            peep->Invalidate();
+            peep->invalidate();
         }
         return JS_UNDEFINED;
     }
@@ -234,7 +234,7 @@ namespace OpenRCT2::Scripting
         if (peep != nullptr)
         {
             peep->TrousersColour = static_cast<Drawing::Colour>(value);
-            peep->Invalidate();
+            peep->invalidate();
         }
         return JS_UNDEFINED;
     }
@@ -252,7 +252,7 @@ namespace OpenRCT2::Scripting
         if (peep != nullptr)
         {
             peep->BalloonColour = static_cast<Drawing::Colour>(value);
-            peep->Invalidate();
+            peep->invalidate();
         }
         return JS_UNDEFINED;
     }
@@ -270,7 +270,7 @@ namespace OpenRCT2::Scripting
         if (peep != nullptr)
         {
             peep->HatColour = static_cast<Drawing::Colour>(value);
-            peep->Invalidate();
+            peep->invalidate();
         }
         return JS_UNDEFINED;
     }
@@ -288,7 +288,7 @@ namespace OpenRCT2::Scripting
         if (peep != nullptr)
         {
             peep->UmbrellaColour = static_cast<Drawing::Colour>(value);
-            peep->Invalidate();
+            peep->invalidate();
         }
         return JS_UNDEFINED;
     }
@@ -999,9 +999,9 @@ namespace OpenRCT2::Scripting
 
         const auto& animationGroup = animObj->GetPeepAnimation(peep->AnimationGroup, peep->AnimationType);
         peep->AnimationImageIdOffset = animationGroup.frameOffsets[offset];
-        peep->Invalidate();
+        peep->invalidate();
         peep->UpdateSpriteBoundingBox();
-        peep->Invalidate();
+        peep->invalidate();
         return JS_UNDEFINED;
     }
 

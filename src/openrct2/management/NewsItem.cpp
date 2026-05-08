@@ -234,7 +234,7 @@ std::optional<CoordsXYZ> News::GetSubjectLocation(ItemType type, int32_t subject
             if (peep == nullptr)
                 break;
 
-            subjectLoc = peep->GetLocation();
+            subjectLoc = peep->getLocation();
             if (subjectLoc->x != kLocationNull)
                 break;
 
@@ -261,7 +261,7 @@ std::optional<CoordsXYZ> News::GetSubjectLocation(ItemType type, int32_t subject
             }
             if (sprite != nullptr)
             {
-                subjectLoc = sprite->GetLocation();
+                subjectLoc = sprite->getLocation();
             }
             break;
         }
@@ -270,7 +270,7 @@ std::optional<CoordsXYZ> News::GetSubjectLocation(ItemType type, int32_t subject
             auto peep = gameState.entities.TryGetEntity<Peep>(EntityId::FromUnderlying(subject));
             if (peep != nullptr)
             {
-                subjectLoc = peep->GetLocation();
+                subjectLoc = peep->getLocation();
             }
             break;
         }

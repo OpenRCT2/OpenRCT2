@@ -37,7 +37,7 @@ static constexpr CoordsXY kSurroundingTiles[] = {
 void Vehicle::UpdateReverserCarBogies()
 {
     const auto moveInfo = GetMoveInfo();
-    MoveTo({ TrackLocation.x + moveInfo->x, TrackLocation.y + moveInfo->y, z });
+    moveTo({ TrackLocation.x + moveInfo->x, TrackLocation.y + moveInfo->y, z });
 }
 
 /**
@@ -93,7 +93,7 @@ bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, EntityId* oth
         if (x_diff + y_diff + z_diff >= ecx)
             return false;
 
-        uint8_t direction = (Orientation - collideVehicle->Orientation + 7) & 0x1F;
+        uint8_t direction = (orientation - collideVehicle->orientation + 7) & 0x1F;
         return direction < 0xF;
     }
 
@@ -154,12 +154,12 @@ bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, EntityId* oth
                 break;
             }
 
-            uint8_t direction = (Orientation - vehicle2->Orientation - 6) & 0x1F;
+            uint8_t direction = (orientation - vehicle2->orientation - 6) & 0x1F;
 
             if (direction < 0x14)
                 continue;
 
-            const CoordsXY directionVector = Math::Trigonometry::YawToDirectionVector[Entity::Yaw::YawTo64(Orientation)];
+            const CoordsXY directionVector = Math::Trigonometry::YawToDirectionVector[Entity::Yaw::YawTo64(orientation)];
 
             const CoordsXY directionVectorToVehicle2 = { vehicle2->x - loc.x, vehicle2->y - loc.y };
             const int32_t directionVectorToVehicle2Length = (directionVectorToVehicle2.x * directionVectorToVehicle2.x)
@@ -205,34 +205,34 @@ bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, EntityId* oth
     {
         flags.set(VehicleFlag::currentlyColliding);
         if (otherVehicleIndex != nullptr)
-            *otherVehicleIndex = collideVehicle->Id;
+            *otherVehicleIndex = collideVehicle->id;
         return true;
     }
 
     if (status == Status::movingToEndOfStation)
     {
-        if (Orientation == 0)
+        if (orientation == 0)
         {
             if (x <= collideVehicle->x)
             {
                 return false;
             }
         }
-        else if (Orientation == 8)
+        else if (orientation == 8)
         {
             if (y >= collideVehicle->y)
             {
                 return false;
             }
         }
-        else if (Orientation == 16)
+        else if (orientation == 16)
         {
             if (x >= collideVehicle->x)
             {
                 return false;
             }
         }
-        else if (Orientation == 24)
+        else if (orientation == 24)
         {
             if (y <= collideVehicle->y)
             {
@@ -248,7 +248,7 @@ bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, EntityId* oth
 
     flags.set(VehicleFlag::currentlyColliding);
     if (otherVehicleIndex != nullptr)
-        *otherVehicleIndex = collideVehicle->Id;
+        *otherVehicleIndex = collideVehicle->id;
     return true;
 }
 

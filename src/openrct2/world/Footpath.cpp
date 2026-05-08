@@ -152,7 +152,7 @@ namespace OpenRCT2
         }
         for (auto* litter : removals)
         {
-            litter->Invalidate();
+            litter->invalidate();
             getGameState().entities.EntityRemove(litter);
         }
     }
@@ -168,7 +168,7 @@ namespace OpenRCT2
         {
             if (peep->State == PeepState::sitting || peep->State == PeepState::watching)
             {
-                auto location = peep->GetLocation();
+                auto location = peep->getLocation();
                 if (location.z == footpathPos.z)
                 {
                     auto destination = location.ToTileCentre();
