@@ -21,10 +21,10 @@ namespace OpenRCT2::Network
     class User final
     {
     public:
-        std::string Hash;
-        std::string Name;
-        std::optional<uint8_t> GroupId;
-        bool Remove;
+        std::string hash;
+        std::string name;
+        std::optional<uint8_t> groupId;
+        bool remove;
 
         /**
          * Creates a User object from a JSON object
@@ -32,14 +32,14 @@ namespace OpenRCT2::Network
          * @return Pointer to a new User object
          * @note jsonData is deliberately left non-const: json_t behaviour changes when const
          */
-        static std::unique_ptr<User> FromJson(const json_t& jsonData);
+        static std::unique_ptr<User> fromJson(const json_t& jsonData);
 
         /**
          * Serialise a User object into a JSON object
          *
          * @return JSON representation of the User object
          */
-        json_t ToJson() const;
+        json_t toJson() const;
     };
 
     class UserManager final

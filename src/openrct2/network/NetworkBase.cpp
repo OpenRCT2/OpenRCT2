@@ -396,8 +396,8 @@ namespace OpenRCT2::Network
         {
             // Add SERVER to users.json and save.
             User* networkUser = _userManager.GetOrAddUser(player->keyHash);
-            networkUser->GroupId = player->group;
-            networkUser->Name = player->name;
+            networkUser->groupId = player->group;
+            networkUser->name = player->name;
             _userManager.Save();
         }
 
@@ -1026,9 +1026,9 @@ namespace OpenRCT2::Network
         const User* networkUser = _userManager.GetUserByHash(keyhash);
 
         uint8_t groupId = GetDefaultGroup();
-        if (networkUser != nullptr && networkUser->GroupId.has_value())
+        if (networkUser != nullptr && networkUser->groupId.has_value())
         {
-            const uint8_t assignedGroup = *networkUser->GroupId;
+            const uint8_t assignedGroup = *networkUser->groupId;
             if (GetGroupByID(assignedGroup) != nullptr)
             {
                 groupId = assignedGroup;
@@ -2217,8 +2217,8 @@ namespace OpenRCT2::Network
                 }
                 else
                 {
-                    player->group = networkUser->GroupId.has_value() ? *networkUser->GroupId : GetDefaultGroup();
-                    player->setName(networkUser->Name);
+                    player->group = networkUser->groupId.has_value() ? *networkUser->groupId : GetDefaultGroup();
+                    player->setName(networkUser->name);
                 }
 
                 // Send new player list.
@@ -3634,8 +3634,8 @@ namespace OpenRCT2::Network
                 // Add or update saved user
                 UserManager& userManager = network._userManager;
                 User* networkUser = userManager.GetOrAddUser(player->keyHash);
-                networkUser->GroupId = groupId;
-                networkUser->Name = player->name;
+                networkUser->groupId = groupId;
+                networkUser->name = player->name;
                 userManager.Save();
             }
 
