@@ -101,32 +101,32 @@ namespace OpenRCT2::Network
             std::memcpy(&header, _inboundBuffer.data(), sizeof(header));
 
             // Normalise values.
-            header.Size = Convert::NetworkToHost(header.Size);
-            header.Id = ByteSwapBE(header.Id);
+            header.size = Convert::NetworkToHost(header.size);
+            header.id = ByteSwapBE(header.id);
 
-            // NOTE: For compatibility reasons for the master server we need to remove sizeof(Header.Id) from the size.
-            // Previously the Id field was not part of the header rather part of the body.
+            // NOTE: For compatibility reasons for the master server we need to remove sizeof(Header.id) from the size.
+            // Previously the id field was not part of the header rather part of the body.
             // We correct the size to have only the length of the body.
-            if (header.Size < sizeof(header.Id))
+            if (header.size < sizeof(header.id))
             {
                 // This is a malformed packet, disconnect.
                 LOG_INFO(
-                    "Received malformed packet (size: %u) from {%s}, disconnecting.", header.Size,
+                    "Received malformed packet (size: %u) from {%s}, disconnecting.", header.size,
                     socket->GetIpAddress().c_str());
 
                 disconnect();
                 return ReadPacket::disconnected;
             }
 
-            header.Size -= sizeof(header.Id);
+            header.size -= sizeof(header.id);
 
             // Fill in new header format.
             inboundPacket.Header.magic = PacketHeader::kMagic;
-            inboundPacket.Header.size = header.Size;
-            inboundPacket.Header.id = header.Id;
+            inboundPacket.Header.size = header.size;
+            inboundPacket.Header.id = header.id;
 
             headerSize = sizeof(header);
-            totalPacketLength = sizeof(header) + header.Size;
+            totalPacketLength = sizeof(header) + header.size;
 
             _isLegacyProtocol = true;
         }
@@ -155,16 +155,16 @@ namespace OpenRCT2::Network
 
         if (legacyProtocol)
         {
-            // NOTE: For compatibility reasons for the master server we need to add sizeof(Header.Id) to the size.
-            // Previously the Id field was not part of the header rather part of the body.
-            const auto bodyLength = packet.Data.size() + sizeof(PacketLegacyHeader::Id);
+            // NOTE: For compatibility reasons for the master server we need to add sizeof(Header.id) to the size.
+            // Previously the id field was not part of the header rather part of the body.
+            const auto bodyLength = packet.Data.size() + sizeof(PacketLegacyHeader::id);
 
             Guard::Assert(bodyLength <= std::numeric_limits<uint16_t>::max(), "Packet size too large");
 
             PacketLegacyHeader header{};
-            header.Size = static_cast<uint16_t>(bodyLength);
-            header.Size = Convert::HostToNetwork(header.Size);
-            header.Id = ByteSwapBE(packet.Header.id);
+            header.size = static_cast<uint16_t>(bodyLength);
+            header.size = Convert::HostToNetwork(header.size);
+            header.id = ByteSwapBE(packet.Header.id);
 
             buffer.insert(
                 buffer.end(), reinterpret_cast<uint8_t*>(&header), reinterpret_cast<uint8_t*>(&header) + sizeof(header));

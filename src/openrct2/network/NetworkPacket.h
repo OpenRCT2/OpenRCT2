@@ -21,8 +21,8 @@ namespace OpenRCT2::Network
 #pragma pack(push, 1)
     struct PacketLegacyHeader
     {
-        uint16_t Size = 0;
-        Command Id = Command::invalid;
+        uint16_t size = 0;
+        Command id = Command::invalid;
     };
     static_assert(sizeof(PacketLegacyHeader) == 6);
 
