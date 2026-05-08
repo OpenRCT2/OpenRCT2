@@ -69,11 +69,11 @@ namespace OpenRCT2
         bool isOutsidePark = false;
         do
         {
-            switch (tileElement->GetType())
+            switch (tileElement->getType())
             {
                 case TileElementType::Surface:
                 {
-                    auto* surfaceElement = tileElement->AsSurface();
+                    auto* surfaceElement = tileElement->asSurface();
                     if (surfaceElement == nullptr)
                     {
                         surfaceColour = paletteIndex = PaletteIndex::transparent;
@@ -117,7 +117,7 @@ namespace OpenRCT2
                 default:
                     break;
             }
-        } while (!(tileElement++)->IsLastForTile());
+        } while (!(tileElement++)->isLastForTile());
 
         // Darken every other tile that's outside of the park, unless it's a path
         if (isOutsidePark && _tileColourIndex == 1 && paletteIndex != PaletteIndex::pi17)

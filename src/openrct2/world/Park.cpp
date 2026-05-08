@@ -360,9 +360,9 @@ namespace OpenRCT2::Park
         TileElementIteratorBegin(&it);
         do
         {
-            if (it.element->GetType() == TileElementType::Surface)
+            if (it.element->getType() == TileElementType::Surface)
             {
-                if (it.element->AsSurface()->GetOwnership() & (OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED | OWNERSHIP_OWNED))
+                if (it.element->asSurface()->GetOwnership() & (OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED | OWNERSHIP_OWNED))
                 {
                     tiles++;
                 }
@@ -655,18 +655,18 @@ namespace OpenRCT2::Park
             // If an entrance element do not place flags around surface
             do
             {
-                if (tileElement->GetType() != TileElementType::Entrance)
+                if (tileElement->getType() != TileElementType::Entrance)
                     continue;
 
-                if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
+                if (tileElement->asEntrance()->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
                     continue;
 
-                if (!(tileElement->IsGhost()))
+                if (!(tileElement->isGhost()))
                 {
                     fenceRequired = false;
                     break;
                 }
-            } while (!(tileElement++)->IsLastForTile());
+            } while (!(tileElement++)->isLastForTile());
 
             if (fenceRequired)
             {
@@ -694,7 +694,7 @@ namespace OpenRCT2::Park
 
         if (surfaceElement->GetParkFences() != newFences)
         {
-            int32_t baseZ = surfaceElement->GetBaseZ();
+            int32_t baseZ = surfaceElement->getBaseZ();
             int32_t clearZ = baseZ + 16;
             MapInvalidateTile({ coords, baseZ, clearZ });
             surfaceElement->SetParkFences(newFences);

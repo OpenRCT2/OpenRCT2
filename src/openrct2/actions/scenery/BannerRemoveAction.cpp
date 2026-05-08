@@ -132,7 +132,7 @@ namespace OpenRCT2::GameActions
 
         reinterpret_cast<TileElement*>(bannerElement)->RemoveBannerEntry();
         MapInvalidateTileZoom1({ _loc, _loc.z, _loc.z + 32 });
-        bannerElement->Remove();
+        bannerElement->remove();
 
         return res;
     }
@@ -142,9 +142,9 @@ namespace OpenRCT2::GameActions
         // Find the banner element at known z and position
         for (auto* bannerElement : TileElementsView<BannerElement>(_loc))
         {
-            if (bannerElement->GetBaseZ() != _loc.z)
+            if (bannerElement->getBaseZ() != _loc.z)
                 continue;
-            if (bannerElement->IsGhost() && !GetFlags().has(CommandFlag::ghost))
+            if (bannerElement->isGhost() && !GetFlags().has(CommandFlag::ghost))
                 continue;
             if (bannerElement->GetPosition() != _loc.direction)
                 continue;

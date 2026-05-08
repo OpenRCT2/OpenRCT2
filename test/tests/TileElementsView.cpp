@@ -87,7 +87,7 @@ std::vector<T*> BuildListManual(const CoordsXY& pos)
             res.push_back(element);
         }
 
-    } while (!(element++)->IsLastForTile());
+    } while (!(element++)->isLastForTile());
 
     return res;
 }

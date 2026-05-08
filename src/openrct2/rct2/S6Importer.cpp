@@ -1040,14 +1040,14 @@ namespace OpenRCT2::RCT2
 
                         do
                         {
-                            if (tileElement->GetType() != TileElementType::Wall || tileElement->BaseHeight != tileCoords.z)
+                            if (tileElement->getType() != TileElementType::Wall || tileElement->baseHeight != tileCoords.z)
                             {
                                 continue;
                             }
 
-                            tileElement->AsWall()->SetIsAnimating(true);
+                            tileElement->asWall()->SetIsAnimating(true);
                             MapAnimations::MarkTileForUpdate(tileCoords);
-                        } while (!(tileElement++)->IsLastForTile());
+                        } while (!(tileElement++)->isLastForTile());
                         break;
                     }
                 }
@@ -1293,7 +1293,7 @@ namespace OpenRCT2::RCT2
                                 ImportTileElement(&dstElement, srcElement, nextElementInvisible || restOfTileInvisible);
                                 nextElementInvisible = false;
                                 tileAdded = true;
-                            } while (!(srcElement++)->IsLastForTile());
+                            } while (!(srcElement++)->isLastForTile());
                         }
                     }
 
@@ -1302,13 +1302,13 @@ namespace OpenRCT2::RCT2
                         // Add a default surface element, we always need at least one element per tile
                         auto& dstElement = tileElements.emplace_back();
                         dstElement.ClearAs(TileElementType::Surface);
-                        dstElement.SetLastForTile(true);
+                        dstElement.setLastForTile(true);
                     }
 
                     // Set last element flag in case the original last element was never added
                     if (!tileElements.empty())
                     {
-                        tileElements.back().SetLastForTile(true);
+                        tileElements.back().setLastForTile(true);
                     }
                 }
             }
@@ -1319,21 +1319,21 @@ namespace OpenRCT2::RCT2
         {
             const auto rct12Type = src->GetType();
             dst->ClearAs(ToOpenRCT2TileElementType(rct12Type));
-            dst->SetDirection(src->GetDirection());
-            dst->SetBaseZ(src->BaseHeight * kCoordsZStep);
-            dst->SetClearanceZ(src->ClearanceHeight * kCoordsZStep);
+            dst->setDirection(src->GetDirection());
+            dst->setBaseZ(src->BaseHeight * kCoordsZStep);
+            dst->setClearanceZ(src->ClearanceHeight * kCoordsZStep);
 
             // All saved in "flags"
-            dst->SetOccupiedQuadrants(src->GetOccupiedQuadrants());
-            dst->SetGhost(src->IsGhost());
-            dst->SetLastForTile(src->IsLastForTile());
-            dst->SetInvisible(invisible);
+            dst->setOccupiedQuadrants(src->GetOccupiedQuadrants());
+            dst->setGhost(src->IsGhost());
+            dst->setLastForTile(src->isLastForTile());
+            dst->setInvisible(invisible);
 
             switch (rct12Type)
             {
                 case RCT12TileElementType::surface:
                 {
-                    auto dst2 = dst->AsSurface();
+                    auto dst2 = dst->asSurface();
                     auto src2 = src->AsSurface();
 
                     dst2->SetSlope(src2->GetSlope());
@@ -1351,7 +1351,7 @@ namespace OpenRCT2::RCT2
                 }
                 case RCT12TileElementType::path:
                 {
-                    auto dst2 = dst->AsPath();
+                    auto dst2 = dst->asPath();
                     auto src2 = src->AsPath();
 
                     auto pathEntryIndex = src2->GetEntryIndex();
@@ -1389,7 +1389,7 @@ namespace OpenRCT2::RCT2
                 }
                 case RCT12TileElementType::track:
                 {
-                    auto dst2 = dst->AsTrack();
+                    auto dst2 = dst->asTrack();
                     auto src2 = src->AsTrack();
 
                     auto rideType = _s6.Rides[src2->GetRideIndex()].type;
@@ -1443,14 +1443,14 @@ namespace OpenRCT2::RCT2
 
                     if (TrackTypeMustBeMadeInvisible(*dst2))
                     {
-                        dst->SetInvisible(true);
+                        dst->setInvisible(true);
                     }
 
                     break;
                 }
                 case RCT12TileElementType::smallScenery:
                 {
-                    auto dst2 = dst->AsSmallScenery();
+                    auto dst2 = dst->asSmallScenery();
                     auto src2 = src->AsSmallScenery();
 
                     dst2->SetEntryIndex(src2->GetEntryIndex());
@@ -1465,7 +1465,7 @@ namespace OpenRCT2::RCT2
                 }
                 case RCT12TileElementType::entrance:
                 {
-                    auto dst2 = dst->AsEntrance();
+                    auto dst2 = dst->asEntrance();
                     auto src2 = src->AsEntrance();
 
                     dst2->SetEntranceType(src2->GetEntranceType());
@@ -1496,7 +1496,7 @@ namespace OpenRCT2::RCT2
                 }
                 case RCT12TileElementType::wall:
                 {
-                    auto dst2 = dst->AsWall();
+                    auto dst2 = dst->asWall();
                     auto src2 = src->AsWall();
 
                     dst2->SetEntryIndex(src2->GetEntryIndex());
@@ -1533,7 +1533,7 @@ namespace OpenRCT2::RCT2
                 }
                 case RCT12TileElementType::largeScenery:
                 {
-                    auto dst2 = dst->AsLargeScenery();
+                    auto dst2 = dst->asLargeScenery();
                     auto src2 = src->AsLargeScenery();
 
                     dst2->SetEntryIndex(src2->GetEntryIndex());
@@ -1566,7 +1566,7 @@ namespace OpenRCT2::RCT2
                 }
                 case RCT12TileElementType::banner:
                 {
-                    auto dst2 = dst->AsBanner();
+                    auto dst2 = dst->asBanner();
                     auto src2 = src->AsBanner();
 
                     dst2->SetPosition(src2->GetPosition());

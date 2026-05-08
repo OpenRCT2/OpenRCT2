@@ -878,7 +878,7 @@ void Vehicle::UpdateAnimationAnimalFlying()
     {
         auto trackType = GetTrackType();
         TileElement* trackElement = MapGetTrackElementAtOfTypeSeq(TrackLocation, trackType, 0);
-        if (trackElement != nullptr && trackElement->AsTrack()->HasChain())
+        if (trackElement != nullptr && trackElement->asTrack()->HasChain())
         {
             // start flapping, bird
             animation_frame = 1;

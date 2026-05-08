@@ -83,7 +83,7 @@ CoordsXYZ _vehicleCurPosition;
 
 PitchAndRoll PitchAndRollStart(bool useInvertedSprites, TileElement* tileElement)
 {
-    auto trackType = tileElement->AsTrack()->GetTrackType();
+    auto trackType = tileElement->asTrack()->GetTrackType();
     const auto& ted = GetTrackElementDescriptor(trackType);
     return PitchAndRoll{ ted.definition.pitchStart, TrackGetActualBank3(useInvertedSprites, tileElement) };
 }
@@ -732,7 +732,7 @@ void Vehicle::UpdateMeasurements()
 
     auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ x, y });
     // If vehicle above ground.
-    if (surfaceElement != nullptr && surfaceElement->GetBaseZ() <= z)
+    if (surfaceElement != nullptr && surfaceElement->getBaseZ() <= z)
     {
         if (!TrackGetIsSheltered(CoordsXYZ{ x, y, z }))
         {
@@ -1031,17 +1031,17 @@ bool Vehicle::CurrentTowerElementIsTop()
     if (tileElement == nullptr)
         return true;
 
-    while (!tileElement->IsLastForTile())
+    while (!tileElement->isLastForTile())
     {
         tileElement++;
 
-        if (tileElement->IsGhost())
+        if (tileElement->isGhost())
             continue;
 
-        if (tileElement->GetType() != TileElementType::Track)
+        if (tileElement->getType() != TileElementType::Track)
             continue;
 
-        const auto* trackElement = tileElement->AsTrack();
+        const auto* trackElement = tileElement->asTrack();
         if (trackElement->GetRideIndex() != ride)
             continue;
 
@@ -1120,7 +1120,7 @@ void Vehicle::UpdateTravellingCableLift()
                     UpdateTestFinish();
                 }
             }
-            else if (!curRide->flags.has(RideFlag::testInProgress) && !IsGhost())
+            else if (!curRide->flags.has(RideFlag::testInProgress) && !isGhost())
             {
                 TestReset();
             }
@@ -1376,7 +1376,7 @@ void Vehicle::UpdateCrossings() const
 
         while (true)
         {
-            auto* pathElement = MapGetPathElementAt(TileCoordsXYZ(CoordsXYZ{ xyElement, xyElement.element->GetBaseZ() }));
+            auto* pathElement = MapGetPathElementAt(TileCoordsXYZ(CoordsXYZ{ xyElement, xyElement.element->getBaseZ() }));
             if (pathElement != nullptr)
             {
                 if (!playedClaxon && !pathElement->IsBlockedByVehicle())
@@ -1397,7 +1397,7 @@ void Vehicle::UpdateCrossings() const
                 break;
             }
 
-            curZ = xyElement.element->BaseHeight;
+            curZ = xyElement.element->baseHeight;
 
             if (travellingForwards)
             {
@@ -1419,7 +1419,7 @@ void Vehicle::UpdateCrossings() const
 
             // Ensure trains near a station don't block possible crossings after the stop,
             // except when they are departing
-            if (xyElement.element->AsTrack()->IsStation() && status != Status::departing)
+            if (xyElement.element->asTrack()->IsStation() && status != Status::departing)
             {
                 break;
             }
@@ -1447,7 +1447,7 @@ void Vehicle::UpdateCrossings() const
             }
         }
 
-        auto* pathElement = MapGetPathElementAt(TileCoordsXYZ(CoordsXYZ{ xyElement, xyElement.element->GetBaseZ() }));
+        auto* pathElement = MapGetPathElementAt(TileCoordsXYZ(CoordsXYZ{ xyElement, xyElement.element->getBaseZ() }));
         if (pathElement != nullptr)
         {
             pathElement->SetIsBlockedByVehicle(false);
@@ -1492,7 +1492,7 @@ void Vehicle::SetState(Status vehicleStatus, uint8_t subState)
     InvalidateWindow();
 }
 
-bool Vehicle::IsGhost() const
+bool Vehicle::isGhost() const
 {
     auto r = GetRide();
     return r != nullptr && r->status == RideStatus::simulating;

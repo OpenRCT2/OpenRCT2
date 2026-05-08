@@ -133,16 +133,16 @@ namespace OpenRCT2
         {
             // the balloon has height so we add some padding to prevent it clipping through things.
             int32_t balloon_top = z + kCoordsZStep * 2;
-            if (balloon_top == tileElement->GetBaseZ())
+            if (balloon_top == tileElement->getBaseZ())
             {
                 return true;
             }
 
             // check for situations where guests can drop a balloon inside a covered building
-            bool check_ceiling = tileElement->GetType() == TileElementType::Entrance;
-            if (tileElement->GetType() == TileElementType::Track)
+            bool check_ceiling = tileElement->getType() == TileElementType::Entrance;
+            if (tileElement->getType() == TileElementType::Track)
             {
-                const TrackElement* trackElement = tileElement->AsTrack();
+                const TrackElement* trackElement = tileElement->asTrack();
                 const auto* ride = GetRide(trackElement->GetRideIndex());
                 if (ride != nullptr && ride->getRideTypeDescriptor().flags.has(RtdFlag::hasRoofOverWholeRide))
                 {
@@ -156,13 +156,13 @@ namespace OpenRCT2
 
             if (check_ceiling)
             {
-                if (balloon_top > tileElement->GetBaseZ() && z < tileElement->GetClearanceZ())
+                if (balloon_top > tileElement->getBaseZ() && z < tileElement->getClearanceZ())
                 {
                     return true;
                 }
             }
 
-        } while (!(tileElement++)->IsLastForTile());
+        } while (!(tileElement++)->isLastForTile());
         return false;
     }
 } // namespace OpenRCT2

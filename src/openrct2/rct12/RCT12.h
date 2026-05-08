@@ -618,7 +618,7 @@ struct RCT12TileElementBase
 
     uint8_t GetOccupiedQuadrants() const;
 
-    bool IsLastForTile() const;
+    bool isLastForTile() const;
     bool IsGhost() const;
 };
 /**

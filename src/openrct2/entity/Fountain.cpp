@@ -95,7 +95,7 @@ namespace OpenRCT2
         const auto currentTicks = getGameState().currentTicks;
 
         int32_t randomIndex;
-        auto newZ = tileElement->GetBaseZ();
+        auto newZ = tileElement->getBaseZ();
 
         // Change pattern approximately every 51 seconds
         uint32_t pattern = (currentTicks >> 11) & 7;
@@ -265,21 +265,21 @@ namespace OpenRCT2
             return false;
         do
         {
-            if (tileElement->GetType() != TileElementType::Path)
+            if (tileElement->getType() != TileElementType::Path)
                 continue;
-            if (tileElement->GetBaseZ() != newLoc.z)
+            if (tileElement->getBaseZ() != newLoc.z)
                 continue;
-            if (tileElement->AsPath()->AdditionIsGhost())
+            if (tileElement->asPath()->AdditionIsGhost())
                 continue;
-            if (!tileElement->AsPath()->HasAddition())
+            if (!tileElement->asPath()->HasAddition())
                 continue;
 
-            auto* pathAdditionEntry = tileElement->AsPath()->GetAdditionEntry();
+            auto* pathAdditionEntry = tileElement->asPath()->GetAdditionEntry();
             if (pathAdditionEntry != nullptr && pathAdditionEntry->flags & pathAdditionFlagMask)
             {
                 return true;
             }
-        } while (!(tileElement++)->IsLastForTile());
+        } while (!(tileElement++)->isLastForTile());
 
         return false;
     }

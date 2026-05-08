@@ -239,7 +239,7 @@ namespace OpenRCT2
     void SteamParticle::Create(const CoordsXYZ& coords)
     {
         auto surfaceElement = MapGetSurfaceElementAt(coords);
-        if (surfaceElement != nullptr && coords.z > surfaceElement->GetBaseZ())
+        if (surfaceElement != nullptr && coords.z > surfaceElement->getBaseZ())
         {
             SteamParticle* steam = getGameState().entities.CreateEntity<SteamParticle>();
             if (steam == nullptr)

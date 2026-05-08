@@ -75,8 +75,8 @@ namespace OpenRCT2::World::MapGenerator
         auto* sceneryElement = TileElementInsert<SmallSceneryElement>({ loc, surfaceZ }, 0b1111);
         Guard::Assert(sceneryElement != nullptr);
 
-        sceneryElement->SetClearanceZ(surfaceZ + sceneryEntry->height);
-        sceneryElement->SetDirection(UtilRand() & 3);
+        sceneryElement->setClearanceZ(surfaceZ + sceneryEntry->height);
+        sceneryElement->setDirection(UtilRand() & 3);
         sceneryElement->SetEntryIndex(type);
         sceneryElement->SetAge(0);
         sceneryElement->SetPrimaryColour(Drawing::Colour::yellow);
@@ -164,8 +164,8 @@ namespace OpenRCT2::World::MapGenerator
                 if (surfaceElement->GetWaterHeight() > 0)
                     continue;
 
-                if (settings->minTreeAltitude > surfaceElement->BaseHeight
-                    || settings->maxTreeAltitude < surfaceElement->BaseHeight)
+                if (settings->minTreeAltitude > surfaceElement->baseHeight
+                    || settings->maxTreeAltitude < surfaceElement->baseHeight)
                     continue;
 
                 // On sand surfaces, give the tile a score based on nearby water, to be used to determine whether to spawn

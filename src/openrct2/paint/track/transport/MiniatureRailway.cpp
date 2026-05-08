@@ -583,7 +583,7 @@ static ImageId MiniatureRailwayTrackToGroovedIndent(const TileElement* path, uin
 
     uint32_t imageIdAlt = SPR_TRACKS_MINIATURE_RAILWAY_GROOVED_SW_NE;
 
-    uint8_t correctedEdges = path->AsPath()->GetEdges();
+    uint8_t correctedEdges = path->asPath()->GetEdges();
     correctedEdges |= correctedEdges << 4;
     correctedEdges >>= 4 - rotation;
     correctedEdges &= 0x0F;

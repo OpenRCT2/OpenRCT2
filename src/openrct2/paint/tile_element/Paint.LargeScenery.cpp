@@ -81,7 +81,7 @@ static void PaintLargeScenerySupports(
     WoodenBSupportsPaintSetupRotated(
         session, WoodenSupportType::truss, WoodenSupportSubType::neSw, direction, supportHeight, imageTemplate, transitionType);
 
-    int32_t clearanceHeight = Numerics::ceil2(tileElement.GetClearanceZ() + 15, 16);
+    int32_t clearanceHeight = Numerics::ceil2(tileElement.getClearanceZ() + 15, 16);
     if (tile.allowSupportsAbove)
     {
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, clearanceHeight, 0x20);
@@ -351,7 +351,7 @@ void PaintLargeScenery(PaintSession& session, uint8_t direction, uint16_t height
         imageTemplate = ImageId().WithRemap(FilterPaletteID::palette46);
         isGhost = true;
     }
-    else if (tileElement.IsGhost())
+    else if (tileElement.isGhost())
     {
         session.InteractionType = ViewportInteractionItem::none;
         imageTemplate = ImageId().WithRemap(FilterPaletteID::paletteGhost);

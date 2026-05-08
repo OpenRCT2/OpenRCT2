@@ -465,12 +465,12 @@ static bool vehicle_boat_is_location_accessible(const CoordsXYZ& location)
         return false;
     do
     {
-        if (tileElement->IsGhost())
+        if (tileElement->isGhost())
             continue;
 
-        if (tileElement->GetType() == TileElementType::Surface)
+        if (tileElement->getType() == TileElementType::Surface)
         {
-            int32_t waterZ = tileElement->AsSurface()->GetWaterHeight();
+            int32_t waterZ = tileElement->asSurface()->GetWaterHeight();
             if (location.z != waterZ)
             {
                 return false;
@@ -478,12 +478,12 @@ static bool vehicle_boat_is_location_accessible(const CoordsXYZ& location)
         }
         else
         {
-            if (location.z > (tileElement->GetBaseZ() - (2 * kCoordsZStep))
-                && location.z < tileElement->GetClearanceZ() + (2 * kCoordsZStep))
+            if (location.z > (tileElement->getBaseZ() - (2 * kCoordsZStep))
+                && location.z < tileElement->getClearanceZ() + (2 * kCoordsZStep))
             {
                 return false;
             }
         }
-    } while (!(tileElement++)->IsLastForTile());
+    } while (!(tileElement++)->isLastForTile());
     return true;
 }

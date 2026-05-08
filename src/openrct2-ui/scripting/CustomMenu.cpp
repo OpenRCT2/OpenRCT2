@@ -230,7 +230,7 @@ namespace OpenRCT2::Scripting
                             break;
                         }
                         index++;
-                    } while (!(el++)->IsLastForTile());
+                    } while (!(el++)->isLastForTile());
                 }
             }
 

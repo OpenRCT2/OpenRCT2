@@ -68,7 +68,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
         }
 
-        auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
+        auto* sceneryEntry = tileElement->asLargeScenery()->GetEntry();
         // If we have a bugged scenery entry, do not touch the tile element.
         if (sceneryEntry == nullptr)
         {
@@ -115,11 +115,11 @@ namespace OpenRCT2::GameActions
             // scenery tile elements.
             if (flags.has(CommandFlag::trackDesign))
             {
-                if (tileElement->AsLargeScenery()->IsAccounted())
+                if (tileElement->asLargeScenery()->IsAccounted())
                     calculate_cost = false;
 
                 // Sets the flag to prevent this being counted in additional calls
-                tileElement->AsLargeScenery()->SetIsAccounted(true);
+                tileElement->asLargeScenery()->SetIsAccounted(true);
             }
         }
 
@@ -146,7 +146,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
         }
 
-        auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
+        auto* sceneryEntry = tileElement->asLargeScenery()->GetEntry();
         // If we have a bugged scenery entry, do not touch the tile element.
         if (sceneryEntry == nullptr)
         {
@@ -198,16 +198,16 @@ namespace OpenRCT2::GameActions
         for (auto* sceneryElement : TileElementsView<LargeSceneryElement>(pos))
         {
             // If we are removing ghost elements
-            if (isGhost && sceneryElement->IsGhost() == false)
+            if (isGhost && sceneryElement->isGhost() == false)
                 continue;
 
-            if (sceneryElement->GetDirection() != _loc.direction)
+            if (sceneryElement->getDirection() != _loc.direction)
                 continue;
 
             if (sceneryElement->GetSequenceIndex() != sequenceIndex)
                 continue;
 
-            if (sceneryElement->GetBaseZ() != pos.z)
+            if (sceneryElement->getBaseZ() != pos.z)
                 continue;
 
             return sceneryElement->as<TileElement>();

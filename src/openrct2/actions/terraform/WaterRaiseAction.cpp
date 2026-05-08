@@ -93,7 +93,7 @@ namespace OpenRCT2::GameActions
 
                 uint8_t height = surfaceElement->GetWaterHeight() / kCoordsZStep;
 
-                if (surfaceElement->BaseHeight > maxHeight)
+                if (surfaceElement->baseHeight > maxHeight)
                     continue;
 
                 if (height != 0)
@@ -111,7 +111,7 @@ namespace OpenRCT2::GameActions
                 }
                 else
                 {
-                    height = surfaceElement->BaseHeight + 2;
+                    height = surfaceElement->baseHeight + 2;
                 }
                 auto waterSetHeightAction = WaterSetHeightAction({ x, y }, height);
                 waterSetHeightAction.SetFlags(GetFlags());
@@ -165,7 +165,7 @@ namespace OpenRCT2::GameActions
                 if (surfaceElement == nullptr)
                     continue;
 
-                auto height = surfaceElement->GetBaseZ();
+                auto height = surfaceElement->getBaseZ();
                 if (surfaceElement->GetWaterHeight() > 0)
                 {
                     height = surfaceElement->GetWaterHeight();

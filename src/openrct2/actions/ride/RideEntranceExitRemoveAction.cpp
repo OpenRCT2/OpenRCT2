@@ -95,7 +95,7 @@ namespace OpenRCT2::GameActions
             _loc, _rideIndex, _stationNum, _isExit ? ENTRANCE_TYPE_RIDE_EXIT : ENTRANCE_TYPE_RIDE_ENTRANCE);
 
         // If we are trying to remove a ghost and the element we found is real, return an error, but don't log a warning
-        if (entranceElement != nullptr && (GetFlags().has(CommandFlag::ghost)) && !(entranceElement->IsGhost()))
+        if (entranceElement != nullptr && (GetFlags().has(CommandFlag::ghost)) && !(entranceElement->isGhost()))
         {
             return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_GHOST_ELEMENT_NOT_FOUND);
         }
@@ -131,7 +131,7 @@ namespace OpenRCT2::GameActions
             _loc, _rideIndex, _stationNum, _isExit ? ENTRANCE_TYPE_RIDE_EXIT : ENTRANCE_TYPE_RIDE_ENTRANCE);
 
         // If we are trying to remove a ghost and the element we found is real, return an error, but don't log a warning
-        if (entranceElement != nullptr && isGhost && !(entranceElement->IsGhost()))
+        if (entranceElement != nullptr && isGhost && !(entranceElement->isGhost()))
         {
             return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_GHOST_ELEMENT_NOT_FOUND);
         }

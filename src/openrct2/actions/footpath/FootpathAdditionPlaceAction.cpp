@@ -83,7 +83,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_POSITION_THIS_HERE, STR_ERR_PATH_ELEMENT_NOT_FOUND);
         }
 
-        auto pathElement = tileElement->AsPath();
+        auto pathElement = tileElement->asPath();
         if (pathElement->IsLevelCrossing(_loc))
         {
             return Result(
@@ -147,7 +147,7 @@ namespace OpenRCT2::GameActions
         res.expenditure = ExpenditureType::landscaping;
 
         auto tileElement = MapGetFootpathElement(_loc);
-        auto pathElement = tileElement->AsPath();
+        auto pathElement = tileElement->asPath();
 
         if (pathElement == nullptr)
         {

@@ -63,7 +63,7 @@ uint8_t RCT12TileElementBase::GetOccupiedQuadrants() const
     return Flags & kTileElementOccupiedQuadrantsMask;
 }
 
-bool RCT12TileElementBase::IsLastForTile() const
+bool RCT12TileElementBase::isLastForTile() const
 {
     return (this->Flags & RCT12_TILE_ELEMENT_FLAG_LAST_TILE) != 0;
 }

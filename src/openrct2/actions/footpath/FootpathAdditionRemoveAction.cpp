@@ -75,7 +75,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_REMOVE_THIS, STR_ERR_PATH_ELEMENT_NOT_FOUND);
         }
 
-        auto pathElement = tileElement->AsPath();
+        auto pathElement = tileElement->asPath();
         if (pathElement == nullptr)
         {
             LOG_ERROR("No path element at x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);

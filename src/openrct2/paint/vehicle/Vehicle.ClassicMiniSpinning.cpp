@@ -75,7 +75,7 @@ namespace OpenRCT2
             + ((vehicle->restraints_position - restraintsInterval) / restraintsInterval);
 
         const ImageIndex imageIndex = ((!restraints) * carImageIndex) + (restraints * restraintsImageIndex);
-        const ImageId imageId = vehicle->IsGhost() ? ConstructionMarker.WithIndex(imageIndex)
+        const ImageId imageId = vehicle->isGhost() ? ConstructionMarker.WithIndex(imageIndex)
                                                    : ImageId(imageIndex, vehicle->colours.Body, vehicle->colours.Trim);
 
         const uint32_t boundingBoxIndex = pitchInfo.boundingBoxIndex
@@ -101,7 +101,7 @@ namespace OpenRCT2
                 const Drawing::Colour guestColour0 = vehicle->peep_tshirt_colours[(i * 2) + swapGuestColours];
                 const Drawing::Colour guestColour1 = vehicle->peep_tshirt_colours[(i * 2) + !swapGuestColours];
 
-                const ImageId guestImageId = vehicle->IsGhost() ? ConstructionMarker.WithIndex(guestImageIndex)
+                const ImageId guestImageId = vehicle->isGhost() ? ConstructionMarker.WithIndex(guestImageIndex)
                                                                 : ImageId(guestImageIndex, guestColour0, guestColour1);
                 PaintAddImageAsChild(session, guestImageId, { 0, 0, z }, boundingBox);
             }

@@ -75,7 +75,7 @@ TEST_F(TileElementWantsFootpathConnection, SlopedPath)
     // Sloped paths only want to connect in two directions, of which is one at a higher offset
     const auto* slopedPathElement = MapGetFootpathElement(TileCoordsXYZ{ 18, 18, 14 }.ToCoordsXYZ());
     ASSERT_NE(slopedPathElement, nullptr);
-    ASSERT_TRUE(slopedPathElement->AsPath()->IsSloped());
+    ASSERT_TRUE(slopedPathElement->asPath()->IsSloped());
     // Bottom and top of sloped path want a path connection
     EXPECT_TRUE(TileElementWantsPathConnectionTowards({ 18, 18, 14, 2 }, nullptr));
     EXPECT_TRUE(TileElementWantsPathConnectionTowards({ 18, 18, 16, 0 }, nullptr));
