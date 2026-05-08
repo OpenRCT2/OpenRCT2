@@ -609,17 +609,17 @@ struct RCT12EightCarsCorruptElement15;
 
 struct RCT12TileElementBase
 {
-    uint8_t Type;            // 0
-    uint8_t Flags;           // 1. Upper nibble: Flags. Lower nibble: occupied quadrants (one bit per quadrant).
-    uint8_t BaseHeight;      // 2
-    uint8_t ClearanceHeight; // 3
-    RCT12TileElementType GetType() const;
-    uint8_t GetDirection() const;
+    uint8_t type;            // 0
+    uint8_t flags;           // 1. Upper nibble: flags. Lower nibble: occupied quadrants (one bit per quadrant).
+    uint8_t baseHeight;      // 2
+    uint8_t clearanceHeight; // 3
+    RCT12TileElementType getType() const;
+    uint8_t getDirection() const;
 
-    uint8_t GetOccupiedQuadrants() const;
+    uint8_t getOccupiedQuadrants() const;
 
     bool isLastForTile() const;
-    bool IsGhost() const;
+    bool isGhost() const;
 };
 /**
  * Map element structure
@@ -631,75 +631,75 @@ struct RCT12TileElement : public RCT12TileElementBase
     template<typename TType, RCT12TileElementType TClass>
     const TType* as() const
     {
-        return GetType() == TClass ? reinterpret_cast<const TType*>(this) : nullptr;
+        return getType() == TClass ? reinterpret_cast<const TType*>(this) : nullptr;
     }
     template<typename TType, RCT12TileElementType TClass>
     TType* as()
     {
-        return GetType() == TClass ? reinterpret_cast<TType*>(this) : nullptr;
+        return getType() == TClass ? reinterpret_cast<TType*>(this) : nullptr;
     }
 
-    const RCT12SurfaceElement* AsSurface() const
+    const RCT12SurfaceElement* asSurface() const
     {
         return as<RCT12SurfaceElement, RCT12TileElementType::surface>();
     }
-    RCT12SurfaceElement* AsSurface()
+    RCT12SurfaceElement* asSurface()
     {
         return as<RCT12SurfaceElement, RCT12TileElementType::surface>();
     }
-    const RCT12PathElement* AsPath() const
+    const RCT12PathElement* asPath() const
     {
         return as<RCT12PathElement, RCT12TileElementType::path>();
     }
-    RCT12PathElement* AsPath()
+    RCT12PathElement* asPath()
     {
         return as<RCT12PathElement, RCT12TileElementType::path>();
     }
-    const RCT12TrackElement* AsTrack() const
+    const RCT12TrackElement* asTrack() const
     {
         return as<RCT12TrackElement, RCT12TileElementType::track>();
     }
-    RCT12TrackElement* AsTrack()
+    RCT12TrackElement* asTrack()
     {
         return as<RCT12TrackElement, RCT12TileElementType::track>();
     }
-    const RCT12SmallSceneryElement* AsSmallScenery() const
+    const RCT12SmallSceneryElement* asSmallScenery() const
     {
         return as<RCT12SmallSceneryElement, RCT12TileElementType::smallScenery>();
     }
-    RCT12SmallSceneryElement* AsSmallScenery()
+    RCT12SmallSceneryElement* asSmallScenery()
     {
         return as<RCT12SmallSceneryElement, RCT12TileElementType::smallScenery>();
     }
-    const RCT12LargeSceneryElement* AsLargeScenery() const
+    const RCT12LargeSceneryElement* asLargeScenery() const
     {
         return as<RCT12LargeSceneryElement, RCT12TileElementType::largeScenery>();
     }
-    RCT12LargeSceneryElement* AsLargeScenery()
+    RCT12LargeSceneryElement* asLargeScenery()
     {
         return as<RCT12LargeSceneryElement, RCT12TileElementType::largeScenery>();
     }
-    const RCT12WallElement* AsWall() const
+    const RCT12WallElement* asWall() const
     {
         return as<RCT12WallElement, RCT12TileElementType::wall>();
     }
-    RCT12WallElement* AsWall()
+    RCT12WallElement* asWall()
     {
         return as<RCT12WallElement, RCT12TileElementType::wall>();
     }
-    const RCT12EntranceElement* AsEntrance() const
+    const RCT12EntranceElement* asEntrance() const
     {
         return as<RCT12EntranceElement, RCT12TileElementType::entrance>();
     }
-    RCT12EntranceElement* AsEntrance()
+    RCT12EntranceElement* asEntrance()
     {
         return as<RCT12EntranceElement, RCT12TileElementType::entrance>();
     }
-    const RCT12BannerElement* AsBanner() const
+    const RCT12BannerElement* asBanner() const
     {
         return as<RCT12BannerElement, RCT12TileElementType::banner>();
     }
-    RCT12BannerElement* AsBanner()
+    RCT12BannerElement* asBanner()
     {
         return as<RCT12BannerElement, RCT12TileElementType::banner>();
     }

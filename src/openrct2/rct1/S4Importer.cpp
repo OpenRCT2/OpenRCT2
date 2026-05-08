@@ -494,11 +494,11 @@ namespace OpenRCT2::RCT1
 
             while (tileIndex < maxTiles)
             {
-                switch (tileElement->GetType())
+                switch (tileElement->getType())
                 {
                     case RCT12TileElementType::surface:
                     {
-                        auto surfaceEl = tileElement->AsSurface();
+                        auto surfaceEl = tileElement->asSurface();
                         auto surfaceStyle = surfaceEl->GetSurfaceStyle();
                         auto edgeStyle = surfaceEl->GetEdgeStyle();
                         AddEntryForTerrainSurface(surfaceStyle);
@@ -507,24 +507,24 @@ namespace OpenRCT2::RCT1
                     }
                     case RCT12TileElementType::path:
                     {
-                        uint8_t pathType = tileElement->AsPath()->GetRCT1PathType();
-                        uint8_t pathAdditionsType = tileElement->AsPath()->GetAddition();
+                        uint8_t pathType = tileElement->asPath()->GetRCT1PathType();
+                        uint8_t pathAdditionsType = tileElement->asPath()->GetAddition();
 
                         AddEntryForPathAddition(pathAdditionsType);
                         AddEntryForPathSurface(pathType);
                         break;
                     }
                     case RCT12TileElementType::smallScenery:
-                        AddEntryForSmallScenery(tileElement->AsSmallScenery()->GetEntryIndex());
+                        AddEntryForSmallScenery(tileElement->asSmallScenery()->GetEntryIndex());
                         break;
                     case RCT12TileElementType::largeScenery:
-                        AddEntryForLargeScenery(tileElement->AsLargeScenery()->GetEntryIndex());
+                        AddEntryForLargeScenery(tileElement->asLargeScenery()->GetEntryIndex());
                         break;
                     case RCT12TileElementType::wall:
                     {
                         for (int32_t edge = 0; edge < 4; edge++)
                         {
-                            int32_t type = tileElement->AsWall()->GetRCT1WallType(edge);
+                            int32_t type = tileElement->asWall()->GetRCT1WallType(edge);
 
                             if (type != -1)
                             {
@@ -1596,7 +1596,7 @@ namespace OpenRCT2::RCT1
                         RCT12TileElement* srcElement = tilePointerIndex.GetFirstElementAt(coords);
                         do
                         {
-                            if (srcElement->BaseHeight == Limits::kMaxElementHeight)
+                            if (srcElement->baseHeight == Limits::kMaxElementHeight)
                                 continue;
 
                             // Reserve 8 elements for import
@@ -1632,26 +1632,26 @@ namespace OpenRCT2::RCT1
 
         size_t ImportTileElement(TileElement* dst, const RCT12TileElement* src)
         {
-            const auto rct12type = src->GetType();
+            const auto rct12type = src->getType();
             const auto tileElementType = ToOpenRCT2TileElementType(rct12type);
             dst->ClearAs(tileElementType);
-            dst->setDirection(src->GetDirection());
+            dst->setDirection(src->getDirection());
 
             // All saved in "flags"
-            dst->setOccupiedQuadrants(src->GetOccupiedQuadrants());
+            dst->setOccupiedQuadrants(src->getOccupiedQuadrants());
             // Skipping IsGhost, which appears to use a different flag in RCT1.
             // This flag will be set by the caller.
             dst->setLastForTile(false);
 
-            dst->setBaseZ(src->BaseHeight * Limits::kCoordsZStep);
-            dst->setClearanceZ(src->ClearanceHeight * Limits::kCoordsZStep);
+            dst->setBaseZ(src->baseHeight * Limits::kCoordsZStep);
+            dst->setClearanceZ(src->clearanceHeight * Limits::kCoordsZStep);
 
             switch (tileElementType)
             {
                 case TileElementType::Surface:
                 {
                     auto dst2 = dst->asSurface();
-                    auto src2 = src->AsSurface();
+                    auto src2 = src->asSurface();
 
                     auto surfaceStyle = _terrainSurfaceTypeToEntryMap[src2->GetSurfaceStyle()];
                     auto edgeStyle = _terrainEdgeTypeToEntryMap[src2->GetEdgeStyle()];
@@ -1670,7 +1670,7 @@ namespace OpenRCT2::RCT1
                 case TileElementType::Path:
                 {
                     auto dst2 = dst->asPath();
-                    auto src2 = src->AsPath();
+                    auto src2 = src->asPath();
 
                     dst2->SetQueueBannerDirection(src2->GetQueueBannerDirection());
                     dst2->SetSloped(src2->IsSloped());
@@ -1725,7 +1725,7 @@ namespace OpenRCT2::RCT1
                 case TileElementType::Track:
                 {
                     auto dst2 = dst->asTrack();
-                    auto src2 = src->AsTrack();
+                    auto src2 = src->asTrack();
                     const auto* ride = GetRide(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
                     auto rideType = (ride != nullptr) ? ride->type : kRideTypeNull;
                     auto rct1RideType = _s4.Rides[src2->GetRideIndex()].type;
@@ -1780,7 +1780,7 @@ namespace OpenRCT2::RCT1
                 case TileElementType::SmallScenery:
                 {
                     auto dst2 = dst->asSmallScenery();
-                    auto src2 = src->AsSmallScenery();
+                    auto src2 = src->asSmallScenery();
 
                     auto entryIndex = _smallSceneryTypeToEntryMap[src2->GetEntryIndex()];
                     dst2->SetEntryIndex(entryIndex);
@@ -1815,7 +1815,7 @@ namespace OpenRCT2::RCT1
                 case TileElementType::Entrance:
                 {
                     auto dst2 = dst->asEntrance();
-                    auto src2 = src->AsEntrance();
+                    auto src2 = src->asEntrance();
 
                     dst2->SetEntranceType(src2->GetEntranceType());
                     dst2->SetRideIndex(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
@@ -1837,7 +1837,7 @@ namespace OpenRCT2::RCT1
                 }
                 case TileElementType::Wall:
                 {
-                    auto src2 = src->AsWall();
+                    auto src2 = src->asWall();
                     auto slope = src2->GetRCT1Slope();
                     size_t numAddedElements = 0;
 
@@ -1853,8 +1853,8 @@ namespace OpenRCT2::RCT1
                         ConvertWall(type, &colourA, &colourB);
 
                         type = _wallTypeToEntryMap[type];
-                        auto baseZ = src->BaseHeight * Limits::kCoordsZStep;
-                        auto clearanceZ = src->ClearanceHeight * Limits::kCoordsZStep;
+                        auto baseZ = src->baseHeight * Limits::kCoordsZStep;
+                        auto clearanceZ = src->clearanceHeight * Limits::kCoordsZStep;
                         auto edgeSlope = GetWallSlopeFromEdgeSlope(slope, edge & 3);
                         if (edgeSlope & (EDGE_SLOPE_UPWARDS | EDGE_SLOPE_DOWNWARDS))
                         {
@@ -1893,7 +1893,7 @@ namespace OpenRCT2::RCT1
                 case TileElementType::LargeScenery:
                 {
                     auto dst2 = dst->asLargeScenery();
-                    auto src2 = src->AsLargeScenery();
+                    auto src2 = src->asLargeScenery();
 
                     auto type = src2->GetEntryIndex();
                     dst2->SetEntryIndex(_largeSceneryTypeToEntryMap[type]);
@@ -1906,7 +1906,7 @@ namespace OpenRCT2::RCT1
                 case TileElementType::Banner:
                 {
                     auto dst2 = dst->asBanner();
-                    auto src2 = src->AsBanner();
+                    auto src2 = src->asBanner();
 
                     dst2->SetPosition(src2->GetPosition());
                     dst2->SetAllowedEdges(src2->GetAllowedEdges());
