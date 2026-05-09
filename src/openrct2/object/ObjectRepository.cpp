@@ -586,7 +586,12 @@ namespace OpenRCT2
             auto userObjPath = _env.GetDirectoryPath(DirBase::user, DirId::objects);
             Path::CreateDirectory(userObjPath);
 
-            auto fileName = u8string(jsonIdentifier);
+            // The identifier comes from park data; sanitise the storage path so it stays within the objects directory.
+            auto fileName = Platform::SanitiseFilename(jsonIdentifier);
+            if (fileName.empty())
+            {
+                fileName = "object";
+            }
             auto extension = u8string(u8".parkobj");
             return updateFileName(fileName, extension);
         }
