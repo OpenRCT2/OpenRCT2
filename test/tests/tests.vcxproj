@@ -95,6 +95,7 @@
     <ClCompile Include="IniWriterTest.cpp" />
     <ClCompile Include="LocalisationTest.cpp" />
     <ClCompile Include="MultiLaunch.cpp" />
+    <ClCompile Include="NetworkPacketTests.cpp" />
     <ClCompile Include="ReplayTests.cpp" />
     <ClCompile Include="PlayTests.cpp" />
     <ClCompile Include="Pathfinding.cpp" />
@@ -129,4 +130,3 @@
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>
-
