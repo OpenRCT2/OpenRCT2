@@ -233,11 +233,11 @@ namespace OpenRCT2::Park
         for (const auto& campaign : park.marketingCampaigns)
         {
             // Random chance of guest generation
-            auto probability = MarketingGetCampaignGuestGenerationProbability(campaign.Type);
+            auto probability = MarketingGetCampaignGuestGenerationProbability(campaign.type);
             auto random = ScenarioRandMax(std::numeric_limits<uint16_t>::max());
             if (random < probability)
             {
-                generateGuestFromCampaign(campaign.Type);
+                generateGuestFromCampaign(campaign.type);
             }
         }
     }

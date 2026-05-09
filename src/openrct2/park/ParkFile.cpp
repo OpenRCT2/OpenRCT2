@@ -952,10 +952,10 @@ namespace OpenRCT2
 
                     // Marketing
                     cs.readWriteVector(park.marketingCampaigns, [&cs](MarketingCampaign& campaign) {
-                        cs.readWrite(campaign.Type);
-                        cs.readWrite(campaign.WeeksLeft);
+                        cs.readWrite(campaign.type);
+                        cs.readWrite(campaign.weeksLeft);
                         cs.readWrite(campaign.flags.holder);
-                        cs.readWrite(campaign.RideId);
+                        cs.readWrite(campaign.rideId);
                     });
 
                     // Awards
