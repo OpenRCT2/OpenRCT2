@@ -2324,7 +2324,7 @@ namespace OpenRCT2::RCT1
 
         void ConvertResearchEntry(::ResearchItem* dst, uint8_t srcItem, uint8_t srcType)
         {
-            dst->SetNull();
+            dst->setNull();
             if (srcType == RCT1_RESEARCH_TYPE_RIDE)
             {
                 auto entryIndex = _rideTypeToRideEntryMap[srcItem];

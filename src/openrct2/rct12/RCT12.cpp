@@ -850,7 +850,7 @@ ResearchItem RCT12ResearchItem::ToResearchItem() const
         newResearchItem.rawValue = 0;
         newResearchItem.flags = 0;
         newResearchItem.category = ResearchCategory::transport;
-        newResearchItem.SetNull();
+        newResearchItem.setNull();
     }
     else
     {
