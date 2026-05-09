@@ -146,12 +146,12 @@ namespace OpenRCT2::News
 
         ItemQueue()
         {
-            std::get<0>(Queue).type = ItemType::null;
+            std::get<0>(_queue).type = ItemType::null;
         }
 
         constexpr iterator begin() noexcept
         {
-            return std::begin(Queue);
+            return std::begin(_queue);
         }
         constexpr const_iterator begin() const noexcept
         {
@@ -159,11 +159,11 @@ namespace OpenRCT2::News
         }
         constexpr const_iterator cbegin() const noexcept
         {
-            return std::cbegin(Queue);
+            return std::cbegin(_queue);
         }
         iterator end() noexcept
         {
-            return std::find_if(std::begin(Queue), std::end(Queue), [](const_reference item) { return item.isEmpty(); });
+            return std::find_if(std::begin(_queue), std::end(_queue), [](const_reference item) { return item.isEmpty(); });
         }
         const_iterator end() const noexcept
         {
@@ -171,12 +171,12 @@ namespace OpenRCT2::News
         }
         const_iterator cend() const noexcept
         {
-            return std::find_if(std::cbegin(Queue), std::cend(Queue), [](const_reference item) { return item.isEmpty(); });
+            return std::find_if(std::cbegin(_queue), std::cend(_queue), [](const_reference item) { return item.isEmpty(); });
         }
 
         constexpr bool empty() const noexcept
         {
-            return std::get<0>(Queue).isEmpty();
+            return std::get<0>(_queue).isEmpty();
         }
 
         size_type size() const noexcept
@@ -203,35 +203,35 @@ namespace OpenRCT2::News
 
         void pop_front()
         {
-            std::move(std::begin(Queue) + 1, std::end(Queue), std::begin(Queue));
-            Queue[N - 1].type = ItemType::null;
+            std::move(std::begin(_queue) + 1, std::end(_queue), std::begin(_queue));
+            _queue[N - 1].type = ItemType::null;
         }
 
         void push_back(const_reference item)
         {
             auto it = end();
-            if (!std::distance(it, std::end(Queue)))
+            if (!std::distance(it, std::end(_queue)))
             {
                 // Reached queue max size, need to free some space
                 pop_front();
-                Queue[N - 1] = item;
+                _queue[N - 1] = item;
             }
             else
             {
                 *it = item;
                 ++it;
-                if (std::distance(it, std::end(Queue)))
+                if (std::distance(it, std::end(_queue)))
                     it->type = ItemType::null;
             }
         }
 
         reference operator[](size_type n) noexcept
         {
-            return Queue[n];
+            return _queue[n];
         }
         const_reference operator[](size_type n) const noexcept
         {
-            return Queue[n];
+            return _queue[n];
         }
 
         constexpr size_type capacity() const noexcept
@@ -241,11 +241,11 @@ namespace OpenRCT2::News
 
         void clear() noexcept
         {
-            std::fill(Queue.begin(), Queue.end(), Item{});
+            std::fill(_queue.begin(), _queue.end(), Item{});
         }
 
     private:
-        std::array<Item, N> Queue;
+        std::array<Item, N> _queue;
     };
 
     struct ItemQueues
