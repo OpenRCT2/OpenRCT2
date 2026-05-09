@@ -629,12 +629,12 @@ void AwardUpdateAll()
     // Decrease award times
     for (auto& award : currentAwards)
     {
-        --award.Time;
+        --award.time;
     }
 
     // Remove any 0 time awards
     auto res = std::remove_if(
-        std::begin(currentAwards), std::end(currentAwards), [](const Award& award) { return award.Time == 0; });
+        std::begin(currentAwards), std::end(currentAwards), [](const Award& award) { return award.time == 0; });
     if (res != std::end(currentAwards))
     {
         currentAwards.erase(res, std::end(currentAwards));
@@ -651,7 +651,7 @@ void AwardUpdateAll()
         int32_t activeAwardTypes = 0;
         for (auto& award : currentAwards)
         {
-            activeAwardTypes |= (1 << EnumValue(award.Type));
+            activeAwardTypes |= (1 << EnumValue(award.type));
         }
 
         // Check if there was a free award entry
@@ -678,7 +678,7 @@ void AwardGrant(AwardType type)
     auto& currentAwards = getGameState().park.currentAwards;
 
     // Remove award type if already granted
-    std::erase_if(currentAwards, [type](const Award& award) { return award.Type == type; });
+    std::erase_if(currentAwards, [type](const Award& award) { return award.type == type; });
 
     // Ensure there is space for the award
     if (currentAwards.size() >= Limits::kMaxAwards)

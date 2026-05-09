@@ -204,7 +204,7 @@ namespace OpenRCT2::Park
         for (const auto& award : park.currentAwards)
         {
             // +/- 0.25% of the probability
-            if (AwardIsPositive(award.Type))
+            if (AwardIsPositive(award.type))
             {
                 probability += probability / 4;
             }

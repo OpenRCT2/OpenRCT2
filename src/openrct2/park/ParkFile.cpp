@@ -964,10 +964,10 @@ namespace OpenRCT2
                     {
                         Award awards[RCT2::Limits::kMaxAwards]{};
                         cs.readWriteArray(awards, [&cs, &currentAwards](Award& award) {
-                            if (award.Time != 0)
+                            if (award.time != 0)
                             {
-                                cs.readWrite(award.Time);
-                                cs.readWrite(award.Type);
+                                cs.readWrite(award.time);
+                                cs.readWrite(award.type);
                                 currentAwards.push_back(award);
                                 return true;
                             }
@@ -978,8 +978,8 @@ namespace OpenRCT2
                     else
                     {
                         cs.readWriteVector(currentAwards, [&cs](Award& award) {
-                            cs.readWrite(award.Time);
-                            cs.readWrite(award.Type);
+                            cs.readWrite(award.time);
+                            cs.readWrite(award.type);
                         });
                     }
                     cs.readWrite(park.value);
