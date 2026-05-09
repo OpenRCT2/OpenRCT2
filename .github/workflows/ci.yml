@@ -186,20 +186,44 @@ jobs:
             palettes.dat
             fonts.dat
             tracks.dat
-  windows-vs2026:
-    name: Windows (VS2026)
-    runs-on: windows-2025-vs2026
+  windows:
+    name: Windows (${{ matrix.toolset }}, ${{ matrix.platform }})
+    runs-on: ${{ matrix.runs_on }}
     needs: [check-code-formatting, build_variables, g2dat]
     strategy:
       fail-fast: false
       matrix:
         include:
-          - platform: win32
+          - toolset: VS2026
             runs_on: windows-2025-vs2026
-          - platform: x64
+            platform: win32
+            artifact_name: windows
+            installer_product: Windows 10 and later
+            run_tests: true
+          - toolset: VS2026
             runs_on: windows-2025-vs2026
-          - platform: arm64
+            platform: x64
+            artifact_name: windows
+            installer_product: Windows 10 and later
+            run_tests: true
+          - toolset: VS2026
             runs_on: windows-2025-vs2026
+            platform: arm64
+            artifact_name: windows
+            installer_product: Windows 10 and later
+            run_tests: false
+          - toolset: VS2022
+            runs_on: windows-2022
+            platform: win32
+            artifact_name: win7
+            installer_product: Windows 7 and 8.x
+            run_tests: true
+          - toolset: VS2022
+            runs_on: windows-2022
+            platform: x64
+            artifact_name: win7
+            installer_product: Windows 7 and 8.x
+            run_tests: true
     env:
       PLATFORM: ${{ matrix.platform }}
       DISTANCE_FROM_TAG: ${{ needs.build_variables.outputs.distance }}
@@ -222,7 +246,7 @@ jobs:
         id: upload-windows-binaries-unsigned
         uses: actions/upload-artifact@v6
         with:
-          name: OpenRCT2-${{ needs.build_variables.outputs.name }}-windows-unsigned-${{ matrix.platform }}
+          name: OpenRCT2-${{ needs.build_variables.outputs.name }}-${{ matrix.artifact_name }}-unsigned-${{ matrix.platform }}
           path: |
             bin/openrct2.exe
             bin/openrct2.com
@@ -264,21 +288,21 @@ jobs:
           echo "OPENRCT2_VERSION_EXTRA=$OPENRCT2_VERSION_EXTRA" >> "$GITHUB_ENV"
       - name: Rename artifacts
         run: |
-          mv artifacts/openrct2-portable-*.zip artifacts/OpenRCT2-${{ needs.build_variables.outputs.name }}-windows-portable-$PLATFORM.zip
-          mv artifacts/openrct2-installer-*.exe artifacts/OpenRCT2-${{ needs.build_variables.outputs.name }}-windows-installer-$PLATFORM.exe
-          mv artifacts/openrct2-symbols-*.zip artifacts/OpenRCT2-${{ needs.build_variables.outputs.name }}-windows-symbols-$PLATFORM.zip
+          mv artifacts/openrct2-portable-*.zip artifacts/OpenRCT2-${{ needs.build_variables.outputs.name }}-${{ matrix.artifact_name }}-portable-$PLATFORM.zip
+          mv artifacts/openrct2-installer-*.exe artifacts/OpenRCT2-${{ needs.build_variables.outputs.name }}-${{ matrix.artifact_name }}-installer-$PLATFORM.exe
+          mv artifacts/openrct2-symbols-*.zip artifacts/OpenRCT2-${{ needs.build_variables.outputs.name }}-${{ matrix.artifact_name }}-symbols-$PLATFORM.zip
       - name: Upload portable artifact (CI)
         uses: actions/upload-artifact@v6
         with:
-          name: OpenRCT2-${{ needs.build_variables.outputs.name }}-${{ runner.os }}-portable-${{ matrix.platform }}
-          path: artifacts/OpenRCT2-${{ needs.build_variables.outputs.name }}-windows-portable-${{ matrix.platform }}.zip
+          name: OpenRCT2-${{ needs.build_variables.outputs.name }}-${{ matrix.artifact_name }}-portable-${{ matrix.platform }}
+          path: artifacts/OpenRCT2-${{ needs.build_variables.outputs.name }}-${{ matrix.artifact_name }}-portable-${{ matrix.platform }}.zip
           if-no-files-found: error
       - name: Upload unsigned installer artifact (CI)
         id: upload-windows-installer-unsigned
         uses: actions/upload-artifact@v6
         with:
-          name: OpenRCT2-${{ needs.build_variables.outputs.name }}-${{ runner.os }}-installer-${{ matrix.platform }}-unsigned
-          path: artifacts/OpenRCT2-${{ needs.build_variables.outputs.name }}-windows-installer-${{ matrix.platform }}.exe
+          name: OpenRCT2-${{ needs.build_variables.outputs.name }}-${{ matrix.artifact_name }}-installer-${{ matrix.platform }}-unsigned
+          path: artifacts/OpenRCT2-${{ needs.build_variables.outputs.name }}-${{ matrix.artifact_name }}-installer-${{ matrix.platform }}.exe
           if-no-files-found: error
       - name: Sign installer
         id: sign-installer
@@ -295,160 +319,34 @@ jobs:
           output-artifact-directory: files-signed
           parameters: |
             version: "${{ env.OPENRCT2_VERSION }}${{ env.OPENRCT2_VERSION_EXTRA }}"
-            product: "OpenRCT2 ${{ matrix.platform }} Installer for Windows 10 and later"
+            product: "OpenRCT2 ${{ matrix.platform }} Installer for ${{ matrix.installer_product }}"
       - name: Upload signed installer artifact (CI)
         id: upload-windows-installer-signed
         if: ${{ needs.build_variables.outputs.sign == 'true' }}
         uses: actions/upload-artifact@v6
         with:
-          name: OpenRCT2-${{ needs.build_variables.outputs.name }}-${{ runner.os }}-installer-${{ matrix.platform }}
-          path: files-signed/OpenRCT2-${{ needs.build_variables.outputs.name }}-windows-installer-${{ matrix.platform }}.exe
+          name: OpenRCT2-${{ needs.build_variables.outputs.name }}-${{ matrix.artifact_name }}-installer-${{ matrix.platform }}
+          path: files-signed/OpenRCT2-${{ needs.build_variables.outputs.name }}-${{ matrix.artifact_name }}-installer-${{ matrix.platform }}.exe
           if-no-files-found: error
       - name: Upload symbols artifact (CI)
         uses: actions/upload-artifact@v6
         with:
-          name: OpenRCT2-${{ needs.build_variables.outputs.name }}-${{ runner.os }}-symbols-${{ matrix.platform }}
-          path: artifacts/OpenRCT2-${{ needs.build_variables.outputs.name }}-windows-symbols-${{ matrix.platform }}.zip
+          name: OpenRCT2-${{ needs.build_variables.outputs.name }}-${{ matrix.artifact_name }}-symbols-${{ matrix.platform }}
+          path: artifacts/OpenRCT2-${{ needs.build_variables.outputs.name }}-${{ matrix.artifact_name }}-symbols-${{ matrix.platform }}.zip
           if-no-files-found: error
       - name: Run Tests
-        if: matrix.platform != 'arm64'
+        if: matrix.run_tests
         run: . scripts/setenv -q && run-tests
       - name: Test Summary
         uses: test-summary/action@v2
         with:
           paths: "artifacts/test-**.xml"
-        if: matrix.platform != 'arm64'
+        if: matrix.run_tests
       - name: Upload symbols (backtrace.io)
         run: |
           . scripts/setenv
           if [[ "$OPENRCT2_PUSH" == "true" ]]; then
-            upload-backtrace-symbols artifacts/OpenRCT2-${{ needs.build_variables.outputs.name }}-windows-symbols-*.zip
-          else
-            echo 'Not going to push build'
-          fi
-  windows-vs2022:
-    name: Windows (VS2022)
-    runs-on: windows-2022
-    needs: [check-code-formatting, build_variables, g2dat]
-    strategy:
-      fail-fast: false
-      matrix:
-        platform: [win32, x64]
-    env:
-      PLATFORM: ${{ matrix.platform }}
-      DISTANCE_FROM_TAG: ${{ needs.build_variables.outputs.distance }}
-    steps:
-      - name: Setup environment
-        run: |
-          BRANCH=$(echo $GITHUB_REF | cut -d'/' -f 3)
-          if [[ $BRANCH == 'develop' || $GITHUB_REF_TYPE == 'tag' ]]; then
-             echo "CONFIGURATION=ReleaseLTCG" >> "$GITHUB_ENV"
-          else
-             echo "CONFIGURATION=Release" >> "$GITHUB_ENV"
-          fi
-      - name: Checkout
-        uses: actions/checkout@v6
-      - name: Install MSVC problem matcher
-        uses: ammaraskar/msvc-problem-matcher@master
-      - name: Build OpenRCT2
-        run: . scripts/setenv && build
-      - name: Upload unsigned binaries
-        id: upload-windows-binaries-unsigned
-        uses: actions/upload-artifact@v6
-        with:
-          name: OpenRCT2-${{ needs.build_variables.outputs.name }}-win7-unsigned-${{ matrix.platform }}
-          path: |
-            bin/openrct2.exe
-            bin/openrct2.com
-      # Sign the binaries first, so that all other artifacts (portable, installer, symbols) use signed binaries
-      - name: Sign binaries
-        id: sign-binaries
-        env:
-          SIGNPATH_API_TOKEN: ${{ secrets.SIGNPATH_API_TOKEN }}
-        if: ${{ needs.build_variables.outputs.sign == 'true' }}
-        uses: signpath/github-action-submit-signing-request@v2
-        with:
-          api-token: '${{ secrets.SIGNPATH_API_TOKEN }}'
-          organization-id: 645b821f-6283-45e1-8198-264997072801
-          project-slug: OpenRCT2
-          signing-policy-slug: ${{ needs.build_variables.outputs.certificate }}
-          artifact-configuration-slug: 'binaries'
-          github-artifact-id: ${{ steps.upload-windows-binaries-unsigned.outputs.artifact-id }}
-          wait-for-completion: true
-          output-artifact-directory: files-signed
-          parameters: |
-            version: "${{ env.OPENRCT2_VERSION }}.${{ needs.build_variables.outputs.distance }}-${{ needs.build_variables.outputs.short-sha }}"
-      - name: Use signed binaries
-        if: ${{ needs.build_variables.outputs.sign == 'true' }}
-        run: |
-          mv files-signed/openrct2.com bin/openrct2.com
-          mv files-signed/openrct2.exe bin/openrct2.exe
-      - name: Build artifacts
-        run: |
-          . scripts/setenv -q
-          build-portable
-          build-symbols
-          build-installer -i
-          echo "OPENRCT2_VERSION_EXTRA=$OPENRCT2_VERSION_EXTRA" >> "$GITHUB_ENV"
-      - name: Rename artifacts
-        run: |
-          mv artifacts/openrct2-portable-*.zip artifacts/OpenRCT2-${{ needs.build_variables.outputs.name }}-win7-portable-$PLATFORM.zip
-          mv artifacts/openrct2-installer-*.exe artifacts/OpenRCT2-${{ needs.build_variables.outputs.name }}-win7-installer-$PLATFORM.exe
-          mv artifacts/openrct2-symbols-*.zip artifacts/OpenRCT2-${{ needs.build_variables.outputs.name }}-win7-symbols-$PLATFORM.zip
-      - name: Upload portable artifact (CI)
-        uses: actions/upload-artifact@v6
-        with:
-          name: OpenRCT2-${{ needs.build_variables.outputs.name }}-win7-portable-${{ matrix.platform }}
-          path: artifacts/OpenRCT2-${{ needs.build_variables.outputs.name }}-win7-portable-${{ matrix.platform }}.zip
-          if-no-files-found: error
-      - name: Upload unsigned installer artifact (CI)
-        id: upload-windows-installer-unsigned
-        uses: actions/upload-artifact@v6
-        with:
-          name: OpenRCT2-${{ needs.build_variables.outputs.name }}-win7-installer-${{ matrix.platform }}-unsigned
-          path: artifacts/OpenRCT2-${{ needs.build_variables.outputs.name }}-win7-installer-${{ matrix.platform }}.exe
-          if-no-files-found: error
-      - name: Sign installer
-        id: sign-installer
-        if: ${{ needs.build_variables.outputs.sign == 'true' }}
-        uses: signpath/github-action-submit-signing-request@v2
-        with:
-          api-token: '${{ secrets.SIGNPATH_API_TOKEN }}'
-          organization-id: 645b821f-6283-45e1-8198-264997072801
-          project-slug: OpenRCT2
-          signing-policy-slug: ${{ needs.build_variables.outputs.certificate }}
-          artifact-configuration-slug: 'installer'
-          github-artifact-id: ${{ steps.upload-windows-installer-unsigned.outputs.artifact-id }}
-          wait-for-completion: true
-          output-artifact-directory: files-signed
-          parameters: |
-            version: "${{ env.OPENRCT2_VERSION }}${{ env.OPENRCT2_VERSION_EXTRA }}"
-            product: "OpenRCT2 ${{ matrix.platform }} Installer for Windows 7 and 8.x"
-      - name: Upload signed installer artifact (CI)
-        id: upload-windows-installer-signed
-        if: ${{ needs.build_variables.outputs.sign == 'true' }}
-        uses: actions/upload-artifact@v6
-        with:
-          name: OpenRCT2-${{ needs.build_variables.outputs.name }}-win7-installer-${{ matrix.platform }}
-          path: files-signed/OpenRCT2-${{ needs.build_variables.outputs.name }}-win7-installer-${{ matrix.platform }}.exe
-          if-no-files-found: error
-      - name: Upload symbols artifact (CI)
-        uses: actions/upload-artifact@v6
-        with:
-          name: OpenRCT2-${{ needs.build_variables.outputs.name }}-win7-symbols-${{ matrix.platform }}
-          path: artifacts/OpenRCT2-${{ needs.build_variables.outputs.name }}-win7-symbols-${{ matrix.platform }}.zip
-          if-no-files-found: error
-      - name: Run Tests
-        run: . scripts/setenv -q && run-tests
-      - name: Test Summary
-        uses: test-summary/action@v2
-        with:
-          paths: "artifacts/test-**.xml"
-      - name: Upload symbols (backtrace.io)
-        run: |
-          . scripts/setenv
-          if [[ "$OPENRCT2_PUSH" == "true" ]]; then
-            upload-backtrace-symbols artifacts/OpenRCT2-${{ needs.build_variables.outputs.name }}-win7-symbols-*.zip
+            upload-backtrace-symbols artifacts/OpenRCT2-${{ needs.build_variables.outputs.name }}-${{ matrix.artifact_name }}-symbols-*.zip
           else
             echo 'Not going to push build'
           fi
@@ -880,7 +778,7 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-slim
-    needs: [build_variables, linux-portable, android, linux-appimage, macos-universal, windows-vs2026, windows-vs2022]
+    needs: [build_variables, linux-portable, android, linux-appimage, macos-universal, windows]
     steps:
       - name: Checkout
         uses: actions/checkout@v6
