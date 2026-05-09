@@ -1154,11 +1154,11 @@ namespace OpenRCT2
                 else
                 {
                     std::vector<News::Item> recent(
-                        std::begin(gameState.newsItems.GetRecent()), std::end(gameState.newsItems.GetRecent()));
+                        std::begin(gameState.newsItems.getRecent()), std::end(gameState.newsItems.getRecent()));
                     cs.readWriteVector(recent, [&cs](News::Item& item) { ReadWriteNewsItem(cs, item); });
 
                     std::vector<News::Item> archived(
-                        std::begin(gameState.newsItems.GetArchived()), std::end(gameState.newsItems.GetArchived()));
+                        std::begin(gameState.newsItems.getArchived()), std::end(gameState.newsItems.getArchived()));
                     cs.readWriteVector(archived, [&cs](News::Item& item) { ReadWriteNewsItem(cs, item); });
                 }
             });

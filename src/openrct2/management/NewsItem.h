@@ -252,48 +252,48 @@ namespace OpenRCT2::News
     {
         Item& operator[](size_t index);
         const Item& operator[](size_t index) const;
-        Item* At(int32_t index);
-        const Item* At(int32_t index) const;
-        bool IsEmpty() const;
-        void Clear();
-        uint16_t IncrementTicks();
-        Item& Current();
-        const Item& Current() const;
-        bool CurrentShouldBeArchived() const;
-        void ArchiveCurrent();
-        Item* FirstOpenOrNewSlot();
-        const auto& GetRecent() const
+        Item* at(int32_t index);
+        const Item* at(int32_t index) const;
+        bool isEmpty() const;
+        void clear();
+        uint16_t incrementTicks();
+        Item& current();
+        const Item& current() const;
+        bool currentShouldBeArchived() const;
+        void archiveCurrent();
+        Item* firstOpenOrNewSlot();
+        const auto& getRecent() const
         {
-            return Recent;
+            return _recent;
         }
-        const auto& GetArchived() const
+        const auto& getArchived() const
         {
-            return Archived;
+            return _archived;
         }
 
         template<typename Predicate>
-        void ForeachRecentNews(Predicate&& p)
+        void foreachRecentNews(Predicate&& p)
         {
-            for (auto& newsItem : Recent)
+            for (auto& newsItem : _recent)
             {
                 p(newsItem);
             }
         }
 
         template<typename Predicate>
-        void ForeachArchivedNews(Predicate&& p)
+        void foreachArchivedNews(Predicate&& p)
         {
-            for (auto& newsItem : Archived)
+            for (auto& newsItem : _archived)
             {
                 p(newsItem);
             }
         }
 
     private:
-        int32_t RemoveTime() const;
+        int32_t removeTime() const;
 
-        ItemQueue<ItemHistoryStart> Recent;
-        ItemQueue<MaxItemsArchive> Archived;
+        ItemQueue<ItemHistoryStart> _recent;
+        ItemQueue<MaxItemsArchive> _archived;
     };
 
     void InitQueue(GameState_t& gameState);
