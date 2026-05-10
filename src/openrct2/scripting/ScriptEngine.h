@@ -169,9 +169,13 @@ namespace OpenRCT2::Scripting
         ScriptEngine(ScriptEngine&) = delete;
         ~ScriptEngine();
 
-        JSContext* GetContext()
+        JSContext* GetContext() const
         {
             return _replContext;
+        }
+        static JSRuntime* GetRuntime()
+        {
+            return _runtime;
         }
         HookEngine& GetHookEngine()
         {
