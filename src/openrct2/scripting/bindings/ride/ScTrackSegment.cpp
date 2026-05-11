@@ -254,6 +254,27 @@ JSValue ScTrackSegment::getNextValidSegments(JSContext* ctx, JSValue thisVal, in
     const auto& rtd = ride->getRideTypeDescriptor();
     const auto& thisTed = GetTrackElementDescriptor(data->_type);
 
+    // Pieces buildable on a ride live across up to four drawer entries
+    // (regular/covered x non-inverted/inverted). RideTypeDescriptor::SupportsTrackGroup
+    // only consults TrackPaintFunctions.Regular, so we widen the check ourselves to
+    // mirror what the construction code can actually place.
+    const bool rideHasCovered = rtd.flags.has(RtdFlag::hasCoveredPieces);
+    const bool rideHasInverted = rtd.flags.has(RtdFlag::hasInvertedVariant);
+    auto isGroupSupported = [&](TrackGroup group) -> bool {
+        if (rtd.TrackPaintFunctions.Regular.SupportsTrackGroup(group))
+            return true;
+        if (rideHasCovered && rtd.TrackPaintFunctions.Covered.SupportsTrackGroup(group))
+            return true;
+        if (rideHasInverted)
+        {
+            if (rtd.InvertedTrackPaintFunctions.Regular.SupportsTrackGroup(group))
+                return true;
+            if (rideHasCovered && rtd.InvertedTrackPaintFunctions.Covered.SupportsTrackGroup(group))
+                return true;
+        }
+        return false;
+    };
+
     const auto endPitch = thisTed.definition.pitchEnd;
     const auto endRoll = thisTed.definition.rollEnd;
     const auto endDirIsDiagonal = TrackPieceDirectionIsDiagonal(thisTed.coordinates.rotationEnd);
@@ -262,9 +283,15 @@ JSValue ScTrackSegment::getNextValidSegments(JSContext* ctx, JSValue thisVal, in
     for (uint16_t type = 0; type < EnumValue(TrackElemType::count); type++)
     {
         auto trackType = static_cast<TrackElemType>(type);
+
+        // Covered variants share a TrackGroup with regular pieces but the construction
+        // code only swaps them in when the ride has covered pieces enabled.
+        if (OpenRCT2::trackTypeIsCovered(trackType) && !rideHasCovered)
+            continue;
+
         const auto& candidateTed = GetTrackElementDescriptor(trackType);
 
-        if (!rtd.SupportsTrackGroup(candidateTed.definition.group))
+        if (!isGroupSupported(candidateTed.definition.group))
             continue;
         if (candidateTed.definition.pitchStart != endPitch)
             continue;
