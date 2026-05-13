@@ -103,15 +103,15 @@ namespace OpenRCT2
         moveDelay = 0;
         numMovements = 0;
 
-        int16_t offsetX = 0;
+        int16_t newOffsetX = 0;
         if (!gOpenRCT2NoGraphics)
         {
             auto [stringId, pairValue] = GetStringId();
             char buffer[128];
             FormatStringLegacy(buffer, 128, stringId, &pairValue);
-            offsetX = -(Drawing::getStringWidth(buffer, FontStyle::medium) / 2);
+            newOffsetX = -(Drawing::getStringWidth(buffer, FontStyle::medium) / 2);
         }
-        this->offsetX = offsetX;
+        this->offsetX = newOffsetX;
         wiggle = 0;
     }
 
