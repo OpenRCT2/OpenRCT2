@@ -110,13 +110,10 @@ static bool AuthenticateClient(Connection& client, const std::string_view player
 class NetworkTests : public ::testing::Test
 {
 protected:
-    uint16_t _testPort = 0;
+    static constexpr uint16_t kTestPort = 11760;
 
-    // Each test must call this with a unique port; CTest may run different
-    // tests in this fixture in parallel, so a shared port causes EADDRINUSE.
-    void StartServer(uint16_t port)
+    void SetUp() override
     {
-        _testPort = port;
         gOpenRCT2Headless = true;
         gOpenRCT2NoGraphics = true;
         _context = CreateContext();
@@ -125,7 +122,7 @@ protected:
         // Don't broadcast to the master server during tests.
         Config::Get().network.advertise = false;
 
-        ASSERT_NE(Network::BeginServer(_testPort, "127.0.0.1"), 0);
+        ASSERT_NE(Network::BeginServer(kTestPort, "127.0.0.1"), 0);
         PumpServer(5);
     }
 
@@ -135,8 +132,7 @@ protected:
 // A misbehaving client sends a `mapRequest` packet without authenticating.
 TEST_F(NetworkTests, UnauthenticatedMapRequest_DoesNotCrashServer)
 {
-    StartServer(11760);
-    const auto client = ConnectTestClient(_testPort);
+    const auto client = ConnectTestClient(kTestPort);
     ASSERT_EQ(client->Socket->GetStatus(), SocketStatus::connected);
 
     PumpServer(5);
@@ -154,8 +150,7 @@ TEST_F(NetworkTests, UnauthenticatedMapRequest_DoesNotCrashServer)
 // count is larger than the actual data.
 TEST_F(NetworkTests, AuthenticatedMalformedMapRequest_DoesNotCrashServer)
 {
-    StartServer(11761);
-    const auto client = ConnectTestClient(_testPort);
+    const auto client = ConnectTestClient(kTestPort);
     ASSERT_EQ(client->Socket->GetStatus(), SocketStatus::connected);
 
     ASSERT_TRUE(AuthenticateClient(*client, "tester"));
