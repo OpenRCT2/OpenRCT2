@@ -15,6 +15,7 @@
     #include <gtest/gtest.h>
     #include <memory>
     #include <openrct2/Context.h>
+    #include <openrct2/Game.h>
     #include <openrct2/OpenRCT2.h>
     #include <openrct2/config/Config.h>
     #include <openrct2/core/Crypt.h>
@@ -118,6 +119,10 @@ protected:
         gOpenRCT2NoGraphics = true;
         _context = CreateContext();
         ASSERT_TRUE(_context->Initialise());
+
+        const auto parkPath = TestData::GetParkPath("EverythingPark.park");
+        GetContext()->LoadParkFromFile(parkPath);
+        GameLoadInit();
 
         // Don't broadcast to the master server during tests.
         Config::Get().network.advertise = false;

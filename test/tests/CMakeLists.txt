@@ -48,12 +48,5 @@ target_include_directories(OpenRCT2Tests PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/..
 set_target_properties(OpenRCT2Tests PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 gtest_discover_tests(OpenRCT2Tests
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-    DISCOVERY_MODE PRE_TEST
-    PROPERTIES RESOURCE_LOCK network_listener
-    TEST_FILTER NetworkTests.*)
-
-gtest_discover_tests(OpenRCT2Tests
-    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-    DISCOVERY_MODE PRE_TEST
-    TEST_FILTER -NetworkTests.*)
+    DISCOVERY_MODE PRE_TEST)
 
