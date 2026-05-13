@@ -14,8 +14,8 @@
 #include <chrono>
 #include <gtest/gtest.h>
 #include <openrct2/Context.h>
-#include <openrct2/Game.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/config/Config.h>
 #include <openrct2/core/Crypt.h>
 #include <openrct2/network/Network.h>
 #include <openrct2/network/NetworkConnection.h>
@@ -121,9 +121,8 @@ protected:
         {
             ASSERT_TRUE(_context->Initialise());
 
-            const auto parkPath = TestData::GetParkPath("bpb.sv6");
-            GetContext()->LoadParkFromFile(parkPath);
-            GameLoadInit();
+            // Don't broadcast to the master server during tests.
+            Config::Get().network.advertise = false;
 
             ASSERT_NE(Network::BeginServer(kTestPort, "127.0.0.1"), 0);
             PumpServer(5);
