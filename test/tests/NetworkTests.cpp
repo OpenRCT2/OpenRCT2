@@ -110,26 +110,23 @@ static bool AuthenticateClient(Connection& client, const std::string_view player
 class NetworkTests : public ::testing::Test
 {
 protected:
-    static constexpr uint16_t kTestPort = 11760;
+    uint16_t _testPort = 0;
 
-    void SetUp() override
+    // Each test must call this with a unique port; CTest may run different
+    // tests in this fixture in parallel, so a shared port causes EADDRINUSE.
+    void StartServer(uint16_t port)
     {
+        _testPort = port;
         gOpenRCT2Headless = true;
         gOpenRCT2NoGraphics = true;
         _context = CreateContext();
-        try
-        {
-            ASSERT_TRUE(_context->Initialise());
+        ASSERT_TRUE(_context->Initialise());
 
-            // Don't broadcast to the master server during tests.
-            Config::Get().network.advertise = false;
+        // Don't broadcast to the master server during tests.
+        Config::Get().network.advertise = false;
 
-            ASSERT_NE(Network::BeginServer(kTestPort, "127.0.0.1"), 0);
-            PumpServer(5);
-        }
-        catch (...)
-        {
-        }
+        ASSERT_NE(Network::BeginServer(_testPort, "127.0.0.1"), 0);
+        PumpServer(5);
     }
 
     std::unique_ptr<IContext> _context;
@@ -138,7 +135,8 @@ protected:
 // A misbehaving client sends a `mapRequest` packet without authenticating.
 TEST_F(NetworkTests, UnauthenticatedMapRequest_DoesNotCrashServer)
 {
-    const auto client = ConnectTestClient(kTestPort);
+    StartServer(11760);
+    const auto client = ConnectTestClient(_testPort);
     ASSERT_EQ(client->Socket->GetStatus(), SocketStatus::connected);
 
     PumpServer(5);
@@ -156,7 +154,8 @@ TEST_F(NetworkTests, UnauthenticatedMapRequest_DoesNotCrashServer)
 // count is larger than the actual data.
 TEST_F(NetworkTests, AuthenticatedMalformedMapRequest_DoesNotCrashServer)
 {
-    const auto client = ConnectTestClient(kTestPort);
+    StartServer(11761);
+    const auto client = ConnectTestClient(_testPort);
     ASSERT_EQ(client->Socket->GetStatus(), SocketStatus::connected);
 
     ASSERT_TRUE(AuthenticateClient(*client, "tester"));
