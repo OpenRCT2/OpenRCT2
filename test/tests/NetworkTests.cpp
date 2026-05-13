@@ -13,6 +13,7 @@
 
     #include <chrono>
     #include <gtest/gtest.h>
+    #include <memory>
     #include <openrct2/Context.h>
     #include <openrct2/OpenRCT2.h>
     #include <openrct2/config/Config.h>
@@ -22,7 +23,6 @@
     #include <openrct2/network/NetworkPacket.h>
     #include <openrct2/network/NetworkTypes.h>
     #include <openrct2/network/Socket.h>
-    #include <memory>
     #include <thread>
 
 using namespace OpenRCT2;
