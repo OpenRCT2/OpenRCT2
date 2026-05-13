@@ -846,7 +846,7 @@ declare global {
         object: number;
         railingsObject: number;
         /** 0 if flat, 1 if sloped */
-        slopeType: number; // 
+        slopeType: number; //
         /** direction if sloped, otherwise ignored */
         slopeDirection: Direction;
         constructFlags: number;
@@ -1646,7 +1646,7 @@ declare global {
 		readonly rideId: number;
 		breakdownReason: string;
 	}
- 
+
     interface RideRatingsCalculateArgs {
         readonly rideId: number;
         excitement: number;
@@ -2738,8 +2738,13 @@ declare global {
 
         /**
          * Gets all track segments that can validly connect after this segment for the given ride.
-         * Takes into account geometric compatibility (slope, banking, direction) and
-         * which track groups are enabled for the ride type.
+         *
+         * The result follows the ride construction selection rules for the ride type, including
+         * compatible slope, banking, direction, enabled track groups, special pieces, covered variants,
+         * inverted variants, and long-base substitutions.
+         *
+         * This does not account for vehicle-object availability or scenario/research restrictions.
+         * Returns an empty array if the ride ID is invalid.
          * @param rideId The ID of the ride to check valid segments for.
          * @returns Array of track segments that can follow this one.
          */

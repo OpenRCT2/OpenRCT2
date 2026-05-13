@@ -14,9 +14,8 @@
     #include "../../../Context.h"
     #include "../../../core/EnumMap.hpp"
     #include "../../../ride/Ride.h"
-    #include "../../../ride/RideData.h"
-    #include "../../../ride/Track.h"
     #include "../../../ride/TrackData.h"
+    #include "../../../ride/TrackPieceSelection.h"
     #include "../../../ride/Vehicle.h"
     #include "../../../ride/ted/TrackElementDescriptor.h"
     #include "../../ScriptEngine.h"
@@ -243,7 +242,6 @@ JSValue ScTrackSegment::getSubpositions(JSContext* ctx, JSValue thisVal, int arg
 JSValue ScTrackSegment::getNextValidSegments(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
 {
     JS_UNPACK_INT32(rideId, ctx, argv[0]);
-
     JSValue result = JS_NewArray(ctx);
 
     auto ride = GetRide(RideId::FromUnderlying(rideId));
@@ -251,58 +249,10 @@ JSValue ScTrackSegment::getNextValidSegments(JSContext* ctx, JSValue thisVal, in
         return result;
 
     const auto* data = GetTrackSegmentData(thisVal);
-    const auto& rtd = ride->getRideTypeDescriptor();
-    const auto& thisTed = GetTrackElementDescriptor(data->_type);
-
-    // Pieces buildable on a ride live across up to four drawer entries
-    // (regular/covered x non-inverted/inverted). RideTypeDescriptor::SupportsTrackGroup
-    // only consults TrackPaintFunctions.Regular, so we widen the check ourselves to
-    // mirror what the construction code can actually place.
-    const bool rideHasCovered = rtd.flags.has(RtdFlag::hasCoveredPieces);
-    const bool rideHasInverted = rtd.flags.has(RtdFlag::hasInvertedVariant);
-    auto isGroupSupported = [&](TrackGroup group) -> bool {
-        if (rtd.TrackPaintFunctions.Regular.SupportsTrackGroup(group))
-            return true;
-        if (rideHasCovered && rtd.TrackPaintFunctions.Covered.SupportsTrackGroup(group))
-            return true;
-        if (rideHasInverted)
-        {
-            if (rtd.InvertedTrackPaintFunctions.Regular.SupportsTrackGroup(group))
-                return true;
-            if (rideHasCovered && rtd.InvertedTrackPaintFunctions.Covered.SupportsTrackGroup(group))
-                return true;
-        }
-        return false;
-    };
-
-    const auto endPitch = thisTed.definition.pitchEnd;
-    const auto endRoll = thisTed.definition.rollEnd;
-    const auto endDirIsDiagonal = TrackPieceDirectionIsDiagonal(thisTed.coordinates.rotationEnd);
-
-    int64_t outIdx = 0;
-    for (uint16_t type = 0; type < EnumValue(TrackElemType::count); type++)
-    {
-        auto trackType = static_cast<TrackElemType>(type);
-
-        // Covered variants share a TrackGroup with regular pieces but the construction
-        // code only swaps them in when the ride has covered pieces enabled.
-        if (OpenRCT2::trackTypeIsCovered(trackType) && !rideHasCovered)
-            continue;
-
-        const auto& candidateTed = GetTrackElementDescriptor(trackType);
-
-        if (!isGroupSupported(candidateTed.definition.group))
-            continue;
-        if (candidateTed.definition.pitchStart != endPitch)
-            continue;
-        if (candidateTed.definition.rollStart != endRoll)
-            continue;
-        if (TrackPieceDirectionIsDiagonal(candidateTed.coordinates.rotationBegin) != endDirIsDiagonal)
-            continue;
-
-        JS_SetPropertyInt64(ctx, result, outIdx++, gScTrackSegment.New(ctx, trackType));
-    }
-
+    auto pieces = OpenRCT2::GetNextValidTrackSegments(ride->getRideTypeDescriptor(), data->_type);
+    int64_t i = 0;
+    for (auto type : pieces)
+        JS_SetPropertyInt64(ctx, result, i++, gScTrackSegment.New(ctx, type));
     return result;
 }
 
