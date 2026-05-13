@@ -213,6 +213,7 @@ namespace OpenRCT2
 
         auto [stringId, stringValue] = GetStringId();
         PaintFloatingMoneyEffect(
-            session, stringValue, stringId, y, z, const_cast<int8_t*>(&waveOffset[wiggle % 22]), offsetX, session.CurrentRotation);
+            session, stringValue, stringId, y, z, const_cast<int8_t*>(&waveOffset[wiggle % 22]), offsetX,
+            session.CurrentRotation);
     }
 } // namespace OpenRCT2
