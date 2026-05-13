@@ -9,21 +9,21 @@
 
 #ifndef DISABLE_NETWORK
 
-#include "TestData.h"
+    #include "TestData.h"
 
-#include <chrono>
-#include <gtest/gtest.h>
-#include <openrct2/Context.h>
-#include <openrct2/OpenRCT2.h>
-#include <openrct2/config/Config.h>
-#include <openrct2/core/Crypt.h>
-#include <openrct2/network/Network.h>
-#include <openrct2/network/NetworkConnection.h>
-#include <openrct2/network/NetworkPacket.h>
-#include <openrct2/network/NetworkTypes.h>
-#include <openrct2/network/Socket.h>
-#include <memory>
-#include <thread>
+    #include <chrono>
+    #include <gtest/gtest.h>
+    #include <openrct2/Context.h>
+    #include <openrct2/OpenRCT2.h>
+    #include <openrct2/config/Config.h>
+    #include <openrct2/core/Crypt.h>
+    #include <openrct2/network/Network.h>
+    #include <openrct2/network/NetworkConnection.h>
+    #include <openrct2/network/NetworkPacket.h>
+    #include <openrct2/network/NetworkTypes.h>
+    #include <openrct2/network/Socket.h>
+    #include <memory>
+    #include <thread>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Network;
