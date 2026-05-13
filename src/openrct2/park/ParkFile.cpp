@@ -2547,12 +2547,12 @@ namespace OpenRCT2
     void ParkFile::ReadWriteEntity(OrcaStream& os, OrcaStream::ChunkStream& cs, MoneyEffect& moneyEffect)
     {
         ReadWriteEntityCommon(cs, moneyEffect);
-        cs.readWrite(moneyEffect.MoveDelay);
-        cs.readWrite(moneyEffect.NumMovements);
-        cs.readWrite(moneyEffect.GuestPurchase);
-        cs.readWrite(moneyEffect.Value);
-        cs.readWrite(moneyEffect.OffsetX);
-        cs.readWrite(moneyEffect.Wiggle);
+        cs.readWrite(moneyEffect.moveDelay);
+        cs.readWrite(moneyEffect.numMovements);
+        cs.readWrite(moneyEffect.guestPurchase);
+        cs.readWrite(moneyEffect.value);
+        cs.readWrite(moneyEffect.offsetX);
+        cs.readWrite(moneyEffect.wiggle);
     }
 
     template<>

@@ -2217,12 +2217,12 @@ namespace OpenRCT2::RCT2
         auto dst = getGameState().entities.CreateEntityAt<::MoneyEffect>(EntityId::FromUnderlying(baseSrc.EntityIndex));
         auto src = static_cast<const RCT12EntityMoneyEffect*>(&baseSrc);
         ImportEntityCommonProperties(dst, src);
-        dst->MoveDelay = src->MoveDelay;
-        dst->NumMovements = src->NumMovements;
-        dst->GuestPurchase = src->Vertical;
-        dst->Value = src->Value;
-        dst->OffsetX = src->OffsetX;
-        dst->Wiggle = src->Wiggle;
+        dst->moveDelay = src->MoveDelay;
+        dst->numMovements = src->NumMovements;
+        dst->guestPurchase = src->Vertical;
+        dst->value = src->Value;
+        dst->offsetX = src->OffsetX;
+        dst->wiggle = src->Wiggle;
     }
 
     template<>

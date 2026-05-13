@@ -27,12 +27,12 @@ namespace OpenRCT2
         static constexpr auto cEntityType = EntityType::moneyEffect;
 
         uint16_t frame;
-        uint16_t MoveDelay;
-        uint8_t NumMovements;
-        uint8_t GuestPurchase;
-        money64 Value;
-        int16_t OffsetX;
-        uint16_t Wiggle;
+        uint16_t moveDelay;
+        uint8_t numMovements;
+        uint8_t guestPurchase;
+        money64 value;
+        int16_t offsetX;
+        uint16_t wiggle;
 
         static void CreateAt(money64 value, const CoordsXYZ& effectPos, bool guestPurchase);
         static void Create(money64 value, const CoordsXYZ& loc);
