@@ -3872,3 +3872,7 @@ STR_7078    :Pine green
 STR_7079    :Ruby
 STR_7080    :Deep blue
 STR_7081    :Silver
+STR_7082    :Audio engine:
+STR_7083    :Select which audio engine to use.
+STR_7084    :Legacy
+STR_7085    :New (experimental)

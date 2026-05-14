@@ -165,6 +165,7 @@ namespace OpenRCT2::Config
         bool rideMusicEnabled;
         uint8_t rideMusicVolume;
         bool audioFocus;
+        AudioEngineType audioEngineType;
     };
 
     struct Network

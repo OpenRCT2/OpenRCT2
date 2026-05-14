@@ -2044,6 +2044,12 @@ namespace OpenRCT2
         STR_THEMES_WINDOW_VIEWPORT = 5191,
         STR_THEMES_WINDOW_WATER = 5194,
 
+        // Audio engine selection
+        STR_AUDIO_ENGINE_LABEL = 7082,
+        STR_AUDIO_ENGINE_TIP = 7083,
+        STR_AUDIO_ENGINE_LEGACY = 7084,
+        STR_AUDIO_ENGINE_NEW = 7085,
+
         // Window: TileInspector
         STR_MOVE_SELECTED_ELEMENT_DOWN_TIP = 5618,
         STR_MOVE_SELECTED_ELEMENT_UP_TIP = 5617,
