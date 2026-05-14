@@ -256,14 +256,16 @@ namespace OpenRCT2::Audio
 
         for (size_t frame = 0; frame < frames; frame++)
         {
-            auto srcIndex = static_cast<uint64_t>(voice.playbackPosition);
+            double srcPos = voice.playbackPosition;
+            auto srcIndex = static_cast<uint64_t>(srcPos);
 
             if (srcIndex >= voice.pcmLengthInFrames)
             {
                 if (voice.looping)
                 {
                     voice.playbackPosition = std::fmod(voice.playbackPosition, static_cast<double>(voice.pcmLengthInFrames));
-                    srcIndex = static_cast<uint64_t>(voice.playbackPosition);
+                    srcPos = voice.playbackPosition;
+                    srcIndex = static_cast<uint64_t>(srcPos);
                 }
                 else
                 {
@@ -272,21 +274,33 @@ namespace OpenRCT2::Audio
                 }
             }
 
-            // TODO: this is nearest-neighbor, should probably interpolate
-            float sample;
+            float frac = static_cast<float>(srcPos - static_cast<double>(srcIndex));
+            uint64_t nextIndex = srcIndex + 1;
+            if (nextIndex >= voice.pcmLengthInFrames)
+                nextIndex = voice.looping ? 0 : srcIndex;
+
+            float sampleL, sampleR;
             if (voice.channels == 1)
             {
-                sample = voice.pcmData[srcIndex];
+                float s0 = voice.pcmData[srcIndex];
+                float s1 = voice.pcmData[nextIndex];
+                float sample = s0 + (s1 - s0) * frac;
+                sampleL = sample;
+                sampleR = sample;
             }
             else
             {
-                // For stereo just take the left channel for now
-                sample = voice.pcmData[srcIndex * 2];
+                float s0L = voice.pcmData[srcIndex * 2];
+                float s0R = voice.pcmData[srcIndex * 2 + 1];
+                float s1L = voice.pcmData[nextIndex * 2];
+                float s1R = voice.pcmData[nextIndex * 2 + 1];
+                sampleL = s0L + (s1L - s0L) * frac;
+                sampleR = s0R + (s1R - s0R) * frac;
             }
 
             float vol = voice.volume;
-            outputBuffer[frame * 2] += sample * vol;
-            outputBuffer[frame * 2 + 1] += sample * vol;
+            outputBuffer[frame * 2] += sampleL * vol;
+            outputBuffer[frame * 2 + 1] += sampleR * vol;
 
             voice.playbackPosition += rateRatio;
         }
