@@ -2115,6 +2115,8 @@ void ScriptEngine::RemoveSockets(const std::shared_ptr<Plugin>& plugin)
 {
     #ifndef DISABLE_NETWORK
     std::erase_if(_sockets, [plugin](const std::shared_ptr<SocketDataBase>& data) {
+        if (data == nullptr)
+            return true;
         if (data->_plugin == plugin)
         {
             data->Dispose();
