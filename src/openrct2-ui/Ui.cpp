@@ -12,6 +12,7 @@
 #include "SDLException.h"
 #include "UiContext.h"
 #include "audio/AudioContext.h"
+#include "audio/newengine/DualAudioContext.h"
 #include "drawing/BitmapReader.h"
 
 #include <memory>
@@ -71,7 +72,7 @@ int main(int argc, const char** argv)
             std::unique_ptr<IAudioContext> audioContext;
             try
             {
-                audioContext = CreateAudioContext();
+                audioContext = createDualAudioContext();
             }
             catch (const SDLException& e)
             {

@@ -47,6 +47,18 @@ namespace OpenRCT2::Audio
         virtual void StopRideMusic() = 0;
         virtual void StopTitleMusic() = 0;
         virtual void StopVehicleSounds() = 0;
+
+        virtual bool IsNewEngine() const
+        {
+            return false;
+        }
+
+        virtual void PlayOneShot(IAudioSource* source, float volume, float pan)
+        {
+            (void)source;
+            (void)volume;
+            (void)pan;
+        }
     };
 
     [[nodiscard]] std::unique_ptr<IAudioContext> CreateDummyAudioContext();
