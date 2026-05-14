@@ -17,6 +17,11 @@
 
 namespace OpenRCT2::Audio
 {
+#ifdef _MSC_VER
+    #pragma warning(push)
+    #pragma warning(disable : 4324)
+#endif
+
     // Lock-free SPSC ring buffer. Capacity must be a power of two.
     template<typename T, size_t Capacity>
     class AudioRingBuffer
@@ -72,9 +77,13 @@ namespace OpenRCT2::Audio
     private:
         static constexpr uint64_t kMask = static_cast<uint64_t>(Capacity - 1);
 
-        alignas(64) std::atomic<uint64_t> _writeIndex{0};
-        alignas(64) std::atomic<uint64_t> _readIndex{0};
+        alignas(64) std::atomic<uint64_t> _writeIndex{ 0 };
+        alignas(64) std::atomic<uint64_t> _readIndex{ 0 };
         std::array<T, Capacity> _buffer{};
     };
+
+#ifdef _MSC_VER
+    #pragma warning(pop)
+#endif
 
 } // namespace OpenRCT2::Audio
