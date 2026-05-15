@@ -236,6 +236,12 @@ declare global {
         captureImage(options: CaptureOptions): void;
 
         /**
+         * Saves the current game. If the game has not been saved before,
+         * the save dialog will be shown.
+         */
+        saveGame(): void;
+
+        /**
          * @deprecated Use {@link ObjectManager.getObject} instead.
          */
         getObject(type: ObjectType, index: number): LoadedImageObject;

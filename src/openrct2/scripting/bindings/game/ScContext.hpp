@@ -412,6 +412,13 @@ namespace OpenRCT2::Scripting
             return JS_UNDEFINED;
         }
 
+        static JSValue saveGame(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
+        {
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+            SaveGame();
+            return JS_UNDEFINED;
+        }
+
         static JSValue getIcon(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
             JS_UNPACK_STR(iconName, ctx, argv[0]);
@@ -443,6 +450,7 @@ namespace OpenRCT2::Scripting
                 JS_CFUNC_DEF("setTimeout", 2, ScContext::setTimeout),
                 JS_CFUNC_DEF("clearInterval", 1, ScContext::clearInterval),
                 JS_CFUNC_DEF("clearTimeout", 1, ScContext::clearTimeout),
+                JS_CFUNC_DEF("saveGame", 0, ScContext::saveGame),
                 JS_CFUNC_DEF("getIcon", 1, ScContext::getIcon),
             };
             RegisterBase(ctx, "Context", nullptr, funcs);
