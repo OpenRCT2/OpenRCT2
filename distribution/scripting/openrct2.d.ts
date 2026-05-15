@@ -610,10 +610,10 @@ declare global {
 
     interface SaveGameOptions {
         /**
-         * A filename for the save file in the saves directory.
+         * A relative filename from the savegame directory to save the game as.
          * The .park extension will be appended automatically.
          * If not specified, the game will save to the existing path,
-         * or show a save dialog if the game has not been saved before.
+         * or show a save menu if the game has not been saved before.
          */
         filename?: string;
     }
