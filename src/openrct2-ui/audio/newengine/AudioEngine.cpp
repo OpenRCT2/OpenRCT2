@@ -10,6 +10,7 @@
 #include "AudioEngine.h"
 
 #include <algorithm>
+#include <atomic>
 #include <cmath>
 #include <cstring>
 #include <openrct2/Diagnostic.h>
@@ -53,6 +54,35 @@ namespace OpenRCT2::Audio
         return { AudioHandle::kInvalid };
     }
 
+    AudioHandle AudioEngine::playTracked(
+        const float* pcmData, uint64_t lengthInFrames, uint32_t sampleRate, uint8_t channels, float volume, float pan,
+        float rate, AudioEngineGroup group, bool looping)
+    {
+        static std::atomic<uint32_t> sNextHandle{ 1 };
+        uint32_t handleVal = sNextHandle.fetch_add(1, std::memory_order_relaxed);
+        if (handleVal == AudioHandle::kInvalid)
+            handleVal = sNextHandle.fetch_add(1, std::memory_order_relaxed);
+
+        AudioHandle handle{ handleVal };
+
+        AudioCommand cmd{};
+        cmd.type = AudioCommandType::playLoop;
+        cmd.data.playLoop.pcmData = pcmData;
+        cmd.data.playLoop.pcmLengthInFrames = lengthInFrames;
+        cmd.data.playLoop.sampleRate = sampleRate;
+        cmd.data.playLoop.channels = channels;
+        cmd.data.playLoop.volume = volume;
+        cmd.data.playLoop.pan = pan;
+        cmd.data.playLoop.rate = rate;
+        cmd.data.playLoop.group = group;
+        cmd.data.playLoop.handle = handle;
+        cmd.data.playLoop.looping = looping;
+
+        if (!submitCommand(cmd))
+            return { AudioHandle::kInvalid };
+        return handle;
+    }
+
     void AudioEngine::stop(AudioHandle handle)
     {
         AudioCommand cmd{};
@@ -89,6 +119,8 @@ namespace OpenRCT2::Audio
     {
         if (framesRequested == 0)
             return;
+
+        _outputSampleRate = outputSampleRate;
 
         std::memset(outputBuffer, 0, framesRequested * 2 * sizeof(float));
 
@@ -157,11 +189,16 @@ namespace OpenRCT2::Audio
                 case AudioCommandType::playOneShot:
                     processPlayOneShot(cmd);
                     break;
+                case AudioCommandType::playLoop:
+                    processPlayLoop(cmd);
+                    break;
                 case AudioCommandType::stop:
                     processStop(cmd);
                     break;
                 case AudioCommandType::stopAll:
                     _voicePool.releaseAll();
+                    for (size_t i = 0; i < kMaxVoices; i++)
+                        markSlotInactive(i);
                     break;
                 case AudioCommandType::setVolume:
                     processSetVolume(cmd);
@@ -198,9 +235,40 @@ namespace OpenRCT2::Audio
         voice->fadePerSample = 0.0f;
     }
 
-    Voice* AudioEngine::findVoice(AudioHandle handle)
+    void AudioEngine::processPlayLoop(const AudioCommand& cmd)
     {
-        return _voicePool.get(handle);
+        auto slotHandle = _voicePool.claim();
+        if (!slotHandle.isValid())
+            return;
+
+        auto* voice = _voicePool.get(slotHandle);
+        if (voice == nullptr)
+            return;
+
+        const auto& p = cmd.data.playLoop;
+        voice->pcmData = p.pcmData;
+        voice->pcmLengthInFrames = p.pcmLengthInFrames;
+        voice->sampleRate = p.sampleRate;
+        voice->channels = p.channels;
+        voice->volume = p.volume;
+        voice->targetVolume = p.volume;
+        voice->pan = p.pan;
+        voice->rate = p.rate;
+        voice->group = p.group;
+        voice->looping = p.looping;
+        voice->playbackPosition = 0.0;
+        voice->fadePerSample = 0.0f;
+        voice->gameHandle = p.handle;
+
+        if (p.handle.isValid())
+            markSlotActive(slotHandle.slotIndex(), p.handle);
+    }
+
+    Voice* AudioEngine::resolveVoice(AudioHandle handle)
+    {
+        if (!handle.isValid())
+            return nullptr;
+        return _voicePool.getByGameHandle(handle);
     }
 
     size_t AudioEngine::getActiveVoiceCount() const
@@ -210,20 +278,21 @@ namespace OpenRCT2::Audio
 
     void AudioEngine::processStop(const AudioCommand& cmd)
     {
-        auto* voice = findVoice(cmd.data.stop.handle);
+        auto* voice = resolveVoice(cmd.data.stop.handle);
         if (voice != nullptr)
         {
+            if (voice->gameHandle.isValid())
+                markSlotInactive(_voicePool.indexOf(voice));
             voice->reset();
         }
     }
 
     void AudioEngine::processSetVolume(const AudioCommand& cmd)
     {
-        auto* voice = findVoice(cmd.data.setVolume.handle);
+        auto* voice = resolveVoice(cmd.data.setVolume.handle);
         if (voice != nullptr)
         {
-            voice->volume = std::clamp(cmd.data.setVolume.volume, 0.0f, 1.0f);
-            voice->targetVolume = voice->volume;
+            voice->targetVolume = std::clamp(cmd.data.setVolume.volume, 0.0f, 1.0f);
         }
     }
 
@@ -241,6 +310,12 @@ namespace OpenRCT2::Audio
                 continue;
 
             mixVoice(voice, outputBuffer, frames, outputSampleRate);
+
+            if (voice.state == VoiceState::idle)
+            {
+                if (voice.gameHandle.isValid())
+                    markSlotInactive(i);
+            }
         }
     }
 
@@ -252,7 +327,7 @@ namespace OpenRCT2::Audio
             return;
         }
 
-        double rateRatio = static_cast<double>(voice.sampleRate) / static_cast<double>(outputSampleRate);
+        double rateRatio = (static_cast<double>(voice.sampleRate) / static_cast<double>(outputSampleRate)) * voice.rate;
 
         for (size_t frame = 0; frame < frames; frame++)
         {
@@ -304,6 +379,31 @@ namespace OpenRCT2::Audio
 
             voice.playbackPosition += rateRatio;
         }
+    }
+
+    bool AudioEngine::isHandleActive(AudioHandle gameHandle) const
+    {
+        if (!gameHandle.isValid())
+            return false;
+
+        for (size_t i = 0; i < kMaxVoices; i++)
+        {
+            if (_slotStatus[i].gameHandle.load(std::memory_order_relaxed) == gameHandle.value)
+                return _slotStatus[i].active.load(std::memory_order_relaxed);
+        }
+
+        return false;
+    }
+
+    void AudioEngine::markSlotActive(size_t slotIndex, AudioHandle gameHandle)
+    {
+        _slotStatus[slotIndex].gameHandle.store(gameHandle.value, std::memory_order_relaxed);
+        _slotStatus[slotIndex].active.store(true, std::memory_order_relaxed);
+    }
+
+    void AudioEngine::markSlotInactive(size_t slotIndex)
+    {
+        _slotStatus[slotIndex].active.store(false, std::memory_order_relaxed);
     }
 
 } // namespace OpenRCT2::Audio

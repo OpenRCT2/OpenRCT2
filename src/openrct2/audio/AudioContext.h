@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../core/IStream.hpp"
+#include "AudioMixer.h"
 
 #include <memory>
 #include <string>
@@ -58,6 +59,18 @@ namespace OpenRCT2::Audio
             (void)source;
             (void)volume;
             (void)pan;
+        }
+
+        virtual std::shared_ptr<IAudioChannel> CreateChannel(
+            IAudioSource* source, MixerGroup group, bool loop, int32_t volume, float pan, double rate)
+        {
+            (void)source;
+            (void)group;
+            (void)loop;
+            (void)volume;
+            (void)pan;
+            (void)rate;
+            return nullptr;
         }
     };
 
