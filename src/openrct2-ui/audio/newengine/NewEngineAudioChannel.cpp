@@ -132,7 +132,16 @@ namespace OpenRCT2::Audio
 
     bool NewEngineAudioChannel::IsDone() const
     {
-        return _done;
+        if (_done)
+            return true;
+        if (_engine != nullptr && _handle.isValid())
+        {
+            bool active = _engine->isHandleActive(_handle);
+            if (active)
+                _pendingActivation = false;
+            return !active && !_pendingActivation;
+        }
+        return true;
     }
 
     void NewEngineAudioChannel::SetDone(bool value)
@@ -164,7 +173,6 @@ namespace OpenRCT2::Audio
     void NewEngineAudioChannel::Stop()
     {
         _stopping = true;
-        _done = true;
         if (_engine != nullptr)
             _engine->stop(_handle);
     }

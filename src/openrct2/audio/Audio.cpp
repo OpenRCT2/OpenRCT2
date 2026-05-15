@@ -500,6 +500,13 @@ namespace OpenRCT2::Audio
     std::shared_ptr<IAudioChannel> CreateAudioChannel(
         IAudioSource* source, MixerGroup group, bool loop, int32_t volume, float pan, double rate, bool forget)
     {
+        auto& audioContext = GetContext()->GetAudioContext();
+
+        if (audioContext.IsNewEngine())
+        {
+            return audioContext.CreateChannel(source, group, loop, volume, pan, rate);
+        }
+
         auto* mixer = GetMixer();
         if (mixer == nullptr)
         {

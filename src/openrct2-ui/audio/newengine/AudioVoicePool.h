@@ -30,6 +30,7 @@ namespace OpenRCT2::Audio
     {
         VoiceState state = VoiceState::idle;
         AudioEngineGroup group = AudioEngineGroup::sound;
+        uint16_t generation = 0;
 
         const float* pcmData = nullptr;
         uint64_t pcmLengthInFrames = 0;
@@ -45,6 +46,8 @@ namespace OpenRCT2::Audio
 
         float fadePerSample = 0.0f;
 
+        AudioHandle gameHandle{AudioHandle::kInvalid};
+
         void reset()
         {
             state = VoiceState::idle;
@@ -59,6 +62,7 @@ namespace OpenRCT2::Audio
             pan = 0.5f;
             rate = 1.0f;
             fadePerSample = 0.0f;
+            gameHandle = {AudioHandle::kInvalid};
         }
     };
 
@@ -69,6 +73,7 @@ namespace OpenRCT2::Audio
 
         AudioHandle claim();
         Voice* get(AudioHandle handle);
+        Voice* getByGameHandle(AudioHandle gameHandle);
         Voice& getByIndex(size_t index);
         void releaseAll();
         [[nodiscard]] size_t indexOf(const Voice* voice) const;

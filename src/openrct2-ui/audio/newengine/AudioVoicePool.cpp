@@ -15,6 +15,7 @@ namespace OpenRCT2::Audio
     {
         for (size_t i = 0; i < kMaxVoices; i++)
         {
+            _voices[i].generation = 0;
             _voices[i].state = VoiceState::idle;
         }
     }
@@ -28,7 +29,8 @@ namespace OpenRCT2::Audio
                 auto& voice = _voices[i];
                 voice.reset();
                 voice.state = VoiceState::playing;
-                return AudioHandle{ static_cast<uint32_t>(i + 1) };
+                voice.generation++;
+                return AudioHandle::make(static_cast<uint16_t>(i), voice.generation);
             }
         }
 
@@ -40,11 +42,27 @@ namespace OpenRCT2::Audio
         if (!handle.isValid())
             return nullptr;
 
-        uint32_t index = handle.value - 1;
+        uint16_t index = handle.slotIndex();
         if (index >= kMaxVoices)
             return nullptr;
 
-        return &_voices[index];
+        auto& voice = _voices[index];
+        if (voice.generation != handle.generation())
+            return nullptr;
+
+        return &voice;
+    }
+
+    Voice* AudioVoicePool::getByGameHandle(AudioHandle gameHandle)
+    {
+        if (!gameHandle.isValid())
+            return nullptr;
+        for (auto& voice : _voices)
+        {
+            if (voice.state != VoiceState::idle && voice.gameHandle == gameHandle)
+                return &voice;
+        }
+        return nullptr;
     }
 
     Voice& AudioVoicePool::getByIndex(size_t index)
