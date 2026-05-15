@@ -236,10 +236,11 @@ declare global {
         captureImage(options: CaptureOptions): void;
 
         /**
-         * Saves the current game. If the game has not been saved before,
-         * the save dialog will be shown.
+         * Save the current game to disc.
+         * If no options are passed and the game has not been saved before the save menu will be shown.
+         * @param options Options that control the save output.
          */
-        saveGame(): void;
+        saveGame(options?: SaveGameOptions): void;
 
         /**
          * @deprecated Use {@link ObjectManager.getObject} instead.
@@ -607,6 +608,16 @@ declare global {
         transparent?: boolean;
     }
 
+    interface SaveGameOptions {
+        /**
+         * A filename for the save file in the saves directory.
+         * The .park extension will be appended automatically.
+         * If not specified, the game will save to the existing path,
+         * or show a save dialog if the game has not been saved before.
+         */
+        filename?: string;
+    }
+
     type GameMode =
         "normal" |
         "title" |
@@ -852,7 +863,7 @@ declare global {
         object: number;
         railingsObject: number;
         /** 0 if flat, 1 if sloped */
-        slopeType: number; // 
+        slopeType: number; //
         /** direction if sloped, otherwise ignored */
         slopeDirection: Direction;
         constructFlags: number;
@@ -1652,7 +1663,7 @@ declare global {
 		readonly rideId: number;
 		breakdownReason: string;
 	}
- 
+
     interface RideRatingsCalculateArgs {
         readonly rideId: number;
         excitement: number;
