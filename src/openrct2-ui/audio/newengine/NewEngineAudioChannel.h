@@ -70,6 +70,7 @@ namespace OpenRCT2::Audio
         float _volumeR = 0.5f;
         float _oldVolumeL = 0.5f;
         float _oldVolumeR = 0.5f;
+        mutable bool _pendingActivation = true;
     };
 
 } // namespace OpenRCT2::Audio

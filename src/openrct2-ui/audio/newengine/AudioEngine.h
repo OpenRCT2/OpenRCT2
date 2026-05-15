@@ -13,6 +13,7 @@
 #include "AudioRingBuffer.h"
 #include "AudioVoicePool.h"
 
+#include <array>
 #include <atomic>
 #include <cstddef>
 #include <cstdint>
@@ -47,6 +48,12 @@ namespace OpenRCT2::Audio
             const float* pcmData, uint64_t lengthInFrames, uint32_t sampleRate, uint8_t channels, float volume, float pan,
             AudioEngineGroup group);
 
+        // Returns a handle so the caller (you/whoever) can adjust volume/pan/rate or
+        // stop the sound later. Works for both looping and non looping
+        AudioHandle playTracked(
+            const float* pcmData, uint64_t lengthInFrames, uint32_t sampleRate, uint8_t channels, float volume, float pan,
+            float rate, AudioEngineGroup group, bool looping);
+
         void stop(AudioHandle handle);
         void stopAll();
         void setVolume(AudioHandle handle, float volume);
@@ -61,16 +68,22 @@ namespace OpenRCT2::Audio
         // platform device actually uses (S16, F32, etc.)
         static void convertToDevice(const float* mixBuffer, uint8_t* dst, size_t frames, AudioSampleFormat format);
 
+        // Safe to call from the game thread, reads atomic shadow state
+        // only, never touches the voice pool. Returns false once the
+        // voice finishes, is stopped, or gets stolen by another sound
+        [[nodiscard]] bool isHandleActive(AudioHandle gameHandle) const;
+
         [[nodiscard]] size_t getActiveVoiceCount() const;
 
     private:
         void processCommands();
         void processPlayOneShot(const AudioCommand& cmd);
+        void processPlayLoop(const AudioCommand& cmd);
         void processStop(const AudioCommand& cmd);
         void processSetVolume(const AudioCommand& cmd);
         void processSetMasterVolume(const AudioCommand& cmd);
 
-        Voice* findVoice(AudioHandle handle);
+        Voice* resolveVoice(AudioHandle handle);
 
         void mixAllVoices(float* outputBuffer, size_t frames, uint32_t outputSampleRate);
         void mixVoice(Voice& voice, float* outputBuffer, size_t frames, uint32_t outputSampleRate);
@@ -80,9 +93,27 @@ namespace OpenRCT2::Audio
 
         float _masterVolume = 1.0f;
 
+        uint32_t _outputSampleRate = 48000;
+
         // Incremented from the game thread when the ring buffer is full.
         // Atomic so getStats() can read it safely from any thread
         std::atomic<uint64_t> _droppedCommands{ 0 };
+
+        void markSlotActive(size_t slotIndex, AudioHandle gameHandle);
+        void markSlotInactive(size_t slotIndex);
+
+        // Shadow state for cross thread voice completion queries.
+        // The audio thread writes these (relaxed stores), the game
+        // thread reads them (relaxed loads). This is separate from the
+        // voice pool because I never want to touch hot mixing data from the game code
+        struct SlotStatus
+        {
+            std::atomic<uint32_t> gameHandle{ AudioHandle::kInvalid };
+            std::atomic<bool> active{ false };
+        };
+        std::array<SlotStatus, kMaxVoices> _slotStatus{};
+
+        // Frozy was here
     };
 
 } // namespace OpenRCT2::Audio

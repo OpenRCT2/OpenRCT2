@@ -13,11 +13,24 @@
 
 namespace OpenRCT2::Audio
 {
+    // Upper 16 bits = generation, lower 16 bits = slot index
     struct AudioHandle
     {
         uint32_t value;
 
         static constexpr uint32_t kInvalid = 0;
+        static constexpr uint32_t kGenerationShift = 16;
+        static constexpr uint32_t kIndexMask = 0xFFFF;
+
+        [[nodiscard]] uint16_t slotIndex() const
+        {
+            return static_cast<uint16_t>(value & kIndexMask);
+        }
+
+        [[nodiscard]] uint16_t generation() const
+        {
+            return static_cast<uint16_t>(value >> kGenerationShift);
+        }
 
         [[nodiscard]] bool isValid() const
         {
@@ -32,6 +45,11 @@ namespace OpenRCT2::Audio
         bool operator!=(const AudioHandle& other) const
         {
             return value != other.value;
+        }
+
+        static AudioHandle make(uint16_t slotIndex, uint16_t generation)
+        {
+            return { (static_cast<uint32_t>(generation) << kGenerationShift) | slotIndex };
         }
     };
 
@@ -54,12 +72,14 @@ namespace OpenRCT2::Audio
     enum class AudioCommandType : uint8_t
     {
         playOneShot,
+        playLoop,
         stop,
         stopAll,
         setVolume,
         setMasterVolume,
     };
 
+    // pcmData pointers are NOT owned, caller keeps them alive during playback
     struct AudioCommand
     {
         AudioCommandType type;
@@ -76,6 +96,20 @@ namespace OpenRCT2::Audio
                 float pan;
                 AudioEngineGroup group;
             } playOneShot;
+
+            struct
+            {
+                const float* pcmData;
+                uint64_t pcmLengthInFrames;
+                uint32_t sampleRate;
+                uint8_t channels;
+                float volume;
+                float pan;
+                float rate;
+                AudioEngineGroup group;
+                AudioHandle handle;
+                bool looping;
+            } playLoop;
 
             struct
             {

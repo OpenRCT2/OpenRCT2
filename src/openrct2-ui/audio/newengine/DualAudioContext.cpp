@@ -135,6 +135,14 @@ namespace OpenRCT2::Audio
             _newEngine->PlayOneShot(source, volume, pan);
     }
 
+    std::shared_ptr<IAudioChannel> DualAudioContext::CreateChannel(
+        IAudioSource* source, MixerGroup group, bool loop, int32_t volume, float pan, double rate)
+    {
+        if (_useNewEngine && _newEngine)
+            return _newEngine->CreateChannel(source, group, loop, volume, pan, rate);
+        return nullptr;
+    }
+
     std::unique_ptr<IAudioContext> createDualAudioContext()
     {
         return std::make_unique<DualAudioContext>();

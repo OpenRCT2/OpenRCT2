@@ -45,6 +45,9 @@ namespace OpenRCT2::Audio
 
         void PlayOneShot(IAudioSource* source, float volume, float pan) override;
 
+        std::shared_ptr<IAudioChannel> CreateChannel(
+            IAudioSource* source, MixerGroup group, bool loop, int32_t volume, float pan, double rate) override;
+
     private:
         IAudioContext* active();
         const IAudioContext* active() const;

@@ -84,6 +84,9 @@ namespace OpenRCT2::Audio
 
         void PlayOneShot(IAudioSource* source, float volume, float pan) override;
 
+        std::shared_ptr<IAudioChannel> CreateChannel(
+            IAudioSource* source, MixerGroup group, bool loop, int32_t volume, float pan, double rate) override;
+
     private:
         Float32AudioData* convertToFloat32(const void* pcmData, size_t pcmLen, AudioSampleFormat format, uint8_t srcChannels, int srcFreq);
 

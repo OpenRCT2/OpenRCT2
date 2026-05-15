@@ -9,6 +9,8 @@
 
 #include "NewAudioContext.h"
 
+#include "NewEngineAudioChannel.h"
+
 #include "../SDLAudioSource.h"
 
 #include <SDL.h>
@@ -300,6 +302,46 @@ namespace OpenRCT2::Audio
         _engine->playOneShot(
             data->samples.data(), data->lengthInFrames(), data->sampleRate, data->channels, volume, pan,
             AudioEngineGroup::sound);
+    }
+
+    std::shared_ptr<IAudioChannel> NewAudioContext::CreateChannel(
+        IAudioSource* source, MixerGroup group, bool loop, int32_t volume, float pan, double rate)
+    {
+        if (_engine == nullptr)
+            return nullptr;
+
+        auto* f32source = dynamic_cast<Float32AudioSource*>(source);
+        if (f32source == nullptr || f32source->getData() == nullptr)
+            return nullptr;
+
+        auto* data = f32source->getData();
+        float normalizedVolume = static_cast<float>(volume) / static_cast<float>(kMixerVolumeMax);
+
+        AudioEngineGroup engineGroup;
+        switch (group)
+        {
+            case MixerGroup::RideMusic:
+                engineGroup = AudioEngineGroup::rideMusic;
+                break;
+            case MixerGroup::TitleMusic:
+                engineGroup = AudioEngineGroup::titleMusic;
+                break;
+            case MixerGroup::Sound:
+            default:
+                engineGroup = AudioEngineGroup::sound;
+                break;
+        }
+
+        AudioHandle handle = _engine->playTracked(
+            data->samples.data(), data->lengthInFrames(), data->sampleRate, data->channels, normalizedVolume, pan,
+            static_cast<float>(rate), engineGroup, loop);
+
+        auto channel = std::make_shared<NewEngineAudioChannel>(_engine.get(), handle, group);
+        channel->SetVolume(volume);
+        channel->SetPan(pan);
+        channel->SetRate(rate);
+        channel->UpdateOldVolume();
+        return channel;
     }
 
     Float32AudioData* NewAudioContext::convertToFloat32(
