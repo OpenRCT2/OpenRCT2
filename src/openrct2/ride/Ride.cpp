@@ -3408,7 +3408,7 @@ ResultWithMessage Ride::createVehicles(const CoordsXYE& element, bool isApplying
 
                 if (!carEntry->flags.has(CarEntryFlag::useDodgemCarPlacement))
                 {
-                    vehicle->UpdateTrackMotion(nullptr);
+                    vehicle->updateTrackMotionTrain(nullptr);
                 }
 
                 vehicle->EnableCollisionsForTrain();
@@ -3451,7 +3451,7 @@ void Ride::moveTrainsToBlockBrakes(const CoordsXYZ& firstBlockPosition, TrackEle
         // until they reach a closed block brake. The block brake directly before the station is set to closed every frame
         // because the trains will open the block brake when the tail leaves the station. Brakes have no effect at this time, so
         // do not set linked brakes when closing the first block.
-        train->UpdateTrackMotion(nullptr);
+        train->updateTrackMotionTrain(nullptr);
 
         if (i == 0)
         {
@@ -3486,7 +3486,7 @@ void Ride::moveTrainsToBlockBrakes(const CoordsXYZ& firstBlockPosition, TrackEle
                 car->SwingSprite = 0;
                 car->remaining_distance += 13962;
             }
-        } while (!(train->UpdateTrackMotion(nullptr) & VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_BLOCK_BRAKE));
+        } while (!(train->updateTrackMotionTrain(nullptr) & VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_BLOCK_BRAKE));
 
         // All vehicles are in position, set the block brake directly before the station one last time and make sure the brakes
         // are set appropriately

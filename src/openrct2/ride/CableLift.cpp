@@ -242,7 +242,7 @@ bool Vehicle::CableLiftUpdateTrackMotionForwards()
     if (curRide == nullptr)
         return false;
 
-    for (; remaining_distance >= 13962; _vehicleUnkF64E10++)
+    for (; remaining_distance >= 13962; _vehicleSubpositionsMoved++)
     {
         auto trackType = GetTrackType();
         if (trackType == TrackElemType::cableLiftHill && track_progress == 160)
@@ -302,7 +302,7 @@ bool Vehicle::CableLiftUpdateTrackMotionBackwards()
     if (curRide == nullptr)
         return false;
 
-    for (; remaining_distance < 0; _vehicleUnkF64E10++)
+    for (; remaining_distance < 0; _vehicleSubpositionsMoved++)
     {
         uint16_t trackProgress = track_progress - 1;
 
@@ -362,14 +362,14 @@ bool Vehicle::CableLiftUpdateTrackMotionBackwards()
  */
 int32_t Vehicle::CableLiftUpdateTrackMotion()
 {
-    _vehicleF64E2C = 0;
+    _vehicleBrakeSoundTimeout = 0;
     gCurrentVehicle = this;
     _vehicleMotionTrackFlags = 0;
     _vehicleStationIndex = StationIndex::GetNull();
 
     velocity += acceleration;
-    _vehicleVelocityF64E08 = velocity;
-    _vehicleVelocityF64E0C = (velocity / 1024) * 42;
+    _vehicleVelocity = velocity;
+    _vehicleRemainingDistance = (velocity / 1024) * 42;
 
     Vehicle* frontVehicle = this;
     if (velocity < 0)
@@ -382,8 +382,8 @@ int32_t Vehicle::CableLiftUpdateTrackMotion()
     for (Vehicle* vehicle = frontVehicle; vehicle != nullptr;)
     {
         vehicle->acceleration = Geometry::getAccelerationFromPitch(vehicle->pitch);
-        _vehicleUnkF64E10 = 1;
-        vehicle->remaining_distance += _vehicleVelocityF64E0C;
+        _vehicleSubpositionsMoved = 1;
+        vehicle->remaining_distance += _vehicleRemainingDistance;
 
         if (vehicle->remaining_distance < 0 || vehicle->remaining_distance >= 13962)
         {
@@ -400,10 +400,10 @@ int32_t Vehicle::CableLiftUpdateTrackMotion()
                     }
 
                     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
-                    _vehicleVelocityF64E0C -= vehicle->remaining_distance - 13962;
+                    _vehicleRemainingDistance -= vehicle->remaining_distance - 13962;
                     vehicle->remaining_distance = 13962;
                     vehicle->acceleration += Geometry::getAccelerationFromPitch(vehicle->pitch);
-                    _vehicleUnkF64E10++;
+                    _vehicleSubpositionsMoved++;
                     continue;
                 }
 
@@ -413,15 +413,15 @@ int32_t Vehicle::CableLiftUpdateTrackMotion()
                 }
 
                 _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
-                _vehicleVelocityF64E0C -= vehicle->remaining_distance + 1;
+                _vehicleRemainingDistance -= vehicle->remaining_distance + 1;
                 vehicle->remaining_distance = -1;
                 vehicle->acceleration += Geometry::getAccelerationFromPitch(vehicle->pitch);
-                _vehicleUnkF64E10++;
+                _vehicleSubpositionsMoved++;
             }
             vehicle->MoveTo(_vehicleCurPosition);
         }
-        vehicle->acceleration /= _vehicleUnkF64E10;
-        if (_vehicleVelocityF64E08 >= 0)
+        vehicle->acceleration /= _vehicleSubpositionsMoved;
+        if (_vehicleVelocity >= 0)
         {
             vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train);
         }

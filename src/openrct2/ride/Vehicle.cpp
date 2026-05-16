@@ -74,10 +74,10 @@ Vehicle* gCurrentVehicle;
 Breakdown _vehicleBreakdown;
 StationIndex _vehicleStationIndex;
 uint32_t _vehicleMotionTrackFlags;
-int32_t _vehicleVelocityF64E08;
-int32_t _vehicleVelocityF64E0C;
-int32_t _vehicleUnkF64E10;
-uint8_t _vehicleF64E2C;
+int32_t _vehicleVelocity;
+int32_t _vehicleRemainingDistance;
+int32_t _vehicleSubpositionsMoved;
+uint8_t _vehicleBrakeSoundTimeout;
 Vehicle* _vehicleFrontVehicle;
 CoordsXYZ _vehicleCurPosition;
 
@@ -213,7 +213,7 @@ void Vehicle::MoveRelativeDistance(int32_t distance)
     remaining_distance += distance;
 
     flags.set(VehicleFlag::moveSingleCar, VehicleFlag::collisionDisabled);
-    UpdateTrackMotion(nullptr);
+    updateTrackMotionTrain(nullptr);
     flags.unset(VehicleFlag::moveSingleCar, VehicleFlag::collisionDisabled);
 }
 
@@ -1131,7 +1131,7 @@ void Vehicle::UpdateTravellingCableLift()
     {
         acceleration = 4398;
     }
-    int32_t curFlags = UpdateTrackMotion(nullptr);
+    int32_t curFlags = updateTrackMotionTrain(nullptr);
 
     if (curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_11)
     {

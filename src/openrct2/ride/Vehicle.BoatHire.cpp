@@ -106,8 +106,8 @@ void Vehicle::UpdateMotionBoatHire()
 {
     _vehicleMotionTrackFlags = 0;
     velocity += acceleration;
-    _vehicleVelocityF64E08 = velocity;
-    _vehicleVelocityF64E0C = (velocity >> 10) * 42;
+    _vehicleVelocity = velocity;
+    _vehicleRemainingDistance = (velocity >> 10) * 42;
 
     auto carEntry = Entry();
     if (carEntry == nullptr)
@@ -119,9 +119,9 @@ void Vehicle::UpdateMotionBoatHire()
         UpdateAdditionalAnimation();
     }
 
-    _vehicleUnkF64E10 = 1;
+    _vehicleSubpositionsMoved = 1;
     acceleration = 0;
-    remaining_distance += _vehicleVelocityF64E0C;
+    remaining_distance += _vehicleRemainingDistance;
     if (remaining_distance >= 0x368A)
     {
         sound2_flags &= ~VEHICLE_SOUND2_FLAGS_LIFT_HILL;
@@ -341,7 +341,7 @@ void Vehicle::UpdateMotionBoatHire()
             {
                 break;
             }
-            _vehicleUnkF64E10++;
+            _vehicleSubpositionsMoved++;
         }
 
         MoveTo(_vehicleCurPosition);
