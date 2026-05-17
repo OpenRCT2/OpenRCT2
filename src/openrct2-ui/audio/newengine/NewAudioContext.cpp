@@ -264,10 +264,14 @@ namespace OpenRCT2::Audio
 
     void NewAudioContext::StopRideMusic()
     {
+        if (_engine)
+            _engine->stopGroup(AudioEngineGroup::rideMusic);
     }
 
     void NewAudioContext::StopTitleMusic()
     {
+        if (_engine)
+            _engine->stopGroup(AudioEngineGroup::titleMusic);
     }
 
     void NewAudioContext::StopVehicleSounds()

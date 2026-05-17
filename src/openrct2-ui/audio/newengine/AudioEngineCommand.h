@@ -77,6 +77,11 @@ namespace OpenRCT2::Audio
         stopAll,
         setVolume,
         setMasterVolume,
+        stopGroup,
+        setPan,
+        setRate,
+        setGroupVolume,
+        fadeOut,
     };
 
     // pcmData pointers are NOT owned, caller keeps them alive during playback
@@ -126,6 +131,35 @@ namespace OpenRCT2::Audio
             {
                 float volume;
             } setMasterVolume;
+
+            struct
+            {
+                AudioEngineGroup group;
+            } stopGroup;
+
+            struct
+            {
+                AudioHandle handle;
+                float pan;
+            } setPan;
+
+            struct
+            {
+                AudioHandle handle;
+                float rate;
+            } setRate;
+
+            struct
+            {
+                AudioEngineGroup group;
+                float volume;
+            } setGroupVolume;
+
+            struct
+            {
+                AudioHandle handle;
+                float durationMs;
+            } fadeOut;
         } data;
     };
 

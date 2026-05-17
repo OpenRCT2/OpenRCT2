@@ -107,11 +107,55 @@ namespace OpenRCT2::Audio
         submitCommand(cmd);
     }
 
+    void AudioEngine::setPan(AudioHandle handle, float pan)
+    {
+        AudioCommand cmd{};
+        cmd.type = AudioCommandType::setPan;
+        cmd.data.setPan.handle = handle;
+        cmd.data.setPan.pan = pan;
+        submitCommand(cmd);
+    }
+
+    void AudioEngine::setRate(AudioHandle handle, float rate)
+    {
+        AudioCommand cmd{};
+        cmd.type = AudioCommandType::setRate;
+        cmd.data.setRate.handle = handle;
+        cmd.data.setRate.rate = rate;
+        submitCommand(cmd);
+    }
+
     void AudioEngine::setMasterVolume(float volume)
     {
         AudioCommand cmd{};
         cmd.type = AudioCommandType::setMasterVolume;
         cmd.data.setMasterVolume.volume = volume;
+        submitCommand(cmd);
+    }
+
+    void AudioEngine::setGroupVolume(AudioEngineGroup group, float volume)
+    {
+        AudioCommand cmd{};
+        cmd.type = AudioCommandType::setGroupVolume;
+        cmd.data.setGroupVolume.group = group;
+        cmd.data.setGroupVolume.volume = volume;
+        submitCommand(cmd);
+    }
+
+    void AudioEngine::fadeOut(AudioHandle handle, float durationMs)
+    {
+        AudioCommand cmd{};
+        cmd.type = AudioCommandType::fadeOut;
+        cmd.data.fadeOut.handle = handle;
+        cmd.data.fadeOut.durationMs = durationMs;
+        submitCommand(cmd);
+    }
+
+    void AudioEngine::stopGroup(AudioEngineGroup group)
+    {
+        AudioCommand cmd{};
+        cmd.type = AudioCommandType::stopGroup;
+        cmd.data.stopGroup.group = group;
         submitCommand(cmd);
     }
 
@@ -206,6 +250,27 @@ namespace OpenRCT2::Audio
                 case AudioCommandType::setMasterVolume:
                     processSetMasterVolume(cmd);
                     break;
+                case AudioCommandType::stopGroup:
+                    for (size_t i = 0; i < kMaxVoices; i++)
+                    {
+                        auto& v = _voicePool.getByIndex(i);
+                        if (v.state != VoiceState::idle && v.group == cmd.data.stopGroup.group)
+                            markSlotInactive(i);
+                    }
+                    _voicePool.releaseGroup(cmd.data.stopGroup.group);
+                    break;
+                case AudioCommandType::setPan:
+                    processSetPan(cmd);
+                    break;
+                case AudioCommandType::setRate:
+                    processSetRate(cmd);
+                    break;
+                case AudioCommandType::setGroupVolume:
+                    processSetGroupVolume(cmd);
+                    break;
+                case AudioCommandType::fadeOut:
+                    processFadeOut(cmd);
+                    break;
             }
         }
     }
@@ -281,9 +346,24 @@ namespace OpenRCT2::Audio
         auto* voice = resolveVoice(cmd.data.stop.handle);
         if (voice != nullptr)
         {
-            if (voice->gameHandle.isValid())
-                markSlotInactive(_voicePool.indexOf(voice));
-            voice->reset();
+            if (voice->volume <= 0.001f)
+            {
+                voice->state = VoiceState::idle;
+                if (voice->gameHandle.isValid())
+                    markSlotInactive(_voicePool.indexOf(voice));
+                return;
+            }
+            voice->state = VoiceState::stopping;
+            voice->targetVolume = 0.0f;
+            if (_outputSampleRate > 0)
+            {
+                float durationSamples = (5.0f / 1000.0f) * static_cast<float>(_outputSampleRate);
+                voice->fadePerSample = voice->volume / std::max(1.0f, durationSamples);
+            }
+            else
+            {
+                voice->fadePerSample = voice->volume;
+            }
         }
     }
 
@@ -296,9 +376,79 @@ namespace OpenRCT2::Audio
         }
     }
 
+    void AudioEngine::processSetPan(const AudioCommand& cmd)
+    {
+        auto* voice = resolveVoice(cmd.data.setPan.handle);
+        if (voice != nullptr)
+        {
+            voice->pan = std::clamp(cmd.data.setPan.pan, 0.0f, 1.0f);
+        }
+    }
+
+    void AudioEngine::processSetRate(const AudioCommand& cmd)
+    {
+        auto* voice = resolveVoice(cmd.data.setRate.handle);
+        if (voice != nullptr)
+        {
+            voice->rate = std::max(0.001f, cmd.data.setRate.rate);
+        }
+    }
+
     void AudioEngine::processSetMasterVolume(const AudioCommand& cmd)
     {
         _masterVolume = std::clamp(cmd.data.setMasterVolume.volume, 0.0f, 1.0f);
+    }
+
+    void AudioEngine::processSetGroupVolume(const AudioCommand& cmd)
+    {
+        float vol = std::clamp(cmd.data.setGroupVolume.volume, 0.0f, 1.0f);
+        switch (cmd.data.setGroupVolume.group)
+        {
+            case AudioEngineGroup::sound:
+                _soundVolume = vol;
+                break;
+            case AudioEngineGroup::rideMusic:
+            case AudioEngineGroup::titleMusic:
+                _musicVolume = vol;
+                break;
+        }
+    }
+
+    void AudioEngine::processFadeOut(const AudioCommand& cmd)
+    {
+        auto* voice = resolveVoice(cmd.data.fadeOut.handle);
+        if (voice != nullptr && voice->state == VoiceState::playing)
+        {
+            if (voice->volume <= 0.001f)
+            {
+                voice->state = VoiceState::idle;
+                return;
+            }
+            voice->state = VoiceState::stopping;
+            voice->targetVolume = 0.0f;
+            if (cmd.data.fadeOut.durationMs > 0 && _outputSampleRate > 0)
+            {
+                float durationSamples = (cmd.data.fadeOut.durationMs / 1000.0f) * static_cast<float>(_outputSampleRate);
+                voice->fadePerSample = voice->volume / std::max(1.0f, durationSamples);
+            }
+            else
+            {
+                voice->fadePerSample = voice->volume;
+            }
+        }
+    }
+
+    float AudioEngine::getGroupVolume(AudioEngineGroup group) const
+    {
+        switch (group)
+        {
+            case AudioEngineGroup::sound:
+                return _soundVolume;
+            case AudioEngineGroup::rideMusic:
+            case AudioEngineGroup::titleMusic:
+                return _musicVolume;
+        }
+        return 1.0f;
     }
 
     void AudioEngine::mixAllVoices(float* outputBuffer, size_t frames, uint32_t outputSampleRate)
@@ -327,7 +477,43 @@ namespace OpenRCT2::Audio
             return;
         }
 
+        float groupVol = getGroupVolume(voice.group);
+
         double rateRatio = (static_cast<double>(voice.sampleRate) / static_cast<double>(outputSampleRate)) * voice.rate;
+
+        float targetPanL = 1.0f;
+        float targetPanR = 1.0f;
+        if (voice.pan != 0.5f)
+        {
+            float deviation = std::abs(voice.pan - 0.5f) * 2.0f;
+            float decibels = deviation * 100.0f;
+            float attenuation = std::pow(10.0f, decibels / 20.0f);
+            if (voice.pan <= 0.5f)
+                targetPanR = 1.0f / attenuation;
+            else
+                targetPanL = 1.0f / attenuation;
+        }
+
+        float currentVolume = voice.volume;
+        bool fading = (voice.state == VoiceState::stopping) && voice.fadePerSample > 0.0f;
+
+        if (voice.state == VoiceState::stopping && !fading)
+        {
+            voice.state = VoiceState::idle;
+            voice.volume = 0.0f;
+            return;
+        }
+
+        bool volumeRamping = !fading && (currentVolume != voice.targetVolume);
+
+        float panL = voice.prevPanL;
+        float panR = voice.prevPanR;
+        float panStepL = (targetPanL - panL) / static_cast<float>(frames);
+        float panStepR = (targetPanR - panR) / static_cast<float>(frames);
+
+        float volumeStep = 0.0f;
+        if (volumeRamping)
+            volumeStep = (voice.targetVolume - currentVolume) / static_cast<float>(frames);
 
         for (size_t frame = 0; frame < frames; frame++)
         {
@@ -373,12 +559,38 @@ namespace OpenRCT2::Audio
                 sampleR = s0R + (s1R - s0R) * frac;
             }
 
-            float vol = voice.volume;
-            outputBuffer[frame * 2] += sampleL * vol;
-            outputBuffer[frame * 2 + 1] += sampleR * vol;
+            float vol = currentVolume * groupVol;
+            sampleL *= vol * panL;
+            sampleR *= vol * panR;
+
+            outputBuffer[frame * 2] += sampleL;
+            outputBuffer[frame * 2 + 1] += sampleR;
 
             voice.playbackPosition += rateRatio;
+
+            panL += panStepL;
+            panR += panStepR;
+
+            if (fading)
+            {
+                currentVolume -= voice.fadePerSample;
+                if (currentVolume <= 0.0f)
+                {
+                    currentVolume = 0.0f;
+                    voice.state = VoiceState::idle;
+                    voice.volume = 0.0f;
+                    return;
+                }
+            }
+            else
+            {
+                currentVolume += volumeStep;
+            }
         }
+
+        voice.volume = currentVolume;
+        voice.prevPanL = targetPanL;
+        voice.prevPanR = targetPanR;
     }
 
     bool AudioEngine::isHandleActive(AudioHandle gameHandle) const

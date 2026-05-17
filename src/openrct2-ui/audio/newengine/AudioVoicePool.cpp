@@ -81,6 +81,17 @@ namespace OpenRCT2::Audio
         }
     }
 
+    void AudioVoicePool::releaseGroup(AudioEngineGroup group)
+    {
+        for (auto& voice : _voices)
+        {
+            if (voice.state != VoiceState::idle && voice.group == group)
+            {
+                voice.reset();
+            }
+        }
+    }
+
     size_t AudioVoicePool::indexOf(const Voice* voice) const
     {
         if (voice >= &_voices[0] && voice < &_voices[kMaxVoices])
