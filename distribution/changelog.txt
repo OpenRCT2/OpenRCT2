@@ -13,6 +13,7 @@
 - Fix: [#26352] Large scenery items are incorrectly labelled as ‘banners’ in the tile inspector.
 - Fix: [#26352] The label for path additions is using the wrong text colour in the tile inspector.
 - Fix: [#26360] Inverted Lay-down Roller Coaster helices are invisible when loading old saves.
+- Fix: [#26396] [Plugin] Socket interfaces were not closing properly and firing up correctly in parallel.
 - Fix: [#26410] Tiles with water can draw incorrectly when there is something underwater and nothing above water.
 - Fix: [#26419] Drop count & negative g’s stat requirements for Flying Roller Coaster don’t get nullified by having an inversion.
 - Fix: [#26421] Wrong scenery tab highlighted when more than 64 scenery groups are selected.
@@ -20,7 +21,6 @@
 - Fix: [#26432] Guests choose to head for rides they have already ridden if they don’t have a map.
 - Fix: [#26492] Drag tool shows per-tile error instead of total cost when running out of money midway through placement.
 - Fix: [#26510] Displayed air time overflows after 655.35 seconds instead of the internal maximum of 1966.05 seconds.
-- Fix: [#26396] [Plugin] Socket interfaces were not closing properly and firing up correctly in parallel.
 
 0.5.0 (2026-04-12)
 ------------------------------------------------------------------------
