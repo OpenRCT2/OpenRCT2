@@ -111,7 +111,7 @@ namespace OpenRCT2
             FormatStringLegacy(buffer, 128, stringId, &pairValue);
             newOffsetX = -(Drawing::getStringWidth(buffer, FontStyle::medium) / 2);
         }
-        this->offsetX = newOffsetX;
+        offsetX = newOffsetX;
         wiggle = 0;
     }
 
