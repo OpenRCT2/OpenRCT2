@@ -81,7 +81,7 @@ namespace OpenRCT2::Network
             _port = port;
             _lanListener = CreateUdpSocket();
     #ifndef DISABLE_HTTP
-            _key = GenerateAdvertiseKey();
+            _key = generateAdvertiseKey();
     #endif
         }
 
@@ -96,24 +96,24 @@ namespace OpenRCT2::Network
             }
         }
 
-        AdvertiseStatus GetStatus() const override
+        AdvertiseStatus getStatus() const override
         {
             return _status;
         }
 
-        void Update() override
+        void update() override
         {
-            UpdateLAN();
+            updateLAN();
     #ifndef DISABLE_HTTP
             if (Config::Get().network.advertise)
             {
-                UpdateWAN();
+                updateWAN();
             }
     #endif
         }
 
     private:
-        void UpdateLAN()
+        void updateLAN()
         {
             auto ticks = Platform::GetTicks();
             if (ticks > _lastListenTime + 500)
@@ -134,7 +134,7 @@ namespace OpenRCT2::Network
                         LOG_VERBOSE("Received %zu bytes from %s on LAN broadcast port", recievedBytes, sender.c_str());
                         if (String::equals(buffer, kLanBroadcastMsg))
                         {
-                            auto body = GetBroadcastJson();
+                            auto body = getBroadcastJson();
                             auto bodyDump = body.dump();
                             size_t sendLen = bodyDump.size() + 1;
                             LOG_VERBOSE("Sending %zu bytes back to %s", sendLen, sender.c_str());
@@ -146,7 +146,7 @@ namespace OpenRCT2::Network
             }
         }
 
-        json_t GetBroadcastJson()
+        json_t getBroadcastJson()
         {
             json_t root = GetServerInfoAsJson();
             root["port"] = _port;
@@ -154,7 +154,7 @@ namespace OpenRCT2::Network
         }
 
     #ifndef DISABLE_HTTP
-        void UpdateWAN()
+        void updateWAN()
         {
             switch (_status)
             {
@@ -162,7 +162,7 @@ namespace OpenRCT2::Network
                     if (_lastAdvertiseTime == 0 || Platform::GetTicks() > _lastAdvertiseTime + kMasterServerRegisterTime)
                     {
                         Console::WriteLine("Registering server on master server...");
-                        SendRegistration(_forceIPv4);
+                        sendRegistration(_forceIPv4);
                     }
                     break;
                 case AdvertiseStatus::registering:
@@ -171,7 +171,7 @@ namespace OpenRCT2::Network
                 case AdvertiseStatus::registered:
                     if (Platform::GetTicks() > _lastHeartbeatTime + kMasterServerHeartbeatTime)
                     {
-                        SendHeartbeat();
+                        sendHeartbeat();
                     }
                     break;
                 // exhaust enum values to satisfy clang
@@ -180,14 +180,14 @@ namespace OpenRCT2::Network
             }
         }
 
-        void SendRegistration(bool forceIPv4)
+        void sendRegistration(bool forceIPv4)
         {
             _lastAdvertiseTime = Platform::GetTicks();
             _status = AdvertiseStatus::registering;
 
             // Send the registration request
             Http::Request request;
-            request.url = GetMasterServerUrl();
+            request.url = getMasterServerUrl();
             request.method = Http::Method::POST;
             request.forceIPv4 = forceIPv4;
 
@@ -217,17 +217,17 @@ namespace OpenRCT2::Network
 
                                   json_t root = Json::FromString(response.body);
                                   root = Json::AsObject(root);
-                                  this->OnRegistrationResponse(root);
+                                  this->onRegistrationResponse(root);
                               }).share();
         }
 
-        void SendHeartbeat()
+        void sendHeartbeat()
         {
             Http::Request request;
-            request.url = GetMasterServerUrl();
+            request.url = getMasterServerUrl();
             request.method = Http::Method::PUT;
 
-            json_t body = GetHeartbeatJson();
+            json_t body = getHeartbeatJson();
             request.body = body.dump();
             request.header["Content-Type"] = "application/json";
 
@@ -248,7 +248,7 @@ namespace OpenRCT2::Network
 
                                   json_t root = Json::FromString(response.body);
                                   root = Json::AsObject(root);
-                                  this->OnHeartbeatResponse(root);
+                                  this->onHeartbeatResponse(root);
                               }).share();
         }
 
@@ -256,9 +256,9 @@ namespace OpenRCT2::Network
          * @param jsonRoot must be of JSON type object or null
          * @note jsonRoot is deliberately left non-const: json_t behaviour changes when const
          */
-        void OnRegistrationResponse(json_t& jsonRoot)
+        void onRegistrationResponse(json_t& jsonRoot)
         {
-            Guard::Assert(jsonRoot.is_object(), "OnRegistrationResponse expects parameter jsonRoot to be object");
+            Guard::Assert(jsonRoot.is_object(), "onRegistrationResponse expects parameter jsonRoot to be object");
 
             auto status = Json::GetEnum<MasterServerStatus>(jsonRoot["status"], MasterServerStatus::internalError);
 
@@ -300,9 +300,9 @@ namespace OpenRCT2::Network
          * @param jsonRoot must be of JSON type object or null
          * @note jsonRoot is deliberately left non-const: json_t behaviour changes when const
          */
-        void OnHeartbeatResponse(json_t& jsonRoot)
+        void onHeartbeatResponse(json_t& jsonRoot)
         {
-            Guard::Assert(jsonRoot.is_object(), "OnHeartbeatResponse expects parameter jsonRoot to be object");
+            Guard::Assert(jsonRoot.is_object(), "onHeartbeatResponse expects parameter jsonRoot to be object");
 
             auto status = Json::GetEnum<MasterServerStatus>(jsonRoot["status"], MasterServerStatus::internalError);
             if (status == MasterServerStatus::ok)
@@ -317,7 +317,7 @@ namespace OpenRCT2::Network
             }
         }
 
-        json_t GetHeartbeatJson()
+        json_t getHeartbeatJson()
         {
             uint32_t numPlayers = GetNumVisiblePlayers();
 
@@ -347,7 +347,7 @@ namespace OpenRCT2::Network
             return root;
         }
 
-        static std::string GenerateAdvertiseKey()
+        static std::string generateAdvertiseKey()
         {
             // Generate a string of 16 random hex characters (64-integer key as a hex formatted string)
             static constexpr char hexChars[] = {
@@ -367,7 +367,7 @@ namespace OpenRCT2::Network
             return key;
         }
 
-        static std::string GetMasterServerUrl()
+        static std::string getMasterServerUrl()
         {
             std::string result = kMasterServerURL;
             if (!Config::Get().network.masterServerUrl.empty())
