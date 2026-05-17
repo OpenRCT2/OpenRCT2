@@ -6456,12 +6456,8 @@ namespace OpenRCT2::Ui::Windows
             if (ride == nullptr)
                 return;
 
-            const auto maxPrice = ride->getRideTypeDescriptor().specialType == RtdSpecialType::cashMachine
-                ? CashMachine::kMaxFee
-                : kRideMaxPrice;
-
             auto price = ride->price[0];
-            if (price < maxPrice)
+            if (price < kRideMaxPrice)
                 price++;
 
             IncomeSetPrimaryPrice(price);
