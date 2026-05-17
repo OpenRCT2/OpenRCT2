@@ -804,9 +804,9 @@ namespace OpenRCT2::Ui::Windows
             const auto series = _graphProps.series;
             for (int32_t i = 0; i < kGraphNumPoints; i++)
             {
-                auto val = std::abs(series[i]);
-                if (val == kMoney64Undefined)
+                if (series[i] == kMoney64Undefined)
                     continue;
+                auto val = std::abs(series[i]);
                 if (val > maxVal)
                     maxVal = val;
             }
