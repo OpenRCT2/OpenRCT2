@@ -49,6 +49,7 @@ enum class ShopItem : uint8_t
     lemonade,
     emptyBox,
     emptyBottle = 27,
+    cashMachineFee = 30,
     admission = 31,
     photo2 = 32,
     photo3,

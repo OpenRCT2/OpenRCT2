@@ -60,6 +60,7 @@
 #include <openrct2/object/PeepAnimationsObject.h>
 #include <openrct2/object/StationObject.h>
 #include <openrct2/rct1/RCT1.h>
+#include <openrct2/ride/CashMachine.h>
 #include <openrct2/ride/RideConstruction.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/ShopItem.h>
@@ -6395,6 +6396,10 @@ namespace OpenRCT2::Ui::Windows
             {
                 shopItem = ShopItem::admission;
             }
+            else if (rtd.specialType == RtdSpecialType::cashMachine)
+            {
+                shopItem = ShopItem::cashMachineFee;
+            }
             else
             {
                 auto rideEntry = GetRideEntryByIndex(ride->subtype);
@@ -6451,8 +6456,12 @@ namespace OpenRCT2::Ui::Windows
             if (ride == nullptr)
                 return;
 
+            const auto maxPrice = ride->getRideTypeDescriptor().specialType == RtdSpecialType::cashMachine
+                ? CashMachine::kMaxFee
+                : kRideMaxPrice;
+
             auto price = ride->price[0];
-            if (price < kRideMaxPrice)
+            if (price < maxPrice)
                 price++;
 
             IncomeSetPrimaryPrice(price);
@@ -6501,6 +6510,7 @@ namespace OpenRCT2::Ui::Windows
             auto& park = getGameState().park;
 
             return Park::RidePricesUnlocked(park) || rtd.specialType == RtdSpecialType::toilet
+                || rtd.specialType == RtdSpecialType::cashMachine
                 || (rideEntry != nullptr && rideEntry->shop_item[0] != ShopItem::none);
         }
 
@@ -6634,6 +6644,11 @@ namespace OpenRCT2::Ui::Windows
 
             if (widgetIndex == WIDX_PRIMARY_PRICE)
             {
+                auto ride = GetRide(rideId);
+                if (ride != nullptr && ride->getRideTypeDescriptor().specialType == RtdSpecialType::cashMachine)
+                {
+                    price = std::clamp(price, kRideMinPrice, CashMachine::kMaxFee);
+                }
                 IncomeSetPrimaryPrice(price);
             }
             else
@@ -6663,7 +6678,7 @@ namespace OpenRCT2::Ui::Windows
             // If ride prices are locked, do not allow setting the price, unless we're dealing with a shop or toilet.
             const auto& rtd = ride->getRideTypeDescriptor();
             const bool primaryPriceLocked = !Park::RidePricesUnlocked(park) && rideEntry->shop_item[0] == ShopItem::none
-                && rtd.specialType != RtdSpecialType::toilet;
+                && rtd.specialType != RtdSpecialType::toilet && rtd.specialType != RtdSpecialType::cashMachine;
             setWidgetDisabled(WIDX_PRIMARY_PRICE, primaryPriceLocked);
             if (primaryPriceLocked)
             {
@@ -6687,7 +6702,17 @@ namespace OpenRCT2::Ui::Windows
             }
 
             ShopItem primaryItem = ShopItem::admission;
-            if (rtd.specialType == RtdSpecialType::toilet || ((primaryItem = rideEntry->shop_item[0]) != ShopItem::none))
+            if (rtd.specialType == RtdSpecialType::cashMachine)
+            {
+                primaryItem = ShopItem::cashMachineFee;
+                widgets[WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK].type = WidgetType::checkbox;
+
+                if (ShopItemHasCommonPrice(primaryItem))
+                    setWidgetPressed(WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK, true);
+
+                widgets[WIDX_PRIMARY_PRICE_LABEL].text = GetShopItemDescriptor(primaryItem).Naming.PriceLabel;
+            }
+            else if (rtd.specialType == RtdSpecialType::toilet || ((primaryItem = rideEntry->shop_item[0]) != ShopItem::none))
             {
                 widgets[WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK].type = WidgetType::checkbox;
 

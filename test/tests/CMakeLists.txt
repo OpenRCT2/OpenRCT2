@@ -9,6 +9,7 @@ install(CODE "execute_process(COMMAND \"${CMAKE_COMMAND}\" -E create_symlink \"\
 set(test_files
    "${CMAKE_CURRENT_SOURCE_DIR}/AssertHelpers.hpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/BitSetTests.cpp"
+   "${CMAKE_CURRENT_SOURCE_DIR}/CashMachineTests.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/CircularBuffer.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/CLITests.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/CryptTests.cpp"

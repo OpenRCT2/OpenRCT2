@@ -3,6 +3,7 @@
 
 0.5.1 (2026-05-17)
 ------------------------------------------------------------------------
+- Feature: [#17421] Allow charging guests a fee for using cash machines (ATMs). The fee is configurable per ATM (defaulting to free, capped at £2.00) with the usual "Same price throughout park" option. Guests pay the fee from their bank account in addition to the cash they withdraw, the park earns it as ride income, and the fee makes guests unhappier — high enough fees can prompt them to refuse the ATM and/or complain about the rip-off.
 - Feature: [#24242] [Plugin] Add ride-breakdown hooktype.
 - Feature: [#24879] [Plugin] Add methods for showing and hiding gridlines.
 - Feature: [#26327] Add ‘guests entertained’ statistic to entertainers.

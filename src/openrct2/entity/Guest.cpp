@@ -45,6 +45,7 @@
 #include "../peep/PeepThoughts.h"
 #include "../peep/RideUseSystem.h"
 #include "../rct2/RCT2.h"
+#include "../ride/CashMachine.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/RideManager.hpp"
@@ -2310,9 +2311,32 @@ namespace OpenRCT2
             }
         }
 
-        // Basic price checks
+        if (rtd.specialType == RtdSpecialType::cashMachine)
+        {
+            // Guests may refuse to use a cash machine if its fee is too high. The
+            // tolerance scales with happiness so happier guests put up with more.
+            auto fee = RideGetPrice(ride);
+            if (fee > 0 && !getGameState().cheats.ignorePrice
+                && !CashMachine::guestAcceptsFee(fee, guest.Happiness, ScenarioRand()))
+            {
+                if (peepAtShop)
+                {
+                    guest.InsertNewThought(PeepThoughtType::NotPaying, ride.id);
+                    if (guest.HappinessTarget >= 60)
+                    {
+                        guest.HappinessTarget -= 16;
+                    }
+                    ride.updatePopularity(0);
+                }
+                guest.ChoseNotToGoOnRide(ride, peepAtShop, true);
+                return false;
+            }
+        }
+
+        // Basic price checks. Cash machine fees are paid from the guest's bank account, not
+        // their pocket, so guests can always afford an ATM fee.
         auto ridePrice = RideGetPrice(ride);
-        if (ridePrice != 0 && ridePrice > guest.CashInPocket)
+        if (ridePrice != 0 && ridePrice > guest.CashInPocket && rtd.specialType != RtdSpecialType::cashMachine)
         {
             if (peepAtShop)
             {
@@ -3420,6 +3444,37 @@ namespace OpenRCT2
                 if (CurrentRide != PreviousRide)
                 {
                     CashInPocket += 50.00_GBP;
+
+                    // If the park has set an ATM fee, charge the guest on top of the cash they
+                    // just withdrew. The fee is paid from the guest's bank account (not their
+                    // pocket), so guests can always afford it. The fee flows into park income,
+                    // costs the guest some happiness, and prompts a complaint thought when
+                    // significant.
+                    auto& gameState = getGameState();
+                    if (!(gameState.park.flags & PARK_FLAGS_NO_MONEY))
+                    {
+                        auto fee = ride->price[0];
+                        if (fee > 0)
+                        {
+                            FinancePayment(-fee, ExpenditureType::parkRideTickets);
+                            MoneyEffect::CreateAt(fee, GetLocation(), true);
+                            Audio::Play3D(Audio::SoundId::purchase, GetLocation());
+
+                            ride->totalProfit = AddClamp(ride->totalProfit, fee);
+                            ride->windowInvalidateFlags.set(RideInvalidateFlag::income);
+
+                            auto penalty = static_cast<uint8_t>(
+                                CashMachine::computeFeeHappinessPenalty(fee, ScenarioRand()));
+                            HappinessTarget = (HappinessTarget > penalty) ? HappinessTarget - penalty : 0;
+                            Happiness = (Happiness > penalty) ? Happiness - penalty : 0;
+
+                            // High fees provoke an outright complaint thought.
+                            if (fee >= 1.00_GBP)
+                            {
+                                InsertNewThought(PeepThoughtType::NotPaying, CurrentRide);
+                            }
+                        }
+                    }
                 }
                 auto* windowMgr = Ui::GetWindowManager();
                 windowMgr->InvalidateByNumber(WindowClass::peep, id);
