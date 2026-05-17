@@ -1,4 +1,4 @@
-0.5.1 (in development)
+0.5.1 (2026-05-17)
 ------------------------------------------------------------------------
 - Feature: [#24242] [Plugin] Add ride-breakdown hooktype.
 - Feature: [#24879] [Plugin] Add methods for showing and hiding gridlines.
