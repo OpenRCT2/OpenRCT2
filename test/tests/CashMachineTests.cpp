@@ -14,11 +14,17 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::CashMachine;
 
-// The cap exists so that ATM fees stay much smaller than other ride/shop prices
-// (whose cap is £20). Guests would refuse to use the ATM at typical ride prices.
-TEST(CashMachineTests, MaxFeeIsTwoPounds)
+// The cap matches kRideMaxPrice (£20) so the price spinner in the Ride window
+// has the same upper bound as other priced rides. Behaviourally, guests refuse
+// anything above kComplaintFeeThreshold, but the raw cap is intentionally higher.
+TEST(CashMachineTests, MaxFeeIsTwentyPounds)
 {
-    EXPECT_EQ(kMaxFee, 2.00_GBP);
+    EXPECT_EQ(kMaxFee, 20.00_GBP);
+}
+
+TEST(CashMachineTests, ComplaintThresholdIsTwoPounds)
+{
+    EXPECT_EQ(kComplaintFeeThreshold, 2.00_GBP);
 }
 
 // A free ATM should always be acceptable to every guest, even a miserable one.
@@ -43,12 +49,29 @@ TEST(CashMachineTests, HappyGuestAcceptsSmallFee)
     EXPECT_TRUE(guestAcceptsFee(0.50_GBP, 255, 0));
 }
 
-// A miserable guest (low happiness) should refuse the £2 cap even with a
-// favourable random roll.
-TEST(CashMachineTests, MiserableGuestRefusesMaxFee)
+// A miserable guest (low happiness) should refuse the £2 complaint threshold
+// even with a favourable random roll.
+TEST(CashMachineTests, MiserableGuestRefusesComplaintThreshold)
 {
-    EXPECT_FALSE(guestAcceptsFee(kMaxFee, 0, 0));
-    EXPECT_FALSE(guestAcceptsFee(kMaxFee, 0, 7));
+    EXPECT_FALSE(guestAcceptsFee(kComplaintFeeThreshold, 0, 0));
+    EXPECT_FALSE(guestAcceptsFee(kComplaintFeeThreshold, 0, 7));
+}
+
+// Any fee above the complaint threshold must be refused regardless of
+// happiness or random roll — kMaxFee is much larger than what guests will pay.
+TEST(CashMachineTests, FeeAboveComplaintThresholdAlwaysRefused)
+{
+    for (money64 fee : { kComplaintFeeThreshold + 0.10_GBP, 5.00_GBP, 10.00_GBP, kMaxFee })
+    {
+        for (uint32_t happiness = 0; happiness <= 255; happiness += 51)
+        {
+            for (uint32_t r = 0; r < 8; ++r)
+            {
+                EXPECT_FALSE(guestAcceptsFee(fee, static_cast<uint8_t>(happiness), r))
+                    << "fee=" << fee << " happiness=" << happiness << " random=" << r;
+            }
+        }
+    }
 }
 
 // Happiness should make a difference: the same fee that a sad guest refuses,

@@ -3469,7 +3469,7 @@ namespace OpenRCT2
                             Happiness = (Happiness > penalty) ? Happiness - penalty : 0;
 
                             // High fees provoke an outright complaint thought.
-                            if (fee >= 1.00_GBP)
+                            if (fee >= CashMachine::kComplaintFeeThreshold)
                             {
                                 InsertNewThought(PeepThoughtType::NotPaying, CurrentRide);
                             }

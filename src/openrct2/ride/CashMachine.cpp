@@ -14,7 +14,7 @@
 namespace OpenRCT2::CashMachine
 {
     // Convert a money64 amount expressed in £ to a small integer in 10p units,
-    // which matches the granularity of ATM fees (£0.00 .. £2.00 -> 0 .. 20).
+    // which matches the granularity of ATM fees (£0.00 .. £20.00 -> 0 .. 200).
     static constexpr int32_t feeInTenPence(money64 fee)
     {
         return static_cast<int32_t>(fee / 0.10_GBP);
@@ -26,9 +26,15 @@ namespace OpenRCT2::CashMachine
         if (fee <= 0)
             return true;
 
-        // Tolerance scales with happiness: a maximally happy guest (255) tolerates
-        // roughly the full £2 cap, while a miserable guest (~50) will balk at any
-        // non-trivial fee.
+        // Anything above the complaint threshold is refused outright, regardless of
+        // happiness. The fee cap (kMaxFee) is much higher to give park owners a
+        // wider spinner range, but guest behaviour clamps the *useful* range here.
+        if (fee > kComplaintFeeThreshold)
+            return false;
+
+        // Within [0, kComplaintFeeThreshold], tolerance scales with happiness: a
+        // maximally happy guest (255) tolerates roughly the full £2 threshold,
+        // while a miserable guest (~50) will balk at any non-trivial fee.
         const int32_t feeUnits = feeInTenPence(fee);
         const int32_t happinessTolerance = happiness / 12; // 0..21
         const int32_t randomBonus = static_cast<int32_t>(randomValue & 0x07); // 0..7

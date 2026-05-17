@@ -17,10 +17,18 @@ namespace OpenRCT2::CashMachine
 {
     /**
      * Maximum fee a park owner can charge a guest for using a cash machine.
-     * Intentionally much smaller than kRideMaxPrice (£20) so that ATM fees stay
-     * in a realistic, non-prohibitive range.
+     * Matches kRideMaxPrice so the spinner has the same upper bound as other
+     * priced rides; in practice guests refuse anything above
+     * kComplaintFeeThreshold, so very high fees mostly serve as a sandbox knob.
      */
-    constexpr money64 kMaxFee = 2.00_GBP;
+    constexpr money64 kMaxFee = 20.00_GBP;
+
+    /**
+     * Fee at which guests begin to refuse the cash machine and emit a complaint
+     * thought. Any fee strictly greater than this is universally refused by
+     * guestAcceptsFee(); at or below it, refusal/tolerance scales with happiness.
+     */
+    constexpr money64 kComplaintFeeThreshold = 2.00_GBP;
 
     /**
      * Returns true if a guest with the given happiness is willing to pay the
