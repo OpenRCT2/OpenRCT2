@@ -1391,8 +1391,7 @@ namespace OpenRCT2::Ui::Windows
             const bool disableTab7 = noRideEntry || rtd.flags.has(RtdFlag::isShopOrFacility);
             const bool disableTab8 = noRideEntry || !rtd.flags.has(RtdFlag::hasDataLogging);
             const bool disableTab9 = noRideEntry || rtd.specialType == RtdSpecialType::firstAid
-                || (getGameState().park.flags & PARK_FLAGS_NO_MONEY) != 0
-                || gLegacyScene == LegacyScene::trackDesigner;
+                || (getGameState().park.flags & PARK_FLAGS_NO_MONEY) != 0 || gLegacyScene == LegacyScene::trackDesigner;
             const bool disableTab10 = noRideEntry || gLegacyScene == LegacyScene::trackDesigner;
 
             setWidgetDisabled(WIDX_TAB_2, disableTab2);
@@ -6665,7 +6664,8 @@ namespace OpenRCT2::Ui::Windows
 
             auto& park = getGameState().park;
 
-            // If ride prices are locked, do not allow setting the price, unless we're dealing with a shop, toilet, or cash machine.
+            // If ride prices are locked, do not allow setting the price, unless we're dealing with a shop, toilet, or cash
+            // machine.
             const auto& rtd = ride->getRideTypeDescriptor();
             const bool primaryPriceLocked = !Park::RidePricesUnlocked(park) && rideEntry->shop_item[0] == ShopItem::none
                 && rtd.specialType != RtdSpecialType::toilet && rtd.specialType != RtdSpecialType::cashMachine;

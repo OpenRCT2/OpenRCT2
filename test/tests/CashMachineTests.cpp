@@ -35,8 +35,7 @@ TEST(CashMachineTests, GuestAcceptsFreeFee)
     {
         for (uint32_t r = 0; r < 8; ++r)
         {
-            EXPECT_TRUE(guestAcceptsFee(0, static_cast<uint8_t>(happiness), r))
-                << "happiness=" << happiness << " random=" << r;
+            EXPECT_TRUE(guestAcceptsFee(0, static_cast<uint8_t>(happiness), r)) << "happiness=" << happiness << " random=" << r;
         }
     }
 }

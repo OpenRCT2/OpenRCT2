@@ -3463,8 +3463,7 @@ namespace OpenRCT2
                             ride->totalProfit = AddClamp(ride->totalProfit, fee);
                             ride->windowInvalidateFlags.set(RideInvalidateFlag::income);
 
-                            auto penalty = static_cast<uint8_t>(
-                                CashMachine::computeFeeHappinessPenalty(fee, ScenarioRand()));
+                            auto penalty = static_cast<uint8_t>(CashMachine::computeFeeHappinessPenalty(fee, ScenarioRand()));
                             HappinessTarget = (HappinessTarget > penalty) ? HappinessTarget - penalty : 0;
                             Happiness = (Happiness > penalty) ? Happiness - penalty : 0;
 
