@@ -473,12 +473,12 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         const MoneyEffect& spriteBase, const MoneyEffect& spriteCmp, GameStateSpriteChange& changeData) const
     {
         COMPARE_FIELD(MoneyEffect, frame);
-        COMPARE_FIELD(MoneyEffect, MoveDelay);
-        COMPARE_FIELD(MoneyEffect, NumMovements);
-        COMPARE_FIELD(MoneyEffect, GuestPurchase);
-        COMPARE_FIELD(MoneyEffect, Value);
-        COMPARE_FIELD(MoneyEffect, OffsetX);
-        COMPARE_FIELD(MoneyEffect, Wiggle);
+        COMPARE_FIELD(MoneyEffect, moveDelay);
+        COMPARE_FIELD(MoneyEffect, numMovements);
+        COMPARE_FIELD(MoneyEffect, guestPurchase);
+        COMPARE_FIELD(MoneyEffect, value);
+        COMPARE_FIELD(MoneyEffect, offsetX);
+        COMPARE_FIELD(MoneyEffect, wiggle);
     }
 
     void CompareSpriteDataSteamParticle(
