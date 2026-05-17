@@ -943,17 +943,17 @@ namespace OpenRCT2
     uint8_t MapGetLowestLandHeight(const MapRange& range)
     {
         uint8_t minHeight = 0xFF;
-        for (auto tileCoords : Map::getDrawableTileRange())
+        for (auto tileCoords : Map::getClampedRange(range))
         {
             auto* surfaceElement = MapGetSurfaceElementAt(tileCoords);
             if (surfaceElement == nullptr || minHeight <= surfaceElement->baseHeight)
                 continue;
 
-            if (gLegacyScene == LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
-                continue;
-
-            if (!MapIsLocationInPark(tileCoords.ToCoordsXY()))
-                continue;
+            if (gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
+            {
+                if (!MapIsLocationInPark(tileCoords.ToCoordsXY()))
+                    continue;
+            }
 
             minHeight = surfaceElement->baseHeight;
         }
@@ -962,18 +962,18 @@ namespace OpenRCT2
 
     uint8_t MapGetHighestLandHeight(const MapRange& range)
     {
-        uint8_t maxHeight = 0xFF;
-        for (auto tileCoords : Map::getDrawableTileRange())
+        uint8_t maxHeight = 0;
+        for (auto tileCoords : Map::getClampedRange(range))
         {
             auto* surfaceElement = MapGetSurfaceElementAt(tileCoords);
             if (surfaceElement == nullptr)
                 continue;
 
-            if (gLegacyScene == LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
-                continue;
-
-            if (!MapIsLocationInPark(tileCoords.ToCoordsXY()))
-                continue;
+            if (gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
+            {
+                if (!MapIsLocationInPark(tileCoords.ToCoordsXY()))
+                    continue;
+            }
 
             uint8_t height = surfaceElement->baseHeight;
             if (surfaceElement->GetSlope() & kTileSlopeRaisedCornersMask)
