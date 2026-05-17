@@ -949,11 +949,11 @@ namespace OpenRCT2
             if (surfaceElement == nullptr || minHeight <= surfaceElement->baseHeight)
                 continue;
 
-            if (gLegacyScene == LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
-                continue;
-
-            if (!MapIsLocationInPark(tileCoords.ToCoordsXY()))
-                continue;
+            if (gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
+            {
+                if (!MapIsLocationInPark(tileCoords.ToCoordsXY()))
+                    continue;
+            }
 
             minHeight = surfaceElement->baseHeight;
         }
@@ -969,11 +969,11 @@ namespace OpenRCT2
             if (surfaceElement == nullptr)
                 continue;
 
-            if (gLegacyScene == LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
-                continue;
-
-            if (!MapIsLocationInPark(tileCoords.ToCoordsXY()))
-                continue;
+            if (gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
+            {
+                if (!MapIsLocationInPark(tileCoords.ToCoordsXY()))
+                    continue;
+            }
 
             uint8_t height = surfaceElement->baseHeight;
             if (surfaceElement->GetSlope() & kTileSlopeRaisedCornersMask)
