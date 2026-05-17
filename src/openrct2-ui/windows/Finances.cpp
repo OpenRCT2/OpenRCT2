@@ -668,11 +668,8 @@ namespace OpenRCT2::Ui::Windows
 
         void onPrepareDrawMarketing()
         {
-            const auto& gameState = getGameState();
-            const auto& park = gameState.parks[0];
-
             // Count number of active campaigns
-            int32_t numActiveCampaigns = static_cast<int32_t>(park.marketingCampaigns.size());
+            int32_t numActiveCampaigns = static_cast<int32_t>(_parkData.marketingCampaigns.size());
             int32_t y = widgets[WIDX_TAB_1].top + std::max(1, numActiveCampaigns) * kListRowHeight + 75;
 
             // Update group box positions
@@ -734,10 +731,7 @@ namespace OpenRCT2::Ui::Windows
                         break;
                     default:
                     {
-                        const auto& gameState = getGameState();
-                        const auto& park = gameState.parks[0];
-
-                        auto parkName = park.name.c_str();
+                        auto parkName = _parkData.name.c_str();
                         ft.Add<StringId>(STR_STRING);
                         ft.Add<const char*>(parkName);
                     }
