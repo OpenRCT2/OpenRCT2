@@ -295,8 +295,8 @@ namespace OpenRCT2::Ui::Windows
         makeWidget        ({297,  51}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH                                      ),
         makeWidget        ({  7, 137}, {302, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_OPTION_REVERSE_TRAINS, STR_OPTION_REVERSE_TRAINS_TIP),
         makeWidget        ({  7, 154}, {302, 43}, WidgetType::scroll,       WindowColour::secondary, kStringIdEmpty                                          ),
-        makeSpinnerWidgets({  7, 203}, {145, 14}, WidgetType::spinner,      WindowColour::secondary, STR_RIDE_VEHICLE_COUNT,    STR_MAX_VEHICLES_TIP         ),
-        makeSpinnerWidgets({164, 203}, {145, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty,            STR_MAX_CARS_PER_TRAIN_TIP   )
+        makeHoldableSpinnerWidgets({  7, 203}, {145, 14}, WidgetType::spinner,      WindowColour::secondary, STR_RIDE_VEHICLE_COUNT,    STR_MAX_VEHICLES_TIP         ),
+        makeHoldableSpinnerWidgets({164, 203}, {145, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty,            STR_MAX_CARS_PER_TRAIN_TIP   )
     );
 
     // 0x009ADEFC
@@ -305,19 +305,19 @@ namespace OpenRCT2::Ui::Windows
         makeWidget        ({  7,  47}, {302, 14}, WidgetType::dropdownMenu, WindowColour::secondary, 0xFFFFFFFF,                             STR_SELECT_OPERATING_MODE                   ),
         makeWidget        ({297,  48}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,                     STR_SELECT_OPERATING_MODE                   ),
         makeWidget        ({ 21,  62}, {129, 12}, WidgetType::label,        WindowColour::secondary                                                                                      ),
-        makeSpinnerWidgets({157,  62}, {152, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                                                 ), // NB: 3 widgets
-        makeWidget        ({ 21,  78}, {129, 12}, WidgetType::label,        WindowColour::secondary, STR_LIFT_HILL_CHAIN_SPEED                                                           ),
-        makeSpinnerWidgets({157,  77}, {152, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                                     ), // NB: 3 widgets
-        makeWidget        ({ 21,  94}, {129, 12}, WidgetType::label,        WindowColour::secondary, STR_NUMBER_OF_CIRCUITS,                 STR_NUMBER_OF_CIRCUITS_TIP                  ),
-        makeSpinnerWidgets({157,  93}, {152, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                                        ), // NB: 3 widgets
+        makeHoldableSpinnerWidgets({157,  62}, {152, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                                         ), // NB: 3 widgets
+        makeWidget                ({ 21,  78}, {129, 12}, WidgetType::label,        WindowColour::secondary, STR_LIFT_HILL_CHAIN_SPEED                                                   ),
+        makeHoldableSpinnerWidgets({157,  77}, {152, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                                         ), // NB: 3 widgets
+        makeWidget                ({ 21,  94}, {129, 12}, WidgetType::label,        WindowColour::secondary, STR_NUMBER_OF_CIRCUITS,                 STR_NUMBER_OF_CIRCUITS_TIP          ),
+        makeHoldableSpinnerWidgets({157,  93}, {152, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                                         ), // NB: 3 widgets
         makeWidget        ({  7, 118}, { 80, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_WAIT_FOR,                           STR_WAIT_FOR_PASSENGERS_BEFORE_DEPARTING_TIP),
         makeWidget        ({ 87, 117}, {222, 14}, WidgetType::dropdownMenu, WindowColour::secondary                                                                                      ),
         makeWidget        ({297, 118}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH                                                                  ),
         makeWidget        ({  7, 135}, {302, 12}, WidgetType::checkbox,     WindowColour::secondary                                                                                      ),
         makeWidget        ({  7, 151}, {150, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_MINIMUM_WAITING_TIME,               STR_MINIMUM_LENGTH_BEFORE_DEPARTING_TIP     ),
-        makeSpinnerWidgets({157, 150}, {152, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                                                 ), // NB: 3 widgets
-        makeWidget        ({  7, 168}, {150, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_MAXIMUM_WAITING_TIME,               STR_MAXIMUM_LENGTH_BEFORE_DEPARTING_TIP     ),
-        makeSpinnerWidgets({157, 167}, {152, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                                                 ), // NB: 3 widgets
+        makeHoldableSpinnerWidgets({157, 150}, {152, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                                         ), // NB: 3 widgets
+        makeWidget                ({  7, 168}, {150, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_MAXIMUM_WAITING_TIME,               STR_MAXIMUM_LENGTH_BEFORE_DEPARTING_TIP     ),
+        makeHoldableSpinnerWidgets({157, 167}, {152, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                                         ), // NB: 3 widgets
         makeWidget        ({  7, 184}, {302, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_SYNCHRONISE_WITH_ADJACENT_STATIONS, STR_SYNCHRONISE_WITH_ADJACENT_STATIONS_TIP  )
     );
 
@@ -399,10 +399,10 @@ namespace OpenRCT2::Ui::Windows
     static constexpr auto _incomeWidgets = makeWidgets(
         kMainRideWidgets,
         makeWidget        ({ 19,  51}, {126, 14}, WidgetType::label,    WindowColour::secondary                                                                    ),
-        makeSpinnerWidgets({147,  50}, {162, 14}, WidgetType::spinner,  WindowColour::secondary, kStringIdEmpty                                                    ), // NB: 3 widgets
-        makeWidget        ({  5,  62}, {306, 13}, WidgetType::checkbox, WindowColour::secondary, STR_SAME_PRICE_THROUGHOUT_PARK, STR_SAME_PRICE_THROUGHOUT_PARK_TIP),
-        makeWidget        ({ 19,  95}, {126, 14}, WidgetType::label,    WindowColour::secondary                                                                    ),
-        makeSpinnerWidgets({147,  94}, {162, 14}, WidgetType::spinner,  WindowColour::secondary, kStringIdEmpty                                                    ), // NB: 3 widgets
+        makeHoldableSpinnerWidgets({147,  50}, {162, 14}, WidgetType::spinner,  WindowColour::secondary, kStringIdEmpty                                            ), // NB: 3 widgets
+        makeWidget                ({  5,  62}, {306, 13}, WidgetType::checkbox, WindowColour::secondary, STR_SAME_PRICE_THROUGHOUT_PARK, STR_SAME_PRICE_THROUGHOUT_PARK_TIP),
+        makeWidget                ({ 19,  95}, {126, 14}, WidgetType::label,    WindowColour::secondary                                                            ),
+        makeHoldableSpinnerWidgets({147,  94}, {162, 14}, WidgetType::spinner,  WindowColour::secondary, kStringIdEmpty                                            ), // NB: 3 widgets
         makeWidget        ({  5, 106}, {306, 13}, WidgetType::checkbox, WindowColour::secondary, STR_SAME_PRICE_THROUGHOUT_PARK, STR_SAME_PRICE_THROUGHOUT_PARK_TIP)
     );
 
@@ -429,33 +429,6 @@ namespace OpenRCT2::Ui::Windows
     static_assert(std::size(PageWidgets) == WINDOW_RIDE_PAGE_COUNT);
 
     // clang-format on
-
-    static void setPageHoldableWidgets(WindowBase& w, int32_t page)
-    {
-        switch (page)
-        {
-            case WINDOW_RIDE_PAGE_VEHICLE:
-                widgetsSetHoldable(
-                    w,
-                    { WIDX_VEHICLE_TRAINS_INCREASE, WIDX_VEHICLE_TRAINS_DECREASE, WIDX_VEHICLE_CARS_PER_TRAIN_INCREASE,
-                      WIDX_VEHICLE_CARS_PER_TRAIN_DECREASE });
-                break;
-            case WINDOW_RIDE_PAGE_OPERATING:
-                widgetsSetHoldable(
-                    w,
-                    { WIDX_MODE_TWEAK_INCREASE, WIDX_MODE_TWEAK_DECREASE, WIDX_LIFT_HILL_SPEED_INCREASE,
-                      WIDX_LIFT_HILL_SPEED_DECREASE, WIDX_MINIMUM_LENGTH_INCREASE, WIDX_MINIMUM_LENGTH_DECREASE,
-                      WIDX_MAXIMUM_LENGTH_INCREASE, WIDX_MAXIMUM_LENGTH_DECREASE, WIDX_OPERATE_NUMBER_OF_CIRCUITS_INCREASE,
-                      WIDX_OPERATE_NUMBER_OF_CIRCUITS_DECREASE });
-                break;
-            case WINDOW_RIDE_PAGE_INCOME:
-                widgetsSetHoldable(
-                    w,
-                    { WIDX_PRIMARY_PRICE_INCREASE, WIDX_PRIMARY_PRICE_DECREASE, WIDX_SECONDARY_PRICE_INCREASE,
-                      WIDX_SECONDARY_PRICE_DECREASE });
-                break;
-        }
-    }
 
 #pragma endregion
 
@@ -1211,7 +1184,6 @@ namespace OpenRCT2::Ui::Windows
             removeViewport();
 
             setWidgets(PageWidgets[page]);
-            setPageHoldableWidgets(*this, page);
             widgetSetPressedExclusive(
                 *this,
                 { WIDX_TAB_1, WIDX_TAB_2, WIDX_TAB_3, WIDX_TAB_4, WIDX_TAB_5, WIDX_TAB_6, WIDX_TAB_7, WIDX_TAB_8, WIDX_TAB_9,

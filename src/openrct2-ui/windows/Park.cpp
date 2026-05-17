@@ -131,8 +131,8 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr auto _priceWidgets = makeWidgets(
         makeParkWidgets(230),
-        makeWidget        ({ 21, 50}, {126, 14}, WidgetType::label,   WindowColour::secondary, STR_ADMISSION_PRICE),
-        makeSpinnerWidgets({147, 50}, { 76, 14}, WidgetType::spinner, WindowColour::secondary                     ) // Price (3 widgets)
+        makeWidget                ({ 21, 50}, {126, 14}, WidgetType::label,   WindowColour::secondary, STR_ADMISSION_PRICE),
+        makeHoldableSpinnerWidgets({147, 50}, { 76, 14}, WidgetType::spinner, WindowColour::secondary                     ) // Price (3 widgets)
     );
 
     static constexpr auto _statsWidgets = makeWidgets(
@@ -1169,8 +1169,6 @@ namespace OpenRCT2::Ui::Windows
             removeViewport();
 
             setWidgets(_pagedWidgets[newPage]);
-            if (newPage == WINDOW_PARK_PAGE_PRICE)
-                widgetsSetHoldable(*this, { WIDX_INCREASE_PRICE, WIDX_DECREASE_PRICE });
             SetDisabledTabs();
             invalidate();
             initScrollWidgets();

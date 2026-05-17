@@ -119,8 +119,8 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr auto _windowFinancesSummaryWidgets = makeWidgets(
         makeFinancesWidgets(STR_FINANCIAL_SUMMARY, kTabContentSizeSummary, kWindowSizeSummary),
-        makeWidget        ({130,  50}, {391, 211}, WidgetType::scroll,  WindowColour::secondary, SCROLL_HORIZONTAL              ),
-        makeSpinnerWidgets({ 64, 277}, { 97,  14}, WidgetType::spinner, WindowColour::secondary) // NB: 3 widgets
+        makeWidget                ({130,  50}, {391, 211}, WidgetType::scroll,  WindowColour::secondary, SCROLL_HORIZONTAL              ),
+        makeHoldableSpinnerWidgets({ 64, 277}, { 97,  14}, WidgetType::spinner, WindowColour::secondary                                 ) // NB: 3 widgets
     );
 
     static constexpr auto _windowFinancesCashWidgets = makeWidgets(
@@ -513,9 +513,6 @@ namespace OpenRCT2::Ui::Windows
 
             setWidgets(_windowFinancesPageWidgets[p]);
             SetDisabledTabs();
-
-            if (p == WINDOW_FINANCES_PAGE_SUMMARY)
-                widgetsSetHoldable(*this, { WIDX_LOAN_INCREASE, WIDX_LOAN_DECREASE });
 
             widgetSetPressedExclusive(
                 *this, { WIDX_TAB_1, WIDX_TAB_2, WIDX_TAB_3, WIDX_TAB_4, WIDX_TAB_5, WIDX_TAB_6 }, WIDX_TAB_1 + p);

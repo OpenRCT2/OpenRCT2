@@ -258,7 +258,7 @@ namespace OpenRCT2::Ui::Windows
         makeWidget                ({158, 172}, {                      210, 14}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdNone,            STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP),
         makeWidget                ({356, 173}, {                       11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,       STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP),
         makeWidget                ({  9, 191}, {                      280, 12}, WidgetType::label,        WindowColour::secondary, STR_ENTRY_PRICE_LABEL                                       ),
-        makeSpinnerWidgets        ({298, 190}, {                       70, 14}, WidgetType::spinner,      WindowColour::secondary                                                              ), // NB: 3 widgets
+        makeHoldableSpinnerWidgets({298, 190}, {                       70, 14}, WidgetType::spinner,      WindowColour::secondary                                                              ), // NB: 3 widgets
         makeWidget                ({ 10, 208}, {kSizeFinancial.width - 16, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_FORBID_MARKETING,     STR_FORBID_MARKETING_TIP          )
     );
 
