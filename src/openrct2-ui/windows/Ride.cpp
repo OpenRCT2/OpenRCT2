@@ -60,7 +60,6 @@
 #include <openrct2/object/PeepAnimationsObject.h>
 #include <openrct2/object/StationObject.h>
 #include <openrct2/rct1/RCT1.h>
-#include <openrct2/ride/CashMachine.h>
 #include <openrct2/ride/RideConstruction.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/ShopItem.h>
@@ -6640,11 +6639,6 @@ namespace OpenRCT2::Ui::Windows
 
             if (widgetIndex == WIDX_PRIMARY_PRICE)
             {
-                auto ride = GetRide(rideId);
-                if (ride != nullptr && ride->getRideTypeDescriptor().specialType == RtdSpecialType::cashMachine)
-                {
-                    price = std::clamp(price, kRideMinPrice, CashMachine::kMaxFee);
-                }
                 IncomeSetPrimaryPrice(price);
             }
             else
@@ -6671,7 +6665,7 @@ namespace OpenRCT2::Ui::Windows
 
             auto& park = getGameState().park;
 
-            // If ride prices are locked, do not allow setting the price, unless we're dealing with a shop or toilet.
+            // If ride prices are locked, do not allow setting the price, unless we're dealing with a shop, toilet, or cash machine.
             const auto& rtd = ride->getRideTypeDescriptor();
             const bool primaryPriceLocked = !Park::RidePricesUnlocked(park) && rideEntry->shop_item[0] == ShopItem::none
                 && rtd.specialType != RtdSpecialType::toilet && rtd.specialType != RtdSpecialType::cashMachine;

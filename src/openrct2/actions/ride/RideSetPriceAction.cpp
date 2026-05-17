@@ -14,7 +14,6 @@
 #include "../../core/MemoryStream.h"
 #include "../../localisation/StringIds.h"
 #include "../../management/Finance.h"
-#include "../../ride/CashMachine.h"
 #include "../../ride/Ride.h"
 #include "../../ride/RideData.h"
 #include "../../ride/RideManager.hpp"
@@ -25,16 +24,6 @@
 
 namespace OpenRCT2::GameActions
 {
-    // Returns the maximum allowed primary price for the given ride. Cash machines
-    // have a much smaller cap than other rides/shops because guests would refuse
-    // to use them long before reaching the £20 default cap.
-    static money64 getMaxPriceForRide(const Ride& ride, bool primaryPrice)
-    {
-        if (primaryPrice && ride.getRideTypeDescriptor().specialType == RtdSpecialType::cashMachine)
-            return CashMachine::kMaxFee;
-        return kRideMaxPrice;
-    }
-
     RideSetPriceAction::RideSetPriceAction(RideId rideIndex, money64 price, bool primaryPrice)
         : _rideIndex(rideIndex)
         , _price(price)
@@ -77,7 +66,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_RIDE_OBJECT_ENTRY_NOT_FOUND);
         }
 
-        if (_price < kRideMinPrice || _price > getMaxPriceForRide(*ride, _primaryPrice))
+        if (_price < kRideMinPrice || _price > kRideMaxPrice)
         {
             LOG_ERROR("Attempting to set an invalid price for rideIndex %u", _rideIndex.ToUnderlying());
             return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, kStringIdEmpty);
@@ -105,7 +94,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_RIDE_OBJECT_ENTRY_NOT_FOUND);
         }
 
-        if (_price < kRideMinPrice || _price > getMaxPriceForRide(*ride, _primaryPrice))
+        if (_price < kRideMinPrice || _price > kRideMaxPrice)
         {
             LOG_ERROR("Attempting to set an invalid price for rideIndex %u", _rideIndex.ToUnderlying());
             return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, kStringIdEmpty);
