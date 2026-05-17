@@ -24,18 +24,23 @@ namespace OpenRCT2::CashMachine
     constexpr money64 kMaxFee = 20.00_GBP;
 
     /**
-     * Fee at which guests begin to refuse the cash machine and emit a complaint
-     * thought. Any fee strictly greater than this is universally refused by
-     * guestAcceptsFee(); at or below it, refusal/tolerance scales with happiness.
+     * Fee at or above which a paying guest emits a complaint thought
+     * (PeepThoughtType::NotPaying). Acceptance itself is probabilistic and
+     * driven by happiness — see guestAcceptsFee() — so fees above this
+     * threshold are not automatically refused, just much less likely to be
+     * paid (and complained about when they are).
      */
     constexpr money64 kComplaintFeeThreshold = 2.00_GBP;
 
     /**
      * Returns true if a guest with the given happiness is willing to pay the
-     * given fee at a cash machine. Happier guests tolerate higher fees.
+     * given fee at a cash machine. The decision is probabilistic: acceptance
+     * probability rises with happiness and falls with fee, so even at the £2
+     * complaint threshold there is some chance of refusal, and even at the £20
+     * cap a maximally happy guest will sometimes still pay.
      *
-     * The randomValue parameter introduces a small amount of variation; callers
-     * should supply ScenarioRand() output. Tests can pass deterministic values.
+     * The randomValue parameter drives the probability roll; callers should
+     * supply ScenarioRand() output. Tests can pass deterministic values.
      */
     bool guestAcceptsFee(money64 fee, uint8_t happiness, uint32_t randomValue);
 

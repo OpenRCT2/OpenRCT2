@@ -26,21 +26,29 @@ namespace OpenRCT2::CashMachine
         if (fee <= 0)
             return true;
 
-        // Anything above the complaint threshold is refused outright, regardless of
-        // happiness. The fee cap (kMaxFee) is much higher to give park owners a
-        // wider spinner range, but guest behaviour clamps the *useful* range here.
-        if (fee > kComplaintFeeThreshold)
-            return false;
-
-        // Within [0, kComplaintFeeThreshold], tolerance scales with happiness: a
-        // maximally happy guest (255) tolerates roughly the full £2 threshold,
-        // while a miserable guest (~50) will balk at any non-trivial fee.
+        // Probabilistic acceptance. Acceptance probability rises with happiness and
+        // falls with fee, so there is always *some* randomness — a maximally happy
+        // guest still occasionally refuses the £2 complaint threshold, and even up
+        // at the £20 cap a maxed-out guest will sometimes agree to pay. Miserable
+        // guests effectively never accept a non-trivial fee.
+        //
+        // pScaled is the accept probability in 0..1024 units. We compare it to a
+        // uniformly distributed 10-bit random sample.
+        //
+        // Construction:
+        //   happiness contribution: happiness * 4   (0..1020, max happiness → ~full)
+        //   fee penalty:            feeUnits * 2    (0..400 over £0..£20)
+        // Worked examples (probability of accepting):
+        //   h=255, fee=£2  (20 units):  (1020 - 40)  / 1024 ≈ 0.96
+        //   h=255, fee=£20 (200 units): (1020 - 400) / 1024 ≈ 0.61
+        //   h=128, fee=£2:              (512  - 40)  / 1024 ≈ 0.46
+        //   h=128, fee=£20:             (512  - 400) / 1024 ≈ 0.11
+        //   h=0,   any fee:             0            / 1024  = 0.00
         const int32_t feeUnits = feeInTenPence(fee);
-        const int32_t happinessTolerance = happiness / 12; // 0..21
-        const int32_t randomBonus = static_cast<int32_t>(randomValue & 0x07); // 0..7
-        const int32_t tolerance = happinessTolerance + randomBonus;
+        const int32_t pScaled = std::max(0, static_cast<int32_t>(happiness) * 4 - feeUnits * 2);
+        const uint32_t roll = randomValue % 1024u;
 
-        return feeUnits <= tolerance;
+        return roll < static_cast<uint32_t>(pScaled);
     }
 
     int32_t computeFeeHappinessPenalty(money64 fee, uint32_t randomValue)

@@ -57,31 +57,85 @@ TEST(CashMachineTests, MiserableGuestRefusesComplaintThreshold)
     EXPECT_FALSE(guestAcceptsFee(kComplaintFeeThreshold, 0, 7));
 }
 
-// Any fee above the complaint threshold must be refused regardless of
-// happiness or random roll — kMaxFee is much larger than what guests will pay.
-TEST(CashMachineTests, FeeAboveComplaintThresholdAlwaysRefused)
-{
-    for (money64 fee : { kComplaintFeeThreshold + 0.10_GBP, 5.00_GBP, 10.00_GBP, kMaxFee })
-    {
-        for (uint32_t happiness = 0; happiness <= 255; happiness += 51)
-        {
-            for (uint32_t r = 0; r < 8; ++r)
-            {
-                EXPECT_FALSE(guestAcceptsFee(fee, static_cast<uint8_t>(happiness), r))
-                    << "fee=" << fee << " happiness=" << happiness << " random=" << r;
-            }
-        }
-    }
-}
+// Any fee above the complaint threshold is no longer an outright refusal — a
+// max-happy guest still has a decent chance of paying even £20 — so test the
+// probabilistic behaviour instead. See MaxHappyGuestSometimesAcceptsMaxFee and
+// MaxHappyGuestSometimesRefusesComplaintThreshold below.
 
-// Happiness should make a difference: the same fee that a sad guest refuses,
-// a happy guest accepts (with the same random roll).
-TEST(CashMachineTests, HappinessIncreasesTolerance)
+// Happiness should make a difference: with the same random roll, a near-zero
+// happiness guest refuses a £1 fee while a max-happiness guest accepts it.
+// Roll value 200 is chosen so it sits inside the accept window for h=255
+// (pScaled ≈ 1000) but outside it for h=30 (pScaled ≈ 100).
+TEST(CashMachineTests, HappinessIncreasesAcceptanceProbability)
 {
     const money64 fee = 1.00_GBP;
-    const uint32_t random = 0;
+    const uint32_t random = 200;
     EXPECT_FALSE(guestAcceptsFee(fee, 30, random));
     EXPECT_TRUE(guestAcceptsFee(fee, 255, random));
+}
+
+// At the £2 complaint threshold a max-happy guest mostly pays, but the outcome
+// is still randomised — there exist random rolls that produce a refusal.
+TEST(CashMachineTests, MaxHappyGuestSometimesRefusesComplaintThreshold)
+{
+    // With h=255, fee=£2 the accept probability ≈ 980/1024, so rolls in
+    // [980, 1023] refuse. 1000 sits inside that window.
+    EXPECT_FALSE(guestAcceptsFee(kComplaintFeeThreshold, 255, 1000));
+    // And a low roll inside the accept window still accepts.
+    EXPECT_TRUE(guestAcceptsFee(kComplaintFeeThreshold, 255, 0));
+}
+
+// Up at the £20 cap, even a max-happy guest has a markedly lower chance of
+// paying — but it is not zero, so some random rolls still produce acceptance.
+TEST(CashMachineTests, MaxHappyGuestSometimesAcceptsMaxFee)
+{
+    // With h=255, fee=£20 the accept probability ≈ 620/1024.
+    // Roll 100 lies in the accept window; roll 900 lies outside it.
+    EXPECT_TRUE(guestAcceptsFee(kMaxFee, 255, 100));
+    EXPECT_FALSE(guestAcceptsFee(kMaxFee, 255, 900));
+}
+
+// Acceptance probability should fall as the fee climbs: a max-happy guest is
+// more likely to pay £2 than £20. Sample the full 0..1023 roll space to get
+// exact accept counts.
+TEST(CashMachineTests, AcceptanceProbabilityDecreasesWithFee)
+{
+    auto acceptRateOver1024 = [](money64 fee, uint8_t happiness) {
+        int32_t accepts = 0;
+        for (uint32_t r = 0; r < 1024; ++r)
+        {
+            if (guestAcceptsFee(fee, happiness, r))
+                ++accepts;
+        }
+        return accepts;
+    };
+
+    const int32_t atTwo = acceptRateOver1024(kComplaintFeeThreshold, 255);
+    const int32_t atTwenty = acceptRateOver1024(kMaxFee, 255);
+    EXPECT_GT(atTwo, atTwenty);
+    // Sanity: at £2 the guest pays most of the time, at £20 they pay markedly less.
+    EXPECT_GT(atTwo, 900);
+    EXPECT_LT(atTwenty, 700);
+    EXPECT_GT(atTwenty, 400); // but still meaningfully > 0
+}
+
+// Acceptance probability should rise with happiness for any given fee.
+TEST(CashMachineTests, AcceptanceProbabilityIncreasesWithHappiness)
+{
+    auto acceptRateOver1024 = [](money64 fee, uint8_t happiness) {
+        int32_t accepts = 0;
+        for (uint32_t r = 0; r < 1024; ++r)
+        {
+            if (guestAcceptsFee(fee, happiness, r))
+                ++accepts;
+        }
+        return accepts;
+    };
+
+    const money64 fee = 10.00_GBP;
+    EXPECT_LT(acceptRateOver1024(fee, 64), acceptRateOver1024(fee, 128));
+    EXPECT_LT(acceptRateOver1024(fee, 128), acceptRateOver1024(fee, 192));
+    EXPECT_LT(acceptRateOver1024(fee, 192), acceptRateOver1024(fee, 255));
 }
 
 // A free ATM imposes no happiness penalty.
