@@ -1134,8 +1134,8 @@ namespace OpenRCT2::Ui::Windows
 
             for (const auto& award : currentAwards)
             {
-                GfxDrawSprite(rt, ImageId(AwardGetSprite(award.Type)), screenCoords);
-                drawTextWrapped(rt, screenCoords + ScreenCoordsXY{ 34, 6 }, 180, AwardGetText(award.Type));
+                GfxDrawSprite(rt, ImageId(AwardGetSprite(award.type)), screenCoords);
+                drawTextWrapped(rt, screenCoords + ScreenCoordsXY{ 34, 6 }, 180, AwardGetText(award.type));
 
                 screenCoords.y += 32;
             }

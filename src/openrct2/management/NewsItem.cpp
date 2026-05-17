@@ -32,14 +32,14 @@
 
 using namespace OpenRCT2;
 
-News::Item& News::ItemQueues::Current()
+News::Item& News::ItemQueues::current()
 {
-    return Recent.front();
+    return _recent.front();
 }
 
-const News::Item& News::ItemQueues::Current() const
+const News::Item& News::ItemQueues::current() const
 {
-    return Recent.front();
+    return _recent.front();
 }
 
 bool News::IsValidIndex(int32_t index)
@@ -54,7 +54,7 @@ bool News::IsValidIndex(int32_t index)
 
 News::Item* News::GetItem(int32_t index)
 {
-    return getGameState().newsItems.At(index);
+    return getGameState().newsItems.at(index);
 }
 
 News::Item& News::ItemQueues::operator[](size_t index)
@@ -64,18 +64,18 @@ News::Item& News::ItemQueues::operator[](size_t index)
 
 const News::Item& News::ItemQueues::operator[](size_t index) const
 {
-    if (index < Recent.capacity())
-        return Recent[index];
+    if (index < _recent.capacity())
+        return _recent[index];
 
-    return Archived[index - Recent.capacity()];
+    return _archived[index - _recent.capacity()];
 }
 
-News::Item* News::ItemQueues::At(int32_t index)
+News::Item* News::ItemQueues::at(int32_t index)
 {
-    return const_cast<Item*>(const_cast<const ItemQueues&>(*this).At(index));
+    return const_cast<Item*>(const_cast<const ItemQueues&>(*this).at(index));
 }
 
-const News::Item* News::ItemQueues::At(int32_t index) const
+const News::Item* News::ItemQueues::at(int32_t index) const
 {
     if (IsValidIndex(index))
     {
@@ -87,28 +87,28 @@ const News::Item* News::ItemQueues::At(int32_t index) const
 
 bool News::IsQueueEmpty()
 {
-    return getGameState().newsItems.IsEmpty();
+    return getGameState().newsItems.isEmpty();
 }
 
-bool News::ItemQueues::IsEmpty() const
+bool News::ItemQueues::isEmpty() const
 {
-    return Recent.empty();
+    return _recent.empty();
 }
 
 /**
  *
  *  rct2: 0x0066DF32
  */
-void News::ItemQueues::Clear()
+void News::ItemQueues::clear()
 {
-    Recent.clear();
-    Archived.clear();
+    _recent.clear();
+    _archived.clear();
 }
 
 void News::InitQueue(GameState_t& gameState)
 {
-    gameState.newsItems.Clear();
-    assert(gameState.newsItems.IsEmpty());
+    gameState.newsItems.clear();
+    assert(gameState.newsItems.isEmpty());
 
     // Throttles for warning types (PEEP_*_WARNING)
     for (auto& warningThrottle : gameState.park.peepWarningThrottle)
@@ -120,14 +120,14 @@ void News::InitQueue(GameState_t& gameState)
     ContextBroadcastIntent(&intent);
 }
 
-uint16_t News::ItemQueues::IncrementTicks()
+uint16_t News::ItemQueues::incrementTicks()
 {
-    return ++Current().ticks;
+    return ++current().ticks;
 }
 
 static void TickCurrent()
 {
-    int32_t ticks = getGameState().newsItems.IncrementTicks();
+    int32_t ticks = getGameState().newsItems.incrementTicks();
     // Only play news item sound when in normal playing mode
     if (ticks == 1 && (gLegacyScene == LegacyScene::playing))
     {
@@ -136,18 +136,18 @@ static void TickCurrent()
     }
 }
 
-int32_t News::ItemQueues::RemoveTime() const
+int32_t News::ItemQueues::removeTime() const
 {
-    if (!Recent[5].isEmpty() && !Recent[4].isEmpty() && !Recent[3].isEmpty() && !Recent[2].isEmpty())
+    if (!_recent[5].isEmpty() && !_recent[4].isEmpty() && !_recent[3].isEmpty() && !_recent[2].isEmpty())
     {
         return 256;
     }
     return 320;
 }
 
-bool News::ItemQueues::CurrentShouldBeArchived() const
+bool News::ItemQueues::currentShouldBeArchived() const
 {
-    return Current().ticks >= RemoveTime();
+    return current().ticks >= removeTime();
 }
 
 /**
@@ -160,7 +160,7 @@ void News::UpdateCurrentItem()
 
     auto& gameState = getGameState();
     // Check if there is a current news item
-    if (gameState.newsItems.IsEmpty())
+    if (gameState.newsItems.isEmpty())
         return;
 
     auto intent = Intent(INTENT_ACTION_INVALIDATE_TICKER_NEWS);
@@ -170,8 +170,8 @@ void News::UpdateCurrentItem()
     TickCurrent();
 
     // Removal of current news item
-    if (gameState.newsItems.CurrentShouldBeArchived())
-        gameState.newsItems.ArchiveCurrent();
+    if (gameState.newsItems.currentShouldBeArchived())
+        gameState.newsItems.archiveCurrent();
 }
 
 /**
@@ -180,23 +180,23 @@ void News::UpdateCurrentItem()
  */
 void News::CloseCurrentItem()
 {
-    getGameState().newsItems.ArchiveCurrent();
+    getGameState().newsItems.archiveCurrent();
 }
 
-void News::ItemQueues::ArchiveCurrent()
+void News::ItemQueues::archiveCurrent()
 {
     // Check if there is a current message
-    if (IsEmpty())
+    if (isEmpty())
         return;
 
-    Archived.push_back(Current());
+    _archived.push_back(current());
 
     // Invalidate the news window
     auto* windowMgr = Ui::GetWindowManager();
     windowMgr->InvalidateByClass(WindowClass::recentNews);
 
     // Dequeue the current news item, shift news up
-    Recent.pop_front();
+    _recent.pop_front();
 
     // Invalidate current news item bar
     auto intent = Intent(INTENT_ACTION_INVALIDATE_TICKER_NEWS);
@@ -291,16 +291,16 @@ std::optional<CoordsXYZ> News::GetSubjectLocation(ItemType type, int32_t subject
     return subjectLoc;
 }
 
-News::Item* News::ItemQueues::FirstOpenOrNewSlot()
+News::Item* News::ItemQueues::firstOpenOrNewSlot()
 {
-    for (auto emptySlots = Recent.capacity() - Recent.size(); emptySlots < 2; ++emptySlots)
+    for (auto emptySlots = _recent.capacity() - _recent.size(); emptySlots < 2; ++emptySlots)
     {
-        ArchiveCurrent();
+        archiveCurrent();
     }
 
-    auto res = Recent.end();
+    auto res = _recent.end();
     // The for loop above guarantees there is always an extra element to use
-    assert(Recent.capacity() - Recent.size() >= 2);
+    assert(_recent.capacity() - _recent.size() >= 2);
     auto newsItem = res + 1;
     newsItem->type = ItemType::null;
 
@@ -329,7 +329,7 @@ News::Item* News::AddItemToQueue(ItemType type, StringId string_id, EntityId ass
 News::Item* News::AddItemToQueue(ItemType type, const utf8* text, uint32_t assoc)
 {
     auto& date = GetDate();
-    Item* newsItem = getGameState().newsItems.FirstOpenOrNewSlot();
+    Item* newsItem = getGameState().newsItems.firstOpenOrNewSlot();
     newsItem->type = type;
     newsItem->flags = 0;
     newsItem->assoc = assoc; // Make optional for Award, Money, Graph and Null
@@ -441,11 +441,11 @@ void News::DisableNewsItems(ItemType type, uint32_t assoc)
 {
     auto& gameState = getGameState();
     // TODO: write test invalidating windows
-    gameState.newsItems.ForeachRecentNews([type, assoc, &gameState](auto& newsItem) {
+    gameState.newsItems.foreachRecentNews([type, assoc, &gameState](auto& newsItem) {
         if (type == newsItem.type && assoc == newsItem.assoc)
         {
             newsItem.setFlags(ItemFlags::hasButton);
-            if (&newsItem == &gameState.newsItems.Current())
+            if (&newsItem == &gameState.newsItems.current())
             {
                 auto intent = Intent(INTENT_ACTION_INVALIDATE_TICKER_NEWS);
                 ContextBroadcastIntent(&intent);
@@ -453,7 +453,7 @@ void News::DisableNewsItems(ItemType type, uint32_t assoc)
         }
     });
 
-    gameState.newsItems.ForeachArchivedNews([type, assoc](auto& newsItem) {
+    gameState.newsItems.foreachArchivedNews([type, assoc](auto& newsItem) {
         if (type == newsItem.type && assoc == newsItem.assoc)
         {
             newsItem.setFlags(ItemFlags::hasButton);
@@ -465,7 +465,7 @@ void News::DisableNewsItems(ItemType type, uint32_t assoc)
 
 void News::AddItemToQueue(Item* newNewsItem)
 {
-    Item* newsItem = getGameState().newsItems.FirstOpenOrNewSlot();
+    Item* newsItem = getGameState().newsItems.firstOpenOrNewSlot();
     *newsItem = *newNewsItem;
 }
 
@@ -489,7 +489,7 @@ void News::RemoveItem(int32_t index)
 
 void News::importNewsItems(GameState_t& gameState, const std::span<const Item> recent, const std::span<const Item> archived)
 {
-    gameState.newsItems.Clear();
+    gameState.newsItems.clear();
 
     for (size_t i = 0; i < std::min<size_t>(recent.size(), ItemHistoryStart); i++)
     {

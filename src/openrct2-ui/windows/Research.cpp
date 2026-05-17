@@ -378,14 +378,14 @@ namespace OpenRCT2::Ui::Windows
             }
             else if (gameState.researchProgressStage == RESEARCH_STAGE_DESIGNING)
             {
-                ft.Add<StringId>(gameState.researchNextItem->GetCategoryName());
+                ft.Add<StringId>(gameState.researchNextItem->getCategoryName());
             }
             else if (gameState.researchNextItem->type == Research::EntryType::ride)
             {
                 const auto& rtd = GetRideTypeDescriptor(gameState.researchNextItem->baseRideType);
                 if (rtd.flags.has(RtdFlag::listVehiclesSeparately))
                 {
-                    ft.Add<StringId>(gameState.researchNextItem->GetName());
+                    ft.Add<StringId>(gameState.researchNextItem->getName());
                 }
                 else if (gameState.researchNextItem->flags & RESEARCH_ENTRY_FLAG_FIRST_OF_TYPE)
                 {
@@ -393,14 +393,14 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else
                 {
-                    ft.Add<StringId>(gameState.researchNextItem->GetName());
+                    ft.Add<StringId>(gameState.researchNextItem->getName());
                     ft.Add<StringId>(rtd.Naming.Name);
                     label = STR_RESEARCH_TYPE_LABEL_VEHICLE;
                 }
             }
             else
             {
-                ft.Add<StringId>(gameState.researchNextItem->GetName());
+                ft.Add<StringId>(gameState.researchNextItem->getName());
             }
             drawTextWrapped(rt, screenCoords, 296, label, ft);
             screenCoords.y += 25;
@@ -437,7 +437,7 @@ namespace OpenRCT2::Ui::Windows
             if (gameState.researchLastItem->type == Research::EntryType::scenery)
             {
                 lastDevelopmentFormat = STR_RESEARCH_SCENERY_LABEL;
-                ft.Add<StringId>(gameState.researchLastItem->GetName());
+                ft.Add<StringId>(gameState.researchLastItem->getName());
             }
             else
             {
@@ -445,7 +445,7 @@ namespace OpenRCT2::Ui::Windows
                 const auto& rtd = GetRideTypeDescriptor(gameState.researchLastItem->baseRideType);
                 if (rtd.flags.has(RtdFlag::listVehiclesSeparately))
                 {
-                    ft.Add<StringId>(gameState.researchLastItem->GetName());
+                    ft.Add<StringId>(gameState.researchLastItem->getName());
                 }
                 else if (gameState.researchLastItem->flags & RESEARCH_ENTRY_FLAG_FIRST_OF_TYPE)
                 {
@@ -453,7 +453,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else
                 {
-                    ft.Add<StringId>(gameState.researchLastItem->GetName());
+                    ft.Add<StringId>(gameState.researchLastItem->getName());
                     ft.Add<StringId>(rtd.Naming.Name);
                     lastDevelopmentFormat = STR_RESEARCH_VEHICLE_LABEL;
                 }

@@ -204,7 +204,7 @@ namespace OpenRCT2::Park
         for (const auto& award : park.currentAwards)
         {
             // +/- 0.25% of the probability
-            if (AwardIsPositive(award.Type))
+            if (AwardIsPositive(award.type))
             {
                 probability += probability / 4;
             }
@@ -233,11 +233,11 @@ namespace OpenRCT2::Park
         for (const auto& campaign : park.marketingCampaigns)
         {
             // Random chance of guest generation
-            auto probability = MarketingGetCampaignGuestGenerationProbability(campaign.Type);
+            auto probability = MarketingGetCampaignGuestGenerationProbability(campaign.type);
             auto random = ScenarioRandMax(std::numeric_limits<uint16_t>::max());
             if (random < probability)
             {
-                generateGuestFromCampaign(campaign.Type);
+                generateGuestFromCampaign(campaign.type);
             }
         }
     }

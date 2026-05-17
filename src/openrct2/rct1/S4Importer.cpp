@@ -1522,15 +1522,15 @@ namespace OpenRCT2::RCT1
                 if (_s4.MarketingStatus[i] & CAMPAIGN_ACTIVE_FLAG)
                 {
                     MarketingCampaign campaign;
-                    campaign.Type = i;
-                    campaign.WeeksLeft = _s4.MarketingStatus[i] & ~CAMPAIGN_ACTIVE_FLAG;
-                    if (campaign.Type == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign.Type == ADVERTISING_CAMPAIGN_RIDE)
+                    campaign.type = i;
+                    campaign.weeksLeft = _s4.MarketingStatus[i] & ~CAMPAIGN_ACTIVE_FLAG;
+                    if (campaign.type == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign.type == ADVERTISING_CAMPAIGN_RIDE)
                     {
-                        campaign.RideId = RCT12RideIdToOpenRCT2RideId(_s4.MarketingAssoc[i]);
+                        campaign.rideId = RCT12RideIdToOpenRCT2RideId(_s4.MarketingAssoc[i]);
                     }
-                    else if (campaign.Type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE)
+                    else if (campaign.type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE)
                     {
-                        campaign.ShopItemType = ShopItem(_s4.MarketingAssoc[i]);
+                        campaign.shopItemType = ShopItem(_s4.MarketingAssoc[i]);
                     }
                     park.marketingCampaigns.push_back(campaign);
                 }
@@ -2324,7 +2324,7 @@ namespace OpenRCT2::RCT1
 
         void ConvertResearchEntry(::ResearchItem* dst, uint8_t srcItem, uint8_t srcType)
         {
-            dst->SetNull();
+            dst->setNull();
             if (srcType == RCT1_RESEARCH_TYPE_RIDE)
             {
                 auto entryIndex = _rideTypeToRideEntryMap[srcItem];

@@ -714,7 +714,7 @@ namespace OpenRCT2::Ui::Windows
                     case ADVERTISING_CAMPAIGN_RIDE_FREE:
                     case ADVERTISING_CAMPAIGN_RIDE:
                     {
-                        auto campaignRide = GetRide(marketingCampaign->RideId);
+                        auto campaignRide = GetRide(marketingCampaign->rideId);
                         if (campaignRide != nullptr)
                         {
                             campaignRide->formatNameTo(ft);
@@ -726,7 +726,7 @@ namespace OpenRCT2::Ui::Windows
                         break;
                     }
                     case ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE:
-                        ft.Add<StringId>(GetShopItemDescriptor(marketingCampaign->ShopItemType).Naming.Plural);
+                        ft.Add<StringId>(GetShopItemDescriptor(marketingCampaign->shopItemType).Naming.Plural);
                         break;
                     default:
                     {
@@ -739,7 +739,7 @@ namespace OpenRCT2::Ui::Windows
                 drawTextEllipsised(rt, screenCoords + ScreenCoordsXY{ 4, 0 }, 296, kMarketingCampaignNames[i][1], ft);
 
                 // Duration
-                uint16_t weeksRemaining = marketingCampaign->WeeksLeft;
+                uint16_t weeksRemaining = marketingCampaign->weeksLeft;
                 ft = Formatter();
                 ft.Add<uint16_t>(weeksRemaining);
                 drawText(

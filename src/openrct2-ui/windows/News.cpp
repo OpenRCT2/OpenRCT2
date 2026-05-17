@@ -363,12 +363,12 @@ namespace OpenRCT2::Ui::Windows
             _pressedNewsItemIndex = -1;
             auto& gameState = getGameState();
 
-            if (j >= gameState.newsItems.GetArchived().size())
+            if (j >= gameState.newsItems.getArchived().size())
             {
                 return;
             }
 
-            const auto& newsItem = gameState.newsItems.GetArchived()[j];
+            const auto& newsItem = gameState.newsItems.getArchived()[j];
             if (newsItem.hasButton())
             {
                 return;
@@ -410,7 +410,7 @@ namespace OpenRCT2::Ui::Windows
 
         ScreenSize onScrollGetSize(int32_t scrollIndex) override
         {
-            int32_t scrollHeight = static_cast<int32_t>(getGameState().newsItems.GetArchived().size())
+            int32_t scrollHeight = static_cast<int32_t>(getGameState().newsItems.getArchived().size())
                     * CalculateNewsItemHeight()
                 - kItemSeparatorHeight;
             return { kWindowSize.width, scrollHeight };
@@ -422,7 +422,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t i = 0;
             int32_t buttonIndex = 0;
             auto mutableScreenCoords = screenCoords;
-            for (const auto& newsItem : getGameState().newsItems.GetArchived())
+            for (const auto& newsItem : getGameState().newsItems.getArchived())
             {
                 if (mutableScreenCoords.y < itemHeight)
                 {
@@ -469,7 +469,7 @@ namespace OpenRCT2::Ui::Windows
             const bool scrollbarVisible = scrolls[0].contentHeight > widgets[WIDX_SCROLL].height() - 1;
             const auto scrollbarFill = scrollbarVisible ? 0 : kScrollBarWidth;
 
-            for (const auto& newsItem : getGameState().newsItems.GetArchived())
+            for (const auto& newsItem : getGameState().newsItems.getArchived())
             {
                 if (y >= rt.y + rt.height)
                     break;

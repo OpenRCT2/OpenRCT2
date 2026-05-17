@@ -61,7 +61,7 @@ namespace OpenRCT2::Scripting
         if (award == nullptr)
             return JSFromStdString(ctx, {});
 
-        return JSFromStdString(ctx, AwardTypeToString(award->Type).value_or(std::string()));
+        return JSFromStdString(ctx, AwardTypeToString(award->type).value_or(std::string()));
     }
 
     JSValue ScAward::text_get(JSContext* ctx, JSValue thisVal)
@@ -71,7 +71,7 @@ namespace OpenRCT2::Scripting
             return JSFromStdString(ctx, {});
 
         Formatter ft{};
-        ft.Add<StringId>(AwardGetText(award->Type));
+        ft.Add<StringId>(AwardGetText(award->type));
         return JSFromStdString(ctx, FormatStringIDLegacy(STR_STRINGID, ft.Data()));
     }
 
@@ -81,7 +81,7 @@ namespace OpenRCT2::Scripting
         if (award == nullptr)
             return JS_NewInt32(ctx, {});
 
-        return JS_NewInt32(ctx, award->Time);
+        return JS_NewInt32(ctx, award->time);
     }
 
     JSValue ScAward::positive_get(JSContext* ctx, JSValue thisVal)
@@ -90,7 +90,7 @@ namespace OpenRCT2::Scripting
         if (award == nullptr)
             return JS_NewBool(ctx, {});
 
-        return JS_NewBool(ctx, AwardIsPositive(award->Type));
+        return JS_NewBool(ctx, AwardIsPositive(award->type));
     }
 
     JSValue ScAward::imageId_get(JSContext* ctx, JSValue thisVal)
@@ -99,7 +99,7 @@ namespace OpenRCT2::Scripting
         if (award == nullptr)
             return JS_NewUint32(ctx, {});
 
-        return JS_NewUint32(ctx, AwardGetSprite(award->Type));
+        return JS_NewUint32(ctx, AwardGetSprite(award->type));
     }
 
 } // namespace OpenRCT2::Scripting

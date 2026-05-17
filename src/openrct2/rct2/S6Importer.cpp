@@ -1605,19 +1605,19 @@ namespace OpenRCT2::RCT2
                 if (_s6.CampaignWeeksLeft[i] & CAMPAIGN_ACTIVE_FLAG)
                 {
                     MarketingCampaign campaign{};
-                    campaign.Type = static_cast<uint8_t>(i);
-                    campaign.WeeksLeft = _s6.CampaignWeeksLeft[i] & ~(CAMPAIGN_ACTIVE_FLAG | CAMPAIGN_FIRST_WEEK_FLAG);
+                    campaign.type = static_cast<uint8_t>(i);
+                    campaign.weeksLeft = _s6.CampaignWeeksLeft[i] & ~(CAMPAIGN_ACTIVE_FLAG | CAMPAIGN_FIRST_WEEK_FLAG);
                     if ((_s6.CampaignWeeksLeft[i] & CAMPAIGN_FIRST_WEEK_FLAG) != 0)
                     {
                         campaign.flags.set(MarketingCampaignFlag::firstWeek);
                     }
-                    if (campaign.Type == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign.Type == ADVERTISING_CAMPAIGN_RIDE)
+                    if (campaign.type == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign.type == ADVERTISING_CAMPAIGN_RIDE)
                     {
-                        campaign.RideId = RCT12RideIdToOpenRCT2RideId(_s6.CampaignRideIndex[i]);
+                        campaign.rideId = RCT12RideIdToOpenRCT2RideId(_s6.CampaignRideIndex[i]);
                     }
-                    else if (campaign.Type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE)
+                    else if (campaign.type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE)
                     {
-                        campaign.ShopItemType = ShopItem(_s6.CampaignRideIndex[i]);
+                        campaign.shopItemType = ShopItem(_s6.CampaignRideIndex[i]);
                     }
                     park.marketingCampaigns.push_back(campaign);
                 }

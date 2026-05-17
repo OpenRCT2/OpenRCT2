@@ -952,10 +952,10 @@ namespace OpenRCT2
 
                     // Marketing
                     cs.readWriteVector(park.marketingCampaigns, [&cs](MarketingCampaign& campaign) {
-                        cs.readWrite(campaign.Type);
-                        cs.readWrite(campaign.WeeksLeft);
+                        cs.readWrite(campaign.type);
+                        cs.readWrite(campaign.weeksLeft);
                         cs.readWrite(campaign.flags.holder);
-                        cs.readWrite(campaign.RideId);
+                        cs.readWrite(campaign.rideId);
                     });
 
                     // Awards
@@ -964,10 +964,10 @@ namespace OpenRCT2
                     {
                         Award awards[RCT2::Limits::kMaxAwards]{};
                         cs.readWriteArray(awards, [&cs, &currentAwards](Award& award) {
-                            if (award.Time != 0)
+                            if (award.time != 0)
                             {
-                                cs.readWrite(award.Time);
-                                cs.readWrite(award.Type);
+                                cs.readWrite(award.time);
+                                cs.readWrite(award.type);
                                 currentAwards.push_back(award);
                                 return true;
                             }
@@ -978,8 +978,8 @@ namespace OpenRCT2
                     else
                     {
                         cs.readWriteVector(currentAwards, [&cs](Award& award) {
-                            cs.readWrite(award.Time);
-                            cs.readWrite(award.Type);
+                            cs.readWrite(award.time);
+                            cs.readWrite(award.type);
                         });
                     }
                     cs.readWrite(park.value);
@@ -1154,11 +1154,11 @@ namespace OpenRCT2
                 else
                 {
                     std::vector<News::Item> recent(
-                        std::begin(gameState.newsItems.GetRecent()), std::end(gameState.newsItems.GetRecent()));
+                        std::begin(gameState.newsItems.getRecent()), std::end(gameState.newsItems.getRecent()));
                     cs.readWriteVector(recent, [&cs](News::Item& item) { ReadWriteNewsItem(cs, item); });
 
                     std::vector<News::Item> archived(
-                        std::begin(gameState.newsItems.GetArchived()), std::end(gameState.newsItems.GetArchived()));
+                        std::begin(gameState.newsItems.getArchived()), std::end(gameState.newsItems.getArchived()));
                     cs.readWriteVector(archived, [&cs](News::Item& item) { ReadWriteNewsItem(cs, item); });
                 }
             });
