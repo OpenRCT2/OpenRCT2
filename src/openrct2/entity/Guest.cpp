@@ -3456,7 +3456,7 @@ namespace OpenRCT2
                         auto fee = ride->price[0];
                         if (fee > 0)
                         {
-                            FinancePayment(-fee, ExpenditureType::parkRideTickets);
+                            FinancePayment(-fee, ExpenditureType::shopSales);
                             MoneyEffect::CreateAt(fee, GetLocation(), true);
                             Audio::Play3D(Audio::SoundId::purchase, GetLocation());
 
