@@ -102,7 +102,7 @@ namespace OpenRCT2::Ui::Windows
         STR_OBJECTIVE_DROPDOWN_MONTHLY_PROFIT_FROM_FOOD_MERCHANDISE,
     };
 
-    enum
+    enum WindowEditorScenarioOptionsWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,
@@ -222,10 +222,10 @@ namespace OpenRCT2::Ui::Windows
         makeWidget        ({  8,  48}, {344,  12}, WidgetType::label,        WindowColour::secondary, STR_OBJECTIVE_DROPDOWN_LABEL                                            ),
         makeWidget        ({ 98,  47}, {344,  14}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdNone,                STR_SELECT_OBJECTIVE_FOR_THIS_SCENARIO_TIP),
         makeWidget        ({430,  48}, { 11,  12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,           STR_SELECT_OBJECTIVE_FOR_THIS_SCENARIO_TIP),
-        makeWidget        ({ 28,  66}, {140,  12}, WidgetType::label,        WindowColour::secondary, kStringIdEmpty                                                          ),
-        makeSpinnerWidgets({158,  65}, {120,  14}, WidgetType::button,       WindowColour::secondary                                                                          ), // NB: 3 widgets
-        makeWidget        ({ 28,  85}, {140,  12}, WidgetType::label,        WindowColour::secondary, STR_WINDOW_OBJECTIVE_DATE                                               ),
-        makeSpinnerWidgets({158,  84}, {120,  14}, WidgetType::button,       WindowColour::secondary                                                                          ), // NB: 3 widgets
+        makeWidget                ({ 28,  66}, {140,  12}, WidgetType::label,        WindowColour::secondary, kStringIdEmpty                                                          ),
+        makeHoldableSpinnerWidgets({158,  65}, {120,  14}, WidgetType::button,       WindowColour::secondary                                                                          ), // NB: 3 widgets
+        makeWidget                ({ 28,  85}, {140,  12}, WidgetType::label,        WindowColour::secondary, STR_WINDOW_OBJECTIVE_DATE                                               ),
+        makeHoldableSpinnerWidgets({158,  84}, {120,  14}, WidgetType::button,       WindowColour::secondary                                                                          ), // NB: 3 widgets
         makeWidget        ({ 14, 103}, {340,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_HARD_PARK_RATING,         STR_HARD_PARK_RATING_TIP                  )
     );
 
@@ -242,48 +242,48 @@ namespace OpenRCT2::Ui::Windows
         makeOptionsWidgets(STR_SCENARIO_OPTIONS_FINANCIAL, kSizeFinancial),
         makeWidget        ({  8,  48}, {kSizeFinancial.width - 16, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_MAKE_PARK_NO_MONEY,   STR_MAKE_PARK_NO_MONEY_TIP        ),
 
-        makeWidget        ({  5,  63}, {kSizeFinancial.width - 10, 72}, WidgetType::groupbox,     WindowColour::secondary, STR_GROUP_LOAN_OPTIONS                                      ),
-        makeWidget        ({  9,  78}, {                      250, 12}, WidgetType::label,        WindowColour::secondary, STR_INIT_LOAN_LABEL                                         ),
-        makeSpinnerWidgets({268,  77}, {                      100, 14}, WidgetType::spinner,      WindowColour::secondary                                                              ), // NB: 3 widgets
-        makeWidget        ({  9,  97}, {                      250, 12}, WidgetType::label,        WindowColour::secondary, STR_MAX_LOAN_LABEL                                          ),
-        makeSpinnerWidgets({268,  96}, {                      100, 14}, WidgetType::spinner,      WindowColour::secondary                                                              ), // NB: 3 widgets
-        makeWidget        ({  9, 116}, {                      280, 12}, WidgetType::label,        WindowColour::secondary, STR_INTEREST_RATE_LABEL                                     ),
-        makeSpinnerWidgets({298, 115}, {                       70, 14}, WidgetType::spinner,      WindowColour::secondary                                                              ), // NB: 3 widgets
-        makeWidget        ({ 10, 115}, {kSizeFinancial.width - 16, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_RCT1_INTEREST,        STR_RCT1_INTEREST_TIP             ),
+        makeWidget                ({  5,  63}, {kSizeFinancial.width - 10, 72}, WidgetType::groupbox,     WindowColour::secondary, STR_GROUP_LOAN_OPTIONS                                      ),
+        makeWidget                ({  9,  78}, {                      250, 12}, WidgetType::label,        WindowColour::secondary, STR_INIT_LOAN_LABEL                                         ),
+        makeHoldableSpinnerWidgets({268,  77}, {                      100, 14}, WidgetType::spinner,      WindowColour::secondary                                                              ), // NB: 3 widgets
+        makeWidget                ({  9,  97}, {                      250, 12}, WidgetType::label,        WindowColour::secondary, STR_MAX_LOAN_LABEL                                          ),
+        makeHoldableSpinnerWidgets({268,  96}, {                      100, 14}, WidgetType::spinner,      WindowColour::secondary                                                              ), // NB: 3 widgets
+        makeWidget                ({  9, 116}, {                      280, 12}, WidgetType::label,        WindowColour::secondary, STR_INTEREST_RATE_LABEL                                     ),
+        makeHoldableSpinnerWidgets({298, 115}, {                       70, 14}, WidgetType::spinner,      WindowColour::secondary                                                              ), // NB: 3 widgets
+        makeWidget                ({ 10, 115}, {kSizeFinancial.width - 16, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_RCT1_INTEREST,        STR_RCT1_INTEREST_TIP             ),
 
-        makeWidget        ({  5, 137}, {kSizeFinancial.width - 10, 89}, WidgetType::groupbox,     WindowColour::secondary, STR_GROUP_BUSINESS_MODEL                                    ),
-        makeWidget        ({  9, 155}, {                      250, 12}, WidgetType::label,        WindowColour::secondary, STR_INIT_CASH_LABEL                                         ),
-        makeSpinnerWidgets({268, 154}, {                      100, 14}, WidgetType::spinner,      WindowColour::secondary                                                              ), // NB: 3 widgets
-        makeWidget        ({  9, 173}, {                      150, 12}, WidgetType::label,        WindowColour::secondary, STR_EARNINGS_LABEL                                          ),
-        makeWidget        ({158, 172}, {                      210, 14}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdNone,            STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP),
-        makeWidget        ({356, 173}, {                       11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,       STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP),
-        makeWidget        ({  9, 191}, {                      280, 12}, WidgetType::label,        WindowColour::secondary, STR_ENTRY_PRICE_LABEL                                       ),
-        makeSpinnerWidgets({298, 190}, {                       70, 14}, WidgetType::spinner,      WindowColour::secondary                                                              ), // NB: 3 widgets
-        makeWidget        ({ 10, 208}, {kSizeFinancial.width - 16, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_FORBID_MARKETING,     STR_FORBID_MARKETING_TIP          )
+        makeWidget                ({  5, 137}, {kSizeFinancial.width - 10, 89}, WidgetType::groupbox,     WindowColour::secondary, STR_GROUP_BUSINESS_MODEL                                    ),
+        makeWidget                ({  9, 155}, {                      250, 12}, WidgetType::label,        WindowColour::secondary, STR_INIT_CASH_LABEL                                         ),
+        makeHoldableSpinnerWidgets({268, 154}, {                      100, 14}, WidgetType::spinner,      WindowColour::secondary                                                              ), // NB: 3 widgets
+        makeWidget                ({  9, 173}, {                      150, 12}, WidgetType::label,        WindowColour::secondary, STR_EARNINGS_LABEL                                          ),
+        makeWidget                ({158, 172}, {                      210, 14}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdNone,            STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP),
+        makeWidget                ({356, 173}, {                       11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,       STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP),
+        makeWidget                ({  9, 191}, {                      280, 12}, WidgetType::label,        WindowColour::secondary, STR_ENTRY_PRICE_LABEL                                       ),
+        makeSpinnerWidgets        ({298, 190}, {                       70, 14}, WidgetType::spinner,      WindowColour::secondary                                                              ), // NB: 3 widgets
+        makeWidget                ({ 10, 208}, {kSizeFinancial.width - 16, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_FORBID_MARKETING,     STR_FORBID_MARKETING_TIP          )
     );
 
     static constexpr auto window_editor_scenario_options_guests_widgets = makeWidgets(
         makeOptionsWidgets(STR_SCENARIO_OPTIONS_GUESTS, kSizeGuests),
-        makeWidget        ({  8,  49}, {      280,  12}, WidgetType::label,        WindowColour::secondary, STR_CASH_PER_GUEST_LABEL                                                ),
-        makeSpinnerWidgets({298,  48}, {       70,  14}, WidgetType::spinner,      WindowColour::secondary                                                                          ), // NB: 3 widgets
-        makeWidget        ({  8,  68}, {      280,  12}, WidgetType::label,        WindowColour::secondary, STR_GUEST_INIT_HAPPINESS                                                ),
-        makeSpinnerWidgets({298,  67}, {       70,  14}, WidgetType::spinner,      WindowColour::secondary                                                                          ), // NB: 3 widgets
-        makeWidget        ({  8,  87}, {      280,  12}, WidgetType::label,        WindowColour::secondary, STR_GUEST_INIT_HUNGER                                                   ),
-        makeSpinnerWidgets({298,  86}, {       70,  14}, WidgetType::spinner,      WindowColour::secondary                                                                          ), // NB: 3 widgets
-        makeWidget        ({  8, 106}, {      280,  12}, WidgetType::label,        WindowColour::secondary, STR_GUEST_INIT_THIRST                                                   ),
-        makeSpinnerWidgets({298, 105}, {       70,  14}, WidgetType::spinner,      WindowColour::secondary                                                                          ), // NB: 3 widgets
-        makeWidget        ({  8, 124}, {      180,  12}, WidgetType::label,        WindowColour::secondary, STR_GUESTS_PREFER_INTENSITY_LABEL                                       ),
-        makeWidget        ({198, 123}, {      170,  14}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdNone,                        STR_GUESTS_PREFER_INTENSITY_TIP   ),
-        makeWidget        ({357, 124}, {       11,  12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,                   STR_GUESTS_PREFER_INTENSITY_TIP   ),
-        makeWidget        ({  8, 143}, {      350,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_HARD_GUEST_GENERATION,            STR_HARD_GUEST_GENERATION_TIP     )
+        makeWidget                ({  8,  49}, {      280,  12}, WidgetType::label,        WindowColour::secondary, STR_CASH_PER_GUEST_LABEL                                                ),
+        makeHoldableSpinnerWidgets({298,  48}, {       70,  14}, WidgetType::spinner,      WindowColour::secondary                                                                          ), // NB: 3 widgets
+        makeWidget                ({  8,  68}, {      280,  12}, WidgetType::label,        WindowColour::secondary, STR_GUEST_INIT_HAPPINESS                                                ),
+        makeHoldableSpinnerWidgets({298,  67}, {       70,  14}, WidgetType::spinner,      WindowColour::secondary                                                                          ), // NB: 3 widgets
+        makeWidget                ({  8,  87}, {      280,  12}, WidgetType::label,        WindowColour::secondary, STR_GUEST_INIT_HUNGER                                                   ),
+        makeHoldableSpinnerWidgets({298,  86}, {       70,  14}, WidgetType::spinner,      WindowColour::secondary                                                                          ), // NB: 3 widgets
+        makeWidget                ({  8, 106}, {      280,  12}, WidgetType::label,        WindowColour::secondary, STR_GUEST_INIT_THIRST                                                   ),
+        makeHoldableSpinnerWidgets({298, 105}, {       70,  14}, WidgetType::spinner,      WindowColour::secondary                                                                          ), // NB: 3 widgets
+        makeWidget                ({  8, 124}, {      180,  12}, WidgetType::label,        WindowColour::secondary, STR_GUESTS_PREFER_INTENSITY_LABEL                                       ),
+        makeWidget                ({198, 123}, {      170,  14}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdNone,                        STR_GUESTS_PREFER_INTENSITY_TIP   ),
+        makeWidget                ({357, 124}, {       11,  12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,                   STR_GUESTS_PREFER_INTENSITY_TIP   ),
+        makeWidget                ({  8, 143}, {      350,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_HARD_GUEST_GENERATION,            STR_HARD_GUEST_GENERATION_TIP     )
     );
 
     static constexpr auto window_editor_scenario_options_land_widgets = makeWidgets(
         makeOptionsWidgets(STR_SCENARIO_OPTIONS_LAND_RESTRICTIONS, kSizeLand),
-        makeWidget        ({  8,  49}, {                 170,  12}, WidgetType::label,    WindowColour::secondary, STR_LAND_COST_LABEL                                             ),
-        makeSpinnerWidgets({188,  48}, {                  70,  14}, WidgetType::spinner,  WindowColour::secondary                                                                  ), // NB: 3 widgets
-        makeWidget        ({  8,  66}, {                 170,  12}, WidgetType::label,    WindowColour::secondary, STR_RIGHTS_COST_LABEL                                           ),
-        makeSpinnerWidgets({188,  65}, {                  70,  14}, WidgetType::spinner,  WindowColour::secondary                                                                  ), // NB: 3 widgets
+        makeWidget                ({  8,  49}, {                 170,  12}, WidgetType::label,    WindowColour::secondary, STR_LAND_COST_LABEL                                             ),
+        makeHoldableSpinnerWidgets({188,  48}, {                  70,  14}, WidgetType::spinner,  WindowColour::secondary                                                                  ), // NB: 3 widgets
+        makeWidget                ({  8,  66}, {                 170,  12}, WidgetType::label,    WindowColour::secondary, STR_RIGHTS_COST_LABEL                                           ),
+        makeHoldableSpinnerWidgets({188,  65}, {                  70,  14}, WidgetType::spinner,  WindowColour::secondary                                                                  ), // NB: 3 widgets
         makeWidget        ({  8,  82}, {kSizeLand.width - 16,  12}, WidgetType::checkbox, WindowColour::secondary, STR_FORBID_TREE_REMOVAL,      STR_FORBID_TREE_REMOVAL_TIP       ),
         makeWidget        ({  8,  99}, {kSizeLand.width - 16,  12}, WidgetType::checkbox, WindowColour::secondary, STR_FORBID_LANDSCAPE_CHANGES, STR_FORBID_LANDSCAPE_CHANGES_TIP  ),
         makeWidget        ({  8, 116}, {kSizeLand.width - 16,  12}, WidgetType::checkbox, WindowColour::secondary, STR_FORBID_HIGH_CONSTRUCTION, STR_FORBID_HIGH_CONSTRUCTION_TIP  )
@@ -304,40 +304,6 @@ namespace OpenRCT2::Ui::Windows
         window_editor_scenario_options_rides_widgets,
     };
 
-#pragma endregion
-
-#pragma region Enabled widgets
-
-    static uint64_t window_editor_scenario_options_page_holdDownWidgets[] = {
-        (1uLL << WIDX_OBJECTIVE_ARG_1_INCREASE) |
-            (1uLL << WIDX_OBJECTIVE_ARG_1_DECREASE) |
-            (1uLL << WIDX_OBJECTIVE_ARG_2_INCREASE) |
-            (1uLL << WIDX_OBJECTIVE_ARG_2_DECREASE),
-        0,
-        (1uLL << WIDX_INITIAL_CASH_INCREASE) |
-            (1uLL << WIDX_INITIAL_CASH_DECREASE) |
-            (1uLL << WIDX_INITIAL_LOAN_INCREASE) |
-            (1uLL << WIDX_INITIAL_LOAN_DECREASE) |
-            (1uLL << WIDX_MAXIMUM_LOAN_INCREASE) |
-            (1uLL << WIDX_MAXIMUM_LOAN_DECREASE) |
-            (1uLL << WIDX_INTEREST_RATE_INCREASE) |
-            (1uLL << WIDX_INTEREST_RATE_DECREASE),
-        (1uLL << WIDX_CASH_PER_GUEST_INCREASE) |
-            (1uLL << WIDX_CASH_PER_GUEST_DECREASE) |
-            (1uLL << WIDX_GUEST_INITIAL_HAPPINESS_INCREASE) |
-            (1uLL << WIDX_GUEST_INITIAL_HAPPINESS_DECREASE) |
-            (1uLL << WIDX_GUEST_INITIAL_HUNGER_INCREASE) |
-            (1uLL << WIDX_GUEST_INITIAL_HUNGER_DECREASE) |
-            (1uLL << WIDX_GUEST_INITIAL_THIRST_INCREASE) |
-            (1uLL << WIDX_GUEST_INITIAL_THIRST_DECREASE),
-        (1uLL << WIDX_LAND_COST_INCREASE) |
-            (1uLL << WIDX_LAND_COST_DECREASE) |
-            (1uLL << WIDX_CONSTRUCTION_RIGHTS_COST_INCREASE) |
-            (1uLL << WIDX_CONSTRUCTION_RIGHTS_COST_DECREASE) |
-            (1uLL << WIDX_ENTRY_PRICE_INCREASE) |
-            (1uLL << WIDX_ENTRY_PRICE_DECREASE),
-        0
-    };
     // clang-format on
 
 #pragma endregion
@@ -669,9 +635,6 @@ namespace OpenRCT2::Ui::Windows
 
             page = newPage;
             currentFrame = 0;
-            disabledWidgets = 0;
-            holdDownWidgets = window_editor_scenario_options_page_holdDownWidgets[page];
-            pressedWidgets = 0;
 
             setWidgets(window_editor_scenario_options_widgets[page]);
             invalidate();

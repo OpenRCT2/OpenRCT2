@@ -25,7 +25,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr StringId kWindowTitle = STR_CUSTOM_CURRENCY_WINDOW_TITLE;
     static constexpr ScreenSize kWindowSize = { 400, 100 };
 
-    enum WindowCustomCurrencyWidgetIdx
+    enum WindowCustomCurrencyWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,
@@ -56,7 +56,7 @@ namespace OpenRCT2::Ui::Windows
         void onOpen() override
         {
             setWidgets(window_custom_currency_widgets);
-            holdDownWidgets = (1uLL << WIDX_RATE_UP) | (1uLL << WIDX_RATE_DOWN);
+            widgetsSetHoldable(*this, { WIDX_RATE_UP, WIDX_RATE_DOWN });
             WindowInitScrollWidgets(*this);
             colours[0] = Drawing::Colour::lightBrown;
             colours[1] = Drawing::Colour::lightBrown;

@@ -36,7 +36,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr StringId kWindowTitle = STR_SET_PATROL_AREA;
     static constexpr ScreenSize kWindowSize = { 104, 54 };
 
-    enum WindowPatrolAreaWidgetIdx
+    enum WindowPatrolAreaWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,
@@ -62,7 +62,7 @@ namespace OpenRCT2::Ui::Windows
         {
             setWidgets(PatrolAreaWidgets);
 
-            holdDownWidgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
+            widgetsSetHoldable(*this, { WIDX_INCREMENT, WIDX_DECREMENT });
             WindowInitScrollWidgets(*this);
             WindowPushOthersBelow(*this);
             gLandToolSize = 4;

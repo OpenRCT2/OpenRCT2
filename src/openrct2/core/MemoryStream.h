@@ -13,6 +13,7 @@
 #include "IStream.hpp"
 
 #include <algorithm>
+#include <cstdio>
 #include <cstring>
 #include <vector>
 
@@ -90,7 +91,13 @@ namespace OpenRCT2
         void Read(void* buffer)
         {
             if (_position + N > _dataSize)
-                throw IOException("Attempted to read past end of stream.");
+            {
+                char message[256];
+                std::snprintf(
+                    message, sizeof(message), "Attempted to read past end of stream. Position: %zu, Length: %zu, DataSize: %zu",
+                    _position, N, _dataSize);
+                throw IOException(message);
+            }
 
             std::memcpy(buffer, _data + _position, N);
             _position += static_cast<size_t>(N);

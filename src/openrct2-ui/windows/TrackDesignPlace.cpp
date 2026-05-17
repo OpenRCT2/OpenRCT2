@@ -60,7 +60,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr auto kPaletteIndexColourTrack = PaletteIndex::primaryRemap5;   // Grey (dark)
     static constexpr auto kPaletteIndexColourStation = PaletteIndex::primaryRemap9; // Grey (light)
 
-    enum
+    enum WindowTrackDesignPlaceWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,

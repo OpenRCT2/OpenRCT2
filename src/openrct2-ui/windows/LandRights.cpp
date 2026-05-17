@@ -39,7 +39,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr ScreenSize kWindowSize = kInGameSize;
     static constexpr StringId kWindowTitle = STR_LAND_RIGHTS;
 
-    enum WindowLandRightsWidgetIdx
+    enum WindowLandRightsWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,
@@ -107,7 +107,11 @@ namespace OpenRCT2::Ui::Windows
         void SwitchToMode(LandRightsMode mode)
         {
             auto widgetIndex = WIDX_BUY_LAND_RIGHTS + EnumValue(mode);
-            pressedWidgets = (1uLL << widgetIndex);
+            widgetSetPressedExclusive(
+                *this,
+                { WIDX_BUY_LAND_RIGHTS, WIDX_BUY_CONSTRUCTION_RIGHTS, WIDX_LAND_OWNED_CHECKBOX, WIDX_LAND_SALE_CHECKBOX,
+                  WIDX_CONSTRUCTION_RIGHTS_OWNED_CHECKBOX, WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX, WIDX_UNOWNED_LAND_CHECKBOX },
+                widgetIndex);
             _landRightsMode = mode;
 
             ToolSet(*this, widgetIndex, Tool::upArrow);
@@ -130,7 +134,7 @@ namespace OpenRCT2::Ui::Windows
         {
             setWidgets(window_land_rights_widgets);
 
-            holdDownWidgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
+            widgetsSetHoldable(*this, { WIDX_INCREMENT, WIDX_DECREMENT });
             WindowInitScrollWidgets(*this);
             WindowPushOthersBelow(*this);
 

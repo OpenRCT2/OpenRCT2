@@ -26,7 +26,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr ScreenSize kWindowSizeSave = { 260, 54 };
     static constexpr ScreenSize kWindowSizeQuit = { 177, 38 };
 
-    enum WindowSavePromptWidgetIdx
+    enum WindowSavePromptWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,

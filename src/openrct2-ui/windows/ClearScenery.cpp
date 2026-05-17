@@ -71,7 +71,12 @@ namespace OpenRCT2::Ui::Windows
         {
             setWidgets(window_clear_scenery_widgets);
 
-            holdDownWidgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
+            widgetsSetHoldable(*this, { WIDX_INCREMENT, WIDX_DECREMENT });
+            widgetSetPressed(*this, WIDX_PREVIEW, true);
+            widgetSetPressed(*this, WIDX_SMALL_SCENERY, _clearSmallScenery);
+            widgetSetPressed(*this, WIDX_LARGE_SCENERY, _clearLargeScenery);
+            widgetSetPressed(*this, WIDX_FOOTPATH, _clearFootpath);
+
             WindowInitScrollWidgets(*this);
             WindowPushOthersBelow(*this);
 
@@ -104,14 +109,17 @@ namespace OpenRCT2::Ui::Windows
                 }
                 case WIDX_SMALL_SCENERY:
                     _clearSmallScenery ^= 1;
+                    widgetSetPressed(*this, WIDX_SMALL_SCENERY, _clearSmallScenery);
                     invalidate();
                     break;
                 case WIDX_LARGE_SCENERY:
                     _clearLargeScenery ^= 1;
+                    widgetSetPressed(*this, WIDX_LARGE_SCENERY, _clearLargeScenery);
                     invalidate();
                     break;
                 case WIDX_FOOTPATH:
                     _clearFootpath ^= 1;
+                    widgetSetPressed(*this, WIDX_FOOTPATH, _clearFootpath);
                     invalidate();
                     break;
             }
@@ -166,10 +174,6 @@ namespace OpenRCT2::Ui::Windows
 
         void onPrepareDraw() override
         {
-            // Set the preview image button to be pressed down
-            pressedWidgets = (1uLL << WIDX_PREVIEW) | (_clearSmallScenery ? (1uLL << WIDX_SMALL_SCENERY) : 0)
-                | (_clearLargeScenery ? (1uLL << WIDX_LARGE_SCENERY) : 0) | (_clearFootpath ? (1uLL << WIDX_FOOTPATH) : 0);
-
             // Update the preview image (for tool sizes up to 7)
             widgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gLandToolSize));
         }

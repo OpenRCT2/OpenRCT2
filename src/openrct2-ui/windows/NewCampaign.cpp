@@ -34,7 +34,7 @@ namespace OpenRCT2::Ui::Windows
 
     constexpr uint16_t kSelectedItemUndefined = 0xFFFF;
 
-    enum WindowNewCampaignWidgetIdx
+    enum WindowNewCampaignWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,
@@ -178,7 +178,7 @@ namespace OpenRCT2::Ui::Windows
         void onOpen() override
         {
             setWidgets(window_new_campaign_widgets);
-            holdDownWidgets = (1uLL << WIDX_WEEKS_INCREASE_BUTTON) | (1uLL << WIDX_WEEKS_DECREASE_BUTTON);
+            widgetsSetHoldable(*this, { WIDX_WEEKS_INCREASE_BUTTON, WIDX_WEEKS_DECREASE_BUTTON });
             WindowInitScrollWidgets(*this);
         }
 

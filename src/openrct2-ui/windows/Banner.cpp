@@ -35,7 +35,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr StringId kWindowTitle = STR_BANNER_WINDOW_TITLE;
     static constexpr ScreenSize kWindowSize = { 113, 96 };
 
-    enum WindowBannerWidgetIdx
+    enum WindowBannerWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,
@@ -296,15 +296,11 @@ namespace OpenRCT2::Ui::Windows
             {
                 colourBtn.type = WidgetType::colourBtn;
             }
-            pressedWidgets &= ~(1uLL << WIDX_BANNER_NO_ENTRY);
-            disabledWidgets &= ~(
-                (1uLL << WIDX_BANNER_TEXT) | (1uLL << WIDX_TEXT_COLOUR_DROPDOWN) | (1uLL << WIDX_TEXT_COLOUR_DROPDOWN_BUTTON));
-            if (banner->flags.has(BannerFlag::noEntry))
-            {
-                pressedWidgets |= (1uLL << WIDX_BANNER_NO_ENTRY);
-                disabledWidgets |= (1uLL << WIDX_BANNER_TEXT) | (1uLL << WIDX_TEXT_COLOUR_DROPDOWN)
-                    | (1uLL << WIDX_TEXT_COLOUR_DROPDOWN_BUTTON);
-            }
+            const bool noEntry = banner->flags.has(BannerFlag::noEntry);
+            setWidgetPressed(WIDX_BANNER_NO_ENTRY, noEntry);
+            setWidgetDisabled(WIDX_BANNER_TEXT, noEntry);
+            setWidgetDisabled(WIDX_TEXT_COLOUR_DROPDOWN, noEntry);
+            setWidgetDisabled(WIDX_TEXT_COLOUR_DROPDOWN_BUTTON, noEntry);
             colourBtn.image = getColourButtonImage(banner->colour);
             Widget& dropDownWidget = widgets[WIDX_TEXT_COLOUR_DROPDOWN];
             dropDownWidget.text = kBannerColouredTextFormats[EnumValue(banner->textColour)];

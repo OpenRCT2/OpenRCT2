@@ -34,4 +34,20 @@ namespace OpenRCT2
                 session, imageId.WithIndexOffset(imageIndexOffset), height, { 0, 0, 0 }, boundingBoxes[sequenceIndex]);
         }
     }
+
+    void paintTrackTunnel(
+        PaintSession& session, const Direction direction, const int32_t height, const TrackMetadata::SequenceTunnel& tunnel,
+        const TrackMetadata::SequenceTunnelType tunnelType, const TunnelGroup tunnelGroup)
+    {
+        if (tunnel.direction == direction)
+        {
+            const auto& tunnelInfo = tunnel.tunnelInfo[EnumValue(tunnelType)];
+            PaintUtilPushTunnelLeft(session, height + tunnelInfo.height, tunnelGroup, tunnelInfo.type);
+        }
+        else if (tunnel.direction == DirectionNext(direction))
+        {
+            const auto& tunnelInfo = tunnel.tunnelInfo[EnumValue(tunnelType)];
+            PaintUtilPushTunnelRight(session, height + tunnelInfo.height, tunnelGroup, tunnelInfo.type);
+        }
+    }
 } // namespace OpenRCT2

@@ -25,7 +25,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr StringId kWindowTitle = STR_SACK_STAFF;
     static constexpr ScreenSize kWindowSize = { 200, 100 };
 
-    enum WindowStaffFireWidgetIdx
+    enum WindowStaffFireWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,

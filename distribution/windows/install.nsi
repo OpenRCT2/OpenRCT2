@@ -215,10 +215,10 @@ Section "!OpenRCT2" Section1
     File ..\..\PRIVACY.md
     Push "$INSTDIR\PRIVACY.md"
     Call unix2dos
-    File ..\scripting.md
+    File ..\scripting\scripting.md
     Push "$INSTDIR\scripting.md"
     Call unix2dos
-    File ..\openrct2.d.ts
+    File ..\scripting\openrct2.d.ts
     Push "$INSTDIR\openrct2.d.ts"
     Call unix2dos
 

@@ -18,7 +18,7 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-    enum WindowNetworkStatusWidgetIdx
+    enum WindowNetworkStatusWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,

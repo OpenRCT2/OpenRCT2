@@ -48,7 +48,7 @@
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
 
-constexpr uint8_t kStreamVersion = 5;
+constexpr uint8_t kStreamVersion = 7;
 
 const std::string kStreamID = std::string(kOpenRCT2Version) + "-" + std::to_string(kStreamVersion);
 
@@ -1869,6 +1869,13 @@ namespace OpenRCT2::Network
                     LOG_VERBOSE("Exception during packet processing: %s", ex.what());
                 }
             }
+            else if (GetMode() == Mode::server)
+            {
+                LOG_WARNING(
+                    "Connection %s sent command %u that requires authentication, disconnecting.",
+                    connection.Socket->GetIpAddress().c_str(), static_cast<uint32_t>(packet.GetCommand()));
+                connection.Disconnect();
+            }
         }
 
         packet.Clear();
@@ -2621,13 +2628,18 @@ namespace OpenRCT2::Network
             if (generation == static_cast<uint8_t>(ObjectGeneration::DAT))
             {
                 const auto* entry = reinterpret_cast<const RCTObjectEntry*>(packet.Read(sizeof(RCTObjectEntry)));
+                if (entry == nullptr)
+                    break;
                 objectName = std::string(entry->GetName());
                 LOG_VERBOSE("Client requested object %s", objectName.c_str());
                 item = repo.FindObject(entry);
             }
             else
             {
-                objectName = std::string(packet.ReadString());
+                auto name = packet.ReadString();
+                if (name.empty())
+                    break;
+                objectName = std::string(name);
                 LOG_VERBOSE("Client requested object %s", objectName.c_str());
                 item = repo.FindObject(objectName);
             }
@@ -2640,6 +2652,14 @@ namespace OpenRCT2::Network
             {
                 connection.RequestedObjects.push_back(item);
             }
+        }
+
+        if (connection.player == nullptr)
+        {
+            LOG_WARNING(
+                "Connection %s requested map but has no player, disconnecting.", connection.Socket->GetIpAddress().c_str());
+            connection.Disconnect();
+            return;
         }
 
         auto player_name = connection.player->Name.c_str();

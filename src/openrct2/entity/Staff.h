@@ -53,22 +53,27 @@ namespace OpenRCT2
         int32_t HireDate;
         uint8_t StaffOrders;
         uint8_t StaffMowingTimeout;
-        union
+
+        union // 1st statistic
         {
             uint32_t StaffLawnsMown;
             uint32_t StaffRidesFixed;
+            uint32_t staffGuestsEntertained;
         };
-        union
+        union // 2nd statistic
         {
             uint32_t StaffGardensWatered;
             uint32_t StaffRidesInspected;
         };
-        union
+        union // 3rd statistic
         {
             uint32_t StaffLitterSwept;
             uint32_t StaffVandalsStopped;
         };
-        uint32_t StaffBinsEmptied;
+        union // 4th statistic
+        {
+            uint32_t StaffBinsEmptied;
+        };
 
         void Update();
         void Tick128UpdateStaff();
@@ -122,7 +127,7 @@ namespace OpenRCT2
 
         Direction HandymanDirectionRandSurface(uint8_t validDirections) const;
 
-        void EntertainerUpdateNearbyPeeps() const;
+        void EntertainerUpdateNearbyPeeps();
         bool SecurityGuardPathIsCrowded() const;
 
         uint8_t GetValidPatrolDirections(const CoordsXY& loc) const;

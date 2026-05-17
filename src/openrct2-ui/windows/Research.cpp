@@ -40,7 +40,7 @@ namespace OpenRCT2::Ui::Windows
         WINDOW_RESEARCH_PAGE_COUNT
     };
 
-    enum
+    enum WindowResearchWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,
@@ -148,9 +148,6 @@ namespace OpenRCT2::Ui::Windows
             invalidate();
 
             setWidgets(window_research_page_widgets[newPageIndex]);
-            holdDownWidgets = 0;
-            disabledWidgets = 0;
-            pressedWidgets = 0;
         }
 
     private:
@@ -555,24 +552,10 @@ namespace OpenRCT2::Ui::Windows
         for (int32_t i = 0; i < 7; i++)
         {
             int32_t mask = 1 << i;
-            int32_t widgetMask = 1uLL << (i + WIDX_TRANSPORT_RIDES + widgetOffset);
-
-            // Set checkbox disabled if research type is complete
-            if (uncompletedResearchTypes & mask)
-            {
-                w->disabledWidgets &= ~widgetMask;
-
-                // Set checkbox ticked if research type is active
-                if (activeResearchTypes & mask)
-                    w->pressedWidgets |= widgetMask;
-                else
-                    w->pressedWidgets &= ~widgetMask;
-            }
-            else
-            {
-                w->disabledWidgets |= widgetMask;
-                w->pressedWidgets &= ~widgetMask;
-            }
+            const WidgetIndex widgetIdx = static_cast<WidgetIndex>(i + WIDX_TRANSPORT_RIDES + widgetOffset);
+            const bool uncompleted = (uncompletedResearchTypes & mask) != 0;
+            widgetSetDisabled(*w, widgetIdx, !uncompleted);
+            widgetSetPressed(*w, widgetIdx, uncompleted && (activeResearchTypes & mask) != 0);
         }
     }
 

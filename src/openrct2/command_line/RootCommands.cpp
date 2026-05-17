@@ -15,7 +15,6 @@
 #include "../core/Console.hpp"
 #include "../core/File.h"
 #include "../core/Guard.hpp"
-#include "../core/Memory.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../localisation/Language.h"
@@ -46,7 +45,7 @@ namespace OpenRCT2
     std::string gNetworkStartAddress;
 
     static uint32_t _port = 0;
-    static char* _address = nullptr;
+    static u8string _address;
 #endif
 
     static bool _help = false;
@@ -307,7 +306,7 @@ namespace OpenRCT2
 
         gNetworkStart = Network::Mode::server;
         gNetworkStartPort = _port;
-        gNetworkStartAddress = String::toStd(_address);
+        gNetworkStartAddress = _address;
 
         return EXITCODE_CONTINUE;
     }

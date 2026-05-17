@@ -108,7 +108,7 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma region Widgets
 
-    enum
+    enum WindowRideWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,
@@ -428,35 +428,34 @@ namespace OpenRCT2::Ui::Windows
     };
     static_assert(std::size(PageWidgets) == WINDOW_RIDE_PAGE_COUNT);
 
-    static constexpr std::array PageHoldDownWidgets = {
-        0uLL,
-        (1uLL << WIDX_VEHICLE_TRAINS_INCREASE) |
-            (1uLL << WIDX_VEHICLE_TRAINS_DECREASE) |
-            (1uLL << WIDX_VEHICLE_CARS_PER_TRAIN_INCREASE) |
-            (1uLL << WIDX_VEHICLE_CARS_PER_TRAIN_DECREASE),
-        (1uLL << WIDX_MODE_TWEAK_INCREASE) |
-            (1uLL << WIDX_MODE_TWEAK_DECREASE) |
-            (1uLL << WIDX_LIFT_HILL_SPEED_INCREASE) |
-            (1uLL << WIDX_LIFT_HILL_SPEED_DECREASE) |
-            (1uLL << WIDX_MINIMUM_LENGTH_INCREASE) |
-            (1uLL << WIDX_MINIMUM_LENGTH_DECREASE) |
-            (1uLL << WIDX_MAXIMUM_LENGTH_INCREASE) |
-            (1uLL << WIDX_MAXIMUM_LENGTH_DECREASE) |
-            (1uLL << WIDX_OPERATE_NUMBER_OF_CIRCUITS_INCREASE) |
-            (1uLL << WIDX_OPERATE_NUMBER_OF_CIRCUITS_DECREASE),
-        0uLL,
-        0uLL,
-        0uLL,
-        0uLL,
-        0uLL,
-        (1uLL << WIDX_PRIMARY_PRICE_INCREASE) |
-            (1uLL << WIDX_PRIMARY_PRICE_DECREASE) |
-            (1uLL << WIDX_SECONDARY_PRICE_INCREASE) |
-            (1uLL << WIDX_SECONDARY_PRICE_DECREASE),
-        0uLL,
-    };
-    static_assert(std::size(PageHoldDownWidgets) == WINDOW_RIDE_PAGE_COUNT);
     // clang-format on
+
+    static void setPageHoldableWidgets(WindowBase& w, int32_t page)
+    {
+        switch (page)
+        {
+            case WINDOW_RIDE_PAGE_VEHICLE:
+                widgetsSetHoldable(
+                    w,
+                    { WIDX_VEHICLE_TRAINS_INCREASE, WIDX_VEHICLE_TRAINS_DECREASE, WIDX_VEHICLE_CARS_PER_TRAIN_INCREASE,
+                      WIDX_VEHICLE_CARS_PER_TRAIN_DECREASE });
+                break;
+            case WINDOW_RIDE_PAGE_OPERATING:
+                widgetsSetHoldable(
+                    w,
+                    { WIDX_MODE_TWEAK_INCREASE, WIDX_MODE_TWEAK_DECREASE, WIDX_LIFT_HILL_SPEED_INCREASE,
+                      WIDX_LIFT_HILL_SPEED_DECREASE, WIDX_MINIMUM_LENGTH_INCREASE, WIDX_MINIMUM_LENGTH_DECREASE,
+                      WIDX_MAXIMUM_LENGTH_INCREASE, WIDX_MAXIMUM_LENGTH_DECREASE, WIDX_OPERATE_NUMBER_OF_CIRCUITS_INCREASE,
+                      WIDX_OPERATE_NUMBER_OF_CIRCUITS_DECREASE });
+                break;
+            case WINDOW_RIDE_PAGE_INCOME:
+                widgetsSetHoldable(
+                    w,
+                    { WIDX_PRIMARY_PRICE_INCREASE, WIDX_PRIMARY_PRICE_DECREASE, WIDX_SECONDARY_PRICE_INCREASE,
+                      WIDX_SECONDARY_PRICE_DECREASE });
+                break;
+        }
+    }
 
 #pragma endregion
 
@@ -778,7 +777,6 @@ namespace OpenRCT2::Ui::Windows
         void onOpen() override
         {
             setWidgets(PageWidgets[WINDOW_RIDE_PAGE_MAIN]);
-            holdDownWidgets = PageHoldDownWidgets[WINDOW_RIDE_PAGE_MAIN];
 
             setPage(WINDOW_RIDE_PAGE_MAIN);
             listInformationType = 0;
@@ -1212,9 +1210,13 @@ namespace OpenRCT2::Ui::Windows
 
             removeViewport();
 
-            holdDownWidgets = PageHoldDownWidgets[page];
-            pressedWidgets = 0;
             setWidgets(PageWidgets[page]);
+            setPageHoldableWidgets(*this, page);
+            widgetSetPressedExclusive(
+                *this,
+                { WIDX_TAB_1, WIDX_TAB_2, WIDX_TAB_3, WIDX_TAB_4, WIDX_TAB_5, WIDX_TAB_6, WIDX_TAB_7, WIDX_TAB_8, WIDX_TAB_9,
+                  WIDX_TAB_10 },
+                WIDX_TAB_1 + page);
             DisableTabs();
             invalidate();
 
@@ -1393,57 +1395,43 @@ namespace OpenRCT2::Ui::Windows
 
         void DisableTabs()
         {
-            uint32_t disabledTabs = 0;
             auto ride = GetRide(rideId);
             if (ride == nullptr)
                 return;
 
             const auto& rtd = ride->getRideTypeDescriptor();
-
-            if (!rtd.flags.has(RtdFlag::hasDataLogging))
-                disabledTabs |= (1uLL << WIDX_TAB_8); // 0x800
-
-            if (rtd.specialType == RtdSpecialType::miniGolf)
-                disabledTabs |= (1uLL << WIDX_TAB_2 | 1uLL << WIDX_TAB_3 | 1uLL << WIDX_TAB_4); // 0xE0
-
-            if (rtd.flags.has(RtdFlag::noVehicles))
-                disabledTabs |= (1uLL << WIDX_TAB_2); // 0x20
-
-            if (!rtd.flags.hasAny(
-                    RtdFlag::hasTrackColourMain, RtdFlag::hasTrackColourAdditional, RtdFlag::hasTrackColourSupports,
-                    RtdFlag::hasVehicleColours, RtdFlag::hasEntranceAndExit))
-            {
-                disabledTabs |= (1uLL << WIDX_TAB_5); // 0x100
-            }
-
-            if (rtd.flags.has(RtdFlag::isShopOrFacility))
-                disabledTabs |= (1uLL << WIDX_TAB_3 | 1uLL << WIDX_TAB_4 | 1uLL << WIDX_TAB_7); // 0x4C0
-
-            if (!rtd.flags.has(RtdFlag::allowMusic))
-            {
-                disabledTabs |= (1uLL << WIDX_TAB_6); // 0x200
-            }
-
-            if (rtd.specialType == RtdSpecialType::cashMachine || rtd.specialType == RtdSpecialType::firstAid
-                || (getGameState().park.flags & PARK_FLAGS_NO_MONEY) != 0)
-                disabledTabs |= (1uLL << WIDX_TAB_9); // 0x1000
-
-            if (gLegacyScene == LegacyScene::trackDesigner)
-                disabledTabs |= (1uLL << WIDX_TAB_4 | 1uLL << WIDX_TAB_6 | 1uLL << WIDX_TAB_9 | 1uLL << WIDX_TAB_10); // 0x3280
-
             const auto* rideEntry = GetRideEntryByIndex(ride->subtype);
+            const bool noRideEntry = rideEntry == nullptr;
 
-            if (rideEntry == nullptr)
-            {
-                disabledTabs |= 1uLL << WIDX_TAB_2 | 1uLL << WIDX_TAB_3 | 1uLL << WIDX_TAB_4 | 1uLL << WIDX_TAB_5
-                    | 1uLL << WIDX_TAB_6 | 1uLL << WIDX_TAB_7 | 1uLL << WIDX_TAB_8 | 1uLL << WIDX_TAB_9 | 1uLL << WIDX_TAB_10;
-            }
-            else if (rideEntry->flags.has(RideEntryFlag::disableColourTab))
-            {
-                disabledTabs |= (1uLL << WIDX_TAB_5);
-            }
+            const bool disableTab2 = noRideEntry || rtd.specialType == RtdSpecialType::miniGolf
+                || rtd.flags.has(RtdFlag::noVehicles);
+            const bool disableTab3 = noRideEntry || rtd.specialType == RtdSpecialType::miniGolf
+                || rtd.flags.has(RtdFlag::isShopOrFacility);
+            const bool disableTab4 = noRideEntry || rtd.specialType == RtdSpecialType::miniGolf
+                || rtd.flags.has(RtdFlag::isShopOrFacility) || gLegacyScene == LegacyScene::trackDesigner;
+            const bool disableTab5 = noRideEntry
+                || !rtd.flags.hasAny(
+                    RtdFlag::hasTrackColourMain, RtdFlag::hasTrackColourAdditional, RtdFlag::hasTrackColourSupports,
+                    RtdFlag::hasVehicleColours, RtdFlag::hasEntranceAndExit)
+                || (!noRideEntry && rideEntry->flags.has(RideEntryFlag::disableColourTab));
+            const bool disableTab6 = noRideEntry || !rtd.flags.has(RtdFlag::allowMusic)
+                || gLegacyScene == LegacyScene::trackDesigner;
+            const bool disableTab7 = noRideEntry || rtd.flags.has(RtdFlag::isShopOrFacility);
+            const bool disableTab8 = noRideEntry || !rtd.flags.has(RtdFlag::hasDataLogging);
+            const bool disableTab9 = noRideEntry || rtd.specialType == RtdSpecialType::cashMachine
+                || rtd.specialType == RtdSpecialType::firstAid || (getGameState().park.flags & PARK_FLAGS_NO_MONEY) != 0
+                || gLegacyScene == LegacyScene::trackDesigner;
+            const bool disableTab10 = noRideEntry || gLegacyScene == LegacyScene::trackDesigner;
 
-            disabledWidgets = disabledTabs;
+            setWidgetDisabled(WIDX_TAB_2, disableTab2);
+            setWidgetDisabled(WIDX_TAB_3, disableTab3);
+            setWidgetDisabled(WIDX_TAB_4, disableTab4);
+            setWidgetDisabled(WIDX_TAB_5, disableTab5);
+            setWidgetDisabled(WIDX_TAB_6, disableTab6);
+            setWidgetDisabled(WIDX_TAB_7, disableTab7);
+            setWidgetDisabled(WIDX_TAB_8, disableTab8);
+            setWidgetDisabled(WIDX_TAB_9, disableTab9);
+            setWidgetDisabled(WIDX_TAB_10, disableTab10);
         }
 
         void UpdateOverallView(const Ride& ride) const
@@ -1505,13 +1493,6 @@ namespace OpenRCT2::Ui::Windows
                 // Small rides or stalls are zoomed in all the way.
                 view.zoom = ZoomLevel{ 0 };
             }
-        }
-
-        void SetPressedTab()
-        {
-            for (int32_t i = 0; i < WINDOW_RIDE_PAGE_COUNT; i++)
-                pressedWidgets &= ~(1 << (WIDX_TAB_1 + i));
-            pressedWidgets |= 1LL << (WIDX_TAB_1 + page);
         }
 
 #pragma region Main
@@ -2424,17 +2405,16 @@ namespace OpenRCT2::Ui::Windows
         {
             int32_t i, widgetHeight;
 
-            SetPressedTab();
-
             auto ride = GetRide(rideId);
             if (ride == nullptr)
                 return;
 
             const auto& gameState = getGameState();
-            disabledWidgets &= ~((1uLL << WIDX_DEMOLISH) | (1uLL << WIDX_CONSTRUCTION));
-            if (ride->flags.hasAny(RideFlag::indestructible, RideFlag::indestructibleTrack)
-                && !gameState.cheats.makeAllDestructible)
-                disabledWidgets |= (1uLL << WIDX_DEMOLISH);
+            setWidgetDisabled(WIDX_CONSTRUCTION, false);
+            setWidgetDisabled(
+                WIDX_DEMOLISH,
+                ride->flags.hasAny(RideFlag::indestructible, RideFlag::indestructibleTrack)
+                    && !gameState.cheats.makeAllDestructible);
 
             uint32_t spriteIds[] = {
                 SPR_CLOSED,
@@ -2874,8 +2854,6 @@ namespace OpenRCT2::Ui::Windows
 
         void VehicleOnPrepareDraw()
         {
-            SetPressedTab();
-
             auto ride = GetRide(rideId);
             if (ride == nullptr)
                 return;
@@ -2922,14 +2900,7 @@ namespace OpenRCT2::Ui::Windows
                 || (gameState.cheats.disableTrainLengthLimit && !ride->getRideTypeDescriptor().flags.has(RtdFlag::isFlatRide)))
             {
                 widgets[WIDX_VEHICLE_REVERSED_TRAINS_CHECKBOX].type = WidgetType::checkbox;
-                if (ride->flags.has(RideFlag::reversedTrains))
-                {
-                    pressedWidgets |= (1uLL << WIDX_VEHICLE_REVERSED_TRAINS_CHECKBOX);
-                }
-                else
-                {
-                    pressedWidgets &= ~(1uLL << WIDX_VEHICLE_REVERSED_TRAINS_CHECKBOX);
-                }
+                setWidgetPressed(WIDX_VEHICLE_REVERSED_TRAINS_CHECKBOX, ride->flags.has(RideFlag::reversedTrains));
             }
             else
             {
@@ -3555,17 +3526,16 @@ namespace OpenRCT2::Ui::Windows
         {
             StringId format, caption, tooltip;
 
-            SetPressedTab();
-
             auto ride = GetRide(rideId);
             if (ride == nullptr)
                 return;
 
             // Widget setup
-            pressedWidgets &= ~(
-                (1uLL << WIDX_LOAD_CHECKBOX) | (1uLL << WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX)
-                | (1uLL << WIDX_MINIMUM_LENGTH_CHECKBOX) | (1uLL << WIDX_MAXIMUM_LENGTH_CHECKBOX)
-                | (1uLL << WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX));
+            setWidgetPressed(WIDX_LOAD_CHECKBOX, false);
+            setWidgetPressed(WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX, false);
+            setWidgetPressed(WIDX_MINIMUM_LENGTH_CHECKBOX, false);
+            setWidgetPressed(WIDX_MAXIMUM_LENGTH_CHECKBOX, false);
+            setWidgetPressed(WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX, false);
 
             // Sometimes, only one of the alternatives support lift hill pieces. Make sure to check both.
             const auto& rtd = ride->getRideTypeDescriptor();
@@ -3661,7 +3631,7 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_MAXIMUM_LENGTH].setString(_spinnerCaption4.c_str());
 
                 if (ride->departFlags & RIDE_DEPART_WAIT_FOR_LOAD)
-                    pressedWidgets |= (1uLL << WIDX_LOAD_CHECKBOX);
+                    setWidgetPressed(WIDX_LOAD_CHECKBOX, true);
             }
             else
             {
@@ -3681,13 +3651,13 @@ namespace OpenRCT2::Ui::Windows
             }
 
             if (ride->departFlags & RIDE_DEPART_LEAVE_WHEN_ANOTHER_ARRIVES)
-                pressedWidgets |= (1uLL << WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX);
+                setWidgetPressed(WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX, true);
             if (ride->departFlags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS)
-                pressedWidgets |= (1uLL << WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX);
+                setWidgetPressed(WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX, true);
             if (ride->departFlags & RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH)
-                pressedWidgets |= (1uLL << WIDX_MINIMUM_LENGTH_CHECKBOX);
+                setWidgetPressed(WIDX_MINIMUM_LENGTH_CHECKBOX, true);
             if (ride->departFlags & RIDE_DEPART_WAIT_FOR_MAXIMUM_LENGTH)
-                pressedWidgets |= (1uLL << WIDX_MAXIMUM_LENGTH_CHECKBOX);
+                setWidgetPressed(WIDX_MAXIMUM_LENGTH_CHECKBOX, true);
 
             // Mode specific functionality
             auto multiplier = ride->getRideTypeDescriptor().OperatingSettings.OperatingSettingMultiplier;
@@ -3752,7 +3722,7 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_MODE_TWEAK].setString(_spinnerCaption0.c_str());
                 widgets[WIDX_MODE_TWEAK_INCREASE].type = WidgetType::button;
                 widgets[WIDX_MODE_TWEAK_DECREASE].type = WidgetType::button;
-                pressedWidgets &= ~(1uLL << WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX);
+                setWidgetPressed(WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX, false);
             }
             else
             {
@@ -4070,8 +4040,6 @@ namespace OpenRCT2::Ui::Windows
 
         void MaintenanceOnPrepareDraw()
         {
-            SetPressedTab();
-
             auto ride = GetRide(rideId);
             if (ride == nullptr)
                 return;
@@ -4091,12 +4059,12 @@ namespace OpenRCT2::Ui::Windows
 
             if (ride->getRideTypeDescriptor().availableBreakdowns.isEmpty() || !ride->flags.has(RideFlag::everBeenOpened))
             {
-                disabledWidgets |= (1uLL << WIDX_REFURBISH_RIDE);
+                setWidgetDisabled(WIDX_REFURBISH_RIDE, true);
                 widgets[WIDX_REFURBISH_RIDE].tooltip = STR_CANT_REFURBISH_NOT_NEEDED;
             }
             else
             {
-                disabledWidgets &= ~(1uLL << WIDX_REFURBISH_RIDE);
+                setWidgetDisabled(WIDX_REFURBISH_RIDE, false);
                 widgets[WIDX_REFURBISH_RIDE].tooltip = STR_REFURBISH_RIDE_TIP;
             }
         }
@@ -4651,7 +4619,6 @@ namespace OpenRCT2::Ui::Windows
 
         void ColourOnPrepareDraw()
         {
-            SetPressedTab();
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
 
             auto ride = GetRide(rideId);
@@ -4736,14 +4703,7 @@ namespace OpenRCT2::Ui::Windows
             if (ride->hasRecolourableShopItems())
             {
                 widgets[WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX].type = WidgetType::checkbox;
-                if (ride->flags.has(RideFlag::randomShopColours))
-                {
-                    pressedWidgets |= (1uLL << WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX);
-                }
-                else
-                {
-                    pressedWidgets &= ~(1uLL << WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX);
-                }
+                setWidgetPressed(WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX, ride->flags.has(RideFlag::randomShopColours));
             }
             else
             {
@@ -5386,8 +5346,6 @@ namespace OpenRCT2::Ui::Windows
 
         void MusicOnPrepareDraw()
         {
-            SetPressedTab();
-
             auto ride = GetRide(rideId);
             if (ride == nullptr)
                 return;
@@ -5427,14 +5385,19 @@ namespace OpenRCT2::Ui::Windows
                     widgets[WIDX_MUSIC_DATA].right = width - 8;
                 }
 
-                pressedWidgets |= (1uLL << WIDX_PLAY_MUSIC) | (1uLL << WIDX_MUSIC_IMAGE);
-                disabledWidgets &= ~((1uLL << WIDX_MUSIC) | (1uLL << WIDX_MUSIC_DROPDOWN) | (1uLL << WIDX_MUSIC_DATA));
+                setWidgetPressed(WIDX_PLAY_MUSIC, true);
+                setWidgetPressed(WIDX_MUSIC_IMAGE, true);
+                setWidgetDisabled(WIDX_MUSIC, false);
+                setWidgetDisabled(WIDX_MUSIC_DROPDOWN, false);
+                setWidgetDisabled(WIDX_MUSIC_DATA, false);
             }
             else
             {
-                pressedWidgets &= ~(1uLL << WIDX_PLAY_MUSIC);
-                pressedWidgets |= (1uLL << WIDX_MUSIC_IMAGE);
-                disabledWidgets |= (1uLL << WIDX_MUSIC) | (1uLL << WIDX_MUSIC_DROPDOWN) | (1uLL << WIDX_MUSIC_DATA);
+                setWidgetPressed(WIDX_PLAY_MUSIC, false);
+                setWidgetPressed(WIDX_MUSIC_IMAGE, true);
+                setWidgetDisabled(WIDX_MUSIC, true);
+                setWidgetDisabled(WIDX_MUSIC_DROPDOWN, true);
+                setWidgetDisabled(WIDX_MUSIC_DATA, true);
             }
 
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
@@ -5779,8 +5742,6 @@ namespace OpenRCT2::Ui::Windows
 
         void MeasurementsOnPrepareDraw()
         {
-            SetPressedTab();
-
             auto ride = GetRide(rideId);
             if (ride == nullptr)
                 return;
@@ -5802,15 +5763,10 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_CANCEL_DESIGN].type = WidgetType::empty;
 
                 widgets[WIDX_SAVE_TRACK_DESIGN].type = WidgetType::flatBtn;
-                disabledWidgets |= (1uLL << WIDX_SAVE_TRACK_DESIGN);
-                if (ride->flags.has(RideFlag::tested))
-                {
-                    if (!ride->ratings.isNull())
-                    {
-                        disabledWidgets &= ~(1uLL << WIDX_SAVE_TRACK_DESIGN);
-                        widgets[WIDX_SAVE_TRACK_DESIGN].tooltip = STR_SAVE_TRACK_DESIGN;
-                    }
-                }
+                const bool canSaveTrackDesign = ride->flags.has(RideFlag::tested) && !ride->ratings.isNull();
+                setWidgetDisabled(WIDX_SAVE_TRACK_DESIGN, !canSaveTrackDesign);
+                if (canSaveTrackDesign)
+                    widgets[WIDX_SAVE_TRACK_DESIGN].tooltip = STR_SAVE_TRACK_DESIGN;
             }
 
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
@@ -6211,18 +6167,14 @@ namespace OpenRCT2::Ui::Windows
 
         void GraphsOnPrepareDraw()
         {
-            SetPressedTab();
-
             auto ride = GetRide(rideId);
             if (ride == nullptr)
                 return;
 
             // Set pressed graph button type
-            pressedWidgets &= ~(1uLL << WIDX_GRAPH_VELOCITY);
-            pressedWidgets &= ~(1uLL << WIDX_GRAPH_ALTITUDE);
-            pressedWidgets &= ~(1uLL << WIDX_GRAPH_VERTICAL);
-            pressedWidgets &= ~(1uLL << WIDX_GRAPH_LATERAL);
-            pressedWidgets |= (1LL << (WIDX_GRAPH_VELOCITY + listInformationType));
+            widgetSetPressedExclusive(
+                *this, { WIDX_GRAPH_VELOCITY, WIDX_GRAPH_ALTITUDE, WIDX_GRAPH_VERTICAL, WIDX_GRAPH_LATERAL },
+                WIDX_GRAPH_VELOCITY + listInformationType);
 
             // Hide graph buttons that are not applicable
             if (ride->getRideTypeDescriptor().flags.has(RtdFlag::hasGForces))
@@ -6278,7 +6230,7 @@ namespace OpenRCT2::Ui::Windows
             if (measurement == nullptr)
             {
                 // No measurement message
-                ScreenCoordsXY stringCoords(widget->width() / 2, widget->height() - 1 / 2 - 5);
+                ScreenCoordsXY stringCoords(widget->width() / 2, widget->height() / 2 - 5);
                 int32_t txtWidth = widget->width() - 3;
                 drawTextWrapped(rt, stringCoords, txtWidth, message.str, message.args, { TextAlignment::centre });
                 return;
@@ -6720,8 +6672,6 @@ namespace OpenRCT2::Ui::Windows
 
         void IncomeOnPrepareDraw()
         {
-            SetPressedTab();
-
             auto ride = GetRide(rideId);
             if (ride == nullptr)
                 return;
@@ -6731,8 +6681,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             // Primary item
-            pressedWidgets &= ~(1uLL << WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK);
-            disabledWidgets &= ~(1uLL << WIDX_PRIMARY_PRICE);
+            setWidgetPressed(WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK, false);
 
             widgets[WIDX_PRIMARY_PRICE_LABEL].tooltip = kStringIdNone;
             widgets[WIDX_PRIMARY_PRICE].tooltip = kStringIdNone;
@@ -6741,10 +6690,11 @@ namespace OpenRCT2::Ui::Windows
 
             // If ride prices are locked, do not allow setting the price, unless we're dealing with a shop or toilet.
             const auto& rtd = ride->getRideTypeDescriptor();
-            if (!Park::RidePricesUnlocked(park) && rideEntry->shop_item[0] == ShopItem::none
-                && rtd.specialType != RtdSpecialType::toilet)
+            const bool primaryPriceLocked = !Park::RidePricesUnlocked(park) && rideEntry->shop_item[0] == ShopItem::none
+                && rtd.specialType != RtdSpecialType::toilet;
+            setWidgetDisabled(WIDX_PRIMARY_PRICE, primaryPriceLocked);
+            if (primaryPriceLocked)
             {
-                disabledWidgets |= (1uLL << WIDX_PRIMARY_PRICE);
                 widgets[WIDX_PRIMARY_PRICE_LABEL].tooltip = STR_RIDE_INCOME_ADMISSION_PAY_FOR_ENTRY_TIP;
                 widgets[WIDX_PRIMARY_PRICE].tooltip = STR_RIDE_INCOME_ADMISSION_PAY_FOR_ENTRY_TIP;
             }
@@ -6770,7 +6720,7 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK].type = WidgetType::checkbox;
 
                 if (ShopItemHasCommonPrice(primaryItem))
-                    pressedWidgets |= (1uLL << WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK);
+                    setWidgetPressed(WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK, true);
 
                 widgets[WIDX_PRIMARY_PRICE_LABEL].text = GetShopItemDescriptor(primaryItem).Naming.PriceLabel;
             }
@@ -6797,9 +6747,7 @@ namespace OpenRCT2::Ui::Windows
             else
             {
                 // Set same price throughout park checkbox
-                pressedWidgets &= ~(1uLL << WIDX_SECONDARY_PRICE_SAME_THROUGHOUT_PARK);
-                if (ShopItemHasCommonPrice(secondaryItem))
-                    pressedWidgets |= (1uLL << WIDX_SECONDARY_PRICE_SAME_THROUGHOUT_PARK);
+                setWidgetPressed(WIDX_SECONDARY_PRICE_SAME_THROUGHOUT_PARK, ShopItemHasCommonPrice(secondaryItem));
 
                 // Show widgets
                 widgets[WIDX_SECONDARY_PRICE_LABEL].type = WidgetType::label;
@@ -6998,8 +6946,6 @@ namespace OpenRCT2::Ui::Windows
 
         void CustomerOnPrepareDraw()
         {
-            SetPressedTab();
-
             auto ride = GetRide(rideId);
             if (ride != nullptr)
             {

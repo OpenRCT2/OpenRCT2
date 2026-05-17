@@ -8,6 +8,7 @@ Checks: >
     modernize-use-nullptr,
     modernize-use-override,
     readability-container-size-empty,
+    readability-identifier-naming,
     readability-redundant-typename,
     readability-uppercase-literal-suffix
 CheckOptions:
@@ -15,5 +16,9 @@ CheckOptions:
       value: 'validate_global_widx|NETWORK_STREAM_VERSION|SFL_ASSERT|SFL_CATCH'
     - key: readability-uppercase-literal-suffix.NewSuffixes
       value: 'u;L;uL;LL;uLL'
+    - key: readability-identifier-naming.ConstexprVariableCase
+      value: 'CamelCase'
+    - key: readability-identifier-naming.ConstexprVariablePrefix
+      value: 'k'
 WarningsAsErrors: true
 FormatStyle: 'file'

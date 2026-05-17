@@ -36,7 +36,7 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma region Widgets
 
-    enum WindowPlayerWidgetIdx
+    enum WindowPlayerWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,
@@ -106,8 +106,6 @@ namespace OpenRCT2::Ui::Windows
 
             WindowSetResize(*this, { 210, 134 }, { 500, 450 });
 
-            holdDownWidgets = 0;
-            pressedWidgets = 0;
             setPage(WINDOW_PLAYER_PAGE_OVERVIEW);
         }
 
@@ -222,8 +220,6 @@ namespace OpenRCT2::Ui::Windows
             page = newPage;
             currentFrame = 0;
 
-            holdDownWidgets = 0;
-            pressedWidgets = 0;
             setWidgets(window_player_page_widgets[newPage]);
             invalidate();
             onResize();
@@ -378,9 +374,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            pressedWidgets &= ~(WIDX_TAB_1);
-            pressedWidgets &= ~(WIDX_TAB_2);
-            pressedWidgets |= 1uLL << (page + WIDX_TAB_1);
+            widgetSetPressedExclusive(*this, { WIDX_TAB_1, WIDX_TAB_2 }, page + WIDX_TAB_1);
 
             UpdateTitle();
 
@@ -589,9 +583,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onPrepareDrawStatistics()
         {
-            pressedWidgets &= ~(WIDX_TAB_1);
-            pressedWidgets &= ~(WIDX_TAB_2);
-            pressedWidgets |= 1uLL << (page + WIDX_TAB_1);
+            widgetSetPressedExclusive(*this, { WIDX_TAB_1, WIDX_TAB_2 }, page + WIDX_TAB_1);
 
             UpdateTitle();
 

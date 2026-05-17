@@ -48,7 +48,7 @@ namespace OpenRCT2::Ui::Windows
         PAGE_COUNT
     };
 
-    enum WindowRideListWidgetIdx
+    enum WindowRideListWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,
@@ -506,16 +506,11 @@ namespace OpenRCT2::Ui::Windows
             ft.Add<StringId>(STR_UP);
 
             // Set correct active tab
-            for (int32_t i = 0; i < 3; i++)
-                pressedWidgets &= ~(1 << (WIDX_TAB_1 + i));
-            pressedWidgets |= 1LL << (WIDX_TAB_1 + page);
+            widgetSetPressedExclusive(*this, { WIDX_TAB_1, WIDX_TAB_2, WIDX_TAB_3 }, WIDX_TAB_1 + page);
 
             widgets[WIDX_TITLE].text = page_names[page];
 
-            if (_quickDemolishMode)
-                pressedWidgets |= (1uLL << WIDX_QUICK_DEMOLISH);
-            else
-                pressedWidgets &= ~(1uLL << WIDX_QUICK_DEMOLISH);
+            setWidgetPressed(WIDX_QUICK_DEMOLISH, _quickDemolishMode);
 
             widgets[WIDX_LIST].right = width - 26;
             widgets[WIDX_LIST].bottom = height - 15;

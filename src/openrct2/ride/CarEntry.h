@@ -110,7 +110,7 @@ using CarEntryFlags = FlagHolder<uint64_t, CarEntryFlag>;
 
 /*
  * When adding a sprite group, add multiplier to SpriteGroupMultiplier in RideObject.cpp and add sprite group data to cable
- * lift hill vehicle in RideData.cpp and update the SpriteGroups interface in distribution/openrct2.d.ts
+ * lift hill vehicle in RideData.cpp and update the SpriteGroups interface in distribution/scripting/openrct2.d.ts
  */
 enum class SpriteGroupType : uint8_t
 {

@@ -576,8 +576,6 @@ namespace OpenRCT2
         uint8_t xl = loc.x & 0x1f;
         uint8_t yl = loc.y & 0x1f;
 
-        uint8_t TILE_SIZE = 32;
-
         // Slope logic:
         // Each of the four bits in slope represents that corner being raised
         // slope == 15 (all four bits) is not used and slope == 0 is flat
@@ -592,13 +590,13 @@ namespace OpenRCT2
             switch (slope)
             {
                 case kTileSlopeNCornerUp:
-                    quad = xl + yl - TILE_SIZE;
+                    quad = xl + yl - kCoordsXYStep;
                     break;
                 case kTileSlopeECornerUp:
                     quad = xl - yl;
                     break;
                 case kTileSlopeSCornerUp:
-                    quad = TILE_SIZE - yl - xl;
+                    quad = kCoordsXYStep - yl - xl;
                     break;
                 case kTileSlopeWCornerUp:
                     quad = yl - xl;
@@ -618,13 +616,13 @@ namespace OpenRCT2
                 height += xl / 2;
                 break;
             case kTileSlopeSESideUp:
-                height += (TILE_SIZE - yl) / 2;
+                height += (kCoordsXYStep - yl) / 2;
                 break;
             case kTileSlopeNWSideUp:
                 height += yl / 2;
                 break;
             case kTileSlopeSWSideUp:
-                height += (TILE_SIZE - xl) / 2;
+                height += (kCoordsXYStep - xl) / 2;
                 break;
         }
 
@@ -635,20 +633,20 @@ namespace OpenRCT2
             switch (slope)
             {
                 case kTileSlopeWCornerDown:
-                    quad_extra = xl + TILE_SIZE - yl;
+                    quad_extra = xl + kCoordsXYStep - yl;
                     quad = xl - yl;
                     break;
                 case kTileSlopeSCornerDown:
                     quad_extra = xl + yl;
-                    quad = xl + yl - TILE_SIZE;
+                    quad = xl + yl - kCoordsXYStep;
                     break;
                 case kTileSlopeECornerDown:
-                    quad_extra = TILE_SIZE - xl + yl;
+                    quad_extra = kCoordsXYStep - xl + yl;
                     quad = yl - xl;
                     break;
                 case kTileSlopeNCornerDown:
-                    quad_extra = (TILE_SIZE - xl) + (TILE_SIZE - yl);
-                    quad = TILE_SIZE - yl - xl;
+                    quad_extra = (kCoordsXYStep - xl) + (kCoordsXYStep - yl);
+                    quad = kCoordsXYStep - yl - xl;
                     break;
             }
 
@@ -675,7 +673,7 @@ namespace OpenRCT2
                     quad = std::abs(xl - yl);
                     break;
                 case kTileSlopeNSValley:
-                    quad = std::abs(xl + yl - TILE_SIZE);
+                    quad = std::abs(xl + yl - kCoordsXYStep);
                     break;
             }
             height += quad / 2;

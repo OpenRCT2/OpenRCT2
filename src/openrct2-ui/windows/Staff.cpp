@@ -56,7 +56,7 @@ namespace OpenRCT2::Ui::Windows
         WINDOW_STAFF_PAGE_COUNT,
     };
 
-    enum WindowStaffWidgetIdx
+    enum WindowStaffWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,
@@ -349,7 +349,6 @@ namespace OpenRCT2::Ui::Windows
         {
             ColourSchemeUpdateByClass(this, static_cast<WindowClass>(WindowClass::staff));
 
-            SetPressedTab();
             DisableWidgets();
 
             auto staff = GetStaff();
@@ -989,6 +988,10 @@ namespace OpenRCT2::Ui::Windows
                     drawText(rt, screenCoords, STR_STAFF_STAT_VANDALS_STOPPED, ft);
                     break;
                 case StaffType::entertainer:
+                    ft = Formatter();
+                    ft.Add<uint32_t>(staff->staffGuestsEntertained);
+                    drawText(rt, screenCoords, STR_STAFF_STAT_GUESTS_ENTERTAINED, ft);
+                    break;
                 case StaffType::count:
                     break;
             }
@@ -1073,9 +1076,8 @@ namespace OpenRCT2::Ui::Windows
 
             page = newPage;
             currentFrame = 0;
-            pressedWidgets = 0;
-            holdDownWidgets = 0;
             setWidgets(window_staff_page_widgets[page]);
+            SetPressedTab();
 
             removeViewport();
 

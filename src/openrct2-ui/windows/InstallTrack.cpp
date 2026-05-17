@@ -38,7 +38,7 @@ using namespace OpenRCT2::Drawing;
 
 namespace OpenRCT2::Ui::Windows
 {
-    enum
+    enum WindowInstallTrackWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,
@@ -89,6 +89,7 @@ namespace OpenRCT2::Ui::Windows
         void onOpen() override
         {
             setWidgets(window_install_track_widgets);
+            setWidgetPressed(WIDX_TRACK_PREVIEW, true);
 
             WindowInitScrollWidgets(*this);
             WindowPushOthersRight(*this);
@@ -139,15 +140,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onPrepareDraw() override
         {
-            pressedWidgets |= 1uLL << WIDX_TRACK_PREVIEW;
-            if (!gTrackDesignSceneryToggle)
-            {
-                pressedWidgets |= (1uLL << WIDX_TOGGLE_SCENERY);
-            }
-            else
-            {
-                pressedWidgets &= ~(1uLL << WIDX_TOGGLE_SCENERY);
-            }
+            setWidgetPressed(WIDX_TOGGLE_SCENERY, !gTrackDesignSceneryToggle);
         }
 
         void onDraw(RenderTarget& rt) override

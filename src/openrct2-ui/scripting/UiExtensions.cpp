@@ -67,8 +67,10 @@ void UiScriptExtensions::Extend(ScriptEngine& scriptEngine)
 
     InitialiseCustomImages(scriptEngine);
     InitialiseCustomMenuItems(scriptEngine);
-    scriptEngine.SubscribeToPluginStoppedEvent(
-        [](std::shared_ptr<Plugin> plugin) -> void { Ui::Windows::CloseWindowsOwnedByPlugin(plugin); });
+    scriptEngine.SubscribeToPluginStoppedEvent([](std::shared_ptr<Plugin> plugin) -> void {
+        ScUi::hidePluginGridlines(plugin);
+        Ui::Windows::CloseWindowsOwnedByPlugin(plugin);
+    });
 
     scriptEngine.RegisterExtension(InitialiseContext, Unregister);
 }

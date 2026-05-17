@@ -44,7 +44,7 @@ namespace OpenRCT2::Ui::Windows
         WINDOW_MAPGEN_PAGE_COUNT
     };
 
-    enum
+    enum WindowMapGenWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,
@@ -183,56 +183,32 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma region Widget flags
 
-    // clang-format off
-    static uint64_t PageDisabledWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
-        (1uLL << WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP) |
-        (1uLL << WIDX_HEIGHTMAP_STRENGTH) |
-        (1uLL << WIDX_HEIGHTMAP_STRENGTH_UP) |
-        (1uLL << WIDX_HEIGHTMAP_STRENGTH_DOWN) |
-        (1uLL << WIDX_HEIGHTMAP_NORMALIZE),
-
-        0,
-
-        0,
-
-        0
-    };
-
-    static uint64_t HoldDownWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
-        (1uLL << WIDX_MAP_SIZE_Y_UP) |
-        (1uLL << WIDX_MAP_SIZE_Y_DOWN) |
-        (1uLL << WIDX_MAP_SIZE_X_UP) |
-        (1uLL << WIDX_MAP_SIZE_X_DOWN) |
-        (1uLL << WIDX_SIMPLEX_BASE_FREQ_UP) |
-        (1uLL << WIDX_SIMPLEX_BASE_FREQ_DOWN) |
-        (1uLL << WIDX_SIMPLEX_OCTAVES_UP) |
-        (1uLL << WIDX_SIMPLEX_OCTAVES_DOWN) |
-        (1uLL << WIDX_HEIGHTMAP_STRENGTH_UP) |
-        (1uLL << WIDX_HEIGHTMAP_STRENGTH_DOWN),
-
-        (1uLL << WIDX_HEIGHTMAP_LOW_UP) |
-        (1uLL << WIDX_HEIGHTMAP_LOW_DOWN) |
-        (1uLL << WIDX_HEIGHTMAP_HIGH_UP) |
-        (1uLL << WIDX_HEIGHTMAP_HIGH_DOWN),
-
-        (1uLL << WIDX_WATER_LEVEL_UP) |
-        (1uLL << WIDX_WATER_LEVEL_DOWN),
-
-        (1uLL << WIDX_TREE_LAND_RATIO_UP) |
-        (1uLL << WIDX_TREE_LAND_RATIO_DOWN) |
-        (1uLL << WIDX_TREE_ALTITUDE_MIN_UP) |
-        (1uLL << WIDX_TREE_ALTITUDE_MIN_DOWN) |
-        (1uLL << WIDX_TREE_ALTITUDE_MAX_UP) |
-        (1uLL << WIDX_TREE_ALTITUDE_MAX_DOWN),
-    };
-
-    static uint64_t PressedWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
-        0,
-        (1uLL << WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES),
-        0,
-        0,
-    };
-    // clang-format on
+    static void setPageHoldableWidgets(WindowBase& w, int32_t page)
+    {
+        switch (page)
+        {
+            case WINDOW_MAPGEN_PAGE_BASE:
+                widgetsSetHoldable(
+                    w,
+                    { WIDX_MAP_SIZE_Y_UP, WIDX_MAP_SIZE_Y_DOWN, WIDX_MAP_SIZE_X_UP, WIDX_MAP_SIZE_X_DOWN,
+                      WIDX_SIMPLEX_BASE_FREQ_UP, WIDX_SIMPLEX_BASE_FREQ_DOWN, WIDX_SIMPLEX_OCTAVES_UP,
+                      WIDX_SIMPLEX_OCTAVES_DOWN, WIDX_HEIGHTMAP_STRENGTH_UP, WIDX_HEIGHTMAP_STRENGTH_DOWN });
+                break;
+            case WINDOW_MAPGEN_PAGE_TERRAIN:
+                widgetsSetHoldable(
+                    w, { WIDX_HEIGHTMAP_LOW_UP, WIDX_HEIGHTMAP_LOW_DOWN, WIDX_HEIGHTMAP_HIGH_UP, WIDX_HEIGHTMAP_HIGH_DOWN });
+                break;
+            case WINDOW_MAPGEN_PAGE_WATER:
+                widgetsSetHoldable(w, { WIDX_WATER_LEVEL_UP, WIDX_WATER_LEVEL_DOWN });
+                break;
+            case WINDOW_MAPGEN_PAGE_FORESTS:
+                widgetsSetHoldable(
+                    w,
+                    { WIDX_TREE_LAND_RATIO_UP, WIDX_TREE_LAND_RATIO_DOWN, WIDX_TREE_ALTITUDE_MIN_UP,
+                      WIDX_TREE_ALTITUDE_MIN_DOWN, WIDX_TREE_ALTITUDE_MAX_UP, WIDX_TREE_ALTITUDE_MAX_DOWN });
+                break;
+        }
+    }
 
 #pragma endregion
 
@@ -290,20 +266,12 @@ namespace OpenRCT2::Ui::Windows
             removeViewport();
 
             setWidgets(PageWidgets[newPage]);
-            holdDownWidgets = HoldDownWidgets[newPage];
-            disabledWidgets = PageDisabledWidgets[newPage];
-            pressedWidgets = PressedWidgets[newPage];
+            setPageHoldableWidgets(*this, newPage);
+            widgetSetPressedExclusive(*this, { WIDX_TAB_1, WIDX_TAB_2, WIDX_TAB_3, WIDX_TAB_4 }, WIDX_TAB_1 + newPage);
 
             initScrollWidgets();
             invalidate();
             onResize();
-        }
-
-        void SetPressedTab()
-        {
-            for (auto i = 0; i < WINDOW_MAPGEN_PAGE_COUNT; i++)
-                pressedWidgets &= ~(1 << (WIDX_TAB_1 + i));
-            pressedWidgets |= 1LL << (WIDX_TAB_1 + page);
         }
 
         void DrawTabImage(RenderTarget& rt, int32_t newPage, int32_t spriteIndex)
@@ -538,16 +506,12 @@ namespace OpenRCT2::Ui::Windows
             setWidgetDisabled(WIDX_MAP_SIZE_X_DOWN, isHeightMapImage);
 
             // Enable heightmap widgets if one is loaded
-            if (isHeightMapImage)
-            {
-                setWidgetEnabled(WIDX_HEIGHTMAP_NORMALIZE, _heightmapLoaded);
-                setWidgetEnabled(WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP, _heightmapLoaded);
-                setWidgetEnabled(WIDX_HEIGHTMAP_STRENGTH, _heightmapLoaded && _settings.smooth_height_map);
-                setWidgetEnabled(WIDX_HEIGHTMAP_STRENGTH_UP, _heightmapLoaded && _settings.smooth_height_map);
-                setWidgetEnabled(WIDX_HEIGHTMAP_STRENGTH_DOWN, _heightmapLoaded && _settings.smooth_height_map);
-            }
-
-            SetPressedTab();
+            const bool heightmapEnabled = isHeightMapImage && _heightmapLoaded;
+            setWidgetEnabled(WIDX_HEIGHTMAP_NORMALIZE, heightmapEnabled);
+            setWidgetEnabled(WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP, heightmapEnabled);
+            setWidgetEnabled(WIDX_HEIGHTMAP_STRENGTH, heightmapEnabled && _settings.smooth_height_map);
+            setWidgetEnabled(WIDX_HEIGHTMAP_STRENGTH_UP, heightmapEnabled && _settings.smooth_height_map);
+            setWidgetEnabled(WIDX_HEIGHTMAP_STRENGTH_DOWN, heightmapEnabled && _settings.smooth_height_map);
 
             _xSpinnerCaption = std::to_string(_settings.mapSize.x - 2);
             widgets[WIDX_MAP_SIZE_X].setString(_xSpinnerCaption.c_str());
@@ -746,11 +710,7 @@ namespace OpenRCT2::Ui::Windows
 
         void ForestsPrepareDraw()
         {
-            pressedWidgets = 0;
-            if (_settings.trees)
-                pressedWidgets |= 1uLL << WIDX_FORESTS_PLACE_TREES;
-
-            SetPressedTab();
+            setWidgetPressed(WIDX_FORESTS_PLACE_TREES, _settings.trees);
 
             const bool isFlatland = _settings.algorithm == MapGenerator::Algorithm::blank;
 
@@ -1226,7 +1186,6 @@ namespace OpenRCT2::Ui::Windows
 
             // only offer terrain edge smoothing if we don't use flatland terrain
             setWidgetEnabled(WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES, _settings.algorithm != MapGenerator::Algorithm::blank);
-            SetPressedTab();
         }
 
         void TerrainDraw(RenderTarget& rt)
@@ -1336,8 +1295,6 @@ namespace OpenRCT2::Ui::Windows
         void WaterPrepareDraw()
         {
             setCheckboxValue(WIDX_ADD_BEACHES, _settings.beaches != 0);
-
-            SetPressedTab();
         }
 
         void WaterDraw(RenderTarget& rt)
@@ -1366,9 +1323,6 @@ namespace OpenRCT2::Ui::Windows
 
             setPage(WINDOW_MAPGEN_PAGE_BASE);
             invalidate();
-            holdDownWidgets = HoldDownWidgets[WINDOW_MAPGEN_PAGE_BASE];
-            pressedWidgets = PressedWidgets[WINDOW_MAPGEN_PAGE_BASE];
-            disabledWidgets = PageDisabledWidgets[WINDOW_MAPGEN_PAGE_BASE];
             initScrollWidgets();
 
             _heightmapLoaded = false;

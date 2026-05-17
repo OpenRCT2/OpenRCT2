@@ -1195,80 +1195,77 @@ namespace OpenRCT2
                     cs.readWrite(gameState.mapSize.x);
                     cs.readWrite(gameState.mapSize.y);
 
-                    if (cs.getMode() == OrcaStream::Mode::reading)
-                    {
-                        gameStateInitAll(gameState, gameState.mapSize);
-
-                        auto numElements = cs.read<uint32_t>();
-
-                        std::vector<TileElement> tileElements;
-                        tileElements.resize(numElements);
-                        cs.read(tileElements.data(), tileElements.size() * sizeof(TileElement));
-                        SetTileElements(gameState, std::move(tileElements));
-                        {
-                            TileElementIterator it;
-                            TileElementIteratorBegin(&it);
-                            while (TileElementIteratorNext(&it))
-                            {
-                                if (it.element->GetType() == TileElementType::Path)
-                                {
-                                    auto* pathElement = it.element->AsPath();
-                                    if (pathElement->HasLegacyPathEntry())
-                                    {
-                                        auto pathEntryIndex = pathElement->GetLegacyPathEntryIndex();
-                                        if (pathToRailingsMap[pathEntryIndex] != kObjectEntryIndexNull)
-                                        {
-                                            if (pathElement->IsQueue())
-                                                pathElement->SetSurfaceEntryIndex(pathToQueueSurfaceMap[pathEntryIndex]);
-                                            else
-                                                pathElement->SetSurfaceEntryIndex(pathToSurfaceMap[pathEntryIndex]);
-
-                                            pathElement->SetRailingsEntryIndex(pathToRailingsMap[pathEntryIndex]);
-                                        }
-                                    }
-                                }
-                                else if (it.element->GetType() == TileElementType::Track)
-                                {
-                                    auto* trackElement = it.element->AsTrack();
-                                    auto trackType = trackElement->GetTrackType();
-                                    if (TrackTypeMustBeMadeInvisible(*trackElement, os.getHeader().targetVersion))
-                                    {
-                                        it.element->SetInvisible(true);
-                                    }
-                                    if (os.getHeader().targetVersion < kBlockBrakeImprovementsVersion)
-                                    {
-                                        if (trackType == TrackElemType::brakes)
-                                            trackElement->SetBrakeClosed(true);
-                                        if (trackType == TrackElemType::blockBrakes)
-                                            trackElement->SetBrakeBoosterSpeed(kRCT2DefaultBlockBrakeSpeed);
-                                    }
-                                }
-                                else if (
-                                    it.element->GetType() == TileElementType::SmallScenery && os.getHeader().targetVersion < 23)
-                                {
-                                    auto* sceneryElement = it.element->AsSmallScenery();
-                                    // Previous formats stored the needs supports flag in the primary colour
-                                    // We have moved it into a flags field to support extended colour sets
-                                    bool needsSupports = EnumValue(sceneryElement->GetPrimaryColour())
-                                        & kRCT12SmallSceneryElementNeedsSupportsFlag;
-                                    if (needsSupports)
-                                    {
-                                        const auto valueWithoutFlag = EnumValue(sceneryElement->GetPrimaryColour())
-                                            & ~kRCT12SmallSceneryElementNeedsSupportsFlag;
-                                        sceneryElement->SetPrimaryColour(static_cast<Drawing::Colour>(valueWithoutFlag));
-                                        sceneryElement->SetNeedsSupports();
-                                    }
-                                }
-                            }
-                        }
-                        ParkEntranceUpdateLocations();
-                    }
-                    else
+                    if (cs.getMode() == OrcaStream::Mode::writing)
                     {
                         auto tileElements = GetReorganisedTileElementsWithoutGhosts();
                         cs.write(static_cast<uint32_t>(tileElements.size()));
                         cs.write(tileElements.data(), tileElements.size() * sizeof(TileElement));
+                        return;
                     }
+
+                    gameStateInitAll(gameState, gameState.mapSize);
+
+                    auto numElements = cs.read<uint32_t>();
+                    std::vector<TileElement> tileElements;
+                    tileElements.resize(numElements);
+                    cs.read(tileElements.data(), tileElements.size() * sizeof(TileElement));
+                    SetTileElements(gameState, std::move(tileElements));
+
+                    TileElementIterator it;
+                    TileElementIteratorBegin(&it);
+                    while (TileElementIteratorNext(&it))
+                    {
+                        if (it.element->GetType() == TileElementType::Path)
+                        {
+                            auto* pathElement = it.element->AsPath();
+                            if (pathElement->HasLegacyPathEntry())
+                            {
+                                auto pathEntryIndex = pathElement->GetLegacyPathEntryIndex();
+                                if (pathToRailingsMap[pathEntryIndex] != kObjectEntryIndexNull)
+                                {
+                                    if (pathElement->IsQueue())
+                                        pathElement->SetSurfaceEntryIndex(pathToQueueSurfaceMap[pathEntryIndex]);
+                                    else
+                                        pathElement->SetSurfaceEntryIndex(pathToSurfaceMap[pathEntryIndex]);
+
+                                    pathElement->SetRailingsEntryIndex(pathToRailingsMap[pathEntryIndex]);
+                                }
+                            }
+                        }
+                        else if (it.element->GetType() == TileElementType::Track)
+                        {
+                            auto* trackElement = it.element->AsTrack();
+                            auto trackType = trackElement->GetTrackType();
+                            if (TrackTypeMustBeMadeInvisible(*trackElement, os.getHeader().targetVersion))
+                            {
+                                it.element->SetInvisible(true);
+                            }
+                            if (os.getHeader().targetVersion < kBlockBrakeImprovementsVersion)
+                            {
+                                if (trackType == TrackElemType::brakes)
+                                    trackElement->SetBrakeClosed(true);
+                                if (trackType == TrackElemType::blockBrakes)
+                                    trackElement->SetBrakeBoosterSpeed(kRCT2DefaultBlockBrakeSpeed);
+                            }
+                        }
+                        else if (it.element->GetType() == TileElementType::SmallScenery && os.getHeader().targetVersion < 23)
+                        {
+                            auto* sceneryElement = it.element->AsSmallScenery();
+                            // Previous formats stored the needs supports flag in the primary colour
+                            // We have moved it into a flags field to support extended colour sets
+                            bool needsSupports = EnumValue(sceneryElement->GetPrimaryColour())
+                                & kRCT12SmallSceneryElementNeedsSupportsFlag;
+                            if (needsSupports)
+                            {
+                                const auto valueWithoutFlag = EnumValue(sceneryElement->GetPrimaryColour())
+                                    & ~kRCT12SmallSceneryElementNeedsSupportsFlag;
+                                sceneryElement->SetPrimaryColour(static_cast<Drawing::Colour>(valueWithoutFlag));
+                                sceneryElement->SetNeedsSupports();
+                            }
+                        }
+                    }
+
+                    ParkEntranceUpdateLocations();
                 });
             if (!found)
             {

@@ -43,7 +43,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t kRotateAndSceneryButtonSize = 24;
     static constexpr int32_t kWindowPadding = 5;
 
-    enum
+    enum WindowTrackListWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,
@@ -407,25 +407,17 @@ namespace OpenRCT2::Ui::Windows
             _windowTitle = FormatStringID(titleFormat, stringId);
             widgets[WIDX_TITLE].setString(_windowTitle.c_str());
 
-            if ((gLegacyScene == LegacyScene::trackDesignsManager) || selectedListItem != 0)
+            const bool showPreview = (gLegacyScene == LegacyScene::trackDesignsManager) || selectedListItem != 0;
+            setWidgetPressed(WIDX_TRACK_PREVIEW, showPreview);
+            setWidgetDisabled(WIDX_TRACK_PREVIEW, !showPreview);
+            if (showPreview)
             {
-                pressedWidgets |= 1uLL << WIDX_TRACK_PREVIEW;
-                disabledWidgets &= ~(1uLL << WIDX_TRACK_PREVIEW);
                 widgets[WIDX_ROTATE].type = WidgetType::flatBtn;
                 widgets[WIDX_TOGGLE_SCENERY].type = WidgetType::flatBtn;
-                if (gTrackDesignSceneryToggle)
-                {
-                    pressedWidgets &= ~(1uLL << WIDX_TOGGLE_SCENERY);
-                }
-                else
-                {
-                    pressedWidgets |= (1uLL << WIDX_TOGGLE_SCENERY);
-                }
+                setWidgetPressed(WIDX_TOGGLE_SCENERY, !gTrackDesignSceneryToggle);
             }
             else
             {
-                pressedWidgets &= ~(1uLL << WIDX_TRACK_PREVIEW);
-                disabledWidgets |= (1uLL << WIDX_TRACK_PREVIEW);
                 widgets[WIDX_ROTATE].type = WidgetType::empty;
                 widgets[WIDX_TOGGLE_SCENERY].type = WidgetType::empty;
             }

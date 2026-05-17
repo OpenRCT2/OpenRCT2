@@ -13,7 +13,6 @@
 #include "../Diagnostic.h"
 #include "../core/File.h"
 #include "../core/FileStream.h"
-#include "../core/Memory.hpp"
 #include "../core/String.hpp"
 #include "../core/ZipStream.hpp"
 #include "../drawing/Image.h"

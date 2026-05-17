@@ -21,7 +21,6 @@
 #include "../core/BitSet.hpp"
 #include "../core/EnumUtils.hpp"
 #include "../core/Guard.hpp"
-#include "../core/Memory.hpp"
 #include "../localisation/Formatter.h"
 #include "../localisation/StringIds.h"
 #include "../object/ObjectEntryManager.h"

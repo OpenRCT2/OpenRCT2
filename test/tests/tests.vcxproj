@@ -95,6 +95,7 @@
     <ClCompile Include="IniWriterTest.cpp" />
     <ClCompile Include="LocalisationTest.cpp" />
     <ClCompile Include="MultiLaunch.cpp" />
+    <ClCompile Include="NetworkTests.cpp" />
     <ClCompile Include="ReplayTests.cpp" />
     <ClCompile Include="PlayTests.cpp" />
     <ClCompile Include="Pathfinding.cpp" />
@@ -112,6 +113,7 @@
     </ClCompile>
     <ClCompile Include="TileElements.cpp" />
     <ClCompile Include="TileElementsView.cpp" />
+    <ClCompile Include="WidgetStateTests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="testdata\sprites\badManifest.json" />

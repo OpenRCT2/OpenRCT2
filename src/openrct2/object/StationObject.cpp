@@ -18,6 +18,35 @@
 
 namespace OpenRCT2
 {
+    constexpr std::array kAllowedStationIDs = std::to_array<u8string_view>({
+        "rct2.station.abstract",
+        "rct2.station.canvas_tent",
+        "rct2.station.castle_brown",
+        "rct2.station.castle_grey",
+        "rct2.station.classical",
+        "rct2.station.jungle",
+        "rct2.station.log",
+        "rct2.station.pagoda",
+        "rct2.station.plain",
+        "rct2.station.snow",
+        "rct2.station.space",
+        "rct2.station.wooden",
+        "openrct2.station.noentrance",
+        "openrct2.station.noplatformnoentrance",
+        "tygrysek90.station.abstract_open",
+        "tygrysek90.station.canvas_tent_open",
+        "tygrysek90.station.castle_brown_open",
+        "tygrysek90.station.castle_grey",
+        "tygrysek90.station.castle_grey_open",
+        "tygrysek90.station.classical_open",
+        "tygrysek90.station.jungle_open",
+        "tygrysek90.station.log_open",
+        "tygrysek90.station.pagoda_open",
+        "tygrysek90.station.snow_open",
+        "tygrysek90.station.space_open",
+        "tygrysek90.station.wooden_open",
+    });
+
     void StationObject::Load()
     {
         GetStringTable().Sort();
@@ -114,9 +143,24 @@ namespace OpenRCT2
         }
     }
 
+    static bool isKnownStationStyle(u8string_view identifier)
+    {
+        for (const auto& entry : kAllowedStationIDs)
+        {
+            if (entry == identifier)
+                return true;
+        }
+
+        return false;
+    }
+
     void StationObject::ReadJson(IReadObjectContext* context, json_t& root)
     {
         Guard::Assert(root.is_object(), "StationObject::ReadJson expects parameter root to be object");
+        if (!isKnownStationStyle(GetIdentifier()))
+        {
+            throw std::runtime_error("Unknown station style");
+        }
 
         auto properties = root["properties"];
 

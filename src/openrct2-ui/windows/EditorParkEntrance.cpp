@@ -54,7 +54,7 @@ namespace OpenRCT2::Ui::Windows
         ImageIndex imageId = kImageIndexUndefined;
     };
 
-    enum WindowEditorParkEntranceListWidgetIdx
+    enum WindowEditorParkEntranceListWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,
@@ -272,7 +272,7 @@ namespace OpenRCT2::Ui::Windows
             auto newMaxHeight = static_cast<int16_t>(kWindowSize.height + kImageSize * (GetNumRows() - 1));
             WindowSetResize(*this, kWindowSize, { kWindowSize.width, newMaxHeight });
 
-            pressedWidgets |= 1LL << WIDX_TAB;
+            widgetSetPressed(*this, WIDX_TAB, true);
 
             ToolSet(*this, WIDX_LIST, Tool::entranceDown);
             gInputFlags.set(InputFlag::allowRightMouseRemoval);
