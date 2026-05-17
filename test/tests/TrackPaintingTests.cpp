@@ -15,6 +15,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/drawing/Drawing.Sprite.h>
 #include <openrct2/drawing/ImageId.hpp>
 #include <openrct2/drawing/PaletteIndex.h>
 #include <openrct2/drawing/RenderTarget.h>
@@ -75,15 +76,26 @@ protected:
 
     static void SetUpTestSuite()
     {
+        // Initialise headless and with graphics disabled so LoadBaseGraphics is skipping any proprietary data.
+        // Once the engine is up we load OpenRCT2's own sprite catalogs.
+        // Derived suites flip the flag to false themselves once they're ready to run paint code, which is
+        // the only place that actually needs lookups to not assert.
         gOpenRCT2Headless = true;
-        gOpenRCT2NoGraphics = false;
+        gOpenRCT2NoGraphics = true;
 
         _context = CreateContext();
         ASSERT_TRUE(_context->Initialise());
+
+        GfxLoadG2PalettesFontsTracks();
     }
     static void TearDownTestSuite()
     {
+        // Derived suites leave the flag false at the end of their own SetUpTestSuite so context
+        // teardown stays quiet; we just flip it back at the very end to leave globals as we found
+        // them for subsequent tests.
         _context.reset();
+        GfxUnloadG2PalettesFontsTracks();
+        gOpenRCT2NoGraphics = true;
     }
 
     // Loads a park from `test/tests/testdata/parks/<name>` into the live GameState
@@ -147,7 +159,14 @@ public:
     static void SetUpTestSuite()
     {
         PaintTestFixture::SetUpTestSuite();
+
+        // Load the park while gOpenRCT2NoGraphics is still true so object loading skips legacy
+        // .POB file lookups.
+        // Only the paint sweep needs graphics enabled so the GfxGetG1Element debug assert
+        // doesn't fire, so flip the flag now that loading is done.
         LoadParkFixture(kSweepParkName);
+        gOpenRCT2NoGraphics = false;
+
         _sampleTrackElement = FindFirstTrackElement();
         ASSERT_NE(_sampleTrackElement, nullptr) << kSweepParkName << " contains no track elements";
         _sampleRide = GetRide(_sampleTrackElement->GetRideIndex());
