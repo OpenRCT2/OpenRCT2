@@ -3667,7 +3667,7 @@ namespace OpenRCT2
         if (ride.getRideTypeDescriptor().specialType != RtdSpecialType::enterprise)
             track_direction *= 2;
 
-        // type 1 loading doesn't do segments and all peeps go to the same
+        // Type 1 loading doesn't do segments and all peeps go to the same
         // location on the ride
         if (vehicle_type->peep_loading_waypoint_segments == 0)
         {
