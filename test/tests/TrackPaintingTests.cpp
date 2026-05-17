@@ -175,12 +175,12 @@ public:
                     continue;
                 do
                 {
-                    if (element->GetType() == TileElementType::Track)
+                    if (element->getType() == TileElementType::Track)
                     {
-                        if (auto* track = element->AsTrack(); track != nullptr)
+                        if (auto* track = element->asTrack(); track != nullptr)
                             return track;
                     }
-                } while (!(element++)->IsLastForTile());
+                } while (!(element++)->isLastForTile());
             }
         }
         return nullptr;
