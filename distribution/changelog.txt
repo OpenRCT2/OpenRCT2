@@ -6,6 +6,7 @@
 - Improved: [#26374] Add higher resolution app icons for Android.
 - Improved: [#26386] Initial window scale and toolbar options on fresh Android installations.
 - Change: [#26476] Limit creation of new station styles to prepare for more flexibility with ride stations and entrances.
+- Fix: [#25581] Chart drawing issue on some platforms due to compiler optimisation.
 - Fix: [#26019] Inverted and Inverted Flying Roller Coaster large half loops glitch with the train and don‘t draw in tunnels at some angles (original bug).
 - Fix: [#26183] The ride stat graph placeholder text is not drawn in the expected position.
 - Fix: [#26287] Game crashes upon connect/disconnect of physical keyboard. 
