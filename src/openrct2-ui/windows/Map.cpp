@@ -162,9 +162,9 @@ namespace OpenRCT2::Ui::Windows
         makeRemapWidget   ({  3,  17}, { 31,  27}, WidgetType::colourBtn, WindowColour::secondary, SPR_TAB,                      STR_SHOW_PEOPLE_ON_MAP_TIP      ),
         makeRemapWidget   ({ 34,  17}, { 31,  27}, WidgetType::colourBtn, WindowColour::secondary, SPR_TAB,                      STR_SHOW_RIDES_STALLS_ON_MAP_TIP),
         makeWidget        ({  3,  46}, {239, 180}, WidgetType::scroll,    WindowColour::secondary, SCROLL_BOTH                                                   ),
-        makeSpinnerWidgets({102, 229}, { 50,  12}, WidgetType::spinner,   WindowColour::secondary, kStringIdEmpty                                                   ), // NB: 3 widgets
-        makeWidget        ({153, 230}, { 20,  12}, WidgetType::flatBtn,   WindowColour::secondary, ImageId(SPR_G2_LINK_CHAIN),   STR_MAINTAIN_SQUARE_MAP_TOOLTIP ),
-        makeSpinnerWidgets({174, 229}, { 50,  12}, WidgetType::spinner,   WindowColour::secondary, kStringIdEmpty                                             ), // NB: 3 widgets
+        makeHoldableSpinnerWidgets({102, 229}, { 50,  12}, WidgetType::spinner,   WindowColour::secondary, kStringIdEmpty                                           ), // NB: 3 widgets
+        makeWidget                ({153, 230}, { 20,  12}, WidgetType::flatBtn,   WindowColour::secondary, ImageId(SPR_G2_LINK_CHAIN),   STR_MAINTAIN_SQUARE_MAP_TOOLTIP ),
+        makeHoldableSpinnerWidgets({174, 229}, { 50,  12}, WidgetType::spinner,   WindowColour::secondary, kStringIdEmpty                                           ), // NB: 3 widgets
         makeWidget        ({  4,  46}, { 24,  24}, WidgetType::flatBtn,   WindowColour::secondary, ImageId(SPR_BUY_LAND_RIGHTS), STR_SELECT_PARK_OWNED_LAND_TIP  ),
         makeWidget        ({  4,  70}, { 24,  24}, WidgetType::flatBtn,   WindowColour::secondary, ImageId(SPR_G2_PEEP_SPAWN),   STR_SET_STARTING_POSITIONS_TIP  ),
         makeWidget        ({ 28,  94}, { 24,  24}, WidgetType::flatBtn,   WindowColour::secondary, ImageId(SPR_PARK_ENTRANCE),   STR_BUILD_PARK_ENTRANCE_TIP     ),
@@ -251,11 +251,6 @@ namespace OpenRCT2::Ui::Windows
         void onOpen() override
         {
             setWidgets(window_map_widgets);
-
-            widgetsSetHoldable(
-                *this,
-                { WIDX_MAP_SIZE_SPINNER_Y_UP, WIDX_MAP_SIZE_SPINNER_Y_DOWN, WIDX_MAP_SIZE_SPINNER_X_UP,
-                  WIDX_MAP_SIZE_SPINNER_X_DOWN });
 
             flags |= WindowFlag::resizable;
 
@@ -469,12 +464,12 @@ namespace OpenRCT2::Ui::Windows
             if (mapCoords.IsNull())
                 return;
 
-            int32_t mapZ = tileElement->GetBaseZ();
-            if (tileElement->GetType() == TileElementType::Surface)
+            int32_t mapZ = tileElement->getBaseZ();
+            if (tileElement->getType() == TileElementType::Surface)
             {
-                if ((tileElement->AsSurface()->GetSlope() & kTileSlopeRaisedCornersMask) != 0)
+                if ((tileElement->asSurface()->GetSlope() & kTileSlopeRaisedCornersMask) != 0)
                     mapZ += 16;
-                if (tileElement->AsSurface()->GetSlope() & kTileSlopeDiagonalFlag)
+                if (tileElement->asSurface()->GetSlope() & kTileSlopeDiagonalFlag)
                     mapZ += 16;
             }
 
@@ -495,7 +490,7 @@ namespace OpenRCT2::Ui::Windows
             if (mapCoords.IsNull())
                 return;
 
-            int32_t mapZ = tileElement->GetBaseZ();
+            int32_t mapZ = tileElement->getBaseZ();
 
             auto gameAction = GameActions::PeepSpawnPlaceAction({ mapCoords, mapZ, static_cast<Direction>(direction) });
             auto result = GameActions::Execute(&gameAction, getGameState());
@@ -871,15 +866,15 @@ namespace OpenRCT2::Ui::Windows
 
             const int32_t maxSupportedTileElementType = static_cast<int32_t>(std::size(kElementTypeOverwriteColour));
             auto tileElement = reinterpret_cast<TileElement*>(surfaceElement);
-            while (!(tileElement++)->IsLastForTile())
+            while (!(tileElement++)->isLastForTile())
             {
-                if (tileElement->IsGhost())
+                if (tileElement->isGhost())
                 {
                     colour = ColourPair(PaletteIndex::pi21);
                     break;
                 }
 
-                auto tileElementType = tileElement->GetType();
+                auto tileElementType = tileElement->getType();
                 if (EnumValue(tileElementType) >= maxSupportedTileElementType)
                 {
                     tileElementType = TileElementType::Surface;
@@ -910,19 +905,19 @@ namespace OpenRCT2::Ui::Windows
                 if (tileElement == nullptr)
                     break;
 
-                if (tileElement->IsGhost())
+                if (tileElement->isGhost())
                 {
                     colourA = ColourPair(PaletteIndex::pi21);
                     break;
                 }
 
-                switch (tileElement->GetType())
+                switch (tileElement->getType())
                 {
                     case TileElementType::Surface:
-                        if (tileElement->AsSurface()->GetWaterHeight() > 0)
+                        if (tileElement->asSurface()->GetWaterHeight() > 0)
                             // Why is this a different water colour as above (195)?
                             colourB = ColourPair(PaletteIndex::pi194);
-                        if (!(tileElement->AsSurface()->GetOwnership() & OWNERSHIP_OWNED))
+                        if (!(tileElement->asSurface()->GetOwnership() & OWNERSHIP_OWNED))
                             colourB = MapColourUnowned(colourB);
                         break;
                     case TileElementType::Path:
@@ -930,9 +925,9 @@ namespace OpenRCT2::Ui::Windows
                         break;
                     case TileElementType::Entrance:
                     {
-                        if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
+                        if (tileElement->asEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
                             break;
-                        Ride* targetRide = GetRide(tileElement->AsEntrance()->GetRideIndex());
+                        Ride* targetRide = GetRide(tileElement->asEntrance()->GetRideIndex());
                         if (targetRide != nullptr)
                         {
                             const auto& colourKey = targetRide->getRideTypeDescriptor().ColourKey;
@@ -942,7 +937,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     case TileElementType::Track:
                     {
-                        Ride* targetRide = GetRide(tileElement->AsTrack()->GetRideIndex());
+                        Ride* targetRide = GetRide(tileElement->asTrack()->GetRideIndex());
                         if (targetRide != nullptr)
                         {
                             const auto& colourKey = targetRide->getRideTypeDescriptor().ColourKey;
@@ -954,7 +949,7 @@ namespace OpenRCT2::Ui::Windows
                     default:
                         break;
                 }
-            } while (!(tileElement++)->IsLastForTile());
+            } while (!(tileElement++)->isLastForTile());
 
             if (colourA != ColourPair(PaletteIndex::transparent, PaletteIndex::transparent))
                 return colourA;

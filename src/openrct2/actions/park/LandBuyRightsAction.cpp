@@ -160,7 +160,7 @@ namespace OpenRCT2::GameActions
                 if (isExecuting)
                 {
                     surfaceElement->SetOwnership(surfaceElement->GetOwnership() | OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
-                    uint16_t baseZ = surfaceElement->GetBaseZ();
+                    uint16_t baseZ = surfaceElement->getBaseZ();
                     MapInvalidateTile({ loc, baseZ, baseZ + 16 });
                 }
                 res.cost = gameState.scenarioOptions.constructionRightsPrice;

@@ -48,7 +48,7 @@ static void PaintTwistStructure(
     uint32_t frameNum = (direction * 88) % 216;
     if (vehicle != nullptr)
     {
-        frameNum += (vehicle->Orientation >> 3) << 4;
+        frameNum += (vehicle->orientation >> 3) << 4;
         frameNum += vehicle->flatRideAnimationFrame;
         frameNum = frameNum % 216;
     }

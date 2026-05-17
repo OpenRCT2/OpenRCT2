@@ -48,7 +48,7 @@ static void PaintBannerScrollingText(
 
     // If text on hidden direction or ghost
     direction = DirectionReverse(direction) - 1;
-    if (direction >= 2 || (bannerElement.IsGhost()))
+    if (direction >= 2 || (bannerElement.isGhost()))
         return;
 
     auto scrollingMode = bannerEntry.scrolling_mode + (direction & 3);
@@ -90,7 +90,7 @@ void PaintBanner(PaintSession& session, uint8_t direction, int32_t height, const
     direction &= 3;
 
     ImageId imageTemplate;
-    if (bannerElement.IsGhost())
+    if (bannerElement.isGhost())
     {
         session.InteractionType = ViewportInteractionItem::none;
         imageTemplate = ImageId().WithRemap(FilterPaletteID::paletteGhost);

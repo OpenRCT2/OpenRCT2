@@ -1,4 +1,7 @@
-0.5.1 (in development)
+0.5.2 (in development)
+------------------------------------------------------------------------
+
+0.5.1 (2026-05-17)
 ------------------------------------------------------------------------
 - Feature: [#24242] [Plugin] Add ride-breakdown hooktype.
 - Feature: [#24879] [Plugin] Add methods for showing and hiding gridlines.
@@ -6,6 +9,7 @@
 - Improved: [#26374] Add higher resolution app icons for Android.
 - Improved: [#26386] Initial window scale and toolbar options on fresh Android installations.
 - Change: [#26476] Limit creation of new station styles to prepare for more flexibility with ride stations and entrances.
+- Fix: [#25581] Chart drawing issue on some platforms due to compiler optimisation.
 - Fix: [#26019] Inverted and Inverted Flying Roller Coaster large half loops glitch with the train and don‘t draw in tunnels at some angles (original bug).
 - Fix: [#26183] The ride stat graph placeholder text is not drawn in the expected position.
 - Fix: [#26287] Game crashes upon connect/disconnect of physical keyboard. 
@@ -13,7 +17,9 @@
 - Fix: [#26352] Large scenery items are incorrectly labelled as ‘banners’ in the tile inspector.
 - Fix: [#26352] The label for path additions is using the wrong text colour in the tile inspector.
 - Fix: [#26360] Inverted Lay-down Roller Coaster helices are invisible when loading old saves.
+- Fix: [#26396] [Plugin] Socket interfaces were not closing properly and firing up correctly in parallel.
 - Fix: [#26410] Tiles with water can draw incorrectly when there is something underwater and nothing above water.
+- Fix: [#26418] Game crashes when a stack overflow occurs in plugin code.
 - Fix: [#26419] Drop count & negative g’s stat requirements for Flying Roller Coaster don’t get nullified by having an inversion.
 - Fix: [#26421] Wrong scenery tab highlighted when more than 64 scenery groups are selected.
 - Fix: [#26425] Benches don’t reduce watching spots from 4 to 2 while other path additions do (should be reversed).

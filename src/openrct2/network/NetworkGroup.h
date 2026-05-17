@@ -23,8 +23,8 @@ namespace OpenRCT2::Network
     class NetworkGroup final
     {
     public:
-        std::array<uint8_t, 8> ActionsAllowed{};
-        uint8_t Id = 0;
+        std::array<uint8_t, 8> actionsAllowed{};
+        uint8_t id = 0;
 
         /**
          * Creates a NetworkGroup object from a JSON object
@@ -33,23 +33,23 @@ namespace OpenRCT2::Network
          * @return A NetworkGroup object
          * @note json is deliberately left non-const: json_t behaviour changes when const
          */
-        static NetworkGroup FromJson(const json_t& json);
+        static NetworkGroup fromJson(const json_t& json);
 
-        const std::string& GetName() const noexcept;
-        void SetName(std::string_view name);
+        const std::string& getName() const noexcept;
+        void setName(std::string_view name);
 
-        void Read(Packet& packet);
-        void Write(Packet& packet) const;
-        void ToggleActionPermission(Permission index);
-        bool CanPerformAction(Permission index) const noexcept;
-        bool CanPerformCommand(GameCommand command) const;
+        void read(Packet& packet);
+        void write(Packet& packet) const;
+        void toggleActionPermission(Permission index);
+        bool canPerformAction(Permission index) const noexcept;
+        bool canPerformCommand(GameCommand command) const;
 
         /**
          * Serialise a NetworkGroup object into a JSON object
          *
          * @return JSON representation of the NetworkGroup object
          */
-        json_t ToJson() const;
+        json_t toJson() const;
 
     private:
         std::string _name;

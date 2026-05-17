@@ -24,12 +24,12 @@ static bool vehicle_boat_is_location_accessible(const CoordsXYZ& location);
 
 void Vehicle::UpdateTravellingBoatHireSetup()
 {
-    var_34 = Orientation;
+    var_34 = orientation;
     TrackLocation.x = x;
     TrackLocation.y = y;
     TrackLocation = TrackLocation.ToTileStart();
 
-    CoordsXY location = CoordsXY(TrackLocation) + CoordsDirectionDelta[Orientation >> 3];
+    CoordsXY location = CoordsXY(TrackLocation) + CoordsDirectionDelta[orientation >> 3];
 
     BoatLocation = location;
     var_35 = 0;
@@ -125,8 +125,8 @@ void Vehicle::UpdateMotionBoatHire()
     if (remaining_distance >= 0x368A)
     {
         sound2_flags &= ~VEHICLE_SOUND2_FLAGS_LIFT_HILL;
-        _vehicleCurPosition = GetLocation();
-        Invalidate();
+        _vehicleCurPosition = getLocation();
+        invalidate();
 
         for (;;)
         {
@@ -210,7 +210,7 @@ void Vehicle::UpdateMotionBoatHire()
 
             if (!(var_35 & (1 << 0)))
             {
-                uint8_t spriteDirection = Orientation;
+                uint8_t spriteDirection = orientation;
                 if (spriteDirection != var_34)
                 {
                     uint8_t dl = (var_34 + 16 - spriteDirection) & 0x1E;
@@ -231,20 +231,20 @@ void Vehicle::UpdateMotionBoatHire()
                         }
                     }
 
-                    Orientation = spriteDirection & 0x1E;
+                    orientation = spriteDirection & 0x1E;
                 }
             }
 
-            int32_t edi = (Orientation | (var_35 & 1)) & 0x1F;
+            int32_t edi = (orientation | (var_35 & 1)) & 0x1F;
             loc2 = { x + Geometry::getFreeroamVehicleMovementData(edi).x, y + Geometry::getFreeroamVehicleMovementData(edi).y };
             if (UpdateMotionCollisionDetection({ loc2, z }, nullptr))
             {
                 remaining_distance = 0;
-                if (Orientation == var_34)
+                if (orientation == var_34)
                 {
-                    Orientation ^= (1 << 4);
+                    orientation ^= (1 << 4);
                     UpdateBoatLocation();
-                    Orientation ^= (1 << 4);
+                    orientation ^= (1 << 4);
                 }
                 break;
             }
@@ -277,7 +277,7 @@ void Vehicle::UpdateMotionBoatHire()
                     if (do_Loc6DAA97)
                     {
                         remaining_distance = 0;
-                        if (Orientation == var_34)
+                        if (orientation == var_34)
                         {
                             UpdateBoatLocation();
                         }
@@ -344,7 +344,7 @@ void Vehicle::UpdateMotionBoatHire()
             _vehicleUnkF64E10++;
         }
 
-        MoveTo(_vehicleCurPosition);
+        moveTo(_vehicleCurPosition);
     }
 
     // Loc6DAAC9:
@@ -406,7 +406,7 @@ void Vehicle::UpdateBoatLocation()
     }
 
     sub_state = BoatHireSubState::Normal;
-    uint8_t curDirection = ((Orientation + 19) >> 3) & 3;
+    uint8_t curDirection = ((orientation + 19) >> 3) & 3;
     uint8_t randDirection = ScenarioRand() & 3;
 
     if (lost_time_out > 1920)
@@ -465,12 +465,12 @@ static bool vehicle_boat_is_location_accessible(const CoordsXYZ& location)
         return false;
     do
     {
-        if (tileElement->IsGhost())
+        if (tileElement->isGhost())
             continue;
 
-        if (tileElement->GetType() == TileElementType::Surface)
+        if (tileElement->getType() == TileElementType::Surface)
         {
-            int32_t waterZ = tileElement->AsSurface()->GetWaterHeight();
+            int32_t waterZ = tileElement->asSurface()->GetWaterHeight();
             if (location.z != waterZ)
             {
                 return false;
@@ -478,12 +478,12 @@ static bool vehicle_boat_is_location_accessible(const CoordsXYZ& location)
         }
         else
         {
-            if (location.z > (tileElement->GetBaseZ() - (2 * kCoordsZStep))
-                && location.z < tileElement->GetClearanceZ() + (2 * kCoordsZStep))
+            if (location.z > (tileElement->getBaseZ() - (2 * kCoordsZStep))
+                && location.z < tileElement->getClearanceZ() + (2 * kCoordsZStep))
             {
                 return false;
             }
         }
-    } while (!(tileElement++)->IsLastForTile());
+    } while (!(tileElement++)->isLastForTile());
     return true;
 }

@@ -82,7 +82,7 @@ void Vehicle::UpdateDodgemsMode()
     if (carEntry.flags.has(CarEntryFlag::hasDodgemInUseLights) && animation_frame != 1)
     {
         animation_frame = 1;
-        Invalidate();
+        invalidate();
     }
 
     UpdateMotionDodgems();
@@ -98,7 +98,7 @@ void Vehicle::UpdateDodgemsMode()
 
     // Mark the dodgem as not in use.
     animation_frame = 0;
-    Invalidate();
+    invalidate();
     velocity = 0;
     acceleration = 0;
     SetState(Status::unloadingPassengers);
@@ -137,24 +137,24 @@ int32_t Vehicle::UpdateMotionDodgems()
             if (var_34 > 0)
             {
                 var_34--;
-                Orientation += 2;
+                orientation += 2;
             }
             else
             {
                 var_34++;
-                Orientation -= 2;
+                orientation -= 2;
             }
-            Orientation &= 0x1E;
-            Invalidate();
+            orientation &= 0x1E;
+            invalidate();
         }
         else if ((ScenarioRand() & 0xFFFF) <= 2849)
         {
             if (var_35 & (1 << 6))
-                Orientation -= 2;
+                orientation -= 2;
             else
-                Orientation += 2;
-            Orientation &= 0x1E;
-            Invalidate();
+                orientation += 2;
+            orientation &= 0x1E;
+            invalidate();
         }
     }
 
@@ -173,7 +173,7 @@ int32_t Vehicle::UpdateMotionDodgems()
 
         if (collideSprite = DodgemsCarWouldCollideAt(location); !collideSprite.has_value())
         {
-            MoveTo(location);
+            moveTo(location);
         }
     }
 
@@ -189,7 +189,7 @@ int32_t Vehicle::UpdateMotionDodgems()
         while (true)
         {
             var_35++;
-            uint8_t direction = Orientation;
+            uint8_t direction = orientation;
             direction |= var_35 & 1;
 
             CoordsXY location = _vehicleCurPosition;
@@ -216,7 +216,7 @@ int32_t Vehicle::UpdateMotionDodgems()
             int32_t oldVelocity = velocity;
             remaining_distance = 0;
             velocity = 0;
-            uint8_t direction = Orientation | 1;
+            uint8_t direction = orientation | 1;
 
             Vehicle* collideVehicle = getGameState().entities.GetEntity<Vehicle>(collideSprite.value());
             if (collideVehicle != nullptr)
@@ -240,7 +240,7 @@ int32_t Vehicle::UpdateMotionDodgems()
             }
         }
 
-        MoveTo(_vehicleCurPosition);
+        moveTo(_vehicleCurPosition);
     }
 
     int32_t eax = velocity / 2;
@@ -330,7 +330,7 @@ std::optional<EntityId> Vehicle::DodgemsCarWouldCollideAt(const CoordsXY& coords
             ecx >>= 8;
             if (std::max(distX, distY) < ecx)
             {
-                return vehicle2->Id;
+                return vehicle2->id;
             }
         }
     }

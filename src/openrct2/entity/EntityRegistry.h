@@ -82,7 +82,7 @@ namespace OpenRCT2
             }
             else
             {
-                return ent->As<T>();
+                return ent->as<T>();
             }
         }
 
@@ -102,7 +102,7 @@ namespace OpenRCT2
             }
             else
             {
-                return ent->As<T>();
+                return ent->as<T>();
             }
         }
 

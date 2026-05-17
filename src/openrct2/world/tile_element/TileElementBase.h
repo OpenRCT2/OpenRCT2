@@ -52,39 +52,39 @@ namespace OpenRCT2
 #pragma pack(push, 1)
     struct TileElementBase
     {
-        uint8_t Type;            // 0
-        uint8_t Flags;           // 1. Upper nibble: flags. Lower nibble: occupied quadrants (one bit per quadrant).
-        uint8_t BaseHeight;      // 2
-        uint8_t ClearanceHeight; // 3
-        uint8_t Owner;           // 4
+        uint8_t type;            // 0
+        uint8_t flags;           // 1. Upper nibble: flags. Lower nibble: occupied quadrants (one bit per quadrant).
+        uint8_t baseHeight;      // 2
+        uint8_t clearanceHeight; // 3
+        uint8_t owner;           // 4
 
-        void Remove();
+        void remove();
 
-        TileElementType GetType() const;
-        void SetType(TileElementType newType);
+        TileElementType getType() const;
+        void setType(TileElementType newType);
 
-        Direction GetDirection() const;
-        void SetDirection(Direction direction);
-        Direction GetDirectionWithOffset(uint8_t offset) const;
+        Direction getDirection() const;
+        void setDirection(Direction direction);
+        Direction getDirectionWithOffset(uint8_t offset) const;
 
-        bool IsLastForTile() const;
-        void SetLastForTile(bool on);
-        bool IsGhost() const;
-        void SetGhost(bool isGhost);
-        bool IsInvisible() const;
-        void SetInvisible(bool on);
+        bool isLastForTile() const;
+        void setLastForTile(bool on);
+        bool isGhost() const;
+        void setGhost(bool isGhost);
+        bool isInvisible() const;
+        void setInvisible(bool on);
 
-        uint8_t GetOccupiedQuadrants() const;
-        void SetOccupiedQuadrants(uint8_t quadrants);
+        uint8_t getOccupiedQuadrants() const;
+        void setOccupiedQuadrants(uint8_t quadrants);
 
-        int32_t GetBaseZ() const;
-        void SetBaseZ(int32_t newZ);
+        int32_t getBaseZ() const;
+        void setBaseZ(int32_t newZ);
 
-        int32_t GetClearanceZ() const;
-        void SetClearanceZ(int32_t newZ);
+        int32_t getClearanceZ() const;
+        void setClearanceZ(int32_t newZ);
 
-        uint8_t GetOwner() const;
-        void SetOwner(uint8_t newOwner);
+        uint8_t getOwner() const;
+        void setOwner(uint8_t newOwner);
 
         template<typename TType>
         const TType* as() const
@@ -92,7 +92,7 @@ namespace OpenRCT2
             if constexpr (std::is_same_v<TType, TileElement>)
                 return reinterpret_cast<const TileElement*>(this);
             else
-                return GetType() == TType::kElementType ? reinterpret_cast<const TType*>(this) : nullptr;
+                return getType() == TType::kElementType ? reinterpret_cast<const TType*>(this) : nullptr;
         }
 
         template<typename TType>
@@ -101,25 +101,25 @@ namespace OpenRCT2
             if constexpr (std::is_same_v<TType, TileElement>)
                 return reinterpret_cast<TileElement*>(this);
             else
-                return GetType() == TType::kElementType ? reinterpret_cast<TType*>(this) : nullptr;
+                return getType() == TType::kElementType ? reinterpret_cast<TType*>(this) : nullptr;
         }
 
-        const SurfaceElement* AsSurface() const;
-        SurfaceElement* AsSurface();
-        const PathElement* AsPath() const;
-        PathElement* AsPath();
-        const TrackElement* AsTrack() const;
-        TrackElement* AsTrack();
-        const SmallSceneryElement* AsSmallScenery() const;
-        SmallSceneryElement* AsSmallScenery();
-        const LargeSceneryElement* AsLargeScenery() const;
-        LargeSceneryElement* AsLargeScenery();
-        const WallElement* AsWall() const;
-        WallElement* AsWall();
-        const EntranceElement* AsEntrance() const;
-        EntranceElement* AsEntrance();
-        const BannerElement* AsBanner() const;
-        BannerElement* AsBanner();
+        const SurfaceElement* asSurface() const;
+        SurfaceElement* asSurface();
+        const PathElement* asPath() const;
+        PathElement* asPath();
+        const TrackElement* asTrack() const;
+        TrackElement* asTrack();
+        const SmallSceneryElement* asSmallScenery() const;
+        SmallSceneryElement* asSmallScenery();
+        const LargeSceneryElement* asLargeScenery() const;
+        LargeSceneryElement* asLargeScenery();
+        const WallElement* asWall() const;
+        WallElement* asWall();
+        const EntranceElement* asEntrance() const;
+        EntranceElement* asEntrance();
+        const BannerElement* asBanner() const;
+        BannerElement* asBanner();
     };
 #pragma pack(pop)
 } // namespace OpenRCT2

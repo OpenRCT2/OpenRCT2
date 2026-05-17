@@ -39,7 +39,7 @@ static void PaintFacility(
     if (firstCarEntry == nullptr)
         return;
 
-    const auto lengthZ = trackElement.GetClearanceZ() - trackElement.GetBaseZ() - 3;
+    const auto lengthZ = trackElement.getClearanceZ() - trackElement.getBaseZ() - 3;
     const CoordsXYZ offset(0, 0, height);
     const BoundBoxXYZ bb = (direction == 0 || direction == 3) ? BoundBoxXYZ{ { 2, 2, height + lengthZ }, { 28, 28, 1 } }
                                                               : BoundBoxXYZ{ { 2, 2, height }, { 28, 8, lengthZ } };

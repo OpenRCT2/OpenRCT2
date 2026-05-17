@@ -94,6 +94,8 @@ public:
     std::string_view operator[](T k) const
     {
         auto it = find(k);
+        if (it == end())
+            return {};
         return it->first;
     }
 
@@ -146,6 +148,8 @@ public:
             if (_continiousValueIndex)
             {
                 auto index = static_cast<size_t>(k);
+                if (index >= _map.size())
+                    return end();
                 return _map.begin() + index;
             }
 

@@ -23,187 +23,187 @@
 
 namespace OpenRCT2
 {
-    TileElementType TileElementBase::GetType() const
+    TileElementType TileElementBase::getType() const
     {
-        return static_cast<TileElementType>((this->Type & kTileElementTypeMask) >> 2);
+        return static_cast<TileElementType>((this->type & kTileElementTypeMask) >> 2);
     }
 
-    void TileElementBase::SetType(TileElementType newType)
+    void TileElementBase::setType(TileElementType newType)
     {
-        this->Type &= ~kTileElementTypeMask;
-        this->Type |= ((EnumValue(newType) << 2) & kTileElementTypeMask);
+        this->type &= ~kTileElementTypeMask;
+        this->type |= ((EnumValue(newType) << 2) & kTileElementTypeMask);
     }
 
-    Direction TileElementBase::GetDirection() const
+    Direction TileElementBase::getDirection() const
     {
-        return this->Type & kTileElementDirectionMask;
+        return this->type & kTileElementDirectionMask;
     }
 
-    void TileElementBase::SetDirection(Direction direction)
+    void TileElementBase::setDirection(Direction direction)
     {
-        this->Type &= ~kTileElementDirectionMask;
-        this->Type |= (direction & kTileElementDirectionMask);
+        this->type &= ~kTileElementDirectionMask;
+        this->type |= (direction & kTileElementDirectionMask);
     }
 
-    Direction TileElementBase::GetDirectionWithOffset(uint8_t offset) const
+    Direction TileElementBase::getDirectionWithOffset(uint8_t offset) const
     {
-        return ((this->Type & kTileElementDirectionMask) + offset) & kTileElementDirectionMask;
+        return ((this->type & kTileElementDirectionMask) + offset) & kTileElementDirectionMask;
     }
 
-    bool TileElementBase::IsLastForTile() const
+    bool TileElementBase::isLastForTile() const
     {
-        return (this->Flags & TILE_ELEMENT_FLAG_LAST_TILE) != 0;
+        return (this->flags & TILE_ELEMENT_FLAG_LAST_TILE) != 0;
     }
 
-    void TileElementBase::SetLastForTile(bool on)
-    {
-        if (on)
-            Flags |= TILE_ELEMENT_FLAG_LAST_TILE;
-        else
-            Flags &= ~TILE_ELEMENT_FLAG_LAST_TILE;
-    }
-
-    bool TileElementBase::IsInvisible() const
-    {
-        return (this->Flags & TILE_ELEMENT_FLAG_INVISIBLE) != 0;
-    }
-
-    void TileElementBase::SetInvisible(bool on)
+    void TileElementBase::setLastForTile(bool on)
     {
         if (on)
-            Flags |= TILE_ELEMENT_FLAG_INVISIBLE;
+            flags |= TILE_ELEMENT_FLAG_LAST_TILE;
         else
-            Flags &= ~TILE_ELEMENT_FLAG_INVISIBLE;
+            flags &= ~TILE_ELEMENT_FLAG_LAST_TILE;
     }
 
-    bool TileElementBase::IsGhost() const
+    bool TileElementBase::isInvisible() const
     {
-        return (this->Flags & TILE_ELEMENT_FLAG_GHOST) != 0;
+        return (this->flags & TILE_ELEMENT_FLAG_INVISIBLE) != 0;
     }
 
-    void TileElementBase::SetGhost(bool isGhost)
+    void TileElementBase::setInvisible(bool on)
+    {
+        if (on)
+            flags |= TILE_ELEMENT_FLAG_INVISIBLE;
+        else
+            flags &= ~TILE_ELEMENT_FLAG_INVISIBLE;
+    }
+
+    bool TileElementBase::isGhost() const
+    {
+        return (this->flags & TILE_ELEMENT_FLAG_GHOST) != 0;
+    }
+
+    void TileElementBase::setGhost(bool isGhost)
     {
         if (isGhost)
         {
-            this->Flags |= TILE_ELEMENT_FLAG_GHOST;
+            this->flags |= TILE_ELEMENT_FLAG_GHOST;
         }
         else
         {
-            this->Flags &= ~TILE_ELEMENT_FLAG_GHOST;
+            this->flags &= ~TILE_ELEMENT_FLAG_GHOST;
         }
     }
 
-    void TileElementBase::Remove()
+    void TileElementBase::remove()
     {
         TileElementRemove(static_cast<TileElement*>(this));
     }
 
-    uint8_t TileElementBase::GetOccupiedQuadrants() const
+    uint8_t TileElementBase::getOccupiedQuadrants() const
     {
-        return Flags & kTileElementOccupiedQuadrantsMask;
+        return flags & kTileElementOccupiedQuadrantsMask;
     }
 
-    void TileElementBase::SetOccupiedQuadrants(uint8_t quadrants)
+    void TileElementBase::setOccupiedQuadrants(uint8_t quadrants)
     {
-        Flags &= ~kTileElementOccupiedQuadrantsMask;
-        Flags |= (quadrants & kTileElementOccupiedQuadrantsMask);
+        flags &= ~kTileElementOccupiedQuadrantsMask;
+        flags |= (quadrants & kTileElementOccupiedQuadrantsMask);
     }
 
-    int32_t TileElementBase::GetBaseZ() const
+    int32_t TileElementBase::getBaseZ() const
     {
-        return BaseHeight * kCoordsZStep;
+        return baseHeight * kCoordsZStep;
     }
 
-    void TileElementBase::SetBaseZ(int32_t newZ)
+    void TileElementBase::setBaseZ(int32_t newZ)
     {
-        BaseHeight = (newZ / kCoordsZStep);
+        baseHeight = (newZ / kCoordsZStep);
     }
 
-    int32_t TileElementBase::GetClearanceZ() const
+    int32_t TileElementBase::getClearanceZ() const
     {
-        return ClearanceHeight * kCoordsZStep;
+        return clearanceHeight * kCoordsZStep;
     }
 
-    void TileElementBase::SetClearanceZ(int32_t newZ)
+    void TileElementBase::setClearanceZ(int32_t newZ)
     {
-        ClearanceHeight = (newZ / kCoordsZStep);
+        clearanceHeight = (newZ / kCoordsZStep);
     }
 
-    uint8_t TileElementBase::GetOwner() const
+    uint8_t TileElementBase::getOwner() const
     {
-        return Owner & kTileElementOwnerMask;
+        return owner & kTileElementOwnerMask;
     }
 
-    void TileElementBase::SetOwner(uint8_t newOwner)
+    void TileElementBase::setOwner(uint8_t newOwner)
     {
-        Owner &= ~kTileElementOwnerMask;
-        Owner |= (newOwner & kTileElementOwnerMask);
+        owner &= ~kTileElementOwnerMask;
+        owner |= (newOwner & kTileElementOwnerMask);
     }
 
-    const SurfaceElement* TileElementBase::AsSurface() const
+    const SurfaceElement* TileElementBase::asSurface() const
     {
         return as<SurfaceElement>();
     }
-    SurfaceElement* TileElementBase::AsSurface()
+    SurfaceElement* TileElementBase::asSurface()
     {
         return as<SurfaceElement>();
     }
-    const PathElement* TileElementBase::AsPath() const
+    const PathElement* TileElementBase::asPath() const
     {
         return as<PathElement>();
     }
-    PathElement* TileElementBase::AsPath()
+    PathElement* TileElementBase::asPath()
     {
         return as<PathElement>();
     }
-    const TrackElement* TileElementBase::AsTrack() const
+    const TrackElement* TileElementBase::asTrack() const
     {
         return as<TrackElement>();
     }
-    TrackElement* TileElementBase::AsTrack()
+    TrackElement* TileElementBase::asTrack()
     {
         return as<TrackElement>();
     }
-    const SmallSceneryElement* TileElementBase::AsSmallScenery() const
+    const SmallSceneryElement* TileElementBase::asSmallScenery() const
     {
         return as<SmallSceneryElement>();
     }
-    SmallSceneryElement* TileElementBase::AsSmallScenery()
+    SmallSceneryElement* TileElementBase::asSmallScenery()
     {
         return as<SmallSceneryElement>();
     }
-    const LargeSceneryElement* TileElementBase::AsLargeScenery() const
+    const LargeSceneryElement* TileElementBase::asLargeScenery() const
     {
         return as<LargeSceneryElement>();
     }
-    LargeSceneryElement* TileElementBase::AsLargeScenery()
+    LargeSceneryElement* TileElementBase::asLargeScenery()
     {
         return as<LargeSceneryElement>();
     }
-    const WallElement* TileElementBase::AsWall() const
+    const WallElement* TileElementBase::asWall() const
     {
         return as<WallElement>();
     }
-    WallElement* TileElementBase::AsWall()
+    WallElement* TileElementBase::asWall()
     {
         return as<WallElement>();
     }
 
-    const EntranceElement* TileElementBase::AsEntrance() const
+    const EntranceElement* TileElementBase::asEntrance() const
     {
         return as<EntranceElement>();
     }
 
-    EntranceElement* TileElementBase::AsEntrance()
+    EntranceElement* TileElementBase::asEntrance()
     {
         return as<EntranceElement>();
     }
 
-    const BannerElement* TileElementBase::AsBanner() const
+    const BannerElement* TileElementBase::asBanner() const
     {
         return as<BannerElement>();
     }
-    BannerElement* TileElementBase::AsBanner()
+    BannerElement* TileElementBase::asBanner()
     {
         return as<BannerElement>();
     }

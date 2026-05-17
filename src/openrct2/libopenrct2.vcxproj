@@ -399,7 +399,9 @@
     <ClInclude Include="paint\Paint.SessionFlags.h" />
     <ClInclude Include="paint\Painter.h" />
     <ClInclude Include="paint\Balloon.h" />
+    <ClInclude Include="paint\entity\Paint.Duck.h" />
     <ClInclude Include="paint\entity\Paint.Guest.h" />
+    <ClInclude Include="paint\entity\Paint.Litter.h" />
     <ClInclude Include="paint\entity\Paint.Peep.h" />
     <ClInclude Include="paint\entity\Paint.Staff.h" />
     <ClInclude Include="paint\support\MetalSupports.h" />
@@ -683,6 +685,7 @@
     <ClInclude Include="world\Map.h" />
     <ClInclude Include="world\MapAnimation.h" />
     <ClInclude Include="world\MapLimits.h" />
+    <ClInclude Include="world\MapRangeView.hpp" />
     <ClInclude Include="world\MapSelection.h" />
     <ClInclude Include="world\Park.h" />
     <ClInclude Include="world\ParkData.h" />
@@ -996,7 +999,9 @@
     <ClCompile Include="paint\Painter.cpp" />
     <ClCompile Include="paint\PaintHelpers.cpp" />
     <ClCompile Include="paint\entity\Paint.Balloon.cpp" />
+    <ClCompile Include="paint\entity\Paint.Duck.cpp" />
     <ClCompile Include="paint\entity\Paint.Guest.cpp" />
+    <ClCompile Include="paint\entity\Paint.Litter.cpp" />
     <ClCompile Include="paint\entity\Paint.Peep.cpp" />
     <ClCompile Include="paint\entity\Paint.Staff.cpp" />
     <ClCompile Include="paint\support\MetalSupports.cpp" />
@@ -1240,6 +1245,7 @@
     <ClCompile Include="world\Footpath.cpp" />
     <ClCompile Include="world\Map.cpp" />
     <ClCompile Include="world\MapAnimation.cpp" />
+    <ClCompile Include="world\MapRangeView.cpp" />
     <ClCompile Include="world\MapSelection.cpp" />
     <ClCompile Include="world\Park.cpp" />
     <ClCompile Include="world\QuarterTile.cpp" />

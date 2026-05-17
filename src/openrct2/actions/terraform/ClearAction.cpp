@@ -136,15 +136,15 @@ namespace OpenRCT2::GameActions
                 return totalCost;
             do
             {
-                if (tileElement->IsGhost())
+                if (tileElement->isGhost())
                     continue;
 
-                switch (tileElement->GetType())
+                switch (tileElement->getType())
                 {
                     case TileElementType::Path:
                         if (_itemsToClear & CLEARABLE_ITEMS::kSceneryFootpath)
                         {
-                            auto footpathRemoveAction = FootpathRemoveAction({ tilePos, tileElement->GetBaseZ() });
+                            auto footpathRemoveAction = FootpathRemoveAction({ tilePos, tileElement->getBaseZ() });
                             footpathRemoveAction.SetFlags(GetFlags());
 
                             auto res = executing ? ExecuteNested(&footpathRemoveAction, gameState)
@@ -165,8 +165,8 @@ namespace OpenRCT2::GameActions
                         if (_itemsToClear & CLEARABLE_ITEMS::kScenerySmall)
                         {
                             auto removeSceneryAction = SmallSceneryRemoveAction(
-                                { tilePos, tileElement->GetBaseZ() }, tileElement->AsSmallScenery()->GetSceneryQuadrant(),
-                                tileElement->AsSmallScenery()->GetEntryIndex());
+                                { tilePos, tileElement->getBaseZ() }, tileElement->asSmallScenery()->GetSceneryQuadrant(),
+                                tileElement->asSmallScenery()->GetEntryIndex());
                             removeSceneryAction.SetFlags(GetFlags());
 
                             auto res = executing ? ExecuteNested(&removeSceneryAction, gameState)
@@ -186,7 +186,7 @@ namespace OpenRCT2::GameActions
                     case TileElementType::Wall:
                         if (_itemsToClear & CLEARABLE_ITEMS::kScenerySmall)
                         {
-                            CoordsXYZD wallLocation = { tilePos, tileElement->GetBaseZ(), tileElement->GetDirection() };
+                            CoordsXYZD wallLocation = { tilePos, tileElement->getBaseZ(), tileElement->getDirection() };
                             auto wallRemoveAction = WallRemoveAction(wallLocation);
                             wallRemoveAction.SetFlags(GetFlags());
 
@@ -208,8 +208,8 @@ namespace OpenRCT2::GameActions
                         if (_itemsToClear & CLEARABLE_ITEMS::kSceneryLarge)
                         {
                             auto removeSceneryAction = LargeSceneryRemoveAction(
-                                { tilePos, tileElement->GetBaseZ(), tileElement->GetDirection() },
-                                tileElement->AsLargeScenery()->GetSequenceIndex());
+                                { tilePos, tileElement->getBaseZ(), tileElement->getDirection() },
+                                tileElement->asLargeScenery()->GetSequenceIndex());
                             removeSceneryAction.SetFlags(GetFlags().with(CommandFlag::trackDesign));
 
                             auto res = executing ? ExecuteNested(&removeSceneryAction, gameState)
@@ -229,7 +229,7 @@ namespace OpenRCT2::GameActions
                     default:
                         break;
                 }
-            } while (!tileEdited && !(tileElement++)->IsLastForTile());
+            } while (!tileEdited && !(tileElement++)->isLastForTile());
         } while (tileEdited);
 
         return totalCost;
@@ -247,11 +247,11 @@ namespace OpenRCT2::GameActions
                 {
                     if (tileElement == nullptr)
                         break;
-                    if (tileElement->GetType() == TileElementType::LargeScenery)
+                    if (tileElement->getType() == TileElementType::LargeScenery)
                     {
-                        tileElement->AsLargeScenery()->SetIsAccounted(false);
+                        tileElement->asLargeScenery()->SetIsAccounted(false);
                     }
-                } while (!(tileElement++)->IsLastForTile());
+                } while (!(tileElement++)->isLastForTile());
             }
         }
     }

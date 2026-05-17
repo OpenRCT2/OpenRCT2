@@ -34,7 +34,7 @@ env:
   OPENRCT2_BUILD_SERVER: GitHub
   OPENRCT2_ORG_TOKEN: ${{ secrets.OPENRCT2_ORG_TOKEN }}
   BACKTRACE_IO_TOKEN: ${{ secrets.BACKTRACE_IO_TOKEN }}
-  OPENRCT2_VERSION: 0.5.0
+  OPENRCT2_VERSION: 0.5.1
 
 # https://docs.github.com/en/actions/using-jobs/using-concurrency#example-using-a-fallback-value
 concurrency:
@@ -44,7 +44,7 @@ concurrency:
 jobs:
   build_variables:
     name: Get version info
-    runs-on: ubuntu-latest # This job is too heavy for ubuntu-slim. It takes almost a minute to checkout the code on slim vs 23s on ubuntu-latest.
+    runs-on: ubuntu-24.04 # This job is too heavy for ubuntu-slim. It takes almost a minute to checkout the code on slim vs 23s on ubuntu-24.04.
     # We want to sign tagged releases with release certificates, but it is only allowed to be ran manually.
     # Disable automatic runs for tags and force release signing for tags.
     if: |
@@ -114,7 +114,7 @@ jobs:
   # lint-commit:
   #   name: Lint Commit Message
   #   if: github.event_name == 'pull_request'
-  #   runs-on: ubuntu-latest
+  #   runs-on: ubuntu-24.04
   #   env:
   #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   #   steps:
@@ -128,7 +128,7 @@ jobs:
   #         configFile: .commitlint.json
   check-code-formatting:
     name: Check code formatting
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     container: ghcr.io/openrct2/openrct2-build:26-format
     permissions:
       pull-requests: write
@@ -194,14 +194,14 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          # Keep win32 on vs2022 for Windows 7 compatibility.
+          # See https://github.blog/changelog/2026-02-05-github-actions-early-february-2026-updates/#windows-server-2025-with-visual-studio-2026-image-now-available-for-github-hosted-runners
           - platform: win32
-            runs_on: windows-2025-vs2026
+            runs_on: windows-2025
           - platform: x64
             runs_on: windows-2025-vs2026
-          # keep arm64 on vs2022 for now. VS2026 is a bit slower and we can maintain
-          # compatibility with vs2022
           - platform: arm64
-            runs_on: windows-latest
+            runs_on: windows-2025-vs2026
     env:
       PLATFORM: ${{ matrix.platform }}
       DISTANCE_FROM_TAG: ${{ needs.build_variables.outputs.distance }}
@@ -330,7 +330,7 @@ jobs:
           fi
   windows-mingw:
     name: Windows (${{ matrix.platform_name }}) using mingw
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [check-code-formatting, build_variables]
     container: ghcr.io/openrct2/openrct2-build:26-mingw
     strategy:
@@ -459,7 +459,7 @@ jobs:
           if-no-files-found: error
   linux-portable:
     name: ${{ matrix.distro }} Linux (${{ matrix.release }}, ${{ matrix.platform }}, portable)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [check-code-formatting, build_variables]
     container: ${{ matrix.image }}
     strategy:
@@ -513,7 +513,7 @@ jobs:
         run: . scripts/setenv -q && run-tests
   linux-appimage:
     name: Ubuntu Linux (AppImage, x86_64)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [check-code-formatting, build_variables]
     container: openrct2/openrct2-build:24-jammy
     steps:
@@ -542,7 +542,7 @@ jobs:
   linux-docker:
     name: Ubuntu Linux (Docker)
     needs: [check-code-formatting, build_variables]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout image
         if: github.repository == 'OpenRCT2/OpenRCT2' && github.ref == 'refs/heads/develop'
@@ -568,7 +568,7 @@ jobs:
           fi
   linux-clang:
     name: Ubuntu Linux (noble, debug, [http, network, flac, vorbis OpenGL] disabled) using clang
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [check-code-formatting, build_variables]
     container: ghcr.io/openrct2/openrct2-build:26-noble
     steps:
@@ -584,7 +584,7 @@ jobs:
         run: . scripts/setenv && build -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Debug -DDISABLE_NETWORK=ON -DDISABLE_HTTP=ON -DDISABLE_FLAC=ON -DDISABLE_VORBIS=ON -DDISABLE_OPENGL=ON
   linux-clang-tests:
     name: Ubuntu Linux (debug) using clang, coverage enabled
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [check-code-formatting, build_variables]
     container: ghcr.io/openrct2/openrct2-build:26-noble
     steps:
@@ -625,7 +625,7 @@ jobs:
           if-no-files-found: error
   android-libs:
     name: Android (${{ matrix.arch }})
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [check-code-formatting, build_variables]
     container: ghcr.io/openrct2/openrct2-build:26-android
     strategy:
@@ -667,7 +667,7 @@ jobs:
 
   android:
     name: Android
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [android-libs, build_variables, g2dat]
     container: ghcr.io/openrct2/openrct2-build:26-android
     steps:
@@ -732,7 +732,7 @@ jobs:
           if-no-files-found: ignore
   emscripten:
     name: Emscripten
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [check-code-formatting, build_variables]
     container: ghcr.io/openrct2/openrct2-build:26-emscripten
     steps:

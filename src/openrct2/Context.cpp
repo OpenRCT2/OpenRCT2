@@ -546,13 +546,17 @@ namespace OpenRCT2
 
                 // TODO: preload the title scene in another (parallel) job.
                 preloaderScene->AddJob([this]() { InitialiseRepositories(); });
-                preloaderScene->AddJob([this]() { InitialiseScriptEngine(); });
             }
             else
             {
                 InitialiseRepositories();
-                InitialiseScriptEngine();
             }
+
+#ifdef ENABLE_SCRIPTING
+            // quickjs script engine is single-threaded and must be set up on the main thread
+            _scriptEngine.Initialise();
+            _uiContext->InitialiseScriptExtensions();
+#endif
 
             return true;
         }
@@ -616,17 +620,6 @@ namespace OpenRCT2
             TitleSequenceManager::Scan();
 
             OpenProgress(STR_LOADING_GENERIC);
-        }
-
-        void InitialiseScriptEngine()
-        {
-#ifdef ENABLE_SCRIPTING
-            OpenProgress(STR_LOADING_PLUGIN_ENGINE);
-            _scriptEngine.Initialise();
-            _uiContext->InitialiseScriptExtensions();
-
-            OpenProgress(STR_LOADING_GENERIC);
-#endif
         }
 
     public:
