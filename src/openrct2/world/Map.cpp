@@ -943,7 +943,7 @@ namespace OpenRCT2
     uint8_t MapGetLowestLandHeight(const MapRange& range)
     {
         uint8_t minHeight = 0xFF;
-        for (auto tileCoords : Map::getDrawableTileRange())
+        for (auto tileCoords : Map::getClampedRange(range))
         {
             auto* surfaceElement = MapGetSurfaceElementAt(tileCoords);
             if (surfaceElement == nullptr || minHeight <= surfaceElement->baseHeight)
@@ -963,7 +963,7 @@ namespace OpenRCT2
     uint8_t MapGetHighestLandHeight(const MapRange& range)
     {
         uint8_t maxHeight = 0;
-        for (auto tileCoords : Map::getDrawableTileRange())
+        for (auto tileCoords : Map::getClampedRange(range))
         {
             auto* surfaceElement = MapGetSurfaceElementAt(tileCoords);
             if (surfaceElement == nullptr)
