@@ -57,7 +57,12 @@ namespace OpenRCT2::Audio
         void stop(AudioHandle handle);
         void stopAll();
         void setVolume(AudioHandle handle, float volume);
+        void setPan(AudioHandle handle, float pan);
+        void setRate(AudioHandle handle, float rate);
         void setMasterVolume(float volume);
+        void setGroupVolume(AudioEngineGroup group, float volume);
+        void fadeOut(AudioHandle handle, float durationMs);
+        void stopGroup(AudioEngineGroup group);
 
         // Called from the audio thread (the SDL callback). Drains the
         // command buffer, mixes active voices, and writes interleaved
@@ -81,7 +86,11 @@ namespace OpenRCT2::Audio
         void processPlayLoop(const AudioCommand& cmd);
         void processStop(const AudioCommand& cmd);
         void processSetVolume(const AudioCommand& cmd);
+        void processSetPan(const AudioCommand& cmd);
+        void processSetRate(const AudioCommand& cmd);
         void processSetMasterVolume(const AudioCommand& cmd);
+        void processSetGroupVolume(const AudioCommand& cmd);
+        void processFadeOut(const AudioCommand& cmd);
 
         Voice* resolveVoice(AudioHandle handle);
 
@@ -92,6 +101,10 @@ namespace OpenRCT2::Audio
         AudioVoicePool _voicePool;
 
         float _masterVolume = 1.0f;
+        float _soundVolume = 1.0f;
+        float _musicVolume = 1.0f;
+
+        float getGroupVolume(AudioEngineGroup group) const;
 
         uint32_t _outputSampleRate = 48000;
 

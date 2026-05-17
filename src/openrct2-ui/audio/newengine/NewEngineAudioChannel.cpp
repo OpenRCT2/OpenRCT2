@@ -51,6 +51,8 @@ namespace OpenRCT2::Audio
     void NewEngineAudioChannel::SetRate(double rate)
     {
         _rate = rate;
+        if (_engine != nullptr)
+            _engine->setRate(_handle, static_cast<float>(rate));
     }
 
     uint64_t NewEngineAudioChannel::GetOffset() const
@@ -118,6 +120,21 @@ namespace OpenRCT2::Audio
     void NewEngineAudioChannel::SetPan(float pan)
     {
         _pan = pan;
+        if (_engine != nullptr)
+            _engine->setPan(_handle, pan);
+
+        double decibels = (std::abs(_pan - 0.5f) * 2.0f) * 100.0;
+        double attenuation = pow(10, decibels / 20.0);
+        if (_pan <= 0.5f)
+        {
+            _volumeL = 1.0f;
+            _volumeR = static_cast<float>(1.0 / attenuation);
+        }
+        else
+        {
+            _volumeR = 1.0f;
+            _volumeL = static_cast<float>(1.0 / attenuation);
+        }
     }
 
     bool NewEngineAudioChannel::IsStopping() const
@@ -173,6 +190,10 @@ namespace OpenRCT2::Audio
     void NewEngineAudioChannel::Stop()
     {
         _stopping = true;
+        // Aaa... Don't set _done = true here. The engine performs a 5ms fade-out,
+        // and IsDone() correctly checks isHandleActive() to detect when the
+        // voice has actually finished. Setting _done prematurely caused the game
+        // code to destroy resources while audio was still playing. NOT GOOD.
         if (_engine != nullptr)
             _engine->stop(_handle);
     }

@@ -43,6 +43,8 @@ namespace OpenRCT2::Audio
         float targetVolume = 1.0f;
         float pan = 0.5f;
         float rate = 1.0f;
+        float prevPanL = 1.0f;
+        float prevPanR = 1.0f;
 
         float fadePerSample = 0.0f;
 
@@ -61,6 +63,8 @@ namespace OpenRCT2::Audio
             targetVolume = 1.0f;
             pan = 0.5f;
             rate = 1.0f;
+            prevPanL = 1.0f;
+            prevPanR = 1.0f;
             fadePerSample = 0.0f;
             gameHandle = {AudioHandle::kInvalid};
         }
@@ -76,6 +80,7 @@ namespace OpenRCT2::Audio
         Voice* getByGameHandle(AudioHandle gameHandle);
         Voice& getByIndex(size_t index);
         void releaseAll();
+        void releaseGroup(AudioEngineGroup group);
         [[nodiscard]] size_t indexOf(const Voice* voice) const;
 
         [[nodiscard]] size_t activeCount() const;
