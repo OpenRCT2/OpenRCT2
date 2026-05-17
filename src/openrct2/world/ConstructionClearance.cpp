@@ -41,13 +41,13 @@ using OpenRCT2::GameActions::CommandFlags;
 static bool MapPlaceClearFunc(
     TileElement** tile_element, const CoordsXY& coords, CommandFlags flags, money64* price, bool is_scenery)
 {
-    if ((*tile_element)->GetType() != TileElementType::SmallScenery)
+    if ((*tile_element)->getType() != TileElementType::SmallScenery)
         return false;
 
     if (is_scenery && !flags.has(CommandFlag::trackDesign))
         return false;
 
-    auto* scenery = (*tile_element)->AsSmallScenery()->GetEntry();
+    auto* scenery = (*tile_element)->asSmallScenery()->GetEntry();
 
     auto& park = getGameState().park;
     if (park.flags & PARK_FLAGS_FORBID_TREE_REMOVAL)
@@ -65,7 +65,7 @@ static bool MapPlaceClearFunc(
     if (!flags.has(CommandFlag::apply))
         return true;
 
-    MapInvalidateTile({ coords, (*tile_element)->GetBaseZ(), (*tile_element)->GetClearanceZ() });
+    MapInvalidateTile({ coords, (*tile_element)->getBaseZ(), (*tile_element)->getClearanceZ() });
 
     TileElementRemove(*tile_element);
 
@@ -99,8 +99,8 @@ static bool landSlopeFitsUnderTrack(int32_t baseZ, uint8_t slope, const TrackEle
     const auto& ted = TrackMetadata::GetTrackElementDescriptor(trackElemType);
     const uint8_t sequenceIndex = trackElemType == TrackElemType::maze ? 0 : trackElement.GetSequenceIndex();
     const auto& trackClearances = ted.sequenceData.sequences[sequenceIndex].clearance;
-    const auto trackQuarters = trackClearances.quarterTile.Rotate(trackElement.GetDirection());
-    const auto trackQuarterHeights = trackQuarters.GetQuarterHeights(trackElement.GetBaseZ());
+    const auto trackQuarters = trackClearances.quarterTile.Rotate(trackElement.getDirection());
+    const auto trackQuarterHeights = trackQuarters.GetQuarterHeights(trackElement.getBaseZ());
     const uint8_t trackOccupiedQuarters = trackQuarters.GetBaseQuarterOccupied();
 
     if ((!(trackOccupiedQuarters & 0b0001) || slopeNorthZ <= trackQuarterHeights.north)
@@ -119,7 +119,7 @@ static bool landSlopeFitsUnderPath(int32_t baseZ, uint8_t slope, const PathEleme
     const auto slopeCornerHeights = GetSlopeCornerHeights(baseZ, slope);
 
     const uint8_t pathSlope = Numerics::rol4(kTileSlopeSWSideUp, pathElement.GetSlopeDirection());
-    const auto pathCornerHeights = GetSlopeCornerHeights(pathElement.GetBaseZ(), pathSlope);
+    const auto pathCornerHeights = GetSlopeCornerHeights(pathElement.getBaseZ(), pathSlope);
 
     return (slopeCornerHeights <= pathCornerHeights);
 }
@@ -135,33 +135,33 @@ static bool MapLoc68BABCShouldContinue(
 
     const TileElement* const tileElement = *tileElementPtr;
 
-    if (slope != kTileSlopeFlat && tileElement->GetType() == TileElementType::Track)
+    if (slope != kTileSlopeFlat && tileElement->getType() == TileElementType::Track)
     {
-        if (landSlopeFitsUnderTrack(pos.baseZ, slope, *tileElement->AsTrack()))
+        if (landSlopeFitsUnderTrack(pos.baseZ, slope, *tileElement->asTrack()))
         {
             return true;
         }
     }
 
-    if (slope != kTileSlopeFlat && tileElement->GetType() == TileElementType::Path && tileElement->AsPath()->IsSloped())
+    if (slope != kTileSlopeFlat && tileElement->getType() == TileElementType::Path && tileElement->asPath()->IsSloped())
     {
-        if (landSlopeFitsUnderPath(pos.baseZ, slope, *tileElement->AsPath()))
+        if (landSlopeFitsUnderPath(pos.baseZ, slope, *tileElement->asPath()))
         {
             return true;
         }
     }
 
-    if (crossingMode == CreateCrossingMode::trackOverPath && canBuildCrossing && tileElement->GetType() == TileElementType::Path
-        && tileElement->GetBaseZ() == pos.baseZ && !tileElement->AsPath()->IsQueue() && !tileElement->AsPath()->IsSloped())
+    if (crossingMode == CreateCrossingMode::trackOverPath && canBuildCrossing && tileElement->getType() == TileElementType::Path
+        && tileElement->getBaseZ() == pos.baseZ && !tileElement->asPath()->IsQueue() && !tileElement->asPath()->IsSloped())
     {
         return true;
     }
     else if (
         crossingMode == CreateCrossingMode::pathOverTrack && canBuildCrossing
-        && tileElement->GetType() == TileElementType::Track && tileElement->GetBaseZ() == pos.baseZ
-        && tileElement->AsTrack()->GetTrackType() == TrackElemType::flat)
+        && tileElement->getType() == TileElementType::Track && tileElement->getBaseZ() == pos.baseZ
+        && tileElement->asTrack()->GetTrackType() == TrackElemType::flat)
     {
-        auto ride = GetRide(tileElement->AsTrack()->GetRideIndex());
+        auto ride = GetRide(tileElement->asTrack()->GetRideIndex());
         if (ride != nullptr && ride->getRideTypeDescriptor().flags.has(RtdFlag::supportsLevelCrossings))
         {
             return true;
@@ -214,19 +214,19 @@ GameActions::Result MapCanConstructWithClearAt(
 
     do
     {
-        if (tileElement->GetType() != TileElementType::Surface)
+        if (tileElement->getType() != TileElementType::Surface)
         {
             // Skip track elements belonging to the ride that's being ignored for rides that intersect themselves.
-            if (!ignoreRideId.IsNull() && tileElement->GetType() == TileElementType::Track
-                && tileElement->AsTrack()->GetRideIndex() == ignoreRideId)
+            if (!ignoreRideId.IsNull() && tileElement->getType() == TileElementType::Track
+                && tileElement->asTrack()->GetRideIndex() == ignoreRideId)
             {
                 continue;
             }
 
-            if (pos.baseZ < tileElement->GetClearanceZ() && pos.clearanceZ > tileElement->GetBaseZ()
-                && !(tileElement->IsGhost()))
+            if (pos.baseZ < tileElement->getClearanceZ() && pos.clearanceZ > tileElement->getBaseZ()
+                && !(tileElement->isGhost()))
             {
-                if (tileElement->GetOccupiedQuadrants() & (quarterTile.GetBaseQuarterOccupied()))
+                if (tileElement->getOccupiedQuadrants() & (quarterTile.GetBaseQuarterOccupied()))
                 {
                     if (MapLoc68BABCShouldContinue(
                             &tileElement, pos, clearFunc, flags, res.cost, crossingMode, canBuildCrossing, slope))
@@ -242,8 +242,8 @@ GameActions::Result MapCanConstructWithClearAt(
             continue;
         }
 
-        const auto waterHeight = tileElement->AsSurface()->GetWaterHeight();
-        if (waterHeight && waterHeight > pos.baseZ && tileElement->GetBaseZ() < pos.clearanceZ)
+        const auto waterHeight = tileElement->asSurface()->GetWaterHeight();
+        if (waterHeight && waterHeight > pos.baseZ && tileElement->getBaseZ() < pos.clearanceZ)
         {
             groundFlags |= ELEMENT_IS_UNDERWATER;
             if (waterHeight < pos.clearanceZ)
@@ -259,7 +259,7 @@ GameActions::Result MapCanConstructWithClearAt(
 
         if (getGameState().park.flags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION && !isTree)
         {
-            const auto heightFromGround = pos.clearanceZ - tileElement->GetBaseZ();
+            const auto heightFromGround = pos.clearanceZ - tileElement->getBaseZ();
 
             if (heightFromGround > (18 * kCoordsZStep))
             {
@@ -270,15 +270,15 @@ GameActions::Result MapCanConstructWithClearAt(
         }
 
         // Only allow building crossings directly on a flat surface tile.
-        if (tileElement->GetType() == TileElementType::Surface && (tileElement->AsSurface()->GetSlope()) == kTileSlopeFlat
-            && tileElement->GetBaseZ() == pos.baseZ)
+        if (tileElement->getType() == TileElementType::Surface && (tileElement->asSurface()->GetSlope()) == kTileSlopeFlat
+            && tileElement->getBaseZ() == pos.baseZ)
         {
             canBuildCrossing = true;
         }
 
         if (quarterTile.GetZQuarterOccupied() != 0b1111)
         {
-            if (tileElement->GetBaseZ() >= pos.clearanceZ)
+            if (tileElement->getBaseZ() >= pos.clearanceZ)
             {
                 // Loc68BA81
                 groundFlags |= ELEMENT_IS_UNDERGROUND;
@@ -287,7 +287,7 @@ GameActions::Result MapCanConstructWithClearAt(
             else
             {
                 const auto [northZ, eastZ, southZ, westZ] = GetSlopeCornerHeights(
-                    tileElement->GetBaseZ(), tileElement->AsSurface()->GetSlope());
+                    tileElement->getBaseZ(), tileElement->asSurface()->GetSlope());
                 const auto baseHeight = pos.baseZ + (4 * kCoordsZStep);
                 const auto baseQuarter = quarterTile.GetBaseQuarterOccupied();
                 const auto zQuarter = quarterTile.GetZQuarterOccupied();
@@ -310,7 +310,7 @@ GameActions::Result MapCanConstructWithClearAt(
                 return res;
             }
         }
-    } while (!(tileElement++)->IsLastForTile());
+    } while (!(tileElement++)->isLastForTile());
 
     res.setData(ConstructClearResult{ groundFlags });
 
@@ -338,7 +338,7 @@ void MapGetObstructionErrorText(TileElement* tileElement, GameActions::Result& r
     Ride* ride;
 
     res.errorMessage = STR_OBJECT_IN_THE_WAY;
-    switch (tileElement->GetType())
+    switch (tileElement->getType())
     {
         case TileElementType::Surface:
             res.errorMessage = STR_RAISE_OR_LOWER_LAND_FIRST;
@@ -347,7 +347,7 @@ void MapGetObstructionErrorText(TileElement* tileElement, GameActions::Result& r
             res.errorMessage = STR_FOOTPATH_IN_THE_WAY;
             break;
         case TileElementType::Track:
-            ride = GetRide(tileElement->AsTrack()->GetRideIndex());
+            ride = GetRide(tileElement->asTrack()->GetRideIndex());
             if (ride != nullptr)
             {
                 res.errorMessage = STR_X_IN_THE_WAY;
@@ -358,7 +358,7 @@ void MapGetObstructionErrorText(TileElement* tileElement, GameActions::Result& r
             break;
         case TileElementType::SmallScenery:
         {
-            auto* sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
+            auto* sceneryEntry = tileElement->asSmallScenery()->GetEntry();
             res.errorMessage = STR_X_IN_THE_WAY;
             auto ft = Formatter(res.errorMessageArgs.data());
             StringId stringId = sceneryEntry != nullptr ? sceneryEntry->name : static_cast<StringId>(kStringIdEmpty);
@@ -366,7 +366,7 @@ void MapGetObstructionErrorText(TileElement* tileElement, GameActions::Result& r
             break;
         }
         case TileElementType::Entrance:
-            switch (tileElement->AsEntrance()->GetEntranceType())
+            switch (tileElement->asEntrance()->GetEntranceType())
             {
                 case ENTRANCE_TYPE_RIDE_ENTRANCE:
                     res.errorMessage = STR_RIDE_ENTRANCE_IN_THE_WAY;
@@ -381,7 +381,7 @@ void MapGetObstructionErrorText(TileElement* tileElement, GameActions::Result& r
             break;
         case TileElementType::Wall:
         {
-            auto* wallEntry = tileElement->AsWall()->GetEntry();
+            auto* wallEntry = tileElement->asWall()->GetEntry();
             res.errorMessage = STR_X_IN_THE_WAY;
             auto ft = Formatter(res.errorMessageArgs.data());
             StringId stringId = wallEntry != nullptr ? wallEntry->name : static_cast<StringId>(kStringIdEmpty);
@@ -390,7 +390,7 @@ void MapGetObstructionErrorText(TileElement* tileElement, GameActions::Result& r
         }
         case TileElementType::LargeScenery:
         {
-            auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
+            auto* sceneryEntry = tileElement->asLargeScenery()->GetEntry();
             res.errorMessage = STR_X_IN_THE_WAY;
             auto ft = Formatter(res.errorMessageArgs.data());
             StringId stringId = sceneryEntry != nullptr ? sceneryEntry->name : static_cast<StringId>(kStringIdEmpty);

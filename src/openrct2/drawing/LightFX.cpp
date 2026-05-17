@@ -337,7 +337,7 @@ namespace OpenRCT2::Drawing::LightFx
 
                     if (interactionType != ViewportInteractionItem::entity && tileElement != nullptr)
                     {
-                        baseHeight = tileElement->GetBaseZ();
+                        baseHeight = tileElement->getBaseZ();
                     }
 
                     minDist = (baseHeight - entry.position.z) / 2;

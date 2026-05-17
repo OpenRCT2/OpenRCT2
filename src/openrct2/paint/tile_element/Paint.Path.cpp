@@ -678,12 +678,12 @@ static bool ShouldDrawSupports(PaintSession& session, const PathElement& pathEl,
     {
         return true;
     }
-    else if (surface->GetBaseZ() != height)
+    else if (surface->getBaseZ() != height)
     {
         const auto* surfaceEntry = pathEl.GetSurfaceEntry();
         const bool showUndergroundRailings = surfaceEntry == nullptr
             || !(surfaceEntry->Flags & FOOTPATH_ENTRY_FLAG_NO_SLOPE_RAILINGS);
-        if (surface->GetBaseZ() < height || showUndergroundRailings)
+        if (surface->getBaseZ() < height || showUndergroundRailings)
             return true;
     }
     else if (pathEl.IsSloped())
@@ -707,7 +707,7 @@ static void PaintPatrolAreas(PaintSession& session, const PathElement& pathEl)
     if (colour)
     {
         uint32_t baseImageIndex = SPR_TERRAIN_STAFF;
-        auto patrolAreaBaseZ = pathEl.GetBaseZ();
+        auto patrolAreaBaseZ = pathEl.getBaseZ();
         if (pathEl.IsSloped())
         {
             baseImageIndex = SPR_TERRAIN_STAFF_SLOPED + ((pathEl.GetSlopeDirection() + session.CurrentRotation) & 3);
@@ -725,7 +725,7 @@ static void PaintHeightMarkers(PaintSession& session, const PathElement& pathEl)
 
     if (PaintShouldShowHeightMarkers(session, VIEWPORT_FLAG_PATH_HEIGHTS))
     {
-        uint16_t heightMarkerBaseZ = pathEl.GetBaseZ() + 3;
+        uint16_t heightMarkerBaseZ = pathEl.getBaseZ() + 3;
         if (pathEl.IsSloped())
         {
             heightMarkerBaseZ += 8;
@@ -774,7 +774,7 @@ void PaintPath(PaintSession& session, uint16_t height, const PathElement& tileEl
         sceneryImageTemplate = ImageId().WithRemap(FilterPaletteID::paletteGhost);
     }
 
-    if (tileElement.IsGhost())
+    if (tileElement.isGhost())
     {
         session.InteractionType = ViewportInteractionItem::none;
         imageTemplate = ImageId().WithRemap(FilterPaletteID::paletteGhost);
@@ -863,7 +863,7 @@ static BoundBoxXYZ PathPaintGetBoundbox(const PaintSession& session, int32_t hei
     // If we are on the same tile as a straight track, add the offset 2 so we
     //  can clip above gravel part of the track sprite
     if (session.TrackElementOnSameHeight != nullptr
-        && session.TrackElementOnSameHeight->AsTrack()->GetTrackType() == TrackElemType::flat)
+        && session.TrackElementOnSameHeight->asTrack()->GetTrackType() == TrackElemType::flat)
     {
         boundingBoxZOffset = 2;
     }

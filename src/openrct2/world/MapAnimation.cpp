@@ -118,7 +118,7 @@ static bool UpdateEntranceAnimation(
     {
         if constexpr (invalidate)
         {
-            const int32_t direction = (entrance.GetDirection() + GetCurrentRotation()) & 3;
+            const int32_t direction = (entrance.getDirection() + GetCurrentRotation()) & 3;
             if (direction == TILE_ELEMENT_DIRECTION_SOUTH || direction == TILE_ELEMENT_DIRECTION_WEST)
             {
                 Invalidate<invalidateAllViewports>(viewport, loc.x, loc.y, baseZ + 32, baseZ + 64, kMaxScrollingTextZoom);
@@ -169,9 +169,9 @@ static std::optional<UpdateType> UpdateSmallSceneryAnimation(
             animationType = UpdateType::update;
 
             // Don't apply anything to peeps when the scenery is a ghost.
-            if (!scenery.IsGhost() && !(getGameState().currentTicks & 0x3FF))
+            if (!scenery.isGhost() && !(getGameState().currentTicks & 0x3FF))
             {
-                const int32_t direction = scenery.GetDirection();
+                const int32_t direction = scenery.getDirection();
                 auto quad = EntityTileList<Peep>(CoordsXY{ loc.x, loc.y } - CoordsDirectionDelta[direction]);
                 for (auto peep : quad)
                 {
@@ -189,13 +189,13 @@ static std::optional<UpdateType> UpdateSmallSceneryAnimation(
                 }
                 if constexpr (invalidate)
                 {
-                    Invalidate<invalidateAllViewports>(viewport, loc.x, loc.y, baseZ, scenery.GetClearanceZ(), kMaxZoom);
+                    Invalidate<invalidateAllViewports>(viewport, loc.x, loc.y, baseZ, scenery.getClearanceZ(), kMaxZoom);
                 }
             }
         }
         else if constexpr (invalidate)
         {
-            Invalidate<invalidateAllViewports>(viewport, loc.x, loc.y, baseZ, scenery.GetClearanceZ(), kMaxZoom);
+            Invalidate<invalidateAllViewports>(viewport, loc.x, loc.y, baseZ, scenery.getClearanceZ(), kMaxZoom);
         }
         return std::optional(animationType);
     }
@@ -339,23 +339,23 @@ static std::optional<UpdateType> UpdateTile(const TileCoordsXY& coords, const Vi
     auto updateType = UpdateType::invalidate;
     do
     {
-        const auto baseZ = tileElement->GetBaseZ();
+        const auto baseZ = tileElement->getBaseZ();
         const CoordsXYZ loc{ coords.ToCoordsXY(), baseZ };
 
-        switch (tileElement->GetType())
+        switch (tileElement->getType())
         {
             case TileElementType::Entrance:
                 hasAnimations |= UpdateEntranceAnimation<invalidate, invalidateAllViewports>(
-                    *tileElement->AsEntrance(), loc, baseZ, viewport);
+                    *tileElement->asEntrance(), loc, baseZ, viewport);
                 break;
             case TileElementType::Path:
                 hasAnimations |= UpdatePathAnimation<invalidate, invalidateAllViewports>(
-                    *tileElement->AsPath(), loc, baseZ, viewport);
+                    *tileElement->asPath(), loc, baseZ, viewport);
                 break;
             case TileElementType::SmallScenery:
             {
                 const auto result = UpdateSmallSceneryAnimation<invalidate, invalidateAllViewports>(
-                    *tileElement->AsSmallScenery(), loc, baseZ, viewport);
+                    *tileElement->asSmallScenery(), loc, baseZ, viewport);
                 if (result)
                 {
                     hasAnimations |= true;
@@ -368,20 +368,20 @@ static std::optional<UpdateType> UpdateTile(const TileCoordsXY& coords, const Vi
             }
             case TileElementType::Track:
                 hasAnimations |= UpdateTrackAnimation<invalidate, invalidateAllViewports>(
-                    *tileElement->AsTrack(), loc, baseZ, viewport);
+                    *tileElement->asTrack(), loc, baseZ, viewport);
                 break;
             case TileElementType::Banner:
                 hasAnimations |= UpdateBannerAnimation<invalidate, invalidateAllViewports>(
-                    *tileElement->AsBanner(), loc, baseZ, viewport);
+                    *tileElement->asBanner(), loc, baseZ, viewport);
                 break;
             case TileElementType::LargeScenery:
                 hasAnimations |= UpdateLargeSceneryAnimation<invalidate, invalidateAllViewports>(
-                    *tileElement->AsLargeScenery(), loc, baseZ, viewport);
+                    *tileElement->asLargeScenery(), loc, baseZ, viewport);
                 break;
             case TileElementType::Wall:
             {
                 const auto result = UpdateWallAnimation<invalidate, invalidateAllViewports>(
-                    *tileElement->AsWall(), loc, baseZ, viewport);
+                    *tileElement->asWall(), loc, baseZ, viewport);
                 if (result)
                 {
                     hasAnimations |= true;
@@ -395,7 +395,7 @@ static std::optional<UpdateType> UpdateTile(const TileCoordsXY& coords, const Vi
             default:
                 break;
         }
-    } while (!(tileElement++)->IsLastForTile());
+    } while (!(tileElement++)->isLastForTile());
 
     return hasAnimations ? std::optional(updateType) : std::nullopt;
 }
@@ -408,7 +408,7 @@ static bool UpdateOnRidePhotoAnimation(TrackElement& track, const CoordsXYZ& coo
         track.DecrementPhotoTimeout();
         if constexpr (invalidate)
         {
-            ViewportsInvalidate(coords.x, coords.y, coords.z, track.GetClearanceZ(), kMaxZoom);
+            ViewportsInvalidate(coords.x, coords.y, coords.z, track.getClearanceZ(), kMaxZoom);
         }
         return true;
     }
@@ -483,35 +483,35 @@ static bool UpdateTemporaryAnimation(const TemporaryMapAnimation& animation)
         {
             case MapAnimations::TemporaryType::onRidePhoto:
             {
-                if (tileElement->GetType() == TileElementType::Track && tileElement->BaseHeight == tileCoords.z
-                    && tileElement->AsTrack()->GetTrackType() == TrackElemType::onRidePhoto)
+                if (tileElement->getType() == TileElementType::Track && tileElement->baseHeight == tileCoords.z
+                    && tileElement->asTrack()->GetTrackType() == TrackElemType::onRidePhoto)
                 {
-                    isAnimating |= UpdateOnRidePhotoAnimation<invalidate>(*tileElement->AsTrack(), animation.location);
+                    isAnimating |= UpdateOnRidePhotoAnimation<invalidate>(*tileElement->asTrack(), animation.location);
                 }
                 break;
             }
             case MapAnimations::TemporaryType::landEdgeDoor:
             {
-                if (tileElement->GetType() == TileElementType::Track && tileElement->BaseHeight == tileCoords.z)
+                if (tileElement->getType() == TileElementType::Track && tileElement->baseHeight == tileCoords.z)
                 {
-                    isAnimating |= UpdateLandEdgeDoorsAnimation<invalidate>(*tileElement->AsTrack(), animation.location);
+                    isAnimating |= UpdateLandEdgeDoorsAnimation<invalidate>(*tileElement->asTrack(), animation.location);
                 }
             }
         }
-    } while (!(tileElement++)->IsLastForTile());
+    } while (!(tileElement++)->isLastForTile());
 
     return isAnimating;
 }
 
 static std::optional<UpdateType> IsElementAnimated(const TileElementBase& element)
 {
-    switch (element.GetType())
+    switch (element.getType())
     {
         case TileElementType::Banner:
             return std::optional(UpdateType::invalidate);
         case TileElementType::Wall:
         {
-            const auto* const wall = element.AsWall();
+            const auto* const wall = element.asWall();
             const auto* const entry = wall->GetEntry();
             if (entry != nullptr)
             {
@@ -528,7 +528,7 @@ static std::optional<UpdateType> IsElementAnimated(const TileElementBase& elemen
         }
         case TileElementType::SmallScenery:
         {
-            const auto* const scenery = element.AsSmallScenery();
+            const auto* const scenery = element.asSmallScenery();
             const auto* const entry = scenery->GetEntry();
             if (entry != nullptr && entry->flags.has(SmallSceneryFlag::isAnimated))
             {
@@ -545,7 +545,7 @@ static std::optional<UpdateType> IsElementAnimated(const TileElementBase& elemen
         }
         case TileElementType::LargeScenery:
         {
-            const auto* const scenery = element.AsLargeScenery();
+            const auto* const scenery = element.asLargeScenery();
             const auto* const entry = scenery->GetEntry();
             if (entry != nullptr && entry->flags.has(LargeSceneryFlag::isAnimated))
             {
@@ -555,7 +555,7 @@ static std::optional<UpdateType> IsElementAnimated(const TileElementBase& elemen
         }
         case TileElementType::Path:
         {
-            const auto* const path = element.AsPath();
+            const auto* const path = element.asPath();
             if (path->HasQueueBanner())
             {
                 return std::optional(UpdateType::invalidate);
@@ -564,7 +564,7 @@ static std::optional<UpdateType> IsElementAnimated(const TileElementBase& elemen
         }
         case TileElementType::Entrance:
         {
-            const auto* const entrance = element.AsEntrance();
+            const auto* const entrance = element.asEntrance();
             if (entrance->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE && entrance->GetSequenceIndex() == 0)
             {
                 return std::optional(UpdateType::invalidate);
@@ -577,7 +577,7 @@ static std::optional<UpdateType> IsElementAnimated(const TileElementBase& elemen
         }
         case TileElementType::Track:
         {
-            const auto* const track = element.AsTrack();
+            const auto* const track = element.asTrack();
             switch (track->GetTrackType())
             {
                 case TrackElemType::waterfall:

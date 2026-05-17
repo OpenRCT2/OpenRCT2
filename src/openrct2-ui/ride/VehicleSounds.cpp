@@ -226,7 +226,7 @@ namespace OpenRCT2::Audio
             auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ vehicle.x, vehicle.y });
 
             // vehicle underground
-            if (surfaceElement != nullptr && surfaceElement->GetBaseZ() > vehicle.z)
+            if (surfaceElement != nullptr && surfaceElement->getBaseZ() > vehicle.z)
             {
                 param.volume = 0x30;
             }

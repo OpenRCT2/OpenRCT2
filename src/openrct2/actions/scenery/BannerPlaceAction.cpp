@@ -148,11 +148,11 @@ namespace OpenRCT2::GameActions
         auto* bannerElement = TileElementInsert<BannerElement>({ _loc, _loc.z + (2 * kCoordsZStep) }, 0b0000);
         Guard::Assert(bannerElement != nullptr);
 
-        bannerElement->SetClearanceZ(_loc.z + kPathClearance);
+        bannerElement->setClearanceZ(_loc.z + kPathClearance);
         bannerElement->SetPosition(_loc.direction);
         bannerElement->ResetAllowedEdges();
         bannerElement->SetIndex(banner->id);
-        bannerElement->SetGhost(GetFlags().has(CommandFlag::ghost));
+        bannerElement->setGhost(GetFlags().has(CommandFlag::ghost));
 
         MapInvalidateTileFull(_loc);
         MapAnimations::MarkTileForInvalidation(TileCoordsXY(_loc));
@@ -165,13 +165,13 @@ namespace OpenRCT2::GameActions
     {
         for (auto* pathElement : TileElementsView<PathElement>(_loc))
         {
-            if (pathElement->GetBaseZ() != _loc.z && pathElement->GetBaseZ() != _loc.z - kPathHeightStep)
+            if (pathElement->getBaseZ() != _loc.z && pathElement->getBaseZ() != _loc.z - kPathHeightStep)
                 continue;
 
             if (!(pathElement->GetEdges() & (1 << _loc.direction)))
                 continue;
 
-            if (pathElement->IsGhost() && !GetFlags().has(CommandFlag::ghost))
+            if (pathElement->isGhost() && !GetFlags().has(CommandFlag::ghost))
                 continue;
 
             return pathElement;

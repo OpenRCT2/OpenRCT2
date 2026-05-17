@@ -224,7 +224,7 @@ namespace OpenRCT2::GameActions
             res.cost += 6.00_GBP;
         }
 
-        if (GetFlags().has(CommandFlag::ghost) && !pathElement->IsGhost())
+        if (GetFlags().has(CommandFlag::ghost) && !pathElement->isGhost())
         {
             return Result(Status::itemAlreadyPlaced, STR_CANT_BUILD_FOOTPATH_HERE, kStringIdNone);
         }
@@ -342,7 +342,7 @@ namespace OpenRCT2::GameActions
         {
             return Result(Status::invalidParameters, STR_CANT_BUILD_FOOTPATH_HERE, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
         }
-        int32_t supportHeight = zLow - surfaceElement->GetBaseZ();
+        int32_t supportHeight = zLow - surfaceElement->getBaseZ();
         res.cost += supportHeight < 0 ? 20.00_GBP : (supportHeight / kPathHeightStep) * 5.00_GBP;
 
         // Prevent the place sound from being spammed
@@ -406,7 +406,7 @@ namespace OpenRCT2::GameActions
         {
             return Result(Status::invalidParameters, STR_CANT_BUILD_FOOTPATH_HERE, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
         }
-        int32_t supportHeight = zLow - surfaceElement->GetBaseZ();
+        int32_t supportHeight = zLow - surfaceElement->getBaseZ();
         res.cost += supportHeight < 0 ? 20.00_GBP : (supportHeight / kPathHeightStep) * 5.00_GBP;
 
         if (entrancePath)
@@ -429,7 +429,7 @@ namespace OpenRCT2::GameActions
             auto* pathElement = TileElementInsert<PathElement>(_loc, 0b1111);
             Guard::Assert(pathElement != nullptr);
 
-            pathElement->SetClearanceZ(zHigh);
+            pathElement->setClearanceZ(zHigh);
             if (_constructFlags & PathConstructFlag::IsLegacyPathObject)
             {
                 pathElement->SetLegacyPathEntryIndex(_type);
@@ -446,7 +446,7 @@ namespace OpenRCT2::GameActions
             pathElement->SetRideIndex(RideId::GetNull());
             pathElement->SetAdditionStatus(255);
             pathElement->SetIsBroken(false);
-            pathElement->SetGhost(GetFlags().has(CommandFlag::ghost));
+            pathElement->setGhost(GetFlags().has(CommandFlag::ghost));
 
             FootpathQueueChainReset();
 
@@ -508,7 +508,7 @@ namespace OpenRCT2::GameActions
         if (pathElement->IsSloped() && !GetFlags().has(CommandFlag::ghost))
         {
             auto direction = pathElement->GetSlopeDirection();
-            int32_t z = pathElement->GetBaseZ();
+            int32_t z = pathElement->getBaseZ();
             WallRemoveIntersectingWalls({ _loc, z, z + (6 * kCoordsZStep) }, DirectionReverse(direction));
             WallRemoveIntersectingWalls({ _loc, z, z + (6 * kCoordsZStep) }, direction);
             // Removing walls may have made the pointer invalid, so find it again
@@ -533,7 +533,7 @@ namespace OpenRCT2::GameActions
 
         for (auto* pathElement : TileElementsView<PathElement>(footpathPos))
         {
-            if (pathElement->GetBaseZ() != footpathPos.z)
+            if (pathElement->getBaseZ() != footpathPos.z)
                 continue;
             if (pathElement->IsSloped() != isSloped)
                 continue;

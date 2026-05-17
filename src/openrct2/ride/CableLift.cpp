@@ -266,12 +266,12 @@ bool Vehicle::CableLiftUpdateTrackMotionForwards()
             if (!trackBlockGetNext(&input, &output, &outputZ, &outputDirection))
                 return false;
 
-            if (TrackPitchAndRollEnd(trackType) != TrackPitchAndRollStart(output.element->AsTrack()->GetTrackType()))
+            if (TrackPitchAndRollEnd(trackType) != TrackPitchAndRollStart(output.element->asTrack()->GetTrackType()))
                 return false;
 
             TrackLocation = { output, outputZ };
             SetTrackDirection(outputDirection);
-            SetTrackType(output.element->AsTrack()->GetTrackType());
+            SetTrackType(output.element->asTrack()->GetTrackType());
             trackProgress = 0;
         }
 
@@ -317,17 +317,17 @@ bool Vehicle::CableLiftUpdateTrackMotionBackwards()
             if (!trackBlockGetPrevious(input, &output))
                 return false;
 
-            if (TrackPitchAndRollStart(trackType) != TrackPitchAndRollEnd(output.begin_element->AsTrack()->GetTrackType()))
+            if (TrackPitchAndRollStart(trackType) != TrackPitchAndRollEnd(output.begin_element->asTrack()->GetTrackType()))
                 return false;
 
             TrackLocation = { output.begin_x, output.begin_y, output.begin_z };
             SetTrackDirection(output.begin_direction);
-            SetTrackType(output.begin_element->AsTrack()->GetTrackType());
+            SetTrackType(output.begin_element->asTrack()->GetTrackType());
 
             // Doesn't check for diagonal block brakes because there is no diagonal cable lift piece,
             // no way for a cable lift to start from a diagonal brake.
-            if (output.begin_element->AsTrack()->GetTrackType() == TrackElemType::endStation
-                || output.begin_element->AsTrack()->GetTrackType() == TrackElemType::blockBrakes)
+            if (output.begin_element->asTrack()->GetTrackType() == TrackElemType::endStation
+                || output.begin_element->asTrack()->GetTrackType() == TrackElemType::blockBrakes)
             {
                 _vehicleMotionTrackFlags = VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION;
             }

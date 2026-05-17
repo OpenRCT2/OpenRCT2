@@ -123,7 +123,7 @@ static void PaintObservationTowerSection(
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 8, 8, height }, { 2, 2, 30 } });
 
     const TileElement* nextTileElement = reinterpret_cast<const TileElement*>(&trackElement) + 1;
-    if (trackElement.IsLastForTile() || trackElement.GetClearanceZ() != nextTileElement->GetBaseZ())
+    if (trackElement.isLastForTile() || trackElement.getClearanceZ() != nextTileElement->getBaseZ())
     {
         imageId = session.TrackColours.WithIndex(SprObservationTowerSegmentTop);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 8, 8, height }, { 2, 2, 30 } });

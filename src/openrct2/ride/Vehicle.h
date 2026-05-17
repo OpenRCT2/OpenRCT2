@@ -280,7 +280,7 @@ struct Vehicle : OpenRCT2::EntityBase
     const Vehicle* GetHead() const;
     Vehicle* GetCar(size_t carIndex) const;
     void SetState(Status vehicleStatus, uint8_t subState = 0);
-    bool IsGhost() const;
+    bool isGhost() const;
     std::optional<EntityId> DodgemsCarWouldCollideAt(const CoordsXY& coords) const;
     int32_t UpdateTrackMotion(int32_t* outStation);
     int32_t CableLiftUpdateTrackMotion();

@@ -150,7 +150,7 @@ bool TrackDesignSaveContainsTileElement(const TileElement* tileElement)
 
 static size_t TrackDesignSaveGetTotalElementCount(TileElement* tileElement)
 {
-    switch (tileElement->GetType())
+    switch (tileElement->getType())
     {
         case TileElementType::Path:
         case TileElementType::SmallScenery:
@@ -159,7 +159,7 @@ static size_t TrackDesignSaveGetTotalElementCount(TileElement* tileElement)
 
         case TileElementType::LargeScenery:
         {
-            auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
+            auto* sceneryEntry = tileElement->asLargeScenery()->GetEntry();
             return sceneryEntry->tiles.size();
         }
         default:
@@ -221,8 +221,8 @@ static TrackDesignSceneryElement TrackDesignCreateTileElementDesc(const Object& 
 static TrackDesignSceneryElement TrackDesignSaveCreateSmallSceneryDesc(
     const Object& object, const CoordsXY& loc, const SmallSceneryElement& smallSceneryElement)
 {
-    auto item = TrackDesignCreateTileElementDesc(object, { loc, smallSceneryElement.GetBaseZ() });
-    item.setRotation(smallSceneryElement.GetDirection());
+    auto item = TrackDesignCreateTileElementDesc(object, { loc, smallSceneryElement.getBaseZ() });
+    item.setRotation(smallSceneryElement.getDirection());
     item.setQuadrant(smallSceneryElement.GetSceneryQuadrant());
     item.primaryColour = smallSceneryElement.GetPrimaryColour();
     item.secondaryColour = smallSceneryElement.GetSecondaryColour();
@@ -250,7 +250,7 @@ static TrackDesignSceneryElement TrackDesignSaveCreateLargeSceneryDesc(
     const Object& object, const CoordsXYZ& loc, const LargeSceneryElement& largeSceneryElement)
 {
     auto item = TrackDesignCreateTileElementDesc(object, loc);
-    item.setRotation(largeSceneryElement.GetDirection());
+    item.setRotation(largeSceneryElement.getDirection());
     item.primaryColour = largeSceneryElement.GetPrimaryColour();
     item.secondaryColour = largeSceneryElement.GetSecondaryColour();
     item.tertiaryColour = largeSceneryElement.GetTertiaryColour();
@@ -268,8 +268,8 @@ static TrackDesignAddStatus TrackDesignSaveAddLargeScenery(const CoordsXY& loc, 
         auto sceneryEntry = reinterpret_cast<const LargeSceneryEntry*>(obj->GetLegacyData());
         auto& sceneryTiles = sceneryEntry->tiles;
 
-        int32_t z = tileElement->BaseHeight;
-        auto direction = tileElement->GetDirection();
+        int32_t z = tileElement->baseHeight;
+        auto direction = tileElement->getDirection();
         auto sequence = tileElement->GetSequenceIndex();
 
         auto sceneryOrigin = MapLargeSceneryGetOrigin({ loc.x, loc.y, z << 3, direction }, sequence, nullptr);
@@ -306,8 +306,8 @@ static TrackDesignAddStatus TrackDesignSaveAddLargeScenery(const CoordsXY& loc, 
 static TrackDesignSceneryElement TrackDesignSaveCreateWallDesc(
     const Object& object, const CoordsXY& loc, const WallElement& wallElement)
 {
-    auto item = TrackDesignCreateTileElementDesc(object, { loc, wallElement.GetBaseZ() });
-    item.setRotation(wallElement.GetDirection());
+    auto item = TrackDesignCreateTileElementDesc(object, { loc, wallElement.getBaseZ() });
+    item.setRotation(wallElement.getDirection());
     item.primaryColour = wallElement.GetPrimaryColour();
     item.secondaryColour = wallElement.GetSecondaryColour();
     item.tertiaryColour = wallElement.GetTertiaryColour();
@@ -358,7 +358,7 @@ static std::optional<RCTObjectEntry> TrackDesignSaveFootpathGetBestEntry(const P
 static TrackDesignSceneryElement TrackDesignSaveCreateFootpathDesc(
     const RCTObjectEntry& pathEntry, const CoordsXY& loc, const PathElement& pathElement)
 {
-    auto item = TrackDesignCreateTileElementDesc(pathEntry, { loc, pathElement.GetBaseZ() });
+    auto item = TrackDesignCreateTileElementDesc(pathEntry, { loc, pathElement.getBaseZ() });
     item.setEdges(pathElement.GetEdges());
     item.setHasSlope(pathElement.IsSloped());
     item.setSlopeDirection(pathElement.GetSlopeDirection());
@@ -393,16 +393,16 @@ static TrackDesignAddStatus TrackDesignSaveAddTileElement(const CoordsXY& loc, T
         return TrackDesignAddStatus::Fail(STR_SAVE_TRACK_SCENERY_TOO_MANY_ITEMS_SELECTED);
     }
 
-    switch (tileElement->GetType())
+    switch (tileElement->getType())
     {
         case TileElementType::SmallScenery:
-            return TrackDesignSaveAddSmallScenery(loc, tileElement->AsSmallScenery());
+            return TrackDesignSaveAddSmallScenery(loc, tileElement->asSmallScenery());
         case TileElementType::LargeScenery:
-            return TrackDesignSaveAddLargeScenery(loc, tileElement->AsLargeScenery());
+            return TrackDesignSaveAddLargeScenery(loc, tileElement->asLargeScenery());
         case TileElementType::Wall:
-            return TrackDesignSaveAddWall(loc, tileElement->AsWall());
+            return TrackDesignSaveAddWall(loc, tileElement->asWall());
         case TileElementType::Path:
-            return TrackDesignSaveAddFootpath(loc, tileElement->AsPath());
+            return TrackDesignSaveAddFootpath(loc, tileElement->asPath());
         default:
             return TrackDesignAddStatus::Fail(STR_UNKNOWN_OBJECT_TYPE);
     }
@@ -482,8 +482,8 @@ static void TrackDesignSaveRemoveLargeScenery(const CoordsXY& loc, LargeSceneryE
         auto sceneryEntry = reinterpret_cast<const LargeSceneryEntry*>(obj->GetLegacyData());
         auto sceneryTiles = sceneryEntry->tiles;
 
-        int32_t z = tileElement->BaseHeight;
-        auto direction = tileElement->GetDirection();
+        int32_t z = tileElement->baseHeight;
+        auto direction = tileElement->getDirection();
         auto sequence = tileElement->GetSequenceIndex();
 
         auto sceneryOrigin = MapLargeSceneryGetOrigin({ loc.x, loc.y, z << 3, direction }, sequence, nullptr);
@@ -543,19 +543,19 @@ static void TrackDesignSaveRemoveFootpath(const CoordsXY& loc, PathElement* path
  */
 static void TrackDesignSaveRemoveTileElement(const CoordsXY& loc, TileElement* tileElement)
 {
-    switch (tileElement->GetType())
+    switch (tileElement->getType())
     {
         case TileElementType::SmallScenery:
-            TrackDesignSaveRemoveSmallScenery(loc, tileElement->AsSmallScenery());
+            TrackDesignSaveRemoveSmallScenery(loc, tileElement->asSmallScenery());
             break;
         case TileElementType::LargeScenery:
-            TrackDesignSaveRemoveLargeScenery(loc, tileElement->AsLargeScenery());
+            TrackDesignSaveRemoveLargeScenery(loc, tileElement->asLargeScenery());
             break;
         case TileElementType::Wall:
-            TrackDesignSaveRemoveWall(loc, tileElement->AsWall());
+            TrackDesignSaveRemoveWall(loc, tileElement->asWall());
             break;
         case TileElementType::Path:
-            TrackDesignSaveRemoveFootpath(loc, tileElement->AsPath());
+            TrackDesignSaveRemoveFootpath(loc, tileElement->asPath());
             break;
         default:
             break;
@@ -564,23 +564,23 @@ static void TrackDesignSaveRemoveTileElement(const CoordsXY& loc, TileElement* t
 
 static bool TrackDesignSaveShouldSelectSceneryAround(RideId rideIndex, TileElement* tileElement)
 {
-    switch (tileElement->GetType())
+    switch (tileElement->getType())
     {
         case TileElementType::Path:
-            if (tileElement->AsPath()->IsQueue() && tileElement->AsPath()->GetRideIndex() == rideIndex)
+            if (tileElement->asPath()->IsQueue() && tileElement->asPath()->GetRideIndex() == rideIndex)
                 return true;
             break;
         case TileElementType::Track:
-            if (tileElement->AsTrack()->GetRideIndex() == rideIndex)
+            if (tileElement->asTrack()->GetRideIndex() == rideIndex)
                 return true;
             break;
         case TileElementType::Entrance:
             // FIXME: This will always break and return false!
-            if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_ENTRANCE)
+            if (tileElement->asEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_ENTRANCE)
                 break;
-            if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_EXIT)
+            if (tileElement->asEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_EXIT)
                 break;
-            if (tileElement->AsEntrance()->GetRideIndex() == rideIndex)
+            if (tileElement->asEntrance()->GetRideIndex() == rideIndex)
                 return true;
             break;
         default:
@@ -603,12 +603,12 @@ static void TrackDesignSaveShouldSelectNearbySceneryForTile(RideId rideIndex, in
             do
             {
                 ViewportInteractionItem interactionType = ViewportInteractionItem::none;
-                switch (tileElement->GetType())
+                switch (tileElement->getType())
                 {
                     case TileElementType::Path:
-                        if (!tileElement->AsPath()->IsQueue())
+                        if (!tileElement->asPath()->IsQueue())
                             interactionType = ViewportInteractionItem::footpath;
-                        else if (tileElement->AsPath()->GetRideIndex() == rideIndex)
+                        else if (tileElement->asPath()->GetRideIndex() == rideIndex)
                             interactionType = ViewportInteractionItem::footpath;
                         break;
                     case TileElementType::SmallScenery:
@@ -631,7 +631,7 @@ static void TrackDesignSaveShouldSelectNearbySceneryForTile(RideId rideIndex, in
                         TrackDesignSaveAddTileElement(TileCoordsXY(x, y).ToCoordsXY(), tileElement);
                     }
                 }
-            } while (!(tileElement++)->IsLastForTile());
+            } while (!(tileElement++)->isLastForTile());
         }
     }
 }

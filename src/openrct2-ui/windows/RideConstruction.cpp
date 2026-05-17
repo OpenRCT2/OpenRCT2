@@ -2432,15 +2432,15 @@ namespace OpenRCT2::Ui::Windows
             {
                 *newCoords = { trackBeginEnd.begin_x, trackBeginEnd.begin_y, trackBeginEnd.begin_z };
                 direction = trackBeginEnd.begin_direction;
-                type = trackBeginEnd.begin_element->AsTrack()->GetTrackType();
+                type = trackBeginEnd.begin_element->asTrack()->GetTrackType();
                 _gotoStartPlacementMode = false;
             }
             else if (trackBlockGetNext(&inputElement, &outputElement, &newCoords->z, &direction))
             {
                 newCoords->x = outputElement.x;
                 newCoords->y = outputElement.y;
-                direction = outputElement.element->GetDirection();
-                type = outputElement.element->AsTrack()->GetTrackType();
+                direction = outputElement.element->getDirection();
+                type = outputElement.element->asTrack()->GetTrackType();
                 _gotoStartPlacementMode = false;
             }
             else
@@ -2456,8 +2456,8 @@ namespace OpenRCT2::Ui::Windows
                     return;
                 }
 
-                const auto& ted = GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
-                newCoords->z = (tileElement->GetBaseZ()) - ted.sequenceData.sequences[0].clearance.z;
+                const auto& ted = GetTrackElementDescriptor(tileElement->asTrack()->GetTrackType());
+                newCoords->z = (tileElement->getBaseZ()) - ted.sequenceData.sequences[0].clearance.z;
                 _gotoStartPlacementMode = true;
             }
 
@@ -2581,7 +2581,7 @@ namespace OpenRCT2::Ui::Windows
                 != std::nullopt)
             {
                 auto trackSetBrakeSpeed = GameActions::TrackSetBrakeSpeedAction(
-                    _currentTrackBegin, tileElement->AsTrack()->GetTrackType(), brakesSpeed);
+                    _currentTrackBegin, tileElement->asTrack()->GetTrackType(), brakesSpeed);
                 trackSetBrakeSpeed.SetCallback([](const GameActions::GameAction* ga, const GameActions::Result* result) {
                     WindowRideConstructionUpdateActiveElements();
                 });
@@ -2766,17 +2766,17 @@ namespace OpenRCT2::Ui::Windows
             gameState.mapSize = { kMaximumMapSizeTechnical, kMaximumMapSizeTechnical };
 
             // Setup non changing parts of the temporary track tile element
-            tempTrackTileElement.SetType(TileElementType::Track);
-            tempTrackTileElement.SetDirection(trackDirection);
-            tempTrackTileElement.AsTrack()->SetHasChain(liftHillAndInvertedState.has(LiftHillAndInverted::liftHill));
-            tempTrackTileElement.SetLastForTile(true);
-            tempTrackTileElement.AsTrack()->SetTrackType(trackType);
-            tempTrackTileElement.AsTrack()->SetRideType(currentRide->type);
-            tempTrackTileElement.AsTrack()->SetHasCableLift(false);
-            tempTrackTileElement.AsTrack()->SetInverted(liftHillAndInvertedState.has(LiftHillAndInverted::inverted));
-            tempTrackTileElement.AsTrack()->SetColourScheme(_currentColourScheme);
+            tempTrackTileElement.setType(TileElementType::Track);
+            tempTrackTileElement.setDirection(trackDirection);
+            tempTrackTileElement.asTrack()->SetHasChain(liftHillAndInvertedState.has(LiftHillAndInverted::liftHill));
+            tempTrackTileElement.setLastForTile(true);
+            tempTrackTileElement.asTrack()->SetTrackType(trackType);
+            tempTrackTileElement.asTrack()->SetRideType(currentRide->type);
+            tempTrackTileElement.asTrack()->SetHasCableLift(false);
+            tempTrackTileElement.asTrack()->SetInverted(liftHillAndInvertedState.has(LiftHillAndInverted::inverted));
+            tempTrackTileElement.asTrack()->SetColourScheme(_currentColourScheme);
             // Skipping seat rotation, should not be necessary for a temporary piece.
-            tempTrackTileElement.AsTrack()->SetRideIndex(rideIndex);
+            tempTrackTileElement.asTrack()->SetRideIndex(rideIndex);
 
             const auto& ted = GetTrackElementDescriptor(trackType);
             const auto* rideEntry = currentRide->getRideEntry();
@@ -2813,10 +2813,10 @@ namespace OpenRCT2::Ui::Windows
                 MapSetTileElement(southTileCoords, &tempSideTrackTileElement);
 
                 // Set the temporary track element
-                tempTrackTileElement.SetOccupiedQuadrants(quarterTile.GetBaseQuarterOccupied());
-                tempTrackTileElement.SetBaseZ(baseZ);
-                tempTrackTileElement.SetClearanceZ(clearanceZ);
-                tempTrackTileElement.AsTrack()->SetSequenceIndex(i);
+                tempTrackTileElement.setOccupiedQuadrants(quarterTile.GetBaseQuarterOccupied());
+                tempTrackTileElement.setBaseZ(baseZ);
+                tempTrackTileElement.setClearanceZ(clearanceZ);
+                tempTrackTileElement.asTrack()->SetSequenceIndex(i);
 
                 // Draw this map tile
                 TileElementPaintSetup(*session, coords, true);
@@ -2978,8 +2978,8 @@ namespace OpenRCT2::Ui::Windows
                 _currentTrackBegin.x = next_track.x;
                 _currentTrackBegin.y = next_track.y;
                 _currentTrackBegin.z = trackPos.z;
-                _currentTrackPieceDirection = next_track.element->GetDirection();
-                _currentTrackPieceType = next_track.element->AsTrack()->GetTrackType();
+                _currentTrackPieceDirection = next_track.element->getDirection();
+                _currentTrackPieceType = next_track.element->asTrack()->GetTrackType();
                 _currentTrackSelectionFlags.clearAll();
                 _rideConstructionState = RideConstructionState::Selected;
                 _rideConstructionNextArrowPulse = 0;
@@ -3026,7 +3026,7 @@ namespace OpenRCT2::Ui::Windows
                 _currentTrackBegin.y = trackBeginEnd.begin_y;
                 _currentTrackBegin.z = trackBeginEnd.begin_z;
                 _currentTrackPieceDirection = trackBeginEnd.begin_direction;
-                _currentTrackPieceType = trackBeginEnd.begin_element->AsTrack()->GetTrackType();
+                _currentTrackPieceType = trackBeginEnd.begin_element->asTrack()->GetTrackType();
                 _currentTrackSelectionFlags.clearAll();
                 _rideConstructionState = RideConstructionState::Selected;
                 _rideConstructionNextArrowPulse = 0;
@@ -3068,7 +3068,7 @@ namespace OpenRCT2::Ui::Windows
                 auto info = GetMapCoordinatesFromPos(screenCoords, interactionFlags);
                 if (info.interactionType != ViewportInteractionItem::none)
                 {
-                    _trackPlaceCtrlZ = info.Element->GetBaseZ();
+                    _trackPlaceCtrlZ = info.Element->getBaseZ();
                     _trackPlaceCtrlState = true;
                 }
             }
@@ -3095,7 +3095,7 @@ namespace OpenRCT2::Ui::Windows
             if (im.isModifierKeyPressed(ModifierKey::shift))
             {
                 uint16_t maxHeight = ZoomLevel::max().ApplyTo(
-                    std::numeric_limits<decltype(TileElement::BaseHeight)>::max() - 32);
+                    std::numeric_limits<decltype(TileElement::baseHeight)>::max() - 32);
 
                 _trackPlaceShiftZ = _trackPlaceShiftStart.y - screenCoords.y + 4;
                 // Scale delta by zoom to match mouse position.
@@ -3129,7 +3129,7 @@ namespace OpenRCT2::Ui::Windows
                 auto surfaceElement = MapGetSurfaceElementAt(mapCoords);
                 if (surfaceElement == nullptr)
                     return std::nullopt;
-                auto mapZ = floor2(surfaceElement->GetBaseZ(), 16);
+                auto mapZ = floor2(surfaceElement->getBaseZ(), 16);
                 mapZ += _trackPlaceShiftZ;
                 mapZ = std::max<int16_t>(mapZ, 16);
                 _trackPlaceZ = mapZ;
@@ -3191,11 +3191,11 @@ namespace OpenRCT2::Ui::Windows
                     &tileElement, {})
                 != std::nullopt)
             {
-                _selectedTrackType = tileElement->AsTrack()->GetTrackType();
-                if (trackTypeHasSpeedSetting(tileElement->AsTrack()->GetTrackType()))
-                    _currentBrakeSpeed = tileElement->AsTrack()->GetBrakeBoosterSpeed();
-                _currentColourScheme = static_cast<RideColourScheme>(tileElement->AsTrack()->GetColourScheme());
-                _currentSeatRotationAngle = tileElement->AsTrack()->GetSeatRotation();
+                _selectedTrackType = tileElement->asTrack()->GetTrackType();
+                if (trackTypeHasSpeedSetting(tileElement->asTrack()->GetTrackType()))
+                    _currentBrakeSpeed = tileElement->asTrack()->GetBrakeBoosterSpeed();
+                _currentColourScheme = static_cast<RideColourScheme>(tileElement->asTrack()->GetColourScheme());
+                _currentSeatRotationAngle = tileElement->asTrack()->GetSeatRotation();
             }
         }
 
@@ -5167,8 +5167,8 @@ namespace OpenRCT2::Ui::Windows
             CoordsXYE next_track;
             if (trackBlockGetNextFromZero({ x, y, z }, *ride, direction, &next_track, &z, &direction, true))
             {
-                auto trackType = next_track.element->AsTrack()->GetTrackType();
-                int32_t trackSequence = next_track.element->AsTrack()->GetSequenceIndex();
+                auto trackType = next_track.element->asTrack()->GetTrackType();
+                int32_t trackSequence = next_track.element->asTrack()->GetSequenceIndex();
                 auto trackRemoveAction = GameActions::TrackRemoveAction{
                     trackType, trackSequence, { next_track.x, next_track.y, z, static_cast<Direction>(direction) }
                 };

@@ -78,13 +78,13 @@ namespace OpenRCT2
         auto bb = BoundBoxXYZ{ { riverRapidsBb.offset_x, riverRapidsBb.offset_y, riverRapidsBb.offset_z + z },
                                { riverRapidsBb.length_x, riverRapidsBb.length_y, riverRapidsBb.length_z } };
         image_id = ImageId(baseImage_id, vehicle->colours.Body, vehicle->colours.Trim);
-        if (vehicle->IsGhost())
+        if (vehicle->isGhost())
         {
             image_id = ConstructionMarker.WithIndex(image_id.GetIndex());
         }
         PaintAddImageAsParent(session, image_id, { 0, 0, z }, bb);
 
-        if (session.rt.zoom_level < ZoomLevel{ 2 } && vehicle->num_peeps > 0 && !vehicle->IsGhost())
+        if (session.rt.zoom_level < ZoomLevel{ 2 } && vehicle->num_peeps > 0 && !vehicle->isGhost())
         {
             // Draw peeps: (this particular vehicle doesn't sort them back to front like others so the back ones sometimes clip,
             // but that's how the original does it...)

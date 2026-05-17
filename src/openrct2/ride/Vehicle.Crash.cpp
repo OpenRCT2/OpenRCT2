@@ -268,15 +268,15 @@ static TileElement* vehicle_check_collision(const CoordsXYZ& vehiclePosition)
 
     do
     {
-        if (vehiclePosition.z < tileElement->GetBaseZ())
+        if (vehiclePosition.z < tileElement->getBaseZ())
             continue;
 
-        if (vehiclePosition.z >= tileElement->GetClearanceZ())
+        if (vehiclePosition.z >= tileElement->getClearanceZ())
             continue;
 
-        if (tileElement->GetOccupiedQuadrants() & quadrant)
+        if (tileElement->getOccupiedQuadrants() & quadrant)
             return tileElement;
-    } while (!(tileElement++)->IsLastForTile());
+    } while (!(tileElement++)->isLastForTile());
 
     return nullptr;
 }

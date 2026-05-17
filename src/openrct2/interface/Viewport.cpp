@@ -1305,11 +1305,11 @@ namespace OpenRCT2
 
     static bool IsTileElementVegetation(const TileElement* tileElement)
     {
-        switch (tileElement->GetType())
+        switch (tileElement->getType())
         {
             case TileElementType::SmallScenery:
             {
-                auto sceneryItem = tileElement->AsSmallScenery();
+                auto sceneryItem = tileElement->asSmallScenery();
                 auto sceneryEntry = sceneryItem->GetEntry();
                 if (sceneryEntry != nullptr
                     && (sceneryEntry->flags.has(SmallSceneryFlag::isTree) || IsCursorIdVegetation(sceneryEntry->tool_id)))
@@ -1320,7 +1320,7 @@ namespace OpenRCT2
             }
             case TileElementType::LargeScenery:
             {
-                auto sceneryItem = tileElement->AsLargeScenery();
+                auto sceneryItem = tileElement->asLargeScenery();
                 auto sceneryEntry = sceneryItem->GetEntry();
                 if (sceneryEntry != nullptr && IsCursorIdVegetation(sceneryEntry->tool_id))
                 {
@@ -1330,7 +1330,7 @@ namespace OpenRCT2
             }
             case TileElementType::Wall:
             {
-                auto sceneryItem = tileElement->AsWall();
+                auto sceneryItem = tileElement->asWall();
                 auto sceneryEntry = sceneryItem->GetEntry();
                 if (sceneryEntry != nullptr && IsCursorIdVegetation(sceneryEntry->tool_id))
                 {
@@ -1356,7 +1356,7 @@ namespace OpenRCT2
 
         // the entity is above the cut-off height
         clipped |= cutAwayViewWithTransparency && ps->Element != nullptr
-            && (ps->Element->GetBaseZ() > gClipHeight * kCoordsZStep);
+            && (ps->Element->getBaseZ() > gClipHeight * kCoordsZStep);
 
         switch (ps->InteractionItem)
         {

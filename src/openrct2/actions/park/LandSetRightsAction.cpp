@@ -138,7 +138,7 @@ namespace OpenRCT2::GameActions
                 if (isExecuting)
                 {
                     surfaceElement->SetOwnership(surfaceElement->GetOwnership() & ~OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
-                    uint16_t baseZ = surfaceElement->GetBaseZ();
+                    uint16_t baseZ = surfaceElement->getBaseZ();
                     MapInvalidateTile({ loc, baseZ, baseZ + 16 });
                 }
                 return res;
@@ -146,7 +146,7 @@ namespace OpenRCT2::GameActions
                 if (isExecuting)
                 {
                     surfaceElement->SetOwnership(surfaceElement->GetOwnership() | OWNERSHIP_AVAILABLE);
-                    uint16_t baseZ = surfaceElement->GetBaseZ();
+                    uint16_t baseZ = surfaceElement->getBaseZ();
                     MapInvalidateTile({ loc, baseZ, baseZ + 16 });
                 }
                 return res;
@@ -154,7 +154,7 @@ namespace OpenRCT2::GameActions
                 if (isExecuting)
                 {
                     surfaceElement->SetOwnership(surfaceElement->GetOwnership() | OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE);
-                    uint16_t baseZ = surfaceElement->GetBaseZ();
+                    uint16_t baseZ = surfaceElement->getBaseZ();
                     MapInvalidateTile({ loc, baseZ, baseZ + 16 });
                 }
                 return res;
@@ -179,8 +179,8 @@ namespace OpenRCT2::GameActions
                     if (_ownership == OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED
                         || _ownership == OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE)
                     {
-                        if (entranceElement->BaseHeight - 3 > surfaceElement->BaseHeight
-                            || entranceElement->BaseHeight < surfaceElement->BaseHeight)
+                        if (entranceElement->baseHeight - 3 > surfaceElement->baseHeight
+                            || entranceElement->baseHeight < surfaceElement->baseHeight)
                         {
                             return res;
                         }

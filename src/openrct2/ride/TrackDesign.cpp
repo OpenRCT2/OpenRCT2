@@ -196,9 +196,9 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
 
     RideGetStartOfTrack(&trackElement);
 
-    int32_t z = trackElement.element->GetBaseZ();
-    auto trackType = trackElement.element->AsTrack()->GetTrackType();
-    uint8_t direction = trackElement.element->GetDirection();
+    int32_t z = trackElement.element->getBaseZ();
+    auto trackType = trackElement.element->asTrack()->GetTrackType();
+    uint8_t direction = trackElement.element->getDirection();
     _saveDirection = direction;
     auto newCoords = GetTrackElementOriginAndApplyChanges(
         { trackElement, z, direction }, trackType, 0, &trackElement.element, {});
@@ -211,7 +211,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
     trackElement.y = newCoords->y;
     z = newCoords->z;
 
-    const auto& ted = GetTrackElementDescriptor(trackElement.element->AsTrack()->GetTrackType());
+    const auto& ted = GetTrackElementDescriptor(trackElement.element->asTrack()->GetTrackType());
     const TrackCoordinates* trackCoordinates = &ted.coordinates;
     // Used in the following loop to know when we have
     // completed all of the elements and are back at the
@@ -224,7 +224,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
 
     do
     {
-        const auto& element = trackElement.element->AsTrack();
+        const auto& element = trackElement.element->asTrack();
 
         if (element->GetTrackType() > TrackElemType::highestAlias)
         {
@@ -258,9 +258,9 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
             break;
         }
 
-        z = trackElement.element->GetBaseZ();
-        direction = trackElement.element->GetDirection();
-        trackType = trackElement.element->AsTrack()->GetTrackType();
+        z = trackElement.element->getBaseZ();
+        direction = trackElement.element->getDirection();
+        trackType = trackElement.element->asTrack()->GetTrackType();
         newCoords = GetTrackElementOriginAndApplyChanges(
             { trackElement, z, direction }, trackType, 0, &trackElement.element, {});
 
@@ -307,15 +307,15 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
 
             do
             {
-                if (tileElement->GetType() != TileElementType::Entrance)
+                if (tileElement->getType() != TileElementType::Entrance)
                     continue;
-                if (tileElement->GetBaseZ() == z)
+                if (tileElement->getBaseZ() == z)
                     break;
-            } while (!(tileElement++)->IsLastForTile());
+            } while (!(tileElement++)->isLastForTile());
 
             // Add something that stops this from walking off the end
 
-            Direction entranceDirection = tileElement->GetDirection();
+            Direction entranceDirection = tileElement->getDirection();
             entranceDirection -= _saveDirection;
             entranceDirection &= kTileElementDirectionMask;
 
@@ -366,7 +366,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, cons
         return { false, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY };
     }
 
-    tds.origin = { startLoc.x, startLoc.y, startLoc.element->GetBaseZ() };
+    tds.origin = { startLoc.x, startLoc.y, startLoc.element->getBaseZ() };
 
     // x is defined here as we can start the search
     // on tile start_x, start_y but then the next row
@@ -380,24 +380,24 @@ ResultWithMessage TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, cons
             {
                 if (tileElement == nullptr)
                     break;
-                if (tileElement->GetType() != TileElementType::Track)
+                if (tileElement->getType() != TileElementType::Track)
                     continue;
-                if (tileElement->AsTrack()->GetRideIndex() != ride.id)
+                if (tileElement->asTrack()->GetRideIndex() != ride.id)
                     continue;
 
                 TrackDesignMazeElement maze{};
 
-                maze.mazeEntry = tileElement->AsTrack()->GetMazeEntry();
+                maze.mazeEntry = tileElement->asTrack()->GetMazeEntry();
                 maze.location.x = (x - startLoc.x) / kCoordsXYStep;
                 maze.location.y = (y - startLoc.y) / kCoordsXYStep;
-                _saveDirection = tileElement->GetDirection();
+                _saveDirection = tileElement->getDirection();
                 mazeElements.push_back(maze);
 
                 if (mazeElements.size() >= RCT2::Limits::kTD6MaxMazeElements)
                 {
                     version = RCT12::TD46Version::td7;
                 }
-            } while (!(tileElement++)->IsLastForTile());
+            } while (!(tileElement++)->isLastForTile());
         }
         x = 0;
     }
@@ -414,18 +414,18 @@ ResultWithMessage TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, cons
     {
         if (tileElement == nullptr)
             return { false, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY };
-        if (tileElement->GetType() != TileElementType::Entrance)
+        if (tileElement->getType() != TileElementType::Entrance)
             continue;
-        if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_ENTRANCE)
+        if (tileElement->asEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_ENTRANCE)
             continue;
-        if (tileElement->AsEntrance()->GetRideIndex() == ride.id)
+        if (tileElement->asEntrance()->GetRideIndex() == ride.id)
             break;
-    } while (!(tileElement++)->IsLastForTile());
+    } while (!(tileElement++)->isLastForTile());
     // Add something that stops this from walking off the end
 
     auto entranceOffset = entranceLoc - startLoc;
     TrackDesignEntranceElement mazeEntrance{};
-    mazeEntrance.location = TileCoordsXYZD(CoordsXYZD(entranceOffset, 0, tileElement->GetDirection()));
+    mazeEntrance.location = TileCoordsXYZD(CoordsXYZD(entranceOffset, 0, tileElement->getDirection()));
     mazeEntrance.isExit = false;
     entranceElements.push_back(mazeEntrance);
 
@@ -441,18 +441,18 @@ ResultWithMessage TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, cons
         return { false, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY };
     do
     {
-        if (tileElement->GetType() != TileElementType::Entrance)
+        if (tileElement->getType() != TileElementType::Entrance)
             continue;
-        if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_EXIT)
+        if (tileElement->asEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_EXIT)
             continue;
-        if (tileElement->AsEntrance()->GetRideIndex() == ride.id)
+        if (tileElement->asEntrance()->GetRideIndex() == ride.id)
             break;
-    } while (!(tileElement++)->IsLastForTile());
+    } while (!(tileElement++)->isLastForTile());
     // Add something that stops this from walking off the end
 
     auto exitOffset = exitLoc - startLoc;
     TrackDesignEntranceElement mazeExit{};
-    mazeExit.location = TileCoordsXYZD(CoordsXYZD(exitOffset, 0, tileElement->GetDirection()));
+    mazeExit.location = TileCoordsXYZD(CoordsXYZD(exitOffset, 0, tileElement->getDirection()));
     mazeExit.isExit = true;
     entranceElements.push_back(mazeExit);
 
@@ -484,13 +484,13 @@ CoordsXYE TrackDesign::MazeGetFirstElement(const Ride& ride)
                 if (tile.element == nullptr)
                     break;
 
-                if (tile.element->GetType() != TileElementType::Track)
+                if (tile.element->getType() != TileElementType::Track)
                     continue;
-                if (tile.element->AsTrack()->GetRideIndex() == ride.id)
+                if (tile.element->asTrack()->GetRideIndex() == ride.id)
                 {
                     return tile;
                 }
-            } while (!(tile.element++)->IsLastForTile());
+            } while (!(tile.element++)->isLastForTile());
         }
     }
     tile.element = nullptr;
@@ -1362,16 +1362,16 @@ static std::optional<GameActions::Result> TrackDesignPlaceEntrances(
 
                     do
                     {
-                        if (tile_element->GetType() != TileElementType::Track)
+                        if (tile_element->getType() != TileElementType::Track)
                         {
                             continue;
                         }
-                        if (tile_element->GetBaseZ() != newCoords.z)
+                        if (tile_element->getBaseZ() != newCoords.z)
                         {
                             continue;
                         }
 
-                        auto stationIndex = tile_element->AsTrack()->GetStationIndex();
+                        auto stationIndex = tile_element->asTrack()->GetStationIndex();
                         CommandFlags flags = { CommandFlag::apply };
                         if (tds.placeOperation == TrackPlaceOperation::placeTrackPreview)
                         {
@@ -1406,7 +1406,7 @@ static std::optional<GameActions::Result> TrackDesignPlaceEntrances(
                         tds.entranceExitPlaced = true;
                         _trackDesignPlaceStateEntranceExitPlaced = true;
                         break;
-                    } while (!(tile_element++)->IsLastForTile());
+                    } while (!(tile_element++)->isLastForTile());
                 }
                 else
                 {
@@ -1513,7 +1513,7 @@ static GameActions::Result TrackDesignPlaceMaze(
             auto surfaceElement = MapGetSurfaceElementAt(mapCoord);
             if (surfaceElement == nullptr)
                 continue;
-            int16_t surfaceZ = surfaceElement->GetBaseZ();
+            int16_t surfaceZ = surfaceElement->getBaseZ();
             if (surfaceElement->GetSlope() & kTileSlopeRaisedCornersMask)
             {
                 surfaceZ += kLandHeightStep;
@@ -1679,7 +1679,7 @@ static GameActions::Result TrackDesignPlaceRide(
                             STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
                     }
 
-                    int32_t surfaceZ = surfaceElement->GetBaseZ();
+                    int32_t surfaceZ = surfaceElement->getBaseZ();
                     if (surfaceElement->GetSlope() & kTileSlopeRaisedCornersMask)
                     {
                         surfaceZ += kLandHeightStep;
@@ -2183,14 +2183,14 @@ static void TrackDesignPreviewClearMap()
     {
         auto* element = &tileElements.emplace_back();
         element->ClearAs(TileElementType::Surface);
-        element->SetLastForTile(true);
-        element->AsSurface()->SetSlope(kTileSlopeFlat);
-        element->AsSurface()->SetWaterHeight(0);
-        element->AsSurface()->SetSurfaceObjectIndex(0);
-        element->AsSurface()->SetEdgeObjectIndex(0);
-        element->AsSurface()->SetGrassLength(GRASS_LENGTH_CLEAR_0);
-        element->AsSurface()->SetOwnership(OWNERSHIP_OWNED);
-        element->AsSurface()->SetParkFences(0);
+        element->setLastForTile(true);
+        element->asSurface()->SetSlope(kTileSlopeFlat);
+        element->asSurface()->SetWaterHeight(0);
+        element->asSurface()->SetSurfaceObjectIndex(0);
+        element->asSurface()->SetEdgeObjectIndex(0);
+        element->asSurface()->SetGrassLength(GRASS_LENGTH_CLEAR_0);
+        element->asSurface()->SetOwnership(OWNERSHIP_OWNED);
+        element->asSurface()->SetParkFences(0);
     }
 
     SetTileElements(gameState, std::move(tileElements));

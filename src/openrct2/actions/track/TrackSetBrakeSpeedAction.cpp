@@ -83,7 +83,7 @@ namespace OpenRCT2::GameActions
         if (isExecuting)
         {
             GetTrackElementOriginAndApplyChanges(
-                { _loc, tileElement->GetDirection() }, tileElement->AsTrack()->GetTrackType(), _brakeSpeed, nullptr,
+                { _loc, tileElement->getDirection() }, tileElement->asTrack()->GetTrackType(), _brakeSpeed, nullptr,
                 { TrackElementSetFlag::brakeBoosterSpeed });
         }
         return res;

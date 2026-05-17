@@ -64,7 +64,7 @@ static bool try_add_synchronised_station(const CoordsXYZ& coords)
         return false;
     }
 
-    auto rideIndex = tileElement->AsTrack()->GetRideIndex();
+    auto rideIndex = tileElement->asTrack()->GetRideIndex();
     auto ride = GetRide(rideIndex);
     if (ride == nullptr || !(ride->departFlags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS))
     {
@@ -76,7 +76,7 @@ static bool try_add_synchronised_station(const CoordsXYZ& coords)
      * to sync with adjacent stations, so it will return true.
      * Still to determine if a vehicle to sync can be identified. */
 
-    auto stationIndex = tileElement->AsTrack()->GetStationIndex();
+    auto stationIndex = tileElement->asTrack()->GetStationIndex();
 
     SynchronisedVehicle* sv = _lastSynchronisedVehicle;
     sv->ride_id = rideIndex;
@@ -165,7 +165,7 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
      *  is found we allow for space between that and the next.
      */
 
-    int32_t direction = tileElement->GetDirectionWithOffset(1);
+    int32_t direction = tileElement->getDirectionWithOffset(1);
     constexpr uint8_t maxCheckDistance = kRideAdjacencyCheckDistance;
     uint8_t spaceBetween = maxCheckDistance;
 
@@ -776,7 +776,7 @@ void Vehicle::UpdateWaitingToDepart()
         uint8_t trackDirection = GetTrackDirection();
         if (trackBlockGetNextFromZero(TrackLocation, *curRide, trackDirection, &track, &zUnused, &direction, false))
         {
-            if (track.element->AsTrack()->HasCableLift())
+            if (track.element->asTrack()->HasCableLift())
             {
                 SetState(Status::waitingForCableLift, sub_state);
             }
@@ -1065,7 +1065,7 @@ void Vehicle::UpdateDeparting()
                     UpdateTestFinish();
                 }
             }
-            else if (!curRide->flags.has(RideFlag::testInProgress) && !IsGhost())
+            else if (!curRide->flags.has(RideFlag::testInProgress) && !isGhost())
             {
                 TestReset();
             }

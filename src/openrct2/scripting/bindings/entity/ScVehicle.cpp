@@ -606,7 +606,7 @@ namespace OpenRCT2::Scripting
         if (!origin)
             return JS_UNDEFINED;
 
-        const auto& trackType = el->AsTrack()->GetTrackType();
+        const auto& trackType = el->asTrack()->GetTrackType();
         const auto& ted = GetTrackElementDescriptor(trackType);
         const auto& seq0 = ted.sequenceData.sequences[0].clearance;
         const auto trackLoc = CoordsXYZ(origin->x + seq0.x, origin->y + seq0.y, origin->z + seq0.z);

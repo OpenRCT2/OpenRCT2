@@ -28,7 +28,7 @@ namespace OpenRCT2
         imageDirection = Entity::Yaw::YawTo32(imageDirection);
 
         auto imageFlags = ImageId(0, vehicle->colours.Body, vehicle->colours.Trim);
-        if (vehicle->IsGhost())
+        if (vehicle->isGhost())
         {
             imageFlags = ConstructionMarker;
         }
@@ -49,7 +49,7 @@ namespace OpenRCT2
         image_id = imageFlags.WithIndex(baseImage_id + 4);
         PaintAddImageAsParent(session, image_id, { 0, 0, z }, { { -5, -5, z + 1 }, { 16, 16, 41 } });
 
-        if (vehicle->num_peeps > 0 && !vehicle->IsGhost())
+        if (vehicle->num_peeps > 0 && !vehicle->isGhost())
         {
             Drawing::Colour riding_peep_sprites[64];
             std::fill_n(riding_peep_sprites, sizeof(riding_peep_sprites), Drawing::kColourNull);

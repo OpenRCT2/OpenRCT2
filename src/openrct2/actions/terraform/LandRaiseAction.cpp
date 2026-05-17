@@ -108,7 +108,7 @@ namespace OpenRCT2::GameActions
                 }
                 withinOwnership = true;
 
-                uint8_t height = surfaceElement->BaseHeight;
+                uint8_t height = surfaceElement->baseHeight;
 
                 if (height > minHeight)
                     continue;

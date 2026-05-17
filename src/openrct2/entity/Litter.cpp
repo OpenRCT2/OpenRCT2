@@ -33,15 +33,15 @@ namespace OpenRCT2
             return false;
         do
         {
-            if (tileElement->GetType() != TileElementType::Path)
+            if (tileElement->getType() != TileElementType::Path)
                 continue;
 
-            int32_t pathZ = tileElement->GetBaseZ();
+            int32_t pathZ = tileElement->getBaseZ();
             if (pathZ < mapPos.z || pathZ >= mapPos.z + kPathClearance)
                 continue;
 
             return !TileElementIsUnderground(tileElement);
-        } while (!(tileElement++)->IsLastForTile());
+        } while (!(tileElement++)->isLastForTile());
         return false;
     }
 

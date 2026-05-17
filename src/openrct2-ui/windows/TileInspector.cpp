@@ -583,7 +583,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             // Page widgets
-            switch (tileElement->GetType())
+            switch (tileElement->getType())
             {
                 case TileElementType::Surface:
                     switch (widgetIndex)
@@ -612,15 +612,15 @@ namespace OpenRCT2::Ui::Windows
                     switch (widgetIndex)
                     {
                         case WIDX_PATH_CHECK_SLOPED:
-                            PathSetSloped(windowTileInspectorSelectedIndex, !tileElement->AsPath()->IsSloped());
+                            PathSetSloped(windowTileInspectorSelectedIndex, !tileElement->asPath()->IsSloped());
                             break;
                         case WIDX_PATH_CHECK_JUNCTION_RAILINGS:
                             PathSetJunctionRailings(
-                                windowTileInspectorSelectedIndex, !tileElement->AsPath()->HasJunctionRailings());
+                                windowTileInspectorSelectedIndex, !tileElement->asPath()->HasJunctionRailings());
                             break;
 
                         case WIDX_PATH_CHECK_BROKEN:
-                            PathSetBroken(windowTileInspectorSelectedIndex, !tileElement->AsPath()->IsBroken());
+                            PathSetBroken(windowTileInspectorSelectedIndex, !tileElement->asPath()->IsBroken());
                             break;
 
                         case WIDX_PATH_CHECK_EDGE_E:
@@ -664,18 +664,18 @@ namespace OpenRCT2::Ui::Windows
                         case WIDX_TRACK_CHECK_CHAIN_LIFT:
                         {
                             bool entireTrackBlock = isWidgetPressed(WIDX_TRACK_CHECK_APPLY_TO_ALL);
-                            bool newLift = !tileElement->AsTrack()->HasChain();
+                            bool newLift = !tileElement->asTrack()->HasChain();
                             TrackBlockSetLift(windowTileInspectorSelectedIndex, entireTrackBlock, newLift);
                             break;
                         }
 
                         case WIDX_TRACK_CHECK_BRAKE_CLOSED:
-                            TrackSetBrakeClosed(windowTileInspectorSelectedIndex, !tileElement->AsTrack()->IsBrakeClosed());
+                            TrackSetBrakeClosed(windowTileInspectorSelectedIndex, !tileElement->asTrack()->IsBrakeClosed());
                             break;
 
                         case WIDX_TRACK_CHECK_IS_INDESTRUCTIBLE:
                             TrackSetIndestructible(
-                                windowTileInspectorSelectedIndex, !tileElement->AsTrack()->IsIndestructible());
+                                windowTileInspectorSelectedIndex, !tileElement->asTrack()->IsIndestructible());
                             break;
                     } // switch widget index
                     break;
@@ -727,7 +727,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         case WIDX_WALL_ANIMATION_IS_BACKWARDS:
                             WallSetAnimationIsBackwards(
-                                windowTileInspectorSelectedIndex, !tileElement->AsWall()->AnimationIsBackwards());
+                                windowTileInspectorSelectedIndex, !tileElement->asWall()->AnimationIsBackwards());
                             break;
                     }
                     break;
@@ -800,7 +800,7 @@ namespace OpenRCT2::Ui::Windows
             if (tileElement == nullptr)
                 return;
 
-            switch (tileElement->GetType())
+            switch (tileElement->getType())
             {
                 case TileElementType::Surface:
                     switch (widgetIndex)
@@ -902,7 +902,7 @@ namespace OpenRCT2::Ui::Windows
                                 Dropdown::Flag::StayOpen, 3, widget->width() - 4);
 
                             // Set current value as checked
-                            gDropdown.items[tileElement->AsWall()->GetSlope()].setChecked(true);
+                            gDropdown.items[tileElement->asWall()->GetSlope()].setChecked(true);
                             break;
                         }
 
@@ -955,7 +955,7 @@ namespace OpenRCT2::Ui::Windows
             const TileElement* const tileElement = OpenRCT2::TileInspector::GetSelectedElement();
             if (tileInspectorPage == TileInspectorPage::Wall)
             {
-                Guard::Assert(tileElement->GetType() == TileElementType::Wall, "Element is not a wall");
+                Guard::Assert(tileElement->getType() == TileElementType::Wall, "Element is not a wall");
                 if (widgetIndex == WIDX_WALL_DROPDOWN_SLOPE_BUTTON)
                     WallSetSlope(windowTileInspectorSelectedIndex, dropdownIndex);
             }
@@ -1076,59 +1076,59 @@ namespace OpenRCT2::Ui::Windows
                 if (tileElement == nullptr)
                     return;
 
-                switch (tileElement->GetType())
+                switch (tileElement->getType())
                 {
                     case TileElementType::Surface:
                     {
-                        auto* surfaceEl = tileElement->AsSurface();
+                        auto* surfaceEl = tileElement->asSurface();
                         onDrawSurface(rt, screenCoords, *surfaceEl);
                         break;
                     }
                     case TileElementType::Path:
                     {
-                        auto* pathEl = tileElement->AsPath();
+                        auto* pathEl = tileElement->asPath();
                         onDrawPath(rt, screenCoords, *pathEl);
                         break;
                     }
 
                     case TileElementType::Track:
                     {
-                        auto* trackEl = tileElement->AsTrack();
+                        auto* trackEl = tileElement->asTrack();
                         onDrawTrack(rt, screenCoords, *trackEl);
                         break;
                     }
 
                     case TileElementType::SmallScenery:
                     {
-                        auto* smallSceneryEl = tileElement->AsSmallScenery();
+                        auto* smallSceneryEl = tileElement->asSmallScenery();
                         onDrawSmallScenery(rt, screenCoords, *smallSceneryEl);
                         break;
                     }
 
                     case TileElementType::Entrance:
                     {
-                        auto* entranceEl = tileElement->AsEntrance();
+                        auto* entranceEl = tileElement->asEntrance();
                         onDrawEntrance(rt, screenCoords, *entranceEl);
                         break;
                     }
 
                     case TileElementType::Wall:
                     {
-                        auto* wallEl = tileElement->AsWall();
+                        auto* wallEl = tileElement->asWall();
                         onDrawWall(rt, screenCoords, *wallEl);
                         break;
                     }
 
                     case TileElementType::LargeScenery:
                     {
-                        auto* largeSceneryEl = tileElement->AsLargeScenery();
+                        auto* largeSceneryEl = tileElement->asLargeScenery();
                         onDrawLargeScenery(rt, screenCoords, *largeSceneryEl);
                         break;
                     }
 
                     case TileElementType::Banner:
                     {
-                        auto* bannerEl = tileElement->AsBanner();
+                        auto* bannerEl = tileElement->asBanner();
                         onDrawBanner(rt, screenCoords, *bannerEl);
                         break;
                     }
@@ -1193,7 +1193,7 @@ namespace OpenRCT2::Ui::Windows
                 + ScreenCoordsXY{ widgets[WIDX_SURFACE_SPINNER_HEIGHT].left + 3,
                                   widgets[WIDX_SURFACE_SPINNER_HEIGHT].textTop() };
             ft = Formatter();
-            ft.Add<int32_t>(surfaceEl.BaseHeight);
+            ft.Add<int32_t>(surfaceEl.baseHeight);
             drawText(rt, screenCoords, STR_FORMAT_INTEGER, ft, { colours[1] });
 
             // Raised corners
@@ -1263,7 +1263,7 @@ namespace OpenRCT2::Ui::Windows
             screenCoords = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_PATH_SPINNER_HEIGHT].left + 3, widgets[WIDX_PATH_SPINNER_HEIGHT].textTop() };
             auto ft = Formatter();
-            ft.Add<int32_t>(pathEl.BaseHeight);
+            ft.Add<int32_t>(pathEl.baseHeight);
             drawText(rt, screenCoords, STR_FORMAT_INTEGER, ft, { colours[1] });
 
             // Path connections
@@ -1334,7 +1334,7 @@ namespace OpenRCT2::Ui::Windows
             screenCoords = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_TRACK_SPINNER_HEIGHT].left + 3, widgets[WIDX_TRACK_SPINNER_HEIGHT].textTop() };
             ft = Formatter();
-            ft.Add<int32_t>(trackEl.BaseHeight);
+            ft.Add<int32_t>(trackEl.baseHeight);
             drawText(rt, screenCoords, STR_FORMAT_INTEGER, ft, { colours[1] });
         }
 
@@ -1377,7 +1377,7 @@ namespace OpenRCT2::Ui::Windows
                 + ScreenCoordsXY{ widgets[WIDX_SCENERY_SPINNER_HEIGHT].left + 3,
                                   widgets[WIDX_SCENERY_SPINNER_HEIGHT].textTop() };
             ft = Formatter();
-            ft.Add<int32_t>(smallSceneryEl.BaseHeight);
+            ft.Add<int32_t>(smallSceneryEl.baseHeight);
             drawText(rt, screenCoords, STR_FORMAT_INTEGER, ft, { colours[1] });
 
             // Quarter tile
@@ -1402,7 +1402,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 // TODO: Make this work with Left/Right park entrance parts
                 ft = Formatter();
-                ft.Add<uint16_t>(ParkEntranceGetIndex({ _toolMap, entranceEl.GetBaseZ() }));
+                ft.Add<uint16_t>(ParkEntranceGetIndex({ _toolMap, entranceEl.getBaseZ() }));
                 drawText(
                     rt, screenCoords + ScreenCoordsXY{ 0, 11 }, STR_TILE_INSPECTOR_ENTRANCE_ENTRANCE_ID, ft, { colours[1] });
             }
@@ -1456,7 +1456,7 @@ namespace OpenRCT2::Ui::Windows
                 + ScreenCoordsXY{ widgets[WIDX_ENTRANCE_SPINNER_HEIGHT].left + 3,
                                   widgets[WIDX_ENTRANCE_SPINNER_HEIGHT].textTop() };
             ft = Formatter();
-            ft.Add<int32_t>(entranceEl.BaseHeight);
+            ft.Add<int32_t>(entranceEl.baseHeight);
             drawText(rt, screenCoords, STR_FORMAT_INTEGER, ft, { colours[1] });
         }
 
@@ -1490,7 +1490,7 @@ namespace OpenRCT2::Ui::Windows
             screenCoords = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_WALL_SPINNER_HEIGHT].left + 3, widgets[WIDX_WALL_SPINNER_HEIGHT].textTop() };
             ft = Formatter();
-            ft.Add<int32_t>(wallEl.BaseHeight);
+            ft.Add<int32_t>(wallEl.baseHeight);
             drawText(rt, screenCoords, STR_FORMAT_INTEGER, ft, { colours[1] });
 
             // Slope label
@@ -1557,7 +1557,7 @@ namespace OpenRCT2::Ui::Windows
             screenCoords.x = windowPos.x + widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT].left + 3;
 
             ft = Formatter();
-            ft.Add<int32_t>(largeSceneryEl.BaseHeight);
+            ft.Add<int32_t>(largeSceneryEl.baseHeight);
             drawText(rt, screenCoords, STR_FORMAT_INTEGER, ft, { colours[1] });
         }
 
@@ -1582,7 +1582,7 @@ namespace OpenRCT2::Ui::Windows
             screenCoords = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_BANNER_SPINNER_HEIGHT].left + 3, widgets[WIDX_BANNER_SPINNER_HEIGHT].textTop() };
             auto ft = Formatter();
-            ft.Add<int32_t>(bannerEl.BaseHeight);
+            ft.Add<int32_t>(bannerEl.baseHeight);
             drawText(rt, screenCoords, STR_FORMAT_INTEGER, ft, { colours[1] });
 
             // Blocked paths
@@ -1649,7 +1649,7 @@ namespace OpenRCT2::Ui::Windows
                 Rectangle::fillInset(
                     rt, { { 2, screenCoords.y }, { 15, screenCoords.y + 11 } }, colours[1], Rectangle::BorderStyle::inset,
                     Rectangle::FillBrightness::dark, Rectangle::FillMode::dontLightenWhenInset);
-                if (!tileElement->IsInvisible())
+                if (!tileElement->isInvisible())
                 {
                     auto eyeFormatter = Formatter();
                     eyeFormatter.Add<StringId>(STR_STRING);
@@ -1657,7 +1657,7 @@ namespace OpenRCT2::Ui::Windows
                     drawText(rt, screenCoords + ScreenCoordsXY{ 2, 1 }, stringFormat, eyeFormatter);
                 }
 
-                const auto type = tileElement->GetType();
+                const auto type = tileElement->getType();
                 switch (type)
                 {
                     case TileElementType::Surface:
@@ -1665,7 +1665,7 @@ namespace OpenRCT2::Ui::Windows
                         break;
 
                     case TileElementType::Path:
-                        typeName = tileElement->AsPath()->IsQueue() ? LanguageGetString(STR_QUEUE_LINE_MAP_TIP)
+                        typeName = tileElement->asPath()->IsQueue() ? LanguageGetString(STR_QUEUE_LINE_MAP_TIP)
                                                                     : LanguageGetString(STR_FOOTPATH_MAP_TIP);
                         break;
 
@@ -1675,7 +1675,7 @@ namespace OpenRCT2::Ui::Windows
 
                     case TileElementType::SmallScenery:
                     {
-                        const auto* sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
+                        const auto* sceneryEntry = tileElement->asSmallScenery()->GetEntry();
                         snprintf(
                             buffer, sizeof(buffer), "%s (%s)", LanguageGetString(STR_OBJECT_SELECTION_SMALL_SCENERY),
                             sceneryEntry != nullptr ? LanguageGetString(sceneryEntry->name) : "");
@@ -1689,7 +1689,7 @@ namespace OpenRCT2::Ui::Windows
 
                     case TileElementType::Wall:
                     {
-                        const auto* entry = tileElement->AsWall()->GetEntry();
+                        const auto* entry = tileElement->asWall()->GetEntry();
                         snprintf(
                             buffer, sizeof(buffer), "%s (%s)", LanguageGetString(STR_TILE_INSPECTOR_WALL),
                             entry != nullptr ? LanguageGetString(entry->name) : "");
@@ -1704,7 +1704,7 @@ namespace OpenRCT2::Ui::Windows
                     case TileElementType::Banner:
                         snprintf(
                             buffer, sizeof(buffer), "%s (%u)", LanguageGetString(STR_BANNER_WINDOW_TITLE),
-                            tileElement->AsBanner()->GetIndex().ToUnderlying());
+                            tileElement->asBanner()->GetIndex().ToUnderlying());
                         typeName = buffer;
                         break;
 
@@ -1714,9 +1714,9 @@ namespace OpenRCT2::Ui::Windows
                         typeName = buffer;
                 }
 
-                const int32_t clearanceHeight = tileElement->ClearanceHeight;
-                const bool ghost = tileElement->IsGhost();
-                const bool last = tileElement->IsLastForTile();
+                const int32_t clearanceHeight = tileElement->clearanceHeight;
+                const bool ghost = tileElement->isGhost();
+                const bool last = tileElement->isLastForTile();
 
                 // Element name
                 auto ft = Formatter();
@@ -1728,7 +1728,7 @@ namespace OpenRCT2::Ui::Windows
                 // Base height
                 ft = Formatter();
                 ft.Add<StringId>(STR_FORMAT_INTEGER);
-                ft.Add<int32_t>(tileElement->BaseHeight);
+                ft.Add<int32_t>(tileElement->baseHeight);
                 drawText(rt, screenCoords + ScreenCoordsXY{ kBaseHeightColumnXY.x, 0 }, stringFormat, ft);
 
                 // Clearance height
@@ -1740,7 +1740,7 @@ namespace OpenRCT2::Ui::Windows
                 // Direction
                 ft = Formatter();
                 ft.Add<StringId>(STR_FORMAT_INTEGER);
-                ft.Add<int32_t>(tileElement->GetDirection());
+                ft.Add<int32_t>(tileElement->getDirection());
                 drawText(rt, screenCoords + ScreenCoordsXY{ kDirectionColumnXY.x, 0 }, stringFormat, ft);
 
                 // Checkmarks for ghost and last for tile
@@ -1751,7 +1751,7 @@ namespace OpenRCT2::Ui::Windows
 
                 screenCoords.y -= kScrollableRowHeight;
                 i++;
-            } while (!(tileElement++)->IsLastForTile());
+            } while (!(tileElement++)->isLastForTile());
         }
 
         void ClearClipboard()
@@ -1871,7 +1871,7 @@ namespace OpenRCT2::Ui::Windows
                     windowTileInspectorSelectedIndex = numItems;
 
                 numItems++;
-            } while (!(element++)->IsLastForTile());
+            } while (!(element++)->isLastForTile());
             windowTileInspectorElementCount = numItems;
             invalidate();
         }
@@ -2097,7 +2097,7 @@ namespace OpenRCT2::Ui::Windows
             TileInspectorPage p = TileInspectorPage::Default;
             if (tileElement != nullptr)
             {
-                switch (tileElement->GetType())
+                switch (tileElement->getType())
                 {
                     case TileElementType::Surface:
                         p = TileInspectorPage::Surface;
@@ -2196,7 +2196,7 @@ namespace OpenRCT2::Ui::Windows
             const auto propertiesAnchor = ScreenCoordsXY{ widgets[WIDX_GROUPBOX_PROPERTIES].left + 6,
                                                           widgets[WIDX_GROUPBOX_PROPERTIES].top + 17 };
 
-            switch (tileElement->GetType())
+            switch (tileElement->getType())
             {
                 case TileElementType::Surface:
                     widgets[WIDX_SURFACE_SPINNER_HEIGHT].moveTo(PropertyRowCol(propertiesAnchor, 0, 1));
@@ -2218,18 +2218,18 @@ namespace OpenRCT2::Ui::Windows
 
                     setCheckboxValue(
                         WIDX_SURFACE_CHECK_CORNER_N,
-                        tileElement->AsSurface()->GetSlope() & (1 << ((2 - GetCurrentRotation()) & 3)));
+                        tileElement->asSurface()->GetSlope() & (1 << ((2 - GetCurrentRotation()) & 3)));
                     setCheckboxValue(
                         WIDX_SURFACE_CHECK_CORNER_E,
-                        tileElement->AsSurface()->GetSlope() & (1 << ((3 - GetCurrentRotation()) & 3)));
+                        tileElement->asSurface()->GetSlope() & (1 << ((3 - GetCurrentRotation()) & 3)));
                     setCheckboxValue(
                         WIDX_SURFACE_CHECK_CORNER_S,
-                        tileElement->AsSurface()->GetSlope() & (1 << ((0 - GetCurrentRotation()) & 3)));
+                        tileElement->asSurface()->GetSlope() & (1 << ((0 - GetCurrentRotation()) & 3)));
                     setCheckboxValue(
                         WIDX_SURFACE_CHECK_CORNER_W,
-                        tileElement->AsSurface()->GetSlope() & (1 << ((1 - GetCurrentRotation()) & 3)));
+                        tileElement->asSurface()->GetSlope() & (1 << ((1 - GetCurrentRotation()) & 3)));
                     setCheckboxValue(
-                        WIDX_SURFACE_CHECK_DIAGONAL, tileElement->AsSurface()->GetSlope() & kTileSlopeDiagonalFlag);
+                        WIDX_SURFACE_CHECK_DIAGONAL, tileElement->asSurface()->GetSlope() & kTileSlopeDiagonalFlag);
                     break;
 
                 case TileElementType::Path:
@@ -2250,25 +2250,25 @@ namespace OpenRCT2::Ui::Windows
                     widgets[WIDX_PATH_CHECK_EDGE_NW].moveTo(CheckboxGroupOffset(PropertyRowCol(propertiesAnchor, 4, 1), 1, 1));
                     widgets[WIDX_PATH_CHECK_EDGE_N].moveTo(CheckboxGroupOffset(PropertyRowCol(propertiesAnchor, 4, 1), 2, 0));
 
-                    setCheckboxValue(WIDX_PATH_CHECK_SLOPED, tileElement->AsPath()->IsSloped());
-                    setCheckboxValue(WIDX_PATH_CHECK_JUNCTION_RAILINGS, tileElement->AsPath()->HasJunctionRailings());
-                    setCheckboxValue(WIDX_PATH_CHECK_BROKEN, tileElement->AsPath()->IsBroken());
+                    setCheckboxValue(WIDX_PATH_CHECK_SLOPED, tileElement->asPath()->IsSloped());
+                    setCheckboxValue(WIDX_PATH_CHECK_JUNCTION_RAILINGS, tileElement->asPath()->HasJunctionRailings());
+                    setCheckboxValue(WIDX_PATH_CHECK_BROKEN, tileElement->asPath()->IsBroken());
                     setCheckboxValue(
-                        WIDX_PATH_CHECK_EDGE_NE, tileElement->AsPath()->GetEdges() & (1 << ((0 - GetCurrentRotation()) & 3)));
+                        WIDX_PATH_CHECK_EDGE_NE, tileElement->asPath()->GetEdges() & (1 << ((0 - GetCurrentRotation()) & 3)));
                     setCheckboxValue(
-                        WIDX_PATH_CHECK_EDGE_SE, tileElement->AsPath()->GetEdges() & (1 << ((1 - GetCurrentRotation()) & 3)));
+                        WIDX_PATH_CHECK_EDGE_SE, tileElement->asPath()->GetEdges() & (1 << ((1 - GetCurrentRotation()) & 3)));
                     setCheckboxValue(
-                        WIDX_PATH_CHECK_EDGE_SW, tileElement->AsPath()->GetEdges() & (1 << ((2 - GetCurrentRotation()) & 3)));
+                        WIDX_PATH_CHECK_EDGE_SW, tileElement->asPath()->GetEdges() & (1 << ((2 - GetCurrentRotation()) & 3)));
                     setCheckboxValue(
-                        WIDX_PATH_CHECK_EDGE_NW, tileElement->AsPath()->GetEdges() & (1 << ((3 - GetCurrentRotation()) & 3)));
+                        WIDX_PATH_CHECK_EDGE_NW, tileElement->asPath()->GetEdges() & (1 << ((3 - GetCurrentRotation()) & 3)));
                     setCheckboxValue(
-                        WIDX_PATH_CHECK_EDGE_E, tileElement->AsPath()->GetCorners() & (1 << ((0 - GetCurrentRotation()) & 3)));
+                        WIDX_PATH_CHECK_EDGE_E, tileElement->asPath()->GetCorners() & (1 << ((0 - GetCurrentRotation()) & 3)));
                     setCheckboxValue(
-                        WIDX_PATH_CHECK_EDGE_S, tileElement->AsPath()->GetCorners() & (1 << ((1 - GetCurrentRotation()) & 3)));
+                        WIDX_PATH_CHECK_EDGE_S, tileElement->asPath()->GetCorners() & (1 << ((1 - GetCurrentRotation()) & 3)));
                     setCheckboxValue(
-                        WIDX_PATH_CHECK_EDGE_W, tileElement->AsPath()->GetCorners() & (1 << ((2 - GetCurrentRotation()) & 3)));
+                        WIDX_PATH_CHECK_EDGE_W, tileElement->asPath()->GetCorners() & (1 << ((2 - GetCurrentRotation()) & 3)));
                     setCheckboxValue(
-                        WIDX_PATH_CHECK_EDGE_N, tileElement->AsPath()->GetCorners() & (1 << ((3 - GetCurrentRotation()) & 3)));
+                        WIDX_PATH_CHECK_EDGE_N, tileElement->asPath()->GetCorners() & (1 << ((3 - GetCurrentRotation()) & 3)));
                     break;
 
                 case TileElementType::Track:
@@ -2283,12 +2283,12 @@ namespace OpenRCT2::Ui::Windows
                     widgets[WIDX_TRACK_CHECK_IS_INDESTRUCTIBLE].moveTo(PropertyRowCol(propertiesAnchor, 4, 0));
 
                     setCheckboxValue(WIDX_TRACK_CHECK_APPLY_TO_ALL, _applyToAll);
-                    setCheckboxValue(WIDX_TRACK_CHECK_CHAIN_LIFT, tileElement->AsTrack()->HasChain());
-                    setCheckboxValue(WIDX_TRACK_CHECK_BRAKE_CLOSED, tileElement->AsTrack()->IsBrakeClosed());
-                    widgets[WIDX_TRACK_CHECK_BRAKE_CLOSED].content = tileElement->AsTrack()->IsBlockStart()
+                    setCheckboxValue(WIDX_TRACK_CHECK_CHAIN_LIFT, tileElement->asTrack()->HasChain());
+                    setCheckboxValue(WIDX_TRACK_CHECK_BRAKE_CLOSED, tileElement->asTrack()->IsBrakeClosed());
+                    widgets[WIDX_TRACK_CHECK_BRAKE_CLOSED].content = tileElement->asTrack()->IsBlockStart()
                         ? STR_TILE_INSPECTOR_TRACK_BLOCK_BRAKE
                         : STR_TILE_INSPECTOR_TRACK_BRAKE_CLOSED;
-                    setCheckboxValue(WIDX_TRACK_CHECK_IS_INDESTRUCTIBLE, tileElement->AsTrack()->IsIndestructible());
+                    setCheckboxValue(WIDX_TRACK_CHECK_IS_INDESTRUCTIBLE, tileElement->asTrack()->IsIndestructible());
                     break;
 
                 case TileElementType::SmallScenery:
@@ -2312,10 +2312,10 @@ namespace OpenRCT2::Ui::Windows
 
                     // This gets the relative rotation, by subtracting the camera's rotation, and wrapping it between 0-3
                     // inclusive
-                    bool N = tileElement->AsSmallScenery()->GetSceneryQuadrant() == ((0 - GetCurrentRotation()) & 3);
-                    bool E = tileElement->AsSmallScenery()->GetSceneryQuadrant() == ((1 - GetCurrentRotation()) & 3);
-                    bool S = tileElement->AsSmallScenery()->GetSceneryQuadrant() == ((2 - GetCurrentRotation()) & 3);
-                    bool W = tileElement->AsSmallScenery()->GetSceneryQuadrant() == ((3 - GetCurrentRotation()) & 3);
+                    bool N = tileElement->asSmallScenery()->GetSceneryQuadrant() == ((0 - GetCurrentRotation()) & 3);
+                    bool E = tileElement->asSmallScenery()->GetSceneryQuadrant() == ((1 - GetCurrentRotation()) & 3);
+                    bool S = tileElement->asSmallScenery()->GetSceneryQuadrant() == ((2 - GetCurrentRotation()) & 3);
+                    bool W = tileElement->asSmallScenery()->GetSceneryQuadrant() == ((3 - GetCurrentRotation()) & 3);
                     setCheckboxValue(WIDX_SCENERY_CHECK_QUARTER_N, N);
                     setCheckboxValue(WIDX_SCENERY_CHECK_QUARTER_E, E);
                     setCheckboxValue(WIDX_SCENERY_CHECK_QUARTER_S, S);
@@ -2331,7 +2331,7 @@ namespace OpenRCT2::Ui::Windows
                     widgets[WIDX_SCENERY_CHECK_COLLISION_W].moveTo(
                         CheckboxGroupOffset(PropertyRowCol(propertiesAnchor, 2, 1), 0, 1 + 1));
 
-                    auto occupiedQuadrants = tileElement->GetOccupiedQuadrants();
+                    auto occupiedQuadrants = tileElement->getOccupiedQuadrants();
                     N = (occupiedQuadrants & (1 << ((2 - GetCurrentRotation()) & 3))) != 0;
                     E = (occupiedQuadrants & (1 << ((3 - GetCurrentRotation()) & 3))) != 0;
                     S = (occupiedQuadrants & (1 << ((0 - GetCurrentRotation()) & 3))) != 0;
@@ -2353,14 +2353,14 @@ namespace OpenRCT2::Ui::Windows
 
                     setWidgetDisabled(
                         WIDX_ENTRANCE_BUTTON_MAKE_USABLE,
-                        tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE);
+                        tileElement->asEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE);
                     break;
 
                 case TileElementType::Wall:
                 {
                     bool canBeSloped = false;
                     bool hasAnimation = false;
-                    const auto wallEntry = tileElement->AsWall()->GetEntry();
+                    const auto wallEntry = tileElement->asWall()->GetEntry();
                     if (wallEntry != nullptr)
                     {
                         canBeSloped = !(wallEntry->flags & WALL_SCENERY_CANT_BUILD_ON_SLOPE);
@@ -2375,7 +2375,7 @@ namespace OpenRCT2::Ui::Windows
                     widgets[WIDX_WALL_DROPDOWN_SLOPE].moveTo(PropertyRowCol(propertiesAnchor, 1, 1));
                     widgets[WIDX_WALL_DROPDOWN_SLOPE_BUTTON].moveTo(
                         PropertyRowCol(propertiesAnchor + ScreenCoordsXY{ kPropertyButtonSize.width - 12, 0 }, 1, 1));
-                    widgets[WIDX_WALL_DROPDOWN_SLOPE].text = kWallSlopeStringIds[tileElement->AsWall()->GetSlope()];
+                    widgets[WIDX_WALL_DROPDOWN_SLOPE].text = kWallSlopeStringIds[tileElement->asWall()->GetSlope()];
                     widgets[WIDX_WALL_SPINNER_ANIMATION_FRAME].moveTo(PropertyRowCol(propertiesAnchor, 2, 1));
                     widgets[WIDX_WALL_SPINNER_ANIMATION_FRAME_INCREASE].moveTo(
                         PropertyRowCol(propertiesAnchor, 2, 1) + ScreenCoordsXY{ kPropertyButtonSize.width - 13, 1 });
@@ -2393,7 +2393,7 @@ namespace OpenRCT2::Ui::Windows
                     setWidgetDisabled(WIDX_WALL_SPINNER_ANIMATION_FRAME_INCREASE, !hasAnimation);
                     setWidgetDisabled(WIDX_WALL_SPINNER_ANIMATION_FRAME_DECREASE, !hasAnimation);
 
-                    setCheckboxValue(WIDX_WALL_ANIMATION_IS_BACKWARDS, tileElement->AsWall()->AnimationIsBackwards());
+                    setCheckboxValue(WIDX_WALL_ANIMATION_IS_BACKWARDS, tileElement->asWall()->AnimationIsBackwards());
                     setWidgetDisabled(WIDX_WALL_ANIMATION_IS_BACKWARDS, !hasAnimation);
                     break;
                 }
@@ -2423,16 +2423,16 @@ namespace OpenRCT2::Ui::Windows
 
                     setCheckboxValue(
                         WIDX_BANNER_CHECK_BLOCK_NE,
-                        (tileElement->AsBanner()->GetAllowedEdges() & (1 << ((0 - GetCurrentRotation()) & 3))));
+                        (tileElement->asBanner()->GetAllowedEdges() & (1 << ((0 - GetCurrentRotation()) & 3))));
                     setCheckboxValue(
                         WIDX_BANNER_CHECK_BLOCK_SE,
-                        (tileElement->AsBanner()->GetAllowedEdges() & (1 << ((1 - GetCurrentRotation()) & 3))));
+                        (tileElement->asBanner()->GetAllowedEdges() & (1 << ((1 - GetCurrentRotation()) & 3))));
                     setCheckboxValue(
                         WIDX_BANNER_CHECK_BLOCK_SW,
-                        (tileElement->AsBanner()->GetAllowedEdges() & (1 << ((2 - GetCurrentRotation()) & 3))));
+                        (tileElement->asBanner()->GetAllowedEdges() & (1 << ((2 - GetCurrentRotation()) & 3))));
                     setCheckboxValue(
                         WIDX_BANNER_CHECK_BLOCK_NW,
-                        (tileElement->AsBanner()->GetAllowedEdges() & (1 << ((3 - GetCurrentRotation()) & 3))));
+                        (tileElement->asBanner()->GetAllowedEdges() & (1 << ((3 - GetCurrentRotation()) & 3))));
                     break;
 
                 default:
