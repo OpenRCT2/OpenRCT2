@@ -3457,8 +3457,8 @@ namespace OpenRCT2
                         if (fee > 0)
                         {
                             FinancePayment(-fee, ExpenditureType::shopSales);
-                            MoneyEffect::CreateAt(fee, GetLocation(), true);
-                            Audio::Play3D(Audio::SoundId::purchase, GetLocation());
+                            MoneyEffect::CreateAt(fee, getLocation(), true);
+                            Audio::Play3D(Audio::SoundId::purchase, getLocation());
 
                             ride->totalProfit = AddClamp(ride->totalProfit, fee);
                             ride->windowInvalidateFlags.set(RideInvalidateFlag::income);

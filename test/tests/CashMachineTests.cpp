@@ -149,12 +149,12 @@ TEST(CashMachineTests, FreeFeeHasNoHappinessPenalty)
 // The penalty grows monotonically with the fee for a fixed random seed.
 TEST(CashMachineTests, PenaltyGrowsWithFee)
 {
-    constexpr uint32_t random = 0;
-    int32_t prev = computeFeeHappinessPenalty(0.10_GBP, random);
+    constexpr uint32_t kRandom = 0;
+    int32_t prev = computeFeeHappinessPenalty(0.10_GBP, kRandom);
     for (int32_t tenths = 2; tenths <= 20; ++tenths)
     {
         const money64 fee = tenths * 0.10_GBP;
-        const int32_t penalty = computeFeeHappinessPenalty(fee, random);
+        const int32_t penalty = computeFeeHappinessPenalty(fee, kRandom);
         EXPECT_GE(penalty, prev) << "fee=" << fee;
         prev = penalty;
     }
