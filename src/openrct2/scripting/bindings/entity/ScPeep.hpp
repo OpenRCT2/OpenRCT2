@@ -62,7 +62,7 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep(thisVal);
             if (peep != nullptr)
             {
-                return JSFromStdString(ctx, peep->Is<Staff>() ? "staff" : "guest");
+                return JSFromStdString(ctx, peep->is<Staff>() ? "staff" : "guest");
             }
             return JS_UNDEFINED;
         }
@@ -109,7 +109,7 @@ namespace OpenRCT2::Scripting
                     peep->PeepFlags |= mask;
                 else
                     peep->PeepFlags &= ~mask;
-                peep->Invalidate();
+                peep->invalidate();
             }
             return JS_UNDEFINED;
         }
@@ -133,7 +133,7 @@ namespace OpenRCT2::Scripting
             {
                 auto pos = JSToCoordsXY(ctx, value);
                 peep->SetDestination(pos);
-                peep->Invalidate();
+                peep->invalidate();
             }
             return JS_UNDEFINED;
         }
@@ -152,8 +152,8 @@ namespace OpenRCT2::Scripting
             if (peep != nullptr && value < kNumOrthogonalDirections)
             {
                 peep->PeepDirection = value;
-                peep->Orientation = value << 3;
-                peep->Invalidate();
+                peep->orientation = value << 3;
+                peep->invalidate();
             }
             return JS_UNDEFINED;
         }
@@ -172,7 +172,7 @@ namespace OpenRCT2::Scripting
             {
                 value = static_cast<uint8_t>(std::clamp<uint32_t>(value, kPeepMinEnergy, kPeepMaxEnergy));
                 peep->Energy = value;
-                peep->Invalidate();
+                peep->invalidate();
             }
             return JS_UNDEFINED;
         }

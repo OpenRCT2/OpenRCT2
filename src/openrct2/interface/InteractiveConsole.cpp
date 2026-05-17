@@ -466,7 +466,7 @@ static void ConsoleCommandStaff(InteractiveConsole& console, const arguments_t& 
             {
                 auto name = peep->GetName();
                 console.WriteFormatLine(
-                    "staff id %03d type: %02u energy %03u name %s", peep->Id, peep->AssignedStaffType, peep->Energy,
+                    "staff id %03d type: %02u energy %03u name %s", peep->id, peep->AssignedStaffType, peep->Energy,
                     name.c_str());
             }
         }
@@ -1583,7 +1583,7 @@ static void ConsoleCommandMpDesync(InteractiveConsole& console, const arguments_
                 if (guests.size() > 1)
                     guest = guests[UtilRand() % guests.size() - 1];
                 guest->TshirtColour = static_cast<Drawing::Colour>(UtilRand() % Drawing::kColourNumNormal);
-                guest->Invalidate();
+                guest->invalidate();
             }
             break;
         }

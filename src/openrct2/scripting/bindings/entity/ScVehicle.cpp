@@ -123,7 +123,7 @@ namespace OpenRCT2::Scripting
         if (vehicle != nullptr)
         {
             vehicle->ride_subtype = value;
-            vehicle->Invalidate();
+            vehicle->invalidate();
         }
         return JS_UNDEFINED;
     }
@@ -141,7 +141,7 @@ namespace OpenRCT2::Scripting
         if (vehicle != nullptr)
         {
             vehicle->vehicle_type = value;
-            vehicle->Invalidate();
+            vehicle->invalidate();
         }
         return JS_UNDEFINED;
     }
@@ -159,7 +159,7 @@ namespace OpenRCT2::Scripting
         if (vehicle != nullptr)
         {
             vehicle->pitch = static_cast<VehiclePitch>(value);
-            vehicle->Invalidate();
+            vehicle->invalidate();
         }
         return JS_UNDEFINED;
     }
@@ -372,7 +372,7 @@ namespace OpenRCT2::Scripting
         if (vehicle != nullptr)
         {
             vehicle->roll = static_cast<VehicleRoll>(value);
-            vehicle->Invalidate();
+            vehicle->invalidate();
         }
         return JS_UNDEFINED;
     }
@@ -400,7 +400,7 @@ namespace OpenRCT2::Scripting
             {
                 vehicle->flags.unset(static_cast<VehicleFlag>(flag));
             }
-            vehicle->Invalidate();
+            vehicle->invalidate();
         }
         return JS_UNDEFINED;
     }
@@ -422,7 +422,7 @@ namespace OpenRCT2::Scripting
         if (vehicle != nullptr)
         {
             vehicle->colours = JSToVehicleColours(ctx, value);
-            vehicle->Invalidate();
+            vehicle->invalidate();
         }
         return JS_UNDEFINED;
     }
@@ -529,7 +529,7 @@ namespace OpenRCT2::Scripting
         if (vehicle != nullptr)
         {
             vehicle->spin_sprite = value;
-            vehicle->Invalidate();
+            vehicle->invalidate();
         }
         return JS_UNDEFINED;
     }

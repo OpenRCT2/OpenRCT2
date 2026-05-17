@@ -219,7 +219,7 @@ static void RideUpdateStationRace(Ride& ride, StationIndex stationIndex)
                     auto* peep = getGameState().entities.GetEntity<Guest>(vehicle->peep[0]);
                     if (peep != nullptr)
                     {
-                        ride.raceWinner = peep->Id;
+                        ride.raceWinner = peep->id;
                         ride.windowInvalidateFlags.set(RideInvalidateFlag::main, RideInvalidateFlag::list);
                     }
                 }

@@ -53,7 +53,7 @@ TEST_F(EntityImportTests, CreateEntityAtDuplicateIndexReturnsNull)
     // Create an entity at index 100
     auto* entity1 = gameState.entities.CreateEntityAt<Guest>(EntityId::FromUnderlying(100));
     ASSERT_NE(entity1, nullptr);
-    EXPECT_EQ(entity1->Id.ToUnderlying(), 100u);
+    EXPECT_EQ(entity1->id.ToUnderlying(), 100u);
 
     // Try to create another entity at the same index, which should return nullptr
     auto* entity2 = gameState.entities.CreateEntityAt<Guest>(EntityId::FromUnderlying(100));

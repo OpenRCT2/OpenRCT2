@@ -100,7 +100,7 @@ namespace OpenRCT2::PathFinding
 
             if (peep != nullptr)
             {
-                LOG_INFO("[%05u:%s] %s", peep->Id.ToUnderlying(), peep->GetName().c_str(), buffer);
+                LOG_INFO("[%05u:%s] %s", peep->id.ToUnderlying(), peep->GetName().c_str(), buffer);
             }
             else
             {
@@ -565,7 +565,7 @@ namespace OpenRCT2::PathFinding
      */
     static uint8_t PeepPathfindGetMaxNumberJunctions(Peep& peep)
     {
-        auto* guest = peep.As<Guest>();
+        auto* guest = peep.as<Guest>();
         if (guest == nullptr)
         {
             // Peep can be only Staff and Guest, so when not a Guest it means its Staff.
@@ -731,7 +731,7 @@ namespace OpenRCT2::PathFinding
         bool currentElementIsWide = currentTileElement->AsPath()->IsWide();
         if (currentElementIsWide)
         {
-            const Staff* staff = peep.As<Staff>();
+            const Staff* staff = peep.as<Staff>();
             if (staff != nullptr && staff->CanIgnoreWideFlag(loc.ToCoordsXYZ(), currentTileElement))
                 currentElementIsWide = false;
         }
@@ -751,7 +751,7 @@ namespace OpenRCT2::PathFinding
         }
 
         bool nextInPatrolArea = inPatrolArea;
-        auto* staff = peep.As<Staff>();
+        auto* staff = peep.as<Staff>();
         if (staff != nullptr && staff->IsMechanic())
         {
             nextInPatrolArea = staff->IsLocationInPatrol(loc.ToCoordsXY());
@@ -1245,7 +1245,7 @@ namespace OpenRCT2::PathFinding
 
         /* The max number of tiles to check - a whole-search limit.
          * Mainly to limit the performance impact of the path finding. */
-        int32_t maxTilesChecked = (peep.Is<Staff>()) ? 50000 : 15000;
+        int32_t maxTilesChecked = (peep.is<Staff>()) ? 50000 : 15000;
 
         LogPathfinding(&peep, "Choose direction for goal %d,%d,%d from %d,%d,%d", goal.x, goal.y, goal.z, loc.x, loc.y, loc.z);
 
@@ -1294,7 +1294,7 @@ namespace OpenRCT2::PathFinding
             isThin = isThin || PathIsThinJunction(destTileElement->AsPath(), loc);
 
             // Collect the permitted edges of ALL matching path elements at this location.
-            permittedEdges |= PathGetPermittedEdges(peep.Is<Staff>(), destTileElement->AsPath());
+            permittedEdges |= PathGetPermittedEdges(peep.is<Staff>(), destTileElement->AsPath());
         } while (!(destTileElement++)->IsLastForTile());
         // Peep is not on a path.
         if (!found)
@@ -1449,7 +1449,7 @@ namespace OpenRCT2::PathFinding
                 uint8_t endDirectionList[16] = { 0 };
 
                 bool inPatrolArea = false;
-                auto* staff = peep.As<Staff>();
+                auto* staff = peep.as<Staff>();
                 if (staff != nullptr && staff->IsMechanic())
                 {
                     /* Mechanics are the only staff type that

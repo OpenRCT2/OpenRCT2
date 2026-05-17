@@ -403,7 +403,7 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
         }
 
         _vehicleCurPosition = trackPos;
-        Orientation = moveInfo->yaw;
+        orientation = moveInfo->yaw;
         roll = moveInfo->roll;
         pitch = moveInfo->pitch;
 
@@ -493,7 +493,7 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
         }
 
         _vehicleCurPosition = trackPos;
-        Orientation = moveInfo->yaw;
+        orientation = moveInfo->yaw;
         roll = moveInfo->roll;
         pitch = moveInfo->pitch;
 
@@ -561,7 +561,7 @@ void Vehicle::UpdateTrackMotionMiniGolfVehicle(const Ride& curRide, const RideOb
     _vehicleCurPosition.x = x;
     _vehicleCurPosition.y = y;
     _vehicleCurPosition.z = z;
-    Invalidate();
+    invalidate();
     bool skipLoc6DC462 = (remaining_distance < 0);
 
     while (true)
@@ -581,7 +581,7 @@ void Vehicle::UpdateTrackMotionMiniGolfVehicle(const Ride& curRide, const RideOb
 
 void Vehicle::Loc6DCDE4(const Ride& curRide)
 {
-    MoveTo(_vehicleCurPosition);
+    moveTo(_vehicleCurPosition);
 
     Loc6DCE02(curRide);
 }

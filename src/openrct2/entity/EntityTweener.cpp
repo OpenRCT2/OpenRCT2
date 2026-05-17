@@ -46,7 +46,7 @@ namespace OpenRCT2
 
     static inline bool IsEntityVisible(const ViewportList& vpList, const EntityBase* entity) noexcept
     {
-        const auto worldLoc = entity->GetLocation();
+        const auto worldLoc = entity->getLocation();
 
         for (const auto* vp : vpList)
         {
@@ -69,7 +69,7 @@ namespace OpenRCT2
         }
 
         Entities.push_back(entity);
-        PrePos.emplace_back(entity->GetLocation());
+        PrePos.emplace_back(entity->getLocation());
     }
 
     void EntityTweener::PopulateEntities()
@@ -113,14 +113,14 @@ namespace OpenRCT2
             }
             else
             {
-                PostPos.emplace_back(ent->GetLocation());
+                PostPos.emplace_back(ent->getLocation());
             }
         }
     }
 
     static bool CanTweenEntity(EntityBase* ent)
     {
-        if (ent->Is<Guest>() || ent->Is<Staff>() || ent->Is<Vehicle>())
+        if (ent->is<Guest>() || ent->is<Staff>() || ent->is<Vehicle>())
             return true;
         return false;
     }
@@ -153,7 +153,7 @@ namespace OpenRCT2
             if (posA == posB)
                 continue;
 
-            ent->MoveTo(
+            ent->moveTo(
                 { static_cast<int32_t>(std::round(posB.x * alpha + posA.x * inv)),
                   static_cast<int32_t>(std::round(posB.y * alpha + posA.y * inv)),
                   static_cast<int32_t>(std::round(posB.z * alpha + posA.z * inv)) });
@@ -168,7 +168,7 @@ namespace OpenRCT2
             if (ent == nullptr || PrePos[i] == PostPos[i])
                 continue;
 
-            ent->MoveTo(PostPos[i]);
+            ent->moveTo(PostPos[i]);
         }
     }
 

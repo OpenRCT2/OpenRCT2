@@ -103,7 +103,7 @@ namespace OpenRCT2::Ui
         // Allows only balloons to be popped and ducks to be quacked in title screen
         if (gLegacyScene == LegacyScene::titleSequence)
         {
-            if (info.interactionType == ViewportInteractionItem::entity && (sprite->Is<Balloon>() || sprite->Is<Duck>()))
+            if (info.interactionType == ViewportInteractionItem::entity && (sprite->is<Balloon>() || sprite->is<Duck>()))
                 return info;
 
             info.interactionType = ViewportInteractionItem::none;
@@ -113,11 +113,11 @@ namespace OpenRCT2::Ui
         switch (info.interactionType)
         {
             case ViewportInteractionItem::entity:
-                switch (sprite->Type)
+                switch (sprite->type)
                 {
                     case EntityType::vehicle:
                     {
-                        auto vehicle = sprite->As<Vehicle>();
+                        auto vehicle = sprite->as<Vehicle>();
                         if (vehicle != nullptr && !vehicle->IsCableLift())
                             vehicle->SetMapToolbar();
                         else
@@ -127,7 +127,7 @@ namespace OpenRCT2::Ui
                     case EntityType::guest:
                     case EntityType::staff:
                     {
-                        auto peep = sprite->As<Peep>();
+                        auto peep = sprite->as<Peep>();
                         if (peep != nullptr)
                         {
                             PeepSetMapTooltip(peep);
@@ -204,7 +204,7 @@ namespace OpenRCT2::Ui
             case ViewportInteractionItem::entity:
             {
                 auto entity = info.Entity;
-                switch (entity->Type)
+                switch (entity->type)
                 {
                     case EntityType::vehicle:
                     {
@@ -225,7 +225,7 @@ namespace OpenRCT2::Ui
                     {
                         if (GameIsNotPaused())
                         {
-                            auto balloonPress = GameActions::BalloonPressAction(entity->Id);
+                            auto balloonPress = GameActions::BalloonPressAction(entity->id);
                             GameActions::Execute(&balloonPress, gameState);
                         }
                     }
@@ -234,7 +234,7 @@ namespace OpenRCT2::Ui
                     {
                         if (GameIsNotPaused())
                         {
-                            auto duck = entity->As<Duck>();
+                            auto duck = entity->as<Duck>();
                             if (duck != nullptr)
                             {
                                 duck->Press();
@@ -288,13 +288,13 @@ namespace OpenRCT2::Ui
             case ViewportInteractionItem::entity:
             {
                 auto sprite = info.Entity;
-                if (gLegacyScene == LegacyScene::scenarioEditor || sprite->Type != EntityType::vehicle)
+                if (gLegacyScene == LegacyScene::scenarioEditor || sprite->type != EntityType::vehicle)
                 {
                     info.interactionType = ViewportInteractionItem::none;
                     return info;
                 }
 
-                auto vehicle = sprite->As<Vehicle>();
+                auto vehicle = sprite->as<Vehicle>();
                 if (vehicle == nullptr)
                 {
                     info.interactionType = ViewportInteractionItem::none;
@@ -573,9 +573,9 @@ namespace OpenRCT2::Ui
             case ViewportInteractionItem::entity:
             {
                 auto entity = info.Entity;
-                if (entity->Type == EntityType::vehicle)
+                if (entity->type == EntityType::vehicle)
                 {
-                    auto vehicle = entity->As<Vehicle>();
+                    auto vehicle = entity->as<Vehicle>();
                     if (vehicle == nullptr)
                     {
                         break;
@@ -746,10 +746,10 @@ namespace OpenRCT2::Ui
             if (peep->x == kLocationNull)
                 continue;
 
-            auto screenCoords = Translate3DTo2DWithZ(rotation, peep->GetLocation());
+            auto screenCoords = Translate3DTo2DWithZ(rotation, peep->getLocation());
             auto spriteRect = ScreenRect(
-                screenCoords - ScreenCoordsXY{ peep->SpriteData.Width, peep->SpriteData.HeightMin },
-                screenCoords + ScreenCoordsXY{ peep->SpriteData.Width, peep->SpriteData.HeightMax });
+                screenCoords - ScreenCoordsXY{ peep->spriteData.width, peep->spriteData.heightMin },
+                screenCoords + ScreenCoordsXY{ peep->spriteData.width, peep->spriteData.heightMax });
 
             auto distance = abs(((spriteRect.GetLeft() + spriteRect.GetRight()) / 2) - viewportCoords.x)
                 + abs(((spriteRect.GetTop() + spriteRect.GetBottom()) / 2) - viewportCoords.y);

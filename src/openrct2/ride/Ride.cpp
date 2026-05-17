@@ -388,11 +388,11 @@ void Ride::queueInsertGuestAtFront(StationIndex stationIndex, Guest* peep)
     auto* queueHeadGuest = getQueueHeadGuest(peep->CurrentRideStation);
     if (queueHeadGuest == nullptr)
     {
-        getStation(peep->CurrentRideStation).LastPeepInQueue = peep->Id;
+        getStation(peep->CurrentRideStation).LastPeepInQueue = peep->id;
     }
     else
     {
-        queueHeadGuest->GuestNextInQueue = peep->Id;
+        queueHeadGuest->GuestNextInQueue = peep->id;
     }
     updateQueueLength(peep->CurrentRideStation);
 }
@@ -1468,7 +1468,7 @@ static void RideCallMechanic(Ride& ride, Peep* mechanic, int32_t forInspection)
     mechanic->SubState = 0;
     ride.mechanicStatus = MechanicStatus::heading;
     ride.windowInvalidateFlags.set(RideInvalidateFlag::maintenance);
-    ride.mechanic = mechanic->Id;
+    ride.mechanic = mechanic->id;
     mechanic->CurrentRide = ride.id;
     mechanic->CurrentRideStation = ride.inspectionStation;
 }
@@ -2994,9 +2994,9 @@ static Vehicle* VehicleCreateCar(
     }
 
     // Loc6DD9A5:
-    vehicle->SpriteData.Width = carEntry.spriteWidth;
-    vehicle->SpriteData.HeightMin = carEntry.spriteHeightNegative;
-    vehicle->SpriteData.HeightMax = carEntry.spriteHeightPositive;
+    vehicle->spriteData.width = carEntry.spriteWidth;
+    vehicle->spriteData.heightMin = carEntry.spriteHeightNegative;
+    vehicle->spriteData.heightMax = carEntry.spriteHeightPositive;
     vehicle->mass = carEntry.car_mass;
     vehicle->num_seats = carEntry.num_seats;
     vehicle->speed = carEntry.powered_max_speed;
@@ -3054,12 +3054,12 @@ static Vehicle* VehicleCreateCar(
             if (numAttempts > 10000)
                 return nullptr;
 
-            vehicle->Orientation = ScenarioRand() & 0x1E;
+            vehicle->orientation = ScenarioRand() & 0x1E;
             chosenLoc.y = dodgemPos.y + (ScenarioRand() & 0xFF);
             chosenLoc.x = dodgemPos.x + (ScenarioRand() & 0xFF);
         } while (vehicle->DodgemsCarWouldCollideAt(chosenLoc).has_value());
 
-        vehicle->MoveToAndUpdateSpatialIndex({ chosenLoc, dodgemPos.z });
+        vehicle->moveToAndUpdateSpatialIndex({ chosenLoc, dodgemPos.z });
     }
     else
     {
@@ -3102,7 +3102,7 @@ static Vehicle* VehicleCreateCar(
         vehicle->TrackLocation = chosenLoc;
 
         int32_t direction = trackElement->GetDirection();
-        vehicle->Orientation = direction << 3;
+        vehicle->orientation = direction << 3;
 
         if (ride.getRideTypeDescriptor().specialType == RtdSpecialType::spaceRings)
         {
@@ -3133,9 +3133,9 @@ static Vehicle* VehicleCreateCar(
 
         vehicle->current_station = trackElement->GetStationIndex();
 
-        vehicle->MoveTo(chosenLoc);
+        vehicle->moveTo(chosenLoc);
         vehicle->SetTrackType(trackElement->GetTrackType());
-        vehicle->SetTrackDirection(vehicle->Orientation >> 3);
+        vehicle->SetTrackDirection(vehicle->orientation >> 3);
         vehicle->track_progress = 31;
         if (carEntry.flags.has(CarEntryFlag::isMiniGolf))
         {
@@ -3191,9 +3191,9 @@ static TrainReference VehicleCreateTrain(
         else
         {
             // Link the previous car with this car
-            train.tail->next_vehicle_on_train = car->Id;
-            train.tail->next_vehicle_on_ride = car->Id;
-            car->prev_vehicle_on_ride = train.tail->Id;
+            train.tail->next_vehicle_on_train = car->id;
+            train.tail->next_vehicle_on_ride = car->id;
+            car->prev_vehicle_on_ride = train.tail->id;
         }
         train.tail = car;
     }
@@ -3228,8 +3228,8 @@ static bool VehicleCreateTrains(Ride& ride, const CoordsXYZ& trainsPos, TrackEle
         else
         {
             // Link the end of the previous train with the front of this train
-            lastTrain.tail->next_vehicle_on_ride = train.head->Id;
-            train.head->prev_vehicle_on_ride = lastTrain.tail->Id;
+            lastTrain.tail->next_vehicle_on_ride = train.head->id;
+            train.head->prev_vehicle_on_ride = lastTrain.tail->id;
         }
         lastTrain = train;
 
@@ -3237,7 +3237,7 @@ static bool VehicleCreateTrains(Ride& ride, const CoordsXYZ& trainsPos, TrackEle
         {
             if (ride.vehicles[i].IsNull())
             {
-                ride.vehicles[i] = train.head->Id;
+                ride.vehicles[i] = train.head->id;
                 break;
             }
         }
@@ -3245,9 +3245,9 @@ static bool VehicleCreateTrains(Ride& ride, const CoordsXYZ& trainsPos, TrackEle
 
     // Link the first train and last train together. Nullptr checks are there to keep Clang happy.
     if (lastTrain.tail != nullptr)
-        firstTrain.head->prev_vehicle_on_ride = lastTrain.tail->Id;
+        firstTrain.head->prev_vehicle_on_ride = lastTrain.tail->id;
     if (firstTrain.head != nullptr)
-        lastTrain.tail->next_vehicle_on_ride = firstTrain.head->Id;
+        lastTrain.tail->next_vehicle_on_ride = firstTrain.head->id;
 
     return allTrainsCreated;
 }
@@ -3660,14 +3660,14 @@ static ResultWithMessage RideCreateCableLift(RideId rideIndex, bool isApplying)
         }
         else
         {
-            tail->next_vehicle_on_train = current->Id;
-            tail->next_vehicle_on_ride = current->Id;
-            current->prev_vehicle_on_ride = tail->Id;
+            tail->next_vehicle_on_train = current->id;
+            tail->next_vehicle_on_ride = current->id;
+            current->prev_vehicle_on_ride = tail->id;
         }
         tail = current;
     }
-    head->prev_vehicle_on_ride = tail->Id;
-    tail->next_vehicle_on_ride = head->Id;
+    head->prev_vehicle_on_ride = tail->id;
+    tail->next_vehicle_on_ride = head->id;
 
     ride->flags.set(RideFlag::cableLift);
     head->CableLiftUpdateTrackMotion();
@@ -4480,7 +4480,7 @@ void RideUpdateVehicleColours(const Ride& ride)
             }
 
             vehicle->colours = colours;
-            vehicle->Invalidate();
+            vehicle->invalidate();
             carIndex++;
         }
     }
@@ -5239,17 +5239,17 @@ void FixInvalidVehicleSpriteSizes()
                     break;
                 }
 
-                if (vehicle->SpriteData.Width == 0)
+                if (vehicle->spriteData.width == 0)
                 {
-                    vehicle->SpriteData.Width = carEntry->spriteWidth;
+                    vehicle->spriteData.width = carEntry->spriteWidth;
                 }
-                if (vehicle->SpriteData.HeightMin == 0)
+                if (vehicle->spriteData.heightMin == 0)
                 {
-                    vehicle->SpriteData.HeightMin = carEntry->spriteHeightNegative;
+                    vehicle->spriteData.heightMin = carEntry->spriteHeightNegative;
                 }
-                if (vehicle->SpriteData.HeightMax == 0)
+                if (vehicle->spriteData.heightMax == 0)
                 {
-                    vehicle->SpriteData.HeightMax = carEntry->spriteHeightPositive;
+                    vehicle->spriteData.heightMax = carEntry->spriteHeightPositive;
                 }
             }
         }

@@ -38,7 +38,7 @@ namespace OpenRCT2
         }
 
         session.CurrentlyDrawnEntity = vehicleToPaint;
-        imageDirection = Entity::Yaw::Add(Entity::Yaw::YawFrom4(session.CurrentRotation), vehicleToPaint->Orientation);
+        imageDirection = Entity::Yaw::Add(Entity::Yaw::YawFrom4(session.CurrentRotation), vehicleToPaint->orientation);
         session.SpritePosition.x = vehicleToPaint->x;
         session.SpritePosition.y = vehicleToPaint->y;
         vehicleToPaint->Paint(session, imageDirection);

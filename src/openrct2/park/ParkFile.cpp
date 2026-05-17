@@ -1756,14 +1756,14 @@ namespace OpenRCT2
 
         static void ReadWriteEntityCommon(OrcaStream::ChunkStream& cs, EntityBase& entity)
         {
-            cs.readWrite(entity.Id);
-            cs.readWrite(entity.SpriteData.HeightMin);
+            cs.readWrite(entity.id);
+            cs.readWrite(entity.spriteData.heightMin);
             cs.readWrite(entity.x);
             cs.readWrite(entity.y);
             cs.readWrite(entity.z);
-            cs.readWrite(entity.SpriteData.Width);
-            cs.readWrite(entity.SpriteData.HeightMax);
-            cs.readWrite(entity.Orientation);
+            cs.readWrite(entity.spriteData.width);
+            cs.readWrite(entity.spriteData.heightMax);
+            cs.readWrite(entity.orientation);
         }
 
         static std::vector<ObjectEntryIndex> LegacyGetRideTypesBeenOn(const std::array<uint8_t, 16>& srcArray)
@@ -1797,8 +1797,8 @@ namespace OpenRCT2
 
             ReadWriteEntityCommon(cs, entity);
 
-            auto guest = entity.As<Guest>();
-            auto staff = entity.As<Staff>();
+            auto guest = entity.as<Guest>();
+            auto staff = entity.as<Staff>();
 
             if (cs.getMode() == OrcaStream::Mode::reading)
             {
@@ -1930,7 +1930,7 @@ namespace OpenRCT2
                         cs.readWrite(rideType);
                         return true;
                     });
-                    RideUse::GetTypeHistory().Set(guest->Id, LegacyGetRideTypesBeenOn(rideTypeBeenOn));
+                    RideUse::GetTypeHistory().Set(guest->id, LegacyGetRideTypesBeenOn(rideTypeBeenOn));
                     cs.readWrite(guest->ItemFlags);
                     cs.readWrite(guest->Photo2RideRef);
                     cs.readWrite(guest->Photo3RideRef);
@@ -1989,7 +1989,7 @@ namespace OpenRCT2
                         cs.readWrite(rideType);
                         return true;
                     });
-                    RideUse::GetHistory().Set(guest->Id, LegacyGetRidesBeenOn(ridesBeenOn));
+                    RideUse::GetHistory().Set(guest->id, LegacyGetRidesBeenOn(ridesBeenOn));
                 }
                 else
                 {
@@ -2382,7 +2382,7 @@ namespace OpenRCT2
                 cs.readWrite(rideType);
                 return true;
             });
-            RideUse::GetTypeHistory().Set(guest.Id, LegacyGetRideTypesBeenOn(rideTypeBeenOn));
+            RideUse::GetTypeHistory().Set(guest.id, LegacyGetRideTypesBeenOn(rideTypeBeenOn));
         }
 
         cs.readWrite(guest.TimeInQueue);
@@ -2393,7 +2393,7 @@ namespace OpenRCT2
                 cs.readWrite(rideType);
                 return true;
             });
-            RideUse::GetHistory().Set(guest.Id, LegacyGetRidesBeenOn(ridesBeenOn));
+            RideUse::GetHistory().Set(guest.id, LegacyGetRidesBeenOn(ridesBeenOn));
         }
         else
         {
@@ -2401,14 +2401,14 @@ namespace OpenRCT2
             {
                 std::vector<RideId> rideUse;
                 cs.readWriteVector(rideUse, [&cs](RideId& rideId) { cs.readWrite(rideId); });
-                RideUse::GetHistory().Set(guest.Id, std::move(rideUse));
+                RideUse::GetHistory().Set(guest.id, std::move(rideUse));
                 std::vector<ObjectEntryIndex> rideTypeUse;
                 cs.readWriteVector(rideTypeUse, [&cs](ObjectEntryIndex& rideType) { cs.readWrite(rideType); });
-                RideUse::GetTypeHistory().Set(guest.Id, std::move(rideTypeUse));
+                RideUse::GetTypeHistory().Set(guest.id, std::move(rideTypeUse));
             }
             else
             {
-                auto* rideUse = RideUse::GetHistory().GetAll(guest.Id);
+                auto* rideUse = RideUse::GetHistory().GetAll(guest.id);
                 if (rideUse == nullptr)
                 {
                     std::vector<RideId> empty;
@@ -2418,7 +2418,7 @@ namespace OpenRCT2
                 {
                     cs.readWriteVector(*rideUse, [&cs](RideId& rideId) { cs.readWrite(rideId); });
                 }
-                auto* rideTypeUse = RideUse::GetTypeHistory().GetAll(guest.Id);
+                auto* rideTypeUse = RideUse::GetTypeHistory().GetAll(guest.id);
                 if (rideTypeUse == nullptr)
                 {
                     std::vector<ObjectEntryIndex> empty;
@@ -2652,7 +2652,7 @@ namespace OpenRCT2
         cs.write(count);
         for (auto* ent : entityList)
         {
-            cs.write(ent->Id);
+            cs.write(ent->id);
             ReadWriteEntity(os, cs, *ent);
         }
     }

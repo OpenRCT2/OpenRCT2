@@ -907,7 +907,7 @@ bool Vehicle::UpdateTrackMotionForwards(const CarEntry* carEntry, const Ride& cu
             }
 
             _vehicleCurPosition = nextVehiclePosition;
-            Orientation = moveInfo->yaw;
+            orientation = moveInfo->yaw;
             roll = moveInfo->roll;
             pitch = moveInfo->pitch;
 
@@ -1205,7 +1205,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
             remaining_distance += Geometry::getTranslationDistance(nextVehiclePosition - _vehicleCurPosition, false);
 
             _vehicleCurPosition = nextVehiclePosition;
-            Orientation = moveInfo->yaw;
+            orientation = moveInfo->yaw;
             roll = moveInfo->roll;
             pitch = moveInfo->pitch;
 
@@ -1407,7 +1407,7 @@ void Vehicle::UpdateTrackMotionPreUpdate(
     _vehicleCurPosition.x = car.x;
     _vehicleCurPosition.y = car.y;
     _vehicleCurPosition.z = car.z;
-    car.Invalidate();
+    car.invalidate();
 
     while (true)
     {
@@ -1445,7 +1445,7 @@ void Vehicle::UpdateTrackMotionPreUpdate(
         _vehicleUnkF64E10++;
     }
     // Loc6DBF20
-    car.MoveTo(_vehicleCurPosition);
+    car.moveTo(_vehicleCurPosition);
 }
 
 /**
@@ -1489,7 +1489,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
     // backwards.
     _vehicleFrontVehicle = vehicle;
 
-    auto spriteId = vehicle->Id;
+    auto spriteId = vehicle->id;
     while (!spriteId.IsNull())
     {
         Vehicle* car = getGameState().entities.GetEntity<Vehicle>(spriteId);

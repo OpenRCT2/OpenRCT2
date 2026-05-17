@@ -107,9 +107,9 @@ int32_t GetAccelerationDecrease2(const int32_t velocity, const int32_t totalMass
 }
 
 template<>
-bool EntityBase::Is<Vehicle>() const
+bool EntityBase::is<Vehicle>() const
 {
-    return Type == EntityType::vehicle;
+    return type == EntityType::vehicle;
 }
 
 static bool vehicle_move_info_valid(
@@ -229,10 +229,10 @@ void Vehicle::UpdateTrackChange()
 
     _vehicleCurPosition = TrackLocation
         + CoordsXYZ{ moveInfo->x, moveInfo->y, moveInfo->z + GetRideTypeDescriptor(curRide->type).Heights.VehicleZOffset };
-    Orientation = moveInfo->yaw;
+    orientation = moveInfo->yaw;
     roll = moveInfo->roll;
     pitch = moveInfo->pitch;
-    MoveTo(_vehicleCurPosition);
+    moveTo(_vehicleCurPosition);
 }
 
 Vehicle* TryGetVehicle(EntityId spriteIndex)
@@ -272,7 +272,7 @@ bool Vehicle::CloseRestraints()
         return true;
 
     bool restraintsClosed = true;
-    for (Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(Id); vehicle != nullptr;
+    for (Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(id); vehicle != nullptr;
          vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
     {
         if (vehicle->flags.has(VehicleFlag::carIsBroken) && vehicle->restraints_position != 0
@@ -306,7 +306,7 @@ bool Vehicle::CloseRestraints()
                 continue;
             }
         }
-        vehicle->Invalidate();
+        vehicle->invalidate();
         restraintsClosed = false;
     }
 
@@ -321,7 +321,7 @@ bool Vehicle::CloseRestraints()
 bool Vehicle::OpenRestraints()
 {
     int32_t restraintsOpen = true;
-    for (Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(Id); vehicle != nullptr;
+    for (Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(id); vehicle != nullptr;
          vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
     {
         vehicle->SwingPosition = 0;
@@ -363,7 +363,7 @@ bool Vehicle::OpenRestraints()
                 vehicle->spin_sprite += value;
                 vehicle->spin_speed -= value;
 
-                vehicle->Invalidate();
+                vehicle->invalidate();
                 continue;
             }
         }
@@ -378,7 +378,7 @@ bool Vehicle::OpenRestraints()
                 vehicle->animationState = 0;
                 vehicle->animation_frame++;
                 vehicle->animation_frame %= carEntry.AnimationFrames;
-                vehicle->Invalidate();
+                vehicle->invalidate();
             }
             restraintsOpen = false;
             continue;
@@ -423,7 +423,7 @@ bool Vehicle::OpenRestraints()
             }
             vehicle->restraints_position += 20;
         }
-        vehicle->Invalidate();
+        vehicle->invalidate();
         restraintsOpen = false;
     }
 
@@ -908,7 +908,7 @@ std::optional<uint32_t> ride_get_train_index_from_vehicle(const Ride& ride, Enti
  */
 void Vehicle::PeepEasterEggHereWeAre() const
 {
-    for (Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(Id); vehicle != nullptr;
+    for (Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(id); vehicle != nullptr;
          vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
     {
         for (int32_t i = 0; i < vehicle->num_peeps; ++i)
@@ -1072,7 +1072,7 @@ void Vehicle::UpdateWaitingForCableLift()
         return;
 
     cableLift->SetState(Status::waitingToDepart, sub_state);
-    cableLift->cable_lift_target = Id;
+    cableLift->cable_lift_target = id;
 }
 
 /**
@@ -1210,7 +1210,7 @@ void Vehicle::SetMapToolbar() const
 
         size_t vehicleIndex;
         for (vehicleIndex = 0; vehicleIndex < std::size(curRide->vehicles); vehicleIndex++)
-            if (curRide->vehicles[vehicleIndex] == vehicle->Id)
+            if (curRide->vehicles[vehicleIndex] == vehicle->id)
                 break;
 
         auto ft = Formatter();
@@ -1296,7 +1296,7 @@ Ride* Vehicle::GetRide() const
 int32_t Vehicle::NumPeepsUntilTrainTail() const
 {
     int32_t numPeeps = 0;
-    for (const Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(Id); vehicle != nullptr;
+    for (const Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(id); vehicle != nullptr;
          vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
     {
         numPeeps += vehicle->num_peeps;
@@ -1510,7 +1510,7 @@ void Vehicle::EnableCollisionsForTrain()
 
 void Vehicle::Serialise(DataSerialiser& stream)
 {
-    EntityBase::Serialise(stream);
+    EntityBase::serialise(stream);
     stream << SubType;
     stream << pitch;
     stream << roll;

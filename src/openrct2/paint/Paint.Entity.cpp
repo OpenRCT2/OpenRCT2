@@ -66,7 +66,7 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
     {
         if (highlightPathIssues)
         {
-            const auto staff = entity->As<Staff>();
+            const auto staff = entity->as<Staff>();
             if (staff != nullptr)
             {
                 if (staff->AssignedStaffType != StaffType::handyman)
@@ -74,13 +74,13 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
                     continue;
                 }
             }
-            else if (entity->Type != EntityType::litter)
+            else if (entity->type != EntityType::litter)
             {
                 continue;
             }
         }
 
-        const auto entityPos = entity->GetLocation();
+        const auto entityPos = entity->getLocation();
 
         // Only paint sprites that are below the clip height and inside the clip selection.
         // Here converting from land/path/etc height scale to pixel height scale.
@@ -107,10 +107,10 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
             }
         }
 
-        auto screenCoords = Translate3DTo2DWithZ(session.CurrentRotation, entity->GetLocation());
+        auto screenCoords = Translate3DTo2DWithZ(session.CurrentRotation, entity->getLocation());
         auto spriteRect = ScreenRect(
-            screenCoords - ScreenCoordsXY{ entity->SpriteData.Width, entity->SpriteData.HeightMin },
-            screenCoords + ScreenCoordsXY{ entity->SpriteData.Width, entity->SpriteData.HeightMax });
+            screenCoords - ScreenCoordsXY{ entity->spriteData.width, entity->spriteData.heightMin },
+            screenCoords + ScreenCoordsXY{ entity->spriteData.width, entity->spriteData.heightMax });
 
         const ZoomLevel zoom = session.rt.zoom_level;
         if (session.rt.y + session.rt.height <= zoom.ApplyInversedTo(spriteRect.GetTop())
@@ -123,7 +123,7 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
 
         int32_t image_direction = session.CurrentRotation;
         image_direction <<= 3;
-        image_direction += entity->Orientation;
+        image_direction += entity->orientation;
         image_direction &= 0x1F;
 
         session.CurrentlyDrawnEntity = entity;
@@ -131,7 +131,7 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
         session.SpritePosition.y = entityPos.y;
         session.InteractionType = ViewportInteractionItem::entity;
 
-        switch (entity->Type)
+        switch (entity->type)
         {
             case EntityType::vehicle:
                 entity->cast<Vehicle>()->Paint(session, image_direction);
