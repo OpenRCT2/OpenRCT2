@@ -1873,8 +1873,8 @@ namespace OpenRCT2::Network
             {
                 LOG_WARNING(
                     "Connection %s sent command %u that requires authentication, disconnecting.",
-                    connection.Socket->GetIpAddress().c_str(), static_cast<uint32_t>(packet.GetCommand()));
-                connection.Disconnect();
+                    connection.socket->GetIpAddress().c_str(), static_cast<uint32_t>(packet.getCommand()));
+                connection.disconnect();
             }
         }
 
