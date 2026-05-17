@@ -962,7 +962,7 @@ namespace OpenRCT2
 
     uint8_t MapGetHighestLandHeight(const MapRange& range)
     {
-        uint8_t maxHeight = 0xFF;
+        uint8_t maxHeight = 0;
         for (auto tileCoords : Map::getDrawableTileRange())
         {
             auto* surfaceElement = MapGetSurfaceElementAt(tileCoords);
