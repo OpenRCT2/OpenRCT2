@@ -372,19 +372,4 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
         stream << target_y;
         stream << state;
     }
-
-    void Duck::Paint(PaintSession& session, int32_t imageDirection) const
-    {
-        PROFILED_FUNCTION();
-
-        auto& rt = session.rt;
-        if (rt.zoom_level > ZoomLevel{ 1 })
-            return;
-
-        uint32_t imageId = GetFrameImage(imageDirection);
-        if (imageId != 0)
-        {
-            PaintAddImageAsParent(session, ImageId(imageId), { 0, 0, z }, { 1, 1, 0 });
-        }
-    }
 } // namespace OpenRCT2

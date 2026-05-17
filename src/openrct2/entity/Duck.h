@@ -42,7 +42,6 @@ namespace OpenRCT2
         bool IsFlying();
         void Remove();
         void Serialise(DataSerialiser& stream);
-        void Paint(PaintSession& session, int32_t imageDirection) const;
 
     private:
         void UpdateFlyToWater();

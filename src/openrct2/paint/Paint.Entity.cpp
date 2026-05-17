@@ -14,7 +14,6 @@
 #include "../entity/Duck.h"
 #include "../entity/EntityList.h"
 #include "../entity/Fountain.h"
-#include "../entity/Litter.h"
 #include "../entity/MoneyEffect.h"
 #include "../entity/Particle.h"
 #include "../entity/Staff.h"
@@ -28,7 +27,9 @@
 #include "../world/Weather.h"
 #include "Paint.h"
 #include "entity/Paint.Balloon.h"
+#include "entity/Paint.Duck.h"
 #include "entity/Paint.Guest.h"
+#include "entity/Paint.Litter.h"
 #include "entity/Paint.Staff.h"
 #include "vehicle/VehiclePaint.h"
 
@@ -170,10 +171,10 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
                 PaintBalloon(session, *entity->cast<Balloon>(), image_direction);
                 break;
             case EntityType::duck:
-                entity->cast<Duck>()->Paint(session, image_direction);
+                PaintDuck(session, *entity->cast<Duck>(), image_direction);
                 break;
             case EntityType::litter:
-                entity->cast<Litter>()->Paint(session, image_direction);
+                PaintLitter(session, *entity->cast<Litter>(), image_direction);
                 break;
             default:
                 assert(false);
