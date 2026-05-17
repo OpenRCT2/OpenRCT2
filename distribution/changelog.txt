@@ -20,6 +20,7 @@
 - Fix: [#26432] Guests choose to head for rides they have already ridden if they don’t have a map.
 - Fix: [#26492] Drag tool shows per-tile error instead of total cost when running out of money midway through placement.
 - Fix: [#26510] Displayed air time overflows after 655.35 seconds instead of the internal maximum of 1966.05 seconds.
+- Fix: [#26396] [Plugin] Socket interfaces were not closing properly and firing up correctly in parallel.
 
 0.5.0 (2026-04-12)
 ------------------------------------------------------------------------
