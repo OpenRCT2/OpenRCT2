@@ -39,7 +39,7 @@ static void PaintShop(
         return;
 
     CoordsXYZ offset(0, 0, height);
-    BoundBoxXYZ bb = { { 2, 2, height }, { 28, 28, trackElement.GetClearanceZ() - trackElement.GetBaseZ() - 3 } };
+    BoundBoxXYZ bb = { { 2, 2, height }, { 28, 28, trackElement.getClearanceZ() - trackElement.getBaseZ() - 3 } };
 
     auto imageFlags = session.TrackColours.WithoutSecondary();
     auto imageIndex = firstCarEntry->base_image_id + direction;

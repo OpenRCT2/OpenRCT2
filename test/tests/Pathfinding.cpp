@@ -97,7 +97,7 @@ protected:
         // tile away. Stepping the peep will move them towards their destination, and once they reach it, a new
         // destination will be picked, to try and get the peep towards the overall pathfinding goal.
         peep->PeepDirection = moveDir;
-        auto destination = CoordsDirectionDelta[moveDir] + peep->GetLocation();
+        auto destination = CoordsDirectionDelta[moveDir] + peep->getLocation();
         peep->SetDestination(destination, 2);
 
         // Repeatedly step the peep, until they reach the target position or until the expected number of steps have
@@ -109,7 +109,7 @@ protected:
             peep->PerformNextAction();
             ++step;
 
-            *pos = TileCoordsXYZ(peep->GetLocation());
+            *pos = TileCoordsXYZ(peep->getLocation());
 
             EXPECT_PRED_FORMAT1(AssertIsNotForbiddenPosition, *pos);
 

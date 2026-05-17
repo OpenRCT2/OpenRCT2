@@ -189,7 +189,7 @@ void Vehicle::UpdateSound()
     sound2_volume = soundIdVolume.volume;
 
     // Calculate Sound Vector (used for sound frequency calcs)
-    int32_t soundDirection = Geometry::getSoundDirectionFromOrientation(Orientation);
+    int32_t soundDirection = Geometry::getSoundDirectionFromOrientation(orientation);
     int32_t soundVector = ((velocity >> 14) * soundDirection) >> 14;
     soundVector = std::clamp(soundVector, -127, 127);
 
@@ -211,7 +211,7 @@ SoundId Vehicle::UpdateScreamSound()
         if (velocity > -2.75_mph)
             return SoundId::null;
 
-        for (Vehicle* vehicle2 = getGameState().entities.GetEntity<Vehicle>(Id); vehicle2 != nullptr;
+        for (Vehicle* vehicle2 = getGameState().entities.GetEntity<Vehicle>(id); vehicle2 != nullptr;
              vehicle2 = getGameState().entities.GetEntity<Vehicle>(vehicle2->next_vehicle_on_train))
         {
             if (vehicle2->pitch < VehiclePitch::up12)
@@ -233,7 +233,7 @@ SoundId Vehicle::UpdateScreamSound()
     if (velocity < 2.75_mph)
         return SoundId::null;
 
-    for (Vehicle* vehicle2 = getGameState().entities.GetEntity<Vehicle>(Id); vehicle2 != nullptr;
+    for (Vehicle* vehicle2 = getGameState().entities.GetEntity<Vehicle>(id); vehicle2 != nullptr;
          vehicle2 = getGameState().entities.GetEntity<Vehicle>(vehicle2->next_vehicle_on_train))
     {
         if (vehicle2->pitch < VehiclePitch::down12)

@@ -87,29 +87,29 @@ namespace OpenRCT2::GameActions
             if (tileElement == nullptr)
                 break;
 
-            if (tileElement->GetBaseZ() != _origin.z)
+            if (tileElement->getBaseZ() != _origin.z)
                 continue;
 
-            if (tileElement->GetType() != TileElementType::Track)
+            if (tileElement->getType() != TileElementType::Track)
                 continue;
 
-            if ((tileElement->GetDirection()) != _origin.direction)
+            if ((tileElement->getDirection()) != _origin.direction)
                 continue;
 
-            if (tileElement->AsTrack()->GetSequenceIndex() != _sequence)
+            if (tileElement->asTrack()->GetSequenceIndex() != _sequence)
                 continue;
 
-            if (tileElement->IsGhost() != isGhost)
+            if (tileElement->isGhost() != isGhost)
                 continue;
 
-            auto tileTrackType = normaliseTrackType(tileElement->AsTrack()->GetTrackType());
+            auto tileTrackType = normaliseTrackType(tileElement->asTrack()->GetTrackType());
 
             if (tileTrackType != comparableTrackType)
                 continue;
 
             found = true;
             break;
-        } while (!(tileElement++)->IsLastForTile());
+        } while (!(tileElement++)->isLastForTile());
 
         if (!found)
         {
@@ -119,14 +119,14 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_ERR_TRACK_ELEMENT_NOT_FOUND);
         }
 
-        if (tileElement->AsTrack()->IsIndestructible())
+        if (tileElement->asTrack()->IsIndestructible())
         {
             return Result(
                 Status::disallowed, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_YOU_ARE_NOT_ALLOWED_TO_REMOVE_THIS_SECTION);
         }
 
-        RideId rideIndex = tileElement->AsTrack()->GetRideIndex();
-        const auto trackType = tileElement->AsTrack()->GetTrackType();
+        RideId rideIndex = tileElement->asTrack()->GetRideIndex();
+        const auto trackType = tileElement->asTrack()->GetTrackType();
 
         auto ride = GetRide(rideIndex);
         if (ride == nullptr)
@@ -141,7 +141,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_ERR_VALUE_OUT_OF_RANGE);
         }
         const auto& ted = GetTrackElementDescriptor(trackType);
-        auto sequenceIndex = tileElement->AsTrack()->GetSequenceIndex();
+        auto sequenceIndex = tileElement->asTrack()->GetSequenceIndex();
         if (sequenceIndex >= ted.sequenceData.numSequences)
         {
             LOG_ERROR("Track block %d not found for track type %d.", sequenceIndex, trackType);
@@ -150,7 +150,7 @@ namespace OpenRCT2::GameActions
         const auto& currentTrackBlock = ted.sequenceData.sequences[sequenceIndex].clearance;
 
         auto startLoc = _origin;
-        startLoc.direction = tileElement->GetDirection();
+        startLoc.direction = tileElement->getDirection();
 
         auto rotatedTrack = CoordsXYZ{ CoordsXY{ currentTrackBlock.x, currentTrackBlock.y }.Rotate(startLoc.direction),
                                        currentTrackBlock.z };
@@ -182,27 +182,27 @@ namespace OpenRCT2::GameActions
                 if (tileElement == nullptr)
                     break;
 
-                if (tileElement->GetBaseZ() != mapLoc.z)
+                if (tileElement->getBaseZ() != mapLoc.z)
                     continue;
 
-                if (tileElement->GetType() != TileElementType::Track)
+                if (tileElement->getType() != TileElementType::Track)
                     continue;
 
-                if (tileElement->GetDirection() != _origin.direction)
+                if (tileElement->getDirection() != _origin.direction)
                     continue;
 
-                if (tileElement->AsTrack()->GetSequenceIndex() != i)
+                if (tileElement->asTrack()->GetSequenceIndex() != i)
                     continue;
 
-                if (tileElement->AsTrack()->GetTrackType() != trackType)
+                if (tileElement->asTrack()->GetTrackType() != trackType)
                     continue;
 
-                if (tileElement->IsGhost() != isGhost)
+                if (tileElement->isGhost() != isGhost)
                     continue;
 
                 found = true;
                 break;
-            } while (!(tileElement++)->IsLastForTile());
+            } while (!(tileElement++)->isLastForTile());
 
             if (!found)
             {
@@ -213,7 +213,7 @@ namespace OpenRCT2::GameActions
             }
 
             if (ted.sequenceData.sequences[0].flags.has(SequenceFlag::trackOrigin)
-                && (tileElement->AsTrack()->GetSequenceIndex() == 0))
+                && (tileElement->asTrack()->GetSequenceIndex() == 0))
             {
                 const auto removeElementResult = TrackRemoveStationElement({ mapLoc, _origin.direction }, rideIndex, {});
                 if (!removeElementResult.Successful)
@@ -229,7 +229,7 @@ namespace OpenRCT2::GameActions
                 return Result(Status::unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
             }
 
-            int16_t _support_height = tileElement->BaseHeight - surfaceElement->BaseHeight;
+            int16_t _support_height = tileElement->baseHeight - surfaceElement->baseHeight;
             if (_support_height < 0)
             {
                 _support_height = 10;
@@ -271,29 +271,29 @@ namespace OpenRCT2::GameActions
             if (tileElement == nullptr)
                 break;
 
-            if (tileElement->GetBaseZ() != _origin.z)
+            if (tileElement->getBaseZ() != _origin.z)
                 continue;
 
-            if (tileElement->GetType() != TileElementType::Track)
+            if (tileElement->getType() != TileElementType::Track)
                 continue;
 
-            if ((tileElement->GetDirection()) != _origin.direction)
+            if ((tileElement->getDirection()) != _origin.direction)
                 continue;
 
-            if (tileElement->AsTrack()->GetSequenceIndex() != _sequence)
+            if (tileElement->asTrack()->GetSequenceIndex() != _sequence)
                 continue;
 
-            if (tileElement->IsGhost() != isGhost)
+            if (tileElement->isGhost() != isGhost)
                 continue;
 
-            auto tileTrackType = normaliseTrackType(tileElement->AsTrack()->GetTrackType());
+            auto tileTrackType = normaliseTrackType(tileElement->asTrack()->GetTrackType());
 
             if (tileTrackType != comparableTrackType)
                 continue;
 
             found = true;
             break;
-        } while (!(tileElement++)->IsLastForTile());
+        } while (!(tileElement++)->isLastForTile());
 
         if (!found)
         {
@@ -303,9 +303,9 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_ERR_TRACK_ELEMENT_NOT_FOUND);
         }
 
-        RideId rideIndex = tileElement->AsTrack()->GetRideIndex();
-        const auto trackType = tileElement->AsTrack()->GetTrackType();
-        bool isLiftHill = tileElement->AsTrack()->HasChain();
+        RideId rideIndex = tileElement->asTrack()->GetRideIndex();
+        const auto trackType = tileElement->asTrack()->GetTrackType();
+        bool isLiftHill = tileElement->asTrack()->HasChain();
 
         auto ride = GetRide(rideIndex);
         if (ride == nullptr)
@@ -314,7 +314,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_ERR_RIDE_NOT_FOUND);
         }
         const auto& ted = GetTrackElementDescriptor(trackType);
-        auto sequenceIndex = tileElement->AsTrack()->GetSequenceIndex();
+        auto sequenceIndex = tileElement->asTrack()->GetSequenceIndex();
         if (sequenceIndex >= ted.sequenceData.numSequences)
         {
             LOG_ERROR("Track block %d not found for track type %d.", sequenceIndex, trackType);
@@ -322,7 +322,7 @@ namespace OpenRCT2::GameActions
         }
 
         auto startLoc = _origin;
-        startLoc.direction = tileElement->GetDirection();
+        startLoc.direction = tileElement->getDirection();
 
         const auto& currentTrackBlock = ted.sequenceData.sequences[sequenceIndex].clearance;
         auto rotatedTrackLoc = CoordsXYZ{ CoordsXY{ currentTrackBlock.x, currentTrackBlock.y }.Rotate(startLoc.direction),
@@ -352,27 +352,27 @@ namespace OpenRCT2::GameActions
                 if (tileElement == nullptr)
                     break;
 
-                if (tileElement->GetBaseZ() != mapLoc.z)
+                if (tileElement->getBaseZ() != mapLoc.z)
                     continue;
 
-                if (tileElement->GetType() != TileElementType::Track)
+                if (tileElement->getType() != TileElementType::Track)
                     continue;
 
-                if (tileElement->GetDirection() != _origin.direction)
+                if (tileElement->getDirection() != _origin.direction)
                     continue;
 
-                if (tileElement->AsTrack()->GetSequenceIndex() != i)
+                if (tileElement->asTrack()->GetSequenceIndex() != i)
                     continue;
 
-                if (tileElement->AsTrack()->GetTrackType() != trackType)
+                if (tileElement->asTrack()->GetTrackType() != trackType)
                     continue;
 
-                if (tileElement->IsGhost() != isGhost)
+                if (tileElement->isGhost() != isGhost)
                     continue;
 
                 found = true;
                 break;
-            } while (!(tileElement++)->IsLastForTile());
+            } while (!(tileElement++)->isLastForTile());
 
             if (!found)
             {
@@ -383,7 +383,7 @@ namespace OpenRCT2::GameActions
             }
 
             if (ted.sequenceData.sequences[0].flags.has(SequenceFlag::trackOrigin)
-                && (tileElement->AsTrack()->GetSequenceIndex() == 0))
+                && (tileElement->asTrack()->GetSequenceIndex() == 0))
             {
                 const auto removeElementResult = TrackRemoveStationElement({ mapLoc, _origin.direction }, rideIndex, {});
                 if (!removeElementResult.Successful)
@@ -399,7 +399,7 @@ namespace OpenRCT2::GameActions
                 return Result(Status::unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
             }
 
-            int16_t _support_height = tileElement->BaseHeight - surfaceElement->BaseHeight;
+            int16_t _support_height = tileElement->baseHeight - surfaceElement->baseHeight;
             if (_support_height < 0)
             {
                 _support_height = 10;
@@ -411,7 +411,7 @@ namespace OpenRCT2::GameActions
             // Don't do this if the ride is simulating and the tile is a ghost to prevent desyncs.
             if (ted.sequenceData.sequences[0].flags.has(SequenceFlag::trackOrigin)
                 && (!GetFlags().has(CommandFlag::ghost) || (GetFlags().has(CommandFlag::trackDesign)))
-                && (tileElement->AsTrack()->GetSequenceIndex() == 0))
+                && (tileElement->asTrack()->GetSequenceIndex() == 0))
             {
                 const auto removeElementResult = TrackRemoveStationElement(
                     { mapLoc, _origin.direction }, rideIndex, { CommandFlag::apply });
@@ -428,7 +428,7 @@ namespace OpenRCT2::GameActions
 
             InvalidateTestResults(*ride);
             FootpathQueueChainReset();
-            if (!gameState.cheats.disableClearanceChecks || !(tileElement->IsGhost()))
+            if (!gameState.cheats.disableClearanceChecks || !(tileElement->isGhost()))
             {
                 FootpathRemoveEdgesAt(mapLoc, tileElement);
             }

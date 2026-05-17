@@ -29,7 +29,7 @@ namespace OpenRCT2::Scripting
 
         if (entity != nullptr)
         {
-            switch (entity->Type)
+            switch (entity->type)
             {
                 case EntityType::vehicle:
                     return "car";
@@ -81,7 +81,7 @@ namespace OpenRCT2::Scripting
         if (entity == nullptr)
             return JS_UNDEFINED;
 
-        return JS_NewInt32(ctx, entity->Id.ToUnderlying());
+        return JS_NewInt32(ctx, entity->id.ToUnderlying());
     }
 
     JSValue ScEntity::type_get(JSContext* ctx, JSValue thisVal)
@@ -104,7 +104,7 @@ namespace OpenRCT2::Scripting
         auto entity = GetEntity(thisVal);
         if (entity != nullptr)
         {
-            entity->MoveTo({ value, entity->y, entity->z });
+            entity->moveTo({ value, entity->y, entity->z });
         }
         return JS_UNDEFINED;
     }
@@ -122,7 +122,7 @@ namespace OpenRCT2::Scripting
         auto entity = GetEntity(thisVal);
         if (entity != nullptr)
         {
-            entity->MoveTo({ entity->x, value, entity->z });
+            entity->moveTo({ entity->x, value, entity->z });
         }
         return JS_UNDEFINED;
     }
@@ -140,7 +140,7 @@ namespace OpenRCT2::Scripting
         auto entity = GetEntity(thisVal);
         if (entity != nullptr)
         {
-            entity->MoveTo({ entity->x, entity->y, value });
+            entity->moveTo({ entity->x, entity->y, value });
         }
         return JS_UNDEFINED;
     }
@@ -150,8 +150,8 @@ namespace OpenRCT2::Scripting
         auto entity = GetEntity(thisVal);
         if (entity != nullptr)
         {
-            entity->Invalidate();
-            switch (entity->Type)
+            entity->invalidate();
+            switch (entity->type)
             {
                 case EntityType::vehicle:
                     JS_ThrowPlainError(ctx, "Removing a vehicle is currently unsupported.");
@@ -159,7 +159,7 @@ namespace OpenRCT2::Scripting
                 case EntityType::guest:
                 case EntityType::staff:
                 {
-                    auto peep = entity->As<Peep>();
+                    auto peep = entity->as<Peep>();
                     // We can't remove a single peep from a ride at the moment as this can cause complications with the
                     // vehicle car having an unsupported peep capacity.
                     if (peep == nullptr || peep->State == PeepState::onRide || peep->State == PeepState::enteringRide)

@@ -66,16 +66,16 @@ namespace OpenRCT2::GameActions
     Result ParkMarketingAction::Execute(GameState_t& gameState, Park::ParkData& park) const
     {
         MarketingCampaign campaign{};
-        campaign.Type = _type;
-        campaign.WeeksLeft = _numWeeks;
+        campaign.type = _type;
+        campaign.weeksLeft = _numWeeks;
         campaign.flags = { MarketingCampaignFlag::firstWeek };
-        if (campaign.Type == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign.Type == ADVERTISING_CAMPAIGN_RIDE)
+        if (campaign.type == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign.type == ADVERTISING_CAMPAIGN_RIDE)
         {
-            campaign.RideId = RideId::FromUnderlying(_item);
+            campaign.rideId = RideId::FromUnderlying(_item);
         }
-        else if (campaign.Type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE)
+        else if (campaign.type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE)
         {
-            campaign.ShopItemType = ShopItem(_item);
+            campaign.shopItemType = ShopItem(_item);
         }
         MarketingNewCampaign(campaign);
 

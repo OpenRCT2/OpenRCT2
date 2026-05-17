@@ -498,7 +498,7 @@ namespace OpenRCT2::Ui::Windows
                     getGameState().entities.EntitySetFlashing(peep, true);
 
                     StaffEntry entry;
-                    entry.Id = peep->Id;
+                    entry.Id = peep->id;
                     entry.Name = peep->GetName();
 
                     _staffList.push_back(std::move(entry));
@@ -562,10 +562,10 @@ namespace OpenRCT2::Ui::Windows
                     CoordsXYZ nullLoc{};
                     nullLoc.SetNull();
 
-                    GameActions::PeepPickupAction pickupAction{ GameActions::PeepPickupType::Pickup, staff->Id, nullLoc,
+                    GameActions::PeepPickupAction pickupAction{ GameActions::PeepPickupType::Pickup, staff->id, nullLoc,
                                                                 Network::GetCurrentPlayerId() };
                     pickupAction.SetCallback(
-                        [staffId = staff->Id](const GameActions::GameAction* ga, const GameActions::Result* result) {
+                        [staffId = staff->id](const GameActions::GameAction* ga, const GameActions::Result* result) {
                             if (result->error != GameActions::Status::ok)
                                 return;
 

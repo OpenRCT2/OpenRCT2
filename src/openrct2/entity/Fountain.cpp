@@ -84,9 +84,9 @@ namespace OpenRCT2
     };
 
     template<>
-    bool EntityBase::Is<JumpingFountain>() const
+    bool EntityBase::is<JumpingFountain>() const
     {
-        return Type == EntityType::jumpingFountain;
+        return type == EntityType::jumpingFountain;
     }
 
     void JumpingFountain::StartAnimation(
@@ -95,7 +95,7 @@ namespace OpenRCT2
         const auto currentTicks = getGameState().currentTicks;
 
         int32_t randomIndex;
-        auto newZ = tileElement->GetBaseZ();
+        auto newZ = tileElement->getBaseZ();
 
         // Change pattern approximately every 51 seconds
         uint32_t pattern = (currentTicks >> 11) & 7;
@@ -150,11 +150,11 @@ namespace OpenRCT2
         {
             jumpingFountain->Iteration = iteration;
             jumpingFountain->fountainFlags = newFlags;
-            jumpingFountain->Orientation = direction << 3;
-            jumpingFountain->SpriteData.Width = 33;
-            jumpingFountain->SpriteData.HeightMin = 36;
-            jumpingFountain->SpriteData.HeightMax = 12;
-            jumpingFountain->MoveTo(newLoc);
+            jumpingFountain->orientation = direction << 3;
+            jumpingFountain->spriteData.width = 33;
+            jumpingFountain->spriteData.heightMin = 36;
+            jumpingFountain->spriteData.heightMax = 12;
+            jumpingFountain->moveTo(newLoc);
             jumpingFountain->FountainType = newType;
             jumpingFountain->NumTicksAlive = 0;
             jumpingFountain->frame = 0;
@@ -173,7 +173,7 @@ namespace OpenRCT2
             return;
         }
 
-        Invalidate();
+        invalidate();
         frame++;
 
         switch (FountainType)
@@ -212,7 +212,7 @@ namespace OpenRCT2
     void JumpingFountain::AdvanceAnimation()
     {
         const JumpingFountainType newType = GetType();
-        const int32_t direction = (Orientation >> 3) & 7;
+        const int32_t direction = (orientation >> 3) & 7;
         const CoordsXY newLoc = CoordsXY{ x, y } + CoordsDirectionDelta[direction];
 
         int32_t availableDirections = 0;
@@ -265,28 +265,28 @@ namespace OpenRCT2
             return false;
         do
         {
-            if (tileElement->GetType() != TileElementType::Path)
+            if (tileElement->getType() != TileElementType::Path)
                 continue;
-            if (tileElement->GetBaseZ() != newLoc.z)
+            if (tileElement->getBaseZ() != newLoc.z)
                 continue;
-            if (tileElement->AsPath()->AdditionIsGhost())
+            if (tileElement->asPath()->AdditionIsGhost())
                 continue;
-            if (!tileElement->AsPath()->HasAddition())
+            if (!tileElement->asPath()->HasAddition())
                 continue;
 
-            auto* pathAdditionEntry = tileElement->AsPath()->GetAdditionEntry();
+            auto* pathAdditionEntry = tileElement->asPath()->GetAdditionEntry();
             if (pathAdditionEntry != nullptr && pathAdditionEntry->flags & pathAdditionFlagMask)
             {
                 return true;
             }
-        } while (!(tileElement++)->IsLastForTile());
+        } while (!(tileElement++)->isLastForTile());
 
         return false;
     }
 
     void JumpingFountain::GoToEdge(const CoordsXYZ& newLoc, const int32_t availableDirections) const
     {
-        int32_t direction = (Orientation >> 3) << 1;
+        int32_t direction = (orientation >> 3) << 1;
         if (availableDirections & (1 << direction))
         {
             CreateNext(newLoc, direction);
@@ -326,7 +326,7 @@ namespace OpenRCT2
         Iteration++;
         if (Iteration < 8)
         {
-            int32_t direction = ((Orientation >> 3) ^ 2) << 1;
+            int32_t direction = ((orientation >> 3) ^ 2) << 1;
             if (availableDirections & (1 << direction))
             {
                 CreateNext(newLoc, direction);
@@ -347,7 +347,7 @@ namespace OpenRCT2
         if (Iteration < 3)
         {
             const auto newType = GetType();
-            int32_t direction = ((Orientation >> 3) ^ 2) << 1;
+            int32_t direction = ((orientation >> 3) ^ 2) << 1;
             availableDirections &= ~(1 << direction);
             availableDirections &= ~(1 << (direction + 1));
 
@@ -394,7 +394,7 @@ namespace OpenRCT2
 
     void JumpingFountain::Serialise(DataSerialiser& stream)
     {
-        EntityBase::Serialise(stream);
+        EntityBase::serialise(stream);
         stream << frame;
         stream << FountainType;
         stream << NumTicksAlive;
@@ -424,7 +424,7 @@ namespace OpenRCT2
         // Fountain is firing anti clockwise
         bool reversed = fountainFlags.has(FountainFlag::direction);
         // Fountain rotation
-        bool rotated = (Orientation / 16) & 1;
+        bool rotated = (orientation / 16) & 1;
         bool isAntiClockwise = (imageDirection / 2) & 1; // Clockwise or Anti-clockwise
 
         // These cancel each other out

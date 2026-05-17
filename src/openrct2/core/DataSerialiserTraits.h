@@ -459,11 +459,11 @@ namespace OpenRCT2
     {
         static void encode(IStream* stream, const TileElement& tileElement)
         {
-            stream->WriteValue(tileElement.Type);
-            stream->WriteValue(tileElement.Flags);
-            stream->WriteValue(tileElement.BaseHeight);
-            stream->WriteValue(tileElement.ClearanceHeight);
-            stream->WriteValue(tileElement.Owner);
+            stream->WriteValue(tileElement.type);
+            stream->WriteValue(tileElement.flags);
+            stream->WriteValue(tileElement.baseHeight);
+            stream->WriteValue(tileElement.clearanceHeight);
+            stream->WriteValue(tileElement.owner);
             for (auto v : tileElement.Pad05)
             {
                 stream->WriteValue(v);
@@ -475,11 +475,11 @@ namespace OpenRCT2
         }
         static void decode(IStream* stream, TileElement& tileElement)
         {
-            tileElement.Type = stream->ReadValue<uint8_t>();
-            tileElement.Flags = stream->ReadValue<uint8_t>();
-            tileElement.BaseHeight = stream->ReadValue<uint8_t>();
-            tileElement.ClearanceHeight = stream->ReadValue<uint8_t>();
-            tileElement.Owner = stream->ReadValue<uint8_t>();
+            tileElement.type = stream->ReadValue<uint8_t>();
+            tileElement.flags = stream->ReadValue<uint8_t>();
+            tileElement.baseHeight = stream->ReadValue<uint8_t>();
+            tileElement.clearanceHeight = stream->ReadValue<uint8_t>();
+            tileElement.owner = stream->ReadValue<uint8_t>();
             for (auto& v : tileElement.Pad05)
             {
                 v = stream->ReadValue<uint8_t>();
@@ -493,8 +493,8 @@ namespace OpenRCT2
         {
             char msg[128] = {};
             snprintf(
-                msg, sizeof(msg), "TileElement(type = %u, flags = %u, BaseHeight = %u)", tileElement.Type, tileElement.Flags,
-                tileElement.BaseHeight);
+                msg, sizeof(msg), "TileElement(type = %u, flags = %u, BaseHeight = %u)", tileElement.type, tileElement.flags,
+                tileElement.baseHeight);
             stream->Write(msg, strlen(msg));
         }
     };

@@ -958,7 +958,7 @@ static void AirPoweredVerticalRCTrackBooster(
     // The booster piece is borrowed from the Reverse Freefall Colour.
     // It has two track colours, instead of the one that the APVC has.
     auto colour = session.TrackColours;
-    if (!trackElement.IsGhost() && !trackElement.IsHighlighted())
+    if (!trackElement.isGhost() && !trackElement.IsHighlighted())
     {
         colour = colour.WithSecondary(colour.GetPrimary());
     }

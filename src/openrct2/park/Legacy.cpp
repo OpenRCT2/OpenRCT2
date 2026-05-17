@@ -2336,7 +2336,7 @@ static bool ConvertPeepAnimationType(TPeepType* peep, AnimObjectConversionTable&
     peep->AnimationObjectIndex = conversion.first;
     peep->AnimationGroup = static_cast<PeepAnimationGroup>(conversion.second);
 
-    if (!peep->template Is<Staff>())
+    if (!peep->template is<Staff>())
         return true;
 
     // NB: 'EatFood' used to be supported, but turned out to be unused in C++ code.

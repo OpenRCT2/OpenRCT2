@@ -285,7 +285,7 @@ namespace OpenRCT2::Ui::Windows
                         return;
 
                     auto clipCoords = ScreenCoordsXY{ 10, 19 };
-                    auto* staff = peep->As<Staff>();
+                    auto* staff = peep->as<Staff>();
                     if (staff != nullptr && staff->isEntertainer())
                     {
                         clipCoords.y += 3;
@@ -301,7 +301,7 @@ namespace OpenRCT2::Ui::Windows
                     auto image_id = ImageId(image_id_base, peep->TshirtColour, peep->TrousersColour);
                     GfxDrawSprite(clippedRT, image_id, clipCoords);
 
-                    auto* guest = peep->As<Guest>();
+                    auto* guest = peep->as<Guest>();
                     if (guest == nullptr)
                         return;
 

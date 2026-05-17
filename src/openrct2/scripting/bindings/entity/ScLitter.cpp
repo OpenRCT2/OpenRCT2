@@ -78,7 +78,7 @@ namespace OpenRCT2::Scripting
         {
             auto* litter = GetLitter(thisVal);
             litter->SubType = it->second;
-            litter->Invalidate();
+            litter->invalidate();
         }
         return JS_UNDEFINED;
     }

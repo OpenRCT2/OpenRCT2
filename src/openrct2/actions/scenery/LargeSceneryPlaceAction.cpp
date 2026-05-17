@@ -300,7 +300,7 @@ namespace OpenRCT2::GameActions
             auto* newSceneryElement = TileElementInsert<LargeSceneryElement>(
                 CoordsXYZ{ curTile.x, curTile.y, zLow }, quarterTile.GetBaseQuarterOccupied());
             Guard::Assert(newSceneryElement != nullptr);
-            newSceneryElement->SetClearanceZ(zHigh);
+            newSceneryElement->setClearanceZ(zHigh);
 
             SetNewLargeSceneryElement(*newSceneryElement, tile.index);
             if (banner != nullptr)
@@ -361,7 +361,7 @@ namespace OpenRCT2::GameActions
             if (surfaceElement == nullptr)
                 continue;
 
-            int32_t baseZ = surfaceElement->GetBaseZ();
+            int32_t baseZ = surfaceElement->getBaseZ();
             int32_t slope = surfaceElement->GetSlope();
 
             if ((slope & kTileSlopeRaisedCornersMask) != kTileSlopeFlat)
@@ -383,7 +383,7 @@ namespace OpenRCT2::GameActions
 
     void LargeSceneryPlaceAction::SetNewLargeSceneryElement(LargeSceneryElement& sceneryElement, uint8_t tileNum) const
     {
-        sceneryElement.SetDirection(_loc.direction);
+        sceneryElement.setDirection(_loc.direction);
         sceneryElement.SetEntryIndex(_sceneryType);
         sceneryElement.SetSequenceIndex(tileNum);
         sceneryElement.SetPrimaryColour(_primaryColour);
@@ -392,7 +392,7 @@ namespace OpenRCT2::GameActions
 
         if (GetFlags().has(CommandFlag::ghost))
         {
-            sceneryElement.SetGhost(true);
+            sceneryElement.setGhost(true);
         }
     }
 } // namespace OpenRCT2::GameActions

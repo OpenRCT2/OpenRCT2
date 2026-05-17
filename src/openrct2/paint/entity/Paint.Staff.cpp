@@ -43,8 +43,8 @@ void PaintStaffLightingEffects(const Staff& staff)
     if (!LightFx::IsAvailable())
         return;
 
-    auto loc = staff.GetLocation();
-    switch (staff.Orientation)
+    auto loc = staff.getLocation();
+    switch (staff.orientation)
     {
         case 0:
             loc.x -= 10;

@@ -165,9 +165,9 @@ namespace OpenRCT2::GameActions
                 newPeep->PeepFlags |= PEEP_FLAGS_SLOW_WALK;
 
             const auto& spriteBounds = animObj->GetSpriteBounds(newPeep->AnimationGroup);
-            newPeep->SpriteData.Width = spriteBounds.spriteWidth;
-            newPeep->SpriteData.HeightMin = spriteBounds.spriteHeightNegative;
-            newPeep->SpriteData.HeightMax = spriteBounds.spriteHeightPositive;
+            newPeep->spriteData.width = spriteBounds.spriteWidth;
+            newPeep->spriteData.heightMin = spriteBounds.spriteHeightNegative;
+            newPeep->spriteData.heightMax = spriteBounds.spriteHeightPositive;
 
             if (_autoPosition)
             {
@@ -179,7 +179,7 @@ namespace OpenRCT2::GameActions
                 newPeep->State = PeepState::picked;
 
                 // INVESTIGATE: x and y are LOCATION_NULL at this point.
-                newPeep->MoveTo(newPeep->GetLocation());
+                newPeep->moveTo(newPeep->getLocation());
             }
 
             // Staff uses this
@@ -215,7 +215,7 @@ namespace OpenRCT2::GameActions
             newPeep->StaffMowingTimeout = 0;
             newPeep->PatrolInfo = nullptr;
 
-            res.setData(StaffHireNewActionResult{ newPeep->Id });
+            res.setData(StaffHireNewActionResult{ newPeep->id });
         }
 
         return res;
@@ -269,13 +269,13 @@ namespace OpenRCT2::GameActions
 
             if (chosenGuest != nullptr)
             {
-                newLocation = chosenGuest->GetLocation();
+                newLocation = chosenGuest->getLocation();
             }
             else
             {
                 // User must pick a location
                 newPeep->State = PeepState::picked;
-                newLocation = newPeep->GetLocation();
+                newLocation = newPeep->getLocation();
             }
         }
         else
@@ -295,10 +295,10 @@ namespace OpenRCT2::GameActions
             {
                 // User must pick a location
                 newPeep->State = PeepState::picked;
-                newLocation = newPeep->GetLocation();
+                newLocation = newPeep->getLocation();
             }
         }
 
-        newPeep->MoveTo(newLocation + CoordsXYZ{ 0, 0, 16 });
+        newPeep->moveTo(newLocation + CoordsXYZ{ 0, 0, 16 });
     }
 } // namespace OpenRCT2::GameActions

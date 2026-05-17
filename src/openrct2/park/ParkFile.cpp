@@ -952,10 +952,10 @@ namespace OpenRCT2
 
                     // Marketing
                     cs.readWriteVector(park.marketingCampaigns, [&cs](MarketingCampaign& campaign) {
-                        cs.readWrite(campaign.Type);
-                        cs.readWrite(campaign.WeeksLeft);
+                        cs.readWrite(campaign.type);
+                        cs.readWrite(campaign.weeksLeft);
                         cs.readWrite(campaign.flags.holder);
-                        cs.readWrite(campaign.RideId);
+                        cs.readWrite(campaign.rideId);
                     });
 
                     // Awards
@@ -964,10 +964,10 @@ namespace OpenRCT2
                     {
                         Award awards[RCT2::Limits::kMaxAwards]{};
                         cs.readWriteArray(awards, [&cs, &currentAwards](Award& award) {
-                            if (award.Time != 0)
+                            if (award.time != 0)
                             {
-                                cs.readWrite(award.Time);
-                                cs.readWrite(award.Type);
+                                cs.readWrite(award.time);
+                                cs.readWrite(award.type);
                                 currentAwards.push_back(award);
                                 return true;
                             }
@@ -978,8 +978,8 @@ namespace OpenRCT2
                     else
                     {
                         cs.readWriteVector(currentAwards, [&cs](Award& award) {
-                            cs.readWrite(award.Time);
-                            cs.readWrite(award.Type);
+                            cs.readWrite(award.time);
+                            cs.readWrite(award.type);
                         });
                     }
                     cs.readWrite(park.value);
@@ -1154,11 +1154,11 @@ namespace OpenRCT2
                 else
                 {
                     std::vector<News::Item> recent(
-                        std::begin(gameState.newsItems.GetRecent()), std::end(gameState.newsItems.GetRecent()));
+                        std::begin(gameState.newsItems.getRecent()), std::end(gameState.newsItems.getRecent()));
                     cs.readWriteVector(recent, [&cs](News::Item& item) { ReadWriteNewsItem(cs, item); });
 
                     std::vector<News::Item> archived(
-                        std::begin(gameState.newsItems.GetArchived()), std::end(gameState.newsItems.GetArchived()));
+                        std::begin(gameState.newsItems.getArchived()), std::end(gameState.newsItems.getArchived()));
                     cs.readWriteVector(archived, [&cs](News::Item& item) { ReadWriteNewsItem(cs, item); });
                 }
             });
@@ -1215,9 +1215,9 @@ namespace OpenRCT2
                     TileElementIteratorBegin(&it);
                     while (TileElementIteratorNext(&it))
                     {
-                        if (it.element->GetType() == TileElementType::Path)
+                        if (it.element->getType() == TileElementType::Path)
                         {
-                            auto* pathElement = it.element->AsPath();
+                            auto* pathElement = it.element->asPath();
                             if (pathElement->HasLegacyPathEntry())
                             {
                                 auto pathEntryIndex = pathElement->GetLegacyPathEntryIndex();
@@ -1232,13 +1232,13 @@ namespace OpenRCT2
                                 }
                             }
                         }
-                        else if (it.element->GetType() == TileElementType::Track)
+                        else if (it.element->getType() == TileElementType::Track)
                         {
-                            auto* trackElement = it.element->AsTrack();
+                            auto* trackElement = it.element->asTrack();
                             auto trackType = trackElement->GetTrackType();
                             if (TrackTypeMustBeMadeInvisible(*trackElement, os.getHeader().targetVersion))
                             {
-                                it.element->SetInvisible(true);
+                                it.element->setInvisible(true);
                             }
                             if (os.getHeader().targetVersion < kBlockBrakeImprovementsVersion)
                             {
@@ -1248,9 +1248,9 @@ namespace OpenRCT2
                                     trackElement->SetBrakeBoosterSpeed(kRCT2DefaultBlockBrakeSpeed);
                             }
                         }
-                        else if (it.element->GetType() == TileElementType::SmallScenery && os.getHeader().targetVersion < 23)
+                        else if (it.element->getType() == TileElementType::SmallScenery && os.getHeader().targetVersion < 23)
                         {
-                            auto* sceneryElement = it.element->AsSmallScenery();
+                            auto* sceneryElement = it.element->asSmallScenery();
                             // Previous formats stored the needs supports flag in the primary colour
                             // We have moved it into a flags field to support extended colour sets
                             bool needsSupports = EnumValue(sceneryElement->GetPrimaryColour())
@@ -1285,17 +1285,17 @@ namespace OpenRCT2
                         continue;
                     do
                     {
-                        if (tileElement->GetType() != TileElementType::Track)
+                        if (tileElement->getType() != TileElementType::Track)
                             continue;
 
-                        auto* trackElement = tileElement->AsTrack();
+                        auto* trackElement = tileElement->asTrack();
                         const auto* ride = GetRide(trackElement->GetRideIndex());
                         if (ride != nullptr)
                         {
                             trackElement->SetRideType(ride->type);
                         }
 
-                    } while (!(tileElement++)->IsLastForTile());
+                    } while (!(tileElement++)->isLastForTile());
                 }
             }
         }
@@ -1756,14 +1756,14 @@ namespace OpenRCT2
 
         static void ReadWriteEntityCommon(OrcaStream::ChunkStream& cs, EntityBase& entity)
         {
-            cs.readWrite(entity.Id);
-            cs.readWrite(entity.SpriteData.HeightMin);
+            cs.readWrite(entity.id);
+            cs.readWrite(entity.spriteData.heightMin);
             cs.readWrite(entity.x);
             cs.readWrite(entity.y);
             cs.readWrite(entity.z);
-            cs.readWrite(entity.SpriteData.Width);
-            cs.readWrite(entity.SpriteData.HeightMax);
-            cs.readWrite(entity.Orientation);
+            cs.readWrite(entity.spriteData.width);
+            cs.readWrite(entity.spriteData.heightMax);
+            cs.readWrite(entity.orientation);
         }
 
         static std::vector<ObjectEntryIndex> LegacyGetRideTypesBeenOn(const std::array<uint8_t, 16>& srcArray)
@@ -1797,8 +1797,8 @@ namespace OpenRCT2
 
             ReadWriteEntityCommon(cs, entity);
 
-            auto guest = entity.As<Guest>();
-            auto staff = entity.As<Staff>();
+            auto guest = entity.as<Guest>();
+            auto staff = entity.as<Staff>();
 
             if (cs.getMode() == OrcaStream::Mode::reading)
             {
@@ -1930,7 +1930,7 @@ namespace OpenRCT2
                         cs.readWrite(rideType);
                         return true;
                     });
-                    RideUse::GetTypeHistory().Set(guest->Id, LegacyGetRideTypesBeenOn(rideTypeBeenOn));
+                    RideUse::GetTypeHistory().Set(guest->id, LegacyGetRideTypesBeenOn(rideTypeBeenOn));
                     cs.readWrite(guest->ItemFlags);
                     cs.readWrite(guest->Photo2RideRef);
                     cs.readWrite(guest->Photo3RideRef);
@@ -1989,7 +1989,7 @@ namespace OpenRCT2
                         cs.readWrite(rideType);
                         return true;
                     });
-                    RideUse::GetHistory().Set(guest->Id, LegacyGetRidesBeenOn(ridesBeenOn));
+                    RideUse::GetHistory().Set(guest->id, LegacyGetRidesBeenOn(ridesBeenOn));
                 }
                 else
                 {
@@ -2382,7 +2382,7 @@ namespace OpenRCT2
                 cs.readWrite(rideType);
                 return true;
             });
-            RideUse::GetTypeHistory().Set(guest.Id, LegacyGetRideTypesBeenOn(rideTypeBeenOn));
+            RideUse::GetTypeHistory().Set(guest.id, LegacyGetRideTypesBeenOn(rideTypeBeenOn));
         }
 
         cs.readWrite(guest.TimeInQueue);
@@ -2393,7 +2393,7 @@ namespace OpenRCT2
                 cs.readWrite(rideType);
                 return true;
             });
-            RideUse::GetHistory().Set(guest.Id, LegacyGetRidesBeenOn(ridesBeenOn));
+            RideUse::GetHistory().Set(guest.id, LegacyGetRidesBeenOn(ridesBeenOn));
         }
         else
         {
@@ -2401,14 +2401,14 @@ namespace OpenRCT2
             {
                 std::vector<RideId> rideUse;
                 cs.readWriteVector(rideUse, [&cs](RideId& rideId) { cs.readWrite(rideId); });
-                RideUse::GetHistory().Set(guest.Id, std::move(rideUse));
+                RideUse::GetHistory().Set(guest.id, std::move(rideUse));
                 std::vector<ObjectEntryIndex> rideTypeUse;
                 cs.readWriteVector(rideTypeUse, [&cs](ObjectEntryIndex& rideType) { cs.readWrite(rideType); });
-                RideUse::GetTypeHistory().Set(guest.Id, std::move(rideTypeUse));
+                RideUse::GetTypeHistory().Set(guest.id, std::move(rideTypeUse));
             }
             else
             {
-                auto* rideUse = RideUse::GetHistory().GetAll(guest.Id);
+                auto* rideUse = RideUse::GetHistory().GetAll(guest.id);
                 if (rideUse == nullptr)
                 {
                     std::vector<RideId> empty;
@@ -2418,7 +2418,7 @@ namespace OpenRCT2
                 {
                     cs.readWriteVector(*rideUse, [&cs](RideId& rideId) { cs.readWrite(rideId); });
                 }
-                auto* rideTypeUse = RideUse::GetTypeHistory().GetAll(guest.Id);
+                auto* rideTypeUse = RideUse::GetTypeHistory().GetAll(guest.id);
                 if (rideTypeUse == nullptr)
                 {
                     std::vector<ObjectEntryIndex> empty;
@@ -2547,12 +2547,12 @@ namespace OpenRCT2
     void ParkFile::ReadWriteEntity(OrcaStream& os, OrcaStream::ChunkStream& cs, MoneyEffect& moneyEffect)
     {
         ReadWriteEntityCommon(cs, moneyEffect);
-        cs.readWrite(moneyEffect.MoveDelay);
-        cs.readWrite(moneyEffect.NumMovements);
-        cs.readWrite(moneyEffect.GuestPurchase);
-        cs.readWrite(moneyEffect.Value);
-        cs.readWrite(moneyEffect.OffsetX);
-        cs.readWrite(moneyEffect.Wiggle);
+        cs.readWrite(moneyEffect.moveDelay);
+        cs.readWrite(moneyEffect.numMovements);
+        cs.readWrite(moneyEffect.guestPurchase);
+        cs.readWrite(moneyEffect.value);
+        cs.readWrite(moneyEffect.offsetX);
+        cs.readWrite(moneyEffect.wiggle);
     }
 
     template<>
@@ -2652,7 +2652,7 @@ namespace OpenRCT2
         cs.write(count);
         for (auto* ent : entityList)
         {
-            cs.write(ent->Id);
+            cs.write(ent->id);
             ReadWriteEntity(os, cs, *ent);
         }
     }

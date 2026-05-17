@@ -26,9 +26,9 @@ namespace OpenRCT2::Network
 {
     constexpr const utf8* kUserStoreFilename = "users.json";
 
-    std::unique_ptr<User> User::FromJson(const json_t& jsonData)
+    std::unique_ptr<User> User::fromJson(const json_t& jsonData)
     {
-        Guard::Assert(jsonData.is_object(), "Network::User::FromJson expects parameter jsonData to be object");
+        Guard::Assert(jsonData.is_object(), "Network::User::fromJson expects parameter jsonData to be object");
 
         const std::string hash = Json::GetString(jsonData["hash"]);
         const std::string name = Json::GetString(jsonData["name"]);
@@ -38,36 +38,36 @@ namespace OpenRCT2::Network
         if (!hash.empty() && !name.empty())
         {
             user = std::make_unique<User>();
-            user->Hash = hash;
-            user->Name = name;
+            user->hash = hash;
+            user->name = name;
             if (jsonGroupId.is_number_integer())
             {
-                user->GroupId = Json::GetNumber<uint8_t>(jsonGroupId);
+                user->groupId = Json::GetNumber<uint8_t>(jsonGroupId);
             }
-            user->Remove = false;
+            user->remove = false;
         }
         return user;
     }
 
-    json_t User::ToJson() const
+    json_t User::toJson() const
     {
         json_t jsonData;
-        jsonData["hash"] = Hash;
-        jsonData["name"] = Name;
+        jsonData["hash"] = hash;
+        jsonData["name"] = name;
 
         json_t jsonGroupId;
-        if (GroupId.has_value())
+        if (groupId.has_value())
         {
-            jsonGroupId = *GroupId;
+            jsonGroupId = *groupId;
         }
         jsonData["groupId"] = jsonGroupId;
 
         return jsonData;
     }
 
-    void UserManager::Load()
+    void UserManager::load()
     {
-        const auto path = GetStorePath();
+        const auto path = getStorePath();
 
         if (File::Exists(path))
         {
@@ -80,10 +80,10 @@ namespace OpenRCT2::Network
                 {
                     if (jsonUser.is_object())
                     {
-                        auto networkUser = User::FromJson(jsonUser);
+                        auto networkUser = User::fromJson(jsonUser);
                         if (networkUser != nullptr)
                         {
-                            _usersByHash[networkUser->Hash] = std::move(networkUser);
+                            _usersByHash[networkUser->hash] = std::move(networkUser);
                         }
                     }
                 }
@@ -95,9 +95,9 @@ namespace OpenRCT2::Network
         }
     }
 
-    void UserManager::Save()
+    void UserManager::save()
     {
-        const auto path = GetStorePath();
+        const auto path = getStorePath();
 
         json_t jsonUsers;
         try
@@ -122,10 +122,10 @@ namespace OpenRCT2::Network
             }
             std::string hashString = Json::GetString(jsonUser["hash"]);
 
-            const auto networkUser = GetUserByHash(hashString);
+            const auto networkUser = getUserByHash(hashString);
             if (networkUser != nullptr)
             {
-                if (networkUser->Remove)
+                if (networkUser->remove)
                 {
                     it = jsonUsers.erase(it);
                     // erase advances the iterator so make sure we don't do it again
@@ -133,7 +133,7 @@ namespace OpenRCT2::Network
                 }
 
                 // replace the existing element in jsonUsers
-                *it = networkUser->ToJson();
+                *it = networkUser->toJson();
                 savedHashes.insert(hashString);
             }
 
@@ -144,37 +144,37 @@ namespace OpenRCT2::Network
         for (const auto& kvp : _usersByHash)
         {
             const auto& networkUser = kvp.second;
-            if (!networkUser->Remove && savedHashes.find(networkUser->Hash) == savedHashes.end())
+            if (!networkUser->remove && savedHashes.find(networkUser->hash) == savedHashes.end())
             {
-                jsonUsers.push_back(networkUser->ToJson());
+                jsonUsers.push_back(networkUser->toJson());
             }
         }
 
         Json::WriteToFile(path, jsonUsers);
     }
 
-    void UserManager::UnsetUsersOfGroup(uint8_t groupId)
+    void UserManager::unsetUsersOfGroup(uint8_t groupId)
     {
         for (const auto& kvp : _usersByHash)
         {
             auto& networkUser = kvp.second;
-            if (networkUser->GroupId.has_value() && *networkUser->GroupId == groupId)
+            if (networkUser->groupId.has_value() && *networkUser->groupId == groupId)
             {
-                networkUser->GroupId = std::nullopt;
+                networkUser->groupId = std::nullopt;
             }
         }
     }
 
-    void UserManager::RemoveUser(const std::string& hash)
+    void UserManager::removeUser(const std::string& hash)
     {
-        User* networkUser = const_cast<User*>(GetUserByHash(hash));
+        User* networkUser = const_cast<User*>(getUserByHash(hash));
         if (networkUser != nullptr)
         {
-            networkUser->Remove = true;
+            networkUser->remove = true;
         }
     }
 
-    const User* UserManager::GetUserByHash(const std::string& hash) const
+    const User* UserManager::getUserByHash(const std::string& hash) const
     {
         auto it = _usersByHash.find(hash);
         if (it != _usersByHash.end())
@@ -184,12 +184,12 @@ namespace OpenRCT2::Network
         return nullptr;
     }
 
-    const User* UserManager::GetUserByName(const std::string& name) const
+    const User* UserManager::getUserByName(const std::string& name) const
     {
         for (const auto& kvp : _usersByHash)
         {
             const auto& networkUser = kvp.second;
-            if (String::iequals(name, networkUser->Name))
+            if (String::iequals(name, networkUser->name))
             {
                 return networkUser.get();
             }
@@ -197,20 +197,20 @@ namespace OpenRCT2::Network
         return nullptr;
     }
 
-    User* UserManager::GetOrAddUser(const std::string& hash)
+    User* UserManager::getOrAddUser(const std::string& hash)
     {
-        User* networkUser = const_cast<User*>(GetUserByHash(hash));
+        User* networkUser = const_cast<User*>(getUserByHash(hash));
         if (networkUser == nullptr)
         {
             auto newUser = std::make_unique<User>();
-            newUser->Hash = hash;
+            newUser->hash = hash;
             networkUser = newUser.get();
             _usersByHash[hash] = std::move(newUser);
         }
         return networkUser;
     }
 
-    u8string UserManager::GetStorePath()
+    u8string UserManager::getStorePath()
     {
         auto& env = GetContext()->GetPlatformEnvironment();
         return Path::Combine(env.GetDirectoryPath(DirBase::user), kUserStoreFilename);

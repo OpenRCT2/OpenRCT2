@@ -49,7 +49,7 @@ namespace OpenRCT2::Scripting
         if (balloon != nullptr)
         {
             balloon->colour = static_cast<Drawing::Colour>(value);
-            balloon->Invalidate();
+            balloon->invalidate();
         }
         return JS_UNDEFINED;
     }
