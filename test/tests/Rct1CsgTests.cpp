@@ -7,14 +7,13 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <filesystem>
 #include <gtest/gtest.h>
+#include <openrct2/core/FileSystem.hpp>
 #include <openrct2/drawing/G1Element.h>
 #include <openrct2/rct1/Csg.h>
 #include <openrct2/rct1/Limits.h>
 
 using namespace OpenRCT2;
-namespace fs = std::filesystem;
 
 namespace
 {
