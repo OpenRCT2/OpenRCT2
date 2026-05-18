@@ -53,7 +53,7 @@ public:
         {
             _data.resize(index + 1);
         }
-        _data[index] = values;
+        _data[index] = std::move(values);
     }
 
     std::vector<V>* GetAll(Handle handle)
