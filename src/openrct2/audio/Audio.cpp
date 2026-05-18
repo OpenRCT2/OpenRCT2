@@ -473,6 +473,8 @@ namespace OpenRCT2::Audio
                 }
             }
         }
+
+        GetContext()->GetAudioContext().StopVehicleSounds();
     }
 
     static IAudioMixer* GetMixer()
