@@ -279,6 +279,12 @@ namespace OpenRCT2::Audio
     {
         auto handle = _voicePool.claim();
         if (!handle.isValid())
+        {
+            handle = _voicePool.stealQuietest();
+            if (handle.isValid())
+                markSlotInactive(handle.slotIndex());
+        }
+        if (!handle.isValid())
             return;
 
         auto* voice = _voicePool.get(handle);
@@ -303,6 +309,14 @@ namespace OpenRCT2::Audio
     void AudioEngine::processPlayLoop(const AudioCommand& cmd)
     {
         auto slotHandle = _voicePool.claim();
+        if (!slotHandle.isValid())
+        {
+            slotHandle = _voicePool.stealQuietest();
+            if (slotHandle.isValid())
+            {
+                markSlotInactive(slotHandle.slotIndex());
+            }
+        }
         if (!slotHandle.isValid())
             return;
 

@@ -9,6 +9,8 @@
 
 #include "AudioVoicePool.h"
 
+#include <limits>
+
 namespace OpenRCT2::Audio
 {
     AudioVoicePool::AudioVoicePool()
@@ -32,6 +34,37 @@ namespace OpenRCT2::Audio
                 voice.generation++;
                 return AudioHandle::make(static_cast<uint16_t>(i), voice.generation);
             }
+        }
+
+        return { AudioHandle::kInvalid };
+    }
+
+    AudioHandle AudioVoicePool::stealQuietest()
+    {
+        float quietest = std::numeric_limits<float>::max();
+        size_t quietestIndex = kMaxVoices;
+
+        for (size_t i = 0; i < kMaxVoices; i++)
+        {
+            auto& voice = _voices[i];
+            if (voice.state == VoiceState::playing && !voice.looping)
+            {
+                float effectiveVolume = voice.volume;
+                if (effectiveVolume < quietest)
+                {
+                    quietest = effectiveVolume;
+                    quietestIndex = i;
+                }
+            }
+        }
+
+        if (quietestIndex < kMaxVoices)
+        {
+            auto& voice = _voices[quietestIndex];
+            voice.reset();
+            voice.state = VoiceState::playing;
+            voice.generation++;
+            return AudioHandle::make(static_cast<uint16_t>(quietestIndex), voice.generation);
         }
 
         return { AudioHandle::kInvalid };
