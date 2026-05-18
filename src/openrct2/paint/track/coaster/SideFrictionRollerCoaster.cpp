@@ -24,52 +24,52 @@ using namespace OpenRCT2;
 
 static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Square;
 
-constexpr int32_t SPR_SIDE_FRICTION_60_DEG_UP_DIR_0_B = 21658;
-constexpr int32_t SPR_SIDE_FRICTION_60_DEG_UP_DIR_1_A = 21647;
-constexpr int32_t SPR_SIDE_FRICTION_60_DEG_UP_DIR_1_B = 21659;
-constexpr int32_t SPR_SIDE_FRICTION_60_DEG_UP_DIR_2_A = 21648;
-constexpr int32_t SPR_SIDE_FRICTION_60_DEG_UP_DIR_0_A = 21646;
-constexpr int32_t SPR_SIDE_FRICTION_60_DEG_UP_DIR_2_B = 21660;
-constexpr int32_t SPR_SIDE_FRICTION_60_DEG_UP_DIR_3_A = 21649;
-constexpr int32_t SPR_SIDE_FRICTION_60_DEG_UP_DIR_3_B = 21661;
+constexpr int32_t kSideFriction60DegUpDir0B = 21658;
+constexpr int32_t kSideFriction60DegUpDir1A = 21647;
+constexpr int32_t kSideFriction60DegUpDir1B = 21659;
+constexpr int32_t kSideFriction60DegUpDir2A = 21648;
+constexpr int32_t kSideFriction60DegUpDir0A = 21646;
+constexpr int32_t kSideFriction60DegUpDir2B = 21660;
+constexpr int32_t kSideFriction60DegUpDir3A = 21649;
+constexpr int32_t kSideFriction60DegUpDir3B = 21661;
 
-constexpr int32_t SPR_SIDE_FRICTION_25_DEG_UP_TO_60_DEG_UP_DIR_0_A = 21638;
-constexpr int32_t SPR_SIDE_FRICTION_25_DEG_UP_TO_60_DEG_UP_DIR_0_B = 21650;
-constexpr int32_t SPR_SIDE_FRICTION_25_DEG_UP_TO_60_DEG_UP_DIR_1_A = 21639;
-constexpr int32_t SPR_SIDE_FRICTION_25_DEG_UP_TO_60_DEG_UP_DIR_1_B = 21651;
-constexpr int32_t SPR_SIDE_FRICTION_25_DEG_UP_TO_60_DEG_UP_DIR_2_A = 21640;
-constexpr int32_t SPR_SIDE_FRICTION_25_DEG_UP_TO_60_DEG_UP_DIR_2_B = 21652;
-constexpr int32_t SPR_SIDE_FRICTION_25_DEG_UP_TO_60_DEG_UP_DIR_3_A = 21641;
-constexpr int32_t SPR_SIDE_FRICTION_25_DEG_UP_TO_60_DEG_UP_DIR_3_B = 21653;
+constexpr int32_t kSideFriction25DegUpTo60DegUpDir0A = 21638;
+constexpr int32_t kSideFriction25DegUpTo60DegUpDir0B = 21650;
+constexpr int32_t kSideFriction25DegUpTo60DegUpDir1A = 21639;
+constexpr int32_t kSideFriction25DegUpTo60DegUpDir1B = 21651;
+constexpr int32_t kSideFriction25DegUpTo60DegUpDir2A = 21640;
+constexpr int32_t kSideFriction25DegUpTo60DegUpDir2B = 21652;
+constexpr int32_t kSideFriction25DegUpTo60DegUpDir3A = 21641;
+constexpr int32_t kSideFriction25DegUpTo60DegUpDir3B = 21653;
 
-constexpr int32_t SPR_SIDE_FRICTION_60_DEG_UP_TO_25_DEG_UP_DIR_0_A = 21642;
-constexpr int32_t SPR_SIDE_FRICTION_60_DEG_UP_TO_25_DEG_UP_DIR_0_B = 21654;
-constexpr int32_t SPR_SIDE_FRICTION_60_DEG_UP_TO_25_DEG_UP_DIR_1_A = 21643;
-constexpr int32_t SPR_SIDE_FRICTION_60_DEG_UP_TO_25_DEG_UP_DIR_1_B = 21655;
-constexpr int32_t SPR_SIDE_FRICTION_60_DEG_UP_TO_25_DEG_UP_DIR_2_A = 21644;
-constexpr int32_t SPR_SIDE_FRICTION_60_DEG_UP_TO_25_DEG_UP_DIR_2_B = 21656;
-constexpr int32_t SPR_SIDE_FRICTION_60_DEG_UP_TO_25_DEG_UP_DIR_3_A = 21645;
-constexpr int32_t SPR_SIDE_FRICTION_60_DEG_UP_TO_25_DEG_UP_DIR_3_B = 21657;
+constexpr int32_t kSideFriction60DegUpTo25DegUpDir0A = 21642;
+constexpr int32_t kSideFriction60DegUpTo25DegUpDir0B = 21654;
+constexpr int32_t kSideFriction60DegUpTo25DegUpDir1A = 21643;
+constexpr int32_t kSideFriction60DegUpTo25DegUpDir1B = 21655;
+constexpr int32_t kSideFriction60DegUpTo25DegUpDir2A = 21644;
+constexpr int32_t kSideFriction60DegUpTo25DegUpDir2B = 21656;
+constexpr int32_t kSideFriction60DegUpTo25DegUpDir3A = 21645;
+constexpr int32_t kSideFriction60DegUpTo25DegUpDir3B = 21657;
 
-constexpr int32_t SPR_SIDE_FRICTION_DIAG_60_DEG_UP_DIR_0_A = 21882;
-constexpr int32_t SPR_SIDE_FRICTION_DIAG_60_DEG_UP_DIR_0_B = 21886;
-constexpr int32_t SPR_SIDE_FRICTION_DIAG_60_DEG_UP_DIR_1_A = 21883; // Needs no B piece
-constexpr int32_t SPR_SIDE_FRICTION_DIAG_60_DEG_UP_DIR_2_A = 21884;
-constexpr int32_t SPR_SIDE_FRICTION_DIAG_60_DEG_UP_DIR_2_B = 21887;
-constexpr int32_t SPR_SIDE_FRICTION_DIAG_60_DEG_UP_DIR_3_A = 21885; // Needs no B piece
+constexpr int32_t kSideFrictionDiag60DegUpDir0A = 21882;
+constexpr int32_t kSideFrictionDiag60DegUpDir0B = 21886;
+constexpr int32_t kSideFrictionDiag60DegUpDir1A = 21883; // Needs no B piece
+constexpr int32_t kSideFrictionDiag60DegUpDir2A = 21884;
+constexpr int32_t kSideFrictionDiag60DegUpDir2B = 21887;
+constexpr int32_t kSideFrictionDiag60DegUpDir3A = 21885; // Needs no B piece
 
 // Whole block appears to lack B counterparts
-constexpr int32_t SPR_SIDE_FRICTION_DIAG_25_DEG_UP_TO_60_DEG_UP_DIR_0_A = 21870;
-constexpr int32_t SPR_SIDE_FRICTION_DIAG_25_DEG_UP_TO_60_DEG_UP_DIR_1_A = 21871;
-constexpr int32_t SPR_SIDE_FRICTION_DIAG_25_DEG_UP_TO_60_DEG_UP_DIR_2_A = 21872;
-constexpr int32_t SPR_SIDE_FRICTION_DIAG_25_DEG_UP_TO_60_DEG_UP_DIR_3_A = 21873;
+constexpr int32_t kSideFrictionDiag25DegUpTo60DegUpDir0A = 21870;
+constexpr int32_t kSideFrictionDiag25DegUpTo60DegUpDir1A = 21871;
+constexpr int32_t kSideFrictionDiag25DegUpTo60DegUpDir2A = 21872;
+constexpr int32_t kSideFrictionDiag25DegUpTo60DegUpDir3A = 21873;
 
-constexpr int32_t SPR_SIDE_FRICTION_DIAG_60_DEG_UP_TO_25_DEG_UP_DIR_0_A = 21876;
-constexpr int32_t SPR_SIDE_FRICTION_DIAG_60_DEG_UP_TO_25_DEG_UP_DIR_0_B = 21880;
-constexpr int32_t SPR_SIDE_FRICTION_DIAG_60_DEG_UP_TO_25_DEG_UP_DIR_1_A = 21877; // Needs no B piece
-constexpr int32_t SPR_SIDE_FRICTION_DIAG_60_DEG_UP_TO_25_DEG_UP_DIR_2_A = 21878;
-constexpr int32_t SPR_SIDE_FRICTION_DIAG_60_DEG_UP_TO_25_DEG_UP_DIR_2_B = 21881;
-constexpr int32_t SPR_SIDE_FRICTION_DIAG_60_DEG_UP_TO_25_DEG_UP_DIR_3_A = 21879; // Needs no B piece
+constexpr int32_t kSideFrictionDiag60DegUpTo25DegUpDir0A = 21876;
+constexpr int32_t kSideFrictionDiag60DegUpTo25DegUpDir0B = 21880;
+constexpr int32_t kSideFrictionDiag60DegUpTo25DegUpDir1A = 21877; // Needs no B piece
+constexpr int32_t kSideFrictionDiag60DegUpTo25DegUpDir2A = 21878;
+constexpr int32_t kSideFrictionDiag60DegUpTo25DegUpDir2B = 21881;
+constexpr int32_t kSideFrictionDiag60DegUpTo25DegUpDir3A = 21879; // Needs no B piece
 
 /** rct2: 0x0077839C */
 static void SideFrictionRCTrackFlat(
@@ -150,7 +150,7 @@ static void SideFrictionRCTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    static constexpr ImageIndex imageIds[4][2] = {
+    static constexpr ImageIndex kImageIds[4][2] = {
         { 21610, 21612 },
         { 21611, 21613 },
         { 21610, 21612 },
@@ -158,14 +158,14 @@ static void SideFrictionRCTrackStation(
     };
 
     PaintAddImageAsParentRotated(
-        session, direction, session.TrackColours.WithIndex(imageIds[direction][0]), { 0, 0, height },
+        session, direction, session.TrackColours.WithIndex(kImageIds[direction][0]), { 0, 0, height },
         { { 0, 2, height }, { 32, 27, 2 } });
     DrawSupportForSequenceA<TrackElemType::endStation>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     if (!TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, StationBaseType::none, 0, 9, 11))
     {
         PaintAddImageAsParentRotated(
-            session, direction, session.TrackColours.WithIndex(imageIds[direction][1]), { 0, 0, height },
+            session, direction, session.TrackColours.WithIndex(kImageIds[direction][1]), { 0, 0, height },
             { { 0, 2, height + 27 }, { 32, 27, 0 } });
     }
     TrackPaintUtilDrawStationTunnel(session, direction, height);
@@ -1719,7 +1719,7 @@ static void SideFrictionRCTrackDiagFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    constexpr ImageIndex images[2][kNumOrthogonalDirections] = {
+    constexpr ImageIndex kImages[2][kNumOrthogonalDirections] = {
         { 21822, 21823, 21824, 21825 },
         { 21846, 21847, 21848, 21849 },
     };
@@ -1729,7 +1729,7 @@ static void SideFrictionRCTrackDiagFlat(
     };
 
     TrackPaintUtilDiagTilesPaint(
-        session, 2, height, direction, trackSequence, images[trackElement.HasChain()], defaultDiagTileOffsets,
+        session, 2, height, direction, trackSequence, kImages[trackElement.HasChain()], defaultDiagTileOffsets,
         defaultDiagBoundLengths, nullptr);
 
     switch (trackSequence)
@@ -2518,35 +2518,35 @@ static void SideFrictionRCTrack60DegUp(
     {
         case 0:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_60_DEG_UP_DIR_0_A), { 0, 0, height },
+                session, direction, session.TrackColours.WithIndex(kSideFriction60DegUpDir0A), { 0, 0, height },
                 { { 0, 2, height }, { 32, 27, 2 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_60_DEG_UP_DIR_0_B), { 0, 0, height },
+                session, direction, session.TrackColours.WithIndex(kSideFriction60DegUpDir0B), { 0, 0, height },
                 { { 0, 26, height + 5 }, { 32, 1, 9 } });
             break;
         case 1:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_60_DEG_UP_DIR_1_A), { 0, 0, height },
+                session, direction, session.TrackColours.WithIndex(kSideFriction60DegUpDir1A), { 0, 0, height },
                 { { 0, 2, height }, { 32, 27, 2 } });
 
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_60_DEG_UP_DIR_1_B), { 0, 0, height },
+                session, direction, session.TrackColours.WithIndex(kSideFriction60DegUpDir1B), { 0, 0, height },
                 { { 0, 26, height + 5 }, { 32, 1, 9 } });
             break;
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_60_DEG_UP_DIR_2_A), { 0, 0, height },
+                session, direction, session.TrackColours.WithIndex(kSideFriction60DegUpDir2A), { 0, 0, height },
                 { { 0, 2, height }, { 32, 27, 2 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_60_DEG_UP_DIR_2_B), { 0, 0, height },
+                session, direction, session.TrackColours.WithIndex(kSideFriction60DegUpDir2B), { 0, 0, height },
                 { { 0, 26, height + 5 }, { 32, 1, 9 } });
             break;
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_60_DEG_UP_DIR_3_A), { 0, 0, height },
+                session, direction, session.TrackColours.WithIndex(kSideFriction60DegUpDir3A), { 0, 0, height },
                 { { 0, 2, height }, { 32, 27, 2 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_60_DEG_UP_DIR_3_B), { 0, 0, height },
+                session, direction, session.TrackColours.WithIndex(kSideFriction60DegUpDir3B), { 0, 0, height },
                 { { 0, 26, height + 5 }, { 32, 1, 9 } });
             break;
     }
@@ -2580,34 +2580,34 @@ static void SideFrictionRCTrack25DegUpTo60DegUp(
     {
         case 0:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_25_DEG_UP_TO_60_DEG_UP_DIR_0_A),
+                session, direction, session.TrackColours.WithIndex(kSideFriction25DegUpTo60DegUpDir0A),
                 { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_25_DEG_UP_TO_60_DEG_UP_DIR_0_B),
+                session, direction, session.TrackColours.WithIndex(kSideFriction25DegUpTo60DegUpDir0B),
                 { 0, 0, height }, { { 0, 26, height + 5 }, { 32, 1, 9 } });
             break;
         case 1:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_25_DEG_UP_TO_60_DEG_UP_DIR_1_A),
+                session, direction, session.TrackColours.WithIndex(kSideFriction25DegUpTo60DegUpDir1A),
                 { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_25_DEG_UP_TO_60_DEG_UP_DIR_1_B),
+                session, direction, session.TrackColours.WithIndex(kSideFriction25DegUpTo60DegUpDir1B),
                 { 0, 0, height }, { { 0, 26, height + 5 }, { 32, 1, 40 } });
             break;
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_25_DEG_UP_TO_60_DEG_UP_DIR_2_A),
+                session, direction, session.TrackColours.WithIndex(kSideFriction25DegUpTo60DegUpDir2A),
                 { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_25_DEG_UP_TO_60_DEG_UP_DIR_2_B),
+                session, direction, session.TrackColours.WithIndex(kSideFriction25DegUpTo60DegUpDir2B),
                 { 0, 0, height }, { { 0, 26, height + 5 }, { 32, 1, 40 } });
             break;
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_25_DEG_UP_TO_60_DEG_UP_DIR_3_A),
+                session, direction, session.TrackColours.WithIndex(kSideFriction25DegUpTo60DegUpDir3A),
                 { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_25_DEG_UP_TO_60_DEG_UP_DIR_3_B),
+                session, direction, session.TrackColours.WithIndex(kSideFriction25DegUpTo60DegUpDir3B),
                 { 0, 0, height }, { { 0, 26, height + 5 }, { 32, 1, 9 } });
             break;
     }
@@ -2641,34 +2641,34 @@ static void SideFrictionRCTrack60DegUpTo25DegUp(
     {
         case 0:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_60_DEG_UP_TO_25_DEG_UP_DIR_0_A),
+                session, direction, session.TrackColours.WithIndex(kSideFriction60DegUpTo25DegUpDir0A),
                 { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_60_DEG_UP_TO_25_DEG_UP_DIR_0_B),
+                session, direction, session.TrackColours.WithIndex(kSideFriction60DegUpTo25DegUpDir0B),
                 { 0, 0, height }, { { 0, 26, height + 5 }, { 32, 1, 9 } });
             break;
         case 1:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_60_DEG_UP_TO_25_DEG_UP_DIR_1_A),
+                session, direction, session.TrackColours.WithIndex(kSideFriction60DegUpTo25DegUpDir1A),
                 { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_60_DEG_UP_TO_25_DEG_UP_DIR_1_B),
+                session, direction, session.TrackColours.WithIndex(kSideFriction60DegUpTo25DegUpDir1B),
                 { 0, 0, height }, { { 0, 26, height + 5 }, { 32, 1, 36 } });
             break;
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_60_DEG_UP_TO_25_DEG_UP_DIR_2_A),
+                session, direction, session.TrackColours.WithIndex(kSideFriction60DegUpTo25DegUpDir2A),
                 { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_60_DEG_UP_TO_25_DEG_UP_DIR_2_B),
+                session, direction, session.TrackColours.WithIndex(kSideFriction60DegUpTo25DegUpDir2B),
                 { 0, 0, height }, { { 0, 26, height + 5 }, { 32, 1, 36 } });
             break;
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_60_DEG_UP_TO_25_DEG_UP_DIR_3_A),
+                session, direction, session.TrackColours.WithIndex(kSideFriction60DegUpTo25DegUpDir3A),
                 { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_60_DEG_UP_TO_25_DEG_UP_DIR_3_B),
+                session, direction, session.TrackColours.WithIndex(kSideFriction60DegUpTo25DegUpDir3B),
                 { 0, 0, height }, { { 0, 26, height + 5 }, { 32, 1, 9 } });
             break;
     }
@@ -2705,7 +2705,7 @@ static void SideFrictionRCTrackDiag60DegUp(
             {
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_DIAG_60_DEG_UP_DIR_3_A),
+                        session, direction, session.TrackColours.WithIndex(kSideFrictionDiag60DegUpDir3A),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 2 } });
                     break;
             }
@@ -2715,10 +2715,10 @@ static void SideFrictionRCTrackDiag60DegUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_DIAG_60_DEG_UP_DIR_0_A),
+                        session, direction, session.TrackColours.WithIndex(kSideFrictionDiag60DegUpDir0A),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 2 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_DIAG_60_DEG_UP_DIR_0_B),
+                        session, direction, session.TrackColours.WithIndex(kSideFrictionDiag60DegUpDir0B),
                         { -16, -16, height }, { { -16, -16, height + 43 }, { 32, 32, 0 } });
                     break;
             }
@@ -2728,10 +2728,10 @@ static void SideFrictionRCTrackDiag60DegUp(
             {
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_DIAG_60_DEG_UP_DIR_2_A),
+                        session, direction, session.TrackColours.WithIndex(kSideFrictionDiag60DegUpDir2A),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 2 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_DIAG_60_DEG_UP_DIR_2_B),
+                        session, direction, session.TrackColours.WithIndex(kSideFrictionDiag60DegUpDir2B),
                         { -16, -16, height }, { { -16, -16, height + 43 }, { 32, 32, 0 } });
                     break;
             }
@@ -2741,7 +2741,7 @@ static void SideFrictionRCTrackDiag60DegUp(
             {
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_DIAG_60_DEG_UP_DIR_1_A),
+                        session, direction, session.TrackColours.WithIndex(kSideFrictionDiag60DegUpDir1A),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 2 } });
                     break;
             }
@@ -2773,7 +2773,7 @@ static void SideFrictionRCTrackDiag60DegUpTo25DegUp(
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction,
-                        session.TrackColours.WithIndex(SPR_SIDE_FRICTION_DIAG_60_DEG_UP_TO_25_DEG_UP_DIR_3_A),
+                        session.TrackColours.WithIndex(kSideFrictionDiag60DegUpTo25DegUpDir3A),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 2 } });
                     break;
             }
@@ -2784,11 +2784,11 @@ static void SideFrictionRCTrackDiag60DegUpTo25DegUp(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction,
-                        session.TrackColours.WithIndex(SPR_SIDE_FRICTION_DIAG_60_DEG_UP_TO_25_DEG_UP_DIR_0_A),
+                        session.TrackColours.WithIndex(kSideFrictionDiag60DegUpTo25DegUpDir0A),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
-                        session.TrackColours.WithIndex(SPR_SIDE_FRICTION_DIAG_60_DEG_UP_TO_25_DEG_UP_DIR_0_B),
+                        session.TrackColours.WithIndex(kSideFrictionDiag60DegUpTo25DegUpDir0B),
                         { -16, -16, height }, { { -16, -16, height + 59 }, { 32, 32, 0 } });
                     break;
             }
@@ -2799,11 +2799,11 @@ static void SideFrictionRCTrackDiag60DegUpTo25DegUp(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction,
-                        session.TrackColours.WithIndex(SPR_SIDE_FRICTION_DIAG_60_DEG_UP_TO_25_DEG_UP_DIR_2_A),
+                        session.TrackColours.WithIndex(kSideFrictionDiag60DegUpTo25DegUpDir2A),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
-                        session.TrackColours.WithIndex(SPR_SIDE_FRICTION_DIAG_60_DEG_UP_TO_25_DEG_UP_DIR_2_B),
+                        session.TrackColours.WithIndex(kSideFrictionDiag60DegUpTo25DegUpDir2B),
                         { -16, -16, height }, { { -16, -16, height + 59 }, { 32, 32, 0 } });
                     break;
             }
@@ -2814,7 +2814,7 @@ static void SideFrictionRCTrackDiag60DegUpTo25DegUp(
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction,
-                        session.TrackColours.WithIndex(SPR_SIDE_FRICTION_DIAG_60_DEG_UP_TO_25_DEG_UP_DIR_1_A),
+                        session.TrackColours.WithIndex(kSideFrictionDiag60DegUpTo25DegUpDir1A),
                         { -16, -16, height }, { { 0, 0, height }, { 16, 16, 2 } });
                     break;
             }
@@ -2847,7 +2847,7 @@ static void SideFrictionRCTrackDiag25DegUpTo60DegUp(
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction,
-                        session.TrackColours.WithIndex(SPR_SIDE_FRICTION_DIAG_25_DEG_UP_TO_60_DEG_UP_DIR_3_A),
+                        session.TrackColours.WithIndex(kSideFrictionDiag25DegUpTo60DegUpDir3A),
                         { -16 + 4, -16 + 2, height }, { { -16, -16, height }, { 32, 32, 2 } });
                     break;
             }
@@ -2858,7 +2858,7 @@ static void SideFrictionRCTrackDiag25DegUpTo60DegUp(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction,
-                        session.TrackColours.WithIndex(SPR_SIDE_FRICTION_DIAG_25_DEG_UP_TO_60_DEG_UP_DIR_0_A),
+                        session.TrackColours.WithIndex(kSideFrictionDiag25DegUpTo60DegUpDir0A),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(24033), { -16, -16, height },
@@ -2872,7 +2872,7 @@ static void SideFrictionRCTrackDiag25DegUpTo60DegUp(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction,
-                        session.TrackColours.WithIndex(SPR_SIDE_FRICTION_DIAG_25_DEG_UP_TO_60_DEG_UP_DIR_2_A),
+                        session.TrackColours.WithIndex(kSideFrictionDiag25DegUpTo60DegUpDir2A),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(24034), { -16, -16, height },
@@ -2886,7 +2886,7 @@ static void SideFrictionRCTrackDiag25DegUpTo60DegUp(
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction,
-                        session.TrackColours.WithIndex(SPR_SIDE_FRICTION_DIAG_25_DEG_UP_TO_60_DEG_UP_DIR_1_A),
+                        session.TrackColours.WithIndex(kSideFrictionDiag25DegUpTo60DegUpDir1A),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 2 } });
                     break;
             }
