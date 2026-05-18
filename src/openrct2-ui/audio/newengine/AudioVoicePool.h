@@ -76,6 +76,7 @@ namespace OpenRCT2::Audio
         AudioVoicePool();
 
         AudioHandle claim();
+        AudioHandle stealQuietest();
         Voice* get(AudioHandle handle);
         Voice* getByGameHandle(AudioHandle gameHandle);
         Voice& getByIndex(size_t index);
