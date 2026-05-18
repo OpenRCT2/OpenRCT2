@@ -45,9 +45,9 @@ static void PumpServer(const int iterations = 20)
 static std::unique_ptr<Connection> ConnectTestClient(uint16_t port)
 {
     auto client = std::make_unique<Connection>();
-    client->Socket = CreateTcpSocket();
-    client->Socket->Connect("127.0.0.1", port);
-    client->AuthStatus = Auth::ok;
+    client->socket = CreateTcpSocket();
+    client->socket->Connect("127.0.0.1", port);
+    client->authStatus = Auth::ok;
     return client;
 }
 
@@ -61,9 +61,9 @@ static bool WaitForPacket(Connection& client, const Command expectedId, int maxI
         client.update();
         while (client.readPacket() == ReadPacket::success)
         {
-            if (client.InboundPacket.GetCommand() == expectedId)
+            if (client.inboundPacket.getCommand() == expectedId)
                 return true;
-            client.InboundPacket.Clear();
+            client.inboundPacket.clear();
         }
     }
     return false;
@@ -73,14 +73,14 @@ static bool WaitForPacket(Connection& client, const Command expectedId, int maxI
 static bool AuthenticateClient(Connection& client, const std::string_view playerName)
 {
     // Send token request, receive challenge
-    client.QueuePacket(Packet(Command::token));
+    client.queuePacket(Packet(Command::token));
     if (!WaitForPacket(client, Command::token))
         return false;
     uint32_t challengeSize = 0;
-    client.InboundPacket >> challengeSize;
+    client.inboundPacket >> challengeSize;
     if (challengeSize == 0)
         return false;
-    const auto* challengeBytes = client.InboundPacket.Read(challengeSize);
+    const auto* challengeBytes = client.inboundPacket.read(challengeSize);
     if (challengeBytes == nullptr)
         return false;
     const std::vector<uint8_t> challenge(challengeBytes, challengeBytes + challengeSize);
@@ -94,18 +94,18 @@ static bool AuthenticateClient(Connection& client, const std::string_view player
 
     // Send the auth packet
     Packet authPacket(Command::auth);
-    authPacket.WriteString(Network::GetVersion());
-    authPacket.WriteString(playerName);
-    authPacket.WriteString("");
-    authPacket.WriteString(pubkey);
+    authPacket.writeString(Network::GetVersion());
+    authPacket.writeString(playerName);
+    authPacket.writeString("");
+    authPacket.writeString(pubkey);
     authPacket << static_cast<uint32_t>(signature.size());
-    authPacket.Write(signature.data(), signature.size());
-    client.QueuePacket(authPacket);
+    authPacket.write(signature.data(), signature.size());
+    client.queuePacket(authPacket);
 
     if (!WaitForPacket(client, Command::auth))
         return false;
     uint32_t authStatus = 0;
-    client.InboundPacket >> authStatus;
+    client.inboundPacket >> authStatus;
     return static_cast<Auth>(authStatus) == Auth::ok;
 }
 
@@ -229,12 +229,12 @@ protected:
 TEST_F(NetworkTests, UnauthenticatedMapRequest_DoesNotCrashServer)
 {
     const auto client = ConnectTestClient(kTestPort);
-    ASSERT_EQ(client->Socket->GetStatus(), SocketStatus::connected);
+    ASSERT_EQ(client->socket->GetStatus(), SocketStatus::connected);
 
     PumpServer(5);
 
     // Empty mapRequest payload (claims 0 objects)
-    client->QueuePacket(Packet(Command::mapRequest));
+    client->queuePacket(Packet(Command::mapRequest));
     client->update();
 
     PumpServer(20);
@@ -247,7 +247,7 @@ TEST_F(NetworkTests, UnauthenticatedMapRequest_DoesNotCrashServer)
 TEST_F(NetworkTests, AuthenticatedMalformedMapRequest_DoesNotCrashServer)
 {
     const auto client = ConnectTestClient(kTestPort);
-    ASSERT_EQ(client->Socket->GetStatus(), SocketStatus::connected);
+    ASSERT_EQ(client->socket->GetStatus(), SocketStatus::connected);
 
     ASSERT_TRUE(AuthenticateClient(*client, "tester"));
 
@@ -255,7 +255,7 @@ TEST_F(NetworkTests, AuthenticatedMalformedMapRequest_DoesNotCrashServer)
     Packet malformed(Command::mapRequest);
     malformed << static_cast<uint32_t>(1000);
     malformed << static_cast<uint8_t>(0); // generation = DAT, no RCTObjectEntry data follows
-    client->QueuePacket(malformed);
+    client->queuePacket(malformed);
     client->update();
     PumpServer(20);
 
