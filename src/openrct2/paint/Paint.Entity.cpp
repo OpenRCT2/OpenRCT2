@@ -28,6 +28,7 @@
 #include "Paint.h"
 #include "entity/Paint.Balloon.h"
 #include "entity/Paint.Duck.h"
+#include "entity/Paint.Fountain.h"
 #include "entity/Paint.Guest.h"
 #include "entity/Paint.Litter.h"
 #include "entity/Paint.Staff.h"
@@ -165,7 +166,7 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
                 entity->cast<ExplosionFlare>()->Paint(session, image_direction);
                 break;
             case EntityType::jumpingFountain:
-                entity->cast<JumpingFountain>()->Paint(session, image_direction);
+                PaintFountain(session, *entity->cast<JumpingFountain>(), image_direction);
                 break;
             case EntityType::balloon:
                 PaintBalloon(session, *entity->cast<Balloon>(), image_direction);
