@@ -9,10 +9,8 @@
 #include "Particle.h"
 
 #include "../GameState.h"
-#include "../SpriteIds.h"
 #include "../audio/Audio.h"
 #include "../core/DataSerialiser.h"
-#include "../profiling/Profiling.h"
 #include "../ride/VehicleColour.h"
 #include "../scenario/Scenario.h"
 #include "../world/Map.h"
