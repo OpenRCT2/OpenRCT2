@@ -25,6 +25,7 @@ set(test_files
    "${CMAKE_CURRENT_SOURCE_DIR}/Pathfinding.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/Platform.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/PlayTests.cpp"
+   "${CMAKE_CURRENT_SOURCE_DIR}/Rct1CsgTests.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/ReplayTests.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/RideRatings.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/EntityImportTests.cpp"
