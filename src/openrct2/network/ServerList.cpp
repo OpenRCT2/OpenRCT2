@@ -289,13 +289,13 @@ namespace OpenRCT2::Network
                 {
                     // Start with initialised buffer in case we receive a non-terminated string
                     char buffer[1024]{};
-                    size_t recievedLen{};
+                    size_t receivedLen{};
                     std::unique_ptr<INetworkEndpoint> endpoint;
-                    auto p = udpSocket->ReceiveData(buffer, sizeof(buffer) - 1, &recievedLen, &endpoint);
+                    auto p = udpSocket->ReceiveData(buffer, sizeof(buffer) - 1, &receivedLen, &endpoint);
                     if (p == ReadPacket::success)
                     {
                         auto sender = endpoint->GetHostname();
-                        LOG_VERBOSE("Received %zu bytes back from %s", recievedLen, sender.c_str());
+                        LOG_VERBOSE("Received %zu bytes back from %s", receivedLen, sender.c_str());
                         auto jinfo = Json::FromString(std::string_view(buffer));
 
                         if (jinfo.is_object())
