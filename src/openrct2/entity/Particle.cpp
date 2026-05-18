@@ -12,7 +12,6 @@
 #include "../SpriteIds.h"
 #include "../audio/Audio.h"
 #include "../core/DataSerialiser.h"
-#include "../paint/Paint.h"
 #include "../profiling/Profiling.h"
 #include "../ride/VehicleColour.h"
 #include "../scenario/Scenario.h"
@@ -24,11 +23,6 @@
 
 namespace OpenRCT2
 {
-    static constexpr uint32_t kVehicleCrashParticleSprites[kCrashedVehicleParticleNumberTypes] = {
-        SPR_VEHICLE_CRASH_PARTICLE_1, SPR_VEHICLE_CRASH_PARTICLE_2, SPR_VEHICLE_CRASH_PARTICLE_3,
-        SPR_VEHICLE_CRASH_PARTICLE_4, SPR_VEHICLE_CRASH_PARTICLE_5,
-    };
-
     template<>
     bool EntityBase::is<SteamParticle>() const
     {
@@ -172,21 +166,6 @@ namespace OpenRCT2
         stream << acceleration_z;
     }
 
-    void VehicleCrashParticle::Paint(PaintSession& session, int32_t imageDirection) const
-    {
-        PROFILED_FUNCTION();
-
-        auto& rt = session.rt;
-        if (rt.zoom_level > ZoomLevel{ 0 })
-        {
-            return;
-        }
-
-        uint32_t imageId = kVehicleCrashParticleSprites[crashed_sprite_base] + frame / 256;
-        auto image = ImageId(imageId, colour[0], colour[1]);
-        PaintAddImageAsParent(session, image, { 0, 0, z }, { 1, 1, 0 });
-    }
-
     /**
      *
      *  rct2: 0x00673699
@@ -222,14 +201,6 @@ namespace OpenRCT2
     {
         EntityBase::serialise(stream);
         stream << frame;
-    }
-
-    void CrashSplashParticle::Paint(PaintSession& session, int32_t imageDirection) const
-    {
-        PROFILED_FUNCTION();
-
-        uint32_t imageId = SPR_CRASH_SPLASH_PARTICLE + (frame / 256);
-        PaintAddImageAsParent(session, ImageId(imageId), { 0, 0, z }, { 1, 1, 0 });
     }
 
     /**
@@ -282,14 +253,6 @@ namespace OpenRCT2
         stream << time_to_move;
     }
 
-    void SteamParticle::Paint(PaintSession& session, int32_t imageDirection) const
-    {
-        PROFILED_FUNCTION();
-
-        uint32_t imageId = SPR_STEAM_PARTICLE + (frame / 256);
-        PaintAddImageAsParent(session, ImageId(imageId), { 0, 0, z }, { 1, 1, 0 });
-    }
-
     /**
      *
      *  rct2: 0x0067363D
@@ -327,14 +290,6 @@ namespace OpenRCT2
         stream << frame;
     }
 
-    void ExplosionCloud::Paint(PaintSession& session, int32_t imageDirection) const
-    {
-        PROFILED_FUNCTION();
-
-        uint32_t imageId = SPR_EXPLOSION_CLOUD + (frame / 256);
-        PaintAddImageAsParent(session, ImageId(imageId), { 0, 0, z }, { 1, 1, 0 });
-    }
-
     /**
      *
      *  rct2: 0x0067366B
@@ -370,13 +325,5 @@ namespace OpenRCT2
     {
         EntityBase::serialise(stream);
         stream << frame;
-    }
-
-    void ExplosionFlare::Paint(PaintSession& session, int32_t imageDirection) const
-    {
-        PROFILED_FUNCTION();
-
-        uint32_t imageId = SPR_EXPLOSION_FLARE + (frame / 256);
-        PaintAddImageAsParent(session, ImageId(imageId), { 0, 0, z }, { 1, 1, 0 });
     }
 } // namespace OpenRCT2
