@@ -63,9 +63,9 @@ namespace OpenRCT2::Platform
 {
     enum class AssetCheckResult
     {
-        NotApplicable,
-        Found,
-        NotFound,
+        notApplicable,
+        found,
+        notFound,
     };
 
     using AssetHandle = void*;
@@ -203,8 +203,8 @@ namespace OpenRCT2::Platform
 #ifdef __ANDROID__
     struct AssetInfo
     {
-        std::string Path;
-        uint64_t Size;
+        std::string path;
+        uint64_t size;
     };
     jclass AndroidFindClass(JNIEnv* env, std::string_view name);
     void* GetAssetManager();
@@ -236,11 +236,11 @@ namespace OpenRCT2::Platform
 } // namespace OpenRCT2::Platform
 
 #ifdef __ANDROID__
-class AndroidClassLoader
+class androidClassLoader
 {
 public:
-    AndroidClassLoader();
-    ~AndroidClassLoader();
+    androidClassLoader();
+    ~androidClassLoader();
     static jobject _classLoader;
     static jmethodID _findClassMethod;
 };

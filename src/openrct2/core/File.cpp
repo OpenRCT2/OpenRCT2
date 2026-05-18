@@ -32,11 +32,11 @@ namespace OpenRCT2::File
         auto assetCheckResult = Platform::CheckAssetExists(path);
         switch (assetCheckResult)
         {
-            case Platform::AssetCheckResult::Found:
+            case Platform::AssetCheckResult::found:
                 return true;
-            case Platform::AssetCheckResult::NotFound:
+            case Platform::AssetCheckResult::notFound:
                 return false;
-            case Platform::AssetCheckResult::NotApplicable:
+            case Platform::AssetCheckResult::notApplicable:
             default:
                 break;
         }
