@@ -172,7 +172,7 @@ namespace OpenRCT2
 
         void AddChecksum(uint32_t tick, EntitiesChecksum&& checksum)
         {
-            _currentRecording->checksums.emplace_back(std::make_pair(tick, std::move(checksum)));
+            _currentRecording->checksums.emplace_back(tick, std::move(checksum));
         }
 
         // Function runs each Tick.
