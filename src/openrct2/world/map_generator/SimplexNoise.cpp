@@ -54,19 +54,19 @@ namespace OpenRCT2::World::MapGenerator
 
     static float Generate(float x, float y)
     {
-        const float F2 = 0.366025403f; // F2 = 0.5*(sqrt(3.0)-1.0)
-        const float G2 = 0.211324865f; // G2 = (3.0-sqrt(3.0))/6.0
+        constexpr float kF2 = 0.366025403f; // F2 = 0.5*(sqrt(3.0)-1.0)
+        constexpr float kG2 = 0.211324865f; // G2 = (3.0-sqrt(3.0))/6.0
 
         float n0, n1, n2; // Noise contributions from the three corners
 
         // Skew the input space to determine which simplex cell we're in
-        float s = (x + y) * F2; // Hairy factor for 2D
+        float s = (x + y) * kF2; // Hairy factor for 2D
         float xs = x + s;
         float ys = y + s;
         int32_t i = FastFloor(xs);
         int32_t j = FastFloor(ys);
 
-        float t = static_cast<float>(i + j) * G2;
+        float t = static_cast<float>(i + j) * kG2;
         float X0 = i - t; // Unskew the cell origin back to (x,y) space
         float Y0 = j - t;
         float x0 = x - X0; // The x,y distances from the cell origin
@@ -90,10 +90,10 @@ namespace OpenRCT2::World::MapGenerator
         // a step of (0,1) in (i,j) means a step of (-c,1-c) in (x,y), where
         // c = (3-sqrt(3))/6
 
-        float x1 = x0 - i1 + G2; // Offsets for middle corner in (x,y) unskewed coords
-        float y1 = y0 - j1 + G2;
-        float x2 = x0 - 1.0f + 2.0f * G2; // Offsets for last corner in (x,y) unskewed coords
-        float y2 = y0 - 1.0f + 2.0f * G2;
+        float x1 = x0 - i1 + kG2; // Offsets for middle corner in (x,y) unskewed coords
+        float y1 = y0 - j1 + kG2;
+        float x2 = x0 - 1.0f + 2.0f * kG2; // Offsets for last corner in (x,y) unskewed coords
+        float y2 = y0 - 1.0f + 2.0f * kG2;
 
         // Wrap the integer indices at 256, to avoid indexing perm[] out of bounds
         int32_t ii = i % 256;
