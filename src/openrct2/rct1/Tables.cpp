@@ -1143,7 +1143,7 @@ namespace OpenRCT2::RCT1
             "rct2.scenery_small.corroof",
             "rct2.scenery_small.corroof2",
         };
-        return smallSceneryType < std::size(map) ? map[smallSceneryType] : "";
+        return map[smallSceneryType];
     }
 
     std::string_view GetLargeSceneryObject(uint8_t largeSceneryType)
@@ -1190,7 +1190,7 @@ namespace OpenRCT2::RCT1
             "rct2.scenery_large.ssig3",
             "rct2.scenery_large.ssig4",
         };
-        return largeSceneryType < std::size(map) ? map[largeSceneryType] : "";
+        return map[largeSceneryType];
     }
 
     int32_t MapSlopedWall(uint8_t wallType)
@@ -1334,8 +1334,7 @@ namespace OpenRCT2::RCT1
             "rct2.footpath_banner.bn8", // BannerType::snow
             "rct2.footpath_banner.bn9", // BannerType::space
         };
-        const auto idx = EnumValue(bannerType);
-        return idx < std::size(map) ? map[idx] : "";
+        return map[EnumValue(bannerType)];
     }
 
     std::string_view GetPathSurfaceObject(uint8_t pathType)
@@ -1372,7 +1371,7 @@ namespace OpenRCT2::RCT1
             "rct1ll.footpath_surface.tiles_red",    // RCT1_FOOTPATH_TYPE_TILE_RED
             "rct1ll.footpath_surface.tiles_green",  // RCT1_FOOTPATH_TYPE_TILE_GREEN
         };
-        return pathType < std::size(map) ? map[pathType] : "";
+        return map[pathType];
     }
 
     std::string_view GetPathAddtionObject(uint8_t pathAdditionType)
@@ -1395,7 +1394,7 @@ namespace OpenRCT2::RCT1
             "rct2.footpath_item.lamp4",       // RCT1_PATH_ADDITION_BROKEN_LAMP_4
             "rct2.footpath_item.jumpsnw1",    // RCT1_PATH_ADDITION_JUMPING_SNOW
         };
-        return pathAdditionType < std::size(map) ? map[pathAdditionType] : "";
+        return map[pathAdditionType];
     }
 
     std::string_view GetFootpathRailingsObject(uint8_t footpathRailingsType)
@@ -1407,7 +1406,7 @@ namespace OpenRCT2::RCT1
             "rct1ll.footpath_railings.space",      // RCT1_PATH_SUPPORT_TYPE_SPACE
             "rct1ll.footpath_railings.bamboo",     // RCT1_PATH_SUPPORT_TYPE_BAMBOO
         };
-        return footpathRailingsType < std::size(map) ? map[footpathRailingsType] : "";
+        return map[footpathRailingsType];
     }
 
     std::string_view GetSceneryGroupObject(uint8_t sceneryGroupType)
@@ -1433,7 +1432,7 @@ namespace OpenRCT2::RCT1
             "rct2.scenery_group.scgurban",    // RCT1_SCENERY_THEME_URBAN
             "rct2.scenery_group.scgorien",    // RCT1_SCENERY_THEME_PAGODA
         };
-        return sceneryGroupType < std::size(map) ? map[sceneryGroupType] : "";
+        return map[sceneryGroupType];
     }
 
     std::string_view GetWaterObject(uint8_t waterType)
@@ -1443,7 +1442,7 @@ namespace OpenRCT2::RCT1
             "rct2.water.wtrcyan",
             "rct2.water.wtrorng",
         };
-        return waterType < std::size(map) ? map[waterType] : "";
+        return map[waterType];
     }
 
     const std::vector<const char *> GetSceneryObjects(uint8_t sceneryType)
@@ -1492,7 +1491,7 @@ namespace OpenRCT2::RCT1
             // RCT1_SCENERY_THEME_PAGODA
             { "rct2.scenery_large.spg", "rct2.scenery_small.tly", "rct2.scenery_small.tgg", "rct2.scenery_small.toh1", "rct2.scenery_small.toh2", "rct2.scenery_small.tot1", "rct2.scenery_small.tot2", "rct2.scenery_small.tos", "rct2.scenery_small.tot3", "rct2.scenery_small.tot4", "rct2.scenery_small.toh3", "rct2.scenery_wall.wallpg32", "rct2.scenery_small.pagroof1", "rct2.footpath_banner.bn7" }
         };
-        return sceneryType < std::size(map) ? map[sceneryType] : std::vector<const char *>{};
+        return map[sceneryType];
     }
     // clang-format on
 

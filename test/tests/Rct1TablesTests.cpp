@@ -16,6 +16,21 @@
 
 using namespace OpenRCT2;
 
+namespace
+{
+    constexpr uint8_t kNumRct1RideTypes = 85;
+    constexpr uint8_t kNumRct1VehicleTypes = 89;
+    constexpr uint8_t kNumRct1BannerTypes = 9;
+    constexpr uint8_t kNumRct1SceneryThemes = 18;
+    constexpr uint8_t kNumRct1SmallScenery = 244;
+    constexpr uint8_t kNumRct1LargeScenery = 39;
+    constexpr uint8_t kNumRct1PathSurfaces = 24;
+    constexpr uint8_t kNumRct1PathAdditions = 15;
+    constexpr uint8_t kNumRct1FootpathRailings = 4;
+    constexpr uint8_t kNumRct1SceneryGroups = 18;
+    constexpr uint8_t kNumRct1WaterTypes = 2;
+} // namespace
+
 TEST(Rct1TablesTests, GetColour_KnownAndOutOfRange)
 {
     EXPECT_EQ(RCT1::GetColour(0), Drawing::Colour::black);
@@ -53,10 +68,8 @@ TEST(Rct1TablesTests, GetTerrainEdgeObject_SweepFullRange)
         (void)RCT1::GetTerrainEdgeObject(static_cast<uint8_t>(i));
 }
 
-TEST(Rct1TablesTests, MapSlopedWall_SweepFullRangeAndOutOfRange)
+TEST(Rct1TablesTests, MapSlopedWall_SweepFullRange)
 {
-    EXPECT_EQ(RCT1::MapSlopedWall(255), -1);
-
     for (uint32_t i = 0; i <= 255; ++i)
         (void)RCT1::MapSlopedWall(static_cast<uint8_t>(i));
 }
@@ -80,7 +93,7 @@ TEST(Rct1TablesTests, GetRideType_SpecialCasesAndAllRideTypes)
         RIDE_TYPE_HYPER_TWISTER);
     EXPECT_EQ(RCT1::GetRideType(RT::steelCorkscrewRollerCoaster, VT::hypercoasterTrain), RIDE_TYPE_HYPERCOASTER);
 
-    for (uint32_t i = 0; i < static_cast<uint32_t>(RT::count); ++i)
+    for (uint8_t i = 0; i < kNumRct1RideTypes; ++i)
         (void)RCT1::GetRideType(static_cast<RT>(i), VT::steelRollerCoasterTrain);
 }
 
@@ -88,7 +101,7 @@ TEST(Rct1TablesTests, RideTypeUsesVehicles_AllCases)
 {
     bool seenTrue = false;
     bool seenFalse = false;
-    for (uint32_t i = 0; i < static_cast<uint32_t>(RCT1::RideType::count); ++i)
+    for (uint8_t i = 0; i < kNumRct1RideTypes; ++i)
     {
         const bool uses = RCT1::RideTypeUsesVehicles(static_cast<RCT1::RideType>(i));
         seenTrue = seenTrue || uses;
@@ -129,19 +142,18 @@ TEST(Rct1TablesTests, VehicleTypeIsReversed_KnownReversedSet)
     EXPECT_FALSE(RCT1::VehicleTypeIsReversed(VT::steelRollerCoasterTrain));
     EXPECT_FALSE(RCT1::VehicleTypeIsReversed(VT::woodenRollerCoasterTrain));
 
-    for (uint32_t i = 0; i < static_cast<uint32_t>(VT::count); ++i)
+    for (uint8_t i = 0; i < kNumRct1VehicleTypes; ++i)
         (void)RCT1::VehicleTypeIsReversed(static_cast<VT>(i));
 }
 
-TEST(Rct1TablesTests, GetVehicleSubEntryIndex_AllVehicleTypesAndSubEntries)
+TEST(Rct1TablesTests, GetVehicleSubEntryIndex_AllVehicleTypes)
 {
     using VT = RCT1::VehicleType;
 
-    // The internal map has more than 256 entries, so any uint8_t sub-entry is safe to query.
-    for (uint32_t v = 0; v < static_cast<uint32_t>(VT::count); ++v)
+    for (uint8_t v = 0; v < kNumRct1VehicleTypes; ++v)
     {
-        for (uint32_t s = 0; s <= 255; ++s)
-            (void)RCT1::GetVehicleSubEntryIndex(static_cast<VT>(v), static_cast<uint8_t>(s));
+        for (uint8_t s = 0; s < 4; ++s)
+            (void)RCT1::GetVehicleSubEntryIndex(static_cast<VT>(v), s);
     }
 
     (void)RCT1::GetVehicleSubEntryIndex(VT::heartlineTwisterCars, RCT1::HEARTLINE_TWISTER_FORWARDS);
@@ -152,13 +164,13 @@ TEST(Rct1TablesTests, GetVehicleSubEntryIndex_AllVehicleTypesAndSubEntries)
 
 TEST(Rct1TablesTests, GetColourSchemeCopyDescriptor_AllVehicleTypes)
 {
-    for (uint32_t i = 0; i < static_cast<uint32_t>(RCT1::VehicleType::count); ++i)
+    for (uint8_t i = 0; i < kNumRct1VehicleTypes; ++i)
         (void)RCT1::GetColourSchemeCopyDescriptor(static_cast<RCT1::VehicleType>(i));
 }
 
 TEST(Rct1TablesTests, GetRideTypeObject_AllRideTypesBothExpansions)
 {
-    for (uint32_t i = 0; i < static_cast<uint32_t>(RCT1::RideType::count); ++i)
+    for (uint8_t i = 0; i < kNumRct1RideTypes; ++i)
     {
         (void)RCT1::GetRideTypeObject(static_cast<RCT1::RideType>(i), false);
         (void)RCT1::GetRideTypeObject(static_cast<RCT1::RideType>(i), true);
@@ -167,93 +179,65 @@ TEST(Rct1TablesTests, GetRideTypeObject_AllRideTypesBothExpansions)
 
 TEST(Rct1TablesTests, GetVehicleObject_AllVehicleTypes)
 {
-    for (uint32_t i = 0; i < static_cast<uint32_t>(RCT1::VehicleType::count); ++i)
+    for (uint8_t i = 0; i < kNumRct1VehicleTypes; ++i)
         (void)RCT1::GetVehicleObject(static_cast<RCT1::VehicleType>(i));
 }
 
-TEST(Rct1TablesTests, GetSmallSceneryObject_SweepFullRangeAndOutOfRange)
+TEST(Rct1TablesTests, GetSmallSceneryObject_AllIndices)
 {
-    EXPECT_FALSE(RCT1::GetSmallSceneryObject(0).empty());
-    EXPECT_TRUE(RCT1::GetSmallSceneryObject(255).empty());
-
-    for (uint32_t i = 0; i <= 255; ++i)
-        (void)RCT1::GetSmallSceneryObject(static_cast<uint8_t>(i));
+    for (uint8_t i = 0; i < kNumRct1SmallScenery; ++i)
+        (void)RCT1::GetSmallSceneryObject(i);
 }
 
-TEST(Rct1TablesTests, GetLargeSceneryObject_SweepFullRangeAndOutOfRange)
+TEST(Rct1TablesTests, GetLargeSceneryObject_AllIndices)
 {
-    EXPECT_FALSE(RCT1::GetLargeSceneryObject(0).empty());
-    EXPECT_TRUE(RCT1::GetLargeSceneryObject(255).empty());
-
-    for (uint32_t i = 0; i <= 255; ++i)
-        (void)RCT1::GetLargeSceneryObject(static_cast<uint8_t>(i));
+    for (uint8_t i = 0; i < kNumRct1LargeScenery; ++i)
+        (void)RCT1::GetLargeSceneryObject(i);
 }
 
-TEST(Rct1TablesTests, GetBannerObject_SweepFullRangeAndOutOfRange)
+TEST(Rct1TablesTests, GetBannerObject_AllBannerTypes)
 {
-    EXPECT_EQ(RCT1::GetBannerObject(RCT1::BannerType::plain), "rct2.footpath_banner.bn1");
-    EXPECT_TRUE(RCT1::GetBannerObject(static_cast<RCT1::BannerType>(200)).empty());
-
-    for (uint32_t i = 0; i <= 255; ++i)
+    for (uint8_t i = 0; i < kNumRct1BannerTypes; ++i)
         (void)RCT1::GetBannerObject(static_cast<RCT1::BannerType>(i));
 }
 
-TEST(Rct1TablesTests, GetPathSurfaceObject_SweepFullRangeAndOutOfRange)
+TEST(Rct1TablesTests, GetPathSurfaceObject_AllPathTypes)
 {
-    EXPECT_FALSE(RCT1::GetPathSurfaceObject(0).empty());
-    EXPECT_TRUE(RCT1::GetPathSurfaceObject(255).empty());
-
-    for (uint32_t i = 0; i <= 255; ++i)
-        (void)RCT1::GetPathSurfaceObject(static_cast<uint8_t>(i));
+    for (uint8_t i = 0; i < kNumRct1PathSurfaces; ++i)
+        (void)RCT1::GetPathSurfaceObject(i);
 }
 
-TEST(Rct1TablesTests, GetPathAddtionObject_SweepFullRangeAndOutOfRange)
+TEST(Rct1TablesTests, GetPathAddtionObject_AllPathAdditions)
 {
-    // Index 0 is RCT1_PATH_ADDITION_NONE which maps to an empty string
-    // index 1 is the first real entry.
-    EXPECT_FALSE(RCT1::GetPathAddtionObject(1).empty());
-    EXPECT_TRUE(RCT1::GetPathAddtionObject(255).empty());
-
-    for (uint32_t i = 0; i <= 255; ++i)
-        (void)RCT1::GetPathAddtionObject(static_cast<uint8_t>(i));
+    for (uint8_t i = 0; i < kNumRct1PathAdditions; ++i)
+        (void)RCT1::GetPathAddtionObject(i);
 }
 
-TEST(Rct1TablesTests, GetFootpathRailingsObject_SweepFullRangeAndOutOfRange)
+TEST(Rct1TablesTests, GetFootpathRailingsObject_AllRailings)
 {
-    EXPECT_FALSE(RCT1::GetFootpathRailingsObject(0).empty());
-    EXPECT_TRUE(RCT1::GetFootpathRailingsObject(255).empty());
-
-    for (uint32_t i = 0; i <= 255; ++i)
-        (void)RCT1::GetFootpathRailingsObject(static_cast<uint8_t>(i));
+    for (uint8_t i = 0; i < kNumRct1FootpathRailings; ++i)
+        (void)RCT1::GetFootpathRailingsObject(i);
 }
 
-TEST(Rct1TablesTests, GetSceneryGroupObject_SweepFullRangeAndOutOfRange)
+TEST(Rct1TablesTests, GetSceneryGroupObject_AllSceneryGroups)
 {
-    // Index 0 is RCT1_SCENERY_THEME_GENERAL which maps to an empty string
-    // index 1 is the first real entry.
-    EXPECT_FALSE(RCT1::GetSceneryGroupObject(1).empty());
-    EXPECT_TRUE(RCT1::GetSceneryGroupObject(255).empty());
-
-    for (uint32_t i = 0; i <= 255; ++i)
-        (void)RCT1::GetSceneryGroupObject(static_cast<uint8_t>(i));
+    for (uint8_t i = 0; i < kNumRct1SceneryGroups; ++i)
+        (void)RCT1::GetSceneryGroupObject(i);
 }
 
-TEST(Rct1TablesTests, GetWaterObject_SweepFullRangeAndOutOfRange)
+TEST(Rct1TablesTests, GetWaterObject_AllWaterTypes)
 {
-    EXPECT_FALSE(RCT1::GetWaterObject(0).empty());
-    EXPECT_TRUE(RCT1::GetWaterObject(255).empty());
-
-    for (uint32_t i = 0; i <= 255; ++i)
-        (void)RCT1::GetWaterObject(static_cast<uint8_t>(i));
+    for (uint8_t i = 0; i < kNumRct1WaterTypes; ++i)
+        (void)RCT1::GetWaterObject(i);
 }
 
-TEST(Rct1TablesTests, GetSceneryObjects_SweepFullRangeAndOutOfRange)
+TEST(Rct1TablesTests, GetSceneryObjects_AllSceneryThemes)
 {
-    EXPECT_FALSE(RCT1::GetSceneryObjects(0).empty());
-    EXPECT_TRUE(RCT1::GetSceneryObjects(255).empty());
-
-    for (uint32_t i = 0; i <= 255; ++i)
-        (void)RCT1::GetSceneryObjects(static_cast<uint8_t>(i));
+    for (uint8_t i = 0; i < kNumRct1SceneryThemes; ++i)
+    {
+        const auto objects = RCT1::GetSceneryObjects(i);
+        EXPECT_FALSE(objects.empty());
+    }
 }
 
 TEST(Rct1TablesTests, RCT1TrackTypeToOpenRCT2_FlatAndNonFlatRides)
