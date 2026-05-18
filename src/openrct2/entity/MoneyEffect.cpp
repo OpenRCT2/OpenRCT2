@@ -12,7 +12,6 @@
 #include "../Diagnostic.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
-#include "../config/Config.h"
 #include "../core/DataSerialiser.h"
 #include "../drawing/Drawing.String.h"
 #include "../drawing/Drawing.h"
@@ -20,8 +19,6 @@
 #include "../interface/Window.h"
 #include "../localisation/Formatting.h"
 #include "../network/Network.h"
-#include "../paint/Paint.h"
-#include "../profiling/Profiling.h"
 #include "../world/Map.h"
 #include "EntityRegistry.h"
 
@@ -181,39 +178,5 @@ namespace OpenRCT2
         stream << value;
         stream << offsetX;
         stream << wiggle;
-    }
-
-    void MoneyEffect::Paint(PaintSession& session, int32_t imageDirection) const
-    {
-        PROFILED_FUNCTION();
-
-        if (gLegacyScene == LegacyScene::titleSequence)
-        {
-            // Don't render any money in the title screen.
-            return;
-        }
-
-        if (guestPurchase && !Config::Get().general.showGuestPurchases)
-        {
-            // Don't show the money effect for guest purchases when the option is disabled.
-            return;
-        }
-
-        auto& rt = session.rt;
-        if (rt.zoom_level > ZoomLevel{ 0 })
-        {
-            return;
-        }
-
-        /** rct2: 0x0097EDA4 */
-        static constexpr int8_t waveOffset[] = {
-            0, 1, 2, 2, 3, 3, 3, 3, 2, 2, 1, 0, -1, -2, -2, -3, -3, -3, -3, -2, -2, -1,
-            0, 1, 2, 2, 3, 3, 3, 3, 2, 2, 1, 0, -1, -2, -2, -3, -3, -3, -3, -2, -2, -1,
-        };
-
-        auto [stringId, stringValue] = GetStringId();
-        PaintFloatingMoneyEffect(
-            session, stringValue, stringId, y, z, const_cast<int8_t*>(&waveOffset[wiggle % 22]), offsetX,
-            session.CurrentRotation);
     }
 } // namespace OpenRCT2

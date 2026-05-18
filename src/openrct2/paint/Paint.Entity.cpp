@@ -32,6 +32,7 @@
 #include "entity/Paint.ExplosionFlare.h"
 #include "entity/Paint.Guest.h"
 #include "entity/Paint.Litter.h"
+#include "entity/Paint.MoneyEffect.h"
 #include "entity/Paint.Staff.h"
 #include "entity/Paint.SteamParticle.h"
 #include "entity/Paint.VehicleCrashParticle.h"
@@ -154,7 +155,7 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
                 PaintSteamParticle(session, *entity->cast<SteamParticle>());
                 break;
             case EntityType::moneyEffect:
-                entity->cast<MoneyEffect>()->Paint(session, image_direction);
+                PaintMoneyEffect(session, *entity->cast<MoneyEffect>());
                 break;
             case EntityType::crashedVehicleParticle:
                 PaintVehicleCrashParticle(session, *entity->cast<VehicleCrashParticle>());

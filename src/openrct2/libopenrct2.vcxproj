@@ -405,6 +405,7 @@
     <ClInclude Include="paint\entity\Paint.ExplosionFlare.h" />
     <ClInclude Include="paint\entity\Paint.Guest.h" />
     <ClInclude Include="paint\entity\Paint.Litter.h" />
+    <ClInclude Include="paint\entity\Paint.MoneyEffect.h" />
     <ClInclude Include="paint\entity\Paint.Peep.h" />
     <ClInclude Include="paint\entity\Paint.Staff.h" />
     <ClInclude Include="paint\entity\Paint.SteamParticle.h" />
@@ -1010,6 +1011,7 @@
     <ClCompile Include="paint\entity\Paint.ExplosionFlare.cpp" />
     <ClCompile Include="paint\entity\Paint.Guest.cpp" />
     <ClCompile Include="paint\entity\Paint.Litter.cpp" />
+    <ClCompile Include="paint\entity\Paint.MoneyEffect.cpp" />
     <ClCompile Include="paint\entity\Paint.Peep.cpp" />
     <ClCompile Include="paint\entity\Paint.Staff.cpp" />
     <ClCompile Include="paint\entity\Paint.SteamParticle.cpp" />
