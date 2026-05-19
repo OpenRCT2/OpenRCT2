@@ -22,6 +22,16 @@ namespace OpenRCT2::Audio
 {
     static constexpr size_t kCommandBufferSize = 1024;
 
+    struct AudioEngineStats
+    {
+        size_t activeVoices = 0;
+        size_t culledVoices = 0;
+        size_t voiceLimit = 128;
+        float lastCallbackDurationUs = 0;
+        float budgetPercent = 0;
+        uint64_t droppedCommands = 0;
+    };
+
     // This is the core audio mixer. The game thread sends commands (play, stop,
     // volume changes, etc.) into a lock free ring buffer. On every audio
     // callback the engine drains this buffer, mixes all active voices in
@@ -79,6 +89,7 @@ namespace OpenRCT2::Audio
         [[nodiscard]] bool isHandleActive(AudioHandle gameHandle) const;
 
         [[nodiscard]] size_t getActiveVoiceCount() const;
+        [[nodiscard]] AudioEngineStats getDebugStats() const;
 
     private:
         void processCommands();
@@ -94,8 +105,9 @@ namespace OpenRCT2::Audio
 
         Voice* resolveVoice(AudioHandle handle);
 
-        void mixAllVoices(float* outputBuffer, size_t frames, uint32_t outputSampleRate);
+        void mixAllVoices(float* outputBuffer, size_t frames, uint32_t outputSampleRate, size_t& culled);
         void mixVoice(Voice& voice, float* outputBuffer, size_t frames, uint32_t outputSampleRate);
+        void updateGovernor(float callbackDurationUs, size_t framesRequested);
 
         AudioRingBuffer<AudioCommand, kCommandBufferSize> _commandBuffer;
         AudioVoicePool _voicePool;
@@ -106,7 +118,19 @@ namespace OpenRCT2::Audio
 
         float getGroupVolume(AudioEngineGroup group) const;
 
+        AudioEngineStats _stats{};
         uint32_t _outputSampleRate = 48000;
+
+        // Adaptive quality governor. Measures how much of the audio
+        // deadline each callback consumes and adjusts the voice limit
+        // and cull threshold so the engine stays within budget
+        static constexpr float kCullVolumeMin = 0.005f;
+        static constexpr float kCullVolumeMax = 0.05f;
+        static constexpr size_t kVoiceLimitMin = 64;
+        static constexpr size_t kVoiceLimitMax = 256;
+        float _cullThreshold = kCullVolumeMin;
+        float _budgetAvg = 0.0f;
+        uint32_t _comfortStreak = 0;
 
         // Incremented from the game thread when the ring buffer is full.
         // Atomic so getStats() can read it safely from any thread
