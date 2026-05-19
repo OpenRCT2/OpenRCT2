@@ -9,6 +9,7 @@
 
 #include "AudioVoicePool.h"
 
+#include <algorithm>
 #include <limits>
 
 namespace OpenRCT2::Audio
@@ -24,7 +25,7 @@ namespace OpenRCT2::Audio
 
     AudioHandle AudioVoicePool::claim()
     {
-        for (size_t i = 0; i < kMaxVoices; i++)
+        for (size_t i = 0; i < _voiceLimit; i++)
         {
             if (_voices[i].state == VoiceState::idle)
             {
@@ -44,7 +45,7 @@ namespace OpenRCT2::Audio
         float quietest = std::numeric_limits<float>::max();
         size_t quietestIndex = kMaxVoices;
 
-        for (size_t i = 0; i < kMaxVoices; i++)
+        for (size_t i = 0; i < _voiceLimit; i++)
         {
             auto& voice = _voices[i];
             if (voice.state == VoiceState::playing && !voice.looping)
@@ -58,7 +59,7 @@ namespace OpenRCT2::Audio
             }
         }
 
-        if (quietestIndex < kMaxVoices)
+        if (quietestIndex < _voiceLimit)
         {
             auto& voice = _voices[quietestIndex];
             voice.reset();
@@ -130,6 +131,11 @@ namespace OpenRCT2::Audio
         if (voice >= &_voices[0] && voice < &_voices[kMaxVoices])
             return static_cast<size_t>(voice - &_voices[0]);
         return kMaxVoices;
+    }
+
+    void AudioVoicePool::setVoiceLimit(size_t limit)
+    {
+        _voiceLimit = std::min(limit, kMaxVoices);
     }
 
     size_t AudioVoicePool::activeCount() const

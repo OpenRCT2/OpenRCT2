@@ -11,6 +11,7 @@
 
 #include <algorithm>
 #include <atomic>
+#include <chrono>
 #include <cmath>
 #include <cstring>
 #include <openrct2/Diagnostic.h>
@@ -161,28 +162,40 @@ namespace OpenRCT2::Audio
 
     void AudioEngine::render(float* outputBuffer, size_t framesRequested, uint32_t outputSampleRate)
     {
+        _outputSampleRate = outputSampleRate;
+
         if (framesRequested == 0)
             return;
 
-        _outputSampleRate = outputSampleRate;
+        auto t0 = std::chrono::high_resolution_clock::now();
 
         std::memset(outputBuffer, 0, framesRequested * 2 * sizeof(float));
 
         processCommands();
-        mixAllVoices(outputBuffer, framesRequested, outputSampleRate);
 
-        // Apply master volume
+        size_t culled = 0;
+        mixAllVoices(outputBuffer, framesRequested, outputSampleRate, culled);
+
+        // master volume + hard clip
         size_t totalSamples = framesRequested * 2;
         for (size_t i = 0; i < totalSamples; i++)
         {
             outputBuffer[i] *= _masterVolume;
-
-            // Hard clip to [-1, 1]
             if (outputBuffer[i] > 1.0f)
                 outputBuffer[i] = 1.0f;
             else if (outputBuffer[i] < -1.0f)
                 outputBuffer[i] = -1.0f;
         }
+
+        auto t1 = std::chrono::high_resolution_clock::now();
+        float durationUs = std::chrono::duration<float, std::micro>(t1 - t0).count();
+
+        updateGovernor(durationUs, framesRequested);
+
+        _stats.activeVoices = _voicePool.activeCount();
+        _stats.culledVoices = culled;
+        _stats.voiceLimit = _voicePool.getVoiceLimit();
+        _stats.lastCallbackDurationUs = durationUs;
     }
 
     void AudioEngine::convertToDevice(const float* mixBuffer, uint8_t* dst, size_t frames, AudioSampleFormat format)
@@ -355,6 +368,13 @@ namespace OpenRCT2::Audio
         return _voicePool.activeCount();
     }
 
+    AudioEngineStats AudioEngine::getDebugStats() const
+    {
+        AudioEngineStats stats = _stats;
+        stats.droppedCommands = _droppedCommands.load(std::memory_order_relaxed);
+        return stats;
+    }
+
     void AudioEngine::processStop(const AudioCommand& cmd)
     {
         auto* voice = resolveVoice(cmd.data.stop.handle);
@@ -465,13 +485,82 @@ namespace OpenRCT2::Audio
         return 1.0f;
     }
 
-    void AudioEngine::mixAllVoices(float* outputBuffer, size_t frames, uint32_t outputSampleRate)
+    void AudioEngine::updateGovernor(float callbackDurationUs, size_t framesRequested)
+    {
+        float deadlineUs = (static_cast<float>(framesRequested) / static_cast<float>(_outputSampleRate)) * 1e6f;
+        float budgetPct = (callbackDurationUs / deadlineUs) * 100.0f;
+
+        _budgetAvg = _budgetAvg * 0.9f + budgetPct * 0.1f;
+        _stats.budgetPercent = _budgetAvg;
+
+        if (budgetPct > 70.0f)
+        {
+            _comfortStreak = 0;
+
+            _cullThreshold = std::min(_cullThreshold * 1.5f, kCullVolumeMax);
+
+            size_t currentLimit = _voicePool.getVoiceLimit();
+            if (currentLimit > kVoiceLimitMin)
+            {
+                _voicePool.setVoiceLimit(currentLimit - 8);
+            }
+            return;
+        }
+
+        if (_budgetAvg < 15.0f)
+        {
+            _comfortStreak++;
+        }
+        else
+        {
+            _comfortStreak = 0;
+        }
+
+        if (_comfortStreak >= 50)
+        {
+            _comfortStreak = 0;
+
+            if (_cullThreshold > kCullVolumeMin)
+                _cullThreshold = std::max(_cullThreshold * 0.8f, kCullVolumeMin);
+
+            size_t currentLimit = _voicePool.getVoiceLimit();
+            if (currentLimit < kVoiceLimitMax)
+                _voicePool.setVoiceLimit(std::min(currentLimit + 4, kVoiceLimitMax));
+        }
+    }
+
+    void AudioEngine::mixAllVoices(float* outputBuffer, size_t frames, uint32_t outputSampleRate, size_t& culled)
     {
         for (size_t i = 0; i < kMaxVoices; i++)
         {
             auto& voice = _voicePool.getByIndex(i);
             if (voice.state == VoiceState::idle)
                 continue;
+
+            float groupVol = getGroupVolume(voice.group);
+            float effectiveVol = std::max(voice.volume, voice.targetVolume) * groupVol;
+            if (effectiveVol < _cullThreshold && voice.state == VoiceState::playing)
+            {
+                double rateRatio = (static_cast<double>(voice.sampleRate) / static_cast<double>(outputSampleRate)) * voice.rate;
+                voice.playbackPosition += rateRatio * static_cast<double>(frames);
+
+                if (static_cast<uint64_t>(voice.playbackPosition) >= voice.pcmLengthInFrames)
+                {
+                    if (voice.looping)
+                    {
+                        voice.playbackPosition = std::fmod(
+                            voice.playbackPosition, static_cast<double>(voice.pcmLengthInFrames));
+                    }
+                    else
+                    {
+                        voice.state = VoiceState::idle;
+                        if (voice.gameHandle.isValid())
+                            markSlotInactive(i);
+                    }
+                }
+                culled++;
+                continue;
+            }
 
             mixVoice(voice, outputBuffer, frames, outputSampleRate);
 
