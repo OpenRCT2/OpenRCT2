@@ -685,6 +685,7 @@
     <ClInclude Include="world\Map.h" />
     <ClInclude Include="world\MapAnimation.h" />
     <ClInclude Include="world\MapLimits.h" />
+    <ClInclude Include="world\MapRangeView.hpp" />
     <ClInclude Include="world\MapSelection.h" />
     <ClInclude Include="world\Park.h" />
     <ClInclude Include="world\ParkData.h" />
@@ -1244,6 +1245,7 @@
     <ClCompile Include="world\Footpath.cpp" />
     <ClCompile Include="world\Map.cpp" />
     <ClCompile Include="world\MapAnimation.cpp" />
+    <ClCompile Include="world\MapRangeView.cpp" />
     <ClCompile Include="world\MapSelection.cpp" />
     <ClCompile Include="world\Park.cpp" />
     <ClCompile Include="world\QuarterTile.cpp" />

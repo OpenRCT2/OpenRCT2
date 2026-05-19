@@ -105,8 +105,8 @@ namespace OpenRCT2::GameActions
             return;
         }
 
-        MapInvalidateTile({ loc, entranceElement->GetBaseZ(), entranceElement->GetClearanceZ() });
-        entranceElement->Remove();
+        MapInvalidateTile({ loc, entranceElement->getBaseZ(), entranceElement->getClearanceZ() });
+        entranceElement->remove();
         Park::UpdateFences({ loc.x, loc.y });
     }
 } // namespace OpenRCT2::GameActions

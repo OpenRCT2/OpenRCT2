@@ -24,7 +24,7 @@ void WallRemoveAt(const CoordsXYRangedZ& wallPos)
     for (auto wallElement = MapGetWallElementAt(wallPos); wallElement != nullptr; wallElement = MapGetWallElementAt(wallPos))
     {
         reinterpret_cast<TileElement*>(wallElement)->RemoveBannerEntry();
-        MapInvalidateTileZoom1({ wallPos, wallElement->GetBaseZ(), wallElement->GetBaseZ() + 72 });
+        MapInvalidateTileZoom1({ wallPos, wallElement->getBaseZ(), wallElement->getBaseZ() + 72 });
         TileElementRemove(reinterpret_cast<TileElement*>(wallElement));
     }
 }
@@ -49,20 +49,20 @@ void WallRemoveIntersectingWalls(const CoordsXYRangedZ& wallPos, Direction direc
         return;
     do
     {
-        if (tileElement->GetType() != TileElementType::Wall)
+        if (tileElement->getType() != TileElementType::Wall)
             continue;
 
-        if (tileElement->GetClearanceZ() <= wallPos.baseZ || tileElement->GetBaseZ() >= wallPos.clearanceZ)
+        if (tileElement->getClearanceZ() <= wallPos.baseZ || tileElement->getBaseZ() >= wallPos.clearanceZ)
             continue;
 
-        if (direction != tileElement->GetDirection())
+        if (direction != tileElement->getDirection())
             continue;
 
         tileElement->RemoveBannerEntry();
-        MapInvalidateTileZoom1({ wallPos, tileElement->GetBaseZ(), tileElement->GetBaseZ() + 72 });
+        MapInvalidateTileZoom1({ wallPos, tileElement->getBaseZ(), tileElement->getBaseZ() + 72 });
         TileElementRemove(tileElement);
         tileElement--;
-    } while (!(tileElement++)->IsLastForTile());
+    } while (!(tileElement++)->isLastForTile());
 }
 
 #pragma region Edge Slopes Table
@@ -128,18 +128,18 @@ bool WallInTheWay(const CoordsXYRangedZ& fencePos, int32_t direction)
         return false;
     do
     {
-        if (tileElement->GetType() != TileElementType::Wall)
+        if (tileElement->getType() != TileElementType::Wall)
             continue;
-        if (tileElement->IsGhost())
+        if (tileElement->isGhost())
             continue;
-        if (fencePos.baseZ >= tileElement->GetClearanceZ())
+        if (fencePos.baseZ >= tileElement->getClearanceZ())
             continue;
-        if (fencePos.clearanceZ <= tileElement->GetBaseZ())
+        if (fencePos.clearanceZ <= tileElement->getBaseZ())
             continue;
-        if ((tileElement->GetDirection()) != direction)
+        if ((tileElement->getDirection()) != direction)
             continue;
 
         return true;
-    } while (!(tileElement++)->IsLastForTile());
+    } while (!(tileElement++)->isLastForTile());
     return false;
 }

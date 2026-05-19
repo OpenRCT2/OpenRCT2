@@ -314,8 +314,8 @@ static void FixInvalidSurfaces()
             auto& gameState = getGameState();
             if (x == 0 || x == gameState.mapSize.x - 1 || y == 0 || y == gameState.mapSize.y - 1)
             {
-                surfaceElement->SetBaseZ(kMinimumLandZ);
-                surfaceElement->SetClearanceZ(kMinimumLandZ);
+                surfaceElement->setBaseZ(kMinimumLandZ);
+                surfaceElement->setClearanceZ(kMinimumLandZ);
                 surfaceElement->SetSlope(0);
                 surfaceElement->SetWaterHeight(0);
             }

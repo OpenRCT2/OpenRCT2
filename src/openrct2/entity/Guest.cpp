@@ -1204,7 +1204,7 @@ namespace OpenRCT2
                     bool found = false;
                     for (auto* pathElement : TileElementsView<PathElement>(NextLoc))
                     {
-                        if (pathElement->GetBaseZ() != NextLoc.z)
+                        if (pathElement->getBaseZ() != NextLoc.z)
                             continue;
 
                         // Check if the footpath has a queue line TV monitor on it
@@ -2987,24 +2987,24 @@ namespace OpenRCT2
             {
                 for (auto* tileElement : TileElementsView(CoordsXY{ x, y }))
                 {
-                    if (tileElement->IsGhost())
+                    if (tileElement->isGhost())
                     {
                         continue;
                     }
 
-                    switch (tileElement->GetType())
+                    switch (tileElement->getType())
                     {
                         case TileElementType::Path:
                         {
-                            if (!tileElement->AsPath()->HasAddition())
+                            if (!tileElement->asPath()->HasAddition())
                                 break;
 
-                            auto* pathAddEntry = tileElement->AsPath()->GetAdditionEntry();
+                            auto* pathAddEntry = tileElement->asPath()->GetAdditionEntry();
                             if (pathAddEntry == nullptr)
                             {
                                 return PeepThoughtType::None;
                             }
-                            if (tileElement->AsPath()->AdditionIsGhost())
+                            if (tileElement->asPath()->AdditionIsGhost())
                                 break;
 
                             if (pathAddEntry->flags
@@ -3013,7 +3013,7 @@ namespace OpenRCT2
                                 num_fountains++;
                                 break;
                             }
-                            if (tileElement->AsPath()->IsBroken())
+                            if (tileElement->asPath()->IsBroken())
                             {
                                 num_rubbish++;
                             }
@@ -3025,7 +3025,7 @@ namespace OpenRCT2
                             break;
                         case TileElementType::Track:
                         {
-                            auto* ride = GetRide(tileElement->AsTrack()->GetRideIndex());
+                            auto* ride = GetRide(tileElement->asTrack()->GetRideIndex());
                             if (ride == nullptr)
                                 break;
 
@@ -3620,7 +3620,7 @@ namespace OpenRCT2
 
         TileElement* tile_element = RideGetStationStartTrackElement(ride, guest.CurrentRideStation);
 
-        uint8_t direction_track = (tile_element == nullptr ? 0 : tile_element->GetDirection());
+        uint8_t direction_track = (tile_element == nullptr ? 0 : tile_element->getDirection());
 
         guest.Var37 = (entrance_loc.direction << 2) | (direction_track << 4);
 
@@ -3691,7 +3691,7 @@ namespace OpenRCT2
 
         TileElement* tile_element = RideGetStationStartTrackElement(ride, CurrentRideStation);
 
-        uint8_t direction_track = (tile_element == nullptr ? 0 : tile_element->GetDirection());
+        uint8_t direction_track = (tile_element == nullptr ? 0 : tile_element->getDirection());
 
         auto vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[CurrentTrain]);
         if (vehicle == nullptr)
@@ -4255,7 +4255,7 @@ namespace OpenRCT2
                     bool foundStation = false;
                     for (auto* trackElement : TileElementsView<TrackElement>(vehicle->TrackLocation))
                     {
-                        if (trackElement->GetBaseZ() != vehicle->TrackLocation.z)
+                        if (trackElement->getBaseZ() != vehicle->TrackLocation.z)
                             continue;
 
                         if (trackElement->GetStationIndex() != CurrentRideStation)
@@ -4362,7 +4362,7 @@ namespace OpenRCT2
 
         TileElement* trackElement = RideGetStationStartTrackElement(*ride, CurrentRideStation);
 
-        Direction station_direction = (trackElement == nullptr ? 0 : trackElement->GetDirection());
+        Direction station_direction = (trackElement == nullptr ? 0 : trackElement->getDirection());
 
         vehicle = gameState.entities.GetEntity<Vehicle>(ride->vehicles[CurrentTrain]);
         if (vehicle == nullptr)
@@ -5038,22 +5038,22 @@ namespace OpenRCT2
             return;
         do
         {
-            if (stationBaseZ != tileElement->GetBaseZ())
+            if (stationBaseZ != tileElement->getBaseZ())
                 continue;
 
-            if (tileElement->GetType() == TileElementType::Track)
+            if (tileElement->getType() == TileElementType::Track)
             {
                 mazeType = maze_type::hedge;
                 break;
             }
 
-            if (tileElement->GetType() == TileElementType::Entrance
-                && tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_EXIT)
+            if (tileElement->getType() == TileElementType::Entrance
+                && tileElement->asEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_EXIT)
             {
                 mazeType = maze_type::entrance_or_exit;
                 break;
             }
-        } while (!(tileElement++)->IsLastForTile());
+        } while (!(tileElement++)->isLastForTile());
 
         switch (mazeType)
         {
@@ -5131,7 +5131,7 @@ namespace OpenRCT2
         for (auto* pathElement : TileElementsView<PathElement>(targetLoc))
         {
             int16_t height = MapHeightFromSlope(targetLoc, pathElement->GetSlopeDirection(), pathElement->IsSloped());
-            height += pathElement->GetBaseZ();
+            height += pathElement->getBaseZ();
 
             int16_t z_diff = z - height;
             if (z_diff > 0 || z_diff < -16)
@@ -5630,12 +5630,12 @@ namespace OpenRCT2
 
         for (;; tileElement++)
         {
-            if (tileElement->GetType() == TileElementType::Path)
+            if (tileElement->getType() == TileElementType::Path)
             {
-                if (NextLoc.z == tileElement->GetBaseZ())
+                if (NextLoc.z == tileElement->getBaseZ())
                     break;
             }
-            if (tileElement->IsLastForTile())
+            if (tileElement->isLastForTile())
             {
                 return;
             }
@@ -5643,11 +5643,11 @@ namespace OpenRCT2
 
         int32_t positions_free = 15;
 
-        if (tileElement->AsPath()->HasAddition())
+        if (tileElement->asPath()->HasAddition())
         {
-            if (!tileElement->AsPath()->AdditionIsGhost())
+            if (!tileElement->asPath()->AdditionIsGhost())
             {
-                auto* pathAddEntry = tileElement->AsPath()->GetAdditionEntry();
+                auto* pathAddEntry = tileElement->asPath()->GetAdditionEntry();
                 if (pathAddEntry == nullptr)
                 {
                     return;
@@ -5658,7 +5658,7 @@ namespace OpenRCT2
             }
         }
 
-        int32_t edges = (tileElement->AsPath()->GetEdges()) ^ 0xF;
+        int32_t edges = (tileElement->asPath()->GetEdges()) ^ 0xF;
         if (edges == 0)
             return;
 
@@ -6029,7 +6029,7 @@ namespace OpenRCT2
                 PathElement* foundElement = nullptr;
                 for (auto* pathElement : TileElementsView<PathElement>(NextLoc))
                 {
-                    if (pathElement->GetBaseZ() != NextLoc.z)
+                    if (pathElement->getBaseZ() != NextLoc.z)
                         continue;
 
                     if (!pathElement->HasAddition())
@@ -6100,7 +6100,7 @@ namespace OpenRCT2
                 additionStatus |= spaceLeftInBin << selectedBin;
                 foundElement->SetAdditionStatus(additionStatus);
 
-                MapInvalidateTileZoom0({ NextLoc, foundElement->GetBaseZ(), foundElement->GetClearanceZ() });
+                MapInvalidateTileZoom0({ NextLoc, foundElement->getBaseZ(), foundElement->getClearanceZ() });
                 StateReset();
                 break;
             }
@@ -6141,7 +6141,7 @@ namespace OpenRCT2
     {
         for (auto* pathElement : TileElementsView<PathElement>(loc))
         {
-            if (pathElement->GetBaseZ() != loc.z)
+            if (pathElement->getBaseZ() != loc.z)
                 continue;
 
             if (!pathElement->HasAddition())
@@ -6230,7 +6230,7 @@ namespace OpenRCT2
     {
         for (auto* pathElement : TileElementsView<PathElement>(loc))
         {
-            if (pathElement->GetBaseZ() != loc.z)
+            if (pathElement->getBaseZ() != loc.z)
                 continue;
 
             if (!pathElement->HasAddition())
@@ -6308,7 +6308,7 @@ namespace OpenRCT2
     {
         for (auto* pathElement : TileElementsView<PathElement>(loc))
         {
-            if (pathElement->GetBaseZ() != loc.z)
+            if (pathElement->getBaseZ() != loc.z)
                 continue;
 
             if (!pathElement->HasAddition())
@@ -6395,7 +6395,7 @@ namespace OpenRCT2
 
         tileElement->SetIsBroken(true);
 
-        MapInvalidateTileZoom1({ guest.NextLoc, tileElement->GetBaseZ(), tileElement->GetBaseZ() + 32 });
+        MapInvalidateTileZoom1({ guest.NextLoc, tileElement->getBaseZ(), tileElement->getBaseZ() + 32 });
 
         guest.Angriness = 16;
     }
@@ -6411,11 +6411,11 @@ namespace OpenRCT2
         // as that may lead to a desync.
         if (Network::GetMode() != Network::Mode::none)
         {
-            if (tileElement->IsGhost())
+            if (tileElement->isGhost())
                 return false;
         }
 
-        auto ride = GetRide(tileElement->AsTrack()->GetRideIndex());
+        auto ride = GetRide(tileElement->asTrack()->GetRideIndex());
         if (ride == nullptr || !ride->isRide())
         {
             return false;
@@ -6461,7 +6461,7 @@ namespace OpenRCT2
 
     bool Loc690FD0(Guest& guest, RideId* rideToView, uint8_t* rideSeatToView, TileElement* tileElement)
     {
-        auto ride = GetRide(tileElement->AsTrack()->GetRideIndex());
+        auto ride = GetRide(tileElement->asTrack()->GetRideIndex());
         if (ride == nullptr)
             return false;
 
@@ -6471,7 +6471,7 @@ namespace OpenRCT2
             *rideSeatToView = 1;
             if (ride->status != RideStatus::open)
             {
-                if (tileElement->GetClearanceZ() > guest.NextLoc.z + (8 * kCoordsZStep))
+                if (tileElement->getClearanceZ() > guest.NextLoc.z + (8 * kCoordsZStep))
                 {
                     *rideSeatToView |= (1 << 1);
                 }
@@ -6484,7 +6484,7 @@ namespace OpenRCT2
             *rideSeatToView = 0;
             if (ride->status == RideStatus::open && !ride->flags.has(RideFlag::brokenDown))
             {
-                if (tileElement->GetClearanceZ() > guest.NextLoc.z + (8 * kCoordsZStep))
+                if (tileElement->getClearanceZ() > guest.NextLoc.z + (8 * kCoordsZStep))
                 {
                     *rideSeatToView = 0x02;
                 }
@@ -6521,23 +6521,23 @@ namespace OpenRCT2
             // as that may lead to a desync.
             if (Network::GetMode() != Network::Mode::none)
             {
-                if (tileElement->IsGhost())
+                if (tileElement->isGhost())
                     continue;
             }
-            if (tileElement->GetType() != TileElementType::Wall)
+            if (tileElement->getType() != TileElementType::Wall)
                 continue;
-            if (tileElement->GetDirection() != edge)
+            if (tileElement->getDirection() != edge)
                 continue;
-            auto wallEntry = tileElement->AsWall()->GetEntry();
+            auto wallEntry = tileElement->asWall()->GetEntry();
             if (wallEntry == nullptr || (wallEntry->flags2 & WALL_SCENERY_2_IS_OPAQUE))
                 continue;
-            if (guest.NextLoc.z + (4 * kCoordsZStep) <= tileElement->GetBaseZ())
+            if (guest.NextLoc.z + (4 * kCoordsZStep) <= tileElement->getBaseZ())
                 continue;
-            if (guest.NextLoc.z + (1 * kCoordsZStep) >= tileElement->GetClearanceZ())
+            if (guest.NextLoc.z + (1 * kCoordsZStep) >= tileElement->getClearanceZ())
                 continue;
 
             return false;
-        } while (!(tileElement++)->IsLastForTile());
+        } while (!(tileElement++)->isLastForTile());
 
         uint16_t x = guest.NextLoc.x + CoordsDirectionDelta[edge].x;
         uint16_t y = guest.NextLoc.y + CoordsDirectionDelta[edge].y;
@@ -6560,24 +6560,24 @@ namespace OpenRCT2
             // as that may lead to a desync.
             if (Network::GetMode() != Network::Mode::none)
             {
-                if (tileElement->IsGhost())
+                if (tileElement->isGhost())
                     continue;
             }
-            if (tileElement->GetType() != TileElementType::Wall)
+            if (tileElement->getType() != TileElementType::Wall)
                 continue;
-            if (DirectionReverse(tileElement->GetDirection()) != edge)
+            if (DirectionReverse(tileElement->getDirection()) != edge)
                 continue;
-            auto wallEntry = tileElement->AsWall()->GetEntry();
+            auto wallEntry = tileElement->asWall()->GetEntry();
             if (wallEntry == nullptr || (wallEntry->flags2 & WALL_SCENERY_2_IS_OPAQUE))
                 continue;
             // TODO: Check whether this shouldn't be <=, as the other loops use. If so, also extract as loop A.
-            if (guest.NextLoc.z + (4 * kCoordsZStep) >= tileElement->GetBaseZ())
+            if (guest.NextLoc.z + (4 * kCoordsZStep) >= tileElement->getBaseZ())
                 continue;
-            if (guest.NextLoc.z + (1 * kCoordsZStep) >= tileElement->GetClearanceZ())
+            if (guest.NextLoc.z + (1 * kCoordsZStep) >= tileElement->getClearanceZ())
                 continue;
 
             return false;
-        } while (!(tileElement++)->IsLastForTile());
+        } while (!(tileElement++)->isLastForTile());
 
         // TODO: Extract loop B
         tileElement = reinterpret_cast<TileElement*>(surfaceElement);
@@ -6587,16 +6587,16 @@ namespace OpenRCT2
             // as that may lead to a desync.
             if (Network::GetMode() != Network::Mode::none)
             {
-                if (tileElement->IsGhost())
+                if (tileElement->isGhost())
                     continue;
             }
 
-            if (tileElement->GetClearanceZ() + (1 * kCoordsZStep) < guest.NextLoc.z)
+            if (tileElement->getClearanceZ() + (1 * kCoordsZStep) < guest.NextLoc.z)
                 continue;
-            if (guest.NextLoc.z + (6 * kCoordsZStep) < tileElement->GetBaseZ())
+            if (guest.NextLoc.z + (6 * kCoordsZStep) < tileElement->getBaseZ())
                 continue;
 
-            if (tileElement->GetType() == TileElementType::Track)
+            if (tileElement->getType() == TileElementType::Track)
             {
                 if (PeepShouldWatchRide(tileElement))
                 {
@@ -6604,16 +6604,16 @@ namespace OpenRCT2
                 }
             }
 
-            if (tileElement->GetType() == TileElementType::LargeScenery)
+            if (tileElement->getType() == TileElementType::LargeScenery)
             {
-                const auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
+                const auto* sceneryEntry = tileElement->asLargeScenery()->GetEntry();
                 if (sceneryEntry == nullptr || !sceneryEntry->flags.has(LargeSceneryFlag::isPhotogenic))
                 {
                     continue;
                 }
 
                 *rideSeatToView = 0;
-                if (tileElement->GetClearanceZ() >= guest.NextLoc.z + (8 * kCoordsZStep))
+                if (tileElement->getClearanceZ() >= guest.NextLoc.z + (8 * kCoordsZStep))
                 {
                     *rideSeatToView = 0x02;
                 }
@@ -6622,7 +6622,7 @@ namespace OpenRCT2
 
                 return true;
             }
-        } while (!(tileElement++)->IsLastForTile());
+        } while (!(tileElement++)->isLastForTile());
 
         // TODO: Extract loop C
         tileElement = reinterpret_cast<TileElement*>(surfaceElement);
@@ -6632,21 +6632,21 @@ namespace OpenRCT2
             // as that may lead to a desync.
             if (Network::GetMode() != Network::Mode::none)
             {
-                if (tileElement->IsGhost())
+                if (tileElement->isGhost())
                     continue;
             }
-            if (tileElement->GetClearanceZ() + (1 * kCoordsZStep) < guest.NextLoc.z)
+            if (tileElement->getClearanceZ() + (1 * kCoordsZStep) < guest.NextLoc.z)
                 continue;
-            if (guest.NextLoc.z + (6 * kCoordsZStep) < tileElement->GetBaseZ())
+            if (guest.NextLoc.z + (6 * kCoordsZStep) < tileElement->getBaseZ())
                 continue;
-            if (tileElement->GetType() == TileElementType::Surface)
+            if (tileElement->getType() == TileElementType::Surface)
                 continue;
-            if (tileElement->GetType() == TileElementType::Path)
+            if (tileElement->getType() == TileElementType::Path)
                 continue;
 
-            if (tileElement->GetType() == TileElementType::Wall)
+            if (tileElement->getType() == TileElementType::Wall)
             {
-                auto wallEntry = tileElement->AsWall()->GetEntry();
+                auto wallEntry = tileElement->asWall()->GetEntry();
                 if (wallEntry == nullptr || (wallEntry->flags2 & WALL_SCENERY_2_IS_OPAQUE))
                 {
                     continue;
@@ -6654,7 +6654,7 @@ namespace OpenRCT2
             }
 
             return false;
-        } while (!(tileElement++)->IsLastForTile());
+        } while (!(tileElement++)->isLastForTile());
 
         x += CoordsDirectionDelta[edge].x;
         y += CoordsDirectionDelta[edge].y;
@@ -6679,23 +6679,23 @@ namespace OpenRCT2
             // as that may lead to a desync.
             if (Network::GetMode() != Network::Mode::none)
             {
-                if (tileElement->IsGhost())
+                if (tileElement->isGhost())
                     continue;
             }
-            if (tileElement->GetType() != TileElementType::Wall)
+            if (tileElement->getType() != TileElementType::Wall)
                 continue;
-            if (DirectionReverse(tileElement->GetDirection()) != edge)
+            if (DirectionReverse(tileElement->getDirection()) != edge)
                 continue;
-            auto wallEntry = tileElement->AsWall()->GetEntry();
+            auto wallEntry = tileElement->asWall()->GetEntry();
             if (wallEntry == nullptr || (wallEntry->flags2 & WALL_SCENERY_2_IS_OPAQUE))
                 continue;
-            if (guest.NextLoc.z + (6 * kCoordsZStep) <= tileElement->GetBaseZ())
+            if (guest.NextLoc.z + (6 * kCoordsZStep) <= tileElement->getBaseZ())
                 continue;
-            if (guest.NextLoc.z >= tileElement->GetClearanceZ())
+            if (guest.NextLoc.z >= tileElement->getClearanceZ())
                 continue;
 
             return false;
-        } while (!(tileElement++)->IsLastForTile());
+        } while (!(tileElement++)->isLastForTile());
 
         // TODO: Extract loop B
         tileElement = reinterpret_cast<TileElement*>(surfaceElement);
@@ -6705,15 +6705,15 @@ namespace OpenRCT2
             // as that may lead to a desync.
             if (Network::GetMode() != Network::Mode::none)
             {
-                if (tileElement->IsGhost())
+                if (tileElement->isGhost())
                     continue;
             }
-            if (tileElement->GetClearanceZ() + (1 * kCoordsZStep) < guest.NextLoc.z)
+            if (tileElement->getClearanceZ() + (1 * kCoordsZStep) < guest.NextLoc.z)
                 continue;
-            if (guest.NextLoc.z + (8 * kCoordsZStep) < tileElement->GetBaseZ())
+            if (guest.NextLoc.z + (8 * kCoordsZStep) < tileElement->getBaseZ())
                 continue;
 
-            if (tileElement->GetType() == TileElementType::Track)
+            if (tileElement->getType() == TileElementType::Track)
             {
                 if (PeepShouldWatchRide(tileElement))
                 {
@@ -6721,16 +6721,16 @@ namespace OpenRCT2
                 }
             }
 
-            if (tileElement->GetType() == TileElementType::LargeScenery)
+            if (tileElement->getType() == TileElementType::LargeScenery)
             {
-                auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
+                auto* sceneryEntry = tileElement->asLargeScenery()->GetEntry();
                 if (!(sceneryEntry == nullptr || sceneryEntry->flags.has(LargeSceneryFlag::isPhotogenic)))
                 {
                     continue;
                 }
 
                 *rideSeatToView = 0;
-                if (tileElement->GetClearanceZ() >= guest.NextLoc.z + (8 * kCoordsZStep))
+                if (tileElement->getClearanceZ() >= guest.NextLoc.z + (8 * kCoordsZStep))
                 {
                     *rideSeatToView = 0x02;
                 }
@@ -6739,7 +6739,7 @@ namespace OpenRCT2
 
                 return true;
             }
-        } while (!(tileElement++)->IsLastForTile());
+        } while (!(tileElement++)->isLastForTile());
 
         // TODO: Extract loop C
         tileElement = reinterpret_cast<TileElement*>(surfaceElement);
@@ -6749,21 +6749,21 @@ namespace OpenRCT2
             // as that may lead to a desync.
             if (Network::GetMode() != Network::Mode::none)
             {
-                if (tileElement->IsGhost())
+                if (tileElement->isGhost())
                     continue;
             }
-            if (tileElement->GetClearanceZ() + (1 * kCoordsZStep) < guest.NextLoc.z)
+            if (tileElement->getClearanceZ() + (1 * kCoordsZStep) < guest.NextLoc.z)
                 continue;
-            if (guest.NextLoc.z + (8 * kCoordsZStep) < tileElement->GetBaseZ())
+            if (guest.NextLoc.z + (8 * kCoordsZStep) < tileElement->getBaseZ())
                 continue;
-            if (tileElement->GetType() == TileElementType::Surface)
+            if (tileElement->getType() == TileElementType::Surface)
                 continue;
-            if (tileElement->GetType() == TileElementType::Path)
+            if (tileElement->getType() == TileElementType::Path)
                 continue;
 
-            if (tileElement->GetType() == TileElementType::Wall)
+            if (tileElement->getType() == TileElementType::Wall)
             {
-                auto wallEntry = tileElement->AsWall()->GetEntry();
+                auto wallEntry = tileElement->asWall()->GetEntry();
                 if (wallEntry == nullptr || (wallEntry->flags2 & WALL_SCENERY_2_IS_OPAQUE))
                 {
                     continue;
@@ -6771,7 +6771,7 @@ namespace OpenRCT2
             }
 
             return false;
-        } while (!(tileElement++)->IsLastForTile());
+        } while (!(tileElement++)->isLastForTile());
 
         x += CoordsDirectionDelta[edge].x;
         y += CoordsDirectionDelta[edge].y;
@@ -6795,23 +6795,23 @@ namespace OpenRCT2
             // as that may lead to a desync.
             if (Network::GetMode() != Network::Mode::none)
             {
-                if (tileElement->IsGhost())
+                if (tileElement->isGhost())
                     continue;
             }
-            if (tileElement->GetType() != TileElementType::Wall)
+            if (tileElement->getType() != TileElementType::Wall)
                 continue;
-            if (DirectionReverse(tileElement->GetDirection()) != edge)
+            if (DirectionReverse(tileElement->getDirection()) != edge)
                 continue;
-            auto wallEntry = tileElement->AsWall()->GetEntry();
+            auto wallEntry = tileElement->asWall()->GetEntry();
             if (wallEntry == nullptr || (wallEntry->flags2 & WALL_SCENERY_2_IS_OPAQUE))
                 continue;
-            if (guest.NextLoc.z + (8 * kCoordsZStep) <= tileElement->GetBaseZ())
+            if (guest.NextLoc.z + (8 * kCoordsZStep) <= tileElement->getBaseZ())
                 continue;
-            if (guest.NextLoc.z >= tileElement->GetClearanceZ())
+            if (guest.NextLoc.z >= tileElement->getClearanceZ())
                 continue;
 
             return false;
-        } while (!(tileElement++)->IsLastForTile());
+        } while (!(tileElement++)->isLastForTile());
 
         // TODO: Extract loop B
         tileElement = reinterpret_cast<TileElement*>(surfaceElement);
@@ -6821,15 +6821,15 @@ namespace OpenRCT2
             // as that may lead to a desync.
             if (Network::GetMode() != Network::Mode::none)
             {
-                if (tileElement->IsGhost())
+                if (tileElement->isGhost())
                     continue;
             }
-            if (tileElement->GetClearanceZ() + (1 * kCoordsZStep) < guest.NextLoc.z)
+            if (tileElement->getClearanceZ() + (1 * kCoordsZStep) < guest.NextLoc.z)
                 continue;
-            if (guest.NextLoc.z + (10 * kCoordsZStep) < tileElement->GetBaseZ())
+            if (guest.NextLoc.z + (10 * kCoordsZStep) < tileElement->getBaseZ())
                 continue;
 
-            if (tileElement->GetType() == TileElementType::Track)
+            if (tileElement->getType() == TileElementType::Track)
             {
                 if (PeepShouldWatchRide(tileElement))
                 {
@@ -6837,16 +6837,16 @@ namespace OpenRCT2
                 }
             }
 
-            if (tileElement->GetType() == TileElementType::LargeScenery)
+            if (tileElement->getType() == TileElementType::LargeScenery)
             {
-                const auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
+                const auto* sceneryEntry = tileElement->asLargeScenery()->GetEntry();
                 if (sceneryEntry == nullptr || !sceneryEntry->flags.has(LargeSceneryFlag::isPhotogenic))
                 {
                     continue;
                 }
 
                 *rideSeatToView = 0;
-                if (tileElement->GetClearanceZ() >= guest.NextLoc.z + (8 * kCoordsZStep))
+                if (tileElement->getClearanceZ() >= guest.NextLoc.z + (8 * kCoordsZStep))
                 {
                     *rideSeatToView = 0x02;
                 }
@@ -6855,7 +6855,7 @@ namespace OpenRCT2
 
                 return true;
             }
-        } while (!(tileElement++)->IsLastForTile());
+        } while (!(tileElement++)->isLastForTile());
 
         return false;
     }
@@ -6973,10 +6973,10 @@ namespace OpenRCT2
                 {
                     if (tileElement == nullptr)
                         break;
-                    if (z < tileElement->GetBaseZ())
+                    if (z < tileElement->getBaseZ())
                         break;
 
-                    if (tileElement->IsLastForTile())
+                    if (tileElement->isLastForTile())
                     {
                         SetAnimationGroup(PeepAnimationGroup::umbrella);
                         return;

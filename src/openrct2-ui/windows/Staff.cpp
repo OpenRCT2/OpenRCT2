@@ -717,7 +717,7 @@ namespace OpenRCT2::Ui::Windows
 
             GameActions::PeepPickupAction pickupAction{ GameActions::PeepPickupType::Place,
                                                         staffEntityId,
-                                                        { destCoords, tileElement->GetBaseZ() },
+                                                        { destCoords, tileElement->getBaseZ() },
                                                         Network::GetCurrentPlayerId() };
             pickupAction.SetCallback([](const GameActions::GameAction* ga, const GameActions::Result* result) {
                 if (result->error != GameActions::Status::ok)

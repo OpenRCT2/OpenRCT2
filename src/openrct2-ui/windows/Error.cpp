@@ -108,7 +108,7 @@ namespace OpenRCT2::Ui::Windows
             buffer.append(message);
         }
 
-        LOG_VERBOSE("show error, %s", buffer.c_str() + 1);
+        LOG_VERBOSE("show error, %s", buffer.c_str());
 
         // Don't do unnecessary work in headless. Also saves checking if cursor state is null.
         if (gOpenRCT2Headless)

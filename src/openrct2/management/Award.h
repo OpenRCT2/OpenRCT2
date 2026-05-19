@@ -40,8 +40,8 @@ static_assert(static_cast<uint32_t>(AwardType::count) < 32); // Awards are used 
 
 struct Award
 {
-    uint16_t Time;
-    AwardType Type;
+    uint16_t time;
+    AwardType type;
 };
 
 bool AwardIsPositive(AwardType type);

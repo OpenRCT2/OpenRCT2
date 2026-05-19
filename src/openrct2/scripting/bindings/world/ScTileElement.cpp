@@ -40,7 +40,7 @@ namespace OpenRCT2::Scripting
 {
     static inline std::string TileElementTypeToString(const TileElement* element)
     {
-        switch (element->GetType())
+        switch (element->getType())
         {
             case TileElementType::Surface:
                 return "surface";
@@ -89,21 +89,21 @@ namespace OpenRCT2::Scripting
         auto element = data->element;
         RemoveBannerEntryIfNeeded(element, data->coords);
         if (value == "surface")
-            element->SetType(TileElementType::Surface);
+            element->setType(TileElementType::Surface);
         else if (value == "footpath")
-            element->SetType(TileElementType::Path);
+            element->setType(TileElementType::Path);
         else if (value == "track")
-            element->SetType(TileElementType::Track);
+            element->setType(TileElementType::Track);
         else if (value == "small_scenery")
-            element->SetType(TileElementType::SmallScenery);
+            element->setType(TileElementType::SmallScenery);
         else if (value == "entrance")
-            element->SetType(TileElementType::Entrance);
+            element->setType(TileElementType::Entrance);
         else if (value == "wall")
-            element->SetType(TileElementType::Wall);
+            element->setType(TileElementType::Wall);
         else if (value == "large_scenery")
-            element->SetType(TileElementType::LargeScenery);
+            element->setType(TileElementType::LargeScenery);
         else if (value == "banner")
-            element->SetType(TileElementType::Banner);
+            element->setType(TileElementType::Banner);
         else
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
@@ -119,14 +119,14 @@ namespace OpenRCT2::Scripting
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
         auto element = data->element;
-        return JS_NewUint32(ctx, element->BaseHeight);
+        return JS_NewUint32(ctx, element->baseHeight);
     }
     JSValue ScTileElement::baseHeight_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
     {
         JS_UNPACK_UINT32(newBaseHeight, ctx, jsValue);
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        data->element->BaseHeight = newBaseHeight;
+        data->element->baseHeight = newBaseHeight;
         Invalidate(data);
         return JS_UNDEFINED;
     }
@@ -135,14 +135,14 @@ namespace OpenRCT2::Scripting
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
         auto element = data->element;
-        return JS_NewUint32(ctx, element->GetBaseZ());
+        return JS_NewUint32(ctx, element->getBaseZ());
     }
     JSValue ScTileElement::baseZ_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
     {
         JS_UNPACK_UINT32(value, ctx, jsValue);
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        data->element->SetBaseZ(value);
+        data->element->setBaseZ(value);
         Invalidate(data);
         return JS_UNDEFINED;
     }
@@ -151,14 +151,14 @@ namespace OpenRCT2::Scripting
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
         auto element = data->element;
-        return JS_NewUint32(ctx, element->ClearanceHeight);
+        return JS_NewUint32(ctx, element->clearanceHeight);
     }
     JSValue ScTileElement::clearanceHeight_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
     {
         JS_UNPACK_UINT32(newClearanceHeight, ctx, jsValue);
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        data->element->ClearanceHeight = newClearanceHeight;
+        data->element->clearanceHeight = newClearanceHeight;
         Invalidate(data);
         return JS_UNDEFINED;
     }
@@ -167,14 +167,14 @@ namespace OpenRCT2::Scripting
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
         auto element = data->element;
-        return JS_NewUint32(ctx, element->GetClearanceZ());
+        return JS_NewUint32(ctx, element->getClearanceZ());
     }
     JSValue ScTileElement::clearanceZ_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
     {
         JS_UNPACK_UINT32(value, ctx, jsValue);
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        data->element->SetClearanceZ(value);
+        data->element->setClearanceZ(value);
         Invalidate(data);
         return JS_UNDEFINED;
     }
@@ -183,16 +183,16 @@ namespace OpenRCT2::Scripting
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
         auto element = data->element;
-        switch (element->GetType())
+        switch (element->getType())
         {
             case TileElementType::Surface:
             {
-                auto* el = element->AsSurface();
+                auto* el = element->asSurface();
                 return JS_NewUint32(ctx, el->GetSlope());
             }
             case TileElementType::Wall:
             {
-                auto* el = element->AsWall();
+                auto* el = element->asWall();
                 return JS_NewUint32(ctx, el->GetSlope());
             }
             default:
@@ -210,17 +210,17 @@ namespace OpenRCT2::Scripting
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
         auto element = data->element;
-        const auto type = element->GetType();
+        const auto type = element->getType();
 
         if (type == TileElementType::Surface)
         {
-            auto* el = element->AsSurface();
+            auto* el = element->asSurface();
             el->SetSlope(value);
             Invalidate(data);
         }
         else if (type == TileElementType::Wall)
         {
-            auto* el = element->AsWall();
+            auto* el = element->asWall();
             el->SetSlope(value);
             Invalidate(data);
         }
@@ -235,7 +235,7 @@ namespace OpenRCT2::Scripting
     JSValue ScTileElement::waterHeight_get(JSContext* ctx, JSValue thisValue)
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsSurface();
+        auto* el = data->element->asSurface();
         if (el != nullptr)
         {
             return JS_NewInt32(ctx, el->GetWaterHeight());
@@ -252,7 +252,7 @@ namespace OpenRCT2::Scripting
         JS_UNPACK_INT32(value, ctx, jsValue);
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsSurface();
+        auto* el = data->element->asSurface();
         if (el == nullptr)
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
@@ -268,7 +268,7 @@ namespace OpenRCT2::Scripting
     JSValue ScTileElement::surfaceStyle_get(JSContext* ctx, JSValue thisValue)
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsSurface();
+        auto* el = data->element->asSurface();
         if (el != nullptr)
         {
             return JS_NewUint32(ctx, el->GetSurfaceObjectIndex());
@@ -285,7 +285,7 @@ namespace OpenRCT2::Scripting
         JS_UNPACK_UINT32(value, ctx, jsValue);
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsSurface();
+        auto* el = data->element->asSurface();
         if (el == nullptr)
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
@@ -301,7 +301,7 @@ namespace OpenRCT2::Scripting
     JSValue ScTileElement::edgeStyle_get(JSContext* ctx, JSValue thisValue)
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsSurface();
+        auto* el = data->element->asSurface();
         if (el != nullptr)
         {
             return JS_NewUint32(ctx, el->GetEdgeObjectIndex());
@@ -318,7 +318,7 @@ namespace OpenRCT2::Scripting
         JS_UNPACK_UINT32(value, ctx, jsValue);
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsSurface();
+        auto* el = data->element->asSurface();
         if (el == nullptr)
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
@@ -334,7 +334,7 @@ namespace OpenRCT2::Scripting
     JSValue ScTileElement::grassLength_get(JSContext* ctx, JSValue thisValue)
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsSurface();
+        auto* el = data->element->asSurface();
         if (el != nullptr)
         {
             return JS_NewUint32(ctx, el->GetGrassLength());
@@ -351,7 +351,7 @@ namespace OpenRCT2::Scripting
         JS_UNPACK_UINT32(value, ctx, jsValue);
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsSurface();
+        auto* el = data->element->asSurface();
         if (el == nullptr)
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
@@ -368,7 +368,7 @@ namespace OpenRCT2::Scripting
     JSValue ScTileElement::hasOwnership_get(JSContext* ctx, JSValue thisValue)
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsSurface();
+        auto* el = data->element->asSurface();
         if (el != nullptr)
         {
             return JS_NewBool(ctx, el->GetOwnership() & OWNERSHIP_OWNED);
@@ -384,7 +384,7 @@ namespace OpenRCT2::Scripting
     JSValue ScTileElement::hasConstructionRights_get(JSContext* ctx, JSValue thisValue)
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsSurface();
+        auto* el = data->element->asSurface();
         if (el != nullptr)
         {
             auto ownership = el->GetOwnership();
@@ -401,7 +401,7 @@ namespace OpenRCT2::Scripting
     JSValue ScTileElement::ownership_get(JSContext* ctx, JSValue thisValue)
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsSurface();
+        auto* el = data->element->asSurface();
         if (el != nullptr)
         {
             return JS_NewUint32(ctx, el->GetOwnership());
@@ -418,7 +418,7 @@ namespace OpenRCT2::Scripting
         JS_UNPACK_UINT32(value, ctx, jsValue);
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsSurface();
+        auto* el = data->element->asSurface();
         if (el == nullptr)
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
@@ -434,7 +434,7 @@ namespace OpenRCT2::Scripting
     JSValue ScTileElement::parkFences_get(JSContext* ctx, JSValue thisValue)
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsSurface();
+        auto* el = data->element->asSurface();
         if (el != nullptr)
         {
             return JS_NewUint32(ctx, el->GetParkFences());
@@ -451,7 +451,7 @@ namespace OpenRCT2::Scripting
         JS_UNPACK_UINT32(value, ctx, jsValue);
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsSurface();
+        auto* el = data->element->asSurface();
         if (el == nullptr)
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
@@ -466,7 +466,7 @@ namespace OpenRCT2::Scripting
     JSValue ScTileElement::trackType_get(JSContext* ctx, JSValue thisValue)
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsTrack();
+        auto* el = data->element->asTrack();
         if (el != nullptr)
         {
             return JS_NewUint32(ctx, EnumValue(el->GetTrackType()));
@@ -483,7 +483,7 @@ namespace OpenRCT2::Scripting
         JS_UNPACK_UINT32(value, ctx, jsValue);
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsTrack();
+        auto* el = data->element->asTrack();
         if (el == nullptr)
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
@@ -499,7 +499,7 @@ namespace OpenRCT2::Scripting
     JSValue ScTileElement::rideType_get(JSContext* ctx, JSValue thisValue)
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsTrack();
+        auto* el = data->element->asTrack();
         if (el != nullptr)
         {
             return JS_NewUint32(ctx, el->GetRideType());
@@ -524,7 +524,7 @@ namespace OpenRCT2::Scripting
         }
 
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsTrack();
+        auto* el = data->element->asTrack();
         if (el == nullptr)
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
@@ -541,16 +541,16 @@ namespace OpenRCT2::Scripting
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
         auto element = data->element;
-        switch (element->GetType())
+        switch (element->getType())
         {
             case TileElementType::LargeScenery:
             {
-                auto* el = element->AsLargeScenery();
+                auto* el = element->asLargeScenery();
                 return JS_NewUint32(ctx, el->GetSequenceIndex());
             }
             case TileElementType::Track:
             {
-                auto* el = element->AsTrack();
+                auto* el = element->asTrack();
                 auto* ride = GetRide(el->GetRideIndex());
 
                 if (ride != nullptr)
@@ -568,7 +568,7 @@ namespace OpenRCT2::Scripting
             }
             case TileElementType::Entrance:
             {
-                auto* el = element->AsEntrance();
+                auto* el = element->asEntrance();
                 return JS_NewUint32(ctx, el->GetSequenceIndex());
             }
             default:
@@ -588,12 +588,12 @@ namespace OpenRCT2::Scripting
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
         auto element = data->element;
 
-        switch (element->GetType())
+        switch (element->getType())
         {
             case TileElementType::LargeScenery:
             {
                 RemoveBannerEntryIfNeeded(element, data->coords);
-                auto* el = element->AsLargeScenery();
+                auto* el = element->asLargeScenery();
                 el->SetSequenceIndex(value);
                 CreateBannerEntryIfNeeded(element, data->coords);
                 Invalidate(data);
@@ -601,7 +601,7 @@ namespace OpenRCT2::Scripting
             }
             case TileElementType::Track:
             {
-                auto* el = element->AsTrack();
+                auto* el = element->asTrack();
                 auto ride = GetRide(el->GetRideIndex());
 
                 if (ride != nullptr)
@@ -621,7 +621,7 @@ namespace OpenRCT2::Scripting
             }
             case TileElementType::Entrance:
             {
-                auto* el = element->AsEntrance();
+                auto* el = element->asEntrance();
                 el->SetSequenceIndex(value);
                 Invalidate(data);
                 break;
@@ -642,11 +642,11 @@ namespace OpenRCT2::Scripting
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
         auto element = data->element;
-        switch (element->GetType())
+        switch (element->getType())
         {
             case TileElementType::Path:
             {
-                auto* el = element->AsPath();
+                auto* el = element->asPath();
                 if (!el->IsQueue())
                 {
                     auto& scriptEngine = GetContext()->GetScriptEngine();
@@ -661,12 +661,12 @@ namespace OpenRCT2::Scripting
             }
             case TileElementType::Track:
             {
-                auto* el = element->AsTrack();
+                auto* el = element->asTrack();
                 return JS_NewUint32(ctx, el->GetRideIndex().ToUnderlying());
             }
             case TileElementType::Entrance:
             {
-                auto* el = element->AsEntrance();
+                auto* el = element->asEntrance();
                 return JS_NewUint32(ctx, el->GetRideIndex().ToUnderlying());
             }
             default:
@@ -684,11 +684,11 @@ namespace OpenRCT2::Scripting
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
         auto element = data->element;
 
-        switch (element->GetType())
+        switch (element->getType())
         {
             case TileElementType::Path:
             {
-                auto* el = element->AsPath();
+                auto* el = element->asPath();
                 if (!el->IsQueue())
                 {
                     auto& scriptEngine = GetContext()->GetScriptEngine();
@@ -724,7 +724,7 @@ namespace OpenRCT2::Scripting
                 }
 
                 JS_UNPACK_UINT32(value, ctx, jsValue);
-                auto* el = element->AsTrack();
+                auto* el = element->asTrack();
                 el->SetRideIndex(RideId::FromUnderlying(value));
                 Invalidate(data);
                 break;
@@ -739,7 +739,7 @@ namespace OpenRCT2::Scripting
                 }
 
                 JS_UNPACK_UINT32(value, ctx, jsValue);
-                auto* el = element->AsEntrance();
+                auto* el = element->asEntrance();
                 el->SetRideIndex(RideId::FromUnderlying(value));
                 Invalidate(data);
                 break;
@@ -759,11 +759,11 @@ namespace OpenRCT2::Scripting
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
         auto element = data->element;
-        switch (element->GetType())
+        switch (element->getType())
         {
             case TileElementType::Path:
             {
-                auto* el = element->AsPath();
+                auto* el = element->asPath();
                 if (!el->IsQueue())
                 {
                     auto& scriptEngine = GetContext()->GetScriptEngine();
@@ -785,7 +785,7 @@ namespace OpenRCT2::Scripting
             }
             case TileElementType::Track:
             {
-                auto* el = element->AsTrack();
+                auto* el = element->asTrack();
                 if (!el->IsStation())
                 {
                     auto& scriptEngine = GetContext()->GetScriptEngine();
@@ -797,7 +797,7 @@ namespace OpenRCT2::Scripting
             }
             case TileElementType::Entrance:
             {
-                auto* el = element->AsEntrance();
+                auto* el = element->asEntrance();
                 return JS_NewUint32(ctx, el->GetStationIndex().ToUnderlying());
             }
             default:
@@ -815,11 +815,11 @@ namespace OpenRCT2::Scripting
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
         auto element = data->element;
 
-        switch (element->GetType())
+        switch (element->getType())
         {
             case TileElementType::Path:
             {
-                auto* el = element->AsPath();
+                auto* el = element->asPath();
                 if (JS_IsNumber(jsValue))
                 {
                     JS_UNPACK_UINT32(value, ctx, jsValue);
@@ -848,7 +848,7 @@ namespace OpenRCT2::Scripting
                 }
 
                 JS_UNPACK_UINT32(value, ctx, jsValue);
-                auto* el = element->AsTrack();
+                auto* el = element->asTrack();
                 el->SetStationIndex(StationIndex::FromUnderlying(value));
                 Invalidate(data);
                 break;
@@ -863,7 +863,7 @@ namespace OpenRCT2::Scripting
                 }
 
                 JS_UNPACK_UINT32(value, ctx, jsValue);
-                auto* el = element->AsEntrance();
+                auto* el = element->asEntrance();
                 el->SetStationIndex(StationIndex::FromUnderlying(value));
                 Invalidate(data);
                 break;
@@ -877,7 +877,7 @@ namespace OpenRCT2::Scripting
     JSValue ScTileElement::hasChainLift_get(JSContext* ctx, JSValue thisValue)
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsTrack();
+        auto* el = data->element->asTrack();
         if (el != nullptr)
         {
             return JS_NewBool(ctx, el->HasChain());
@@ -894,7 +894,7 @@ namespace OpenRCT2::Scripting
         JS_UNPACK_BOOL(value, ctx, jsValue);
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsTrack();
+        auto* el = data->element->asTrack();
         if (el == nullptr)
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
@@ -910,7 +910,7 @@ namespace OpenRCT2::Scripting
     JSValue ScTileElement::mazeEntry_get(JSContext* ctx, JSValue thisValue)
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsTrack();
+        auto* el = data->element->asTrack();
         if (el == nullptr)
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
@@ -948,7 +948,7 @@ namespace OpenRCT2::Scripting
         }
 
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsTrack();
+        auto* el = data->element->asTrack();
         if (el == nullptr)
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
@@ -981,7 +981,7 @@ namespace OpenRCT2::Scripting
     JSValue ScTileElement::colourScheme_get(JSContext* ctx, JSValue thisValue)
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsTrack();
+        auto* el = data->element->asTrack();
         if (el == nullptr)
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
@@ -1019,7 +1019,7 @@ namespace OpenRCT2::Scripting
         }
 
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsTrack();
+        auto* el = data->element->asTrack();
         if (el == nullptr)
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
@@ -1052,7 +1052,7 @@ namespace OpenRCT2::Scripting
     JSValue ScTileElement::seatRotation_get(JSContext* ctx, JSValue thisValue)
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsTrack();
+        auto* el = data->element->asTrack();
         if (el == nullptr)
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
@@ -1090,7 +1090,7 @@ namespace OpenRCT2::Scripting
         }
 
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsTrack();
+        auto* el = data->element->asTrack();
         if (el == nullptr)
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
@@ -1123,7 +1123,7 @@ namespace OpenRCT2::Scripting
     JSValue ScTileElement::brakeBoosterSpeed_get(JSContext* ctx, JSValue thisValue)
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsTrack();
+        auto* el = data->element->asTrack();
         if (el == nullptr)
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
@@ -1152,7 +1152,7 @@ namespace OpenRCT2::Scripting
         }
 
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsTrack();
+        auto* el = data->element->asTrack();
         if (el == nullptr)
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
@@ -1176,7 +1176,7 @@ namespace OpenRCT2::Scripting
     JSValue ScTileElement::isInverted_get(JSContext* ctx, JSValue thisValue)
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsTrack();
+        auto* el = data->element->asTrack();
         if (el != nullptr)
         {
             return JS_NewBool(ctx, el->IsInverted());
@@ -1193,7 +1193,7 @@ namespace OpenRCT2::Scripting
         JS_UNPACK_BOOL(value, ctx, jsValue);
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsTrack();
+        auto* el = data->element->asTrack();
         if (el == nullptr)
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
@@ -1209,7 +1209,7 @@ namespace OpenRCT2::Scripting
     JSValue ScTileElement::hasCableLift_get(JSContext* ctx, JSValue thisValue)
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsTrack();
+        auto* el = data->element->asTrack();
         if (el != nullptr)
         {
             return JS_NewBool(ctx, el->HasCableLift());
@@ -1226,7 +1226,7 @@ namespace OpenRCT2::Scripting
         JS_UNPACK_BOOL(value, ctx, jsValue);
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsTrack();
+        auto* el = data->element->asTrack();
         if (el == nullptr)
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
@@ -1242,7 +1242,7 @@ namespace OpenRCT2::Scripting
     JSValue ScTileElement::isHighlighted_get(JSContext* ctx, JSValue thisValue)
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto el = data->element->AsTrack();
+        auto el = data->element->asTrack();
         if (el != nullptr)
             return JS_NewBool(ctx, el->IsHighlighted());
         else
@@ -1253,7 +1253,7 @@ namespace OpenRCT2::Scripting
         JS_UNPACK_BOOL(value, ctx, jsValue);
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto el = data->element->AsTrack();
+        auto el = data->element->asTrack();
         if (el != nullptr)
         {
             el->SetHighlight(value);
@@ -1266,11 +1266,11 @@ namespace OpenRCT2::Scripting
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
         auto element = data->element;
-        switch (element->GetType())
+        switch (element->getType())
         {
             case TileElementType::Path:
             {
-                auto* el = element->AsPath();
+                auto* el = element->asPath();
                 auto index = el->GetLegacyPathEntryIndex();
                 if (index != kObjectEntryIndexNull)
                     return JS_NewUint32(ctx, index);
@@ -1279,27 +1279,27 @@ namespace OpenRCT2::Scripting
             }
             case TileElementType::SmallScenery:
             {
-                auto* el = element->AsSmallScenery();
+                auto* el = element->asSmallScenery();
                 return JS_NewUint32(ctx, el->GetEntryIndex());
             }
             case TileElementType::LargeScenery:
             {
-                auto* el = element->AsLargeScenery();
+                auto* el = element->asLargeScenery();
                 return JS_NewUint32(ctx, el->GetEntryIndex());
             }
             case TileElementType::Wall:
             {
-                auto* el = element->AsWall();
+                auto* el = element->asWall();
                 return JS_NewUint32(ctx, el->GetEntryIndex());
             }
             case TileElementType::Entrance:
             {
-                auto* el = element->AsEntrance();
+                auto* el = element->asEntrance();
                 return JS_NewUint32(ctx, el->GetEntranceType());
             }
             case TileElementType::Banner:
             {
-                auto* el = element->AsBanner();
+                auto* el = element->asBanner();
                 return JS_NewUint32(ctx, el->GetBanner()->type);
             }
             default:
@@ -1313,14 +1313,14 @@ namespace OpenRCT2::Scripting
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
         auto element = data->element;
 
-        switch (element->GetType())
+        switch (element->getType())
         {
             case TileElementType::Path:
             {
                 if (JS_IsNumber(jsValue))
                 {
                     JS_UNPACK_UINT32(index, ctx, jsValue);
-                    auto* el = element->AsPath();
+                    auto* el = element->asPath();
                     el->SetLegacyPathEntryIndex(index);
                     Invalidate(data);
                 }
@@ -1329,7 +1329,7 @@ namespace OpenRCT2::Scripting
             case TileElementType::SmallScenery:
             {
                 JS_UNPACK_UINT32(index, ctx, jsValue);
-                auto* el = element->AsSmallScenery();
+                auto* el = element->asSmallScenery();
                 el->SetEntryIndex(index);
                 Invalidate(data);
                 break;
@@ -1338,7 +1338,7 @@ namespace OpenRCT2::Scripting
             {
                 JS_UNPACK_UINT32(index, ctx, jsValue);
                 RemoveBannerEntryIfNeeded(element, data->coords);
-                auto* el = element->AsLargeScenery();
+                auto* el = element->asLargeScenery();
                 el->SetEntryIndex(index);
                 CreateBannerEntryIfNeeded(element, data->coords);
                 Invalidate(data);
@@ -1348,7 +1348,7 @@ namespace OpenRCT2::Scripting
             {
                 JS_UNPACK_UINT32(index, ctx, jsValue);
                 RemoveBannerEntryIfNeeded(element, data->coords);
-                auto* el = element->AsWall();
+                auto* el = element->asWall();
                 el->SetEntryIndex(index);
                 CreateBannerEntryIfNeeded(element, data->coords);
                 Invalidate(data);
@@ -1357,7 +1357,7 @@ namespace OpenRCT2::Scripting
             case TileElementType::Entrance:
             {
                 JS_UNPACK_UINT32(index, ctx, jsValue);
-                auto* el = element->AsEntrance();
+                auto* el = element->asEntrance();
                 el->SetEntranceType(index);
                 Invalidate(data);
                 break;
@@ -1365,7 +1365,7 @@ namespace OpenRCT2::Scripting
             case TileElementType::Banner:
             {
                 JS_UNPACK_UINT32(index, ctx, jsValue);
-                auto* el = element->AsBanner();
+                auto* el = element->asBanner();
                 el->GetBanner()->type = index;
                 Invalidate(data);
                 break;
@@ -1379,7 +1379,7 @@ namespace OpenRCT2::Scripting
     JSValue ScTileElement::isHidden_get(JSContext* ctx, JSValue thisValue)
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        return JS_NewBool(ctx, data->element->IsInvisible());
+        return JS_NewBool(ctx, data->element->isInvisible());
     }
 
     JSValue ScTileElement::isHidden_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
@@ -1387,7 +1387,7 @@ namespace OpenRCT2::Scripting
         JS_UNPACK_BOOL(hide, ctx, jsValue);
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        data->element->SetInvisible(hide);
+        data->element->setInvisible(hide);
         Invalidate(data);
         return JS_UNDEFINED;
     }
@@ -1395,7 +1395,7 @@ namespace OpenRCT2::Scripting
     JSValue ScTileElement::age_get(JSContext* ctx, JSValue thisValue)
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsSmallScenery();
+        auto* el = data->element->asSmallScenery();
         if (el != nullptr)
             return JS_NewUint32(ctx, el->GetAge());
         else
@@ -1406,7 +1406,7 @@ namespace OpenRCT2::Scripting
         JS_UNPACK_UINT32(value, ctx, jsValue);
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsSmallScenery();
+        auto* el = data->element->asSmallScenery();
         if (el != nullptr)
         {
             el->SetAge(value);
@@ -1418,7 +1418,7 @@ namespace OpenRCT2::Scripting
     JSValue ScTileElement::quadrant_get(JSContext* ctx, JSValue thisValue)
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsSmallScenery();
+        auto* el = data->element->asSmallScenery();
         if (el != nullptr)
             return JS_NewUint32(ctx, el->GetSceneryQuadrant());
         else
@@ -1429,7 +1429,7 @@ namespace OpenRCT2::Scripting
         JS_UNPACK_UINT32(value, ctx, jsValue);
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsSmallScenery();
+        auto* el = data->element->asSmallScenery();
         if (el != nullptr)
         {
             el->SetSceneryQuadrant(value);
@@ -1441,14 +1441,14 @@ namespace OpenRCT2::Scripting
     JSValue ScTileElement::occupiedQuadrants_get(JSContext* ctx, JSValue thisValue)
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        return JS_NewUint32(ctx, data->element->GetOccupiedQuadrants());
+        return JS_NewUint32(ctx, data->element->getOccupiedQuadrants());
     }
     JSValue ScTileElement::occupiedQuadrants_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
     {
         JS_UNPACK_UINT32(value, ctx, jsValue);
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        data->element->SetOccupiedQuadrants(value);
+        data->element->setOccupiedQuadrants(value);
         Invalidate(data);
         return JS_UNDEFINED;
     }
@@ -1456,14 +1456,14 @@ namespace OpenRCT2::Scripting
     JSValue ScTileElement::isGhost_get(JSContext* ctx, JSValue thisValue)
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        return JS_NewBool(ctx, data->element->IsGhost());
+        return JS_NewBool(ctx, data->element->isGhost());
     }
     JSValue ScTileElement::isGhost_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
     {
         JS_UNPACK_BOOL(value, ctx, jsValue);
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        data->element->SetGhost(value);
+        data->element->setGhost(value);
         Invalidate(data);
         return JS_UNDEFINED;
     }
@@ -1472,26 +1472,26 @@ namespace OpenRCT2::Scripting
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
         auto element = data->element;
-        switch (element->GetType())
+        switch (element->getType())
         {
             case TileElementType::SmallScenery:
             {
-                auto* el = element->AsSmallScenery();
+                auto* el = element->asSmallScenery();
                 return JS_NewUint32(ctx, EnumValue(el->GetPrimaryColour()));
             }
             case TileElementType::LargeScenery:
             {
-                auto* el = element->AsLargeScenery();
+                auto* el = element->asLargeScenery();
                 return JS_NewUint32(ctx, EnumValue(el->GetPrimaryColour()));
             }
             case TileElementType::Wall:
             {
-                auto* el = element->AsWall();
+                auto* el = element->asWall();
                 return JS_NewUint32(ctx, EnumValue(el->GetPrimaryColour()));
             }
             case TileElementType::Banner:
             {
-                auto* el = element->AsBanner();
+                auto* el = element->asBanner();
                 return JS_NewUint32(ctx, EnumValue(el->GetBanner()->colour));
             }
             default:
@@ -1504,32 +1504,32 @@ namespace OpenRCT2::Scripting
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
         auto element = data->element;
-        switch (element->GetType())
+        switch (element->getType())
         {
             case TileElementType::SmallScenery:
             {
-                auto* el = element->AsSmallScenery();
+                auto* el = element->asSmallScenery();
                 el->SetPrimaryColour(static_cast<Drawing::Colour>(value));
                 Invalidate(data);
                 break;
             }
             case TileElementType::LargeScenery:
             {
-                auto* el = element->AsLargeScenery();
+                auto* el = element->asLargeScenery();
                 el->SetPrimaryColour(static_cast<Drawing::Colour>(value));
                 Invalidate(data);
                 break;
             }
             case TileElementType::Wall:
             {
-                auto* el = element->AsWall();
+                auto* el = element->asWall();
                 el->SetPrimaryColour(static_cast<Drawing::Colour>(value));
                 Invalidate(data);
                 break;
             }
             case TileElementType::Banner:
             {
-                auto* el = element->AsBanner();
+                auto* el = element->asBanner();
                 el->GetBanner()->colour = static_cast<Drawing::Colour>(value);
                 Invalidate(data);
                 break;
@@ -1544,26 +1544,26 @@ namespace OpenRCT2::Scripting
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
         auto element = data->element;
-        switch (element->GetType())
+        switch (element->getType())
         {
             case TileElementType::SmallScenery:
             {
-                auto* el = element->AsSmallScenery();
+                auto* el = element->asSmallScenery();
                 return JS_NewUint32(ctx, EnumValue(el->GetSecondaryColour()));
             }
             case TileElementType::LargeScenery:
             {
-                auto* el = element->AsLargeScenery();
+                auto* el = element->asLargeScenery();
                 return JS_NewUint32(ctx, EnumValue(el->GetSecondaryColour()));
             }
             case TileElementType::Wall:
             {
-                auto* el = element->AsWall();
+                auto* el = element->asWall();
                 return JS_NewUint32(ctx, EnumValue(el->GetSecondaryColour()));
             }
             case TileElementType::Banner:
             {
-                auto* el = element->AsBanner();
+                auto* el = element->asBanner();
                 return JS_NewUint32(ctx, EnumValue(el->GetBanner()->textColour));
             }
             default:
@@ -1576,32 +1576,32 @@ namespace OpenRCT2::Scripting
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
         auto element = data->element;
-        switch (element->GetType())
+        switch (element->getType())
         {
             case TileElementType::SmallScenery:
             {
-                auto* el = element->AsSmallScenery();
+                auto* el = element->asSmallScenery();
                 el->SetSecondaryColour(static_cast<Drawing::Colour>(value));
                 Invalidate(data);
                 break;
             }
             case TileElementType::LargeScenery:
             {
-                auto* el = element->AsLargeScenery();
+                auto* el = element->asLargeScenery();
                 el->SetSecondaryColour(static_cast<Drawing::Colour>(value));
                 Invalidate(data);
                 break;
             }
             case TileElementType::Wall:
             {
-                auto* el = element->AsWall();
+                auto* el = element->asWall();
                 el->SetSecondaryColour(static_cast<Drawing::Colour>(value));
                 Invalidate(data);
                 break;
             }
             case TileElementType::Banner:
             {
-                auto* el = element->AsBanner();
+                auto* el = element->asBanner();
                 el->GetBanner()->textColour = static_cast<Drawing::TextColour>(value);
                 Invalidate(data);
                 break;
@@ -1616,21 +1616,21 @@ namespace OpenRCT2::Scripting
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
         auto element = data->element;
-        switch (element->GetType())
+        switch (element->getType())
         {
             case TileElementType::SmallScenery:
             {
-                auto* el = element->AsSmallScenery();
+                auto* el = element->asSmallScenery();
                 return JS_NewUint32(ctx, EnumValue(el->GetTertiaryColour()));
             }
             case TileElementType::LargeScenery:
             {
-                auto* el = element->AsLargeScenery();
+                auto* el = element->asLargeScenery();
                 return JS_NewUint32(ctx, EnumValue(el->GetTertiaryColour()));
             }
             case TileElementType::Wall:
             {
-                auto* el = element->AsWall();
+                auto* el = element->asWall();
                 return JS_NewUint32(ctx, EnumValue(el->GetTertiaryColour()));
             }
             default:
@@ -1643,25 +1643,25 @@ namespace OpenRCT2::Scripting
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
         auto element = data->element;
-        switch (element->GetType())
+        switch (element->getType())
         {
             case TileElementType::SmallScenery:
             {
-                auto* el = element->AsSmallScenery();
+                auto* el = element->asSmallScenery();
                 el->SetTertiaryColour(static_cast<Drawing::Colour>(value));
                 Invalidate(data);
                 break;
             }
             case TileElementType::LargeScenery:
             {
-                auto* el = element->AsLargeScenery();
+                auto* el = element->asLargeScenery();
                 el->SetTertiaryColour(static_cast<Drawing::Colour>(value));
                 Invalidate(data);
                 break;
             }
             case TileElementType::Wall:
             {
-                auto* el = element->AsWall();
+                auto* el = element->asWall();
                 el->SetTertiaryColour(static_cast<Drawing::Colour>(value));
                 Invalidate(data);
                 break;
@@ -1686,11 +1686,11 @@ namespace OpenRCT2::Scripting
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
         auto element = data->element;
-        switch (element->GetType())
+        switch (element->getType())
         {
             case TileElementType::LargeScenery:
             {
-                auto* el = element->AsLargeScenery();
+                auto* el = element->asLargeScenery();
                 if (JS_IsNumber(jsValue))
                 {
                     JS_UNPACK_UINT32(value, ctx, jsValue);
@@ -1703,7 +1703,7 @@ namespace OpenRCT2::Scripting
             }
             case TileElementType::Wall:
             {
-                auto* el = element->AsWall();
+                auto* el = element->asWall();
                 if (JS_IsNumber(jsValue))
                 {
                     JS_UNPACK_UINT32(value, ctx, jsValue);
@@ -1716,7 +1716,7 @@ namespace OpenRCT2::Scripting
             }
             case TileElementType::Banner:
             {
-                auto* el = element->AsBanner();
+                auto* el = element->asBanner();
                 if (JS_IsNumber(jsValue))
                 {
                     JS_UNPACK_UINT32(value, ctx, jsValue);
@@ -1738,7 +1738,7 @@ namespace OpenRCT2::Scripting
     JSValue ScTileElement::edgesAndCorners_get(JSContext* ctx, JSValue thisValue)
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsPath();
+        auto* el = data->element->asPath();
         return JS_NewUint32(ctx, el != nullptr ? el->GetEdgesAndCorners() : 0);
     }
     JSValue ScTileElement::edgesAndCorners_set(JSContext* ctx, JSValue thisValue, JSValue jsValue)
@@ -1746,7 +1746,7 @@ namespace OpenRCT2::Scripting
         JS_UNPACK_UINT32(value, ctx, jsValue);
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsPath();
+        auto* el = data->element->asPath();
         if (el != nullptr)
         {
             el->SetEdgesAndCorners(value);
@@ -1758,7 +1758,7 @@ namespace OpenRCT2::Scripting
     JSValue ScTileElement::edges_get(JSContext* ctx, JSValue thisValue)
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsPath();
+        auto* el = data->element->asPath();
         if (el != nullptr)
             return JS_NewUint32(ctx, el->GetEdges());
         else
@@ -1769,7 +1769,7 @@ namespace OpenRCT2::Scripting
         JS_UNPACK_UINT32(value, ctx, jsValue);
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsPath();
+        auto* el = data->element->asPath();
         if (el != nullptr)
         {
             el->SetEdges(value);
@@ -1781,7 +1781,7 @@ namespace OpenRCT2::Scripting
     JSValue ScTileElement::corners_get(JSContext* ctx, JSValue thisValue)
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsPath();
+        auto* el = data->element->asPath();
         if (el != nullptr)
             return JS_NewUint32(ctx, el->GetCorners());
         else
@@ -1792,7 +1792,7 @@ namespace OpenRCT2::Scripting
         JS_UNPACK_UINT32(value, ctx, jsValue);
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsPath();
+        auto* el = data->element->asPath();
         if (el != nullptr)
         {
             el->SetCorners(value);
@@ -1804,7 +1804,7 @@ namespace OpenRCT2::Scripting
     JSValue ScTileElement::slopeDirection_get(JSContext* ctx, JSValue thisValue)
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsPath();
+        auto* el = data->element->asPath();
         if (el != nullptr && el->IsSloped())
             return JS_NewUint32(ctx, el->GetSlopeDirection());
         else
@@ -1814,7 +1814,7 @@ namespace OpenRCT2::Scripting
     {
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsPath();
+        auto* el = data->element->asPath();
         if (el != nullptr)
         {
             if (JS_IsNumber(jsValue))
@@ -1836,7 +1836,7 @@ namespace OpenRCT2::Scripting
     JSValue ScTileElement::isQueue_get(JSContext* ctx, JSValue thisValue)
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsPath();
+        auto* el = data->element->asPath();
         if (el != nullptr)
             return JS_NewBool(ctx, el->IsQueue());
         else
@@ -1847,7 +1847,7 @@ namespace OpenRCT2::Scripting
         JS_UNPACK_BOOL(value, ctx, jsValue);
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsPath();
+        auto* el = data->element->asPath();
         if (el != nullptr)
         {
             el->SetIsQueue(value);
@@ -1859,7 +1859,7 @@ namespace OpenRCT2::Scripting
     JSValue ScTileElement::queueBannerDirection_get(JSContext* ctx, JSValue thisValue)
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsPath();
+        auto* el = data->element->asPath();
         if (el != nullptr && el->HasQueueBanner())
             return JS_NewUint32(ctx, el->GetQueueBannerDirection());
         else
@@ -1869,7 +1869,7 @@ namespace OpenRCT2::Scripting
     {
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsPath();
+        auto* el = data->element->asPath();
         if (el != nullptr)
         {
             if (JS_IsNumber(jsValue))
@@ -1891,7 +1891,7 @@ namespace OpenRCT2::Scripting
     JSValue ScTileElement::isBlockedByVehicle_get(JSContext* ctx, JSValue thisValue)
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsPath();
+        auto* el = data->element->asPath();
         if (el != nullptr)
             return JS_NewBool(ctx, el->IsBlockedByVehicle());
         else
@@ -1902,7 +1902,7 @@ namespace OpenRCT2::Scripting
         JS_UNPACK_BOOL(value, ctx, jsValue);
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsPath();
+        auto* el = data->element->asPath();
         if (el != nullptr)
         {
             el->SetIsBlockedByVehicle(value);
@@ -1914,7 +1914,7 @@ namespace OpenRCT2::Scripting
     JSValue ScTileElement::isWide_get(JSContext* ctx, JSValue thisValue)
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsPath();
+        auto* el = data->element->asPath();
         if (el != nullptr)
             return JS_NewBool(ctx, el->IsWide());
         else
@@ -1925,7 +1925,7 @@ namespace OpenRCT2::Scripting
         JS_UNPACK_BOOL(value, ctx, jsValue);
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsPath();
+        auto* el = data->element->asPath();
         if (el != nullptr)
         {
             el->SetWide(value);
@@ -1938,9 +1938,9 @@ namespace OpenRCT2::Scripting
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
         auto element = data->element;
-        if (element->GetType() == TileElementType::Path)
+        if (element->getType() == TileElementType::Path)
         {
-            auto* el = element->AsPath();
+            auto* el = element->asPath();
             auto index = el->GetSurfaceEntryIndex();
             if (index != kObjectEntryIndexNull)
             {
@@ -1957,10 +1957,10 @@ namespace OpenRCT2::Scripting
             JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
             auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
             auto element = data->element;
-            if (element->GetType() == TileElementType::Path)
+            if (element->getType() == TileElementType::Path)
             {
                 JS_UNPACK_UINT32(value, ctx, jsValue);
-                auto* el = element->AsPath();
+                auto* el = element->asPath();
                 el->SetSurfaceEntryIndex(value);
                 Invalidate(data);
             }
@@ -1972,9 +1972,9 @@ namespace OpenRCT2::Scripting
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
         auto element = data->element;
-        if (element->GetType() == TileElementType::Path)
+        if (element->getType() == TileElementType::Path)
         {
-            auto* el = element->AsPath();
+            auto* el = element->asPath();
             auto index = el->GetRailingsEntryIndex();
             if (index != kObjectEntryIndexNull)
             {
@@ -1991,10 +1991,10 @@ namespace OpenRCT2::Scripting
             JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
             auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
             auto element = data->element;
-            if (element->GetType() == TileElementType::Path)
+            if (element->getType() == TileElementType::Path)
             {
                 JS_UNPACK_UINT32(value, ctx, jsValue);
-                auto* el = element->AsPath();
+                auto* el = element->asPath();
                 el->SetRailingsEntryIndex(value);
                 Invalidate(data);
             }
@@ -2005,7 +2005,7 @@ namespace OpenRCT2::Scripting
     JSValue ScTileElement::addition_get(JSContext* ctx, JSValue thisValue)
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsPath();
+        auto* el = data->element->asPath();
         if (el != nullptr && el->HasAddition())
             return JS_NewUint32(ctx, el->GetAdditionEntryIndex());
         else
@@ -2015,7 +2015,7 @@ namespace OpenRCT2::Scripting
     {
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsPath();
+        auto* el = data->element->asPath();
         if (el != nullptr)
         {
             if (JS_IsNumber(jsValue))
@@ -2038,7 +2038,7 @@ namespace OpenRCT2::Scripting
     JSValue ScTileElement::additionStatus_get(JSContext* ctx, JSValue thisValue)
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsPath();
+        auto* el = data->element->asPath();
         if (el != nullptr && el->HasAddition() && !el->IsQueue())
             return JS_NewUint32(ctx, el->GetAdditionStatus());
         else
@@ -2050,7 +2050,7 @@ namespace OpenRCT2::Scripting
         {
             JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
             auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-            auto* el = data->element->AsPath();
+            auto* el = data->element->asPath();
             if (el != nullptr)
             {
                 if (el->HasAddition() && !el->IsQueue())
@@ -2067,7 +2067,7 @@ namespace OpenRCT2::Scripting
     JSValue ScTileElement::isAdditionBroken_get(JSContext* ctx, JSValue thisValue)
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsPath();
+        auto* el = data->element->asPath();
         if (el != nullptr && el->HasAddition())
             return JS_NewBool(ctx, el->IsBroken());
         else
@@ -2079,7 +2079,7 @@ namespace OpenRCT2::Scripting
         {
             JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
             auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-            auto* el = data->element->AsPath();
+            auto* el = data->element->asPath();
             if (el != nullptr)
             {
                 JS_UNPACK_BOOL(value, ctx, jsValue);
@@ -2093,7 +2093,7 @@ namespace OpenRCT2::Scripting
     JSValue ScTileElement::isAdditionGhost_get(JSContext* ctx, JSValue thisValue)
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsPath();
+        auto* el = data->element->asPath();
         if (el != nullptr && el->HasAddition())
             return JS_NewBool(ctx, el->AdditionIsGhost());
         else
@@ -2105,7 +2105,7 @@ namespace OpenRCT2::Scripting
         {
             JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
             auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-            auto* el = data->element->AsPath();
+            auto* el = data->element->asPath();
             if (el != nullptr)
             {
                 JS_UNPACK_BOOL(value, ctx, jsValue);
@@ -2119,7 +2119,7 @@ namespace OpenRCT2::Scripting
     JSValue ScTileElement::footpathObject_get(JSContext* ctx, JSValue thisValue)
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsEntrance();
+        auto* el = data->element->asEntrance();
         if (el != nullptr)
         {
             auto index = el->GetLegacyPathEntryIndex();
@@ -2136,7 +2136,7 @@ namespace OpenRCT2::Scripting
         {
             JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
             auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-            auto* el = data->element->AsEntrance();
+            auto* el = data->element->asEntrance();
             if (el != nullptr)
             {
                 JS_UNPACK_UINT32(value, ctx, jsValue);
@@ -2150,7 +2150,7 @@ namespace OpenRCT2::Scripting
     JSValue ScTileElement::footpathSurfaceObject_get(JSContext* ctx, JSValue thisValue)
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsEntrance();
+        auto* el = data->element->asEntrance();
         if (el != nullptr)
         {
             auto index = el->GetSurfaceEntryIndex();
@@ -2168,7 +2168,7 @@ namespace OpenRCT2::Scripting
         {
             JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
             auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-            auto* el = data->element->AsEntrance();
+            auto* el = data->element->asEntrance();
             if (el != nullptr)
             {
                 JS_UNPACK_UINT32(value, ctx, jsValue);
@@ -2183,11 +2183,11 @@ namespace OpenRCT2::Scripting
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
         auto element = data->element;
-        switch (element->GetType())
+        switch (element->getType())
         {
             case TileElementType::Banner:
             {
-                auto* el = element->AsBanner();
+                auto* el = element->asBanner();
                 return JS_NewUint32(ctx, el->GetPosition());
             }
             case TileElementType::Path:
@@ -2197,7 +2197,7 @@ namespace OpenRCT2::Scripting
             }
             default:
             {
-                return JS_NewUint32(ctx, element->GetDirection());
+                return JS_NewUint32(ctx, element->getDirection());
             }
         }
     }
@@ -2207,11 +2207,11 @@ namespace OpenRCT2::Scripting
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
         auto element = data->element;
-        switch (element->GetType())
+        switch (element->getType())
         {
             case TileElementType::Banner:
             {
-                auto* el = element->AsBanner();
+                auto* el = element->asBanner();
                 el->SetPosition(value);
                 Invalidate(data);
                 break;
@@ -2223,7 +2223,7 @@ namespace OpenRCT2::Scripting
             }
             default:
             {
-                element->SetDirection(value);
+                element->setDirection(value);
                 Invalidate(data);
             }
         }
@@ -2250,7 +2250,7 @@ namespace OpenRCT2::Scripting
         {
             auto banner = GetBanner(idx);
             banner->text = value;
-            if (element->GetType() != TileElementType::Banner)
+            if (element->getType() != TileElementType::Banner)
             {
                 if (value.empty())
                     banner->rideIndex = BannerGetClosestRideIndex({ banner->position.ToCoordsXY(), 16 });
@@ -2266,7 +2266,7 @@ namespace OpenRCT2::Scripting
     JSValue ScTileElement::isNoEntry_get(JSContext* ctx, JSValue thisValue)
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsBanner();
+        auto* el = data->element->asBanner();
         if (el != nullptr)
             return JS_NewBool(ctx, el->GetBanner()->flags.has(BannerFlag::noEntry));
         else
@@ -2277,7 +2277,7 @@ namespace OpenRCT2::Scripting
         JS_UNPACK_BOOL(value, ctx, jsValue);
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        auto* el = data->element->AsBanner();
+        auto* el = data->element->asBanner();
         if (el != nullptr)
         {
             el->GetBanner()->flags.set(BannerFlag::noEntry, value);
@@ -2290,7 +2290,7 @@ namespace OpenRCT2::Scripting
         const CoordsXY& loc, const LargeSceneryElement* const largeScenery)
     {
         const auto* const largeEntry = largeScenery->GetEntry();
-        const auto direction = largeScenery->GetDirection();
+        const auto direction = largeScenery->getDirection();
         const auto sequenceIndex = largeScenery->GetSequenceIndex();
         const auto& tiles = largeEntry->tiles;
         const auto& initialTile = tiles[sequenceIndex];
@@ -2299,7 +2299,7 @@ namespace OpenRCT2::Scripting
             initialTile.offset.z,
         };
 
-        const auto firstTile = CoordsXYZ{ loc, largeScenery->GetBaseZ() } - rotatedFirstTile;
+        const auto firstTile = CoordsXYZ{ loc, largeScenery->getBaseZ() } - rotatedFirstTile;
         for (auto& tile : tiles)
         {
             const auto rotatedCurrentTile = CoordsXYZ{ CoordsXY{ tile.offset }.Rotate(direction), tile.offset.z };
@@ -2311,22 +2311,22 @@ namespace OpenRCT2::Scripting
             {
                 do
                 {
-                    if (tileElement->GetType() != TileElementType::LargeScenery)
+                    if (tileElement->getType() != TileElementType::LargeScenery)
                         continue;
-                    if (tileElement->GetDirection() != direction)
+                    if (tileElement->getDirection() != direction)
                         continue;
-                    if (tileElement->GetBaseZ() != currentTile.z)
-                        continue;
-
-                    if (tileElement->AsLargeScenery() == largeScenery)
-                        continue;
-                    if (tileElement->AsLargeScenery()->GetEntryIndex() != largeScenery->GetEntryIndex())
-                        continue;
-                    if (tileElement->AsLargeScenery()->GetSequenceIndex() != tile.index)
+                    if (tileElement->getBaseZ() != currentTile.z)
                         continue;
 
-                    return tileElement->AsLargeScenery();
-                } while (!(tileElement++)->IsLastForTile());
+                    if (tileElement->asLargeScenery() == largeScenery)
+                        continue;
+                    if (tileElement->asLargeScenery()->GetEntryIndex() != largeScenery->GetEntryIndex())
+                        continue;
+                    if (tileElement->asLargeScenery()->GetSequenceIndex() != tile.index)
+                        continue;
+
+                    return tileElement->asLargeScenery();
+                } while (!(tileElement++)->isLastForTile());
             }
         }
         return nullptr;
@@ -2335,9 +2335,9 @@ namespace OpenRCT2::Scripting
     void ScTileElement::RemoveBannerEntryIfNeeded(TileElement* element, CoordsXY& coords)
     {
         // check if other element still uses the banner entry
-        if (element->GetType() == TileElementType::LargeScenery
-            && element->AsLargeScenery()->GetEntry()->scrolling_mode != kScrollingModeNone
-            && GetOtherLargeSceneryElement(coords, element->AsLargeScenery()) != nullptr)
+        if (element->getType() == TileElementType::LargeScenery
+            && element->asLargeScenery()->GetEntry()->scrolling_mode != kScrollingModeNone
+            && GetOtherLargeSceneryElement(coords, element->asLargeScenery()) != nullptr)
             return;
         // remove banner entry (if one exists)
         element->RemoveBannerEntry();
@@ -2346,20 +2346,20 @@ namespace OpenRCT2::Scripting
     void ScTileElement::CreateBannerEntryIfNeeded(TileElement* element, CoordsXY& coords)
     {
         // check if creation is needed
-        switch (element->GetType())
+        switch (element->getType())
         {
             case TileElementType::Banner:
                 break;
             case TileElementType::Wall:
             {
-                auto wallEntry = element->AsWall()->GetEntry();
+                auto wallEntry = element->asWall()->GetEntry();
                 if (wallEntry == nullptr || wallEntry->scrolling_mode == kScrollingModeNone)
                     return;
                 break;
             }
             case TileElementType::LargeScenery:
             {
-                auto largeScenery = element->AsLargeScenery();
+                auto largeScenery = element->asLargeScenery();
                 auto largeSceneryEntry = largeScenery->GetEntry();
                 if (largeSceneryEntry == nullptr || largeSceneryEntry->scrolling_mode == kScrollingModeNone)
                     return;
@@ -2387,16 +2387,16 @@ namespace OpenRCT2::Scripting
             banner->colour = Drawing::Colour::black;
             banner->textColour = Drawing::TextColour::black;
             banner->flags = {};
-            if (element->GetType() == TileElementType::Wall)
+            if (element->getType() == TileElementType::Wall)
                 banner->flags.set(BannerFlag::isWall);
-            if (element->GetType() == TileElementType::LargeScenery)
+            if (element->getType() == TileElementType::LargeScenery)
                 banner->flags.set(BannerFlag::isLargeScenery);
             banner->type = 0;
             banner->position = TileCoordsXY(coords);
 
-            if (element->GetType() == TileElementType::Wall || element->GetType() == TileElementType::LargeScenery)
+            if (element->getType() == TileElementType::Wall || element->getType() == TileElementType::LargeScenery)
             {
-                RideId rideIndex = BannerGetClosestRideIndex({ coords, element->BaseHeight });
+                RideId rideIndex = BannerGetClosestRideIndex({ coords, element->baseHeight });
                 if (!rideIndex.IsNull())
                 {
                     banner->rideIndex = rideIndex;

@@ -157,9 +157,9 @@ namespace OpenRCT2::GameActions
             auto* entranceElement = TileElementInsert<EntranceElement>(CoordsXYZ{ entranceLoc, zLow }, 0b1111);
             Guard::Assert(entranceElement != nullptr);
 
-            entranceElement->SetClearanceZ(zHigh);
-            entranceElement->SetGhost(flags.has(CommandFlag::ghost));
-            entranceElement->SetDirection(_loc.direction);
+            entranceElement->setClearanceZ(zHigh);
+            entranceElement->setGhost(flags.has(CommandFlag::ghost));
+            entranceElement->setDirection(_loc.direction);
             entranceElement->SetSequenceIndex(index);
             entranceElement->SetEntranceType(ENTRANCE_TYPE_PARK_ENTRANCE);
             entranceElement->setEntryIndex(_entranceType);
@@ -172,7 +172,7 @@ namespace OpenRCT2::GameActions
                 entranceElement->SetLegacyPathEntryIndex(_pathType);
             }
 
-            if (!entranceElement->IsGhost())
+            if (!entranceElement->isGhost())
             {
                 FootpathConnectEdges(entranceLoc, entranceElement->as<TileElement>(), { CommandFlag::apply });
             }
@@ -183,7 +183,7 @@ namespace OpenRCT2::GameActions
             Park::UpdateFences({ entranceLoc.x, entranceLoc.y - kCoordsXYStep });
             Park::UpdateFences({ entranceLoc.x, entranceLoc.y + kCoordsXYStep });
 
-            MapInvalidateTile({ entranceLoc, entranceElement->GetBaseZ(), entranceElement->GetClearanceZ() });
+            MapInvalidateTile({ entranceLoc, entranceElement->getBaseZ(), entranceElement->getClearanceZ() });
 
             if (index == 0)
             {

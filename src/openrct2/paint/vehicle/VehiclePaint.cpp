@@ -1089,7 +1089,7 @@ static void PaintVehicleRiders(
             auto peepColour0 = vehicle->peep_tshirt_colours[i * 2];
             auto peepColour1 = vehicle->peep_tshirt_colours[(i * 2) + 1];
             auto imageId = ImageId(offsetImageId, peepColour0, peepColour1);
-            if (vehicle->IsGhost())
+            if (vehicle->isGhost())
             {
                 imageId = ImageId(offsetImageId).WithRemap(FilterPaletteID::paletteGhost);
             }
@@ -1123,7 +1123,7 @@ static void vehicle_sprite_paint(
     }
 
     auto imageId = ImageId(baseImageId, vehicle->colours.Body, vehicle->colours.Trim, vehicle->colours.Tertiary);
-    if (vehicle->IsGhost())
+    if (vehicle->isGhost())
     {
         imageId = ImageId(baseImageId).WithRemap(FilterPaletteID::paletteGhost);
     }

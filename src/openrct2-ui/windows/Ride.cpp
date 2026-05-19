@@ -749,8 +749,6 @@ namespace OpenRCT2::Ui::Windows
 
         void onOpen() override
         {
-            setWidgets(PageWidgets[WINDOW_RIDE_PAGE_MAIN]);
-
             setPage(WINDOW_RIDE_PAGE_MAIN);
             listInformationType = 0;
             pickedPeepFrame = 0;
@@ -1420,15 +1418,15 @@ namespace OpenRCT2::Ui::Windows
 
             while (TileElementIteratorNext(&it))
             {
-                if (it.element->GetType() != TileElementType::Track)
+                if (it.element->getType() != TileElementType::Track)
                     continue;
 
-                if (it.element->AsTrack()->GetRideIndex() != ride.id)
+                if (it.element->asTrack()->GetRideIndex() != ride.id)
                     continue;
 
                 auto location = TileCoordsXY(it.x, it.y).ToCoordsXY();
-                int32_t baseZ = it.element->GetBaseZ();
-                int32_t clearZ = it.element->GetClearanceZ();
+                int32_t baseZ = it.element->getBaseZ();
+                int32_t clearZ = it.element->getClearanceZ();
 
                 min.x = std::min(min.x, location.x);
                 min.y = std::min(min.y, location.y);
@@ -4196,17 +4194,17 @@ namespace OpenRCT2::Ui::Windows
 
             if (info.interactionType != ViewportInteractionItem::ride)
                 return;
-            if (info.Element->GetType() != TileElementType::Track)
+            if (info.Element->getType() != TileElementType::Track)
                 return;
-            if (info.Element->AsTrack()->GetRideIndex() != rideId)
+            if (info.Element->asTrack()->GetRideIndex() != rideId)
                 return;
-            if (info.Element->AsTrack()->GetColourScheme() == newColourScheme)
+            if (info.Element->asTrack()->GetColourScheme() == newColourScheme)
                 return;
 
-            auto z = info.Element->GetBaseZ();
-            auto direction = info.Element->GetDirection();
+            auto z = info.Element->getBaseZ();
+            auto direction = info.Element->getDirection();
             auto gameAction = GameActions::RideSetColourSchemeAction(
-                CoordsXYZD{ info.Loc, z, direction }, info.Element->AsTrack()->GetTrackType(), newColourScheme);
+                CoordsXYZD{ info.Loc, z, direction }, info.Element->asTrack()->GetTrackType(), newColourScheme);
             GameActions::Execute(&gameAction, getGameState());
         }
 
@@ -7158,18 +7156,18 @@ namespace OpenRCT2::Ui::Windows
             auto ride = GetRide(rideIndex);
             if (ride != nullptr)
             {
-                const auto type = tileElement->GetType();
+                const auto type = tileElement->getType();
                 if (type == TileElementType::Entrance)
                 {
                     // Open ride window in station view
-                    auto entranceElement = tileElement->AsEntrance();
+                    auto entranceElement = tileElement->asEntrance();
                     auto stationIndex = entranceElement->GetStationIndex();
                     return WindowRideOpenStation(*ride, stationIndex);
                 }
                 else if (type == TileElementType::Track)
                 {
                     // Open ride window in station view
-                    auto trackElement = tileElement->AsTrack();
+                    auto trackElement = tileElement->asTrack();
                     auto trackType = trackElement->GetTrackType();
                     const auto& ted = GetTrackElementDescriptor(trackType);
                     if (ted.sequenceData.sequences[0].flags.has(SequenceFlag::trackOrigin))

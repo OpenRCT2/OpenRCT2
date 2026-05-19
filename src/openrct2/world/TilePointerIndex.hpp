@@ -39,7 +39,7 @@ public:
                 do
                 {
                     index++;
-                } while (!tileElements[index - 1].IsLastForTile());
+                } while (!tileElements[index - 1].isLastForTile());
             }
         }
     }

@@ -952,10 +952,10 @@ namespace OpenRCT2
 
                     // Marketing
                     cs.readWriteVector(park.marketingCampaigns, [&cs](MarketingCampaign& campaign) {
-                        cs.readWrite(campaign.Type);
-                        cs.readWrite(campaign.WeeksLeft);
+                        cs.readWrite(campaign.type);
+                        cs.readWrite(campaign.weeksLeft);
                         cs.readWrite(campaign.flags.holder);
-                        cs.readWrite(campaign.RideId);
+                        cs.readWrite(campaign.rideId);
                     });
 
                     // Awards
@@ -964,10 +964,10 @@ namespace OpenRCT2
                     {
                         Award awards[RCT2::Limits::kMaxAwards]{};
                         cs.readWriteArray(awards, [&cs, &currentAwards](Award& award) {
-                            if (award.Time != 0)
+                            if (award.time != 0)
                             {
-                                cs.readWrite(award.Time);
-                                cs.readWrite(award.Type);
+                                cs.readWrite(award.time);
+                                cs.readWrite(award.type);
                                 currentAwards.push_back(award);
                                 return true;
                             }
@@ -978,8 +978,8 @@ namespace OpenRCT2
                     else
                     {
                         cs.readWriteVector(currentAwards, [&cs](Award& award) {
-                            cs.readWrite(award.Time);
-                            cs.readWrite(award.Type);
+                            cs.readWrite(award.time);
+                            cs.readWrite(award.type);
                         });
                     }
                     cs.readWrite(park.value);
@@ -1154,11 +1154,11 @@ namespace OpenRCT2
                 else
                 {
                     std::vector<News::Item> recent(
-                        std::begin(gameState.newsItems.GetRecent()), std::end(gameState.newsItems.GetRecent()));
+                        std::begin(gameState.newsItems.getRecent()), std::end(gameState.newsItems.getRecent()));
                     cs.readWriteVector(recent, [&cs](News::Item& item) { ReadWriteNewsItem(cs, item); });
 
                     std::vector<News::Item> archived(
-                        std::begin(gameState.newsItems.GetArchived()), std::end(gameState.newsItems.GetArchived()));
+                        std::begin(gameState.newsItems.getArchived()), std::end(gameState.newsItems.getArchived()));
                     cs.readWriteVector(archived, [&cs](News::Item& item) { ReadWriteNewsItem(cs, item); });
                 }
             });
@@ -1215,9 +1215,9 @@ namespace OpenRCT2
                     TileElementIteratorBegin(&it);
                     while (TileElementIteratorNext(&it))
                     {
-                        if (it.element->GetType() == TileElementType::Path)
+                        if (it.element->getType() == TileElementType::Path)
                         {
-                            auto* pathElement = it.element->AsPath();
+                            auto* pathElement = it.element->asPath();
                             if (pathElement->HasLegacyPathEntry())
                             {
                                 auto pathEntryIndex = pathElement->GetLegacyPathEntryIndex();
@@ -1232,13 +1232,13 @@ namespace OpenRCT2
                                 }
                             }
                         }
-                        else if (it.element->GetType() == TileElementType::Track)
+                        else if (it.element->getType() == TileElementType::Track)
                         {
-                            auto* trackElement = it.element->AsTrack();
+                            auto* trackElement = it.element->asTrack();
                             auto trackType = trackElement->GetTrackType();
                             if (TrackTypeMustBeMadeInvisible(*trackElement, os.getHeader().targetVersion))
                             {
-                                it.element->SetInvisible(true);
+                                it.element->setInvisible(true);
                             }
                             if (os.getHeader().targetVersion < kBlockBrakeImprovementsVersion)
                             {
@@ -1248,9 +1248,9 @@ namespace OpenRCT2
                                     trackElement->SetBrakeBoosterSpeed(kRCT2DefaultBlockBrakeSpeed);
                             }
                         }
-                        else if (it.element->GetType() == TileElementType::SmallScenery && os.getHeader().targetVersion < 23)
+                        else if (it.element->getType() == TileElementType::SmallScenery && os.getHeader().targetVersion < 23)
                         {
-                            auto* sceneryElement = it.element->AsSmallScenery();
+                            auto* sceneryElement = it.element->asSmallScenery();
                             // Previous formats stored the needs supports flag in the primary colour
                             // We have moved it into a flags field to support extended colour sets
                             bool needsSupports = EnumValue(sceneryElement->GetPrimaryColour())
@@ -1285,17 +1285,17 @@ namespace OpenRCT2
                         continue;
                     do
                     {
-                        if (tileElement->GetType() != TileElementType::Track)
+                        if (tileElement->getType() != TileElementType::Track)
                             continue;
 
-                        auto* trackElement = tileElement->AsTrack();
+                        auto* trackElement = tileElement->asTrack();
                         const auto* ride = GetRide(trackElement->GetRideIndex());
                         if (ride != nullptr)
                         {
                             trackElement->SetRideType(ride->type);
                         }
 
-                    } while (!(tileElement++)->IsLastForTile());
+                    } while (!(tileElement++)->isLastForTile());
                 }
             }
         }

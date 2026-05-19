@@ -70,14 +70,14 @@ namespace OpenRCT2::GameActions
                 LOG_ERROR("Banner tile element not found for bannerIndex %u", _bannerIndex);
                 return Result(Status::invalidParameters, STR_CANT_REPAINT_THIS, kStringIdNone);
             }
-            if (tileElement->GetType() != TileElementType::LargeScenery)
+            if (tileElement->getType() != TileElementType::LargeScenery)
             {
                 LOG_ERROR(
-                    "Tile element has type %u, expected %d (LargeScenery)", tileElement->GetType(),
+                    "Tile element has type %u, expected %d (LargeScenery)", tileElement->getType(),
                     TileElementType::LargeScenery);
                 return Result(Status::invalidParameters, STR_CANT_REPAINT_THIS, kStringIdNone);
             }
-            loc = { banner->position.ToCoordsXY(), tileElement->GetBaseZ() };
+            loc = { banner->position.ToCoordsXY(), tileElement->getBaseZ() };
         }
         else
         {
@@ -88,7 +88,7 @@ namespace OpenRCT2::GameActions
                 LOG_ERROR("Wall element not found for bannerIndex", _bannerIndex);
                 return Result(Status::invalidParameters, STR_CANT_REPAINT_THIS, kStringIdNone);
             }
-            loc = { banner->position.ToCoordsXY(), wallElement->GetBaseZ() };
+            loc = { banner->position.ToCoordsXY(), wallElement->getBaseZ() };
         }
 
         if (!LocationValid(loc))
@@ -118,8 +118,8 @@ namespace OpenRCT2::GameActions
         {
             TileElement* tileElement = BannerGetTileElement(_bannerIndex);
             if (!MapLargeScenerySignSetColour(
-                    { coords, tileElement->GetBaseZ(), tileElement->GetDirection() },
-                    tileElement->AsLargeScenery()->GetSequenceIndex(), _mainColour, _textColour))
+                    { coords, tileElement->getBaseZ(), tileElement->getDirection() },
+                    tileElement->asLargeScenery()->GetSequenceIndex(), _mainColour, _textColour))
             {
                 return Result(Status::unknown, STR_CANT_REPAINT_THIS, kStringIdNone);
             }
@@ -130,7 +130,7 @@ namespace OpenRCT2::GameActions
 
             wallElement->SetPrimaryColour(_mainColour);
             wallElement->SetSecondaryColour(_textColour);
-            MapInvalidateTile({ coords, wallElement->GetBaseZ(), wallElement->GetClearanceZ() });
+            MapInvalidateTile({ coords, wallElement->getBaseZ(), wallElement->getClearanceZ() });
         }
 
         auto intent = Intent(INTENT_ACTION_UPDATE_BANNER);

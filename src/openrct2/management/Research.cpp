@@ -406,7 +406,7 @@ static void ResearchInsertUnresearched(ResearchItem&& item)
 {
     auto& gameState = getGameState();
     // First check to make sure that entry is not already accounted for
-    if (item.Exists())
+    if (item.exists())
     {
         return;
     }
@@ -422,7 +422,7 @@ static void ResearchInsertResearched(ResearchItem&& item)
 {
     auto& gameState = getGameState();
     // First check to make sure that entry is not already accounted for
-    if (item.Exists())
+    if (item.exists())
     {
         return;
     }
@@ -722,7 +722,7 @@ void SetEveryRideEntryNotInvented()
  *
  *  rct2: 0x0068563D
  */
-StringId ResearchItem::GetName() const
+StringId ResearchItem::getName() const
 {
     if (type == Research::EntryType::ride)
     {
@@ -947,22 +947,22 @@ void ResearchItemsShuffle()
         std::default_random_engine{});
 }
 
-bool ResearchItem::IsAlwaysResearched() const
+bool ResearchItem::isAlwaysResearched() const
 {
     return (flags & (RESEARCH_ENTRY_FLAG_RIDE_ALWAYS_RESEARCHED | RESEARCH_ENTRY_FLAG_SCENERY_SET_ALWAYS_RESEARCHED)) != 0;
 }
 
-bool ResearchItem::IsNull() const
+bool ResearchItem::isNull() const
 {
     return entryIndex == kObjectEntryIndexNull;
 }
 
-void ResearchItem::SetNull()
+void ResearchItem::setNull()
 {
     entryIndex = kObjectEntryIndexNull;
 }
 
-bool ResearchItem::Exists() const
+bool ResearchItem::exists() const
 {
     auto& gameState = getGameState();
     for (auto const& researchItem : gameState.researchItemsUninvented)
@@ -994,7 +994,7 @@ static constexpr StringId _editorInventionsResearchCategories[] = {
 };
 // clang-format on
 
-StringId ResearchItem::GetCategoryInventionString() const
+StringId ResearchItem::getCategoryInventionString() const
 {
     const auto categoryValue = EnumValue(category);
     Guard::Assert(categoryValue <= 6, "Unsupported category invention string");
@@ -1013,7 +1013,7 @@ static constexpr StringId _researchCategoryNames[] = {
 };
 // clang-format on
 
-StringId ResearchItem::GetCategoryName() const
+StringId ResearchItem::getCategoryName() const
 {
     const auto categoryValue = EnumValue(category);
     Guard::Assert(categoryValue <= 6, "Unsupported category name");
@@ -1029,7 +1029,7 @@ static BitSet<RIDE_TYPE_COUNT> _seenRideType = {};
 
 static void ResearchUpdateFirstOfType(ResearchItem* researchItem)
 {
-    if (researchItem->IsNull())
+    if (researchItem->isNull())
         return;
 
     if (researchItem->type != Research::EntryType::ride)
@@ -1083,13 +1083,13 @@ void ResearchDetermineFirstOfType()
 
         // The last research item will also be present in gameState.researchItemsInvented.
         // Avoid marking its ride type as "invented" prematurely.
-        if (gameState.researchLastItem.has_value() && !gameState.researchLastItem->IsNull()
+        if (gameState.researchLastItem.has_value() && !gameState.researchLastItem->isNull()
             && researchItem == gameState.researchLastItem.value())
             continue;
 
         // The next research item is (sometimes?) also present in gameState.researchItemsInvented, even though it isn't invented
         // yet(!)
-        if (gameState.researchNextItem.has_value() && !gameState.researchNextItem->IsNull()
+        if (gameState.researchNextItem.has_value() && !gameState.researchNextItem->isNull()
             && researchItem == gameState.researchNextItem.value())
             continue;
 
@@ -1110,7 +1110,7 @@ void ResearchDetermineFirstOfType()
     for (auto& researchItem : gameState.researchItemsUninvented)
     {
         // The next research item is (sometimes?) also present in gameState.researchItemsUninvented
-        if (gameState.researchNextItem.has_value() && !gameState.researchNextItem->IsNull()
+        if (gameState.researchNextItem.has_value() && !gameState.researchNextItem->isNull()
             && researchItem.baseRideType == gameState.researchNextItem.value().baseRideType)
         {
             // Copy the "first of type" flag.

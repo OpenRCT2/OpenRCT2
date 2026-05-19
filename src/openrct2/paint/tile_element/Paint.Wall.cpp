@@ -320,7 +320,7 @@ void PaintWall(PaintSession& session, uint8_t direction, int32_t height, const W
         imageTemplate = imageTemplate.WithTertiary(wallElement.GetTertiaryColour());
     }
 
-    PaintUtilSetGeneralSupportHeight(session, 8 * wallElement.ClearanceHeight);
+    PaintUtilSetGeneralSupportHeight(session, 8 * wallElement.clearanceHeight);
 
     auto isGhost = false;
     if (gTrackDesignSaveMode)
@@ -332,7 +332,7 @@ void PaintWall(PaintSession& session, uint8_t direction, int32_t height, const W
         }
     }
 
-    if (wallElement.IsGhost())
+    if (wallElement.isGhost())
     {
         session.InteractionType = ViewportInteractionItem::none;
         imageTemplate = ImageId().WithRemap(FilterPaletteID::paletteGhost);

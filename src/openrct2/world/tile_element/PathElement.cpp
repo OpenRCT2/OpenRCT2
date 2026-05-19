@@ -57,14 +57,14 @@ namespace OpenRCT2
 
     bool PathElement::IsQueue() const
     {
-        return (Type & FOOTPATH_ELEMENT_TYPE_FLAG_IS_QUEUE) != 0;
+        return (type & FOOTPATH_ELEMENT_TYPE_FLAG_IS_QUEUE) != 0;
     }
 
     void PathElement::SetIsQueue(bool isQueue)
     {
-        Type &= ~FOOTPATH_ELEMENT_TYPE_FLAG_IS_QUEUE;
+        type &= ~FOOTPATH_ELEMENT_TYPE_FLAG_IS_QUEUE;
         if (isQueue)
-            Type |= FOOTPATH_ELEMENT_TYPE_FLAG_IS_QUEUE;
+            type |= FOOTPATH_ELEMENT_TYPE_FLAG_IS_QUEUE;
     }
 
     bool PathElement::HasQueueBanner() const
@@ -125,14 +125,14 @@ namespace OpenRCT2
 
     bool PathElement::IsWide() const
     {
-        return (Type & FOOTPATH_ELEMENT_TYPE_FLAG_IS_WIDE) != 0;
+        return (type & FOOTPATH_ELEMENT_TYPE_FLAG_IS_WIDE) != 0;
     }
 
     void PathElement::SetWide(bool isWide)
     {
-        Type &= ~FOOTPATH_ELEMENT_TYPE_FLAG_IS_WIDE;
+        type &= ~FOOTPATH_ELEMENT_TYPE_FLAG_IS_WIDE;
         if (isWide)
-            Type |= FOOTPATH_ELEMENT_TYPE_FLAG_IS_WIDE;
+            type |= FOOTPATH_ELEMENT_TYPE_FLAG_IS_WIDE;
     }
 
     bool PathElement::HasAddition() const
@@ -287,13 +287,13 @@ namespace OpenRCT2
 
     uint8_t PathElement::GetQueueBannerDirection() const
     {
-        return ((Type & FOOTPATH_ELEMENT_TYPE_DIRECTION_MASK) >> 6);
+        return ((type & FOOTPATH_ELEMENT_TYPE_DIRECTION_MASK) >> 6);
     }
 
     void PathElement::SetQueueBannerDirection(uint8_t direction)
     {
-        Type &= ~FOOTPATH_ELEMENT_TYPE_DIRECTION_MASK;
-        Type |= (direction << 6);
+        type &= ~FOOTPATH_ELEMENT_TYPE_DIRECTION_MASK;
+        type |= (direction << 6);
     }
 
     bool PathElement::ShouldDrawPathOverSupports() const
