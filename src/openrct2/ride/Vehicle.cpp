@@ -19,7 +19,6 @@
 #include "../config/Config.h"
 #include "../core/EnumUtils.hpp"
 #include "../core/FixedPoint.hpp"
-#include "../core/Memory.hpp"
 #include "../core/Speed.hpp"
 #include "../entity/EntityList.h"
 #include "../entity/EntityRegistry.h"
@@ -84,7 +83,7 @@ CoordsXYZ _vehicleCurPosition;
 
 PitchAndRoll PitchAndRollStart(bool useInvertedSprites, TileElement* tileElement)
 {
-    auto trackType = tileElement->AsTrack()->GetTrackType();
+    auto trackType = tileElement->asTrack()->GetTrackType();
     const auto& ted = GetTrackElementDescriptor(trackType);
     return PitchAndRoll{ ted.definition.pitchStart, TrackGetActualBank3(useInvertedSprites, tileElement) };
 }
@@ -108,9 +107,9 @@ int32_t GetAccelerationDecrease2(const int32_t velocity, const int32_t totalMass
 }
 
 template<>
-bool EntityBase::Is<Vehicle>() const
+bool EntityBase::is<Vehicle>() const
 {
-    return Type == EntityType::vehicle;
+    return type == EntityType::vehicle;
 }
 
 static bool vehicle_move_info_valid(
@@ -230,10 +229,10 @@ void Vehicle::UpdateTrackChange()
 
     _vehicleCurPosition = TrackLocation
         + CoordsXYZ{ moveInfo->x, moveInfo->y, moveInfo->z + GetRideTypeDescriptor(curRide->type).Heights.VehicleZOffset };
-    Orientation = moveInfo->yaw;
+    orientation = moveInfo->yaw;
     roll = moveInfo->roll;
     pitch = moveInfo->pitch;
-    MoveTo(_vehicleCurPosition);
+    moveTo(_vehicleCurPosition);
 }
 
 Vehicle* TryGetVehicle(EntityId spriteIndex)
@@ -273,7 +272,7 @@ bool Vehicle::CloseRestraints()
         return true;
 
     bool restraintsClosed = true;
-    for (Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(Id); vehicle != nullptr;
+    for (Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(id); vehicle != nullptr;
          vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
     {
         if (vehicle->flags.has(VehicleFlag::carIsBroken) && vehicle->restraints_position != 0
@@ -307,7 +306,7 @@ bool Vehicle::CloseRestraints()
                 continue;
             }
         }
-        vehicle->Invalidate();
+        vehicle->invalidate();
         restraintsClosed = false;
     }
 
@@ -322,7 +321,7 @@ bool Vehicle::CloseRestraints()
 bool Vehicle::OpenRestraints()
 {
     int32_t restraintsOpen = true;
-    for (Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(Id); vehicle != nullptr;
+    for (Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(id); vehicle != nullptr;
          vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
     {
         vehicle->SwingPosition = 0;
@@ -364,7 +363,7 @@ bool Vehicle::OpenRestraints()
                 vehicle->spin_sprite += value;
                 vehicle->spin_speed -= value;
 
-                vehicle->Invalidate();
+                vehicle->invalidate();
                 continue;
             }
         }
@@ -379,7 +378,7 @@ bool Vehicle::OpenRestraints()
                 vehicle->animationState = 0;
                 vehicle->animation_frame++;
                 vehicle->animation_frame %= carEntry.AnimationFrames;
-                vehicle->Invalidate();
+                vehicle->invalidate();
             }
             restraintsOpen = false;
             continue;
@@ -424,7 +423,7 @@ bool Vehicle::OpenRestraints()
             }
             vehicle->restraints_position += 20;
         }
-        vehicle->Invalidate();
+        vehicle->invalidate();
         restraintsOpen = false;
     }
 
@@ -733,7 +732,7 @@ void Vehicle::UpdateMeasurements()
 
     auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ x, y });
     // If vehicle above ground.
-    if (surfaceElement != nullptr && surfaceElement->GetBaseZ() <= z)
+    if (surfaceElement != nullptr && surfaceElement->getBaseZ() <= z)
     {
         if (!TrackGetIsSheltered(CoordsXYZ{ x, y, z }))
         {
@@ -909,7 +908,7 @@ std::optional<uint32_t> ride_get_train_index_from_vehicle(const Ride& ride, Enti
  */
 void Vehicle::PeepEasterEggHereWeAre() const
 {
-    for (Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(Id); vehicle != nullptr;
+    for (Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(id); vehicle != nullptr;
          vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
     {
         for (int32_t i = 0; i < vehicle->num_peeps; ++i)
@@ -1032,17 +1031,17 @@ bool Vehicle::CurrentTowerElementIsTop()
     if (tileElement == nullptr)
         return true;
 
-    while (!tileElement->IsLastForTile())
+    while (!tileElement->isLastForTile())
     {
         tileElement++;
 
-        if (tileElement->IsGhost())
+        if (tileElement->isGhost())
             continue;
 
-        if (tileElement->GetType() != TileElementType::Track)
+        if (tileElement->getType() != TileElementType::Track)
             continue;
 
-        const auto* trackElement = tileElement->AsTrack();
+        const auto* trackElement = tileElement->asTrack();
         if (trackElement->GetRideIndex() != ride)
             continue;
 
@@ -1073,7 +1072,7 @@ void Vehicle::UpdateWaitingForCableLift()
         return;
 
     cableLift->SetState(Status::waitingToDepart, sub_state);
-    cableLift->cable_lift_target = Id;
+    cableLift->cable_lift_target = id;
 }
 
 /**
@@ -1121,7 +1120,7 @@ void Vehicle::UpdateTravellingCableLift()
                     UpdateTestFinish();
                 }
             }
-            else if (!curRide->flags.has(RideFlag::testInProgress) && !IsGhost())
+            else if (!curRide->flags.has(RideFlag::testInProgress) && !isGhost())
             {
                 TestReset();
             }
@@ -1211,7 +1210,7 @@ void Vehicle::SetMapToolbar() const
 
         size_t vehicleIndex;
         for (vehicleIndex = 0; vehicleIndex < std::size(curRide->vehicles); vehicleIndex++)
-            if (curRide->vehicles[vehicleIndex] == vehicle->Id)
+            if (curRide->vehicles[vehicleIndex] == vehicle->id)
                 break;
 
         auto ft = Formatter();
@@ -1297,7 +1296,7 @@ Ride* Vehicle::GetRide() const
 int32_t Vehicle::NumPeepsUntilTrainTail() const
 {
     int32_t numPeeps = 0;
-    for (const Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(Id); vehicle != nullptr;
+    for (const Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(id); vehicle != nullptr;
          vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
     {
         numPeeps += vehicle->num_peeps;
@@ -1377,7 +1376,7 @@ void Vehicle::UpdateCrossings() const
 
         while (true)
         {
-            auto* pathElement = MapGetPathElementAt(TileCoordsXYZ(CoordsXYZ{ xyElement, xyElement.element->GetBaseZ() }));
+            auto* pathElement = MapGetPathElementAt(TileCoordsXYZ(CoordsXYZ{ xyElement, xyElement.element->getBaseZ() }));
             if (pathElement != nullptr)
             {
                 if (!playedClaxon && !pathElement->IsBlockedByVehicle())
@@ -1398,7 +1397,7 @@ void Vehicle::UpdateCrossings() const
                 break;
             }
 
-            curZ = xyElement.element->BaseHeight;
+            curZ = xyElement.element->baseHeight;
 
             if (travellingForwards)
             {
@@ -1420,7 +1419,7 @@ void Vehicle::UpdateCrossings() const
 
             // Ensure trains near a station don't block possible crossings after the stop,
             // except when they are departing
-            if (xyElement.element->AsTrack()->IsStation() && status != Status::departing)
+            if (xyElement.element->asTrack()->IsStation() && status != Status::departing)
             {
                 break;
             }
@@ -1448,7 +1447,7 @@ void Vehicle::UpdateCrossings() const
             }
         }
 
-        auto* pathElement = MapGetPathElementAt(TileCoordsXYZ(CoordsXYZ{ xyElement, xyElement.element->GetBaseZ() }));
+        auto* pathElement = MapGetPathElementAt(TileCoordsXYZ(CoordsXYZ{ xyElement, xyElement.element->getBaseZ() }));
         if (pathElement != nullptr)
         {
             pathElement->SetIsBlockedByVehicle(false);
@@ -1493,7 +1492,7 @@ void Vehicle::SetState(Status vehicleStatus, uint8_t subState)
     InvalidateWindow();
 }
 
-bool Vehicle::IsGhost() const
+bool Vehicle::isGhost() const
 {
     auto r = GetRide();
     return r != nullptr && r->status == RideStatus::simulating;
@@ -1511,7 +1510,7 @@ void Vehicle::EnableCollisionsForTrain()
 
 void Vehicle::Serialise(DataSerialiser& stream)
 {
-    EntityBase::Serialise(stream);
+    EntityBase::serialise(stream);
     stream << SubType;
     stream << pitch;
     stream << roll;

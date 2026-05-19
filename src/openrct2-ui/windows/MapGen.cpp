@@ -44,7 +44,7 @@ namespace OpenRCT2::Ui::Windows
         WINDOW_MAPGEN_PAGE_COUNT
     };
 
-    enum
+    enum WindowMapGenWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,
@@ -131,26 +131,26 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr auto kBaseWidgets = makeWidgets(
         makeMapGenWidgets(STR_MAPGEN_CAPTION_GENERATOR),
-        makeSpinnerWidgets ({165, 52}, { 50, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                                ), // NB: 3 widgets
-        makeWidget         ({216, 52}, { 21, 12}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_G2_LINK_CHAIN), STR_MAINTAIN_SQUARE_MAP_TOOLTIP),
-        makeSpinnerWidgets ({238, 52}, { 50, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                          ), // NB: 3 widgets
-        makeDropdownWidgets({155, 72}, {133, 14}, WidgetType::dropdownMenu, WindowColour::secondary, STR_HEIGHTMAP_FLATLAND                                     ),
+        makeHoldableSpinnerWidgets({165, 52}, { 50, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                        ), // NB: 3 widgets
+        makeWidget                ({216, 52}, { 21, 12}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_G2_LINK_CHAIN), STR_MAINTAIN_SQUARE_MAP_TOOLTIP),
+        makeHoldableSpinnerWidgets({238, 52}, { 50, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                        ), // NB: 3 widgets
+        makeDropdownWidgets       ({155, 72}, {133, 14}, WidgetType::dropdownMenu, WindowColour::secondary, STR_HEIGHTMAP_FLATLAND                                  ),
 
-        makeWidget        ({  5,  94}, {290, 57}, WidgetType::groupbox, WindowColour::secondary, STR_MAPGEN_SIMPLEX_NOISE), // WIDX_SIMPLEX_GROUP
-        makeSpinnerWidgets({179, 111}, {109, 14}, WidgetType::spinner,  WindowColour::secondary                          ), // WIDX_SIMPLEX_BASE_FREQ{,_UP,_DOWN}
-        makeSpinnerWidgets({179, 129}, {109, 14}, WidgetType::spinner,  WindowColour::secondary                          ), // WIDX_SIMPLEX_OCTAVES{,_UP,_DOWN}
+        makeWidget                ({  5,  94}, {290, 57}, WidgetType::groupbox, WindowColour::secondary, STR_MAPGEN_SIMPLEX_NOISE), // WIDX_SIMPLEX_GROUP
+        makeHoldableSpinnerWidgets({179, 111}, {109, 14}, WidgetType::spinner,  WindowColour::secondary                          ), // WIDX_SIMPLEX_BASE_FREQ{,_UP,_DOWN}
+        makeHoldableSpinnerWidgets({179, 129}, {109, 14}, WidgetType::spinner,  WindowColour::secondary                          ), // WIDX_SIMPLEX_OCTAVES{,_UP,_DOWN}
 
-        makeWidget        ({  5,  90+8}, {290, 88}, WidgetType::groupbox, WindowColour::secondary, STR_MAPGEN_SELECT_HEIGHTMAP), // WIDX_HEIGHTMAP_GROUP
-        makeWidget        ({223, 107+8}, { 65, 14}, WidgetType::button,   WindowColour::secondary, STR_BROWSE                 ), // WIDX_HEIGHTMAP_BROWSE
-        makeWidget        ({ 10, 125+8}, {150, 12}, WidgetType::checkbox, WindowColour::secondary, STR_MAPGEN_NORMALIZE       ), // WIDX_HEIGHTMAP_NORMALIZE
-        makeWidget        ({ 10, 141+8}, {150, 12}, WidgetType::checkbox, WindowColour::secondary, STR_MAPGEN_SMOOTH_HEIGHTMAP), // WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP
-        makeSpinnerWidgets({179, 157+8}, {109, 14}, WidgetType::spinner,  WindowColour::secondary                             )  // WIDX_HEIGHTMAP_STRENGTH{,_UP,_DOWN}
+        makeWidget                ({  5,  90+8}, {290, 88}, WidgetType::groupbox, WindowColour::secondary, STR_MAPGEN_SELECT_HEIGHTMAP), // WIDX_HEIGHTMAP_GROUP
+        makeWidget                ({223, 107+8}, { 65, 14}, WidgetType::button,   WindowColour::secondary, STR_BROWSE                 ), // WIDX_HEIGHTMAP_BROWSE
+        makeWidget                ({ 10, 125+8}, {150, 12}, WidgetType::checkbox, WindowColour::secondary, STR_MAPGEN_NORMALIZE       ), // WIDX_HEIGHTMAP_NORMALIZE
+        makeWidget                ({ 10, 141+8}, {150, 12}, WidgetType::checkbox, WindowColour::secondary, STR_MAPGEN_SMOOTH_HEIGHTMAP), // WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP
+        makeHoldableSpinnerWidgets({179, 157+8}, {109, 14}, WidgetType::spinner,  WindowColour::secondary                             )  // WIDX_HEIGHTMAP_STRENGTH{,_UP,_DOWN}
     );
 
     static constexpr auto kTerrainWidgets = makeWidgets(
         makeMapGenWidgets(STR_MAPGEN_CAPTION_TERRAIN),
-        makeSpinnerWidgets({179,  52}, {109, 14}, WidgetType::spinner,  WindowColour::secondary                                          ), // WIDX_HEIGHTMAP_LOW{,_UP,_DOWN}
-        makeSpinnerWidgets({179,  70}, {109, 14}, WidgetType::spinner,  WindowColour::secondary                                          ), // WIDX_HEIGHTMAP_HIGH{,_UP,_DOWN}
+        makeHoldableSpinnerWidgets({179,  52}, {109, 14}, WidgetType::spinner,  WindowColour::secondary                                  ), // WIDX_HEIGHTMAP_LOW{,_UP,_DOWN}
+        makeHoldableSpinnerWidgets({179,  70}, {109, 14}, WidgetType::spinner,  WindowColour::secondary                                  ), // WIDX_HEIGHTMAP_HIGH{,_UP,_DOWN}
         makeWidget        ({179,  88}, { 47, 36}, WidgetType::flatBtn,  WindowColour::secondary, 0xFFFFFFFF, STR_CHANGE_BASE_LAND_TIP    ),
         makeWidget        ({236,  88}, { 47, 36}, WidgetType::flatBtn,  WindowColour::secondary, 0xFFFFFFFF, STR_CHANGE_VERTICAL_LAND_TIP),
         makeWidget        ({ 10, 106}, {150, 12}, WidgetType::checkbox, WindowColour::secondary, STR_MAPGEN_OPTION_RANDOM_TERRAIN        ),
@@ -159,16 +159,16 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr auto kWaterWidgets = makeWidgets(
         makeMapGenWidgets(STR_MAPGEN_CAPTION_WATER),
-        makeSpinnerWidgets({179,  52}, {109, 14}, WidgetType::spinner,  WindowColour::secondary                          ), // NB: 3 widgets
-        makeWidget        ({ 10,  70}, {255, 12}, WidgetType::checkbox, WindowColour::secondary, STR_BEACHES_WATER_BODIES)
+        makeHoldableSpinnerWidgets({179,  52}, {109, 14}, WidgetType::spinner,  WindowColour::secondary                          ), // NB: 3 widgets
+        makeWidget                ({ 10,  70}, {255, 12}, WidgetType::checkbox, WindowColour::secondary, STR_BEACHES_WATER_BODIES)
     );
 
     static constexpr auto kForestsWidgets = makeWidgets(
         makeMapGenWidgets(STR_MAPGEN_CAPTION_FORESTS),
-        makeWidget        ({ 10,  52}, {255, 12}, WidgetType::checkbox, WindowColour::secondary, STR_MAPGEN_OPTION_PLACE_TREES),
-        makeSpinnerWidgets({179,  70}, {109, 14}, WidgetType::spinner,  WindowColour::secondary                               ), // WIDX_TREE_LAND_RATIO{,_UP,_DOWN}
-        makeSpinnerWidgets({179,  88}, {109, 14}, WidgetType::spinner,  WindowColour::secondary                               ), // WIDX_TREE_ALTITUDE_MIN{,_UP,_DOWN}
-        makeSpinnerWidgets({179, 106}, {109, 14}, WidgetType::spinner,  WindowColour::secondary                               )  // WIDX_TREE_ALTITUDE_MAX{,_UP,_DOWN}
+        makeWidget                ({ 10,  52}, {255, 12}, WidgetType::checkbox, WindowColour::secondary, STR_MAPGEN_OPTION_PLACE_TREES),
+        makeHoldableSpinnerWidgets({179,  70}, {109, 14}, WidgetType::spinner,  WindowColour::secondary                               ), // WIDX_TREE_LAND_RATIO{,_UP,_DOWN}
+        makeHoldableSpinnerWidgets({179,  88}, {109, 14}, WidgetType::spinner,  WindowColour::secondary                               ), // WIDX_TREE_ALTITUDE_MIN{,_UP,_DOWN}
+        makeHoldableSpinnerWidgets({179, 106}, {109, 14}, WidgetType::spinner,  WindowColour::secondary                               )  // WIDX_TREE_ALTITUDE_MAX{,_UP,_DOWN}
     );
 
     static std::span<const Widget> PageWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
@@ -178,37 +178,6 @@ namespace OpenRCT2::Ui::Windows
         kForestsWidgets,
     };
     // clang-format on
-
-#pragma endregion
-
-#pragma region Widget flags
-
-    static void setPageHoldableWidgets(WindowBase& w, int32_t page)
-    {
-        switch (page)
-        {
-            case WINDOW_MAPGEN_PAGE_BASE:
-                widgetsSetHoldable(
-                    w,
-                    { WIDX_MAP_SIZE_Y_UP, WIDX_MAP_SIZE_Y_DOWN, WIDX_MAP_SIZE_X_UP, WIDX_MAP_SIZE_X_DOWN,
-                      WIDX_SIMPLEX_BASE_FREQ_UP, WIDX_SIMPLEX_BASE_FREQ_DOWN, WIDX_SIMPLEX_OCTAVES_UP,
-                      WIDX_SIMPLEX_OCTAVES_DOWN, WIDX_HEIGHTMAP_STRENGTH_UP, WIDX_HEIGHTMAP_STRENGTH_DOWN });
-                break;
-            case WINDOW_MAPGEN_PAGE_TERRAIN:
-                widgetsSetHoldable(
-                    w, { WIDX_HEIGHTMAP_LOW_UP, WIDX_HEIGHTMAP_LOW_DOWN, WIDX_HEIGHTMAP_HIGH_UP, WIDX_HEIGHTMAP_HIGH_DOWN });
-                break;
-            case WINDOW_MAPGEN_PAGE_WATER:
-                widgetsSetHoldable(w, { WIDX_WATER_LEVEL_UP, WIDX_WATER_LEVEL_DOWN });
-                break;
-            case WINDOW_MAPGEN_PAGE_FORESTS:
-                widgetsSetHoldable(
-                    w,
-                    { WIDX_TREE_LAND_RATIO_UP, WIDX_TREE_LAND_RATIO_DOWN, WIDX_TREE_ALTITUDE_MIN_UP,
-                      WIDX_TREE_ALTITUDE_MIN_DOWN, WIDX_TREE_ALTITUDE_MAX_UP, WIDX_TREE_ALTITUDE_MAX_DOWN });
-                break;
-        }
-    }
 
 #pragma endregion
 
@@ -266,7 +235,6 @@ namespace OpenRCT2::Ui::Windows
             removeViewport();
 
             setWidgets(PageWidgets[newPage]);
-            setPageHoldableWidgets(*this, newPage);
             widgetSetPressedExclusive(*this, { WIDX_TAB_1, WIDX_TAB_2, WIDX_TAB_3, WIDX_TAB_4 }, WIDX_TAB_1 + newPage);
 
             initScrollWidgets();

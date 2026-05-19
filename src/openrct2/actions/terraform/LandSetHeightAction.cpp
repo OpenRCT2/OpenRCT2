@@ -113,9 +113,9 @@ namespace OpenRCT2::GameActions
 
         // We need to check if there is _currently_ a level crossing on the tile.
         // For that, we need the old height, so we can't use the _height variable.
-        auto oldCoords = CoordsXYZ{ _coords, surfaceElement->GetBaseZ() };
+        auto oldCoords = CoordsXYZ{ _coords, surfaceElement->getBaseZ() };
         auto* pathElement = MapGetFootpathElement(oldCoords);
-        if (pathElement != nullptr && pathElement->AsPath()->IsLevelCrossing(oldCoords))
+        if (pathElement != nullptr && pathElement->asPath()->IsLevelCrossing(oldCoords))
         {
             return Result(Status::disallowed, STR_REMOVE_LEVEL_CROSSING_FIRST, kStringIdNone);
         }
@@ -217,9 +217,9 @@ namespace OpenRCT2::GameActions
     {
         for (auto* sceneryElement : TileElementsView<SmallSceneryElement>(_coords))
         {
-            if (_height > sceneryElement->ClearanceHeight)
+            if (_height > sceneryElement->clearanceHeight)
                 continue;
-            if (_height + 4 < sceneryElement->BaseHeight)
+            if (_height + 4 < sceneryElement->baseHeight)
                 continue;
 
             auto* sceneryEntry = sceneryElement->GetEntry();
@@ -237,9 +237,9 @@ namespace OpenRCT2::GameActions
 
         for (auto* sceneryElement : TileElementsView<SmallSceneryElement>(_coords))
         {
-            if (_height > sceneryElement->ClearanceHeight)
+            if (_height > sceneryElement->clearanceHeight)
                 continue;
-            if (_height + 4 < sceneryElement->BaseHeight)
+            if (_height + 4 < sceneryElement->baseHeight)
                 continue;
 
             auto* sceneryEntry = sceneryElement->GetEntry();
@@ -259,14 +259,14 @@ namespace OpenRCT2::GameActions
         {
             if (tileElement == nullptr)
                 break;
-            if (tileElement->GetType() != TileElementType::SmallScenery)
+            if (tileElement->getType() != TileElementType::SmallScenery)
                 continue;
-            if (_height > tileElement->ClearanceHeight)
+            if (_height > tileElement->clearanceHeight)
                 continue;
-            if (_height + 4 < tileElement->BaseHeight)
+            if (_height + 4 < tileElement->baseHeight)
                 continue;
             TileElementRemove(tileElement--);
-        } while (!(tileElement++)->IsLastForTile());
+        } while (!(tileElement++)->isLastForTile());
     }
 
     StringId LandSetHeightAction::CheckRideSupports() const
@@ -289,7 +289,7 @@ namespace OpenRCT2::GameActions
                 maxHeight = ride->getRideTypeDescriptor().Heights.MaxHeight;
             }
 
-            int32_t zDelta = trackElement->ClearanceHeight - _height;
+            int32_t zDelta = trackElement->clearanceHeight - _height;
             if (zDelta >= 0 && zDelta / 2 > maxHeight)
             {
                 return STR_SUPPORTS_CANT_BE_EXTENDED;
@@ -300,9 +300,9 @@ namespace OpenRCT2::GameActions
 
     TileElement* LandSetHeightAction::CheckFloatingStructures(TileElement* surfaceElement, uint8_t zCorner) const
     {
-        if (surfaceElement->AsSurface()->HasTrackThatNeedsWater())
+        if (surfaceElement->asSurface()->HasTrackThatNeedsWater())
         {
-            uint32_t waterHeight = surfaceElement->AsSurface()->GetWaterHeight();
+            uint32_t waterHeight = surfaceElement->asSurface()->GetWaterHeight();
             if (waterHeight != 0)
             {
                 if (_style & kTileSlopeMask)
@@ -336,13 +336,13 @@ namespace OpenRCT2::GameActions
 
     void LandSetHeightAction::SetSurfaceHeight(TileElement* surfaceElement) const
     {
-        surfaceElement->BaseHeight = _height;
-        surfaceElement->ClearanceHeight = _height;
-        surfaceElement->AsSurface()->SetSlope(_style);
-        int32_t waterHeight = surfaceElement->AsSurface()->GetWaterHeight() / kCoordsZStep;
+        surfaceElement->baseHeight = _height;
+        surfaceElement->clearanceHeight = _height;
+        surfaceElement->asSurface()->SetSlope(_style);
+        int32_t waterHeight = surfaceElement->asSurface()->GetWaterHeight() / kCoordsZStep;
         if (waterHeight != 0 && waterHeight <= _height)
         {
-            surfaceElement->AsSurface()->SetWaterHeight(0);
+            surfaceElement->asSurface()->SetWaterHeight(0);
         }
 
         MapInvalidateTileFull(_coords);
@@ -352,10 +352,10 @@ namespace OpenRCT2::GameActions
         TileElement** tile_element, [[maybe_unused]] const CoordsXY& coords, [[maybe_unused]] CommandFlags flags,
         [[maybe_unused]] money64* price)
     {
-        if ((*tile_element)->GetType() == TileElementType::Surface)
+        if ((*tile_element)->getType() == TileElementType::Surface)
             return true;
 
-        if ((*tile_element)->GetType() == TileElementType::SmallScenery)
+        if ((*tile_element)->getType() == TileElementType::SmallScenery)
             return true;
 
         return false;

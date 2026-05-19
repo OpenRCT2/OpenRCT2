@@ -68,10 +68,10 @@ static void PaintEnterpriseStructure(
     CoordsXYZ offset(xOffset, yOffset, height + 7);
     BoundBoxXYZ bb = { { 0, 0, height + 7 }, { 24, 24, 48 } };
 
-    uint32_t imageOffset = trackElement.GetDirectionWithOffset(session.CurrentRotation);
+    uint32_t imageOffset = trackElement.getDirectionWithOffset(session.CurrentRotation);
     if (vehicle != nullptr)
     {
-        imageOffset = (vehicle->flatRideAnimationFrame << 2) + (((vehicle->Orientation >> 3) + session.CurrentRotation) % 4);
+        imageOffset = (vehicle->flatRideAnimationFrame << 2) + (((vehicle->orientation >> 3) + session.CurrentRotation) % 4);
     }
 
     auto imageTemplate = ImageId(0, ride.vehicleColours[0].Body, ride.vehicleColours[0].Trim);

@@ -42,7 +42,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr ScreenSize kWindowSize = { 600, 400 };
     static constexpr StringId kWindowTitle = STR_INVENTION_LIST;
 
-    enum
+    enum WindowEditorInventionsListWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,
@@ -111,7 +111,7 @@ namespace OpenRCT2::Ui::Windows
         RenderTarget& rt, const ResearchItem& researchItem, const int16_t& width, const ScreenCoordsXY& screenCoords,
         StringId format, TextPaint textPaint)
     {
-        const StringId itemNameId = researchItem.GetName();
+        const StringId itemNameId = researchItem.getName();
         int16_t columnSplitOffset = width / 2;
 
         if (researchItem.type == Research::EntryType::ride
@@ -252,7 +252,7 @@ namespace OpenRCT2::Ui::Windows
                 invalidate();
 
                 // Prevent always-researched items from being highlighted when hovered over
-                if (researchItem != nullptr && researchItem->IsAlwaysResearched())
+                if (researchItem != nullptr && researchItem->isAlwaysResearched())
                 {
                     _selectedResearchItem = nullptr;
                 }
@@ -266,7 +266,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             // Disallow picking up always-researched items
-            if (researchItem->IsAlwaysResearched())
+            if (researchItem->isAlwaysResearched())
                 return;
 
             invalidate();
@@ -321,7 +321,7 @@ namespace OpenRCT2::Ui::Windows
                 FontStyle fontStyle = FontStyle::medium;
                 auto darkness = TextDarkness::regular;
 
-                if (researchItem.IsAlwaysResearched())
+                if (researchItem.isAlwaysResearched())
                 {
                     if (_selectedResearchItem == &researchItem && dragItem == nullptr)
                         darkness = TextDarkness::extraDark;
@@ -352,7 +352,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Use the open hand as cursor for items that can be picked up
             auto* researchItem = GetItemFromScrollY(isInvented, screenCoords.y);
-            if (researchItem != nullptr && !researchItem->IsAlwaysResearched())
+            if (researchItem != nullptr && !researchItem->isAlwaysResearched())
             {
                 return CursorID::HandOpen;
             }
@@ -386,10 +386,10 @@ namespace OpenRCT2::Ui::Windows
                 getColourMap(colours[1].colour).darkest);
 
             auto* researchItem = WindowEditorInventionsListDragGetItem();
-            if (researchItem == nullptr || researchItem->IsNull())
+            if (researchItem == nullptr || researchItem->isNull())
                 researchItem = _selectedResearchItem;
             // If the research item is null or a list separator.
-            if (researchItem == nullptr || researchItem->IsNull())
+            if (researchItem == nullptr || researchItem->isNull())
                 return;
 
             // Preview image
@@ -420,7 +420,7 @@ namespace OpenRCT2::Ui::Windows
             const auto itemWidth = width - widgets[WIDX_RESEARCH_ORDER_SCROLL].right - 6;
 
             StringId drawString = STR_WINDOW_COLOUR_2_STRINGID;
-            StringId stringId = researchItem->GetName();
+            StringId stringId = researchItem->getName();
             auto ft = Formatter();
 
             if (researchItem->type == Research::EntryType::ride
@@ -443,7 +443,7 @@ namespace OpenRCT2::Ui::Windows
             // Item category
             screenPos.x = windowPos.x + widgets[WIDX_RESEARCH_ORDER_SCROLL].right + 4;
             ft = Formatter();
-            ft.Add<StringId>(researchItem->GetCategoryInventionString());
+            ft.Add<StringId>(researchItem->getCategoryInventionString());
             drawText(rt, screenPos, STR_INVENTION_RESEARCH_GROUP, ft);
         }
 
@@ -646,7 +646,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 res = inventionListWindow->GetResearchItemAt(newScreenCoords);
                 newScreenCoords.y += kListRowHeight;
-            } while (res.has_value() && res->research != nullptr && res->research->IsAlwaysResearched());
+            } while (res.has_value() && res->research != nullptr && res->research->isAlwaysResearched());
 
             if (res.has_value())
             {

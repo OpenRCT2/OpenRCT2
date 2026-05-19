@@ -59,7 +59,7 @@ static void PaintCrookedHouseStructure(
     if (tileElement == nullptr)
         return;
 
-    auto ride = GetRide(tileElement->AsTrack()->GetRideIndex());
+    auto ride = GetRide(tileElement->asTrack()->GetRideIndex());
     if (ride == nullptr)
         return;
 

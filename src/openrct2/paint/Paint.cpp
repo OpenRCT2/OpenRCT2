@@ -23,7 +23,6 @@
 #include "../localisation/LocalisationService.h"
 #include "../localisation/StringIdType.h"
 #include "../paint/Painter.h"
-#include "../platform/Memory.h"
 #include "../profiling/Profiling.h"
 #include "Boundbox.h"
 #include "Paint.Entity.h"
@@ -470,10 +469,6 @@ static void PaintStructsSortQuadrantLegacy(PaintStruct* parent, PaintStruct* chi
         auto* ps = child;
         child = child->NextQuadrantEntry;
 
-        if (child != nullptr)
-        {
-            PREFETCH(&child->Bounds);
-        }
         if (child == nullptr || child->SortFlags & PaintSortFlags::OutsideQuadrant)
         {
             break;
@@ -517,11 +512,6 @@ static void PaintStructsSortQuadrantStable(PaintStruct* parent, PaintStruct* chi
     for (;;)
     {
         PaintStruct* next = child->NextQuadrantEntry;
-
-        if (next != nullptr)
-        {
-            PREFETCH(&next->Bounds);
-        }
 
         // Stop if at the end of the list or outside the quadrant range.
         if (next == nullptr || next->SortFlags & PaintSortFlags::OutsideQuadrant)

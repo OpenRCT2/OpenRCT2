@@ -27,7 +27,7 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-    enum
+    enum WindowChangelogWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,

@@ -25,7 +25,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr StringId kWindowTitle = STR_SACK_STAFF;
     static constexpr ScreenSize kWindowSize = { 200, 100 };
 
-    enum WindowStaffFireWidgetIdx
+    enum WindowStaffFireWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,
@@ -98,7 +98,7 @@ namespace OpenRCT2::Ui::Windows
         auto* windowMgr = GetWindowManager();
         auto* window = windowMgr->FocusOrCreate<StaffFirePromptWindow>(
             WindowClass::firePrompt, kWindowSize, { WindowFlag::centreScreen, WindowFlag::transparent });
-        window->setWindowNumber(peep->Id.ToUnderlying());
+        window->setWindowNumber(peep->id.ToUnderlying());
         return window;
     }
 } // namespace OpenRCT2::Ui::Windows

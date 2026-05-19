@@ -56,7 +56,7 @@ namespace OpenRCT2::Ui::Windows
         WINDOW_STAFF_PAGE_COUNT,
     };
 
-    enum WindowStaffWidgetIdx
+    enum WindowStaffWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,
@@ -487,7 +487,7 @@ namespace OpenRCT2::Ui::Windows
                         windowMgr->CloseByClass(WindowClass::patrolArea);
 
                         auto staffSetPatrolAreaAction = GameActions::StaffSetPatrolAreaAction(
-                            staff->Id, {}, GameActions::StaffSetPatrolAreaMode::ClearAll);
+                            staff->id, {}, GameActions::StaffSetPatrolAreaMode::ClearAll);
                         GameActions::Execute(&staffSetPatrolAreaAction, gameState);
                     }
                     else
@@ -526,7 +526,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_PICKUP].left = width - 25;
             widgets[WIDX_PICKUP].right = width - 2;
 
-            setWidgetPressed(WIDX_PATROL, WindowPatrolAreaGetCurrentStaffId() == staff->Id);
+            setWidgetPressed(WIDX_PATROL, WindowPatrolAreaGetCurrentStaffId() == staff->id);
 
             widgets[WIDX_PATROL].left = width - 25;
             widgets[WIDX_PATROL].right = width - 2;
@@ -656,7 +656,7 @@ namespace OpenRCT2::Ui::Windows
 
             invalidateWidget(WIDX_TAB_1);
 
-            const std::optional<Focus> tempFocus = staff->State != PeepState::picked ? std::optional(Focus(staff->Id))
+            const std::optional<Focus> tempFocus = staff->State != PeepState::picked ? std::optional(Focus(staff->id))
                                                                                      : std::nullopt;
             if (focus != tempFocus)
             {
@@ -717,7 +717,7 @@ namespace OpenRCT2::Ui::Windows
 
             GameActions::PeepPickupAction pickupAction{ GameActions::PeepPickupType::Place,
                                                         staffEntityId,
-                                                        { destCoords, tileElement->GetBaseZ() },
+                                                        { destCoords, tileElement->getBaseZ() },
                                                         Network::GetCurrentPlayerId() };
             pickupAction.SetCallback([](const GameActions::GameAction* ga, const GameActions::Result* result) {
                 if (result->error != GameActions::Status::ok)
@@ -988,6 +988,10 @@ namespace OpenRCT2::Ui::Windows
                     drawText(rt, screenCoords, STR_STAFF_STAT_VANDALS_STOPPED, ft);
                     break;
                 case StaffType::entertainer:
+                    ft = Formatter();
+                    ft.Add<uint32_t>(staff->staffGuestsEntertained);
+                    drawText(rt, screenCoords, STR_STAFF_STAT_GUESTS_ENTERTAINED, ft);
+                    break;
                 case StaffType::count:
                     break;
             }
@@ -1122,7 +1126,7 @@ namespace OpenRCT2::Ui::Windows
             std::optional<Focus> tempFocus;
             if (staff->State != PeepState::picked)
             {
-                tempFocus = Focus(staff->Id);
+                tempFocus = Focus(staff->id);
             }
 
             uint16_t viewport_flags;
@@ -1227,7 +1231,7 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = GetWindowManager();
 
-        auto w = static_cast<StaffWindow*>(windowMgr->BringToFrontByNumber(WindowClass::peep, peep->Id.ToUnderlying()));
+        auto w = static_cast<StaffWindow*>(windowMgr->BringToFrontByNumber(WindowClass::peep, peep->id.ToUnderlying()));
         if (w != nullptr)
             return w;
 
@@ -1237,7 +1241,7 @@ namespace OpenRCT2::Ui::Windows
             return nullptr;
 
         if (w != nullptr)
-            w->initialise(peep->Id);
+            w->initialise(peep->id);
 
         return w;
     }

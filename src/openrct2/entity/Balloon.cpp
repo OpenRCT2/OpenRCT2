@@ -24,14 +24,14 @@
 namespace OpenRCT2
 {
     template<>
-    bool EntityBase::Is<Balloon>() const
+    bool EntityBase::is<Balloon>() const
     {
-        return Type == EntityType::balloon;
+        return type == EntityType::balloon;
     }
 
     void Balloon::Update()
     {
-        Invalidate();
+        invalidate();
         if (popped == 1)
         {
             frame++;
@@ -59,7 +59,7 @@ namespace OpenRCT2
                     return;
                 }
 
-                MoveTo({ x, y, z + 1 });
+                moveTo({ x, y, z + 1 });
 
                 int32_t maxZ = 1967 - ((x ^ y) & 31);
                 if (z >= maxZ)
@@ -77,14 +77,14 @@ namespace OpenRCT2
             // There is a random chance that pressing the balloon will not pop it
             // and instead shift it slightly
             uint32_t random = ScenarioRand();
-            if ((Id.ToUnderlying() & 7) || (random & 0xFFFF) < 0x2000)
+            if ((id.ToUnderlying() & 7) || (random & 0xFFFF) < 0x2000)
             {
                 Pop(true);
             }
             else
             {
                 int16_t shift = ((random & 0x80000000) ? -6 : 6);
-                MoveTo({ x + shift, y, z });
+                moveTo({ x + shift, y, z });
             }
         }
     }
@@ -105,10 +105,10 @@ namespace OpenRCT2
         if (balloon == nullptr)
             return;
 
-        balloon->SpriteData.Width = 13;
-        balloon->SpriteData.HeightMin = 22;
-        balloon->SpriteData.HeightMax = 11;
-        balloon->MoveTo(balloonPos);
+        balloon->spriteData.width = 13;
+        balloon->spriteData.heightMin = 22;
+        balloon->spriteData.heightMax = 11;
+        balloon->moveTo(balloonPos);
         balloon->time_to_move = 0;
         balloon->frame = 0;
         balloon->colour = colour;
@@ -117,7 +117,7 @@ namespace OpenRCT2
 
     void Balloon::Serialise(DataSerialiser& stream)
     {
-        EntityBase::Serialise(stream);
+        EntityBase::serialise(stream);
         stream << frame;
         stream << popped;
         stream << time_to_move;
@@ -133,16 +133,16 @@ namespace OpenRCT2
         {
             // the balloon has height so we add some padding to prevent it clipping through things.
             int32_t balloon_top = z + kCoordsZStep * 2;
-            if (balloon_top == tileElement->GetBaseZ())
+            if (balloon_top == tileElement->getBaseZ())
             {
                 return true;
             }
 
             // check for situations where guests can drop a balloon inside a covered building
-            bool check_ceiling = tileElement->GetType() == TileElementType::Entrance;
-            if (tileElement->GetType() == TileElementType::Track)
+            bool check_ceiling = tileElement->getType() == TileElementType::Entrance;
+            if (tileElement->getType() == TileElementType::Track)
             {
-                const TrackElement* trackElement = tileElement->AsTrack();
+                const TrackElement* trackElement = tileElement->asTrack();
                 const auto* ride = GetRide(trackElement->GetRideIndex());
                 if (ride != nullptr && ride->getRideTypeDescriptor().flags.has(RtdFlag::hasRoofOverWholeRide))
                 {
@@ -156,13 +156,13 @@ namespace OpenRCT2
 
             if (check_ceiling)
             {
-                if (balloon_top > tileElement->GetBaseZ() && z < tileElement->GetClearanceZ())
+                if (balloon_top > tileElement->getBaseZ() && z < tileElement->getClearanceZ())
                 {
                     return true;
                 }
             }
 
-        } while (!(tileElement++)->IsLastForTile());
+        } while (!(tileElement++)->isLastForTile());
         return false;
     }
 } // namespace OpenRCT2

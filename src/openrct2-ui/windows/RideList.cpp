@@ -48,7 +48,7 @@ namespace OpenRCT2::Ui::Windows
         PAGE_COUNT
     };
 
-    enum WindowRideListWidgetIdx
+    enum WindowRideListWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,

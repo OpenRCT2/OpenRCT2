@@ -1931,7 +1931,7 @@ void TrackPaintUtilLeftCorkscrewUpSupports(PaintSession& session, Direction dire
 
 ImageId GetStationColourScheme(PaintSession& session, const TrackElement& trackElement)
 {
-    if (trackElement.IsGhost())
+    if (trackElement.isGhost())
     {
         return ConstructionMarker;
     }
@@ -1944,7 +1944,7 @@ ImageId GetStationColourScheme(PaintSession& session, const TrackElement& trackE
 
 ImageId GetShopSupportColourScheme(PaintSession& session, const TrackElement& trackElement)
 {
-    if (trackElement.IsGhost())
+    if (trackElement.isGhost())
     {
         return ConstructionMarker;
     }
@@ -2007,7 +2007,7 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
             if (originElement != nullptr && originElement->GetTrackType() == TrackElemType::flatTrack1x1B)
                 LightFx::AddKioskLights(session.MapPosition, height, zOffset);
             else if (kRideTypeDescriptors[ride->type].flags.has(RtdFlag::isShopOrFacility))
-                LightFx::AddShopLights(session.MapPosition, trackElement.GetDirection(), height, zOffset);
+                LightFx::AddShopLights(session.MapPosition, trackElement.getDirection(), height, zOffset);
         }
 
         session.InteractionType = ViewportInteractionItem::ride;
@@ -2020,7 +2020,7 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
             session.TrackColours = HighlightMarker;
             session.SupportColours = HighlightMarker;
         }
-        if (trackElement.IsGhost())
+        if (trackElement.isGhost())
         {
             session.InteractionType = ViewportInteractionItem::none;
             session.TrackColours = ConstructionMarker;

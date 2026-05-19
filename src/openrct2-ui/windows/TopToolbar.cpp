@@ -63,7 +63,7 @@ using namespace OpenRCT2::Numerics;
 
 namespace OpenRCT2::Ui::Windows
 {
-    enum
+    enum WindowTopToolbarWidgetIdx : WidgetIndex
     {
         WIDX_PAUSE,
         WIDX_FILE_MENU,

@@ -214,7 +214,7 @@ namespace OpenRCT2::Scripting
 
             if (info.interactionType == ViewportInteractionItem::entity && info.Entity != nullptr)
             {
-                JS_SetPropertyStr(ctx, obj, "entityId", JS_NewInt32(ctx, info.Entity->Id.ToUnderlying()));
+                JS_SetPropertyStr(ctx, obj, "entityId", JS_NewInt32(ctx, info.Entity->id.ToUnderlying()));
             }
             else if (info.Element != nullptr)
             {
@@ -230,7 +230,7 @@ namespace OpenRCT2::Scripting
                             break;
                         }
                         index++;
-                    } while (!(el++)->IsLastForTile());
+                    } while (!(el++)->isLastForTile());
                 }
             }
 

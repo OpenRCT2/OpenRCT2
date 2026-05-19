@@ -46,10 +46,14 @@ namespace OpenRCT2::Scripting
             auto listeners = GetListenerList(id);
             for (size_t i = 0; i < listeners.size(); i++)
             {
-                scriptEngine.ExecutePluginCall(plugin, listeners[i].callback, args, isGameStateMutable);
+                scriptEngine.ExecutePluginCall(plugin, listeners[i].callback, args, isGameStateMutable, true);
 
                 // Safety, listeners might get reallocated
                 listeners = GetListenerList(id);
+            }
+            for (const JSValue& arg : args)
+            {
+                JS_FreeValueRT(ScriptEngine::GetRuntime(), arg);
             }
         }
 
@@ -425,6 +429,7 @@ namespace OpenRCT2::Scripting
             auto data = std::make_shared<SocketData>();
             data->_plugin = plugin;
             data->_socket = std::move(socket);
+            data->_wasConnected = true;
             GetContext()->GetScriptEngine().AddSocket(data);
             return MakeWithOpaque(ctx, new std::shared_ptr(data));
         }

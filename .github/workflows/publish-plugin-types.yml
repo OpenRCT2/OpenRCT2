@@ -17,6 +17,7 @@ jobs:
   publish:
     name: Publish @openrct2/types
     runs-on: ubuntu-slim
+    if: github.repository == 'OpenRCT2/OpenRCT2'
     permissions:
       contents: read
       id-token: write

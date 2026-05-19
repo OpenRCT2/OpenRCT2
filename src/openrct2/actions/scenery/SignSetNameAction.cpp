@@ -62,7 +62,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_RENAME_BANNER, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
         }
 
-        CoordsXYZ loc = { banner->position.ToCoordsXY(), tileElement->GetBaseZ() };
+        CoordsXYZ loc = { banner->position.ToCoordsXY(), tileElement->getBaseZ() };
 
         if (!LocationValid(loc))
         {

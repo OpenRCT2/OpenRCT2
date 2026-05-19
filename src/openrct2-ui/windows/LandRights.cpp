@@ -39,7 +39,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr ScreenSize kWindowSize = kInGameSize;
     static constexpr StringId kWindowTitle = STR_LAND_RIGHTS;
 
-    enum WindowLandRightsWidgetIdx
+    enum WindowLandRightsWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,

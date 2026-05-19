@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -75,7 +75,7 @@ TEST_F(TileElementWantsFootpathConnection, SlopedPath)
     // Sloped paths only want to connect in two directions, of which is one at a higher offset
     const auto* slopedPathElement = MapGetFootpathElement(TileCoordsXYZ{ 18, 18, 14 }.ToCoordsXYZ());
     ASSERT_NE(slopedPathElement, nullptr);
-    ASSERT_TRUE(slopedPathElement->AsPath()->IsSloped());
+    ASSERT_TRUE(slopedPathElement->asPath()->IsSloped());
     // Bottom and top of sloped path want a path connection
     EXPECT_TRUE(TileElementWantsPathConnectionTowards({ 18, 18, 14, 2 }, nullptr));
     EXPECT_TRUE(TileElementWantsPathConnectionTowards({ 18, 18, 16, 0 }, nullptr));

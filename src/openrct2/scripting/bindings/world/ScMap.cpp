@@ -99,7 +99,7 @@ namespace OpenRCT2::Scripting
         {
             auto spriteId = EntityId::FromUnderlying(id);
             auto sprite = getGameState().entities.GetEntity(spriteId);
-            if (sprite != nullptr && sprite->Type != EntityType::null)
+            if (sprite != nullptr && sprite->type != EntityType::null)
             {
                 return GetEntityAsDukValue(ctx, sprite);
             }
@@ -117,14 +117,14 @@ namespace OpenRCT2::Scripting
         {
             for (auto sprite : EntityList<Balloon>())
             {
-                JS_SetPropertyInt64(ctx, result, idx++, ScBalloon::New(ctx, sprite->Id));
+                JS_SetPropertyInt64(ctx, result, idx++, ScBalloon::New(ctx, sprite->id));
             }
         }
         else if (type == "car")
         {
             for (auto trainHead : TrainManager::View())
             {
-                for (auto carId = trainHead->Id; !carId.IsNull();)
+                for (auto carId = trainHead->id; !carId.IsNull();)
                 {
                     auto car = getGameState().entities.GetEntity<Vehicle>(carId);
 
@@ -150,67 +150,67 @@ namespace OpenRCT2::Scripting
         {
             for (auto sprite : EntityList<Litter>())
             {
-                JS_SetPropertyInt64(ctx, result, idx++, ScLitter::New(ctx, sprite->Id));
+                JS_SetPropertyInt64(ctx, result, idx++, ScLitter::New(ctx, sprite->id));
             }
         }
         else if (type == "money_effect")
         {
             for (auto sprite : EntityList<MoneyEffect>())
             {
-                JS_SetPropertyInt64(ctx, result, idx++, ScMoneyEffect::New(ctx, sprite->Id));
+                JS_SetPropertyInt64(ctx, result, idx++, ScMoneyEffect::New(ctx, sprite->id));
             }
         }
         else if (type == "duck")
         {
             for (auto sprite : EntityList<Duck>())
             {
-                JS_SetPropertyInt64(ctx, result, idx++, gScEntity.New(ctx, sprite->Id));
+                JS_SetPropertyInt64(ctx, result, idx++, gScEntity.New(ctx, sprite->id));
             }
         }
         else if (type == "peep")
         {
             for (auto sprite : EntityList<Guest>())
             {
-                JS_SetPropertyInt64(ctx, result, idx++, ScGuest::New(ctx, sprite->Id));
+                JS_SetPropertyInt64(ctx, result, idx++, ScGuest::New(ctx, sprite->id));
             }
             for (auto sprite : EntityList<Staff>())
             {
-                JS_SetPropertyInt64(ctx, result, idx++, ScStaff::New(ctx, sprite->Id));
+                JS_SetPropertyInt64(ctx, result, idx++, ScStaff::New(ctx, sprite->id));
             }
         }
         else if (type == "guest")
         {
             for (auto sprite : EntityList<Guest>())
             {
-                JS_SetPropertyInt64(ctx, result, idx++, ScGuest::New(ctx, sprite->Id));
+                JS_SetPropertyInt64(ctx, result, idx++, ScGuest::New(ctx, sprite->id));
             }
         }
         else if (type == "staff")
         {
             for (auto sprite : EntityList<Staff>())
             {
-                auto staff = getGameState().entities.GetEntity<Staff>(sprite->Id);
+                auto staff = getGameState().entities.GetEntity<Staff>(sprite->id);
                 if (staff != nullptr)
                 {
                     switch (staff->AssignedStaffType)
                     {
                         case StaffType::handyman:
-                            JS_SetPropertyInt64(ctx, result, idx++, ScHandyman::New(ctx, sprite->Id));
+                            JS_SetPropertyInt64(ctx, result, idx++, ScHandyman::New(ctx, sprite->id));
                             break;
                         case StaffType::mechanic:
-                            JS_SetPropertyInt64(ctx, result, idx++, ScMechanic::New(ctx, sprite->Id));
+                            JS_SetPropertyInt64(ctx, result, idx++, ScMechanic::New(ctx, sprite->id));
                             break;
                         case StaffType::security:
-                            JS_SetPropertyInt64(ctx, result, idx++, ScSecurity::New(ctx, sprite->Id));
+                            JS_SetPropertyInt64(ctx, result, idx++, ScSecurity::New(ctx, sprite->id));
                             break;
                         default:
-                            JS_SetPropertyInt64(ctx, result, idx++, ScStaff::New(ctx, sprite->Id));
+                            JS_SetPropertyInt64(ctx, result, idx++, ScStaff::New(ctx, sprite->id));
                             break;
                     }
                 }
                 else
                 {
-                    JS_SetPropertyInt64(ctx, result, idx++, ScStaff::New(ctx, sprite->Id));
+                    JS_SetPropertyInt64(ctx, result, idx++, ScStaff::New(ctx, sprite->id));
                 }
             }
         }
@@ -218,7 +218,7 @@ namespace OpenRCT2::Scripting
         {
             for (auto sprite : EntityList<VehicleCrashParticle>())
             {
-                JS_SetPropertyInt64(ctx, result, idx++, ScCrashedVehicleParticle::New(ctx, sprite->Id));
+                JS_SetPropertyInt64(ctx, result, idx++, ScCrashedVehicleParticle::New(ctx, sprite->id));
             }
         }
         else
@@ -247,70 +247,70 @@ namespace OpenRCT2::Scripting
         {
             for (auto sprite : EntityTileList<Balloon>(pos))
             {
-                JS_SetPropertyInt64(ctx, result, idx++, ScBalloon::New(ctx, sprite->Id));
+                JS_SetPropertyInt64(ctx, result, idx++, ScBalloon::New(ctx, sprite->id));
             }
         }
         else if (type == "car")
         {
             for (auto sprite : EntityTileList<Vehicle>(pos))
             {
-                JS_SetPropertyInt64(ctx, result, idx++, ScVehicle::New(ctx, sprite->Id));
+                JS_SetPropertyInt64(ctx, result, idx++, ScVehicle::New(ctx, sprite->id));
             }
         }
         else if (type == "litter")
         {
             for (auto sprite : EntityTileList<Litter>(pos))
             {
-                JS_SetPropertyInt64(ctx, result, idx++, ScLitter::New(ctx, sprite->Id));
+                JS_SetPropertyInt64(ctx, result, idx++, ScLitter::New(ctx, sprite->id));
             }
         }
         else if (type == "duck")
         {
             for (auto sprite : EntityTileList<Duck>(pos))
             {
-                JS_SetPropertyInt64(ctx, result, idx++, ScEntity::New(ctx, sprite->Id));
+                JS_SetPropertyInt64(ctx, result, idx++, ScEntity::New(ctx, sprite->id));
             }
         }
         else if (type == "guest")
         {
             for (auto sprite : EntityTileList<Guest>(pos))
             {
-                JS_SetPropertyInt64(ctx, result, idx++, ScGuest::New(ctx, sprite->Id));
+                JS_SetPropertyInt64(ctx, result, idx++, ScGuest::New(ctx, sprite->id));
             }
         }
         else if (type == "money_effect")
         {
             for (auto sprite : EntityTileList<MoneyEffect>(pos))
             {
-                JS_SetPropertyInt64(ctx, result, idx++, ScMoneyEffect::New(ctx, sprite->Id));
+                JS_SetPropertyInt64(ctx, result, idx++, ScMoneyEffect::New(ctx, sprite->id));
             }
         }
         else if (type == "staff")
         {
             for (auto sprite : EntityTileList<Staff>(pos))
             {
-                auto staff = getGameState().entities.GetEntity<Staff>(sprite->Id);
+                auto staff = getGameState().entities.GetEntity<Staff>(sprite->id);
                 if (staff != nullptr)
                 {
                     switch (staff->AssignedStaffType)
                     {
                         case StaffType::handyman:
-                            JS_SetPropertyInt64(ctx, result, idx++, ScHandyman::New(ctx, sprite->Id));
+                            JS_SetPropertyInt64(ctx, result, idx++, ScHandyman::New(ctx, sprite->id));
                             break;
                         case StaffType::mechanic:
-                            JS_SetPropertyInt64(ctx, result, idx++, ScMechanic::New(ctx, sprite->Id));
+                            JS_SetPropertyInt64(ctx, result, idx++, ScMechanic::New(ctx, sprite->id));
                             break;
                         case StaffType::security:
-                            JS_SetPropertyInt64(ctx, result, idx++, ScSecurity::New(ctx, sprite->Id));
+                            JS_SetPropertyInt64(ctx, result, idx++, ScSecurity::New(ctx, sprite->id));
                             break;
                         default:
-                            JS_SetPropertyInt64(ctx, result, idx++, ScStaff::New(ctx, sprite->Id));
+                            JS_SetPropertyInt64(ctx, result, idx++, ScStaff::New(ctx, sprite->id));
                             break;
                     }
                 }
                 else
                 {
-                    JS_SetPropertyInt64(ctx, result, idx++, ScStaff::New(ctx, sprite->Id));
+                    JS_SetPropertyInt64(ctx, result, idx++, ScStaff::New(ctx, sprite->id));
                 }
             }
         }
@@ -318,7 +318,7 @@ namespace OpenRCT2::Scripting
         {
             for (auto sprite : EntityTileList<VehicleCrashParticle>(pos))
             {
-                JS_SetPropertyInt64(ctx, result, idx++, ScCrashedVehicleParticle::New(ctx, sprite->Id));
+                JS_SetPropertyInt64(ctx, result, idx++, ScCrashedVehicleParticle::New(ctx, sprite->id));
             }
         }
         else
@@ -344,9 +344,9 @@ namespace OpenRCT2::Scripting
 
         auto entityPos = CoordsXYZ{ AsOrDefault(ctx, initializer, "x", 0), AsOrDefault(ctx, initializer, "y", 0),
                                     AsOrDefault(ctx, initializer, "z", 0) };
-        entity->MoveTo(entityPos);
+        entity->moveTo(entityPos);
 
-        return TScriptType::New(ctx, entity->Id);
+        return TScriptType::New(ctx, entity->id);
     }
 
     JSValue ScMap::createEntity(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
@@ -367,7 +367,7 @@ namespace OpenRCT2::Scripting
             {
                 auto entityPos = CoordsXYZ{ AsOrDefault(ctx, initializer, "x", 0), AsOrDefault(ctx, initializer, "y", 0),
                                             AsOrDefault(ctx, initializer, "z", 0) };
-                entity->MoveTo(entityPos);
+                entity->moveTo(entityPos);
 
                 // Reset some important vehicle vars to their null values
                 entity->sound1_id = Audio::SoundId::null;
@@ -380,7 +380,7 @@ namespace OpenRCT2::Scripting
                 }
                 entity->BoatLocation.SetNull();
 
-                res = ScVehicle::New(ctx, entity->Id);
+                res = ScVehicle::New(ctx, entity->id);
             }
         }
         else if (type == "staff")
@@ -527,8 +527,8 @@ namespace OpenRCT2::Scripting
 
     JSValue ScMap::GetEntityAsDukValue(JSContext* ctx, const EntityBase* sprite)
     {
-        auto spriteId = sprite->Id;
-        switch (sprite->Type)
+        auto spriteId = sprite->id;
+        switch (sprite->type)
         {
             case EntityType::vehicle:
                 return ScVehicle::New(ctx, spriteId);

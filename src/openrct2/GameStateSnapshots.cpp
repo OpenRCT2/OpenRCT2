@@ -91,7 +91,7 @@ struct GameStateSnapshot_t
             for (EntityId::UnderlyingType i = 0; i < numSprites; i++)
             {
                 auto entity = getEntity(EntityId::FromUnderlying(i));
-                if (entity == nullptr || entity->base.Type == EntityType::null)
+                if (entity == nullptr || entity->base.type == EntityType::null)
                     continue;
                 indexTable.push_back(static_cast<uint32_t>(i));
             }
@@ -125,9 +125,9 @@ struct GameStateSnapshot_t
             }
             auto& sprite = *entity;
 
-            ds << sprite.base.Type;
+            ds << sprite.base.type;
 
-            switch (sprite.base.Type)
+            switch (sprite.base.type)
             {
                 case EntityType::vehicle:
                     reinterpret_cast<Vehicle&>(sprite).Serialise(ds);
@@ -221,7 +221,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         for (auto& sprite : spriteList)
         {
             // By default they don't exist.
-            sprite.base.Type = EntityType::null;
+            sprite.base.type = EntityType::null;
         }
 
         snapshot.SerialiseSprites(
@@ -245,8 +245,8 @@ struct GameStateSnapshots final : public IGameStateSnapshots
     void CompareSpriteDataCommon(
         const EntityBase& spriteBase, const EntityBase& spriteCmp, GameStateSpriteChange& changeData) const
     {
-        COMPARE_FIELD(EntityBase, Type);
-        COMPARE_FIELD(EntityBase, Id);
+        COMPARE_FIELD(EntityBase, type);
+        COMPARE_FIELD(EntityBase, id);
         COMPARE_FIELD(EntityBase, x);
         COMPARE_FIELD(EntityBase, y);
         COMPARE_FIELD(EntityBase, z);
@@ -259,7 +259,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(SpriteBase, sprite_right);
         COMPARE_FIELD(SpriteBase, sprite_bottom);
         */
-        COMPARE_FIELD(EntityBase, Orientation);
+        COMPARE_FIELD(EntityBase, orientation);
     }
 
     void CompareSpriteDataPeep(const Peep& spriteBase, const Peep& spriteCmp, GameStateSpriteChange& changeData) const
@@ -473,12 +473,12 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         const MoneyEffect& spriteBase, const MoneyEffect& spriteCmp, GameStateSpriteChange& changeData) const
     {
         COMPARE_FIELD(MoneyEffect, frame);
-        COMPARE_FIELD(MoneyEffect, MoveDelay);
-        COMPARE_FIELD(MoneyEffect, NumMovements);
-        COMPARE_FIELD(MoneyEffect, GuestPurchase);
-        COMPARE_FIELD(MoneyEffect, Value);
-        COMPARE_FIELD(MoneyEffect, OffsetX);
-        COMPARE_FIELD(MoneyEffect, Wiggle);
+        COMPARE_FIELD(MoneyEffect, moveDelay);
+        COMPARE_FIELD(MoneyEffect, numMovements);
+        COMPARE_FIELD(MoneyEffect, guestPurchase);
+        COMPARE_FIELD(MoneyEffect, value);
+        COMPARE_FIELD(MoneyEffect, offsetX);
+        COMPARE_FIELD(MoneyEffect, wiggle);
     }
 
     void CompareSpriteDataSteamParticle(
@@ -556,9 +556,9 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         const EntitySnapshot& spriteBase, const EntitySnapshot& spriteCmp, GameStateSpriteChange& changeData) const
     {
         CompareSpriteDataCommon(spriteBase.base, spriteCmp.base, changeData);
-        if (spriteBase.base.Type == spriteCmp.base.Type)
+        if (spriteBase.base.type == spriteCmp.base.type)
         {
-            switch (spriteBase.base.Type)
+            switch (spriteBase.base.type)
             {
                 case EntityType::guest:
                     CompareSpriteDataGuest(
@@ -646,21 +646,21 @@ struct GameStateSnapshots final : public IGameStateSnapshots
             const EntitySnapshot& spriteBase = spritesBase[i];
             const EntitySnapshot& spriteCmp = spritesCmp[i];
 
-            changeData.entityType = spriteBase.base.Type;
+            changeData.entityType = spriteBase.base.type;
 
-            if (spriteBase.base.Type == EntityType::null && spriteCmp.base.Type != EntityType::null)
+            if (spriteBase.base.type == EntityType::null && spriteCmp.base.type != EntityType::null)
             {
                 // Sprite was added.
                 changeData.changeType = GameStateSpriteChange::ADDED;
-                changeData.entityType = spriteCmp.base.Type;
+                changeData.entityType = spriteCmp.base.type;
             }
-            else if (spriteBase.base.Type != EntityType::null && spriteCmp.base.Type == EntityType::null)
+            else if (spriteBase.base.type != EntityType::null && spriteCmp.base.type == EntityType::null)
             {
                 // Sprite was removed.
                 changeData.changeType = GameStateSpriteChange::REMOVED;
-                changeData.entityType = spriteBase.base.Type;
+                changeData.entityType = spriteBase.base.type;
             }
-            else if (spriteBase.base.Type == EntityType::null && spriteCmp.base.Type == EntityType::null)
+            else if (spriteBase.base.type == EntityType::null && spriteCmp.base.type == EntityType::null)
             {
                 // Do nothing.
                 changeData.changeType = GameStateSpriteChange::EQUAL;

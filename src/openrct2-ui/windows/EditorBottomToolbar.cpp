@@ -39,7 +39,7 @@ namespace OpenRCT2::Ui::Windows
 {
     static constexpr int32_t kToolbarHeight = 32;
 
-    enum
+    enum WindowEditorBottomToolbarWidgetIdx : WidgetIndex
     {
         WIDX_PREVIOUS_IMAGE,       // 1
         WIDX_PREVIOUS_STEP_BUTTON, // 2

@@ -60,7 +60,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr auto kPaletteIndexColourTrack = PaletteIndex::primaryRemap5;   // Grey (dark)
     static constexpr auto kPaletteIndexColourStation = PaletteIndex::primaryRemap9; // Grey (light)
 
-    enum
+    enum WindowTrackDesignPlaceWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,
@@ -496,7 +496,7 @@ namespace OpenRCT2::Ui::Windows
                 auto info = GetMapCoordinatesFromPos(screenCoords, interactionFlags);
                 if (info.interactionType == ViewportInteractionItem::terrain)
                 {
-                    _trackPlaceCtrlZ = floor2(surfaceElement->GetBaseZ(), kCoordsZStep);
+                    _trackPlaceCtrlZ = floor2(surfaceElement->getBaseZ(), kCoordsZStep);
 
                     // Increase Z above water
                     if (surfaceElement->GetWaterHeight() > 0)
@@ -504,7 +504,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else
                 {
-                    _trackPlaceCtrlZ = floor2(info.Element->GetBaseZ(), kCoordsZStep);
+                    _trackPlaceCtrlZ = floor2(info.Element->getBaseZ(), kCoordsZStep);
                 }
 
                 _trackPlaceCtrlState = true;
@@ -524,7 +524,7 @@ namespace OpenRCT2::Ui::Windows
             else if (im.isModifierKeyPressed(ModifierKey::shift))
             {
                 uint16_t newMaxHeight = ZoomLevel::max().ApplyTo(
-                    std::numeric_limits<decltype(TileElement::BaseHeight)>::max() - 32);
+                    std::numeric_limits<decltype(TileElement::baseHeight)>::max() - 32);
 
                 _trackPlaceShiftZ = _trackPlaceShiftStart.y - screenCoords.y + 4;
 
@@ -547,7 +547,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (!_trackPlaceCtrlState)
             {
-                _trackPlaceZ = floor2(surfaceElement->GetBaseZ(), kCoordsZStep);
+                _trackPlaceZ = floor2(surfaceElement->getBaseZ(), kCoordsZStep);
 
                 // Increase Z above water
                 if (surfaceElement->GetWaterHeight() > 0)
@@ -575,12 +575,12 @@ namespace OpenRCT2::Ui::Windows
             auto* mainWnd = WindowGetMain();
             if (mainWnd != nullptr && mainWnd->viewport != nullptr)
             {
-                if (_trackPlaceZ < surfaceElement->GetBaseZ() && !_triggeredUndergroundView)
+                if (_trackPlaceZ < surfaceElement->getBaseZ() && !_triggeredUndergroundView)
                 {
                     mainWnd->viewport->flags |= VIEWPORT_FLAG_UNDERGROUND_INSIDE;
                     _triggeredUndergroundView = true;
                 }
-                else if (_trackPlaceZ >= surfaceElement->GetBaseZ() && _triggeredUndergroundView)
+                else if (_trackPlaceZ >= surfaceElement->getBaseZ() && _triggeredUndergroundView)
                 {
                     mainWnd->viewport->flags &= ~VIEWPORT_FLAG_UNDERGROUND_INSIDE;
                     _triggeredUndergroundView = false;

@@ -35,7 +35,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr StringId kWindowTitle = STR_BANNER_WINDOW_TITLE;
     static constexpr ScreenSize kWindowSize = { 113, 96 };
 
-    enum WindowBannerWidgetIdx
+    enum WindowBannerWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,
@@ -117,7 +117,7 @@ namespace OpenRCT2::Ui::Windows
 
             do
             {
-                auto* bannerElement = tileElement->AsBanner();
+                auto* bannerElement = tileElement->asBanner();
                 if (bannerElement == nullptr)
                 {
                     continue;
@@ -126,7 +126,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     return bannerElement;
                 }
-            } while (!(tileElement++)->IsLastForTile());
+            } while (!(tileElement++)->isLastForTile());
 
             return nullptr;
         }
@@ -147,7 +147,7 @@ namespace OpenRCT2::Ui::Windows
             if (bannerElement == nullptr)
                 return;
 
-            _bannerViewPos = CoordsXYZ{ banner->position.ToCoordsXY().ToTileCentre(), bannerElement->GetBaseZ() };
+            _bannerViewPos = CoordsXYZ{ banner->position.ToCoordsXY().ToTileCentre(), bannerElement->getBaseZ() };
             createViewport();
         }
 
@@ -208,7 +208,7 @@ namespace OpenRCT2::Ui::Windows
                         break;
 
                     auto bannerRemoveAction = GameActions::BannerRemoveAction(
-                        { banner->position.ToCoordsXY(), bannerElement->GetBaseZ(), bannerElement->GetPosition() });
+                        { banner->position.ToCoordsXY(), bannerElement->getBaseZ(), bannerElement->GetPosition() });
                     GameActions::Execute(&bannerRemoveAction, gameState);
                     break;
                 }

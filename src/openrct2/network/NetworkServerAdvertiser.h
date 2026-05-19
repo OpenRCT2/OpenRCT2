@@ -28,8 +28,8 @@ namespace OpenRCT2::Network
         {
         }
 
-        virtual AdvertiseStatus GetStatus() const = 0;
-        virtual void Update() = 0;
+        virtual AdvertiseStatus getStatus() const = 0;
+        virtual void update() = 0;
     };
 
     [[nodiscard]] std::unique_ptr<INetworkServerAdvertiser> CreateServerAdvertiser(uint16_t port);

@@ -16,7 +16,7 @@ namespace OpenRCT2::Ui::Windows
 {
     static constexpr ScreenSize kWindowSize = { 80, 15 };
 
-    enum WindowTitleOptionsWidgetIdx
+    enum WindowTitleOptionsWidgetIdx : WidgetIndex
     {
         WIDX_OPTIONS,
     };

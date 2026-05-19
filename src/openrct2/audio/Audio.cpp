@@ -16,7 +16,6 @@
 #include "../core/EnumUtils.hpp"
 #include "../core/File.h"
 #include "../core/FileStream.h"
-#include "../core/Memory.hpp"
 #include "../core/String.hpp"
 #include "../entity/Peep.h"
 #include "../interface/Viewport.h"
@@ -153,7 +152,7 @@ namespace OpenRCT2::Audio
         params.pan = 0;
 
         auto element = MapGetSurfaceElementAt(location);
-        if (element != nullptr && (element->GetBaseZ()) - 5 > location.z)
+        if (element != nullptr && (element->getBaseZ()) - 5 > location.z)
         {
             volumeDown = 10;
         }

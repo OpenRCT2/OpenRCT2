@@ -8,9 +8,11 @@
  *****************************************************************************/
 
 #include "../Diagnostic.h"
+#include "../core/Guard.hpp"
 
 #include <cassert>
 #include <cctype>
+#include <cstring>
 #include <cwctype>
 #include <iomanip>
 #include <sstream>
@@ -33,7 +35,6 @@
     #include <windows.h>
 #endif
 
-#include "Memory.hpp"
 #include "String.hpp"
 #include "StringBuilder.h"
 #include "UTF8.h"
@@ -364,7 +365,7 @@ namespace OpenRCT2::String
             return u8string(buffer, buffer + len);
         }
 
-        LOG_WARNING("Encoding error occured");
+        LOG_WARNING("Encoding error occurred");
         return u8string{};
     }
 

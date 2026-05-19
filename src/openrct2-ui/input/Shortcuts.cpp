@@ -509,18 +509,18 @@ static void ShortcutToggleWallSlope()
     const TileElement* tileElement = TileInspector::GetSelectedElement();
 
     // Ensure an element is selected and it's a wall
-    if (tileElement == nullptr || tileElement->GetType() != TileElementType::Wall)
+    if (tileElement == nullptr || tileElement->getType() != TileElementType::Wall)
     {
         return;
     }
 
     // Ensure a wall can be built on a slope
-    if (tileElement->AsWall()->GetEntry()->flags & WALL_SCENERY_CANT_BUILD_ON_SLOPE)
+    if (tileElement->asWall()->GetEntry()->flags & WALL_SCENERY_CANT_BUILD_ON_SLOPE)
     {
         return;
     }
 
-    int32_t currSlopeValue = tileElement->AsWall()->GetSlope();
+    int32_t currSlopeValue = tileElement->asWall()->GetSlope();
     int32_t newSlopeValue = (currSlopeValue + 1) % 3;
 
     extern TileCoordsXY windowTileInspectorTile;

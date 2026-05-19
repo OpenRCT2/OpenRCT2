@@ -2242,15 +2242,15 @@ namespace OpenRCT2::Ui::Windows
             {
                 case ViewportInteractionItem::scenery:
                 {
-                    auto* sceneryEntry = info.Element->AsSmallScenery()->GetEntry();
+                    auto* sceneryEntry = info.Element->asSmallScenery()->GetEntry();
 
                     // If can't repaint
                     if (!sceneryEntry->flags.hasAny(SmallSceneryFlag::hasPrimaryColour, SmallSceneryFlag::hasGlass))
                         return;
 
-                    uint8_t quadrant = info.Element->AsSmallScenery()->GetSceneryQuadrant();
+                    uint8_t quadrant = info.Element->asSmallScenery()->GetSceneryQuadrant();
                     auto repaintScenery = GameActions::SmallScenerySetColourAction(
-                        { info.Loc, info.Element->GetBaseZ() }, quadrant, info.Element->AsSmallScenery()->GetEntryIndex(),
+                        { info.Loc, info.Element->getBaseZ() }, quadrant, info.Element->asSmallScenery()->GetEntryIndex(),
                         _sceneryPrimaryColour, _scenerySecondaryColour, _sceneryTertiaryColour);
 
                     GameActions::Execute(&repaintScenery, gameState);
@@ -2258,14 +2258,14 @@ namespace OpenRCT2::Ui::Windows
                 }
                 case ViewportInteractionItem::wall:
                 {
-                    auto* scenery_entry = info.Element->AsWall()->GetEntry();
+                    auto* scenery_entry = info.Element->asWall()->GetEntry();
 
                     // If can't repaint
                     if (!(scenery_entry->flags & (WALL_SCENERY_HAS_PRIMARY_COLOUR | WALL_SCENERY_HAS_GLASS)))
                         return;
 
                     auto repaintScenery = GameActions::WallSetColourAction(
-                        { info.Loc, info.Element->GetBaseZ(), info.Element->GetDirection() }, _sceneryPrimaryColour,
+                        { info.Loc, info.Element->getBaseZ(), info.Element->getDirection() }, _sceneryPrimaryColour,
                         _scenerySecondaryColour, _sceneryTertiaryColour);
 
                     GameActions::Execute(&repaintScenery, gameState);
@@ -2273,15 +2273,15 @@ namespace OpenRCT2::Ui::Windows
                 }
                 case ViewportInteractionItem::largeScenery:
                 {
-                    auto* sceneryEntry = info.Element->AsLargeScenery()->GetEntry();
+                    auto* sceneryEntry = info.Element->asLargeScenery()->GetEntry();
 
                     // If can't repaint
                     if (!sceneryEntry->flags.has(LargeSceneryFlag::hasPrimaryColour))
                         return;
 
                     auto repaintScenery = GameActions::LargeScenerySetColourAction(
-                        { info.Loc, info.Element->GetBaseZ(), info.Element->GetDirection() },
-                        info.Element->AsLargeScenery()->GetSequenceIndex(), _sceneryPrimaryColour, _scenerySecondaryColour,
+                        { info.Loc, info.Element->getBaseZ(), info.Element->getDirection() },
+                        info.Element->asLargeScenery()->GetSequenceIndex(), _sceneryPrimaryColour, _scenerySecondaryColour,
                         _sceneryTertiaryColour);
 
                     GameActions::Execute(&repaintScenery, gameState);
@@ -2289,14 +2289,14 @@ namespace OpenRCT2::Ui::Windows
                 }
                 case ViewportInteractionItem::banner:
                 {
-                    auto banner = info.Element->AsBanner()->GetBanner();
+                    auto banner = info.Element->asBanner()->GetBanner();
                     if (banner != nullptr)
                     {
                         auto* bannerEntry = ObjectEntryManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
                         if (bannerEntry->flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR)
                         {
                             auto repaintScenery = GameActions::BannerSetColourAction(
-                                { info.Loc, info.Element->GetBaseZ(), info.Element->AsBanner()->GetPosition() },
+                                { info.Loc, info.Element->getBaseZ(), info.Element->asBanner()->GetPosition() },
                                 _sceneryPrimaryColour);
 
                             GameActions::Execute(&repaintScenery, gameState);
@@ -2319,7 +2319,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 case ViewportInteractionItem::scenery:
                 {
-                    SmallSceneryElement* sceneryElement = info.Element->AsSmallScenery();
+                    SmallSceneryElement* sceneryElement = info.Element->asSmallScenery();
                     auto entryIndex = sceneryElement->GetEntryIndex();
                     auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<SmallSceneryEntry>(entryIndex);
                     if (sceneryEntry != nullptr)
@@ -2327,40 +2327,40 @@ namespace OpenRCT2::Ui::Windows
                         WindowScenerySetSelectedItem(
                             { SCENERY_TYPE_SMALL, entryIndex }, sceneryElement->GetPrimaryColour(),
                             sceneryElement->GetSecondaryColour(), sceneryElement->GetTertiaryColour(),
-                            sceneryElement->GetDirectionWithOffset(GetCurrentRotation()));
+                            sceneryElement->getDirectionWithOffset(GetCurrentRotation()));
                     }
                     break;
                 }
                 case ViewportInteractionItem::wall:
                 {
-                    auto entryIndex = info.Element->AsWall()->GetEntryIndex();
+                    auto entryIndex = info.Element->asWall()->GetEntryIndex();
                     auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<WallSceneryEntry>(entryIndex);
                     if (sceneryEntry != nullptr)
                     {
                         WindowScenerySetSelectedItem(
-                            { SCENERY_TYPE_WALL, entryIndex }, info.Element->AsWall()->GetPrimaryColour(),
-                            info.Element->AsWall()->GetSecondaryColour(), info.Element->AsWall()->GetTertiaryColour(),
+                            { SCENERY_TYPE_WALL, entryIndex }, info.Element->asWall()->GetPrimaryColour(),
+                            info.Element->asWall()->GetSecondaryColour(), info.Element->asWall()->GetTertiaryColour(),
                             std::nullopt);
                     }
                     break;
                 }
                 case ViewportInteractionItem::largeScenery:
                 {
-                    auto entryIndex = info.Element->AsLargeScenery()->GetEntryIndex();
+                    auto entryIndex = info.Element->asLargeScenery()->GetEntryIndex();
                     auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<LargeSceneryEntry>(entryIndex);
                     if (sceneryEntry != nullptr)
                     {
                         WindowScenerySetSelectedItem(
-                            { SCENERY_TYPE_LARGE, entryIndex }, info.Element->AsLargeScenery()->GetPrimaryColour(),
-                            info.Element->AsLargeScenery()->GetSecondaryColour(),
-                            info.Element->AsLargeScenery()->GetTertiaryColour(),
-                            (GetCurrentRotation() + info.Element->GetDirection()) & 3);
+                            { SCENERY_TYPE_LARGE, entryIndex }, info.Element->asLargeScenery()->GetPrimaryColour(),
+                            info.Element->asLargeScenery()->GetSecondaryColour(),
+                            info.Element->asLargeScenery()->GetTertiaryColour(),
+                            (GetCurrentRotation() + info.Element->getDirection()) & 3);
                     }
                     break;
                 }
                 case ViewportInteractionItem::banner:
                 {
-                    auto banner = info.Element->AsBanner()->GetBanner();
+                    auto banner = info.Element->asBanner()->GetBanner();
                     if (banner != nullptr)
                     {
                         auto sceneryEntry = ObjectEntryManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
@@ -2374,7 +2374,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 case ViewportInteractionItem::pathAddition:
                 {
-                    auto entryIndex = info.Element->AsPath()->GetAdditionEntryIndex();
+                    auto entryIndex = info.Element->asPath()->GetAdditionEntryIndex();
                     auto* pathAdditionEntry = ObjectEntryManager::GetObjectEntry<PathAdditionEntry>(entryIndex);
                     if (pathAdditionEntry != nullptr)
                     {
@@ -2412,7 +2412,7 @@ namespace OpenRCT2::Ui::Windows
                         if (info.interactionType != ViewportInteractionItem::none)
                         {
                             gSceneryCtrlPressed = true;
-                            gSceneryCtrlPressZ = info.Element->GetBaseZ();
+                            gSceneryCtrlPressZ = info.Element->getBaseZ();
                         }
                     }
                 }
@@ -2468,7 +2468,7 @@ namespace OpenRCT2::Ui::Windows
         {
             auto screenPos = sourceScreenPos;
             uint16_t maxPossibleHeight = ZoomLevel::max().ApplyTo(
-                std::numeric_limits<decltype(TileElement::BaseHeight)>::max() - 32);
+                std::numeric_limits<decltype(TileElement::baseHeight)>::max() - 32);
             bool can_raise_item = false;
 
             const auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<SmallSceneryEntry>(sceneryIndex);
@@ -2515,7 +2515,7 @@ namespace OpenRCT2::Ui::Windows
                             return;
                         }
 
-                        int16_t z = (surfaceElement->GetBaseZ()) & 0xFFF0;
+                        int16_t z = (surfaceElement->getBaseZ()) & 0xFFF0;
                         z += gSceneryShiftPressZOffset;
 
                         z = std::clamp<int16_t>(z, 16, maxPossibleHeight);
@@ -2598,7 +2598,7 @@ namespace OpenRCT2::Ui::Windows
                         return;
                     }
 
-                    int16_t z = (surfaceElement->GetBaseZ()) & 0xFFF0;
+                    int16_t z = (surfaceElement->getBaseZ()) & 0xFFF0;
                     z += gSceneryShiftPressZOffset;
 
                     z = std::clamp<int16_t>(z, 16, maxPossibleHeight);
@@ -2674,7 +2674,7 @@ namespace OpenRCT2::Ui::Windows
                 VirtualFloorSetHeight(gSceneryPlaceZ);
             }
 
-            *outZ = info.Element->GetBaseZ();
+            *outZ = info.Element->getBaseZ();
         }
 
         void updatePlacementWall(
@@ -2682,7 +2682,7 @@ namespace OpenRCT2::Ui::Windows
         {
             auto screenPos = sourceScreenPos;
             uint16_t maxPossibleHeight = ZoomLevel::max().ApplyTo(
-                std::numeric_limits<decltype(TileElement::BaseHeight)>::max() - 32);
+                std::numeric_limits<decltype(TileElement::baseHeight)>::max() - 32);
 
             auto* wallEntry = ObjectEntryManager::GetObjectEntry<WallSceneryEntry>(sceneryIndex);
             if (wallEntry != nullptr)
@@ -2718,7 +2718,7 @@ namespace OpenRCT2::Ui::Windows
                         return;
                     }
 
-                    int16_t z = (surfaceElement->GetBaseZ()) & 0xFFF0;
+                    int16_t z = (surfaceElement->getBaseZ()) & 0xFFF0;
                     z += gSceneryShiftPressZOffset;
 
                     z = std::clamp<int16_t>(z, 16, maxPossibleHeight);
@@ -2766,7 +2766,7 @@ namespace OpenRCT2::Ui::Windows
         {
             auto screenPos = sourceScreenPos;
             uint16_t maxPossibleHeight = ZoomLevel::max().ApplyTo(
-                std::numeric_limits<decltype(TileElement::BaseHeight)>::max() - 32);
+                std::numeric_limits<decltype(TileElement::baseHeight)>::max() - 32);
 
             auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<LargeSceneryEntry>(sceneryIndex);
             if (sceneryEntry)
@@ -2804,7 +2804,7 @@ namespace OpenRCT2::Ui::Windows
                         return;
                     }
 
-                    int16_t z = (surfaceElement->GetBaseZ()) & 0xFFF0;
+                    int16_t z = (surfaceElement->getBaseZ()) & 0xFFF0;
                     z += gSceneryShiftPressZOffset;
 
                     z = std::clamp<int16_t>(z, 16, maxPossibleHeight);
@@ -2875,11 +2875,11 @@ namespace OpenRCT2::Ui::Windows
             rotation -= GetCurrentRotation();
             rotation &= 0x3;
 
-            auto z = info.Element->GetBaseZ();
+            auto z = info.Element->getBaseZ();
 
-            if (info.Element->AsPath()->IsSloped())
+            if (info.Element->asPath()->IsSloped())
             {
-                if (rotation != DirectionReverse(info.Element->AsPath()->GetSlopeDirection()))
+                if (rotation != DirectionReverse(info.Element->asPath()->GetSlopeDirection()))
                 {
                     z += (2 * kCoordsZStep);
                 }

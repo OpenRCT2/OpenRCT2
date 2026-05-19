@@ -45,7 +45,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr StringId kWindowTitle = kStringIdNone;
     static constexpr ScreenSize kWindowSize = { 166, 200 };
 
-    enum : WidgetIndex
+    enum WindowMazeConstructionWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,

@@ -23,7 +23,7 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-    enum ProgressWindowWidgetIdx
+    enum ProgressWindowWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,

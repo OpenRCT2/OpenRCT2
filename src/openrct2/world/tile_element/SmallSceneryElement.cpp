@@ -31,13 +31,13 @@ namespace OpenRCT2
 {
     uint8_t SmallSceneryElement::GetSceneryQuadrant() const
     {
-        return (this->Type & kTileElementQuadrantMask) >> 6;
+        return (this->type & kTileElementQuadrantMask) >> 6;
     }
 
     void SmallSceneryElement::SetSceneryQuadrant(uint8_t newQuadrant)
     {
-        Type &= ~kTileElementQuadrantMask;
-        Type |= (newQuadrant << 6);
+        type &= ~kTileElementQuadrantMask;
+        type |= (newQuadrant << 6);
     }
 
     uint16_t SmallSceneryElement::GetEntryIndex() const
@@ -62,7 +62,7 @@ namespace OpenRCT2
 
     void SmallSceneryElement::IncreaseAge(const CoordsXY& sceneryPos)
     {
-        if (IsGhost())
+        if (isGhost())
             return;
 
         if (age < 255)
@@ -76,7 +76,7 @@ namespace OpenRCT2
 
                 if (sceneryEntry->flags.has(SmallSceneryFlag::canWither))
                 {
-                    MapInvalidateTileZoom1({ sceneryPos, GetBaseZ(), GetClearanceZ() });
+                    MapInvalidateTileZoom1({ sceneryPos, getBaseZ(), getClearanceZ() });
                 }
             }
         }

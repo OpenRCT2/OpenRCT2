@@ -25,7 +25,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr StringId kWindowTitle = STR_CUSTOM_CURRENCY_WINDOW_TITLE;
     static constexpr ScreenSize kWindowSize = { 400, 100 };
 
-    enum WindowCustomCurrencyWidgetIdx
+    enum WindowCustomCurrencyWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,
@@ -41,10 +41,10 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr auto window_custom_currency_widgets = makeWidgets(
         makeWindowShim(kWindowTitle, kWindowSize),
-        makeSpinnerWidgets({100, 30}, {101, 11}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty     ), // NB: 3 widgets
-        makeWidget        ({120, 50}, { 81, 11}, WidgetType::button,       WindowColour::secondary, kStringIdEmpty     ),
-        makeWidget        ({220, 50}, {131, 11}, WidgetType::dropdownMenu, WindowColour::secondary                     ),
-        makeWidget        ({339, 51}, { 11,  9}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH )
+        makeHoldableSpinnerWidgets({100, 30}, {101, 11}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty     ), // NB: 3 widgets
+        makeWidget                ({120, 50}, { 81, 11}, WidgetType::button,       WindowColour::secondary, kStringIdEmpty     ),
+        makeWidget                ({220, 50}, {131, 11}, WidgetType::dropdownMenu, WindowColour::secondary                     ),
+        makeWidget                ({339, 51}, { 11,  9}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH )
     );
     // clang-format on
 
@@ -56,7 +56,6 @@ namespace OpenRCT2::Ui::Windows
         void onOpen() override
         {
             setWidgets(window_custom_currency_widgets);
-            widgetsSetHoldable(*this, { WIDX_RATE_UP, WIDX_RATE_DOWN });
             WindowInitScrollWidgets(*this);
             colours[0] = Drawing::Colour::lightBrown;
             colours[1] = Drawing::Colour::lightBrown;

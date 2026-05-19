@@ -41,7 +41,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr StringId kWindowTitle = STR_GUESTS;
     static constexpr ScreenSize kWindowSize = { 350, 330 };
 
-    enum WindowGuestListWidgetIdx
+    enum WindowGuestListWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,
@@ -619,7 +619,7 @@ namespace OpenRCT2::Ui::Windows
                         continue;
 
                     auto& item = _guestList.emplace_back();
-                    item.Id = peep->Id;
+                    item.Id = peep->id;
 
                     Formatter ft;
                     peep->FormatNameTo(ft);
@@ -927,9 +927,9 @@ namespace OpenRCT2::Ui::Windows
             if (peepA != nullptr && peepB != nullptr)
             {
                 // Compare types
-                if (peepA->Type != peepB->Type)
+                if (peepA->type != peepB->type)
                 {
-                    return static_cast<int32_t>(peepA->Type) < static_cast<int32_t>(peepB->Type);
+                    return static_cast<int32_t>(peepA->type) < static_cast<int32_t>(peepB->type);
                 }
 
                 // Compare name

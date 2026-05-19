@@ -199,13 +199,13 @@ static int32_t GetHighestBaseClearanceZ(const CoordsXY& location, const bool use
     {
         do
         {
-            if (useViewClipping && (element->GetBaseZ() > gClipHeight * kCoordsZStep))
+            if (useViewClipping && (element->getBaseZ() > gClipHeight * kCoordsZStep))
             {
                 continue;
             }
-            z = std::max<int32_t>(z, element->GetBaseZ());
-            z = std::max<int32_t>(z, element->GetClearanceZ());
-        } while (!(element++)->IsLastForTile());
+            z = std::max<int32_t>(z, element->getBaseZ());
+            z = std::max<int32_t>(z, element->getClearanceZ());
+        } while (!(element++)->isLastForTile());
     }
     return z;
 }
@@ -233,8 +233,11 @@ static RenderTarget CreateRT(const Viewport& viewport)
     RenderTarget rt;
     rt.width = viewport.width;
     rt.height = viewport.height;
-    rt.bits = new (std::nothrow) PaletteIndex[rt.width * rt.height];
-    if (rt.bits == nullptr)
+    try
+    {
+        rt.bits = new PaletteIndex[rt.width * rt.height];
+    }
+    catch (...)
     {
         throw std::runtime_error("Giant screenshot failed, unable to allocate memory for image.");
     }

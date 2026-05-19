@@ -36,7 +36,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr StringId kWindowTitle = STR_SET_PATROL_AREA;
     static constexpr ScreenSize kWindowSize = { 104, 54 };
 
-    enum WindowPatrolAreaWidgetIdx
+    enum WindowPatrolAreaWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,

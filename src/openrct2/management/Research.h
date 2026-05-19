@@ -65,13 +65,13 @@ struct ResearchItem
     uint8_t flags;
     ResearchCategory category;
 
-    bool IsNull() const;
-    void SetNull();
-    bool Exists() const;
-    bool IsAlwaysResearched() const;
-    StringId GetName() const;
-    StringId GetCategoryInventionString() const;
-    StringId GetCategoryName() const;
+    bool isNull() const;
+    void setNull();
+    bool exists() const;
+    bool isAlwaysResearched() const;
+    StringId getName() const;
+    StringId getCategoryInventionString() const;
+    StringId getCategoryName() const;
 
     ResearchItem() = default;
     constexpr ResearchItem(uint32_t _rawValue, ResearchCategory _category, uint8_t _flags)

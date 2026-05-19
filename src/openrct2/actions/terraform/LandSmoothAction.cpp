@@ -74,7 +74,7 @@ namespace OpenRCT2::GameActions
     Result LandSmoothAction::SmoothLandTile(
         GameState_t& gameState, int32_t direction, bool isExecuting, const CoordsXY& loc, SurfaceElement* surfaceElement) const
     {
-        int32_t targetBaseZ = surfaceElement->BaseHeight;
+        int32_t targetBaseZ = surfaceElement->baseHeight;
         int32_t slope = surfaceElement->GetSlope();
         if (_isLowering)
         {
@@ -186,7 +186,7 @@ namespace OpenRCT2::GameActions
             expectedLandHeight1 += landChangePerTile;
 
             // change land of current tile
-            int32_t targetBaseZ = surfaceElement->BaseHeight;
+            int32_t targetBaseZ = surfaceElement->baseHeight;
             int32_t slope = surfaceElement->GetSlope();
             int32_t oldSlope = slope;
             if (_isLowering)
@@ -201,7 +201,7 @@ namespace OpenRCT2::GameActions
                     }
                 }
                 if ((shouldContinue & 0x8)
-                    && MapGetCornerHeight(surfaceElement->BaseHeight, oldSlope, direction2)
+                    && MapGetCornerHeight(surfaceElement->baseHeight, oldSlope, direction2)
                         == MapGetCornerHeight(targetBaseZ, slope, direction2))
                 {
                     slope = LowerSurfaceCornerFlags(direction2, slope);
@@ -224,7 +224,7 @@ namespace OpenRCT2::GameActions
                     }
                 }
                 if ((shouldContinue & 0x8)
-                    && MapGetCornerHeight(surfaceElement->BaseHeight, oldSlope, direction2)
+                    && MapGetCornerHeight(surfaceElement->baseHeight, oldSlope, direction2)
                         == MapGetCornerHeight(targetBaseZ, slope, direction2))
                 {
                     slope = RaiseSurfaceCornerFlags(direction2, slope);
@@ -467,7 +467,7 @@ namespace OpenRCT2::GameActions
                 auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ validRange.GetX1(), validRange.GetY1() });
                 if (surfaceElement == nullptr)
                     break;
-                uint8_t newBaseZ = surfaceElement->BaseHeight;
+                uint8_t newBaseZ = surfaceElement->baseHeight;
                 uint8_t newSlope = surfaceElement->GetSlope();
                 auto direction = static_cast<Direction>(selectionType);
 
@@ -570,7 +570,7 @@ namespace OpenRCT2::GameActions
                 auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ validRange.GetX1(), validRange.GetY1() });
                 if (surfaceElement == nullptr)
                     break;
-                uint8_t newBaseZ = surfaceElement->BaseHeight;
+                uint8_t newBaseZ = surfaceElement->baseHeight;
                 uint8_t oldSlope = surfaceElement->GetSlope();
                 int32_t rowIndex = EnumValue(selectionType)
                     - (EnumValue(MapSelectType::edge0) - EnumValue(MapSelectType::full) - 1);

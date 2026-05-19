@@ -53,13 +53,13 @@ namespace OpenRCT2
 
 struct MarketingCampaign
 {
-    uint8_t Type{};
-    uint8_t WeeksLeft{};
+    uint8_t type{};
+    uint8_t weeksLeft{};
     OpenRCT2::MarketingCampaignFlags flags{};
     union
     {
-        ::RideId RideId{};
-        ShopItemIndex ShopItemType;
+        ::RideId rideId{};
+        ShopItemIndex shopItemType;
     };
 };
 
