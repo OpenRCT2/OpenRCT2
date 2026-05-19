@@ -39,7 +39,7 @@ namespace OpenRCT2
         };
 
         static constexpr auto cEntityType = EntityType::litter;
-        Type SubType;
+        Type subType;
         uint32_t creationTick;
         static void Create(const CoordsXYZD& litterPos, Type type);
         static void RemoveAt(const CoordsXYZ& litterPos);

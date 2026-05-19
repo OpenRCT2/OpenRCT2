@@ -50,9 +50,9 @@ namespace OpenRCT2
         imageDirection >>= 3;
         // Some litter types have only 1 direction so remove
         // anything that isn't required.
-        imageDirection &= kLitterSprites[EnumValue(litter.SubType)].direction_mask;
+        imageDirection &= kLitterSprites[EnumValue(litter.subType)].direction_mask;
 
-        uint32_t image_id = imageDirection + kLitterSprites[EnumValue(litter.SubType)].base_id;
+        uint32_t image_id = imageDirection + kLitterSprites[EnumValue(litter.subType)].base_id;
 
         // In the following call to PaintAddImageAsParent, we add 4 (instead of 2) to the
         // bound_box_offset_z to make sure litter is drawn on top of railways
