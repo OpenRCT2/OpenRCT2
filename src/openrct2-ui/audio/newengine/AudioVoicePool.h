@@ -86,7 +86,11 @@ namespace OpenRCT2::Audio
 
         [[nodiscard]] size_t activeCount() const;
 
+        void setVoiceLimit(size_t limit);
+        [[nodiscard]] size_t getVoiceLimit() const { return _voiceLimit; }
+
     private:
+        size_t _voiceLimit = 128;
         std::array<Voice, kMaxVoices> _voices{};
     };
 
