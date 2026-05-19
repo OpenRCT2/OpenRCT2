@@ -26,29 +26,29 @@ namespace OpenRCT2::Scripting
     private:
         struct PathConnectionData
         {
-            TileCoordsXYZ _position;
-            int32_t _elementIndex;
-            int32_t _direction; // -1 if none (e.g. starting tile)
+            TileCoordsXYZ position;
+            int32_t elementIndex;
+            int32_t direction; // -1 if none (e.g. starting tile)
         };
 
     public:
-        void Register(JSContext* ctx);
-        JSValue New(JSContext* ctx, const TileCoordsXYZ& position, int32_t elementIndex, int32_t direction);
+        void registerClass(JSContext* ctx);
+        JSValue create(JSContext* ctx, const TileCoordsXYZ& position, int32_t elementIndex, int32_t direction);
 
     private:
-        static void Finalize(JSRuntime* rt, JSValue thisVal);
-        static PathConnectionData* GetData(JSValue thisVal);
-        static const PathElement* FindPathElement(const PathConnectionData* data);
+        static void finalize(JSRuntime* rt, JSValue thisVal);
+        static PathConnectionData* getData(JSValue thisVal);
+        static const PathElement* findPathElement(const PathConnectionData* data);
 
-        static JSValue position_get(JSContext* ctx, JSValue thisVal);
-        static JSValue direction_get(JSContext* ctx, JSValue thisVal);
-        static JSValue elementIndex_get(JSContext* ctx, JSValue thisVal);
-        static JSValue isSloped_get(JSContext* ctx, JSValue thisVal);
-        static JSValue slopeDirection_get(JSContext* ctx, JSValue thisVal);
-        static JSValue isQueue_get(JSContext* ctx, JSValue thisVal);
-        static JSValue isWide_get(JSContext* ctx, JSValue thisVal);
-        static JSValue ride_get(JSContext* ctx, JSValue thisVal);
-        static JSValue station_get(JSContext* ctx, JSValue thisVal);
+        static JSValue getPosition(JSContext* ctx, JSValue thisVal);
+        static JSValue getDirection(JSContext* ctx, JSValue thisVal);
+        static JSValue getElementIndex(JSContext* ctx, JSValue thisVal);
+        static JSValue isSloped(JSContext* ctx, JSValue thisVal);
+        static JSValue getSlopeDirection(JSContext* ctx, JSValue thisVal);
+        static JSValue isQueue(JSContext* ctx, JSValue thisVal);
+        static JSValue isWide(JSContext* ctx, JSValue thisVal);
+        static JSValue getRide(JSContext* ctx, JSValue thisVal);
+        static JSValue getStation(JSContext* ctx, JSValue thisVal);
     };
 
 } // namespace OpenRCT2::Scripting

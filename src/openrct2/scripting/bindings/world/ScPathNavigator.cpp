@@ -21,22 +21,22 @@
 namespace OpenRCT2::Scripting
 {
 
-    JSValue ScPathNavigator::FromElement(
+    JSValue ScPathNavigator::fromElement(
         JSContext* ctx, const CoordsXY& position, int32_t elementIndex, const PathNavigationOptions& options)
     {
         auto el = MapGetNthElementAt(position, elementIndex);
         if (el == nullptr)
             return JS_NULL;
 
-        auto* pathEl = el->AsPath();
+        auto* pathEl = el->asPath();
         if (pathEl == nullptr)
             return JS_NULL;
 
-        TileCoordsXYZ tilePos(TileCoordsXY(position), el->BaseHeight);
-        return gScPathNavigator.New(ctx, tilePos, elementIndex, -1, options);
+        TileCoordsXYZ tilePos(TileCoordsXY(position), el->baseHeight);
+        return gScPathNavigator.create(ctx, tilePos, elementIndex, -1, options);
     }
 
-    JSValue ScPathNavigator::FromPosition(JSContext* ctx, const CoordsXYZ& position, const PathNavigationOptions& options)
+    JSValue ScPathNavigator::fromPosition(JSContext* ctx, const CoordsXYZ& position, const PathNavigationOptions& options)
     {
         TileCoordsXYZ tilePos(position);
         auto coords = tilePos.ToCoordsXY();
@@ -47,58 +47,58 @@ namespace OpenRCT2::Scripting
         int32_t index = 0;
         do
         {
-            if (tileElement->GetType() != TileElementType::Path || tileElement->BaseHeight != tilePos.z
-                || (tileElement->IsGhost() && !options.IncludeGhosts))
+            if (tileElement->getType() != TileElementType::Path || tileElement->baseHeight != tilePos.z
+                || (tileElement->isGhost() && !options.includeGhosts))
             {
                 index++;
                 continue;
             }
-            return gScPathNavigator.New(ctx, tilePos, index, -1, options);
-        } while (!(tileElement++)->IsLastForTile());
+            return gScPathNavigator.create(ctx, tilePos, index, -1, options);
+        } while (!(tileElement++)->isLastForTile());
 
         return JS_NULL;
     }
 
-    void ScPathNavigator::Register(JSContext* ctx)
+    void ScPathNavigator::registerClass(JSContext* ctx)
     {
-        static constexpr JSCFunctionListEntry funcs[] = {
-            JS_CGETSET_DEF("current", ScPathNavigator::current_get, nullptr),
-            JS_CGETSET_DEF("edges", ScPathNavigator::edges_get, nullptr),
-            JS_CGETSET_DEF("permittedEdges", ScPathNavigator::permittedEdges_get, nullptr),
+        static constexpr JSCFunctionListEntry kFuncs[] = {
+            JS_CGETSET_DEF("current", ScPathNavigator::getCurrent, nullptr),
+            JS_CGETSET_DEF("edges", ScPathNavigator::getEdges, nullptr),
+            JS_CGETSET_DEF("permittedEdges", ScPathNavigator::getPermittedEdges, nullptr),
             JS_CFUNC_DEF("getConnectedPaths", 0, ScPathNavigator::getConnectedPaths),
             JS_CFUNC_DEF("moveTo", 1, ScPathNavigator::moveTo),
         };
-        RegisterBase(ctx, "PathNavigator", Finalize, funcs);
+        RegisterBase(ctx, "PathNavigator", finalize, kFuncs);
     }
 
-    JSValue ScPathNavigator::New(
+    JSValue ScPathNavigator::create(
         JSContext* ctx, const TileCoordsXYZ& position, int32_t elementIndex, int32_t lastDirection,
         const PathNavigationOptions& options)
     {
         return MakeWithOpaque(ctx, new PathNavigatorData{ position, elementIndex, lastDirection, options });
     }
 
-    void ScPathNavigator::Finalize(JSRuntime* rt, JSValue thisVal)
+    void ScPathNavigator::finalize(JSRuntime* rt, JSValue thisVal)
     {
-        PathNavigatorData* data = GetPathNavigatorData(thisVal);
+        PathNavigatorData* data = getPathNavigatorData(thisVal);
         if (data)
             delete data;
     }
 
-    ScPathNavigator::PathNavigatorData* ScPathNavigator::GetPathNavigatorData(JSValue thisVal)
+    ScPathNavigator::PathNavigatorData* ScPathNavigator::getPathNavigatorData(JSValue thisVal)
     {
         return gScPathNavigator.GetOpaque<PathNavigatorData*>(thisVal);
     }
 
-    const PathElement* ScPathNavigator::FindPathElement(const PathNavigatorData* data)
+    const PathElement* ScPathNavigator::findPathElement(const PathNavigatorData* data)
     {
-        const bool includeGhost = data->_options.IncludeGhosts;
-        auto coords = data->_position.ToCoordsXY();
-        auto* el = MapGetNthElementAt(coords, data->_elementIndex);
-        if (el != nullptr && el->GetType() == TileElementType::Path && el->BaseHeight == data->_position.z
-            && (includeGhost || !el->IsGhost()))
+        const bool includeGhost = data->options.includeGhosts;
+        auto coords = data->position.ToCoordsXY();
+        auto* el = MapGetNthElementAt(coords, data->elementIndex);
+        if (el != nullptr && el->getType() == TileElementType::Path && el->baseHeight == data->position.z
+            && (includeGhost || !el->isGhost()))
         {
-            return el->AsPath();
+            return el->asPath();
         }
 
         // Fall back to scanning in case the tile was re-ordered.
@@ -107,103 +107,103 @@ namespace OpenRCT2::Scripting
             return nullptr;
         do
         {
-            if (scan->GetType() != TileElementType::Path)
+            if (scan->getType() != TileElementType::Path)
                 continue;
-            if (scan->BaseHeight != data->_position.z)
+            if (scan->baseHeight != data->position.z)
                 continue;
-            if (scan->IsGhost() && !includeGhost)
+            if (scan->isGhost() && !includeGhost)
                 continue;
-            return scan->AsPath();
-        } while (!(scan++)->IsLastForTile());
+            return scan->asPath();
+        } while (!(scan++)->isLastForTile());
 
         return nullptr;
     }
 
-    static const TileElement* GetBannerOnPath(const TileElement* pathElement)
+    static const TileElement* getBannerOnPath(const TileElement* pathElement)
     {
-        if (pathElement->IsLastForTile())
+        if (pathElement->isLastForTile())
             return nullptr;
 
         const TileElement* bannerElement = pathElement + 1;
         do
         {
-            if (bannerElement->GetType() == TileElementType::Path)
+            if (bannerElement->getType() == TileElementType::Path)
                 return nullptr;
-            if (bannerElement->GetType() == TileElementType::Banner)
+            if (bannerElement->getType() == TileElementType::Banner)
                 return bannerElement;
-            if (bannerElement->IsLastForTile())
+            if (bannerElement->isLastForTile())
                 return nullptr;
         } while (bannerElement++ != nullptr);
 
         return nullptr;
     }
 
-    int32_t ScPathNavigator::GetPermittedEdges(const PathElement* pathElement, const PathNavigationOptions& options)
+    int32_t ScPathNavigator::computePermittedEdges(const PathElement* pathElement, const PathNavigationOptions& options)
     {
         int32_t edges = pathElement->GetEdgesAndCorners() & 0x0F;
-        if (!options.RespectBanners)
+        if (!options.respectBanners)
             return edges;
 
-        const TileElement* bannerElement = GetBannerOnPath(reinterpret_cast<const TileElement*>(pathElement));
+        const TileElement* bannerElement = getBannerOnPath(reinterpret_cast<const TileElement*>(pathElement));
         while (bannerElement != nullptr)
         {
-            edges &= bannerElement->AsBanner()->GetAllowedEdges();
-            bannerElement = GetBannerOnPath(bannerElement);
+            edges &= bannerElement->asBanner()->GetAllowedEdges();
+            bannerElement = getBannerOnPath(bannerElement);
         }
         return edges;
     }
 
-    bool ScPathNavigator::IsTraversableNeighbor(const PathElement* pathElement, const PathNavigationOptions& options)
+    bool ScPathNavigator::isTraversableNeighbor(const PathElement* pathElement, const PathNavigationOptions& options)
     {
-        if (pathElement->IsQueue() && !options.IncludeQueues)
+        if (pathElement->IsQueue() && !options.includeQueues)
             return false;
-        if (pathElement->IsWide() && !options.IncludeWidePaths)
+        if (pathElement->IsWide() && !options.includeWidePaths)
             return false;
         return true;
     }
 
-    JSValue ScPathNavigator::current_get(JSContext* ctx, JSValue thisVal)
+    JSValue ScPathNavigator::getCurrent(JSContext* ctx, JSValue thisVal)
     {
-        auto* data = GetPathNavigatorData(thisVal);
+        auto* data = getPathNavigatorData(thisVal);
         if (data == nullptr)
             return JS_NULL;
-        return gScPathConnection.New(ctx, data->_position, data->_elementIndex, data->_lastDirection);
+        return gScPathConnection.create(ctx, data->position, data->elementIndex, data->lastDirection);
     }
 
-    JSValue ScPathNavigator::edges_get(JSContext* ctx, JSValue thisVal)
+    JSValue ScPathNavigator::getEdges(JSContext* ctx, JSValue thisVal)
     {
-        auto* data = GetPathNavigatorData(thisVal);
+        auto* data = getPathNavigatorData(thisVal);
         if (data == nullptr)
             return JS_NULL;
-        auto* pathEl = FindPathElement(data);
+        auto* pathEl = findPathElement(data);
         if (pathEl == nullptr)
             return JS_NULL;
         return JS_NewInt32(ctx, pathEl->GetEdges());
     }
 
-    JSValue ScPathNavigator::permittedEdges_get(JSContext* ctx, JSValue thisVal)
+    JSValue ScPathNavigator::getPermittedEdges(JSContext* ctx, JSValue thisVal)
     {
-        auto* data = GetPathNavigatorData(thisVal);
+        auto* data = getPathNavigatorData(thisVal);
         if (data == nullptr)
             return JS_NULL;
-        auto* pathEl = FindPathElement(data);
+        auto* pathEl = findPathElement(data);
         if (pathEl == nullptr)
             return JS_NULL;
-        return JS_NewInt32(ctx, GetPermittedEdges(pathEl, data->_options));
+        return JS_NewInt32(ctx, computePermittedEdges(pathEl, data->options));
     }
 
     JSValue ScPathNavigator::getConnectedPaths(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
     {
-        auto* data = GetPathNavigatorData(thisVal);
+        auto* data = getPathNavigatorData(thisVal);
         if (data == nullptr)
             return JS_NULL;
 
-        auto* pathElement = FindPathElement(data);
+        auto* pathElement = findPathElement(data);
         if (pathElement == nullptr)
             return JS_NULL;
 
-        const auto& options = data->_options;
-        int32_t edges = GetPermittedEdges(pathElement, options);
+        const auto& options = data->options;
+        int32_t edges = computePermittedEdges(pathElement, options);
 
         JSValue result = JS_NewArray(ctx);
         int32_t resultIndex = 0;
@@ -213,7 +213,7 @@ namespace OpenRCT2::Scripting
             if (!(edges & (1 << direction)))
                 continue;
 
-            TileCoordsXYZ neighborPos = data->_position;
+            TileCoordsXYZ neighborPos = data->position;
 
             if (pathElement->IsSloped() && pathElement->GetSlopeDirection() == direction)
             {
@@ -231,30 +231,30 @@ namespace OpenRCT2::Scripting
             int32_t nextIndex = 0;
             do
             {
-                if ((nextEl->IsGhost() && !options.IncludeGhosts) || nextEl->GetType() != TileElementType::Path)
+                if ((nextEl->isGhost() && !options.includeGhosts) || nextEl->getType() != TileElementType::Path)
                 {
                     nextIndex++;
                     continue;
                 }
 
-                const auto* nextPath = nextEl->AsPath();
+                const auto* nextPath = nextEl->asPath();
                 if (!FootpathIsZAndDirectionValid(*nextPath, neighborPos.z, direction))
                 {
                     nextIndex++;
                     continue;
                 }
 
-                if (!IsTraversableNeighbor(nextPath, options))
+                if (!isTraversableNeighbor(nextPath, options))
                 {
                     nextIndex++;
                     continue;
                 }
 
-                TileCoordsXYZ actualPos(neighborPos.x, neighborPos.y, nextEl->BaseHeight);
-                JSValue conn = gScPathConnection.New(ctx, actualPos, nextIndex, direction);
+                TileCoordsXYZ actualPos(neighborPos.x, neighborPos.y, nextEl->baseHeight);
+                JSValue conn = gScPathConnection.create(ctx, actualPos, nextIndex, direction);
                 JS_SetPropertyUint32(ctx, result, resultIndex++, conn);
                 break;
-            } while (!(nextEl++)->IsLastForTile());
+            } while (!(nextEl++)->isLastForTile());
         }
 
         return result;
@@ -262,7 +262,7 @@ namespace OpenRCT2::Scripting
 
     JSValue ScPathNavigator::moveTo(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
     {
-        auto* data = GetPathNavigatorData(thisVal);
+        auto* data = getPathNavigatorData(thisVal);
         if (data == nullptr)
             return JS_NewBool(ctx, false);
 
@@ -270,16 +270,16 @@ namespace OpenRCT2::Scripting
         if (direction < 0 || direction > 3)
             return JS_NewBool(ctx, false);
 
-        auto* pathElement = FindPathElement(data);
+        auto* pathElement = findPathElement(data);
         if (pathElement == nullptr)
             return JS_NewBool(ctx, false);
 
-        const auto& options = data->_options;
-        int32_t edges = GetPermittedEdges(pathElement, options);
+        const auto& options = data->options;
+        int32_t edges = computePermittedEdges(pathElement, options);
         if (!(edges & (1 << direction)))
             return JS_NewBool(ctx, false);
 
-        TileCoordsXYZ neighborPos = data->_position;
+        TileCoordsXYZ neighborPos = data->position;
 
         if (pathElement->IsSloped() && pathElement->GetSlopeDirection() == direction)
         {
@@ -297,30 +297,30 @@ namespace OpenRCT2::Scripting
         int32_t nextIndex = 0;
         do
         {
-            if ((nextEl->IsGhost() && !options.IncludeGhosts) || nextEl->GetType() != TileElementType::Path)
+            if ((nextEl->isGhost() && !options.includeGhosts) || nextEl->getType() != TileElementType::Path)
             {
                 nextIndex++;
                 continue;
             }
 
-            const auto* nextPath = nextEl->AsPath();
+            const auto* nextPath = nextEl->asPath();
             if (!FootpathIsZAndDirectionValid(*nextPath, neighborPos.z, direction))
             {
                 nextIndex++;
                 continue;
             }
 
-            if (!IsTraversableNeighbor(nextPath, options))
+            if (!isTraversableNeighbor(nextPath, options))
             {
                 nextIndex++;
                 continue;
             }
 
-            data->_position = TileCoordsXYZ(neighborPos.x, neighborPos.y, nextEl->BaseHeight);
-            data->_elementIndex = nextIndex;
-            data->_lastDirection = direction;
+            data->position = TileCoordsXYZ(neighborPos.x, neighborPos.y, nextEl->baseHeight);
+            data->elementIndex = nextIndex;
+            data->lastDirection = direction;
             return JS_NewBool(ctx, true);
-        } while (!(nextEl++)->IsLastForTile());
+        } while (!(nextEl++)->isLastForTile());
 
         return JS_NewBool(ctx, false);
     }
