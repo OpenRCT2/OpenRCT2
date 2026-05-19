@@ -323,7 +323,6 @@ struct Vehicle : OpenRCT2::EntityBase
     }
     void ApplyMass(int16_t appliedMass);
     void Serialise(OpenRCT2::DataSerialiser& stream);
-    void Paint(PaintSession& session, int32_t imageDirection) const;
     bool IsCableLift() const;
 
     friend void UpdateRotatingDefault(Vehicle& vehicle);

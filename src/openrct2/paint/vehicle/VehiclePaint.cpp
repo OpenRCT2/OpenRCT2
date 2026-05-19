@@ -11,7 +11,6 @@
 
 #include "../../Game.h"
 #include "../../GameState.h"
-#include "../../SpriteIds.h"
 #include "../../core/Speed.hpp"
 #include "../../drawing/Drawing.h"
 #include "../../drawing/LightFX.h"
@@ -19,7 +18,6 @@
 #include "../../entity/Yaw.hpp"
 #include "../../interface/Viewport.h"
 #include "../../ride/CarEntry.h"
-#include "../../ride/RideData.h"
 #include "../../ride/Vehicle.h"
 #include "../Paint.h"
 
@@ -4707,84 +4705,5 @@ void VehicleVisualDefault(
             PaintFunctionsByPitch[EnumValue(vehicle->pitch)](
                 session, vehicle, imageDirection, z, carEntry, kBoundBoxIndexUndefined);
         }
-    }
-}
-
-void Vehicle::Paint(PaintSession& session, int32_t imageDirection) const
-{
-    const CarEntry* carEntry;
-
-    if (flags.has(VehicleFlag::crashed))
-    {
-        PaintAddImageAsParent(
-            session, ImageId(SPR_WATER_PARTICLES_DENSE_0 + animation_frame), { 0, 0, z }, { { 0, 0, z + 2 }, { 1, 1, 0 } });
-        return;
-    }
-
-    int32_t zOffset = 0;
-    if (IsCableLift())
-    {
-        carEntry = &kCableLiftVehicle;
-    }
-    else
-    {
-        auto rideEntry = GetRideEntry();
-        if (rideEntry == nullptr)
-        {
-            return;
-        }
-
-        auto carEntryIndex = vehicle_type;
-        if (flags.has(VehicleFlag::carIsInverted))
-        {
-            carEntryIndex++;
-            zOffset += 16;
-        }
-
-        if (carEntryIndex >= std::size(rideEntry->Cars))
-        {
-            return;
-        }
-        carEntry = &rideEntry->Cars[carEntryIndex];
-    }
-
-    switch (carEntry->PaintStyle)
-    {
-        case VEHICLE_VISUAL_DEFAULT:
-            VehicleVisualDefault(session, imageDirection, z + zOffset, this, carEntry);
-            break;
-        case VEHICLE_VISUAL_LAUNCHED_FREEFALL:
-            VehicleVisualLaunchedFreefall(session, x, imageDirection, y, z + zOffset, this, carEntry);
-            break;
-        case VEHICLE_VISUAL_OBSERVATION_TOWER:
-            VehicleVisualObservationTower(session, x, imageDirection, y, z + zOffset, this, carEntry);
-            break;
-        case VEHICLE_VISUAL_RIVER_RAPIDS:
-            VehicleVisualRiverRapids(session, x, imageDirection, y, z + zOffset, this, carEntry);
-            break;
-        case VEHICLE_VISUAL_MINI_GOLF_PLAYER:
-            VehicleVisualMiniGolfPlayer(session, x, imageDirection, y, z + zOffset, this);
-            break;
-        case VEHICLE_VISUAL_MINI_GOLF_BALL:
-            VehicleVisualMiniGolfBall(session, x, imageDirection, y, z + zOffset, this);
-            break;
-        case VEHICLE_VISUAL_REVERSER:
-            VehicleVisualReverser(session, x, imageDirection, y, z + zOffset, this, carEntry);
-            break;
-        case VEHICLE_VISUAL_SPLASH_BOATS_OR_WATER_COASTER:
-            VehicleVisualSplashBoatsOrWaterCoaster(session, x, imageDirection, y, z + zOffset, this, carEntry);
-            break;
-        case VEHICLE_VISUAL_ROTO_DROP:
-            VehicleVisualRotoDrop(session, x, imageDirection, y, z + zOffset, this, carEntry);
-            break;
-        case VEHICLE_VISUAL_VIRGINIA_REEL:
-            VehicleVisualVirginiaReel(session, x, imageDirection, y, z + zOffset, this, carEntry);
-            break;
-        case VEHICLE_VISUAL_SUBMARINE:
-            VehicleVisualSubmarine(session, x, imageDirection, y, z + zOffset, this, carEntry);
-            break;
-        case VEHICLE_VISUAL_SPINNING_CARS:
-            VehicleVisualClassicMiniSpinning(session, x, imageDirection, y, z + zOffset, this, carEntry);
-            break;
     }
 }
