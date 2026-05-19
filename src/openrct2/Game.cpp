@@ -28,6 +28,7 @@
 #include "config/Config.h"
 #include "core/Console.hpp"
 #include "core/File.h"
+#include "core/FileSystem.hpp"
 #include "core/FileScanner.h"
 #include "core/Money.hpp"
 #include "core/Path.hpp"
@@ -493,8 +494,16 @@ void SaveGameCmd(u8string_view name /* = {} */)
     else
     {
         auto& env = GetContext()->GetPlatformEnvironment();
-        auto savePath = Path::Combine(env.GetDirectoryPath(DirBase::user, DirId::saves), u8string(name) + u8".park");
-        SaveGameWithName(savePath);
+        auto savesDir = fs::canonical(env.GetDirectoryPath(DirBase::user, DirId::saves));
+        auto savePath = savesDir / fs::u8path(u8string(name) + u8".park");
+
+        if (!fs::weakly_canonical(savePath).u8string().starts_with(savesDir.u8string()))
+        {
+            LOG_ERROR("Save filename must resolve to a path inside the saves directory.");
+            return;
+        }
+
+        SaveGameWithName(savePath.u8string());
     }
 }
 
