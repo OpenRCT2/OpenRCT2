@@ -23,10 +23,10 @@ namespace OpenRCT2::Scripting
 
     struct PathNavigationOptions
     {
-        bool RespectBanners = false;
-        bool IncludeGhosts = false;
-        bool IncludeQueues = false;
-        bool IncludeWidePaths = false;
+        bool respectBanners = false;
+        bool includeGhosts = false;
+        bool includeQueues = false;
+        bool includeWidePaths = false;
     };
 
     class ScPathNavigator final : public ScBase
@@ -34,32 +34,32 @@ namespace OpenRCT2::Scripting
     private:
         struct PathNavigatorData
         {
-            TileCoordsXYZ _position;
-            int32_t _elementIndex;
-            int32_t _lastDirection; // -1 if navigator has not moved yet
-            PathNavigationOptions _options;
+            TileCoordsXYZ position;
+            int32_t elementIndex;
+            int32_t lastDirection; // -1 if navigator has not moved yet
+            PathNavigationOptions options;
         };
 
     public:
-        static JSValue FromElement(
+        static JSValue fromElement(
             JSContext* ctx, const CoordsXY& position, int32_t elementIndex, const PathNavigationOptions& options);
-        static JSValue FromPosition(JSContext* ctx, const CoordsXYZ& position, const PathNavigationOptions& options);
-        void Register(JSContext* ctx);
-        JSValue New(
+        static JSValue fromPosition(JSContext* ctx, const CoordsXYZ& position, const PathNavigationOptions& options);
+        void registerClass(JSContext* ctx);
+        JSValue create(
             JSContext* ctx, const TileCoordsXYZ& position, int32_t elementIndex, int32_t lastDirection,
             const PathNavigationOptions& options);
 
     private:
-        static void Finalize(JSRuntime* rt, JSValue thisVal);
-        static PathNavigatorData* GetPathNavigatorData(JSValue thisVal);
+        static void finalize(JSRuntime* rt, JSValue thisVal);
+        static PathNavigatorData* getPathNavigatorData(JSValue thisVal);
 
-        static const PathElement* FindPathElement(const PathNavigatorData* data);
-        static int32_t GetPermittedEdges(const PathElement* pathElement, const PathNavigationOptions& options);
-        static bool IsTraversableNeighbor(const PathElement* pathElement, const PathNavigationOptions& options);
+        static const PathElement* findPathElement(const PathNavigatorData* data);
+        static int32_t computePermittedEdges(const PathElement* pathElement, const PathNavigationOptions& options);
+        static bool isTraversableNeighbor(const PathElement* pathElement, const PathNavigationOptions& options);
 
-        static JSValue current_get(JSContext* ctx, JSValue thisVal);
-        static JSValue edges_get(JSContext* ctx, JSValue thisVal);
-        static JSValue permittedEdges_get(JSContext* ctx, JSValue thisVal);
+        static JSValue getCurrent(JSContext* ctx, JSValue thisVal);
+        static JSValue getEdges(JSContext* ctx, JSValue thisVal);
+        static JSValue getPermittedEdges(JSContext* ctx, JSValue thisVal);
 
         static JSValue getConnectedPaths(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
         static JSValue moveTo(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);

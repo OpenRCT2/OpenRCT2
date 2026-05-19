@@ -17,128 +17,128 @@
 
 namespace OpenRCT2::Scripting
 {
-    void ScPathConnection::Register(JSContext* ctx)
+    void ScPathConnection::registerClass(JSContext* ctx)
     {
-        static constexpr JSCFunctionListEntry funcs[] = {
-            JS_CGETSET_DEF("position", ScPathConnection::position_get, nullptr),
-            JS_CGETSET_DEF("direction", ScPathConnection::direction_get, nullptr),
-            JS_CGETSET_DEF("elementIndex", ScPathConnection::elementIndex_get, nullptr),
-            JS_CGETSET_DEF("isSloped", ScPathConnection::isSloped_get, nullptr),
-            JS_CGETSET_DEF("slopeDirection", ScPathConnection::slopeDirection_get, nullptr),
-            JS_CGETSET_DEF("isQueue", ScPathConnection::isQueue_get, nullptr),
-            JS_CGETSET_DEF("isWide", ScPathConnection::isWide_get, nullptr),
-            JS_CGETSET_DEF("ride", ScPathConnection::ride_get, nullptr),
-            JS_CGETSET_DEF("station", ScPathConnection::station_get, nullptr),
+        static constexpr JSCFunctionListEntry kFuncs[] = {
+            JS_CGETSET_DEF("position", ScPathConnection::getPosition, nullptr),
+            JS_CGETSET_DEF("direction", ScPathConnection::getDirection, nullptr),
+            JS_CGETSET_DEF("elementIndex", ScPathConnection::getElementIndex, nullptr),
+            JS_CGETSET_DEF("isSloped", ScPathConnection::isSloped, nullptr),
+            JS_CGETSET_DEF("slopeDirection", ScPathConnection::getSlopeDirection, nullptr),
+            JS_CGETSET_DEF("isQueue", ScPathConnection::isQueue, nullptr),
+            JS_CGETSET_DEF("isWide", ScPathConnection::isWide, nullptr),
+            JS_CGETSET_DEF("ride", ScPathConnection::getRide, nullptr),
+            JS_CGETSET_DEF("station", ScPathConnection::getStation, nullptr),
         };
-        RegisterBase(ctx, "PathConnection", Finalize, funcs);
+        RegisterBase(ctx, "PathConnection", finalize, kFuncs);
     }
 
-    JSValue ScPathConnection::New(JSContext* ctx, const TileCoordsXYZ& position, int32_t elementIndex, int32_t direction)
+    JSValue ScPathConnection::create(JSContext* ctx, const TileCoordsXYZ& position, int32_t elementIndex, int32_t direction)
     {
         return MakeWithOpaque(ctx, new PathConnectionData{ position, elementIndex, direction });
     }
 
-    void ScPathConnection::Finalize(JSRuntime* rt, JSValue thisVal)
+    void ScPathConnection::finalize(JSRuntime* rt, JSValue thisVal)
     {
-        PathConnectionData* data = GetData(thisVal);
+        PathConnectionData* data = getData(thisVal);
         if (data)
             delete data;
     }
 
-    ScPathConnection::PathConnectionData* ScPathConnection::GetData(JSValue thisVal)
+    ScPathConnection::PathConnectionData* ScPathConnection::getData(JSValue thisVal)
     {
         return gScPathConnection.GetOpaque<PathConnectionData*>(thisVal);
     }
 
-    const PathElement* ScPathConnection::FindPathElement(const PathConnectionData* data)
+    const PathElement* ScPathConnection::findPathElement(const PathConnectionData* data)
     {
-        auto coords = data->_position.ToCoordsXY();
-        auto* el = MapGetNthElementAt(coords, data->_elementIndex);
+        auto coords = data->position.ToCoordsXY();
+        auto* el = MapGetNthElementAt(coords, data->elementIndex);
         if (el == nullptr)
             return nullptr;
-        if (el->GetType() != TileElementType::Path)
+        if (el->getType() != TileElementType::Path)
             return nullptr;
-        if (el->BaseHeight != data->_position.z)
+        if (el->baseHeight != data->position.z)
             return nullptr;
-        if (el->IsGhost())
+        if (el->isGhost())
             return nullptr;
-        return el->AsPath();
+        return el->asPath();
     }
 
-    JSValue ScPathConnection::position_get(JSContext* ctx, JSValue thisVal)
+    JSValue ScPathConnection::getPosition(JSContext* ctx, JSValue thisVal)
     {
-        auto* data = GetData(thisVal);
+        auto* data = getData(thisVal);
         if (data == nullptr)
             return JS_NULL;
-        return ToJSValue(ctx, data->_position.ToCoordsXYZ());
+        return ToJSValue(ctx, data->position.ToCoordsXYZ());
     }
 
-    JSValue ScPathConnection::direction_get(JSContext* ctx, JSValue thisVal)
+    JSValue ScPathConnection::getDirection(JSContext* ctx, JSValue thisVal)
     {
-        auto* data = GetData(thisVal);
-        if (data == nullptr || data->_direction < 0)
+        auto* data = getData(thisVal);
+        if (data == nullptr || data->direction < 0)
             return JS_NULL;
-        return JS_NewInt32(ctx, data->_direction);
+        return JS_NewInt32(ctx, data->direction);
     }
 
-    JSValue ScPathConnection::elementIndex_get(JSContext* ctx, JSValue thisVal)
+    JSValue ScPathConnection::getElementIndex(JSContext* ctx, JSValue thisVal)
     {
-        auto* data = GetData(thisVal);
+        auto* data = getData(thisVal);
         if (data == nullptr)
             return JS_NULL;
-        return JS_NewInt32(ctx, data->_elementIndex);
+        return JS_NewInt32(ctx, data->elementIndex);
     }
 
-    JSValue ScPathConnection::isSloped_get(JSContext* ctx, JSValue thisVal)
+    JSValue ScPathConnection::isSloped(JSContext* ctx, JSValue thisVal)
     {
-        auto* data = GetData(thisVal);
+        auto* data = getData(thisVal);
         if (data == nullptr)
             return JS_NULL;
-        auto* pathEl = FindPathElement(data);
+        auto* pathEl = findPathElement(data);
         if (pathEl == nullptr)
             return JS_NULL;
         return JS_NewBool(ctx, pathEl->IsSloped());
     }
 
-    JSValue ScPathConnection::slopeDirection_get(JSContext* ctx, JSValue thisVal)
+    JSValue ScPathConnection::getSlopeDirection(JSContext* ctx, JSValue thisVal)
     {
-        auto* data = GetData(thisVal);
+        auto* data = getData(thisVal);
         if (data == nullptr)
             return JS_NULL;
-        auto* pathEl = FindPathElement(data);
+        auto* pathEl = findPathElement(data);
         if (pathEl == nullptr || !pathEl->IsSloped())
             return JS_NULL;
         return JS_NewInt32(ctx, pathEl->GetSlopeDirection());
     }
 
-    JSValue ScPathConnection::isQueue_get(JSContext* ctx, JSValue thisVal)
+    JSValue ScPathConnection::isQueue(JSContext* ctx, JSValue thisVal)
     {
-        auto* data = GetData(thisVal);
+        auto* data = getData(thisVal);
         if (data == nullptr)
             return JS_NULL;
-        auto* pathEl = FindPathElement(data);
+        auto* pathEl = findPathElement(data);
         if (pathEl == nullptr)
             return JS_NULL;
         return JS_NewBool(ctx, pathEl->IsQueue());
     }
 
-    JSValue ScPathConnection::isWide_get(JSContext* ctx, JSValue thisVal)
+    JSValue ScPathConnection::isWide(JSContext* ctx, JSValue thisVal)
     {
-        auto* data = GetData(thisVal);
+        auto* data = getData(thisVal);
         if (data == nullptr)
             return JS_NULL;
-        auto* pathEl = FindPathElement(data);
+        auto* pathEl = findPathElement(data);
         if (pathEl == nullptr)
             return JS_NULL;
         return JS_NewBool(ctx, pathEl->IsWide());
     }
 
-    JSValue ScPathConnection::ride_get(JSContext* ctx, JSValue thisVal)
+    JSValue ScPathConnection::getRide(JSContext* ctx, JSValue thisVal)
     {
-        auto* data = GetData(thisVal);
+        auto* data = getData(thisVal);
         if (data == nullptr)
             return JS_NULL;
-        auto* pathEl = FindPathElement(data);
+        auto* pathEl = findPathElement(data);
         if (pathEl == nullptr || !pathEl->IsQueue())
             return JS_NULL;
         auto rideIndex = pathEl->GetRideIndex();
@@ -147,12 +147,12 @@ namespace OpenRCT2::Scripting
         return JS_NewInt32(ctx, rideIndex.ToUnderlying());
     }
 
-    JSValue ScPathConnection::station_get(JSContext* ctx, JSValue thisVal)
+    JSValue ScPathConnection::getStation(JSContext* ctx, JSValue thisVal)
     {
-        auto* data = GetData(thisVal);
+        auto* data = getData(thisVal);
         if (data == nullptr)
             return JS_NULL;
-        auto* pathEl = FindPathElement(data);
+        auto* pathEl = findPathElement(data);
         if (pathEl == nullptr || !pathEl->IsQueue())
             return JS_NULL;
         auto stationIndex = pathEl->GetStationIndex();

@@ -455,10 +455,10 @@ namespace OpenRCT2::Scripting
         if (!JS_IsObject(obj))
             return options;
 
-        options.RespectBanners = AsOrDefault(ctx, obj, "respectBanners", false);
-        options.IncludeGhosts = AsOrDefault(ctx, obj, "includeGhosts", false);
-        options.IncludeQueues = AsOrDefault(ctx, obj, "includeQueues", false);
-        options.IncludeWidePaths = AsOrDefault(ctx, obj, "includeWidePaths", false);
+        options.respectBanners = AsOrDefault(ctx, obj, "respectBanners", false);
+        options.includeGhosts = AsOrDefault(ctx, obj, "includeGhosts", false);
+        options.includeQueues = AsOrDefault(ctx, obj, "includeQueues", false);
+        options.includeWidePaths = AsOrDefault(ctx, obj, "includeWidePaths", false);
         return options;
     }
 
@@ -494,11 +494,11 @@ namespace OpenRCT2::Scripting
         if (hasElementIndex)
         {
             const auto position = JSToCoordsXY(ctx, pos);
-            return ScPathNavigator::FromElement(ctx, position, elementIndex, options);
+            return ScPathNavigator::fromElement(ctx, position, elementIndex, options);
         }
 
         const auto position = JSToCoordsXYZ(ctx, pos);
-        return ScPathNavigator::FromPosition(ctx, position, options);
+        return ScPathNavigator::fromPosition(ctx, position, options);
     }
 
     void ScMap::Register(JSContext* ctx)

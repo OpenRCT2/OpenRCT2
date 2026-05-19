@@ -578,8 +578,8 @@ void ScriptEngine::RegisterClasses(JSContext* ctx)
     gScTileElement.Register(ctx);
     gScTrackIterator.Register(ctx);
     gScTrackSegment.Register(ctx);
-    gScPathConnection.Register(ctx);
-    gScPathNavigator.Register(ctx);
+    gScPathConnection.registerClass(ctx);
+    gScPathNavigator.registerClass(ctx);
     gScEntity.Register(ctx);
     gScPeep.Register(ctx);
     gScGuest.Register(ctx);
