@@ -21,7 +21,7 @@ namespace OpenRCT2
      *
      *  rct2: 0x006D5FAB
      */
-    void VehicleVisualLaunchedFreefall(
+    void vehicleVisualLaunchedFreefall(
         PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
         const CarEntry* carEntry)
     {

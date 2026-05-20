@@ -22,7 +22,7 @@ namespace OpenRCT2
      *
      *  rct2: 0x006D4453
      */
-    void VehicleVisualReverser(
+    void vehicleVisualReverser(
         PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
         const CarEntry* carEntry)
     {
@@ -37,6 +37,6 @@ namespace OpenRCT2
         z = (v1->z + v2->z) / 2;
         session.spritePosition.x = x;
         session.spritePosition.y = y;
-        VehicleVisualDefault(session, imageDirection, z, vehicle, carEntry);
+        vehicleVisualDefault(session, imageDirection, z, vehicle, carEntry);
     }
 } // namespace OpenRCT2

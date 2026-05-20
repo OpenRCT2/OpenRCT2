@@ -97,7 +97,7 @@ namespace OpenRCT2
     /**
      * rct2: 0x006D42F0
      */
-    void VehicleVisualMiniGolfPlayer(
+    void vehicleVisualMiniGolfPlayer(
         PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle)
     {
         if (vehicle->num_peeps == 0)
@@ -133,7 +133,7 @@ namespace OpenRCT2
     /**
      * rct2: 0x006D43C6
      */
-    void VehicleVisualMiniGolfBall(
+    void vehicleVisualMiniGolfBall(
         PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle)
     {
         if (vehicle->mini_golf_current_animation != MiniGolfAnimation::PlaceBallDown)

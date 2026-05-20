@@ -28,7 +28,7 @@ namespace OpenRCT2
      *
      *  rct2: 0x006D5889
      */
-    void VehicleVisualRiverRapids(
+    void vehicleVisualRiverRapids(
         PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
         const CarEntry* carEntry)
     {
@@ -75,8 +75,8 @@ namespace OpenRCT2
         baseImage_id += carEntry->base_image_id;
 
         const auto& riverRapidsBb = _riverRapidsBoundbox[j];
-        auto bb = BoundBoxXYZ{ { riverRapidsBb.offset_x, riverRapidsBb.offset_y, riverRapidsBb.offset_z + z },
-                               { riverRapidsBb.length_x, riverRapidsBb.length_y, riverRapidsBb.length_z } };
+        auto bb = BoundBoxXYZ{ { riverRapidsBb.offsetX, riverRapidsBb.offsetY, riverRapidsBb.offsetZ + z },
+                               { riverRapidsBb.lengthX, riverRapidsBb.lengthY, riverRapidsBb.lengthZ } };
         image_id = ImageId(baseImage_id, vehicle->colours.Body, vehicle->colours.Trim);
         if (vehicle->isGhost())
         {
@@ -115,6 +115,6 @@ namespace OpenRCT2
             }
         }
 
-        VehicleVisualSplashEffect(session, z, vehicle, carEntry);
+        vehicleVisualSplashEffect(session, z, vehicle, carEntry);
     }
 } // namespace OpenRCT2

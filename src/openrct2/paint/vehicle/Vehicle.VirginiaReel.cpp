@@ -28,7 +28,7 @@ namespace OpenRCT2
      *
      *  rct2: 0x006D5B48
      */
-    void VehicleVisualVirginiaReel(
+    void vehicleVisualVirginiaReel(
         PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
         const CarEntry* carEntry)
     {
@@ -52,8 +52,8 @@ namespace OpenRCT2
         }();
         baseImage_id += ecx & 7;
         const auto& vehicleBb = _virginiaReelBoundbox[baseImage_id >> 3];
-        auto bb = BoundBoxXYZ{ { vehicleBb.offset_x, vehicleBb.offset_y, vehicleBb.offset_z + z },
-                               { vehicleBb.length_x, vehicleBb.length_y, vehicleBb.length_z } };
+        auto bb = BoundBoxXYZ{ { vehicleBb.offsetX, vehicleBb.offsetY, vehicleBb.offsetZ + z },
+                               { vehicleBb.lengthX, vehicleBb.lengthY, vehicleBb.lengthZ } };
 
         baseImage_id += carEntry->base_image_id;
         auto image_id = ImageId(baseImage_id, vehicle->colours.Body, vehicle->colours.Trim);

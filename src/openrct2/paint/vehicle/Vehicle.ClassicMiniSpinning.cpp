@@ -50,7 +50,7 @@ namespace OpenRCT2
         return pitchInfo;
     }();
 
-    void VehicleVisualClassicMiniSpinning(
+    void vehicleVisualClassicMiniSpinning(
         PaintSession& session, const int32_t x, const int32_t imageDirection, const int32_t y, const int32_t z,
         const Vehicle* const vehicle, const CarEntry* const carEntry)
     {
@@ -81,8 +81,8 @@ namespace OpenRCT2
         const uint32_t boundingBoxIndex = pitchInfo.boundingBoxIndex
             + (rotatedImageDirection >> pitchInfo.boundingBoxPrecisionShift);
         const VehicleBoundBox& bb = VehicleBoundboxes[carEntry->draw_order][boundingBoxIndex];
-        const BoundBoxXYZ boundingBox = { { bb.offset_x, bb.offset_y, bb.offset_z + z },
-                                          { bb.length_x, bb.length_y, bb.length_z } };
+        const BoundBoxXYZ boundingBox = { { bb.offsetX, bb.offsetY, bb.offsetZ + z },
+                                          { bb.lengthX, bb.lengthY, bb.lengthZ } };
         paintAddImageAsParent(session, imageId, { 0, 0, z }, boundingBox);
 
         if (session.rt.zoom_level < ZoomLevel{ 2 })

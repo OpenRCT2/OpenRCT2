@@ -21,7 +21,7 @@ namespace OpenRCT2
      *
      *  rct2: 0x006D5DA9
      */
-    void VehicleVisualRotoDrop(
+    void vehicleVisualRotoDrop(
         PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
         const CarEntry* carEntry)
     {
