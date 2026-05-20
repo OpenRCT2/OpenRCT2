@@ -368,6 +368,13 @@ namespace OpenRCT2::Audio
         _engine->setGroupVolume(AudioEngineGroup::titleMusic, music);
     }
 
+    bool NewAudioContext::HandleAudioDeviceEvent(uint32_t eventType, uint32_t deviceIndex, bool isCapture)
+    {
+        if (_platform)
+            return _platform->handleDeviceEvent(eventType, deviceIndex, isCapture);
+        return false;
+    }
+
     Float32AudioData* NewAudioContext::convertToFloat32(
         const void* pcmData, size_t pcmLen, AudioSampleFormat format, uint8_t srcChannels, int srcFreq)
     {

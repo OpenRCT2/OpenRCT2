@@ -9,8 +9,13 @@
 
 #include "DualAudioContext.h"
 
+#include <openrct2/Context.h>
 #include <openrct2/Diagnostic.h>
+#include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/object/AudioObject.h>
+#include <openrct2/object/ObjectLimits.h>
+#include <openrct2/object/ObjectManager.h>
 
 namespace OpenRCT2::Audio
 {
@@ -148,6 +153,59 @@ namespace OpenRCT2::Audio
         if (_useNewEngine && _newEngine)
             return _newEngine->CreateChannel(source, group, loop, volume, pan, rate);
         return nullptr;
+    }
+
+    void DualAudioContext::SwitchAudioEngine()
+    {
+        bool wantNew = (Config::Get().sound.audioEngineType == AudioEngineType::newEngine);
+        if (wantNew == _useNewEngine)
+            return;
+
+        LOG_INFO("Live-switching audio engine to %s", wantNew ? "new" : "legacy");
+
+        Audio::StopAll();
+        active()->StopAll();
+
+        auto* context = GetContext();
+        auto& objManager = context->GetObjectManager();
+        for (ObjectEntryIndex i = 0; i < kMaxAudioObjects; i++)
+        {
+            auto* obj = objManager.GetLoadedObject<AudioObject>(i);
+            if (obj != nullptr)
+                obj->Unload();
+        }
+
+        if (wantNew)
+        {
+            if (!_newEngine)
+                _newEngine = std::make_unique<NewAudioContext>();
+            _useNewEngine = true;
+            _newEngine->SetOutputDevice(Config::Get().sound.device);
+            _newEngine->SyncVolumeSettings();
+        }
+        else
+        {
+            _useNewEngine = false;
+            _legacy->SetOutputDevice(Config::Get().sound.device);
+        }
+
+        for (ObjectEntryIndex i = 0; i < kMaxAudioObjects; i++)
+        {
+            auto* obj = objManager.GetLoadedObject<AudioObject>(i);
+            if (obj != nullptr)
+                obj->Load();
+        }
+
+        Audio::PlayTitleMusic();
+
+        LOG_INFO("Audio engine switch complete");
+    }
+
+    bool DualAudioContext::HandleAudioDeviceEvent(uint32_t eventType, uint32_t deviceIndex, bool isCapture)
+    {
+        if (_useNewEngine && _newEngine)
+            return _newEngine->HandleAudioDeviceEvent(eventType, deviceIndex, isCapture);
+        return false;
     }
 
     std::unique_ptr<IAudioContext> createDualAudioContext()

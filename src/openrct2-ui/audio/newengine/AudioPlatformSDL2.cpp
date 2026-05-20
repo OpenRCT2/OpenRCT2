@@ -132,6 +132,92 @@ namespace OpenRCT2::Audio
         return _deviceId;
     }
 
+    bool AudioPlatformSDL2::handleDeviceEvent(uint32_t eventType, uint32_t deviceIndex, bool isCapture)
+    {
+        if (isCapture)
+            return false;
+
+        if (eventType == SDL_AUDIODEVICEREMOVED)
+        {
+            SDL_AudioDeviceID removedId = static_cast<SDL_AudioDeviceID>(deviceIndex);
+
+            if (removedId == _deviceId)
+            {
+                LOG_WARNING("Audio device disconnected (ID %u)", removedId);
+
+                close();
+
+                std::string newDeviceName;
+                bool reopened = false;
+
+                if (_autoReconnect)
+                {
+                    LOG_INFO("Attempting to reconnect to default audio device...");
+                    reopened = open(nullptr);
+                    if (reopened)
+                    {
+                        LOG_INFO("Successfully reconnected to default audio device");
+                        newDeviceName = _currentDeviceName;
+                    }
+                    else
+                    {
+                        LOG_ERROR("Failed to reconnect to any audio device");
+                    }
+                }
+
+                if (_deviceChangeCallback)
+                {
+                    _deviceChangeCallback(true, newDeviceName);
+                }
+
+                return true;
+            }
+        }
+        else if (eventType == SDL_AUDIODEVICEADDED)
+        {
+            const char* name = SDL_GetAudioDeviceName(static_cast<int>(deviceIndex), SDL_FALSE);
+            std::string deviceName = name ? String::toStd(name) : "";
+
+            LOG_VERBOSE("Audio device added: '%s'", deviceName.c_str());
+
+            if (!isOpen() && _autoReconnect)
+            {
+                LOG_INFO("No audio device open, attempting to open newly added device...");
+                if (open(name))
+                {
+                    LOG_INFO("Successfully opened newly added audio device: '%s'", deviceName.c_str());
+                    if (_deviceChangeCallback)
+                    {
+                        _deviceChangeCallback(false, deviceName);
+                    }
+                    return true;
+                }
+            }
+
+            if (_deviceChangeCallback)
+            {
+                _deviceChangeCallback(false, deviceName);
+            }
+        }
+
+        return false;
+    }
+
+    void AudioPlatformSDL2::setDeviceChangeCallback(DeviceChangeCallback callback)
+    {
+        _deviceChangeCallback = std::move(callback);
+    }
+
+    void AudioPlatformSDL2::setAutoReconnect(bool enable)
+    {
+        _autoReconnect = enable;
+    }
+
+    bool AudioPlatformSDL2::reopen(const char* deviceName)
+    {
+        return open(deviceName);
+    }
+
     std::vector<std::string> AudioPlatformSDL2::enumerateDevices()
     {
         std::vector<std::string> devices;

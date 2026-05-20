@@ -398,6 +398,17 @@ public:
                     _cursorState.position = { static_cast<int32_t>(e.motion.x / Config::Get().general.windowScale),
                                               static_cast<int32_t>(e.motion.y / Config::Get().general.windowScale) };
                     break;
+                case SDL_AUDIODEVICEADDED:
+                case SDL_AUDIODEVICEREMOVED:
+                {
+                    auto* context = GetContext();
+                    if (context != nullptr)
+                    {
+                        context->GetAudioContext().HandleAudioDeviceEvent(
+                            e.adevice.type, e.adevice.which, e.adevice.iscapture != 0);
+                    }
+                    break;
+                }
                 case SDL_MOUSEWHEEL:
                     if (_inGameConsole.IsOpen())
                     {
