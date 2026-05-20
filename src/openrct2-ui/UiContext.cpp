@@ -1071,6 +1071,14 @@ private:
     void SetAudioVolume(float value)
     {
         auto& audioContext = GetContext()->GetAudioContext();
+        if (audioContext.IsNewEngine())
+        {
+            if (value <= 0.0f)
+                audioContext.PauseSounds();
+            else
+                audioContext.UnpauseSounds();
+            return;
+        }
         auto* mixer = audioContext.GetMixer();
         if (mixer != nullptr)
         {

@@ -17,7 +17,7 @@
 
 namespace OpenRCT2::Audio
 {
-    static constexpr size_t kMaxVoices = 128;
+    static constexpr size_t kMaxVoices = 256;
 
     enum class VoiceState : uint8_t
     {
