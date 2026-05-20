@@ -17,16 +17,16 @@ namespace OpenRCT2::GameActions
     // direction
     enum class BannerSetStyleType : uint8_t
     {
-        PrimaryColour,
-        TextColour,
-        NoEntry,
-        Count
+        primaryColour,
+        textColour,
+        noEntry,
+        count
     };
 
     class BannerSetStyleAction final : public GameActionBase<GameCommand::SetBannerStyle>
     {
     private:
-        BannerSetStyleType _type{ BannerSetStyleType::Count };
+        BannerSetStyleType _type{ BannerSetStyleType::count };
         BannerIndex _bannerIndex{ BannerIndex::GetNull() };
         uint8_t _parameter{};
 

@@ -102,7 +102,7 @@ TEST_F(PlayTests, SecondGuestInQueueShouldNotRideIfNoFunds)
     auto& gameState = getGameState();
 
     // Open park for free but charging for rides
-    execute<GameActions::ParkSetParameterAction>(GameActions::ParkParameter::Open);
+    execute<GameActions::ParkSetParameterAction>(GameActions::ParkParameter::open);
     execute<GameActions::ParkSetEntranceFeeAction>(0);
     gameState.park.flags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
 
@@ -162,7 +162,7 @@ TEST_F(PlayTests, CarRideWithOneCarOnlyAcceptsTwoGuests)
     auto& gameState = getGameState();
 
     // Open park for free but charging for rides
-    execute<GameActions::ParkSetParameterAction>(GameActions::ParkParameter::Open);
+    execute<GameActions::ParkSetParameterAction>(GameActions::ParkParameter::open);
     execute<GameActions::ParkSetEntranceFeeAction>(0);
     gameState.park.flags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
 

@@ -843,7 +843,7 @@ namespace OpenRCT2::RCT2
         StringId ParkName;
         uint8_t Pad013573D6[2];
         uint32_t ParkNameArgs;
-        money32 initialCash;
+        money32 InitialCash;
         money32 CurrentLoan;
         uint32_t ParkFlags;
         money16 ParkEntranceFee;
