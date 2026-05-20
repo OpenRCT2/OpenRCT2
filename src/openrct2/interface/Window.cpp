@@ -790,10 +790,10 @@ static constexpr float kWindowScrollLocations[][2] = {
             mainWind->height = height;
             viewport->width = width;
             viewport->height = height;
-            if (!mainWind->widgets.empty() && mainWind->widgets[kWindowMainWidgetViewport].type == WidgetType::viewport)
+            if (!mainWind->widgets.empty() && mainWind->widgets[kWindowMainWidgetIdxViewport].type == WidgetType::viewport)
             {
-                mainWind->widgets[kWindowMainWidgetViewport].right = width;
-                mainWind->widgets[kWindowMainWidgetViewport].bottom = height;
+                mainWind->widgets[kWindowMainWidgetIdxViewport].right = width;
+                mainWind->widgets[kWindowMainWidgetIdxViewport].bottom = height;
             }
         }
 

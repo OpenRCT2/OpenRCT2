@@ -137,14 +137,14 @@ namespace OpenRCT2
 #define VALIDATE_GLOBAL_WIDX(wc, widx)                                                                                         \
     static_assert(widx == wc##__##widx, "Global WIDX of " #widx " doesn't match actual value.")
 
-constexpr int32_t kWindowMainWidgetViewport = 0;
-constexpr int32_t kWindowRideConstructionWidgetConstruct = 27;
-constexpr int32_t kWindowRideConstructionWidgetEntrance = 32;
-constexpr int32_t kWindowRideConstructionWidgetExit = 33;
-constexpr int32_t kWindowRideConstructionWidgetRotate = 34;
-constexpr int32_t WC_MAZE_CONSTRUCTION__WIDX_MAZE_DIRECTION_GROUPBOX = kWindowRideConstructionWidgetConstruct;
-constexpr int32_t WC_MAZE_CONSTRUCTION__WIDX_MAZE_ENTRANCE = kWindowRideConstructionWidgetEntrance;
-constexpr int32_t WC_MAZE_CONSTRUCTION__WIDX_MAZE_EXIT = kWindowRideConstructionWidgetExit;
+constexpr int32_t kWindowMainWidgetIdxViewport = 0;
+constexpr int32_t kWindowRideConstructionWidgetIdxConstruct = 27;
+constexpr int32_t kWindowRideConstructionWidgetIdxEntrance = 32;
+constexpr int32_t kWindowRideConstructionWidgetIdxExit = 33;
+constexpr int32_t kWindowRideConstructionWidgetIdxRotate = 34;
+constexpr int32_t WC_MAZE_CONSTRUCTION__WIDX_MAZE_DIRECTION_GROUPBOX = kWindowRideConstructionWidgetIdxConstruct;
+constexpr int32_t WC_MAZE_CONSTRUCTION__WIDX_MAZE_ENTRANCE = kWindowRideConstructionWidgetIdxEntrance;
+constexpr int32_t WC_MAZE_CONSTRUCTION__WIDX_MAZE_EXIT = kWindowRideConstructionWidgetIdxExit;
 constexpr int32_t WC_SCENERY__WIDX_SCENERY_BACKGROUND = 0;
 constexpr int32_t WC_SCENERY__WIDX_SCENERY_TAB_1 = 15;
 constexpr int32_t WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON = 5;

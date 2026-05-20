@@ -102,13 +102,13 @@ static void ShortcutRotateConstructionObject()
 
     // Rotate construction track piece
     w = windowMgr->FindByClass(WindowClass::rideConstruction);
-    if (w != nullptr && !widgetIsDisabled(*w, kWindowRideConstructionWidgetRotate)
-        && w->widgets[kWindowRideConstructionWidgetRotate].type != WidgetType::empty)
+    if (w != nullptr && !widgetIsDisabled(*w, kWindowRideConstructionWidgetIdxRotate)
+        && w->widgets[kWindowRideConstructionWidgetIdxRotate].type != WidgetType::empty)
     {
         // Check if building a maze...
-        if (w->widgets[kWindowRideConstructionWidgetRotate].tooltip != STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP)
+        if (w->widgets[kWindowRideConstructionWidgetIdxRotate].tooltip != STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP)
         {
-            w->onMouseUp(kWindowRideConstructionWidgetRotate);
+            w->onMouseUp(kWindowRideConstructionWidgetIdxRotate);
             return;
         }
     }
