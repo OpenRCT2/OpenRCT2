@@ -4244,7 +4244,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         const bool currentlyEnabled = ride->flags.has(RideFlag::randomShopColours);
                         auto rideSetAppearanceAction = GameActions::RideSetAppearanceAction(
-                            rideId, GameActions::RideSetAppearanceType::SellingItemColourIsRandom, currentlyEnabled ? 0 : 1, 0);
+                            rideId, GameActions::RideSetAppearanceType::sellingItemColourIsRandom, currentlyEnabled ? 0 : 1, 0);
                         GameActions::Execute(&rideSetAppearanceAction, gameState);
                     }
                     break;
@@ -4286,7 +4286,7 @@ namespace OpenRCT2::Ui::Windows
                         {
                             auto colour = static_cast<Colour>(UtilRand() % kColourNumNormal);
                             auto vehicleSetBodyColourAction = GameActions::RideSetAppearanceAction(
-                                rideId, GameActions::RideSetAppearanceType::VehicleColourBody, EnumValue(colour), i);
+                                rideId, GameActions::RideSetAppearanceType::vehicleColourBody, EnumValue(colour), i);
                             GameActions::Execute(&vehicleSetBodyColourAction, gameState);
                         }
 
@@ -4294,7 +4294,7 @@ namespace OpenRCT2::Ui::Windows
                         {
                             auto colour = static_cast<Colour>(UtilRand() % kColourNumNormal);
                             auto vehicleSetTrimColourAction = GameActions::RideSetAppearanceAction(
-                                rideId, GameActions::RideSetAppearanceType::VehicleColourTrim, EnumValue(colour), i);
+                                rideId, GameActions::RideSetAppearanceType::vehicleColourTrim, EnumValue(colour), i);
                             GameActions::Execute(&vehicleSetTrimColourAction, gameState);
                         }
 
@@ -4302,7 +4302,7 @@ namespace OpenRCT2::Ui::Windows
                         {
                             auto colour = static_cast<Colour>(UtilRand() % kColourNumNormal);
                             auto vehicleSetTertiaryColourAction = GameActions::RideSetAppearanceAction(
-                                rideId, GameActions::RideSetAppearanceType::VehicleColourTertiary, EnumValue(colour), i);
+                                rideId, GameActions::RideSetAppearanceType::vehicleColourTertiary, EnumValue(colour), i);
                             GameActions::Execute(&vehicleSetTertiaryColourAction, gameState);
                         }
                     }
@@ -4476,7 +4476,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_TRACK_MAIN_COLOUR:
                 {
                     auto rideSetAppearanceAction = GameActions::RideSetAppearanceAction(
-                        rideId, GameActions::RideSetAppearanceType::TrackColourMain,
+                        rideId, GameActions::RideSetAppearanceType::trackColourMain,
                         EnumValue(ColourDropDownIndexToColour(dropdownIndex)), _rideColour);
                     GameActions::Execute(&rideSetAppearanceAction, gameState);
                 }
@@ -4484,7 +4484,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_TRACK_ADDITIONAL_COLOUR:
                 {
                     auto rideSetAppearanceAction = GameActions::RideSetAppearanceAction(
-                        rideId, GameActions::RideSetAppearanceType::TrackColourAdditional,
+                        rideId, GameActions::RideSetAppearanceType::trackColourAdditional,
                         EnumValue(ColourDropDownIndexToColour(dropdownIndex)), _rideColour);
                     GameActions::Execute(&rideSetAppearanceAction, gameState);
                 }
@@ -4492,7 +4492,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_TRACK_SUPPORT_COLOUR:
                 {
                     auto rideSetAppearanceAction = GameActions::RideSetAppearanceAction(
-                        rideId, GameActions::RideSetAppearanceType::TrackColourSupports,
+                        rideId, GameActions::RideSetAppearanceType::trackColourSupports,
                         EnumValue(ColourDropDownIndexToColour(dropdownIndex)), _rideColour);
                     GameActions::Execute(&rideSetAppearanceAction, gameState);
                 }
@@ -4500,7 +4500,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_MAZE_STYLE_DROPDOWN:
                 {
                     auto rideSetAppearanceAction = GameActions::RideSetAppearanceAction(
-                        rideId, GameActions::RideSetAppearanceType::MazeStyle, dropdownIndex, _rideColour);
+                        rideId, GameActions::RideSetAppearanceType::mazeStyle, dropdownIndex, _rideColour);
                     GameActions::Execute(&rideSetAppearanceAction, gameState);
                 }
                 break;
@@ -4512,7 +4512,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     auto objIndex = _entranceDropdownData[dropdownIndex].EntranceTypeId;
                     auto rideSetAppearanceAction = GameActions::RideSetAppearanceAction(
-                        rideId, GameActions::RideSetAppearanceType::EntranceStyle, objIndex, 0);
+                        rideId, GameActions::RideSetAppearanceType::entranceStyle, objIndex, 0);
                     rideSetAppearanceAction.SetCallback(
                         [objIndex](const GameActions::GameAction*, const GameActions::Result* res) {
                             if (res->error != GameActions::Status::ok)
@@ -4525,7 +4525,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN:
                 {
                     auto rideSetAppearanceAction = GameActions::RideSetAppearanceAction(
-                        rideId, GameActions::RideSetAppearanceType::VehicleColourScheme, dropdownIndex, 0);
+                        rideId, GameActions::RideSetAppearanceType::vehicleColourScheme, dropdownIndex, 0);
                     rideSetAppearanceAction.SetCallback(
                         [this](const GameActions::GameAction* ga, const GameActions::Result* result) {
                             if (result->error == GameActions::Status::ok)
@@ -4543,7 +4543,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_VEHICLE_BODY_COLOUR:
                 {
                     auto rideSetAppearanceAction = GameActions::RideSetAppearanceAction(
-                        rideId, GameActions::RideSetAppearanceType::VehicleColourBody,
+                        rideId, GameActions::RideSetAppearanceType::vehicleColourBody,
                         EnumValue(ColourDropDownIndexToColour(dropdownIndex)), _vehicleIndex);
                     GameActions::Execute(&rideSetAppearanceAction, gameState);
                 }
@@ -4551,7 +4551,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_VEHICLE_TRIM_COLOUR:
                 {
                     auto rideSetAppearanceAction = GameActions::RideSetAppearanceAction(
-                        rideId, GameActions::RideSetAppearanceType::VehicleColourTrim,
+                        rideId, GameActions::RideSetAppearanceType::vehicleColourTrim,
                         EnumValue(ColourDropDownIndexToColour(dropdownIndex)), _vehicleIndex);
                     GameActions::Execute(&rideSetAppearanceAction, gameState);
                 }
@@ -4559,7 +4559,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_VEHICLE_TERTIARY_COLOUR:
                 {
                     auto rideSetAppearanceAction = GameActions::RideSetAppearanceAction(
-                        rideId, GameActions::RideSetAppearanceType::VehicleColourTertiary,
+                        rideId, GameActions::RideSetAppearanceType::vehicleColourTertiary,
                         EnumValue(ColourDropDownIndexToColour(dropdownIndex)), _vehicleIndex);
                     GameActions::Execute(&rideSetAppearanceAction, gameState);
                 }
