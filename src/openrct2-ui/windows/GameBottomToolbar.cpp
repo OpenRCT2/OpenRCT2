@@ -393,33 +393,33 @@ namespace OpenRCT2::Ui::Windows
 
         void InvalidateDirtyWidgets()
         {
-            if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_MONEY)
+            if (gToolbarDirtyFlags & bottomToolbarDirtyFlagMoney)
             {
-                gToolbarDirtyFlags &= ~BTM_TB_DIRTY_FLAG_MONEY;
+                gToolbarDirtyFlags &= ~bottomToolbarDirtyFlagMoney;
                 invalidateWidget(WIDX_LEFT_INSET);
             }
 
-            if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_DATE)
+            if (gToolbarDirtyFlags & bottomToolbarDirtyFlagDate)
             {
-                gToolbarDirtyFlags &= ~BTM_TB_DIRTY_FLAG_DATE;
+                gToolbarDirtyFlags &= ~bottomToolbarDirtyFlagDate;
                 invalidateWidget(WIDX_RIGHT_INSET);
             }
 
-            if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_PEEP_COUNT)
+            if (gToolbarDirtyFlags & bottomToolbarDirtyFlagPeepCount)
             {
-                gToolbarDirtyFlags &= ~BTM_TB_DIRTY_FLAG_PEEP_COUNT;
+                gToolbarDirtyFlags &= ~bottomToolbarDirtyFlagPeepCount;
                 invalidateWidget(WIDX_LEFT_INSET);
             }
 
-            if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_CLIMATE)
+            if (gToolbarDirtyFlags & bottomToolbarDirtyFlagClimate)
             {
-                gToolbarDirtyFlags &= ~BTM_TB_DIRTY_FLAG_CLIMATE;
+                gToolbarDirtyFlags &= ~bottomToolbarDirtyFlagClimate;
                 invalidateWidget(WIDX_RIGHT_INSET);
             }
 
-            if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_PARK_RATING)
+            if (gToolbarDirtyFlags & bottomToolbarDirtyFlagParkRating)
             {
-                gToolbarDirtyFlags &= ~BTM_TB_DIRTY_FLAG_PARK_RATING;
+                gToolbarDirtyFlags &= ~bottomToolbarDirtyFlagParkRating;
                 invalidateWidget(WIDX_LEFT_INSET);
             }
         }
