@@ -1523,8 +1523,13 @@ namespace OpenRCT2::Ui::Windows
                 {
                     if (dropdownIndex >= 0 && dropdownIndex <= 1)
                     {
-                        Config::Get().sound.audioEngineType = static_cast<AudioEngineType>(dropdownIndex);
-                        Config::Save();
+                        auto newType = static_cast<AudioEngineType>(dropdownIndex);
+                        if (newType != Config::Get().sound.audioEngineType)
+                        {
+                            Config::Get().sound.audioEngineType = newType;
+                            Config::Save();
+                            GetContext()->GetAudioContext().SwitchAudioEngine();
+                        }
                         invalidate();
                     }
                     break;
