@@ -18,4 +18,4 @@ namespace OpenRCT2
 
 struct PaintSession;
 
-void PaintFountain(PaintSession& session, const OpenRCT2::JumpingFountain& fountain, int32_t imageDirection);
+void PaintJumpingFountain(PaintSession& session, const OpenRCT2::JumpingFountain& jumpingFountain, int32_t imageDirection);

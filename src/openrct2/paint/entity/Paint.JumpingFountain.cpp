@@ -16,7 +16,7 @@
 
 using namespace OpenRCT2;
 
-void PaintFountain(PaintSession& session, const JumpingFountain& fountain, int32_t imageDirection)
+void PaintJumpingFountain(PaintSession& session, const JumpingFountain& jumpingFountain, int32_t imageDirection)
 {
     PROFILED_FUNCTION();
 
@@ -26,13 +26,13 @@ void PaintFountain(PaintSession& session, const JumpingFountain& fountain, int32
         return;
     }
 
-    uint16_t height = fountain.z + 6;
+    uint16_t height = jumpingFountain.z + 6;
     imageDirection = imageDirection / 8;
 
     // Fountain is firing anti clockwise
-    bool reversed = fountain.fountainFlags.has(FountainFlag::direction);
+    bool reversed = jumpingFountain.fountainFlags.has(FountainFlag::direction);
     // Fountain rotation
-    bool rotated = (fountain.orientation / 16) & 1;
+    bool rotated = (jumpingFountain.orientation / 16) & 1;
     bool isAntiClockwise = (imageDirection / 2) & 1; // Clockwise or Anti-clockwise
 
     // These cancel each other out
@@ -41,9 +41,9 @@ void PaintFountain(PaintSession& session, const JumpingFountain& fountain, int32
         isAntiClockwise = !isAntiClockwise;
     }
 
-    uint32_t baseImageId = (fountain.FountainType == JumpingFountainType::Snow) ? SPR_JUMPING_FOUNTAIN_SNOW
-                                                                                : SPR_JUMPING_FOUNTAIN_WATER;
-    auto imageId = ImageId(baseImageId + imageDirection * 16 + fountain.frame);
+    uint32_t baseImageId = (jumpingFountain.FountainType == JumpingFountainType::Snow) ? SPR_JUMPING_FOUNTAIN_SNOW
+                                                                                       : SPR_JUMPING_FOUNTAIN_WATER;
+    auto imageId = ImageId(baseImageId + imageDirection * 16 + jumpingFountain.frame);
     constexpr std::array kAntiClockWiseBoundingBoxes = {
         CoordsXY{ -kCoordsXYStep, -3 },
         CoordsXY{ 0, -3 },

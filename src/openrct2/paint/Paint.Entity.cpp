@@ -166,7 +166,7 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
                 entity->cast<ExplosionFlare>()->Paint(session, image_direction);
                 break;
             case EntityType::jumpingFountain:
-                PaintFountain(session, *entity->cast<JumpingFountain>(), image_direction);
+                PaintJumpingFountain(session, *entity->cast<JumpingFountain>(), image_direction);
                 break;
             case EntityType::balloon:
                 PaintBalloon(session, *entity->cast<Balloon>(), image_direction);
