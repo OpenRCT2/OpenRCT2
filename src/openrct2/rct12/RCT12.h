@@ -14,7 +14,7 @@
 #include "../core/EnumUtils.hpp"
 #include "../core/FlagHolder.hpp"
 #include "../core/Money.hpp"
-#include "../entity/Fountain.h"
+#include "../entity/JumpingFountain.h"
 #include "../management/Research.h"
 #include "../object/Object.h"
 #include "../ride/RideTypes.h"

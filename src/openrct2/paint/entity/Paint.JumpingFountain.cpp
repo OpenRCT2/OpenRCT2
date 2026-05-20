@@ -7,10 +7,10 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "Paint.Fountain.h"
+#include "Paint.JumpingFountain.h"
 
 #include "../../SpriteIds.h"
-#include "../../entity/Fountain.h"
+#include "../../entity/JumpingFountain.h"
 #include "../../profiling/Profiling.h"
 #include "../Paint.h"
 

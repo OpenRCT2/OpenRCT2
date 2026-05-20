@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "Fountain.h"
+#include "JumpingFountain.h"
 
 #include "../Game.h"
 #include "../GameState.h"
