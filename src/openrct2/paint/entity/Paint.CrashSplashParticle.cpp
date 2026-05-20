@@ -21,5 +21,5 @@ void PaintCrashSplashParticle(PaintSession& session, const CrashSplashParticle& 
     PROFILED_FUNCTION();
 
     uint32_t imageId = SPR_CRASH_SPLASH_PARTICLE + (particle.frame / 256);
-    PaintAddImageAsParent(session, ImageId(imageId), { 0, 0, particle.z }, { 1, 1, 0 });
+    paintAddImageAsParent(session, ImageId(imageId), { 0, 0, particle.z }, { 1, 1, 0 });
 }

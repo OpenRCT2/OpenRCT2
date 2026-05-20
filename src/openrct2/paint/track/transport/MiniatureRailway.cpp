@@ -692,7 +692,7 @@ static void PaintMiniatureRailwayTrackFlat(
         }
     }
 
-    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+    paintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
 
     paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);

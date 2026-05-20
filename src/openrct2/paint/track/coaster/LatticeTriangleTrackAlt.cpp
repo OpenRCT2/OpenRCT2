@@ -109,7 +109,7 @@ static void LatticeTriangleTrackAltBrakes(
         MetalASupportsPaintSetup(
             session, MetalSupportType::tubes, MetalSupportPlace::centre, 0, height, session.supportColours);
     }
-    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+    paintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -128,7 +128,7 @@ static void LatticeTriangleTrackAltBlockBrakes(
         MetalASupportsPaintSetup(
             session, MetalSupportType::tubes, MetalSupportPlace::centre, 0, height, session.supportColours);
     }
-    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+    paintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -165,7 +165,7 @@ static void LatticeTriangleTrackAltBooster(
         MetalASupportsPaintSetup(
             session, MetalSupportType::tubes, MetalSupportPlace::centre, 0, height, session.supportColours);
     }
-    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+    paintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -184,11 +184,11 @@ static void LatticeTriangleTrackAltPoweredLift(
     }
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+        paintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
+        paintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
     paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     paintUtilSetGeneralSupportHeight(session, height + 56);

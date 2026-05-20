@@ -33,7 +33,7 @@ void PaintGuest(PaintSession& session, const Guest& guest, int32_t orientation)
     auto baseImageData = PaintPeepGetBaseImageAndOffset(guest, direction);
     auto imageId = ImageId(baseImageData.baseImageId, guest.TshirtColour, guest.TrousersColour);
 
-    // In the following 4 calls to PaintAddImageAsParent/PaintAddImageAsChild, we add 5 (instead of 3) to the
+    // In the following 4 calls to paintAddImageAsParent/paintAddImageAsChild, we add 5 (instead of 3) to the
     // bound_box_offset_z to make sure peeps are drawn on top of railways
     auto bb = kPaintPeepBoundBox(guest.z);
     paintAddImageAsParent(session, imageId, { 0, 0, guest.z }, bb);

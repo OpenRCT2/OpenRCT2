@@ -24,7 +24,7 @@ using Direction = uint8_t;
 
 constexpr BoundBoxXYZ kPaintPeepBoundBox(int32_t z)
 {
-    // In the calls to PaintAddImageAsParent/PaintAddImageAsChild, we add 5 (instead of 3) to the
+    // In the calls to paintAddImageAsParent/paintAddImageAsChild, we add 5 (instead of 3) to the
     // offset.z to make sure peeps are drawn on top of railways.
     return BoundBoxXYZ{ { 0, 0, z + 5 }, { 1, 1, 11 } };
 }

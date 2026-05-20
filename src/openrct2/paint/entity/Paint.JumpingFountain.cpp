@@ -55,6 +55,6 @@ void PaintJumpingFountain(PaintSession& session, const JumpingFountain& jumpingF
 
     auto bb = isAntiClockwise ? kAntiClockWiseBoundingBoxes : kClockWiseBoundingBoxes;
 
-    PaintAddImageAsParentRotated(
+    paintAddImageAsParentRotated(
         session, imageDirection, imageId, { 0, 0, height }, { { bb[imageDirection & 1], height }, { 32, 1, 3 } });
 }

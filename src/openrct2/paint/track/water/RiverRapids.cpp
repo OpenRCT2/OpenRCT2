@@ -239,7 +239,7 @@ static void PaintRiverRapidsTrack25Deg(
 
     int8_t tunnelHeightOffset = isStart ? -8 : 8;
     auto tunnelSubType = isStart ? TunnelSubType::SlopeStart : TunnelSubType::SlopeEnd;
-    PaintUtilPushTunnelRotated(session, direction, height + tunnelHeightOffset, kTunnelGroup, tunnelSubType);
+    paintUtilPushTunnelRotated(session, direction, height + tunnelHeightOffset, kTunnelGroup, tunnelSubType);
 
     paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     paintUtilSetGeneralSupportHeight(session, height + 56);
@@ -294,7 +294,7 @@ static void PaintRiverRapidsTrack25DegToFlatA(
 
     int8_t heightOffset = isStart ? -8 : 8;
     auto tunnelSubType = isStart ? TunnelSubType::Flat : TunnelSubType::FlatTo25Deg;
-    PaintUtilPushTunnelRotated(session, direction, height + heightOffset, kTunnelGroup, tunnelSubType);
+    paintUtilPushTunnelRotated(session, direction, height + heightOffset, kTunnelGroup, tunnelSubType);
 
     paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     paintUtilSetGeneralSupportHeight(session, height + 40);
@@ -346,7 +346,7 @@ static void PaintRiverRapidsTrack25DegToFlatB(
         session, supportType.wooden, 0, direction, height, session.supportColours);
 
     const auto tunnelType = direction == 0 || direction == 3 ? TunnelSubType::Flat : TunnelSubType::SlopeEnd;
-    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, tunnelType);
+    paintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, tunnelType);
 
     paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     paintUtilSetGeneralSupportHeight(session, height + 48);

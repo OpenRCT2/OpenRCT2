@@ -2042,7 +2042,7 @@ void TrackPaintUtilOnridePhotoPaint2(
     int32_t supportsAboveHeightOffset, int32_t trackHeightOffset)
 {
     TrackPaintUtilOnridePhotoPaint(session, direction, height + trackHeightOffset, trackElement);
-    PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Flat);
+    paintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Flat);
     paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     paintUtilSetGeneralSupportHeight(session, height + supportsAboveHeightOffset);
 }

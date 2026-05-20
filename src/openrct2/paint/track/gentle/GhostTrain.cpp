@@ -195,7 +195,7 @@ static void PaintGhostTrainTrackFlat(
     paintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
 
     auto tunnelImage = GetTunnelDoorsImageStraightFlat(trackElement, direction);
-    PaintUtilPushTunnelRotated(session, direction, height, tunnelImage);
+    paintUtilPushTunnelRotated(session, direction, height, tunnelImage);
 
     if (TrackPaintUtilShouldPaintSupports(session.mapPosition))
     {
@@ -514,7 +514,7 @@ static void PaintGhostTrainTrackSpinningTunnel(
     TrackPaintUtilSpinningTunnelPaint(session, 3, height, direction);
 
     auto tunnelImage = GetTunnelDoorsImageStraightFlat(trackElement, direction);
-    PaintUtilPushTunnelRotated(session, direction, height, tunnelImage);
+    paintUtilPushTunnelRotated(session, direction, height, tunnelImage);
 
     WoodenASupportsPaintSetupRotated(
         session, WoodenSupportType::truss, WoodenSupportSubType::neSw, direction, height,
@@ -534,7 +534,7 @@ static void PaintGhostTrainTrackBrakes(
     paintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
 
     auto tunnelImage = GetTunnelDoorsImageStraightFlat(trackElement, direction);
-    PaintUtilPushTunnelRotated(session, direction, height, tunnelImage);
+    paintUtilPushTunnelRotated(session, direction, height, tunnelImage);
 
     if (TrackPaintUtilShouldPaintSupports(session.mapPosition))
     {

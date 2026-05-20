@@ -22,7 +22,7 @@ void PaintVehicle(PaintSession& session, const Vehicle& vehicle, int32_t imageDi
 
     if (vehicle.flags.has(VehicleFlag::crashed))
     {
-        PaintAddImageAsParent(
+        paintAddImageAsParent(
             session, ImageId(SPR_WATER_PARTICLES_DENSE_0 + vehicle.animation_frame), { 0, 0, vehicle.z },
             { { 0, 0, vehicle.z + 2 }, { 1, 1, 0 } });
         return;
@@ -58,43 +58,43 @@ void PaintVehicle(PaintSession& session, const Vehicle& vehicle, int32_t imageDi
     switch (carEntry->PaintStyle)
     {
         case VEHICLE_VISUAL_DEFAULT:
-            VehicleVisualDefault(session, imageDirection, vehicle.z + zOffset, &vehicle, carEntry);
+            vehicleVisualDefault(session, imageDirection, vehicle.z + zOffset, &vehicle, carEntry);
             break;
         case VEHICLE_VISUAL_LAUNCHED_FREEFALL:
-            VehicleVisualLaunchedFreefall(
+            vehicleVisualLaunchedFreefall(
                 session, vehicle.x, imageDirection, vehicle.y, vehicle.z + zOffset, &vehicle, carEntry);
             break;
         case VEHICLE_VISUAL_OBSERVATION_TOWER:
-            VehicleVisualObservationTower(
+            vehicleVisualObservationTower(
                 session, vehicle.x, imageDirection, vehicle.y, vehicle.z + zOffset, &vehicle, carEntry);
             break;
         case VEHICLE_VISUAL_RIVER_RAPIDS:
-            VehicleVisualRiverRapids(session, vehicle.x, imageDirection, vehicle.y, vehicle.z + zOffset, &vehicle, carEntry);
+            vehicleVisualRiverRapids(session, vehicle.x, imageDirection, vehicle.y, vehicle.z + zOffset, &vehicle, carEntry);
             break;
         case VEHICLE_VISUAL_MINI_GOLF_PLAYER:
-            VehicleVisualMiniGolfPlayer(session, vehicle.x, imageDirection, vehicle.y, vehicle.z + zOffset, &vehicle);
+            vehicleVisualMiniGolfPlayer(session, vehicle.x, imageDirection, vehicle.y, vehicle.z + zOffset, &vehicle);
             break;
         case VEHICLE_VISUAL_MINI_GOLF_BALL:
-            VehicleVisualMiniGolfBall(session, vehicle.x, imageDirection, vehicle.y, vehicle.z + zOffset, &vehicle);
+            vehicleVisualMiniGolfBall(session, vehicle.x, imageDirection, vehicle.y, vehicle.z + zOffset, &vehicle);
             break;
         case VEHICLE_VISUAL_REVERSER:
-            VehicleVisualReverser(session, vehicle.x, imageDirection, vehicle.y, vehicle.z + zOffset, &vehicle, carEntry);
+            vehicleVisualReverser(session, vehicle.x, imageDirection, vehicle.y, vehicle.z + zOffset, &vehicle, carEntry);
             break;
         case VEHICLE_VISUAL_SPLASH_BOATS_OR_WATER_COASTER:
-            VehicleVisualSplashBoatsOrWaterCoaster(
+            vehicleVisualSplashBoatsOrWaterCoaster(
                 session, vehicle.x, imageDirection, vehicle.y, vehicle.z + zOffset, &vehicle, carEntry);
             break;
         case VEHICLE_VISUAL_ROTO_DROP:
-            VehicleVisualRotoDrop(session, vehicle.x, imageDirection, vehicle.y, vehicle.z + zOffset, &vehicle, carEntry);
+            vehicleVisualRotoDrop(session, vehicle.x, imageDirection, vehicle.y, vehicle.z + zOffset, &vehicle, carEntry);
             break;
         case VEHICLE_VISUAL_VIRGINIA_REEL:
-            VehicleVisualVirginiaReel(session, vehicle.x, imageDirection, vehicle.y, vehicle.z + zOffset, &vehicle, carEntry);
+            vehicleVisualVirginiaReel(session, vehicle.x, imageDirection, vehicle.y, vehicle.z + zOffset, &vehicle, carEntry);
             break;
         case VEHICLE_VISUAL_SUBMARINE:
-            VehicleVisualSubmarine(session, vehicle.x, imageDirection, vehicle.y, vehicle.z + zOffset, &vehicle, carEntry);
+            vehicleVisualSubmarine(session, vehicle.x, imageDirection, vehicle.y, vehicle.z + zOffset, &vehicle, carEntry);
             break;
         case VEHICLE_VISUAL_SPINNING_CARS:
-            VehicleVisualClassicMiniSpinning(
+            vehicleVisualClassicMiniSpinning(
                 session, vehicle.x, imageDirection, vehicle.y, vehicle.z + zOffset, &vehicle, carEntry);
             break;
     }

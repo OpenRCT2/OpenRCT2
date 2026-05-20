@@ -21,5 +21,5 @@ void PaintSteamParticle(PaintSession& session, const SteamParticle& particle)
     PROFILED_FUNCTION();
 
     uint32_t imageId = SPR_STEAM_PARTICLE + (particle.frame / 256);
-    PaintAddImageAsParent(session, ImageId(imageId), { 0, 0, particle.z }, { 1, 1, 0 });
+    paintAddImageAsParent(session, ImageId(imageId), { 0, 0, particle.z }, { 1, 1, 0 });
 }
