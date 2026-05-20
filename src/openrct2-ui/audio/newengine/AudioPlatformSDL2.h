@@ -13,6 +13,7 @@
 
 #include <SDL.h>
 #include <cstdint>
+#include <functional>
 #include <string>
 #include <vector>
 
@@ -29,6 +30,8 @@ namespace OpenRCT2::Audio
         void pause();
         void unpause();
 
+        using DeviceChangeCallback = std::function<void(bool deviceLost, const std::string& newDeviceName)>;
+
         [[nodiscard]] bool isOpen() const;
         [[nodiscard]] uint32_t getSampleRate() const;
         [[nodiscard]] AudioSampleFormat getFormat() const;
@@ -36,6 +39,11 @@ namespace OpenRCT2::Audio
         [[nodiscard]] uint16_t getBufferSamples() const;
         [[nodiscard]] const std::string& getCurrentDeviceName() const;
         [[nodiscard]] SDL_AudioDeviceID getDeviceId() const;
+
+        bool handleDeviceEvent(uint32_t eventType, uint32_t deviceIndex, bool isCapture);
+        void setDeviceChangeCallback(DeviceChangeCallback callback);
+        void setAutoReconnect(bool enable);
+        bool reopen(const char* deviceName = nullptr);
 
         static std::vector<std::string> enumerateDevices();
         static AudioSampleFormat mapSDLFormat(uint16_t sdlFormat);
@@ -53,6 +61,8 @@ namespace OpenRCT2::Audio
         size_t _renderBufferCapacity = 0;
 
         std::string _currentDeviceName;
+        bool _autoReconnect = true;
+        DeviceChangeCallback _deviceChangeCallback;
 
         std::vector<float> _renderBuffer;
     };

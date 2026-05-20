@@ -65,6 +65,18 @@ namespace OpenRCT2::Audio
         {
         }
 
+        virtual void SwitchAudioEngine()
+        {
+        }
+
+        virtual bool HandleAudioDeviceEvent(uint32_t eventType, uint32_t deviceIndex, bool isCapture)
+        {
+            (void)eventType;
+            (void)deviceIndex;
+            (void)isCapture;
+            return false;
+        }
+
         virtual std::shared_ptr<IAudioChannel> CreateChannel(
             IAudioSource* source, MixerGroup group, bool loop, int32_t volume, float pan, double rate)
         {
