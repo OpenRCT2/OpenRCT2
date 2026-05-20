@@ -200,7 +200,7 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
                 else
                 {
                     auto res = SetOperatingSetting(
-                        RideId::FromUnderlying(ride_index), GameActions::RideSetSetting::RideType, type);
+                        RideId::FromUnderlying(ride_index), GameActions::RideSetSetting::rideType, type);
                     if (res == kMoney64Undefined)
                     {
                         if (!gameState.cheats.allowArbitraryRideTypeChanges)

@@ -2278,7 +2278,7 @@ namespace OpenRCT2::Ui::Windows
                         if (rideType < RIDE_TYPE_COUNT)
                         {
                             auto rideSetSetting = GameActions::RideSetSettingAction(
-                                rideId, GameActions::RideSetSetting::RideType, rideType);
+                                rideId, GameActions::RideSetSetting::rideType, rideType);
                             rideSetSetting.SetCallback(
                                 [](const GameActions::GameAction* ga, const GameActions::Result* result) {
                                     // Reset ghost track if ride construction window is open, prevents a crash
@@ -3102,7 +3102,7 @@ namespace OpenRCT2::Ui::Windows
             uint8_t increment = ride->mode == RideMode::dodgems ? 10 : 1;
 
             SetOperatingSetting(
-                rideId, GameActions::RideSetSetting::Operation,
+                rideId, GameActions::RideSetSetting::operation,
                 std::clamp<int16_t>(ride->operationOption + increment, minValue, maxValue));
         }
 
@@ -3124,7 +3124,7 @@ namespace OpenRCT2::Ui::Windows
             uint8_t decrement = ride->mode == RideMode::dodgems ? 10 : 1;
 
             SetOperatingSetting(
-                rideId, GameActions::RideSetSetting::Operation,
+                rideId, GameActions::RideSetSetting::operation,
                 std::clamp<int16_t>(ride->operationOption - decrement, minValue, maxValue));
         }
 
@@ -3208,26 +3208,26 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_LOAD_CHECKBOX:
                     SetOperatingSetting(
-                        rideId, GameActions::RideSetSetting::Departure, ride->departFlags ^ RIDE_DEPART_WAIT_FOR_LOAD);
+                        rideId, GameActions::RideSetSetting::departure, ride->departFlags ^ RIDE_DEPART_WAIT_FOR_LOAD);
                     break;
                 case WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX:
                     SetOperatingSetting(
-                        rideId, GameActions::RideSetSetting::Departure,
+                        rideId, GameActions::RideSetSetting::departure,
                         ride->departFlags ^ RIDE_DEPART_LEAVE_WHEN_ANOTHER_ARRIVES);
                     break;
                 case WIDX_MINIMUM_LENGTH_CHECKBOX:
                     SetOperatingSetting(
-                        rideId, GameActions::RideSetSetting::Departure,
+                        rideId, GameActions::RideSetSetting::departure,
                         ride->departFlags ^ RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH);
                     break;
                 case WIDX_MAXIMUM_LENGTH_CHECKBOX:
                     SetOperatingSetting(
-                        rideId, GameActions::RideSetSetting::Departure,
+                        rideId, GameActions::RideSetSetting::departure,
                         ride->departFlags ^ RIDE_DEPART_WAIT_FOR_MAXIMUM_LENGTH);
                     break;
                 case WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX:
                     SetOperatingSetting(
-                        rideId, GameActions::RideSetSetting::Departure,
+                        rideId, GameActions::RideSetSetting::departure,
                         ride->departFlags ^ RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS);
                     break;
             }
@@ -3265,7 +3265,7 @@ namespace OpenRCT2::Ui::Windows
                         ? 0
                         : ride->getRideTypeDescriptor().LiftData.minimum_speed;
                     SetOperatingSetting(
-                        rideId, GameActions::RideSetSetting::LiftHillSpeed,
+                        rideId, GameActions::RideSetSetting::liftHillSpeed,
                         std::clamp<int16_t>(ride->liftHillSpeed + 1, lowerBound, upperBound));
                     break;
                 case WIDX_LIFT_HILL_SPEED_DECREASE:
@@ -3276,7 +3276,7 @@ namespace OpenRCT2::Ui::Windows
                         ? 0
                         : ride->getRideTypeDescriptor().LiftData.minimum_speed;
                     SetOperatingSetting(
-                        rideId, GameActions::RideSetSetting::LiftHillSpeed,
+                        rideId, GameActions::RideSetSetting::liftHillSpeed,
                         std::clamp<int16_t>(ride->liftHillSpeed - 1, lowerBound, upperBound));
                     break;
                 case WIDX_MINIMUM_LENGTH:
@@ -3289,28 +3289,28 @@ namespace OpenRCT2::Ui::Windows
                     upperBound = Limits::kMaxWaitingTime;
                     lowerBound = 0;
                     SetOperatingSetting(
-                        rideId, GameActions::RideSetSetting::MinWaitingTime,
+                        rideId, GameActions::RideSetSetting::minWaitingTime,
                         std::clamp<int16_t>(ride->minWaitingTime + 1, lowerBound, upperBound));
                     break;
                 case WIDX_MINIMUM_LENGTH_DECREASE:
                     upperBound = Limits::kMaxWaitingTime;
                     lowerBound = 0;
                     SetOperatingSetting(
-                        rideId, GameActions::RideSetSetting::MinWaitingTime,
+                        rideId, GameActions::RideSetSetting::minWaitingTime,
                         std::clamp<int16_t>(ride->minWaitingTime - 1, lowerBound, upperBound));
                     break;
                 case WIDX_MAXIMUM_LENGTH_INCREASE:
                     upperBound = Limits::kMaxWaitingTime;
                     lowerBound = 0;
                     SetOperatingSetting(
-                        rideId, GameActions::RideSetSetting::MaxWaitingTime,
+                        rideId, GameActions::RideSetSetting::maxWaitingTime,
                         std::clamp<int16_t>(ride->maxWaitingTime + 1, lowerBound, upperBound));
                     break;
                 case WIDX_MAXIMUM_LENGTH_DECREASE:
                     upperBound = Limits::kMaxWaitingTime;
                     lowerBound = 0;
                     SetOperatingSetting(
-                        rideId, GameActions::RideSetSetting::MaxWaitingTime,
+                        rideId, GameActions::RideSetSetting::maxWaitingTime,
                         std::clamp<int16_t>(ride->maxWaitingTime - 1, lowerBound, upperBound));
                     break;
                 case WIDX_MODE_DROPDOWN:
@@ -3324,7 +3324,7 @@ namespace OpenRCT2::Ui::Windows
                                                                              : Limits::kMaxCircuitsPerRide;
                     lowerBound = 1;
                     SetOperatingSetting(
-                        rideId, GameActions::RideSetSetting::NumCircuits,
+                        rideId, GameActions::RideSetSetting::numCircuits,
                         std::clamp<int16_t>(ride->numCircuits + 1, lowerBound, upperBound));
                     break;
                 case WIDX_OPERATE_NUMBER_OF_CIRCUITS_DECREASE:
@@ -3332,7 +3332,7 @@ namespace OpenRCT2::Ui::Windows
                                                                              : Limits::kMaxCircuitsPerRide;
                     lowerBound = 1;
                     SetOperatingSetting(
-                        rideId, GameActions::RideSetSetting::NumCircuits,
+                        rideId, GameActions::RideSetSetting::numCircuits,
                         std::clamp<int16_t>(ride->numCircuits - 1, lowerBound, upperBound));
                     break;
             }
@@ -3418,12 +3418,12 @@ namespace OpenRCT2::Ui::Windows
                         }
                     }
                     if (rideMode != RideMode::nullMode)
-                        SetOperatingSetting(rideId, GameActions::RideSetSetting::Mode, static_cast<uint8_t>(rideMode));
+                        SetOperatingSetting(rideId, GameActions::RideSetSetting::mode, static_cast<uint8_t>(rideMode));
                     break;
                 }
                 case WIDX_LOAD_DROPDOWN:
                     SetOperatingSetting(
-                        rideId, GameActions::RideSetSetting::Departure,
+                        rideId, GameActions::RideSetSetting::departure,
                         (ride->departFlags & ~RIDE_DEPART_WAIT_FOR_LOAD_MASK) | dropdownIndex);
                     break;
             }
@@ -3465,7 +3465,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     uint32_t origSize = std::stol(std::string(text)) / multiplier;
                     uint8_t size = static_cast<uint8_t>(std::clamp(origSize, minValue, maxValue));
-                    SetOperatingSetting(ride->id, GameActions::RideSetSetting::Operation, size);
+                    SetOperatingSetting(ride->id, GameActions::RideSetSetting::operation, size);
                 }
                 catch (const std::logic_error&)
                 {
@@ -3476,8 +3476,8 @@ namespace OpenRCT2::Ui::Windows
             {
                 try
                 {
-                    auto rideSetSetting = widgetIndex == WIDX_MINIMUM_LENGTH ? GameActions::RideSetSetting::MinWaitingTime
-                                                                             : GameActions::RideSetSetting::MaxWaitingTime;
+                    auto rideSetSetting = widgetIndex == WIDX_MINIMUM_LENGTH ? GameActions::RideSetSetting::minWaitingTime
+                                                                             : GameActions::RideSetSetting::maxWaitingTime;
 
                     uint16_t upperBound = Limits::kMaxWaitingTime;
                     uint16_t lowerBound = 0;
@@ -3904,7 +3904,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_INSPECTION_INTERVAL_DROPDOWN:
-                    SetOperatingSetting(rideId, GameActions::RideSetSetting::InspectionInterval, dropdownIndex);
+                    SetOperatingSetting(rideId, GameActions::RideSetSetting::inspectionInterval, dropdownIndex);
                     break;
 
                 case WIDX_FORCE_BREAKDOWN:
@@ -5115,7 +5115,7 @@ namespace OpenRCT2::Ui::Windows
             if (ride != nullptr)
             {
                 int32_t activateMusic = ride->flags.has(RideFlag::music) ? 0 : 1;
-                SetOperatingSetting(rideId, GameActions::RideSetSetting::Music, activateMusic);
+                SetOperatingSetting(rideId, GameActions::RideSetSetting::music, activateMusic);
                 ride->windowInvalidateFlags.set(RideInvalidateFlag::music);
             }
         }
@@ -5254,7 +5254,7 @@ namespace OpenRCT2::Ui::Windows
                 && static_cast<size_t>(dropdownIndex) < window_ride_current_music_style_order.size())
             {
                 auto musicStyle = window_ride_current_music_style_order[dropdownIndex];
-                SetOperatingSetting(rideId, GameActions::RideSetSetting::MusicType, musicStyle);
+                SetOperatingSetting(rideId, GameActions::RideSetSetting::musicType, musicStyle);
             }
         }
 
