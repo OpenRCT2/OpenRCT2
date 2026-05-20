@@ -57,7 +57,7 @@ namespace OpenRCT2::Scripting
     #ifndef DISABLE_NETWORK
         JS_UNPACK_STR(valueStr, ctx, value);
         auto action = GameActions::NetworkModifyGroupAction(
-            GameActions::ModifyGroupType::SetName, GetGroupId(thisVal), valueStr);
+            GameActions::ModifyGroupType::setName, GetGroupId(thisVal), valueStr);
         GameActions::Execute(&action, getGameState());
     #endif
         return JS_UNDEFINED;
@@ -118,7 +118,7 @@ namespace OpenRCT2::Scripting
 
         // First clear all permissions
         auto networkAction = GameActions::NetworkModifyGroupAction(
-            GameActions::ModifyGroupType::SetPermissions, id, "", 0, GameActions::PermissionState::ClearAll);
+            GameActions::ModifyGroupType::setPermissions, id, "", 0, GameActions::PermissionState::clearAll);
         GameActions::Execute(&networkAction, getGameState());
 
         // Don't use vector<bool> since the weird bitpacking specialisation does not work with the lambda (on some compilers)
@@ -144,8 +144,8 @@ namespace OpenRCT2::Scripting
             if (toggle)
             {
                 auto networkAction2 = GameActions::NetworkModifyGroupAction(
-                    GameActions::ModifyGroupType::SetPermissions, id, "", static_cast<uint32_t>(i),
-                    GameActions::PermissionState::Toggle);
+                    GameActions::ModifyGroupType::setPermissions, id, "", static_cast<uint32_t>(i),
+                    GameActions::PermissionState::toggle);
                 GameActions::Execute(&networkAction2, getGameState());
             }
         }

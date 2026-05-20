@@ -3663,7 +3663,7 @@ namespace OpenRCT2::Network
         auto& network = GetContext()->GetNetwork();
         switch (type)
         {
-            case GameActions::ModifyGroupType::AddGroup:
+            case GameActions::ModifyGroupType::addGroup:
             {
                 if (isExecuting)
                 {
@@ -3675,7 +3675,7 @@ namespace OpenRCT2::Network
                 }
             }
             break;
-            case GameActions::ModifyGroupType::RemoveGroup:
+            case GameActions::ModifyGroupType::removeGroup:
             {
                 if (groupId == 0)
                 {
@@ -3696,7 +3696,7 @@ namespace OpenRCT2::Network
                 }
             }
             break;
-            case GameActions::ModifyGroupType::SetPermissions:
+            case GameActions::ModifyGroupType::setPermissions:
             {
                 if (groupId == 0)
                 { // can't change admin group permissions
@@ -3706,7 +3706,7 @@ namespace OpenRCT2::Network
                 NetworkGroup* mygroup = nullptr;
                 Player* player = network.GetPlayerByID(actionPlayerId);
                 auto networkPermission = static_cast<Permission>(permissionIndex);
-                if (player != nullptr && permissionState == GameActions::PermissionState::Toggle)
+                if (player != nullptr && permissionState == GameActions::PermissionState::toggle)
                 {
                     mygroup = network.GetGroupByID(player->group);
                     if (mygroup == nullptr || !mygroup->canPerformAction(networkPermission))
@@ -3721,11 +3721,11 @@ namespace OpenRCT2::Network
                     NetworkGroup* group = network.GetGroupByID(groupId);
                     if (group != nullptr)
                     {
-                        if (permissionState != GameActions::PermissionState::Toggle)
+                        if (permissionState != GameActions::PermissionState::toggle)
                         {
                             if (mygroup != nullptr)
                             {
-                                if (permissionState == GameActions::PermissionState::SetAll)
+                                if (permissionState == GameActions::PermissionState::setAll)
                                 {
                                     group->actionsAllowed = mygroup->actionsAllowed;
                                 }
@@ -3743,7 +3743,7 @@ namespace OpenRCT2::Network
                 }
             }
             break;
-            case GameActions::ModifyGroupType::SetName:
+            case GameActions::ModifyGroupType::setName:
             {
                 NetworkGroup* group = network.GetGroupByID(groupId);
                 if (group == nullptr)
@@ -3773,7 +3773,7 @@ namespace OpenRCT2::Network
                 }
             }
             break;
-            case GameActions::ModifyGroupType::SetDefault:
+            case GameActions::ModifyGroupType::setDefault:
             {
                 if (groupId == 0)
                 {
