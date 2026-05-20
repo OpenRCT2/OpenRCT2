@@ -137,7 +137,7 @@ namespace OpenRCT2
 #define VALIDATE_GLOBAL_WIDX(wc, widx)                                                                                         \
     static_assert(widx == wc##__##widx, "Global WIDX of " #widx " doesn't match actual value.")
 
-constexpr int32_t WC_MAIN_WINDOW__0 = 0;
+constexpr int32_t kWindowMainWidgetViewport = 0;
 constexpr int32_t WC_RIDE_CONSTRUCTION__WIDX_CONSTRUCT = 27;
 constexpr int32_t WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE = 32;
 constexpr int32_t WC_RIDE_CONSTRUCTION__WIDX_EXIT = 33;
@@ -280,7 +280,8 @@ namespace OpenRCT2
 
     constexpr int8_t kWindowLimitMin = 4;
     constexpr int8_t kWindowLimitMax = 64;
-    constexpr int8_t kWindowLimitReserved = 4; // Used to reserve room for the main viewport, toolbars, etc.
+    // Used to reserve room for the main viewport, toolbars, etc.
+    constexpr int8_t kWindowLimitReserved = 4;
 
     extern WindowBase* gWindowAudioExclusive;
 
