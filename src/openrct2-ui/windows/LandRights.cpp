@@ -429,8 +429,8 @@ namespace OpenRCT2::Ui::Windows
 
         GameActions::LandBuyRightsAction GetLandBuyAction()
         {
-            auto mode = (_landRightsMode == LandRightsMode::BuyLand) ? GameActions::LandBuyRightSetting::BuyLand
-                                                                     : GameActions::LandBuyRightSetting::BuyConstructionRights;
+            auto mode = (_landRightsMode == LandRightsMode::BuyLand) ? GameActions::LandBuyRightSetting::buyLand
+                                                                     : GameActions::LandBuyRightSetting::buyConstructionRights;
 
             return GameActions::LandBuyRightsAction(
                 { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y }, mode);

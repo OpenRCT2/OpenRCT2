@@ -248,7 +248,7 @@ namespace OpenRCT2::Editor
         landSetRightsAction.SetFlags({ CommandFlag::noSpend });
         GameActions::Execute(&landSetRightsAction, gameState);
 
-        auto landBuyRightsAction = GameActions::LandBuyRightsAction(range, GameActions::LandBuyRightSetting::BuyLand);
+        auto landBuyRightsAction = GameActions::LandBuyRightsAction(range, GameActions::LandBuyRightSetting::buyLand);
         landBuyRightsAction.SetFlags({ CommandFlag::noSpend });
         GameActions::Execute(&landBuyRightsAction, gameState);
     }
