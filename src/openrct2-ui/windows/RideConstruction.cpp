@@ -2819,7 +2819,7 @@ namespace OpenRCT2::Ui::Windows
                 tempTrackTileElement.asTrack()->SetSequenceIndex(i);
 
                 // Draw this map tile
-                TileElementPaintSetup(*session, coords, true);
+                tileElementPaintSetup(*session, coords, true);
 
                 // Restore map elements
                 MapSetTileElement(centreTileCoords, backupTileElementArrays[0]);

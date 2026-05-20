@@ -33,10 +33,10 @@ constexpr uint8_t kTrackMap2x2[][4] = {
     { 2, 0, 3, 1 },
 };
 constexpr uint8_t kEdges2x2[] = {
-    EDGE_NE | EDGE_NW,
-    EDGE_NE | EDGE_SE,
-    EDGE_SW | EDGE_NW,
-    EDGE_SW | EDGE_SE,
+    edgeNE | edgeNW,
+    edgeNE | edgeSE,
+    edgeSW | edgeNW,
+    edgeSW | edgeSE,
 };
 
 constexpr uint8_t kTrackMap3x3[][9] = {
@@ -48,14 +48,14 @@ constexpr uint8_t kTrackMap3x3[][9] = {
 // clang-format off
 constexpr uint8_t kEdges3x3[] = {
     0,
-    EDGE_NE | EDGE_NW,
-    EDGE_NE,
-    EDGE_NE | EDGE_SE,
-    EDGE_NW,
-    EDGE_SE,
-    EDGE_SW | EDGE_NW,
-    EDGE_SW | EDGE_SE,
-    EDGE_SW,
+    edgeNE | edgeNW,
+    edgeNE,
+    edgeNE | edgeSE,
+    edgeNW,
+    edgeSE,
+    edgeSW | edgeNW,
+    edgeSW | edgeSE,
+    edgeSW,
 };
 // clang-format on
 
@@ -67,22 +67,22 @@ constexpr uint8_t kTrackMap4x4[][16] = {
 };
 // clang-format off
 constexpr uint8_t kEdges4x4[] = {
-    EDGE_NE | EDGE_NW,
-    EDGE_NE,
-    EDGE_NE,
-    EDGE_NE | EDGE_SE,
-    EDGE_NW,
+    edgeNE | edgeNW,
+    edgeNE,
+    edgeNE,
+    edgeNE | edgeSE,
+    edgeNW,
     0,
     0,
-    EDGE_SE,
-    EDGE_NW,
+    edgeSE,
+    edgeNW,
     0,
     0,
-    EDGE_SE,
-    EDGE_NW | EDGE_SW,
-    EDGE_SW,
-    EDGE_SW,
-    EDGE_SW | EDGE_SE,
+    edgeSE,
+    edgeNW | edgeSW,
+    edgeSW,
+    edgeSW,
+    edgeSW | edgeSE,
 };
 // clang-format on
 

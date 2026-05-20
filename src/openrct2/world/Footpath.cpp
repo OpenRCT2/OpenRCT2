@@ -1397,7 +1397,7 @@ namespace OpenRCT2
             }
 
             uint8_t pathConnections = 0;
-            if (tileElement->asPath()->GetEdges() & EDGE_NW)
+            if (tileElement->asPath()->GetEdges() & edgeNW)
             {
                 pathConnections |= FOOTPATH_CONNECTION_NW;
                 const auto* pathElement = std::get<3>(pathList);
@@ -1407,7 +1407,7 @@ namespace OpenRCT2
                 }
             }
 
-            if (tileElement->asPath()->GetEdges() & EDGE_NE)
+            if (tileElement->asPath()->GetEdges() & edgeNE)
             {
                 pathConnections |= FOOTPATH_CONNECTION_NE;
                 const auto* pathElement = std::get<0>(pathList);
@@ -1417,7 +1417,7 @@ namespace OpenRCT2
                 }
             }
 
-            if (tileElement->asPath()->GetEdges() & EDGE_SE)
+            if (tileElement->asPath()->GetEdges() & edgeSE)
             {
                 pathConnections |= FOOTPATH_CONNECTION_SE;
                 /* In the following:
@@ -1432,7 +1432,7 @@ namespace OpenRCT2
                 //}
             }
 
-            if (tileElement->asPath()->GetEdges() & EDGE_SW)
+            if (tileElement->asPath()->GetEdges() & edgeSW)
             {
                 pathConnections |= FOOTPATH_CONNECTION_SW;
                 /* In the following:
@@ -1450,7 +1450,7 @@ namespace OpenRCT2
             if ((pathConnections & FOOTPATH_CONNECTION_NW) && std::get<3>(pathList) != nullptr
                 && !std::get<3>(pathList)->asPath()->IsWide())
             {
-                constexpr uint8_t edgeMask1 = EDGE_SE | EDGE_SW;
+                constexpr uint8_t edgeMask1 = edgeSE | edgeSW;
                 const auto* pathElement0 = std::get<0>(pathList);
                 const auto* pathElement7 = std::get<7>(pathList);
                 if ((pathConnections & FOOTPATH_CONNECTION_NE) && pathElement7 != nullptr && !pathElement7->asPath()->IsWide()
@@ -1465,7 +1465,7 @@ namespace OpenRCT2
                  * is always false due to the tile update order
                  * in combination with reset tiles.
                  * Short circuit the logic appropriately. */
-                constexpr uint8_t edgeMask2 = EDGE_NE | EDGE_SE;
+                constexpr uint8_t edgeMask2 = edgeNE | edgeSE;
                 const auto* pathElement2 = std::get<2>(pathList);
                 const auto* pathElement6 = std::get<6>(pathList);
                 if ((pathConnections & FOOTPATH_CONNECTION_SW) && pathElement6 != nullptr && !(pathElement6)->asPath()->IsWide()
@@ -1483,7 +1483,7 @@ namespace OpenRCT2
              * Short circuit the logic appropriately. */
             if ((pathConnections & FOOTPATH_CONNECTION_SE) && std::get<1>(pathList) != nullptr)
             {
-                constexpr uint8_t edgeMask1 = EDGE_SW | EDGE_NW;
+                constexpr uint8_t edgeMask1 = edgeSW | edgeNW;
                 const auto* pathElement0 = std::get<0>(pathList);
                 const auto* pathElement4 = std::get<4>(pathList);
                 if ((pathConnections & FOOTPATH_CONNECTION_NE) && (pathElement4 != nullptr)
@@ -1499,7 +1499,7 @@ namespace OpenRCT2
                  * are always false due to the tile update order
                  * in combination with reset tiles.
                  * Short circuit the logic appropriately. */
-                constexpr uint8_t edgeMask2 = EDGE_NE | EDGE_NW;
+                constexpr uint8_t edgeMask2 = edgeNE | edgeNW;
                 const auto* pathElement2 = std::get<2>(pathList);
                 const auto* pathElement5 = std::get<5>(pathList);
                 if ((pathConnections & FOOTPATH_CONNECTION_SW) && pathElement5 != nullptr

@@ -218,8 +218,8 @@ static void PaintReverseFreefallRCFlat(
 
     DrawSupportForSequenceA<TrackElemType::flat>(
         session, supportType.wooden, trackSequence, direction, height, session.supportColours);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 static void PaintReverseFreefallRCStation(
@@ -244,8 +244,8 @@ static void PaintReverseFreefallRCStation(
 
     TrackPaintUtilDrawNarrowStationPlatform(session, ride, direction, height, 5, trackElement, StationBaseType::b, -2);
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 static void PaintReverseFreefallRCSlope(
@@ -297,8 +297,8 @@ static void PaintReverseFreefallRCSlope(
 
             DrawSupportForSequenceA<TrackElemType::reverseFreefallSlope>(
                 session, supportType.wooden, trackSequence, direction, height, session.supportColours);
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + supportHeights[trackSequence]);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + supportHeights[trackSequence]);
             break;
         case 5:
             if (DrawSupportForSequenceA<TrackElemType::reverseFreefallSlope>(
@@ -324,8 +324,8 @@ static void PaintReverseFreefallRCSlope(
                     session, direction, supportsImageId, { 0, 0, height },
                     { { isDirection03 ? 3 : 11, 3, height }, { isDirection03 ? 26 : 18, 26, 126 } });
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + supportHeights[trackSequence]);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + supportHeights[trackSequence]);
             break;
         case 6:
             if (isDirection03)
@@ -344,8 +344,8 @@ static void PaintReverseFreefallRCSlope(
             }
             DrawSupportForSequenceA<TrackElemType::reverseFreefallSlope>(
                 session, supportType.wooden, trackSequence, direction, height, session.supportColours);
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + supportHeights[trackSequence]);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + supportHeights[trackSequence]);
             PaintUtilSetVerticalTunnel(session, height + 240);
             break;
     }
@@ -361,8 +361,8 @@ static void PaintReverseFreefallRCVertical(
         case 0:
             supportsImageId = session.supportColours.WithIndex(kPiecesVerticalSupports[direction]);
             paintAddImageAsParent(session, supportsImageId, { 0, 0, height }, { { 3, 3, height }, { 26, 26, 79 } });
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 80);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 80);
             break;
         case 1:
             trackImageId = session.trackColours.WithIndex(kPiecesVertical[direction]);
@@ -377,8 +377,8 @@ static void PaintReverseFreefallRCVertical(
                     session, direction, trackImageId, { 0, 0, height }, { { 30, 6, height }, { 2, 20, 79 } });
             }
             PaintUtilSetVerticalTunnel(session, height + 80);
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 80);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 80);
             break;
     }
 }

@@ -70,8 +70,8 @@ static void PaintFacility(
         paintAddImageAsParent(session, imageId.WithIndexOffset(4), offset, { { 2, 2, height + lengthZ }, { 28, 28, 1 } });
     }
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 
     if (direction == 1 || direction == 2)
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);

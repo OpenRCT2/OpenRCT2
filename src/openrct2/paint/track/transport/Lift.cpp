@@ -64,9 +64,9 @@ static void PaintLiftBase(
         PaintLiftCage(session, -1, session.trackColours, height + 64, session.currentRotation);
 
         PaintUtilSetVerticalTunnel(session, height + 96);
-        PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+        paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
 
-        PaintUtilSetGeneralSupportHeight(session, height + 96);
+        paintUtilSetGeneralSupportHeight(session, height + 96);
 
         return;
     }
@@ -114,9 +114,9 @@ static void PaintLiftBase(
             blockedSegments = EnumsToFlags(PaintSegment::left, PaintSegment::bottomLeft, PaintSegment::bottom);
             break;
     }
-    PaintUtilSetSegmentSupportHeight(session, blockedSegments, 0xFFFF, 0);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll & ~blockedSegments, height + 2, 0x20);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetSegmentSupportHeight(session, blockedSegments, 0xFFFF, 0);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll & ~blockedSegments, height + 2, 0x20);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x0076C6DC */
@@ -131,10 +131,10 @@ static void PaintLiftTowerSection(
 
     PaintLiftCage(session, -1, session.trackColours, height, session.currentRotation);
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
 
     PaintUtilSetVerticalTunnel(session, height + 32);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /**

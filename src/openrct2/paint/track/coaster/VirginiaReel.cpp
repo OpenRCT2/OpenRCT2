@@ -185,8 +185,8 @@ static void PaintVirginiaReelTrackFlat(
     DrawSupportForSequenceA<TrackElemType::flat>(
         session, supportType.wooden, trackSequence, direction, height, session.supportColours);
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x00811274 */
@@ -235,8 +235,8 @@ static void PaintVirginiaReelTrack25DegUp(
             break;
     }
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x00811294 */
@@ -275,8 +275,8 @@ static void PaintVirginiaReelTrackFlatTo25DegUp(
         session, supportType.wooden, trackSequence, direction, height, session.supportColours);
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x00811294 */
@@ -325,8 +325,8 @@ static void PaintVirginiaReelTrack25DegUpToFlat(
             break;
     }
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 40);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
 /** rct2: 0x008112A4 */
@@ -379,8 +379,8 @@ static void PaintVirginiaReelStation(
         session, supportType.wooden, trackSequence, direction, height, session.supportColours);
     TrackPaintUtilDrawStation(session, ride, direction, height, trackElement, StationBaseType::b, -2);
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x00811304 */
@@ -395,9 +395,9 @@ static void PaintVirginiaReelTrackLeftQuarterTurn3Tiles(
     switch (trackSequence)
     {
         case 2:
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::topLeft, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::left),
                     direction),
                 0xFFFF, 0);
@@ -406,11 +406,11 @@ static void PaintVirginiaReelTrackLeftQuarterTurn3Tiles(
         case 3:
             DrawSupportForSequenceA<TrackElemType::leftQuarterTurn3Tiles>(
                 session, supportType.wooden, trackSequence, direction, height, session.supportColours);
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             break;
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 static constexpr uint8_t virginia_reel_right_quarter_turn_3_tiles_to_left_turn_map[] = {
@@ -454,8 +454,8 @@ static void PaintVirginiaReelTrackLeftQuarterTurn1Tile(
             break;
     }
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x00811334 */

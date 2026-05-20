@@ -305,7 +305,7 @@ static ImageId GetTunnelImage(const TerrainEdgeObject* edgeObject, TunnelType ty
         type = TunnelType::StandardFlat;
 
     ImageId result = GetEdgeImageWithOffset(edgeObject, kTunnels[EnumValue(type)].imageOffset)
-                         .WithIndexOffset(edge == EDGE_BOTTOMRIGHT ? 2 : 0);
+                         .WithIndexOffset(edge == edgeBottomRight ? 2 : 0);
 
     return result;
 }
@@ -340,28 +340,28 @@ static void ViewportSurfaceSmoothenEdge(
 
     switch (edge)
     {
-        case EDGE_BOTTOMLEFT:
+        case edgeBottomLeft:
             maskImageBase = SPR_TERRAIN_EDGE_MASK_BOTTOM_LEFT;
             neighbourCorners[0] = neighbour.corner_heights.top;
             neighbourCorners[1] = neighbour.corner_heights.right;
             ownCorners[0] = self.corner_heights.left;
             ownCorners[1] = self.corner_heights.bottom;
             break;
-        case EDGE_BOTTOMRIGHT:
+        case edgeBottomRight:
             maskImageBase = SPR_TERRAIN_EDGE_MASK_BOTTOM_RIGHT;
             neighbourCorners[0] = neighbour.corner_heights.top;
             neighbourCorners[1] = neighbour.corner_heights.left;
             ownCorners[0] = self.corner_heights.right;
             ownCorners[1] = self.corner_heights.bottom;
             break;
-        case EDGE_TOPLEFT:
+        case edgeTopLeft:
             maskImageBase = SPR_TERRAIN_EDGE_MASK_TOP_LEFT;
             neighbourCorners[0] = neighbour.corner_heights.right;
             neighbourCorners[1] = neighbour.corner_heights.bottom;
             ownCorners[0] = self.corner_heights.top;
             ownCorners[1] = self.corner_heights.left;
             break;
-        case EDGE_TOPRIGHT:
+        case edgeTopRight:
             maskImageBase = SPR_TERRAIN_EDGE_MASK_TOP_RIGHT;
             neighbourCorners[0] = neighbour.corner_heights.left;
             neighbourCorners[1] = neighbour.corner_heights.bottom;
@@ -379,22 +379,22 @@ static void ViewportSurfaceSmoothenEdge(
     uint8_t dh = 0, cl = 0;
     switch (edge)
     {
-        case EDGE_BOTTOMLEFT:
+        case edgeBottomLeft:
             dh = Byte97B524[Byte97B444[self.slope]];
             cl = Byte97B54A[Byte97B444[neighbour.slope]];
             break;
 
-        case EDGE_TOPLEFT:
+        case edgeTopLeft:
             dh = Byte97B537[Byte97B444[self.slope]];
             cl = Byte97B55D[Byte97B444[neighbour.slope]];
             break;
 
-        case EDGE_BOTTOMRIGHT:
+        case edgeBottomRight:
             dh = Byte97B55D[Byte97B444[self.slope]];
             cl = Byte97B537[Byte97B444[neighbour.slope]];
             break;
 
-        case EDGE_TOPRIGHT:
+        case edgeTopRight:
             dh = Byte97B54A[Byte97B444[self.slope]];
             cl = Byte97B524[Byte97B444[neighbour.slope]];
             break;
@@ -463,7 +463,7 @@ static void ViewportSurfaceDrawTileSideBottom(
 
     switch (edge)
     {
-        case EDGE_BOTTOMLEFT:
+        case edgeBottomLeft:
             cornerHeight1 = self.corner_heights.left;
             cornerHeight2 = self.corner_heights.bottom;
 
@@ -476,7 +476,7 @@ static void ViewportSurfaceDrawTileSideBottom(
             tunnelTopBoundBoxOffset.y = 31;
             break;
 
-        case EDGE_BOTTOMRIGHT:
+        case edgeBottomRight:
             cornerHeight1 = self.corner_heights.right;
             cornerHeight2 = self.corner_heights.bottom;
 
@@ -531,7 +531,7 @@ static void ViewportSurfaceDrawTileSideBottom(
         baseImageId = GetEdgeImage(edgeObject, 1);
     }
 
-    if (edge == EDGE_BOTTOMRIGHT)
+    if (edge == edgeBottomRight)
     {
         baseImageId = baseImageId.WithIndexOffset(5);
     }
@@ -559,7 +559,7 @@ static void ViewportSurfaceDrawTileSideBottom(
 
     const auto lowestCornerHeight = std::min(cornerHeight1, cornerHeight2);
 
-    const auto& tunnels = edge == EDGE_BOTTOMLEFT ? session.leftTunnels : session.rightTunnels;
+    const auto& tunnels = edge == edgeBottomLeft ? session.leftTunnels : session.rightTunnels;
     for (auto& tunnel : tunnels)
     {
         if (curHeight > tunnel.height || tunnel.height >= lowestCornerHeight)
@@ -654,7 +654,7 @@ static void ViewportSurfaceDrawTileSideTop(
 
     switch (edge)
     {
-        case EDGE_TOPLEFT:
+        case edgeTopLeft:
             cornerHeight1 = self.corner_heights.top;
             cornerHeight2 = self.corner_heights.left;
 
@@ -665,7 +665,7 @@ static void ViewportSurfaceDrawTileSideTop(
             bounds.x = 30;
             break;
 
-        case EDGE_TOPRIGHT:
+        case edgeTopRight:
             cornerHeight1 = self.corner_heights.top;
             cornerHeight2 = self.corner_heights.right;
 
@@ -717,7 +717,7 @@ static void ViewportSurfaceDrawTileSideTop(
         {
             baseImageId = GetEdgeImage(edgeObject, 1); // var_04
         }
-        baseImageId = baseImageId.WithIndexOffset(edge == EDGE_TOPLEFT ? 5 : 0);
+        baseImageId = baseImageId.WithIndexOffset(edge == edgeTopLeft ? 5 : 0);
 
         offset.x = 0;
         offset.y = 0;
@@ -727,12 +727,12 @@ static void ViewportSurfaceDrawTileSideTop(
         if (!(session.viewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE))
         {
             const uint8_t incline = (cornerHeight2 - cornerHeight1) + 1;
-            const auto imageId = GetEdgeImage(edgeObject, 3).WithIndexOffset((edge == EDGE_TOPLEFT ? 3 : 0) + incline);
+            const auto imageId = GetEdgeImage(edgeObject, 3).WithIndexOffset((edge == edgeTopLeft ? 3 : 0) + incline);
             const int16_t y = (height - cornerHeight1) * kCoordsZPerTinyZ;
             paintAttachToPreviousPS(session, imageId, 0, y);
             return;
         }
-        baseImageId = GetEdgeImage(edgeObject, 1).WithIndexOffset(edge == EDGE_TOPLEFT ? 5 : 0);
+        baseImageId = GetEdgeImage(edgeObject, 1).WithIndexOffset(edge == edgeTopLeft ? 5 : 0);
     }
 
     uint8_t cur_height = std::min(neighbourCornerHeight2, neighbourCornerHeight1);
@@ -992,7 +992,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         descriptor.corner_heights.left = baseHeight + ch.left;
     }
 
-    if (PaintShouldShowHeightMarkers(session, VIEWPORT_FLAG_LAND_HEIGHTS))
+    if (paintShouldShowHeightMarkers(session, VIEWPORT_FLAG_LAND_HEIGHTS))
     {
         const int16_t x = session.mapPosition.x;
         const int16_t y = session.mapPosition.y;
@@ -1201,10 +1201,10 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
     if (zoomLevel <= ZoomLevel{ 0 } && has_surface && !(session.viewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
         && !(session.viewFlags & VIEWPORT_FLAG_HIDE_BASE) && Config::Get().general.landscapeSmoothing)
     {
-        ViewportSurfaceSmoothenEdge(session, EDGE_TOPLEFT, selfDescriptor, tileDescriptors[2]);
-        ViewportSurfaceSmoothenEdge(session, EDGE_TOPRIGHT, selfDescriptor, tileDescriptors[3]);
-        ViewportSurfaceSmoothenEdge(session, EDGE_BOTTOMLEFT, selfDescriptor, tileDescriptors[0]);
-        ViewportSurfaceSmoothenEdge(session, EDGE_BOTTOMRIGHT, selfDescriptor, tileDescriptors[1]);
+        ViewportSurfaceSmoothenEdge(session, edgeTopLeft, selfDescriptor, tileDescriptors[2]);
+        ViewportSurfaceSmoothenEdge(session, edgeTopRight, selfDescriptor, tileDescriptors[3]);
+        ViewportSurfaceSmoothenEdge(session, edgeBottomLeft, selfDescriptor, tileDescriptors[0]);
+        ViewportSurfaceSmoothenEdge(session, edgeBottomRight, selfDescriptor, tileDescriptors[1]);
     }
 
     if ((session.viewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE) && !(session.viewFlags & VIEWPORT_FLAG_HIDE_BASE)
@@ -1219,12 +1219,12 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
 
     if (!(session.viewFlags & VIEWPORT_FLAG_HIDE_VERTICAL))
     {
-        ViewportSurfaceDrawTileSideTop(session, EDGE_TOPLEFT, height, edgeObject, selfDescriptor, tileDescriptors[2], false);
-        ViewportSurfaceDrawTileSideTop(session, EDGE_TOPRIGHT, height, edgeObject, selfDescriptor, tileDescriptors[3], false);
+        ViewportSurfaceDrawTileSideTop(session, edgeTopLeft, height, edgeObject, selfDescriptor, tileDescriptors[2], false);
+        ViewportSurfaceDrawTileSideTop(session, edgeTopRight, height, edgeObject, selfDescriptor, tileDescriptors[3], false);
         ViewportSurfaceDrawTileSideBottom(
-            session, EDGE_BOTTOMLEFT, height, edgeObject, selfDescriptor, tileDescriptors[0], false);
+            session, edgeBottomLeft, height, edgeObject, selfDescriptor, tileDescriptors[0], false);
         ViewportSurfaceDrawTileSideBottom(
-            session, EDGE_BOTTOMRIGHT, height, edgeObject, selfDescriptor, tileDescriptors[1], false);
+            session, edgeBottomRight, height, edgeObject, selfDescriptor, tileDescriptors[1], false);
     }
 
     const uint16_t waterHeight = tileElement.GetWaterHeight();
@@ -1257,13 +1257,13 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         if (!(session.viewFlags & VIEWPORT_FLAG_HIDE_VERTICAL))
         {
             ViewportSurfaceDrawTileSideBottom(
-                session, EDGE_BOTTOMLEFT, waterHeight, edgeObject, selfDescriptor, tileDescriptors[0], true);
+                session, edgeBottomLeft, waterHeight, edgeObject, selfDescriptor, tileDescriptors[0], true);
             ViewportSurfaceDrawTileSideBottom(
-                session, EDGE_BOTTOMRIGHT, waterHeight, edgeObject, selfDescriptor, tileDescriptors[1], true);
+                session, edgeBottomRight, waterHeight, edgeObject, selfDescriptor, tileDescriptors[1], true);
             ViewportSurfaceDrawTileSideTop(
-                session, EDGE_TOPLEFT, waterHeight, edgeObject, selfDescriptor, tileDescriptors[2], true);
+                session, edgeTopLeft, waterHeight, edgeObject, selfDescriptor, tileDescriptors[2], true);
             ViewportSurfaceDrawTileSideTop(
-                session, EDGE_TOPRIGHT, waterHeight, edgeObject, selfDescriptor, tileDescriptors[3], true);
+                session, edgeTopRight, waterHeight, edgeObject, selfDescriptor, tileDescriptors[3], true);
         }
     }
 
@@ -1344,8 +1344,8 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             // 00  00  00
             //   00  00
             //     00
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, height, 0);
-            PaintUtilForceSetGeneralSupportHeight(session, height, 0);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, height, 0);
+            paintUtilForceSetGeneralSupportHeight(session, height, 0);
             break;
 
         case 1:
@@ -1355,14 +1355,14 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             // 01  01  01
             //   1B  1B
             //     1B
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session, EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight), height, 0);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session, EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::right), height, 1);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session, EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::bottomRight), height + 6, 0x1B);
-            PaintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::bottom), height + 6 + 6, 0x1B);
-            PaintUtilForceSetGeneralSupportHeight(session, height, 1);
+            paintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::bottom), height + 6 + 6, 0x1B);
+            paintUtilForceSetGeneralSupportHeight(session, height, 1);
             break;
 
         case 2:
@@ -1372,14 +1372,14 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             // 17  02  00
             //   17  00
             //     02
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session, EnumsToFlags(PaintSegment::right, PaintSegment::topRight, PaintSegment::bottomRight), height, 0);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session, EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::bottom), height, 2);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session, EnumsToFlags(PaintSegment::topLeft, PaintSegment::bottomLeft), height + 6, 0x17);
-            PaintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::left), height + 6 + 6, 0x17);
-            PaintUtilForceSetGeneralSupportHeight(session, height, 2);
+            paintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::left), height + 6 + 6, 0x17);
+            paintUtilForceSetGeneralSupportHeight(session, height, 2);
             break;
 
         case 3:
@@ -1389,15 +1389,15 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             // 03  03  03
             //   03  03
             //     03
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session, EnumsToFlags(PaintSegment::top, PaintSegment::topRight, PaintSegment::right), height + 2, 3);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session, EnumsToFlags(PaintSegment::topLeft, PaintSegment::centre, PaintSegment::bottomRight), height + 2 + 6,
                 3);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session, EnumsToFlags(PaintSegment::left, PaintSegment::bottomLeft, PaintSegment::bottom), height + 2 + 6 + 6,
                 3);
-            PaintUtilForceSetGeneralSupportHeight(session, height, 3);
+            paintUtilForceSetGeneralSupportHeight(session, height, 3);
             break;
 
         case 4:
@@ -1407,14 +1407,14 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             // 04  04  04
             //   00  00
             //     00
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session, EnumsToFlags(PaintSegment::bottom, PaintSegment::bottomLeft, PaintSegment::bottomRight), height, 0);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session, EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::right), height, 4);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session, EnumsToFlags(PaintSegment::topLeft, PaintSegment::topRight), height + 6, 0x1E);
-            PaintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::top), height + 6 + 6, 0x1E);
-            PaintUtilForceSetGeneralSupportHeight(session, height, 4);
+            paintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::top), height + 6 + 6, 0x1E);
+            paintUtilForceSetGeneralSupportHeight(session, height, 4);
             break;
 
         case 5:
@@ -1424,15 +1424,15 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             // 05  05  05  ░░  ░░  ░░
             //   1B  1B      ▒▒  ▒▒
             //     1B          ▓▓
-            PaintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::top), height + 6 + 6, 0x1E);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::top), height + 6 + 6, 0x1E);
+            paintUtilSetSegmentSupportHeight(
                 session, EnumsToFlags(PaintSegment::topLeft, PaintSegment::topRight), height + 6, 0x1E);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session, EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::right), height, 5);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session, EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::bottomRight), height + 6, 0x1B);
-            PaintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::bottom), height + 6 + 6, 0x1B);
-            PaintUtilForceSetGeneralSupportHeight(session, height, 5);
+            paintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::bottom), height + 6 + 6, 0x1B);
+            paintUtilForceSetGeneralSupportHeight(session, height, 5);
             break;
 
         case 6:
@@ -1442,14 +1442,14 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             // 06  06  06  ▓▓  ▒▒  ░░
             //   06  06      ▒▒  ░░
             //     06          ░░
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session, EnumsToFlags(PaintSegment::right, PaintSegment::bottomRight, PaintSegment::bottom), height + 2, 6);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session, EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), height + 2 + 6,
                 6);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session, EnumsToFlags(PaintSegment::left, PaintSegment::topLeft, PaintSegment::top), height + 2 + 6 + 6, 6);
-            PaintUtilForceSetGeneralSupportHeight(session, height, 6);
+            paintUtilForceSetGeneralSupportHeight(session, height, 6);
             break;
 
         case 7:
@@ -1459,155 +1459,155 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             // 00  07  17  ▓▓  ▓▓  ░░
             //   00  17      ▓▓  ▒▒
             //     07          ▓▓
-            PaintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::right), height + 4, 0x17);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::right), height + 4, 0x17);
+            paintUtilSetSegmentSupportHeight(
                 session, EnumsToFlags(PaintSegment::topRight, PaintSegment::bottomRight), height + 4 + 6, 0x17);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session, EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::bottom), height + 4 + 6 + 6, 7);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session, EnumsToFlags(PaintSegment::topLeft, PaintSegment::bottomLeft, PaintSegment::left), height + 4 + 6 + 6,
                 0);
-            PaintUtilForceSetGeneralSupportHeight(session, height, 7);
+            paintUtilForceSetGeneralSupportHeight(session, height, 7);
             break;
 
         case 8:
             // Loc6620D8
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session, EnumsToFlags(PaintSegment::left, PaintSegment::topLeft, PaintSegment::bottomLeft), height, 0);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session, EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::bottom), height, 8);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session, EnumsToFlags(PaintSegment::topRight, PaintSegment::bottomRight), height + 6, 0x1D);
-            PaintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::right), height + 6 + 6, 0x1D);
-            PaintUtilForceSetGeneralSupportHeight(session, height, 8);
+            paintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::right), height + 6 + 6, 0x1D);
+            paintUtilForceSetGeneralSupportHeight(session, height, 8);
             break;
 
         case 9:
             // Loc66216D
-            PaintUtilForceSetGeneralSupportHeight(session, height, 9);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilForceSetGeneralSupportHeight(session, height, 9);
+            paintUtilSetSegmentSupportHeight(
                 session, EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::left), height + 2, 9);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session, EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), height + 2 + 6,
                 9);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session, EnumsToFlags(PaintSegment::bottom, PaintSegment::bottomRight, PaintSegment::right), height + 2 + 6 + 6,
                 9);
             break;
 
         case 10:
             // Loc662206
-            PaintUtilForceSetGeneralSupportHeight(session, height, 0xA);
-            PaintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::left), height + 6 + 6, 0x17);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilForceSetGeneralSupportHeight(session, height, 0xA);
+            paintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::left), height + 6 + 6, 0x17);
+            paintUtilSetSegmentSupportHeight(
                 session, EnumsToFlags(PaintSegment::topLeft, PaintSegment::bottomLeft), height + 6, 0x17);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session, EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::bottom), height, 0xA);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session, EnumsToFlags(PaintSegment::topRight, PaintSegment::bottomRight), height + 6, 0x1D);
-            PaintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::right), height + 6 + 6, 0x1D);
+            paintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::right), height + 6 + 6, 0x1D);
             break;
 
         case 11:
             // Loc66229B
-            PaintUtilForceSetGeneralSupportHeight(session, height, 0xB);
-            PaintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::top), height + 4, 0x1B);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilForceSetGeneralSupportHeight(session, height, 0xB);
+            paintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::top), height + 4, 0x1B);
+            paintUtilSetSegmentSupportHeight(
                 session, EnumsToFlags(PaintSegment::topLeft, PaintSegment::topRight), height + 4 + 6, 0x1B);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session, EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::right), height + 4 + 6 + 6, 0xB);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session, EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::bottomRight, PaintSegment::bottom),
                 height + 4 + 6 + 6, 0);
             break;
 
         case 12:
             // Loc662334
-            PaintUtilForceSetGeneralSupportHeight(session, height, 0xC);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilForceSetGeneralSupportHeight(session, height, 0xC);
+            paintUtilSetSegmentSupportHeight(
                 session, EnumsToFlags(PaintSegment::left, PaintSegment::bottomLeft, PaintSegment::bottom), height + 2, 0xC);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session, EnumsToFlags(PaintSegment::topLeft, PaintSegment::centre, PaintSegment::bottomRight), height + 2 + 6,
                 0xC);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session, EnumsToFlags(PaintSegment::top, PaintSegment::topRight, PaintSegment::right), height + 2 + 6 + 6, 0xC);
             break;
 
         case 13:
             // Loc6623CD
-            PaintUtilForceSetGeneralSupportHeight(session, height, 0xD);
-            PaintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::left), height + 4, 0x1D);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilForceSetGeneralSupportHeight(session, height, 0xD);
+            paintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::left), height + 4, 0x1D);
+            paintUtilSetSegmentSupportHeight(
                 session, EnumsToFlags(PaintSegment::topLeft, PaintSegment::bottomLeft), height + 4 + 6, 0x1D);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session, EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::bottom), height + 4 + 6 + 6, 0xD);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session, EnumsToFlags(PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right),
                 height + 4 + 6 + 6, 0);
             break;
 
         case 14:
             // Loc662466
-            PaintUtilForceSetGeneralSupportHeight(session, height, 0xE);
-            PaintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::bottom), height + 4, 0x1E);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilForceSetGeneralSupportHeight(session, height, 0xE);
+            paintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::bottom), height + 4, 0x1E);
+            paintUtilSetSegmentSupportHeight(
                 session, EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::bottomRight), height + 4 + 6, 0x1E);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session, EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::right), height + 4 + 6 + 6, 0xE);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session, EnumsToFlags(PaintSegment::topLeft, PaintSegment::topRight, PaintSegment::top), height + 4 + 6 + 6, 0);
             break;
 
         case 23:
             // Loc6624FF
-            PaintUtilForceSetGeneralSupportHeight(session, height, 0x17);
-            PaintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::right), height + 4, 0x17);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilForceSetGeneralSupportHeight(session, height, 0x17);
+            paintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::right), height + 4, 0x17);
+            paintUtilSetSegmentSupportHeight(
                 session, EnumsToFlags(PaintSegment::topRight, PaintSegment::bottomRight), height + 4 + 6, 0x17);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session, EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::bottom), height + 4 + 6 + 6, 0x17);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session, EnumsToFlags(PaintSegment::topLeft, PaintSegment::bottomLeft), height + 4 + 6 + 6 + 6, 0x17);
-            PaintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::left), height + 4 + 6 + 6 + 6 + 6, 0x17);
+            paintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::left), height + 4 + 6 + 6 + 6 + 6, 0x17);
             break;
 
         case 27:
             // Loc6625A0
-            PaintUtilForceSetGeneralSupportHeight(session, height, 0x1B);
-            PaintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::top), height + 4, 0x1B);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilForceSetGeneralSupportHeight(session, height, 0x1B);
+            paintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::top), height + 4, 0x1B);
+            paintUtilSetSegmentSupportHeight(
                 session, EnumsToFlags(PaintSegment::topLeft, PaintSegment::topRight), height + 4 + 6, 0x1B);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session, EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::right), height + 4 + 6 + 6, 0x1B);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session, EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::bottomRight), height + 4 + 6 + 6 + 6, 0x1B);
-            PaintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::bottom), height + 4 + 6 + 6 + 6 + 6, 0x1B);
+            paintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::bottom), height + 4 + 6 + 6 + 6 + 6, 0x1B);
             break;
 
         case 29:
             // Loc662641
-            PaintUtilForceSetGeneralSupportHeight(session, height, 0x1D);
-            PaintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::left), height + 4, 0x1D);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilForceSetGeneralSupportHeight(session, height, 0x1D);
+            paintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::left), height + 4, 0x1D);
+            paintUtilSetSegmentSupportHeight(
                 session, EnumsToFlags(PaintSegment::topLeft, PaintSegment::bottomLeft), height + 4 + 6, 0x1D);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session, EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::bottom), height + 4 + 6 + 6, 0x1D);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session, EnumsToFlags(PaintSegment::topRight, PaintSegment::bottomRight), height + 4 + 6 + 6 + 6, 0x1D);
-            PaintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::right), height + 4 + 6 + 6 + 6 + 6, 0x1D);
+            paintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::right), height + 4 + 6 + 6 + 6 + 6, 0x1D);
             break;
 
         case 30:
             // Loc6626E2
-            PaintUtilForceSetGeneralSupportHeight(session, height, 0x1E);
-            PaintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::bottom), height + 4, 0x1E);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilForceSetGeneralSupportHeight(session, height, 0x1E);
+            paintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::bottom), height + 4, 0x1E);
+            paintUtilSetSegmentSupportHeight(
                 session, EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::bottomRight), height + 4 + 6, 0x1E);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session, EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::right), height + 4 + 6 + 6, 0x1E);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session, EnumsToFlags(PaintSegment::topLeft, PaintSegment::topRight), height + 4 + 6 + 6 + 6, 0x1E);
-            PaintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::top), height + 4 + 6 + 6 + 6 + 6, 0x1E);
+            paintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::top), height + 4 + 6 + 6 + 6 + 6, 0x1E);
             break;
     }
 }

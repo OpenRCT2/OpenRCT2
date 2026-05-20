@@ -59,12 +59,12 @@ static void PaintBoatHireTrackFlat(
         paintAddImageAsParent(session, imageId, offset, { { 0, 28, height }, { 32, 1, 3 } });
     }
 
-    PaintUtilSetSegmentSupportHeight(
+    paintUtilSetSegmentSupportHeight(
         session,
-        PaintUtilRotateSegments(
+        paintUtilRotateSegments(
             EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), direction),
         0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 16);
+    paintUtilSetGeneralSupportHeight(session, height + 16);
 }
 
 /** rct2: 0x008B0E50 */
@@ -78,8 +78,8 @@ static void PaintBoatHireStation(
     TrackPaintUtilDrawPier(
         session, ride, stationObj, session.mapPosition, direction, height, trackElement, session.currentRotation);
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x008B0E80 */
@@ -121,11 +121,11 @@ static void PaintBoatHireTrackLeftQuarterTurn1Tile(
             break;
     }
 
-    PaintUtilSetSegmentSupportHeight(
+    paintUtilSetSegmentSupportHeight(
         session,
-        PaintUtilRotateSegments(EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topLeft), direction),
+        paintUtilRotateSegments(EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topLeft), direction),
         0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 16);
+    paintUtilSetGeneralSupportHeight(session, height + 16);
 }
 
 /** rct2: 0x008B0E90 */
@@ -265,8 +265,8 @@ static void PaintBoatHireTrackLeftQuarterTurn3Tiles(
             break;
     }
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 16);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 16);
 }
 
 static void PaintBoatHireTrackRightQuarterTurn3Tiles(
@@ -471,8 +471,8 @@ static void PaintBoatHireTrackLeftQuarterTurn5Tiles(
             break;
     }
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 16);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 16);
 }
 
 static void PaintBoatHireTrackRightQuarterTurn5Tiles(
@@ -653,8 +653,8 @@ static void PaintBoatHireTrackLeftEighthToDiag(
             break;
     }
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 16);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 16);
 }
 
 static void PaintBoatHireTrackRightEighthToDiag(
@@ -826,8 +826,8 @@ static void PaintBoatHireTrackRightEighthToDiag(
             break;
     }
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 16);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 16);
 }
 
 static void PaintBoatHireTrackLeftEighthToOrthogonal(
@@ -902,8 +902,8 @@ static void PaintBoatHireTrackDiagFlat(
             break;
     }
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 16);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 16);
 }
 
 static void PaintBoatHireTrackSBendLeft(
@@ -1062,8 +1062,8 @@ static void PaintBoatHireTrackSBendLeft(
             break;
     }
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 16);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 16);
 }
 
 static void PaintBoatHireTrackSBendRight(
@@ -1222,8 +1222,8 @@ static void PaintBoatHireTrackSBendRight(
             break;
     }
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 16);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 16);
 }
 
 /**

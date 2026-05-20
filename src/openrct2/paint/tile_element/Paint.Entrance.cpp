@@ -208,8 +208,8 @@ static void PaintRideEntranceExit(PaintSession& session, uint8_t direction, int3
         session, WoodenSupportType::truss, WoodenSupportSubType::neSw, direction, height, supportsImageTemplate);
 
     height += isExit ? 40 : 56;
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height);
 }
 
 static void PaintParkEntranceScrollingText(
@@ -320,15 +320,15 @@ static void PaintParkEntrance(PaintSession& session, uint8_t direction, int32_t 
     WoodenASupportsPaintSetupRotated(
         session, WoodenSupportType::truss, WoodenSupportSubType::neSw, direction, height, supportsImageTemplate);
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 80);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 80);
 }
 
 static void PaintHeightMarkers(PaintSession& session, const EntranceElement& entranceEl, int32_t height)
 {
     PROFILED_FUNCTION();
 
-    if (PaintShouldShowHeightMarkers(session, VIEWPORT_FLAG_PATH_HEIGHTS))
+    if (paintShouldShowHeightMarkers(session, VIEWPORT_FLAG_PATH_HEIGHTS))
     {
         if (entranceEl.GetDirections() & 0xF)
         {

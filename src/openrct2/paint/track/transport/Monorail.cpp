@@ -436,12 +436,12 @@ static void PaintMonorailTrackFlat(
         MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 0, height, session.supportColours);
     }
 
-    PaintUtilSetSegmentSupportHeight(
+    paintUtilSetSegmentSupportHeight(
         session,
-        PaintUtilRotateSegments(
+        paintUtilRotateSegments(
             EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), direction),
         0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x008AE25C, 0x008AE26C, 0x008AE27C */
@@ -471,8 +471,8 @@ static void PaintMonorailStation(
             session, supportType.metal, MetalSupportPlace::centre, direction, 0, height, session.supportColours);
     }
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x008AE1BC */
@@ -512,12 +512,12 @@ static void PaintMonorailTrack25DegUp(
         MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 8, height, session.supportColours);
     }
 
-    PaintUtilSetSegmentSupportHeight(
+    paintUtilSetSegmentSupportHeight(
         session,
-        PaintUtilRotateSegments(
+        paintUtilRotateSegments(
             EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), direction),
         0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56);
+    paintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x008AE1CC */
@@ -557,12 +557,12 @@ static void PaintMonorailTrackFlatTo25DegUp(
         MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 3, height, session.supportColours);
     }
 
-    PaintUtilSetSegmentSupportHeight(
+    paintUtilSetSegmentSupportHeight(
         session,
-        PaintUtilRotateSegments(
+        paintUtilRotateSegments(
             EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), direction),
         0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48);
+    paintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x008AE1DC */
@@ -602,12 +602,12 @@ static void PaintMonorailTrack25DegUpToFlat(
         MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 6, height, session.supportColours);
     }
 
-    PaintUtilSetSegmentSupportHeight(
+    paintUtilSetSegmentSupportHeight(
         session,
-        PaintUtilRotateSegments(
+        paintUtilRotateSegments(
             EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), direction),
         0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 40);
+    paintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
 /** rct2: 0x008AE1EC */
@@ -698,9 +698,9 @@ static void PaintMonorailTrackRightQuarterTurn5Tiles(
             break;
     }
 
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
 
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x008AE21C */
@@ -781,9 +781,9 @@ static void PaintMonorailTrackSBendLeft(
                 PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottom);
             break;
     }
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction & 1), 0xFFFF, 0);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(blockedSegments, direction & 1), 0xFFFF, 0);
 
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x008AE24C */
@@ -851,9 +851,9 @@ static void PaintMonorailTrackSBendRight(
                 PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::left);
             break;
     }
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction & 1), 0xFFFF, 0);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(blockedSegments, direction & 1), 0xFFFF, 0);
 
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x008AE29C */
@@ -890,9 +890,9 @@ static void PaintMonorailTrackRightQuarterTurn3Tiles(
                 PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::left);
             break;
     }
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
 
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x008AE28C */
@@ -981,8 +981,8 @@ static void PaintMonorailTrackLeftEighthToDiag(
             break;
     }
 
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x008AE32C */
@@ -1056,8 +1056,8 @@ static void PaintMonorailTrackRightEighthToDiag(
             break;
     }
 
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x008AE33C */
@@ -1103,8 +1103,8 @@ static void PaintMonorailTrackDiag25DegUp(
     }
 
     int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x008AE2BC */
@@ -1123,8 +1123,8 @@ static void PaintMonorailTrackDiagFlatTo25DegUp(
     }
 
     int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x008AE2CC */
@@ -1143,8 +1143,8 @@ static void PaintMonorailTrackDiag25DegUpToFlat(
     }
 
     int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x008AE30C */
@@ -1163,8 +1163,8 @@ static void PaintMonorailTrackDiag25DegDown(
     }
 
     int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x008AE2EC */
@@ -1183,8 +1183,8 @@ static void PaintMonorailTrackDiagFlatTo25DegDown(
     }
 
     int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x008AE2FC */
@@ -1203,8 +1203,8 @@ static void PaintMonorailTrackDiag25DegDownToFlat(
     }
 
     int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /**

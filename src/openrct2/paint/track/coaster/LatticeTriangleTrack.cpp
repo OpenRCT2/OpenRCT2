@@ -175,8 +175,8 @@ static void LatticeTriangleTrackFlat(
         }
     }
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 static void LatticeTriangleTrackStation(
@@ -213,8 +213,8 @@ static void LatticeTriangleTrackStation(
             session, supportType.metal, MetalSupportPlace::centre, direction, 0, height, session.supportColours);
     }
     TrackPaintUtilDrawStationTunnel(session, direction, height);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x008AD684 */
@@ -320,8 +320,8 @@ static void LatticeTriangleTrack25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x008AD694 */
@@ -397,8 +397,8 @@ static void LatticeTriangleTrack60DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 56, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 104);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 104);
 }
 
 /** rct2: 0x008AD6A4 */
@@ -504,8 +504,8 @@ static void LatticeTriangleTrackFlatTo25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x008AD6B4 */
@@ -593,8 +593,8 @@ static void LatticeTriangleTrack25DegUpTo60DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 72);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
 /** rct2: 0x008AD6C4 */
@@ -682,8 +682,8 @@ static void LatticeTriangleTrack60DegUpTo25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 72);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
 /** rct2: 0x008AD6D4 */
@@ -789,8 +789,8 @@ static void LatticeTriangleTrack25DegUpToFlat(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
     }
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 40);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
 /** rct2: 0x008AD6E4 */
@@ -877,16 +877,16 @@ static void LatticeTriangleTrackLeftQuarterTurn5(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -912,15 +912,15 @@ static void LatticeTriangleTrackLeftQuarterTurn5(
                         { { 0, 16, height }, { 32, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -946,16 +946,16 @@ static void LatticeTriangleTrackLeftQuarterTurn5(
                         { { 0, 0, height }, { 16, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 5:
             switch (direction)
@@ -981,15 +981,15 @@ static void LatticeTriangleTrackLeftQuarterTurn5(
                         { { 16, 0, height }, { 16, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 6:
             switch (direction)
@@ -1025,13 +1025,13 @@ static void LatticeTriangleTrackLeftQuarterTurn5(
                     PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -1084,8 +1084,8 @@ static void LatticeTriangleTrackFlatToLeftBank(
         MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 0, height, session.supportColours);
     }
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x008AD774 */
@@ -1127,8 +1127,8 @@ static void LatticeTriangleTrackFlatToRightBank(
         MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 0, height, session.supportColours);
     }
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x008AD784 */
@@ -1170,8 +1170,8 @@ static void LatticeTriangleTrackLeftBankToFlat(
         MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 0, height, session.supportColours);
     }
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x008AD794 */
@@ -1213,8 +1213,8 @@ static void LatticeTriangleTrackRightBankToFlat(
         MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 0, height, session.supportColours);
     }
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x008AD7A4 */
@@ -1256,16 +1256,16 @@ static void LatticeTriangleTrackBankedLeftQuarterTurn5(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -1291,15 +1291,15 @@ static void LatticeTriangleTrackBankedLeftQuarterTurn5(
                         { { 0, 16, height }, { 32, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -1325,16 +1325,16 @@ static void LatticeTriangleTrackBankedLeftQuarterTurn5(
                         { { 0, 0, height }, { 16, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 5:
             switch (direction)
@@ -1360,15 +1360,15 @@ static void LatticeTriangleTrackBankedLeftQuarterTurn5(
                         { { 16, 0, height }, { 16, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 6:
             switch (direction)
@@ -1407,13 +1407,13 @@ static void LatticeTriangleTrackBankedLeftQuarterTurn5(
                     PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -1474,8 +1474,8 @@ static void LatticeTriangleTrackLeftBankTo25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x008AD7D4 */
@@ -1524,8 +1524,8 @@ static void LatticeTriangleTrackRightBankTo25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x008AD7E4 */
@@ -1574,8 +1574,8 @@ static void LatticeTriangleTrack25DegUpToLeftBank(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
     }
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 40);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
 /** rct2: 0x008AD7F4 */
@@ -1624,8 +1624,8 @@ static void LatticeTriangleTrack25DegUpToRightBank(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
     }
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 40);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
 /** rct2: 0x008AD804 */
@@ -1695,8 +1695,8 @@ static void LatticeTriangleTrackLeftBank(
         MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 0, height, session.supportColours);
     }
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x008AD854 */
@@ -1743,16 +1743,16 @@ static void LatticeTriangleTrackLeftQuarterTurn525DegUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -1776,15 +1776,15 @@ static void LatticeTriangleTrackLeftQuarterTurn525DegUp(
                         { { 0, 16, height }, { 32, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             switch (direction)
@@ -1809,16 +1809,16 @@ static void LatticeTriangleTrackLeftQuarterTurn525DegUp(
                         session, direction, session.trackColours.WithIndex(18291), { 0, 0, height }, { 16, 16, 3 });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 5:
             switch (direction)
@@ -1842,15 +1842,15 @@ static void LatticeTriangleTrackLeftQuarterTurn525DegUp(
                         { { 16, 0, height }, { 16, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 6:
             switch (direction)
@@ -1886,13 +1886,13 @@ static void LatticeTriangleTrackLeftQuarterTurn525DegUp(
                     PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -1933,16 +1933,16 @@ static void LatticeTriangleTrackRightQuarterTurn525DegUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -1966,15 +1966,15 @@ static void LatticeTriangleTrackRightQuarterTurn525DegUp(
                         session, direction, session.trackColours.WithIndex(18270), { 0, 0, height }, { 32, 16, 3 });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             switch (direction)
@@ -1999,16 +1999,16 @@ static void LatticeTriangleTrackRightQuarterTurn525DegUp(
                         { { 0, 16, height }, { 16, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 5:
             switch (direction)
@@ -2032,15 +2032,15 @@ static void LatticeTriangleTrackRightQuarterTurn525DegUp(
                         { { 16, 0, height }, { 16, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 6:
             switch (direction)
@@ -2076,13 +2076,13 @@ static void LatticeTriangleTrackRightQuarterTurn525DegUp(
                     PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -2143,13 +2143,13 @@ static void LatticeTriangleTrackSBendLeft(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -2174,15 +2174,15 @@ static void LatticeTriangleTrackSBendLeft(
                     break;
             }
             DrawSBendLeftSupports(session, supportType.metal, trackSequence, direction, height, 0, 1);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -2207,15 +2207,15 @@ static void LatticeTriangleTrackSBendLeft(
                     break;
             }
             DrawSBendLeftSupports(session, supportType.metal, trackSequence, direction, height, 0, 1);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -2251,13 +2251,13 @@ static void LatticeTriangleTrackSBendLeft(
                     PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -2298,13 +2298,13 @@ static void LatticeTriangleTrackSBendRight(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -2329,15 +2329,15 @@ static void LatticeTriangleTrackSBendRight(
                     break;
             }
             DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height, 0, 0);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -2362,15 +2362,15 @@ static void LatticeTriangleTrackSBendRight(
                     break;
             }
             DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height, 0, 0);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -2406,13 +2406,13 @@ static void LatticeTriangleTrackSBendRight(
                     PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -2453,16 +2453,16 @@ static void LatticeTriangleTrackLeftQuarterTurn3(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -2488,13 +2488,13 @@ static void LatticeTriangleTrackLeftQuarterTurn3(
                         { { 16, 16, height }, { 16, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -2530,13 +2530,13 @@ static void LatticeTriangleTrackLeftQuarterTurn3(
                     PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -2589,16 +2589,16 @@ static void LatticeTriangleTrackLeftQuarterTurn3Bank(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -2624,13 +2624,13 @@ static void LatticeTriangleTrackLeftQuarterTurn3Bank(
                         { { 16, 16, height }, { 16, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -2669,13 +2669,13 @@ static void LatticeTriangleTrackLeftQuarterTurn3Bank(
                     PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -2722,19 +2722,19 @@ static void LatticeTriangleTrackLeftQuarterTurn325DegUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 2:
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 3:
             switch (direction)
@@ -2766,13 +2766,13 @@ static void LatticeTriangleTrackLeftQuarterTurn325DegUp(
                     PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -2809,19 +2809,19 @@ static void LatticeTriangleTrackRightQuarterTurn325DegUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 2:
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 3:
             switch (direction)
@@ -2860,13 +2860,13 @@ static void LatticeTriangleTrackRightQuarterTurn325DegUp(
                     PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -2930,18 +2930,18 @@ static void LatticeTriangleTrackLeftHalfBankedHelixUpSmall(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
                         PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -2967,13 +2967,13 @@ static void LatticeTriangleTrackLeftHalfBankedHelixUpSmall(
                         { { 16, 16, height }, { 16, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -3012,15 +3012,15 @@ static void LatticeTriangleTrackLeftHalfBankedHelixUpSmall(
                     PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft,
                         PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 4:
             switch (direction)
@@ -3059,18 +3059,18 @@ static void LatticeTriangleTrackLeftHalfBankedHelixUpSmall(
                     PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft,
                         PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 5:
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 6:
             switch (direction)
@@ -3096,14 +3096,14 @@ static void LatticeTriangleTrackLeftHalfBankedHelixUpSmall(
                         { { 16, 0, height }, { 16, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 7:
             switch (direction)
@@ -3137,15 +3137,15 @@ static void LatticeTriangleTrackLeftHalfBankedHelixUpSmall(
             {
                 PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft,
                         PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -3189,18 +3189,18 @@ static void LatticeTriangleTrackRightHalfBankedHelixUpSmall(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft,
                         PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -3226,14 +3226,14 @@ static void LatticeTriangleTrackRightHalfBankedHelixUpSmall(
                         { { 16, 0, height }, { 16, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -3272,15 +3272,15 @@ static void LatticeTriangleTrackRightHalfBankedHelixUpSmall(
                     PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft,
                         PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 4:
             switch (direction)
@@ -3319,18 +3319,18 @@ static void LatticeTriangleTrackRightHalfBankedHelixUpSmall(
                     PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft,
                         PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 5:
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 6:
             switch (direction)
@@ -3356,13 +3356,13 @@ static void LatticeTriangleTrackRightHalfBankedHelixUpSmall(
                         { { 16, 16, height }, { 16, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 7:
             switch (direction)
@@ -3396,15 +3396,15 @@ static void LatticeTriangleTrackRightHalfBankedHelixUpSmall(
             {
                 PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
                         PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -3478,18 +3478,18 @@ static void LatticeTriangleTrackLeftHalfBankedHelixUpLarge(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
                         PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -3515,15 +3515,15 @@ static void LatticeTriangleTrackLeftHalfBankedHelixUpLarge(
                         { { 0, 16, height }, { 32, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -3549,16 +3549,16 @@ static void LatticeTriangleTrackLeftHalfBankedHelixUpLarge(
                         { { 0, 0, height }, { 16, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 5:
             switch (direction)
@@ -3584,15 +3584,15 @@ static void LatticeTriangleTrackLeftHalfBankedHelixUpLarge(
                         { { 16, 0, height }, { 16, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 6:
             switch (direction)
@@ -3631,15 +3631,15 @@ static void LatticeTriangleTrackLeftHalfBankedHelixUpLarge(
                     PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft,
                         PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 7:
             switch (direction)
@@ -3678,18 +3678,18 @@ static void LatticeTriangleTrackLeftHalfBankedHelixUpLarge(
                     PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft,
                         PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 8:
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 9:
             switch (direction)
@@ -3715,15 +3715,15 @@ static void LatticeTriangleTrackLeftHalfBankedHelixUpLarge(
                         { { 16, 0, height }, { 16, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 10:
             switch (direction)
@@ -3749,16 +3749,16 @@ static void LatticeTriangleTrackLeftHalfBankedHelixUpLarge(
                         { { 0, 16, height }, { 16, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 11:
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 12:
             switch (direction)
@@ -3784,15 +3784,15 @@ static void LatticeTriangleTrackLeftHalfBankedHelixUpLarge(
                         { { 0, 0, height }, { 32, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 13:
             switch (direction)
@@ -3826,15 +3826,15 @@ static void LatticeTriangleTrackLeftHalfBankedHelixUpLarge(
             {
                 PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft,
                         PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -3878,18 +3878,18 @@ static void LatticeTriangleTrackRightHalfBankedHelixUpLarge(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft,
                         PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -3915,15 +3915,15 @@ static void LatticeTriangleTrackRightHalfBankedHelixUpLarge(
                         { { 0, 0, height }, { 32, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -3949,16 +3949,16 @@ static void LatticeTriangleTrackRightHalfBankedHelixUpLarge(
                         { { 0, 16, height }, { 16, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 5:
             switch (direction)
@@ -3984,15 +3984,15 @@ static void LatticeTriangleTrackRightHalfBankedHelixUpLarge(
                         { { 16, 0, height }, { 16, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 6:
             switch (direction)
@@ -4038,15 +4038,15 @@ static void LatticeTriangleTrackRightHalfBankedHelixUpLarge(
                     PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft,
                         PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 7:
             switch (direction)
@@ -4085,18 +4085,18 @@ static void LatticeTriangleTrackRightHalfBankedHelixUpLarge(
                     PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft,
                         PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 8:
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 9:
             switch (direction)
@@ -4122,15 +4122,15 @@ static void LatticeTriangleTrackRightHalfBankedHelixUpLarge(
                         { { 16, 0, height }, { 16, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 10:
             switch (direction)
@@ -4156,16 +4156,16 @@ static void LatticeTriangleTrackRightHalfBankedHelixUpLarge(
                         { { 0, 0, height }, { 16, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 11:
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 12:
             switch (direction)
@@ -4191,15 +4191,15 @@ static void LatticeTriangleTrackRightHalfBankedHelixUpLarge(
                         { { 0, 16, height }, { 32, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 13:
             switch (direction)
@@ -4240,15 +4240,15 @@ static void LatticeTriangleTrackRightHalfBankedHelixUpLarge(
             {
                 PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
                         PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -4325,8 +4325,8 @@ static void LatticeTriangleTrackLeftQuarterTurn160DegUp(
     }
     TrackPaintUtilLeftQuarterTurn1TileTunnel(
         session, kTunnelGroup, direction, height, -8, TunnelSubType::SlopeStart, +56, TunnelSubType::SlopeEnd);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 104);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 104);
 }
 
 /** rct2: 0x008AD9F4 */
@@ -4371,8 +4371,8 @@ static void LatticeTriangleTrackRightQuarterTurn160DegUp(
     }
     TrackPaintUtilRightQuarterTurn1TileTunnel(
         session, kTunnelGroup, direction, height, -8, TunnelSubType::SlopeStart, +56, TunnelSubType::SlopeEnd);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 104);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 104);
 }
 
 /** rct2: 0x008ADA04 */
@@ -4424,8 +4424,8 @@ static void LatticeTriangleTrackBrakes(
         MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 0, height, session.supportColours);
     }
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x008ADC84 */
@@ -4468,8 +4468,8 @@ static void LatticeTriangleTrack25DegUpLeftBanked(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x008ADC94 */
@@ -4512,8 +4512,8 @@ static void LatticeTriangleTrack25DegUpRightBanked(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x008ADA44 */
@@ -4640,9 +4640,9 @@ static void LatticeTriangleTrackFlatTo60DegUpLongBase(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             if (trackElement.HasCableLift())
@@ -4707,9 +4707,9 @@ static void LatticeTriangleTrackFlatTo60DegUpLongBase(
                         session, supportType.metal, MetalSupportPlace::centre, 5, height, session.supportColours);
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             if (trackElement.HasCableLift())
@@ -4774,9 +4774,9 @@ static void LatticeTriangleTrackFlatTo60DegUpLongBase(
                         session, supportType.metal, MetalSupportPlace::centre, 7, height, session.supportColours);
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 3:
             if (trackElement.HasCableLift())
@@ -4850,9 +4850,9 @@ static void LatticeTriangleTrackFlatTo60DegUpLongBase(
                     PaintUtilPushTunnelLeft(session, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 80);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 80);
             break;
     }
 }
@@ -4897,9 +4897,9 @@ static void LatticeTriangleTrack60DegUpToFlatLongBase(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeStart);
             }
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 80);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 80);
             break;
         case 1:
             switch (direction)
@@ -4930,9 +4930,9 @@ static void LatticeTriangleTrack60DegUpToFlatLongBase(
                 MetalASupportsPaintSetup(
                     session, supportType.metal, MetalSupportPlace::centre, 12, height, session.supportColours);
             }
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 80);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 80);
             break;
         case 2:
             switch (direction)
@@ -4963,9 +4963,9 @@ static void LatticeTriangleTrack60DegUpToFlatLongBase(
                 MetalASupportsPaintSetup(
                     session, supportType.metal, MetalSupportPlace::centre, 9, height, session.supportColours);
             }
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 3:
             switch (direction)
@@ -5005,9 +5005,9 @@ static void LatticeTriangleTrack60DegUpToFlatLongBase(
                     PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 40);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 40);
             break;
     }
 }
@@ -5074,9 +5074,9 @@ static void LatticeTriangleTrackCableLiftHill(
             {
                 PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 40);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 40);
             break;
         case 1:
             switch (direction)
@@ -5115,9 +5115,9 @@ static void LatticeTriangleTrackCableLiftHill(
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 40);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 40);
             break;
         case 2:
             switch (direction)
@@ -5162,9 +5162,9 @@ static void LatticeTriangleTrackCableLiftHill(
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             switch (direction)
@@ -5203,9 +5203,9 @@ static void LatticeTriangleTrackCableLiftHill(
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 104);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 104);
             break;
     }
 }
@@ -5246,9 +5246,9 @@ static void LatticeTriangleTrackLeftEighthToDiag(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -5274,15 +5274,15 @@ static void LatticeTriangleTrackLeftEighthToDiag(
                         { { 0, 16, height }, { 32, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -5308,24 +5308,24 @@ static void LatticeTriangleTrackLeftEighthToDiag(
                         { { 0, 0, height }, { 16, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 4:
             switch (direction)
@@ -5359,15 +5359,15 @@ static void LatticeTriangleTrackLeftEighthToDiag(
                         session, supportType.metal, MetalSupportPlace::rightCorner, 0, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -5408,9 +5408,9 @@ static void LatticeTriangleTrackRightEighthToDiag(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -5436,15 +5436,15 @@ static void LatticeTriangleTrackRightEighthToDiag(
                         { { 0, 0, height }, { 32, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -5470,25 +5470,25 @@ static void LatticeTriangleTrackRightEighthToDiag(
                         { { 0, 16, height }, { 16, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 4:
             switch (direction)
@@ -5522,15 +5522,15 @@ static void LatticeTriangleTrackRightEighthToDiag(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -5589,9 +5589,9 @@ static void LatticeTriangleTrackLeftEighthBankToDiag(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -5617,15 +5617,15 @@ static void LatticeTriangleTrackLeftEighthBankToDiag(
                         { { 0, 16, height }, { 32, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -5651,24 +5651,24 @@ static void LatticeTriangleTrackLeftEighthBankToDiag(
                         { { 0, 0, height }, { 16, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 4:
             switch (direction)
@@ -5702,15 +5702,15 @@ static void LatticeTriangleTrackLeftEighthBankToDiag(
                         session, supportType.metal, MetalSupportPlace::rightCorner, 0, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -5751,9 +5751,9 @@ static void LatticeTriangleTrackRightEighthBankToDiag(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -5779,15 +5779,15 @@ static void LatticeTriangleTrackRightEighthBankToDiag(
                         { { 0, 0, height }, { 32, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -5813,25 +5813,25 @@ static void LatticeTriangleTrackRightEighthBankToDiag(
                         { { 0, 16, height }, { 16, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 4:
             switch (direction)
@@ -5865,15 +5865,15 @@ static void LatticeTriangleTrackRightEighthBankToDiag(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -5942,13 +5942,13 @@ static void LatticeTriangleTrackDiag25DegUp(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -5973,13 +5973,13 @@ static void LatticeTriangleTrackDiag25DegUp(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -6004,14 +6004,14 @@ static void LatticeTriangleTrackDiag25DegUp(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -6064,13 +6064,13 @@ static void LatticeTriangleTrackDiag25DegUp(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
     }
 }
@@ -6091,13 +6091,13 @@ static void LatticeTriangleTrackDiag60DegUp(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 104);
+            paintUtilSetGeneralSupportHeight(session, height + 104);
             break;
         case 1:
             switch (direction)
@@ -6108,13 +6108,13 @@ static void LatticeTriangleTrackDiag60DegUp(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 104);
+            paintUtilSetGeneralSupportHeight(session, height + 104);
             break;
         case 2:
             switch (direction)
@@ -6125,14 +6125,14 @@ static void LatticeTriangleTrackDiag60DegUp(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 104);
+            paintUtilSetGeneralSupportHeight(session, height + 104);
             break;
         case 3:
             switch (direction)
@@ -6157,13 +6157,13 @@ static void LatticeTriangleTrackDiag60DegUp(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 36, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 104);
+            paintUtilSetGeneralSupportHeight(session, height + 104);
             break;
     }
 }
@@ -6198,13 +6198,13 @@ static void LatticeTriangleTrackDiagFlatTo25DegUp(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -6229,13 +6229,13 @@ static void LatticeTriangleTrackDiagFlatTo25DegUp(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -6260,14 +6260,14 @@ static void LatticeTriangleTrackDiagFlatTo25DegUp(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -6320,13 +6320,13 @@ static void LatticeTriangleTrackDiagFlatTo25DegUp(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -6347,13 +6347,13 @@ static void LatticeTriangleTrackDiag25DegUpTo60DegUp(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
             switch (direction)
@@ -6364,13 +6364,13 @@ static void LatticeTriangleTrackDiag25DegUpTo60DegUp(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -6381,14 +6381,14 @@ static void LatticeTriangleTrackDiag25DegUpTo60DegUp(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             switch (direction)
@@ -6413,13 +6413,13 @@ static void LatticeTriangleTrackDiag25DegUpTo60DegUp(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 16, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -6440,13 +6440,13 @@ static void LatticeTriangleTrackDiag60DegUpTo25DegUp(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
             switch (direction)
@@ -6457,13 +6457,13 @@ static void LatticeTriangleTrackDiag60DegUpTo25DegUp(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -6474,14 +6474,14 @@ static void LatticeTriangleTrackDiag60DegUpTo25DegUp(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             switch (direction)
@@ -6506,13 +6506,13 @@ static void LatticeTriangleTrackDiag60DegUpTo25DegUp(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 21, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -6547,13 +6547,13 @@ static void LatticeTriangleTrackDiag25DegUpToFlat(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -6578,13 +6578,13 @@ static void LatticeTriangleTrackDiag25DegUpToFlat(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -6609,14 +6609,14 @@ static void LatticeTriangleTrackDiag25DegUpToFlat(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -6669,13 +6669,13 @@ static void LatticeTriangleTrackDiag25DegUpToFlat(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
     }
 }
@@ -6710,13 +6710,13 @@ static void LatticeTriangleTrackDiag25DegDown(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -6741,13 +6741,13 @@ static void LatticeTriangleTrackDiag25DegDown(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -6772,14 +6772,14 @@ static void LatticeTriangleTrackDiag25DegDown(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -6832,13 +6832,13 @@ static void LatticeTriangleTrackDiag25DegDown(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
     }
 }
@@ -6859,13 +6859,13 @@ static void LatticeTriangleTrackDiag60DegDown(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 104);
+            paintUtilSetGeneralSupportHeight(session, height + 104);
             break;
         case 1:
             switch (direction)
@@ -6876,13 +6876,13 @@ static void LatticeTriangleTrackDiag60DegDown(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 104);
+            paintUtilSetGeneralSupportHeight(session, height + 104);
             break;
         case 2:
             switch (direction)
@@ -6893,14 +6893,14 @@ static void LatticeTriangleTrackDiag60DegDown(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 104);
+            paintUtilSetGeneralSupportHeight(session, height + 104);
             break;
         case 3:
             switch (direction)
@@ -6925,13 +6925,13 @@ static void LatticeTriangleTrackDiag60DegDown(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 28, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 104);
+            paintUtilSetGeneralSupportHeight(session, height + 104);
             break;
     }
 }
@@ -6966,9 +6966,9 @@ static void LatticeTriangleTrackDiagFlatTo25DegDown(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
@@ -6996,9 +6996,9 @@ static void LatticeTriangleTrackDiagFlatTo25DegDown(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
@@ -7026,9 +7026,9 @@ static void LatticeTriangleTrackDiagFlatTo25DegDown(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
@@ -7085,16 +7085,16 @@ static void LatticeTriangleTrackDiagFlatTo25DegDown(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             break;
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + 56);
+    paintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x008ADB74 */
@@ -7113,13 +7113,13 @@ static void LatticeTriangleTrackDiag25DegDownTo60DegDown(
                         { { 0, 0, height }, { 16, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
             switch (direction)
@@ -7130,13 +7130,13 @@ static void LatticeTriangleTrackDiag25DegDownTo60DegDown(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -7147,14 +7147,14 @@ static void LatticeTriangleTrackDiag25DegDownTo60DegDown(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             switch (direction)
@@ -7179,13 +7179,13 @@ static void LatticeTriangleTrackDiag25DegDownTo60DegDown(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 17, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -7206,13 +7206,13 @@ static void LatticeTriangleTrackDiag60DegDownTo25DegDown(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
             switch (direction)
@@ -7223,13 +7223,13 @@ static void LatticeTriangleTrackDiag60DegDownTo25DegDown(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -7240,14 +7240,14 @@ static void LatticeTriangleTrackDiag60DegDownTo25DegDown(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             switch (direction)
@@ -7272,13 +7272,13 @@ static void LatticeTriangleTrackDiag60DegDownTo25DegDown(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 8, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -7313,13 +7313,13 @@ static void LatticeTriangleTrackDiag25DegDownToFlat(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -7344,13 +7344,13 @@ static void LatticeTriangleTrackDiag25DegDownToFlat(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -7375,14 +7375,14 @@ static void LatticeTriangleTrackDiag25DegDownToFlat(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -7435,13 +7435,13 @@ static void LatticeTriangleTrackDiag25DegDownToFlat(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -7462,13 +7462,13 @@ static void LatticeTriangleTrackDiagFlatToLeftBank(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -7482,13 +7482,13 @@ static void LatticeTriangleTrackDiagFlatToLeftBank(
                         { { -16, -16, height + 27 }, { 32, 32, 0 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -7499,14 +7499,14 @@ static void LatticeTriangleTrackDiagFlatToLeftBank(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -7531,13 +7531,13 @@ static void LatticeTriangleTrackDiagFlatToLeftBank(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -7558,13 +7558,13 @@ static void LatticeTriangleTrackDiagFlatToRightBank(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -7575,13 +7575,13 @@ static void LatticeTriangleTrackDiagFlatToRightBank(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -7595,14 +7595,14 @@ static void LatticeTriangleTrackDiagFlatToRightBank(
                         { { -16, -16, height + 27 }, { 32, 32, 0 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -7627,13 +7627,13 @@ static void LatticeTriangleTrackDiagFlatToRightBank(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -7654,13 +7654,13 @@ static void LatticeTriangleTrackDiagLeftBankToFlat(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -7674,13 +7674,13 @@ static void LatticeTriangleTrackDiagLeftBankToFlat(
                         { { -16, -16, height + 27 }, { 32, 32, 0 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -7691,14 +7691,14 @@ static void LatticeTriangleTrackDiagLeftBankToFlat(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -7723,13 +7723,13 @@ static void LatticeTriangleTrackDiagLeftBankToFlat(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -7750,13 +7750,13 @@ static void LatticeTriangleTrackDiagRightBankToFlat(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -7767,13 +7767,13 @@ static void LatticeTriangleTrackDiagRightBankToFlat(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -7787,14 +7787,14 @@ static void LatticeTriangleTrackDiagRightBankToFlat(
                         { { -16, -16, height + 27 }, { 32, 32, 0 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -7819,13 +7819,13 @@ static void LatticeTriangleTrackDiagRightBankToFlat(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -7846,13 +7846,13 @@ static void LatticeTriangleTrackDiagLeftBankTo25DegUp(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
@@ -7866,13 +7866,13 @@ static void LatticeTriangleTrackDiagLeftBankTo25DegUp(
                         { { -16, -16, height + 35 }, { 32, 32, 0 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -7883,14 +7883,14 @@ static void LatticeTriangleTrackDiagLeftBankTo25DegUp(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
@@ -7915,13 +7915,13 @@ static void LatticeTriangleTrackDiagLeftBankTo25DegUp(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -7942,13 +7942,13 @@ static void LatticeTriangleTrackDiagRightBankTo25DegUp(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
@@ -7959,13 +7959,13 @@ static void LatticeTriangleTrackDiagRightBankTo25DegUp(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -7979,14 +7979,14 @@ static void LatticeTriangleTrackDiagRightBankTo25DegUp(
                         { { -16, -16, height + 35 }, { 32, 32, 0 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
@@ -8011,13 +8011,13 @@ static void LatticeTriangleTrackDiagRightBankTo25DegUp(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -8038,13 +8038,13 @@ static void LatticeTriangleTrackDiag25DegUpToLeftBank(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 1:
             switch (direction)
@@ -8058,13 +8058,13 @@ static void LatticeTriangleTrackDiag25DegUpToLeftBank(
                         { { -16, -16, height + 35 }, { 32, 32, 0 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 2:
             switch (direction)
@@ -8075,14 +8075,14 @@ static void LatticeTriangleTrackDiag25DegUpToLeftBank(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 3:
             switch (direction)
@@ -8107,13 +8107,13 @@ static void LatticeTriangleTrackDiag25DegUpToLeftBank(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 4, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
     }
 }
@@ -8134,13 +8134,13 @@ static void LatticeTriangleTrackDiag25DegUpToRightBank(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 1:
             switch (direction)
@@ -8151,13 +8151,13 @@ static void LatticeTriangleTrackDiag25DegUpToRightBank(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 2:
             switch (direction)
@@ -8171,14 +8171,14 @@ static void LatticeTriangleTrackDiag25DegUpToRightBank(
                         { { -16, -16, height + 35 }, { 32, 32, 0 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 3:
             switch (direction)
@@ -8203,13 +8203,13 @@ static void LatticeTriangleTrackDiag25DegUpToRightBank(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 4, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
     }
 }
@@ -8230,9 +8230,9 @@ static void LatticeTriangleTrackDiagLeftBankTo25DegDown(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
@@ -8249,9 +8249,9 @@ static void LatticeTriangleTrackDiagLeftBankTo25DegDown(
                         { { -16, -16, height + 35 }, { 32, 32, 0 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
@@ -8265,9 +8265,9 @@ static void LatticeTriangleTrackDiagLeftBankTo25DegDown(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
@@ -8296,16 +8296,16 @@ static void LatticeTriangleTrackDiagLeftBankTo25DegDown(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 4, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             break;
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + 56);
+    paintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x008ADC54 */
@@ -8324,9 +8324,9 @@ static void LatticeTriangleTrackDiagRightBankTo25DegDown(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
@@ -8340,9 +8340,9 @@ static void LatticeTriangleTrackDiagRightBankTo25DegDown(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
@@ -8359,9 +8359,9 @@ static void LatticeTriangleTrackDiagRightBankTo25DegDown(
                         { { -16, -16, height + 35 }, { 32, 32, 0 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
@@ -8390,16 +8390,16 @@ static void LatticeTriangleTrackDiagRightBankTo25DegDown(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 4, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             break;
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + 56);
+    paintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x008ADC64 */
@@ -8418,13 +8418,13 @@ static void LatticeTriangleTrackDiag25DegDownToLeftBank(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
@@ -8438,13 +8438,13 @@ static void LatticeTriangleTrackDiag25DegDownToLeftBank(
                         { { -16, -16, height + 35 }, { 32, 32, 0 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -8455,14 +8455,14 @@ static void LatticeTriangleTrackDiag25DegDownToLeftBank(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
@@ -8487,13 +8487,13 @@ static void LatticeTriangleTrackDiag25DegDownToLeftBank(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -8514,13 +8514,13 @@ static void LatticeTriangleTrackDiag25DegDownToRightBank(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
@@ -8531,13 +8531,13 @@ static void LatticeTriangleTrackDiag25DegDownToRightBank(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -8551,14 +8551,14 @@ static void LatticeTriangleTrackDiag25DegDownToRightBank(
                         { { -16, -16, height + 35 }, { 32, 32, 0 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
@@ -8583,13 +8583,13 @@ static void LatticeTriangleTrackDiag25DegDownToRightBank(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -8610,13 +8610,13 @@ static void LatticeTriangleTrackDiagLeftBank(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -8627,13 +8627,13 @@ static void LatticeTriangleTrackDiagLeftBank(
                         { { -16, -16, height + 27 }, { 32, 32, 0 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -8644,14 +8644,14 @@ static void LatticeTriangleTrackDiagLeftBank(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -8676,13 +8676,13 @@ static void LatticeTriangleTrackDiagLeftBank(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -8703,13 +8703,13 @@ static void LatticeTriangleTrackDiagRightBank(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -8720,13 +8720,13 @@ static void LatticeTriangleTrackDiagRightBank(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -8737,14 +8737,14 @@ static void LatticeTriangleTrackDiagRightBank(
                         { { -16, -16, height + 27 }, { 32, 32, 0 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -8769,13 +8769,13 @@ static void LatticeTriangleTrackDiagRightBank(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -8798,8 +8798,8 @@ static void LatticeTriangleTrackBlockBrakes(
         MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 0, height, session.supportColours);
     }
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x008ADCC4 */
@@ -8835,19 +8835,19 @@ static void LatticeTriangleTrackLeftBankedQuarterTurn325DegUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 2:
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 3:
             switch (direction)
@@ -8881,13 +8881,13 @@ static void LatticeTriangleTrackLeftBankedQuarterTurn325DegUp(
                     PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -8925,19 +8925,19 @@ static void LatticeTriangleTrackRightBankedQuarterTurn325DegUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 2:
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 3:
             switch (direction)
@@ -8978,13 +8978,13 @@ static void LatticeTriangleTrackRightBankedQuarterTurn325DegUp(
                     PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -9045,16 +9045,16 @@ static void LatticeTriangleTrackLeftBankedQuarterTurn525DegUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -9079,15 +9079,15 @@ static void LatticeTriangleTrackLeftBankedQuarterTurn525DegUp(
                         { { 0, 16, height }, { 32, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             switch (direction)
@@ -9112,16 +9112,16 @@ static void LatticeTriangleTrackLeftBankedQuarterTurn525DegUp(
                         session, direction, session.trackColours.WithIndex(18641), { 0, 0, height }, { 16, 16, 3 });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 5:
             switch (direction)
@@ -9147,15 +9147,15 @@ static void LatticeTriangleTrackLeftBankedQuarterTurn525DegUp(
                         { { 16, 0, height }, { 16, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 6:
             switch (direction)
@@ -9191,13 +9191,13 @@ static void LatticeTriangleTrackLeftBankedQuarterTurn525DegUp(
                     PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -9238,16 +9238,16 @@ static void LatticeTriangleTrackRightBankedQuarterTurn525DegUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -9272,15 +9272,15 @@ static void LatticeTriangleTrackRightBankedQuarterTurn525DegUp(
                         session, direction, session.trackColours.WithIndex(18620), { 0, 0, height }, { 32, 16, 3 });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             switch (direction)
@@ -9305,16 +9305,16 @@ static void LatticeTriangleTrackRightBankedQuarterTurn525DegUp(
                         { { 0, 16, height }, { 16, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 5:
             switch (direction)
@@ -9340,15 +9340,15 @@ static void LatticeTriangleTrackRightBankedQuarterTurn525DegUp(
                         { { 16, 0, height }, { 16, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 6:
             switch (direction)
@@ -9384,13 +9384,13 @@ static void LatticeTriangleTrackRightBankedQuarterTurn525DegUp(
                     PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -9458,8 +9458,8 @@ static void LatticeTriangleTrack25DegUpToLeftBanked25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x008ADD54 */
@@ -9505,8 +9505,8 @@ static void LatticeTriangleTrack25DegUpToRightBanked25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x008ADD64 */
@@ -9552,8 +9552,8 @@ static void LatticeTriangleTrackLeftBanked25DegUpTo25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x008ADD74 */
@@ -9599,8 +9599,8 @@ static void LatticeTriangleTrackRightBanked25DegUpTo25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x008ADD84 */
@@ -9679,8 +9679,8 @@ static void LatticeTriangleTrackLeftBankedFlatToLeftBanked25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x008ADDD4 */
@@ -9723,8 +9723,8 @@ static void LatticeTriangleTrackRightBankedFlatToRightBanked25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x008ADE04 */
@@ -9767,8 +9767,8 @@ static void LatticeTriangleTrackLeftBanked25DegUpToLeftBankedFlat(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
     }
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 40);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
 /** rct2: 0x008ADE14 */
@@ -9811,8 +9811,8 @@ static void LatticeTriangleTrackRightBanked25DegUpToRightBankedFlat(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
     }
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 40);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
 /** rct2: 0x008ADE24 */
@@ -9894,8 +9894,8 @@ static void LatticeTriangleTrackFlatToLeftBanked25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x008ADE54 */
@@ -9941,8 +9941,8 @@ static void LatticeTriangleTrackFlatToRightBanked25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x008ADE64 */
@@ -9988,8 +9988,8 @@ static void LatticeTriangleTrackLeftBanked25DegUpToFlat(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
     }
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 40);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
 /** rct2: 0x008ADE74 */
@@ -10035,8 +10035,8 @@ static void LatticeTriangleTrackRightBanked25DegUpToFlat(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
     }
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 40);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
 /** rct2: 0x008ADE84 */
@@ -10099,8 +10099,8 @@ static void LatticeTriangleTrackBooster(
         MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 0, height, session.supportColours);
     }
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 static void LatticeTriangleTrackPoweredLift(
@@ -10123,8 +10123,8 @@ static void LatticeTriangleTrackPoweredLift(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 static void LatticeTriangleTrack90DegUp(
@@ -10158,9 +10158,9 @@ static void LatticeTriangleTrack90DegUp(
                     break;
             }
             PaintUtilSetVerticalTunnel(session, height + 32);
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             break;
@@ -10214,9 +10214,9 @@ static void LatticeTriangleTrack60DegUpTo90DegUp(
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
             PaintUtilSetVerticalTunnel(session, height + 56);
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 1:
             break;
@@ -10266,8 +10266,8 @@ static void LatticeTriangleTrack90DegUpTo60DegUp(
             PaintUtilPushTunnelLeft(session, height + 48, kTunnelGroup, TunnelSubType::SlopeEnd);
             break;
     }
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 80);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 80);
 }
 
 static void LatticeTriangleTrack60DegDownTo90DegDown(
@@ -10304,9 +10304,9 @@ static void LatticeTriangleTrack60DegDownTo90DegDown(
             {
                 PaintUtilPushTunnelRotated(session, direction, height + 48, kTunnelGroup, TunnelSubType::SlopeEnd);
             }
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 80);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 80);
             break;
         case 1:
             break;
@@ -10356,9 +10356,9 @@ static void LatticeTriangleTrackLeftQuarterTurn190DegUp(
                     break;
             }
             PaintUtilSetVerticalTunnel(session, height + 96);
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 96);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 96);
             break;
         case 1:
             break;
@@ -10408,9 +10408,9 @@ static void LatticeTriangleTrackRightQuarterTurn190DegUp(
                     break;
             }
             PaintUtilSetVerticalTunnel(session, height + 96);
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 96);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 96);
             break;
         case 1:
             break;
@@ -10491,15 +10491,15 @@ static void LatticeTriangleTrackLeftBarrelRollUpToDown(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft,
                         PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -10541,15 +10541,15 @@ static void LatticeTriangleTrackLeftBarrelRollUpToDown(
                         { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -10602,15 +10602,15 @@ static void LatticeTriangleTrackLeftBarrelRollUpToDown(
                     PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Tall);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft,
                         PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -10677,15 +10677,15 @@ static void LatticeTriangleTrackRightBarrelRollUpToDown(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
                         PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -10731,15 +10731,15 @@ static void LatticeTriangleTrackRightBarrelRollUpToDown(
                         { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -10794,15 +10794,15 @@ static void LatticeTriangleTrackRightBarrelRollUpToDown(
                     PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Tall);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
                         PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -10858,9 +10858,9 @@ static void LatticeTriangleTrackHalfLoopUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 1:
             switch (direction)
@@ -10894,8 +10894,8 @@ static void LatticeTriangleTrackHalfLoopUp(
                         session, supportType.metal, MetalSupportPlace::centre, 16, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -10921,15 +10921,15 @@ static void LatticeTriangleTrackHalfLoopUp(
                         { 16, 16, height }, { { 15, 6, height }, { 2, 16, 119 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 168);
+            paintUtilSetGeneralSupportHeight(session, height + 168);
             break;
         case 3:
             switch (direction)
@@ -10959,9 +10959,9 @@ static void LatticeTriangleTrackHalfLoopUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -11016,15 +11016,15 @@ static void LatticeTriangleTrackLeftVerticalLoop(
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 1:
             switch (direction)
@@ -11059,15 +11059,15 @@ static void LatticeTriangleTrackLeftVerticalLoop(
                         session, supportType.metal, MetalSupportPlace::centre, 5, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -11095,13 +11095,13 @@ static void LatticeTriangleTrackLeftVerticalLoop(
                         { 16, 16, height }, { { 16, 16, height }, { 2, 16, 119 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 168);
+            paintUtilSetGeneralSupportHeight(session, height + 168);
             break;
         case 3:
             switch (direction)
@@ -11129,21 +11129,21 @@ static void LatticeTriangleTrackLeftVerticalLoop(
                         { 0, 16, height + 32 }, { 32, 16, 3 });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 5:
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 6:
             switch (direction)
@@ -11171,15 +11171,15 @@ static void LatticeTriangleTrackLeftVerticalLoop(
                         { 0, 0, height + 32 }, { 32, 16, 3 });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 7:
             switch (direction)
@@ -11207,13 +11207,13 @@ static void LatticeTriangleTrackLeftVerticalLoop(
                         { 12, 0, height }, { { 12, 0, height }, { 3, 16, 119 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 168);
+            paintUtilSetGeneralSupportHeight(session, height + 168);
             break;
         case 8:
             switch (direction)
@@ -11248,15 +11248,15 @@ static void LatticeTriangleTrackLeftVerticalLoop(
                         session, supportType.metal, MetalSupportPlace::centre, 0, height + 10, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 9:
             switch (direction)
@@ -11300,15 +11300,15 @@ static void LatticeTriangleTrackLeftVerticalLoop(
                     PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
     }
 }
@@ -11352,7 +11352,7 @@ static void LatticeTriangleTrackRightVerticalLoop(
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 1:
             switch (direction)
@@ -11390,7 +11390,7 @@ static void LatticeTriangleTrackRightVerticalLoop(
                         session, supportType.metal, MetalSupportPlace::centre, 26, height, session.supportColours);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -11420,7 +11420,7 @@ static void LatticeTriangleTrackRightVerticalLoop(
                         { { 16, 0, height }, { 2, 16, 119 } });
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 168);
+            paintUtilSetGeneralSupportHeight(session, height + 168);
             break;
         case 3:
             switch (direction)
@@ -11450,13 +11450,13 @@ static void LatticeTriangleTrackRightVerticalLoop(
                         { 0, 0, height + 32 }, { 32, 16, 3 });
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 5:
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 6:
             switch (direction)
@@ -11486,7 +11486,7 @@ static void LatticeTriangleTrackRightVerticalLoop(
                         { 0, 16, height + 32 }, { 32, 16, 3 });
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 7:
             switch (direction)
@@ -11516,7 +11516,7 @@ static void LatticeTriangleTrackRightVerticalLoop(
                         { 10, 16, height }, { { 10, 16, height }, { 4, 16, 119 } });
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 168);
+            paintUtilSetGeneralSupportHeight(session, height + 168);
             break;
         case 8:
             switch (direction)
@@ -11554,7 +11554,7 @@ static void LatticeTriangleTrackRightVerticalLoop(
                         session, supportType.metal, MetalSupportPlace::centre, 14, height, session.supportColours);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 9:
             switch (direction)
@@ -11594,7 +11594,7 @@ static void LatticeTriangleTrackRightVerticalLoop(
                     PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
     }
 
@@ -11643,15 +11643,15 @@ static void LatticeTriangleTrackLeftCorkscrewUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
                         PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
@@ -11677,8 +11677,8 @@ static void LatticeTriangleTrackLeftCorkscrewUp(
                         { 0, 0, height }, { { 6, 6, height + 10 }, { 20, 20, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -11705,9 +11705,9 @@ static void LatticeTriangleTrackLeftCorkscrewUp(
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft,
                         PaintSegment::bottomRight),
@@ -11725,7 +11725,7 @@ static void LatticeTriangleTrackLeftCorkscrewUp(
                     PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -11772,15 +11772,15 @@ static void LatticeTriangleTrackRightCorkscrewUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft,
                         PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
@@ -11806,8 +11806,8 @@ static void LatticeTriangleTrackRightCorkscrewUp(
                         { 0, 0, height }, { { 6, 6, height + 10 }, { 20, 20, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -11834,9 +11834,9 @@ static void LatticeTriangleTrackRightCorkscrewUp(
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft,
                         PaintSegment::bottomRight),
@@ -11854,7 +11854,7 @@ static void LatticeTriangleTrackRightCorkscrewUp(
                     PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -11915,15 +11915,15 @@ static void LatticeTriangleTrackLeftLargeCorkscrewUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
                         PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 40);
+            paintUtilSetGeneralSupportHeight(session, height + 40);
             break;
         case 1:
             switch (direction)
@@ -11961,15 +11961,15 @@ static void LatticeTriangleTrackLeftLargeCorkscrewUp(
                         session, supportType.metal, MetalSupportPlace::topLeftSide, 16, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 2:
             switch (direction)
@@ -11999,21 +11999,21 @@ static void LatticeTriangleTrackLeftLargeCorkscrewUp(
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 4:
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::bottomLeft, PaintSegment::bottom, PaintSegment::topLeft,
                         PaintSegment::centre, PaintSegment::bottomRight),
@@ -12055,7 +12055,7 @@ static void LatticeTriangleTrackLeftLargeCorkscrewUp(
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 5:
             switch (direction)
@@ -12086,9 +12086,9 @@ static void LatticeTriangleTrackLeftLargeCorkscrewUp(
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::bottomLeft, PaintSegment::bottom, PaintSegment::topLeft,
                         PaintSegment::centre, PaintSegment::bottomRight),
@@ -12103,7 +12103,7 @@ static void LatticeTriangleTrackLeftLargeCorkscrewUp(
                     PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -12149,15 +12149,15 @@ static void LatticeTriangleTrackRightLargeCorkscrewUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::right, PaintSegment::topRight,
                         PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 40);
+            paintUtilSetGeneralSupportHeight(session, height + 40);
             break;
         case 1:
             switch (direction)
@@ -12195,15 +12195,15 @@ static void LatticeTriangleTrackRightLargeCorkscrewUp(
                         session, supportType.metal, MetalSupportPlace::topLeftSide, 21, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomRight,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 2:
             switch (direction)
@@ -12233,22 +12233,22 @@ static void LatticeTriangleTrackRightLargeCorkscrewUp(
                         { 0, 0, height }, { { 0, 31, height }, { 48, 1, 64 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 4:
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::bottomLeft, PaintSegment::bottom, PaintSegment::topLeft,
                         PaintSegment::centre, PaintSegment::bottomRight),
@@ -12289,7 +12289,7 @@ static void LatticeTriangleTrackRightLargeCorkscrewUp(
                         session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 65, session.supportColours);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 5:
             switch (direction)
@@ -12320,9 +12320,9 @@ static void LatticeTriangleTrackRightLargeCorkscrewUp(
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::bottomLeft, PaintSegment::bottom, PaintSegment::topLeft,
                         PaintSegment::centre, PaintSegment::bottomRight),
@@ -12337,7 +12337,7 @@ static void LatticeTriangleTrackRightLargeCorkscrewUp(
                     PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -12399,9 +12399,9 @@ static void LatticeTriangleTrackLeftMediumHalfLoopUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
@@ -12432,15 +12432,15 @@ static void LatticeTriangleTrackLeftMediumHalfLoopUp(
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::topLeft, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::top),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -12478,13 +12478,13 @@ static void LatticeTriangleTrackLeftMediumHalfLoopUp(
                         session, supportType.metal, MetalSupportPlace::bottomLeftSide, 14, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::topLeft, PaintSegment::centre, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 144);
+            paintUtilSetGeneralSupportHeight(session, height + 144);
             break;
         case 3:
             switch (direction)
@@ -12514,14 +12514,14 @@ static void LatticeTriangleTrackLeftMediumHalfLoopUp(
                         { 0, 0, height }, { { 0, 0, height }, { 1, 32, 160 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 144);
+            paintUtilSetGeneralSupportHeight(session, height + 144);
             break;
         case 4:
             switch (direction)
@@ -12552,9 +12552,9 @@ static void LatticeTriangleTrackLeftMediumHalfLoopUp(
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::topRight, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottom,
                         PaintSegment::bottomRight, PaintSegment::right),
@@ -12565,7 +12565,7 @@ static void LatticeTriangleTrackLeftMediumHalfLoopUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height + 16, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -12611,9 +12611,9 @@ static void LatticeTriangleTrackRightMediumHalfLoopUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
@@ -12644,15 +12644,15 @@ static void LatticeTriangleTrackRightMediumHalfLoopUp(
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::topRight, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottom,
                         PaintSegment::bottomRight, PaintSegment::right),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -12690,14 +12690,14 @@ static void LatticeTriangleTrackRightMediumHalfLoopUp(
                         session, supportType.metal, MetalSupportPlace::topRightSide, 14, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 144);
+            paintUtilSetGeneralSupportHeight(session, height + 144);
             break;
         case 3:
             switch (direction)
@@ -12728,13 +12728,13 @@ static void LatticeTriangleTrackRightMediumHalfLoopUp(
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 144);
+            paintUtilSetGeneralSupportHeight(session, height + 144);
             break;
         case 4:
             switch (direction)
@@ -12765,9 +12765,9 @@ static void LatticeTriangleTrackRightMediumHalfLoopUp(
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::topLeft, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::top),
@@ -12777,7 +12777,7 @@ static void LatticeTriangleTrackRightMediumHalfLoopUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height + 16, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -12846,9 +12846,9 @@ static void LatticeTriangleTrackLeftZeroGRollUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 40);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 40);
             break;
         case 1:
             switch (direction)
@@ -12875,15 +12875,15 @@ static void LatticeTriangleTrackLeftZeroGRollUp(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::topLeft, PaintSegment::top, PaintSegment::bottomLeft,
                         PaintSegment::centre, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -12928,9 +12928,9 @@ static void LatticeTriangleTrackLeftZeroGRollUp(
                     PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::topLeft, PaintSegment::top, PaintSegment::bottomLeft,
                         PaintSegment::centre, PaintSegment::topRight),
@@ -12938,7 +12938,7 @@ static void LatticeTriangleTrackLeftZeroGRollUp(
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
                 session, supportType.metal, MetalSupportPlace::centre, 0, height + 42, session.supportColours);
-            PaintUtilSetGeneralSupportHeight(session, height + 40);
+            paintUtilSetGeneralSupportHeight(session, height + 40);
             break;
     }
 }
@@ -12997,9 +12997,9 @@ static void LatticeTriangleTrackRightZeroGRollUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 40);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 40);
             break;
         case 1:
             switch (direction)
@@ -13029,15 +13029,15 @@ static void LatticeTriangleTrackRightZeroGRollUp(
                         { { 0, 6, height + 32 }, { 32, 20, 1 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::bottomRight, PaintSegment::right, PaintSegment::bottomLeft,
                         PaintSegment::centre, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -13084,9 +13084,9 @@ static void LatticeTriangleTrackRightZeroGRollUp(
                     PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::bottomRight, PaintSegment::right, PaintSegment::bottomLeft,
                         PaintSegment::centre, PaintSegment::topRight),
@@ -13094,7 +13094,7 @@ static void LatticeTriangleTrackRightZeroGRollUp(
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
                 session, supportType.metal, MetalSupportPlace::centre, 0, height + 42, session.supportColours);
-            PaintUtilSetGeneralSupportHeight(session, height + 40);
+            paintUtilSetGeneralSupportHeight(session, height + 40);
             break;
     }
 }
@@ -13158,9 +13158,9 @@ static void LatticeTriangleTrackLeftLargeZeroGRollUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 1:
             switch (direction)
@@ -13194,9 +13194,9 @@ static void LatticeTriangleTrackLeftLargeZeroGRollUp(
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -13230,20 +13230,20 @@ static void LatticeTriangleTrackLeftLargeZeroGRollUp(
                         { 0, 0, height }, { { 0, 6, height + 40 }, { 32, 20, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::topLeft, PaintSegment::top, PaintSegment::bottomLeft,
                         PaintSegment::centre, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 3:
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::topLeft, PaintSegment::top, PaintSegment::bottomLeft,
                         PaintSegment::centre, PaintSegment::topRight),
@@ -13297,7 +13297,7 @@ static void LatticeTriangleTrackLeftLargeZeroGRollUp(
                     PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 40);
+            paintUtilSetGeneralSupportHeight(session, height + 40);
             break;
     }
 }
@@ -13345,9 +13345,9 @@ static void LatticeTriangleTrackRightLargeZeroGRollUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 1:
             switch (direction)
@@ -13381,9 +13381,9 @@ static void LatticeTriangleTrackRightLargeZeroGRollUp(
                         { 0, 0, height }, { { 0, 30, height }, { 32, 0, 96 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -13418,20 +13418,20 @@ static void LatticeTriangleTrackRightLargeZeroGRollUp(
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 3:
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
@@ -13485,7 +13485,7 @@ static void LatticeTriangleTrackRightLargeZeroGRollUp(
                     PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 40);
+            paintUtilSetGeneralSupportHeight(session, height + 40);
             break;
     }
 }
@@ -13540,9 +13540,9 @@ static void LatticeTriangleTrack90DegToInvertedFlatQuarterLoopUp(
                         { { 4, 6, height + 8 }, { 2, 20, 31 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 1:
             switch (direction)
@@ -13572,9 +13572,9 @@ static void LatticeTriangleTrack90DegToInvertedFlatQuarterLoopUp(
                         { { -8, 6, height }, { 2, 20, 31 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 2:
             switch (direction)
@@ -13608,9 +13608,9 @@ static void LatticeTriangleTrack90DegToInvertedFlatQuarterLoopUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -13666,19 +13666,19 @@ static void LatticeTriangleTrackLeftBankToLeftQuarterTurn3Tile25DegUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
@@ -13719,13 +13719,13 @@ static void LatticeTriangleTrackLeftBankToLeftQuarterTurn3Tile25DegUp(
                     PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
     }
 }
@@ -13773,19 +13773,19 @@ static void LatticeTriangleTrackRightBankToRightQuarterTurn3Tile25DegUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
@@ -13826,13 +13826,13 @@ static void LatticeTriangleTrackRightBankToRightQuarterTurn3Tile25DegUp(
                     PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
     }
 }
@@ -13877,19 +13877,19 @@ static void LatticeTriangleTrackLeftQuarterTurn3Tile25DegDownToLeftBank(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
@@ -13933,13 +13933,13 @@ static void LatticeTriangleTrackLeftQuarterTurn3Tile25DegDownToLeftBank(
                     PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
     }
 }
@@ -13984,19 +13984,19 @@ static void LatticeTriangleTrackRightQuarterTurn3Tile25DegDownToRightBank(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
@@ -14040,13 +14040,13 @@ static void LatticeTriangleTrackRightQuarterTurn3Tile25DegDownToRightBank(
                     PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
     }
 }
@@ -14090,9 +14090,9 @@ static void LatticeTriangleTrackLeftLargeHalfLoopUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 1:
             switch (direction)
@@ -14130,9 +14130,9 @@ static void LatticeTriangleTrackLeftLargeHalfLoopUp(
                         session, supportType.metal, MetalSupportPlace::centre, 0, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -14162,15 +14162,15 @@ static void LatticeTriangleTrackLeftLargeHalfLoopUp(
                         { 0, 0, height }, { { 0, 16, height }, { 32, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88);
+            paintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 3:
             switch (direction)
@@ -14208,15 +14208,15 @@ static void LatticeTriangleTrackLeftLargeHalfLoopUp(
                         session, supportType.metal, MetalSupportPlace::bottomLeftSide, 22, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 224);
+            paintUtilSetGeneralSupportHeight(session, height + 224);
             break;
         case 4:
             switch (direction)
@@ -14246,14 +14246,14 @@ static void LatticeTriangleTrackLeftLargeHalfLoopUp(
                         { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 128);
+            paintUtilSetGeneralSupportHeight(session, height + 128);
             break;
         case 5:
             switch (direction)
@@ -14283,15 +14283,15 @@ static void LatticeTriangleTrackLeftLargeHalfLoopUp(
                         { 0, 0, height }, { { 0, 0, height }, { 32, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 224);
+            paintUtilSetGeneralSupportHeight(session, height + 224);
             break;
         case 6:
             switch (direction)
@@ -14325,15 +14325,15 @@ static void LatticeTriangleTrackLeftLargeHalfLoopUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 40);
+            paintUtilSetGeneralSupportHeight(session, height + 40);
             break;
     }
 }
@@ -14377,9 +14377,9 @@ static void LatticeTriangleTrackRightLargeHalfLoopUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 1:
             switch (direction)
@@ -14417,9 +14417,9 @@ static void LatticeTriangleTrackRightLargeHalfLoopUp(
                         session, supportType.metal, MetalSupportPlace::centre, 12, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -14449,15 +14449,15 @@ static void LatticeTriangleTrackRightLargeHalfLoopUp(
                         { 0, 0, height }, { { 0, 0, height }, { 32, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88);
+            paintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 3:
             switch (direction)
@@ -14495,15 +14495,15 @@ static void LatticeTriangleTrackRightLargeHalfLoopUp(
                         session, supportType.metal, MetalSupportPlace::topRightSide, 14, height + 8, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 224);
+            paintUtilSetGeneralSupportHeight(session, height + 224);
             break;
         case 4:
             switch (direction)
@@ -14533,13 +14533,13 @@ static void LatticeTriangleTrackRightLargeHalfLoopUp(
                         { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 128);
+            paintUtilSetGeneralSupportHeight(session, height + 128);
             break;
         case 5:
             switch (direction)
@@ -14569,15 +14569,15 @@ static void LatticeTriangleTrackRightLargeHalfLoopUp(
                         { 0, 0, height }, { { 0, 16, height }, { 32, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 224);
+            paintUtilSetGeneralSupportHeight(session, height + 224);
             break;
         case 6:
             switch (direction)
@@ -14611,15 +14611,15 @@ static void LatticeTriangleTrackRightLargeHalfLoopUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 40);
+            paintUtilSetGeneralSupportHeight(session, height + 40);
             break;
     }
 }
@@ -14680,8 +14680,8 @@ static void LatticeTriangleTrackFlatTo60DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 64);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 64);
 }
 
 static void LatticeTriangleTrack60DegUpToFlat(
@@ -14728,8 +14728,8 @@ static void LatticeTriangleTrack60DegUpToFlat(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 24, kTunnelGroup, TunnelSubType::Flat);
     }
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 72);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
 static void LatticeTriangleTrackFlatTo60DegDown(
@@ -14762,13 +14762,13 @@ static void LatticeTriangleTrackDiagFlatTo60DegUp(
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 1:
             switch (direction)
@@ -14780,13 +14780,13 @@ static void LatticeTriangleTrackDiagFlatTo60DegUp(
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 2:
             switch (direction)
@@ -14798,14 +14798,14 @@ static void LatticeTriangleTrackDiagFlatTo60DegUp(
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 3:
             switch (direction)
@@ -14831,13 +14831,13 @@ static void LatticeTriangleTrackDiagFlatTo60DegUp(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 4, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
     }
 }
@@ -14858,13 +14858,13 @@ static void LatticeTriangleTrackDiag60DegUpToFlat(
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
             switch (direction)
@@ -14876,13 +14876,13 @@ static void LatticeTriangleTrackDiag60DegUpToFlat(
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -14894,14 +14894,14 @@ static void LatticeTriangleTrackDiag60DegUpToFlat(
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             switch (direction)
@@ -14927,13 +14927,13 @@ static void LatticeTriangleTrackDiag60DegUpToFlat(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 18, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -14954,13 +14954,13 @@ static void LatticeTriangleTrackDiagFlatTo60DegDown(
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
             switch (direction)
@@ -14972,13 +14972,13 @@ static void LatticeTriangleTrackDiagFlatTo60DegDown(
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -14990,14 +14990,14 @@ static void LatticeTriangleTrackDiagFlatTo60DegDown(
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             switch (direction)
@@ -15023,13 +15023,13 @@ static void LatticeTriangleTrackDiagFlatTo60DegDown(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 14, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -15050,13 +15050,13 @@ static void LatticeTriangleTrackDiag60DegDownToFlat(
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 1:
             switch (direction)
@@ -15068,13 +15068,13 @@ static void LatticeTriangleTrackDiag60DegDownToFlat(
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 2:
             switch (direction)
@@ -15086,14 +15086,14 @@ static void LatticeTriangleTrackDiag60DegDownToFlat(
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 3:
             switch (direction)
@@ -15119,13 +15119,13 @@ static void LatticeTriangleTrackDiag60DegDownToFlat(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 2, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
     }
 }
@@ -15169,9 +15169,9 @@ static void LatticeTriangleTrackLeftEighthToDiagUp25(
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
             switch (direction)
@@ -15201,15 +15201,15 @@ static void LatticeTriangleTrackLeftEighthToDiagUp25(
                         { 0, 0, height }, { { 0, 16, height }, { 32, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -15239,24 +15239,24 @@ static void LatticeTriangleTrackLeftEighthToDiagUp25(
                         { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 4:
             switch (direction)
@@ -15294,15 +15294,15 @@ static void LatticeTriangleTrackLeftEighthToDiagUp25(
                         session, supportType.metal, MetalSupportPlace::rightCorner, 1, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -15346,9 +15346,9 @@ static void LatticeTriangleTrackRightEighthToDiagUp25(
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
             switch (direction)
@@ -15378,15 +15378,15 @@ static void LatticeTriangleTrackRightEighthToDiagUp25(
                         { 0, 0, height }, { { 0, 0, height }, { 32, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -15416,25 +15416,25 @@ static void LatticeTriangleTrackRightEighthToDiagUp25(
                         { 0, 0, height }, { { 0, 16, height }, { 16, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 4:
             switch (direction)
@@ -15472,15 +15472,15 @@ static void LatticeTriangleTrackRightEighthToDiagUp25(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 2, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -15527,15 +15527,15 @@ static void LatticeTriangleTrackLeftEighthToOrthogonalUp25(
                         session, supportType.metal, MetalSupportPlace::topCorner, 4, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
             switch (direction)
@@ -15565,24 +15565,24 @@ static void LatticeTriangleTrackLeftEighthToOrthogonalUp25(
                         { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft,
                         PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             switch (direction)
@@ -15612,15 +15612,15 @@ static void LatticeTriangleTrackLeftEighthToOrthogonalUp25(
                         { 0, 0, height }, { { 0, 16, height }, { 32, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 4:
             switch (direction)
@@ -15657,9 +15657,9 @@ static void LatticeTriangleTrackLeftEighthToOrthogonalUp25(
                 PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
             }
 
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -15706,15 +15706,15 @@ static void LatticeTriangleTrackRightEighthToOrthogonalUp25(
                         session, supportType.metal, MetalSupportPlace::topCorner, 4, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
             switch (direction)
@@ -15744,25 +15744,25 @@ static void LatticeTriangleTrackRightEighthToOrthogonalUp25(
                         { 0, 0, height }, { { 0, 16, height }, { 16, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::right, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             switch (direction)
@@ -15792,15 +15792,15 @@ static void LatticeTriangleTrackRightEighthToOrthogonalUp25(
                         { 0, 0, height }, { { 16, 0, height }, { 16, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 4:
             switch (direction)
@@ -15835,12 +15835,12 @@ static void LatticeTriangleTrackRightEighthToOrthogonalUp25(
             {
                 PaintUtilPushTunnelRotated(session, direction + 1, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight), direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -15899,13 +15899,13 @@ static void LatticeTriangleTrackDiagUp25ToLeftBankedUp25(
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
             switch (direction)
@@ -15921,13 +15921,13 @@ static void LatticeTriangleTrackDiagUp25ToLeftBankedUp25(
                         { -16, -16, height }, { { -16, -16, height + 48 }, { 32, 32, 0 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -15939,14 +15939,14 @@ static void LatticeTriangleTrackDiagUp25ToLeftBankedUp25(
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             switch (direction)
@@ -15972,13 +15972,13 @@ static void LatticeTriangleTrackDiagUp25ToLeftBankedUp25(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 10, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -15999,13 +15999,13 @@ static void LatticeTriangleTrackDiagUp25ToRightBankedUp25(
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
             switch (direction)
@@ -16017,13 +16017,13 @@ static void LatticeTriangleTrackDiagUp25ToRightBankedUp25(
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -16039,14 +16039,14 @@ static void LatticeTriangleTrackDiagUp25ToRightBankedUp25(
                         { -16, -16, height }, { { -16, -16, height + 48 }, { 32, 32, 0 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             switch (direction)
@@ -16072,13 +16072,13 @@ static void LatticeTriangleTrackDiagUp25ToRightBankedUp25(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 10, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -16099,13 +16099,13 @@ static void LatticeTriangleTrackDiagLeftBankedUp25ToUp25(
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 1:
             switch (direction)
@@ -16121,13 +16121,13 @@ static void LatticeTriangleTrackDiagLeftBankedUp25ToUp25(
                         { -16, -16, height }, { { -16, -16, height + 48 }, { 32, 32, 0 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 2:
             switch (direction)
@@ -16139,14 +16139,14 @@ static void LatticeTriangleTrackDiagLeftBankedUp25ToUp25(
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 3:
             switch (direction)
@@ -16172,13 +16172,13 @@ static void LatticeTriangleTrackDiagLeftBankedUp25ToUp25(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 9, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
     }
 }
@@ -16199,13 +16199,13 @@ static void LatticeTriangleTrackDiagRightBankedUp25ToUp25(
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 1:
             switch (direction)
@@ -16217,13 +16217,13 @@ static void LatticeTriangleTrackDiagRightBankedUp25ToUp25(
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 2:
             switch (direction)
@@ -16239,14 +16239,14 @@ static void LatticeTriangleTrackDiagRightBankedUp25ToUp25(
                         { -16, -16, height }, { { -16, -16, height + 48 }, { 32, 32, 0 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 3:
             switch (direction)
@@ -16272,13 +16272,13 @@ static void LatticeTriangleTrackDiagRightBankedUp25ToUp25(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 9, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
     }
 }
@@ -16331,13 +16331,13 @@ static void LatticeTriangleTrackDiagLeftBankedFlatToLeftBankedUp25(
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
@@ -16349,13 +16349,13 @@ static void LatticeTriangleTrackDiagLeftBankedFlatToLeftBankedUp25(
                         { -16, -16, height }, { { -16, -16, height + 27 }, { 32, 32, 0 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -16367,14 +16367,14 @@ static void LatticeTriangleTrackDiagLeftBankedFlatToLeftBankedUp25(
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
@@ -16400,13 +16400,13 @@ static void LatticeTriangleTrackDiagLeftBankedFlatToLeftBankedUp25(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 4, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -16427,13 +16427,13 @@ static void LatticeTriangleTrackDiagRightBankedFlatToRightBankedUp25(
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
@@ -16445,13 +16445,13 @@ static void LatticeTriangleTrackDiagRightBankedFlatToRightBankedUp25(
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -16463,14 +16463,14 @@ static void LatticeTriangleTrackDiagRightBankedFlatToRightBankedUp25(
                         { -16, -16, height }, { { -16, -16, height + 27 }, { 32, 32, 0 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
@@ -16496,13 +16496,13 @@ static void LatticeTriangleTrackDiagRightBankedFlatToRightBankedUp25(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 4, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -16523,13 +16523,13 @@ static void LatticeTriangleTrackDiagLeftBankedUp25ToLeftBankedFlat(
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 1:
             switch (direction)
@@ -16541,13 +16541,13 @@ static void LatticeTriangleTrackDiagLeftBankedUp25ToLeftBankedFlat(
                         { -16, -16, height }, { { -16, -16, height + 27 }, { 32, 32, 0 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 2:
             switch (direction)
@@ -16559,14 +16559,14 @@ static void LatticeTriangleTrackDiagLeftBankedUp25ToLeftBankedFlat(
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 3:
             switch (direction)
@@ -16592,13 +16592,13 @@ static void LatticeTriangleTrackDiagLeftBankedUp25ToLeftBankedFlat(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 8, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
     }
 }
@@ -16619,13 +16619,13 @@ static void LatticeTriangleTrackDiagRightBankedUp25ToRightBankedFlat(
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 1:
             switch (direction)
@@ -16637,13 +16637,13 @@ static void LatticeTriangleTrackDiagRightBankedUp25ToRightBankedFlat(
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 2:
             switch (direction)
@@ -16655,14 +16655,14 @@ static void LatticeTriangleTrackDiagRightBankedUp25ToRightBankedFlat(
                         { -16, -16, height }, { { -16, -16, height + 27 }, { 32, 32, 0 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 3:
             switch (direction)
@@ -16688,13 +16688,13 @@ static void LatticeTriangleTrackDiagRightBankedUp25ToRightBankedFlat(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 8, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
     }
 }
@@ -16747,13 +16747,13 @@ static void LatticeTriangleTrackDiagUp25LeftBanked(
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 1:
             switch (direction)
@@ -16765,13 +16765,13 @@ static void LatticeTriangleTrackDiagUp25LeftBanked(
                         { -16, -16, height }, { { -16, -16, height + 48 }, { 32, 32, 0 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 2:
             switch (direction)
@@ -16783,14 +16783,14 @@ static void LatticeTriangleTrackDiagUp25LeftBanked(
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 3:
             switch (direction)
@@ -16816,13 +16816,13 @@ static void LatticeTriangleTrackDiagUp25LeftBanked(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 11, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
     }
 }
@@ -16843,13 +16843,13 @@ static void LatticeTriangleTrackDiagUp25RightBanked(
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 1:
             switch (direction)
@@ -16861,13 +16861,13 @@ static void LatticeTriangleTrackDiagUp25RightBanked(
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 2:
             switch (direction)
@@ -16879,14 +16879,14 @@ static void LatticeTriangleTrackDiagUp25RightBanked(
                         { -16, -16, height }, { { -16, -16, height + 48 }, { 32, 32, 0 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 3:
             switch (direction)
@@ -16912,13 +16912,13 @@ static void LatticeTriangleTrackDiagUp25RightBanked(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 11, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
     }
 }
@@ -16955,13 +16955,13 @@ static void LatticeTriangleTrackDiagFlatToLeftBankedUp25(
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
@@ -16977,13 +16977,13 @@ static void LatticeTriangleTrackDiagFlatToLeftBankedUp25(
                         { -16, -16, height }, { { -16, -16, height + 27 }, { 32, 32, 0 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -16995,14 +16995,14 @@ static void LatticeTriangleTrackDiagFlatToLeftBankedUp25(
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
@@ -17028,13 +17028,13 @@ static void LatticeTriangleTrackDiagFlatToLeftBankedUp25(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 4, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -17055,13 +17055,13 @@ static void LatticeTriangleTrackDiagFlatToRightBankedUp25(
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
@@ -17073,13 +17073,13 @@ static void LatticeTriangleTrackDiagFlatToRightBankedUp25(
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -17095,14 +17095,14 @@ static void LatticeTriangleTrackDiagFlatToRightBankedUp25(
                         { -16, -16, height }, { { -16, -16, height + 27 }, { 32, 32, 0 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
@@ -17128,13 +17128,13 @@ static void LatticeTriangleTrackDiagFlatToRightBankedUp25(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 4, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -17155,13 +17155,13 @@ static void LatticeTriangleTrackDiagLeftBankedUp25ToFlat(
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 1:
             switch (direction)
@@ -17177,13 +17177,13 @@ static void LatticeTriangleTrackDiagLeftBankedUp25ToFlat(
                         { -16, -16, height }, { { -16, -16, height + 27 }, { 32, 32, 0 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 2:
             switch (direction)
@@ -17195,14 +17195,14 @@ static void LatticeTriangleTrackDiagLeftBankedUp25ToFlat(
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 3:
             switch (direction)
@@ -17228,13 +17228,13 @@ static void LatticeTriangleTrackDiagLeftBankedUp25ToFlat(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 6, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
     }
 }
@@ -17255,13 +17255,13 @@ static void LatticeTriangleTrackDiagRightBankedUp25ToFlat(
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 1:
             switch (direction)
@@ -17273,13 +17273,13 @@ static void LatticeTriangleTrackDiagRightBankedUp25ToFlat(
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 2:
             switch (direction)
@@ -17295,14 +17295,14 @@ static void LatticeTriangleTrackDiagRightBankedUp25ToFlat(
                         { -16, -16, height }, { { -16, -16, height + 27 }, { 32, 32, 0 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 3:
             switch (direction)
@@ -17328,13 +17328,13 @@ static void LatticeTriangleTrackDiagRightBankedUp25ToFlat(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 6, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
     }
 }
@@ -17417,9 +17417,9 @@ static void LatticeTriangleTrackLeftEighthBankToDiagUp25(
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
             switch (direction)
@@ -17449,15 +17449,15 @@ static void LatticeTriangleTrackLeftEighthBankToDiagUp25(
                         { 0, 0, height }, { { 0, 16, height }, { 32, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -17487,24 +17487,24 @@ static void LatticeTriangleTrackLeftEighthBankToDiagUp25(
                         { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 4:
             switch (direction)
@@ -17542,15 +17542,15 @@ static void LatticeTriangleTrackLeftEighthBankToDiagUp25(
                         session, supportType.metal, MetalSupportPlace::rightCorner, 7, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -17601,9 +17601,9 @@ static void LatticeTriangleTrackRightEighthBankToDiagUp25(
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
             switch (direction)
@@ -17633,15 +17633,15 @@ static void LatticeTriangleTrackRightEighthBankToDiagUp25(
                         { 0, 0, height }, { { 0, 0, height }, { 32, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -17671,25 +17671,25 @@ static void LatticeTriangleTrackRightEighthBankToDiagUp25(
                         { 0, 0, height }, { { 0, 16, height }, { 16, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 4:
             switch (direction)
@@ -17727,15 +17727,15 @@ static void LatticeTriangleTrackRightEighthBankToDiagUp25(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 7, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -17782,15 +17782,15 @@ static void LatticeTriangleTrackLeftEighthBankToOrthogonalUp25(
                         session, supportType.metal, MetalSupportPlace::topCorner, 7, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
             switch (direction)
@@ -17820,24 +17820,24 @@ static void LatticeTriangleTrackLeftEighthBankToOrthogonalUp25(
                         { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft,
                         PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             switch (direction)
@@ -17867,15 +17867,15 @@ static void LatticeTriangleTrackLeftEighthBankToOrthogonalUp25(
                         { 0, 0, height }, { { 0, 16, height }, { 32, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 4:
             switch (direction)
@@ -17917,9 +17917,9 @@ static void LatticeTriangleTrackLeftEighthBankToOrthogonalUp25(
             {
                 PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
             }
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -17966,15 +17966,15 @@ static void LatticeTriangleTrackRightEighthBankToOrthogonalUp25(
                         session, supportType.metal, MetalSupportPlace::topCorner, 7, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
             switch (direction)
@@ -18004,25 +18004,25 @@ static void LatticeTriangleTrackRightEighthBankToOrthogonalUp25(
                         { 0, 0, height }, { { 0, 16, height }, { 16, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::right, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             switch (direction)
@@ -18052,15 +18052,15 @@ static void LatticeTriangleTrackRightEighthBankToOrthogonalUp25(
                         { 0, 0, height }, { { 16, 0, height }, { 16, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 4:
             switch (direction)
@@ -18102,12 +18102,12 @@ static void LatticeTriangleTrackRightEighthBankToOrthogonalUp25(
             {
                 PaintUtilPushTunnelRotated(session, direction + 1, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight), direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -18175,9 +18175,9 @@ static void LatticeTriangleTrackDiagBrakes(
             session, supportType.metal, kDiagSupportPlacement[direction], 0, height, session.supportColours);
     }
 
-    PaintUtilSetSegmentSupportHeight(
-        session, PaintUtilRotateSegments(BlockedSegments::kDiagStraightFlat[trackSequence], direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetSegmentSupportHeight(
+        session, paintUtilRotateSegments(BlockedSegments::kDiagStraightFlat[trackSequence], direction), 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 static void LatticeTriangleTrackDiagBooster(
@@ -18208,13 +18208,13 @@ static void LatticeTriangleTrackDiagFlatTo60DegUpLongBase(
                         { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            paintUtilSetGeneralSupportHeight(session, height + 32);
             break;
         case 1:
             switch (direction)
@@ -18226,13 +18226,13 @@ static void LatticeTriangleTrackDiagFlatTo60DegUpLongBase(
                         { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::topLeft, PaintSegment::top, PaintSegment::centre, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -18244,14 +18244,14 @@ static void LatticeTriangleTrackDiagFlatTo60DegUpLongBase(
                         { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
@@ -18281,15 +18281,15 @@ static void LatticeTriangleTrackDiagFlatTo60DegUpLongBase(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 0, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::topLeft, PaintSegment::bottomLeft, PaintSegment::centre,
                         PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 4:
             switch (direction)
@@ -18301,13 +18301,13 @@ static void LatticeTriangleTrackDiagFlatTo60DegUpLongBase(
                         { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::topLeft, PaintSegment::top, PaintSegment::centre, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 5:
             switch (direction)
@@ -18319,14 +18319,14 @@ static void LatticeTriangleTrackDiagFlatTo60DegUpLongBase(
                         { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 6:
             switch (direction)
@@ -18356,15 +18356,15 @@ static void LatticeTriangleTrackDiagFlatTo60DegUpLongBase(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 11, height + 0, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::topLeft, PaintSegment::bottomLeft, PaintSegment::centre,
                         PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 96);
+            paintUtilSetGeneralSupportHeight(session, height + 96);
             break;
         case 7:
             switch (direction)
@@ -18376,13 +18376,13 @@ static void LatticeTriangleTrackDiagFlatTo60DegUpLongBase(
                         { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::topLeft, PaintSegment::top, PaintSegment::centre, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 120);
+            paintUtilSetGeneralSupportHeight(session, height + 120);
             break;
         case 8:
             switch (direction)
@@ -18394,14 +18394,14 @@ static void LatticeTriangleTrackDiagFlatTo60DegUpLongBase(
                         { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 120);
+            paintUtilSetGeneralSupportHeight(session, height + 120);
             break;
         case 9:
             switch (direction)
@@ -18427,13 +18427,13 @@ static void LatticeTriangleTrackDiagFlatTo60DegUpLongBase(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 19, height + 0, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::topLeft, PaintSegment::bottomLeft, PaintSegment::centre),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 136);
+            paintUtilSetGeneralSupportHeight(session, height + 136);
             break;
     }
 }
@@ -18454,13 +18454,13 @@ static void LatticeTriangleTrackDiag60DegUpToFlatLongBase(
                         { -16, -16, height }, { { -8, -8, height + 0 }, { 16, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 96);
+            paintUtilSetGeneralSupportHeight(session, height + 96);
             break;
         case 1:
             switch (direction)
@@ -18472,13 +18472,13 @@ static void LatticeTriangleTrackDiag60DegUpToFlatLongBase(
                         { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::topLeft, PaintSegment::top, PaintSegment::centre, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 104);
+            paintUtilSetGeneralSupportHeight(session, height + 104);
             break;
         case 2:
             switch (direction)
@@ -18490,14 +18490,14 @@ static void LatticeTriangleTrackDiag60DegUpToFlatLongBase(
                         { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 104);
+            paintUtilSetGeneralSupportHeight(session, height + 104);
             break;
         case 3:
             switch (direction)
@@ -18527,15 +18527,15 @@ static void LatticeTriangleTrackDiag60DegUpToFlatLongBase(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 28, height + 0, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::topLeft, PaintSegment::bottomLeft, PaintSegment::centre,
                         PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 112);
+            paintUtilSetGeneralSupportHeight(session, height + 112);
             break;
         case 4:
             switch (direction)
@@ -18547,13 +18547,13 @@ static void LatticeTriangleTrackDiag60DegUpToFlatLongBase(
                         { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::topLeft, PaintSegment::top, PaintSegment::centre, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 5:
             switch (direction)
@@ -18565,14 +18565,14 @@ static void LatticeTriangleTrackDiag60DegUpToFlatLongBase(
                         { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 6:
             switch (direction)
@@ -18602,15 +18602,15 @@ static void LatticeTriangleTrackDiag60DegUpToFlatLongBase(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 10, height + 0, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::topLeft, PaintSegment::bottomLeft, PaintSegment::centre,
                         PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 40);
+            paintUtilSetGeneralSupportHeight(session, height + 40);
             break;
         case 7:
             switch (direction)
@@ -18622,13 +18622,13 @@ static void LatticeTriangleTrackDiag60DegUpToFlatLongBase(
                         { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::topLeft, PaintSegment::top, PaintSegment::centre, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 40);
+            paintUtilSetGeneralSupportHeight(session, height + 40);
             break;
         case 8:
             switch (direction)
@@ -18640,14 +18640,14 @@ static void LatticeTriangleTrackDiag60DegUpToFlatLongBase(
                         { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 40);
+            paintUtilSetGeneralSupportHeight(session, height + 40);
             break;
         case 9:
             switch (direction)
@@ -18673,13 +18673,13 @@ static void LatticeTriangleTrackDiag60DegUpToFlatLongBase(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 3, height + 0, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::topLeft, PaintSegment::bottomLeft, PaintSegment::centre),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 40);
+            paintUtilSetGeneralSupportHeight(session, height + 40);
             break;
     }
 }
@@ -18700,13 +18700,13 @@ static void LatticeTriangleTrackDiagFlatTo60DegDownLongBase(
                         { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 40);
+            paintUtilSetGeneralSupportHeight(session, height + 40);
             break;
         case 1:
             switch (direction)
@@ -18718,13 +18718,13 @@ static void LatticeTriangleTrackDiagFlatTo60DegDownLongBase(
                         { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::topLeft, PaintSegment::top, PaintSegment::centre, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 40);
+            paintUtilSetGeneralSupportHeight(session, height + 40);
             break;
         case 2:
             switch (direction)
@@ -18736,14 +18736,14 @@ static void LatticeTriangleTrackDiagFlatTo60DegDownLongBase(
                         { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 40);
+            paintUtilSetGeneralSupportHeight(session, height + 40);
             break;
         case 3:
             switch (direction)
@@ -18773,15 +18773,15 @@ static void LatticeTriangleTrackDiagFlatTo60DegDownLongBase(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 24, height + 0, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::topLeft, PaintSegment::bottomLeft, PaintSegment::centre,
                         PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 40);
+            paintUtilSetGeneralSupportHeight(session, height + 40);
             break;
         case 4:
             switch (direction)
@@ -18793,13 +18793,13 @@ static void LatticeTriangleTrackDiagFlatTo60DegDownLongBase(
                         { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::topLeft, PaintSegment::top, PaintSegment::centre, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 5:
             switch (direction)
@@ -18811,14 +18811,14 @@ static void LatticeTriangleTrackDiagFlatTo60DegDownLongBase(
                         { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 6:
             switch (direction)
@@ -18848,15 +18848,15 @@ static void LatticeTriangleTrackDiagFlatTo60DegDownLongBase(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 58, height + 0, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::topLeft, PaintSegment::bottomLeft, PaintSegment::centre,
                         PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 112);
+            paintUtilSetGeneralSupportHeight(session, height + 112);
             break;
         case 7:
             switch (direction)
@@ -18868,13 +18868,13 @@ static void LatticeTriangleTrackDiagFlatTo60DegDownLongBase(
                         { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::topLeft, PaintSegment::top, PaintSegment::centre, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 104);
+            paintUtilSetGeneralSupportHeight(session, height + 104);
             break;
         case 8:
             switch (direction)
@@ -18886,14 +18886,14 @@ static void LatticeTriangleTrackDiagFlatTo60DegDownLongBase(
                         { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 104);
+            paintUtilSetGeneralSupportHeight(session, height + 104);
             break;
         case 9:
             switch (direction)
@@ -18919,13 +18919,13 @@ static void LatticeTriangleTrackDiagFlatTo60DegDownLongBase(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 14, height + 0, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::topLeft, PaintSegment::bottomLeft, PaintSegment::centre),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 96);
+            paintUtilSetGeneralSupportHeight(session, height + 96);
             break;
     }
 }
@@ -18946,13 +18946,13 @@ static void LatticeTriangleTrackDiag60DegDownToFlatLongBase(
                         { -16, -16, height }, { { -16, -16, height + 80 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 136);
+            paintUtilSetGeneralSupportHeight(session, height + 136);
             break;
         case 1:
             switch (direction)
@@ -18964,13 +18964,13 @@ static void LatticeTriangleTrackDiag60DegDownToFlatLongBase(
                         { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::topLeft, PaintSegment::top, PaintSegment::centre, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 120);
+            paintUtilSetGeneralSupportHeight(session, height + 120);
             break;
         case 2:
             switch (direction)
@@ -18982,14 +18982,14 @@ static void LatticeTriangleTrackDiag60DegDownToFlatLongBase(
                         { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 120);
+            paintUtilSetGeneralSupportHeight(session, height + 120);
             break;
         case 3:
             switch (direction)
@@ -19019,15 +19019,15 @@ static void LatticeTriangleTrackDiag60DegDownToFlatLongBase(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 38, height + 0, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::topLeft, PaintSegment::bottomLeft, PaintSegment::centre,
                         PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 96);
+            paintUtilSetGeneralSupportHeight(session, height + 96);
             break;
         case 4:
             switch (direction)
@@ -19039,13 +19039,13 @@ static void LatticeTriangleTrackDiag60DegDownToFlatLongBase(
                         { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::topLeft, PaintSegment::top, PaintSegment::centre, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 5:
             switch (direction)
@@ -19057,14 +19057,14 @@ static void LatticeTriangleTrackDiag60DegDownToFlatLongBase(
                         { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 6:
             switch (direction)
@@ -19094,15 +19094,15 @@ static void LatticeTriangleTrackDiag60DegDownToFlatLongBase(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 12, height + 0, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::topLeft, PaintSegment::bottomLeft, PaintSegment::centre,
                         PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 7:
             switch (direction)
@@ -19114,13 +19114,13 @@ static void LatticeTriangleTrackDiag60DegDownToFlatLongBase(
                         { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::topLeft, PaintSegment::top, PaintSegment::centre, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 8:
             switch (direction)
@@ -19132,14 +19132,14 @@ static void LatticeTriangleTrackDiag60DegDownToFlatLongBase(
                         { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 9:
             switch (direction)
@@ -19165,13 +19165,13 @@ static void LatticeTriangleTrackDiag60DegDownToFlatLongBase(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 0, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::topLeft, PaintSegment::bottomLeft, PaintSegment::centre),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32);
+            paintUtilSetGeneralSupportHeight(session, height + 32);
             break;
     }
 }
@@ -19196,13 +19196,13 @@ static void LatticeTriangleTrackLeftEighthDiveLoopUpToOrthogonal(
                         { -16, -16, height }, { { 0, 0, height + -8 }, { 32, 32, 1 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 96);
+            paintUtilSetGeneralSupportHeight(session, height + 96);
             break;
         case 1:
             switch (direction)
@@ -19213,13 +19213,13 @@ static void LatticeTriangleTrackLeftEighthDiveLoopUpToOrthogonal(
                         { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::topLeft, PaintSegment::top, PaintSegment::centre, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 120);
+            paintUtilSetGeneralSupportHeight(session, height + 120);
             break;
         case 2:
             switch (direction)
@@ -19230,14 +19230,14 @@ static void LatticeTriangleTrackLeftEighthDiveLoopUpToOrthogonal(
                         { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 120);
+            paintUtilSetGeneralSupportHeight(session, height + 120);
             break;
         case 3:
             switch (direction)
@@ -19271,15 +19271,15 @@ static void LatticeTriangleTrackLeftEighthDiveLoopUpToOrthogonal(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 4, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::topLeft, PaintSegment::top, PaintSegment::bottomLeft,
                         PaintSegment::centre, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 112);
+            paintUtilSetGeneralSupportHeight(session, height + 112);
             break;
         case 4:
             switch (direction)
@@ -19305,20 +19305,20 @@ static void LatticeTriangleTrackLeftEighthDiveLoopUpToOrthogonal(
                         { -16, -16, height }, { { 0, 6, height + 58 }, { 32, 20, 1 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::topLeft, PaintSegment::top, PaintSegment::bottomLeft,
                         PaintSegment::centre, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 80);
+            paintUtilSetGeneralSupportHeight(session, height + 80);
             break;
         case 5:
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::topLeft, PaintSegment::top, PaintSegment::bottomLeft,
                         PaintSegment::centre, PaintSegment::topRight),
@@ -19357,7 +19357,7 @@ static void LatticeTriangleTrackLeftEighthDiveLoopUpToOrthogonal(
                         session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 44, session.supportColours);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
     }
 }
@@ -19382,13 +19382,13 @@ static void LatticeTriangleTrackRightEighthDiveLoopUpToOrthogonal(
                         { -16, -16, height }, { { 0, 0, height + -8 }, { 32, 32, 1 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 96);
+            paintUtilSetGeneralSupportHeight(session, height + 96);
             break;
         case 1:
             switch (direction)
@@ -19399,14 +19399,14 @@ static void LatticeTriangleTrackRightEighthDiveLoopUpToOrthogonal(
                         { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 120);
+            paintUtilSetGeneralSupportHeight(session, height + 120);
             break;
         case 2:
             switch (direction)
@@ -19417,13 +19417,13 @@ static void LatticeTriangleTrackRightEighthDiveLoopUpToOrthogonal(
                         { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::topLeft, PaintSegment::top, PaintSegment::centre, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 120);
+            paintUtilSetGeneralSupportHeight(session, height + 120);
             break;
         case 3:
             switch (direction)
@@ -19457,15 +19457,15 @@ static void LatticeTriangleTrackRightEighthDiveLoopUpToOrthogonal(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 4, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::topLeft, PaintSegment::bottomLeft, PaintSegment::centre,
                         PaintSegment::bottom, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 112);
+            paintUtilSetGeneralSupportHeight(session, height + 112);
             break;
         case 4:
             switch (direction)
@@ -19491,20 +19491,20 @@ static void LatticeTriangleTrackRightEighthDiveLoopUpToOrthogonal(
                         { -16, -16, height }, { { 6, 0, height + 58 }, { 20, 32, 1 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::topLeft, PaintSegment::bottomLeft, PaintSegment::centre,
                         PaintSegment::bottom, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 80);
+            paintUtilSetGeneralSupportHeight(session, height + 80);
             break;
         case 5:
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::topLeft, PaintSegment::bottomLeft, PaintSegment::centre,
                         PaintSegment::bottom, PaintSegment::bottomRight),
@@ -19543,7 +19543,7 @@ static void LatticeTriangleTrackRightEighthDiveLoopUpToOrthogonal(
                         session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 44, session.supportColours);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
     }
 }

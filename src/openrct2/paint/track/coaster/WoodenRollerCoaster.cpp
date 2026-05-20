@@ -2039,8 +2039,8 @@ static void WoodenRCTrackFlat(
     WoodenASupportsPaintSetupRotated(
         session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.supportColours);
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 template<bool isClassic>
@@ -2080,8 +2080,8 @@ static void WoodenRCTrackStation(
     WoodenASupportsPaintSetupRotated(
         session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.supportColours);
     TrackPaintUtilDrawStationTunnel(session, direction, height);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x008AC578 */
@@ -2168,8 +2168,8 @@ static void WoodenRCTrack25DegUp(
         PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x008AC588 */
@@ -2236,8 +2236,8 @@ static void WoodenRCTrack60DegUp(
         PaintUtilPushTunnelRotated(session, direction, height + 56, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 104);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 104);
 }
 
 /** rct2: 0x008AC598 */
@@ -2324,8 +2324,8 @@ static void WoodenRCTrackFlatTo25DegUp(
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x008AC5A8 */
@@ -2437,8 +2437,8 @@ static void WoodenRCTrack25DegUpTo60DegUp(
         PaintUtilPushTunnelRotated(session, direction, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 72);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
 /** rct2: 0x008AC5B8 */
@@ -2551,8 +2551,8 @@ static void WoodenRCTrack60DegUpTo25DegUp(
         PaintUtilPushTunnelRotated(session, direction, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 72);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
 /** rct2: 0x008AC5C8 */
@@ -2639,8 +2639,8 @@ static void WoodenRCTrack25DegUpToFlat(
         PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
     }
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 40);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
 /** rct2: 0x008AC5D8 */
@@ -3044,8 +3044,8 @@ static void WoodenRCTrackRightQuarterTurn5(
             blockedSegments = kSegmentsAll;
             break;
     }
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 template<bool isClassic>
@@ -3206,16 +3206,16 @@ static void WoodenRCTrackLeftQuarterTurn525DegUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::topRight, PaintSegment::bottomRight), direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -3273,15 +3273,15 @@ static void WoodenRCTrackLeftQuarterTurn525DegUp(
                         session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             switch (direction)
@@ -3339,23 +3339,23 @@ static void WoodenRCTrackLeftQuarterTurn525DegUp(
                         session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::right, PaintSegment::bottom, PaintSegment::centre,
                         PaintSegment::topLeft, PaintSegment::topRight, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 4:
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::topRight, PaintSegment::bottomRight), direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 5:
             switch (direction)
@@ -3419,15 +3419,15 @@ static void WoodenRCTrackLeftQuarterTurn525DegUp(
                         session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 6:
             switch (direction)
@@ -3495,8 +3495,8 @@ static void WoodenRCTrackLeftQuarterTurn525DegUp(
                     PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -3567,16 +3567,16 @@ static void WoodenRCTrackRightQuarterTurn525DegUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight), direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -3634,15 +3634,15 @@ static void WoodenRCTrackRightQuarterTurn525DegUp(
                         session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             switch (direction)
@@ -3700,23 +3700,23 @@ static void WoodenRCTrackRightQuarterTurn525DegUp(
                         session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::right, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 4:
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight), direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 5:
             switch (direction)
@@ -3780,15 +3780,15 @@ static void WoodenRCTrackRightQuarterTurn525DegUp(
                         session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 6:
             switch (direction)
@@ -3857,8 +3857,8 @@ static void WoodenRCTrackRightQuarterTurn525DegUp(
                     PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -3953,8 +3953,8 @@ static void WoodenRCTrackSBendLeft(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -4012,15 +4012,15 @@ static void WoodenRCTrackSBendLeft(
                         session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -4078,15 +4078,15 @@ static void WoodenRCTrackSBendLeft(
                         session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -4153,8 +4153,8 @@ static void WoodenRCTrackSBendLeft(
                     PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -4227,8 +4227,8 @@ static void WoodenRCTrackSBendRight(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -4286,15 +4286,15 @@ static void WoodenRCTrackSBendRight(
                         session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -4352,15 +4352,15 @@ static void WoodenRCTrackSBendRight(
                         session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -4427,8 +4427,8 @@ static void WoodenRCTrackSBendRight(
                     PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -4466,15 +4466,15 @@ static void WoodenRCTrackLeftVerticalLoop(
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 1:
             switch (direction)
@@ -4504,15 +4504,15 @@ static void WoodenRCTrackLeftVerticalLoop(
                         session, MetalSupportType::boxed, MetalSupportPlace::centre, 16, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -4538,13 +4538,13 @@ static void WoodenRCTrackLeftVerticalLoop(
                         { 4, 16, 119 });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 168);
+            paintUtilSetGeneralSupportHeight(session, height + 168);
             break;
         case 3:
             switch (direction)
@@ -4570,21 +4570,21 @@ static void WoodenRCTrackLeftVerticalLoop(
                         { 32, 16, 3 });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 5:
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 6:
             switch (direction)
@@ -4610,15 +4610,15 @@ static void WoodenRCTrackLeftVerticalLoop(
                         { 32, 16, 3 });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 7:
             switch (direction)
@@ -4644,13 +4644,13 @@ static void WoodenRCTrackLeftVerticalLoop(
                         { 3, 16, 119 });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 168);
+            paintUtilSetGeneralSupportHeight(session, height + 168);
             break;
         case 8:
             switch (direction)
@@ -4680,15 +4680,15 @@ static void WoodenRCTrackLeftVerticalLoop(
                         session, MetalSupportType::boxed, MetalSupportPlace::centre, 9, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 9:
             switch (direction)
@@ -4721,15 +4721,15 @@ static void WoodenRCTrackLeftVerticalLoop(
                     PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
     }
 }
@@ -4767,7 +4767,7 @@ static void WoodenRCTrackRightVerticalLoop(
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 1:
             switch (direction)
@@ -4797,7 +4797,7 @@ static void WoodenRCTrackRightVerticalLoop(
                         session, MetalSupportType::boxed, MetalSupportPlace::centre, 20, height, session.supportColours);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -4823,7 +4823,7 @@ static void WoodenRCTrackRightVerticalLoop(
                         { 5, 16, 119 });
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 168);
+            paintUtilSetGeneralSupportHeight(session, height + 168);
             break;
         case 3:
             switch (direction)
@@ -4849,13 +4849,13 @@ static void WoodenRCTrackRightVerticalLoop(
                         { 32, 16, 3 });
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 5:
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 6:
             switch (direction)
@@ -4881,7 +4881,7 @@ static void WoodenRCTrackRightVerticalLoop(
                         { 32, 16, 3 });
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 7:
             switch (direction)
@@ -4907,7 +4907,7 @@ static void WoodenRCTrackRightVerticalLoop(
                         { 4, 16, 119 });
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 168);
+            paintUtilSetGeneralSupportHeight(session, height + 168);
             break;
         case 8:
             switch (direction)
@@ -4937,7 +4937,7 @@ static void WoodenRCTrackRightVerticalLoop(
                         session, MetalSupportType::boxed, MetalSupportPlace::centre, 16, height, session.supportColours);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 9:
             switch (direction)
@@ -4970,7 +4970,7 @@ static void WoodenRCTrackRightVerticalLoop(
                     PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
     }
 
@@ -5045,11 +5045,11 @@ static void WoodenRCTrackLeftQuarterTurn3(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -5099,13 +5099,13 @@ static void WoodenRCTrackLeftQuarterTurn3(
                         { { 16, 16, height + 27 }, { 16, 16, 0 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -5172,8 +5172,8 @@ static void WoodenRCTrackLeftQuarterTurn3(
                     PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -5268,20 +5268,20 @@ static void WoodenRCTrackLeftQuarterTurn325DegUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 2:
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 3:
             switch (direction)
@@ -5354,8 +5354,8 @@ static void WoodenRCTrackLeftQuarterTurn325DegUp(
                     PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -5428,21 +5428,21 @@ static void WoodenRCTrackRightQuarterTurn325DegUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 2:
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 3:
             switch (direction)
@@ -5515,8 +5515,8 @@ static void WoodenRCTrackRightQuarterTurn325DegUp(
                     PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -5674,8 +5674,8 @@ static void WoodenRCTrackLeftQuarterTurn160DegUp(
     }
     TrackPaintUtilLeftQuarterTurn1TileTunnel(
         session, kTunnelGroup, direction, height, -8, TunnelSubType::SlopeStart, +56, TunnelSubType::SlopeEnd);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 104);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 104);
 }
 
 /** rct2: 0x008ACB78 */
@@ -5745,8 +5745,8 @@ static void WoodenRCTrackRightQuarterTurn160DegUp(
     }
     TrackPaintUtilRightQuarterTurn1TileTunnel(
         session, kTunnelGroup, direction, height, -8, TunnelSubType::SlopeStart, +56, TunnelSubType::SlopeEnd);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 104);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 104);
 }
 
 /** rct2: 0x008ACB88 */
@@ -5788,8 +5788,8 @@ static void WoodenRCTrackBrakes(
     WoodenASupportsPaintSetupRotated(
         session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.supportColours);
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x008ACC78 */
@@ -5871,8 +5871,8 @@ static void WoodenRCTrack25DegUpLeftBanked(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x008ACC88 */
@@ -5954,8 +5954,8 @@ static void WoodenRCTrack25DegUpRightBanked(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x008AC878 */
@@ -6003,8 +6003,8 @@ static void WoodenRCTrackOnRidePhoto(
         session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.supportColours);
     TrackPaintUtilOnridePhotoSmallPaint(session, direction, height + 16, trackElement);
     PaintUtilPushTunnelRotated(session, direction, height, TunnelType::InvertedSquare);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 template<bool isClassic>
@@ -6081,8 +6081,8 @@ static void WoodenRCTrackFlatTo60DegUpLongBase(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
@@ -6147,8 +6147,8 @@ static void WoodenRCTrackFlatTo60DegUpLongBase(
             WoodenASupportsPaintSetupRotated(
                 session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.supportColours,
                 WoodenSupportTransitionType::flatToUp60DegLongBaseSeq1);
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -6213,8 +6213,8 @@ static void WoodenRCTrackFlatTo60DegUpLongBase(
             WoodenASupportsPaintSetupRotated(
                 session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.supportColours,
                 WoodenSupportTransitionType::flatToUp60DegLongBaseSeq2);
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 3:
             switch (direction)
@@ -6264,8 +6264,8 @@ static void WoodenRCTrackFlatTo60DegUpLongBase(
                     PaintUtilPushTunnelLeft(session, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 80);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 80);
             break;
     }
 }
@@ -6320,8 +6320,8 @@ static void WoodenRCTrack60DegUpToFlatLongBase(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeStart);
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 80);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 80);
             break;
         case 1:
             switch (direction)
@@ -6386,8 +6386,8 @@ static void WoodenRCTrack60DegUpToFlatLongBase(
             WoodenASupportsPaintSetupRotated(
                 session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.supportColours,
                 WoodenSupportTransitionType::up60DegToFlatLongBaseSeq1);
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 80);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 80);
             break;
         case 2:
             switch (direction)
@@ -6452,8 +6452,8 @@ static void WoodenRCTrack60DegUpToFlatLongBase(
             WoodenASupportsPaintSetupRotated(
                 session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.supportColours,
                 WoodenSupportTransitionType::up60DegToFlatLongBaseSeq2);
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 3:
             switch (direction)
@@ -6527,8 +6527,8 @@ static void WoodenRCTrack60DegUpToFlatLongBase(
                     PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 40);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 40);
             break;
     }
 }
@@ -6686,8 +6686,8 @@ static void WoodenRCTrackWaterSplash(
             WoodenASupportsPaintSetupRotated(
                 session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.supportColours);
             PaintUtilPushTunnelRotated(session, direction, height + 16, kTunnelGroup, TunnelSubType::Flat);
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
@@ -6791,8 +6791,8 @@ static void WoodenRCTrackWaterSplash(
             }
             WoodenASupportsPaintSetupRotated(
                 session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.supportColours);
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -6850,8 +6850,8 @@ static void WoodenRCTrackWaterSplash(
             }
             WoodenASupportsPaintSetupRotated(
                 session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.supportColours);
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
@@ -6955,8 +6955,8 @@ static void WoodenRCTrackWaterSplash(
             }
             WoodenASupportsPaintSetupRotated(
                 session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.supportColours);
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 4:
             switch (direction)
@@ -7061,8 +7061,8 @@ static void WoodenRCTrackWaterSplash(
             WoodenASupportsPaintSetupRotated(
                 session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.supportColours);
             PaintUtilPushTunnelRotated(session, direction, height + 16, kTunnelGroup, TunnelSubType::Flat);
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -7135,8 +7135,8 @@ static void WoodenRCTrackLeftEighthToDiag(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -7194,8 +7194,8 @@ static void WoodenRCTrackLeftEighthToDiag(
                         session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -7253,8 +7253,8 @@ static void WoodenRCTrackLeftEighthToDiag(
                         session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -7276,8 +7276,8 @@ static void WoodenRCTrackLeftEighthToDiag(
                         session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 4:
             switch (direction)
@@ -7327,8 +7327,8 @@ static void WoodenRCTrackLeftEighthToDiag(
                         { { 16, 0, height + 27 }, { 16, 16, 0 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -7401,8 +7401,8 @@ static void WoodenRCTrackRightEighthToDiag(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -7460,8 +7460,8 @@ static void WoodenRCTrackRightEighthToDiag(
                         session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -7519,8 +7519,8 @@ static void WoodenRCTrackRightEighthToDiag(
                         session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -7542,8 +7542,8 @@ static void WoodenRCTrackRightEighthToDiag(
                         session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 4:
             switch (direction)
@@ -7593,8 +7593,8 @@ static void WoodenRCTrackRightEighthToDiag(
                         { { 16, 16, height }, { 16, 16, 2 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -7781,8 +7781,8 @@ static void WoodenRCTrackDiagBrakes(
             session, supportType.wooden, kDiagonalSupports[trackSequence][direction], height, session.supportColours);
     }
 
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 template<bool isClassic>
@@ -8050,8 +8050,8 @@ static void WoodenRCTrackDiagBlockBrakes(
             session, supportType.wooden, kDiagonalSupports[trackSequence][direction], height, session.supportColours);
     }
 
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x008AC888 */
@@ -8218,8 +8218,8 @@ static void WoodenRCTrackDiagFlat(
             break;
     }
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x008AC8B8 */
@@ -8259,8 +8259,8 @@ static void WoodenRCTrackDiag25DegUp(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -8307,8 +8307,8 @@ static void WoodenRCTrackDiag25DegUp(
                 WoodenBSupportsPaintSetupRotated(
                     session, supportType.wooden, WoodenSupportSubType::corner0, direction, height + 16, session.supportColours);
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -8355,8 +8355,8 @@ static void WoodenRCTrackDiag25DegUp(
             WoodenBSupportsPaintSetupRotated(
                 session, supportType.wooden, WoodenSupportSubType::corner2, direction, height + 16, session.supportColours);
 
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -8387,8 +8387,8 @@ static void WoodenRCTrackDiag25DegUp(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
     }
 }
@@ -8413,8 +8413,8 @@ static void WoodenRCTrackDiag60DegUp(
                         { { -16, -16, height }, { 32, 32, 2 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 104);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 104);
             break;
         case 1:
             switch (direction)
@@ -8436,8 +8436,8 @@ static void WoodenRCTrackDiag60DegUp(
             }
             WoodenBSupportsPaintSetupRotated(
                 session, supportType.wooden, WoodenSupportSubType::corner0, direction, height + 16, session.supportColours);
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 104);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 104);
             break;
         case 2:
             switch (direction)
@@ -8461,8 +8461,8 @@ static void WoodenRCTrackDiag60DegUp(
             WoodenBSupportsPaintSetupRotated(
                 session, supportType.wooden, WoodenSupportSubType::corner2, direction, height + 16, session.supportColours);
 
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 104);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 104);
             break;
         case 3:
             switch (direction)
@@ -8476,8 +8476,8 @@ static void WoodenRCTrackDiag60DegUp(
                         { { -16, -16, height }, { 32, 32, 2 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 104);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 104);
             break;
     }
 }
@@ -8519,8 +8519,8 @@ static void WoodenRCTrackDiagFlatTo25DegUp(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -8591,8 +8591,8 @@ static void WoodenRCTrackDiagFlatTo25DegUp(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -8663,8 +8663,8 @@ static void WoodenRCTrackDiagFlatTo25DegUp(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -8695,8 +8695,8 @@ static void WoodenRCTrackDiagFlatTo25DegUp(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -8721,8 +8721,8 @@ static void WoodenRCTrackDiag25DegUpTo60DegUp(
                         { { -16, -16, height }, { 32, 32, 2 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
             switch (direction)
@@ -8744,8 +8744,8 @@ static void WoodenRCTrackDiag25DegUpTo60DegUp(
             }
             WoodenBSupportsPaintSetupRotated(
                 session, supportType.wooden, WoodenSupportSubType::corner0, direction, height + 16, session.supportColours);
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -8769,8 +8769,8 @@ static void WoodenRCTrackDiag25DegUpTo60DegUp(
             WoodenBSupportsPaintSetupRotated(
                 session, supportType.wooden, WoodenSupportSubType::corner2, direction, height + 16, session.supportColours);
 
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             switch (direction)
@@ -8784,8 +8784,8 @@ static void WoodenRCTrackDiag25DegUpTo60DegUp(
                         { { -16, -16, height }, { 32, 32, 2 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -8810,8 +8810,8 @@ static void WoodenRCTrackDiag60DegUpTo25DegUp(
                         { { -16, -16, height }, { 32, 32, 2 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
             switch (direction)
@@ -8833,8 +8833,8 @@ static void WoodenRCTrackDiag60DegUpTo25DegUp(
             }
             WoodenBSupportsPaintSetupRotated(
                 session, supportType.wooden, WoodenSupportSubType::corner0, direction, height + 16, session.supportColours);
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -8856,8 +8856,8 @@ static void WoodenRCTrackDiag60DegUpTo25DegUp(
             }
             WoodenBSupportsPaintSetupRotated(
                 session, supportType.wooden, WoodenSupportSubType::corner2, direction, height + 16, session.supportColours);
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             switch (direction)
@@ -8871,8 +8871,8 @@ static void WoodenRCTrackDiag60DegUpTo25DegUp(
                         { { 0, 0, height }, { 16, 16, 2 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -8914,8 +8914,8 @@ static void WoodenRCTrackDiag25DegUpToFlat(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -8962,8 +8962,8 @@ static void WoodenRCTrackDiag25DegUpToFlat(
                 WoodenBSupportsPaintSetupRotated(
                     session, supportType.wooden, WoodenSupportSubType::corner0, direction, height + 16, session.supportColours);
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -9010,8 +9010,8 @@ static void WoodenRCTrackDiag25DegUpToFlat(
             WoodenBSupportsPaintSetupRotated(
                 session, supportType.wooden, WoodenSupportSubType::corner2, direction, height + 16, session.supportColours);
 
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -9042,8 +9042,8 @@ static void WoodenRCTrackDiag25DegUpToFlat(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
     }
 }
@@ -9085,8 +9085,8 @@ static void WoodenRCTrackDiag25DegDown(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -9133,8 +9133,8 @@ static void WoodenRCTrackDiag25DegDown(
                 WoodenBSupportsPaintSetupRotated(
                     session, supportType.wooden, WoodenSupportSubType::corner0, direction, height + 16, session.supportColours);
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -9181,8 +9181,8 @@ static void WoodenRCTrackDiag25DegDown(
             WoodenBSupportsPaintSetupRotated(
                 session, supportType.wooden, WoodenSupportSubType::corner2, direction, height + 16, session.supportColours);
 
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -9213,8 +9213,8 @@ static void WoodenRCTrackDiag25DegDown(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
     }
 }
@@ -9239,8 +9239,8 @@ static void WoodenRCTrackDiag60DegDown(
                         { { -16, -16, height }, { 32, 32, 2 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 104);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 104);
             break;
         case 1:
             switch (direction)
@@ -9262,8 +9262,8 @@ static void WoodenRCTrackDiag60DegDown(
             }
             WoodenBSupportsPaintSetupRotated(
                 session, supportType.wooden, WoodenSupportSubType::corner0, direction, height + 16, session.supportColours);
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 104);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 104);
             break;
         case 2:
             switch (direction)
@@ -9285,8 +9285,8 @@ static void WoodenRCTrackDiag60DegDown(
             }
             WoodenBSupportsPaintSetupRotated(
                 session, supportType.wooden, WoodenSupportSubType::corner2, direction, height + 16, session.supportColours);
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 104);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 104);
             break;
         case 3:
             switch (direction)
@@ -9300,8 +9300,8 @@ static void WoodenRCTrackDiag60DegDown(
                         { { -16, -16, height }, { 32, 32, 2 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 104);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 104);
             break;
     }
 }
@@ -9468,8 +9468,8 @@ static void WoodenRCTrackDiagFlatTo25DegDown(
             break;
     }
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x008AC928 */
@@ -9492,8 +9492,8 @@ static void WoodenRCTrackDiag25DegDownTo60DegDown(
                         { { 0, 0, height }, { 16, 16, 2 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
             switch (direction)
@@ -9515,8 +9515,8 @@ static void WoodenRCTrackDiag25DegDownTo60DegDown(
             }
             WoodenBSupportsPaintSetupRotated(
                 session, supportType.wooden, WoodenSupportSubType::corner0, direction, height + 16, session.supportColours);
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -9538,8 +9538,8 @@ static void WoodenRCTrackDiag25DegDownTo60DegDown(
             }
             WoodenBSupportsPaintSetupRotated(
                 session, supportType.wooden, WoodenSupportSubType::corner2, direction, height + 16, session.supportColours);
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             switch (direction)
@@ -9553,8 +9553,8 @@ static void WoodenRCTrackDiag25DegDownTo60DegDown(
                         { { -16, -16, height }, { 32, 32, 2 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -9579,8 +9579,8 @@ static void WoodenRCTrackDiag60DegDownTo25DegDown(
                         { { -16, -16, height }, { 32, 32, 2 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
             switch (direction)
@@ -9602,8 +9602,8 @@ static void WoodenRCTrackDiag60DegDownTo25DegDown(
             }
             WoodenBSupportsPaintSetupRotated(
                 session, supportType.wooden, WoodenSupportSubType::corner0, direction, height + 16, session.supportColours);
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -9625,8 +9625,8 @@ static void WoodenRCTrackDiag60DegDownTo25DegDown(
             }
             WoodenBSupportsPaintSetupRotated(
                 session, supportType.wooden, WoodenSupportSubType::corner2, direction, height + 16, session.supportColours);
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             switch (direction)
@@ -9640,8 +9640,8 @@ static void WoodenRCTrackDiag60DegDownTo25DegDown(
                         { { -16, -16, height }, { 32, 32, 2 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -9683,8 +9683,8 @@ static void WoodenRCTrackDiag25DegDownToFlat(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -9755,8 +9755,8 @@ static void WoodenRCTrackDiag25DegDownToFlat(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -9827,8 +9827,8 @@ static void WoodenRCTrackDiag25DegDownToFlat(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -9859,8 +9859,8 @@ static void WoodenRCTrackDiag25DegDownToFlat(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -9943,8 +9943,8 @@ static void TrackDiagLeftBank(
                         { { -16, -16, height }, { 32, 32, 2 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -9978,8 +9978,8 @@ static void TrackDiagLeftBank(
                         session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -10013,8 +10013,8 @@ static void TrackDiagLeftBank(
                         session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -10028,8 +10028,8 @@ static void TrackDiagLeftBank(
                         { { -16, -16, height }, { 32, 32, 2 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -10054,8 +10054,8 @@ static void WoodenRCTrackDiagRightBank(
                         { { -16, -16, height }, { 32, 32, 2 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -10089,8 +10089,8 @@ static void WoodenRCTrackDiagRightBank(
                         session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -10124,8 +10124,8 @@ static void WoodenRCTrackDiagRightBank(
                         session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -10139,8 +10139,8 @@ static void WoodenRCTrackDiagRightBank(
                         { { -16, -16, height }, { 32, 32, 2 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -10181,8 +10181,8 @@ static void WoodenRCTrackBlockBrakes(
     WoodenASupportsPaintSetupRotated(
         session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.supportColours);
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x008ACCB8 */
@@ -10253,20 +10253,20 @@ static void WoodenRCTrackLeftBankedQuarterTurn325DegUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 2:
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 3:
             switch (direction)
@@ -10339,8 +10339,8 @@ static void WoodenRCTrackLeftBankedQuarterTurn325DegUp(
                     PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -10413,21 +10413,21 @@ static void WoodenRCTrackRightBankedQuarterTurn325DegUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 2:
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 3:
             switch (direction)
@@ -10500,8 +10500,8 @@ static void WoodenRCTrackRightBankedQuarterTurn325DegUp(
                     PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -10594,16 +10594,16 @@ static void WoodenRCTrackLeftBankedQuarterTurn525DegUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::topRight, PaintSegment::bottomRight), direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -10661,15 +10661,15 @@ static void WoodenRCTrackLeftBankedQuarterTurn525DegUp(
                         session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             switch (direction)
@@ -10727,23 +10727,23 @@ static void WoodenRCTrackLeftBankedQuarterTurn525DegUp(
                         session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::right, PaintSegment::bottom, PaintSegment::centre,
                         PaintSegment::topLeft, PaintSegment::topRight, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 4:
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::topRight, PaintSegment::bottomRight), direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 5:
             switch (direction)
@@ -10807,15 +10807,15 @@ static void WoodenRCTrackLeftBankedQuarterTurn525DegUp(
                         session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 6:
             switch (direction)
@@ -10883,8 +10883,8 @@ static void WoodenRCTrackLeftBankedQuarterTurn525DegUp(
                     PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -10955,16 +10955,16 @@ static void WoodenRCTrackRightBankedQuarterTurn525DegUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight), direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -11022,15 +11022,15 @@ static void WoodenRCTrackRightBankedQuarterTurn525DegUp(
                         session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             switch (direction)
@@ -11088,23 +11088,23 @@ static void WoodenRCTrackRightBankedQuarterTurn525DegUp(
                         session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::right, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 4:
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight), direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 5:
             switch (direction)
@@ -11168,15 +11168,15 @@ static void WoodenRCTrackRightBankedQuarterTurn525DegUp(
                         session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 6:
             switch (direction)
@@ -11244,8 +11244,8 @@ static void WoodenRCTrackRightBankedQuarterTurn525DegUp(
                     PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -11345,8 +11345,8 @@ static void WoodenRCTrack25DegUpToLeftBanked25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x008ACD08 */
@@ -11422,8 +11422,8 @@ static void WoodenRCTrack25DegUpToRightBanked25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x008ACD18 */
@@ -11487,8 +11487,8 @@ static void WoodenRCTrackLeftBanked25DegUpTo25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x008ACD28 */
@@ -11552,8 +11552,8 @@ static void WoodenRCTrackRightBanked25DegUpTo25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x008ACD38 */
@@ -11675,8 +11675,8 @@ static void WoodenRCTrackLeftBankedFlatToLeftBanked25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x008ACD88 */
@@ -11758,8 +11758,8 @@ static void WoodenRCTrackRightBankedFlatToRightBanked25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x008ACD98 */
@@ -11841,8 +11841,8 @@ static void WoodenRCTrackLeftBanked25DegUpToLeftBankedFlat(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
     }
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 40);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
 /** rct2: 0x008ACDA8 */
@@ -11924,8 +11924,8 @@ static void WoodenRCTrackRightBanked25DegUpToRightBankedFlat(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
     }
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 40);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
 /** rct2: 0x008ACDB8 */
@@ -12047,8 +12047,8 @@ static void WoodenRCTrackFlatToLeftBanked25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x008ACBC8 */
@@ -12130,8 +12130,8 @@ static void WoodenRCTrackFlatToRightBanked25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x008ACBD8 */
@@ -12207,8 +12207,8 @@ static void WoodenRCTrackLeftBanked25DegUpToFlat(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
     }
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 40);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
 /** rct2: 0x008ACBE8 */
@@ -12284,8 +12284,8 @@ static void WoodenRCTrackRightBanked25DegUpToFlat(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
     }
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 40);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
 /** rct2: 0x008ACBF8 */
@@ -12352,8 +12352,8 @@ static void WoodenRCTrackBooster(
     WoodenASupportsPaintSetupRotated(
         session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.supportColours);
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 template<bool isClassic>
@@ -12401,9 +12401,9 @@ static void WoodenRCTrackLeftMediumHalfLoopUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
@@ -12433,15 +12433,15 @@ static void WoodenRCTrackLeftMediumHalfLoopUp(
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::topLeft, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::top),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -12477,13 +12477,13 @@ static void WoodenRCTrackLeftMediumHalfLoopUp(
                         session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::topLeft, PaintSegment::centre, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 144);
+            paintUtilSetGeneralSupportHeight(session, height + 144);
             break;
         case 3:
             switch (direction)
@@ -12512,14 +12512,14 @@ static void WoodenRCTrackLeftMediumHalfLoopUp(
                         { 0, 0, height }, { { 0, 0, height }, { 1, 32, 160 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 144);
+            paintUtilSetGeneralSupportHeight(session, height + 144);
             break;
         case 4:
             switch (direction)
@@ -12546,9 +12546,9 @@ static void WoodenRCTrackLeftMediumHalfLoopUp(
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::topRight, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottom,
                         PaintSegment::bottomRight, PaintSegment::right),
@@ -12559,7 +12559,7 @@ static void WoodenRCTrackLeftMediumHalfLoopUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height + 16, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -12609,9 +12609,9 @@ static void WoodenRCTrackRightMediumHalfLoopUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
@@ -12641,15 +12641,15 @@ static void WoodenRCTrackRightMediumHalfLoopUp(
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::topRight, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottom,
                         PaintSegment::bottomRight, PaintSegment::right),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -12685,14 +12685,14 @@ static void WoodenRCTrackRightMediumHalfLoopUp(
                         session, MetalSupportType::boxed, MetalSupportPlace::topRightSide, 14, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 144);
+            paintUtilSetGeneralSupportHeight(session, height + 144);
             break;
         case 3:
             switch (direction)
@@ -12722,13 +12722,13 @@ static void WoodenRCTrackRightMediumHalfLoopUp(
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 144);
+            paintUtilSetGeneralSupportHeight(session, height + 144);
             break;
         case 4:
             switch (direction)
@@ -12755,9 +12755,9 @@ static void WoodenRCTrackRightMediumHalfLoopUp(
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::topLeft, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::top),
@@ -12767,7 +12767,7 @@ static void WoodenRCTrackRightMediumHalfLoopUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height + 16, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -12827,9 +12827,9 @@ static void WoodenRCTrackLeftLargeHalfLoopUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 1:
             switch (direction)
@@ -12866,9 +12866,9 @@ static void WoodenRCTrackLeftLargeHalfLoopUp(
                         session, MetalSupportType::boxed, MetalSupportPlace::centre, 0, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -12897,15 +12897,15 @@ static void WoodenRCTrackLeftLargeHalfLoopUp(
                         { 0, 0, height }, { { 0, 16, height }, { 32, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88);
+            paintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 3:
             switch (direction)
@@ -12942,15 +12942,15 @@ static void WoodenRCTrackLeftLargeHalfLoopUp(
                         session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 224);
+            paintUtilSetGeneralSupportHeight(session, height + 224);
             break;
         case 4:
             switch (direction)
@@ -12976,14 +12976,14 @@ static void WoodenRCTrackLeftLargeHalfLoopUp(
                         { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 128);
+            paintUtilSetGeneralSupportHeight(session, height + 128);
             break;
         case 5:
             switch (direction)
@@ -13015,15 +13015,15 @@ static void WoodenRCTrackLeftLargeHalfLoopUp(
                         { 0, 0, height }, { { 0, 0, height + 210 }, { 32, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 224);
+            paintUtilSetGeneralSupportHeight(session, height + 224);
             break;
         case 6:
             switch (direction)
@@ -13053,15 +13053,15 @@ static void WoodenRCTrackLeftLargeHalfLoopUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 40);
+            paintUtilSetGeneralSupportHeight(session, height + 40);
             break;
     }
 }
@@ -13103,9 +13103,9 @@ static void WoodenRCTrackRightLargeHalfLoopUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 1:
             switch (direction)
@@ -13142,9 +13142,9 @@ static void WoodenRCTrackRightLargeHalfLoopUp(
                         session, MetalSupportType::boxed, MetalSupportPlace::centre, 12, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
@@ -13173,15 +13173,15 @@ static void WoodenRCTrackRightLargeHalfLoopUp(
                         { 0, 0, height }, { { 0, 0, height }, { 32, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88);
+            paintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 3:
             switch (direction)
@@ -13218,15 +13218,15 @@ static void WoodenRCTrackRightLargeHalfLoopUp(
                         session, MetalSupportType::boxed, MetalSupportPlace::topRightSide, 22, height, session.supportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 224);
+            paintUtilSetGeneralSupportHeight(session, height + 224);
             break;
         case 4:
             switch (direction)
@@ -13252,13 +13252,13 @@ static void WoodenRCTrackRightLargeHalfLoopUp(
                         { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 128);
+            paintUtilSetGeneralSupportHeight(session, height + 128);
             break;
         case 5:
             switch (direction)
@@ -13290,15 +13290,15 @@ static void WoodenRCTrackRightLargeHalfLoopUp(
                         { 0, 0, height }, { { 0, 16, height + 210 }, { 32, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 224);
+            paintUtilSetGeneralSupportHeight(session, height + 224);
             break;
         case 6:
             switch (direction)
@@ -13328,15 +13328,15 @@ static void WoodenRCTrackRightLargeHalfLoopUp(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 40);
+            paintUtilSetGeneralSupportHeight(session, height + 40);
             break;
     }
 }

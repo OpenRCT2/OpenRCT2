@@ -184,12 +184,12 @@ static void PaintCarRideTrackFlat(
     }
 
     MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 0, height, session.supportColours);
-    PaintUtilSetSegmentSupportHeight(
+    paintUtilSetSegmentSupportHeight(
         session,
-        PaintUtilRotateSegments(
+        paintUtilRotateSegments(
             EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), direction),
         0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x006F72D8 */
@@ -225,12 +225,12 @@ static void PaintCarRideTrack25DegUp(
     }
 
     MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 8, height, session.supportColours);
-    PaintUtilSetSegmentSupportHeight(
+    paintUtilSetSegmentSupportHeight(
         session,
-        PaintUtilRotateSegments(
+        paintUtilRotateSegments(
             EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), direction),
         0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56);
+    paintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x006F72E8 */
@@ -266,12 +266,12 @@ static void PaintCarRideTrackFlatTo25DegUp(
     }
 
     MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 3, height, session.supportColours);
-    PaintUtilSetSegmentSupportHeight(
+    paintUtilSetSegmentSupportHeight(
         session,
-        PaintUtilRotateSegments(
+        paintUtilRotateSegments(
             EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), direction),
         0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48);
+    paintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x006F72F8 */
@@ -307,12 +307,12 @@ static void PaintCarRideTrack25DegUpToFlat(
     }
 
     MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 6, height, session.supportColours);
-    PaintUtilSetSegmentSupportHeight(
+    paintUtilSetSegmentSupportHeight(
         session,
-        PaintUtilRotateSegments(
+        paintUtilRotateSegments(
             EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), direction),
         0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 40);
+    paintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
 /** rct2: 0x006F7308 */
@@ -359,8 +359,8 @@ static void PaintCarRideStation(
             session, supportType.metal, MetalSupportPlace::centre, direction, 0, height, session.supportColours);
     }
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x006F7378 */
@@ -397,9 +397,9 @@ static void PaintCarRideTrackRightQuarterTurn3Tiles(
                 PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::left);
             break;
     }
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
 
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x006F7368 */
@@ -443,8 +443,8 @@ static void PaintCarRideTrackLeftQuarterTurn1Tile(
     TrackPaintUtilLeftQuarterTurn1TileTunnel(
         session, kTunnelGroup, direction, height, 0, TunnelSubType::Flat, 0, TunnelSubType::Flat);
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x006F7398 */
@@ -486,8 +486,8 @@ static void PaintCarRideTrackSpinningTunnel(
         session, WoodenSupportType::truss, WoodenSupportSubType::neSw, direction, height,
         GetStationColourScheme(session, trackElement));
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x006F73B8 */
@@ -534,12 +534,12 @@ static void PaintCarRideTrack60DegUp(
         MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 32, height, session.supportColours);
     }
 
-    PaintUtilSetSegmentSupportHeight(
+    paintUtilSetSegmentSupportHeight(
         session,
-        PaintUtilRotateSegments(
+        paintUtilRotateSegments(
             EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), direction),
         0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 104);
+    paintUtilSetGeneralSupportHeight(session, height + 104);
 }
 
 /** rct2: 0x006F73C8 */
@@ -593,12 +593,12 @@ static void PaintCarRideTrack25DegUpTo60DegUp(
         MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 12, height, session.supportColours);
     }
 
-    PaintUtilSetSegmentSupportHeight(
+    paintUtilSetSegmentSupportHeight(
         session,
-        PaintUtilRotateSegments(
+        paintUtilRotateSegments(
             EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), direction),
         0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 72);
+    paintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
 /** rct2: 0x006F73D8 */
@@ -652,12 +652,12 @@ static void PaintCarRideTrack60DegUpTo25DegUp(
         MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 20, height, session.supportColours);
     }
 
-    PaintUtilSetSegmentSupportHeight(
+    paintUtilSetSegmentSupportHeight(
         session,
-        PaintUtilRotateSegments(
+        paintUtilRotateSegments(
             EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), direction),
         0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 72);
+    paintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
 /** rct2: 0x006F73E8 */
@@ -710,12 +710,12 @@ static void PaintCarRideTrackLogBumps(
     }
 
     MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 0, height, session.supportColours);
-    PaintUtilSetSegmentSupportHeight(
+    paintUtilSetSegmentSupportHeight(
         session,
-        PaintUtilRotateSegments(
+        paintUtilRotateSegments(
             EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), direction),
         0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /**

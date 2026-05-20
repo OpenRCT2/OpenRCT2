@@ -121,13 +121,13 @@ namespace OpenRCT2
         }
 
         const auto segments = sequenceDescriptor.blockedSegments[EnumValue(blockedSegmentsType)];
-        PaintUtilSetSegmentSupportHeight(session, paintSegmentsRotate(segments, direction), 0xFFFF, 0);
+        paintUtilSetSegmentSupportHeight(session, paintSegmentsRotate(segments, direction), 0xFFFF, 0);
 
         constexpr int16_t trackClearanceHeightCeil = Numerics::ceil2(trackClearanceHeight, kLandHeightStep);
         const auto generalSupportHeight = height + trackClearanceHeightCeil + sequenceDescriptor.generalSupportHeight;
         const bool setGeneralSupportHeight = sequenceDescriptor.generalSupportHeight
             != TrackMetadata::kDoNotSetGeneralSupportHeight;
-        PaintUtilSetGeneralSupportHeight(session, generalSupportHeight * setGeneralSupportHeight);
+        paintUtilSetGeneralSupportHeight(session, generalSupportHeight * setGeneralSupportHeight);
 
         if constexpr (tunnelCount >= 1)
         {

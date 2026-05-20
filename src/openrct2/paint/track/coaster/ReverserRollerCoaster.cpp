@@ -69,8 +69,8 @@ static void ReverserRCTrackFlat(
     DrawSupportForSequenceA<TrackElemType::flat>(
         session, supportType.wooden, trackSequence, direction, height, session.supportColours);
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 static void ReverserRCTrackStation(
@@ -90,8 +90,8 @@ static void ReverserRCTrackStation(
         session, supportType.wooden, trackSequence, direction, height, session.supportColours);
     TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, StationBaseType::a, 0, 9, 11);
     TrackPaintUtilDrawStationTunnel(session, direction, height);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x0086E66C */
@@ -161,8 +161,8 @@ static void ReverserRCTrack25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x0086E67C */
@@ -232,8 +232,8 @@ static void ReverserRCTrackFlatTo25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x0086E68C */
@@ -303,8 +303,8 @@ static void ReverserRCTrack25DegUpToFlat(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
     }
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 40);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
 /** rct2: 0x0086E69C */
@@ -364,16 +364,16 @@ static void ReverserRCTrackLeftQuarterTurn5(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::topRight, PaintSegment::bottomRight), direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -397,15 +397,15 @@ static void ReverserRCTrackLeftQuarterTurn5(
             }
             DrawSupportForSequenceA<TrackElemType::leftQuarterTurn5Tiles>(
                 session, supportType.wooden, trackSequence, direction, height, session.supportColours);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -429,23 +429,23 @@ static void ReverserRCTrackLeftQuarterTurn5(
             }
             DrawSupportForSequenceA<TrackElemType::leftQuarterTurn5Tiles>(
                 session, supportType.wooden, trackSequence, direction, height, session.supportColours);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::right, PaintSegment::bottom, PaintSegment::centre,
                         PaintSegment::topLeft, PaintSegment::topRight, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 4:
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::topRight, PaintSegment::bottomRight), direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 5:
             switch (direction)
@@ -469,15 +469,15 @@ static void ReverserRCTrackLeftQuarterTurn5(
             }
             DrawSupportForSequenceA<TrackElemType::leftQuarterTurn5Tiles>(
                 session, supportType.wooden, trackSequence, direction, height, session.supportColours);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 6:
             switch (direction)
@@ -510,8 +510,8 @@ static void ReverserRCTrackLeftQuarterTurn5(
                     PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -562,8 +562,8 @@ static void ReverserRCTrackSBendLeft(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -591,15 +591,15 @@ static void ReverserRCTrackSBendLeft(
             }
             DrawSupportForSequenceA<TrackElemType::sBendLeft>(
                 session, supportType.wooden, trackSequence, direction, height, session.supportColours);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -627,15 +627,15 @@ static void ReverserRCTrackSBendLeft(
             }
             DrawSupportForSequenceA<TrackElemType::sBendLeft>(
                 session, supportType.wooden, trackSequence, direction, height, session.supportColours);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -672,8 +672,8 @@ static void ReverserRCTrackSBendLeft(
                     PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -715,8 +715,8 @@ static void ReverserRCTrackSBendRight(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -744,15 +744,15 @@ static void ReverserRCTrackSBendRight(
             }
             DrawSupportForSequenceA<TrackElemType::sBendRight>(
                 session, supportType.wooden, trackSequence, direction, height, session.supportColours);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -780,15 +780,15 @@ static void ReverserRCTrackSBendRight(
             }
             DrawSupportForSequenceA<TrackElemType::sBendRight>(
                 session, supportType.wooden, trackSequence, direction, height, session.supportColours);
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -825,8 +825,8 @@ static void ReverserRCTrackSBendRight(
                     PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -868,11 +868,11 @@ static void ReverserRCTrackLeftQuarterTurn3(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -898,13 +898,13 @@ static void ReverserRCTrackLeftQuarterTurn3(
                         { { 16, 16, height }, { 16, 16, 2 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -941,8 +941,8 @@ static void ReverserRCTrackLeftQuarterTurn3(
                     PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -979,8 +979,8 @@ static void ReverserRCTrackBrakes(
     DrawSupportForSequenceA<TrackElemType::brakes>(
         session, supportType.wooden, trackSequence, direction, height, session.supportColours);
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x0086E76C */
@@ -1167,8 +1167,8 @@ static void ReverserRCTrackLeftReverser(
             break;
     }
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x0086E77C */
@@ -1208,8 +1208,8 @@ static void ReverserRCTrackRightReverser(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
@@ -1237,8 +1237,8 @@ static void ReverserRCTrackRightReverser(
             }
             DrawSupportForSequenceA<TrackElemType::rightReverser>(
                 session, supportType.wooden, trackSequence, direction, height, session.supportColours);
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -1266,8 +1266,8 @@ static void ReverserRCTrackRightReverser(
             }
             DrawSupportForSequenceA<TrackElemType::rightReverser>(
                 session, supportType.wooden, trackSequence, direction, height, session.supportColours);
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -1295,8 +1295,8 @@ static void ReverserRCTrackRightReverser(
             }
             DrawSupportForSequenceA<TrackElemType::rightReverser>(
                 session, supportType.wooden, trackSequence, direction, height, session.supportColours);
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 4:
             switch (direction)
@@ -1324,8 +1324,8 @@ static void ReverserRCTrackRightReverser(
             }
             DrawSupportForSequenceA<TrackElemType::rightReverser>(
                 session, supportType.wooden, trackSequence, direction, height, session.supportColours);
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 5:
             switch (direction)
@@ -1362,8 +1362,8 @@ static void ReverserRCTrackRightReverser(
                     PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }

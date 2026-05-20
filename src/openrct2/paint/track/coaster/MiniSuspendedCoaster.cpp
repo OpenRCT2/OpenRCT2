@@ -66,7 +66,7 @@ static void MiniSuspendedRCTrackFlat(
         }
     }
 
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     if (TrackPaintUtilShouldPaintSupports(session.mapPosition))
     {
         MetalASupportsPaintSetupRotated(
@@ -74,7 +74,7 @@ static void MiniSuspendedRCTrackFlat(
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-    PaintUtilSetGeneralSupportHeight(session, height + 48);
+    paintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x008AFF4C, 0x008AFF5C, 0x008AFF6C */
@@ -101,8 +101,8 @@ static void MiniSuspendedRCTrackStation(
         DrawSupportsSideBySide(session, direction, height, session.supportColours, supportType.metal);
     }
     TrackPaintUtilDrawStationTunnel(session, direction, height);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x008AFEAC */
@@ -163,7 +163,7 @@ static void MiniSuspendedRCTrack25DegUp(
         }
     }
 
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     if (TrackPaintUtilShouldPaintSupports(session.mapPosition))
     {
         MetalASupportsPaintSetupRotated(
@@ -178,7 +178,7 @@ static void MiniSuspendedRCTrack25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
-    PaintUtilSetGeneralSupportHeight(session, height + 72);
+    paintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
 /** rct2: 0x008AFEBC */
@@ -239,7 +239,7 @@ static void MiniSuspendedRCTrackFlatTo25DegUp(
         }
     }
 
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     if (TrackPaintUtilShouldPaintSupports(session.mapPosition))
     {
         MetalASupportsPaintSetupRotated(
@@ -254,7 +254,7 @@ static void MiniSuspendedRCTrackFlatTo25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
-    PaintUtilSetGeneralSupportHeight(session, height + 64);
+    paintUtilSetGeneralSupportHeight(session, height + 64);
 }
 
 /** rct2: 0x008AFECC */
@@ -315,7 +315,7 @@ static void MiniSuspendedRCTrack25DegUpToFlat(
         }
     }
 
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     if (TrackPaintUtilShouldPaintSupports(session.mapPosition))
     {
         MetalASupportsPaintSetupRotated(
@@ -330,7 +330,7 @@ static void MiniSuspendedRCTrack25DegUpToFlat(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
     }
-    PaintUtilSetGeneralSupportHeight(session, height + 56);
+    paintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x008AFEDC */
@@ -385,9 +385,9 @@ static void MiniSuspendedRCTrackLeftQuarterTurn5(
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft,
                         PaintSegment::bottomRight),
@@ -400,10 +400,10 @@ static void MiniSuspendedRCTrackLeftQuarterTurn5(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -425,15 +425,15 @@ static void MiniSuspendedRCTrackLeftQuarterTurn5(
                         session, direction, session.trackColours.WithIndex(28400), { 0, 16, height + 24 }, { 32, 16, 1 });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
@@ -455,16 +455,16 @@ static void MiniSuspendedRCTrackLeftQuarterTurn5(
                         session, direction, session.trackColours.WithIndex(28399), { 0, 0, height + 24 }, { 16, 16, 1 });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 5:
             switch (direction)
@@ -486,15 +486,15 @@ static void MiniSuspendedRCTrackLeftQuarterTurn5(
                         session, direction, session.trackColours.WithIndex(28398), { 16, 0, height + 24 }, { 16, 32, 1 });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 6:
             switch (direction)
@@ -517,9 +517,9 @@ static void MiniSuspendedRCTrackLeftQuarterTurn5(
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
                         PaintSegment::bottomRight),
@@ -538,7 +538,7 @@ static void MiniSuspendedRCTrackLeftQuarterTurn5(
                     PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -580,9 +580,9 @@ static void MiniSuspendedRCTrackSBendLeft(
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
@@ -592,7 +592,7 @@ static void MiniSuspendedRCTrackSBendLeft(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
@@ -615,9 +615,9 @@ static void MiniSuspendedRCTrackSBendLeft(
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
@@ -625,7 +625,7 @@ static void MiniSuspendedRCTrackSBendLeft(
                 0xFFFF, 0);
             DrawSBendLeftSupports(session, supportType.metal, trackSequence, direction, height + 30, 0, 0);
 
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -648,9 +648,9 @@ static void MiniSuspendedRCTrackSBendLeft(
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
@@ -658,7 +658,7 @@ static void MiniSuspendedRCTrackSBendLeft(
                 0xFFFF, 0);
             DrawSBendLeftSupports(session, supportType.metal, trackSequence, direction, height + 30, 0, 0);
 
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
@@ -681,9 +681,9 @@ static void MiniSuspendedRCTrackSBendLeft(
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
@@ -699,7 +699,7 @@ static void MiniSuspendedRCTrackSBendLeft(
                     PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -732,9 +732,9 @@ static void MiniSuspendedRCTrackSBendRight(
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
@@ -744,7 +744,7 @@ static void MiniSuspendedRCTrackSBendRight(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
@@ -767,9 +767,9 @@ static void MiniSuspendedRCTrackSBendRight(
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
@@ -777,7 +777,7 @@ static void MiniSuspendedRCTrackSBendRight(
                 0xFFFF, 0);
             DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height + 30, 0, 0);
 
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -800,9 +800,9 @@ static void MiniSuspendedRCTrackSBendRight(
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
@@ -810,7 +810,7 @@ static void MiniSuspendedRCTrackSBendRight(
                 0xFFFF, 0);
             DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height + 30, 0, 0);
 
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
@@ -833,9 +833,9 @@ static void MiniSuspendedRCTrackSBendRight(
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
@@ -850,7 +850,7 @@ static void MiniSuspendedRCTrackSBendRight(
                     PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -883,9 +883,9 @@ static void MiniSuspendedRCTrackLeftQuarterTurn3(
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft,
                         PaintSegment::bottomRight),
@@ -898,10 +898,10 @@ static void MiniSuspendedRCTrackLeftQuarterTurn3(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -923,13 +923,13 @@ static void MiniSuspendedRCTrackLeftQuarterTurn3(
                         session, direction, session.trackColours.WithIndex(28448), { 16, 16, height + 24 }, { 16, 16, 3 });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             switch (direction)
@@ -952,9 +952,9 @@ static void MiniSuspendedRCTrackLeftQuarterTurn3(
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
                         PaintSegment::bottomRight),
@@ -973,7 +973,7 @@ static void MiniSuspendedRCTrackLeftQuarterTurn3(
                     PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
 }
@@ -1019,9 +1019,9 @@ static void MiniSuspendedRCTrackLeftEighthToDiag(
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
@@ -1033,7 +1033,7 @@ static void MiniSuspendedRCTrackLeftEighthToDiag(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
@@ -1059,15 +1059,15 @@ static void MiniSuspendedRCTrackLeftEighthToDiag(
                         { { 0, 16, height + 24 }, { 32, 16, 1 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -1093,24 +1093,24 @@ static void MiniSuspendedRCTrackLeftEighthToDiag(
                         { { 0, 0, height + 24 }, { 16, 16, 1 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 4:
             switch (direction)
@@ -1137,9 +1137,9 @@ static void MiniSuspendedRCTrackLeftEighthToDiag(
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft, PaintSegment::bottomRight),
@@ -1148,7 +1148,7 @@ static void MiniSuspendedRCTrackLeftEighthToDiag(
             MetalASupportsPaintSetupRotated(
                 session, supportType.metal, MetalSupportPlace::bottomCorner, direction, 0, height + 30, session.supportColours);
 
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -1185,9 +1185,9 @@ static void MiniSuspendedRCTrackRightEighthToDiag(
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
@@ -1198,7 +1198,7 @@ static void MiniSuspendedRCTrackRightEighthToDiag(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
@@ -1224,15 +1224,15 @@ static void MiniSuspendedRCTrackRightEighthToDiag(
                         { { 0, 0, height + 24 }, { 32, 16, 1 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
@@ -1258,25 +1258,25 @@ static void MiniSuspendedRCTrackRightEighthToDiag(
                         { { 0, 16, height + 24 }, { 16, 16, 1 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 4:
             switch (direction)
@@ -1303,9 +1303,9 @@ static void MiniSuspendedRCTrackRightEighthToDiag(
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft, PaintSegment::bottomRight),
@@ -1314,7 +1314,7 @@ static void MiniSuspendedRCTrackRightEighthToDiag(
             MetalASupportsPaintSetupRotated(
                 session, supportType.metal, MetalSupportPlace::leftCorner, direction, 0, height + 30, session.supportColours);
 
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -1346,14 +1346,14 @@ static void MiniSuspendedRCTrackDiagFlat(
     TrackPaintUtilDiagTilesPaint(
         session, 1, height + 24, direction, trackSequence, images, defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
-    PaintUtilSetSegmentSupportHeight(
-        session, PaintUtilRotateSegments(BlockedSegments::kDiagStraightFlat[trackSequence], direction), 0xFFFF, 0);
+    paintUtilSetSegmentSupportHeight(
+        session, paintUtilRotateSegments(BlockedSegments::kDiagStraightFlat[trackSequence], direction), 0xFFFF, 0);
 
     if (trackSequence == 3)
         MetalASupportsPaintSetupRotated(
             session, supportType.metal, MetalSupportPlace::leftCorner, direction, 0, height + 30, session.supportColours);
 
-    PaintUtilSetGeneralSupportHeight(session, height + 48);
+    paintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x008B000C */
@@ -1386,13 +1386,13 @@ static void MiniSuspendedRCTrackDiag25DegUp(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -1417,13 +1417,13 @@ static void MiniSuspendedRCTrackDiag25DegUp(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -1448,14 +1448,14 @@ static void MiniSuspendedRCTrackDiag25DegUp(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -1481,16 +1481,16 @@ static void MiniSuspendedRCTrackDiag25DegUp(
                 }
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetupRotated(
                 session, supportType.metal, MetalSupportPlace::leftCorner, direction, 0, height + 42, session.supportColours);
 
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -1525,13 +1525,13 @@ static void MiniSuspendedRCTrackDiagFlatTo25DegUp(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -1556,13 +1556,13 @@ static void MiniSuspendedRCTrackDiagFlatTo25DegUp(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -1587,14 +1587,14 @@ static void MiniSuspendedRCTrackDiagFlatTo25DegUp(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -1620,16 +1620,16 @@ static void MiniSuspendedRCTrackDiagFlatTo25DegUp(
                 }
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetupRotated(
                 session, supportType.metal, MetalSupportPlace::leftCorner, direction, 0, height + 34, session.supportColours);
 
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
     }
 }
@@ -1664,13 +1664,13 @@ static void MiniSuspendedRCTrackDiag25DegUpToFlat(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -1695,13 +1695,13 @@ static void MiniSuspendedRCTrackDiag25DegUpToFlat(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -1726,14 +1726,14 @@ static void MiniSuspendedRCTrackDiag25DegUpToFlat(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -1759,16 +1759,16 @@ static void MiniSuspendedRCTrackDiag25DegUpToFlat(
                 }
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             MetalBSupportsPaintSetupRotated(
                 session, supportType.metal, MetalSupportPlace::leftCorner, direction, 0, height + 36, session.supportColours);
 
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -1803,13 +1803,13 @@ static void MiniSuspendedRCTrackDiag25DegDown(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -1834,13 +1834,13 @@ static void MiniSuspendedRCTrackDiag25DegDown(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -1865,14 +1865,14 @@ static void MiniSuspendedRCTrackDiag25DegDown(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -1898,16 +1898,16 @@ static void MiniSuspendedRCTrackDiag25DegDown(
                 }
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetupRotated(
                 session, supportType.metal, MetalSupportPlace::leftCorner, direction, 0, height + 42, session.supportColours);
 
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -1942,9 +1942,9 @@ static void MiniSuspendedRCTrackDiagFlatTo25DegDown(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
@@ -1972,9 +1972,9 @@ static void MiniSuspendedRCTrackDiagFlatTo25DegDown(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
@@ -2002,9 +2002,9 @@ static void MiniSuspendedRCTrackDiagFlatTo25DegDown(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
@@ -2034,9 +2034,9 @@ static void MiniSuspendedRCTrackDiagFlatTo25DegDown(
                 }
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
@@ -2045,7 +2045,7 @@ static void MiniSuspendedRCTrackDiagFlatTo25DegDown(
             break;
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + 72);
+    paintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
 /** rct2: 0x008B002C */
@@ -2078,13 +2078,13 @@ static void MiniSuspendedRCTrackDiag25DegDownToFlat(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -2109,13 +2109,13 @@ static void MiniSuspendedRCTrackDiag25DegDownToFlat(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -2140,14 +2140,14 @@ static void MiniSuspendedRCTrackDiag25DegDownToFlat(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -2173,16 +2173,16 @@ static void MiniSuspendedRCTrackDiag25DegDownToFlat(
                 }
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetupRotated(
                 session, supportType.metal, MetalSupportPlace::leftCorner, direction, 0, height + 34, session.supportColours);
 
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
     }
 }

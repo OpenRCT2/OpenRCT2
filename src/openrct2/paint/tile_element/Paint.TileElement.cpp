@@ -43,29 +43,29 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
 
-static void BlankTilesPaint(PaintSession& session, int32_t x, int32_t y);
-static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoords);
+static void blankTilesPaint(PaintSession& session, int32_t x, int32_t y);
+static void paintTileElementBase(PaintSession& session, const CoordsXY& origCoords);
 
 /**
  *
  *  rct2: 0x0068B35F
  */
-void TileElementPaintSetup(PaintSession& session, const CoordsXY& mapCoords, bool isTrackPiecePreview)
+void tileElementPaintSetup(PaintSession& session, const CoordsXY& mapCoords, bool isTrackPiecePreview)
 {
     PROFILED_FUNCTION();
 
     if (!MapIsEdge(mapCoords))
     {
-        PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-        PaintUtilForceSetGeneralSupportHeight(session, -1, 0);
+        paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+        paintUtilForceSetGeneralSupportHeight(session, -1, 0);
         session.flags = isTrackPiecePreview ? PaintSessionFlags::IsTrackPiecePreview : 0;
         session.waterHeight = 0xFFFF;
 
-        PaintTileElementBase(session, mapCoords);
+        paintTileElementBase(session, mapCoords);
     }
     else if (!(session.viewFlags & VIEWPORT_FLAG_TRANSPARENT_BACKGROUND))
     {
-        BlankTilesPaint(session, mapCoords.x, mapCoords.y);
+        blankTilesPaint(session, mapCoords.x, mapCoords.y);
     }
 }
 
@@ -73,7 +73,7 @@ void TileElementPaintSetup(PaintSession& session, const CoordsXY& mapCoords, boo
  *
  *  rct2: 0x0068B60E
  */
-static void BlankTilesPaint(PaintSession& session, int32_t x, int32_t y)
+static void blankTilesPaint(PaintSession& session, int32_t x, int32_t y)
 {
     int32_t dx = 0;
     switch (session.currentRotation)
@@ -118,7 +118,7 @@ bool gShowSupportSegmentHeights = false;
  *
  *  rct2: 0x0068B3FB
  */
-static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoords)
+static void paintTileElementBase(PaintSession& session, const CoordsXY& origCoords)
 {
     PROFILED_FUNCTION();
 
@@ -346,17 +346,17 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
     }
 }
 
-void PaintUtilSetGeneralSupportHeight(PaintSession& session, int16_t height)
+void paintUtilSetGeneralSupportHeight(PaintSession& session, int16_t height)
 {
     if (session.support.height >= height)
     {
         return;
     }
 
-    PaintUtilForceSetGeneralSupportHeight(session, height, kTileSlopeAboveTrackOrScenery);
+    paintUtilForceSetGeneralSupportHeight(session, height, kTileSlopeAboveTrackOrScenery);
 }
 
-void PaintUtilForceSetGeneralSupportHeight(PaintSession& session, int16_t height, uint8_t slope)
+void paintUtilForceSetGeneralSupportHeight(PaintSession& session, int16_t height, uint8_t slope)
 {
     session.support.height = height;
     session.support.slope = slope;
@@ -368,7 +368,7 @@ const uint16_t kSegmentOffsets[9] = {
     EnumToFlag(PaintSegment::topRight), EnumToFlag(PaintSegment::bottomLeft), EnumToFlag(PaintSegment::bottomRight),
 };
 
-void PaintUtilSetSegmentSupportHeight(PaintSession& session, int32_t segments, uint16_t height, uint8_t slope)
+void paintUtilSetSegmentSupportHeight(PaintSession& session, int32_t segments, uint16_t height, uint8_t slope)
 {
     SupportHeight* supportSegments = session.supportSegments;
     for (std::size_t s = 0; s < std::size(kSegmentOffsets); s++)
@@ -384,7 +384,7 @@ void PaintUtilSetSegmentSupportHeight(PaintSession& session, int32_t segments, u
     }
 }
 
-uint16_t PaintUtilRotateSegments(uint16_t segments, uint8_t rotation)
+uint16_t paintUtilRotateSegments(uint16_t segments, uint8_t rotation)
 {
     // Only the value representing PaintSegment::centre falls beyond 0xFF, so this will be kept in place.
     uint8_t temp = segments & 0xFF;
@@ -393,7 +393,7 @@ uint16_t PaintUtilRotateSegments(uint16_t segments, uint8_t rotation)
     return (segments & 0xFF00) | temp;
 }
 
-bool PaintShouldShowHeightMarkers(const PaintSession& session, const uint32_t viewportFlag)
+bool paintShouldShowHeightMarkers(const PaintSession& session, const uint32_t viewportFlag)
 {
     auto rt = &session.rt;
     return (session.viewFlags & viewportFlag) && (rt->zoom_level <= ZoomLevel{ 0 });

@@ -619,15 +619,15 @@ static void PathPaintFencesAdditionsTunnels(
     uint8_t direction = (pathElement.GetSlopeDirection() + session.currentRotation) % kNumOrthogonalDirections;
     bool sloped = pathElement.IsSloped();
 
-    if (connectedEdges & EDGE_SE)
+    if (connectedEdges & edgeSE)
     {
         // Bottom right of tile is a tunnel
-        if (sloped && direction == EDGE_NE)
+        if (sloped && direction == edgeNE)
         {
             // Path going down into the tunnel
             PaintUtilPushTunnelRight(session, height + 16, TunnelType::PathAndMiniGolf);
         }
-        else if (connectedEdges & EDGE_NE)
+        else if (connectedEdges & edgeNE)
         {
             // Flat path with edge to the right (north-east)
             PaintUtilPushTunnelRight(session, height, TunnelType::Path11);
@@ -639,18 +639,18 @@ static void PathPaintFencesAdditionsTunnels(
         }
     }
 
-    if (!(connectedEdges & EDGE_SW))
+    if (!(connectedEdges & edgeSW))
     {
         return;
     }
 
     // Bottom left of the tile is a tunnel
-    if (sloped && direction == EDGE_SE)
+    if (sloped && direction == edgeSE)
     {
         // Path going down into the tunnel
         PaintUtilPushTunnelLeft(session, height + 16, TunnelType::PathAndMiniGolf);
     }
-    else if (connectedEdges & EDGE_NW)
+    else if (connectedEdges & edgeNW)
     {
         // Flat path with edge to the left (north-west)
         PaintUtilPushTunnelLeft(session, height, TunnelType::Path11);
@@ -723,7 +723,7 @@ static void PaintHeightMarkers(PaintSession& session, const PathElement& pathEl)
 {
     PROFILED_FUNCTION();
 
-    if (PaintShouldShowHeightMarkers(session, VIEWPORT_FLAG_PATH_HEIGHTS))
+    if (paintShouldShowHeightMarkers(session, VIEWPORT_FLAG_PATH_HEIGHTS))
     {
         uint16_t heightMarkerBaseZ = pathEl.getBaseZ() + 3;
         if (pathEl.IsSloped())
@@ -880,43 +880,43 @@ static void PathPaintSegmentSupportHeight(
         height += 16;
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height);
+    paintUtilSetGeneralSupportHeight(session, height);
 
     if (pathElement.IsQueue() || (pathElement.GetEdgesAndCorners() != 0xFF && hasSupports))
     {
-        PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+        paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         return;
     }
 
     if (pathElement.GetEdgesAndCorners() == 0xFF)
     {
-        PaintUtilSetSegmentSupportHeight(
+        paintUtilSetSegmentSupportHeight(
             session,
             EnumsToFlags(PaintSegment::topLeft, PaintSegment::topRight, PaintSegment::bottomLeft, PaintSegment::bottomRight),
             0xFFFF, 0);
         return;
     }
 
-    PaintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::centre), 0xFFFF, 0);
+    paintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::centre), 0xFFFF, 0);
 
-    if (edges & EDGE_NE)
+    if (edges & edgeNE)
     {
-        PaintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::topRight), 0xFFFF, 0);
+        paintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::topRight), 0xFFFF, 0);
     }
 
-    if (edges & EDGE_SE)
+    if (edges & edgeSE)
     {
-        PaintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::bottomRight), 0xFFFF, 0);
+        paintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::bottomRight), 0xFFFF, 0);
     }
 
-    if (edges & EDGE_SW)
+    if (edges & edgeSW)
     {
-        PaintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::bottomLeft), 0xFFFF, 0);
+        paintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::bottomLeft), 0xFFFF, 0);
     }
 
-    if (edges & EDGE_NW)
+    if (edges & edgeNW)
     {
-        PaintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::topLeft), 0xFFFF, 0);
+        paintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::topLeft), 0xFFFF, 0);
     }
 }
 

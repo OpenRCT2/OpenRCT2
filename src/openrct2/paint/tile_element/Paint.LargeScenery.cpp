@@ -84,13 +84,13 @@ static void PaintLargeScenerySupports(
     int32_t clearanceHeight = Numerics::ceil2(tileElement.getClearanceZ() + 15, 16);
     if (tile.allowSupportsAbove)
     {
-        PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, clearanceHeight, 0x20);
+        paintUtilSetSegmentSupportHeight(session, kSegmentsAll, clearanceHeight, 0x20);
     }
     else
     {
-        PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+        paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     }
-    PaintUtilSetGeneralSupportHeight(session, clearanceHeight);
+    paintUtilSetGeneralSupportHeight(session, clearanceHeight);
 }
 
 static std::string_view LargeSceneryCalculateDisplayText(const LargeSceneryText& text, std::string_view s, bool height)

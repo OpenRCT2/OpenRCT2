@@ -110,12 +110,12 @@ static void PaintSpaceRings(
     switch (trackSequence)
     {
         case 7:
-            if (TrackPaintUtilHasFence(EDGE_SW, position, trackElement, ride, session.currentRotation))
+            if (TrackPaintUtilHasFence(edgeSW, position, trackElement, ride, session.currentRotation))
             {
                 imageId = stationColour.WithIndex(SprSpaceRingsFenceSw);
                 paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 29, 0, height + 2 }, { 1, 28, 7 } });
             }
-            if (TrackPaintUtilHasFence(EDGE_SE, position, trackElement, ride, session.currentRotation))
+            if (TrackPaintUtilHasFence(edgeSE, position, trackElement, ride, session.currentRotation))
             {
                 imageId = stationColour.WithIndex(SprSpaceRingsFenceSe);
                 paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 29, height + 2 }, { 28, 1, 7 } });
@@ -181,9 +181,9 @@ static void PaintSpaceRings(
             cornerSegments = EnumsToFlags(PaintSegment::left, PaintSegment::bottomLeft, PaintSegment::bottom);
             break;
     }
-    PaintUtilSetSegmentSupportHeight(session, cornerSegments, height + 2, 0x20);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll & ~cornerSegments, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48);
+    paintUtilSetSegmentSupportHeight(session, cornerSegments, height + 2, 0x20);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll & ~cornerSegments, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /**

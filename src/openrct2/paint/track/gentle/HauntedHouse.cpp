@@ -119,9 +119,9 @@ static void PaintHauntedHouse(
             break;
     }
 
-    PaintUtilSetSegmentSupportHeight(session, cornerSegments, height + 2, 0x20);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll & ~cornerSegments, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 128);
+    paintUtilSetSegmentSupportHeight(session, cornerSegments, height + 2, 0x20);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll & ~cornerSegments, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 128);
 }
 
 TrackPaintFunction GetTrackPaintFunctionHauntedHouse(TrackElemType trackType)

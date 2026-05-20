@@ -251,8 +251,8 @@ static void PaintMagicCarpet(
             break;
     }
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 176);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 176);
 }
 
 TrackPaintFunction GetTrackPaintFunctionMagicCarpet(TrackElemType trackType)

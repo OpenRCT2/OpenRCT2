@@ -694,8 +694,8 @@ static void PaintMiniatureRailwayTrackFlat(
 
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x008AD170, 0x008AD180, 0x008AD190 */
@@ -717,8 +717,8 @@ static void PaintMiniatureRailwayStation(
 
     TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, StationBaseType::a, -2, 7, 9);
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 30);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 30);
 }
 
 /** rct2: 0x008AD0D0 */
@@ -750,8 +750,8 @@ static void PaintMiniatureRailwayTrack25DegUp(
         session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.supportColours,
         WoodenSupportTransitionType::up25DegRailway);
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x008AD0E0 */
@@ -783,8 +783,8 @@ static void PaintMiniatureRailwayTrackFlatTo25DegUp(
         session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.supportColours,
         WoodenSupportTransitionType::flatToUp25DegRailway);
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x008AD0F0 */
@@ -816,8 +816,8 @@ static void PaintMiniatureRailwayTrack25DegUpToFlat(
         session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.supportColours,
         WoodenSupportTransitionType::up25DegToFlatRailway);
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 40);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
 /** rct2: 0x008AD100 */
@@ -1075,9 +1075,9 @@ static void PaintMiniatureRailwayTrackRightQuarterTurn5Tiles(
             break;
     }
 
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
 
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x008AD130 */
@@ -1196,9 +1196,9 @@ static void PaintMiniatureRailwayTrackSBendLeft(
             blockedSegments = kSegmentsAll;
             break;
     }
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction & 1), 0xFFFF, 0);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(blockedSegments, direction & 1), 0xFFFF, 0);
 
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 static constexpr WoodenSupportSubType s_bend_right_supports_type[kNumOrthogonalDirections][4] = {
@@ -1307,9 +1307,9 @@ static void PaintMiniatureRailwayTrackSBendRight(
             blockedSegments = kSegmentsAll;
             break;
     }
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction & 1), 0xFFFF, 0);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(blockedSegments, direction & 1), 0xFFFF, 0);
 
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 static constexpr uint32_t miniature_railway_right_quarter_turn_3_tile_track_floor[4][3] = {
@@ -1417,9 +1417,9 @@ static void PaintMiniatureRailwayTrackRightQuarterTurn3Tiles(
             blockedSegments = kSegmentsAll;
             break;
     }
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
 
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x008AD1A0 */
@@ -1598,10 +1598,10 @@ static void PaintMiniatureRailwayTrackLeftEighthToDiag(
         PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
 
     if (trackSequence != 4 || !isRightEighthToOrthog)
-        PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+        paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 static constexpr uint32_t kFloorPiecesRightEighthToDiag[4][5] = {
@@ -1766,11 +1766,11 @@ static void PaintMiniatureRailwayTrackRightEighthToDiag(
         PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
 
     // Fixes #5281.
     if (trackSequence != 4 || !isLeftEighthToOrthog)
-        PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+        paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x008AD1E0 */
@@ -1863,11 +1863,11 @@ static void MiniatureRailwayTrackDiagFlat(
             session, session.trackColours.WithIndex(imageId), { -16, -16, height }, { { -16, -16, height }, { 32, 32, 2 } });
     }
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
 
     // Fixes #5281.
     if (supportSubType != WoodenSupportSubType::null)
-        PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+        paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x008AD230 */
@@ -1947,11 +1947,11 @@ static void MiniatureRailwayTrackDiag25DegUp(
             { { -16, -16, height + offsetB[direction] }, { 32, 32, 2 } });
     }
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
 
     // Fixes #5281
     if (supportSubType != WoodenSupportSubType::null)
-        PaintUtilSetGeneralSupportHeight(session, height + 56);
+        paintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x008AD210 */
@@ -2001,10 +2001,10 @@ static void MiniatureRailwayTrackDiagFlatTo25DegUp(
             session, session.trackColours.WithIndex(imageId), { -16, -16, height }, { { -16, -16, height }, { 32, 32, 2 } });
     }
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
 
     if (supportSubType != WoodenSupportSubType::null)
-        PaintUtilSetGeneralSupportHeight(session, height + 48);
+        paintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x008AD220 */
@@ -2082,10 +2082,10 @@ static void MiniatureRailwayTrackDiag25DegUpToFlat(
             { { -16, -16, height + railOffsets[direction] }, { 32, 32, 2 } });
     }
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
 
     if (supportSubType != WoodenSupportSubType::null)
-        PaintUtilSetGeneralSupportHeight(session, height + 56);
+        paintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x008AD260 */
@@ -2162,11 +2162,11 @@ static void MiniatureRailwayTrackDiag25DegDown(
             { { -16, -16, height + railOffsets[direction] }, { 32, 32, 2 } });
     }
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
 
     // Fixes #5281
     if (supportSubType != WoodenSupportSubType::null)
-        PaintUtilSetGeneralSupportHeight(session, height + 56);
+        paintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x008AD240 */
@@ -2242,11 +2242,11 @@ static void MiniatureRailwayTrackDiagFlatTo25DegDown(
             { { -16, -16, height + railOffsets[direction] }, { 32, 32, 2 } });
     }
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
 
     // Fixes #5281,
     if (supportSubType != WoodenSupportSubType::null)
-        PaintUtilSetGeneralSupportHeight(session, height + 56);
+        paintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 static void MiniatureRailwayTrackDiag25DegDownToFlat(
@@ -2294,11 +2294,11 @@ static void MiniatureRailwayTrackDiag25DegDownToFlat(
             session, session.trackColours.WithIndex(imageId), { -16, -16, height }, { { -16, -16, height }, { 32, 32, 2 } });
     }
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
 
     // Fixes #5281.
     if (supportSubType != WoodenSupportSubType::null)
-        PaintUtilSetGeneralSupportHeight(session, height + 48);
+        paintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /**

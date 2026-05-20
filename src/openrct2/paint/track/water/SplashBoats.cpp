@@ -505,8 +505,8 @@ static void PaintSplashBoatsTrack25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 static void PaintSplashBoatsTrack60DegUp(
@@ -531,8 +531,8 @@ static void PaintSplashBoatsTrack60DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 56, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 104);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 104);
 }
 
 static void PaintSplashBoatsTrackFlatTo25DegUp(
@@ -556,8 +556,8 @@ static void PaintSplashBoatsTrackFlatTo25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 static void PaintSplashBoatsTrack25DegUpToFlat(
@@ -581,8 +581,8 @@ static void PaintSplashBoatsTrack25DegUpToFlat(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
     }
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 40);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
 static void PaintSplashBoatsTrack25DegUpTo60DegUp(
@@ -607,8 +607,8 @@ static void PaintSplashBoatsTrack25DegUpTo60DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 72);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
 static void PaintSplashBoatsTrack60DegUpTo25DegUp(
@@ -633,8 +633,8 @@ static void PaintSplashBoatsTrack60DegUpTo25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 72);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
 static void PaintSplashBoatsTrack25DegDown(
@@ -658,8 +658,8 @@ static void PaintSplashBoatsTrack25DegDown(
     {
         PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
     }
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 static void PaintSplashBoatsTrack60DegDown(
@@ -690,8 +690,8 @@ static void PaintSplashBoatsTrackFlatTo25DegDown(
     {
         PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
     }
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 40);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
 static void PaintSplashBoatsTrack25DegDownTo60DegDown(
@@ -729,8 +729,8 @@ static void PaintSplashBoatsTrack25DegDownToFlat(
     {
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     }
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** Start of elements originally from River Rafts */
@@ -756,8 +756,8 @@ static void PaintSplashBoatsTrackFlat(
         PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x0089B1A0 */
@@ -779,8 +779,8 @@ static void PaintSplashBoatsStation(
 
     TrackPaintUtilDrawStationTunnel(session, direction, height);
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x0089B1D0 */
@@ -799,19 +799,19 @@ static void PaintSplashBoatsTrackLeftQuarterTurn5Tiles(
     switch (trackSequence)
     {
         case 0:
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             break;
         case 1:
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::topRight, PaintSegment::bottomRight), direction),
                 0xFFFF, 0);
             break;
         case 2:
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::topLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::top,
                         PaintSegment::left, PaintSegment::bottomLeft),
@@ -819,9 +819,9 @@ static void PaintSplashBoatsTrackLeftQuarterTurn5Tiles(
                 0xFFFF, 0);
             break;
         case 3:
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right, PaintSegment::centre,
                         PaintSegment::top, PaintSegment::bottom, PaintSegment::topLeft, PaintSegment::bottomLeft),
@@ -829,16 +829,16 @@ static void PaintSplashBoatsTrackLeftQuarterTurn5Tiles(
                 0xFFFF, 0);
             break;
         case 4:
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::topRight, PaintSegment::bottomRight), direction),
                 0xFFFF, 0);
             break;
         case 5:
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::topLeft, PaintSegment::centre, PaintSegment::bottomRight, PaintSegment::bottomLeft,
                         PaintSegment::bottom, PaintSegment::left),
@@ -846,7 +846,7 @@ static void PaintSplashBoatsTrackLeftQuarterTurn5Tiles(
                 0xFFFF, 0);
             break;
         case 6:
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             break;
     }
 
@@ -866,7 +866,7 @@ static void PaintSplashBoatsTrackLeftQuarterTurn5Tiles(
             break;
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x0089B1D0 */
@@ -885,19 +885,19 @@ static void PaintSplashBoatsTrackRightQuarterTurn5Tiles(
     switch (trackSequence)
     {
         case 0:
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             break;
         case 1:
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight), direction),
                 0xFFFF, 0);
             break;
         case 2:
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottomRight, PaintSegment::right,
                         PaintSegment::bottom, PaintSegment::topRight),
@@ -905,9 +905,9 @@ static void PaintSplashBoatsTrackRightQuarterTurn5Tiles(
                 0xFFFF, 0);
             break;
         case 3:
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight, PaintSegment::centre,
                         PaintSegment::left, PaintSegment::right, PaintSegment::bottomLeft, PaintSegment::bottomRight),
@@ -915,16 +915,16 @@ static void PaintSplashBoatsTrackRightQuarterTurn5Tiles(
                 0xFFFF, 0);
             break;
         case 4:
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight), direction),
                 0xFFFF, 0);
             break;
         case 5:
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::left,
                         PaintSegment::bottom, PaintSegment::topLeft),
@@ -932,7 +932,7 @@ static void PaintSplashBoatsTrackRightQuarterTurn5Tiles(
                 0xFFFF, 0);
             break;
         case 6:
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             break;
     }
 
@@ -952,7 +952,7 @@ static void PaintSplashBoatsTrackRightQuarterTurn5Tiles(
             break;
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x0089B180 */
@@ -999,7 +999,7 @@ static void PaintSplashBoatsTrackSBendLeft(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, 2, height + 27 }, { 32, 27, 0 } });
             DrawSupportForSequenceA<TrackElemType::sBendLeft>(
                 session, supportType.wooden, trackSequence, direction, height, session.supportColours);
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             break;
         case 1:
             bboy = (direction == 0 || direction == 1) ? 0 : 6;
@@ -1010,9 +1010,9 @@ static void PaintSplashBoatsTrackSBendLeft(
             DrawSupportForSequenceA<TrackElemType::sBendLeft>(
                 session, supportType.wooden, trackSequence, direction, height, session.supportColours);
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
@@ -1028,9 +1028,9 @@ static void PaintSplashBoatsTrackSBendLeft(
             DrawSupportForSequenceA<TrackElemType::sBendLeft>(
                 session, supportType.wooden, trackSequence, direction, height, session.supportColours);
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
@@ -1043,7 +1043,7 @@ static void PaintSplashBoatsTrackSBendLeft(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, 2, height + 27 }, { 32, 27, 0 } });
             DrawSupportForSequenceA<TrackElemType::sBendLeft>(
                 session, supportType.wooden, trackSequence, direction, height, session.supportColours);
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             break;
     }
 
@@ -1062,7 +1062,7 @@ static void PaintSplashBoatsTrackSBendLeft(
         }
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x0089B190 */
@@ -1109,7 +1109,7 @@ static void PaintSplashBoatsTrackSBendRight(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, 2, height + 27 }, { 32, 27, 0 } });
             DrawSupportForSequenceA<TrackElemType::sBendRight>(
                 session, supportType.wooden, trackSequence, direction, height, session.supportColours);
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             break;
         case 1:
             bboy = (direction == 2 || direction == 3) ? 0 : 6;
@@ -1120,9 +1120,9 @@ static void PaintSplashBoatsTrackSBendRight(
             DrawSupportForSequenceA<TrackElemType::sBendRight>(
                 session, supportType.wooden, trackSequence, direction, height, session.supportColours);
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
@@ -1138,9 +1138,9 @@ static void PaintSplashBoatsTrackSBendRight(
             DrawSupportForSequenceA<TrackElemType::sBendRight>(
                 session, supportType.wooden, trackSequence, direction, height, session.supportColours);
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
@@ -1153,7 +1153,7 @@ static void PaintSplashBoatsTrackSBendRight(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, 2, height + 27 }, { 32, 27, 0 } });
             DrawSupportForSequenceA<TrackElemType::sBendRight>(
                 session, supportType.wooden, trackSequence, direction, height, session.supportColours);
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             break;
     }
 
@@ -1172,7 +1172,7 @@ static void PaintSplashBoatsTrackSBendRight(
         }
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 static void PaintSplashBoatsTrackOnRidePhoto(

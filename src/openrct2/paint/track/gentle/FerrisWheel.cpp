@@ -24,17 +24,17 @@
 using namespace OpenRCT2;
 
 static constexpr uint8_t kEdges1X4NeSw[] = {
-    EDGE_NW | EDGE_SE,
-    EDGE_NW | EDGE_SE | EDGE_NE,
-    EDGE_NW | EDGE_SE,
-    EDGE_NW | EDGE_SE | EDGE_SW,
+    edgeNW | edgeSE,
+    edgeNW | edgeSE | edgeNE,
+    edgeNW | edgeSE,
+    edgeNW | edgeSE | edgeSW,
 };
 
 static constexpr uint8_t kEdges1X4NwSe[] = {
-    EDGE_NE | EDGE_SW,
-    EDGE_NE | EDGE_SW | EDGE_NW,
-    EDGE_NE | EDGE_SW,
-    EDGE_NE | EDGE_SW | EDGE_SE,
+    edgeNE | edgeSW,
+    edgeNE | edgeSW | edgeNW,
+    edgeNE | edgeSW,
+    edgeNE | edgeSW | edgeSE,
 };
 
 /** rct2: 0x008A8CA8 */
@@ -131,23 +131,23 @@ static void PaintFerrisWheel(
     ImageId imageId;
     uint8_t rotation = session.currentRotation;
 
-    if (edges & EDGE_NW && TrackPaintUtilHasFence(EDGE_NW, session.mapPosition, trackElement, ride, rotation))
+    if (edges & edgeNW && TrackPaintUtilHasFence(edgeNW, session.mapPosition, trackElement, ride, rotation))
     {
         imageId = stationColour.WithIndex(SPR_FENCE_ROPE_NW);
         paintAddImageAsChild(session, imageId, { 0, 0, height }, { { 0, 2, height + 2 }, { 32, 1, 7 } });
     }
-    if (edges & EDGE_NE && TrackPaintUtilHasFence(EDGE_NE, session.mapPosition, trackElement, ride, rotation))
+    if (edges & edgeNE && TrackPaintUtilHasFence(edgeNE, session.mapPosition, trackElement, ride, rotation))
     {
         imageId = stationColour.WithIndex(SPR_FENCE_ROPE_NE);
         paintAddImageAsChild(session, imageId, { 0, 0, height }, { { 2, 0, height + 2 }, { 1, 32, 7 } });
     }
-    if (edges & EDGE_SE && TrackPaintUtilHasFence(EDGE_SE, session.mapPosition, trackElement, ride, rotation))
+    if (edges & edgeSE && TrackPaintUtilHasFence(edgeSE, session.mapPosition, trackElement, ride, rotation))
     {
         // Bound box is slightly different from TrackPaintUtilPaintFences
         imageId = stationColour.WithIndex(SPR_FENCE_ROPE_SE);
         paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 29, height + 3 }, { 28, 1, 7 } });
     }
-    if (edges & EDGE_SW && TrackPaintUtilHasFence(EDGE_SW, session.mapPosition, trackElement, ride, rotation))
+    if (edges & edgeSW && TrackPaintUtilHasFence(edgeSW, session.mapPosition, trackElement, ride, rotation))
     {
         imageId = stationColour.WithIndex(SPR_FENCE_ROPE_SW);
         paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 30, 0, height + 2 }, { 1, 32, 7 } });
@@ -169,8 +169,8 @@ static void PaintFerrisWheel(
             break;
     }
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 176);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 176);
 }
 
 TrackPaintFunction GetTrackPaintFunctionFerrisWheel(TrackElemType trackType)

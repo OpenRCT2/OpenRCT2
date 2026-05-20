@@ -180,7 +180,7 @@ static void PaintSwingingShip(
         }
     }
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
 
     if (stationObject != nullptr && !(stationObject->Flags & StationObjectFlags::noPlatforms))
     {
@@ -188,7 +188,7 @@ static void PaintSwingingShip(
         {
             if (relativeTrackSequence != 1 && relativeTrackSequence != 4)
             {
-                hasFence = TrackPaintUtilHasFence(EDGE_NE, session.mapPosition, trackElement, ride, session.currentRotation);
+                hasFence = TrackPaintUtilHasFence(edgeNE, session.mapPosition, trackElement, ride, session.currentRotation);
                 if (relativeTrackSequence == 2)
                 {
                     imageId = session.trackColours.WithIndex(
@@ -205,7 +205,7 @@ static void PaintSwingingShip(
                     (relativeTrackSequence == 2 ? SPR_STATION_PLATFORM_BEGIN_NW_SE : SPR_STATION_PLATFORM_NW_SE));
                 paintAddImageAsParent(session, imageId, { 24, 0, height + 9 }, { 8, 32, 1 });
 
-                hasFence = TrackPaintUtilHasFence(EDGE_SW, session.mapPosition, trackElement, ride, session.currentRotation);
+                hasFence = TrackPaintUtilHasFence(edgeSW, session.mapPosition, trackElement, ride, session.currentRotation);
                 if (relativeTrackSequence == 3)
                 {
                     if (hasFence)
@@ -233,7 +233,7 @@ static void PaintSwingingShip(
         {
             if (relativeTrackSequence != 1 && relativeTrackSequence != 4)
             {
-                hasFence = TrackPaintUtilHasFence(EDGE_NW, session.mapPosition, trackElement, ride, session.currentRotation);
+                hasFence = TrackPaintUtilHasFence(edgeNW, session.mapPosition, trackElement, ride, session.currentRotation);
                 if (relativeTrackSequence == 2)
                 {
                     imageId = session.trackColours.WithIndex(
@@ -250,7 +250,7 @@ static void PaintSwingingShip(
                     (relativeTrackSequence == 2 ? SPR_STATION_PLATFORM_BEGIN_SW_NE : SPR_STATION_PLATFORM_SW_NE));
                 paintAddImageAsParent(session, imageId, { 0, 24, height + 9 }, { 32, 8, 1 });
 
-                hasFence = TrackPaintUtilHasFence(EDGE_SE, session.mapPosition, trackElement, ride, session.currentRotation);
+                hasFence = TrackPaintUtilHasFence(edgeSE, session.mapPosition, trackElement, ride, session.currentRotation);
                 if (relativeTrackSequence == 3)
                 {
                     if (hasFence)
@@ -295,7 +295,7 @@ static void PaintSwingingShip(
             break;
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + 112);
+    paintUtilSetGeneralSupportHeight(session, height + 112);
 }
 
 TrackPaintFunction GetTrackPaintFunctionSwingingShip(TrackElemType trackType)

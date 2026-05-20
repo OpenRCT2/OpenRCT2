@@ -212,13 +212,13 @@ static void ChairliftPaintStationNeSw(
     imageId = session.supportColours.WithIndex(SPR_FLOOR_TILE_CHEQUERBOARD);
     paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 32, 32, 1 } });
 
-    bool hasFence = TrackPaintUtilHasFence(EDGE_NW, pos, trackElement, ride, session.currentRotation);
+    bool hasFence = TrackPaintUtilHasFence(edgeNW, pos, trackElement, ride, session.currentRotation);
     if (hasFence)
     {
         imageId = session.trackColours.WithIndex(SPR_FENCE_PICKET_NW);
         paintAddImageAsChild(session, imageId, { 0, 0, height }, { { 0, 2, height + 2 }, { 32, 1, 7 } });
     }
-    TrackPaintUtilDrawStationCovers(session, EDGE_NW, hasFence, stationObj, height, stationColour);
+    TrackPaintUtilDrawStationCovers(session, edgeNW, hasFence, stationObj, height, stationColour);
 
     if ((direction == 2 && isStart) || (direction == 0 && isEnd))
     {
@@ -226,13 +226,13 @@ static void ChairliftPaintStationNeSw(
         paintAddImageAsChild(session, imageId, { 0, 0, height }, { { 2, 2, height + 4 }, { 1, 28, 7 } });
     }
 
-    hasFence = TrackPaintUtilHasFence(EDGE_SE, pos, trackElement, ride, session.currentRotation);
+    hasFence = TrackPaintUtilHasFence(edgeSE, pos, trackElement, ride, session.currentRotation);
     if (hasFence)
     {
         imageId = session.trackColours.WithIndex(SPR_FENCE_PICKET_SE);
         paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 30, height + 2 }, { 32, 1, 20 } });
     }
-    TrackPaintUtilDrawStationCovers(session, EDGE_SE, hasFence, stationObj, height, stationColour);
+    TrackPaintUtilDrawStationCovers(session, edgeSE, hasFence, stationObj, height, stationColour);
 
     bool drawFrontColumn = true;
     bool drawBackColumn = true;
@@ -273,9 +273,9 @@ static void ChairliftPaintStationNeSw(
             session, imageId, { 30, 16, height + 2 }, { { 1, 16, height + 2 }, { 1, 1, 7 } }); // bound offset x is wrong?
     }
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 static void ChairliftPaintStationSeNw(
@@ -305,13 +305,13 @@ static void ChairliftPaintStationSeNw(
     imageId = session.supportColours.WithIndex(SPR_FLOOR_TILE_CHEQUERBOARD);
     paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 32, 32, 1 } });
 
-    bool hasFence = TrackPaintUtilHasFence(EDGE_NE, pos, trackElement, ride, session.currentRotation);
+    bool hasFence = TrackPaintUtilHasFence(edgeNE, pos, trackElement, ride, session.currentRotation);
     if (hasFence)
     {
         imageId = session.trackColours.WithIndex(SPR_FENCE_PICKET_NE);
         paintAddImageAsChild(session, imageId, { 0, 0, height }, { { 2, 0, height + 2 }, { 1, 32, 7 } });
     }
-    TrackPaintUtilDrawStationCovers(session, EDGE_NE, hasFence, stationObj, height, stationColour);
+    TrackPaintUtilDrawStationCovers(session, edgeNE, hasFence, stationObj, height, stationColour);
 
     if ((direction == 1 && isStart) || (direction == 3 && isEnd))
     {
@@ -319,13 +319,13 @@ static void ChairliftPaintStationSeNw(
         paintAddImageAsChild(session, imageId, { 0, 0, height }, { { 2, 2, height + 4 }, { 28, 1, 7 } });
     }
 
-    hasFence = TrackPaintUtilHasFence(EDGE_SW, pos, trackElement, ride, session.currentRotation);
+    hasFence = TrackPaintUtilHasFence(edgeSW, pos, trackElement, ride, session.currentRotation);
     if (hasFence)
     {
         imageId = session.trackColours.WithIndex(SPR_FENCE_PICKET_SW);
         paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 30, 0, height + 2 }, { 1, 32, 20 } });
     }
-    TrackPaintUtilDrawStationCovers(session, EDGE_SW, hasFence, stationObj, height, stationColour);
+    TrackPaintUtilDrawStationCovers(session, edgeSW, hasFence, stationObj, height, stationColour);
 
     bool drawRightColumn = true;
     bool drawLeftColumn = true;
@@ -369,8 +369,8 @@ static void ChairliftPaintStationSeNw(
     }
 
     PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x00744068 */
@@ -406,8 +406,8 @@ static void ChairliftPaintFlat(
         PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x00743FD8 */
@@ -444,8 +444,8 @@ static void ChairliftPaint25DegUp(
             break;
     }
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x00743FD8 */
@@ -499,8 +499,8 @@ static void ChairliftPaintFlatTo25DegUp(
     }
 
     ChairliftPaintUtilDrawSupports(session, EnumToFlag(PaintSegment::centre), height, supportType);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x00743FF8 */
@@ -554,8 +554,8 @@ static void ChairliftPaint25DegUpToFlat(
     }
 
     ChairliftPaintUtilDrawSupports(session, EnumToFlag(PaintSegment::centre), height, supportType);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 40);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
 /** rct2: 0x00744008 */
@@ -644,11 +644,11 @@ static void ChairliftPaintLeftQuarterTurn1Tile(
     }
 
     ChairliftPaintUtilDrawSupports(
-        session, PaintUtilRotateSegments(EnumsToFlags(PaintSegment::topLeft, PaintSegment::bottomLeft), direction), height,
+        session, paintUtilRotateSegments(EnumsToFlags(PaintSegment::topLeft, PaintSegment::bottomLeft), direction), height,
         supportType);
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x00744048 */

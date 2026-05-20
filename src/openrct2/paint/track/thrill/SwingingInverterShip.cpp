@@ -182,8 +182,8 @@ static void PaintSwingingInverterShip(
             break;
     }
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 176);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 176);
 }
 
 TrackPaintFunction GetTrackPaintFunctionSwingingInverterShip(TrackElemType trackType)

@@ -61,8 +61,8 @@ static void PaintFlyingSaucers(
         session, edges, session.mapPosition, trackElement, ride, session.trackColours, height, FlyingSaucersFenceSprites,
         session.currentRotation);
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /**
