@@ -83,6 +83,7 @@ namespace OpenRCT2::Audio
         bool isDeviceOpen() const;
 
         void PlayOneShot(IAudioSource* source, float volume, float pan) override;
+        void SyncVolumeSettings() override;
 
         std::shared_ptr<IAudioChannel> CreateChannel(
             IAudioSource* source, MixerGroup group, bool loop, int32_t volume, float pan, double rate) override;
