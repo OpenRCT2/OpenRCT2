@@ -1879,14 +1879,14 @@ namespace OpenRCT2::Ui::Windows
         void RemoveElement(int32_t elementIndex)
         {
             Guard::Assert(elementIndex >= 0 && elementIndex < windowTileInspectorElementCount, "elementIndex out of range");
-            auto modifyTile = GameActions::TileModifyAction(_toolMap, GameActions::TileModifyType::AnyRemove, elementIndex);
+            auto modifyTile = GameActions::TileModifyAction(_toolMap, GameActions::TileModifyType::anyRemove, elementIndex);
             GameActions::Execute(&modifyTile, getGameState());
         }
 
         void RotateElement(int32_t elementIndex)
         {
             Guard::Assert(elementIndex >= 0 && elementIndex < windowTileInspectorElementCount, "elementIndex out of range");
-            auto modifyTile = GameActions::TileModifyAction(_toolMap, GameActions::TileModifyType::AnyRotate, elementIndex);
+            auto modifyTile = GameActions::TileModifyAction(_toolMap, GameActions::TileModifyType::anyRotate, elementIndex);
             GameActions::Execute(&modifyTile, getGameState());
         }
 
@@ -1898,14 +1898,14 @@ namespace OpenRCT2::Ui::Windows
             // This might happen if two people are modifying the same tile.
             if (!firstInRange || !secondInRange)
                 return;
-            auto modifyTile = GameActions::TileModifyAction(_toolMap, GameActions::TileModifyType::AnySwap, first, second);
+            auto modifyTile = GameActions::TileModifyAction(_toolMap, GameActions::TileModifyType::anySwap, first, second);
             GameActions::Execute(&modifyTile, getGameState());
         }
 
         void SortElements()
         {
             Guard::Assert(_tileSelected, "No tile selected");
-            auto modifyTile = GameActions::TileModifyAction(_toolMap, GameActions::TileModifyType::AnySort);
+            auto modifyTile = GameActions::TileModifyAction(_toolMap, GameActions::TileModifyType::anySort);
             GameActions::Execute(&modifyTile, getGameState());
         }
 
@@ -1930,55 +1930,55 @@ namespace OpenRCT2::Ui::Windows
         void PasteElement()
         {
             auto modifyTile = GameActions::TileModifyAction(
-                _toolMap, GameActions::TileModifyType::AnyPaste, 0, 0, _copiedElement, _copiedBanner);
+                _toolMap, GameActions::TileModifyType::anyPaste, 0, 0, _copiedElement, _copiedBanner);
             GameActions::Execute(&modifyTile, getGameState());
         }
 
         void BaseHeightOffset(int16_t elementIndex, int8_t heightOffset)
         {
             auto modifyTile = GameActions::TileModifyAction(
-                _toolMap, GameActions::TileModifyType::AnyBaseHeightOffset, elementIndex, heightOffset);
+                _toolMap, GameActions::TileModifyType::anyBaseHeightOffset, elementIndex, heightOffset);
             GameActions::Execute(&modifyTile, getGameState());
         }
 
         void SurfaceShowParkFences(bool showFences)
         {
             auto modifyTile = GameActions::TileModifyAction(
-                _toolMap, GameActions::TileModifyType::SurfaceShowParkFences, showFences);
+                _toolMap, GameActions::TileModifyType::surfaceShowParkFences, showFences);
             GameActions::Execute(&modifyTile, getGameState());
         }
 
         void SurfaceToggleCorner(int32_t cornerIndex)
         {
             auto modifyTile = GameActions::TileModifyAction(
-                _toolMap, GameActions::TileModifyType::SurfaceToggleCorner, cornerIndex);
+                _toolMap, GameActions::TileModifyType::surfaceToggleCorner, cornerIndex);
             GameActions::Execute(&modifyTile, getGameState());
         }
 
         void SurfaceToggleDiagonal()
         {
-            auto modifyTile = GameActions::TileModifyAction(_toolMap, GameActions::TileModifyType::SurfaceToggleDiagonal);
+            auto modifyTile = GameActions::TileModifyAction(_toolMap, GameActions::TileModifyType::surfaceToggleDiagonal);
             GameActions::Execute(&modifyTile, getGameState());
         }
 
         void PathSetSloped(int32_t elementIndex, bool sloped)
         {
             auto modifyTile = GameActions::TileModifyAction(
-                _toolMap, GameActions::TileModifyType::PathSetSlope, elementIndex, sloped);
+                _toolMap, GameActions::TileModifyType::pathSetSlope, elementIndex, sloped);
             GameActions::Execute(&modifyTile, getGameState());
         }
 
         void PathSetJunctionRailings(int32_t elementIndex, bool hasJunctionRailings)
         {
             auto modifyTile = GameActions::TileModifyAction(
-                _toolMap, GameActions::TileModifyType::PathSetJunctionRailings, elementIndex, hasJunctionRailings);
+                _toolMap, GameActions::TileModifyType::pathSetJunctionRailings, elementIndex, hasJunctionRailings);
             GameActions::Execute(&modifyTile, getGameState());
         }
 
         void PathSetBroken(int32_t elementIndex, bool broken)
         {
             auto modifyTile = GameActions::TileModifyAction(
-                _toolMap, GameActions::TileModifyType::PathSetBroken, elementIndex, broken);
+                _toolMap, GameActions::TileModifyType::pathSetBroken, elementIndex, broken);
             GameActions::Execute(&modifyTile, getGameState());
         }
 
@@ -1987,7 +1987,7 @@ namespace OpenRCT2::Ui::Windows
             Guard::Assert(elementIndex >= 0 && elementIndex < windowTileInspectorElementCount, "elementIndex out of range");
             Guard::Assert(cornerIndex >= 0 && cornerIndex < 8, "cornerIndex out of range");
             auto modifyTile = GameActions::TileModifyAction(
-                _toolMap, GameActions::TileModifyType::PathToggleEdge, elementIndex, cornerIndex);
+                _toolMap, GameActions::TileModifyType::pathToggleEdge, elementIndex, cornerIndex);
             GameActions::Execute(&modifyTile, getGameState());
         }
 
@@ -1995,7 +1995,7 @@ namespace OpenRCT2::Ui::Windows
         {
             Guard::ArgumentInRange(elementIndex, 0, windowTileInspectorElementCount - 1);
             auto modifyTile = GameActions::TileModifyAction(
-                _toolMap, GameActions::TileModifyType::EntranceMakeUsable, elementIndex);
+                _toolMap, GameActions::TileModifyType::entranceMakeUsable, elementIndex);
             GameActions::Execute(&modifyTile, getGameState());
         }
 
@@ -2004,21 +2004,21 @@ namespace OpenRCT2::Ui::Windows
             // Make sure only the correct bits are set
             Guard::Assert((slopeValue & 3) == slopeValue, "slopeValue doesn't match its mask");
             auto modifyTile = GameActions::TileModifyAction(
-                _toolMap, GameActions::TileModifyType::WallSetSlope, elementIndex, slopeValue);
+                _toolMap, GameActions::TileModifyType::wallSetSlope, elementIndex, slopeValue);
             GameActions::Execute(&modifyTile, getGameState());
         }
 
         void WallAnimationFrameOffset(int16_t elementIndex, int8_t animationFrameOffset)
         {
             auto modifyTile = GameActions::TileModifyAction(
-                _toolMap, GameActions::TileModifyType::WallSetAnimationFrame, elementIndex, animationFrameOffset);
+                _toolMap, GameActions::TileModifyType::wallSetAnimationFrame, elementIndex, animationFrameOffset);
             GameActions::Execute(&modifyTile, getGameState());
         }
 
         void TrackBlockHeightOffset(int32_t elementIndex, int8_t heightOffset)
         {
             auto modifyTile = GameActions::TileModifyAction(
-                _toolMap, GameActions::TileModifyType::TrackBaseHeightOffset, elementIndex, heightOffset);
+                _toolMap, GameActions::TileModifyType::trackBaseHeightOffset, elementIndex, heightOffset);
             GameActions::Execute(&modifyTile, getGameState());
         }
 
@@ -2026,7 +2026,7 @@ namespace OpenRCT2::Ui::Windows
         {
             auto modifyTile = GameActions::TileModifyAction(
                 _toolMap,
-                entireTrackBlock ? GameActions::TileModifyType::TrackSetChainBlock : GameActions::TileModifyType::TrackSetChain,
+                entireTrackBlock ? GameActions::TileModifyType::trackSetChainBlock : GameActions::TileModifyType::trackSetChain,
                 elementIndex, chain);
             GameActions::Execute(&modifyTile, getGameState());
         }
@@ -2034,14 +2034,14 @@ namespace OpenRCT2::Ui::Windows
         void TrackSetBrakeClosed(int32_t elementIndex, bool isClosed)
         {
             auto modifyTile = GameActions::TileModifyAction(
-                _toolMap, GameActions::TileModifyType::TrackSetBrake, elementIndex, isClosed);
+                _toolMap, GameActions::TileModifyType::trackSetBrake, elementIndex, isClosed);
             GameActions::Execute(&modifyTile, getGameState());
         }
 
         void TrackSetIndestructible(int32_t elementIndex, bool isIndestructible)
         {
             auto modifyTile = GameActions::TileModifyAction(
-                _toolMap, GameActions::TileModifyType::TrackSetIndestructible, elementIndex, isIndestructible);
+                _toolMap, GameActions::TileModifyType::trackSetIndestructible, elementIndex, isIndestructible);
             GameActions::Execute(&modifyTile, getGameState());
         }
 
@@ -2050,7 +2050,7 @@ namespace OpenRCT2::Ui::Windows
             // quarterIndex is widget index relative to WIDX_SCENERY_CHECK_QUARTER_N, so a value from 0-3
             Guard::Assert(quarterIndex >= 0 && quarterIndex < 4, "quarterIndex out of range");
             auto modifyTile = GameActions::TileModifyAction(
-                _toolMap, GameActions::TileModifyType::ScenerySetQuarterLocation, elementIndex,
+                _toolMap, GameActions::TileModifyType::scenerySetQuarterLocation, elementIndex,
                 (quarterIndex - GetCurrentRotation()) & 3);
             GameActions::Execute(&modifyTile, getGameState());
         }
@@ -2059,7 +2059,7 @@ namespace OpenRCT2::Ui::Windows
         void ToggleQuadrantCollosion(int32_t elementIndex, const int32_t quadrantIndex)
         {
             auto modifyTile = GameActions::TileModifyAction(
-                _toolMap, GameActions::TileModifyType::ScenerySetQuarterCollision, elementIndex,
+                _toolMap, GameActions::TileModifyType::scenerySetQuarterCollision, elementIndex,
                 (quadrantIndex + 2 - GetCurrentRotation()) & 3);
             GameActions::Execute(&modifyTile, getGameState());
         }
@@ -2070,7 +2070,7 @@ namespace OpenRCT2::Ui::Windows
             // Make edgeIndex  = 0
             edgeIndex = (edgeIndex - GetCurrentRotation()) & 3;
             auto modifyTile = GameActions::TileModifyAction(
-                _toolMap, GameActions::TileModifyType::BannerToggleBlockingEdge, elementIndex, edgeIndex);
+                _toolMap, GameActions::TileModifyType::bannerToggleBlockingEdge, elementIndex, edgeIndex);
             GameActions::Execute(&modifyTile, getGameState());
         }
 
@@ -2078,14 +2078,14 @@ namespace OpenRCT2::Ui::Windows
         {
             Guard::Assert(elementIndex >= 0 && elementIndex < windowTileInspectorElementCount, "elementIndex out of range");
             auto modifyTile = GameActions::TileModifyAction(
-                _toolMap, GameActions::TileModifyType::AnyToggleInvisilibity, elementIndex);
+                _toolMap, GameActions::TileModifyType::anyToggleInvisilibity, elementIndex);
             GameActions::Execute(&modifyTile, getGameState());
         }
 
         void WallSetAnimationIsBackwards(int32_t elementIndex, bool backwards)
         {
             auto modifyTile = GameActions::TileModifyAction(
-                _toolMap, GameActions::TileModifyType::WallSetAnimationIsBackwards, elementIndex, backwards);
+                _toolMap, GameActions::TileModifyType::wallSetAnimationIsBackwards, elementIndex, backwards);
             GameActions::Execute(&modifyTile, getGameState());
         }
 

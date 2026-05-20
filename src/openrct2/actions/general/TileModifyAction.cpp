@@ -68,170 +68,170 @@ namespace OpenRCT2::GameActions
         auto res = Result();
         switch (_setting)
         {
-            case TileModifyType::AnyRemove:
+            case TileModifyType::anyRemove:
             {
                 const auto elementIndex = _value1;
                 res = TileInspector::RemoveElementAt(_loc, elementIndex, isExecuting);
                 break;
             }
-            case TileModifyType::AnySwap:
+            case TileModifyType::anySwap:
             {
                 const auto firstIndex = _value1;
                 const auto secondIndex = _value2;
                 res = TileInspector::SwapElementsAt(_loc, firstIndex, secondIndex, isExecuting);
                 break;
             }
-            case TileModifyType::AnyToggleInvisilibity:
+            case TileModifyType::anyToggleInvisilibity:
             {
                 const auto elementIndex = _value1;
                 res = TileInspector::ToggleInvisibilityOfElementAt(_loc, elementIndex, isExecuting);
                 break;
             }
-            case TileModifyType::AnyRotate:
+            case TileModifyType::anyRotate:
             {
                 const auto elementIndex = _value1;
                 res = TileInspector::RotateElementAt(_loc, elementIndex, isExecuting);
                 break;
             }
-            case TileModifyType::AnyPaste:
+            case TileModifyType::anyPaste:
             {
                 res = TileInspector::PasteElementAt(_loc, _pasteElement, _pasteBanner, isExecuting);
                 break;
             }
-            case TileModifyType::AnySort:
+            case TileModifyType::anySort:
             {
                 res = TileInspector::SortElementsAt(_loc, isExecuting);
                 break;
             }
-            case TileModifyType::AnyBaseHeightOffset:
+            case TileModifyType::anyBaseHeightOffset:
             {
                 const auto elementIndex = _value1;
                 const auto heightOffset = _value2;
                 res = TileInspector::AnyBaseHeightOffset(_loc, elementIndex, heightOffset, isExecuting);
                 break;
             }
-            case TileModifyType::SurfaceShowParkFences:
+            case TileModifyType::surfaceShowParkFences:
             {
                 const bool showFences = _value1;
                 res = TileInspector::SurfaceShowParkFences(_loc, showFences, isExecuting);
                 break;
             }
-            case TileModifyType::SurfaceToggleCorner:
+            case TileModifyType::surfaceToggleCorner:
             {
                 const auto cornerIndex = _value1;
                 res = TileInspector::SurfaceToggleCorner(_loc, cornerIndex, isExecuting);
                 break;
             }
-            case TileModifyType::SurfaceToggleDiagonal:
+            case TileModifyType::surfaceToggleDiagonal:
             {
                 res = TileInspector::SurfaceToggleDiagonal(_loc, isExecuting);
                 break;
             }
-            case TileModifyType::PathSetSlope:
+            case TileModifyType::pathSetSlope:
             {
                 const auto elementIndex = _value1;
                 const bool sloped = _value2;
                 res = TileInspector::PathSetSloped(_loc, elementIndex, sloped, isExecuting);
                 break;
             }
-            case TileModifyType::PathSetJunctionRailings:
+            case TileModifyType::pathSetJunctionRailings:
             {
                 const auto elementIndex = _value1;
                 const bool hasJunctionRailing = _value2;
                 res = TileInspector::PathSetJunctionRailings(_loc, elementIndex, hasJunctionRailing, isExecuting);
                 break;
             }
-            case TileModifyType::PathSetBroken:
+            case TileModifyType::pathSetBroken:
             {
                 const auto elementIndex = _value1;
                 const bool broken = _value2;
                 res = TileInspector::PathSetBroken(_loc, elementIndex, broken, isExecuting);
                 break;
             }
-            case TileModifyType::PathToggleEdge:
+            case TileModifyType::pathToggleEdge:
             {
                 const auto elementIndex = _value1;
                 const auto edgeIndex = _value2;
                 res = TileInspector::PathToggleEdge(_loc, elementIndex, edgeIndex, isExecuting);
                 break;
             }
-            case TileModifyType::EntranceMakeUsable:
+            case TileModifyType::entranceMakeUsable:
             {
                 const auto elementIndex = _value1;
                 res = TileInspector::EntranceMakeUsable(_loc, elementIndex, isExecuting);
                 break;
             }
-            case TileModifyType::WallSetSlope:
+            case TileModifyType::wallSetSlope:
             {
                 const auto elementIndex = _value1;
                 const auto slopeValue = _value2;
                 res = TileInspector::WallSetSlope(_loc, elementIndex, slopeValue, isExecuting);
                 break;
             }
-            case TileModifyType::WallSetAnimationFrame:
+            case TileModifyType::wallSetAnimationFrame:
             {
                 const auto elementIndex = _value1;
                 const auto animationFrameOffset = _value2;
                 res = TileInspector::WallAnimationFrameOffset(_loc, elementIndex, animationFrameOffset, isExecuting);
                 break;
             }
-            case TileModifyType::TrackBaseHeightOffset:
+            case TileModifyType::trackBaseHeightOffset:
             {
                 const auto elementIndex = _value1;
                 const auto heightOffset = _value2;
                 res = TileInspector::TrackBaseHeightOffset(_loc, elementIndex, heightOffset, isExecuting);
                 break;
             }
-            case TileModifyType::TrackSetChainBlock:
+            case TileModifyType::trackSetChainBlock:
             {
                 const auto elementIndex = _value1;
                 const bool setChain = _value2;
                 res = TileInspector::TrackSetChain(_loc, elementIndex, true, setChain, isExecuting);
                 break;
             }
-            case TileModifyType::TrackSetChain:
+            case TileModifyType::trackSetChain:
             {
                 const auto elementIndex = _value1;
                 const bool setChain = _value2;
                 res = TileInspector::TrackSetChain(_loc, elementIndex, false, setChain, isExecuting);
                 break;
             }
-            case TileModifyType::TrackSetBrake:
+            case TileModifyType::trackSetBrake:
             {
                 const auto elementIndex = _value1;
                 const bool isClosed = _value2;
                 res = TileInspector::TrackSetBrakeClosed(_loc, elementIndex, isClosed, isExecuting);
                 break;
             }
-            case TileModifyType::TrackSetIndestructible:
+            case TileModifyType::trackSetIndestructible:
             {
                 const auto elementIndex = _value1;
                 const bool isIndestructible = _value2;
                 res = TileInspector::TrackSetIndestructible(_loc, elementIndex, isIndestructible, isExecuting);
                 break;
             }
-            case TileModifyType::ScenerySetQuarterLocation:
+            case TileModifyType::scenerySetQuarterLocation:
             {
                 const auto elementIndex = _value1;
                 const auto quarterIndex = _value2;
                 res = TileInspector::ScenerySetQuarterLocation(_loc, elementIndex, quarterIndex, isExecuting);
                 break;
             }
-            case TileModifyType::ScenerySetQuarterCollision:
+            case TileModifyType::scenerySetQuarterCollision:
             {
                 const auto elementIndex = _value1;
                 const auto quarterIndex = _value2;
                 res = TileInspector::ScenerySetQuarterCollision(_loc, elementIndex, quarterIndex, isExecuting);
                 break;
             }
-            case TileModifyType::BannerToggleBlockingEdge:
+            case TileModifyType::bannerToggleBlockingEdge:
             {
                 const auto elementIndex = _value1;
                 const auto edgeIndex = _value2;
                 res = TileInspector::BannerToggleBlockingEdge(_loc, elementIndex, edgeIndex, isExecuting);
                 break;
             }
-            case TileModifyType::WallSetAnimationIsBackwards:
+            case TileModifyType::wallSetAnimationIsBackwards:
             {
                 const auto elementIndex = _value1;
                 const bool broken = _value2;
