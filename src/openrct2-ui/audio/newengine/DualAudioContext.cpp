@@ -60,6 +60,7 @@ namespace OpenRCT2::Audio
             }
             _useNewEngine = true;
             _newEngine->SetOutputDevice(deviceName);
+            _newEngine->SyncVolumeSettings();
             LOG_INFO("New audio engine is now active");
         }
         else
@@ -133,6 +134,12 @@ namespace OpenRCT2::Audio
     {
         if (_useNewEngine && _newEngine)
             _newEngine->PlayOneShot(source, volume, pan);
+    }
+
+    void DualAudioContext::SyncVolumeSettings()
+    {
+        if (_useNewEngine && _newEngine)
+            _newEngine->SyncVolumeSettings();
     }
 
     std::shared_ptr<IAudioChannel> DualAudioContext::CreateChannel(

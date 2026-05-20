@@ -61,6 +61,10 @@ namespace OpenRCT2::Audio
             (void)pan;
         }
 
+        virtual void SyncVolumeSettings()
+        {
+        }
+
         virtual std::shared_ptr<IAudioChannel> CreateChannel(
             IAudioSource* source, MixerGroup group, bool loop, int32_t volume, float pan, double rate)
         {
