@@ -319,11 +319,11 @@ namespace OpenRCT2::Drawing::LightFx
                         rt.cullingWidth = rt.width;
                         rt.cullingHeight = rt.height;
 
-                        PaintSession* session = PaintSessionAlloc(rt, vp.flags, vp.rotation);
-                        PaintSessionGenerate(*session);
-                        PaintSessionArrange(*session);
+                        PaintSession* session = paintSessionAlloc(rt, vp.flags, vp.rotation);
+                        paintSessionGenerate(*session);
+                        paintSessionArrange(*session);
                         auto info = SetInteractionInfoFromPaintSession(session, vp.flags, kViewportInteractionItemAll);
-                        PaintSessionFree(session);
+                        paintSessionFree(session);
 
                         mapCoord = info.Loc;
                         mapCoord.x += tileOffsetX;

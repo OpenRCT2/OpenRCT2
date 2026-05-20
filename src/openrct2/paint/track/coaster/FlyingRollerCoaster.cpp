@@ -38,24 +38,24 @@ static void FlyingRCTrackStation(
 
     if (trackElement.GetTrackType() == TrackElemType::endStation)
     {
-        PaintAddImageAsParentRotated(
-            session, direction, session.TrackColours.WithIndex(imageIds[direction][1]), { 0, 0, height },
+        paintAddImageAsParentRotated(
+            session, direction, session.trackColours.WithIndex(imageIds[direction][1]), { 0, 0, height },
             { { 0, 6, height + 3 }, { 32, 20, 1 } });
     }
     else
     {
-        PaintAddImageAsParentRotated(
-            session, direction, session.TrackColours.WithIndex(imageIds[direction][0]), { 0, 0, height },
+        paintAddImageAsParentRotated(
+            session, direction, session.trackColours.WithIndex(imageIds[direction][0]), { 0, 0, height },
             { { 0, 6, height + 3 }, { 32, 20, 1 } });
     }
     if (TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, StationBaseType::a, 0, 9, 11))
     {
-        DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal);
+        DrawSupportsSideBySide(session, direction, height, session.supportColours, supportType.metal);
     }
-    else if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    else if (TrackPaintUtilShouldPaintSupports(session.mapPosition))
     {
         MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::centre, direction, 0, height, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::centre, direction, 0, height, session.supportColours);
     }
 
     TrackPaintUtilDrawStationTunnel(session, direction, height);
@@ -73,23 +73,23 @@ static void FlyingRCTrack90DegToInvertedFlatQuarterLoopUp(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(18062), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(18062), { 0, 0, height },
                         { { 4, 6, height + 8 }, { 2, 20, 31 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(18065), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(18065), { 0, 0, height },
                         { { 24, 6, height + 8 }, { 2, 20, 31 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(18068), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(18068), { 0, 0, height },
                         { { 24, 6, height + 8 }, { 2, 20, 31 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(18071), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(18071), { 0, 0, height },
                         { { 4, 6, height + 8 }, { 2, 20, 31 } });
                     break;
             }
@@ -101,23 +101,23 @@ static void FlyingRCTrack90DegToInvertedFlatQuarterLoopUp(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(18063), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(18063), { 0, 0, height },
                         { { -8, 6, height }, { 2, 20, 31 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(18066), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(18066), { 0, 0, height },
                         { { 24, 6, height + 8 }, { 2, 20, 63 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(18069), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(18069), { 0, 0, height },
                         { { 24, 6, height + 8 }, { 2, 20, 63 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(18072), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(18072), { 0, 0, height },
                         { { -8, 6, height }, { 2, 20, 31 } });
                     break;
             }
@@ -129,23 +129,23 @@ static void FlyingRCTrack90DegToInvertedFlatQuarterLoopUp(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(18064), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(18064), { 0, 0, height },
                         { { 0, 6, height + 24 }, { 32, 20, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(18067), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(18067), { 0, 0, height },
                         { { 24, 6, height + 8 }, { 2, 20, 31 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(18070), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(18070), { 0, 0, height },
                         { { 24, 6, height + 8 }, { 2, 20, 31 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(18073), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(18073), { 0, 0, height },
                         { { 0, 6, height + 24 }, { 32, 20, 3 } });
                     break;
             }
@@ -178,23 +178,23 @@ static void FlyingRCTrackHalfLoopInvertedUp(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27451), { 0, 6, height + 24 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27451), { 0, 6, height + 24 },
                         { { 0, 6, height + 45 }, { 32, 20, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27459), { 0, 6, height + 24 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27459), { 0, 6, height + 24 },
                         { { 0, 6, height + 45 }, { 32, 20, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27458), { 0, 6, height + 24 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27458), { 0, 6, height + 24 },
                         { { 0, 6, height + 45 }, { 32, 20, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27466), { 0, 6, height + 24 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27466), { 0, 6, height + 24 },
                         { { 0, 6, height + 45 }, { 32, 20, 3 } });
                     break;
             }
@@ -205,19 +205,19 @@ static void FlyingRCTrackHalfLoopInvertedUp(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 62, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 62, session.supportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 62, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 62, session.supportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 62, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 62, session.supportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 62, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 62, session.supportColours);
                     break;
             }
 
@@ -231,23 +231,23 @@ static void FlyingRCTrackHalfLoopInvertedUp(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27452), { 0, 0, height + 24 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27452), { 0, 0, height + 24 },
                         { { 0, 29, height + 29 }, { 32, 2, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27460), { 0, 14, height + 24 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27460), { 0, 14, height + 24 },
                         { { 0, 29, height + 29 }, { 32, 2, 63 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27457), { 0, 6, height + 24 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27457), { 0, 6, height + 24 },
                         { { 0, 0, height + 29 }, { 32, 2, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27465), { 0, 6, height + 24 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27465), { 0, 6, height + 24 },
                         { { 29, 20, height + 29 }, { 2, 2, 3 } });
                     break;
             }
@@ -258,23 +258,23 @@ static void FlyingRCTrackHalfLoopInvertedUp(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27453), { 16, 0, height - 3 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27453), { 16, 0, height - 3 },
                         { { 16, 29, height + 2 }, { 5, 2, 119 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27461), { 12, 0, height - 3 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27461), { 12, 0, height - 3 },
                         { { 0, -6, height + 2 }, { 32, 2, 119 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27456), { 10, 16, height - 3 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27456), { 10, 16, height - 3 },
                         { { 10, 0, height + 2 }, { 4, 2, 119 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27464), { 16, 16, height - 3 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27464), { 16, 16, height - 3 },
                         { { 29, 29, height + 2 }, { 2, 2, 119 } });
                     break;
             }
@@ -292,23 +292,23 @@ static void FlyingRCTrackHalfLoopInvertedUp(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27454), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27454), { 0, 0, height + 29 },
                         { { 0, 6, height + 34 }, { 32, 20, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27462), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27462), { 0, 0, height + 29 },
                         { { 0, 0, height - 6 }, { 2, 2, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27455), { 0, 16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27455), { 0, 16, height + 29 },
                         { { 0, 0, height - 6 }, { 32, 2, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27463), { 0, 16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27463), { 0, 16, height + 29 },
                         { { 0, 6, height + 34 }, { 32, 20, 3 } });
                     break;
             }
@@ -340,23 +340,23 @@ static void FlyingRCTrackLeftFlyingLargeHalfLoopInvertedUp(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27639), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27639), { 0, 0, height - 4 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27646), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27646), { 0, 0, height - 4 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27653), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27653), { 0, 0, height - 4 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27660), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27660), { 0, 0, height - 4 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
             }
@@ -372,23 +372,23 @@ static void FlyingRCTrackLeftFlyingLargeHalfLoopInvertedUp(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27640), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27640), { 0, 0, height - 4 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27647), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27647), { 0, 0, height - 4 },
                         { { 0, 6, height + 29 }, { 32, 20, 9 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27654), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27654), { 0, 0, height - 4 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27661), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27661), { 0, 0, height - 4 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
             }
@@ -400,23 +400,23 @@ static void FlyingRCTrackLeftFlyingLargeHalfLoopInvertedUp(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27641), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27641), { 0, 0, height - 4 },
                         { { 8, 0, height + 40 }, { 24, 16, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27648), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27648), { 0, 0, height - 4 },
                         { { 0, 0, height }, { 32, 16, 0 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27655), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27655), { 0, 0, height - 4 },
                         { { 0, 16, height }, { 32, 16, 0 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27662), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27662), { 0, 0, height - 4 },
                         { { 30, 16, height + 70 }, { 2, 16, 3 } });
                     break;
             }
@@ -434,23 +434,23 @@ static void FlyingRCTrackLeftFlyingLargeHalfLoopInvertedUp(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27642), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27642), { 0, 0, height - 4 },
                         { { 24, 0, height + 29 }, { 8, 16, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27649), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27649), { 0, 0, height - 4 },
                         { { 0, 0, height }, { 32, 16, 0 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27656), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27656), { 0, 0, height - 4 },
                         { { 0, 16, height }, { 32, 16, 0 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27663), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27663), { 0, 0, height - 4 },
                         { { 30, 16, height + 100 }, { 2, 16, 3 } });
                     break;
             }
@@ -468,23 +468,23 @@ static void FlyingRCTrackLeftFlyingLargeHalfLoopInvertedUp(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27643), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27643), { 0, 0, height - 4 },
                         { { 30, 30, height + 80 }, { 2, 2, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27650), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27650), { 0, 0, height - 4 },
                         { { 0, 16, height }, { 16, 16, 0 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27657), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27657), { 0, 0, height - 4 },
                         { { 0, 0, height }, { 16, 16, 0 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27664), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27664), { 0, 0, height - 4 },
                         { { 30, 0, height + 90 }, { 2, 16, 3 } });
                     break;
             }
@@ -501,23 +501,23 @@ static void FlyingRCTrackLeftFlyingLargeHalfLoopInvertedUp(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27644), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27644), { 0, 0, height - 4 },
                         { { 0, 6, height + 211 }, { 32, 20, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27651), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27651), { 0, 0, height - 4 },
                         { { 0, 16, height }, { 32, 16, 0 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27658), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27658), { 0, 0, height - 4 },
                         { { 0, 0, height }, { 32, 16, 0 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27665), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27665), { 0, 0, height - 4 },
                         { { 0, 6, height + 211 }, { 32, 20, 3 } });
                     break;
             }
@@ -535,28 +535,28 @@ static void FlyingRCTrackLeftFlyingLargeHalfLoopInvertedUp(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27645), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27645), { 0, 0, height - 4 },
                         { { 0, 6, height + 32 }, { 32, 20, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27652), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27652), { 0, 0, height - 4 },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27659), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27659), { 0, 0, height - 4 },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27666), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27666), { 0, 0, height - 4 },
                         { { 0, 6, height + 32 }, { 32, 20, 3 } });
                     break;
             }
 
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 25, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 25, height, session.supportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height + 32, kTunnelGroup, TunnelSubType::Flat);
@@ -584,23 +584,23 @@ static void FlyingRCTrackRightFlyingLargeHalfLoopInvertedUp(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27688), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27688), { 0, 0, height - 4 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27681), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27681), { 0, 0, height - 4 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27674), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27674), { 0, 0, height - 4 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27667), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27667), { 0, 0, height - 4 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
             }
@@ -616,23 +616,23 @@ static void FlyingRCTrackRightFlyingLargeHalfLoopInvertedUp(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27689), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27689), { 0, 0, height - 4 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27682), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27682), { 0, 0, height - 4 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27675), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27675), { 0, 0, height - 4 },
                         { { 0, 6, height + 29 }, { 32, 20, 19 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27668), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27668), { 0, 0, height - 4 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
             }
@@ -644,23 +644,23 @@ static void FlyingRCTrackRightFlyingLargeHalfLoopInvertedUp(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27690), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27690), { 0, 0, height - 4 },
                         { { 0, 16, height + 70 }, { 32, 16, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27683), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27683), { 0, 0, height - 4 },
                         { { 0, 16, height }, { 32, 16, 0 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27676), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27676), { 0, 0, height - 4 },
                         { { 0, 0, height }, { 32, 16, 0 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27669), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27669), { 0, 0, height - 4 },
                         { { 0, 0, height + 70 }, { 32, 16, 3 } });
                     break;
             }
@@ -678,23 +678,23 @@ static void FlyingRCTrackRightFlyingLargeHalfLoopInvertedUp(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27691), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27691), { 0, 0, height - 4 },
                         { { 0, 16, height + 100 }, { 32, 16, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27684), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27684), { 0, 0, height - 4 },
                         { { 0, 16, height }, { 32, 16, 0 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27677), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27677), { 0, 0, height - 4 },
                         { { 0, 0, height }, { 32, 16, 0 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27670), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27670), { 0, 0, height - 4 },
                         { { 0, 0, height + 100 }, { 32, 16, 3 } });
                     break;
             }
@@ -712,23 +712,23 @@ static void FlyingRCTrackRightFlyingLargeHalfLoopInvertedUp(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27692), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27692), { 0, 0, height - 4 },
                         { { 16, 7, height + 90 }, { 16, 16, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27685), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27685), { 0, 0, height - 4 },
                         { { 0, -7, height }, { 16, 16, 0 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27678), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27678), { 0, 0, height - 4 },
                         { { -7, 16, height }, { 16, 16, 0 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27671), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27671), { 0, 0, height - 4 },
                         { { 30, 23, height + 110 }, { 2, 16, 3 } });
                     break;
             }
@@ -744,23 +744,23 @@ static void FlyingRCTrackRightFlyingLargeHalfLoopInvertedUp(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27693), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27693), { 0, 0, height - 4 },
                         { { 0, 6, height + 211 }, { 32, 20, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27686), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27686), { 0, 0, height - 4 },
                         { { 0, 0, height }, { 32, 16, 0 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27679), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27679), { 0, 0, height - 4 },
                         { { 0, 16, height }, { 32, 16, 0 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27672), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27672), { 0, 0, height - 4 },
                         { { 0, 6, height + 211 }, { 32, 20, 3 } });
                     break;
             }
@@ -778,27 +778,27 @@ static void FlyingRCTrackRightFlyingLargeHalfLoopInvertedUp(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27694), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27694), { 0, 0, height - 4 },
                         { { 0, 6, height + 32 }, { 32, 20, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27687), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27687), { 0, 0, height - 4 },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27680), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27680), { 0, 0, height - 4 },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27673), { 0, 0, height - 4 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27673), { 0, 0, height - 4 },
                         { { 0, 6, height + 32 }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 25, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 25, height, session.supportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height + 32, kTunnelGroup, TunnelSubType::Flat);

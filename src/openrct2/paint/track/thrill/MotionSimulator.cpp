@@ -50,8 +50,8 @@ static void PaintMotionSimulatorVehicle(
         vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[0]);
         if (vehicle != nullptr)
         {
-            session.InteractionType = ViewportInteractionItem::entity;
-            session.CurrentlyDrawnEntity = vehicle;
+            session.interactionType = ViewportInteractionItem::entity;
+            session.currentlyDrawnEntity = vehicle;
         }
     }
 
@@ -79,29 +79,29 @@ static void PaintMotionSimulatorVehicle(
     switch (direction)
     {
         case 0:
-            PaintAddImageAsParent(session, simulatorImageId, offset, { offset, { 20, 20, 44 } });
-            PaintAddImageAsChild(session, stairsImageId, offset, { offset, { 20, 20, 44 } });
-            PaintAddImageAsParent(session, stairsRailImageId, offset, { { offset.x, offset.y + 32, offset.z }, { 20, 2, 44 } });
+            paintAddImageAsParent(session, simulatorImageId, offset, { offset, { 20, 20, 44 } });
+            paintAddImageAsChild(session, stairsImageId, offset, { offset, { 20, 20, 44 } });
+            paintAddImageAsParent(session, stairsRailImageId, offset, { { offset.x, offset.y + 32, offset.z }, { 20, 2, 44 } });
             break;
         case 1:
-            PaintAddImageAsParent(session, simulatorImageId, offset, { offset, { 20, 20, 44 } });
-            PaintAddImageAsChild(session, stairsImageId, offset, { offset, { 20, 20, 44 } });
-            PaintAddImageAsParent(session, stairsRailImageId, offset, { { offset.x + 34, offset.y, offset.z }, { 2, 20, 44 } });
+            paintAddImageAsParent(session, simulatorImageId, offset, { offset, { 20, 20, 44 } });
+            paintAddImageAsChild(session, stairsImageId, offset, { offset, { 20, 20, 44 } });
+            paintAddImageAsParent(session, stairsRailImageId, offset, { { offset.x + 34, offset.y, offset.z }, { 2, 20, 44 } });
             break;
         case 2:
-            PaintAddImageAsParent(session, stairsRailImageId, offset, { { offset.x, offset.y - 10, offset.z }, { 20, 2, 44 } });
-            PaintAddImageAsParent(session, stairsImageId, offset, { { offset.x, offset.y + 5, offset.z }, { 20, 20, 44 } });
-            PaintAddImageAsChild(session, simulatorImageId, offset, { { offset.x, offset.y + 5, offset.z }, { 20, 20, 44 } });
+            paintAddImageAsParent(session, stairsRailImageId, offset, { { offset.x, offset.y - 10, offset.z }, { 20, 2, 44 } });
+            paintAddImageAsParent(session, stairsImageId, offset, { { offset.x, offset.y + 5, offset.z }, { 20, 20, 44 } });
+            paintAddImageAsChild(session, simulatorImageId, offset, { { offset.x, offset.y + 5, offset.z }, { 20, 20, 44 } });
             break;
         case 3:
-            PaintAddImageAsParent(session, stairsRailImageId, offset, { { offset.x - 10, offset.y, offset.z }, { 2, 20, 44 } });
-            PaintAddImageAsParent(session, stairsImageId, offset, { { offset.x + 5, offset.y, offset.z }, { 20, 20, 44 } });
-            PaintAddImageAsChild(session, simulatorImageId, offset, { { offset.x + 5, offset.y, offset.z }, { 20, 20, 44 } });
+            paintAddImageAsParent(session, stairsRailImageId, offset, { { offset.x - 10, offset.y, offset.z }, { 2, 20, 44 } });
+            paintAddImageAsParent(session, stairsImageId, offset, { { offset.x + 5, offset.y, offset.z }, { 20, 20, 44 } });
+            paintAddImageAsChild(session, simulatorImageId, offset, { { offset.x + 5, offset.y, offset.z }, { 20, 20, 44 } });
             break;
     }
 
-    session.CurrentlyDrawnEntity = nullptr;
-    session.InteractionType = ViewportInteractionItem::ride;
+    session.currentlyDrawnEntity = nullptr;
+    session.interactionType = ViewportInteractionItem::ride;
 }
 
 static void PaintMotionSimulator(
@@ -118,11 +118,11 @@ static void PaintMotionSimulator(
 
     const StationObject* stationObject = ride.getStationObject();
 
-    TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, kFloorSpritesMulch, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.trackColours, height, kFloorSpritesMulch, stationObject);
 
     TrackPaintUtilPaintFences(
-        session, edges, session.MapPosition, trackElement, ride, session.SupportColours, height, kFenceSpritesRope,
-        session.CurrentRotation);
+        session, edges, session.mapPosition, trackElement, ride, session.supportColours, height, kFenceSpritesRope,
+        session.currentRotation);
 
     switch (trackSequence)
     {

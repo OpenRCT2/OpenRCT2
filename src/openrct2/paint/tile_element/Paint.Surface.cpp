@@ -420,12 +420,12 @@ static void ViewportSurfaceSmoothenEdge(
 
     const auto image_id = ImageId(maskImageBase + Byte97B444[self.slope]);
 
-    if (PaintAttachToPreviousPS(session, image_id, 0, 0))
+    if (paintAttachToPreviousPS(session, image_id, 0, 0))
     {
-        AttachedPaintStruct* out = session.LastAttachedPS;
+        AttachedPaintStruct* out = session.lastAttachedPS;
         // set content and enable masking
-        out->ColourImageId = GetSurfacePattern(neighbour.surfaceObject, cl);
-        out->IsMasked = true;
+        out->colourImageId = GetSurfacePattern(neighbour.surfaceObject, cl);
+        out->isMasked = true;
     }
 }
 
@@ -493,7 +493,7 @@ static void ViewportSurfaceDrawTileSideBottom(
             return;
     }
 
-    bool neighbourIsClippedAway = (session.ViewFlags & VIEWPORT_FLAG_CLIP_VIEW) && !TileIsInsideClipView(neighbour);
+    bool neighbourIsClippedAway = (session.viewFlags & VIEWPORT_FLAG_CLIP_VIEW) && !TileIsInsideClipView(neighbour);
 
     if (neighbour.tile_element == nullptr || neighbourIsClippedAway)
     {
@@ -526,7 +526,7 @@ static void ViewportSurfaceDrawTileSideBottom(
     }
 
     auto baseImageId = GetEdgeImage(edgeObject, 0);
-    if (session.ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
+    if (session.viewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
     {
         baseImageId = GetEdgeImage(edgeObject, 1);
     }
@@ -550,7 +550,7 @@ static void ViewportSurfaceDrawTileSideBottom(
         if (curHeight != cornerHeight1 && curHeight != cornerHeight2)
         {
             auto imageId = baseImageId.WithIndexOffset(image_offset);
-            PaintAddImageAsParent(session, imageId, { offset, curHeight * kCoordsZPerTinyZ }, { bounds, 15 });
+            paintAddImageAsParent(session, imageId, { offset, curHeight * kCoordsZPerTinyZ }, { bounds, 15 });
             curHeight++;
         }
     }
@@ -559,7 +559,7 @@ static void ViewportSurfaceDrawTileSideBottom(
 
     const auto lowestCornerHeight = std::min(cornerHeight1, cornerHeight2);
 
-    const auto& tunnels = edge == EDGE_BOTTOMLEFT ? session.LeftTunnels : session.RightTunnels;
+    const auto& tunnels = edge == EDGE_BOTTOMLEFT ? session.leftTunnels : session.rightTunnels;
     for (auto& tunnel : tunnels)
     {
         if (curHeight > tunnel.height || tunnel.height >= lowestCornerHeight)
@@ -573,7 +573,7 @@ static void ViewportSurfaceDrawTileSideBottom(
         while (curHeight < tunnel.height)
         {
             const auto boundBoxZ = curHeight == tunnel.height - 1 ? tdOriginal.lowerEdgeBoundingBoxZ : kCoordsZPerTinyZ - 1;
-            PaintAddImageAsParent(session, baseImageId, { offset, curHeight * kCoordsZPerTinyZ }, { bounds, boundBoxZ });
+            paintAddImageAsParent(session, baseImageId, { offset, curHeight * kCoordsZPerTinyZ }, { bounds, boundBoxZ });
             curHeight++;
         }
 
@@ -602,7 +602,7 @@ static void ViewportSurfaceDrawTileSideBottom(
         }
 
         auto imageId = GetTunnelImage(edgeObject, tunnelType, edge);
-        PaintAddImageAsParent(
+        paintAddImageAsParent(
             session, imageId, { offset, zOffset }, { { 0, 0, boundBoxOffsetZ }, { tunnelBounds, boundBoxLength - 1 } });
 
         boundBoxOffsetZ = curHeight * kCoordsZPerTinyZ;
@@ -615,7 +615,7 @@ static void ViewportSurfaceDrawTileSideBottom(
         }
 
         imageId = GetTunnelImage(edgeObject, tunnelType, edge).WithIndexOffset(1);
-        PaintAddImageAsParent(
+        paintAddImageAsParent(
             session, imageId, { offset, curHeight * kCoordsZPerTinyZ },
             { { tunnelTopBoundBoxOffset, boundBoxOffsetZ }, { tunnelBounds, boundBoxLength - 1 } });
 
@@ -625,7 +625,7 @@ static void ViewportSurfaceDrawTileSideBottom(
     // Draw land edges up to the lowest corner
     while (curHeight < lowestCornerHeight)
     {
-        PaintAddImageAsParent(session, baseImageId, { offset, curHeight * kCoordsZPerTinyZ }, { bounds, kCoordsZPerTinyZ - 1 });
+        paintAddImageAsParent(session, baseImageId, { offset, curHeight * kCoordsZPerTinyZ }, { bounds, kCoordsZPerTinyZ - 1 });
         curHeight++;
     }
 
@@ -634,7 +634,7 @@ static void ViewportSurfaceDrawTileSideBottom(
     {
         const uint32_t imageOffset = curHeight >= cornerHeight1 ? 2 : 1;
         const auto imageId = baseImageId.WithIndexOffset(imageOffset);
-        PaintAddImageAsParent(session, imageId, { offset, curHeight * kCoordsZPerTinyZ }, { bounds, kCoordsZPerTinyZ - 1 });
+        paintAddImageAsParent(session, imageId, { offset, curHeight * kCoordsZPerTinyZ }, { bounds, kCoordsZPerTinyZ - 1 });
     }
 }
 
@@ -713,7 +713,7 @@ static void ViewportSurfaceDrawTileSideTop(
     if (isWater)
     {
         baseImageId = GetEdgeImage(edgeObject, 2); // var_08
-        if (session.ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
+        if (session.viewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
         {
             baseImageId = GetEdgeImage(edgeObject, 1); // var_04
         }
@@ -724,12 +724,12 @@ static void ViewportSurfaceDrawTileSideTop(
     }
     else
     {
-        if (!(session.ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE))
+        if (!(session.viewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE))
         {
             const uint8_t incline = (cornerHeight2 - cornerHeight1) + 1;
             const auto imageId = GetEdgeImage(edgeObject, 3).WithIndexOffset((edge == EDGE_TOPLEFT ? 3 : 0) + incline);
             const int16_t y = (height - cornerHeight1) * kCoordsZPerTinyZ;
-            PaintAttachToPreviousPS(session, imageId, 0, y);
+            paintAttachToPreviousPS(session, imageId, 0, y);
             return;
         }
         baseImageId = GetEdgeImage(edgeObject, 1).WithIndexOffset(edge == EDGE_TOPLEFT ? 5 : 0);
@@ -748,7 +748,7 @@ static void ViewportSurfaceDrawTileSideTop(
         if (cur_height != cornerHeight1 && cur_height != cornerHeight2)
         {
             auto imageId = baseImageId.WithIndexOffset(image_offset);
-            PaintAddImageAsParent(
+            paintAddImageAsParent(
                 session, imageId, { offset.x, offset.y, cur_height * kCoordsZPerTinyZ }, { bounds.x, bounds.y, 15 });
             cur_height++;
         }
@@ -758,7 +758,7 @@ static void ViewportSurfaceDrawTileSideTop(
 
     while (cur_height < cornerHeight1 && cur_height < neighbourCornerHeight1)
     {
-        PaintAddImageAsParent(session, baseImageId, { offset, cur_height * kCoordsZPerTinyZ }, { bounds, 15 });
+        paintAddImageAsParent(session, baseImageId, { offset, cur_height * kCoordsZPerTinyZ }, { bounds, 15 });
         cur_height++;
     }
 
@@ -774,7 +774,7 @@ static void ViewportSurfaceDrawTileSideTop(
     }
 
     auto imageId = baseImageId.WithIndexOffset(image_offset);
-    PaintAddImageAsParent(session, imageId, { offset, cur_height * kCoordsZPerTinyZ }, { bounds, 15 });
+    paintAddImageAsParent(session, imageId, { offset, cur_height * kCoordsZPerTinyZ }, { bounds, 15 });
 }
 
 static std::pair<int32_t, int32_t> SurfaceGetHeightAboveWater(
@@ -840,7 +840,7 @@ std::optional<OpenRCT2::Drawing::Colour> GetPatrolAreaTileColour(const CoordsXY&
 
 static void PaintPatrolArea(PaintSession& session, const SurfaceElement& element, int32_t height, uint8_t surfaceShape)
 {
-    auto colour = GetPatrolAreaTileColour(session.MapPosition);
+    auto colour = GetPatrolAreaTileColour(session.mapPosition);
     if (colour)
     {
         assert(surfaceShape < std::size(Byte97B444));
@@ -848,9 +848,9 @@ static void PaintPatrolArea(PaintSession& session, const SurfaceElement& element
         auto [localZ, localSurfaceShape] = SurfaceGetHeightAboveWater(element, height, surfaceShape);
         auto imageId = ImageId(SPR_TERRAIN_SELECTION_PATROL_AREA + Byte97B444[localSurfaceShape], *colour);
 
-        auto* backup = session.LastPS;
-        PaintAddImageAsParent(session, imageId, { 0, 0, localZ }, { 32, 32, 1 });
-        session.LastPS = backup;
+        auto* backup = session.lastPS;
+        paintAddImageAsParent(session, imageId, { 0, 0, localZ }, { 32, 32, 1 });
+        session.lastPS = backup;
     }
 }
 
@@ -866,26 +866,26 @@ static void PaintSurfaceLandOwnership(
         assert(static_cast<size_t>(aboveWaterSurfaceShape) < std::size(Byte97B444));
 
         // Paint outline on top of surface (can be underwater)
-        PaintAttachToPreviousPS(session, ImageId(SPR_TERRAIN_SELECTION_SQUARE + Byte97B444[surfaceShape]), 0, 0);
+        paintAttachToPreviousPS(session, ImageId(SPR_TERRAIN_SELECTION_SQUARE + Byte97B444[surfaceShape]), 0, 0);
 
         const auto tileIsUnderWater = height != aboveWaterHeight || surfaceShape != aboveWaterSurfaceShape;
         if (tileIsUnderWater)
         {
-            PaintStruct* backup = session.LastPS;
-            PaintAddImageAsParent(
+            PaintStruct* backup = session.lastPS;
+            paintAddImageAsParent(
                 session, ImageId(SPR_TERRAIN_SELECTION_SQUARE + Byte97B444[aboveWaterSurfaceShape]), { 0, 0, aboveWaterHeight },
                 { 32, 32, 1 });
-            session.LastPS = backup;
+            session.lastPS = backup;
         }
     }
     else if (tileElement.GetOwnership() & OWNERSHIP_AVAILABLE)
     {
-        const auto pos = CoordsXYZ(session.MapPosition.x + 16, session.MapPosition.y + 16, aboveWaterHeight);
+        const auto pos = CoordsXYZ(session.mapPosition.x + 16, session.mapPosition.y + 16, aboveWaterHeight);
         const auto height2 = TileElementHeight(pos, aboveWaterSurfaceShape) + ForSaleSignZOffset;
 
-        PaintStruct* backup = session.LastPS;
-        PaintAddImageAsParent(session, ImageId(SPR_LAND_OWNERSHIP_AVAILABLE), { 16, 16, height2 }, { 1, 1, 0 });
-        session.LastPS = backup;
+        PaintStruct* backup = session.lastPS;
+        paintAddImageAsParent(session, ImageId(SPR_LAND_OWNERSHIP_AVAILABLE), { 16, 16, height2 }, { 1, 1, 0 });
+        session.lastPS = backup;
     }
 }
 
@@ -900,26 +900,26 @@ static void PaintSurfaceConstructionRights(
         assert(static_cast<size_t>(aboveWaterSurfaceShape) < std::size(Byte97B444));
 
         // Paint outline on top of surface (can be underwater)
-        PaintAttachToPreviousPS(session, ImageId(SPR_TERRAIN_SELECTION_DOTTED + Byte97B444[surfaceShape]), 0, 0);
+        paintAttachToPreviousPS(session, ImageId(SPR_TERRAIN_SELECTION_DOTTED + Byte97B444[surfaceShape]), 0, 0);
 
         const auto tileIsUnderWater = height != aboveWaterHeight || surfaceShape != aboveWaterSurfaceShape;
         if (tileIsUnderWater)
         {
-            PaintStruct* backup = session.LastPS;
-            PaintAddImageAsParent(
+            PaintStruct* backup = session.lastPS;
+            paintAddImageAsParent(
                 session, ImageId(SPR_TERRAIN_SELECTION_DOTTED + Byte97B444[aboveWaterSurfaceShape]), { 0, 0, aboveWaterHeight },
                 { 32, 32, 1 });
-            session.LastPS = backup;
+            session.lastPS = backup;
         }
     }
     else if (tileElement.GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE)
     {
-        const auto pos = CoordsXYZ(session.MapPosition.x + 16, session.MapPosition.y + 16, aboveWaterHeight);
+        const auto pos = CoordsXYZ(session.mapPosition.x + 16, session.mapPosition.y + 16, aboveWaterHeight);
         const auto height2 = TileElementHeight(pos, aboveWaterSurfaceShape) + ForSaleSignZOffset;
 
-        PaintStruct* backup = session.LastPS;
-        PaintAddImageAsParent(session, ImageId(SPR_LAND_CONSTRUCTION_RIGHTS_AVAILABLE), { 16, 16, height2 }, { 1, 1, 0 });
-        session.LastPS = backup;
+        PaintStruct* backup = session.lastPS;
+        paintAddImageAsParent(session, ImageId(SPR_LAND_CONSTRUCTION_RIGHTS_AVAILABLE), { 16, 16, height2 }, { 1, 1, 0 });
+        session.lastPS = backup;
     }
 }
 
@@ -930,14 +930,14 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
 {
     PROFILED_FUNCTION();
 
-    session.InteractionType = ViewportInteractionItem::terrain;
-    session.Flags |= PaintSessionFlags::PassedSurface;
-    session.Surface = &tileElement;
+    session.interactionType = ViewportInteractionItem::terrain;
+    session.flags |= PaintSessionFlags::PassedSurface;
+    session.surface = &tileElement;
 
     const auto zoomLevel = session.rt.zoom_level;
-    const uint8_t rotation = session.CurrentRotation;
+    const uint8_t rotation = session.currentRotation;
     const uint8_t surfaceShape = ViewportSurfacePaintSetupGetRelativeSlope(tileElement, rotation);
-    const CoordsXY& base = session.SpritePosition;
+    const CoordsXY& base = session.spritePosition;
     const auto cornerHeights = GetSlopeRelativeCornerHeights(surfaceShape);
     const TileElement* elementPtr = &reinterpret_cast<const TileElement&>(tileElement);
 
@@ -994,8 +994,8 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
 
     if (PaintShouldShowHeightMarkers(session, VIEWPORT_FLAG_LAND_HEIGHTS))
     {
-        const int16_t x = session.MapPosition.x;
-        const int16_t y = session.MapPosition.y;
+        const int16_t x = session.mapPosition.x;
+        const int16_t y = session.mapPosition.y;
 
         int32_t surfaceHeight = TileElementHeight({ x + 16, y + 16 });
         int32_t dx = surfaceHeight + 3;
@@ -1004,22 +1004,22 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         image_id += GetHeightMarkerOffset();
         image_id -= kMapBaseZ;
 
-        PaintAddImageAsParent(
+        paintAddImageAsParent(
             session, ImageId(image_id, OpenRCT2::Drawing::Colour::oliveGreen), { 16, 16, surfaceHeight }, { 1, 1, 0 });
     }
 
     bool has_surface = false;
-    if (session.VerticalTunnelHeight * kCoordsZPerTinyZ == height)
+    if (session.verticalTunnelHeight * kCoordsZPerTinyZ == height)
     {
         // Vertical tunnels
-        PaintAddImageAsParent(session, ImageId(1575), { 0, 0, height }, { { -2, 1, height - 40 }, { 1, 30, 39 } });
-        PaintAddImageAsParent(session, ImageId(1576), { 0, 0, height }, { { 1, 31, height }, { 30, 1, 0 } });
-        PaintAddImageAsParent(session, ImageId(1577), { 0, 0, height }, { { 31, 1, height }, { 1, 30, 0 } });
-        PaintAddImageAsParent(session, ImageId(1578), { 0, 0, height }, { { 1, -2, height - 40 }, { 30, 1, 39 } });
+        paintAddImageAsParent(session, ImageId(1575), { 0, 0, height }, { { -2, 1, height - 40 }, { 1, 30, 39 } });
+        paintAddImageAsParent(session, ImageId(1576), { 0, 0, height }, { { 1, 31, height }, { 30, 1, 0 } });
+        paintAddImageAsParent(session, ImageId(1577), { 0, 0, height }, { { 31, 1, height }, { 1, 30, 0 } });
+        paintAddImageAsParent(session, ImageId(1578), { 0, 0, height }, { { 1, -2, height - 40 }, { 30, 1, 39 } });
     }
     else
     {
-        const bool showGridlines = (session.ViewFlags & VIEWPORT_FLAG_GRIDLINES);
+        const bool showGridlines = (session.viewFlags & VIEWPORT_FLAG_GRIDLINES);
 
         assert(surfaceShape < std::size(Byte97B444));
         const uint8_t image_offset = Byte97B444[surfaceShape];
@@ -1034,24 +1034,24 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             uint8_t grassLength = TerrainSurfaceObject::kNoValue;
             if (zoomLevel <= ZoomLevel{ 0 })
             {
-                if ((session.ViewFlags & (VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_UNDERGROUND_INSIDE)) == 0)
+                if ((session.viewFlags & (VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_UNDERGROUND_INSIDE)) == 0)
                 {
                     grassLength = tileElement.GetGrassLength() & 0x7;
                 }
             }
-            imageId = surfaceObject->GetImageId(session.MapPosition, grassLength, rotation, image_offset, showGridlines, false);
+            imageId = surfaceObject->GetImageId(session.mapPosition, grassLength, rotation, image_offset, showGridlines, false);
         }
-        if (session.ViewFlags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE))
+        if (session.viewFlags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE))
         {
             imageId = imageId.WithTransparency(FilterPaletteID::paletteDarken1);
         }
 
-        if (session.SelectedElement == elementPtr)
+        if (session.selectedElement == elementPtr)
         {
             imageId = imageId.WithRemap(FilterPaletteID::paletteGhost);
         }
 
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, -1 });
+        paintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, -1 });
         has_surface = true;
     }
 
@@ -1060,28 +1060,28 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
     auto& gameState = getGameState();
     // Draw Peep Spawns
     if ((gLegacyScene == LegacyScene::scenarioEditor || gameState.cheats.sandboxMode)
-        && session.ViewFlags & VIEWPORT_FLAG_LAND_OWNERSHIP)
+        && session.viewFlags & VIEWPORT_FLAG_LAND_OWNERSHIP)
     {
-        const CoordsXY& pos = session.MapPosition;
+        const CoordsXY& pos = session.mapPosition;
         for (auto& spawn : gameState.peepSpawns)
         {
             if ((spawn.x & 0xFFE0) == pos.x && (spawn.y & 0xFFE0) == pos.y)
             {
-                PaintAddImageAsParent(session, ImageId(SPR_TERRAIN_SELECTION_SQUARE_SIMPLE), { 0, 0, spawn.z }, { 32, 32, 16 });
+                paintAddImageAsParent(session, ImageId(SPR_TERRAIN_SELECTION_SQUARE_SIMPLE), { 0, 0, spawn.z }, { 32, 32, 16 });
 
                 const int32_t offset = (DirectionReverse(spawn.direction) + rotation) & 3;
                 const auto image_id = ImageId(PEEP_SPAWN_ARROW_0 + offset, OpenRCT2::Drawing::Colour::lightBlue);
-                PaintAddImageAsParent(session, image_id, { 0, 0, spawn.z }, { 32, 32, 19 });
+                paintAddImageAsParent(session, image_id, { 0, 0, spawn.z }, { 32, 32, 19 });
             }
         }
     }
 
-    if (session.ViewFlags & VIEWPORT_FLAG_LAND_OWNERSHIP)
+    if (session.viewFlags & VIEWPORT_FLAG_LAND_OWNERSHIP)
     {
         PaintSurfaceLandOwnership(session, tileElement, height, surfaceShape);
     }
 
-    if (session.ViewFlags & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS && !(tileElement.GetOwnership() & OWNERSHIP_OWNED))
+    if (session.viewFlags & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS && !(tileElement.GetOwnership() & OWNERSHIP_OWNED))
     {
         PaintSurfaceConstructionRights(session, tileElement, height, surfaceShape);
     }
@@ -1093,7 +1093,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
     if (gMapSelectFlags.has(MapSelectFlag::enable))
     {
         // Loc660FB8:
-        const CoordsXY& pos = session.MapPosition;
+        const CoordsXY& pos = session.mapPosition;
         if (pos.x >= gMapSelectPositionA.x && pos.x <= gMapSelectPositionB.x && pos.y >= gMapSelectPositionA.y
             && pos.y <= gMapSelectPositionB.y)
         {
@@ -1106,7 +1106,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
                     (((EnumValue(mapSelectionType) - EnumValue(MapSelectType::edge0) + 1) + rotation) & 3)
                     + static_cast<uint32_t>(FilterPaletteID::paletteLandMarker0));
                 const auto image_id = ImageId(SPR_TERRAIN_SELECTION_EDGE + Byte97B444[surfaceShape], fpId);
-                PaintAttachToPreviousPS(session, image_id, 0, 0);
+                paintAttachToPreviousPS(session, image_id, 0, 0);
             }
             else if (mapSelectionType >= MapSelectType::quarter0)
             {
@@ -1116,7 +1116,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
                     (((EnumValue(mapSelectionType) - EnumValue(MapSelectType::quarter0)) + rotation) & 3)
                     + static_cast<uint32_t>(FilterPaletteID::paletteQuarterMarker0));
                 const auto image_id = ImageId(SPR_TERRAIN_SELECTION_QUARTER + Byte97B444[surfaceShape], fpId);
-                PaintAttachToPreviousPS(session, image_id, 0, 0);
+                paintAttachToPreviousPS(session, image_id, 0, 0);
             }
             else if (mapSelectionType <= MapSelectType::full)
             {
@@ -1130,7 +1130,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
                 const auto fpId = static_cast<FilterPaletteID>(
                     eax + static_cast<uint32_t>(FilterPaletteID::paletteLandMarker0));
                 const auto image_id = ImageId(SPR_TERRAIN_SELECTION_CORNER + Byte97B444[surfaceShape], fpId);
-                PaintAttachToPreviousPS(session, image_id, 0, 0);
+                paintAttachToPreviousPS(session, image_id, 0, 0);
             }
             else if (mapSelectionType == MapSelectType::fullLandRights)
             {
@@ -1138,15 +1138,15 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
 
                 const auto fpId = FilterPaletteID::paletteSceneryGroundMarker;
                 const auto imageId1 = ImageId(SPR_TERRAIN_SELECTION_CORNER + Byte97B444[surfaceShape], fpId);
-                PaintAttachToPreviousPS(session, imageId1, 0, 0);
+                paintAttachToPreviousPS(session, imageId1, 0, 0);
 
                 const bool isUnderWater = (surfaceShape != waterSurfaceShape || height != waterHeight);
                 if (isUnderWater)
                 {
                     const auto imageId2 = ImageId(SPR_TERRAIN_SELECTION_CORNER + Byte97B444[waterSurfaceShape], fpId);
-                    PaintStruct* backup = session.LastPS;
-                    PaintAddImageAsParent(session, imageId2, { 0, 0, waterHeight }, { 32, 32, 1 });
-                    session.LastPS = backup;
+                    PaintStruct* backup = session.lastPS;
+                    paintAddImageAsParent(session, imageId2, { 0, 0, waterHeight }, { 32, 32, 1 });
+                    session.lastPS = backup;
                 }
             }
             else
@@ -1157,16 +1157,16 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
                 const auto fpId = FilterPaletteID::paletteWaterMarker;
                 const auto image_id = ImageId(SPR_TERRAIN_SELECTION_CORNER + Byte97B444[local_surfaceShape], fpId);
 
-                PaintStruct* backup = session.LastPS;
-                PaintAddImageAsParent(session, image_id, { 0, 0, local_height }, { 32, 32, 1 });
-                session.LastPS = backup;
+                PaintStruct* backup = session.lastPS;
+                paintAddImageAsParent(session, image_id, { 0, 0, local_height }, { 32, 32, 1 });
+                session.lastPS = backup;
             }
         }
     }
 
     if (gMapSelectFlags.has(MapSelectFlag::enableConstruct))
     {
-        const CoordsXY& pos = session.MapPosition;
+        const CoordsXY& pos = session.mapPosition;
 
         for (const auto& tile : MapSelection::getSelectedTiles())
         {
@@ -1182,24 +1182,24 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             }
 
             const auto image_id = ImageId(SPR_TERRAIN_SELECTION_CORNER + Byte97B444[surfaceShape], fpId);
-            PaintAttachToPreviousPS(session, image_id, 0, 0);
+            paintAttachToPreviousPS(session, image_id, 0, 0);
 
             auto [waterHeight, waterSurfaceShape] = SurfaceGetHeightAboveWater(tileElement, height, surfaceShape);
             const bool isUnderWater = (surfaceShape != waterSurfaceShape || height != waterHeight);
             if (isUnderWater)
             {
                 const auto imageId2 = ImageId(SPR_TERRAIN_SELECTION_CORNER + Byte97B444[waterSurfaceShape], fpId);
-                PaintStruct* backup = session.LastPS;
-                PaintAddImageAsParent(session, imageId2, { 0, 0, waterHeight }, { 32, 32, 0 });
-                session.LastPS = backup;
+                PaintStruct* backup = session.lastPS;
+                paintAddImageAsParent(session, imageId2, { 0, 0, waterHeight }, { 32, 32, 0 });
+                session.lastPS = backup;
             }
 
             break;
         }
     }
 
-    if (zoomLevel <= ZoomLevel{ 0 } && has_surface && !(session.ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
-        && !(session.ViewFlags & VIEWPORT_FLAG_HIDE_BASE) && Config::Get().general.landscapeSmoothing)
+    if (zoomLevel <= ZoomLevel{ 0 } && has_surface && !(session.viewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
+        && !(session.viewFlags & VIEWPORT_FLAG_HIDE_BASE) && Config::Get().general.landscapeSmoothing)
     {
         ViewportSurfaceSmoothenEdge(session, EDGE_TOPLEFT, selfDescriptor, tileDescriptors[2]);
         ViewportSurfaceSmoothenEdge(session, EDGE_TOPRIGHT, selfDescriptor, tileDescriptors[3]);
@@ -1207,17 +1207,17 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         ViewportSurfaceSmoothenEdge(session, EDGE_BOTTOMRIGHT, selfDescriptor, tileDescriptors[1]);
     }
 
-    if ((session.ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE) && !(session.ViewFlags & VIEWPORT_FLAG_HIDE_BASE)
+    if ((session.viewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE) && !(session.viewFlags & VIEWPORT_FLAG_HIDE_BASE)
         && !(isInTrackDesignerOrManager()))
     {
         const uint8_t image_offset = Byte97B444[surfaceShape];
         ImageId imageId;
         if (surfaceObject != nullptr)
-            imageId = surfaceObject->GetImageId(session.MapPosition, 1, rotation, image_offset, false, true);
-        PaintAttachToPreviousPS(session, imageId, 0, 0);
+            imageId = surfaceObject->GetImageId(session.mapPosition, 1, rotation, image_offset, false, true);
+        paintAttachToPreviousPS(session, imageId, 0, 0);
     }
 
-    if (!(session.ViewFlags & VIEWPORT_FLAG_HIDE_VERTICAL))
+    if (!(session.viewFlags & VIEWPORT_FLAG_HIDE_VERTICAL))
     {
         ViewportSurfaceDrawTileSideTop(session, EDGE_TOPLEFT, height, edgeObject, selfDescriptor, tileDescriptors[2], false);
         ViewportSurfaceDrawTileSideTop(session, EDGE_TOPRIGHT, height, edgeObject, selfDescriptor, tileDescriptors[3], false);
@@ -1228,18 +1228,18 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
     }
 
     const uint16_t waterHeight = tileElement.GetWaterHeight();
-    const bool waterGetsClipped = (session.ViewFlags & VIEWPORT_FLAG_CLIP_VIEW) && (waterHeight > gClipHeight * kCoordsZStep);
+    const bool waterGetsClipped = (session.viewFlags & VIEWPORT_FLAG_CLIP_VIEW) && (waterHeight > gClipHeight * kCoordsZStep);
     const bool waterIsTransparent = Config::Get().general.transparentWater
-        || (session.ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE);
+        || (session.viewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE);
 
     if (waterHeight > 0 && !gTrackDesignSaveMode && !waterGetsClipped)
     {
         // Loc6615A9: (water height)
-        session.InteractionType = ViewportInteractionItem::water;
+        session.interactionType = ViewportInteractionItem::water;
 
         const uint16_t localHeight = height + 16;
 
-        session.WaterHeight = waterHeight;
+        session.waterHeight = waterHeight;
 
         int32_t image_offset = 0;
         if (waterHeight <= localHeight)
@@ -1248,13 +1248,13 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         }
 
         const auto image_id = ImageId(SPR_WATER_MASK + image_offset, FilterPaletteID::paletteWater).WithBlended(true);
-        PaintAddImageAsParent(session, image_id, { 0, 0, waterHeight }, { 32, 32, -1 });
+        paintAddImageAsParent(session, image_id, { 0, 0, waterHeight }, { 32, 32, -1 });
 
         const uint32_t overlayStart = waterIsTransparent ? EnumValue(SPR_WATER_OVERLAY)
                                                          : EnumValue(SPR_G2_OPAQUE_WATER_OVERLAY);
-        PaintAttachToPreviousPS(session, ImageId(overlayStart + image_offset), 0, 0);
+        paintAttachToPreviousPS(session, ImageId(overlayStart + image_offset), 0, 0);
 
-        if (!(session.ViewFlags & VIEWPORT_FLAG_HIDE_VERTICAL))
+        if (!(session.viewFlags & VIEWPORT_FLAG_HIDE_VERTICAL))
         {
             ViewportSurfaceDrawTileSideBottom(
                 session, EDGE_BOTTOMLEFT, waterHeight, edgeObject, selfDescriptor, tileDescriptors[0], true);
@@ -1270,7 +1270,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
     if ((tileElement.GetParkFences()) && !gTrackDesignSaveMode)
     {
         // Owned land boundary fences
-        session.InteractionType = ViewportInteractionItem::parkEntrance;
+        session.interactionType = ViewportInteractionItem::parkEntrance;
 
         uint8_t rotatedFences = Numerics::rol4(tileElement.GetParkFences(), rotation);
 
@@ -1327,13 +1327,13 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
                 continue;
             }
 
-            PaintAddImageAsParent(
+            paintAddImageAsParent(
                 session, ImageId(image_id), { fenceData.offset, fenceHeight },
                 { { fenceData.Boundbox.offset, fenceHeight + 1 }, { fenceData.Boundbox.length, 9 } });
         }
     }
 
-    session.InteractionType = ViewportInteractionItem::terrain;
+    session.interactionType = ViewportInteractionItem::terrain;
 
     switch (surfaceShape)
     {

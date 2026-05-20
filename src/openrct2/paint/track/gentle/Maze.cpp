@@ -57,10 +57,10 @@ static void MazePaintSetup(
     uint16_t mazeEntry = trackElement.GetMazeEntry();
     mazeEntry = Numerics::rol16(mazeEntry, direction * 4);
 
-    uint32_t rotation = session.CurrentRotation;
+    uint32_t rotation = session.currentRotation;
     // draw ground
     auto imageId = GetStationColourScheme(session, trackElement).WithIndex(SPR_TERRAIN_DIRT);
-    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 0 });
+    paintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 0 });
 
     WoodenASupportsPaintSetupRotated(
         session, WoodenSupportType::truss, WoodenSupportSubType::nwSe, rotation, height,
@@ -89,92 +89,92 @@ static void MazePaintSetup(
 
     imageId = baseImage.WithIndexOffset(SprMazeOffsetWallCentre);
     if (mazeEntry & MAZE_ENTRY_FLAG_3)
-        PaintAddImageAsParent(session, imageId, { 2, 2, height }, { { 3, 3, height + 2 }, { 10, 10, 9 } });
+        paintAddImageAsParent(session, imageId, { 2, 2, height }, { { 3, 3, height + 2 }, { 10, 10, 9 } });
 
     if (mazeEntry & MAZE_ENTRY_FLAG_7)
-        PaintAddImageAsParent(session, imageId, { 2, 18, height }, { { 3, 19, height + 2 }, { 10, 10, 9 } });
+        paintAddImageAsParent(session, imageId, { 2, 18, height }, { { 3, 19, height + 2 }, { 10, 10, 9 } });
 
     if (mazeEntry & MAZE_ENTRY_FLAG_11)
-        PaintAddImageAsParent(session, imageId, { 18, 18, height }, { { 19, 19, height + 2 }, { 10, 10, 9 } });
+        paintAddImageAsParent(session, imageId, { 18, 18, height }, { { 19, 19, height + 2 }, { 10, 10, 9 } });
 
     if (mazeEntry & MAZE_ENTRY_FLAG_15)
-        PaintAddImageAsParent(session, imageId, { 18, 2, height }, { { 19, 3, height + 2 }, { 10, 10, 9 } });
+        paintAddImageAsParent(session, imageId, { 18, 2, height }, { { 19, 3, height + 2 }, { 10, 10, 9 } });
 
     imageId = baseImage.WithIndexOffset(SprMazeOffsetWallTopLeft);
     if (mazeEntry & MAZE_ENTRY_FLAG_0)
-        PaintAddImageAsParent(session, imageId, { 2, 0, height }, { { 3, 1, height + 2 }, { 10, 1, 9 } });
+        paintAddImageAsParent(session, imageId, { 2, 0, height }, { { 3, 1, height + 2 }, { 10, 1, 9 } });
 
     if (mazeEntry & MAZE_ENTRY_FLAG_13)
-        PaintAddImageAsParent(session, imageId, { 18, 0, height }, { { 19, 1, height + 2 }, { 10, 1, 9 } });
+        paintAddImageAsParent(session, imageId, { 18, 0, height }, { { 19, 1, height + 2 }, { 10, 1, 9 } });
 
     imageId = baseImage.WithIndexOffset(SprMazeOffsetWallBottomRight);
     if (mazeEntry & MAZE_ENTRY_FLAG_5)
-        PaintAddImageAsParent(session, imageId, { 2, 30, height }, { { 3, 30, height + 2 }, { 10, 1, 9 } });
+        paintAddImageAsParent(session, imageId, { 2, 30, height }, { { 3, 30, height + 2 }, { 10, 1, 9 } });
 
     if (mazeEntry & MAZE_ENTRY_FLAG_8)
-        PaintAddImageAsParent(session, imageId, { 18, 30, height }, { { 19, 30, height + 2 }, { 10, 1, 9 } });
+        paintAddImageAsParent(session, imageId, { 18, 30, height }, { { 19, 30, height + 2 }, { 10, 1, 9 } });
 
     imageId = baseImage.WithIndexOffset(SprMazeOffsetWallTopRight);
     if (mazeEntry & MAZE_ENTRY_FLAG_1)
-        PaintAddImageAsParent(session, imageId, { 0, 2, height }, { { 1, 3, height + 2 }, { 1, 10, 9 } });
+        paintAddImageAsParent(session, imageId, { 0, 2, height }, { { 1, 3, height + 2 }, { 1, 10, 9 } });
 
     if (mazeEntry & MAZE_ENTRY_FLAG_4)
-        PaintAddImageAsParent(session, imageId, { 0, 18, height }, { { 1, 19, height + 2 }, { 1, 10, 9 } });
+        paintAddImageAsParent(session, imageId, { 0, 18, height }, { { 1, 19, height + 2 }, { 1, 10, 9 } });
 
     imageId = baseImage.WithIndexOffset(SprMazeOffsetWallBottomLeft);
     if (mazeEntry & MAZE_ENTRY_FLAG_12)
-        PaintAddImageAsParent(session, imageId, { 30, 2, height }, { { 30, 3, height + 2 }, { 1, 10, 9 } });
+        paintAddImageAsParent(session, imageId, { 30, 2, height }, { { 30, 3, height + 2 }, { 1, 10, 9 } });
 
     if (mazeEntry & MAZE_ENTRY_FLAG_9)
-        PaintAddImageAsParent(session, imageId, { 30, 18, height }, { { 30, 19, height + 2 }, { 1, 10, 9 } });
+        paintAddImageAsParent(session, imageId, { 30, 18, height }, { { 30, 19, height + 2 }, { 1, 10, 9 } });
 
     imageId = baseImage.WithIndexOffset(SprMazeOffsetWallInnerNeSw);
     if (mazeEntry & MAZE_ENTRY_FLAG_2)
-        PaintAddImageAsParent(session, imageId, { 2, 14, height }, { { 3, 14, height + 2 }, { 10, 4, 9 } });
+        paintAddImageAsParent(session, imageId, { 2, 14, height }, { { 3, 14, height + 2 }, { 10, 4, 9 } });
 
     if (mazeEntry & MAZE_ENTRY_FLAG_10)
-        PaintAddImageAsParent(session, imageId, { 18, 14, height }, { { 19, 14, height + 2 }, { 10, 4, 9 } });
+        paintAddImageAsParent(session, imageId, { 18, 14, height }, { { 19, 14, height + 2 }, { 10, 4, 9 } });
 
     imageId = baseImage.WithIndexOffset(SprMazeOffsetWallInnerNwSe);
     if (mazeEntry & MAZE_ENTRY_FLAG_14)
-        PaintAddImageAsParent(session, imageId, { 14, 2, height }, { { 14, 3, height + 2 }, { 4, 10, 9 } });
+        paintAddImageAsParent(session, imageId, { 14, 2, height }, { { 14, 3, height + 2 }, { 4, 10, 9 } });
 
     if (mazeEntry & MAZE_ENTRY_FLAG_6)
-        PaintAddImageAsParent(session, imageId, { 14, 18, height }, { { 14, 19, height + 2 }, { 4, 10, 9 } });
+        paintAddImageAsParent(session, imageId, { 14, 18, height }, { { 14, 19, height + 2 }, { 4, 10, 9 } });
 
     imageId = baseImage.WithIndexOffset(SprMazeOffsetColumnCorner);
     if (mazeEntry & (MAZE_ENTRY_FLAG_0 | MAZE_ENTRY_FLAG_1))
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 1, 1, height + 2 }, { 1, 1, 9 } });
+        paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 1, 1, height + 2 }, { 1, 1, 9 } });
 
     if (mazeEntry & (MAZE_ENTRY_FLAG_4 | MAZE_ENTRY_FLAG_5))
-        PaintAddImageAsParent(session, imageId, { 0, 30, height }, { { 1, 30, height + 2 }, { 1, 1, 9 } });
+        paintAddImageAsParent(session, imageId, { 0, 30, height }, { { 1, 30, height + 2 }, { 1, 1, 9 } });
 
     if (mazeEntry & (MAZE_ENTRY_FLAG_8 | MAZE_ENTRY_FLAG_9))
-        PaintAddImageAsParent(session, imageId, { 30, 30, height }, { { 30, 30, height + 2 }, { 1, 1, 9 } });
+        paintAddImageAsParent(session, imageId, { 30, 30, height }, { { 30, 30, height + 2 }, { 1, 1, 9 } });
 
     if (mazeEntry & (MAZE_ENTRY_FLAG_12 | MAZE_ENTRY_FLAG_13))
-        PaintAddImageAsParent(session, imageId, { 30, 0, height }, { { 30, 1, height + 2 }, { 1, 1, 9 } });
+        paintAddImageAsParent(session, imageId, { 30, 0, height }, { { 30, 1, height + 2 }, { 1, 1, 9 } });
 
     imageId = baseImage.WithIndexOffset(SprMazeOffsetColumnTopLeft);
     if (mazeEntry & (MAZE_ENTRY_FLAG_0 | MAZE_ENTRY_FLAG_13 | MAZE_ENTRY_FLAG_14))
-        PaintAddImageAsParent(session, imageId, { 14, 0, height }, { { 15, 1, height + 2 }, { 2, 1, 9 } });
+        paintAddImageAsParent(session, imageId, { 14, 0, height }, { { 15, 1, height + 2 }, { 2, 1, 9 } });
 
     imageId = baseImage.WithIndexOffset(SprMazeOffsetColumnBottomRight);
     if (mazeEntry & (MAZE_ENTRY_FLAG_5 | MAZE_ENTRY_FLAG_6 | MAZE_ENTRY_FLAG_8))
-        PaintAddImageAsParent(session, imageId, { 14, 30, height }, { { 15, 30, height + 2 }, { 2, 1, 9 } });
+        paintAddImageAsParent(session, imageId, { 14, 30, height }, { { 15, 30, height + 2 }, { 2, 1, 9 } });
 
     imageId = baseImage.WithIndexOffset(SprMazeOffsetColumnTopRight);
     if (mazeEntry & (MAZE_ENTRY_FLAG_1 | MAZE_ENTRY_FLAG_2 | MAZE_ENTRY_FLAG_4))
-        PaintAddImageAsParent(session, imageId, { 0, 14, height }, { { 1, 15, height + 2 }, { 1, 2, 9 } });
+        paintAddImageAsParent(session, imageId, { 0, 14, height }, { { 1, 15, height + 2 }, { 1, 2, 9 } });
 
     imageId = baseImage.WithIndexOffset(SprMazeOffsetColumnBottomLeft);
     if (mazeEntry & (MAZE_ENTRY_FLAG_9 | MAZE_ENTRY_FLAG_10 | MAZE_ENTRY_FLAG_12))
-        PaintAddImageAsParent(session, imageId, { 30, 14, height }, { { 30, 15, height + 2 }, { 1, 2, 9 } });
+        paintAddImageAsParent(session, imageId, { 30, 14, height }, { { 30, 15, height + 2 }, { 1, 2, 9 } });
 
     if (mazeEntry & (MAZE_ENTRY_FLAG_2 | MAZE_ENTRY_FLAG_6 | MAZE_ENTRY_FLAG_10 | MAZE_ENTRY_FLAG_14))
     {
         imageId = baseImage.WithIndexOffset(SprMazeOffsetColumnCentre);
-        PaintAddImageAsParent(session, imageId, { 14, 14, height }, { { 15, 15, height + 2 }, { 2, 2, 8 } });
+        paintAddImageAsParent(session, imageId, { 14, 14, height }, { { 15, 15, height + 2 }, { 2, 2, 8 } });
 
         PaintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::centre), height + 12, 0x20);
     }

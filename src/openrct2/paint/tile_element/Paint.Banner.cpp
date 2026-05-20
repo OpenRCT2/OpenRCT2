@@ -59,7 +59,7 @@ static void PaintBannerScrollingText(
 
     auto bannerText = banner.getTextWithColour();
     auto imageId = ScrollingText::setup(session, bannerText, scrollingMode, PaletteIndex::transparent);
-    PaintAddImageAsChild(session, imageId, { 0, 0, height + 22 }, { bbOffset, { 1, 1, 21 } });
+    paintAddImageAsChild(session, imageId, { 0, 0, height + 22 }, { bbOffset, { 1, 1, 21 } });
 }
 
 void PaintBanner(PaintSession& session, uint8_t direction, int32_t height, const BannerElement& bannerElement)
@@ -67,7 +67,7 @@ void PaintBanner(PaintSession& session, uint8_t direction, int32_t height, const
     PROFILED_FUNCTION();
 
     if (session.rt.zoom_level > ZoomLevel{ 1 } || gTrackDesignSaveMode
-        || (session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
+        || (session.viewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
         return;
 
     auto banner = bannerElement.GetBanner();
@@ -82,7 +82,7 @@ void PaintBanner(PaintSession& session, uint8_t direction, int32_t height, const
         return;
     }
 
-    session.InteractionType = ViewportInteractionItem::banner;
+    session.interactionType = ViewportInteractionItem::banner;
 
     height -= 16;
 
@@ -92,10 +92,10 @@ void PaintBanner(PaintSession& session, uint8_t direction, int32_t height, const
     ImageId imageTemplate;
     if (bannerElement.isGhost())
     {
-        session.InteractionType = ViewportInteractionItem::none;
+        session.interactionType = ViewportInteractionItem::none;
         imageTemplate = ImageId().WithRemap(FilterPaletteID::paletteGhost);
     }
-    else if (session.SelectedElement == reinterpret_cast<const TileElement*>(&bannerElement))
+    else if (session.selectedElement == reinterpret_cast<const TileElement*>(&bannerElement))
     {
         imageTemplate = ImageId().WithRemap(FilterPaletteID::paletteGhost);
     }
@@ -107,10 +107,10 @@ void PaintBanner(PaintSession& session, uint8_t direction, int32_t height, const
     auto imageIndex = (direction << 1) + bannerEntry->image;
     auto imageId = imageTemplate.WithIndex(imageIndex);
     auto bbOffset = CoordsXYZ(kBannerBoundBoxes[direction][0], height + 2);
-    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { bbOffset, { 1, 1, 21 } });
+    paintAddImageAsParent(session, imageId, { 0, 0, height }, { bbOffset, { 1, 1, 21 } });
 
     bbOffset = CoordsXYZ(kBannerBoundBoxes[direction][1], height + 2);
-    PaintAddImageAsParent(session, imageId.WithIndexOffset(1), { 0, 0, height }, { bbOffset, { 1, 1, 21 } });
+    paintAddImageAsParent(session, imageId.WithIndexOffset(1), { 0, 0, height }, { bbOffset, { 1, 1, 21 } });
 
     PaintBannerScrollingText(session, *bannerEntry, *banner, bannerElement, direction, height, bbOffset);
 }

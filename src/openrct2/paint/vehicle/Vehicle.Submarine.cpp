@@ -56,10 +56,10 @@ namespace OpenRCT2
         }
 
         const auto& bb = VehicleBoundboxes[carEntry->draw_order][Entity::Yaw::YawTo16(imageDirection)];
-        PaintAddImageAsParent(
+        paintAddImageAsParent(
             session, imageId0, { 0, 0, z },
             { { bb.offset_x, bb.offset_y, bb.offset_z + z }, { bb.length_x, bb.length_y, bb.length_z } });
-        PaintAddImageAsParent(
+        paintAddImageAsParent(
             session, imageId1, { 0, 0, z },
             { { bb.offset_x, bb.offset_y, bb.offset_z + z - 10 }, { bb.length_x, bb.length_y, 2 } });
         assert(carEntry->effect_visual == 1);

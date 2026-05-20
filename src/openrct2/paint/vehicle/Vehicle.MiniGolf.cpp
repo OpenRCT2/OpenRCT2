@@ -127,7 +127,7 @@ namespace OpenRCT2
 
         ImageIndex index = rideEntry->Cars[0].base_image_id + 1 + ebx;
         auto image = ImageId(index, peep->TshirtColour, peep->TrousersColour);
-        PaintAddImageAsParent(session, image, { 0, 0, z }, { { 0, 0, z + 5 }, { 1, 1, 11 } });
+        paintAddImageAsParent(session, image, { 0, 0, z }, { { 0, 0, z + 5 }, { 1, 1, 11 } });
     }
 
     /**
@@ -155,6 +155,6 @@ namespace OpenRCT2
             return;
 
         uint32_t image_id = rideEntry->Cars[0].base_image_id;
-        PaintAddImageAsParent(session, ImageId(image_id), { 0, 0, z }, { { 0, 0, z + 3 }, { 1, 1, 0 } });
+        paintAddImageAsParent(session, ImageId(image_id), { 0, 0, z }, { { 0, 0, z + 3 }, { 1, 1, 0 } });
     }
 } // namespace OpenRCT2

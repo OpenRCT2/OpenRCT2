@@ -50,24 +50,24 @@ namespace OpenRCT2::MultiDimensionRCInverted
         {
             case 0:
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26227), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26227), { 0, 0, height + 24 },
                     { { 0, 6, height + 22 }, { 32, 20, 1 } });
                 break;
             case 1:
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26228), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26228), { 0, 0, height + 24 },
                     { { 0, 6, height + 22 }, { 32, 20, 1 } });
                 break;
         }
 
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.mapPosition))
         {
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.supportColours);
         }
 
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -81,48 +81,48 @@ namespace OpenRCT2::MultiDimensionRCInverted
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26253), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26253), { 0, 0, height + 24 },
                     { { 0, 6, height + 40 }, { 32, 20, 3 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26254), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26254), { 0, 0, height + 24 },
                     { { 0, 6, height + 40 }, { 32, 20, 3 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26255), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26255), { 0, 0, height + 24 },
                     { { 0, 6, height + 40 }, { 32, 20, 3 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26256), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26256), { 0, 0, height + 24 },
                     { { 0, 6, height + 40 }, { 32, 20, 3 } });
                 break;
         }
 
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.mapPosition))
         {
             switch (direction)
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 54, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 54, session.supportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 54, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 54, session.supportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 54, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 54, session.supportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 54, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 54, session.supportColours);
                     break;
             }
         }
@@ -145,23 +145,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26269), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26269), { 0, 0, height + 24 },
                     { { 0, 6, height + 88 }, { 32, 20, 3 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26270), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26270), { 0, 0, height + 24 },
                     { { 0, 4, height + 6 }, { 32, 2, 81 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26271), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26271), { 0, 0, height + 24 },
                     { { 0, 4, height + 6 }, { 32, 2, 81 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26272), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26272), { 0, 0, height + 24 },
                     { { 0, 6, height + 88 }, { 32, 20, 3 } });
                 break;
         }
@@ -185,48 +185,48 @@ namespace OpenRCT2::MultiDimensionRCInverted
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26245), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26245), { 0, 0, height + 24 },
                     { { 0, 6, height + 32 }, { 32, 20, 3 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26246), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26246), { 0, 0, height + 24 },
                     { { 0, 6, height + 32 }, { 32, 20, 3 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26247), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26247), { 0, 0, height + 24 },
                     { { 0, 6, height + 32 }, { 32, 20, 3 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26248), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26248), { 0, 0, height + 24 },
                     { { 0, 6, height + 32 }, { 32, 20, 3 } });
                 break;
         }
 
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.mapPosition))
         {
             switch (direction)
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 46, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 46, session.supportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 46, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 46, session.supportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 46, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 46, session.supportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 46, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 46, session.supportColours);
                     break;
             }
         }
@@ -249,29 +249,29 @@ namespace OpenRCT2::MultiDimensionRCInverted
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26257), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26257), { 0, 0, height + 24 },
                     { { 0, 6, height + 56 }, { 32, 20, 3 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26261), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26261), { 0, 0, height + 24 },
                     { { 0, 10, height + 6 }, { 32, 10, 49 } });
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26258), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26258), { 0, 0, height + 24 },
                     { { 0, 4, height + 6 }, { 32, 2, 49 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26262), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26262), { 0, 0, height + 24 },
                     { { 0, 10, height + 6 }, { 32, 10, 49 } });
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26259), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26259), { 0, 0, height + 24 },
                     { { 0, 4, height + 6 }, { 32, 2, 49 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26260), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26260), { 0, 0, height + 24 },
                     { { 0, 6, height + 56 }, { 32, 20, 3 } });
                 break;
         }
@@ -295,54 +295,54 @@ namespace OpenRCT2::MultiDimensionRCInverted
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26263), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26263), { 0, 0, height + 24 },
                     { { 0, 6, height + 56 }, { 32, 20, 3 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26267), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26267), { 0, 0, height + 24 },
                     { { 0, 10, height + 6 }, { 32, 10, 49 } });
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26264), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26264), { 0, 0, height + 24 },
                     { { 0, 4, height + 6 }, { 32, 2, 49 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26268), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26268), { 0, 0, height + 24 },
                     { { 0, 10, height + 6 }, { 32, 10, 49 } });
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26265), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26265), { 0, 0, height + 24 },
                     { { 0, 4, height + 6 }, { 32, 2, 49 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26266), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26266), { 0, 0, height + 24 },
                     { { 0, 6, height + 56 }, { 32, 20, 3 } });
                 break;
         }
 
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.mapPosition))
         {
             switch (direction)
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 68, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 68, session.supportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 68, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 68, session.supportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 68, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 68, session.supportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 68, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 68, session.supportColours);
                     break;
             }
         }
@@ -365,48 +365,48 @@ namespace OpenRCT2::MultiDimensionRCInverted
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26249), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26249), { 0, 0, height + 24 },
                     { { 0, 6, height + 32 }, { 32, 20, 3 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26250), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26250), { 0, 0, height + 24 },
                     { { 0, 6, height + 32 }, { 32, 20, 3 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26251), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26251), { 0, 0, height + 24 },
                     { { 0, 6, height + 32 }, { 32, 20, 3 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26252), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26252), { 0, 0, height + 24 },
                     { { 0, 6, height + 32 }, { 32, 20, 3 } });
                 break;
         }
 
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.mapPosition))
         {
             switch (direction)
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 44, session.supportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 44, session.supportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 44, session.supportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 44, session.supportColours);
                     break;
             }
         }
@@ -474,23 +474,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26310), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26310), { 0, 0, height + 24 },
                             { { 0, 6, height + 22 }, { 32, 20, 3 } });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26315), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26315), { 0, 0, height + 24 },
                             { { 0, 6, height + 22 }, { 32, 20, 3 } });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26320), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26320), { 0, 0, height + 24 },
                             { { 0, 6, height + 22 }, { 32, 20, 3 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26305), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26305), { 0, 0, height + 24 },
                             { { 0, 6, height + 22 }, { 32, 20, 3 } });
                         break;
                 }
@@ -504,7 +504,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
                         direction),
                     0xFFFF, 0);
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.supportColours);
 
                 if (direction == 0 || direction == 3)
                 {
@@ -519,23 +519,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26309), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26309), { 0, 0, height + 24 },
                             { { 0, 0, height + 22 }, { 32, 16, 3 } });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26314), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26314), { 0, 0, height + 24 },
                             { { 0, 0, height + 22 }, { 32, 16, 3 } });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26319), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26319), { 0, 0, height + 24 },
                             { { 0, 16, height + 22 }, { 32, 16, 3 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26304), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26304), { 0, 0, height + 24 },
                             { { 0, 16, height + 22 }, { 32, 16, 3 } });
                         break;
                 }
@@ -553,23 +553,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26308), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26308), { 0, 0, height + 24 },
                             { { 0, 16, height + 22 }, { 16, 16, 3 } });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26313), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26313), { 0, 0, height + 24 },
                             { { 16, 16, height + 22 }, { 16, 16, 3 } });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26318), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26318), { 0, 0, height + 24 },
                             { { 16, 0, height + 22 }, { 16, 16, 3 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26303), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26303), { 0, 0, height + 24 },
                             { { 0, 0, height + 22 }, { 16, 16, 3 } });
                         break;
                 }
@@ -589,23 +589,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26307), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26307), { 0, 0, height + 24 },
                             { { 16, 0, height + 22 }, { 16, 32, 3 } });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26312), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26312), { 0, 0, height + 24 },
                             { { 0, 0, height + 22 }, { 16, 32, 3 } });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26317), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26317), { 0, 0, height + 24 },
                             { { 0, 0, height + 22 }, { 16, 32, 3 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26302), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26302), { 0, 0, height + 24 },
                             { { 16, 0, height + 22 }, { 16, 32, 3 } });
                         break;
                 }
@@ -623,23 +623,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26306), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26306), { 0, 0, height + 24 },
                             { { 6, 0, height + 22 }, { 20, 32, 3 } });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26311), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26311), { 0, 0, height + 24 },
                             { { 6, 0, height + 22 }, { 20, 32, 3 } });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26316), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26316), { 0, 0, height + 24 },
                             { { 6, 0, height + 22 }, { 20, 32, 3 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26301), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26301), { 0, 0, height + 24 },
                             { { 6, 0, height + 22 }, { 20, 32, 3 } });
                         break;
                 }
@@ -653,7 +653,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
                         direction),
                     0xFFFF, 0);
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.supportColours);
 
                 switch (direction)
                 {
@@ -685,23 +685,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26273), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26273), { 0, 0, height + 24 },
                     { { 0, 6, height + 22 }, { 32, 20, 3 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26274), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26274), { 0, 0, height + 24 },
                     { { 0, 6, height + 22 }, { 32, 20, 3 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26275), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26275), { 0, 0, height + 24 },
                     { { 0, 6, height + 22 }, { 32, 20, 3 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26276), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26276), { 0, 0, height + 24 },
                     { { 0, 6, height + 22 }, { 32, 20, 3 } });
                 break;
         }
@@ -714,10 +714,10 @@ namespace OpenRCT2::MultiDimensionRCInverted
                     PaintSegment::bottomLeft, PaintSegment::bottomRight),
                 direction),
             0xFFFF, 0);
-        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.mapPosition))
         {
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.supportColours);
         }
 
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -731,23 +731,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26277), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26277), { 0, 0, height + 24 },
                     { { 0, 6, height + 22 }, { 32, 20, 3 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26278), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26278), { 0, 0, height + 24 },
                     { { 0, 6, height + 22 }, { 32, 20, 3 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26279), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26279), { 0, 0, height + 24 },
                     { { 0, 6, height + 22 }, { 32, 20, 3 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26280), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26280), { 0, 0, height + 24 },
                     { { 0, 6, height + 22 }, { 32, 20, 3 } });
                 break;
         }
@@ -760,10 +760,10 @@ namespace OpenRCT2::MultiDimensionRCInverted
                     PaintSegment::bottomLeft),
                 direction),
             0xFFFF, 0);
-        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.mapPosition))
         {
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.supportColours);
         }
 
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -777,23 +777,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26279), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26279), { 0, 0, height + 24 },
                     { { 0, 6, height + 22 }, { 32, 20, 3 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26280), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26280), { 0, 0, height + 24 },
                     { { 0, 6, height + 22 }, { 32, 20, 3 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26277), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26277), { 0, 0, height + 24 },
                     { { 0, 6, height + 22 }, { 32, 20, 3 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26278), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26278), { 0, 0, height + 24 },
                     { { 0, 6, height + 22 }, { 32, 20, 3 } });
                 break;
         }
@@ -806,10 +806,10 @@ namespace OpenRCT2::MultiDimensionRCInverted
                     PaintSegment::bottomLeft, PaintSegment::bottomRight),
                 direction),
             0xFFFF, 0);
-        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.mapPosition))
         {
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.supportColours);
         }
 
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -823,23 +823,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26275), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26275), { 0, 0, height + 24 },
                     { { 0, 6, height + 22 }, { 32, 20, 3 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26276), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26276), { 0, 0, height + 24 },
                     { { 0, 6, height + 22 }, { 32, 20, 3 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26273), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26273), { 0, 0, height + 24 },
                     { { 0, 6, height + 22 }, { 32, 20, 3 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26274), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26274), { 0, 0, height + 24 },
                     { { 0, 6, height + 22 }, { 32, 20, 3 } });
                 break;
         }
@@ -852,10 +852,10 @@ namespace OpenRCT2::MultiDimensionRCInverted
                     PaintSegment::bottomLeft),
                 direction),
             0xFFFF, 0);
-        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.mapPosition))
         {
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.supportColours);
         }
 
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -872,23 +872,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26354), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26354), { 0, 0, height + 24 },
                             { { 0, 6, height + 24 }, { 32, 20, 3 } });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26359), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26359), { 0, 0, height + 24 },
                             { { 0, 6, height + 24 }, { 32, 20, 3 } });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26364), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26364), { 0, 0, height + 24 },
                             { { 0, 6, height + 24 }, { 32, 20, 3 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26349), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26349), { 0, 0, height + 24 },
                             { { 0, 6, height + 24 }, { 32, 20, 3 } });
                         break;
                 }
@@ -902,7 +902,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
                         direction),
                     0xFFFF, 0);
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.supportColours);
 
                 if (direction == 0 || direction == 3)
                 {
@@ -917,21 +917,21 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26353), { 0, 0, height + 24 }, { 32, 16, 3 });
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26353), { 0, 0, height + 24 }, { 32, 16, 3 });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26358), { 0, 0, height + 24 }, { 32, 16, 3 });
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26358), { 0, 0, height + 24 }, { 32, 16, 3 });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26363), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26363), { 0, 0, height + 24 },
                             { { 0, 16, height + 24 }, { 32, 16, 3 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26348), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26348), { 0, 0, height + 24 },
                             { { 0, 16, height + 24 }, { 32, 16, 3 } });
                         break;
                 }
@@ -949,23 +949,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26352), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26352), { 0, 0, height + 24 },
                             { { 0, 16, height + 24 }, { 16, 16, 3 } });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26357), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26357), { 0, 0, height + 24 },
                             { { 16, 16, height + 24 }, { 16, 16, 3 } });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26362), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26362), { 0, 0, height + 24 },
                             { { 16, 0, height + 24 }, { 16, 16, 3 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26347), { 0, 0, height + 24 }, { 16, 16, 3 });
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26347), { 0, 0, height + 24 }, { 16, 16, 3 });
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -984,21 +984,21 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26351), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26351), { 0, 0, height + 24 },
                             { { 16, 0, height + 24 }, { 16, 32, 3 } });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26356), { 0, 0, height + 24 }, { 16, 32, 3 });
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26356), { 0, 0, height + 24 }, { 16, 32, 3 });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26361), { 0, 0, height + 24 }, { 16, 32, 3 });
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26361), { 0, 0, height + 24 }, { 16, 32, 3 });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26346), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26346), { 0, 0, height + 24 },
                             { { 16, 0, height + 24 }, { 16, 32, 3 } });
                         break;
                 }
@@ -1016,23 +1016,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26350), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26350), { 0, 0, height + 24 },
                             { { 6, 0, height + 24 }, { 20, 32, 3 } });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26355), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26355), { 0, 0, height + 24 },
                             { { 6, 0, height + 24 }, { 20, 32, 3 } });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26360), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26360), { 0, 0, height + 24 },
                             { { 6, 0, height + 24 }, { 20, 32, 3 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26345), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26345), { 0, 0, height + 24 },
                             { { 6, 0, height + 24 }, { 20, 32, 3 } });
                         break;
                 }
@@ -1046,7 +1046,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
                         direction),
                     0xFFFF, 0);
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.supportColours);
 
                 switch (direction)
                 {
@@ -1078,23 +1078,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26281), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26281), { 0, 0, height + 24 },
                     { { 0, 6, height + 32 }, { 32, 20, 3 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26282), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26282), { 0, 0, height + 24 },
                     { { 0, 6, height + 32 }, { 32, 20, 3 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26283), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26283), { 0, 0, height + 24 },
                     { { 0, 6, height + 32 }, { 32, 20, 3 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26284), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26284), { 0, 0, height + 24 },
                     { { 0, 6, height + 32 }, { 32, 20, 3 } });
                 break;
         }
@@ -1107,25 +1107,25 @@ namespace OpenRCT2::MultiDimensionRCInverted
                     PaintSegment::bottomLeft, PaintSegment::bottomRight),
                 direction),
             0xFFFF, 0);
-        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.mapPosition))
         {
             switch (direction)
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 44, session.supportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 44, session.supportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 44, session.supportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 44, session.supportColours);
                     break;
             }
         }
@@ -1148,23 +1148,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26285), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26285), { 0, 0, height + 24 },
                     { { 0, 6, height + 32 }, { 32, 20, 3 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26286), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26286), { 0, 0, height + 24 },
                     { { 0, 6, height + 32 }, { 32, 20, 3 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26287), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26287), { 0, 0, height + 24 },
                     { { 0, 6, height + 32 }, { 32, 20, 3 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26288), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26288), { 0, 0, height + 24 },
                     { { 0, 6, height + 32 }, { 32, 20, 3 } });
                 break;
         }
@@ -1177,25 +1177,25 @@ namespace OpenRCT2::MultiDimensionRCInverted
                     PaintSegment::bottomLeft),
                 direction),
             0xFFFF, 0);
-        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.mapPosition))
         {
             switch (direction)
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 44, session.supportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 44, session.supportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 44, session.supportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 44, session.supportColours);
                     break;
             }
         }
@@ -1218,23 +1218,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26289), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26289), { 0, 0, height + 24 },
                     { { 0, 6, height + 32 }, { 32, 20, 3 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26290), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26290), { 0, 0, height + 24 },
                     { { 0, 6, height + 32 }, { 32, 20, 3 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26291), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26291), { 0, 0, height + 24 },
                     { { 0, 6, height + 32 }, { 32, 20, 3 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26292), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26292), { 0, 0, height + 24 },
                     { { 0, 6, height + 32 }, { 32, 20, 3 } });
                 break;
         }
@@ -1247,25 +1247,25 @@ namespace OpenRCT2::MultiDimensionRCInverted
                     PaintSegment::bottomLeft, PaintSegment::bottomRight),
                 direction),
             0xFFFF, 0);
-        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.mapPosition))
         {
             switch (direction)
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 44, session.supportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 44, session.supportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 44, session.supportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 44, session.supportColours);
                     break;
             }
         }
@@ -1288,23 +1288,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26293), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26293), { 0, 0, height + 24 },
                     { { 0, 6, height + 32 }, { 32, 20, 3 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26294), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26294), { 0, 0, height + 24 },
                     { { 0, 6, height + 32 }, { 32, 20, 3 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26295), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26295), { 0, 0, height + 24 },
                     { { 0, 6, height + 32 }, { 32, 20, 3 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26296), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26296), { 0, 0, height + 24 },
                     { { 0, 6, height + 32 }, { 32, 20, 3 } });
                 break;
         }
@@ -1317,25 +1317,25 @@ namespace OpenRCT2::MultiDimensionRCInverted
                     PaintSegment::bottomLeft),
                 direction),
             0xFFFF, 0);
-        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.mapPosition))
         {
             switch (direction)
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 44, session.supportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 44, session.supportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 44, session.supportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 44, session.supportColours);
                     break;
             }
         }
@@ -1386,23 +1386,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26297), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26297), { 0, 0, height + 24 },
                     { { 0, 6, height + 22 }, { 32, 20, 3 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26298), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26298), { 0, 0, height + 24 },
                     { { 0, 6, height + 22 }, { 32, 20, 3 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26299), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26299), { 0, 0, height + 24 },
                     { { 0, 6, height + 22 }, { 32, 20, 3 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26300), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26300), { 0, 0, height + 24 },
                     { { 0, 6, height + 22 }, { 32, 20, 3 } });
                 break;
         }
@@ -1415,10 +1415,10 @@ namespace OpenRCT2::MultiDimensionRCInverted
                     PaintSegment::bottomLeft, PaintSegment::bottomRight),
                 direction),
             0xFFFF, 0);
-        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.mapPosition))
         {
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.supportColours);
         }
 
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -1442,23 +1442,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26229), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26229), { 0, 0, height + 24 },
                             { { 0, 6, height + 22 }, { 32, 20, 3 } });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26233), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26233), { 0, 0, height + 24 },
                             { { 0, 6, height + 22 }, { 32, 20, 3 } });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26232), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26232), { 0, 0, height + 24 },
                             { { 0, 6, height + 22 }, { 32, 20, 3 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26236), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26236), { 0, 0, height + 24 },
                             { { 0, 6, height + 22 }, { 32, 20, 3 } });
                         break;
                 }
@@ -1470,7 +1470,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
                         direction),
                     0xFFFF, 0);
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.supportColours);
 
                 if (direction == 0 || direction == 3)
                 {
@@ -1482,23 +1482,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26230), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26230), { 0, 0, height + 24 },
                             { { 0, 0, height + 22 }, { 32, 26, 3 } });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26234), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26234), { 0, 0, height + 24 },
                             { { 0, 0, height + 22 }, { 32, 26, 3 } });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26231), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26231), { 0, 0, height + 24 },
                             { { 0, 6, height + 22 }, { 32, 26, 3 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26235), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26235), { 0, 0, height + 24 },
                             { { 0, 6, height + 22 }, { 32, 26, 3 } });
                         break;
                 }
@@ -1515,12 +1515,12 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 36, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 36, session.supportColours);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
                             session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 36,
-                            session.SupportColours);
+                            session.supportColours);
                         break;
                 }
 
@@ -1530,23 +1530,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26231), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26231), { 0, 0, height + 24 },
                             { { 0, 6, height + 22 }, { 32, 26, 3 } });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26235), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26235), { 0, 0, height + 24 },
                             { { 0, 6, height + 22 }, { 32, 26, 3 } });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26230), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26230), { 0, 0, height + 24 },
                             { { 0, 0, height + 22 }, { 32, 26, 3 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26234), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26234), { 0, 0, height + 24 },
                             { { 0, 0, height + 22 }, { 32, 26, 3 } });
                         break;
                 }
@@ -1563,12 +1563,12 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 {
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 36, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 36, session.supportColours);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
                             session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 36,
-                            session.SupportColours);
+                            session.supportColours);
                         break;
                 }
 
@@ -1578,23 +1578,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26232), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26232), { 0, 0, height + 24 },
                             { { 0, 6, height + 22 }, { 32, 20, 3 } });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26236), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26236), { 0, 0, height + 24 },
                             { { 0, 6, height + 22 }, { 32, 20, 3 } });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26229), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26229), { 0, 0, height + 24 },
                             { { 0, 6, height + 22 }, { 32, 20, 3 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26233), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26233), { 0, 0, height + 24 },
                             { { 0, 6, height + 22 }, { 32, 20, 3 } });
                         break;
                 }
@@ -1607,7 +1607,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
                         direction),
                     0xFFFF, 0);
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.supportColours);
 
                 switch (direction)
                 {
@@ -1633,23 +1633,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26237), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26237), { 0, 0, height + 24 },
                             { { 0, 6, height + 22 }, { 32, 20, 3 } });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26241), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26241), { 0, 0, height + 24 },
                             { { 0, 6, height + 22 }, { 32, 20, 3 } });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26240), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26240), { 0, 0, height + 24 },
                             { { 0, 6, height + 22 }, { 32, 20, 3 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26244), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26244), { 0, 0, height + 24 },
                             { { 0, 6, height + 22 }, { 32, 20, 3 } });
                         break;
                 }
@@ -1673,23 +1673,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26238), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26238), { 0, 0, height + 24 },
                             { { 0, 6, height + 22 }, { 32, 26, 3 } });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26242), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26242), { 0, 0, height + 24 },
                             { { 0, 6, height + 22 }, { 32, 26, 3 } });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26239), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26239), { 0, 0, height + 24 },
                             { { 0, 0, height + 22 }, { 32, 26, 3 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26243), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26243), { 0, 0, height + 24 },
                             { { 0, 0, height + 22 }, { 32, 26, 3 } });
                         break;
                 }
@@ -1710,23 +1710,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26239), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26239), { 0, 0, height + 24 },
                             { { 0, 0, height + 22 }, { 32, 26, 3 } });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26243), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26243), { 0, 0, height + 24 },
                             { { 0, 0, height + 22 }, { 32, 26, 3 } });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26238), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26238), { 0, 0, height + 24 },
                             { { 0, 6, height + 22 }, { 32, 26, 3 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26242), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26242), { 0, 0, height + 24 },
                             { { 0, 6, height + 22 }, { 32, 26, 3 } });
                         break;
                 }
@@ -1747,23 +1747,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26240), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26240), { 0, 0, height + 24 },
                             { { 0, 6, height + 22 }, { 32, 20, 3 } });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26244), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26244), { 0, 0, height + 24 },
                             { { 0, 6, height + 22 }, { 32, 20, 3 } });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26237), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26237), { 0, 0, height + 24 },
                             { { 0, 6, height + 22 }, { 32, 20, 3 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26241), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26241), { 0, 0, height + 24 },
                             { { 0, 6, height + 22 }, { 32, 20, 3 } });
                         break;
                 }
@@ -1801,23 +1801,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26326), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26326), { 0, 0, height + 24 },
                             { { 0, 6, height + 22 }, { 32, 20, 3 } });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26329), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26329), { 0, 0, height + 24 },
                             { { 0, 6, height + 22 }, { 32, 20, 3 } });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26332), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26332), { 0, 0, height + 24 },
                             { { 0, 6, height + 22 }, { 32, 20, 3 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26323), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26323), { 0, 0, height + 24 },
                             { { 0, 6, height + 22 }, { 32, 20, 3 } });
                         break;
                 }
@@ -1831,7 +1831,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
                         direction),
                     0xFFFF, 0);
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.supportColours);
 
                 if (direction == 0 || direction == 3)
                 {
@@ -1846,23 +1846,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26325), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26325), { 0, 0, height + 24 },
                             { { 16, 0, height + 22 }, { 16, 16, 3 } });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26328), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26328), { 0, 0, height + 24 },
                             { { 0, 0, height + 22 }, { 16, 16, 3 } });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26331), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26331), { 0, 0, height + 24 },
                             { { 0, 16, height + 22 }, { 16, 16, 3 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26322), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26322), { 0, 0, height + 24 },
                             { { 16, 16, height + 22 }, { 16, 16, 3 } });
                         break;
                 }
@@ -1878,23 +1878,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26324), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26324), { 0, 0, height + 24 },
                             { { 6, 0, height + 22 }, { 20, 32, 3 } });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26327), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26327), { 0, 0, height + 24 },
                             { { 6, 0, height + 22 }, { 20, 32, 3 } });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26330), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26330), { 0, 0, height + 24 },
                             { { 6, 0, height + 22 }, { 20, 32, 3 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26321), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26321), { 0, 0, height + 24 },
                             { { 6, 0, height + 22 }, { 20, 32, 3 } });
                         break;
                 }
@@ -1908,7 +1908,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
                         direction),
                     0xFFFF, 0);
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.supportColours);
 
                 switch (direction)
                 {
@@ -1943,23 +1943,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26338), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26338), { 0, 0, height + 24 },
                             { { 0, 6, height + 22 }, { 32, 20, 3 } });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26341), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26341), { 0, 0, height + 24 },
                             { { 0, 6, height + 22 }, { 32, 20, 3 } });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26344), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26344), { 0, 0, height + 24 },
                             { { 0, 6, height + 22 }, { 32, 20, 3 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26335), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26335), { 0, 0, height + 24 },
                             { { 0, 6, height + 22 }, { 32, 20, 3 } });
                         break;
                 }
@@ -1973,7 +1973,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
                         direction),
                     0xFFFF, 0);
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.supportColours);
 
                 if (direction == 0 || direction == 3)
                 {
@@ -1988,23 +1988,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26337), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26337), { 0, 0, height + 24 },
                             { { 16, 0, height + 22 }, { 16, 16, 3 } });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26340), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26340), { 0, 0, height + 24 },
                             { { 0, 0, height + 22 }, { 16, 16, 3 } });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26343), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26343), { 0, 0, height + 24 },
                             { { 0, 16, height + 22 }, { 16, 16, 3 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26334), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26334), { 0, 0, height + 24 },
                             { { 16, 16, height + 22 }, { 16, 16, 3 } });
                         break;
                 }
@@ -2020,23 +2020,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26336), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26336), { 0, 0, height + 24 },
                             { { 6, 0, height + 22 }, { 20, 32, 3 } });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26339), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26339), { 0, 0, height + 24 },
                             { { 6, 0, height + 22 }, { 20, 32, 3 } });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26342), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26342), { 0, 0, height + 24 },
                             { { 6, 0, height + 22 }, { 20, 32, 3 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26333), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26333), { 0, 0, height + 24 },
                             { { 6, 0, height + 22 }, { 20, 32, 3 } });
                         break;
                 }
@@ -2050,7 +2050,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
                         direction),
                     0xFFFF, 0);
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.supportColours);
 
                 switch (direction)
                 {
@@ -2083,24 +2083,24 @@ namespace OpenRCT2::MultiDimensionRCInverted
         {
             case 0:
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26549), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26549), { 0, 0, height + 24 },
                     { { 0, 6, height + 24 }, { 32, 20, 3 } });
                 break;
             case 1:
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26550), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26550), { 0, 0, height + 24 },
                     { { 0, 6, height + 24 }, { 32, 20, 3 } });
                 break;
         }
 
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.mapPosition))
         {
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.supportColours);
         }
 
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -2116,38 +2116,38 @@ namespace OpenRCT2::MultiDimensionRCInverted
         {
             case 0:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height, session.supportColours);
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height, session.SupportColours);
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26227), { 0, 0, height + 24 },
+                    session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height, session.supportColours);
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26227), { 0, 0, height + 24 },
                     { { 0, 6, height + 24 }, { 32, 20, 3 } });
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::topRightSide, 0, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::topRightSide, 0, height, session.supportColours);
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height, session.SupportColours);
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26228), { 0, 0, height + 24 },
+                    session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height, session.supportColours);
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26228), { 0, 0, height + 24 },
                     { { 0, 6, height + 24 }, { 32, 20, 3 } });
                 break;
             case 2:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height, session.supportColours);
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height, session.SupportColours);
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26227), { 0, 0, height + 24 },
+                    session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height, session.supportColours);
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26227), { 0, 0, height + 24 },
                     { { 0, 6, height + 24 }, { 32, 20, 3 } });
                 break;
             case 3:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::topRightSide, 0, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::topRightSide, 0, height, session.supportColours);
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height, session.SupportColours);
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26228), { 0, 0, height + 24 },
+                    session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height, session.supportColours);
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26228), { 0, 0, height + 24 },
                     { { 0, 6, height + 24 }, { 32, 20, 3 } });
                 break;
         }
@@ -2164,23 +2164,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26533), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26533), { 0, 0, height + 24 },
                             { { 0, 6, height + 56 }, { 32, 20, 3 } });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26534), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26534), { 0, 0, height + 24 },
                             { { 0, 4, height + 6 }, { 32, 2, 31 } });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26535), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26535), { 0, 0, height + 24 },
                             { { 0, 4, height + 6 }, { 32, 2, 31 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26536), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26536), { 0, 0, height + 24 },
                             { { 0, 6, height + 56 }, { 32, 20, 3 } });
                         break;
                 }
@@ -2211,23 +2211,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26525), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26525), { 0, 0, height + 24 },
                             { { 0, 6, height + 80 }, { 32, 20, 3 } });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26526), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26526), { 0, 0, height + 24 },
                             { { 0, 4, height + 6 }, { 32, 2, 55 } });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26527), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26527), { 0, 0, height + 24 },
                             { { 0, 4, height + 6 }, { 32, 2, 55 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26528), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26528), { 0, 0, height + 24 },
                             { { 0, 6, height + 80 }, { 32, 20, 3 } });
                         break;
                 }
@@ -2260,23 +2260,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26529), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26529), { 0, 0, height + 24 },
                     { { 0, 6, height + 80 }, { 32, 20, 3 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26530), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26530), { 0, 0, height + 24 },
                     { { 0, 4, height + 6 }, { 32, 2, 55 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26531), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26531), { 0, 0, height + 24 },
                     { { 0, 4, height + 6 }, { 32, 2, 55 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26532), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26532), { 0, 0, height + 24 },
                     { { 0, 6, height + 80 }, { 32, 20, 3 } });
                 break;
         }
@@ -2304,23 +2304,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26531), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26531), { 0, 0, height + 24 },
                             { { 0, 4, height + 6 }, { 32, 2, 55 } });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26532), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26532), { 0, 0, height + 24 },
                             { { 0, 6, height + 80 }, { 32, 20, 3 } });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26529), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26529), { 0, 0, height + 24 },
                             { { 0, 6, height + 80 }, { 32, 20, 3 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26530), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26530), { 0, 0, height + 24 },
                             { { 0, 4, height + 6 }, { 32, 2, 55 } });
                         break;
                 }
@@ -2347,23 +2347,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26405), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26405), { 0, 0, height + 24 },
                             { { 0, 6, height + 22 }, { 32, 20, 3 } });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26409), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26409), { 0, 0, height + 24 },
                             { { 0, 6, height + 22 }, { 32, 20, 3 } });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26413), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26413), { 0, 0, height + 24 },
                             { { 0, 6, height + 22 }, { 32, 20, 3 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26417), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26417), { 0, 0, height + 24 },
                             { { 0, 6, height + 22 }, { 32, 20, 3 } });
                         break;
                 }
@@ -2371,7 +2371,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.supportColours);
 
                 if (direction == 0 || direction == 3)
                 {
@@ -2383,23 +2383,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26406), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26406), { 0, 0, height + 24 },
                             { { 0, 0, height + 22 }, { 32, 16, 3 } });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26410), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26410), { 0, 0, height + 24 },
                             { { 0, 0, height + 22 }, { 34, 16, 3 } });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26414), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26414), { 0, 0, height + 24 },
                             { { 0, 16, height + 22 }, { 32, 16, 3 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26418), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26418), { 0, 0, height + 24 },
                             { { 0, 16, height + 22 }, { 32, 16, 3 } });
                         break;
                 }
@@ -2417,23 +2417,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26407), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26407), { 0, 0, height + 24 },
                             { { 0, 16, height + 22 }, { 16, 16, 3 } });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26411), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26411), { 0, 0, height + 24 },
                             { { 16, 16, height + 22 }, { 16, 16, 3 } });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26415), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26415), { 0, 0, height + 24 },
                             { { 16, 0, height + 22 }, { 16, 16, 3 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26419), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26419), { 0, 0, height + 24 },
                             { { 0, 0, height + 22 }, { 16, 16, 3 } });
                         break;
                 }
@@ -2460,23 +2460,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26408), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26408), { 0, 0, height + 24 },
                             { { 16, 16, height + 22 }, { 16, 16, 3 } });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26412), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26412), { 0, 0, height + 24 },
                             { { 0, 16, height + 22 }, { 16, 18, 3 } });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26416), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26416), { 0, 0, height + 24 },
                             { { 0, 0, height + 22 }, { 16, 16, 3 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26420), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26420), { 0, 0, height + 24 },
                             { { 16, 0, height + 22 }, { 16, 16, 3 } });
                         break;
                 }
@@ -2494,19 +2494,19 @@ namespace OpenRCT2::MultiDimensionRCInverted
                     case 0:
                         MetalASupportsPaintSetup(
                             session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 36,
-                            session.SupportColours);
+                            session.supportColours);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 36, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 36, session.supportColours);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 36, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 36, session.supportColours);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 36, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 36, session.supportColours);
                         break;
                 }
 
@@ -2525,23 +2525,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26389), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26389), { 0, 0, height + 24 },
                             { { 0, 6, height + 22 }, { 32, 20, 3 } });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26393), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26393), { 0, 0, height + 24 },
                             { { 0, 6, height + 22 }, { 32, 20, 3 } });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26397), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26397), { 0, 0, height + 24 },
                             { { 0, 6, height + 22 }, { 32, 20, 3 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26401), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26401), { 0, 0, height + 24 },
                             { { 0, 6, height + 22 }, { 32, 20, 3 } });
                         break;
                 }
@@ -2549,7 +2549,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.supportColours);
 
                 if (direction == 0 || direction == 3)
                 {
@@ -2561,23 +2561,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26390), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26390), { 0, 0, height + 24 },
                             { { 0, 16, height + 22 }, { 32, 16, 3 } });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26394), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26394), { 0, 0, height + 24 },
                             { { 0, 16, height + 22 }, { 32, 16, 3 } });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26398), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26398), { 0, 0, height + 24 },
                             { { 0, 0, height + 22 }, { 34, 16, 3 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26402), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26402), { 0, 0, height + 24 },
                             { { 0, 0, height + 22 }, { 32, 16, 3 } });
                         break;
                 }
@@ -2595,23 +2595,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26391), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26391), { 0, 0, height + 24 },
                             { { 0, 0, height + 22 }, { 16, 16, 3 } });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26395), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26395), { 0, 0, height + 24 },
                             { { 16, 0, height + 22 }, { 16, 16, 3 } });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26399), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26399), { 0, 0, height + 24 },
                             { { 16, 16, height + 22 }, { 16, 16, 3 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26403), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26403), { 0, 0, height + 24 },
                             { { 0, 16, height + 22 }, { 16, 16, 3 } });
                         break;
                 }
@@ -2639,23 +2639,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26392), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26392), { 0, 0, height + 24 },
                             { { 16, 0, height + 22 }, { 16, 16, 3 } });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26396), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26396), { 0, 0, height + 24 },
                             { { 0, 0, height + 22 }, { 16, 16, 3 } });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26400), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26400), { 0, 0, height + 24 },
                             { { 0, 16, height + 22 }, { 16, 18, 3 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26404), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26404), { 0, 0, height + 24 },
                             { { 16, 16, height + 22 }, { 16, 16, 3 } });
                         break;
                 }
@@ -2672,20 +2672,20 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 36, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 36, session.supportColours);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 36, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 36, session.supportColours);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 36, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 36, session.supportColours);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
                             session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 36,
-                            session.SupportColours);
+                            session.supportColours);
                         break;
                 }
 
@@ -2722,23 +2722,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26437), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26437), { 0, 0, height + 24 },
                             { { 0, 6, height + 22 }, { 32, 20, 3 } });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26441), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26441), { 0, 0, height + 24 },
                             { { 0, 6, height + 22 }, { 32, 20, 3 } });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26445), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26445), { 0, 0, height + 24 },
                             { { 0, 6, height + 22 }, { 32, 20, 3 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26449), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26449), { 0, 0, height + 24 },
                             { { 0, 6, height + 22 }, { 32, 20, 3 } });
                         break;
                 }
@@ -2751,7 +2751,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
                         direction),
                     0xFFFF, 0);
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.supportColours);
 
                 if (direction == 0 || direction == 3)
                 {
@@ -2763,23 +2763,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26438), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26438), { 0, 0, height + 24 },
                             { { 0, 0, height + 22 }, { 32, 16, 3 } });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26442), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26442), { 0, 0, height + 24 },
                             { { 0, 0, height + 22 }, { 34, 16, 3 } });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26446), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26446), { 0, 0, height + 24 },
                             { { 0, 16, height + 22 }, { 32, 16, 3 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26450), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26450), { 0, 0, height + 24 },
                             { { 0, 16, height + 22 }, { 32, 16, 3 } });
                         break;
                 }
@@ -2797,23 +2797,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26439), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26439), { 0, 0, height + 24 },
                             { { 0, 16, height + 22 }, { 16, 16, 3 } });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26443), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26443), { 0, 0, height + 24 },
                             { { 16, 16, height + 22 }, { 16, 16, 3 } });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26447), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26447), { 0, 0, height + 24 },
                             { { 16, 0, height + 22 }, { 16, 16, 3 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26451), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26451), { 0, 0, height + 24 },
                             { { 0, 0, height + 22 }, { 16, 16, 3 } });
                         break;
                 }
@@ -2840,23 +2840,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26440), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26440), { 0, 0, height + 24 },
                             { { 16, 16, height + 22 }, { 16, 16, 3 } });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26444), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26444), { 0, 0, height + 24 },
                             { { 0, 16, height + 22 }, { 16, 18, 3 } });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26448), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26448), { 0, 0, height + 24 },
                             { { 0, 0, height + 22 }, { 16, 16, 3 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26452), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26452), { 0, 0, height + 24 },
                             { { 16, 0, height + 22 }, { 16, 16, 3 } });
                         break;
                 }
@@ -2874,19 +2874,19 @@ namespace OpenRCT2::MultiDimensionRCInverted
                     case 0:
                         MetalASupportsPaintSetup(
                             session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 36,
-                            session.SupportColours);
+                            session.supportColours);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 36, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 36, session.supportColours);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 36, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 36, session.supportColours);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 36, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 36, session.supportColours);
                         break;
                 }
 
@@ -2905,23 +2905,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26421), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26421), { 0, 0, height + 24 },
                             { { 0, 6, height + 22 }, { 32, 20, 3 } });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26425), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26425), { 0, 0, height + 24 },
                             { { 0, 6, height + 22 }, { 32, 20, 3 } });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26429), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26429), { 0, 0, height + 24 },
                             { { 0, 6, height + 22 }, { 32, 20, 3 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26433), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26433), { 0, 0, height + 24 },
                             { { 0, 6, height + 22 }, { 32, 20, 3 } });
                         break;
                 }
@@ -2934,7 +2934,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
                         direction),
                     0xFFFF, 0);
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.supportColours);
 
                 if (direction == 0 || direction == 3)
                 {
@@ -2946,23 +2946,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26422), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26422), { 0, 0, height + 24 },
                             { { 0, 16, height + 22 }, { 32, 16, 3 } });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26426), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26426), { 0, 0, height + 24 },
                             { { 0, 16, height + 22 }, { 32, 16, 3 } });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26430), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26430), { 0, 0, height + 24 },
                             { { 0, 0, height + 22 }, { 34, 16, 3 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26434), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26434), { 0, 0, height + 24 },
                             { { 0, 0, height + 22 }, { 32, 16, 3 } });
                         break;
                 }
@@ -2980,23 +2980,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26423), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26423), { 0, 0, height + 24 },
                             { { 0, 0, height + 22 }, { 16, 16, 3 } });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26427), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26427), { 0, 0, height + 24 },
                             { { 16, 0, height + 22 }, { 16, 16, 3 } });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26431), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26431), { 0, 0, height + 24 },
                             { { 4, 4, height + 22 }, { 28, 28, 3 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26435), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26435), { 0, 0, height + 24 },
                             { { 0, 16, height + 22 }, { 16, 16, 3 } });
                         break;
                 }
@@ -3024,23 +3024,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26424), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26424), { 0, 0, height + 24 },
                             { { 16, 0, height + 22 }, { 16, 16, 3 } });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26428), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26428), { 0, 0, height + 24 },
                             { { 0, 0, height + 22 }, { 16, 16, 3 } });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26432), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26432), { 0, 0, height + 24 },
                             { { 0, 16, height + 22 }, { 16, 18, 3 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26436), { 0, 0, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26436), { 0, 0, height + 24 },
                             { { 16, 16, height + 22 }, { 16, 16, 3 } });
                         break;
                 }
@@ -3057,20 +3057,20 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 36, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 36, session.supportColours);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 36, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 36, session.supportColours);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 36, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 36, session.supportColours);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
                             session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 36,
-                            session.SupportColours);
+                            session.supportColours);
                         break;
                 }
 
@@ -3109,8 +3109,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                     switch (direction)
                     {
                         case 3:
-                            PaintAddImageAsParentRotated(
-                                session, direction, session.TrackColours.WithIndex(26484), { -16, -16, height + 24 },
+                            paintAddImageAsParentRotated(
+                                session, direction, session.trackColours.WithIndex(26484), { -16, -16, height + 24 },
                                 { { -16, -16, height + 22 }, { 32, 32, 3 } });
                             break;
                     }
@@ -3120,8 +3120,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                     switch (direction)
                     {
                         case 3:
-                            PaintAddImageAsParentRotated(
-                                session, direction, session.TrackColours.WithIndex(26456), { -16, -16, height + 24 },
+                            paintAddImageAsParentRotated(
+                                session, direction, session.trackColours.WithIndex(26456), { -16, -16, height + 24 },
                                 { { -16, -16, height + 22 }, { 32, 32, 3 } });
                             break;
                     }
@@ -3141,8 +3141,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                     switch (direction)
                     {
                         case 0:
-                            PaintAddImageAsParentRotated(
-                                session, direction, session.TrackColours.WithIndex(26481), { -16, -16, height + 24 },
+                            paintAddImageAsParentRotated(
+                                session, direction, session.trackColours.WithIndex(26481), { -16, -16, height + 24 },
                                 { { -16, -16, height + 22 }, { 32, 32, 3 } });
                             break;
                     }
@@ -3152,8 +3152,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                     switch (direction)
                     {
                         case 0:
-                            PaintAddImageAsParentRotated(
-                                session, direction, session.TrackColours.WithIndex(26453), { -16, -16, height + 24 },
+                            paintAddImageAsParentRotated(
+                                session, direction, session.trackColours.WithIndex(26453), { -16, -16, height + 24 },
                                 { { -16, -16, height + 22 }, { 32, 32, 3 } });
                             break;
                     }
@@ -3172,8 +3172,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                     switch (direction)
                     {
                         case 2:
-                            PaintAddImageAsParentRotated(
-                                session, direction, session.TrackColours.WithIndex(26483), { -16, -16, height + 24 },
+                            paintAddImageAsParentRotated(
+                                session, direction, session.trackColours.WithIndex(26483), { -16, -16, height + 24 },
                                 { { -16, -16, height + 22 }, { 32, 32, 3 } });
                             break;
                     }
@@ -3183,8 +3183,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                     switch (direction)
                     {
                         case 2:
-                            PaintAddImageAsParentRotated(
-                                session, direction, session.TrackColours.WithIndex(26455), { -16, -16, height + 24 },
+                            paintAddImageAsParentRotated(
+                                session, direction, session.trackColours.WithIndex(26455), { -16, -16, height + 24 },
                                 { { -16, -16, height + 22 }, { 32, 32, 3 } });
                             break;
                     }
@@ -3204,8 +3204,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                     switch (direction)
                     {
                         case 1:
-                            PaintAddImageAsParentRotated(
-                                session, direction, session.TrackColours.WithIndex(26482), { -16, -16, height + 24 },
+                            paintAddImageAsParentRotated(
+                                session, direction, session.trackColours.WithIndex(26482), { -16, -16, height + 24 },
                                 { { -16, -16, height + 22 }, { 32, 32, 3 } });
                             break;
                     }
@@ -3215,8 +3215,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                     switch (direction)
                     {
                         case 1:
-                            PaintAddImageAsParentRotated(
-                                session, direction, session.TrackColours.WithIndex(26454), { -16, -16, height + 24 },
+                            paintAddImageAsParentRotated(
+                                session, direction, session.trackColours.WithIndex(26454), { -16, -16, height + 24 },
                                 { { -16, -16, height + 22 }, { 32, 32, 3 } });
                             break;
                     }
@@ -3232,20 +3232,20 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 36, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 36, session.supportColours);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 36, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 36, session.supportColours);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 36, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 36, session.supportColours);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
                             session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 36,
-                            session.SupportColours);
+                            session.supportColours);
                         break;
                 }
 
@@ -3266,8 +3266,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                     switch (direction)
                     {
                         case 3:
-                            PaintAddImageAsParentRotated(
-                                session, direction, session.TrackColours.WithIndex(26496), { -16, -16, height + 24 },
+                            paintAddImageAsParentRotated(
+                                session, direction, session.trackColours.WithIndex(26496), { -16, -16, height + 24 },
                                 { { -16, -16, height + 40 }, { 32, 32, 3 } });
                             break;
                     }
@@ -3277,8 +3277,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                     switch (direction)
                     {
                         case 3:
-                            PaintAddImageAsParentRotated(
-                                session, direction, session.TrackColours.WithIndex(26468), { -16, -16, height + 24 },
+                            paintAddImageAsParentRotated(
+                                session, direction, session.trackColours.WithIndex(26468), { -16, -16, height + 24 },
                                 { { -16, -16, height + 40 }, { 32, 32, 3 } });
                             break;
                     }
@@ -3298,8 +3298,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                     switch (direction)
                     {
                         case 0:
-                            PaintAddImageAsParentRotated(
-                                session, direction, session.TrackColours.WithIndex(26493), { -16, -16, height + 24 },
+                            paintAddImageAsParentRotated(
+                                session, direction, session.trackColours.WithIndex(26493), { -16, -16, height + 24 },
                                 { { -16, -16, height + 40 }, { 32, 32, 3 } });
                             break;
                     }
@@ -3309,8 +3309,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                     switch (direction)
                     {
                         case 0:
-                            PaintAddImageAsParentRotated(
-                                session, direction, session.TrackColours.WithIndex(26465), { -16, -16, height + 24 },
+                            paintAddImageAsParentRotated(
+                                session, direction, session.trackColours.WithIndex(26465), { -16, -16, height + 24 },
                                 { { -16, -16, height + 40 }, { 32, 32, 3 } });
                             break;
                     }
@@ -3329,8 +3329,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                     switch (direction)
                     {
                         case 2:
-                            PaintAddImageAsParentRotated(
-                                session, direction, session.TrackColours.WithIndex(26495), { -16, -16, height + 24 },
+                            paintAddImageAsParentRotated(
+                                session, direction, session.trackColours.WithIndex(26495), { -16, -16, height + 24 },
                                 { { -16, -16, height + 40 }, { 32, 32, 3 } });
                             break;
                     }
@@ -3340,8 +3340,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                     switch (direction)
                     {
                         case 2:
-                            PaintAddImageAsParentRotated(
-                                session, direction, session.TrackColours.WithIndex(26467), { -16, -16, height + 24 },
+                            paintAddImageAsParentRotated(
+                                session, direction, session.trackColours.WithIndex(26467), { -16, -16, height + 24 },
                                 { { -16, -16, height + 40 }, { 32, 32, 3 } });
                             break;
                     }
@@ -3361,8 +3361,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                     switch (direction)
                     {
                         case 1:
-                            PaintAddImageAsParentRotated(
-                                session, direction, session.TrackColours.WithIndex(26494), { -16, -16, height + 24 },
+                            paintAddImageAsParentRotated(
+                                session, direction, session.trackColours.WithIndex(26494), { -16, -16, height + 24 },
                                 { { -16, -16, height + 40 }, { 32, 32, 3 } });
                             break;
                     }
@@ -3372,8 +3372,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                     switch (direction)
                     {
                         case 1:
-                            PaintAddImageAsParentRotated(
-                                session, direction, session.TrackColours.WithIndex(26466), { -16, -16, height + 24 },
+                            paintAddImageAsParentRotated(
+                                session, direction, session.trackColours.WithIndex(26466), { -16, -16, height + 24 },
                                 { { -16, -16, height + 40 }, { 32, 32, 3 } });
                             break;
                     }
@@ -3389,20 +3389,20 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 48, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 48, session.supportColours);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 48, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 48, session.supportColours);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 48, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 48, session.supportColours);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
                             session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 48,
-                            session.SupportColours);
+                            session.supportColours);
                         break;
                 }
 
@@ -3421,8 +3421,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26480), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26480), { -16, -16, height + 24 },
                             { { -16, -16, height + 88 }, { 32, 32, 3 } });
                         break;
                 }
@@ -3439,8 +3439,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26477), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26477), { -16, -16, height + 24 },
                             { { -16, -16, height + 88 }, { 32, 32, 3 } });
                         break;
                 }
@@ -3456,8 +3456,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26479), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26479), { -16, -16, height + 24 },
                             { { -16, -16, height + 88 }, { 32, 32, 3 } });
                         break;
                 }
@@ -3474,8 +3474,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26478), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26478), { -16, -16, height + 24 },
                             { { -16, -16, height + 24 }, { 32, 32, 3 } });
                         break;
                 }
@@ -3490,21 +3490,21 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::leftCorner, 32, height + 36, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::leftCorner, 32, height + 36, session.supportColours);
                         break;
                     case 1:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::topCorner, 36, height + 36, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::topCorner, 36, height + 36, session.supportColours);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
                             session, supportType.metal, MetalSupportPlace::rightCorner, 32, height + 36,
-                            session.SupportColours);
+                            session.supportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
                             session, supportType.metal, MetalSupportPlace::bottomCorner, 36, height + 36,
-                            session.SupportColours);
+                            session.supportColours);
                         break;
                 }
 
@@ -3525,8 +3525,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                     switch (direction)
                     {
                         case 3:
-                            PaintAddImageAsParentRotated(
-                                session, direction, session.TrackColours.WithIndex(26488), { -16, -16, height + 24 },
+                            paintAddImageAsParentRotated(
+                                session, direction, session.trackColours.WithIndex(26488), { -16, -16, height + 24 },
                                 { { -16, -16, height + 32 }, { 32, 32, 3 } });
                             break;
                     }
@@ -3536,8 +3536,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                     switch (direction)
                     {
                         case 3:
-                            PaintAddImageAsParentRotated(
-                                session, direction, session.TrackColours.WithIndex(26460), { -16, -16, height + 24 },
+                            paintAddImageAsParentRotated(
+                                session, direction, session.trackColours.WithIndex(26460), { -16, -16, height + 24 },
                                 { { -16, -16, height + 32 }, { 32, 32, 3 } });
                             break;
                     }
@@ -3557,8 +3557,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                     switch (direction)
                     {
                         case 0:
-                            PaintAddImageAsParentRotated(
-                                session, direction, session.TrackColours.WithIndex(26485), { -16, -16, height + 24 },
+                            paintAddImageAsParentRotated(
+                                session, direction, session.trackColours.WithIndex(26485), { -16, -16, height + 24 },
                                 { { -16, -16, height + 32 }, { 32, 32, 3 } });
                             break;
                     }
@@ -3568,8 +3568,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                     switch (direction)
                     {
                         case 0:
-                            PaintAddImageAsParentRotated(
-                                session, direction, session.TrackColours.WithIndex(26457), { -16, -16, height + 24 },
+                            paintAddImageAsParentRotated(
+                                session, direction, session.trackColours.WithIndex(26457), { -16, -16, height + 24 },
                                 { { -16, -16, height + 32 }, { 32, 32, 3 } });
                             break;
                     }
@@ -3588,8 +3588,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                     switch (direction)
                     {
                         case 2:
-                            PaintAddImageAsParentRotated(
-                                session, direction, session.TrackColours.WithIndex(26487), { -16, -16, height + 24 },
+                            paintAddImageAsParentRotated(
+                                session, direction, session.trackColours.WithIndex(26487), { -16, -16, height + 24 },
                                 { { -16, -16, height + 32 }, { 32, 32, 3 } });
                             break;
                     }
@@ -3599,8 +3599,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                     switch (direction)
                     {
                         case 2:
-                            PaintAddImageAsParentRotated(
-                                session, direction, session.TrackColours.WithIndex(26459), { -16, -16, height + 24 },
+                            paintAddImageAsParentRotated(
+                                session, direction, session.trackColours.WithIndex(26459), { -16, -16, height + 24 },
                                 { { -16, -16, height + 32 }, { 32, 32, 3 } });
                             break;
                     }
@@ -3620,8 +3620,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                     switch (direction)
                     {
                         case 1:
-                            PaintAddImageAsParentRotated(
-                                session, direction, session.TrackColours.WithIndex(26486), { -16, -16, height + 24 },
+                            paintAddImageAsParentRotated(
+                                session, direction, session.trackColours.WithIndex(26486), { -16, -16, height + 24 },
                                 { { -16, -16, height + 32 }, { 32, 32, 3 } });
                             break;
                     }
@@ -3631,8 +3631,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                     switch (direction)
                     {
                         case 1:
-                            PaintAddImageAsParentRotated(
-                                session, direction, session.TrackColours.WithIndex(26458), { -16, -16, height + 24 },
+                            paintAddImageAsParentRotated(
+                                session, direction, session.trackColours.WithIndex(26458), { -16, -16, height + 24 },
                                 { { -16, -16, height + 32 }, { 32, 32, 3 } });
                             break;
                     }
@@ -3648,20 +3648,20 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 40, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 40, session.supportColours);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 40, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 40, session.supportColours);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 40, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 40, session.supportColours);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
                             session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 40,
-                            session.SupportColours);
+                            session.supportColours);
                         break;
                 }
 
@@ -3680,8 +3680,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26472), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26472), { -16, -16, height + 24 },
                             { { -16, -16, height + 56 }, { 32, 32, 3 } });
                         break;
                 }
@@ -3698,8 +3698,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26469), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26469), { -16, -16, height + 24 },
                             { { -16, -16, height + 56 }, { 32, 32, 3 } });
                         break;
                 }
@@ -3715,8 +3715,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26471), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26471), { -16, -16, height + 24 },
                             { { -16, -16, height + 56 }, { 32, 32, 3 } });
                         break;
                 }
@@ -3733,8 +3733,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26470), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26470), { -16, -16, height + 24 },
                             { { -16, -16, height + 56 }, { 32, 32, 3 } });
                         break;
                 }
@@ -3749,21 +3749,21 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::leftCorner, 16, height + 36, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::leftCorner, 16, height + 36, session.supportColours);
                         break;
                     case 1:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::topCorner, 16, height + 36, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::topCorner, 16, height + 36, session.supportColours);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
                             session, supportType.metal, MetalSupportPlace::rightCorner, 16, height + 36,
-                            session.SupportColours);
+                            session.supportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
                             session, supportType.metal, MetalSupportPlace::bottomCorner, 16, height + 36,
-                            session.SupportColours);
+                            session.supportColours);
                         break;
                 }
 
@@ -3782,8 +3782,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26476), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26476), { -16, -16, height + 24 },
                             { { -16, -16, height + 56 }, { 32, 32, 3 } });
                         break;
                 }
@@ -3800,8 +3800,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26473), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26473), { -16, -16, height + 24 },
                             { { -16, -16, height + 56 }, { 32, 32, 3 } });
                         break;
                 }
@@ -3817,8 +3817,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26475), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26475), { -16, -16, height + 24 },
                             { { -16, -16, height + 56 }, { 32, 32, 3 } });
                         break;
                 }
@@ -3835,8 +3835,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26474), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26474), { -16, -16, height + 24 },
                             { { 0, 0, height + 56 }, { 16, 16, 3 } });
                         break;
                 }
@@ -3851,21 +3851,21 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::leftCorner, 21, height + 36, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::leftCorner, 21, height + 36, session.supportColours);
                         break;
                     case 1:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::topCorner, 21, height + 36, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::topCorner, 21, height + 36, session.supportColours);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
                             session, supportType.metal, MetalSupportPlace::rightCorner, 21, height + 36,
-                            session.SupportColours);
+                            session.supportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
                             session, supportType.metal, MetalSupportPlace::bottomCorner, 21, height + 36,
-                            session.SupportColours);
+                            session.supportColours);
                         break;
                 }
 
@@ -3886,8 +3886,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                     switch (direction)
                     {
                         case 3:
-                            PaintAddImageAsParentRotated(
-                                session, direction, session.TrackColours.WithIndex(26492), { -16, -16, height + 24 },
+                            paintAddImageAsParentRotated(
+                                session, direction, session.trackColours.WithIndex(26492), { -16, -16, height + 24 },
                                 { { -16, -16, height + 32 }, { 32, 32, 3 } });
                             break;
                     }
@@ -3897,8 +3897,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                     switch (direction)
                     {
                         case 3:
-                            PaintAddImageAsParentRotated(
-                                session, direction, session.TrackColours.WithIndex(26464), { -16, -16, height + 24 },
+                            paintAddImageAsParentRotated(
+                                session, direction, session.trackColours.WithIndex(26464), { -16, -16, height + 24 },
                                 { { -16, -16, height + 32 }, { 32, 32, 3 } });
                             break;
                     }
@@ -3918,8 +3918,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                     switch (direction)
                     {
                         case 0:
-                            PaintAddImageAsParentRotated(
-                                session, direction, session.TrackColours.WithIndex(26489), { -16, -16, height + 24 },
+                            paintAddImageAsParentRotated(
+                                session, direction, session.trackColours.WithIndex(26489), { -16, -16, height + 24 },
                                 { { -16, -16, height + 32 }, { 32, 32, 3 } });
                             break;
                     }
@@ -3929,8 +3929,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                     switch (direction)
                     {
                         case 0:
-                            PaintAddImageAsParentRotated(
-                                session, direction, session.TrackColours.WithIndex(26461), { -16, -16, height + 24 },
+                            paintAddImageAsParentRotated(
+                                session, direction, session.trackColours.WithIndex(26461), { -16, -16, height + 24 },
                                 { { -16, -16, height + 32 }, { 32, 32, 3 } });
                             break;
                     }
@@ -3949,8 +3949,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                     switch (direction)
                     {
                         case 2:
-                            PaintAddImageAsParentRotated(
-                                session, direction, session.TrackColours.WithIndex(26491), { -16, -16, height + 24 },
+                            paintAddImageAsParentRotated(
+                                session, direction, session.trackColours.WithIndex(26491), { -16, -16, height + 24 },
                                 { { -16, -16, height + 32 }, { 32, 32, 3 } });
                             break;
                     }
@@ -3960,8 +3960,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                     switch (direction)
                     {
                         case 2:
-                            PaintAddImageAsParentRotated(
-                                session, direction, session.TrackColours.WithIndex(26463), { -16, -16, height + 24 },
+                            paintAddImageAsParentRotated(
+                                session, direction, session.trackColours.WithIndex(26463), { -16, -16, height + 24 },
                                 { { -16, -16, height + 32 }, { 32, 32, 3 } });
                             break;
                     }
@@ -3981,8 +3981,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                     switch (direction)
                     {
                         case 1:
-                            PaintAddImageAsParentRotated(
-                                session, direction, session.TrackColours.WithIndex(26490), { -16, -16, height + 24 },
+                            paintAddImageAsParentRotated(
+                                session, direction, session.trackColours.WithIndex(26490), { -16, -16, height + 24 },
                                 { { -16, -16, height + 32 }, { 32, 32, 3 } });
                             break;
                     }
@@ -3992,8 +3992,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                     switch (direction)
                     {
                         case 1:
-                            PaintAddImageAsParentRotated(
-                                session, direction, session.TrackColours.WithIndex(26462), { -16, -16, height + 24 },
+                            paintAddImageAsParentRotated(
+                                session, direction, session.trackColours.WithIndex(26462), { -16, -16, height + 24 },
                                 { { -16, -16, height + 32 }, { 32, 32, 3 } });
                             break;
                     }
@@ -4009,20 +4009,20 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 42, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 42, session.supportColours);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 42, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 42, session.supportColours);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 42, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 42, session.supportColours);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
                             session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 42,
-                            session.SupportColours);
+                            session.supportColours);
                         break;
                 }
 
@@ -4041,8 +4041,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26466), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26466), { -16, -16, height + 24 },
                             { { -16, -16, height + 40 }, { 32, 32, 3 } });
                         break;
                 }
@@ -4059,8 +4059,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26467), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26467), { -16, -16, height + 24 },
                             { { -16, -16, height + 40 }, { 32, 32, 3 } });
                         break;
                 }
@@ -4076,8 +4076,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26465), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26465), { -16, -16, height + 24 },
                             { { -16, -16, height + 40 }, { 32, 32, 3 } });
                         break;
                 }
@@ -4094,8 +4094,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26468), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26468), { -16, -16, height + 24 },
                             { { -16, -16, height + 40 }, { 32, 32, 3 } });
                         break;
                 }
@@ -4110,20 +4110,20 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 48, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 48, session.supportColours);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 48, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 48, session.supportColours);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 48, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 48, session.supportColours);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
                             session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 48,
-                            session.SupportColours);
+                            session.supportColours);
                         break;
                 }
 
@@ -4142,8 +4142,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26478), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26478), { -16, -16, height + 24 },
                             { { -16, -16, height + 24 }, { 32, 32, 3 } });
                         break;
                 }
@@ -4160,8 +4160,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26479), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26479), { -16, -16, height + 24 },
                             { { -16, -16, height + 88 }, { 32, 32, 3 } });
                         break;
                 }
@@ -4177,8 +4177,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26477), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26477), { -16, -16, height + 24 },
                             { { -16, -16, height + 88 }, { 32, 32, 3 } });
                         break;
                 }
@@ -4195,8 +4195,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26480), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26480), { -16, -16, height + 24 },
                             { { -16, -16, height + 88 }, { 32, 32, 3 } });
                         break;
                 }
@@ -4211,21 +4211,21 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::leftCorner, 24, height + 36, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::leftCorner, 24, height + 36, session.supportColours);
                         break;
                     case 1:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::topCorner, 28, height + 36, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::topCorner, 28, height + 36, session.supportColours);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
                             session, supportType.metal, MetalSupportPlace::rightCorner, 24, height + 36,
-                            session.SupportColours);
+                            session.supportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
                             session, supportType.metal, MetalSupportPlace::bottomCorner, 28, height + 36,
-                            session.SupportColours);
+                            session.supportColours);
                         break;
                 }
 
@@ -4244,8 +4244,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26462), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26462), { -16, -16, height + 24 },
                             { { -16, -16, height + 32 }, { 32, 32, 3 } });
                         break;
                 }
@@ -4262,8 +4262,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26463), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26463), { -16, -16, height + 24 },
                             { { -16, -16, height + 32 }, { 32, 32, 3 } });
                         break;
                 }
@@ -4279,8 +4279,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26461), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26461), { -16, -16, height + 24 },
                             { { -16, -16, height + 32 }, { 32, 32, 3 } });
                         break;
                 }
@@ -4297,8 +4297,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26464), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26464), { -16, -16, height + 24 },
                             { { -16, -16, height + 32 }, { 32, 32, 3 } });
                         break;
                 }
@@ -4313,20 +4313,20 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 42, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 42, session.supportColours);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 42, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 42, session.supportColours);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 42, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 42, session.supportColours);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
                             session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 42,
-                            session.SupportColours);
+                            session.supportColours);
                         break;
                 }
                 break;
@@ -4345,8 +4345,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26474), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26474), { -16, -16, height + 24 },
                             { { 0, 0, height + 56 }, { 16, 16, 3 } });
                         break;
                 }
@@ -4363,8 +4363,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26475), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26475), { -16, -16, height + 24 },
                             { { -16, -16, height + 56 }, { 32, 32, 3 } });
                         break;
                 }
@@ -4380,8 +4380,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26473), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26473), { -16, -16, height + 24 },
                             { { -16, -16, height + 56 }, { 32, 32, 3 } });
                         break;
                 }
@@ -4398,8 +4398,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26476), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26476), { -16, -16, height + 24 },
                             { { -16, -16, height + 56 }, { 32, 32, 3 } });
                         break;
                 }
@@ -4414,21 +4414,21 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::leftCorner, 17, height + 36, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::leftCorner, 17, height + 36, session.supportColours);
                         break;
                     case 1:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::topCorner, 17, height + 36, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::topCorner, 17, height + 36, session.supportColours);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
                             session, supportType.metal, MetalSupportPlace::rightCorner, 17, height + 36,
-                            session.SupportColours);
+                            session.supportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
                             session, supportType.metal, MetalSupportPlace::bottomCorner, 17, height + 36,
-                            session.SupportColours);
+                            session.supportColours);
                         break;
                 }
 
@@ -4447,8 +4447,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26470), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26470), { -16, -16, height + 24 },
                             { { -16, -16, height + 56 }, { 32, 32, 3 } });
                         break;
                 }
@@ -4465,8 +4465,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26471), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26471), { -16, -16, height + 24 },
                             { { -16, -16, height + 56 }, { 32, 32, 3 } });
                         break;
                 }
@@ -4482,8 +4482,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26469), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26469), { -16, -16, height + 24 },
                             { { -16, -16, height + 56 }, { 32, 32, 3 } });
                         break;
                 }
@@ -4500,8 +4500,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26472), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26472), { -16, -16, height + 24 },
                             { { -16, -16, height + 56 }, { 32, 32, 3 } });
                         break;
                 }
@@ -4516,20 +4516,20 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::leftCorner, 8, height + 36, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::leftCorner, 8, height + 36, session.supportColours);
                         break;
                     case 1:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::topCorner, 8, height + 36, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::topCorner, 8, height + 36, session.supportColours);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::rightCorner, 8, height + 36, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::rightCorner, 8, height + 36, session.supportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
                             session, supportType.metal, MetalSupportPlace::bottomCorner, 8, height + 36,
-                            session.SupportColours);
+                            session.supportColours);
                         break;
                 }
 
@@ -4548,8 +4548,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26458), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26458), { -16, -16, height + 24 },
                             { { -16, -16, height + 32 }, { 32, 32, 3 } });
                         break;
                 }
@@ -4566,8 +4566,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26459), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26459), { -16, -16, height + 24 },
                             { { -16, -16, height + 32 }, { 32, 32, 3 } });
                         break;
                 }
@@ -4583,8 +4583,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26457), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26457), { -16, -16, height + 24 },
                             { { -16, -16, height + 32 }, { 32, 32, 3 } });
                         break;
                 }
@@ -4601,8 +4601,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26460), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26460), { -16, -16, height + 24 },
                             { { -16, -16, height + 32 }, { 32, 32, 3 } });
                         break;
                 }
@@ -4617,20 +4617,20 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 40, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 40, session.supportColours);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 40, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 40, session.supportColours);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 40, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 40, session.supportColours);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
                             session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 40,
-                            session.SupportColours);
+                            session.supportColours);
                         break;
                 }
 
@@ -4649,8 +4649,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26504), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26504), { -16, -16, height + 24 },
                             { { -16, -16, height + 22 }, { 32, 32, 3 } });
                         break;
                 }
@@ -4667,8 +4667,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26501), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26501), { -16, -16, height + 24 },
                             { { -16, -16, height + 22 }, { 32, 32, 3 } });
                         break;
                 }
@@ -4684,8 +4684,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26503), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26503), { -16, -16, height + 24 },
                             { { -16, -16, height + 22 }, { 32, 32, 3 } });
                         break;
                 }
@@ -4702,8 +4702,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26502), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26502), { -16, -16, height + 24 },
                             { { -16, -16, height + 22 }, { 32, 32, 3 } });
                         break;
                 }
@@ -4720,20 +4720,20 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 36, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 36, session.supportColours);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 36, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 36, session.supportColours);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 36, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 36, session.supportColours);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
                             session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 36,
-                            session.SupportColours);
+                            session.supportColours);
                         break;
                 }
 
@@ -4752,8 +4752,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26508), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26508), { -16, -16, height + 24 },
                             { { -16, -16, height + 22 }, { 32, 32, 3 } });
                         break;
                 }
@@ -4770,8 +4770,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26505), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26505), { -16, -16, height + 24 },
                             { { -16, -16, height + 22 }, { 32, 32, 3 } });
                         break;
                 }
@@ -4787,8 +4787,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26507), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26507), { -16, -16, height + 24 },
                             { { -16, -16, height + 22 }, { 32, 32, 3 } });
                         break;
                 }
@@ -4805,8 +4805,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26506), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26506), { -16, -16, height + 24 },
                             { { -16, -16, height + 22 }, { 32, 32, 3 } });
                         break;
                 }
@@ -4823,20 +4823,20 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 36, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 36, session.supportColours);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 36, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 36, session.supportColours);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 36, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 36, session.supportColours);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
                             session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 36,
-                            session.SupportColours);
+                            session.supportColours);
                         break;
                 }
 
@@ -4855,8 +4855,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26506), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26506), { -16, -16, height + 24 },
                             { { -16, -16, height + 22 }, { 32, 32, 3 } });
                         break;
                 }
@@ -4873,8 +4873,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26507), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26507), { -16, -16, height + 24 },
                             { { -16, -16, height + 22 }, { 32, 32, 3 } });
                         break;
                 }
@@ -4890,8 +4890,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26505), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26505), { -16, -16, height + 24 },
                             { { -16, -16, height + 22 }, { 32, 32, 3 } });
                         break;
                 }
@@ -4908,8 +4908,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26508), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26508), { -16, -16, height + 24 },
                             { { -16, -16, height + 22 }, { 32, 32, 3 } });
                         break;
                 }
@@ -4926,20 +4926,20 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 36, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 36, session.supportColours);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 36, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 36, session.supportColours);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 36, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 36, session.supportColours);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
                             session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 36,
-                            session.SupportColours);
+                            session.supportColours);
                         break;
                 }
 
@@ -4958,8 +4958,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26502), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26502), { -16, -16, height + 24 },
                             { { -16, -16, height + 22 }, { 32, 32, 3 } });
                         break;
                 }
@@ -4976,8 +4976,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26503), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26503), { -16, -16, height + 24 },
                             { { -16, -16, height + 22 }, { 32, 32, 3 } });
                         break;
                 }
@@ -4993,8 +4993,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26501), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26501), { -16, -16, height + 24 },
                             { { -16, -16, height + 22 }, { 32, 32, 3 } });
                         break;
                 }
@@ -5011,8 +5011,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26504), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26504), { -16, -16, height + 24 },
                             { { -16, -16, height + 22 }, { 32, 32, 3 } });
                         break;
                 }
@@ -5029,20 +5029,20 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 36, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 36, session.supportColours);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 36, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 36, session.supportColours);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 36, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 36, session.supportColours);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
                             session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 36,
-                            session.SupportColours);
+                            session.supportColours);
                         break;
                 }
 
@@ -5061,8 +5061,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26520), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26520), { -16, -16, height + 24 },
                             { { -16, -16, height + 32 }, { 32, 32, 3 } });
                         break;
                 }
@@ -5079,8 +5079,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26517), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26517), { -16, -16, height + 24 },
                             { { -16, -16, height + 32 }, { 32, 32, 3 } });
                         break;
                 }
@@ -5096,8 +5096,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26519), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26519), { -16, -16, height + 24 },
                             { { -16, -16, height + 32 }, { 32, 32, 3 } });
                         break;
                 }
@@ -5114,8 +5114,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26518), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26518), { -16, -16, height + 24 },
                             { { -16, -16, height + 32 }, { 32, 32, 3 } });
                         break;
                 }
@@ -5130,20 +5130,20 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 40, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 40, session.supportColours);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 40, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 40, session.supportColours);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 40, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 40, session.supportColours);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
                             session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 40,
-                            session.SupportColours);
+                            session.supportColours);
                         break;
                 }
 
@@ -5162,8 +5162,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26524), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26524), { -16, -16, height + 24 },
                             { { -16, -16, height + 32 }, { 32, 32, 3 } });
                         break;
                 }
@@ -5180,8 +5180,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26521), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26521), { -16, -16, height + 24 },
                             { { -16, -16, height + 32 }, { 32, 32, 3 } });
                         break;
                 }
@@ -5197,8 +5197,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26523), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26523), { -16, -16, height + 24 },
                             { { -16, -16, height + 32 }, { 32, 32, 3 } });
                         break;
                 }
@@ -5215,8 +5215,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26522), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26522), { -16, -16, height + 24 },
                             { { -16, -16, height + 32 }, { 32, 32, 3 } });
                         break;
                 }
@@ -5231,20 +5231,20 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 40, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 40, session.supportColours);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 40, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 40, session.supportColours);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 40, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 40, session.supportColours);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
                             session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 40,
-                            session.SupportColours);
+                            session.supportColours);
                         break;
                 }
 
@@ -5263,8 +5263,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26512), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26512), { -16, -16, height + 24 },
                             { { -16, -16, height + 32 }, { 32, 32, 3 } });
                         break;
                 }
@@ -5281,8 +5281,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26509), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26509), { -16, -16, height + 24 },
                             { { -16, -16, height + 32 }, { 32, 32, 3 } });
                         break;
                 }
@@ -5298,8 +5298,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26511), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26511), { -16, -16, height + 24 },
                             { { -16, -16, height + 32 }, { 32, 32, 3 } });
                         break;
                 }
@@ -5316,8 +5316,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26510), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26510), { -16, -16, height + 24 },
                             { { -16, -16, height + 32 }, { 32, 32, 3 } });
                         break;
                 }
@@ -5332,20 +5332,20 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 42, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 42, session.supportColours);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 42, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 42, session.supportColours);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 42, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 42, session.supportColours);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
                             session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 42,
-                            session.SupportColours);
+                            session.supportColours);
                         break;
                 }
 
@@ -5364,8 +5364,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26516), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26516), { -16, -16, height + 24 },
                             { { -16, -16, height + 32 }, { 32, 32, 3 } });
                         break;
                 }
@@ -5382,8 +5382,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26513), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26513), { -16, -16, height + 24 },
                             { { -16, -16, height + 32 }, { 32, 32, 3 } });
                         break;
                 }
@@ -5399,8 +5399,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26515), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26515), { -16, -16, height + 24 },
                             { { -16, -16, height + 32 }, { 32, 32, 3 } });
                         break;
                 }
@@ -5417,8 +5417,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26514), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26514), { -16, -16, height + 24 },
                             { { -16, -16, height + 32 }, { 32, 32, 3 } });
                         break;
                 }
@@ -5433,20 +5433,20 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 42, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 42, session.supportColours);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 42, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 42, session.supportColours);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 42, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 42, session.supportColours);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
                             session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 42,
-                            session.SupportColours);
+                            session.supportColours);
                         break;
                 }
 
@@ -5465,8 +5465,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26514), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26514), { -16, -16, height + 24 },
                             { { -16, -16, height + 32 }, { 32, 32, 3 } });
                         break;
                 }
@@ -5482,8 +5482,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26515), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26515), { -16, -16, height + 24 },
                             { { -16, -16, height + 32 }, { 32, 32, 3 } });
                         break;
                 }
@@ -5498,8 +5498,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26513), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26513), { -16, -16, height + 24 },
                             { { -16, -16, height + 32 }, { 32, 32, 3 } });
                         break;
                 }
@@ -5515,8 +5515,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26516), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26516), { -16, -16, height + 24 },
                             { { -16, -16, height + 32 }, { 32, 32, 3 } });
                         break;
                 }
@@ -5531,20 +5531,20 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 42, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 42, session.supportColours);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 42, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 42, session.supportColours);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 42, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 42, session.supportColours);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
                             session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 42,
-                            session.SupportColours);
+                            session.supportColours);
                         break;
                 }
                 break;
@@ -5563,8 +5563,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26510), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26510), { -16, -16, height + 24 },
                             { { -16, -16, height + 32 }, { 32, 32, 3 } });
                         break;
                 }
@@ -5580,8 +5580,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26511), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26511), { -16, -16, height + 24 },
                             { { -16, -16, height + 32 }, { 32, 32, 3 } });
                         break;
                 }
@@ -5596,8 +5596,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26509), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26509), { -16, -16, height + 24 },
                             { { -16, -16, height + 32 }, { 32, 32, 3 } });
                         break;
                 }
@@ -5613,8 +5613,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26512), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26512), { -16, -16, height + 24 },
                             { { -16, -16, height + 32 }, { 32, 32, 3 } });
                         break;
                 }
@@ -5629,20 +5629,20 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 42, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 42, session.supportColours);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 42, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 42, session.supportColours);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 42, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 42, session.supportColours);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
                             session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 42,
-                            session.SupportColours);
+                            session.supportColours);
                         break;
                 }
                 break;
@@ -5661,8 +5661,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26522), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26522), { -16, -16, height + 24 },
                             { { -16, -16, height + 32 }, { 32, 32, 3 } });
                         break;
                 }
@@ -5679,8 +5679,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26523), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26523), { -16, -16, height + 24 },
                             { { -16, -16, height + 32 }, { 32, 32, 3 } });
                         break;
                 }
@@ -5696,8 +5696,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26521), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26521), { -16, -16, height + 24 },
                             { { -16, -16, height + 32 }, { 32, 32, 3 } });
                         break;
                 }
@@ -5714,8 +5714,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26524), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26524), { -16, -16, height + 24 },
                             { { -16, -16, height + 32 }, { 32, 32, 3 } });
                         break;
                 }
@@ -5730,20 +5730,20 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 40, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 40, session.supportColours);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 40, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 40, session.supportColours);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 40, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 40, session.supportColours);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
                             session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 40,
-                            session.SupportColours);
+                            session.supportColours);
                         break;
                 }
 
@@ -5762,8 +5762,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26518), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26518), { -16, -16, height + 24 },
                             { { -16, -16, height + 32 }, { 32, 32, 3 } });
                         break;
                 }
@@ -5780,8 +5780,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26519), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26519), { -16, -16, height + 24 },
                             { { -16, -16, height + 32 }, { 32, 32, 3 } });
                         break;
                 }
@@ -5797,8 +5797,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26517), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26517), { -16, -16, height + 24 },
                             { { -16, -16, height + 32 }, { 32, 32, 3 } });
                         break;
                 }
@@ -5815,8 +5815,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26520), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26520), { -16, -16, height + 24 },
                             { { -16, -16, height + 32 }, { 32, 32, 3 } });
                         break;
                 }
@@ -5831,20 +5831,20 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 40, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 40, session.supportColours);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 40, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 40, session.supportColours);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 40, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 40, session.supportColours);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
                             session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 40,
-                            session.SupportColours);
+                            session.supportColours);
                         break;
                 }
 
@@ -5863,8 +5863,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26500), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26500), { -16, -16, height + 24 },
                             { { -16, -16, height + 22 }, { 32, 32, 3 } });
                         break;
                 }
@@ -5881,8 +5881,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26497), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26497), { -16, -16, height + 24 },
                             { { -16, -16, height + 22 }, { 32, 32, 3 } });
                         break;
                 }
@@ -5898,8 +5898,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26499), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26499), { -16, -16, height + 24 },
                             { { -16, -16, height + 22 }, { 32, 32, 3 } });
                         break;
                 }
@@ -5916,8 +5916,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26498), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26498), { -16, -16, height + 24 },
                             { { -16, -16, height + 22 }, { 32, 32, 3 } });
                         break;
                 }
@@ -5934,20 +5934,20 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 36, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 36, session.supportColours);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 36, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 36, session.supportColours);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 36, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 36, session.supportColours);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
                             session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 36,
-                            session.SupportColours);
+                            session.supportColours);
                         break;
                 }
 
@@ -5966,8 +5966,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26498), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26498), { -16, -16, height + 24 },
                             { { -16, -16, height + 22 }, { 32, 32, 3 } });
                         break;
                 }
@@ -5984,8 +5984,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26499), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26499), { -16, -16, height + 24 },
                             { { -16, -16, height + 22 }, { 32, 32, 3 } });
                         break;
                 }
@@ -6001,8 +6001,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26497), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26497), { -16, -16, height + 24 },
                             { { -16, -16, height + 22 }, { 32, 32, 3 } });
                         break;
                 }
@@ -6019,8 +6019,8 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26500), { -16, -16, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26500), { -16, -16, height + 24 },
                             { { -16, -16, height + 22 }, { 32, 32, 3 } });
                         break;
                 }
@@ -6037,20 +6037,20 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 36, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 36, session.supportColours);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 36, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 36, session.supportColours);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 36, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 36, session.supportColours);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
                             session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 36,
-                            session.SupportColours);
+                            session.supportColours);
                         break;
                 }
 
@@ -6069,21 +6069,21 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26365), { 0, 6, height + 24 }, { 32, 20, 3 });
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26365), { 0, 6, height + 24 }, { 32, 20, 3 });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26371), { 0, 6, height + 24 }, { 32, 20, 3 });
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26371), { 0, 6, height + 24 }, { 32, 20, 3 });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26370), { 0, 6, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26370), { 0, 6, height + 24 },
                             { { 0, 6, height + 24 }, { 32, 20, 3 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26376), { 0, 6, height + 24 }, { 32, 20, 3 });
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26376), { 0, 6, height + 24 }, { 32, 20, 3 });
                         break;
                 }
 
@@ -6096,7 +6096,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
                         direction),
                     0xFFFF, 0);
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.supportColours);
 
                 if (direction == 0 || direction == 3)
                 {
@@ -6108,21 +6108,21 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26366), { 0, 6, height + 24 }, { 32, 20, 3 });
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26366), { 0, 6, height + 24 }, { 32, 20, 3 });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26372), { 0, 6, height + 24 }, { 32, 20, 3 });
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26372), { 0, 6, height + 24 }, { 32, 20, 3 });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26369), { 0, 6, height + 24 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26369), { 0, 6, height + 24 },
                             { { 0, 6, height + 24 }, { 32, 20, 3 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26375), { 0, 6, height + 24 }, { 32, 20, 3 });
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26375), { 0, 6, height + 24 }, { 32, 20, 3 });
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -6139,24 +6139,24 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26367), { 0, 6, height }, { 32, 20, 3 });
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26367), { 0, 6, height }, { 32, 20, 3 });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26373), { 0, 6, height }, { 32, 20, 3 });
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26373), { 0, 6, height }, { 32, 20, 3 });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26368), { 0, 6, height }, { 32, 20, 3 });
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26368), { 0, 6, height }, { 32, 20, 3 });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26374), { 0, 6, height }, { 32, 20, 3 });
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26374), { 0, 6, height }, { 32, 20, 3 });
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::centre, 0, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, 0, height, session.supportColours);
                 switch (direction)
                 {
                     case 1:
@@ -6189,20 +6189,20 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26377), { 0, 6, height + 24 }, { 32, 20, 3 });
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26377), { 0, 6, height + 24 }, { 32, 20, 3 });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26383), { 0, 6, height + 24 }, { 32, 20, 3 });
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26383), { 0, 6, height + 24 }, { 32, 20, 3 });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26382), { 0, 6, height + 24 }, { 32, 20, 3 });
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26382), { 0, 6, height + 24 }, { 32, 20, 3 });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26388), { 0, 6, height + 24 }, { 32, 20, 3 });
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26388), { 0, 6, height + 24 }, { 32, 20, 3 });
                         break;
                 }
 
@@ -6215,7 +6215,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
                         direction),
                     0xFFFF, 0);
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.supportColours);
 
                 if (direction == 0 || direction == 3)
                 {
@@ -6227,20 +6227,20 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26378), { 0, 6, height + 24 }, { 32, 20, 3 });
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26378), { 0, 6, height + 24 }, { 32, 20, 3 });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26384), { 0, 6, height + 24 }, { 32, 20, 3 });
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26384), { 0, 6, height + 24 }, { 32, 20, 3 });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26381), { 0, 6, height + 24 }, { 32, 20, 3 });
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26381), { 0, 6, height + 24 }, { 32, 20, 3 });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26387), { 0, 6, height + 24 }, { 32, 20, 3 });
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26387), { 0, 6, height + 24 }, { 32, 20, 3 });
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -6257,24 +6257,24 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26379), { 0, 6, height }, { 32, 20, 3 });
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26379), { 0, 6, height }, { 32, 20, 3 });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26385), { 0, 6, height }, { 32, 20, 3 });
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26385), { 0, 6, height }, { 32, 20, 3 });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26380), { 0, 6, height }, { 32, 20, 3 });
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26380), { 0, 6, height }, { 32, 20, 3 });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26386), { 0, 6, height }, { 32, 20, 3 });
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26386), { 0, 6, height }, { 32, 20, 3 });
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::centre, 0, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, 0, height, session.supportColours);
                 switch (direction)
                 {
                     case 1:
@@ -6309,16 +6309,16 @@ namespace OpenRCT2::MultiDimensionRCInverted
             { MULTI_DIM_INVERTED_BLOCK_BRAKE_NW_SE_OPEN, MULTI_DIM_INVERTED_BLOCK_BRAKE_NW_SE_CLOSED },
         };
 
-        PaintAddImageAsParentRotated(
-            session, direction, session.TrackColours.WithIndex(imageIds[direction][isClosed]), { 0, 0, height + 24 },
+        paintAddImageAsParentRotated(
+            session, direction, session.trackColours.WithIndex(imageIds[direction][isClosed]), { 0, 0, height + 24 },
             { { 0, 6, height + 24 }, { 32, 20, 3 } });
 
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.mapPosition))
         {
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.supportColours);
         }
 
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -6335,23 +6335,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(16208), { 0, 0, height },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(16208), { 0, 0, height },
                             { { 0, 6, height + 24 }, { 32, 20, 3 } });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(16211), { 0, 0, height },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(16211), { 0, 0, height },
                             { { 24, 6, height + 8 }, { 2, 20, 31 } });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(16214), { 0, 0, height },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(16214), { 0, 0, height },
                             { { 24, 6, height + 8 }, { 2, 20, 31 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(16217), { 0, 0, height },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(16217), { 0, 0, height },
                             { { 0, 6, height + 24 }, { 32, 20, 3 } });
                         break;
                 }
@@ -6367,23 +6367,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(16207), { 0, 0, height },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(16207), { 0, 0, height },
                             { { -8, 6, height }, { 2, 20, 31 } });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(16210), { 0, 0, height },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(16210), { 0, 0, height },
                             { { 24, 6, height + 8 }, { 2, 20, 63 } });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(16213), { 0, 0, height },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(16213), { 0, 0, height },
                             { { 24, 6, height + 8 }, { 2, 20, 63 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(16216), { 0, 0, height },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(16216), { 0, 0, height },
                             { { -8, 6, height }, { 2, 20, 31 } });
                         break;
                 }
@@ -6395,23 +6395,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(16206), { 0, 0, height },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(16206), { 0, 0, height },
                             { { 4, 6, height + 8 }, { 2, 20, 31 } });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(16209), { 0, 0, height },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(16209), { 0, 0, height },
                             { { 24, 6, height + 8 }, { 2, 20, 31 } });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(16212), { 0, 0, height },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(16212), { 0, 0, height },
                             { { 24, 6, height + 8 }, { 2, 20, 31 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(16215), { 0, 0, height },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(16215), { 0, 0, height },
                             { { 4, 6, height + 8 }, { 2, 20, 31 } });
                         break;
                 }
@@ -6434,23 +6434,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26537), { 0, 0, height - 16 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26537), { 0, 0, height - 16 },
                             { { 28, 6, height - 8 }, { 2, 20, 31 } });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26540), { 0, 0, height - 16 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26540), { 0, 0, height - 16 },
                             { { 0, 6, height - 8 }, { 2, 20, 31 } });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26543), { 0, 0, height - 16 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26543), { 0, 0, height - 16 },
                             { { 0, 6, height - 8 }, { 2, 20, 31 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26546), { 0, 0, height - 16 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26546), { 0, 0, height - 16 },
                             { { 28, 6, height - 8 }, { 2, 20, 31 } });
                         break;
                 }
@@ -6462,23 +6462,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26538), { 0, 0, height - 16 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26538), { 0, 0, height - 16 },
                             { { 24, 6, height - 16 }, { 2, 20, 31 } });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26541), { 0, 0, height - 16 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26541), { 0, 0, height - 16 },
                             { { 0, 6, height - 8 }, { 2, 20, 63 } });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26544), { 0, 0, height - 16 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26544), { 0, 0, height - 16 },
                             { { 0, 6, height - 8 }, { 2, 20, 63 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26547), { 0, 0, height - 16 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26547), { 0, 0, height - 16 },
                             { { 24, 6, height - 16 }, { 2, 20, 31 } });
                         break;
                 }
@@ -6490,23 +6490,23 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26539), { 0, 0, height - 16 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26539), { 0, 0, height - 16 },
                             { { 0, 6, height - 16 }, { 32, 20, 3 } });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26542), { 0, 0, height - 16 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26542), { 0, 0, height - 16 },
                             { { 0, 6, height - 8 }, { 2, 20, 31 } });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26545), { 0, 0, height - 16 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26545), { 0, 0, height - 16 },
                             { { 0, 6, height - 8 }, { 2, 20, 31 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26548), { 0, 0, height - 16 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26548), { 0, 0, height - 16 },
                             { { 0, 6, height - 16 }, { 32, 20, 3 } });
                         break;
                 }
@@ -6536,7 +6536,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
         if (trackSequence == 3)
         {
             MetalASupportsPaintSetup(
-                session, supportType.metal, kDiagSupportPlacement[direction], 0, height + 36, session.SupportColours);
+                session, supportType.metal, kDiagSupportPlacement[direction], 0, height + 36, session.supportColours);
         }
     }
 
@@ -6555,7 +6555,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
         if (trackSequence == 3)
         {
             MetalASupportsPaintSetup(
-                session, supportType.metal, kDiagSupportPlacement[direction], 0, height + 36, session.SupportColours);
+                session, supportType.metal, kDiagSupportPlacement[direction], 0, height + 36, session.supportColours);
         }
     }
 

@@ -20,23 +20,23 @@ static std::array<TunnelGroupMap, kTunnelGroupCount> tunnelMap = {
 
 void PaintUtilPushTunnelLeft(PaintSession& session, uint16_t height, TunnelType type)
 {
-    if (!session.LeftTunnels.full())
+    if (!session.leftTunnels.full())
     {
-        session.LeftTunnels.emplace_back(height / kCoordsZPerTinyZ, type);
+        session.leftTunnels.emplace_back(height / kCoordsZPerTinyZ, type);
     }
 }
 
 void PaintUtilPushTunnelRight(PaintSession& session, uint16_t height, TunnelType type)
 {
-    if (!session.RightTunnels.full())
+    if (!session.rightTunnels.full())
     {
-        session.RightTunnels.emplace_back(height / kCoordsZPerTinyZ, type);
+        session.rightTunnels.emplace_back(height / kCoordsZPerTinyZ, type);
     }
 }
 
 void PaintUtilSetVerticalTunnel(PaintSession& session, uint16_t height)
 {
-    session.VerticalTunnelHeight = height / 16;
+    session.verticalTunnelHeight = height / 16;
 }
 
 void PaintUtilPushTunnelRotated(PaintSession& session, uint8_t direction, uint16_t height, TunnelType type)

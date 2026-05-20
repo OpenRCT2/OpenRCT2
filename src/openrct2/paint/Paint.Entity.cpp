@@ -57,7 +57,7 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
     {
         return;
     }
-    if (gTrackDesignSaveMode || (session.ViewFlags & VIEWPORT_FLAG_HIDE_ENTITIES))
+    if (gTrackDesignSaveMode || (session.viewFlags & VIEWPORT_FLAG_HIDE_ENTITIES))
     {
         return;
     }
@@ -67,7 +67,7 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
         return;
     }
 
-    const bool highlightPathIssues = (session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES);
+    const bool highlightPathIssues = (session.viewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES);
 
     for (auto* entity : EntityTileList(pos))
     {
@@ -93,13 +93,13 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
         // Here converting from land/path/etc height scale to pixel height scale.
         // Note: peeps/scenery on slopes will be above the base
         // height of the slope element, and consequently clipped.
-        if (session.ViewFlags & VIEWPORT_FLAG_CLIP_VIEW)
+        if (session.viewFlags & VIEWPORT_FLAG_CLIP_VIEW)
         {
             if (entityPos.z > (gClipHeight * kCoordsZStep))
             {
                 // see-through off: don't paint this entity at all
                 // see-through on: paint this entity as partial or hidden later on
-                if ((session.ViewFlags & VIEWPORT_FLAG_CLIP_VIEW_SEE_THROUGH) == 0)
+                if ((session.viewFlags & VIEWPORT_FLAG_CLIP_VIEW_SEE_THROUGH) == 0)
                 {
                     continue;
                 }
@@ -114,7 +114,7 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
             }
         }
 
-        auto screenCoords = Translate3DTo2DWithZ(session.CurrentRotation, entity->getLocation());
+        auto screenCoords = Translate3DTo2DWithZ(session.currentRotation, entity->getLocation());
         auto spriteRect = ScreenRect(
             screenCoords - ScreenCoordsXY{ entity->spriteData.width, entity->spriteData.heightMin },
             screenCoords + ScreenCoordsXY{ entity->spriteData.width, entity->spriteData.heightMax });
@@ -128,15 +128,15 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
             continue;
         }
 
-        int32_t image_direction = session.CurrentRotation;
+        int32_t image_direction = session.currentRotation;
         image_direction <<= 3;
         image_direction += entity->orientation;
         image_direction &= 0x1F;
 
-        session.CurrentlyDrawnEntity = entity;
-        session.SpritePosition.x = entityPos.x;
-        session.SpritePosition.y = entityPos.y;
-        session.InteractionType = ViewportInteractionItem::entity;
+        session.currentlyDrawnEntity = entity;
+        session.spritePosition.x = entityPos.x;
+        session.spritePosition.y = entityPos.y;
+        session.interactionType = ViewportInteractionItem::entity;
 
         switch (entity->type)
         {

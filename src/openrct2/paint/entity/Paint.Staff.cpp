@@ -35,7 +35,7 @@ void PaintStaff(PaintSession& session, const Staff& staff, int32_t orientation)
     auto baseImageData = PaintPeepGetBaseImageAndOffset(staff, direction);
     auto imageId = ImageId(baseImageData.baseImageId, staff.TshirtColour);
 
-    PaintAddImageAsParent(session, imageId, kPaintPeepOffset(staff.z), kPaintPeepBoundBox(staff.z));
+    paintAddImageAsParent(session, imageId, kPaintPeepOffset(staff.z), kPaintPeepBoundBox(staff.z));
 }
 
 void PaintStaffLightingEffects(const Staff& staff)

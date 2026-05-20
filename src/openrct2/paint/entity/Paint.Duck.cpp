@@ -26,7 +26,7 @@ namespace OpenRCT2
         uint32_t imageId = duck.GetFrameImage(imageDirection);
         if (imageId != 0)
         {
-            PaintAddImageAsParent(session, ImageId(imageId), { 0, 0, duck.z }, { 1, 1, 0 });
+            paintAddImageAsParent(session, ImageId(imageId), { 0, 0, duck.z }, { 1, 1, 0 });
         }
     }
 } // namespace OpenRCT2

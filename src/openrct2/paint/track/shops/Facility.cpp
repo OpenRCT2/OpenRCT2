@@ -44,7 +44,7 @@ static void PaintFacility(
     const BoundBoxXYZ bb = (direction == 0 || direction == 3) ? BoundBoxXYZ{ { 2, 2, height + lengthZ }, { 28, 28, 1 } }
                                                               : BoundBoxXYZ{ { 2, 2, height }, { 28, 8, lengthZ } };
 
-    auto imageTemplate = session.TrackColours;
+    auto imageTemplate = session.trackColours;
     auto imageIndex = firstCarEntry->base_image_id + ((direction + 2) & 3);
     auto imageId = imageTemplate.WithIndex(imageIndex);
     if (hasSupports)
@@ -52,22 +52,22 @@ static void PaintFacility(
         auto foundationImageTemplate = GetShopSupportColourScheme(session, trackElement);
         auto foundationImageIndex = (direction & 1) ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS;
         auto foundationImageId = foundationImageTemplate.WithIndex(foundationImageIndex);
-        PaintAddImageAsParent(session, foundationImageId, offset, bb);
-        PaintAddImageAsChildRotated(session, direction, imageId, offset, bb);
+        paintAddImageAsParent(session, foundationImageId, offset, bb);
+        paintAddImageAsChildRotated(session, direction, imageId, offset, bb);
     }
     else
     {
-        PaintAddImageAsParentRotated(session, direction, imageId, offset, bb);
+        paintAddImageAsParentRotated(session, direction, imageId, offset, bb);
     }
 
     // Base image if door was drawn
     if (direction == 1)
     {
-        PaintAddImageAsParent(session, imageId.WithIndexOffset(2), offset, { { 2, 2, height + lengthZ }, { 28, 28, 1 } });
+        paintAddImageAsParent(session, imageId.WithIndexOffset(2), offset, { { 2, 2, height + lengthZ }, { 28, 28, 1 } });
     }
     else if (direction == 2)
     {
-        PaintAddImageAsParent(session, imageId.WithIndexOffset(4), offset, { { 2, 2, height + lengthZ }, { 28, 28, 1 } });
+        paintAddImageAsParent(session, imageId.WithIndexOffset(4), offset, { { 2, 2, height + lengthZ }, { 28, 28, 1 } });
     }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);

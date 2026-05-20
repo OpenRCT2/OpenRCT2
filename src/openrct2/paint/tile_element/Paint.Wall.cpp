@@ -60,13 +60,13 @@ static void PaintWallDoor(
     auto newImageId1 = imageId.WithIndexOffset(1);
     if (wallEntry.flags & WALL_SCENERY_CANT_BUILD_ON_SLOPE)
     {
-        PaintAddImageAsParent(session, newImageId0, offset, bbR1);
-        PaintAddImageAsParent(session, newImageId1, offset, bbR2);
+        paintAddImageAsParent(session, newImageId0, offset, bbR1);
+        paintAddImageAsParent(session, newImageId1, offset, bbR2);
     }
     else
     {
-        PaintAddImageAsParent(session, newImageId0, offset, bbL);
-        PaintAddImageAsChild(session, newImageId1, offset, bbL);
+        paintAddImageAsParent(session, newImageId0, offset, bbL);
+        paintAddImageAsChild(session, newImageId1, offset, bbL);
     }
 }
 
@@ -142,11 +142,11 @@ static void PaintWallWall(
 
     auto frameNum = (wallEntry.flags2 & WALL_SCENERY_2_ANIMATED) ? (getGameState().currentTicks & 7) * 2 : 0;
     auto imageIndex = wallEntry.image + imageOffset + frameNum;
-    PaintAddImageAsParent(session, imageTemplate.WithIndex(imageIndex), offset, boundBox);
+    paintAddImageAsParent(session, imageTemplate.WithIndex(imageIndex), offset, boundBox);
     if ((wallEntry.flags & WALL_SCENERY_HAS_GLASS) && !isGhost)
     {
         auto glassImageId = ImageId(imageIndex + 6).WithTransparency(imageTemplate.GetPrimary());
-        PaintAddImageAsChild(session, glassImageId, offset, boundBox);
+        paintAddImageAsChild(session, glassImageId, offset, boundBox);
     }
 }
 
@@ -177,7 +177,7 @@ static void PaintWallScrollingText(
 
     auto bannerText = banner->getText();
     auto imageId = ScrollingText::setup(session, bannerText, scrollingMode, textPaletteIndex);
-    PaintAddImageAsChild(session, imageId, { 0, 0, height + 8 }, { boundsOffset, { 1, 1, 13 } });
+    paintAddImageAsChild(session, imageId, { 0, 0, height + 8 }, { boundsOffset, { 1, 1, 13 } });
 }
 
 static void PaintWallWall(
@@ -293,7 +293,7 @@ void PaintWall(PaintSession& session, uint8_t direction, int32_t height, const W
 {
     PROFILED_FUNCTION();
 
-    if (session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
+    if (session.viewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
     {
         return;
     }
@@ -304,7 +304,7 @@ void PaintWall(PaintSession& session, uint8_t direction, int32_t height, const W
         return;
     }
 
-    session.InteractionType = ViewportInteractionItem::wall;
+    session.interactionType = ViewportInteractionItem::wall;
 
     ImageId imageTemplate;
     if (wallEntry->flags & WALL_SCENERY_HAS_PRIMARY_COLOUR)
@@ -334,11 +334,11 @@ void PaintWall(PaintSession& session, uint8_t direction, int32_t height, const W
 
     if (wallElement.isGhost())
     {
-        session.InteractionType = ViewportInteractionItem::none;
+        session.interactionType = ViewportInteractionItem::none;
         imageTemplate = ImageId().WithRemap(FilterPaletteID::paletteGhost);
         isGhost = true;
     }
-    else if (session.SelectedElement == reinterpret_cast<const TileElement*>(&wallElement))
+    else if (session.selectedElement == reinterpret_cast<const TileElement*>(&wallElement))
     {
         imageTemplate = ImageId().WithRemap(FilterPaletteID::paletteGhost);
         isGhost = true;

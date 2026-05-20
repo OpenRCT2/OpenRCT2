@@ -51,7 +51,7 @@ static void PaintTopSpinRiders(
             auto imageIndex = seatImageIndex + ((i + 1) * 76);
             auto imageId = ImageId(
                 imageIndex, vehicle.peep_tshirt_colours[peepIndex], vehicle.peep_tshirt_colours[peepIndex + 1]);
-            PaintAddImageAsChild(session, imageId, seatCoords, bb);
+            paintAddImageAsChild(session, imageId, seatCoords, bb);
         }
         else
         {
@@ -109,7 +109,7 @@ static void PaintTopSpinSeat(
         imageTemplate = stationColour;
     }
 
-    PaintAddImageAsChild(session, imageTemplate.WithIndex(seatImageIndex), seatCoords, bb);
+    paintAddImageAsChild(session, imageTemplate.WithIndex(seatImageIndex), seatCoords, bb);
     if (vehicle != nullptr)
     {
         PaintTopSpinRiders(session, *vehicle, seatImageIndex, seatCoords, bb);
@@ -131,8 +131,8 @@ static void PaintTopSpinVehicle(
     auto* vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[0]);
     if (ride.flags.has(RideFlag::onTrack) && vehicle != nullptr)
     {
-        session.InteractionType = ViewportInteractionItem::entity;
-        session.CurrentlyDrawnEntity = vehicle;
+        session.interactionType = ViewportInteractionItem::entity;
+        session.currentlyDrawnEntity = vehicle;
 
         armRotation = vehicle->flatRideAnimationFrame;
         seatRotation = vehicle->flatRideSecondaryAnimationFrame;
@@ -159,25 +159,25 @@ static void PaintTopSpinVehicle(
 
     // Left back bottom support
     auto imageIndex = carEntry.base_image_id + 572 + ((direction & 1) << 1);
-    PaintAddImageAsParent(session, supportImageTemplate.WithIndex(imageIndex), offset, bb);
+    paintAddImageAsParent(session, supportImageTemplate.WithIndex(imageIndex), offset, bb);
 
     // Left hand arm
     imageIndex = carEntry.base_image_id + 380 + armImageOffset + ((direction & 1) * 48);
-    PaintAddImageAsChild(session, armImageTemplate.WithIndex(imageIndex), offset, bb);
+    paintAddImageAsChild(session, armImageTemplate.WithIndex(imageIndex), offset, bb);
 
     // Seat
     PaintTopSpinSeat(session, ride, *rideEntry, vehicle, direction, armRotation, seatRotation, offset, bb, stationColour);
 
     // Right hand arm
     imageIndex = carEntry.base_image_id + 476 + armImageOffset + ((direction & 1) * 48);
-    PaintAddImageAsChild(session, armImageTemplate.WithIndex(imageIndex), offset, bb);
+    paintAddImageAsChild(session, armImageTemplate.WithIndex(imageIndex), offset, bb);
 
     // Right back bottom support
     imageIndex = carEntry.base_image_id + 573 + ((direction & 1) << 1);
-    PaintAddImageAsChild(session, supportImageTemplate.WithIndex(imageIndex), offset, bb);
+    paintAddImageAsChild(session, supportImageTemplate.WithIndex(imageIndex), offset, bb);
 
-    session.CurrentlyDrawnEntity = nullptr;
-    session.InteractionType = ViewportInteractionItem::ride;
+    session.currentlyDrawnEntity = nullptr;
+    session.interactionType = ViewportInteractionItem::ride;
 }
 
 static void PaintTopSpin(
@@ -194,11 +194,11 @@ static void PaintTopSpin(
 
     const StationObject* stationObject = ride.getStationObject();
 
-    TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, kFloorSpritesMulch, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.trackColours, height, kFloorSpritesMulch, stationObject);
 
     TrackPaintUtilPaintFences(
-        session, edges, session.MapPosition, trackElement, ride, stationColour, height, kFenceSpritesRope,
-        session.CurrentRotation);
+        session, edges, session.mapPosition, trackElement, ride, stationColour, height, kFenceSpritesRope,
+        session.currentRotation);
 
     switch (trackSequence)
     {

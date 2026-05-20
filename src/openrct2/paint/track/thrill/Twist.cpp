@@ -41,8 +41,8 @@ static void PaintTwistStructure(
     {
         vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[0]);
 
-        session.InteractionType = ViewportInteractionItem::entity;
-        session.CurrentlyDrawnEntity = vehicle;
+        session.interactionType = ViewportInteractionItem::entity;
+        session.currentlyDrawnEntity = vehicle;
     }
 
     uint32_t frameNum = (direction * 88) % 216;
@@ -66,7 +66,7 @@ static void PaintTwistStructure(
         { xOffset + 16, yOffset + 16, height },
         { 24, 24, 48 },
     };
-    PaintAddImageAsParent(session, imageId, { xOffset, yOffset, height }, bb);
+    paintAddImageAsParent(session, imageId, { xOffset, yOffset, height }, bb);
 
     if (session.rt.zoom_level < ZoomLevel{ 1 } && ride.flags.has(RideFlag::onTrack) && vehicle != nullptr)
     {
@@ -75,12 +75,12 @@ static void PaintTwistStructure(
             imageTemplate = ImageId(0, vehicle->peep_tshirt_colours[i], vehicle->peep_tshirt_colours[i + 1]);
             auto peepFrameNum = (frameNum + i * 12) % 216;
             imageId = imageTemplate.WithIndex(baseImageId + 24 + peepFrameNum);
-            PaintAddImageAsChild(session, imageId, { xOffset, yOffset, height }, bb);
+            paintAddImageAsChild(session, imageId, { xOffset, yOffset, height }, bb);
         }
     }
 
-    session.CurrentlyDrawnEntity = nullptr;
-    session.InteractionType = ViewportInteractionItem::ride;
+    session.currentlyDrawnEntity = nullptr;
+    session.interactionType = ViewportInteractionItem::ride;
 }
 
 /** rct2: 0x0076D858 */
@@ -104,21 +104,21 @@ static void PaintTwist(
     switch (trackSequence)
     {
         case 7:
-            if (TrackPaintUtilHasFence(EDGE_SW, session.MapPosition, trackElement, ride, session.CurrentRotation))
+            if (TrackPaintUtilHasFence(EDGE_SW, session.mapPosition, trackElement, ride, session.currentRotation))
             {
                 imageId = stationColour.WithIndex(SPR_FENCE_ROPE_SW);
-                PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 29, 0, height + 3 }, { 1, 28, 7 } });
+                paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 29, 0, height + 3 }, { 1, 28, 7 } });
             }
-            if (TrackPaintUtilHasFence(EDGE_SE, session.MapPosition, trackElement, ride, session.CurrentRotation))
+            if (TrackPaintUtilHasFence(EDGE_SE, session.mapPosition, trackElement, ride, session.currentRotation))
             {
                 imageId = stationColour.WithIndex(SPR_FENCE_ROPE_SE);
-                PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 29, height + 3 }, { 28, 1, 7 } });
+                paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 29, height + 3 }, { 28, 1, 7 } });
             }
             break;
         default:
             TrackPaintUtilPaintFences(
-                session, edges, session.MapPosition, trackElement, ride, GetStationColourScheme(session, trackElement), height,
-                kFenceSpritesRope, session.CurrentRotation);
+                session, edges, session.mapPosition, trackElement, ride, GetStationColourScheme(session, trackElement), height,
+                kFenceSpritesRope, session.currentRotation);
             break;
     }
 

@@ -55,8 +55,8 @@ static void LatticeTriangleTrackAltStation(
             SPR_TRACKS_LATTICE_TRIANGLE_TRACK_BOOSTER_ALT_SE_NW,
         };
 
-        PaintAddImageAsParentRotated(
-            session, direction, session.TrackColours.WithIndex(imageIds[direction]), { 0, 0, height },
+        paintAddImageAsParentRotated(
+            session, direction, session.trackColours.WithIndex(imageIds[direction]), { 0, 0, height },
             { { 0, 6, height + 3 }, { 32, 20, 1 } });
     }
     else
@@ -70,25 +70,25 @@ static void LatticeTriangleTrackAltStation(
         if (trackElement.GetTrackType() == TrackElemType::endStation)
         {
             bool isClosed = trackElement.IsBrakeClosed();
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(kLatticeTriangleAltBlockBrakeImages[direction][isClosed]),
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(kLatticeTriangleAltBlockBrakeImages[direction][isClosed]),
                 { 0, 0, height }, { { 0, 6, height + 3 }, { 32, 20, 1 } });
         }
         else
         {
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(imageIds[direction]), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(imageIds[direction]), { 0, 0, height },
                 { { 0, 6, height + 3 }, { 32, 20, 1 } });
         }
     }
     if (TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, StationBaseType::a, 0, 9, 11))
     {
-        DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal);
+        DrawSupportsSideBySide(session, direction, height, session.supportColours, supportType.metal);
     }
-    else if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    else if (TrackPaintUtilShouldPaintSupports(session.mapPosition))
     {
         MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::centre, direction, 0, height, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::centre, direction, 0, height, session.supportColours);
     }
     TrackPaintUtilDrawStationTunnel(session, direction, height);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -100,14 +100,14 @@ static void LatticeTriangleTrackAltBrakes(
     const TrackElement& trackElement, SupportType supportType)
 {
     bool isClosed = trackElement.IsBrakeClosed();
-    PaintAddImageAsParentRotated(
-        session, direction, session.TrackColours.WithIndex(kLatticeTriangleAltBrakeImages[direction][isClosed]),
+    paintAddImageAsParentRotated(
+        session, direction, session.trackColours.WithIndex(kLatticeTriangleAltBrakeImages[direction][isClosed]),
         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
 
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.mapPosition))
     {
         MetalASupportsPaintSetup(
-            session, MetalSupportType::tubes, MetalSupportPlace::centre, 0, height, session.SupportColours);
+            session, MetalSupportType::tubes, MetalSupportPlace::centre, 0, height, session.supportColours);
     }
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -119,14 +119,14 @@ static void LatticeTriangleTrackAltBlockBrakes(
     const TrackElement& trackElement, SupportType supportType)
 {
     bool isClosed = trackElement.IsBrakeClosed();
-    PaintAddImageAsParentRotated(
-        session, direction, session.TrackColours.WithIndex(kLatticeTriangleAltBlockBrakeImages[direction][isClosed]),
+    paintAddImageAsParentRotated(
+        session, direction, session.trackColours.WithIndex(kLatticeTriangleAltBlockBrakeImages[direction][isClosed]),
         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
 
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.mapPosition))
     {
         MetalASupportsPaintSetup(
-            session, MetalSupportType::tubes, MetalSupportPlace::centre, 0, height, session.SupportColours);
+            session, MetalSupportType::tubes, MetalSupportPlace::centre, 0, height, session.supportColours);
     }
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -140,30 +140,30 @@ static void LatticeTriangleTrackAltBooster(
     switch (direction)
     {
         case 0:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(SPR_TRACKS_LATTICE_TRIANGLE_TRACK_BOOSTER_ALT_NE_SW),
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(SPR_TRACKS_LATTICE_TRIANGLE_TRACK_BOOSTER_ALT_NE_SW),
                 { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 1:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(SPR_TRACKS_LATTICE_TRIANGLE_TRACK_BOOSTER_ALT_NW_SE),
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(SPR_TRACKS_LATTICE_TRIANGLE_TRACK_BOOSTER_ALT_NW_SE),
                 { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 2:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(SPR_TRACKS_LATTICE_TRIANGLE_TRACK_BOOSTER_ALT_SW_NE),
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(SPR_TRACKS_LATTICE_TRIANGLE_TRACK_BOOSTER_ALT_SW_NE),
                 { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 3:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(SPR_TRACKS_LATTICE_TRIANGLE_TRACK_BOOSTER_ALT_SE_NW),
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(SPR_TRACKS_LATTICE_TRIANGLE_TRACK_BOOSTER_ALT_SE_NW),
                 { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.mapPosition))
     {
         MetalASupportsPaintSetup(
-            session, MetalSupportType::tubes, MetalSupportPlace::centre, 0, height, session.SupportColours);
+            session, MetalSupportType::tubes, MetalSupportPlace::centre, 0, height, session.supportColours);
     }
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -174,13 +174,13 @@ static void LatticeTriangleTrackAltPoweredLift(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    PaintAddImageAsParentRotated(
-        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_LATTICE_TRIANGLE_TRACK_POWERED_LIFT_ALT_1 + direction),
+    paintAddImageAsParentRotated(
+        session, direction, session.trackColours.WithIndex(SPR_TRACKS_LATTICE_TRIANGLE_TRACK_POWERED_LIFT_ALT_1 + direction),
         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
 
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.mapPosition))
     {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 8, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 8, height, session.supportColours);
     }
     if (direction == 0 || direction == 3)
     {

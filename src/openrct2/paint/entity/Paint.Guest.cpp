@@ -36,7 +36,7 @@ void PaintGuest(PaintSession& session, const Guest& guest, int32_t orientation)
     // In the following 4 calls to PaintAddImageAsParent/PaintAddImageAsChild, we add 5 (instead of 3) to the
     // bound_box_offset_z to make sure peeps are drawn on top of railways
     auto bb = kPaintPeepBoundBox(guest.z);
-    PaintAddImageAsParent(session, imageId, { 0, 0, guest.z }, bb);
+    paintAddImageAsParent(session, imageId, { 0, 0, guest.z }, bb);
 
     PaintGuestAccesories(session, guest, baseImageData.offset, baseImageData.actionAnimationGroup, direction);
 }
@@ -61,18 +61,18 @@ void PaintGuestAccesories(
     {
         auto itemOffset = kPeepSpriteHatItemStart;
         auto imageId = ImageId(itemOffset + direction + itemFrame * 4, guest.HatColour);
-        PaintAddImageAsChild(session, imageId, kPaintPeepOffset(guest.z), kPaintPeepBoundBox(guest.z));
+        paintAddImageAsChild(session, imageId, kPaintPeepOffset(guest.z), kPaintPeepBoundBox(guest.z));
     }
     else if (guest.AnimationGroup == PeepAnimationGroup::balloon)
     {
         auto itemOffset = kPeepSpriteBalloonItemStart;
         auto imageId = ImageId(itemOffset + direction + itemFrame * 4, guest.BalloonColour);
-        PaintAddImageAsChild(session, imageId, kPaintPeepOffset(guest.z), kPaintPeepBoundBox(guest.z));
+        paintAddImageAsChild(session, imageId, kPaintPeepOffset(guest.z), kPaintPeepBoundBox(guest.z));
     }
     else if (guest.AnimationGroup == PeepAnimationGroup::umbrella)
     {
         auto itemOffset = kPeepSpriteUmbrellaItemStart;
         auto imageId = ImageId(itemOffset + direction + itemFrame * 4, guest.UmbrellaColour);
-        PaintAddImageAsChild(session, imageId, kPaintPeepOffset(guest.z), kPaintPeepBoundBox(guest.z));
+        paintAddImageAsChild(session, imageId, kPaintPeepOffset(guest.z), kPaintPeepBoundBox(guest.z));
     }
 }

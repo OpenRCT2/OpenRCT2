@@ -32,17 +32,17 @@ static void SubmarineRidePaintTrackStation(
 
     if (direction & 1)
     {
-        imageId = session.TrackColours.WithIndex(SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_SE_NW);
-        PaintAddImageAsParent(session, imageId, { 0, 0, heightLower }, { { 6, 0, heightLower }, { 20, 32, 3 } });
+        imageId = session.trackColours.WithIndex(SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_SE_NW);
+        paintAddImageAsParent(session, imageId, { 0, 0, heightLower }, { { 6, 0, heightLower }, { 20, 32, 3 } });
     }
     else
     {
-        imageId = session.TrackColours.WithIndex(SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_NE_SW);
-        PaintAddImageAsParent(session, imageId, { 0, 0, heightLower }, { { 0, 6, heightLower }, { 32, 20, 3 } });
+        imageId = session.trackColours.WithIndex(SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_NE_SW);
+        paintAddImageAsParent(session, imageId, { 0, 0, heightLower }, { { 0, 6, heightLower }, { 32, 20, 3 } });
     }
     TrackPaintUtilDrawStationTunnel(session, direction, height);
     TrackPaintUtilDrawPier(
-        session, ride, stationObj, session.MapPosition, direction, height, trackElement, session.CurrentRotation);
+        session, ride, stationObj, session.mapPosition, direction, height, trackElement, session.currentRotation);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -57,21 +57,21 @@ static void SubmarineRidePaintTrackFlat(
 
     if (direction & 1)
     {
-        imageId = session.TrackColours.WithIndex(SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_SE_NW);
-        PaintAddImageAsParent(session, imageId, { 0, 0, heightLower }, { { 6, 0, heightLower }, { 20, 32, 3 } });
+        imageId = session.trackColours.WithIndex(SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_SE_NW);
+        paintAddImageAsParent(session, imageId, { 0, 0, heightLower }, { { 6, 0, heightLower }, { 20, 32, 3 } });
         PaintUtilPushTunnelRight(session, heightLower, kTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
-        imageId = session.TrackColours.WithIndex(SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_NE_SW);
-        PaintAddImageAsParent(session, imageId, { 0, 0, heightLower }, { { 0, 6, heightLower }, { 32, 20, 3 } });
+        imageId = session.trackColours.WithIndex(SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_NE_SW);
+        paintAddImageAsParent(session, imageId, { 0, 0, heightLower }, { { 0, 6, heightLower }, { 32, 20, 3 } });
         PaintUtilPushTunnelLeft(session, heightLower, kTunnelGroup, TunnelSubType::Flat);
     }
 
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.mapPosition))
     {
         MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::centre, direction, -1, heightLower, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::centre, direction, -1, heightLower, session.supportColours);
     }
 
     PaintUtilSetSegmentSupportHeight(
@@ -87,7 +87,7 @@ static void SubmarineRidePaintTrackLeftQuarterTurn3Tiles(
     const TrackElement& trackElement, SupportType supportType)
 {
     TrackPaintUtilLeftQuarterTurn3TilesPaint(
-        session, 3, height - 16, direction, trackSequence, session.TrackColours,
+        session, 3, height - 16, direction, trackSequence, session.trackColours,
         kTrackSpritesSubmarineRideMiniHelicoptersQuarterTurn3Tiles);
     TrackPaintUtilLeftQuarterTurn3TilesTunnel(
         session, kTunnelGroup, TunnelSubType::Flat, height - 16, direction, trackSequence);
@@ -96,7 +96,7 @@ static void SubmarineRidePaintTrackLeftQuarterTurn3Tiles(
     {
         case 0:
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, -1, height - 16, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, -1, height - 16, session.supportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -114,7 +114,7 @@ static void SubmarineRidePaintTrackLeftQuarterTurn3Tiles(
             break;
         case 3:
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, -1, height - 16, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, -1, height - 16, session.supportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -147,7 +147,7 @@ static void SubmarineRidePaintTrackLeftQuarterTurn1Tile(
     const TrackElement& trackElement, SupportType supportType)
 {
     TrackPaintUtilLeftQuarterTurn1TilePaint(
-        session, 1, height - 16, 0, direction, session.TrackColours, kTrackSpritesSubmarineRideMiniHelicoptersQuarterTurn1Tile);
+        session, 1, height - 16, 0, direction, session.trackColours, kTrackSpritesSubmarineRideMiniHelicoptersQuarterTurn1Tile);
     TrackPaintUtilLeftQuarterTurn1TileTunnel(
         session, kTunnelGroup, direction, height - 16, 0, TunnelSubType::Flat, 0, TunnelSubType::Flat);
 

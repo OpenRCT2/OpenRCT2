@@ -67,7 +67,7 @@ static void PaintRideEntranceExitScrollingText(
         bannerText = LanguageGetString(STR_RIDE_ENTRANCE_CLOSED);
     }
 
-    PaintAddImageAsChild(
+    paintAddImageAsChild(
         session, ScrollingText::setup(session, bannerText, stationObj.ScrollingMode, PaletteIndex::transparent),
         { 0, 0, height + stationObj.Height }, { { 2, 2, height + stationObj.Height }, { 28, 28, 51 } });
 }
@@ -80,22 +80,22 @@ static void PaintRideEntranceExitLightEffects(PaintSession& session, int32_t hei
     {
         if (entranceEl.GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
         {
-            LightFx::Add3DLightMagicFromDrawingTile(session.MapPosition, 0, 0, height + 45, LightType::Lantern3);
+            LightFx::Add3DLightMagicFromDrawingTile(session.mapPosition, 0, 0, height + 45, LightType::Lantern3);
         }
 
         switch (entranceEl.getDirection())
         {
             case 0:
-                LightFx::Add3DLightMagicFromDrawingTile(session.MapPosition, 16, 0, height + 16, LightType::Lantern2);
+                LightFx::Add3DLightMagicFromDrawingTile(session.mapPosition, 16, 0, height + 16, LightType::Lantern2);
                 break;
             case 1:
-                LightFx::Add3DLightMagicFromDrawingTile(session.MapPosition, 0, -16, height + 16, LightType::Lantern2);
+                LightFx::Add3DLightMagicFromDrawingTile(session.mapPosition, 0, -16, height + 16, LightType::Lantern2);
                 break;
             case 2:
-                LightFx::Add3DLightMagicFromDrawingTile(session.MapPosition, -16, 0, height + 16, LightType::Lantern2);
+                LightFx::Add3DLightMagicFromDrawingTile(session.mapPosition, -16, 0, height + 16, LightType::Lantern2);
                 break;
             case 3:
-                LightFx::Add3DLightMagicFromDrawingTile(session.MapPosition, 0, 16, height + 16, LightType::Lantern2);
+                LightFx::Add3DLightMagicFromDrawingTile(session.mapPosition, 0, 16, height + 16, LightType::Lantern2);
                 break;
         }
     }
@@ -106,7 +106,7 @@ static void PaintRideEntranceExit(PaintSession& session, uint8_t direction, int3
     PROFILED_FUNCTION();
 
     auto rideIndex = entranceEl.GetRideIndex();
-    if ((session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
+    if ((session.viewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
         || (gTrackDesignSaveMode && rideIndex != gTrackDesignSaveRideIndex))
     {
         return;
@@ -124,7 +124,7 @@ static void PaintRideEntranceExit(PaintSession& session, uint8_t direction, int3
         return;
     }
 
-    session.InteractionType = ViewportInteractionItem::ride;
+    session.interactionType = ViewportInteractionItem::ride;
 
     PaintRideEntranceExitLightEffects(session, height, entranceEl);
 
@@ -139,10 +139,10 @@ static void PaintRideEntranceExit(PaintSession& session, uint8_t direction, int3
 
     if (entranceEl.isGhost())
     {
-        session.InteractionType = ViewportInteractionItem::none;
+        session.interactionType = ViewportInteractionItem::none;
         imageTemplate = ImageId().WithRemap(FilterPaletteID::paletteGhost);
     }
-    else if (session.SelectedElement == reinterpret_cast<const TileElement*>(&entranceEl))
+    else if (session.selectedElement == reinterpret_cast<const TileElement*>(&entranceEl))
     {
         imageTemplate = ImageId().WithRemap(FilterPaletteID::paletteGhost);
     }
@@ -168,13 +168,13 @@ static void PaintRideEntranceExit(PaintSession& session, uint8_t direction, int3
 
     // Back
     ImageIndex backImageIndex = (isExit ? stationObj->exitBackIndex : stationObj->entranceBackIndex) + direction;
-    PaintAddImageAsParentRotated(
+    paintAddImageAsParentRotated(
         session, direction, imageTemplate.WithIndex(backImageIndex), { 0, 0, height }, { { 2, 2, height }, { 28, 8, 30 } });
     if (hasGlass)
     {
         ImageIndex backGlassImageIndex = (isExit ? stationObj->exitBackGlassIndex : stationObj->entranceBackGlassIndex)
             + direction;
-        PaintAddImageAsChildRotated(
+        paintAddImageAsChildRotated(
             session, direction, glassImageTemplate.WithIndex(backGlassImageIndex), { 0, 0, height },
             { { 2, 2, height }, { 28, 8, 30 } });
     }
@@ -182,14 +182,14 @@ static void PaintRideEntranceExit(PaintSession& session, uint8_t direction, int3
     // Front
     const auto frontBoundBoxZ = isExit ? 1 : 17;
     ImageIndex frontImageIndex = (isExit ? stationObj->exitFrontIndex : stationObj->entranceFrontIndex) + direction;
-    PaintAddImageAsParent(
+    paintAddImageAsParent(
         session, imageTemplate.WithIndex(frontImageIndex), { 0, 0, height },
         { { 2, 2, height + 30 }, { 28, 28, frontBoundBoxZ } });
     if (hasGlass)
     {
         ImageIndex frontGlassImageIndex = (isExit ? stationObj->exitFrontGlassIndex : stationObj->entranceFrontGlassIndex)
             + direction;
-        PaintAddImageAsChild(
+        paintAddImageAsChild(
             session, glassImageTemplate.WithIndex(frontGlassImageIndex), { 0, 0, height },
             { { 2, 2, height + 30 }, { 28, 28, frontBoundBoxZ } });
     }
@@ -238,7 +238,7 @@ static void PaintParkEntranceScrollingText(
 
     auto imageIndex = ScrollingText::setup(session, bannerText, scrollingMode + direction / 2, PaletteIndex::transparent);
     auto textHeight = height + entrance.GetTextHeight();
-    PaintAddImageAsChild(session, imageIndex, { 0, 0, textHeight }, { { 2, 2, textHeight }, { 28, 28, 47 } });
+    paintAddImageAsChild(session, imageIndex, { 0, 0, textHeight }, { { 2, 2, textHeight }, { 28, 28, 47 } });
 }
 
 static void PaintParkEntranceLightEffects(PaintSession& session)
@@ -247,7 +247,7 @@ static void PaintParkEntranceLightEffects(PaintSession& session)
 
     if (LightFx::IsAvailable())
     {
-        LightFx::Add3DLightMagicFromDrawingTile(session.MapPosition, 0, 0, 155, LightType::Lantern3);
+        LightFx::Add3DLightMagicFromDrawingTile(session.mapPosition, 0, 0, 155, LightType::Lantern3);
     }
 }
 
@@ -255,20 +255,20 @@ static void PaintParkEntrance(PaintSession& session, uint8_t direction, int32_t 
 {
     PROFILED_FUNCTION();
 
-    if (gTrackDesignSaveMode || (session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
+    if (gTrackDesignSaveMode || (session.viewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
         return;
 
     PaintParkEntranceLightEffects(session);
 
-    session.InteractionType = ViewportInteractionItem::parkEntrance;
+    session.interactionType = ViewportInteractionItem::parkEntrance;
 
     ImageId imageTemplate;
     if (entranceEl.isGhost())
     {
-        session.InteractionType = ViewportInteractionItem::none;
+        session.interactionType = ViewportInteractionItem::none;
         imageTemplate = ImageId().WithRemap(FilterPaletteID::paletteGhost);
     }
-    else if (session.SelectedElement == reinterpret_cast<const TileElement*>(&entranceEl))
+    else if (session.selectedElement == reinterpret_cast<const TileElement*>(&entranceEl))
     {
         imageTemplate = ImageId().WithRemap(FilterPaletteID::paletteGhost);
     }
@@ -285,7 +285,7 @@ static void PaintParkEntrance(PaintSession& session, uint8_t direction, int32_t 
             if (surfaceDescriptor != nullptr)
             {
                 auto imageIndex = (surfaceDescriptor->image + 5 * (1 + (direction & 1)));
-                PaintAddImageAsParent(
+                paintAddImageAsParent(
                     session, imageTemplate.WithIndex(imageIndex), { 0, 0, height }, { { 0, 2, height }, { 32, 28, 0 } });
             }
 
@@ -293,7 +293,7 @@ static void PaintParkEntrance(PaintSession& session, uint8_t direction, int32_t 
             if (entrance != nullptr)
             {
                 auto imageIndex = entrance->GetImage(sequence, direction);
-                PaintAddImageAsParent(
+                paintAddImageAsParent(
                     session, imageTemplate.WithIndex(imageIndex), { 0, 0, height }, { { 2, 2, height + 32 }, { 28, 28, 47 } });
 
                 if (!entranceEl.isGhost())
@@ -306,7 +306,7 @@ static void PaintParkEntrance(PaintSession& session, uint8_t direction, int32_t 
             if (entrance != nullptr)
             {
                 auto imageIndex = entrance->GetImage(sequence, direction);
-                PaintAddImageAsParent(
+                paintAddImageAsParent(
                     session, imageTemplate.WithIndex(imageIndex), { 0, 0, height }, { { 3, 3, height }, { 26, 26, 79 } });
             }
             break;
@@ -338,7 +338,7 @@ static void PaintHeightMarkers(PaintSession& session, const EntranceElement& ent
             baseImageIndex += GetHeightMarkerOffset();
             baseImageIndex -= kMapBaseZ;
             auto imageId = ImageId(baseImageIndex, OpenRCT2::Drawing::Colour::grey);
-            PaintAddImageAsParent(session, imageId, { 16, 16, height }, { { 31, 31, heightMarkerBaseZ + 64 }, { 1, 1, 0 } });
+            paintAddImageAsParent(session, imageId, { 16, 16, height }, { { 31, 31, heightMarkerBaseZ + 64 }, { 1, 1, 0 } });
         }
     }
 }
@@ -347,7 +347,7 @@ void PaintEntrance(PaintSession& session, uint8_t direction, int32_t height, con
 {
     PROFILED_FUNCTION();
 
-    session.InteractionType = ViewportInteractionItem::label;
+    session.interactionType = ViewportInteractionItem::label;
 
     PaintHeightMarkers(session, entranceElement, height);
     switch (entranceElement.GetEntranceType())

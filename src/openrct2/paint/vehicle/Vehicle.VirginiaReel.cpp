@@ -33,7 +33,7 @@ namespace OpenRCT2
         const CarEntry* carEntry)
     {
         imageDirection = Entity::Yaw::YawTo32(imageDirection);
-        const uint8_t rotation = session.CurrentRotation;
+        const uint8_t rotation = session.currentRotation;
         int32_t ecx = ((vehicle->spin_sprite / 8) + (rotation * 8)) & 31;
         int32_t baseImage_id = [&] {
             switch (vehicle->pitch)
@@ -61,7 +61,7 @@ namespace OpenRCT2
         {
             image_id = ConstructionMarker.WithIndex(image_id.GetIndex());
         }
-        PaintAddImageAsParent(session, image_id, { 0, 0, z }, bb);
+        paintAddImageAsParent(session, image_id, { 0, 0, z }, bb);
 
         if (session.rt.zoom_level < ZoomLevel{ 2 } && vehicle->num_peeps > 0 && !vehicle->isGhost())
         {
@@ -77,7 +77,7 @@ namespace OpenRCT2
                 if (riding_peep_sprites[i] != Drawing::kColourNull)
                 {
                     image_id = ImageId(baseImage_id + ((i + 1) * 72), riding_peep_sprites[i]);
-                    PaintAddImageAsChild(session, image_id, { 0, 0, z }, bb);
+                    paintAddImageAsChild(session, image_id, { 0, 0, z }, bb);
                 }
             }
         }

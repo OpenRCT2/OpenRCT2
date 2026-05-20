@@ -39,11 +39,11 @@ static constexpr uint32_t kDodgemsFenceSprites[] = {
 
 static void PaintDodgemsRoof(PaintSession& session, int32_t height, int32_t offset)
 {
-    auto imageId = session.TrackColours.WithIndex((SprDodgemsRoofFrame + offset));
-    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 2 });
+    auto imageId = session.trackColours.WithIndex((SprDodgemsRoofFrame + offset));
+    paintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 2 });
 
     imageId = ImageId(SprDodgemsRoofGlass + offset).WithTransparency(FilterPaletteID::paletteDarken3);
-    PaintAttachToPreviousPS(session, imageId, 0, 0);
+    paintAttachToPreviousPS(session, imageId, 0, 0);
 }
 
 static void PaintDodgems(
@@ -62,12 +62,12 @@ static void PaintDodgems(
 
     if (stationObject != nullptr && !(stationObject->Flags & StationObjectFlags::noPlatforms))
     {
-        auto imageId = session.SupportColours.WithIndex(SprDodgemsFloor);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 1, 1, height }, { 30, 30, 1 } });
+        auto imageId = session.supportColours.WithIndex(SprDodgemsFloor);
+        paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 1, 1, height }, { 30, 30, 1 } });
 
         TrackPaintUtilPaintFences(
-            session, edges, session.MapPosition, trackElement, ride, session.SupportColours, height, kDodgemsFenceSprites,
-            session.CurrentRotation);
+            session, edges, session.mapPosition, trackElement, ride, session.supportColours, height, kDodgemsFenceSprites,
+            session.currentRotation);
 
         switch (direction)
         {

@@ -53,13 +53,13 @@ static void PaintFlyingSaucers(
 
     if (stationObject != nullptr && !(stationObject->Flags & StationObjectFlags::noPlatforms))
     {
-        auto imageId = session.TrackColours.WithIndex(SprFlyingSaucersFloor);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 1, 1, height }, { 30, 30, 1 } });
+        auto imageId = session.trackColours.WithIndex(SprFlyingSaucersFloor);
+        paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 1, 1, height }, { 30, 30, 1 } });
     }
 
     TrackPaintUtilPaintFences(
-        session, edges, session.MapPosition, trackElement, ride, session.TrackColours, height, FlyingSaucersFenceSprites,
-        session.CurrentRotation);
+        session, edges, session.mapPosition, trackElement, ride, session.trackColours, height, FlyingSaucersFenceSprites,
+        session.currentRotation);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);

@@ -79,8 +79,8 @@ static void PaintSwingingInverterShipStructure(
         vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[0]);
         if (vehicle != nullptr)
         {
-            session.InteractionType = ViewportInteractionItem::entity;
-            session.CurrentlyDrawnEntity = vehicle;
+            session.interactionType = ViewportInteractionItem::entity;
+            session.currentlyDrawnEntity = vehicle;
         }
     }
 
@@ -108,23 +108,23 @@ static void PaintSwingingInverterShipStructure(
     {
         vehicleImageTemplate = stationColour;
     }
-    auto frameImageTemplate = session.TrackColours;
+    auto frameImageTemplate = session.trackColours;
     auto vehicleImageId = vehicleImageTemplate.WithIndex(vehicleImageIndex);
     auto mainSupportImageId = frameImageTemplate.WithIndex(kSwingingInverterShipMainSupportSprites[direction]);
 
     if (direction & 2)
     {
-        PaintAddImageAsParent(session, vehicleImageId, offset, bb);
-        PaintAddImageAsChild(session, mainSupportImageId, offset, bb);
+        paintAddImageAsParent(session, vehicleImageId, offset, bb);
+        paintAddImageAsChild(session, mainSupportImageId, offset, bb);
     }
     else
     {
-        PaintAddImageAsParent(session, mainSupportImageId, offset, bb);
-        PaintAddImageAsChild(session, vehicleImageId, offset, bb);
+        paintAddImageAsParent(session, mainSupportImageId, offset, bb);
+        paintAddImageAsChild(session, vehicleImageId, offset, bb);
     }
 
-    session.CurrentlyDrawnEntity = nullptr;
-    session.InteractionType = ViewportInteractionItem::ride;
+    session.currentlyDrawnEntity = nullptr;
+    session.interactionType = ViewportInteractionItem::ride;
 }
 
 static void PaintSwingingInverterShip(
@@ -136,30 +136,30 @@ static void PaintSwingingInverterShip(
 
     if (relativeTrackSequence != 1 && relativeTrackSequence != 3)
     {
-        DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::tubes);
+        DrawSupportsSideBySide(session, direction, height, session.supportColours, MetalSupportType::tubes);
 
         if (stationObject != nullptr && !(stationObject->Flags & StationObjectFlags::noPlatforms))
         {
-            ImageId imageId = session.SupportColours.WithIndex(SPR_STATION_BASE_BORDERLESS);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 });
+            ImageId imageId = session.supportColours.WithIndex(SPR_STATION_BASE_BORDERLESS);
+            paintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 });
 
             switch (direction)
             {
                 case 0:
-                    imageId = session.TrackColours.WithIndex(SPR_STATION_PLATFORM_SW_NE);
-                    PaintAddImageAsParent(session, imageId, { 0, 24, height + 9 }, { 32, 8, 1 });
+                    imageId = session.trackColours.WithIndex(SPR_STATION_PLATFORM_SW_NE);
+                    paintAddImageAsParent(session, imageId, { 0, 24, height + 9 }, { 32, 8, 1 });
                     break;
                 case 1:
-                    imageId = session.TrackColours.WithIndex(SPR_STATION_PLATFORM_NW_SE);
-                    PaintAddImageAsParent(session, imageId, { 24, 0, height + 9 }, { 8, 32, 1 });
+                    imageId = session.trackColours.WithIndex(SPR_STATION_PLATFORM_NW_SE);
+                    paintAddImageAsParent(session, imageId, { 24, 0, height + 9 }, { 8, 32, 1 });
                     break;
                 case 2:
-                    imageId = session.TrackColours.WithIndex(SPR_STATION_PLATFORM_SW_NE);
-                    PaintAddImageAsChild(session, imageId, { 0, 0, height + 9 }, { { -2, 0, height }, { 32, 8, 1 } });
+                    imageId = session.trackColours.WithIndex(SPR_STATION_PLATFORM_SW_NE);
+                    paintAddImageAsChild(session, imageId, { 0, 0, height + 9 }, { { -2, 0, height }, { 32, 8, 1 } });
                     break;
                 case 3:
-                    imageId = session.TrackColours.WithIndex(SPR_STATION_PLATFORM_NW_SE);
-                    PaintAddImageAsChild(session, imageId, { 0, 0, height + 9 }, { { 0, -2, height }, { 8, 32, 1 } });
+                    imageId = session.trackColours.WithIndex(SPR_STATION_PLATFORM_NW_SE);
+                    paintAddImageAsChild(session, imageId, { 0, 0, height + 9 }, { { 0, -2, height }, { 8, 32, 1 } });
                     break;
             }
         }

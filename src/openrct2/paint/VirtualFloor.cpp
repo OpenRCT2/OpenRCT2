@@ -291,10 +291,10 @@ void VirtualFloorPaint(PaintSession& session)
     if (_virtualFloorHeight < kMinimumLandHeight)
         return;
 
-    uint8_t direction = session.CurrentRotation;
+    uint8_t direction = session.currentRotation;
 
     // This is a virtual floor, so no interactions
-    session.InteractionType = ViewportInteractionItem::none;
+    session.interactionType = ViewportInteractionItem::none;
 
     int16_t virtualFloorClipHeight = _virtualFloorHeight;
 
@@ -308,7 +308,7 @@ void VirtualFloorPaint(PaintSession& session)
     uint8_t litEdges = 0;
 
     VirtualFloorGetTileProperties(
-        session.MapPosition, virtualFloorClipHeight, &weAreOccupied, &weAreOwned, &occupiedEdges, &weAreBelowGround,
+        session.mapPosition, virtualFloorClipHeight, &weAreOccupied, &weAreOwned, &occupiedEdges, &weAreBelowGround,
         &weAreAboveGround, &weAreLit);
 
     // Move the bits around to match the current rotation
@@ -321,7 +321,7 @@ void VirtualFloorPaint(PaintSession& session)
     for (uint8_t i = 0; i < kNumOrthogonalDirections; i++)
     {
         uint8_t effectiveRotation = (kNumOrthogonalDirections + i - direction) % kNumOrthogonalDirections;
-        CoordsXY theirLocation = session.MapPosition + scenery_half_tile_offsets[effectiveRotation];
+        CoordsXY theirLocation = session.mapPosition + scenery_half_tile_offsets[effectiveRotation];
 
         bool theyAreOccupied;
         uint8_t theirOccupiedEdges;
@@ -361,28 +361,28 @@ void VirtualFloorPaint(PaintSession& session)
     if (paintEdges & EDGE_NE)
     {
         const auto baseImg = !(occupiedEdges & EDGE_NE) ? ((litEdges & EDGE_NE) ? remap_lit : remap_base) : remap_edge;
-        PaintAddImageAsParent(
+        paintAddImageAsParent(
             session, baseImg.WithIndex(SPR_G2_SELECTION_EDGE_NE), virtualFloorOffset,
             { { 5, 5, _virtualFloorHeight + ((dullEdges & EDGE_NE) ? -2 : 0) }, { 0, 0, 1 } });
     }
     if (paintEdges & EDGE_SE)
     {
         const auto baseImg = !(occupiedEdges & EDGE_SE) ? ((litEdges & EDGE_SE) ? remap_lit : remap_base) : remap_edge;
-        PaintAddImageAsParent(
+        paintAddImageAsParent(
             session, baseImg.WithIndex(SPR_G2_SELECTION_EDGE_SE), virtualFloorOffset,
             { { 16, 27, _virtualFloorHeight + ((dullEdges & EDGE_SE) ? -2 : 0) }, { 1, 1, 1 } });
     }
     if (paintEdges & EDGE_SW)
     {
         const auto baseImg = !(occupiedEdges & EDGE_SW) ? ((litEdges & EDGE_SW) ? remap_lit : remap_base) : remap_edge;
-        PaintAddImageAsParent(
+        paintAddImageAsParent(
             session, baseImg.WithIndex(SPR_G2_SELECTION_EDGE_SW), virtualFloorOffset,
             { { 27, 16, _virtualFloorHeight + ((dullEdges & EDGE_SW) ? -2 : 0) }, { 1, 1, 1 } });
     }
     if (paintEdges & EDGE_NW)
     {
         const auto baseImg = !(occupiedEdges & EDGE_NW) ? ((litEdges & EDGE_NW) ? remap_lit : remap_base) : remap_edge;
-        PaintAddImageAsParent(
+        paintAddImageAsParent(
             session, baseImg.WithIndex(SPR_G2_SELECTION_EDGE_NW), virtualFloorOffset,
             { { 5, 5, _virtualFloorHeight + ((dullEdges & EDGE_NW) ? -2 : 0) }, { 0, 0, 1 } });
     }
@@ -393,7 +393,7 @@ void VirtualFloorPaint(PaintSession& session)
     if (!weAreOccupied && !weAreLit && weAreAboveGround && weAreOwned)
     {
         auto imageColourFlats = ImageId(SPR_G2_SURFACE_GLASSY_RECOLOURABLE, FilterPaletteID::paletteWater).WithBlended(true);
-        PaintAddImageAsParent(
+        paintAddImageAsParent(
             session, imageColourFlats, virtualFloorOffset, { { 2, 2, _virtualFloorHeight - 3 }, { 30, 30, 0 } });
     }
 }

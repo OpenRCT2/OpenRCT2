@@ -82,7 +82,7 @@ namespace OpenRCT2
             modifiedDirection = (direction + ted.reversedRotationOffset) & 3;
         }
 
-        ImageId imageId = trackSupportColours ? getPrimaryTrackColourWithSecondarySupportColour(session) : session.TrackColours;
+        ImageId imageId = trackSupportColours ? getPrimaryTrackColourWithSecondarySupportColour(session) : session.trackColours;
         imageId = imageId.WithIndex(imageIndex);
         if constexpr (sequenceSpriteCount >= 1)
         {
@@ -104,7 +104,7 @@ namespace OpenRCT2
                 const Direction supportRotation = (direction + sequenceDescriptor.extraSupportRotation) & 3;
                 WoodenASupportsPaintSetupRotated(
                     session, supportType.wooden, sequenceDescriptor.woodenSupports.subType, supportRotation,
-                    height + sequenceDescriptor.woodenSupports.height, session.SupportColours,
+                    height + sequenceDescriptor.woodenSupports.height, session.supportColours,
                     sequenceDescriptor.woodenSupports.transitionType);
             }
         }
@@ -116,7 +116,7 @@ namespace OpenRCT2
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, sequenceDescriptor.metalSupports.place, supportRotation,
                     supportHeightExtras[modifiedTrackSequence][modifiedDirection],
-                    height + sequenceDescriptor.metalSupports.height, session.SupportColours);
+                    height + sequenceDescriptor.metalSupports.height, session.supportColours);
             }
         }
 

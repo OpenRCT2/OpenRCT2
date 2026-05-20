@@ -78,23 +78,23 @@ static void MineTrainRCTrackFlat(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20054), { 0, 0, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20054), { 0, 0, height },
                     { { 0, 6, height }, { 32, 20, 1 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20055), { 0, 0, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20055), { 0, 0, height },
                     { { 0, 6, height }, { 32, 20, 1 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20056), { 0, 0, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20056), { 0, 0, height },
                     { { 0, 6, height }, { 32, 20, 1 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20057), { 0, 0, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20057), { 0, 0, height },
                     { { 0, 6, height }, { 32, 20, 1 } });
                 break;
         }
@@ -105,20 +105,20 @@ static void MineTrainRCTrackFlat(
         {
             case 0:
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20052), { 0, 0, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20052), { 0, 0, height },
                     { { 0, 6, height }, { 32, 20, 1 } });
                 break;
             case 1:
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20053), { 0, 0, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20053), { 0, 0, height },
                     { { 0, 6, height }, { 32, 20, 1 } });
                 break;
         }
     }
     DrawSupportForSequenceA<TrackElemType::flat>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+        session, supportType.wooden, trackSequence, direction, height, session.supportColours);
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -138,24 +138,24 @@ static void MineTrainRCTrackStation(
     if (trackElement.GetTrackType() == TrackElemType::endStation)
     {
         bool isClosed = trackElement.IsBrakeClosed();
-        PaintAddImageAsParentRotated(
-            session, direction, session.TrackColours.WithIndex(kMineTrainBlockBrakeImages[direction][isClosed]),
+        paintAddImageAsParentRotated(
+            session, direction, session.trackColours.WithIndex(kMineTrainBlockBrakeImages[direction][isClosed]),
             { 0, 0, height }, { { 0, 6, height + 1 }, { 32, 20, 1 } });
     }
     else
     {
-        PaintAddImageAsParentRotated(
-            session, direction, session.TrackColours.WithIndex(imageIds[direction]), { 0, 0, height },
+        paintAddImageAsParentRotated(
+            session, direction, session.trackColours.WithIndex(imageIds[direction]), { 0, 0, height },
             { { 0, 6, height + 1 }, { 32, 20, 1 } });
     }
     if (TrackPaintUtilDrawStation(session, ride, direction, height, trackElement, StationBaseType::b, -2))
     {
-        DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::boxed);
+        DrawSupportsSideBySide(session, direction, height, session.supportColours, MetalSupportType::boxed);
     }
     else
     {
         DrawSupportForSequenceA<TrackElemType::flat>(
-            session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+            session, supportType.wooden, trackSequence, direction, height, session.supportColours);
     }
     TrackPaintUtilDrawStationTunnel(session, direction, height);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -172,23 +172,23 @@ static void MineTrainRCTrack25DegUp(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20102), { 0, 0, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20102), { 0, 0, height },
                     { { 0, 6, height }, { 32, 20, 1 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20103), { 0, 0, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20103), { 0, 0, height },
                     { { 0, 6, height }, { 32, 20, 1 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20104), { 0, 0, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20104), { 0, 0, height },
                     { { 0, 6, height }, { 32, 20, 1 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20105), { 0, 0, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20105), { 0, 0, height },
                     { { 0, 6, height }, { 32, 20, 1 } });
                 break;
         }
@@ -198,30 +198,30 @@ static void MineTrainRCTrack25DegUp(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20074), { 0, 0, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20074), { 0, 0, height },
                     { { 0, 6, height }, { 32, 20, 1 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20075), { 0, 0, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20075), { 0, 0, height },
                     { { 0, 6, height }, { 32, 20, 1 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20076), { 0, 0, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20076), { 0, 0, height },
                     { { 0, 6, height }, { 32, 20, 1 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20077), { 0, 0, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20077), { 0, 0, height },
                     { { 0, 6, height }, { 32, 20, 1 } });
                 break;
         }
     }
 
     DrawSupportForSequenceA<TrackElemType::up25>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+        session, supportType.wooden, trackSequence, direction, height, session.supportColours);
 
     if (direction == 0 || direction == 3)
     {
@@ -243,29 +243,29 @@ static void MineTrainRCTrack60DegUp(
     switch (direction)
     {
         case 0:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20090), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20090), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 1 } });
             break;
         case 1:
-            session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20091), { 0, 0, height },
+            session.woodenSupportsPrependTo = paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20091), { 0, 0, height },
                 { { 27, 0, height }, { 1, 32, 98 } });
             break;
         case 2:
-            session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20092), { 0, 0, height },
+            session.woodenSupportsPrependTo = paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20092), { 0, 0, height },
                 { { 27, 0, height }, { 1, 32, 98 } });
             break;
         case 3:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20093), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20093), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 1 } });
             break;
     }
 
     DrawSupportForSequenceA<TrackElemType::up60>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+        session, supportType.wooden, trackSequence, direction, height, session.supportColours);
 
     if (direction == 0 || direction == 3)
     {
@@ -289,23 +289,23 @@ static void MineTrainRCTrackFlatTo25DegUp(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20094), { 0, 0, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20094), { 0, 0, height },
                     { { 0, 6, height }, { 32, 20, 1 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20095), { 0, 0, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20095), { 0, 0, height },
                     { { 0, 6, height }, { 32, 20, 1 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20096), { 0, 0, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20096), { 0, 0, height },
                     { { 0, 6, height }, { 32, 20, 1 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20097), { 0, 0, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20097), { 0, 0, height },
                     { { 0, 6, height }, { 32, 20, 1 } });
                 break;
         }
@@ -315,30 +315,30 @@ static void MineTrainRCTrackFlatTo25DegUp(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20066), { 0, 0, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20066), { 0, 0, height },
                     { { 0, 6, height }, { 32, 20, 1 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20067), { 0, 0, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20067), { 0, 0, height },
                     { { 0, 6, height }, { 32, 20, 1 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20068), { 0, 0, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20068), { 0, 0, height },
                     { { 0, 6, height }, { 32, 20, 1 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20069), { 0, 0, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20069), { 0, 0, height },
                     { { 0, 6, height }, { 32, 20, 1 } });
                 break;
         }
     }
 
     DrawSupportForSequenceA<TrackElemType::flatToUp25>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+        session, supportType.wooden, trackSequence, direction, height, session.supportColours);
 
     if (direction == 0 || direction == 3)
     {
@@ -360,35 +360,35 @@ static void MineTrainRCTrack25DegUpTo60DegUp(
     switch (direction)
     {
         case 0:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20078), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20078), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 1 } });
             break;
         case 1:
-            session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20079), { 0, 0, height },
+            session.woodenSupportsPrependTo = paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20079), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 1 } });
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20082), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20082), { 0, 0, height },
                 { { 0, 27, height }, { 32, 1, 66 } });
             break;
         case 2:
-            session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20080), { 0, 0, height },
+            session.woodenSupportsPrependTo = paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20080), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 1 } });
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20083), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20083), { 0, 0, height },
                 { { 0, 27, height }, { 32, 1, 66 } });
             break;
         case 3:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20081), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20081), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 1 } });
             break;
     }
 
     DrawSupportForSequenceA<TrackElemType::up25ToUp60>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+        session, supportType.wooden, trackSequence, direction, height, session.supportColours);
 
     if (direction == 0 || direction == 3)
     {
@@ -410,35 +410,35 @@ static void MineTrainRCTrack60DegUpTo25DegUp(
     switch (direction)
     {
         case 0:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20084), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20084), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 1 } });
             break;
         case 1:
-            session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20085), { 0, 0, height },
+            session.woodenSupportsPrependTo = paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20085), { 0, 0, height },
                 { { 4, 29, height - 16 }, { 24, 1, 61 } });
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20088), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20088), { 0, 0, height },
                 { { 0, 4, height }, { 32, 2, 66 } });
             break;
         case 2:
-            session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20086), { 0, 0, height },
+            session.woodenSupportsPrependTo = paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20086), { 0, 0, height },
                 { { 4, 29, height - 16 }, { 24, 1, 61 } });
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20089), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20089), { 0, 0, height },
                 { { 0, 4, height }, { 32, 2, 66 } });
             break;
         case 3:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20087), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20087), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 1 } });
             break;
     }
 
     DrawSupportForSequenceA<TrackElemType::up60ToUp25>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+        session, supportType.wooden, trackSequence, direction, height, session.supportColours);
 
     if (direction == 0 || direction == 3)
     {
@@ -462,23 +462,23 @@ static void MineTrainRCTrack25DegUpToFlat(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20098), { 0, 0, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20098), { 0, 0, height },
                     { { 0, 6, height }, { 32, 20, 1 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20099), { 0, 0, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20099), { 0, 0, height },
                     { { 0, 6, height }, { 32, 20, 1 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20100), { 0, 0, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20100), { 0, 0, height },
                     { { 0, 6, height }, { 32, 20, 1 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20101), { 0, 0, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20101), { 0, 0, height },
                     { { 0, 6, height }, { 32, 20, 1 } });
                 break;
         }
@@ -488,30 +488,30 @@ static void MineTrainRCTrack25DegUpToFlat(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20070), { 0, 0, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20070), { 0, 0, height },
                     { { 0, 6, height }, { 32, 20, 1 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20071), { 0, 0, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20071), { 0, 0, height },
                     { { 0, 6, height }, { 32, 20, 1 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20072), { 0, 0, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20072), { 0, 0, height },
                     { { 0, 6, height }, { 32, 20, 1 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20073), { 0, 0, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20073), { 0, 0, height },
                     { { 0, 6, height }, { 32, 20, 1 } });
                 break;
         }
     }
 
     DrawSupportForSequenceA<TrackElemType::up25ToFlat>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+        session, supportType.wooden, trackSequence, direction, height, session.supportColours);
 
     if (direction == 0 || direction == 3)
     {
@@ -584,28 +584,28 @@ static void MineTrainRCTrackLeftQuarterTurn5(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20155), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20155), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 1 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20160), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20160), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 1 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20165), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20165), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 1 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20150), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20150), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 1 } });
                     break;
             }
             DrawSupportForSequenceA<TrackElemType::leftQuarterTurn5Tiles>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+                session, supportType.wooden, trackSequence, direction, height, session.supportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -625,26 +625,26 @@ static void MineTrainRCTrackLeftQuarterTurn5(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20154), { 0, 0, height }, { 32, 16, 1 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20154), { 0, 0, height }, { 32, 16, 1 });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20159), { 0, 0, height }, { 32, 16, 1 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20159), { 0, 0, height }, { 32, 16, 1 });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20164), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20164), { 0, 0, height },
                         { { 0, 16, height }, { 32, 16, 1 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20149), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20149), { 0, 0, height },
                         { { 0, 16, height }, { 32, 16, 1 } });
                     break;
             }
             DrawSupportForSequenceA<TrackElemType::leftQuarterTurn5Tiles>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+                session, supportType.wooden, trackSequence, direction, height, session.supportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -659,27 +659,27 @@ static void MineTrainRCTrackLeftQuarterTurn5(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20153), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20153), { 0, 0, height },
                         { { 0, 16, height }, { 16, 16, 1 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20158), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20158), { 0, 0, height },
                         { { 16, 16, height }, { 16, 16, 1 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20163), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20163), { 0, 0, height },
                         { { 16, 0, height }, { 16, 16, 1 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20148), { 0, 0, height }, { 16, 16, 1 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20148), { 0, 0, height }, { 16, 16, 1 });
                     break;
             }
             DrawSupportForSequenceA<TrackElemType::leftQuarterTurn5Tiles>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+                session, supportType.wooden, trackSequence, direction, height, session.supportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -702,26 +702,26 @@ static void MineTrainRCTrackLeftQuarterTurn5(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20152), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20152), { 0, 0, height },
                         { { 16, 0, height }, { 16, 32, 1 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20157), { 0, 0, height }, { 16, 32, 1 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20157), { 0, 0, height }, { 16, 32, 1 });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20162), { 0, 0, height }, { 16, 32, 1 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20162), { 0, 0, height }, { 16, 32, 1 });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20147), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20147), { 0, 0, height },
                         { { 16, 0, height }, { 16, 32, 1 } });
                     break;
             }
             DrawSupportForSequenceA<TrackElemType::leftQuarterTurn5Tiles>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+                session, supportType.wooden, trackSequence, direction, height, session.supportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -736,28 +736,28 @@ static void MineTrainRCTrackLeftQuarterTurn5(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20151), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20151), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 1 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20156), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20156), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 1 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20161), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20161), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 1 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20146), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20146), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 1 } });
                     break;
             }
             DrawSupportForSequenceA<TrackElemType::leftQuarterTurn5Tiles>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+                session, supportType.wooden, trackSequence, direction, height, session.supportColours);
             switch (direction)
             {
                 case 2:
@@ -790,34 +790,34 @@ static void MineTrainRCTrackFlatToLeftBank(
     switch (direction)
     {
         case 0:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20106), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20106), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 1 } });
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20114), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20114), { 0, 0, height },
                 { { 0, 27, height }, { 32, 1, 26 } });
             break;
         case 1:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20107), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20107), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 1 } });
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20115), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20115), { 0, 0, height },
                 { { 0, 27, height }, { 32, 1, 26 } });
             break;
         case 2:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20108), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20108), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 1 } });
             break;
         case 3:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20109), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20109), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 1 } });
             break;
     }
     DrawSupportForSequenceA<TrackElemType::flatToLeftBank>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+        session, supportType.wooden, trackSequence, direction, height, session.supportColours);
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -831,34 +831,34 @@ static void MineTrainRCTrackFlatToRightBank(
     switch (direction)
     {
         case 0:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20110), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20110), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 1 } });
             break;
         case 1:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20111), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20111), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 1 } });
             break;
         case 2:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20112), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20112), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 1 } });
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20116), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20116), { 0, 0, height },
                 { { 0, 27, height }, { 32, 1, 26 } });
             break;
         case 3:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20113), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20113), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 1 } });
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20117), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20117), { 0, 0, height },
                 { { 0, 27, height }, { 32, 1, 26 } });
             break;
     }
     DrawSupportForSequenceA<TrackElemType::flatToRightBank>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+        session, supportType.wooden, trackSequence, direction, height, session.supportColours);
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -872,34 +872,34 @@ static void MineTrainRCTrackLeftBankToFlat(
     switch (direction)
     {
         case 0:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20112), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20112), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 1 } });
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20116), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20116), { 0, 0, height },
                 { { 0, 27, height }, { 32, 1, 26 } });
             break;
         case 1:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20113), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20113), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 1 } });
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20117), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20117), { 0, 0, height },
                 { { 0, 27, height }, { 32, 1, 26 } });
             break;
         case 2:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20110), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20110), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 1 } });
             break;
         case 3:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20111), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20111), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 1 } });
             break;
     }
     DrawSupportForSequenceA<TrackElemType::leftBankToFlat>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+        session, supportType.wooden, trackSequence, direction, height, session.supportColours);
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -913,34 +913,34 @@ static void MineTrainRCTrackRightBankToFlat(
     switch (direction)
     {
         case 0:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20108), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20108), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 1 } });
             break;
         case 1:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20109), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20109), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 1 } });
             break;
         case 2:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20106), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20106), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 1 } });
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20114), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20114), { 0, 0, height },
                 { { 0, 27, height }, { 32, 1, 26 } });
             break;
         case 3:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20107), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20107), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 1 } });
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20115), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20115), { 0, 0, height },
                 { { 0, 27, height }, { 32, 1, 26 } });
             break;
     }
     DrawSupportForSequenceA<TrackElemType::rightBankToFlat>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+        session, supportType.wooden, trackSequence, direction, height, session.supportColours);
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -957,31 +957,31 @@ static void MineTrainRCTrackBankedLeftQuarterTurn5(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20175), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20175), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 1 } });
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20186), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20186), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20180), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20180), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20185), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20185), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 1 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20170), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20170), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 1 } });
                     break;
             }
             DrawSupportForSequenceA<TrackElemType::bankedLeftQuarterTurn5Tiles>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+                session, supportType.wooden, trackSequence, direction, height, session.supportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -999,27 +999,27 @@ static void MineTrainRCTrackBankedLeftQuarterTurn5(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20174), { 0, 0, height }, { 32, 16, 1 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20174), { 0, 0, height }, { 32, 16, 1 });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20179), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20179), { 0, 0, height },
                         { { 0, 0, height + 27 }, { 32, 16, 1 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20184), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20184), { 0, 0, height },
                         { { 0, 16, height }, { 32, 16, 1 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20169), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20169), { 0, 0, height },
                         { { 0, 16, height }, { 32, 16, 1 } });
                     break;
             }
             DrawSupportForSequenceA<TrackElemType::bankedLeftQuarterTurn5Tiles>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+                session, supportType.wooden, trackSequence, direction, height, session.supportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -1033,28 +1033,28 @@ static void MineTrainRCTrackBankedLeftQuarterTurn5(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20173), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20173), { 0, 0, height },
                         { { 0, 16, height }, { 16, 16, 1 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20178), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20178), { 0, 0, height },
                         { { 16, 16, height + 27 }, { 16, 16, 1 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20183), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20183), { 0, 0, height },
                         { { 16, 0, height }, { 16, 16, 1 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20168), { 0, 0, height }, { 16, 16, 1 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20168), { 0, 0, height }, { 16, 16, 1 });
                     break;
             }
 
             DrawSupportForSequenceA<TrackElemType::bankedLeftQuarterTurn5Tiles>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+                session, supportType.wooden, trackSequence, direction, height, session.supportColours);
 
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -1077,27 +1077,27 @@ static void MineTrainRCTrackBankedLeftQuarterTurn5(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20172), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20172), { 0, 0, height },
                         { { 16, 0, height }, { 16, 32, 1 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20177), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20177), { 0, 0, height },
                         { { 0, 0, height + 27 }, { 16, 32, 1 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20182), { 0, 0, height }, { 16, 32, 1 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20182), { 0, 0, height }, { 16, 32, 1 });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20167), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20167), { 0, 0, height },
                         { { 16, 0, height }, { 16, 32, 1 } });
                     break;
             }
             DrawSupportForSequenceA<TrackElemType::bankedLeftQuarterTurn5Tiles>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+                session, supportType.wooden, trackSequence, direction, height, session.supportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -1111,31 +1111,31 @@ static void MineTrainRCTrackBankedLeftQuarterTurn5(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20171), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20171), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 1 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20176), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20176), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 26 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20181), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20181), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 1 } });
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20187), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20187), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 26 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20166), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20166), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 1 } });
                     break;
             }
             DrawSupportForSequenceA<TrackElemType::bankedLeftQuarterTurn5Tiles>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+                session, supportType.wooden, trackSequence, direction, height, session.supportColours);
             switch (direction)
             {
                 case 2:
@@ -1170,35 +1170,35 @@ static void MineTrainRCTrackLeftBankTo25DegUp(
     switch (direction)
     {
         case 0:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20118), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20118), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 1 } });
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20122), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20122), { 0, 0, height },
                 { { 0, 27, height }, { 32, 1, 34 } });
             break;
         case 1:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20119), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20119), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 1 } });
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20123), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20123), { 0, 0, height },
                 { { 0, 27, height }, { 32, 1, 34 } });
             break;
         case 2:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20120), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20120), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 1 } });
             break;
         case 3:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20121), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20121), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 1 } });
             break;
     }
 
     DrawSupportForSequenceA<TrackElemType::leftBankToUp25>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+        session, supportType.wooden, trackSequence, direction, height, session.supportColours);
 
     if (direction == 0 || direction == 3)
     {
@@ -1220,35 +1220,35 @@ static void MineTrainRCTrackRightBankTo25DegUp(
     switch (direction)
     {
         case 0:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20124), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20124), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 1 } });
             break;
         case 1:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20125), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20125), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 1 } });
             break;
         case 2:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20126), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20126), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 1 } });
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20128), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20128), { 0, 0, height },
                 { { 0, 27, height }, { 32, 1, 34 } });
             break;
         case 3:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20127), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20127), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 1 } });
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20129), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20129), { 0, 0, height },
                 { { 0, 27, height }, { 32, 1, 34 } });
             break;
     }
 
     DrawSupportForSequenceA<TrackElemType::rightBankToUp25>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+        session, supportType.wooden, trackSequence, direction, height, session.supportColours);
 
     if (direction == 0 || direction == 3)
     {
@@ -1270,35 +1270,35 @@ static void MineTrainRCTrack25DegUpToLeftBank(
     switch (direction)
     {
         case 0:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20130), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20130), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 1 } });
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20134), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20134), { 0, 0, height },
                 { { 0, 27, height }, { 32, 1, 34 } });
             break;
         case 1:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20131), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20131), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 1 } });
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20135), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20135), { 0, 0, height },
                 { { 0, 27, height }, { 32, 1, 34 } });
             break;
         case 2:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20132), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20132), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 1 } });
             break;
         case 3:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20133), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20133), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 1 } });
             break;
     }
 
     DrawSupportForSequenceA<TrackElemType::up25ToLeftBank>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+        session, supportType.wooden, trackSequence, direction, height, session.supportColours);
 
     if (direction == 0 || direction == 3)
     {
@@ -1320,35 +1320,35 @@ static void MineTrainRCTrack25DegUpToRightBank(
     switch (direction)
     {
         case 0:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20136), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20136), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 1 } });
             break;
         case 1:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20137), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20137), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 1 } });
             break;
         case 2:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20138), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20138), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 1 } });
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20140), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20140), { 0, 0, height },
                 { { 0, 27, height }, { 32, 1, 34 } });
             break;
         case 3:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20139), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20139), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 1 } });
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20141), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20141), { 0, 0, height },
                 { { 0, 27, height }, { 32, 1, 34 } });
             break;
     }
 
     DrawSupportForSequenceA<TrackElemType::up25ToRightBank>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+        session, supportType.wooden, trackSequence, direction, height, session.supportColours);
 
     if (direction == 0 || direction == 3)
     {
@@ -1402,28 +1402,28 @@ static void MineTrainRCTrackLeftBank(
     switch (direction)
     {
         case 0:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20142), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20142), { 0, 0, height },
                 { { 0, 27, height }, { 32, 1, 26 } });
             break;
         case 1:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20143), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20143), { 0, 0, height },
                 { { 0, 27, height }, { 32, 1, 26 } });
             break;
         case 2:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20144), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20144), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 1 } });
             break;
         case 3:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20145), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20145), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 1 } });
             break;
     }
     DrawSupportForSequenceA<TrackElemType::leftBank>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+        session, supportType.wooden, trackSequence, direction, height, session.supportColours);
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -1448,29 +1448,29 @@ static void MineTrainRCTrackLeftQuarterTurn525DegUp(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20250), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20250), { 0, 0, height },
                         { { 0, 2, height }, { 32, 27, 1 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20255), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20255), { 0, 0, height },
                         { { 0, 2, height }, { 32, 27, 1 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20260), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20260), { 0, 0, height },
                         { { 0, 2, height }, { 32, 27, 1 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20265), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20265), { 0, 0, height },
                         { { 0, 2, height }, { 32, 27, 1 } });
                     break;
             }
 
             DrawSupportForSequenceA<TrackElemType::leftQuarterTurn5TilesUp25>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+                session, supportType.wooden, trackSequence, direction, height, session.supportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -1491,28 +1491,28 @@ static void MineTrainRCTrackLeftQuarterTurn525DegUp(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20251), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20251), { 0, 0, height },
                         { { 0, 0, height }, { 32, 16, 1 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20256), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20256), { 0, 0, height },
                         { { 0, 0, height }, { 32, 16, 1 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20261), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20261), { 0, 0, height },
                         { { 0, 16, height }, { 32, 16, 1 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20266), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20266), { 0, 0, height },
                         { { 0, 16, height }, { 32, 16, 1 } });
                     break;
             }
             DrawSupportForSequenceA<TrackElemType::leftQuarterTurn5TilesUp25>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+                session, supportType.wooden, trackSequence, direction, height, session.supportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -1527,28 +1527,28 @@ static void MineTrainRCTrackLeftQuarterTurn525DegUp(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20252), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20252), { 0, 0, height },
                         { { 0, 16, height }, { 16, 16, 1 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20257), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20257), { 0, 0, height },
                         { { 16, 16, height }, { 16, 16, 1 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20262), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20262), { 0, 0, height },
                         { { 16, 0, height }, { 16, 16, 1 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20267), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20267), { 0, 0, height },
                         { { 0, 0, height }, { 16, 16, 1 } });
                     break;
             }
             DrawSupportForSequenceA<TrackElemType::leftQuarterTurn5TilesUp25>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+                session, supportType.wooden, trackSequence, direction, height, session.supportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -1571,28 +1571,28 @@ static void MineTrainRCTrackLeftQuarterTurn525DegUp(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20253), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20253), { 0, 0, height },
                         { { 16, 0, height }, { 16, 32, 1 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20258), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20258), { 0, 0, height },
                         { { 0, 0, height }, { 16, 32, 1 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20263), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20263), { 0, 0, height },
                         { { 0, 0, height }, { 16, 32, 1 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20268), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20268), { 0, 0, height },
                         { { 16, 0, height }, { 16, 32, 1 } });
                     break;
             }
             DrawSupportForSequenceA<TrackElemType::leftQuarterTurn5TilesUp25>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+                session, supportType.wooden, trackSequence, direction, height, session.supportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -1607,35 +1607,35 @@ static void MineTrainRCTrackLeftQuarterTurn525DegUp(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20254), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20254), { 0, 0, height },
                         { { 2, 0, height }, { 27, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours,
+                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours,
                         WoodenSupportTransitionType::up25Deg, 3);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20259), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20259), { 0, 0, height },
                         { { 2, 0, height }, { 27, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours,
+                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours,
                         WoodenSupportTransitionType::up25Deg, 0);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20264), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20264), { 0, 0, height },
                         { { 2, 0, height }, { 27, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours,
+                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours,
                         WoodenSupportTransitionType::up25Deg, 1);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20269), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20269), { 0, 0, height },
                         { { 2, 0, height }, { 27, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours,
+                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours,
                         WoodenSupportTransitionType::up25Deg, 2);
                     break;
             }
@@ -1665,29 +1665,29 @@ static void MineTrainRCTrackRightQuarterTurn525DegUp(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20230), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20230), { 0, 0, height },
                         { { 0, 2, height }, { 32, 27, 1 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20235), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20235), { 0, 0, height },
                         { { 0, 2, height }, { 32, 27, 1 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20240), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20240), { 0, 0, height },
                         { { 0, 2, height }, { 32, 27, 1 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20245), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20245), { 0, 0, height },
                         { { 0, 2, height }, { 32, 27, 1 } });
                     break;
             }
 
             WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
+                session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.supportColours,
                 WoodenSupportTransitionType::up25Deg);
 
             if (direction == 0 || direction == 3)
@@ -1709,32 +1709,32 @@ static void MineTrainRCTrackRightQuarterTurn525DegUp(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20231), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20231), { 0, 0, height },
                         { { 0, 16, height }, { 32, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20236), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20236), { 0, 0, height },
                         { { 0, 16, height }, { 32, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20241), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20241), { 0, 0, height },
                         { { 0, 0, height }, { 32, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20246), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20246), { 0, 0, height },
                         { { 0, 0, height }, { 32, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -1751,32 +1751,32 @@ static void MineTrainRCTrackRightQuarterTurn525DegUp(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20232), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20232), { 0, 0, height },
                         { { 0, 0, height }, { 16, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20237), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20237), { 0, 0, height },
                         { { 16, 0, height }, { 16, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20242), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20242), { 0, 0, height },
                         { { 16, 16, height }, { 16, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20247), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20247), { 0, 0, height },
                         { { 0, 16, height }, { 16, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -1801,32 +1801,32 @@ static void MineTrainRCTrackRightQuarterTurn525DegUp(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20233), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20233), { 0, 0, height },
                         { { 16, 0, height }, { 16, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20238), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20238), { 0, 0, height },
                         { { 0, 0, height }, { 16, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20243), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20243), { 0, 0, height },
                         { { 0, 0, height }, { 16, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20248), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20248), { 0, 0, height },
                         { { 16, 0, height }, { 16, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -1843,35 +1843,35 @@ static void MineTrainRCTrackRightQuarterTurn525DegUp(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20234), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20234), { 0, 0, height },
                         { { 2, 0, height }, { 27, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours,
+                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours,
                         WoodenSupportTransitionType::up25Deg, 1);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20239), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20239), { 0, 0, height },
                         { { 2, 0, height }, { 27, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours,
+                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours,
                         WoodenSupportTransitionType::up25Deg, 2);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20244), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20244), { 0, 0, height },
                         { { 2, 0, height }, { 27, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours,
+                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours,
                         WoodenSupportTransitionType::up25Deg, 3);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20249), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20249), { 0, 0, height },
                         { { 2, 0, height }, { 27, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours,
+                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours,
                         WoodenSupportTransitionType::up25Deg, 0);
                     break;
             }
@@ -1921,32 +1921,32 @@ static void MineTrainRCTrackSBendLeft(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20270), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20270), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20274), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20274), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20273), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20273), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20277), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20277), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                     break;
             }
             if (direction == 0 || direction == 3)
@@ -1960,30 +1960,30 @@ static void MineTrainRCTrackSBendLeft(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20271), { 0, 0, height }, { 32, 26, 1 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20271), { 0, 0, height }, { 32, 26, 1 });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20275), { 0, 0, height }, { 32, 26, 1 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20275), { 0, 0, height }, { 32, 26, 1 });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20272), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20272), { 0, 0, height },
                         { { 0, 6, height }, { 32, 26, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20276), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20276), { 0, 0, height },
                         { { 0, 6, height }, { 32, 26, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -2000,30 +2000,30 @@ static void MineTrainRCTrackSBendLeft(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20272), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20272), { 0, 0, height },
                         { { 0, 6, height }, { 32, 26, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20276), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20276), { 0, 0, height },
                         { { 0, 6, height }, { 32, 26, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20271), { 0, 0, height }, { 32, 26, 1 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20271), { 0, 0, height }, { 32, 26, 1 });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20275), { 0, 0, height }, { 32, 26, 1 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20275), { 0, 0, height }, { 32, 26, 1 });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -2040,32 +2040,32 @@ static void MineTrainRCTrackSBendLeft(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20273), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20273), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20277), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20277), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20270), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20270), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20274), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20274), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                     break;
             }
             switch (direction)
@@ -2094,32 +2094,32 @@ static void MineTrainRCTrackSBendRight(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20278), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20278), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20282), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20282), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20281), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20281), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20285), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20285), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                     break;
             }
             if (direction == 0 || direction == 3)
@@ -2133,30 +2133,30 @@ static void MineTrainRCTrackSBendRight(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20279), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20279), { 0, 0, height },
                         { { 0, 6, height }, { 32, 26, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20283), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20283), { 0, 0, height },
                         { { 0, 6, height }, { 32, 26, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20280), { 0, 0, height }, { 32, 26, 1 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20280), { 0, 0, height }, { 32, 26, 1 });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20284), { 0, 0, height }, { 32, 26, 1 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20284), { 0, 0, height }, { 32, 26, 1 });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -2173,30 +2173,30 @@ static void MineTrainRCTrackSBendRight(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20280), { 0, 0, height }, { 32, 26, 1 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20280), { 0, 0, height }, { 32, 26, 1 });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20284), { 0, 0, height }, { 32, 26, 1 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20284), { 0, 0, height }, { 32, 26, 1 });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20279), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20279), { 0, 0, height },
                         { { 0, 6, height }, { 32, 26, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20283), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20283), { 0, 0, height },
                         { { 0, 6, height }, { 32, 26, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -2213,32 +2213,32 @@ static void MineTrainRCTrackSBendRight(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20281), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20281), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20285), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20285), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20278), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20278), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20282), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20282), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                     break;
             }
             switch (direction)
@@ -2267,32 +2267,32 @@ static void MineTrainRCTrackLeftQuarterTurn3(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20193), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20193), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20196), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20196), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20199), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20199), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20190), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20190), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                     break;
             }
             if (direction == 0 || direction == 3)
@@ -2304,7 +2304,7 @@ static void MineTrainRCTrackLeftQuarterTurn3(
             break;
         case 1:
             WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner1, direction, height, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner1, direction, height, session.supportColours);
 
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
@@ -2312,22 +2312,22 @@ static void MineTrainRCTrackLeftQuarterTurn3(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20192), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20192), { 0, 0, height },
                         { { 16, 0, height }, { 16, 16, 1 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20195), { 0, 0, height }, { 16, 16, 1 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20195), { 0, 0, height }, { 16, 16, 1 });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20198), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20198), { 0, 0, height },
                         { { 0, 16, height }, { 16, 16, 1 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20189), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20189), { 0, 0, height },
                         { { 16, 16, height }, { 16, 16, 1 } });
                     break;
             }
@@ -2343,32 +2343,32 @@ static void MineTrainRCTrackLeftQuarterTurn3(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20191), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20191), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20194), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20194), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20197), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20197), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20188), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20188), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                     break;
             }
             switch (direction)
@@ -2406,35 +2406,35 @@ static void MineTrainRCTrackLeftQuarterTurn3Bank(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20205), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20205), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 1 } });
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20212), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20212), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20208), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20208), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20211), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20211), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20202), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20202), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                     break;
             }
             if (direction == 0 || direction == 3)
@@ -2446,7 +2446,7 @@ static void MineTrainRCTrackLeftQuarterTurn3Bank(
             break;
         case 1:
             WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner1, direction, height, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner1, direction, height, session.supportColours);
 
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
@@ -2454,23 +2454,23 @@ static void MineTrainRCTrackLeftQuarterTurn3Bank(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20204), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20204), { 0, 0, height },
                         { { 16, 0, height }, { 16, 16, 1 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20207), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20207), { 0, 0, height },
                         { { 0, 0, height + 27 }, { 16, 16, 1 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20210), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20210), { 0, 0, height },
                         { { 0, 16, height }, { 16, 16, 1 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20201), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20201), { 0, 0, height },
                         { { 16, 16, height }, { 16, 16, 1 } });
                     break;
             }
@@ -2486,35 +2486,35 @@ static void MineTrainRCTrackLeftQuarterTurn3Bank(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20203), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20203), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20206), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20206), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 26 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20209), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20209), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 1 } });
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20213), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20213), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 26 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20200), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20200), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                     break;
             }
             switch (direction)
@@ -2552,28 +2552,28 @@ static void MineTrainRCTrackLeftQuarterTurn325DegUp(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20225), { 0, 6, height }, { 32, 20, 1 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20225), { 0, 6, height }, { 32, 20, 1 });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20227), { 0, 6, height }, { 32, 20, 1 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20227), { 0, 6, height }, { 32, 20, 1 });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20229), { 0, 6, height }, { 32, 20, 1 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20229), { 0, 6, height }, { 32, 20, 1 });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20223), { 0, 6, height }, { 32, 20, 1 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20223), { 0, 6, height }, { 32, 20, 1 });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                     break;
             }
             if (direction == 0 || direction == 3)
@@ -2585,7 +2585,7 @@ static void MineTrainRCTrackLeftQuarterTurn325DegUp(
             break;
         case 1:
             WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner1, direction, height, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner1, direction, height, session.supportColours);
 
             PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
@@ -2602,28 +2602,28 @@ static void MineTrainRCTrackLeftQuarterTurn325DegUp(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20224), { 6, 0, height }, { 20, 32, 1 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20224), { 6, 0, height }, { 20, 32, 1 });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20226), { 6, 0, height }, { 20, 32, 1 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20226), { 6, 0, height }, { 20, 32, 1 });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20228), { 6, 0, height }, { 20, 32, 1 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20228), { 6, 0, height }, { 20, 32, 1 });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20222), { 6, 0, height }, { 20, 32, 1 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20222), { 6, 0, height }, { 20, 32, 1 });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                     break;
             }
             switch (direction)
@@ -2652,28 +2652,28 @@ static void MineTrainRCTrackRightQuarterTurn325DegUp(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20214), { 0, 6, height }, { 32, 20, 1 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20214), { 0, 6, height }, { 32, 20, 1 });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20216), { 0, 6, height }, { 32, 20, 1 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20216), { 0, 6, height }, { 32, 20, 1 });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20218), { 0, 6, height }, { 32, 20, 1 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20218), { 0, 6, height }, { 32, 20, 1 });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20220), { 0, 6, height }, { 32, 20, 1 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20220), { 0, 6, height }, { 32, 20, 1 });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                     break;
             }
             if (direction == 0 || direction == 3)
@@ -2685,7 +2685,7 @@ static void MineTrainRCTrackRightQuarterTurn325DegUp(
             break;
         case 1:
             WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height, session.supportColours);
 
             PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
@@ -2703,28 +2703,28 @@ static void MineTrainRCTrackRightQuarterTurn325DegUp(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20215), { 6, 0, height }, { 20, 32, 1 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20215), { 6, 0, height }, { 20, 32, 1 });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20217), { 6, 0, height }, { 20, 32, 1 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20217), { 6, 0, height }, { 20, 32, 1 });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20219), { 6, 0, height }, { 20, 32, 1 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20219), { 6, 0, height }, { 20, 32, 1 });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20221), { 6, 0, height }, { 20, 32, 1 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20221), { 6, 0, height }, { 20, 32, 1 });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                     break;
             }
             switch (direction)
@@ -2773,35 +2773,35 @@ static void MineTrainRCTrackLeftHalfBankedHelixUpSmall(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20305), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20305), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 1 } });
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20312), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20312), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20308), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20308), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20311), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20311), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20302), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20302), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                     break;
             }
             if (direction == 0 || direction == 3)
@@ -2826,7 +2826,7 @@ static void MineTrainRCTrackLeftHalfBankedHelixUpSmall(
             break;
         case 1:
             WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner1, direction, height, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner1, direction, height, session.supportColours);
 
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
@@ -2834,23 +2834,23 @@ static void MineTrainRCTrackLeftHalfBankedHelixUpSmall(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20304), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20304), { 0, 0, height },
                         { { 16, 0, height }, { 16, 16, 1 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20307), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20307), { 0, 0, height },
                         { { 0, 0, height + 27 }, { 16, 16, 1 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20310), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20310), { 0, 0, height },
                         { { 0, 16, height }, { 16, 16, 1 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20301), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20301), { 0, 0, height },
                         { { 16, 16, height }, { 16, 16, 1 } });
                     break;
             }
@@ -2866,35 +2866,35 @@ static void MineTrainRCTrackLeftHalfBankedHelixUpSmall(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20303), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20303), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20306), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20306), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 26 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20309), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20309), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 1 } });
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20313), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20313), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 26 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20300), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20300), { 0, 0, height },
                         { { 6, 0, height + 8 }, { 20, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                     break;
             }
             switch (direction)
@@ -2926,35 +2926,35 @@ static void MineTrainRCTrackLeftHalfBankedHelixUpSmall(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20302), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20302), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20305), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20305), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 1 } });
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20312), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20312), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 26 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20308), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20308), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 26 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20311), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20311), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                     break;
             }
             switch (direction)
@@ -2984,30 +2984,30 @@ static void MineTrainRCTrackLeftHalfBankedHelixUpSmall(
             break;
         case 5:
             WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height, session.supportColours);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 6:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20301), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20301), { 0, 0, height },
                         { { 16, 16, height }, { 16, 16, 1 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20304), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20304), { 0, 0, height },
                         { { 0, 16, height }, { 16, 16, 1 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20307), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20307), { 0, 0, height },
                         { { 0, 0, height + 27 }, { 16, 16, 1 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20310), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20310), { 0, 0, height },
                         { { 16, 0, height }, { 16, 16, 1 } });
                     break;
             }
@@ -3024,35 +3024,35 @@ static void MineTrainRCTrackLeftHalfBankedHelixUpSmall(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20300), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20300), { 0, 0, height },
                         { { 0, 6, height + 8 }, { 32, 20, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20303), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20303), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20306), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20306), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20309), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20309), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 1 } });
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20313), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20313), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                     break;
             }
             if (direction == 0 || direction == 3)
@@ -3089,35 +3089,35 @@ static void MineTrainRCTrackRightHalfBankedHelixUpSmall(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20286), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20286), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20289), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20289), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20292), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20292), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20295), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20295), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 1 } });
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20299), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20299), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                     break;
             }
             if (direction == 0 || direction == 3)
@@ -3142,7 +3142,7 @@ static void MineTrainRCTrackRightHalfBankedHelixUpSmall(
             break;
         case 1:
             WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height, session.supportColours);
 
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
@@ -3150,23 +3150,23 @@ static void MineTrainRCTrackRightHalfBankedHelixUpSmall(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20287), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20287), { 0, 0, height },
                         { { 16, 16, height }, { 16, 16, 1 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20290), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20290), { 0, 0, height },
                         { { 0, 16, height }, { 16, 16, 1 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20293), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20293), { 0, 0, height },
                         { { 0, 0, height + 27 }, { 16, 16, 1 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20296), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20296), { 0, 0, height },
                         { { 16, 0, height }, { 16, 16, 1 } });
                     break;
             }
@@ -3183,35 +3183,35 @@ static void MineTrainRCTrackRightHalfBankedHelixUpSmall(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20288), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20288), { 0, 0, height },
                         { { 6, 0, height + 8 }, { 20, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20291), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20291), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 1 } });
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20298), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20298), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 26 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20294), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20294), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 26 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20297), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20297), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                     break;
             }
             switch (direction)
@@ -3243,35 +3243,35 @@ static void MineTrainRCTrackRightHalfBankedHelixUpSmall(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20289), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20289), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20292), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20292), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 26 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20295), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20295), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 1 } });
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20299), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20299), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 26 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20286), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20286), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                     break;
             }
             switch (direction)
@@ -3301,7 +3301,7 @@ static void MineTrainRCTrackRightHalfBankedHelixUpSmall(
             break;
         case 5:
             WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner1, direction, height, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner1, direction, height, session.supportColours);
 
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
@@ -3309,23 +3309,23 @@ static void MineTrainRCTrackRightHalfBankedHelixUpSmall(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20290), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20290), { 0, 0, height },
                         { { 16, 0, height }, { 16, 16, 1 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20293), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20293), { 0, 0, height },
                         { { 0, 0, height + 27 }, { 16, 16, 1 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20296), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20296), { 0, 0, height },
                         { { 0, 16, height }, { 16, 16, 1 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20287), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20287), { 0, 0, height },
                         { { 16, 16, height }, { 16, 16, 1 } });
                     break;
             }
@@ -3341,35 +3341,35 @@ static void MineTrainRCTrackRightHalfBankedHelixUpSmall(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20291), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20291), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 1 } });
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20298), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20298), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20294), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20294), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20297), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20297), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20288), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20288), { 0, 0, height },
                         { { 0, 6, height + 8 }, { 32, 20, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                     break;
             }
             if (direction == 0 || direction == 3)
@@ -3436,35 +3436,35 @@ static void MineTrainRCTrackLeftHalfBankedHelixUpLarge(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20345), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20345), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 1 } });
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20356), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20356), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20350), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20350), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20355), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20355), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20340), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20340), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                     break;
             }
             if (direction == 0 || direction == 3)
@@ -3499,32 +3499,32 @@ static void MineTrainRCTrackLeftHalfBankedHelixUpLarge(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20344), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20344), { 0, 0, height },
                         { { 0, 0, height }, { 32, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20349), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20349), { 0, 0, height },
                         { { 0, 0, height + 27 }, { 32, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20354), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20354), { 0, 0, height },
                         { { 0, 16, height }, { 32, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20339), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20339), { 0, 0, height },
                         { { 0, 16, height }, { 32, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -3541,32 +3541,32 @@ static void MineTrainRCTrackLeftHalfBankedHelixUpLarge(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20343), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20343), { 0, 0, height },
                         { { 0, 16, height }, { 16, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20348), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20348), { 0, 0, height },
                         { { 16, 16, height + 27 }, { 16, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20353), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20353), { 0, 0, height },
                         { { 16, 0, height }, { 16, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20338), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20338), { 0, 0, height },
                         { { 0, 0, height }, { 16, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -3595,32 +3595,32 @@ static void MineTrainRCTrackLeftHalfBankedHelixUpLarge(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20342), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20342), { 0, 0, height },
                         { { 16, 0, height }, { 16, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20347), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20347), { 0, 0, height },
                         { { 0, 0, height + 27 }, { 16, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20352), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20352), { 0, 0, height },
                         { { 0, 0, height }, { 16, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20337), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20337), { 0, 0, height },
                         { { 16, 0, height }, { 16, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -3637,35 +3637,35 @@ static void MineTrainRCTrackLeftHalfBankedHelixUpLarge(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20341), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20341), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20346), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20346), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 26 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20351), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20351), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 1 } });
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20357), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20357), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 26 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20336), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20336), { 0, 0, height },
                         { { 6, 0, height + 8 }, { 20, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                     break;
             }
             switch (direction)
@@ -3697,35 +3697,35 @@ static void MineTrainRCTrackLeftHalfBankedHelixUpLarge(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20340), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20340), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20345), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20345), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 1 } });
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20356), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20356), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 26 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20350), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20350), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 26 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20355), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20355), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                     break;
             }
             switch (direction)
@@ -3765,32 +3765,32 @@ static void MineTrainRCTrackLeftHalfBankedHelixUpLarge(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20339), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20339), { 0, 0, height },
                         { { 16, 0, height }, { 16, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20344), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20344), { 0, 0, height },
                         { { 0, 0, height }, { 16, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20349), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20349), { 0, 0, height },
                         { { 0, 0, height + 27 }, { 16, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20354), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20354), { 0, 0, height },
                         { { 16, 0, height }, { 16, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -3807,32 +3807,32 @@ static void MineTrainRCTrackLeftHalfBankedHelixUpLarge(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20338), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20338), { 0, 0, height },
                         { { 0, 0, height }, { 16, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20343), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20343), { 0, 0, height },
                         { { 16, 0, height }, { 16, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20348), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20348), { 0, 0, height },
                         { { 16, 16, height + 27 }, { 16, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20353), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20353), { 0, 0, height },
                         { { 0, 16, height }, { 16, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -3861,32 +3861,32 @@ static void MineTrainRCTrackLeftHalfBankedHelixUpLarge(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20337), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20337), { 0, 0, height },
                         { { 0, 16, height }, { 32, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20342), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20342), { 0, 0, height },
                         { { 0, 16, height }, { 32, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20347), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20347), { 0, 0, height },
                         { { 0, 0, height + 27 }, { 32, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20352), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20352), { 0, 0, height },
                         { { 0, 0, height }, { 32, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -3903,35 +3903,35 @@ static void MineTrainRCTrackLeftHalfBankedHelixUpLarge(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20336), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20336), { 0, 0, height },
                         { { 0, 6, height + 8 }, { 32, 20, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20341), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20341), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20346), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20346), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20351), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20351), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 1 } });
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20357), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20357), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                     break;
             }
             if (direction == 0 || direction == 3)
@@ -3968,35 +3968,35 @@ static void MineTrainRCTrackRightHalfBankedHelixUpLarge(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20314), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20314), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20319), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20319), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20324), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20324), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20329), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20329), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 1 } });
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20335), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20335), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                     break;
             }
             if (direction == 0 || direction == 3)
@@ -4031,32 +4031,32 @@ static void MineTrainRCTrackRightHalfBankedHelixUpLarge(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20315), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20315), { 0, 0, height },
                         { { 0, 16, height }, { 32, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20320), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20320), { 0, 0, height },
                         { { 0, 16, height }, { 32, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20325), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20325), { 0, 0, height },
                         { { 0, 0, height + 27 }, { 32, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20330), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20330), { 0, 0, height },
                         { { 0, 0, height }, { 32, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -4073,32 +4073,32 @@ static void MineTrainRCTrackRightHalfBankedHelixUpLarge(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20316), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20316), { 0, 0, height },
                         { { 0, 0, height }, { 16, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20321), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20321), { 0, 0, height },
                         { { 16, 0, height }, { 16, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20326), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20326), { 0, 0, height },
                         { { 16, 16, height + 27 }, { 16, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20331), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20331), { 0, 0, height },
                         { { 0, 16, height }, { 16, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -4127,32 +4127,32 @@ static void MineTrainRCTrackRightHalfBankedHelixUpLarge(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20317), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20317), { 0, 0, height },
                         { { 16, 0, height }, { 16, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20322), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20322), { 0, 0, height },
                         { { 0, 0, height }, { 16, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20327), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20327), { 0, 0, height },
                         { { 0, 0, height + 27 }, { 16, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20332), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20332), { 0, 0, height },
                         { { 16, 0, height }, { 16, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -4169,35 +4169,35 @@ static void MineTrainRCTrackRightHalfBankedHelixUpLarge(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20318), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20318), { 0, 0, height },
                         { { 6, 0, height + 8 }, { 20, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20323), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20323), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 1 } });
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20334), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20334), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 26 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20328), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20328), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 26 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20333), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20333), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                     break;
             }
             switch (direction)
@@ -4229,35 +4229,35 @@ static void MineTrainRCTrackRightHalfBankedHelixUpLarge(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20319), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20319), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20324), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20324), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 26 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20329), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20329), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 1 } });
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20335), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20335), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 26 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20314), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20314), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                     break;
             }
             switch (direction)
@@ -4297,32 +4297,32 @@ static void MineTrainRCTrackRightHalfBankedHelixUpLarge(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20320), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20320), { 0, 0, height },
                         { { 16, 0, height }, { 16, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20325), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20325), { 0, 0, height },
                         { { 0, 0, height + 27 }, { 16, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20330), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20330), { 0, 0, height },
                         { { 0, 0, height }, { 16, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20315), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20315), { 0, 0, height },
                         { { 16, 0, height }, { 16, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -4339,32 +4339,32 @@ static void MineTrainRCTrackRightHalfBankedHelixUpLarge(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20321), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20321), { 0, 0, height },
                         { { 0, 16, height }, { 16, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20326), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20326), { 0, 0, height },
                         { { 16, 16, height + 27 }, { 16, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20331), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20331), { 0, 0, height },
                         { { 16, 0, height }, { 16, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20316), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20316), { 0, 0, height },
                         { { 0, 0, height }, { 16, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -4393,32 +4393,32 @@ static void MineTrainRCTrackRightHalfBankedHelixUpLarge(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20322), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20322), { 0, 0, height },
                         { { 0, 0, height }, { 32, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20327), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20327), { 0, 0, height },
                         { { 0, 0, height + 27 }, { 32, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20332), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20332), { 0, 0, height },
                         { { 0, 16, height }, { 32, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20317), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20317), { 0, 0, height },
                         { { 0, 16, height }, { 32, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -4435,35 +4435,35 @@ static void MineTrainRCTrackRightHalfBankedHelixUpLarge(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20323), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20323), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 1 } });
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20334), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20334), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20328), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20328), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20333), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20333), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20318), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20318), { 0, 0, height },
                         { { 0, 6, height + 8 }, { 32, 20, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                     break;
             }
             if (direction == 0 || direction == 3)
@@ -4528,17 +4528,17 @@ static void MineTrainRCTrackBrakes(
     {
         case 0:
         case 2:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20058), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20058), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 1 } });
-            WoodenASupportsPaintSetup(session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+            WoodenASupportsPaintSetup(session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
             break;
         case 1:
         case 3:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20059), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20059), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 1 } });
-            WoodenASupportsPaintSetup(session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+            WoodenASupportsPaintSetup(session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
             break;
     }
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -4554,28 +4554,28 @@ static void MineTrainRCTrackOnRidePhoto(
     switch (direction)
     {
         case 0:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20052), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20052), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 1 } });
-            WoodenASupportsPaintSetup(session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+            WoodenASupportsPaintSetup(session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
             break;
         case 1:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20053), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20053), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 1 } });
-            WoodenASupportsPaintSetup(session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+            WoodenASupportsPaintSetup(session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
             break;
         case 2:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20052), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20052), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 1 } });
-            WoodenASupportsPaintSetup(session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+            WoodenASupportsPaintSetup(session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
             break;
         case 3:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(20053), { 0, 0, height },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(20053), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 1 } });
-            WoodenASupportsPaintSetup(session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+            WoodenASupportsPaintSetup(session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
             break;
     }
     TrackPaintUtilOnridePhotoPaint2(session, direction, trackElement, height, kGeneralSupportHeightOnRidePhoto, 2);
@@ -4592,32 +4592,32 @@ static void MineTrainRCTrackLeftEighthToDiag(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20452), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20452), { 0, 0, height },
                         { { 0, 0, height }, { 32, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20456), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20456), { 0, 0, height },
                         { { 0, 0, height }, { 32, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20460), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20460), { 0, 0, height },
                         { { 0, 0, height }, { 32, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20464), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20464), { 0, 0, height },
                         { { 0, 0, height }, { 32, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                     break;
             }
             if (direction == 0 || direction == 3)
@@ -4631,32 +4631,32 @@ static void MineTrainRCTrackLeftEighthToDiag(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20453), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20453), { 0, 0, height },
                         { { 0, 0, height }, { 32, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20457), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20457), { 0, 0, height },
                         { { 0, 0, height }, { 34, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20461), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20461), { 0, 0, height },
                         { { 0, 16, height }, { 32, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20465), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20465), { 0, 0, height },
                         { { 0, 16, height }, { 32, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -4666,32 +4666,32 @@ static void MineTrainRCTrackLeftEighthToDiag(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20454), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20454), { 0, 0, height },
                         { { 0, 16, height }, { 16, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20458), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20458), { 0, 0, height },
                         { { 16, 16, height }, { 16, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20462), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20462), { 0, 0, height },
                         { { 16, 0, height }, { 16, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20466), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20466), { 0, 0, height },
                         { { 0, 0, height }, { 16, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -4699,7 +4699,7 @@ static void MineTrainRCTrackLeftEighthToDiag(
             break;
         case 3:
             WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner3, direction, height, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner3, direction, height, session.supportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -4708,23 +4708,23 @@ static void MineTrainRCTrackLeftEighthToDiag(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20455), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20455), { 0, 0, height },
                         { { 16, 16, height }, { 16, 16, 1 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20459), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20459), { 0, 0, height },
                         { { 0, 16, height }, { 16, 18, 1 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20463), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20463), { 0, 0, height },
                         { { 0, 0, height }, { 16, 16, 1 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20467), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20467), { 0, 0, height },
                         { { 16, 0, height }, { 16, 16, 1 } });
                     break;
             }
@@ -4745,32 +4745,32 @@ static void MineTrainRCTrackRightEighthToDiag(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20436), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20436), { 0, 0, height },
                         { { 0, 0, height }, { 32, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20440), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20440), { 0, 0, height },
                         { { 0, 0, height }, { 32, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20444), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20444), { 0, 0, height },
                         { { 0, 0, height }, { 32, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20448), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20448), { 0, 0, height },
                         { { 0, 0, height }, { 32, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                     break;
             }
             if (direction == 0 || direction == 3)
@@ -4784,32 +4784,32 @@ static void MineTrainRCTrackRightEighthToDiag(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20437), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20437), { 0, 0, height },
                         { { 0, 16, height }, { 32, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20441), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20441), { 0, 0, height },
                         { { 0, 16, height }, { 32, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20445), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20445), { 0, 0, height },
                         { { 0, 0, height }, { 34, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20449), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20449), { 0, 0, height },
                         { { 0, 0, height }, { 32, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -4819,32 +4819,32 @@ static void MineTrainRCTrackRightEighthToDiag(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20438), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20438), { 0, 0, height },
                         { { 0, 0, height }, { 16, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20442), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20442), { 0, 0, height },
                         { { 16, 0, height }, { 16, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20446), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20446), { 0, 0, height },
                         { { 16, 16, height }, { 16, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20450), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20450), { 0, 0, height },
                         { { 0, 16, height }, { 16, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -4852,7 +4852,7 @@ static void MineTrainRCTrackRightEighthToDiag(
             break;
         case 3:
             WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height, session.supportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -4861,23 +4861,23 @@ static void MineTrainRCTrackRightEighthToDiag(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20439), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20439), { 0, 0, height },
                         { { 16, 0, height }, { 16, 16, 1 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20443), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20443), { 0, 0, height },
                         { { 0, 0, height }, { 16, 16, 1 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20447), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20447), { 0, 0, height },
                         { { 0, 16, height }, { 16, 18, 1 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20451), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20451), { 0, 0, height },
                         { { 16, 16, height }, { 16, 16, 1 } });
                     break;
             }
@@ -4916,32 +4916,32 @@ static void MineTrainRCTrackLeftEighthBankToDiag(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20484), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20484), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20488), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20488), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20492), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20492), { 0, 0, height },
                         { { 0, 0, height }, { 32, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20496), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20496), { 0, 0, height },
                         { { 0, 0, height }, { 32, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                     break;
             }
             if (direction == 0 || direction == 3)
@@ -4955,32 +4955,32 @@ static void MineTrainRCTrackLeftEighthBankToDiag(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20485), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20485), { 0, 0, height },
                         { { 0, 0, height }, { 32, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20489), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20489), { 0, 0, height },
                         { { 0, 0, height + 27 }, { 34, 16, 0 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20493), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20493), { 0, 0, height },
                         { { 0, 16, height }, { 32, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20497), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20497), { 0, 0, height },
                         { { 0, 16, height }, { 32, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -4990,32 +4990,32 @@ static void MineTrainRCTrackLeftEighthBankToDiag(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20486), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20486), { 0, 0, height },
                         { { 0, 16, height }, { 16, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20490), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20490), { 0, 0, height },
                         { { 16, 16, height + 27 }, { 16, 16, 0 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20494), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20494), { 0, 0, height },
                         { { 16, 0, height }, { 16, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20498), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20498), { 0, 0, height },
                         { { 0, 0, height }, { 16, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -5023,7 +5023,7 @@ static void MineTrainRCTrackLeftEighthBankToDiag(
             break;
         case 3:
             WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner3, direction, height, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner3, direction, height, session.supportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -5032,23 +5032,23 @@ static void MineTrainRCTrackLeftEighthBankToDiag(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20487), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20487), { 0, 0, height },
                         { { 16, 16, height }, { 16, 16, 1 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20491), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20491), { 0, 0, height },
                         { { 0, 16, height + 27 }, { 16, 18, 0 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20495), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20495), { 0, 0, height },
                         { { 0, 0, height }, { 16, 16, 1 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20499), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20499), { 0, 0, height },
                         { { 16, 0, height }, { 16, 16, 1 } });
                     break;
             }
@@ -5069,32 +5069,32 @@ static void MineTrainRCTrackRightEighthBankToDiag(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20468), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20468), { 0, 0, height },
                         { { 0, 0, height }, { 32, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20472), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20472), { 0, 0, height },
                         { { 0, 0, height }, { 32, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20476), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20476), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20480), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20480), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                     break;
             }
             if (direction == 0 || direction == 3)
@@ -5108,32 +5108,32 @@ static void MineTrainRCTrackRightEighthBankToDiag(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20469), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20469), { 0, 0, height },
                         { { 0, 16, height }, { 32, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20473), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20473), { 0, 0, height },
                         { { 0, 16, height }, { 32, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20477), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20477), { 0, 0, height },
                         { { 0, 0, height + 27 }, { 34, 16, 0 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20481), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20481), { 0, 0, height },
                         { { 0, 0, height }, { 32, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -5143,32 +5143,32 @@ static void MineTrainRCTrackRightEighthBankToDiag(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20470), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20470), { 0, 0, height },
                         { { 0, 0, height }, { 16, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20474), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20474), { 0, 0, height },
                         { { 16, 0, height }, { 16, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20478), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20478), { 0, 0, height },
                         { { 4, 4, height + 27 }, { 28, 28, 0 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20482), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20482), { 0, 0, height },
                         { { 0, 16, height }, { 16, 16, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                        session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -5176,7 +5176,7 @@ static void MineTrainRCTrackRightEighthBankToDiag(
             break;
         case 3:
             WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height, session.supportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -5185,23 +5185,23 @@ static void MineTrainRCTrackRightEighthBankToDiag(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20471), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20471), { 0, 0, height },
                         { { 16, 0, height }, { 16, 16, 1 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20475), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20475), { 0, 0, height },
                         { { 0, 0, height }, { 16, 16, 1 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20479), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20479), { 0, 0, height },
                         { { 0, 16, height + 27 }, { 16, 18, 0 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20483), { 0, 0, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20483), { 0, 0, height },
                         { { 16, 16, height }, { 16, 16, 1 } });
                     break;
             }
@@ -5247,11 +5247,11 @@ static void MineTrainRCTrackDiagFlat(
     {
         case 1:
             WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height, session.supportColours);
             break;
         case 2:
             WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height, session.supportColours);
             break;
     }
 
@@ -5270,7 +5270,7 @@ static void MineTrainRCTrackDiagBrakes(
     if (MineTrainRCDiagonalSupports[trackSequence][direction] != WoodenSupportSubType::null)
     {
         WoodenASupportsPaintSetup(
-            session, supportType.wooden, MineTrainRCDiagonalSupports[trackSequence][0], height, session.SupportColours);
+            session, supportType.wooden, MineTrainRCDiagonalSupports[trackSequence][0], height, session.supportColours);
     }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -5288,7 +5288,7 @@ static void MineTrainRCTrackDiagBlockBrakes(
     if (MineTrainRCDiagonalSupports[trackSequence][direction] != WoodenSupportSubType::null)
     {
         WoodenASupportsPaintSetup(
-            session, supportType.wooden, MineTrainRCDiagonalSupports[trackSequence][direction], height, session.SupportColours);
+            session, supportType.wooden, MineTrainRCDiagonalSupports[trackSequence][direction], height, session.supportColours);
     }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -5306,8 +5306,8 @@ static void MineTrainRCTrackDiag25DegUp(
             if (direction == 3)
             {
                 ImageIndex imageIndex = trackElement.HasChain() ? 20401 : 20373;
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(imageIndex), { -16, -16, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(imageIndex), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -5316,8 +5316,8 @@ static void MineTrainRCTrackDiag25DegUp(
             if (direction == 0)
             {
                 ImageIndex imageIndex = trackElement.HasChain() ? 20398 : 20370;
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(imageIndex), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(imageIndex), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -5326,8 +5326,8 @@ static void MineTrainRCTrackDiag25DegUp(
             if (direction == 2)
             {
                 ImageIndex imageIndex = trackElement.HasChain() ? 20400 : 20372;
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(imageIndex), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(imageIndex), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -5336,8 +5336,8 @@ static void MineTrainRCTrackDiag25DegUp(
             if (direction == 1)
             {
                 ImageIndex imageIndex = trackElement.HasChain() ? 20399 : 20371;
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(imageIndex), { -16, -16, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(imageIndex), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -5345,7 +5345,7 @@ static void MineTrainRCTrackDiag25DegUp(
     }
 
     DrawSupportForSequenceA<TrackElemType::diagUp25>(
-        session, supportType.wooden, trackSequence, direction, height + 16, session.SupportColours);
+        session, supportType.wooden, trackSequence, direction, height + 16, session.supportColours);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
@@ -5360,8 +5360,8 @@ static void MineTrainRCTrackDiag60DegUp(
         case 0:
             if (direction == 3)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20385), { -16, -16, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20385), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -5370,13 +5370,13 @@ static void MineTrainRCTrackDiag60DegUp(
         case 1:
             if (direction == 0)
             {
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(20382), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(20382), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
             WoodenBSupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height + 16, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height + 16, session.supportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 104);
@@ -5384,13 +5384,13 @@ static void MineTrainRCTrackDiag60DegUp(
         case 2:
             if (direction == 2)
             {
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(20384), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(20384), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
             WoodenBSupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height + 16, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height + 16, session.supportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 104);
@@ -5398,8 +5398,8 @@ static void MineTrainRCTrackDiag60DegUp(
         case 3:
             if (direction == 1)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20383), { -16, -16, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20383), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -5420,8 +5420,8 @@ static void MineTrainRCTrackDiagFlatTo25DegUp(
             if (direction == 3)
             {
                 ImageIndex imageIndex = trackElement.HasChain() ? 20393 : 20365;
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(imageIndex), { -16, -16, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(imageIndex), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -5432,13 +5432,13 @@ static void MineTrainRCTrackDiagFlatTo25DegUp(
             if (direction == 0)
             {
                 ImageIndex imageIndex = trackElement.HasChain() ? 20390 : 20362;
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(imageIndex), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(imageIndex), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
             WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height, session.supportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -5447,13 +5447,13 @@ static void MineTrainRCTrackDiagFlatTo25DegUp(
             if (direction == 2)
             {
                 ImageIndex imageIndex = trackElement.HasChain() ? 20392 : 20364;
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(imageIndex), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(imageIndex), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
             WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height, session.supportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -5462,8 +5462,8 @@ static void MineTrainRCTrackDiagFlatTo25DegUp(
             if (direction == 1)
             {
                 ImageIndex imageIndex = trackElement.HasChain() ? 20391 : 20363;
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(imageIndex), { -16, -16, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(imageIndex), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -5483,8 +5483,8 @@ static void MineTrainRCTrackDiag25DegUpTo60DegUp(
         case 0:
             if (direction == 3)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20377), { -16, -16, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20377), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -5494,13 +5494,13 @@ static void MineTrainRCTrackDiag25DegUpTo60DegUp(
         case 1:
             if (direction == 0)
             {
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(20374), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(20374), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
             WoodenBSupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height + 16, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height + 16, session.supportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -5508,13 +5508,13 @@ static void MineTrainRCTrackDiag25DegUpTo60DegUp(
         case 2:
             if (direction == 2)
             {
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(20376), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(20376), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
             WoodenBSupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height + 16, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height + 16, session.supportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -5522,8 +5522,8 @@ static void MineTrainRCTrackDiag25DegUpTo60DegUp(
         case 3:
             if (direction == 1)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20375), { -16, -16, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20375), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -5544,8 +5544,8 @@ static void MineTrainRCTrackDiag60DegUpTo25DegUp(
             switch (direction)
             {
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20381), { -16, -16, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20381), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 1 } });
                     break;
             }
@@ -5555,13 +5555,13 @@ static void MineTrainRCTrackDiag60DegUpTo25DegUp(
         case 1:
             if (direction == 0)
             {
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(20378), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(20378), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
             WoodenBSupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height + 16, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height + 16, session.supportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -5569,13 +5569,13 @@ static void MineTrainRCTrackDiag60DegUpTo25DegUp(
         case 2:
             if (direction == 2)
             {
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(20380), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(20380), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
             WoodenBSupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height + 16, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height + 16, session.supportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -5583,8 +5583,8 @@ static void MineTrainRCTrackDiag60DegUpTo25DegUp(
         case 3:
             if (direction == 1)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20379), { -16, -16, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20379), { -16, -16, height },
                     { { 0, 0, height }, { 16, 16, 1 } });
             }
 
@@ -5605,8 +5605,8 @@ static void MineTrainRCTrackDiag25DegUpToFlat(
             if (direction == 3)
             {
                 ImageIndex imageIndex = trackElement.HasChain() ? 20397 : 20369;
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(imageIndex), { -16, -16, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(imageIndex), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -5617,13 +5617,13 @@ static void MineTrainRCTrackDiag25DegUpToFlat(
             if (direction == 0)
             {
                 ImageIndex imageIndex = trackElement.HasChain() ? 20394 : 20366;
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(imageIndex), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(imageIndex), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
             WoodenBSupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height + 16, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height + 16, session.supportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 56);
@@ -5632,13 +5632,13 @@ static void MineTrainRCTrackDiag25DegUpToFlat(
             if (direction == 2)
             {
                 ImageIndex imageIndex = trackElement.HasChain() ? 20396 : 20368;
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(imageIndex), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(imageIndex), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
             WoodenBSupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height + 16, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height + 16, session.supportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 56);
@@ -5647,8 +5647,8 @@ static void MineTrainRCTrackDiag25DegUpToFlat(
             if (direction == 1)
             {
                 ImageIndex imageIndex = trackElement.HasChain() ? 20395 : 20367;
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(imageIndex), { -16, -16, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(imageIndex), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -5669,8 +5669,8 @@ static void MineTrainRCTrackDiag25DegDown(
             if (direction == 3)
             {
                 ImageIndex imageIndex = trackElement.HasChain() ? 20399 : 20371;
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(imageIndex), { -16, -16, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(imageIndex), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -5681,13 +5681,13 @@ static void MineTrainRCTrackDiag25DegDown(
             if (direction == 0)
             {
                 ImageIndex imageIndex = trackElement.HasChain() ? 20400 : 20372;
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(imageIndex), { -16, -16, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(imageIndex), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
             WoodenBSupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height + 16, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height + 16, session.supportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 56);
@@ -5696,13 +5696,13 @@ static void MineTrainRCTrackDiag25DegDown(
             if (direction == 2)
             {
                 ImageIndex imageIndex = trackElement.HasChain() ? 20398 : 20370;
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(imageIndex), { -16, -16, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(imageIndex), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
             WoodenBSupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height + 16, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height + 16, session.supportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 56);
@@ -5711,8 +5711,8 @@ static void MineTrainRCTrackDiag25DegDown(
             if (direction == 1)
             {
                 ImageIndex imageIndex = trackElement.HasChain() ? 20401 : 20373;
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(imageIndex), { -16, -16, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(imageIndex), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -5732,8 +5732,8 @@ static void MineTrainRCTrackDiag60DegDown(
         case 0:
             if (direction == 3)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20383), { -16, -16, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20383), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -5743,13 +5743,13 @@ static void MineTrainRCTrackDiag60DegDown(
         case 1:
             if (direction == 0)
             {
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(20384), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(20384), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
             WoodenBSupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height + 16, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height + 16, session.supportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 104);
@@ -5757,13 +5757,13 @@ static void MineTrainRCTrackDiag60DegDown(
         case 2:
             if (direction == 2)
             {
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(20382), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(20382), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
             WoodenBSupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height + 16, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height + 16, session.supportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 104);
@@ -5771,8 +5771,8 @@ static void MineTrainRCTrackDiag60DegDown(
         case 3:
             if (direction == 1)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20385), { -16, -16, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20385), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -5793,8 +5793,8 @@ static void MineTrainRCTrackDiagFlatTo25DegDown(
             if (direction == 3)
             {
                 ImageIndex imageIndex = trackElement.HasChain() ? 20395 : 20367;
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(imageIndex), { -16, -16, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(imageIndex), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -5804,13 +5804,13 @@ static void MineTrainRCTrackDiagFlatTo25DegDown(
             if (direction == 0)
             {
                 ImageIndex imageIndex = trackElement.HasChain() ? 20396 : 20368;
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(imageIndex), { -16, -16, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(imageIndex), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
             WoodenBSupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height + 16, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height + 16, session.supportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             break;
@@ -5818,13 +5818,13 @@ static void MineTrainRCTrackDiagFlatTo25DegDown(
             if (direction == 2)
             {
                 ImageIndex imageIndex = trackElement.HasChain() ? 20394 : 20366;
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(imageIndex), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(imageIndex), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
             WoodenBSupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height + 16, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height + 16, session.supportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             break;
@@ -5832,8 +5832,8 @@ static void MineTrainRCTrackDiagFlatTo25DegDown(
             if (direction == 1)
             {
                 ImageIndex imageIndex = trackElement.HasChain() ? 20397 : 20369;
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(imageIndex), { -16, -16, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(imageIndex), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -5854,8 +5854,8 @@ static void MineTrainRCTrackDiag25DegDownTo60DegDown(
         case 0:
             if (direction == 3)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20379), { -16, -16, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20379), { -16, -16, height },
                     { { 0, 0, height }, { 16, 16, 1 } });
             }
 
@@ -5865,13 +5865,13 @@ static void MineTrainRCTrackDiag25DegDownTo60DegDown(
         case 1:
             if (direction == 0)
             {
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(20380), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(20380), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
             WoodenBSupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height + 16, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height + 16, session.supportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -5879,13 +5879,13 @@ static void MineTrainRCTrackDiag25DegDownTo60DegDown(
         case 2:
             if (direction == 2)
             {
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(20378), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(20378), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
             WoodenBSupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height + 16, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height + 16, session.supportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -5893,8 +5893,8 @@ static void MineTrainRCTrackDiag25DegDownTo60DegDown(
         case 3:
             if (direction == 1)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20381), { -16, -16, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20381), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -5914,8 +5914,8 @@ static void MineTrainRCTrackDiag60DegDownTo25DegDown(
         case 0:
             if (direction == 3)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20375), { -16, -16, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20375), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -5925,13 +5925,13 @@ static void MineTrainRCTrackDiag60DegDownTo25DegDown(
         case 1:
             if (direction == 0)
             {
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(20376), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(20376), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
             WoodenBSupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height + 16, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height + 16, session.supportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -5939,13 +5939,13 @@ static void MineTrainRCTrackDiag60DegDownTo25DegDown(
         case 2:
             if (direction == 2)
             {
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(20374), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(20374), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
             WoodenBSupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height + 16, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height + 16, session.supportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -5953,8 +5953,8 @@ static void MineTrainRCTrackDiag60DegDownTo25DegDown(
         case 3:
             if (direction == 1)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20377), { -16, -16, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20377), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -5975,8 +5975,8 @@ static void MineTrainRCTrackDiag25DegDownToFlat(
             if (direction == 3)
             {
                 ImageIndex imageIndex = trackElement.HasChain() ? 20391 : 20363;
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(imageIndex), { -16, -16, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(imageIndex), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -5987,13 +5987,13 @@ static void MineTrainRCTrackDiag25DegDownToFlat(
             if (direction == 0)
             {
                 ImageIndex imageIndex = trackElement.HasChain() ? 20392 : 20364;
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(imageIndex), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(imageIndex), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
             WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height, session.supportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -6002,13 +6002,13 @@ static void MineTrainRCTrackDiag25DegDownToFlat(
             if (direction == 2)
             {
                 ImageIndex imageIndex = trackElement.HasChain() ? 20390 : 20362;
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(imageIndex), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(imageIndex), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
             WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height, session.supportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -6017,8 +6017,8 @@ static void MineTrainRCTrackDiag25DegDownToFlat(
             if (direction == 1)
             {
                 ImageIndex imageIndex = trackElement.HasChain() ? 20393 : 20365;
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(imageIndex), { -16, -16, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(imageIndex), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -6038,8 +6038,8 @@ static void MineTrainRCTrackDiagFlatToLeftBank(
         case 0:
             if (direction == 3)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20409), { -16, -16, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20409), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -6049,16 +6049,16 @@ static void MineTrainRCTrackDiagFlatToLeftBank(
         case 1:
             if (direction == 0)
             {
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(20406), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(20406), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(20410), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(20410), { -16, -16, height },
                     { { -16, -16, height + 27 }, { 32, 32, 0 } });
             }
 
             WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height, session.supportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -6066,13 +6066,13 @@ static void MineTrainRCTrackDiagFlatToLeftBank(
         case 2:
             if (direction == 2)
             {
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(20408), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(20408), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
             WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height, session.supportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -6080,8 +6080,8 @@ static void MineTrainRCTrackDiagFlatToLeftBank(
         case 3:
             if (direction == 1)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20407), { -16, -16, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20407), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -6101,8 +6101,8 @@ static void MineTrainRCTrackDiagFlatToRightBank(
         case 0:
             if (direction == 3)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20414), { -16, -16, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20414), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -6112,13 +6112,13 @@ static void MineTrainRCTrackDiagFlatToRightBank(
         case 1:
             if (direction == 0)
             {
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(20411), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(20411), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
             WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height, session.supportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -6126,16 +6126,16 @@ static void MineTrainRCTrackDiagFlatToRightBank(
         case 2:
             if (direction == 2)
             {
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(20413), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(20413), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(20415), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(20415), { -16, -16, height },
                     { { -16, -16, height + 27 }, { 32, 32, 0 } });
             }
 
             WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height, session.supportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -6143,8 +6143,8 @@ static void MineTrainRCTrackDiagFlatToRightBank(
         case 3:
             if (direction == 1)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20412), { -16, -16, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20412), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -6164,8 +6164,8 @@ static void MineTrainRCTrackDiagLeftBankToFlat(
         case 0:
             if (direction == 3)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20412), { -16, -16, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20412), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -6175,16 +6175,16 @@ static void MineTrainRCTrackDiagLeftBankToFlat(
         case 1:
             if (direction == 0)
             {
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(20413), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(20413), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(20415), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(20415), { -16, -16, height },
                     { { -16, -16, height + 27 }, { 32, 32, 0 } });
             }
 
             WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height, session.supportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -6192,13 +6192,13 @@ static void MineTrainRCTrackDiagLeftBankToFlat(
         case 2:
             if (direction == 2)
             {
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(20411), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(20411), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
             WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height, session.supportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -6206,8 +6206,8 @@ static void MineTrainRCTrackDiagLeftBankToFlat(
         case 3:
             if (direction == 1)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20414), { -16, -16, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20414), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -6227,8 +6227,8 @@ static void MineTrainRCTrackDiagRightBankToFlat(
         case 0:
             if (direction == 3)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20407), { -16, -16, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20407), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -6238,13 +6238,13 @@ static void MineTrainRCTrackDiagRightBankToFlat(
         case 1:
             if (direction == 0)
             {
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(20408), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(20408), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
             WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height, session.supportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -6252,16 +6252,16 @@ static void MineTrainRCTrackDiagRightBankToFlat(
         case 2:
             if (direction == 2)
             {
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(20406), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(20406), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(20410), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(20410), { -16, -16, height },
                     { { -16, -16, height + 27 }, { 32, 32, 0 } });
             }
 
             WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height, session.supportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -6269,8 +6269,8 @@ static void MineTrainRCTrackDiagRightBankToFlat(
         case 3:
             if (direction == 1)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20409), { -16, -16, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20409), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -6290,8 +6290,8 @@ static void MineTrainRCTrackDiagLeftBankTo25DegUp(
         case 0:
             if (direction == 3)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20429), { -16, -16, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20429), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -6301,16 +6301,16 @@ static void MineTrainRCTrackDiagLeftBankTo25DegUp(
         case 1:
             if (direction == 0)
             {
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(20426), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(20426), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(20430), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(20430), { -16, -16, height },
                     { { -16, -16, height + 35 }, { 32, 32, 0 } });
             }
 
             WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height, session.supportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -6318,13 +6318,13 @@ static void MineTrainRCTrackDiagLeftBankTo25DegUp(
         case 2:
             if (direction == 2)
             {
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(20428), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(20428), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
             WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height, session.supportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -6332,8 +6332,8 @@ static void MineTrainRCTrackDiagLeftBankTo25DegUp(
         case 3:
             if (direction == 1)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20427), { -16, -16, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20427), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -6353,8 +6353,8 @@ static void MineTrainRCTrackDiagRightBankTo25DegUp(
         case 0:
             if (direction == 3)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20434), { -16, -16, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20434), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -6364,13 +6364,13 @@ static void MineTrainRCTrackDiagRightBankTo25DegUp(
         case 1:
             if (direction == 0)
             {
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(20431), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(20431), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
             WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height, session.supportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -6378,16 +6378,16 @@ static void MineTrainRCTrackDiagRightBankTo25DegUp(
         case 2:
             if (direction == 2)
             {
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(20433), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(20433), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(20435), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(20435), { -16, -16, height },
                     { { -16, -16, height + 35 }, { 32, 32, 0 } });
             }
 
             WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height, session.supportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -6395,8 +6395,8 @@ static void MineTrainRCTrackDiagRightBankTo25DegUp(
         case 3:
             if (direction == 1)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20432), { -16, -16, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20432), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -6416,8 +6416,8 @@ static void MineTrainRCTrackDiag25DegUpToLeftBank(
         case 0:
             if (direction == 3)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20419), { -16, -16, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20419), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -6427,16 +6427,16 @@ static void MineTrainRCTrackDiag25DegUpToLeftBank(
         case 1:
             if (direction == 0)
             {
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(20416), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(20416), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(20420), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(20420), { -16, -16, height },
                     { { -16, -16, height + 35 }, { 32, 32, 0 } });
             }
 
             WoodenBSupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height + 16, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height + 16, session.supportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 56);
@@ -6444,13 +6444,13 @@ static void MineTrainRCTrackDiag25DegUpToLeftBank(
         case 2:
             if (direction == 2)
             {
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(20418), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(20418), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
             WoodenBSupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height + 16, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height + 16, session.supportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 56);
@@ -6458,8 +6458,8 @@ static void MineTrainRCTrackDiag25DegUpToLeftBank(
         case 3:
             if (direction == 1)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20417), { -16, -16, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20417), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -6480,8 +6480,8 @@ static void MineTrainRCTrackDiag25DegUpToRightBank(
             switch (direction)
             {
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20424), { -16, -16, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20424), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 1 } });
                     break;
             }
@@ -6491,13 +6491,13 @@ static void MineTrainRCTrackDiag25DegUpToRightBank(
         case 1:
             if (direction == 0)
             {
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(20421), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(20421), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
             WoodenBSupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height + 16, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height + 16, session.supportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 56);
@@ -6505,16 +6505,16 @@ static void MineTrainRCTrackDiag25DegUpToRightBank(
         case 2:
             if (direction == 2)
             {
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(20423), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(20423), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(20425), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(20425), { -16, -16, height },
                     { { -16, -16, height + 35 }, { 32, 32, 0 } });
             }
 
             WoodenBSupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height + 16, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height + 16, session.supportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 56);
@@ -6522,8 +6522,8 @@ static void MineTrainRCTrackDiag25DegUpToRightBank(
         case 3:
             if (direction == 1)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20422), { -16, -16, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20422), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -6544,8 +6544,8 @@ static void MineTrainRCTrackDiagLeftBankTo25DegDown(
             switch (direction)
             {
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20422), { -16, -16, height },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(20422), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 1 } });
                     break;
             }
@@ -6553,35 +6553,35 @@ static void MineTrainRCTrackDiagLeftBankTo25DegDown(
         case 1:
             if (direction == 0)
             {
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(20423), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(20423), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(20425), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(20425), { -16, -16, height },
                     { { -16, -16, height + 35 }, { 32, 32, 0 } });
             }
 
             WoodenBSupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height + 16, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height + 16, session.supportColours);
 
             break;
         case 2:
             if (direction == 2)
             {
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(20421), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(20421), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
             WoodenBSupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height + 16, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height + 16, session.supportColours);
 
             break;
         case 3:
             if (direction == 1)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20424), { -16, -16, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20424), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -6602,8 +6602,8 @@ static void MineTrainRCTrackDiagRightBankTo25DegDown(
         case 0:
             if (direction == 3)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20417), { -16, -16, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20417), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -6611,35 +6611,35 @@ static void MineTrainRCTrackDiagRightBankTo25DegDown(
         case 1:
             if (direction == 0)
             {
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(20418), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(20418), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
             WoodenBSupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height + 16, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height + 16, session.supportColours);
 
             break;
         case 2:
             if (direction == 2)
             {
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(20416), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(20416), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(20420), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(20420), { -16, -16, height },
                     { { -16, -16, height + 35 }, { 32, 32, 0 } });
             }
 
             WoodenBSupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height + 16, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height + 16, session.supportColours);
 
             break;
         case 3:
             if (direction == 1)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20419), { -16, -16, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20419), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -6660,8 +6660,8 @@ static void MineTrainRCTrackDiag25DegDownToLeftBank(
         case 0:
             if (direction == 3)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20432), { -16, -16, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20432), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -6671,16 +6671,16 @@ static void MineTrainRCTrackDiag25DegDownToLeftBank(
         case 1:
             if (direction == 0)
             {
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(20433), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(20433), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(20435), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(20435), { -16, -16, height },
                     { { -16, -16, height + 35 }, { 32, 32, 0 } });
             }
 
             WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height, session.supportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -6688,13 +6688,13 @@ static void MineTrainRCTrackDiag25DegDownToLeftBank(
         case 2:
             if (direction == 2)
             {
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(20431), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(20431), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
             WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height, session.supportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -6702,8 +6702,8 @@ static void MineTrainRCTrackDiag25DegDownToLeftBank(
         case 3:
             if (direction == 1)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20434), { -16, -16, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20434), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -6723,8 +6723,8 @@ static void MineTrainRCTrackDiag25DegDownToRightBank(
         case 0:
             if (direction == 3)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20427), { -16, -16, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20427), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -6734,13 +6734,13 @@ static void MineTrainRCTrackDiag25DegDownToRightBank(
         case 1:
             if (direction == 0)
             {
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(20428), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(20428), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
             WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height, session.supportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -6748,16 +6748,16 @@ static void MineTrainRCTrackDiag25DegDownToRightBank(
         case 2:
             if (direction == 2)
             {
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(20426), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(20426), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(20430), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(20430), { -16, -16, height },
                     { { -16, -16, height + 35 }, { 32, 32, 0 } });
             }
 
             WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height, session.supportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -6765,8 +6765,8 @@ static void MineTrainRCTrackDiag25DegDownToRightBank(
         case 3:
             if (direction == 1)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20429), { -16, -16, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20429), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -6786,8 +6786,8 @@ static void MineTrainRCTrackDiagLeftBank(
         case 0:
             if (direction == 3)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20405), { -16, -16, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20405), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 3 } });
             }
 
@@ -6795,32 +6795,32 @@ static void MineTrainRCTrackDiagLeftBank(
         case 1:
             if (direction == 0)
             {
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(20402), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(20402), { -16, -16, height },
                     { { -16, -16, height + 27 }, { 32, 32, 0 } });
             }
 
             WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height, session.supportColours);
 
             break;
         case 2:
             if (direction == 2)
             {
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(20404), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(20404), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 3 } });
             }
 
             WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height, session.supportColours);
 
             break;
         case 3:
             if (direction == 1)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20403), { -16, -16, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20403), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 3 } });
             }
 
@@ -6842,8 +6842,8 @@ static void MineTrainRCTrackDiagRightBank(
         case 0:
             if (direction == 3)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20403), { -16, -16, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20403), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 3 } });
             }
 
@@ -6858,13 +6858,13 @@ static void MineTrainRCTrackDiagRightBank(
         case 1:
             if (direction == 0)
             {
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(20404), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(20404), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 3 } });
             }
 
             WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner0, direction, height, session.supportColours);
 
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -6877,13 +6877,13 @@ static void MineTrainRCTrackDiagRightBank(
         case 2:
             if (direction == 2)
             {
-                PaintAddImageAsParent(
-                    session, session.TrackColours.WithIndex(20402), { -16, -16, height },
+                paintAddImageAsParent(
+                    session, session.trackColours.WithIndex(20402), { -16, -16, height },
                     { { -16, -16, height + 27 }, { 32, 32, 0 } });
             }
 
             WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height, session.SupportColours);
+                session, supportType.wooden, WoodenSupportSubType::corner2, direction, height, session.supportColours);
 
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -6897,8 +6897,8 @@ static void MineTrainRCTrackDiagRightBank(
         case 3:
             if (direction == 1)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(20405), { -16, -16, height },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(20405), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 3 } });
             }
 
@@ -6919,11 +6919,11 @@ static void MineTrainRCTrackBlockBrakes(
     const TrackElement& trackElement, SupportType supportType)
 {
     bool isClosed = trackElement.IsBrakeClosed();
-    PaintAddImageAsParentRotated(
-        session, direction, session.TrackColours.WithIndex(kMineTrainBlockBrakeImages[direction][isClosed]), { 0, 0, height },
+    paintAddImageAsParentRotated(
+        session, direction, session.trackColours.WithIndex(kMineTrainBlockBrakeImages[direction][isClosed]), { 0, 0, height },
         { { 0, 6, height }, { 32, 20, 1 } });
     WoodenASupportsPaintSetupRotated(
-        session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours);
+        session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.supportColours);
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -6939,28 +6939,28 @@ static void MineTrainRCTrackFlatTo60DegUpLongBase(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 0),
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 0),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 4),
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 4),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 8),
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 8),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 12),
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 12),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
             WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
+                session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.supportColours,
                 WoodenSupportTransitionType::flatToUp60DegLongBaseSeq0);
             if (direction == 0 || direction == 3)
             {
@@ -6972,28 +6972,28 @@ static void MineTrainRCTrackFlatTo60DegUpLongBase(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 1),
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 1),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 5),
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 5),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 9),
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 9),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 13),
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 13),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
             WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
+                session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.supportColours,
                 WoodenSupportTransitionType::flatToUp60DegLongBaseSeq1);
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
@@ -7001,28 +7001,28 @@ static void MineTrainRCTrackFlatTo60DegUpLongBase(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 2),
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 2),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 6),
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 6),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 10),
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 10),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 14),
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 14),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
             WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
+                session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.supportColours,
                 WoodenSupportTransitionType::flatToUp60DegLongBaseSeq2);
             PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
@@ -7030,28 +7030,28 @@ static void MineTrainRCTrackFlatTo60DegUpLongBase(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 3),
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 3),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
-                    session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 7),
+                    session.woodenSupportsPrependTo = paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 7),
                         { 0, 0, height }, { { 28, 4, height }, { 2, 24, 56 } });
                     break;
                 case 2:
-                    session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 11),
+                    session.woodenSupportsPrependTo = paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 11),
                         { 0, 0, height }, { { 28, 4, height }, { 2, 24, 56 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 15),
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 15),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
             WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
+                session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.supportColours,
                 WoodenSupportTransitionType::flatToUp60DegLongBaseSeq3);
             switch (direction)
             {
@@ -7077,28 +7077,28 @@ static void MineTrainRCTrack60DegUpToFlatLongBase(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 16),
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 16),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
-                    session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 20),
+                    session.woodenSupportsPrependTo = paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 20),
                         { 0, 0, height }, { { 28, 4, height }, { 2, 24, 56 } });
                     break;
                 case 2:
-                    session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 24),
+                    session.woodenSupportsPrependTo = paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 24),
                         { 0, 0, height }, { { 28, 4, height }, { 2, 24, 56 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 28),
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 28),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
             WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
+                session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.supportColours,
                 WoodenSupportTransitionType::up60DegToFlatLongBaseSeq0);
             if (direction == 0 || direction == 3)
             {
@@ -7110,28 +7110,28 @@ static void MineTrainRCTrack60DegUpToFlatLongBase(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 17),
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 17),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 21),
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 21),
                         { 0, 0, height }, { { 28, 4, height }, { 2, 24, 56 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 25),
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 25),
                         { 0, 0, height }, { { 28, 4, height }, { 2, 24, 56 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 29),
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 29),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
             WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
+                session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.supportColours,
                 WoodenSupportTransitionType::up60DegToFlatLongBaseSeq1);
             PaintUtilSetGeneralSupportHeight(session, height + 80);
             break;
@@ -7139,28 +7139,28 @@ static void MineTrainRCTrack60DegUpToFlatLongBase(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 18),
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 18),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 22),
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 22),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 26),
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 26),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 30),
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 30),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
             WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
+                session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.supportColours,
                 WoodenSupportTransitionType::up60DegToFlatLongBaseSeq2);
             PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
@@ -7168,28 +7168,28 @@ static void MineTrainRCTrack60DegUpToFlatLongBase(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 19),
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 19),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 23),
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 23),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 27),
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 27),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 31),
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 31),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
             WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
+                session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.supportColours,
                 WoodenSupportTransitionType::up60DegToFlatLongBaseSeq3);
             switch (direction)
             {

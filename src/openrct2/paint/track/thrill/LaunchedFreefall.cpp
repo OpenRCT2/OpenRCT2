@@ -44,24 +44,24 @@ static void PaintLaunchedFreefallBase(
 
     const StationObject* stationObject = ride.getStationObject();
 
-    TrackPaintUtilPaintFloor(session, edges, session.SupportColours, height, kFloorSpritesTileChequerboard, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.supportColours, height, kFloorSpritesTileChequerboard, stationObject);
 
     TrackPaintUtilPaintFences(
-        session, edges, session.MapPosition, trackElement, ride, session.TrackColours, height, kFenceSpritesPicket,
-        session.CurrentRotation);
+        session, edges, session.mapPosition, trackElement, ride, session.trackColours, height, kFenceSpritesPicket,
+        session.currentRotation);
 
     if (trackSequence == 0)
     {
-        auto imageId = session.TrackColours.WithIndex(SPR_LAUNCHED_FREEFALL_TOWER_BASE);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 8, 8, height + 3 }, { 2, 2, 27 } });
+        auto imageId = session.trackColours.WithIndex(SPR_LAUNCHED_FREEFALL_TOWER_BASE);
+        paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 8, 8, height + 3 }, { 2, 2, 27 } });
 
         height += 32;
-        imageId = session.TrackColours.WithIndex(SPR_LAUNCHED_FREEFALL_TOWER_SEGMENT);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 8, 8, height }, { 2, 2, 30 } });
+        imageId = session.trackColours.WithIndex(SPR_LAUNCHED_FREEFALL_TOWER_SEGMENT);
+        paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 8, 8, height }, { 2, 2, 30 } });
 
         height += 32;
-        imageId = session.TrackColours.WithIndex(SPR_LAUNCHED_FREEFALL_TOWER_SEGMENT);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 8, 8, height }, { 2, 2, 30 } });
+        imageId = session.trackColours.WithIndex(SPR_LAUNCHED_FREEFALL_TOWER_SEGMENT);
+        paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 8, 8, height }, { 2, 2, 30 } });
 
         PaintUtilSetVerticalTunnel(session, height + 32);
 
@@ -120,14 +120,14 @@ static void PaintLaunchedFreefallTowerSection(
         return;
     }
 
-    auto imageId = session.TrackColours.WithIndex(SPR_LAUNCHED_FREEFALL_TOWER_SEGMENT);
-    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 8, 8, height }, { 2, 2, 30 } });
+    auto imageId = session.trackColours.WithIndex(SPR_LAUNCHED_FREEFALL_TOWER_SEGMENT);
+    paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 8, 8, height }, { 2, 2, 30 } });
 
     const TileElement* nextTileElement = reinterpret_cast<const TileElement*>(&trackElement) + 1;
     if (trackElement.isLastForTile() || trackElement.getClearanceZ() != nextTileElement->getBaseZ())
     {
-        imageId = session.TrackColours.WithIndex(SPR_LAUNCHED_FREEFALL_TOWER_SEGMENT_TOP);
-        PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 8, 8, height }, { 2, 2, 30 } });
+        imageId = session.trackColours.WithIndex(SPR_LAUNCHED_FREEFALL_TOWER_SEGMENT_TOP);
+        paintAddImageAsChild(session, imageId, { 0, 0, height }, { { 8, 8, height }, { 2, 2, 30 } });
     }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);

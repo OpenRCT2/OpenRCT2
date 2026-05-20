@@ -1346,27 +1346,27 @@ static void PaintGoKartsTrackFlat(
     ImageId imageId;
     if (direction == 0 || direction == 2)
     {
-        imageId = session.TrackColours.WithIndex(SPR_GO_KARTS_FLAT_SW_NE);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 28, 1 } });
+        imageId = session.trackColours.WithIndex(SPR_GO_KARTS_FLAT_SW_NE);
+        paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 28, 1 } });
 
-        imageId = session.TrackColours.WithIndex(SPR_GO_KARTS_FLAT_FRONT_SW_NE);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 29, height + 2 }, { 32, 1, 3 } });
+        imageId = session.trackColours.WithIndex(SPR_GO_KARTS_FLAT_FRONT_SW_NE);
+        paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 29, height + 2 }, { 32, 1, 3 } });
 
         PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
-        imageId = session.TrackColours.WithIndex(SPR_GO_KARTS_FLAT_NW_SE);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 0, height }, { 28, 32, 1 } });
+        imageId = session.trackColours.WithIndex(SPR_GO_KARTS_FLAT_NW_SE);
+        paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 0, height }, { 28, 32, 1 } });
 
-        imageId = session.TrackColours.WithIndex(SPR_GO_KARTS_FLAT_FRONT_NW_SE);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 29, 0, height + 2 }, { 1, 32, 3 } });
+        imageId = session.trackColours.WithIndex(SPR_GO_KARTS_FLAT_FRONT_NW_SE);
+        paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 29, 0, height + 2 }, { 1, 32, 3 } });
 
         PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
 
     DrawSupportForSequenceA<TrackElemType::flat>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+        session, supportType.wooden, trackSequence, direction, height, session.supportColours);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -1380,30 +1380,30 @@ static void PaintGoKartsTrack25DegUp(
     ImageId imageId;
     PaintStruct* ps;
 
-    imageId = session.TrackColours.WithIndex(go_karts_track_pieces_25_deg_up[direction][0]);
+    imageId = session.trackColours.WithIndex(go_karts_track_pieces_25_deg_up[direction][0]);
     if (direction == 0 || direction == 2)
     {
-        ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 28, 1 } });
+        ps = paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 28, 1 } });
     }
     else
     {
-        ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 0, height }, { 28, 32, 1 } });
+        ps = paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 0, height }, { 28, 32, 1 } });
     }
 
-    imageId = session.TrackColours.WithIndex(go_karts_track_pieces_25_deg_up[direction][1]);
+    imageId = session.trackColours.WithIndex(go_karts_track_pieces_25_deg_up[direction][1]);
     if (direction == 0 || direction == 2)
     {
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 29, height + 2 }, { 32, 1, 11 } });
+        paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 29, height + 2 }, { 32, 1, 11 } });
     }
     else
     {
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 29, 0, height + 2 }, { 1, 32, 11 } });
+        paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 29, 0, height + 2 }, { 1, 32, 11 } });
     }
 
-    session.WoodenSupportsPrependTo = ps;
+    session.woodenSupportsPrependTo = ps;
 
     DrawSupportForSequenceA<TrackElemType::up25>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+        session, supportType.wooden, trackSequence, direction, height, session.supportColours);
 
     switch (direction)
     {
@@ -1433,30 +1433,30 @@ static void PaintGoKartsTrackFlatTo25DegUp(
     ImageId imageId;
     PaintStruct* ps;
 
-    imageId = session.TrackColours.WithIndex(go_karts_track_pieces_flat_to_25_deg_up[direction][0]);
+    imageId = session.trackColours.WithIndex(go_karts_track_pieces_flat_to_25_deg_up[direction][0]);
     if (direction == 0 || direction == 2)
     {
-        ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 28, 1 } });
+        ps = paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 28, 1 } });
     }
     else
     {
-        ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 0, height }, { 28, 32, 1 } });
+        ps = paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 0, height }, { 28, 32, 1 } });
     }
 
-    imageId = session.TrackColours.WithIndex(go_karts_track_pieces_flat_to_25_deg_up[direction][1]);
+    imageId = session.trackColours.WithIndex(go_karts_track_pieces_flat_to_25_deg_up[direction][1]);
     if (direction == 0 || direction == 2)
     {
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 29, height + 2 }, { 32, 1, 11 } });
+        paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 29, height + 2 }, { 32, 1, 11 } });
     }
     else
     {
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 29, 0, height + 2 }, { 1, 32, 11 } });
+        paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 29, 0, height + 2 }, { 1, 32, 11 } });
     }
 
-    session.WoodenSupportsPrependTo = ps;
+    session.woodenSupportsPrependTo = ps;
 
     DrawSupportForSequenceA<TrackElemType::flatToUp25>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+        session, supportType.wooden, trackSequence, direction, height, session.supportColours);
 
     switch (direction)
     {
@@ -1486,30 +1486,30 @@ static void PaintGoKartsTrack25DegUpToFlat(
     ImageId imageId;
     PaintStruct* ps;
 
-    imageId = session.TrackColours.WithIndex(go_karts_track_pieces_25_deg_up_to_flat[direction][0]);
+    imageId = session.trackColours.WithIndex(go_karts_track_pieces_25_deg_up_to_flat[direction][0]);
     if (direction == 0 || direction == 2)
     {
-        ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 28, 1 } });
+        ps = paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 28, 1 } });
     }
     else
     {
-        ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 0, height }, { 28, 32, 1 } });
+        ps = paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 0, height }, { 28, 32, 1 } });
     }
 
-    imageId = session.TrackColours.WithIndex(go_karts_track_pieces_25_deg_up_to_flat[direction][1]);
+    imageId = session.trackColours.WithIndex(go_karts_track_pieces_25_deg_up_to_flat[direction][1]);
     if (direction == 0 || direction == 2)
     {
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 29, height + 2 }, { 32, 1, 11 } });
+        paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 29, height + 2 }, { 32, 1, 11 } });
     }
     else
     {
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 29, 0, height + 2 }, { 1, 32, 11 } });
+        paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 29, 0, height + 2 }, { 1, 32, 11 } });
     }
 
-    session.WoodenSupportsPrependTo = ps;
+    session.woodenSupportsPrependTo = ps;
 
     DrawSupportForSequenceA<TrackElemType::up25ToFlat>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+        session, supportType.wooden, trackSequence, direction, height, session.supportColours);
 
     switch (direction)
     {
@@ -1572,50 +1572,50 @@ static void PaintGoKartsStation(
         sprites = go_karts_track_pieces_starting_grid_end;
     }
 
-    imageId = session.TrackColours.WithIndex(sprites[direction][0]);
+    imageId = session.trackColours.WithIndex(sprites[direction][0]);
     if (direction == 0 || direction == 2)
     {
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 28, 1 } });
+        paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 28, 1 } });
     }
     else
     {
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 0, height }, { 28, 32, 1 } });
+        paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 0, height }, { 28, 32, 1 } });
     }
 
     auto stationColour = GetStationColourScheme(session, trackElement);
     if (direction == 0 || direction == 2)
     {
-        hasFence = TrackPaintUtilHasFence(EDGE_NW, session.MapPosition, trackElement, ride, session.CurrentRotation);
+        hasFence = TrackPaintUtilHasFence(EDGE_NW, session.mapPosition, trackElement, ride, session.currentRotation);
         TrackPaintUtilDrawStationCovers(session, EDGE_NW, hasFence, stationObj, height, stationColour);
     }
     else
     {
-        hasFence = TrackPaintUtilHasFence(EDGE_NE, session.MapPosition, trackElement, ride, session.CurrentRotation);
+        hasFence = TrackPaintUtilHasFence(EDGE_NE, session.mapPosition, trackElement, ride, session.currentRotation);
         TrackPaintUtilDrawStationCovers(session, EDGE_NE, hasFence, stationObj, height, stationColour);
     }
 
-    imageId = session.TrackColours.WithIndex(sprites[direction][1]);
+    imageId = session.trackColours.WithIndex(sprites[direction][1]);
     if (direction == 0 || direction == 2)
     {
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 29, height + 2 }, { 32, 1, 3 } });
+        paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 29, height + 2 }, { 32, 1, 3 } });
 
         PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 29, 0, height + 2 }, { 1, 32, 3 } });
+        paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 29, 0, height + 2 }, { 1, 32, 3 } });
 
         PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
 
     if (direction == 0 || direction == 2)
     {
-        hasFence = TrackPaintUtilHasFence(EDGE_SE, session.MapPosition, trackElement, ride, session.CurrentRotation);
+        hasFence = TrackPaintUtilHasFence(EDGE_SE, session.mapPosition, trackElement, ride, session.currentRotation);
         TrackPaintUtilDrawStationCovers(session, EDGE_SE, hasFence, stationObj, height, stationColour);
     }
     else
     {
-        hasFence = TrackPaintUtilHasFence(EDGE_SW, session.MapPosition, trackElement, ride, session.CurrentRotation);
+        hasFence = TrackPaintUtilHasFence(EDGE_SW, session.mapPosition, trackElement, ride, session.currentRotation);
         TrackPaintUtilDrawStationCovers(session, EDGE_SW, hasFence, stationObj, height, stationColour);
     }
 
@@ -1626,42 +1626,42 @@ static void PaintGoKartsStation(
         switch (direction)
         {
             case 0:
-                imageId = session.TrackColours.WithIndex(
+                imageId = session.trackColours.WithIndex(
                     (hasGreenLight ? SPR_GO_KARTS_START_POLE_GREEN_SW_NE : SPR_GO_KARTS_START_POLE_RED_SW_NE));
-                PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 1, 1, height + 4 }, { 3, 3, 13 } });
+                paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 1, 1, height + 4 }, { 3, 3, 13 } });
 
-                imageId = session.TrackColours.WithIndex(
+                imageId = session.trackColours.WithIndex(
                     (hasGreenLight ? SPR_GO_KARTS_START_LIGHTS_GREEN_SW_NE : SPR_GO_KARTS_START_LIGHTS_RED_SW_NE));
-                PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 1, 28, height + 4 }, { 3, 3, 13 } });
+                paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 1, 28, height + 4 }, { 3, 3, 13 } });
                 break;
             case 1:
-                imageId = session.TrackColours.WithIndex(SPR_GO_KARTS_START_POLE_NW_SE);
-                PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 1, 28, height + 4 }, { 3, 3, 13 } });
+                imageId = session.trackColours.WithIndex(SPR_GO_KARTS_START_POLE_NW_SE);
+                paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 1, 28, height + 4 }, { 3, 3, 13 } });
 
-                imageId = session.TrackColours.WithIndex(SPR_GO_KARTS_START_LIGHTS_NW_SE);
-                PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 28, 28, height + 4 }, { 3, 3, 13 } });
+                imageId = session.trackColours.WithIndex(SPR_GO_KARTS_START_LIGHTS_NW_SE);
+                paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 28, 28, height + 4 }, { 3, 3, 13 } });
                 break;
             case 2:
-                imageId = session.TrackColours.WithIndex(SPR_GO_KARTS_START_POLE_NE_SW);
-                PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 28, 1, height + 4 }, { 3, 3, 13 } });
+                imageId = session.trackColours.WithIndex(SPR_GO_KARTS_START_POLE_NE_SW);
+                paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 28, 1, height + 4 }, { 3, 3, 13 } });
 
-                imageId = session.TrackColours.WithIndex(SPR_GO_KARTS_START_LIGHTS_NE_SW);
-                PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 28, 28, height + 4 }, { 3, 3, 13 } });
+                imageId = session.trackColours.WithIndex(SPR_GO_KARTS_START_LIGHTS_NE_SW);
+                paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 28, 28, height + 4 }, { 3, 3, 13 } });
                 break;
             case 3:
-                imageId = session.TrackColours.WithIndex(
+                imageId = session.trackColours.WithIndex(
                     (hasGreenLight ? SPR_GO_KARTS_START_POLE_GREEN_SE_NW : SPR_GO_KARTS_START_POLE_RED_SE_NW));
-                PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 1, 1, height + 4 }, { 3, 3, 13 } });
+                paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 1, 1, height + 4 }, { 3, 3, 13 } });
 
-                imageId = session.TrackColours.WithIndex(
+                imageId = session.trackColours.WithIndex(
                     (hasGreenLight ? SPR_GO_KARTS_START_LIGHTS_GREEN_SE_NW : SPR_GO_KARTS_START_LIGHTS_RED_SE_NW));
-                PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 28, 1, height + 4 }, { 3, 3, 13 } });
+                paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 28, 1, height + 4 }, { 3, 3, 13 } });
                 break;
         }
     }
 
     DrawSupportForSequenceA<TrackElemType::endStation>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+        session, supportType.wooden, trackSequence, direction, height, session.supportColours);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -1677,41 +1677,41 @@ static void PaintGoKartsTrackLeftQuarterTurn1Tile(
     switch (direction)
     {
         case 0:
-            imageId = session.TrackColours.WithIndex(SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_NW_NE);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 28, 1 } });
+            imageId = session.trackColours.WithIndex(SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_NW_NE);
+            paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 28, 1 } });
 
-            imageId = session.TrackColours.WithIndex(SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_EDGE_A_NW_NE);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 29, 2, height + 2 }, { 1, 1, 3 } });
+            imageId = session.trackColours.WithIndex(SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_EDGE_A_NW_NE);
+            paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 29, 2, height + 2 }, { 1, 1, 3 } });
 
-            imageId = session.TrackColours.WithIndex(SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_EDGE_B_NW_NE);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 14, 29, height + 2 }, { 16, 1, 3 } });
+            imageId = session.trackColours.WithIndex(SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_EDGE_B_NW_NE);
+            paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 14, 29, height + 2 }, { 16, 1, 3 } });
             break;
         case 1:
-            imageId = session.TrackColours.WithIndex(SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_NE_SE);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 30, 30, 1 } });
+            imageId = session.trackColours.WithIndex(SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_NE_SE);
+            paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 30, 30, 1 } });
 
-            imageId = session.TrackColours.WithIndex(SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_EDGE_A_NE_SE);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 29, height + 2 }, { 16, 1, 3 } });
+            imageId = session.trackColours.WithIndex(SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_EDGE_A_NE_SE);
+            paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 29, height + 2 }, { 16, 1, 3 } });
 
-            imageId = session.TrackColours.WithIndex(SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_EDGE_B_NE_SE);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 29, 2, height + 2 }, { 1, 16, 3 } });
+            imageId = session.trackColours.WithIndex(SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_EDGE_B_NE_SE);
+            paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 29, 2, height + 2 }, { 1, 16, 3 } });
             break;
         case 2:
-            imageId = session.TrackColours.WithIndex(SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_SE_SW);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 0, height }, { 28, 32, 1 } });
+            imageId = session.trackColours.WithIndex(SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_SE_SW);
+            paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 0, height }, { 28, 32, 1 } });
 
-            imageId = session.TrackColours.WithIndex(SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_EDGE_A_SE_SW);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 2, height + 2 }, { 1, 1, 3 } });
+            imageId = session.trackColours.WithIndex(SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_EDGE_A_SE_SW);
+            paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 2, height + 2 }, { 1, 1, 3 } });
 
-            imageId = session.TrackColours.WithIndex(SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_EDGE_B_SE_SW);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 29, 14, height + 2 }, { 1, 16, 3 } });
+            imageId = session.trackColours.WithIndex(SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_EDGE_B_SE_SW);
+            paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 29, 14, height + 2 }, { 1, 16, 3 } });
             break;
         case 3:
-            imageId = session.TrackColours.WithIndex(SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_SW_NW);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 8, 8, height }, { 24, 24, 1 } });
+            imageId = session.trackColours.WithIndex(SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_SW_NW);
+            paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 8, 8, height }, { 24, 24, 1 } });
 
-            imageId = session.TrackColours.WithIndex(SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_EDGE_A_SW_NW);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 29, 29, height + 2 }, { 1, 1, 3 } });
+            imageId = session.trackColours.WithIndex(SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_EDGE_A_SW_NW);
+            paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 29, 29, height + 2 }, { 1, 1, 3 } });
 
             // The empty sprite isn't drawn
             break;
@@ -1732,7 +1732,7 @@ static void PaintGoKartsTrackLeftQuarterTurn1Tile(
     }
 
     WoodenASupportsPaintSetupRotated(
-        session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours);
+        session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.supportColours);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -1750,15 +1750,15 @@ static void TrackUp60(
     PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
     const TrackElement& trackElement, const SupportType supportType)
 {
-    PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsUp60Sprites[direction][0]), height, { 0, 0, 0 },
+    paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsUp60Sprites[direction][0]), height, { 0, 0, 0 },
         kGoKartsUp60BoundBoxes[direction][0]);
-    session.WoodenSupportsPrependTo = PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsUp60Sprites[direction][1]), height, { 0, 0, 0 },
+    session.woodenSupportsPrependTo = paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsUp60Sprites[direction][1]), height, { 0, 0, 0 },
         kGoKartsUp60BoundBoxes[direction][1]);
 
     WoodenASupportsPaintSetupRotated(
-        session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
+        session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.supportColours,
         WoodenSupportTransitionType::up60Deg);
     if (direction == 0 || direction == 3)
     {
@@ -1776,15 +1776,15 @@ static void TrackUp25ToUp60(
     PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
     const TrackElement& trackElement, const SupportType supportType)
 {
-    PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsUp25ToUp60Sprites[direction][0]), height, { 0, 0, 0 },
+    paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsUp25ToUp60Sprites[direction][0]), height, { 0, 0, 0 },
         kGoKartsUp25ToUp60BoundBoxes[direction][0]);
-    session.WoodenSupportsPrependTo = PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsUp25ToUp60Sprites[direction][1]), height, { 0, 0, 0 },
+    session.woodenSupportsPrependTo = paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsUp25ToUp60Sprites[direction][1]), height, { 0, 0, 0 },
         kGoKartsUp25ToUp60BoundBoxes[direction][1]);
 
     WoodenASupportsPaintSetupRotated(
-        session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
+        session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.supportColours,
         WoodenSupportTransitionType::up25DegToUp60Deg);
     if (direction == 0 || direction == 3)
     {
@@ -1802,15 +1802,15 @@ static void TrackUp60ToUp25(
     PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
     const TrackElement& trackElement, const SupportType supportType)
 {
-    PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsUp60ToUp25Sprites[direction][0]), height, { 0, 0, 0 },
+    paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsUp60ToUp25Sprites[direction][0]), height, { 0, 0, 0 },
         kGoKartsUp25ToUp60BoundBoxes[direction][0]);
-    session.WoodenSupportsPrependTo = PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsUp60ToUp25Sprites[direction][1]), height, { 0, 0, 0 },
+    session.woodenSupportsPrependTo = paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsUp60ToUp25Sprites[direction][1]), height, { 0, 0, 0 },
         kGoKartsUp25ToUp60BoundBoxes[direction][1]);
 
     WoodenASupportsPaintSetupRotated(
-        session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
+        session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.supportColours,
         WoodenSupportTransitionType::up60DegToUp25Deg);
     if (direction == 0 || direction == 3)
     {
@@ -1849,15 +1849,15 @@ static void TrackFlatToUp60LongBase(
     PaintSession& session, const Ride& ride, const uint8_t trackSequence, const uint8_t direction, const int32_t height,
     const TrackElement& trackElement, const SupportType supportType)
 {
-    PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsFlatToUp60LongBaseSprites[direction][trackSequence][0]), height,
+    paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsFlatToUp60LongBaseSprites[direction][trackSequence][0]), height,
         { 0, 0, 0 }, kGoKartsFlatToUp60LongBaseBoundBoxes[direction][trackSequence][0]);
-    session.WoodenSupportsPrependTo = PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsFlatToUp60LongBaseSprites[direction][trackSequence][1]), height,
+    session.woodenSupportsPrependTo = paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsFlatToUp60LongBaseSprites[direction][trackSequence][1]), height,
         { 0, 0, 0 }, kGoKartsFlatToUp60LongBaseBoundBoxes[direction][trackSequence][1]);
 
     DrawSupportForSequenceA<TrackElemType::flatToUp60LongBase>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+        session, supportType.wooden, trackSequence, direction, height, session.supportColours);
     if (trackSequence == 0 && (direction == 0 || direction == 3))
     {
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -1875,15 +1875,15 @@ static void TrackUp60ToFlatLongBase(
     PaintSession& session, const Ride& ride, const uint8_t trackSequence, const uint8_t direction, const int32_t height,
     const TrackElement& trackElement, const SupportType supportType)
 {
-    PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsUp60ToFlatLongBaseSprites[direction][trackSequence][0]), height,
+    paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsUp60ToFlatLongBaseSprites[direction][trackSequence][0]), height,
         { 0, 0, 0 }, kGoKartsUp60ToFlatLongBaseBoundBoxes[direction][trackSequence][0]);
-    session.WoodenSupportsPrependTo = PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsUp60ToFlatLongBaseSprites[direction][trackSequence][1]), height,
+    session.woodenSupportsPrependTo = paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsUp60ToFlatLongBaseSprites[direction][trackSequence][1]), height,
         { 0, 0, 0 }, kGoKartsUp60ToFlatLongBaseBoundBoxes[direction][trackSequence][1]);
 
     DrawSupportForSequenceA<TrackElemType::up60ToFlatLongBase>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+        session, supportType.wooden, trackSequence, direction, height, session.supportColours);
     if (trackSequence == 0 && (direction == 0 || direction == 3))
     {
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -1915,11 +1915,11 @@ static void TrackLeftQuarterTurn3Tiles(
     PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
     const TrackElement& trackElement, const SupportType supportType)
 {
-    PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsLeftQuarterTurn3TilesSprites[direction][trackSequence][0]), height,
+    paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsLeftQuarterTurn3TilesSprites[direction][trackSequence][0]), height,
         { 0, 0, 0 }, kGoKartsLeftQuarterTurn3TilesBoundBoxes[direction][trackSequence][0]);
-    PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsLeftQuarterTurn3TilesSprites[direction][trackSequence][1]), height,
+    paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsLeftQuarterTurn3TilesSprites[direction][trackSequence][1]), height,
         { 0, 0, 0 }, kGoKartsLeftQuarterTurn3TilesBoundBoxes[direction][trackSequence][1]);
 
     static constexpr std::array<WoodenSupportSubType, 4> woodenSupportSubTypes = {
@@ -1932,7 +1932,7 @@ static void TrackLeftQuarterTurn3Tiles(
     if (woodenSupportSubType != WoodenSupportSubType::null)
     {
         WoodenASupportsPaintSetupRotated(
-            session, supportType.wooden, woodenSupportSubType, direction, height, session.SupportColours,
+            session, supportType.wooden, woodenSupportSubType, direction, height, session.supportColours,
             WoodenSupportTransitionType::none);
     }
     TrackPaintUtilLeftQuarterTurn3TilesTunnel(session, kTunnelGroup, TunnelSubType::Flat, height, direction, trackSequence);
@@ -1959,18 +1959,18 @@ static void TrackLeftQuarterTurn5Tiles(
     PaintSession& session, const Ride& ride, const uint8_t trackSequence, const uint8_t direction, const int32_t height,
     const TrackElement& trackElement, const SupportType supportType)
 {
-    PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsLeftQuarterTurn5TilesSprites[direction][trackSequence][0]), height,
+    paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsLeftQuarterTurn5TilesSprites[direction][trackSequence][0]), height,
         { 0, 0, 0 }, kGoKartsLeftQuarterTurn5TilesBoundBoxes[direction][trackSequence][0]);
-    PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsLeftQuarterTurn5TilesSprites[direction][trackSequence][1]), height,
+    paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsLeftQuarterTurn5TilesSprites[direction][trackSequence][1]), height,
         { 0, 0, 0 }, kGoKartsLeftQuarterTurn5TilesBoundBoxes[direction][trackSequence][1]);
-    PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsLeftQuarterTurn5TilesSprites[direction][trackSequence][2]), height,
+    paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsLeftQuarterTurn5TilesSprites[direction][trackSequence][2]), height,
         { 0, 0, 0 }, kGoKartsLeftQuarterTurn5TilesBoundBoxes[direction][trackSequence][2]);
 
     DrawSupportForSequenceA<TrackElemType::leftQuarterTurn5Tiles>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+        session, supportType.wooden, trackSequence, direction, height, session.supportColours);
     if (trackSequence == 0 && (direction == 0 || direction == 3))
     {
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -2011,18 +2011,18 @@ static void TrackLeftEighthToDiag(
     PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
     const TrackElement& trackElement, const SupportType supportType)
 {
-    PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsLeftEighthToDiagSprites[direction][trackSequence][0]), height,
+    paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsLeftEighthToDiagSprites[direction][trackSequence][0]), height,
         { 0, 0, 0 }, kGoKartsLeftEighthToDiagBoundBoxes[direction][trackSequence][0]);
-    PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsLeftEighthToDiagSprites[direction][trackSequence][1]), height,
+    paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsLeftEighthToDiagSprites[direction][trackSequence][1]), height,
         { 0, 0, 0 }, kGoKartsLeftEighthToDiagBoundBoxes[direction][trackSequence][1]);
-    PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsLeftEighthToDiagSprites[direction][trackSequence][2]), height,
+    paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsLeftEighthToDiagSprites[direction][trackSequence][2]), height,
         { 0, 0, 0 }, kGoKartsLeftEighthToDiagBoundBoxes[direction][trackSequence][2]);
 
     DrawSupportForSequenceA<TrackElemType::leftEighthToDiag>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+        session, supportType.wooden, trackSequence, direction, height, session.supportColours);
     if (trackSequence == 0 && (direction == 0 || direction == 3))
     {
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -2035,18 +2035,18 @@ static void TrackRightEighthToDiag(
     PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
     const TrackElement& trackElement, const SupportType supportType)
 {
-    PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsRightEighthToDiagSprites[direction][trackSequence][0]), height,
+    paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsRightEighthToDiagSprites[direction][trackSequence][0]), height,
         { 0, 0, 0 }, kGoKartsRightEighthToDiagBoundBoxes[direction][trackSequence][0]);
-    PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsRightEighthToDiagSprites[direction][trackSequence][1]), height,
+    paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsRightEighthToDiagSprites[direction][trackSequence][1]), height,
         { 0, 0, 0 }, kGoKartsRightEighthToDiagBoundBoxes[direction][trackSequence][1]);
-    PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsRightEighthToDiagSprites[direction][trackSequence][2]), height,
+    paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsRightEighthToDiagSprites[direction][trackSequence][2]), height,
         { 0, 0, 0 }, kGoKartsRightEighthToDiagBoundBoxes[direction][trackSequence][2]);
 
     DrawSupportForSequenceA<TrackElemType::rightEighthToDiag>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+        session, supportType.wooden, trackSequence, direction, height, session.supportColours);
     if (trackSequence == 0 && (direction == 0 || direction == 3))
     {
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -2077,15 +2077,15 @@ static void TrackDiagFlat(
     PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
     const TrackElement& trackElement, const SupportType supportType)
 {
-    PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsDiagFlatSprites[direction][trackSequence][0]), height, { 0, 0, 0 },
+    paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsDiagFlatSprites[direction][trackSequence][0]), height, { 0, 0, 0 },
         kGoKartsDiagFlatBoundBoxes[direction][trackSequence][0]);
-    PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsDiagFlatSprites[direction][trackSequence][1]), height, { 0, 0, 0 },
+    paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsDiagFlatSprites[direction][trackSequence][1]), height, { 0, 0, 0 },
         kGoKartsDiagFlatBoundBoxes[direction][trackSequence][1]);
 
     DrawSupportForSequenceA<TrackElemType::diagFlat>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+        session, supportType.wooden, trackSequence, direction, height, session.supportColours);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -2094,15 +2094,15 @@ static void TrackDiagFlatToUp25(
     PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
     const TrackElement& trackElement, const SupportType supportType)
 {
-    PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsDiagFlatToUp25Sprites[direction][trackSequence][0]), height,
+    paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsDiagFlatToUp25Sprites[direction][trackSequence][0]), height,
         { 0, 0, 0 }, kGoKartsDiagFlatToUp25BoundBoxes[direction][trackSequence][0]);
-    PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsDiagFlatToUp25Sprites[direction][trackSequence][1]), height,
+    paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsDiagFlatToUp25Sprites[direction][trackSequence][1]), height,
         { 0, 0, 0 }, kGoKartsDiagFlatToUp25BoundBoxes[direction][trackSequence][1]);
 
     DrawSupportForSequenceA<TrackElemType::diagFlatToUp25>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+        session, supportType.wooden, trackSequence, direction, height, session.supportColours);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
@@ -2111,15 +2111,15 @@ static void TrackDiagUp25ToFlat(
     PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
     const TrackElement& trackElement, const SupportType supportType)
 {
-    PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsDiagUp25ToFlatSprites[direction][trackSequence][0]), height,
+    paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsDiagUp25ToFlatSprites[direction][trackSequence][0]), height,
         { 0, 0, 0 }, kGoKartsDiagUp25ToFlatBoundBoxes[direction][trackSequence][0]);
-    PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsDiagUp25ToFlatSprites[direction][trackSequence][1]), height,
+    paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsDiagUp25ToFlatSprites[direction][trackSequence][1]), height,
         { 0, 0, 0 }, kGoKartsDiagUp25ToFlatBoundBoxes[direction][trackSequence][1]);
 
     DrawSupportForSequenceB<TrackElemType::diagUp25ToFlat>(
-        session, supportType.wooden, trackSequence, direction, height + 16, session.SupportColours);
+        session, supportType.wooden, trackSequence, direction, height + 16, session.supportColours);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
@@ -2128,15 +2128,15 @@ static void TrackDiagUp25(
     PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
     const TrackElement& trackElement, const SupportType supportType)
 {
-    PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsDiagUp25Sprites[direction][trackSequence][0]), height, { 0, 0, 0 },
+    paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsDiagUp25Sprites[direction][trackSequence][0]), height, { 0, 0, 0 },
         kGoKartsDiagUp25BoundBoxes[direction][trackSequence][0]);
-    PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsDiagUp25Sprites[direction][trackSequence][1]), height, { 0, 0, 0 },
+    paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsDiagUp25Sprites[direction][trackSequence][1]), height, { 0, 0, 0 },
         kGoKartsDiagUp25BoundBoxes[direction][trackSequence][1]);
 
     DrawSupportForSequenceB<TrackElemType::diagUp25>(
-        session, supportType.wooden, trackSequence, direction, height + 16, session.SupportColours);
+        session, supportType.wooden, trackSequence, direction, height + 16, session.supportColours);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
@@ -2172,15 +2172,15 @@ static void TrackDiagUp25ToUp60(
     PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
     const TrackElement& trackElement, const SupportType supportType)
 {
-    PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsDiagUp25ToUp60Sprites[direction][trackSequence][0]), height,
+    paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsDiagUp25ToUp60Sprites[direction][trackSequence][0]), height,
         { 0, 0, 0 }, kGoKartsDiagUp25ToUp60BoundBoxes[direction][trackSequence][0]);
-    PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsDiagUp25ToUp60Sprites[direction][trackSequence][1]), height,
+    paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsDiagUp25ToUp60Sprites[direction][trackSequence][1]), height,
         { 0, 0, 0 }, kGoKartsDiagUp25ToUp60BoundBoxes[direction][trackSequence][1]);
 
     DrawSupportForSequenceB<TrackElemType::diagUp25ToUp60>(
-        session, supportType.wooden, trackSequence, direction, height + 16, session.SupportColours);
+        session, supportType.wooden, trackSequence, direction, height + 16, session.supportColours);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
@@ -2189,15 +2189,15 @@ static void TrackDiagUp60ToUp25(
     PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
     const TrackElement& trackElement, const SupportType supportType)
 {
-    PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsDiagUp60ToUp25Sprites[direction][trackSequence][0]), height,
+    paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsDiagUp60ToUp25Sprites[direction][trackSequence][0]), height,
         { 0, 0, 0 }, kGoKartsDiagUp60ToUp25BoundBoxes[direction][trackSequence][0]);
-    PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsDiagUp60ToUp25Sprites[direction][trackSequence][1]), height,
+    paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsDiagUp60ToUp25Sprites[direction][trackSequence][1]), height,
         { 0, 0, 0 }, kGoKartsDiagUp60ToUp25BoundBoxes[direction][trackSequence][1]);
 
     DrawSupportForSequenceB<TrackElemType::diagUp60ToUp25>(
-        session, supportType.wooden, trackSequence, direction, height + 16, session.SupportColours);
+        session, supportType.wooden, trackSequence, direction, height + 16, session.supportColours);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
@@ -2206,15 +2206,15 @@ static void TrackDiagUp60(
     PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
     const TrackElement& trackElement, const SupportType supportType)
 {
-    PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsDiagUp60Sprites[direction][trackSequence][0]), height, { 0, 0, 0 },
+    paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsDiagUp60Sprites[direction][trackSequence][0]), height, { 0, 0, 0 },
         kGoKartsDiagUp60BoundBoxes[direction][trackSequence][0]);
-    PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsDiagUp60Sprites[direction][trackSequence][1]), height, { 0, 0, 0 },
+    paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsDiagUp60Sprites[direction][trackSequence][1]), height, { 0, 0, 0 },
         kGoKartsDiagUp60BoundBoxes[direction][trackSequence][1]);
 
     DrawSupportForSequenceB<TrackElemType::diagUp60>(
-        session, supportType.wooden, trackSequence, direction, height + 16, session.SupportColours);
+        session, supportType.wooden, trackSequence, direction, height + 16, session.supportColours);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 104);
 }
@@ -2250,11 +2250,11 @@ static void TrackLeftQuarterTurn3TilesUp25(
     PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
     const TrackElement& trackElement, const SupportType supportType)
 {
-    PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsLeftQuarterTurn3TilesUp25Sprites[direction][trackSequence][0]), height,
+    paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsLeftQuarterTurn3TilesUp25Sprites[direction][trackSequence][0]), height,
         { 0, 0, 0 }, kGoKartsLeftQuarterTurn3TilesUp25BoundBoxes[direction][trackSequence][0]);
-    PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsLeftQuarterTurn3TilesUp25Sprites[direction][trackSequence][1]), height,
+    paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsLeftQuarterTurn3TilesUp25Sprites[direction][trackSequence][1]), height,
         { 0, 0, 0 }, kGoKartsLeftQuarterTurn3TilesUp25BoundBoxes[direction][trackSequence][1]);
 
     static constexpr std::array<WoodenSupportSubType, 4> woodenSupportSubTypes = {
@@ -2280,7 +2280,7 @@ static void TrackLeftQuarterTurn3TilesUp25(
     {
         WoodenASupportsPaintSetupRotated(
             session, supportType.wooden, woodenSupportSubType, (direction + woodenSupportExtraRotation[trackSequence]) & 3,
-            height, session.SupportColours, woodenSupportTransitionTypes[trackSequence]);
+            height, session.supportColours, woodenSupportTransitionTypes[trackSequence]);
     }
 
     if (trackSequence == 0 && (direction == 0 || direction == 3))
@@ -2308,11 +2308,11 @@ static void TrackRightQuarterTurn3TilesUp25(
     PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
     const TrackElement& trackElement, const SupportType supportType)
 {
-    PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsRightQuarterTurn3TilesUp25Sprites[direction][trackSequence][0]), height,
+    paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsRightQuarterTurn3TilesUp25Sprites[direction][trackSequence][0]), height,
         { 0, 0, 0 }, kGoKartsRightQuarterTurn3TilesUp25BoundBoxes[direction][trackSequence][0]);
-    PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsRightQuarterTurn3TilesUp25Sprites[direction][trackSequence][1]), height,
+    paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsRightQuarterTurn3TilesUp25Sprites[direction][trackSequence][1]), height,
         { 0, 0, 0 }, kGoKartsRightQuarterTurn3TilesUp25BoundBoxes[direction][trackSequence][1]);
 
     static constexpr std::array<WoodenSupportSubType, 4> woodenSupportSubTypes = {
@@ -2338,7 +2338,7 @@ static void TrackRightQuarterTurn3TilesUp25(
     {
         WoodenASupportsPaintSetupRotated(
             session, supportType.wooden, woodenSupportSubType, (direction + woodenSupportExtraRotation[trackSequence]) & 3,
-            height, session.SupportColours, woodenSupportTransitionTypes[trackSequence]);
+            height, session.supportColours, woodenSupportTransitionTypes[trackSequence]);
     }
 
     if (trackSequence == 0 && (direction == 0 || direction == 3))
@@ -2384,11 +2384,11 @@ static void TrackLeftQuarterTurn5TilesUp25(
     PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
     const TrackElement& trackElement, const SupportType supportType)
 {
-    PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsLeftQuarterTurn5TilesUp25Sprites[direction][trackSequence][0]), height,
+    paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsLeftQuarterTurn5TilesUp25Sprites[direction][trackSequence][0]), height,
         { 0, 0, 0 }, kGoKartsLeftQuarterTurn5TilesUp25BoundBoxes[direction][trackSequence][0]);
-    PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsLeftQuarterTurn5TilesUp25Sprites[direction][trackSequence][1]), height,
+    paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsLeftQuarterTurn5TilesUp25Sprites[direction][trackSequence][1]), height,
         { 0, 0, 0 }, kGoKartsLeftQuarterTurn5TilesUp25BoundBoxes[direction][trackSequence][1]);
 
     static constexpr std::array<WoodenSupportSubType, 7> woodenSupportSubTypes = {
@@ -2407,7 +2407,7 @@ static void TrackLeftQuarterTurn5TilesUp25(
     {
         WoodenASupportsPaintSetupRotated(
             session, supportType.wooden, woodenSupportSubType, (direction + woodenSupportExtraRotation[trackSequence]) & 3,
-            height + woodenSupportHeight[trackSequence], session.SupportColours, woodenSupportTransitionTypes[trackSequence]);
+            height + woodenSupportHeight[trackSequence], session.supportColours, woodenSupportTransitionTypes[trackSequence]);
     }
 
     if (trackSequence == 0 && (direction == 0 || direction == 3))
@@ -2444,11 +2444,11 @@ static void TrackRightQuarterTurn5TilesUp25(
     PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
     const TrackElement& trackElement, const SupportType supportType)
 {
-    PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsRightQuarterTurn5TilesUp25Sprites[direction][trackSequence][0]), height,
+    paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsRightQuarterTurn5TilesUp25Sprites[direction][trackSequence][0]), height,
         { 0, 0, 0 }, kGoKartsRightQuarterTurn5TilesUp25BoundBoxes[direction][trackSequence][0]);
-    PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsRightQuarterTurn5TilesUp25Sprites[direction][trackSequence][1]), height,
+    paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsRightQuarterTurn5TilesUp25Sprites[direction][trackSequence][1]), height,
         { 0, 0, 0 }, kGoKartsRightQuarterTurn5TilesUp25BoundBoxes[direction][trackSequence][1]);
 
     static constexpr std::array<WoodenSupportSubType, 7> woodenSupportSubTypes = {
@@ -2467,7 +2467,7 @@ static void TrackRightQuarterTurn5TilesUp25(
     {
         WoodenASupportsPaintSetupRotated(
             session, supportType.wooden, woodenSupportSubType, (direction + woodenSupportExtraRotation[trackSequence]) & 3,
-            height + woodenSupportHeight[trackSequence], session.SupportColours, woodenSupportTransitionTypes[trackSequence]);
+            height + woodenSupportHeight[trackSequence], session.supportColours, woodenSupportTransitionTypes[trackSequence]);
     }
 
     if (trackSequence == 0 && (direction == 0 || direction == 3))
@@ -2522,11 +2522,11 @@ static void TrackLeftEighthToDiagUp25(
     PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
     const TrackElement& trackElement, const SupportType supportType)
 {
-    PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsLeftEighthToDiagUp25Sprites[direction][trackSequence][0]), height,
+    paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsLeftEighthToDiagUp25Sprites[direction][trackSequence][0]), height,
         { 0, 0, 0 }, kGoKartsLeftEighthToDiagUp25BoundBoxes[direction][trackSequence][0]);
-    PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsLeftEighthToDiagUp25Sprites[direction][trackSequence][1]), height,
+    paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsLeftEighthToDiagUp25Sprites[direction][trackSequence][1]), height,
         { 0, 0, 0 }, kGoKartsLeftEighthToDiagUp25BoundBoxes[direction][trackSequence][1]);
 
     static constexpr std::array<WoodenSupportSubType, 5> woodenSupportSubTypes = {
@@ -2543,7 +2543,7 @@ static void TrackLeftEighthToDiagUp25(
     {
         WoodenASupportsPaintSetupRotated(
             session, supportType.wooden, woodenSupportSubType, direction, height + woodenSupportHeight[trackSequence],
-            session.SupportColours, woodenSupportTransitionTypes[trackSequence]);
+            session.supportColours, woodenSupportTransitionTypes[trackSequence]);
     }
 
     if (trackSequence == 0 && (direction == 0 || direction == 3))
@@ -2559,11 +2559,11 @@ static void TrackRightEighthToDiagUp25(
     PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
     const TrackElement& trackElement, const SupportType supportType)
 {
-    PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsRightEighthToDiagUp25Sprites[direction][trackSequence][0]), height,
+    paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsRightEighthToDiagUp25Sprites[direction][trackSequence][0]), height,
         { 0, 0, 0 }, kGoKartsRightEighthToDiagUp25BoundBoxes[direction][trackSequence][0]);
-    PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsRightEighthToDiagUp25Sprites[direction][trackSequence][1]), height,
+    paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsRightEighthToDiagUp25Sprites[direction][trackSequence][1]), height,
         { 0, 0, 0 }, kGoKartsRightEighthToDiagUp25BoundBoxes[direction][trackSequence][1]);
 
     static constexpr std::array<WoodenSupportSubType, 5> woodenSupportSubTypes = {
@@ -2580,7 +2580,7 @@ static void TrackRightEighthToDiagUp25(
     {
         WoodenASupportsPaintSetupRotated(
             session, supportType.wooden, woodenSupportSubType, direction, height + woodenSupportHeight[trackSequence],
-            session.SupportColours, woodenSupportTransitionTypes[trackSequence]);
+            session.supportColours, woodenSupportTransitionTypes[trackSequence]);
     }
 
     if (trackSequence == 0 && (direction == 0 || direction == 3))
@@ -2596,11 +2596,11 @@ static void TrackLeftEighthToOrthogonalUp25(
     PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
     const TrackElement& trackElement, const SupportType supportType)
 {
-    PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsLeftEighthToOrthogonalUp25Sprites[direction][trackSequence][0]), height,
+    paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsLeftEighthToOrthogonalUp25Sprites[direction][trackSequence][0]), height,
         { 0, 0, 0 }, kGoKartsLeftEighthToOrthogonalUp25BoundBoxes[direction][trackSequence][0]);
-    PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsLeftEighthToOrthogonalUp25Sprites[direction][trackSequence][1]), height,
+    paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsLeftEighthToOrthogonalUp25Sprites[direction][trackSequence][1]), height,
         { 0, 0, 0 }, kGoKartsLeftEighthToOrthogonalUp25BoundBoxes[direction][trackSequence][1]);
 
     static constexpr std::array<WoodenSupportSubType, 5> woodenSupportSubTypes = {
@@ -2611,7 +2611,7 @@ static void TrackLeftEighthToOrthogonalUp25(
     if (woodenSupportSubType != WoodenSupportSubType::null)
     {
         WoodenASupportsPaintSetupRotated(
-            session, supportType.wooden, woodenSupportSubType, direction, height, session.SupportColours,
+            session, supportType.wooden, woodenSupportSubType, direction, height, session.supportColours,
             WoodenSupportTransitionType::none);
     }
 
@@ -2628,11 +2628,11 @@ static void TrackRightEighthToOrthogonalUp25(
     PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
     const TrackElement& trackElement, const SupportType supportType)
 {
-    PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsRightEighthToOrthogonalUp25Sprites[direction][trackSequence][0]),
+    paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsRightEighthToOrthogonalUp25Sprites[direction][trackSequence][0]),
         height, { 0, 0, 0 }, kGoKartsRightEighthToOrthogonalUp25BoundBoxes[direction][trackSequence][0]);
-    PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsRightEighthToOrthogonalUp25Sprites[direction][trackSequence][1]),
+    paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsRightEighthToOrthogonalUp25Sprites[direction][trackSequence][1]),
         height, { 0, 0, 0 }, kGoKartsRightEighthToOrthogonalUp25BoundBoxes[direction][trackSequence][1]);
 
     static constexpr std::array<WoodenSupportSubType, 5> woodenSupportSubTypes = {
@@ -2643,7 +2643,7 @@ static void TrackRightEighthToOrthogonalUp25(
     if (woodenSupportSubType != WoodenSupportSubType::null)
     {
         WoodenASupportsPaintSetupRotated(
-            session, supportType.wooden, woodenSupportSubType, direction, height, session.SupportColours,
+            session, supportType.wooden, woodenSupportSubType, direction, height, session.supportColours,
             WoodenSupportTransitionType::none);
     }
 
@@ -2696,18 +2696,18 @@ static void TrackSBendLeft(
     PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
     const TrackElement& trackElement, const SupportType supportType)
 {
-    PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsSBendLeftSprites[direction][trackSequence][0]), height, { 0, 0, 0 },
+    paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsSBendLeftSprites[direction][trackSequence][0]), height, { 0, 0, 0 },
         kGoKartsSBendLeftBoundBoxes[direction][trackSequence][0]);
-    PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsSBendLeftSprites[direction][trackSequence][1]), height, { 0, 0, 0 },
+    paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsSBendLeftSprites[direction][trackSequence][1]), height, { 0, 0, 0 },
         kGoKartsSBendLeftBoundBoxes[direction][trackSequence][1]);
-    PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsSBendLeftSprites[direction][trackSequence][2]), height, { 0, 0, 0 },
+    paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsSBendLeftSprites[direction][trackSequence][2]), height, { 0, 0, 0 },
         kGoKartsSBendLeftBoundBoxes[direction][trackSequence][2]);
 
     DrawSupportForSequenceA<TrackElemType::sBendLeft>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+        session, supportType.wooden, trackSequence, direction, height, session.supportColours);
     if ((trackSequence == 0 && (direction == 0 || direction == 3))
         || (trackSequence == 3 && (direction == 1 || direction == 2)))
     {
@@ -2731,18 +2731,18 @@ static void TrackSBendRight(
     PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
     const TrackElement& trackElement, const SupportType supportType)
 {
-    PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsSBendRightSprites[direction][trackSequence][0]), height, { 0, 0, 0 },
+    paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsSBendRightSprites[direction][trackSequence][0]), height, { 0, 0, 0 },
         kGoKartsSBendRightBoundBoxes[direction][trackSequence][0]);
-    PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsSBendRightSprites[direction][trackSequence][1]), height, { 0, 0, 0 },
+    paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsSBendRightSprites[direction][trackSequence][1]), height, { 0, 0, 0 },
         kGoKartsSBendRightBoundBoxes[direction][trackSequence][1]);
-    PaintAddImageAsParentHeight(
-        session, session.TrackColours.WithIndex(kGoKartsSBendRightSprites[direction][trackSequence][2]), height, { 0, 0, 0 },
+    paintAddImageAsParentHeight(
+        session, session.trackColours.WithIndex(kGoKartsSBendRightSprites[direction][trackSequence][2]), height, { 0, 0, 0 },
         kGoKartsSBendRightBoundBoxes[direction][trackSequence][2]);
 
     DrawSupportForSequenceA<TrackElemType::sBendRight>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+        session, supportType.wooden, trackSequence, direction, height, session.supportColours);
     if ((trackSequence == 0 && (direction == 0 || direction == 3))
         || (trackSequence == 3 && (direction == 1 || direction == 2)))
     {

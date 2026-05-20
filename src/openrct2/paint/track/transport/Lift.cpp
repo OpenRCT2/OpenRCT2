@@ -42,10 +42,10 @@ static void PaintLiftCage(PaintSession& session, int8_t index, ImageId colourFla
     ImageId imageId;
 
     imageId = colourFlags.WithIndex(kLiftCageSprites[1 + index][0]);
-    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 2, height }, { 2, 2, 30 } });
+    paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 2, height }, { 2, 2, 30 } });
 
     imageId = colourFlags.WithIndex(kLiftCageSprites[1 + index][1]);
-    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 28, 28, height }, { 2, 2, 30 } });
+    paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 28, 28, height }, { 2, 2, 30 } });
 }
 
 /** rct2: 0x0076C6CC */
@@ -57,11 +57,11 @@ static void PaintLiftBase(
 
     if (trackSequence == 0)
     {
-        PaintLiftCage(session, direction, session.TrackColours, height, session.CurrentRotation);
+        PaintLiftCage(session, direction, session.trackColours, height, session.currentRotation);
 
-        PaintLiftCage(session, -1, session.TrackColours, height + 32, session.CurrentRotation);
+        PaintLiftCage(session, -1, session.trackColours, height + 32, session.currentRotation);
 
-        PaintLiftCage(session, -1, session.TrackColours, height + 64, session.CurrentRotation);
+        PaintLiftCage(session, -1, session.trackColours, height + 64, session.currentRotation);
 
         PaintUtilSetVerticalTunnel(session, height + 96);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -73,12 +73,12 @@ static void PaintLiftBase(
 
     int32_t edges = kEdges3x3[trackSequence];
 
-    auto imageId = session.SupportColours.WithIndex(SPR_FLOOR_TILE_DIAMOND);
-    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 32, 32, 1 } });
+    auto imageId = session.supportColours.WithIndex(SPR_FLOOR_TILE_DIAMOND);
+    paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 32, 32, 1 } });
 
     TrackPaintUtilPaintFences(
-        session, edges, session.MapPosition, trackElement, ride, session.TrackColours, height, kFenceSpritesPicketDuplicate,
-        session.CurrentRotation);
+        session, edges, session.mapPosition, trackElement, ride, session.trackColours, height, kFenceSpritesPicketDuplicate,
+        session.currentRotation);
 
     int32_t blockedSegments = 0;
     switch (trackSequence)
@@ -129,7 +129,7 @@ static void PaintLiftTowerSection(
         return;
     }
 
-    PaintLiftCage(session, -1, session.TrackColours, height, session.CurrentRotation);
+    PaintLiftCage(session, -1, session.trackColours, height, session.currentRotation);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
 

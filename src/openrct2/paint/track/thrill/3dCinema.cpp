@@ -31,8 +31,8 @@ static void Paint3dCinemaDome(
 
     if (ride.flags.has(RideFlag::onTrack) && !ride.vehicles[0].IsNull())
     {
-        session.InteractionType = ViewportInteractionItem::entity;
-        session.CurrentlyDrawnEntity = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[0]);
+        session.interactionType = ViewportInteractionItem::entity;
+        session.currentlyDrawnEntity = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[0]);
     }
 
     auto imageTemplate = ImageId(0, ride.vehicleColours[0].Body, ride.vehicleColours[0].Trim);
@@ -42,11 +42,11 @@ static void Paint3dCinemaDome(
     }
 
     auto imageId = imageTemplate.WithIndex(rideEntry->Cars[0].base_image_id + direction);
-    PaintAddImageAsParent(
+    paintAddImageAsParent(
         session, imageId, { xOffset, yOffset, height + 3 }, { { xOffset + 16, yOffset + 16, height + 3 }, { 24, 24, 47 } });
 
-    session.CurrentlyDrawnEntity = nullptr;
-    session.InteractionType = ViewportInteractionItem::ride;
+    session.currentlyDrawnEntity = nullptr;
+    session.interactionType = ViewportInteractionItem::ride;
 }
 
 /**
@@ -66,11 +66,11 @@ static void Paint3dCinema(
 
     const StationObject* stationObject = ride.getStationObject();
 
-    TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, kFloorSpritesMulch, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.trackColours, height, kFloorSpritesMulch, stationObject);
 
     TrackPaintUtilPaintFences(
-        session, edges, session.MapPosition, trackElement, ride, stationColour, height, kFenceSpritesRope,
-        session.CurrentRotation);
+        session, edges, session.mapPosition, trackElement, ride, stationColour, height, kFenceSpritesRope,
+        session.currentRotation);
 
     switch (trackSequence)
     {

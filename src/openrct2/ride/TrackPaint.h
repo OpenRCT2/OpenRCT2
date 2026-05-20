@@ -549,7 +549,7 @@ inline void TrackPaintUtilDiagTilesPaint(
 {
     TrackPaintUtilDiagTilesPaint(
         session, thickness, height, direction, trackSequence, sprites, offsets, boundsLengths, boundsOffsets,
-        additionalBoundsHeight, session.TrackColours);
+        additionalBoundsHeight, session.trackColours);
 }
 
 void TrackPaintUtilDiagTilesPaintExtra(

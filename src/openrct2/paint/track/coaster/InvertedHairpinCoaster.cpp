@@ -34,23 +34,23 @@ static void InvertedHairpinRCTrackFlat(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17030), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17030), { 0, 0, height + 24 },
                     { { 0, 6, height + 22 }, { 32, 20, 1 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17031), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17031), { 0, 0, height + 24 },
                     { { 0, 6, height + 22 }, { 32, 20, 1 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17032), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17032), { 0, 0, height + 24 },
                     { { 0, 6, height + 22 }, { 32, 20, 1 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17033), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17033), { 0, 0, height + 24 },
                     { { 0, 6, height + 22 }, { 32, 20, 1 } });
                 break;
         }
@@ -61,24 +61,24 @@ static void InvertedHairpinRCTrackFlat(
         {
             case 0:
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17026), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17026), { 0, 0, height + 24 },
                     { { 0, 6, height + 22 }, { 32, 20, 1 } });
                 break;
             case 1:
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17027), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17027), { 0, 0, height + 24 },
                     { { 0, 6, height + 22 }, { 32, 20, 1 } });
                 break;
         }
     }
 
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.mapPosition))
     {
         MetalASupportsPaintSetup(
-            session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.supportColours);
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -98,15 +98,15 @@ static void InvertedHairpinRCTrackStation(
     };
     const bool stationDrawn = TrackPaintUtilDrawStationInverted(
         session, ride, direction, height, trackElement, STATION_VARIANT_1);
-    PaintAddImageAsParentRotated(
-        session, direction, session.TrackColours.WithIndex(imageIds[direction][0]), { 0, 0, height + 24 },
+    paintAddImageAsParentRotated(
+        session, direction, session.trackColours.WithIndex(imageIds[direction][0]), { 0, 0, height + 24 },
         { { 0, 6, height + 24 }, { 32, 20, 3 } });
     if (stationDrawn)
     {
-        PaintAddImageAsChildRotated(
-            session, direction, session.SupportColours.WithIndex(imageIds[direction][1]), { 0, 6, height + 24 },
+        paintAddImageAsChildRotated(
+            session, direction, session.supportColours.WithIndex(imageIds[direction][1]), { 0, 6, height + 24 },
             { { 0, 6, height + 24 }, { 32, 20, 3 } });
-        DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal);
+        DrawSupportsSideBySide(session, direction, height, session.supportColours, supportType.metal);
     }
     TrackPaintUtilDrawStationTunnel(session, direction, height);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -123,23 +123,23 @@ static void InvertedHairpinRCTrack25DegUp(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17070), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17070), { 0, 0, height + 24 },
                     { { 0, 6, height + 37 }, { 32, 20, 3 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17071), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17071), { 0, 0, height + 24 },
                     { { 0, 6, height + 37 }, { 32, 20, 3 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17072), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17072), { 0, 0, height + 24 },
                     { { 0, 6, height + 37 }, { 32, 20, 3 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17073), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17073), { 0, 0, height + 24 },
                     { { 0, 6, height + 37 }, { 32, 20, 3 } });
                 break;
         }
@@ -149,48 +149,48 @@ static void InvertedHairpinRCTrack25DegUp(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17042), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17042), { 0, 0, height + 24 },
                     { { 0, 6, height + 37 }, { 32, 20, 3 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17043), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17043), { 0, 0, height + 24 },
                     { { 0, 6, height + 37 }, { 32, 20, 3 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17044), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17044), { 0, 0, height + 24 },
                     { { 0, 6, height + 37 }, { 32, 20, 3 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17045), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17045), { 0, 0, height + 24 },
                     { { 0, 6, height + 37 }, { 32, 20, 3 } });
                 break;
         }
     }
 
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.mapPosition))
     {
         switch (direction)
         {
             case 0:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 48, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 48, session.supportColours);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 48, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 48, session.supportColours);
                 break;
             case 2:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 48, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 48, session.supportColours);
                 break;
             case 3:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 48, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 48, session.supportColours);
                 break;
         }
     }
@@ -216,23 +216,23 @@ static void InvertedHairpinRCTrack60DegUp(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17086), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17086), { 0, 0, height + 24 },
                     { { 0, 6, height + 85 }, { 32, 20, 3 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17087), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17087), { 0, 0, height + 24 },
                     { { 0, 4, height + 6 }, { 32, 2, 81 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17088), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17088), { 0, 0, height + 24 },
                     { { 0, 4, height + 6 }, { 32, 2, 81 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17089), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17089), { 0, 0, height + 24 },
                     { { 0, 6, height + 85 }, { 32, 20, 3 } });
                 break;
         }
@@ -242,23 +242,23 @@ static void InvertedHairpinRCTrack60DegUp(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17058), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17058), { 0, 0, height + 24 },
                     { { 0, 6, height + 85 }, { 32, 20, 3 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17059), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17059), { 0, 0, height + 24 },
                     { { 0, 4, height + 6 }, { 32, 2, 81 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17060), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17060), { 0, 0, height + 24 },
                     { { 0, 4, height + 6 }, { 32, 2, 81 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17061), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17061), { 0, 0, height + 24 },
                     { { 0, 6, height + 85 }, { 32, 20, 3 } });
                 break;
         }
@@ -285,23 +285,23 @@ static void InvertedHairpinRCTrackFlatTo25DegUp(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17062), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17062), { 0, 0, height + 24 },
                     { { 0, 6, height + 29 }, { 32, 20, 3 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17063), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17063), { 0, 0, height + 24 },
                     { { 0, 6, height + 29 }, { 32, 20, 3 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17064), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17064), { 0, 0, height + 24 },
                     { { 0, 6, height + 29 }, { 32, 20, 3 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17065), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17065), { 0, 0, height + 24 },
                     { { 0, 6, height + 29 }, { 32, 20, 3 } });
                 break;
         }
@@ -311,48 +311,48 @@ static void InvertedHairpinRCTrackFlatTo25DegUp(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17034), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17034), { 0, 0, height + 24 },
                     { { 0, 6, height + 29 }, { 32, 20, 3 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17035), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17035), { 0, 0, height + 24 },
                     { { 0, 6, height + 29 }, { 32, 20, 3 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17036), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17036), { 0, 0, height + 24 },
                     { { 0, 6, height + 29 }, { 32, 20, 3 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17037), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17037), { 0, 0, height + 24 },
                     { { 0, 6, height + 29 }, { 32, 20, 3 } });
                 break;
         }
     }
 
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.mapPosition))
     {
         switch (direction)
         {
             case 0:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 40, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 40, session.supportColours);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 40, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 40, session.supportColours);
                 break;
             case 2:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 40, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 40, session.supportColours);
                 break;
             case 3:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 40, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 40, session.supportColours);
                 break;
         }
     }
@@ -378,29 +378,29 @@ static void InvertedHairpinRCTrack25DegUpTo60DegUp(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17074), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17074), { 0, 0, height + 24 },
                     { { 0, 6, height + 53 }, { 32, 20, 3 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17078), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17078), { 0, 0, height + 24 },
                     { { 0, 10, height + 6 }, { 32, 10, 49 } });
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17075), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17075), { 0, 0, height + 24 },
                     { { 0, 4, height + 6 }, { 32, 2, 49 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17079), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17079), { 0, 0, height + 24 },
                     { { 0, 10, height + 6 }, { 32, 10, 49 } });
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17076), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17076), { 0, 0, height + 24 },
                     { { 0, 4, height + 6 }, { 32, 2, 49 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17077), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17077), { 0, 0, height + 24 },
                     { { 0, 6, height + 53 }, { 32, 20, 3 } });
                 break;
         }
@@ -410,29 +410,29 @@ static void InvertedHairpinRCTrack25DegUpTo60DegUp(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17046), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17046), { 0, 0, height + 24 },
                     { { 0, 6, height + 53 }, { 32, 20, 3 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17050), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17050), { 0, 0, height + 24 },
                     { { 0, 10, height + 6 }, { 32, 10, 49 } });
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17047), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17047), { 0, 0, height + 24 },
                     { { 0, 4, height + 6 }, { 32, 2, 49 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17051), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17051), { 0, 0, height + 24 },
                     { { 0, 10, height + 6 }, { 32, 10, 49 } });
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17048), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17048), { 0, 0, height + 24 },
                     { { 0, 4, height + 6 }, { 32, 2, 49 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17049), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17049), { 0, 0, height + 24 },
                     { { 0, 6, height + 53 }, { 32, 20, 3 } });
                 break;
         }
@@ -459,29 +459,29 @@ static void InvertedHairpinRCTrack60DegUpTo25DegUp(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17080), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17080), { 0, 0, height + 24 },
                     { { 0, 6, height + 53 }, { 32, 20, 3 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17084), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17084), { 0, 0, height + 24 },
                     { { 0, 10, height + 6 }, { 32, 10, 49 } });
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17081), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17081), { 0, 0, height + 24 },
                     { { 0, 4, height + 6 }, { 32, 2, 49 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17085), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17085), { 0, 0, height + 24 },
                     { { 0, 10, height + 6 }, { 32, 10, 49 } });
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17082), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17082), { 0, 0, height + 24 },
                     { { 0, 4, height + 6 }, { 32, 2, 49 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17083), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17083), { 0, 0, height + 24 },
                     { { 0, 6, height + 53 }, { 32, 20, 3 } });
                 break;
         }
@@ -491,54 +491,54 @@ static void InvertedHairpinRCTrack60DegUpTo25DegUp(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17052), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17052), { 0, 0, height + 24 },
                     { { 0, 6, height + 53 }, { 32, 20, 3 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17056), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17056), { 0, 0, height + 24 },
                     { { 0, 10, height + 6 }, { 32, 10, 49 } });
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17053), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17053), { 0, 0, height + 24 },
                     { { 0, 4, height + 6 }, { 32, 2, 49 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17057), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17057), { 0, 0, height + 24 },
                     { { 0, 10, height + 6 }, { 32, 10, 49 } });
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17054), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17054), { 0, 0, height + 24 },
                     { { 0, 4, height + 6 }, { 32, 2, 49 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17055), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17055), { 0, 0, height + 24 },
                     { { 0, 6, height + 53 }, { 32, 20, 3 } });
                 break;
         }
     }
 
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.mapPosition))
     {
         switch (direction)
         {
             case 0:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 62, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 62, session.supportColours);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 62, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 62, session.supportColours);
                 break;
             case 2:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 62, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 62, session.supportColours);
                 break;
             case 3:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 62, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 62, session.supportColours);
                 break;
         }
     }
@@ -564,23 +564,23 @@ static void InvertedHairpinRCTrack25DegUpToFlat(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17066), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17066), { 0, 0, height + 24 },
                     { { 0, 6, height + 29 }, { 32, 20, 3 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17067), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17067), { 0, 0, height + 24 },
                     { { 0, 6, height + 29 }, { 32, 20, 3 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17068), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17068), { 0, 0, height + 24 },
                     { { 0, 6, height + 29 }, { 32, 20, 3 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17069), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17069), { 0, 0, height + 24 },
                     { { 0, 6, height + 29 }, { 32, 20, 3 } });
                 break;
         }
@@ -590,48 +590,48 @@ static void InvertedHairpinRCTrack25DegUpToFlat(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17038), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17038), { 0, 0, height + 24 },
                     { { 0, 6, height + 29 }, { 32, 20, 3 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17039), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17039), { 0, 0, height + 24 },
                     { { 0, 6, height + 29 }, { 32, 20, 3 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17040), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17040), { 0, 0, height + 24 },
                     { { 0, 6, height + 29 }, { 32, 20, 3 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17041), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17041), { 0, 0, height + 24 },
                     { { 0, 6, height + 29 }, { 32, 20, 3 } });
                 break;
         }
     }
 
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.mapPosition))
     {
         switch (direction)
         {
             case 0:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 38, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 38, session.supportColours);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 38, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 38, session.supportColours);
                 break;
             case 2:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 38, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 38, session.supportColours);
                 break;
             case 3:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 38, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 38, session.supportColours);
                 break;
         }
     }
@@ -708,23 +708,23 @@ static void InvertedHairpinRCTrackLeftQuarterTurn3(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(17123), { 0, 0, height + 24 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(17123), { 0, 0, height + 24 },
                         { { 0, 6, height + 21 }, { 32, 20, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(17126), { 0, 0, height + 24 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(17126), { 0, 0, height + 24 },
                         { { 0, 6, height + 21 }, { 32, 20, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(17129), { 0, 0, height + 24 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(17129), { 0, 0, height + 24 },
                         { { 0, 6, height + 21 }, { 32, 20, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(17120), { 0, 0, height + 24 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(17120), { 0, 0, height + 24 },
                         { { 0, 6, height + 21 }, { 32, 20, 3 } });
                     break;
             }
@@ -738,7 +738,7 @@ static void InvertedHairpinRCTrackLeftQuarterTurn3(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.supportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -753,23 +753,23 @@ static void InvertedHairpinRCTrackLeftQuarterTurn3(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(17122), { 0, 0, height + 24 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(17122), { 0, 0, height + 24 },
                         { { 16, 0, height + 21 }, { 16, 16, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(17125), { 0, 0, height + 24 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(17125), { 0, 0, height + 24 },
                         { { 0, 0, height + 21 }, { 16, 16, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(17128), { 0, 0, height + 24 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(17128), { 0, 0, height + 24 },
                         { { 0, 16, height + 21 }, { 16, 16, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(17119), { 0, 0, height + 24 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(17119), { 0, 0, height + 24 },
                         { { 16, 16, height + 21 }, { 16, 16, 3 } });
                     break;
             }
@@ -785,23 +785,23 @@ static void InvertedHairpinRCTrackLeftQuarterTurn3(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(17121), { 0, 0, height + 24 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(17121), { 0, 0, height + 24 },
                         { { 6, 0, height + 21 }, { 20, 32, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(17124), { 0, 0, height + 24 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(17124), { 0, 0, height + 24 },
                         { { 6, 0, height + 21 }, { 20, 32, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(17127), { 0, 0, height + 24 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(17127), { 0, 0, height + 24 },
                         { { 6, 0, height + 21 }, { 20, 32, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(17118), { 0, 0, height + 24 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(17118), { 0, 0, height + 24 },
                         { { 6, 0, height + 21 }, { 20, 32, 3 } });
                     break;
             }
@@ -815,7 +815,7 @@ static void InvertedHairpinRCTrackLeftQuarterTurn3(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.supportColours);
 
             switch (direction)
             {
@@ -852,20 +852,20 @@ static void InvertedHairpinRCTrackLeftQuarterTurn325DegUp(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(17141), { 0, 6, height + 24 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(17141), { 0, 6, height + 24 }, { 32, 20, 3 });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(17143), { 0, 6, height + 24 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(17143), { 0, 6, height + 24 }, { 32, 20, 3 });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(17145), { 0, 6, height + 24 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(17145), { 0, 6, height + 24 }, { 32, 20, 3 });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(17139), { 0, 6, height + 24 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(17139), { 0, 6, height + 24 }, { 32, 20, 3 });
                     break;
             }
 
@@ -878,7 +878,7 @@ static void InvertedHairpinRCTrackLeftQuarterTurn325DegUp(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, 0, height + 38, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 38, session.supportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -896,20 +896,20 @@ static void InvertedHairpinRCTrackLeftQuarterTurn325DegUp(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(17140), { 6, 0, height + 24 }, { 20, 32, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(17140), { 6, 0, height + 24 }, { 20, 32, 3 });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(17142), { 6, 0, height + 24 }, { 20, 32, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(17142), { 6, 0, height + 24 }, { 20, 32, 3 });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(17144), { 6, 0, height + 24 }, { 20, 32, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(17144), { 6, 0, height + 24 }, { 20, 32, 3 });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(17138), { 6, 0, height + 24 }, { 20, 32, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(17138), { 6, 0, height + 24 }, { 20, 32, 3 });
                     break;
             }
 
@@ -922,7 +922,7 @@ static void InvertedHairpinRCTrackLeftQuarterTurn325DegUp(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, 0, height + 38, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 38, session.supportColours);
 
             switch (direction)
             {
@@ -949,20 +949,20 @@ static void InvertedHairpinRCTrackRightQuarterTurn325DegUp(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(17130), { 0, 6, height + 24 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(17130), { 0, 6, height + 24 }, { 32, 20, 3 });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(17132), { 0, 6, height + 24 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(17132), { 0, 6, height + 24 }, { 32, 20, 3 });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(17134), { 0, 6, height + 24 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(17134), { 0, 6, height + 24 }, { 32, 20, 3 });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(17136), { 0, 6, height + 24 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(17136), { 0, 6, height + 24 }, { 32, 20, 3 });
                     break;
             }
 
@@ -975,7 +975,7 @@ static void InvertedHairpinRCTrackRightQuarterTurn325DegUp(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, 0, height + 38, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 38, session.supportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -993,20 +993,20 @@ static void InvertedHairpinRCTrackRightQuarterTurn325DegUp(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(17131), { 6, 0, height + 24 }, { 20, 32, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(17131), { 6, 0, height + 24 }, { 20, 32, 3 });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(17133), { 6, 0, height + 24 }, { 20, 32, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(17133), { 6, 0, height + 24 }, { 20, 32, 3 });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(17135), { 6, 0, height + 24 }, { 20, 32, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(17135), { 6, 0, height + 24 }, { 20, 32, 3 });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(17137), { 6, 0, height + 24 }, { 20, 32, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(17137), { 6, 0, height + 24 }, { 20, 32, 3 });
                     break;
             }
 
@@ -1019,7 +1019,7 @@ static void InvertedHairpinRCTrackRightQuarterTurn325DegUp(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, 0, height + 38, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 38, session.supportColours);
 
             switch (direction)
             {
@@ -1063,23 +1063,23 @@ static void InvertedHairpinRCTrackLeftQuarterTurn1(
     switch (direction)
     {
         case 0:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(17114), { 0, 0, height + 24 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(17114), { 0, 0, height + 24 },
                 { { 6, 2, height + 21 }, { 26, 24, 3 } });
             break;
         case 1:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(17115), { 0, 0, height + 24 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(17115), { 0, 0, height + 24 },
                 { { 0, 0, height + 21 }, { 26, 26, 3 } });
             break;
         case 2:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(17116), { 0, 0, height + 24 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(17116), { 0, 0, height + 24 },
                 { { 2, 6, height + 21 }, { 24, 26, 3 } });
             break;
         case 3:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(17117), { 0, 0, height + 24 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(17117), { 0, 0, height + 24 },
                 { { 6, 6, height + 21 }, { 24, 24, 3 } });
             break;
     }
@@ -1090,7 +1090,7 @@ static void InvertedHairpinRCTrackLeftQuarterTurn1(
             EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft), direction),
         0xFFFF, 0);
     MetalASupportsPaintSetup(
-        session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.SupportColours);
+        session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.supportColours);
 
     switch (direction)
     {
@@ -1127,29 +1127,29 @@ static void InvertedHairpinRCTrackFlatTo60DegUp(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17102), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17102), { 0, 0, height + 24 },
                     { { 0, 6, height + 45 }, { 30, 20, 3 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17106), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17106), { 0, 0, height + 24 },
                     { { 0, 10, height + 6 }, { 32, 10, 49 } });
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17103), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17103), { 0, 0, height + 24 },
                     { { 0, 4, height + 6 }, { 32, 2, 49 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17107), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17107), { 0, 0, height + 24 },
                     { { 0, 10, height + 6 }, { 32, 10, 49 } });
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17104), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17104), { 0, 0, height + 24 },
                     { { 0, 4, height + 6 }, { 32, 2, 49 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17105), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17105), { 0, 0, height + 24 },
                     { { 0, 6, height + 45 }, { 30, 20, 3 } });
                 break;
         }
@@ -1159,29 +1159,29 @@ static void InvertedHairpinRCTrackFlatTo60DegUp(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17090), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17090), { 0, 0, height + 24 },
                     { { 0, 6, height + 45 }, { 30, 20, 3 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17094), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17094), { 0, 0, height + 24 },
                     { { 0, 10, height + 6 }, { 32, 10, 49 } });
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17091), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17091), { 0, 0, height + 24 },
                     { { 0, 4, height + 6 }, { 32, 2, 49 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17095), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17095), { 0, 0, height + 24 },
                     { { 0, 10, height + 6 }, { 32, 10, 49 } });
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17092), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17092), { 0, 0, height + 24 },
                     { { 0, 4, height + 6 }, { 32, 2, 49 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17093), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17093), { 0, 0, height + 24 },
                     { { 0, 6, height + 45 }, { 30, 20, 3 } });
                 break;
         }
@@ -1208,29 +1208,29 @@ static void InvertedHairpinRCTrack60DegUpToFlat(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17108), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17108), { 0, 0, height + 24 },
                     { { 0, 6, height + 45 }, { 30, 20, 3 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17112), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17112), { 0, 0, height + 24 },
                     { { 0, 10, height + 6 }, { 32, 10, 41 } });
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17109), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17109), { 0, 0, height + 24 },
                     { { 0, 4, height + 6 }, { 32, 2, 41 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17113), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17113), { 0, 0, height + 24 },
                     { { 0, 10, height + 6 }, { 32, 10, 41 } });
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17110), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17110), { 0, 0, height + 24 },
                     { { 0, 4, height + 6 }, { 32, 2, 41 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17111), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17111), { 0, 0, height + 24 },
                     { { 0, 6, height + 45 }, { 30, 20, 3 } });
                 break;
         }
@@ -1240,29 +1240,29 @@ static void InvertedHairpinRCTrack60DegUpToFlat(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17096), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17096), { 0, 0, height + 24 },
                     { { 0, 6, height + 45 }, { 30, 20, 3 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17100), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17100), { 0, 0, height + 24 },
                     { { 0, 10, height + 6 }, { 32, 10, 41 } });
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17097), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17097), { 0, 0, height + 24 },
                     { { 0, 4, height + 6 }, { 32, 2, 41 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17101), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17101), { 0, 0, height + 24 },
                     { { 0, 10, height + 6 }, { 32, 10, 41 } });
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17098), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17098), { 0, 0, height + 24 },
                     { { 0, 4, height + 6 }, { 32, 2, 41 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(17099), { 0, 0, height + 24 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(17099), { 0, 0, height + 24 },
                     { { 0, 6, height + 45 }, { 30, 20, 3 } });
                 break;
         }
@@ -1273,19 +1273,19 @@ static void InvertedHairpinRCTrack60DegUpToFlat(
     {
         case 0:
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 54, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 54, session.supportColours);
             break;
         case 1:
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 54, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 54, session.supportColours);
             break;
         case 2:
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 54, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 54, session.supportColours);
             break;
         case 3:
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 54, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 54, session.supportColours);
             break;
     }
 
@@ -1325,23 +1325,23 @@ static void InvertedHairpinRCTrackBrakes(
     {
         case 0:
         case 2:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(17028), { 0, 0, height + 24 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(17028), { 0, 0, height + 24 },
                 { { 0, 6, height + 22 }, { 32, 20, 1 } });
             break;
         case 1:
         case 3:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(17029), { 0, 0, height + 24 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(17029), { 0, 0, height + 24 },
                 { { 0, 6, height + 22 }, { 32, 20, 1 } });
             break;
     }
 
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.mapPosition))
     {
         MetalASupportsPaintSetup(
-            session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.supportColours);
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -1357,23 +1357,23 @@ static void InvertedHairpinRCTrackBlockBrakes(
     {
         case 0:
         case 2:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(17028), { 0, 0, height + 24 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(17028), { 0, 0, height + 24 },
                 { { 0, 6, height + 22 }, { 32, 20, 1 } });
             break;
         case 1:
         case 3:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(17029), { 0, 0, height + 24 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(17029), { 0, 0, height + 24 },
                 { { 0, 6, height + 22 }, { 32, 20, 1 } });
             break;
     }
 
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.mapPosition))
     {
         MetalASupportsPaintSetup(
-            session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.supportColours);
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);

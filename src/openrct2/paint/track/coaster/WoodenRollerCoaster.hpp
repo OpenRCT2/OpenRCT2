@@ -57,9 +57,9 @@ namespace OpenRCT2::WoodenRC
     ImageId WoodenRCGetTrackColour(const PaintSession& session)
     {
         if (isClassic)
-            return session.TrackColours;
+            return session.trackColours;
         else
-            return session.SupportColours;
+            return session.supportColours;
     }
 
     ImageId WoodenRCGetRailsColour(PaintSession& session);
@@ -71,17 +71,17 @@ namespace OpenRCT2::WoodenRC
     {
         if (isClassic)
         {
-            const ImageId imageId = session.TrackColours.WithIndex(imageIdTrack);
+            const ImageId imageId = session.trackColours.WithIndex(imageIdTrack);
 
-            return PaintAddImageAsParentRotated(session, direction, imageId, offset, boundBox);
+            return paintAddImageAsParentRotated(session, direction, imageId, offset, boundBox);
         }
         else
         {
-            const ImageId imageId = session.SupportColours.WithIndex(imageIdTrack);
+            const ImageId imageId = session.supportColours.WithIndex(imageIdTrack);
             const ImageId railsImageId = WoodenRCGetRailsColour(session).WithIndex(imageIdRails);
 
-            PaintAddImageAsParentRotated(session, direction, imageId, offset, boundBox);
-            return PaintAddImageAsChildRotated(session, direction, railsImageId, offset, boundBox);
+            paintAddImageAsParentRotated(session, direction, imageId, offset, boundBox);
+            return paintAddImageAsChildRotated(session, direction, railsImageId, offset, boundBox);
         }
     }
 
@@ -92,13 +92,13 @@ namespace OpenRCT2::WoodenRC
             return;
 
         ImageId imageId = WoodenRCGetTrackColour<isClassic>(session).WithIndex(bb->ImageIdA);
-        PaintAddImageAsParent(
+        paintAddImageAsParent(
             session, imageId, { bb->offset.x, bb->offset.y, height + bb->offset.z },
             { { bb->BoundBox.offset.x, bb->BoundBox.offset.y, height + bb->BoundBox.offset.z }, bb->BoundBox.length });
         if (bb->ImageIdB != 0)
         {
             ImageId railsImageId = WoodenRCGetRailsColour(session).WithIndex(bb->ImageIdB);
-            PaintAddImageAsChild(
+            paintAddImageAsChild(
                 session, railsImageId, { bb->offset.x, bb->offset.y, height + bb->offset.z },
                 { { bb->BoundBox.offset, height + bb->BoundBox.offset.z }, bb->BoundBox.length });
         }
@@ -126,7 +126,7 @@ namespace OpenRCT2::WoodenRC
     {
         TrackStraightBankTrack<isClassic, imageIds>(session, direction, height);
         WoodenASupportsPaintSetupRotated(
-            session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours);
+            session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.supportColours);
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -140,7 +140,7 @@ namespace OpenRCT2::WoodenRC
     {
         TrackStraightBankTrack<isClassic, imageIds>(session, direction, height);
         WoodenASupportsPaintSetupRotated(
-            session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
+            session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.supportColours,
             WoodenSupportTransitionType::up25DegToFlat);
         if (direction == 0 || direction == 3)
         {
@@ -162,7 +162,7 @@ namespace OpenRCT2::WoodenRC
     {
         TrackStraightBankTrack<isClassic, imageIds>(session, direction, height);
         WoodenASupportsPaintSetupRotated(
-            session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
+            session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.supportColours,
             WoodenSupportTransitionType::flatToUp25Deg);
         if (direction == 0 || direction == 3)
         {
@@ -306,7 +306,7 @@ namespace OpenRCT2::WoodenRC
         };
 
         DrawSupportForSequenceA<TrackElemType::leftBankedQuarterTurn3Tiles>(
-            session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+            session, supportType.wooden, trackSequence, direction, height, session.supportColours);
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(blockedSegments[trackSequence], direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -526,7 +526,7 @@ namespace OpenRCT2::WoodenRC
         };
 
         DrawSupportForSequenceA<TrackElemType::bankedRightQuarterTurn5Tiles>(
-            session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+            session, supportType.wooden, trackSequence, direction, height, session.supportColours);
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(blockedSegments[trackSequence], direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -548,7 +548,7 @@ namespace OpenRCT2::WoodenRC
                             session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 0, height },
                             { { 0, 6, height }, { 32, 20, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                         break;
                     case 1:
                         TrackPaint<isClassic>(
@@ -561,14 +561,14 @@ namespace OpenRCT2::WoodenRC
                                 { 0, 0, height }, { { 0, 6, height + 27 }, { 32, 20, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                         break;
                     case 2:
                         TrackPaint<isClassic>(
                             session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 0, height },
                             { { 0, 6, height }, { 32, 20, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                         break;
                     case 3:
                         TrackPaint<isClassic>(
@@ -581,7 +581,7 @@ namespace OpenRCT2::WoodenRC
                                 { 0, 0, height }, { { 0, 6, height + 27 }, { 32, 20, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                         break;
                 }
                 if (direction == 0 || direction == 3)
@@ -609,19 +609,19 @@ namespace OpenRCT2::WoodenRC
                 {
                     case 0:
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                         break;
                     case 1:
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                         break;
                     case 2:
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                         break;
                     case 3:
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                         break;
                 }
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -678,7 +678,7 @@ namespace OpenRCT2::WoodenRC
                             session, direction, imageIds[2][direction].track, imageIds[2][direction].handrail, { 0, 0, height },
                             { { 6, 0, height }, { 20, 32, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                         break;
                     case 1:
                         TrackPaint<isClassic>(
@@ -691,14 +691,14 @@ namespace OpenRCT2::WoodenRC
                                 { 0, 0, height }, { { 6, 0, height + 27 }, { 20, 32, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                         break;
                     case 2:
                         TrackPaint<isClassic>(
                             session, direction, imageIds[2][direction].track, imageIds[2][direction].handrail, { 0, 0, height },
                             { { 6, 0, height }, { 20, 32, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                         break;
                     case 3:
                         TrackPaint<isClassic>(
@@ -711,7 +711,7 @@ namespace OpenRCT2::WoodenRC
                                 { 0, 0, height }, { { 6, 0, height + 27 }, { 20, 32, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                         break;
                 }
                 switch (direction)
@@ -753,14 +753,14 @@ namespace OpenRCT2::WoodenRC
                                 { { 6, 0, height + 27 }, { 20, 32, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                         break;
                     case 1:
                         TrackPaint<isClassic>(
                             session, direction, imageIds[0][0].track, imageIds[0][0].handrail, { 0, 0, height },
                             { { 6, 0, height }, { 20, 32, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                         break;
                     case 2:
                         TrackPaint<isClassic>(
@@ -773,14 +773,14 @@ namespace OpenRCT2::WoodenRC
                                 { { 6, 0, height + 27 }, { 20, 32, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                         break;
                     case 3:
                         TrackPaint<isClassic>(
                             session, direction, imageIds[0][2].track, imageIds[0][2].handrail, { 0, 0, height },
                             { { 6, 0, height }, { 20, 32, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                         break;
                 }
                 switch (direction)
@@ -813,19 +813,19 @@ namespace OpenRCT2::WoodenRC
                 {
                     case 0:
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                         break;
                     case 1:
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                         break;
                     case 2:
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                         break;
                     case 3:
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                         break;
                 }
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -889,14 +889,14 @@ namespace OpenRCT2::WoodenRC
                                 { { 0, 6, height + 27 }, { 32, 20, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                         break;
                     case 1:
                         TrackPaint<isClassic>(
                             session, direction, imageIds[2][0].track, imageIds[2][0].handrail, { 0, 0, height },
                             { { 0, 6, height }, { 32, 20, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                         break;
                     case 2:
                         TrackPaint<isClassic>(
@@ -909,14 +909,14 @@ namespace OpenRCT2::WoodenRC
                                 { { 0, 6, height + 27 }, { 32, 20, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                         break;
                     case 3:
                         TrackPaint<isClassic>(
                             session, direction, imageIds[2][2].track, imageIds[2][2].handrail, { 0, 0, height },
                             { { 0, 6, height }, { 32, 20, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                         break;
                 }
                 if (direction == 0 || direction == 3)
@@ -964,14 +964,14 @@ namespace OpenRCT2::WoodenRC
                                 { 0, 0, height }, { { 0, 6, height + 27 }, { 32, 20, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                         break;
                     case 1:
                         TrackPaint<isClassic>(
                             session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 0, height },
                             { { 0, 6, height }, { 32, 20, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                         break;
                     case 2:
                         TrackPaint<isClassic>(
@@ -984,14 +984,14 @@ namespace OpenRCT2::WoodenRC
                                 { 0, 0, height }, { { 0, 6, height + 27 }, { 32, 20, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                         break;
                     case 3:
                         TrackPaint<isClassic>(
                             session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 0, height },
                             { { 0, 6, height }, { 32, 20, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                         break;
                 }
                 if (direction == 0 || direction == 3)
@@ -1019,19 +1019,19 @@ namespace OpenRCT2::WoodenRC
                 {
                     case 0:
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                         break;
                     case 1:
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                         break;
                     case 2:
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                         break;
                     case 3:
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                         break;
                 }
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -1095,14 +1095,14 @@ namespace OpenRCT2::WoodenRC
                                 { 0, 0, height }, { { 6, 0, height + 27 }, { 20, 32, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                         break;
                     case 1:
                         TrackPaint<isClassic>(
                             session, direction, imageIds[2][direction].track, imageIds[2][direction].handrail, { 0, 0, height },
                             { { 6, 0, height }, { 20, 32, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                         break;
                     case 2:
                         TrackPaint<isClassic>(
@@ -1115,14 +1115,14 @@ namespace OpenRCT2::WoodenRC
                                 { 0, 0, height }, { { 6, 0, height + 27 }, { 20, 32, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                         break;
                     case 3:
                         TrackPaint<isClassic>(
                             session, direction, imageIds[2][direction].track, imageIds[2][direction].handrail, { 0, 0, height },
                             { { 6, 0, height }, { 20, 32, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                         break;
                 }
                 switch (direction)
@@ -1158,7 +1158,7 @@ namespace OpenRCT2::WoodenRC
                             session, direction, imageIds[0][1].track, imageIds[0][1].handrail, { 0, 0, height },
                             { { 6, 0, height }, { 20, 32, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                         break;
                     case 1:
                         TrackPaint<isClassic>(
@@ -1171,14 +1171,14 @@ namespace OpenRCT2::WoodenRC
                                 { { 6, 0, height + 27 }, { 20, 32, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                         break;
                     case 2:
                         TrackPaint<isClassic>(
                             session, direction, imageIds[0][3].track, imageIds[0][3].handrail, { 0, 0, height },
                             { { 6, 0, height }, { 20, 32, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                         break;
                     case 3:
                         TrackPaint<isClassic>(
@@ -1191,7 +1191,7 @@ namespace OpenRCT2::WoodenRC
                                 { { 6, 0, height + 27 }, { 20, 32, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                         break;
                 }
                 switch (direction)
@@ -1224,19 +1224,19 @@ namespace OpenRCT2::WoodenRC
                 {
                     case 0:
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                         break;
                     case 1:
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                         break;
                     case 2:
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                         break;
                     case 3:
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                         break;
                 }
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -1293,7 +1293,7 @@ namespace OpenRCT2::WoodenRC
                             session, direction, imageIds[2][1].track, imageIds[2][1].handrail, { 0, 0, height },
                             { { 0, 6, height }, { 32, 20, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                         break;
                     case 1:
                         TrackPaint<isClassic>(
@@ -1306,14 +1306,14 @@ namespace OpenRCT2::WoodenRC
                                 { { 0, 6, height + 27 }, { 32, 20, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                         break;
                     case 2:
                         TrackPaint<isClassic>(
                             session, direction, imageIds[2][3].track, imageIds[2][3].handrail, { 0, 0, height },
                             { { 0, 6, height }, { 32, 20, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                         break;
                     case 3:
                         TrackPaint<isClassic>(
@@ -1326,7 +1326,7 @@ namespace OpenRCT2::WoodenRC
                                 { { 0, 6, height + 27 }, { 32, 20, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                         break;
                 }
                 if (direction == 0 || direction == 3)
@@ -1368,7 +1368,7 @@ namespace OpenRCT2::WoodenRC
                             session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 0, height },
                             { { 0, 6, height }, { 32, 20, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                         break;
                     case 1:
                         TrackPaint<isClassic>(
@@ -1381,14 +1381,14 @@ namespace OpenRCT2::WoodenRC
                                 { 0, 0, height }, { { 0, 2, height + 27 }, { 32, 27, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                         break;
                     case 2:
                         TrackPaint<isClassic>(
                             session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 0, height },
                             { { 0, 6, height }, { 32, 20, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                         break;
                     case 3:
                         TrackPaint<isClassic>(
@@ -1401,7 +1401,7 @@ namespace OpenRCT2::WoodenRC
                                 { 0, 0, height }, { { 0, 6, height + 27 }, { 32, 20, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                         break;
                 }
                 if (direction == 0 || direction == 3)
@@ -1440,7 +1440,7 @@ namespace OpenRCT2::WoodenRC
                             session, direction, imageIds[1][direction].track, imageIds[1][direction].handrail, { 0, 0, height },
                             { { 0, 0, height }, { 32, 16, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                         break;
                     case 1:
                         TrackPaint<isClassic>(
@@ -1453,14 +1453,14 @@ namespace OpenRCT2::WoodenRC
                                 { 0, 0, height }, { { 0, 0, height + 27 }, { 32, 16, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                         break;
                     case 2:
                         TrackPaint<isClassic>(
                             session, direction, imageIds[1][direction].track, imageIds[1][direction].handrail, { 0, 0, height },
                             { { 0, 16, height }, { 32, 16, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                         break;
                     case 3:
                         TrackPaint<isClassic>(
@@ -1473,7 +1473,7 @@ namespace OpenRCT2::WoodenRC
                                 { 0, 0, height }, { { 0, 16, height + 27 }, { 32, 16, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -1494,7 +1494,7 @@ namespace OpenRCT2::WoodenRC
                             session, direction, imageIds[2][direction].track, imageIds[2][direction].handrail, { 0, 0, height },
                             { { 0, 16, height }, { 16, 16, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                         break;
                     case 1:
                         TrackPaint<isClassic>(
@@ -1507,14 +1507,14 @@ namespace OpenRCT2::WoodenRC
                                 { 0, 0, height }, { { 16, 16, height + 29 }, { 16, 16, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                         break;
                     case 2:
                         TrackPaint<isClassic>(
                             session, direction, imageIds[2][direction].track, imageIds[2][direction].handrail, { 0, 0, height },
                             { { 16, 0, height }, { 16, 16, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                         break;
                     case 3:
                         TrackPaint<isClassic>(
@@ -1527,7 +1527,7 @@ namespace OpenRCT2::WoodenRC
                                 { 0, 0, height }, { { 0, 0, height + 27 }, { 16, 16, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -1561,7 +1561,7 @@ namespace OpenRCT2::WoodenRC
                             session, direction, imageIds[3][direction].track, imageIds[3][direction].handrail, { 0, 0, height },
                             { { 16, 0, height }, { 16, 32, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                         break;
                     case 1:
                         TrackPaint<isClassic>(
@@ -1574,14 +1574,14 @@ namespace OpenRCT2::WoodenRC
                                 { 0, 0, height }, { { 0, 0, height + 33 }, { 16, 32, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                         break;
                     case 2:
                         TrackPaint<isClassic>(
                             session, direction, imageIds[3][direction].track, imageIds[3][direction].handrail, { 0, 0, height },
                             { { 0, 0, height }, { 16, 32, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                         break;
                     case 3:
                         TrackPaint<isClassic>(
@@ -1594,7 +1594,7 @@ namespace OpenRCT2::WoodenRC
                                 { 0, 0, height }, { { 16, 0, height + 27 }, { 16, 32, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -1615,7 +1615,7 @@ namespace OpenRCT2::WoodenRC
                             session, direction, imageIds[4][direction].track, imageIds[4][direction].handrail, { 0, 0, height },
                             { { 6, 0, height }, { 20, 32, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                         break;
                     case 1:
                         TrackPaint<isClassic>(
@@ -1628,14 +1628,14 @@ namespace OpenRCT2::WoodenRC
                                 { 0, 0, height }, { { 2, 0, height + 33 }, { 27, 32, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                         break;
                     case 2:
                         TrackPaint<isClassic>(
                             session, direction, imageIds[4][direction].track, imageIds[4][direction].handrail, { 0, 0, height },
                             { { 6, 0, height }, { 20, 32, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                         break;
                     case 3:
                         TrackPaint<isClassic>(
@@ -1648,7 +1648,7 @@ namespace OpenRCT2::WoodenRC
                                 { 0, 0, height }, { { 6, 0, height + 27 }, { 20, 32, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                         break;
                 }
                 switch (direction)
@@ -1690,14 +1690,14 @@ namespace OpenRCT2::WoodenRC
                                 { { 6, 0, height + 27 }, { 20, 32, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                         break;
                     case 1:
                         TrackPaint<isClassic>(
                             session, direction, imageIds[0][0].track, imageIds[0][0].handrail, { 0, 0, height },
                             { { 6, 0, height }, { 20, 32, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                         break;
                     case 2:
                         TrackPaint<isClassic>(
@@ -1710,14 +1710,14 @@ namespace OpenRCT2::WoodenRC
                                 { { 2, 0, height + 27 }, { 27, 32, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                         break;
                     case 3:
                         TrackPaint<isClassic>(
                             session, direction, imageIds[0][2].track, imageIds[0][2].handrail, { 0, 0, height },
                             { { 6, 0, height }, { 20, 32, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                         break;
                 }
                 switch (direction)
@@ -1767,14 +1767,14 @@ namespace OpenRCT2::WoodenRC
                                 { { 16, 0, height + 27 }, { 16, 32, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                         break;
                     case 1:
                         TrackPaint<isClassic>(
                             session, direction, imageIds[1][0].track, imageIds[1][0].handrail, { 0, 0, height },
                             { { 0, 0, height }, { 16, 32, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                         break;
                     case 2:
                         TrackPaint<isClassic>(
@@ -1787,14 +1787,14 @@ namespace OpenRCT2::WoodenRC
                                 { { 0, 0, height + 27 }, { 16, 32, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                         break;
                     case 3:
                         TrackPaint<isClassic>(
                             session, direction, imageIds[1][2].track, imageIds[1][2].handrail, { 0, 0, height },
                             { { 16, 0, height }, { 16, 32, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -1821,14 +1821,14 @@ namespace OpenRCT2::WoodenRC
                                 { { 0, 0, height + 27 }, { 16, 16, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                         break;
                     case 1:
                         TrackPaint<isClassic>(
                             session, direction, imageIds[2][0].track, imageIds[2][0].handrail, { 0, 0, height },
                             { { 16, 0, height }, { 16, 16, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                         break;
                     case 2:
                         TrackPaint<isClassic>(
@@ -1841,14 +1841,14 @@ namespace OpenRCT2::WoodenRC
                                 { { 16, 16, height + 29 }, { 16, 16, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                         break;
                     case 3:
                         TrackPaint<isClassic>(
                             session, direction, imageIds[2][2].track, imageIds[2][2].handrail, { 0, 0, height },
                             { { 0, 16, height }, { 16, 16, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -1888,14 +1888,14 @@ namespace OpenRCT2::WoodenRC
                                 { { 0, 16, height + 27 }, { 32, 16, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                         break;
                     case 1:
                         TrackPaint<isClassic>(
                             session, direction, imageIds[3][0].track, imageIds[3][0].handrail, { 0, 0, height },
                             { { 0, 16, height }, { 32, 16, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                         break;
                     case 2:
                         TrackPaint<isClassic>(
@@ -1908,14 +1908,14 @@ namespace OpenRCT2::WoodenRC
                                 { { 0, 0, height + 33 }, { 32, 16, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                         break;
                     case 3:
                         TrackPaint<isClassic>(
                             session, direction, imageIds[3][2].track, imageIds[3][2].handrail, { 0, 0, height },
                             { { 0, 0, height }, { 32, 16, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -1942,14 +1942,14 @@ namespace OpenRCT2::WoodenRC
                                 { { 0, 6, height + 27 }, { 32, 20, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                         break;
                     case 1:
                         TrackPaint<isClassic>(
                             session, direction, imageIds[4][0].track, imageIds[4][0].handrail, { 0, 0, height },
                             { { 0, 6, height }, { 32, 20, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                         break;
                     case 2:
                         TrackPaint<isClassic>(
@@ -1962,14 +1962,14 @@ namespace OpenRCT2::WoodenRC
                                 { { 0, 2, height + 33 }, { 32, 27, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                         break;
                     case 3:
                         TrackPaint<isClassic>(
                             session, direction, imageIds[4][2].track, imageIds[4][2].handrail, { 0, 0, height },
                             { { 0, 6, height }, { 32, 20, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                         break;
                 }
                 if (direction == 0 || direction == 3)
@@ -2017,14 +2017,14 @@ namespace OpenRCT2::WoodenRC
                                 { 0, 0, height }, { { 0, 6, height + 27 }, { 32, 20, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                         break;
                     case 1:
                         TrackPaint<isClassic>(
                             session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 0, height },
                             { { 0, 6, height }, { 32, 20, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                         break;
                     case 2:
                         TrackPaint<isClassic>(
@@ -2037,14 +2037,14 @@ namespace OpenRCT2::WoodenRC
                                 { 0, 0, height }, { { 0, 2, height + 27 }, { 32, 27, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                         break;
                     case 3:
                         TrackPaint<isClassic>(
                             session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 0, height },
                             { { 0, 6, height }, { 32, 20, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                         break;
                 }
                 if (direction == 0 || direction == 3)
@@ -2089,14 +2089,14 @@ namespace OpenRCT2::WoodenRC
                                 { 0, 0, height }, { { 0, 16, height + 27 }, { 32, 16, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                         break;
                     case 1:
                         TrackPaint<isClassic>(
                             session, direction, imageIds[1][direction].track, imageIds[1][direction].handrail, { 0, 0, height },
                             { { 0, 16, height }, { 32, 16, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                         break;
                     case 2:
                         TrackPaint<isClassic>(
@@ -2109,14 +2109,14 @@ namespace OpenRCT2::WoodenRC
                                 { 0, 0, height }, { { 0, 0, height + 27 }, { 32, 16, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                         break;
                     case 3:
                         TrackPaint<isClassic>(
                             session, direction, imageIds[1][direction].track, imageIds[1][direction].handrail, { 0, 0, height },
                             { { 0, 0, height }, { 32, 16, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -2143,14 +2143,14 @@ namespace OpenRCT2::WoodenRC
                                 { 0, 0, height }, { { 0, 0, height + 27 }, { 16, 16, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                         break;
                     case 1:
                         TrackPaint<isClassic>(
                             session, direction, imageIds[2][direction].track, imageIds[2][direction].handrail, { 0, 0, height },
                             { { 16, 0, height }, { 16, 16, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                         break;
                     case 2:
                         TrackPaint<isClassic>(
@@ -2163,14 +2163,14 @@ namespace OpenRCT2::WoodenRC
                                 { 0, 0, height }, { { 16, 16, height + 29 }, { 16, 16, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                         break;
                     case 3:
                         TrackPaint<isClassic>(
                             session, direction, imageIds[2][direction].track, imageIds[2][direction].handrail, { 0, 0, height },
                             { { 0, 16, height }, { 16, 16, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -2210,14 +2210,14 @@ namespace OpenRCT2::WoodenRC
                                 { 0, 0, height }, { { 16, 0, height + 27 }, { 16, 32, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                         break;
                     case 1:
                         TrackPaint<isClassic>(
                             session, direction, imageIds[3][direction].track, imageIds[3][direction].handrail, { 0, 0, height },
                             { { 0, 0, height }, { 16, 32, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                         break;
                     case 2:
                         TrackPaint<isClassic>(
@@ -2230,14 +2230,14 @@ namespace OpenRCT2::WoodenRC
                                 { 0, 0, height }, { { 0, 0, height + 33 }, { 16, 32, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                         break;
                     case 3:
                         TrackPaint<isClassic>(
                             session, direction, imageIds[3][direction].track, imageIds[3][direction].handrail, { 0, 0, height },
                             { { 16, 0, height }, { 16, 32, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -2264,14 +2264,14 @@ namespace OpenRCT2::WoodenRC
                                 { 0, 0, height }, { { 6, 0, height + 27 }, { 20, 32, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                         break;
                     case 1:
                         TrackPaint<isClassic>(
                             session, direction, imageIds[4][direction].track, imageIds[4][direction].handrail, { 0, 0, height },
                             { { 6, 0, height }, { 20, 32, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                         break;
                     case 2:
                         TrackPaint<isClassic>(
@@ -2284,14 +2284,14 @@ namespace OpenRCT2::WoodenRC
                                 { 0, 0, height }, { { 2, 0, height + 33 }, { 27, 32, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                         break;
                     case 3:
                         TrackPaint<isClassic>(
                             session, direction, imageIds[4][direction].track, imageIds[4][direction].handrail, { 0, 0, height },
                             { { 6, 0, height }, { 20, 32, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                         break;
                 }
                 switch (direction)
@@ -2327,7 +2327,7 @@ namespace OpenRCT2::WoodenRC
                             session, direction, imageIds[0][1].track, imageIds[0][1].handrail, { 0, 0, height },
                             { { 6, 0, height }, { 20, 32, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                         break;
                     case 1:
                         TrackPaint<isClassic>(
@@ -2340,14 +2340,14 @@ namespace OpenRCT2::WoodenRC
                                 { { 2, 0, height + 27 }, { 27, 32, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                         break;
                     case 2:
                         TrackPaint<isClassic>(
                             session, direction, imageIds[0][3].track, imageIds[0][3].handrail, { 0, 0, height },
                             { { 6, 0, height }, { 20, 32, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                         break;
                     case 3:
                         TrackPaint<isClassic>(
@@ -2360,7 +2360,7 @@ namespace OpenRCT2::WoodenRC
                                 { { 6, 0, height + 27 }, { 20, 32, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                         break;
                 }
                 switch (direction)
@@ -2404,7 +2404,7 @@ namespace OpenRCT2::WoodenRC
                             session, direction, imageIds[1][1].track, imageIds[1][1].handrail, { 0, 0, height },
                             { { 16, 0, height }, { 16, 32, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                         break;
                     case 1:
                         TrackPaint<isClassic>(
@@ -2417,14 +2417,14 @@ namespace OpenRCT2::WoodenRC
                                 { { 0, 0, height + 27 }, { 16, 32, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                         break;
                     case 2:
                         TrackPaint<isClassic>(
                             session, direction, imageIds[1][3].track, imageIds[1][3].handrail, { 0, 0, height },
                             { { 0, 0, height }, { 16, 32, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                         break;
                     case 3:
                         TrackPaint<isClassic>(
@@ -2437,7 +2437,7 @@ namespace OpenRCT2::WoodenRC
                                 { { 16, 0, height + 27 }, { 16, 32, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -2458,7 +2458,7 @@ namespace OpenRCT2::WoodenRC
                             session, direction, imageIds[2][1].track, imageIds[2][1].handrail, { 0, 0, height },
                             { { 0, 16, height }, { 16, 16, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                         break;
                     case 1:
                         TrackPaint<isClassic>(
@@ -2471,14 +2471,14 @@ namespace OpenRCT2::WoodenRC
                                 { { 16, 16, height + 29 }, { 16, 16, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                         break;
                     case 2:
                         TrackPaint<isClassic>(
                             session, direction, imageIds[2][3].track, imageIds[2][3].handrail, { 0, 0, height },
                             { { 16, 0, height }, { 16, 16, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                         break;
                     case 3:
                         TrackPaint<isClassic>(
@@ -2491,7 +2491,7 @@ namespace OpenRCT2::WoodenRC
                                 { { 0, 0, height + 27 }, { 16, 16, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -2525,7 +2525,7 @@ namespace OpenRCT2::WoodenRC
                             session, direction, imageIds[3][1].track, imageIds[3][1].handrail, { 0, 0, height },
                             { { 0, 0, height }, { 32, 16, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                         break;
                     case 1:
                         TrackPaint<isClassic>(
@@ -2538,14 +2538,14 @@ namespace OpenRCT2::WoodenRC
                                 { { 0, 0, height + 33 }, { 32, 16, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                         break;
                     case 2:
                         TrackPaint<isClassic>(
                             session, direction, imageIds[3][3].track, imageIds[3][3].handrail, { 0, 0, height },
                             { { 0, 16, height }, { 32, 16, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                         break;
                     case 3:
                         TrackPaint<isClassic>(
@@ -2558,7 +2558,7 @@ namespace OpenRCT2::WoodenRC
                                 { { 0, 16, height + 27 }, { 32, 16, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -2579,7 +2579,7 @@ namespace OpenRCT2::WoodenRC
                             session, direction, imageIds[4][1].track, imageIds[4][1].handrail, { 0, 0, height },
                             { { 0, 6, height }, { 32, 20, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                         break;
                     case 1:
                         TrackPaint<isClassic>(
@@ -2592,14 +2592,14 @@ namespace OpenRCT2::WoodenRC
                                 { { 0, 2, height + 33 }, { 32, 27, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                         break;
                     case 2:
                         TrackPaint<isClassic>(
                             session, direction, imageIds[4][3].track, imageIds[4][3].handrail, { 0, 0, height },
                             { { 0, 6, height }, { 32, 20, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::neSw, height, session.supportColours);
                         break;
                     case 3:
                         TrackPaint<isClassic>(
@@ -2612,7 +2612,7 @@ namespace OpenRCT2::WoodenRC
                                 { { 0, 6, height + 27 }, { 32, 20, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.supportColours);
                         break;
                 }
                 if (direction == 0 || direction == 3)
@@ -2654,7 +2654,7 @@ namespace OpenRCT2::WoodenRC
                             session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 6, height },
                             { { 0, 6, height }, { 32, 20, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                         break;
                     case 1:
                         TrackPaint<isClassic>(
@@ -2667,14 +2667,14 @@ namespace OpenRCT2::WoodenRC
                                 { 0, 6, height }, { { 0, 6, height + 67 }, { 32, 20, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                         break;
                     case 2:
                         TrackPaint<isClassic>(
                             session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 6, height },
                             { { 0, 6, height }, { 32, 20, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                         break;
                     case 3:
                         TrackPaint<isClassic>(
@@ -2687,7 +2687,7 @@ namespace OpenRCT2::WoodenRC
                                 { 0, 6, height }, { { 0, 6, height + 67 }, { 32, 20, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                         break;
                 }
                 if (direction == 0 || direction == 3)
@@ -2717,7 +2717,7 @@ namespace OpenRCT2::WoodenRC
                             session, direction, imageIds[1][direction].track, imageIds[1][direction].handrail, { 6, 0, height },
                             { { 6, 0, height }, { 20, 32, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                         break;
                     case 1:
                         TrackPaint<isClassic>(
@@ -2730,7 +2730,7 @@ namespace OpenRCT2::WoodenRC
                                 { 6, 0, height }, { { 6, 0, height + 67 }, { 20, 32, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                         break;
                     case 2:
                         TrackPaint<isClassic>(
@@ -2743,7 +2743,7 @@ namespace OpenRCT2::WoodenRC
                                 { 6, 0, height }, { { 6, 0, height + 67 }, { 20, 32, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                         break;
                     case 3:
                         TrackPaint<isClassic>(
@@ -2756,7 +2756,7 @@ namespace OpenRCT2::WoodenRC
                                 { 6, 0, height }, { { 6, 0, height + 67 }, { 20, 32, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                         break;
                 }
                 switch (direction)
@@ -2796,14 +2796,14 @@ namespace OpenRCT2::WoodenRC
                                 { 0, 6, height }, { { 0, 6, height + 67 }, { 32, 20, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                         break;
                     case 1:
                         TrackPaint<isClassic>(
                             session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 6, height },
                             { { 0, 6, height }, { 32, 20, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                         break;
                     case 2:
                         TrackPaint<isClassic>(
@@ -2816,14 +2816,14 @@ namespace OpenRCT2::WoodenRC
                                 { 0, 6, height }, { { 0, 6, height + 67 }, { 32, 20, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                         break;
                     case 3:
                         TrackPaint<isClassic>(
                             session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 6, height },
                             { { 0, 6, height }, { 32, 20, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                         break;
                 }
                 if (direction == 0 || direction == 3)
@@ -2860,7 +2860,7 @@ namespace OpenRCT2::WoodenRC
                                 { 6, 0, height }, { { 6, 0, height + 67 }, { 20, 32, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner2, height, session.supportColours);
                         break;
                     case 1:
                         TrackPaint<isClassic>(
@@ -2873,7 +2873,7 @@ namespace OpenRCT2::WoodenRC
                                 { 6, 0, height }, { { 6, 0, height + 67 }, { 20, 32, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner3, height, session.supportColours);
                         break;
                     case 2:
                         TrackPaint<isClassic>(
@@ -2886,14 +2886,14 @@ namespace OpenRCT2::WoodenRC
                                 { 6, 0, height }, { { 6, 0, height + 67 }, { 20, 32, 0 } });
                         }
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner0, height, session.supportColours);
                         break;
                     case 3:
                         TrackPaint<isClassic>(
                             session, direction, imageIds[1][direction].track, imageIds[1][direction].handrail, { 6, 0, height },
                             { { 6, 0, height }, { 20, 32, 2 } });
                         WoodenASupportsPaintSetup(
-                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
+                            session, supportType.wooden, WoodenSupportSubType::corner1, height, session.supportColours);
                         break;
                 }
                 switch (direction)
@@ -2974,7 +2974,7 @@ namespace OpenRCT2::WoodenRC
         }
 
         DrawSupportForSequenceA<TrackElemType::diagFlat>(
-            session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+            session, supportType.wooden, trackSequence, direction, height, session.supportColours);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
     }
@@ -3042,7 +3042,7 @@ namespace OpenRCT2::WoodenRC
         }
 
         DrawSupportForSequenceA<TrackElemType::diagFlatToUp25>(
-            session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+            session, supportType.wooden, trackSequence, direction, height, session.supportColours);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 48);
     }
@@ -3110,7 +3110,7 @@ namespace OpenRCT2::WoodenRC
         }
 
         DrawSupportForSequenceB<TrackElemType::diagUp25ToFlat>(
-            session, supportType.wooden, trackSequence, direction, height + 16, session.SupportColours);
+            session, supportType.wooden, trackSequence, direction, height + 16, session.supportColours);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 56);
     }
@@ -3178,7 +3178,7 @@ namespace OpenRCT2::WoodenRC
         }
 
         DrawSupportForSequenceA<TrackElemType::diagLeftBank>(
-            session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+            session, supportType.wooden, trackSequence, direction, height, session.supportColours);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
     }
@@ -3346,7 +3346,7 @@ namespace OpenRCT2::WoodenRC
         }
 
         DrawSupportForSequenceA<TrackElemType::leftEighthBankToDiag>(
-            session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+            session, supportType.wooden, trackSequence, direction, height, session.supportColours);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
     }
@@ -3514,7 +3514,7 @@ namespace OpenRCT2::WoodenRC
         }
 
         DrawSupportForSequenceA<TrackElemType::rightEighthBankToDiag>(
-            session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+            session, supportType.wooden, trackSequence, direction, height, session.supportColours);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
     }

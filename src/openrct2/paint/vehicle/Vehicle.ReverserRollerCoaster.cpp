@@ -35,8 +35,8 @@ namespace OpenRCT2
         x = (v1->x + v2->x) / 2;
         y = (v1->y + v2->y) / 2;
         z = (v1->z + v2->z) / 2;
-        session.SpritePosition.x = x;
-        session.SpritePosition.y = y;
+        session.spritePosition.x = x;
+        session.spritePosition.y = y;
         VehicleVisualDefault(session, imageDirection, z, vehicle, carEntry);
     }
 } // namespace OpenRCT2

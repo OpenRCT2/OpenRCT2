@@ -113,7 +113,7 @@ static void PaintMagicCarpetRiders(
         auto imageIndex = baseImageIndex + (peepIndex * 2);
         auto imageId = ImageId(
             imageIndex, vehicle.peep_tshirt_colours[peepIndex + 0], vehicle.peep_tshirt_colours[peepIndex + 1]);
-        PaintAddImageAsChild(session, imageId, offset, bb);
+        paintAddImageAsChild(session, imageId, offset, bb);
     }
 }
 
@@ -121,15 +121,15 @@ static void PaintMagicCarpetFrame(
     PaintSession& session, Plane plane, Direction direction, const CoordsXYZ& offset, const BoundBoxXYZ& bb)
 {
     auto imageIndex = GetMagicCarpetFrameImage(plane, direction);
-    auto imageTemplate = session.TrackColours;
+    auto imageTemplate = session.trackColours;
     auto imageId = imageTemplate.WithIndex(imageIndex);
     if (plane == Plane::Back)
     {
-        PaintAddImageAsParent(session, imageId, offset, bb);
+        paintAddImageAsParent(session, imageId, offset, bb);
     }
     else
     {
-        PaintAddImageAsChild(session, imageId, offset, bb);
+        paintAddImageAsChild(session, imageId, offset, bb);
     }
 }
 
@@ -137,9 +137,9 @@ static void PaintMagicCarpetPendulum(
     PaintSession& session, Plane plane, int32_t swing, Direction direction, const CoordsXYZ& offset, const BoundBoxXYZ& bb)
 {
     auto imageIndex = GetMagicCarpetPendulumImage(plane, direction, swing);
-    auto imageTemplate = session.TrackColours;
+    auto imageTemplate = session.trackColours;
     auto imageId = imageTemplate.WithIndex(imageIndex);
-    PaintAddImageAsChild(session, imageId, offset, bb);
+    paintAddImageAsChild(session, imageId, offset, bb);
 }
 
 static void PaintMagicCarpetVehicle(
@@ -175,7 +175,7 @@ static void PaintMagicCarpetVehicle(
         imageTemplate = stationColour;
     }
     auto vehicleImageIndex = rideEntry->Cars[0].base_image_id + direction;
-    PaintAddImageAsChild(session, imageTemplate.WithIndex(vehicleImageIndex), offset, bb);
+    paintAddImageAsChild(session, imageTemplate.WithIndex(vehicleImageIndex), offset, bb);
 
     auto* vehicle = GetFirstVehicle(ride);
     if (vehicle != nullptr)
@@ -192,8 +192,8 @@ static void PaintMagicCarpetStructure(
     if (vehicle != nullptr)
     {
         swing = vehicle->flatRideAnimationFrame;
-        session.InteractionType = ViewportInteractionItem::entity;
-        session.CurrentlyDrawnEntity = vehicle;
+        session.interactionType = ViewportInteractionItem::entity;
+        session.currentlyDrawnEntity = vehicle;
     }
 
     CoordsXYZ offset = {
@@ -209,8 +209,8 @@ static void PaintMagicCarpetStructure(
     PaintMagicCarpetPendulum(session, Plane::Front, swing, direction, offset, bb);
     PaintMagicCarpetFrame(session, Plane::Front, direction, offset, bb);
 
-    session.CurrentlyDrawnEntity = nullptr;
-    session.InteractionType = ViewportInteractionItem::ride;
+    session.currentlyDrawnEntity = nullptr;
+    session.interactionType = ViewportInteractionItem::ride;
 }
 
 static void PaintMagicCarpet(
@@ -224,13 +224,13 @@ static void PaintMagicCarpet(
     {
         case 0:
         case 2:
-            DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::tubes);
+            DrawSupportsSideBySide(session, direction, height, session.supportColours, MetalSupportType::tubes);
             const StationObject* stationObject = ride.getStationObject();
 
             if (stationObject != nullptr && !(stationObject->Flags & StationObjectFlags::noPlatforms))
             {
-                auto imageId = session.SupportColours.WithIndex(SPR_STATION_BASE_BORDERLESS);
-                PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 });
+                auto imageId = session.supportColours.WithIndex(SPR_STATION_BASE_BORDERLESS);
+                paintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 });
             }
             break;
     }

@@ -83,7 +83,7 @@ namespace OpenRCT2
         const VehicleBoundBox& bb = VehicleBoundboxes[carEntry->draw_order][boundingBoxIndex];
         const BoundBoxXYZ boundingBox = { { bb.offset_x, bb.offset_y, bb.offset_z + z },
                                           { bb.length_x, bb.length_y, bb.length_z } };
-        PaintAddImageAsParent(session, imageId, { 0, 0, z }, boundingBox);
+        paintAddImageAsParent(session, imageId, { 0, 0, z }, boundingBox);
 
         if (session.rt.zoom_level < ZoomLevel{ 2 })
         {
@@ -91,7 +91,7 @@ namespace OpenRCT2
             {
                 const int32_t seatRotation = i * spriteRotationPrecision;
                 const int32_t guestRotationPrecision = rotationPrecision / 2;
-                const int32_t rotation = spin + (session.CurrentRotation * 4) + seatRotation;
+                const int32_t rotation = spin + (session.currentRotation * 4) + seatRotation;
                 const int32_t guestRotation = rotation & (guestRotationPrecision - 1);
                 const ImageIndex guestImageIndexOffset = guestRotation >= 4 ? spriteCount * 2 : spriteCount;
 
@@ -103,7 +103,7 @@ namespace OpenRCT2
 
                 const ImageId guestImageId = vehicle->isGhost() ? ConstructionMarker.WithIndex(guestImageIndex)
                                                                 : ImageId(guestImageIndex, guestColour0, guestColour1);
-                PaintAddImageAsChild(session, guestImageId, { 0, 0, z }, boundingBox);
+                paintAddImageAsChild(session, guestImageId, { 0, 0, z }, boundingBox);
             }
         }
     }

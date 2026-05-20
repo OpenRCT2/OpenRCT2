@@ -167,8 +167,8 @@ static void PaintMonorailCyclesTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto imageId = session.TrackColours.WithIndex(kMonorailCyclesTrackPiecesFlat[(direction & 1)]);
-    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+    auto imageId = session.trackColours.WithIndex(kMonorailCyclesTrackPiecesFlat[(direction & 1)]);
+    paintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
 
     if (direction & 1)
     {
@@ -180,7 +180,7 @@ static void PaintMonorailCyclesTrackFlat(
     }
 
     MetalASupportsPaintSetupRotated(
-        session, supportType.metal, MetalSupportPlace::centre, direction, -1, height, session.SupportColours);
+        session, supportType.metal, MetalSupportPlace::centre, direction, -1, height, session.supportColours);
 
     PaintUtilSetSegmentSupportHeight(
         session,
@@ -199,25 +199,25 @@ static void PaintMonorailCyclesStation(
 
     if (direction == 0 || direction == 2)
     {
-        imageId = session.TrackColours.WithIndex(SprMonorailCyclesFlatSwNe);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 6, height + 1 }, { 32, 20, 1 } });
+        imageId = session.trackColours.WithIndex(SprMonorailCyclesFlatSwNe);
+        paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 6, height + 1 }, { 32, 20, 1 } });
     }
     else if (direction == 1 || direction == 3)
     {
-        imageId = session.TrackColours.WithIndex(SprMonorailCyclesFlatNwSe);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 6, 0, height + 1 }, { 20, 32, 1 } });
+        imageId = session.trackColours.WithIndex(SprMonorailCyclesFlatNwSe);
+        paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 6, 0, height + 1 }, { 20, 32, 1 } });
     }
 
     TrackPaintUtilDrawStationTunnel(session, direction, height);
 
     if (TrackPaintUtilDrawStation(session, ride, direction, height, trackElement, StationBaseType::b, -2))
     {
-        DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::boxed);
+        DrawSupportsSideBySide(session, direction, height, session.supportColours, MetalSupportType::boxed);
     }
     else
     {
         MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::centre, direction, -1, height, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::centre, direction, -1, height, session.supportColours);
     }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -230,13 +230,13 @@ static void PaintMonorailCyclesTrackLeftQuarterTurn3Tiles(
     const TrackElement& trackElement, SupportType supportType)
 {
     TrackPaintUtilLeftQuarterTurn3TilesPaint(
-        session, 3, height, direction, trackSequence, session.TrackColours, kMonorailCyclesTrackPiecesFlatQuarterTurn3Tiles);
+        session, 3, height, direction, trackSequence, session.trackColours, kMonorailCyclesTrackPiecesFlatQuarterTurn3Tiles);
     TrackPaintUtilLeftQuarterTurn3TilesTunnel(session, kTunnelGroup, TunnelSubType::Flat, height, direction, trackSequence);
 
     switch (trackSequence)
     {
         case 0:
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, -1, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, -1, height, session.supportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -253,7 +253,7 @@ static void PaintMonorailCyclesTrackLeftQuarterTurn3Tiles(
                 0xFFFF, 0);
             break;
         case 3:
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, -1, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, -1, height, session.supportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -303,7 +303,7 @@ static void PaintMonorailCyclesTrackRightQuarterTurn5Tiles(
     const TrackElement& trackElement, SupportType supportType)
 {
     TrackPaintUtilRightQuarterTurn5TilesPaint(
-        session, 1, height, direction, trackSequence, session.TrackColours, kMonorailCyclesTrackPiecesFlatQuarterTurn5Tiles,
+        session, 1, height, direction, trackSequence, session.trackColours, kMonorailCyclesTrackPiecesFlatQuarterTurn5Tiles,
         nullptr, kDefaultRightQuarterTurn5TilesBoundLengths, kDefaultRightQuarterTurn5TilesBoundOffsets);
 
     int32_t supportHeight = height + kMonorailCyclesTrackRightQuarterTurn5TilesSupportHeightOffset[direction][trackSequence];
@@ -313,22 +313,22 @@ static void PaintMonorailCyclesTrackRightQuarterTurn5Tiles(
         case 0:
             MetalASupportsPaintSetupRotated(
                 session, supportType.metal, MetalSupportPlace::centre, direction, supportSpecial, supportHeight,
-                session.SupportColours);
+                session.supportColours);
             break;
         case 2:
             MetalASupportsPaintSetupRotated(
                 session, supportType.metal, MetalSupportPlace::bottomRightSide, direction, supportSpecial, supportHeight,
-                session.SupportColours);
+                session.supportColours);
             break;
         case 5:
             MetalASupportsPaintSetupRotated(
                 session, supportType.metal, MetalSupportPlace::bottomRightSide, DirectionNext(direction), supportSpecial,
-                supportHeight, session.SupportColours);
+                supportHeight, session.supportColours);
             break;
         case 6:
             MetalASupportsPaintSetupRotated(
                 session, supportType.metal, MetalSupportPlace::centre, DirectionNext(direction), supportSpecial, supportHeight,
-                session.SupportColours);
+                session.supportColours);
             break;
     }
 
@@ -424,20 +424,20 @@ static void PaintMonorailCyclesTrackSBendLeft(
         trackSequence = 3 - trackSequence;
     }
 
-    auto imageId = session.TrackColours.WithIndex(kMonorailCyclesTrackPiecesSBendLeft[direction & 1][trackSequence]);
+    auto imageId = session.trackColours.WithIndex(kMonorailCyclesTrackPiecesSBendLeft[direction & 1][trackSequence]);
     switch (trackSequence)
     {
         case 0:
-            PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
+            paintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
             break;
         case 1:
-            PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 0, height }, { 32, 26, 1 } });
+            paintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 0, height }, { 32, 26, 1 } });
             break;
         case 2:
-            PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 26, 1 } });
+            paintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 26, 1 } });
             break;
         case 3:
-            PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
+            paintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
             break;
     }
 
@@ -511,20 +511,20 @@ static void PaintMonorailCyclesTrackSBendRight(
         trackSequence = 3 - trackSequence;
     }
 
-    auto imageId = session.TrackColours.WithIndex(kMonorailCyclesTrackPiecesSBendRight[direction & 1][trackSequence]);
+    auto imageId = session.trackColours.WithIndex(kMonorailCyclesTrackPiecesSBendRight[direction & 1][trackSequence]);
     switch (trackSequence)
     {
         case 0:
-            PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
+            paintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
             break;
         case 1:
-            PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 26, 1 } });
+            paintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 26, 1 } });
             break;
         case 2:
-            PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 0, height }, { 32, 26, 1 } });
+            paintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 0, height }, { 32, 26, 1 } });
             break;
         case 3:
-            PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
+            paintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
             break;
     }
 
