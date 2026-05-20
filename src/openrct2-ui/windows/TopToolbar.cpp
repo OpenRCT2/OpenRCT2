@@ -945,13 +945,13 @@ namespace OpenRCT2::Ui::Windows
                         case DDIDX_NEW_GAME:
                         {
                             auto loadOrQuitAction = GameActions::LoadOrQuitAction(
-                                GameActions::LoadOrQuitModes::OpenSavePrompt, PromptMode::saveBeforeNewGame);
+                                GameActions::LoadOrQuitModes::openSavePrompt, PromptMode::saveBeforeNewGame);
                             GameActions::Execute(&loadOrQuitAction, gameState);
                             break;
                         }
                         case DDIDX_LOAD_GAME:
                         {
-                            auto loadOrQuitAction = GameActions::LoadOrQuitAction(GameActions::LoadOrQuitModes::OpenSavePrompt);
+                            auto loadOrQuitAction = GameActions::LoadOrQuitAction(GameActions::LoadOrQuitModes::openSavePrompt);
                             GameActions::Execute(&loadOrQuitAction, gameState);
                             break;
                         }
@@ -1005,7 +1005,7 @@ namespace OpenRCT2::Ui::Windows
                             windowMgr->CloseByClass(WindowClass::manageTrackDesign);
                             windowMgr->CloseByClass(WindowClass::trackDeletePrompt);
                             auto loadOrQuitAction = GameActions::LoadOrQuitAction(
-                                GameActions::LoadOrQuitModes::OpenSavePrompt, PromptMode::saveBeforeQuit);
+                                GameActions::LoadOrQuitModes::openSavePrompt, PromptMode::saveBeforeQuit);
                             GameActions::Execute(&loadOrQuitAction, gameState);
                             break;
                         }

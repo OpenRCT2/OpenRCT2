@@ -2850,7 +2850,7 @@ namespace OpenRCT2::Network
         {
             // Something went wrong, game is not loaded. Return to main screen.
             auto loadOrQuitAction = GameActions::LoadOrQuitAction(
-                GameActions::LoadOrQuitModes::OpenSavePrompt, PromptMode::saveBeforeQuit);
+                GameActions::LoadOrQuitModes::openSavePrompt, PromptMode::saveBeforeQuit);
 
             auto& gameState = getGameState();
             loadOrQuitAction.Execute(gameState, gameState.park);
