@@ -94,17 +94,17 @@ namespace OpenRCT2::Platform
 #ifndef __ANDROID__
     AssetCheckResult CheckAssetDirectoryExists([[maybe_unused]] u8string_view path)
     {
-        return AssetCheckResult::NotApplicable;
+        return AssetCheckResult::notApplicable;
     }
 
     AssetCheckResult CheckAssetExists([[maybe_unused]] u8string_view path)
     {
-        return AssetCheckResult::NotApplicable;
+        return AssetCheckResult::notApplicable;
     }
 
     AssetFileOpenResult OpenAssetFile([[maybe_unused]] u8string_view path)
     {
-        return AssetFileOpenResult{ AssetCheckResult::NotApplicable, nullptr, 0 };
+        return AssetFileOpenResult{ AssetCheckResult::notApplicable, nullptr, 0 };
     }
 
     void CloseAssetFile([[maybe_unused]] void* handle)

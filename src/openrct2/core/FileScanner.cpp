@@ -275,9 +275,9 @@ public:
 
         for (const auto& entry : assetList)
         {
-            if (entry.Path.size() > prefix.size() && String::startsWith(entry.Path, prefix))
+            if (entry.path.size() > prefix.size() && String::startsWith(entry.path, prefix))
             {
-                std::string_view relative = std::string_view(entry.Path).substr(prefix.size());
+                std::string_view relative = std::string_view(entry.path).substr(prefix.size());
                 auto slashPos = relative.find('/');
                 if (slashPos != std::string_view::npos)
                 {
@@ -298,7 +298,7 @@ public:
                         DirectoryChild child;
                         child.Name = fileName;
                         child.Type = DirectoryChildType::file;
-                        child.Size = entry.Size;
+                        child.Size = entry.size;
 
                         children.push_back(child);
                     }

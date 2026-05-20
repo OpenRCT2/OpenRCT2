@@ -749,8 +749,6 @@ namespace OpenRCT2::Ui::Windows
 
         void onOpen() override
         {
-            setWidgets(PageWidgets[WINDOW_RIDE_PAGE_MAIN]);
-
             setPage(WINDOW_RIDE_PAGE_MAIN);
             listInformationType = 0;
             pickedPeepFrame = 0;

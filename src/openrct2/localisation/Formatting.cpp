@@ -55,8 +55,8 @@ namespace OpenRCT2
                 i++;
             }
 
-            auto paramter = str.substr(parameterStart, i - parameterStart);
-            return ParseNumericToken(paramter);
+            auto parameter = str.substr(parameterStart, i - parameterStart);
+            return ParseNumericToken(parameter);
         }
         return std::nullopt;
     }

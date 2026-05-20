@@ -1,5 +1,7 @@
 0.5.2 (in development)
 ------------------------------------------------------------------------
+- Improved: [#26566] Improve the performance of sorting sprites.
+- Fix: [#26583] The default tab is not highlighted when opening a ride window.
 
 0.5.1 (2026-05-17)
 ------------------------------------------------------------------------

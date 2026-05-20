@@ -274,26 +274,26 @@ namespace OpenRCT2::Platform
     {
         if (!String::startsWith(path, Platform::kAndroidAssetPathPrefix))
         {
-            return AssetCheckResult::NotApplicable;
+            return AssetCheckResult::notApplicable;
         }
 
         const auto& assetList = GetAssetList();
         std::string assetPath = std::string(path.substr(Platform::kAndroidAssetPathPrefix.length()));
         if (assetPath.empty())
         {
-            return assetList.empty() ? AssetCheckResult::NotFound : AssetCheckResult::Found;
+            return assetList.empty() ? AssetCheckResult::notFound : AssetCheckResult::found;
         }
 
         if (!directoryOnly)
         {
             auto it = std::lower_bound(
                 assetList.begin(), assetList.end(), assetPath,
-                [](const AssetInfo& a, const std::string& b) { return a.Path < b; });
-            if (it != assetList.end() && it->Path == assetPath)
+                [](const AssetInfo& a, const std::string& b) { return a.path < b; });
+            if (it != assetList.end() && it->path == assetPath)
             {
-                return AssetCheckResult::Found;
+                return AssetCheckResult::found;
             }
-            return AssetCheckResult::NotFound;
+            return AssetCheckResult::notFound;
         }
 
         // Only check for directory/prefix matches if directoryOnly is true
@@ -304,13 +304,13 @@ namespace OpenRCT2::Platform
         }
 
         auto it = std::lower_bound(
-            assetList.begin(), assetList.end(), prefix, [](const AssetInfo& a, const std::string& b) { return a.Path < b; });
-        if (it != assetList.end() && String::startsWith(it->Path, prefix))
+            assetList.begin(), assetList.end(), prefix, [](const AssetInfo& a, const std::string& b) { return a.path < b; });
+        if (it != assetList.end() && String::startsWith(it->path, prefix))
         {
-            return AssetCheckResult::Found;
+            return AssetCheckResult::found;
         }
 
-        return AssetCheckResult::NotFound;
+        return AssetCheckResult::notFound;
     }
 
     AssetCheckResult CheckAssetDirectoryExists(u8string_view path)
@@ -327,24 +327,24 @@ namespace OpenRCT2::Platform
     {
         if (!String::startsWith(path, Platform::kAndroidAssetPathPrefix))
         {
-            return AssetFileOpenResult{ AssetCheckResult::NotApplicable, nullptr, 0 };
+            return AssetFileOpenResult{ AssetCheckResult::notApplicable, nullptr, 0 };
         }
 
         auto assetManager = static_cast<AAssetManager*>(GetAssetManager());
         if (assetManager == nullptr)
         {
-            return AssetFileOpenResult{ AssetCheckResult::NotFound, nullptr, 0 };
+            return AssetFileOpenResult{ AssetCheckResult::notFound, nullptr, 0 };
         }
 
         std::string assetPath = std::string(path.substr(Platform::kAndroidAssetPathPrefix.length()));
         auto asset = AAssetManager_open(assetManager, assetPath.c_str(), AASSET_MODE_RANDOM);
         if (asset == nullptr)
         {
-            return AssetFileOpenResult{ AssetCheckResult::NotFound, nullptr, 0 };
+            return AssetFileOpenResult{ AssetCheckResult::notFound, nullptr, 0 };
         }
 
         uint64_t assetSize = AAsset_getLength64(asset);
-        return AssetFileOpenResult{ AssetCheckResult::Found, asset, assetSize };
+        return AssetFileOpenResult{ AssetCheckResult::found, asset, assetSize };
     }
 
     void CloseAssetFile(AssetHandle handle)
@@ -441,8 +441,8 @@ namespace OpenRCT2::Platform
                                 try
                                 {
                                     AssetInfo info;
-                                    info.Path = line.substr(0, sep);
-                                    info.Size = std::stoull(line.substr(sep + 1));
+                                    info.path = line.substr(0, sep);
+                                    info.size = std::stoull(line.substr(sep + 1));
                                     _assetList.push_back(std::move(info));
                                 }
                                 catch (const std::exception&)
@@ -463,7 +463,7 @@ namespace OpenRCT2::Platform
                     }
                     processLine(content.substr(start));
                     std::sort(_assetList.begin(), _assetList.end(), [](const AssetInfo& a, const AssetInfo& b) {
-                        return a.Path < b.Path;
+                        return a.path < b.path;
                     });
                 }
             }

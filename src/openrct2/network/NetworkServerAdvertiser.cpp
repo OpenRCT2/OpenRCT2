@@ -125,13 +125,13 @@ namespace OpenRCT2::Network
                 else
                 {
                     char buffer[256]{};
-                    size_t recievedBytes{};
+                    size_t receivedBytes{};
                     std::unique_ptr<INetworkEndpoint> endpoint;
-                    auto p = _lanListener->ReceiveData(buffer, sizeof(buffer) - 1, &recievedBytes, &endpoint);
+                    auto p = _lanListener->ReceiveData(buffer, sizeof(buffer) - 1, &receivedBytes, &endpoint);
                     if (p == ReadPacket::success)
                     {
                         std::string sender = endpoint->GetHostname();
-                        LOG_VERBOSE("Received %zu bytes from %s on LAN broadcast port", recievedBytes, sender.c_str());
+                        LOG_VERBOSE("Received %zu bytes from %s on LAN broadcast port", receivedBytes, sender.c_str());
                         if (String::equals(buffer, kLanBroadcastMsg))
                         {
                             auto body = getBroadcastJson();

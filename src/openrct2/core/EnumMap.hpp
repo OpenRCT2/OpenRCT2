@@ -23,7 +23,7 @@ class EnumMap
 {
 private:
     std::vector<std::pair<std::string_view, T>> _map;
-    bool _continiousValueIndex{ false };
+    bool _continuousValueIndex{ false };
 
     static constexpr size_t kBucketSize = 43;
     std::array<std::vector<int32_t>, kBucketSize> _buckets;
@@ -65,7 +65,7 @@ public:
 
         if (ValueIndexable() && _map.size() > 1)
         {
-            _continiousValueIndex = true;
+            _continuousValueIndex = true;
             T cur{};
             for (size_t i = 1; i < _map.size(); i++)
             {
@@ -73,7 +73,7 @@ public:
                 auto dist = ValueDistance(cur, _map[i].second);
                 if (dist != 1)
                 {
-                    _continiousValueIndex = false;
+                    _continuousValueIndex = false;
                     break;
                 }
                 cur = nextVal;
@@ -145,7 +145,7 @@ public:
 
         if constexpr (ValueIndexable())
         {
-            if (_continiousValueIndex)
+            if (_continuousValueIndex)
             {
                 auto index = static_cast<size_t>(k);
                 if (index >= _map.size())

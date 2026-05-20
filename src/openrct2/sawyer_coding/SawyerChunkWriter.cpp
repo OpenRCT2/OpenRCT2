@@ -16,7 +16,7 @@
 namespace OpenRCT2::SawyerCoding
 {
     // Maximum buffer size to store compressed data, maximum of 16 MiB
-    constexpr size_t MAX_COMPRESSED_CHUNK_SIZE = 16 * 1024 * 1024;
+    constexpr size_t kMaxCompressedChunkSize = 16 * 1024 * 1024;
 
     SawyerChunkWriter::SawyerChunkWriter(IStream* stream)
         : _stream(stream)
@@ -34,7 +34,7 @@ namespace OpenRCT2::SawyerCoding
         header.encoding = encoding;
         header.length = static_cast<uint32_t>(length);
 
-        auto data = std::make_unique<uint8_t[]>(MAX_COMPRESSED_CHUNK_SIZE);
+        auto data = std::make_unique<uint8_t[]>(kMaxCompressedChunkSize);
         size_t dataLength = WriteChunkBuffer(data.get(), static_cast<const uint8_t*>(src), header);
 
         _stream->Write(data.get(), dataLength);
@@ -42,7 +42,7 @@ namespace OpenRCT2::SawyerCoding
 
     void SawyerChunkWriter::WriteChunkTrack(const void* src, size_t length)
     {
-        auto data = std::make_unique<uint8_t[]>(MAX_COMPRESSED_CHUNK_SIZE);
+        auto data = std::make_unique<uint8_t[]>(kMaxCompressedChunkSize);
         size_t dataLength = EncodeChunkRLE(static_cast<const uint8_t*>(src), data.get(), length);
 
         uint32_t checksum = 0;
