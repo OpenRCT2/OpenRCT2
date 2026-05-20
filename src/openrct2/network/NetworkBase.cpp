@@ -2140,7 +2140,7 @@ namespace OpenRCT2::Network
         Peep* pickup_peep = GetPickupPeep(connection_player->id);
         if (pickup_peep != nullptr)
         {
-            GameActions::PeepPickupAction pickupAction{ GameActions::PeepPickupType::Cancel,
+            GameActions::PeepPickupAction pickupAction{ GameActions::PeepPickupType::cancel,
                                                         pickup_peep->id,
                                                         { GetPickupPeepOldX(connection_player->id), 0, 0 },
                                                         GetCurrentPlayerId() };

@@ -384,7 +384,7 @@ namespace OpenRCT2::Ui::Windows
                     _pickedPeepOldX = staff->x;
                     CoordsXYZ nullLoc{};
                     nullLoc.SetNull();
-                    GameActions::PeepPickupAction pickupAction{ GameActions::PeepPickupType::Pickup,
+                    GameActions::PeepPickupAction pickupAction{ GameActions::PeepPickupType::pickup,
                                                                 EntityId::FromUnderlying(number), nullLoc,
                                                                 Network::GetCurrentPlayerId() };
                     pickupAction.SetCallback(
@@ -715,7 +715,7 @@ namespace OpenRCT2::Ui::Windows
             if (destCoords.IsNull())
                 return;
 
-            GameActions::PeepPickupAction pickupAction{ GameActions::PeepPickupType::Place,
+            GameActions::PeepPickupAction pickupAction{ GameActions::PeepPickupType::place,
                                                         staffEntityId,
                                                         { destCoords, tileElement->getBaseZ() },
                                                         Network::GetCurrentPlayerId() };
@@ -733,7 +733,7 @@ namespace OpenRCT2::Ui::Windows
             if (widgetIndex != WIDX_PICKUP)
                 return;
 
-            GameActions::PeepPickupAction pickupAction{ GameActions::PeepPickupType::Cancel,
+            GameActions::PeepPickupAction pickupAction{ GameActions::PeepPickupType::cancel,
                                                         EntityId::FromUnderlying(number),
                                                         { _pickedPeepOldX, 0, 0 },
                                                         Network::GetCurrentPlayerId() };
