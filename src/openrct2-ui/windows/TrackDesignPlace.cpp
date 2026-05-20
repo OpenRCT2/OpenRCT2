@@ -337,7 +337,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         RideInitialiseConstructionWindow(*getRide);
                         auto* wnd = windowMgr->FindByClass(WindowClass::rideConstruction);
-                        wnd->onMouseUp(WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE);
+                        wnd->onMouseUp(kWindowRideConstructionWidgetEntrance);
                     }
                 }
                 _placingTrackDesign = false;
