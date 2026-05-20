@@ -7,13 +7,12 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "Fountain.h"
+#include "JumpingFountain.h"
 
 #include "../Game.h"
 #include "../GameState.h"
 #include "../core/DataSerialiser.h"
 #include "../object/PathAdditionEntry.h"
-#include "../paint/Paint.h"
 #include "../profiling/Profiling.h"
 #include "../scenario/Scenario.h"
 #include "../world/Footpath.h"
@@ -402,52 +401,5 @@ namespace OpenRCT2
         stream << TargetX;
         stream << TargetY;
         stream << Iteration;
-    }
-
-    void JumpingFountain::Paint(PaintSession& session, int32_t imageDirection) const
-    {
-        PROFILED_FUNCTION();
-
-        // TODO: Move into SpriteIds.h
-        constexpr uint32_t kJumpingFountainSnowBaseImage = 23037;
-        constexpr uint32_t kJumpingFountainWaterBaseImage = 22973;
-
-        auto& rt = session.rt;
-        if (rt.zoom_level > ZoomLevel{ 0 })
-        {
-            return;
-        }
-
-        uint16_t height = z + 6;
-        imageDirection = imageDirection / 8;
-
-        // Fountain is firing anti clockwise
-        bool reversed = fountainFlags.has(FountainFlag::direction);
-        // Fountain rotation
-        bool rotated = (orientation / 16) & 1;
-        bool isAntiClockwise = (imageDirection / 2) & 1; // Clockwise or Anti-clockwise
-
-        // These cancel each other out
-        if (reversed != rotated)
-        {
-            isAntiClockwise = !isAntiClockwise;
-        }
-
-        uint32_t baseImageId = (FountainType == JumpingFountainType::Snow) ? kJumpingFountainSnowBaseImage
-                                                                           : kJumpingFountainWaterBaseImage;
-        auto imageId = ImageId(baseImageId + imageDirection * 16 + frame);
-        constexpr std::array antiClockWiseBoundingBoxes = {
-            CoordsXY{ -kCoordsXYStep, -3 },
-            CoordsXY{ 0, -3 },
-        };
-        constexpr std::array clockWiseBoundingBoxes = {
-            CoordsXY{ -kCoordsXYStep, 3 },
-            CoordsXY{ 0, 3 },
-        };
-
-        auto bb = isAntiClockwise ? antiClockWiseBoundingBoxes : clockWiseBoundingBoxes;
-
-        PaintAddImageAsParentRotated(
-            session, imageDirection, imageId, { 0, 0, height }, { { bb[imageDirection & 1], height }, { 32, 1, 3 } });
     }
 } // namespace OpenRCT2

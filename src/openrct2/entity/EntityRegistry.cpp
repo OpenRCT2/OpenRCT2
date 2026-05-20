@@ -30,7 +30,7 @@
 #include "Balloon.h"
 #include "Duck.h"
 #include "EntityTweener.h"
-#include "Fountain.h"
+#include "JumpingFountain.h"
 #include "MoneyEffect.h"
 #include "Particle.h"
 

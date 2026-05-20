@@ -281,7 +281,7 @@
     <ClInclude Include="entity\EntityList.h" />
     <ClInclude Include="entity\EntityRegistry.h" />
     <ClInclude Include="entity\EntityTweener.h" />
-    <ClInclude Include="entity\Fountain.h" />
+    <ClInclude Include="entity\JumpingFountain.h" />
     <ClInclude Include="entity\Guest.h" />
     <ClInclude Include="entity\Litter.h" />
     <ClInclude Include="entity\MoneyEffect.h" />
@@ -404,6 +404,7 @@
     <ClInclude Include="paint\entity\Paint.ExplosionCloud.h" />
     <ClInclude Include="paint\entity\Paint.ExplosionFlare.h" />
     <ClInclude Include="paint\entity\Paint.Guest.h" />
+    <ClInclude Include="paint\entity\Paint.JumpingFountain.h" />
     <ClInclude Include="paint\entity\Paint.Litter.h" />
     <ClInclude Include="paint\entity\Paint.MoneyEffect.h" />
     <ClInclude Include="paint\entity\Paint.Peep.h" />
@@ -911,7 +912,7 @@
     <ClCompile Include="entity\EntityBase.cpp" />
     <ClCompile Include="entity\EntityRegistry.cpp" />
     <ClCompile Include="entity\EntityTweener.cpp" />
-    <ClCompile Include="entity\Fountain.cpp" />
+    <ClCompile Include="entity\JumpingFountain.cpp" />
     <ClCompile Include="entity\Guest.cpp" />
     <ClCompile Include="entity\Litter.cpp" />
     <ClCompile Include="entity\MoneyEffect.cpp" />
@@ -1011,6 +1012,7 @@
     <ClCompile Include="paint\entity\Paint.ExplosionCloud.cpp" />
     <ClCompile Include="paint\entity\Paint.ExplosionFlare.cpp" />
     <ClCompile Include="paint\entity\Paint.Guest.cpp" />
+    <ClCompile Include="paint\entity\Paint.JumpingFountain.cpp" />
     <ClCompile Include="paint\entity\Paint.Litter.cpp" />
     <ClCompile Include="paint\entity\Paint.MoneyEffect.cpp" />
     <ClCompile Include="paint\entity\Paint.Peep.cpp" />

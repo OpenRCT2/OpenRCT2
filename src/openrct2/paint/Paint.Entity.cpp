@@ -13,7 +13,7 @@
 #include "../drawing/LightFX.h"
 #include "../entity/Duck.h"
 #include "../entity/EntityList.h"
-#include "../entity/Fountain.h"
+#include "../entity/JumpingFountain.h"
 #include "../entity/MoneyEffect.h"
 #include "../entity/Particle.h"
 #include "../entity/Staff.h"
@@ -31,6 +31,7 @@
 #include "entity/Paint.ExplosionCloud.h"
 #include "entity/Paint.ExplosionFlare.h"
 #include "entity/Paint.Guest.h"
+#include "entity/Paint.JumpingFountain.h"
 #include "entity/Paint.Litter.h"
 #include "entity/Paint.MoneyEffect.h"
 #include "entity/Paint.Staff.h"
@@ -171,7 +172,7 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
                 PaintExplosionFlare(session, *entity->cast<ExplosionFlare>());
                 break;
             case EntityType::jumpingFountain:
-                entity->cast<JumpingFountain>()->Paint(session, image_direction);
+                PaintJumpingFountain(session, *entity->cast<JumpingFountain>(), image_direction);
                 break;
             case EntityType::balloon:
                 PaintBalloon(session, *entity->cast<Balloon>(), image_direction);

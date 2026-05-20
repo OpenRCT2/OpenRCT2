@@ -21,7 +21,7 @@
 #include "../actions/scenery/SmallSceneryRemoveAction.h"
 #include "../actions/scenery/WallRemoveAction.h"
 #include "../core/CodepointView.hpp"
-#include "../entity/Fountain.h"
+#include "../entity/JumpingFountain.h"
 #include "../network/Network.h"
 #include "../object/BannerSceneryEntry.h"
 #include "../object/LargeSceneryEntry.h"
