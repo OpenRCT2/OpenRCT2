@@ -16,6 +16,7 @@
 #include <SDL.h>
 #include <cmath>
 #include <openrct2/Diagnostic.h>
+#include <openrct2/config/Config.h>
 #include <openrct2/audio/AudioSource.h>
 #include <openrct2/core/IStream.hpp>
 
@@ -238,6 +239,7 @@ namespace OpenRCT2::Audio
 
     void NewAudioContext::ToggleAllSounds()
     {
+        SyncVolumeSettings();
     }
 
     void NewAudioContext::PauseSounds()
@@ -346,6 +348,24 @@ namespace OpenRCT2::Audio
         channel->SetRate(rate);
         channel->UpdateOldVolume();
         return channel;
+    }
+
+    void NewAudioContext::SyncVolumeSettings()
+    {
+        if (_engine == nullptr)
+            return;
+
+        auto& sound = Config::Get().sound;
+
+        float master = sound.masterSoundEnabled ? (static_cast<float>(sound.masterVolume) / 100.0f) : 0.0f;
+        _engine->setMasterVolume(master);
+
+        float sfx = powf(static_cast<float>(sound.soundVolume) / 100.0f, 10.0f / 6.0f);
+        _engine->setGroupVolume(AudioEngineGroup::sound, sfx);
+
+        float music = powf(static_cast<float>(sound.rideMusicVolume) / 100.0f, 10.0f / 6.0f);
+        _engine->setGroupVolume(AudioEngineGroup::rideMusic, music);
+        _engine->setGroupVolume(AudioEngineGroup::titleMusic, music);
     }
 
     Float32AudioData* NewAudioContext::convertToFloat32(

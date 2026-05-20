@@ -1563,6 +1563,10 @@ namespace OpenRCT2::Ui::Windows
                 Config::Save();
                 invalidateWidget(WIDX_MUSIC_VOLUME);
             }
+
+            auto& audioContext = GetContext()->GetAudioContext();
+            if (audioContext.IsNewEngine())
+                audioContext.SyncVolumeSettings();
         }
 
         void ControlsUpdate()
