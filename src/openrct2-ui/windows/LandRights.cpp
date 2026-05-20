@@ -458,7 +458,7 @@ namespace OpenRCT2::Ui::Windows
         {
             return GameActions::LandSetRightsAction(
                 { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
-                GameActions::LandSetRightSetting::SetOwnershipWithChecks, GetDesiredOwnership());
+                GameActions::LandSetRightSetting::setOwnershipWithChecks, GetDesiredOwnership());
         }
 
         void onToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override

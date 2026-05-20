@@ -126,7 +126,7 @@ namespace OpenRCT2::GameActions
         auto res = Result();
         switch (_setting)
         {
-            case LandSetRightSetting::UnownLand:
+            case LandSetRightSetting::unownLand:
                 if (isExecuting)
                 {
                     surfaceElement->SetOwnership(
@@ -134,7 +134,7 @@ namespace OpenRCT2::GameActions
                     Park::UpdateFencesAroundTile(loc);
                 }
                 return res;
-            case LandSetRightSetting::UnownConstructionRights:
+            case LandSetRightSetting::unownConstructionRights:
                 if (isExecuting)
                 {
                     surfaceElement->SetOwnership(surfaceElement->GetOwnership() & ~OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
@@ -142,7 +142,7 @@ namespace OpenRCT2::GameActions
                     MapInvalidateTile({ loc, baseZ, baseZ + 16 });
                 }
                 return res;
-            case LandSetRightSetting::SetForSale:
+            case LandSetRightSetting::setForSale:
                 if (isExecuting)
                 {
                     surfaceElement->SetOwnership(surfaceElement->GetOwnership() | OWNERSHIP_AVAILABLE);
@@ -150,7 +150,7 @@ namespace OpenRCT2::GameActions
                     MapInvalidateTile({ loc, baseZ, baseZ + 16 });
                 }
                 return res;
-            case LandSetRightSetting::SetConstructionRightsForSale:
+            case LandSetRightSetting::setConstructionRightsForSale:
                 if (isExecuting)
                 {
                     surfaceElement->SetOwnership(surfaceElement->GetOwnership() | OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE);
@@ -158,7 +158,7 @@ namespace OpenRCT2::GameActions
                     MapInvalidateTile({ loc, baseZ, baseZ + 16 });
                 }
                 return res;
-            case LandSetRightSetting::SetOwnershipWithChecks:
+            case LandSetRightSetting::setOwnershipWithChecks:
             {
                 if (_ownership == surfaceElement->GetOwnership())
                 {

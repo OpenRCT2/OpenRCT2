@@ -15,19 +15,19 @@ namespace OpenRCT2::GameActions
 {
     enum class LandSetRightSetting : uint8_t
     {
-        UnownLand,
-        UnownConstructionRights,
-        SetForSale,
-        SetConstructionRightsForSale,
-        SetOwnershipWithChecks,
-        Count
+        unownLand,
+        unownConstructionRights,
+        setForSale,
+        setConstructionRightsForSale,
+        setOwnershipWithChecks,
+        count
     };
 
     class LandSetRightsAction final : public GameActionBase<GameCommand::SetLandOwnership>
     {
     private:
         MapRange _range;
-        LandSetRightSetting _setting{ LandSetRightSetting::Count };
+        LandSetRightSetting _setting{ LandSetRightSetting::count };
         uint8_t _ownership{};
 
     public:
