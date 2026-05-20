@@ -487,7 +487,7 @@ namespace OpenRCT2::Ui::Windows
                         windowMgr->CloseByClass(WindowClass::patrolArea);
 
                         auto staffSetPatrolAreaAction = GameActions::StaffSetPatrolAreaAction(
-                            staff->id, {}, GameActions::StaffSetPatrolAreaMode::ClearAll);
+                            staff->id, {}, GameActions::StaffSetPatrolAreaMode::clearAll);
                         GameActions::Execute(&staffSetPatrolAreaAction, gameState);
                     }
                     else

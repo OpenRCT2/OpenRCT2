@@ -15,9 +15,9 @@ namespace OpenRCT2::GameActions
 {
     enum class StaffSetPatrolAreaMode : uint8_t
     {
-        Set,
-        Unset,
-        ClearAll
+        set,
+        unset,
+        clearAll
     };
 
     class StaffSetPatrolAreaAction final : public GameActionBase<GameCommand::SetStaffPatrol>
