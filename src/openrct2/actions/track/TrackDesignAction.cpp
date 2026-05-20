@@ -225,17 +225,17 @@ namespace OpenRCT2::GameActions
         if (entryIndex != kObjectEntryIndexNull)
         {
             auto colour = RideGetUnusedPresetVehicleColour(entryIndex);
-            auto rideSetVehicleAction = RideSetVehicleAction(ride->id, RideSetVehicleType::RideEntry, entryIndex, colour);
+            auto rideSetVehicleAction = RideSetVehicleAction(ride->id, RideSetVehicleType::rideEntry, entryIndex, colour);
             ExecuteNested(&rideSetVehicleAction, gameState);
         }
 
         SetOperatingSettingNested(ride->id, RideSetSetting::mode, static_cast<uint8_t>(_td.operation.rideMode), flags);
         auto rideSetVehicleAction2 = RideSetVehicleAction(
-            ride->id, RideSetVehicleType::NumTrains, _td.trackAndVehicle.numberOfTrains);
+            ride->id, RideSetVehicleType::numTrains, _td.trackAndVehicle.numberOfTrains);
         ExecuteNested(&rideSetVehicleAction2, gameState);
 
         auto rideSetVehicleAction3 = RideSetVehicleAction(
-            ride->id, RideSetVehicleType::NumCarsPerTrain, _td.trackAndVehicle.numberOfCarsPerTrain);
+            ride->id, RideSetVehicleType::numCarsPerTrain, _td.trackAndVehicle.numberOfCarsPerTrain);
         ExecuteNested(&rideSetVehicleAction3, gameState);
 
         SetOperatingSettingNested(ride->id, RideSetSetting::departure, _td.operation.departFlags, flags);
