@@ -236,11 +236,11 @@ namespace OpenRCT2::Platform
 } // namespace OpenRCT2::Platform
 
 #ifdef __ANDROID__
-class androidClassLoader
+class AndroidClassLoader
 {
 public:
-    androidClassLoader();
-    ~androidClassLoader();
+    AndroidClassLoader();
+    ~AndroidClassLoader();
     static jobject _classLoader;
     static jmethodID _findClassMethod;
 };
