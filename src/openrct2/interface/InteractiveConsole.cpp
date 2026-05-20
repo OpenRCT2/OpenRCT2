@@ -900,7 +900,7 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
         else if (varName == "park_open" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
             ConsoleSetVariableAction<GameActions::ParkSetParameterAction>(
-                console, varName, (int_val[0] == 1) ? GameActions::ParkParameter::Open : GameActions::ParkParameter::Close);
+                console, varName, (int_val[0] == 1) ? GameActions::ParkParameter::open : GameActions::ParkParameter::close);
         }
         else if (varName == "land_rights_cost" && InvalidArguments(&invalidArgs, double_valid[0]))
         {

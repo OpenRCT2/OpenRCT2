@@ -627,7 +627,7 @@ namespace OpenRCT2::Park
     void SetOpen(const ParkData& park, bool open)
     {
         auto parkSetParameter = GameActions::ParkSetParameterAction(
-            open ? GameActions::ParkParameter::Open : GameActions::ParkParameter::Close);
+            open ? GameActions::ParkParameter::open : GameActions::ParkParameter::close);
         GameActions::Execute(&parkSetParameter, getGameState());
     }
 

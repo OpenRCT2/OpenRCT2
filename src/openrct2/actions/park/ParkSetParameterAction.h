@@ -15,16 +15,16 @@ namespace OpenRCT2::GameActions
 {
     enum class ParkParameter : uint8_t
     {
-        Close,
-        Open,
-        SamePriceInPark,
-        Count
+        close,
+        open,
+        samePriceInPark,
+        count
     };
 
     class ParkSetParameterAction final : public GameActionBase<GameCommand::SetParkOpen>
     {
     private:
-        ParkParameter _parameter{ ParkParameter::Count };
+        ParkParameter _parameter{ ParkParameter::count };
         uint64_t _value{};
 
         constexpr static StringId kErrorTitles[] = {

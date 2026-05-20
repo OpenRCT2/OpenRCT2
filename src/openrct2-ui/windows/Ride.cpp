@@ -6377,7 +6377,7 @@ namespace OpenRCT2::Ui::Windows
                 newFlags ^= EnumToFlag(shop_item);
             }
 
-            auto parkSetParameter = GameActions::ParkSetParameterAction(GameActions::ParkParameter::SamePriceInPark, newFlags);
+            auto parkSetParameter = GameActions::ParkSetParameterAction(GameActions::ParkParameter::samePriceInPark, newFlags);
             GameActions::Execute(&parkSetParameter, getGameState());
         }
 
