@@ -49,7 +49,7 @@ namespace OpenRCT2
         if (fileMode == FileMode::open)
         {
             auto assetOpen = Platform::OpenAssetFile(path);
-            if (assetOpen.result == Platform::AssetCheckResult::Found)
+            if (assetOpen.result == Platform::AssetCheckResult::found)
             {
                 _asset = assetOpen.handle;
                 _fileSize = assetOpen.size;
