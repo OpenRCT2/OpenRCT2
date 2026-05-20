@@ -314,7 +314,7 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
                     else
                     {
                         auto rideAction = GameActions::RideFreezeRatingAction(
-                            rideIndex, GameActions::RideRatingType::Excitement, excitement);
+                            rideIndex, GameActions::RideRatingType::excitement, excitement);
                         GameActions::Execute(&rideAction, gameState);
                     }
                 }
@@ -348,7 +348,7 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
                     else
                     {
                         auto rideAction = GameActions::RideFreezeRatingAction(
-                            rideIndex, GameActions::RideRatingType::Intensity, intensity);
+                            rideIndex, GameActions::RideRatingType::intensity, intensity);
                         GameActions::Execute(&rideAction, gameState);
                     }
                 }
@@ -382,7 +382,7 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
                     else
                     {
                         auto rideAction = GameActions::RideFreezeRatingAction(
-                            rideIndex, GameActions::RideRatingType::Nausea, nausea);
+                            rideIndex, GameActions::RideRatingType::nausea, nausea);
                         GameActions::Execute(&rideAction, gameState);
                     }
                 }

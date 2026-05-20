@@ -58,13 +58,13 @@ namespace OpenRCT2::GameActions
 
         switch (_type)
         {
-            case RideRatingType::Excitement:
+            case RideRatingType::excitement:
                 ride->ratings.excitement = _value;
                 break;
-            case RideRatingType::Intensity:
+            case RideRatingType::intensity:
                 ride->ratings.intensity = _value;
                 break;
-            case RideRatingType::Nausea:
+            case RideRatingType::nausea:
                 ride->ratings.nausea = _value;
                 break;
         }
