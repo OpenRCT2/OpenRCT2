@@ -409,6 +409,7 @@
     <ClInclude Include="paint\entity\Paint.Peep.h" />
     <ClInclude Include="paint\entity\Paint.Staff.h" />
     <ClInclude Include="paint\entity\Paint.SteamParticle.h" />
+    <ClInclude Include="paint\entity\Paint.Vehicle.h" />
     <ClInclude Include="paint\entity\Paint.VehicleCrashParticle.h" />
     <ClInclude Include="paint\support\MetalSupports.h" />
     <ClInclude Include="paint\support\WoodenSupports.h" />
@@ -1015,6 +1016,7 @@
     <ClCompile Include="paint\entity\Paint.Peep.cpp" />
     <ClCompile Include="paint\entity\Paint.Staff.cpp" />
     <ClCompile Include="paint\entity\Paint.SteamParticle.cpp" />
+    <ClCompile Include="paint\entity\Paint.Vehicle.cpp" />
     <ClCompile Include="paint\entity\Paint.VehicleCrashParticle.cpp" />
     <ClCompile Include="paint\support\MetalSupports.cpp" />
     <ClCompile Include="paint\support\WoodenSupports.cpp" />

@@ -35,6 +35,7 @@
 #include "entity/Paint.MoneyEffect.h"
 #include "entity/Paint.Staff.h"
 #include "entity/Paint.SteamParticle.h"
+#include "entity/Paint.Vehicle.h"
 #include "entity/Paint.VehicleCrashParticle.h"
 #include "vehicle/VehiclePaint.h"
 
@@ -139,7 +140,7 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
         switch (entity->type)
         {
             case EntityType::vehicle:
-                entity->cast<Vehicle>()->Paint(session, image_direction);
+                PaintVehicle(session, *entity->cast<Vehicle>(), image_direction);
                 if (LightFx::ForVehiclesIsAvailable())
                 {
                     LightFx::AddLightsMagicVehicle(entity->cast<Vehicle>());
