@@ -370,7 +370,7 @@ namespace OpenRCT2::RCT2
 
             auto& park = gameState.park;
 
-            gameState.scenarioOptions.initialCash = ToMoney64(_s6.InitialCash);
+            gameState.scenarioOptions.initialCash = ToMoney64(_s6.initialCash);
             park.bankLoan = ToMoney64(_s6.CurrentLoan);
 
             park.flags = _s6.ParkFlags & ~PARK_FLAGS_NO_MONEY_SCENARIO;

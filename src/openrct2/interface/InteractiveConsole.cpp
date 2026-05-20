@@ -807,7 +807,7 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
         else if (varName == "scenario_initial_cash" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
             ConsoleSetVariableAction<GameActions::ScenarioSetSettingAction>(
-                console, varName, GameActions::ScenarioSetSetting::InitialCash,
+                console, varName, GameActions::ScenarioSetSetting::initialCash,
                 std::clamp(ToMoney64FromGBP(int_val[0]), 0.00_GBP, 1000000.00_GBP));
         }
         else if (varName == "current_loan" && InvalidArguments(&invalidArgs, int_valid[0]))
@@ -815,68 +815,68 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
             auto amount = std::clamp(
                 ToMoney64FromGBP(int_val[0]) - ToMoney64FromGBP(int_val[0] % 1000), 0.00_GBP, gameState.park.maxBankLoan);
             ConsoleSetVariableAction<GameActions::ScenarioSetSettingAction>(
-                console, varName, GameActions::ScenarioSetSetting::InitialLoan, amount);
+                console, varName, GameActions::ScenarioSetSetting::initialLoan, amount);
         }
         else if (varName == "max_loan" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
             auto amount = std::clamp(
                 ToMoney64FromGBP(int_val[0]) - ToMoney64FromGBP(int_val[0] % 1000), 0.00_GBP, 5000000.00_GBP);
             ConsoleSetVariableAction<GameActions::ScenarioSetSettingAction>(
-                console, varName, GameActions::ScenarioSetSetting::MaximumLoanSize, amount);
+                console, varName, GameActions::ScenarioSetSetting::maximumLoanSize, amount);
         }
         else if (varName == "guest_initial_cash" && InvalidArguments(&invalidArgs, double_valid[0]))
         {
             ConsoleSetVariableAction<GameActions::ScenarioSetSettingAction>(
-                console, varName, GameActions::ScenarioSetSetting::AverageCashPerGuest,
+                console, varName, GameActions::ScenarioSetSetting::averageCashPerGuest,
                 std::clamp(ToMoney64FromGBP(double_val[0]), 0.00_GBP, 1000.00_GBP));
         }
         else if (varName == "guest_initial_happiness" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
             ConsoleSetVariableAction<GameActions::ScenarioSetSettingAction>(
-                console, varName, GameActions::ScenarioSetSetting::GuestInitialHappiness,
+                console, varName, GameActions::ScenarioSetSetting::guestInitialHappiness,
                 Park::CalculateGuestInitialHappiness(static_cast<uint8_t>(int_val[0])));
         }
         else if (varName == "guest_initial_hunger" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
             ConsoleSetVariableAction<GameActions::ScenarioSetSettingAction>(
-                console, varName, GameActions::ScenarioSetSetting::GuestInitialHunger,
+                console, varName, GameActions::ScenarioSetSetting::guestInitialHunger,
                 (std::clamp(int_val[0], 1, 84) * 255 / 100 - 255) * -1);
         }
         else if (varName == "guest_initial_thirst" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
             ConsoleSetVariableAction<GameActions::ScenarioSetSettingAction>(
-                console, varName, GameActions::ScenarioSetSetting::GuestInitialThirst,
+                console, varName, GameActions::ScenarioSetSetting::guestInitialThirst,
                 (std::clamp(int_val[0], 1, 84) * 255 / 100 - 255) * -1);
         }
         else if (varName == "guest_prefer_less_intense_rides" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
             ConsoleSetVariableAction<GameActions::ScenarioSetSettingAction>(
-                console, varName, GameActions::ScenarioSetSetting::GuestsPreferLessIntenseRides, int_val[0]);
+                console, varName, GameActions::ScenarioSetSetting::guestsPreferLessIntenseRides, int_val[0]);
         }
         else if (varName == "guest_prefer_more_intense_rides" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
             ConsoleSetVariableAction<GameActions::ScenarioSetSettingAction>(
-                console, varName, GameActions::ScenarioSetSetting::GuestsPreferMoreIntenseRides, int_val[0]);
+                console, varName, GameActions::ScenarioSetSetting::guestsPreferMoreIntenseRides, int_val[0]);
         }
         else if (varName == "forbid_marketing_campaigns" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
             ConsoleSetVariableAction<GameActions::ScenarioSetSettingAction>(
-                console, varName, GameActions::ScenarioSetSetting::ForbidMarketingCampaigns, int_val[0]);
+                console, varName, GameActions::ScenarioSetSetting::forbidMarketingCampaigns, int_val[0]);
         }
         else if (varName == "forbid_landscape_changes" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
             ConsoleSetVariableAction<GameActions::ScenarioSetSettingAction>(
-                console, varName, GameActions::ScenarioSetSetting::ForbidLandscapeChanges, int_val[0]);
+                console, varName, GameActions::ScenarioSetSetting::forbidLandscapeChanges, int_val[0]);
         }
         else if (varName == "forbid_tree_removal" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
             ConsoleSetVariableAction<GameActions::ScenarioSetSettingAction>(
-                console, varName, GameActions::ScenarioSetSetting::ForbidTreeRemoval, int_val[0]);
+                console, varName, GameActions::ScenarioSetSetting::forbidTreeRemoval, int_val[0]);
         }
         else if (varName == "forbid_high_construction" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
             ConsoleSetVariableAction<GameActions::ScenarioSetSettingAction>(
-                console, varName, GameActions::ScenarioSetSetting::ForbidHighConstruction, int_val[0]);
+                console, varName, GameActions::ScenarioSetSetting::forbidHighConstruction, int_val[0]);
         }
         else if (varName == "pay_for_rides" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
@@ -890,12 +890,12 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
         else if (varName == "difficult_park_rating" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
             ConsoleSetVariableAction<GameActions::ScenarioSetSettingAction>(
-                console, varName, GameActions::ScenarioSetSetting::ParkRatingHigherDifficultyLevel, int_val[0]);
+                console, varName, GameActions::ScenarioSetSetting::parkRatingHigherDifficultyLevel, int_val[0]);
         }
         else if (varName == "difficult_guest_generation" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
             ConsoleSetVariableAction<GameActions::ScenarioSetSettingAction>(
-                console, varName, GameActions::ScenarioSetSetting::GuestGenerationHigherDifficultyLevel, int_val[0]);
+                console, varName, GameActions::ScenarioSetSetting::guestGenerationHigherDifficultyLevel, int_val[0]);
         }
         else if (varName == "park_open" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
@@ -905,13 +905,13 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
         else if (varName == "land_rights_cost" && InvalidArguments(&invalidArgs, double_valid[0]))
         {
             ConsoleSetVariableAction<GameActions::ScenarioSetSettingAction>(
-                console, varName, GameActions::ScenarioSetSetting::CostToBuyLand,
+                console, varName, GameActions::ScenarioSetSetting::costToBuyLand,
                 std::clamp(ToMoney64FromGBP(double_val[0]), 0.00_GBP, 200.00_GBP));
         }
         else if (varName == "construction_rights_cost" && InvalidArguments(&invalidArgs, double_valid[0]))
         {
             ConsoleSetVariableAction<GameActions::ScenarioSetSettingAction>(
-                console, varName, GameActions::ScenarioSetSetting::CostToBuyConstructionRights,
+                console, varName, GameActions::ScenarioSetSetting::costToBuyConstructionRights,
                 std::clamp(ToMoney64FromGBP(double_val[0]), 0.00_GBP, 200.00_GBP));
         }
         else if (varName == "game_speed" && InvalidArguments(&invalidArgs, int_valid[0]))
