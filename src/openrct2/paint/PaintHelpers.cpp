@@ -27,8 +27,7 @@ PaintStruct* paintAddImageAsParentRotated(
 }
 
 PaintStruct* paintAddImageAsChildRotated(
-    PaintSession& session, const uint8_t direction, const ImageId imageId, const CoordsXYZ& offset,
-    const BoundBoxXYZ& boundBox)
+    PaintSession& session, const uint8_t direction, const ImageId imageId, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox)
 {
     if (direction & 1)
     {

@@ -60,8 +60,7 @@ namespace OpenRCT2
             session, imageId0, { 0, 0, z },
             { { bb.offsetX, bb.offsetY, bb.offsetZ + z }, { bb.lengthX, bb.lengthY, bb.lengthZ } });
         paintAddImageAsParent(
-            session, imageId1, { 0, 0, z },
-            { { bb.offsetX, bb.offsetY, bb.offsetZ + z - 10 }, { bb.lengthX, bb.lengthY, 2 } });
+            session, imageId1, { 0, 0, z }, { { bb.offsetX, bb.offsetY, bb.offsetZ + z - 10 }, { bb.lengthX, bb.lengthY, 2 } });
         assert(carEntry->effect_visual == 1);
     }
 } // namespace OpenRCT2

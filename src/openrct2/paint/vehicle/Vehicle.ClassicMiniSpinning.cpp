@@ -81,8 +81,7 @@ namespace OpenRCT2
         const uint32_t boundingBoxIndex = pitchInfo.boundingBoxIndex
             + (rotatedImageDirection >> pitchInfo.boundingBoxPrecisionShift);
         const VehicleBoundBox& bb = VehicleBoundboxes[carEntry->draw_order][boundingBoxIndex];
-        const BoundBoxXYZ boundingBox = { { bb.offsetX, bb.offsetY, bb.offsetZ + z },
-                                          { bb.lengthX, bb.lengthY, bb.lengthZ } };
+        const BoundBoxXYZ boundingBox = { { bb.offsetX, bb.offsetY, bb.offsetZ + z }, { bb.lengthX, bb.lengthY, bb.lengthZ } };
         paintAddImageAsParent(session, imageId, { 0, 0, z }, boundingBox);
 
         if (session.rt.zoom_level < ZoomLevel{ 2 })

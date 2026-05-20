@@ -275,8 +275,7 @@ inline PaintStruct* paintAddImageAsParent(
 
 [[nodiscard]] PaintStruct* paintAddImageAsOrphan(
     PaintSession& session, ImageId imageId, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox);
-PaintStruct* paintAddImageAsChild(
-    PaintSession& session, ImageId imageId, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox);
+PaintStruct* paintAddImageAsChild(PaintSession& session, ImageId imageId, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox);
 
 PaintStruct* paintAddImageAsChildRotated(
     PaintSession& session, uint8_t direction, ImageId imageId, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox);
