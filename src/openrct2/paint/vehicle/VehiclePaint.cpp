@@ -1126,8 +1126,7 @@ static void vehicle_sprite_paint(
         imageId = ImageId(baseImageId).WithRemap(FilterPaletteID::paletteGhost);
     }
     paintAddImageAsParent(
-        session, imageId, { 0, 0, z },
-        { { bb.offsetX, bb.offsetY, bb.offsetZ + z }, { bb.lengthX, bb.lengthY, bb.lengthZ } });
+        session, imageId, { 0, 0, z }, { { bb.offsetX, bb.offsetY, bb.offsetZ + z }, { bb.lengthX, bb.lengthY, bb.lengthZ } });
 
     auto& rt = session.rt;
     if (rt.zoom_level < ZoomLevel{ 2 } && vehicle->num_peeps > 0 && carEntry->no_seating_rows > 0)
