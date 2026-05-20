@@ -25,12 +25,17 @@
 #include "../world/Map.h"
 #include "../world/Park.h"
 #include "../world/Weather.h"
-#include "Paint.h"
 #include "entity/Paint.Balloon.h"
+#include "entity/Paint.CrashSplashParticle.h"
 #include "entity/Paint.Duck.h"
+#include "entity/Paint.ExplosionCloud.h"
+#include "entity/Paint.ExplosionFlare.h"
 #include "entity/Paint.Guest.h"
 #include "entity/Paint.Litter.h"
+#include "entity/Paint.MoneyEffect.h"
 #include "entity/Paint.Staff.h"
+#include "entity/Paint.SteamParticle.h"
+#include "entity/Paint.VehicleCrashParticle.h"
 #include "vehicle/VehiclePaint.h"
 
 #include <cassert>
@@ -147,22 +152,22 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
                 PaintStaff(session, *entity->cast<Staff>(), image_direction);
                 break;
             case EntityType::steamParticle:
-                entity->cast<SteamParticle>()->Paint(session, image_direction);
+                PaintSteamParticle(session, *entity->cast<SteamParticle>());
                 break;
             case EntityType::moneyEffect:
-                entity->cast<MoneyEffect>()->Paint(session, image_direction);
+                PaintMoneyEffect(session, *entity->cast<MoneyEffect>());
                 break;
             case EntityType::crashedVehicleParticle:
-                entity->cast<VehicleCrashParticle>()->Paint(session, image_direction);
+                PaintVehicleCrashParticle(session, *entity->cast<VehicleCrashParticle>());
                 break;
             case EntityType::explosionCloud:
-                entity->cast<ExplosionCloud>()->Paint(session, image_direction);
+                PaintExplosionCloud(session, *entity->cast<ExplosionCloud>());
                 break;
             case EntityType::crashSplash:
-                entity->cast<CrashSplashParticle>()->Paint(session, image_direction);
+                PaintCrashSplashParticle(session, *entity->cast<CrashSplashParticle>());
                 break;
             case EntityType::explosionFlare:
-                entity->cast<ExplosionFlare>()->Paint(session, image_direction);
+                PaintExplosionFlare(session, *entity->cast<ExplosionFlare>());
                 break;
             case EntityType::jumpingFountain:
                 entity->cast<JumpingFountain>()->Paint(session, image_direction);
