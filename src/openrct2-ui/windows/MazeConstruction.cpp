@@ -63,10 +63,6 @@ namespace OpenRCT2::Ui::Windows
         WIDX_MAZE_EXIT,
     };
 
-    static_assert(WIDX_MAZE_DIRECTION_GROUPBOX == kWindowMazeConstructionWidgetIdxMazeDirectionGroupbox);
-    static_assert(WIDX_MAZE_ENTRANCE == kWindowMazeConstructionWidgetIdxMazeEntrance);
-    static_assert(WIDX_MAZE_EXIT == kWindowMazeConstructionWidgetIdxMazeExit);
-
     // clang-format off
     static constexpr auto window_maze_construction_widgets = makeWidgets(
         makeWindowShim(kWindowTitle, kWindowSize),
