@@ -93,10 +93,10 @@ static void ShortcutRotateConstructionObject()
 
     // Rotate scenery
     WindowBase* w = windowMgr->FindByClass(WindowClass::scenery);
-    if (w != nullptr && !widgetIsDisabled(*w, WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON)
-        && w->widgets[WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type != WidgetType::empty)
+    if (w != nullptr && !widgetIsDisabled(*w, kWindowScenaryWidgetIdxScenaryRotateObjectsButton)
+        && w->widgets[kWindowScenaryWidgetIdxScenaryRotateObjectsButton].type != WidgetType::empty)
     {
-        w->onMouseUp(WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON);
+        w->onMouseUp(kWindowScenaryWidgetIdxScenaryRotateObjectsButton);
         return;
     }
 
@@ -449,10 +449,10 @@ static void ShortcutOpenSceneryPicker()
         ToggleSceneryWindow();
 
     sceneryWindow = windowMgr->FindByClass(WindowClass::scenery);
-    if (sceneryWindow != nullptr && !widgetIsDisabled(*sceneryWindow, WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON)
+    if (sceneryWindow != nullptr && !widgetIsDisabled(*sceneryWindow, kWindowScenaryWidgetIdxScenaryEyedropperButton)
         && !gWindowSceneryEyedropperEnabled)
     {
-        sceneryWindow->onMouseUp(WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON);
+        sceneryWindow->onMouseUp(kWindowScenaryWidgetIdxScenaryEyedropperButton);
         return;
     }
 }
