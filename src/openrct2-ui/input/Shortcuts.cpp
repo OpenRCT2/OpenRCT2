@@ -431,7 +431,7 @@ static void ShortcutLoadGame()
 {
     if (!(isInTrackDesignerOrManager()))
     {
-        auto loadOrQuitAction = GameActions::LoadOrQuitAction(GameActions::LoadOrQuitModes::OpenSavePrompt);
+        auto loadOrQuitAction = GameActions::LoadOrQuitAction(GameActions::LoadOrQuitModes::openSavePrompt);
         GameActions::Execute(&loadOrQuitAction, getGameState());
     }
 }
@@ -525,7 +525,7 @@ static void ShortcutToggleWallSlope()
 
     extern TileCoordsXY windowTileInspectorTile;
     auto modifyTile = GameActions::TileModifyAction(
-        windowTileInspectorTile.ToCoordsXY(), GameActions::TileModifyType::WallSetSlope, windowTileInspectorSelectedIndex,
+        windowTileInspectorTile.ToCoordsXY(), GameActions::TileModifyType::wallSetSlope, windowTileInspectorSelectedIndex,
         newSlopeValue);
     GameActions::Execute(&modifyTile, getGameState());
 }

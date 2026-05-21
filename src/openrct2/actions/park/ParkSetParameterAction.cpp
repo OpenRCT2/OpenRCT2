@@ -43,7 +43,7 @@ namespace OpenRCT2::GameActions
 
     Result ParkSetParameterAction::Query(GameState_t& gameState, Park::ParkData& park) const
     {
-        if (_parameter >= ParkParameter::Count)
+        if (_parameter >= ParkParameter::count)
         {
             LOG_ERROR("Invalid park parameter %d", _parameter);
             return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
@@ -60,21 +60,21 @@ namespace OpenRCT2::GameActions
 
         switch (_parameter)
         {
-            case ParkParameter::Close:
+            case ParkParameter::close:
                 if (park.flags & PARK_FLAGS_PARK_OPEN)
                 {
                     park.flags &= ~PARK_FLAGS_PARK_OPEN;
                     windowMgr->InvalidateByClass(WindowClass::parkInformation);
                 }
                 break;
-            case ParkParameter::Open:
+            case ParkParameter::open:
                 if (!(park.flags & PARK_FLAGS_PARK_OPEN))
                 {
                     park.flags |= PARK_FLAGS_PARK_OPEN;
                     windowMgr->InvalidateByClass(WindowClass::parkInformation);
                 }
                 break;
-            case ParkParameter::SamePriceInPark:
+            case ParkParameter::samePriceInPark:
                 park.samePriceThroughoutPark = _value;
                 windowMgr->InvalidateByClass(WindowClass::ride);
                 break;

@@ -244,11 +244,11 @@ namespace OpenRCT2::Editor
         MapRange range = { 2 * kCoordsXYStep, 2 * kCoordsXYStep, (gameState.mapSize.x - 3) * kCoordsXYStep,
                            (gameState.mapSize.y - 3) * kCoordsXYStep };
 
-        auto landSetRightsAction = GameActions::LandSetRightsAction(range, GameActions::LandSetRightSetting::SetForSale);
+        auto landSetRightsAction = GameActions::LandSetRightsAction(range, GameActions::LandSetRightSetting::setForSale);
         landSetRightsAction.SetFlags({ CommandFlag::noSpend });
         GameActions::Execute(&landSetRightsAction, gameState);
 
-        auto landBuyRightsAction = GameActions::LandBuyRightsAction(range, GameActions::LandBuyRightSetting::BuyLand);
+        auto landBuyRightsAction = GameActions::LandBuyRightsAction(range, GameActions::LandBuyRightSetting::buyLand);
         landBuyRightsAction.SetFlags({ CommandFlag::noSpend });
         GameActions::Execute(&landBuyRightsAction, gameState);
     }

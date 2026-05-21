@@ -562,7 +562,7 @@ namespace OpenRCT2::Ui::Windows
                     CoordsXYZ nullLoc{};
                     nullLoc.SetNull();
 
-                    GameActions::PeepPickupAction pickupAction{ GameActions::PeepPickupType::Pickup, staff->id, nullLoc,
+                    GameActions::PeepPickupAction pickupAction{ GameActions::PeepPickupType::pickup, staff->id, nullLoc,
                                                                 Network::GetCurrentPlayerId() };
                     pickupAction.SetCallback(
                         [staffId = staff->id](const GameActions::GameAction* ga, const GameActions::Result* result) {

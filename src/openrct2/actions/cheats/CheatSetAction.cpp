@@ -829,7 +829,7 @@ namespace OpenRCT2::GameActions
 
     void CheatSetAction::ParkSetOpen(bool isOpen, GameState_t& gameState) const
     {
-        auto parkSetParameter = ParkSetParameterAction(isOpen ? ParkParameter::Open : ParkParameter::Close);
+        auto parkSetParameter = ParkSetParameterAction(isOpen ? ParkParameter::open : ParkParameter::close);
         ExecuteNested(&parkSetParameter, gameState);
     }
 

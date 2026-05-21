@@ -4976,27 +4976,27 @@ void Ride::setRideEntry(ObjectEntryIndex entryIndex)
 {
     auto colour = RideGetUnusedPresetVehicleColour(entryIndex);
     auto rideSetVehicleAction = GameActions::RideSetVehicleAction(
-        id, GameActions::RideSetVehicleType::RideEntry, entryIndex, colour);
+        id, GameActions::RideSetVehicleType::rideEntry, entryIndex, colour);
     GameActions::Execute(&rideSetVehicleAction, getGameState());
 }
 
 void Ride::setNumTrains(int32_t newNumTrains)
 {
-    auto rideSetVehicleAction = GameActions::RideSetVehicleAction(id, GameActions::RideSetVehicleType::NumTrains, newNumTrains);
+    auto rideSetVehicleAction = GameActions::RideSetVehicleAction(id, GameActions::RideSetVehicleType::numTrains, newNumTrains);
     GameActions::Execute(&rideSetVehicleAction, getGameState());
 }
 
 void Ride::setNumCarsPerTrain(int32_t numCarsPerVehicle)
 {
     auto rideSetVehicleAction = GameActions::RideSetVehicleAction(
-        id, GameActions::RideSetVehicleType::NumCarsPerTrain, numCarsPerVehicle);
+        id, GameActions::RideSetVehicleType::numCarsPerTrain, numCarsPerVehicle);
     GameActions::Execute(&rideSetVehicleAction, getGameState());
 }
 
 void Ride::setReversedTrains(bool reverseTrains)
 {
     auto rideSetVehicleAction = GameActions::RideSetVehicleAction(
-        id, GameActions::RideSetVehicleType::TrainsReversed, reverseTrains);
+        id, GameActions::RideSetVehicleType::trainsReversed, reverseTrains);
     GameActions::Execute(&rideSetVehicleAction, getGameState());
 }
 

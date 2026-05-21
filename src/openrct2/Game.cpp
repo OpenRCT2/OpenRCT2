@@ -690,7 +690,7 @@ void GameLoadOrQuitNoSavePrompt()
     {
         case PromptMode::saveBeforeLoad:
         {
-            auto loadOrQuitAction = GameActions::LoadOrQuitAction(GameActions::LoadOrQuitModes::CloseSavePrompt);
+            auto loadOrQuitAction = GameActions::LoadOrQuitAction(GameActions::LoadOrQuitModes::closeSavePrompt);
             GameActions::Execute(&loadOrQuitAction, gameState);
             ToolCancel();
             if (gLegacyScene == LegacyScene::scenarioEditor)
@@ -709,7 +709,7 @@ void GameLoadOrQuitNoSavePrompt()
         }
         case PromptMode::saveBeforeQuit:
         {
-            auto loadOrQuitAction = GameActions::LoadOrQuitAction(GameActions::LoadOrQuitModes::CloseSavePrompt);
+            auto loadOrQuitAction = GameActions::LoadOrQuitAction(GameActions::LoadOrQuitModes::closeSavePrompt);
             GameActions::Execute(&loadOrQuitAction, gameState);
             ToolCancel();
             if (gInputFlags.has(InputFlag::rightMousePressed))
@@ -730,7 +730,7 @@ void GameLoadOrQuitNoSavePrompt()
         }
         case PromptMode::saveBeforeNewGame:
         {
-            auto loadOrQuitAction = GameActions::LoadOrQuitAction(GameActions::LoadOrQuitModes::CloseSavePrompt);
+            auto loadOrQuitAction = GameActions::LoadOrQuitAction(GameActions::LoadOrQuitModes::closeSavePrompt);
             GameActions::Execute(&loadOrQuitAction, gameState);
             ToolCancel();
             auto intent = Intent(WindowClass::scenarioSelect);

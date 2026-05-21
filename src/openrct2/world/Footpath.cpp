@@ -1062,7 +1062,7 @@ namespace OpenRCT2
         }
 
         auto landSetRightsAction = GameActions::LandSetRightsAction(
-            mapPos, GameActions::LandSetRightSetting::SetOwnershipWithChecks, ownership);
+            mapPos, GameActions::LandSetRightSetting::setOwnershipWithChecks, ownership);
         landSetRightsAction.SetFlags({ CommandFlag::noSpend });
         GameActions::Execute(&landSetRightsAction, getGameState());
     }

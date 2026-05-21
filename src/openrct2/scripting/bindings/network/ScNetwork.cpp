@@ -69,7 +69,7 @@ namespace OpenRCT2::Scripting
     #ifndef DISABLE_NETWORK
         JS_UNPACK_INT32(valueInt, ctx, value);
 
-        auto action = GameActions::NetworkModifyGroupAction(GameActions::ModifyGroupType::SetDefault, valueInt);
+        auto action = GameActions::NetworkModifyGroupAction(GameActions::ModifyGroupType::setDefault, valueInt);
         GameActions::Execute(&action, getGameState());
     #endif
         return JS_UNDEFINED;
@@ -200,7 +200,7 @@ namespace OpenRCT2::Scripting
     JSValue ScNetwork::addGroup(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
     {
     #ifndef DISABLE_NETWORK
-        auto networkModifyGroup = GameActions::NetworkModifyGroupAction(GameActions::ModifyGroupType::AddGroup);
+        auto networkModifyGroup = GameActions::NetworkModifyGroupAction(GameActions::ModifyGroupType::addGroup);
         GameActions::Execute(&networkModifyGroup, getGameState());
     #endif
         return JS_UNDEFINED;
@@ -218,7 +218,7 @@ namespace OpenRCT2::Scripting
             if (index < numGroups)
             {
                 auto groupId = Network::GetGroupID(index);
-                auto networkAction = GameActions::NetworkModifyGroupAction(GameActions::ModifyGroupType::RemoveGroup, groupId);
+                auto networkAction = GameActions::NetworkModifyGroupAction(GameActions::ModifyGroupType::removeGroup, groupId);
                 GameActions::Execute(&networkAction, getGameState());
             }
         }
@@ -227,7 +227,7 @@ namespace OpenRCT2::Scripting
             auto index = Network::GetGroupIndex(id);
             if (index != -1)
             {
-                auto networkAction = GameActions::NetworkModifyGroupAction(GameActions::ModifyGroupType::RemoveGroup, id);
+                auto networkAction = GameActions::NetworkModifyGroupAction(GameActions::ModifyGroupType::removeGroup, id);
                 GameActions::Execute(&networkAction, getGameState());
             }
         }

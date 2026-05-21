@@ -16,16 +16,16 @@ namespace OpenRCT2::GameActions
 {
     enum class PeepPickupType : uint8_t
     {
-        Pickup,
-        Cancel,
-        Place,
-        Count
+        pickup,
+        cancel,
+        place,
+        count
     };
 
     class PeepPickupAction final : public GameActionBase<GameCommand::PickupGuest>
     {
     private:
-        PeepPickupType _type{ PeepPickupType::Count };
+        PeepPickupType _type{ PeepPickupType::count };
         EntityId _entityId{ EntityId::GetNull() };
         CoordsXYZ _loc;
         Network::PlayerId_t _owner{ -1 };

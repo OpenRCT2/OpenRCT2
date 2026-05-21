@@ -470,7 +470,7 @@ namespace OpenRCT2::GameActions
                             {
                                 ride->windowInvalidateFlags.set(RideInvalidateFlag::operatingSettings);
                                 auto rideSetSetting = RideSetSettingAction(
-                                    ride->id, RideSetSetting::Mode, static_cast<uint8_t>(newMode));
+                                    ride->id, RideSetSetting::mode, static_cast<uint8_t>(newMode));
                                 ExecuteNested(&rideSetSetting, gameState);
                             }
                         }

@@ -1859,7 +1859,7 @@ namespace OpenRCT2::Ui::Windows
                     if (Network::GetMode() == Network::Mode::server)
                     {
                         auto setAllowEarlyCompletionAction = GameActions::ScenarioSetSettingAction(
-                            GameActions::ScenarioSetSetting::AllowEarlyCompletion, Config::Get().general.allowEarlyCompletion);
+                            GameActions::ScenarioSetSetting::allowEarlyCompletion, Config::Get().general.allowEarlyCompletion);
                         GameActions::Execute(&setAllowEarlyCompletionAction, getGameState());
                     }
                     Config::Save();

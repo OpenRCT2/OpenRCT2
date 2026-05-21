@@ -2278,7 +2278,7 @@ namespace OpenRCT2::Ui::Windows
                         if (rideType < RIDE_TYPE_COUNT)
                         {
                             auto rideSetSetting = GameActions::RideSetSettingAction(
-                                rideId, GameActions::RideSetSetting::RideType, rideType);
+                                rideId, GameActions::RideSetSetting::rideType, rideType);
                             rideSetSetting.SetCallback(
                                 [](const GameActions::GameAction* ga, const GameActions::Result* result) {
                                     // Reset ghost track if ride construction window is open, prevents a crash
@@ -3121,7 +3121,7 @@ namespace OpenRCT2::Ui::Windows
             uint8_t increment = ride->mode == RideMode::dodgems ? 10 : 1;
 
             SetOperatingSetting(
-                rideId, GameActions::RideSetSetting::Operation,
+                rideId, GameActions::RideSetSetting::operation,
                 std::clamp<int16_t>(ride->operationOption + increment, minValue, maxValue));
         }
 
@@ -3143,7 +3143,7 @@ namespace OpenRCT2::Ui::Windows
             uint8_t decrement = ride->mode == RideMode::dodgems ? 10 : 1;
 
             SetOperatingSetting(
-                rideId, GameActions::RideSetSetting::Operation,
+                rideId, GameActions::RideSetSetting::operation,
                 std::clamp<int16_t>(ride->operationOption - decrement, minValue, maxValue));
         }
 
@@ -3227,26 +3227,26 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_LOAD_CHECKBOX:
                     SetOperatingSetting(
-                        rideId, GameActions::RideSetSetting::Departure, ride->departFlags ^ RIDE_DEPART_WAIT_FOR_LOAD);
+                        rideId, GameActions::RideSetSetting::departure, ride->departFlags ^ RIDE_DEPART_WAIT_FOR_LOAD);
                     break;
                 case WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX:
                     SetOperatingSetting(
-                        rideId, GameActions::RideSetSetting::Departure,
+                        rideId, GameActions::RideSetSetting::departure,
                         ride->departFlags ^ RIDE_DEPART_LEAVE_WHEN_ANOTHER_ARRIVES);
                     break;
                 case WIDX_MINIMUM_LENGTH_CHECKBOX:
                     SetOperatingSetting(
-                        rideId, GameActions::RideSetSetting::Departure,
+                        rideId, GameActions::RideSetSetting::departure,
                         ride->departFlags ^ RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH);
                     break;
                 case WIDX_MAXIMUM_LENGTH_CHECKBOX:
                     SetOperatingSetting(
-                        rideId, GameActions::RideSetSetting::Departure,
+                        rideId, GameActions::RideSetSetting::departure,
                         ride->departFlags ^ RIDE_DEPART_WAIT_FOR_MAXIMUM_LENGTH);
                     break;
                 case WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX:
                     SetOperatingSetting(
-                        rideId, GameActions::RideSetSetting::Departure,
+                        rideId, GameActions::RideSetSetting::departure,
                         ride->departFlags ^ RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS);
                     break;
             }
@@ -3284,7 +3284,7 @@ namespace OpenRCT2::Ui::Windows
                         ? 0
                         : ride->getRideTypeDescriptor().LiftData.minimum_speed;
                     SetOperatingSetting(
-                        rideId, GameActions::RideSetSetting::LiftHillSpeed,
+                        rideId, GameActions::RideSetSetting::liftHillSpeed,
                         std::clamp<int16_t>(ride->liftHillSpeed + 1, lowerBound, upperBound));
                     break;
                 case WIDX_LIFT_HILL_SPEED_DECREASE:
@@ -3295,7 +3295,7 @@ namespace OpenRCT2::Ui::Windows
                         ? 0
                         : ride->getRideTypeDescriptor().LiftData.minimum_speed;
                     SetOperatingSetting(
-                        rideId, GameActions::RideSetSetting::LiftHillSpeed,
+                        rideId, GameActions::RideSetSetting::liftHillSpeed,
                         std::clamp<int16_t>(ride->liftHillSpeed - 1, lowerBound, upperBound));
                     break;
                 case WIDX_MINIMUM_LENGTH:
@@ -3308,28 +3308,28 @@ namespace OpenRCT2::Ui::Windows
                     upperBound = Limits::kMaxWaitingTime;
                     lowerBound = 0;
                     SetOperatingSetting(
-                        rideId, GameActions::RideSetSetting::MinWaitingTime,
+                        rideId, GameActions::RideSetSetting::minWaitingTime,
                         std::clamp<int16_t>(ride->minWaitingTime + 1, lowerBound, upperBound));
                     break;
                 case WIDX_MINIMUM_LENGTH_DECREASE:
                     upperBound = Limits::kMaxWaitingTime;
                     lowerBound = 0;
                     SetOperatingSetting(
-                        rideId, GameActions::RideSetSetting::MinWaitingTime,
+                        rideId, GameActions::RideSetSetting::minWaitingTime,
                         std::clamp<int16_t>(ride->minWaitingTime - 1, lowerBound, upperBound));
                     break;
                 case WIDX_MAXIMUM_LENGTH_INCREASE:
                     upperBound = Limits::kMaxWaitingTime;
                     lowerBound = 0;
                     SetOperatingSetting(
-                        rideId, GameActions::RideSetSetting::MaxWaitingTime,
+                        rideId, GameActions::RideSetSetting::maxWaitingTime,
                         std::clamp<int16_t>(ride->maxWaitingTime + 1, lowerBound, upperBound));
                     break;
                 case WIDX_MAXIMUM_LENGTH_DECREASE:
                     upperBound = Limits::kMaxWaitingTime;
                     lowerBound = 0;
                     SetOperatingSetting(
-                        rideId, GameActions::RideSetSetting::MaxWaitingTime,
+                        rideId, GameActions::RideSetSetting::maxWaitingTime,
                         std::clamp<int16_t>(ride->maxWaitingTime - 1, lowerBound, upperBound));
                     break;
                 case WIDX_MODE_DROPDOWN:
@@ -3343,7 +3343,7 @@ namespace OpenRCT2::Ui::Windows
                                                                              : Limits::kMaxCircuitsPerRide;
                     lowerBound = 1;
                     SetOperatingSetting(
-                        rideId, GameActions::RideSetSetting::NumCircuits,
+                        rideId, GameActions::RideSetSetting::numCircuits,
                         std::clamp<int16_t>(ride->numCircuits + 1, lowerBound, upperBound));
                     break;
                 case WIDX_OPERATE_NUMBER_OF_CIRCUITS_DECREASE:
@@ -3351,7 +3351,7 @@ namespace OpenRCT2::Ui::Windows
                                                                              : Limits::kMaxCircuitsPerRide;
                     lowerBound = 1;
                     SetOperatingSetting(
-                        rideId, GameActions::RideSetSetting::NumCircuits,
+                        rideId, GameActions::RideSetSetting::numCircuits,
                         std::clamp<int16_t>(ride->numCircuits - 1, lowerBound, upperBound));
                     break;
             }
@@ -3437,12 +3437,12 @@ namespace OpenRCT2::Ui::Windows
                         }
                     }
                     if (rideMode != RideMode::nullMode)
-                        SetOperatingSetting(rideId, GameActions::RideSetSetting::Mode, static_cast<uint8_t>(rideMode));
+                        SetOperatingSetting(rideId, GameActions::RideSetSetting::mode, static_cast<uint8_t>(rideMode));
                     break;
                 }
                 case WIDX_LOAD_DROPDOWN:
                     SetOperatingSetting(
-                        rideId, GameActions::RideSetSetting::Departure,
+                        rideId, GameActions::RideSetSetting::departure,
                         (ride->departFlags & ~RIDE_DEPART_WAIT_FOR_LOAD_MASK) | dropdownIndex);
                     break;
             }
@@ -3484,7 +3484,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     uint32_t origSize = std::stol(std::string(text)) / multiplier;
                     uint8_t size = static_cast<uint8_t>(std::clamp(origSize, minValue, maxValue));
-                    SetOperatingSetting(ride->id, GameActions::RideSetSetting::Operation, size);
+                    SetOperatingSetting(ride->id, GameActions::RideSetSetting::operation, size);
                 }
                 catch (const std::logic_error&)
                 {
@@ -3495,8 +3495,8 @@ namespace OpenRCT2::Ui::Windows
             {
                 try
                 {
-                    auto rideSetSetting = widgetIndex == WIDX_MINIMUM_LENGTH ? GameActions::RideSetSetting::MinWaitingTime
-                                                                             : GameActions::RideSetSetting::MaxWaitingTime;
+                    auto rideSetSetting = widgetIndex == WIDX_MINIMUM_LENGTH ? GameActions::RideSetSetting::minWaitingTime
+                                                                             : GameActions::RideSetSetting::maxWaitingTime;
 
                     uint16_t upperBound = Limits::kMaxWaitingTime;
                     uint16_t lowerBound = 0;
@@ -3923,7 +3923,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_INSPECTION_INTERVAL_DROPDOWN:
-                    SetOperatingSetting(rideId, GameActions::RideSetSetting::InspectionInterval, dropdownIndex);
+                    SetOperatingSetting(rideId, GameActions::RideSetSetting::inspectionInterval, dropdownIndex);
                     break;
 
                 case WIDX_FORCE_BREAKDOWN:
@@ -4263,7 +4263,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         const bool currentlyEnabled = ride->flags.has(RideFlag::randomShopColours);
                         auto rideSetAppearanceAction = GameActions::RideSetAppearanceAction(
-                            rideId, GameActions::RideSetAppearanceType::SellingItemColourIsRandom, currentlyEnabled ? 0 : 1, 0);
+                            rideId, GameActions::RideSetAppearanceType::sellingItemColourIsRandom, currentlyEnabled ? 0 : 1, 0);
                         GameActions::Execute(&rideSetAppearanceAction, gameState);
                     }
                     break;
@@ -4305,7 +4305,7 @@ namespace OpenRCT2::Ui::Windows
                         {
                             auto colour = static_cast<Colour>(UtilRand() % kColourNumNormal);
                             auto vehicleSetBodyColourAction = GameActions::RideSetAppearanceAction(
-                                rideId, GameActions::RideSetAppearanceType::VehicleColourBody, EnumValue(colour), i);
+                                rideId, GameActions::RideSetAppearanceType::vehicleColourBody, EnumValue(colour), i);
                             GameActions::Execute(&vehicleSetBodyColourAction, gameState);
                         }
 
@@ -4313,7 +4313,7 @@ namespace OpenRCT2::Ui::Windows
                         {
                             auto colour = static_cast<Colour>(UtilRand() % kColourNumNormal);
                             auto vehicleSetTrimColourAction = GameActions::RideSetAppearanceAction(
-                                rideId, GameActions::RideSetAppearanceType::VehicleColourTrim, EnumValue(colour), i);
+                                rideId, GameActions::RideSetAppearanceType::vehicleColourTrim, EnumValue(colour), i);
                             GameActions::Execute(&vehicleSetTrimColourAction, gameState);
                         }
 
@@ -4321,7 +4321,7 @@ namespace OpenRCT2::Ui::Windows
                         {
                             auto colour = static_cast<Colour>(UtilRand() % kColourNumNormal);
                             auto vehicleSetTertiaryColourAction = GameActions::RideSetAppearanceAction(
-                                rideId, GameActions::RideSetAppearanceType::VehicleColourTertiary, EnumValue(colour), i);
+                                rideId, GameActions::RideSetAppearanceType::vehicleColourTertiary, EnumValue(colour), i);
                             GameActions::Execute(&vehicleSetTertiaryColourAction, gameState);
                         }
                     }
@@ -4495,7 +4495,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_TRACK_MAIN_COLOUR:
                 {
                     auto rideSetAppearanceAction = GameActions::RideSetAppearanceAction(
-                        rideId, GameActions::RideSetAppearanceType::TrackColourMain,
+                        rideId, GameActions::RideSetAppearanceType::trackColourMain,
                         EnumValue(ColourDropDownIndexToColour(dropdownIndex)), _rideColour);
                     GameActions::Execute(&rideSetAppearanceAction, gameState);
                 }
@@ -4503,7 +4503,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_TRACK_ADDITIONAL_COLOUR:
                 {
                     auto rideSetAppearanceAction = GameActions::RideSetAppearanceAction(
-                        rideId, GameActions::RideSetAppearanceType::TrackColourAdditional,
+                        rideId, GameActions::RideSetAppearanceType::trackColourAdditional,
                         EnumValue(ColourDropDownIndexToColour(dropdownIndex)), _rideColour);
                     GameActions::Execute(&rideSetAppearanceAction, gameState);
                 }
@@ -4511,7 +4511,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_TRACK_SUPPORT_COLOUR:
                 {
                     auto rideSetAppearanceAction = GameActions::RideSetAppearanceAction(
-                        rideId, GameActions::RideSetAppearanceType::TrackColourSupports,
+                        rideId, GameActions::RideSetAppearanceType::trackColourSupports,
                         EnumValue(ColourDropDownIndexToColour(dropdownIndex)), _rideColour);
                     GameActions::Execute(&rideSetAppearanceAction, gameState);
                 }
@@ -4519,7 +4519,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_MAZE_STYLE_DROPDOWN:
                 {
                     auto rideSetAppearanceAction = GameActions::RideSetAppearanceAction(
-                        rideId, GameActions::RideSetAppearanceType::MazeStyle, dropdownIndex, _rideColour);
+                        rideId, GameActions::RideSetAppearanceType::mazeStyle, dropdownIndex, _rideColour);
                     GameActions::Execute(&rideSetAppearanceAction, gameState);
                 }
                 break;
@@ -4531,7 +4531,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     auto objIndex = _entranceDropdownData[dropdownIndex].EntranceTypeId;
                     auto rideSetAppearanceAction = GameActions::RideSetAppearanceAction(
-                        rideId, GameActions::RideSetAppearanceType::EntranceStyle, objIndex, 0);
+                        rideId, GameActions::RideSetAppearanceType::entranceStyle, objIndex, 0);
                     rideSetAppearanceAction.SetCallback(
                         [objIndex](const GameActions::GameAction*, const GameActions::Result* res) {
                             if (res->error != GameActions::Status::ok)
@@ -4544,7 +4544,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN:
                 {
                     auto rideSetAppearanceAction = GameActions::RideSetAppearanceAction(
-                        rideId, GameActions::RideSetAppearanceType::VehicleColourScheme, dropdownIndex, 0);
+                        rideId, GameActions::RideSetAppearanceType::vehicleColourScheme, dropdownIndex, 0);
                     rideSetAppearanceAction.SetCallback(
                         [this](const GameActions::GameAction* ga, const GameActions::Result* result) {
                             if (result->error == GameActions::Status::ok)
@@ -4562,7 +4562,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_VEHICLE_BODY_COLOUR:
                 {
                     auto rideSetAppearanceAction = GameActions::RideSetAppearanceAction(
-                        rideId, GameActions::RideSetAppearanceType::VehicleColourBody,
+                        rideId, GameActions::RideSetAppearanceType::vehicleColourBody,
                         EnumValue(ColourDropDownIndexToColour(dropdownIndex)), _vehicleIndex);
                     GameActions::Execute(&rideSetAppearanceAction, gameState);
                 }
@@ -4570,7 +4570,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_VEHICLE_TRIM_COLOUR:
                 {
                     auto rideSetAppearanceAction = GameActions::RideSetAppearanceAction(
-                        rideId, GameActions::RideSetAppearanceType::VehicleColourTrim,
+                        rideId, GameActions::RideSetAppearanceType::vehicleColourTrim,
                         EnumValue(ColourDropDownIndexToColour(dropdownIndex)), _vehicleIndex);
                     GameActions::Execute(&rideSetAppearanceAction, gameState);
                 }
@@ -4578,7 +4578,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_VEHICLE_TERTIARY_COLOUR:
                 {
                     auto rideSetAppearanceAction = GameActions::RideSetAppearanceAction(
-                        rideId, GameActions::RideSetAppearanceType::VehicleColourTertiary,
+                        rideId, GameActions::RideSetAppearanceType::vehicleColourTertiary,
                         EnumValue(ColourDropDownIndexToColour(dropdownIndex)), _vehicleIndex);
                     GameActions::Execute(&rideSetAppearanceAction, gameState);
                 }
@@ -5134,7 +5134,7 @@ namespace OpenRCT2::Ui::Windows
             if (ride != nullptr)
             {
                 int32_t activateMusic = ride->flags.has(RideFlag::music) ? 0 : 1;
-                SetOperatingSetting(rideId, GameActions::RideSetSetting::Music, activateMusic);
+                SetOperatingSetting(rideId, GameActions::RideSetSetting::music, activateMusic);
                 ride->windowInvalidateFlags.set(RideInvalidateFlag::music);
             }
         }
@@ -5273,7 +5273,7 @@ namespace OpenRCT2::Ui::Windows
                 && static_cast<size_t>(dropdownIndex) < window_ride_current_music_style_order.size())
             {
                 auto musicStyle = window_ride_current_music_style_order[dropdownIndex];
-                SetOperatingSetting(rideId, GameActions::RideSetSetting::MusicType, musicStyle);
+                SetOperatingSetting(rideId, GameActions::RideSetSetting::musicType, musicStyle);
             }
         }
 
@@ -6396,7 +6396,7 @@ namespace OpenRCT2::Ui::Windows
                 newFlags ^= EnumToFlag(shop_item);
             }
 
-            auto parkSetParameter = GameActions::ParkSetParameterAction(GameActions::ParkParameter::SamePriceInPark, newFlags);
+            auto parkSetParameter = GameActions::ParkSetParameterAction(GameActions::ParkParameter::samePriceInPark, newFlags);
             GameActions::Execute(&parkSetParameter, getGameState());
         }
 

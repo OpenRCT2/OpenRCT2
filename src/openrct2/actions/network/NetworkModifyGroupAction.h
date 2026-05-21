@@ -15,36 +15,36 @@ namespace OpenRCT2::GameActions
 {
     enum class ModifyGroupType : uint8_t
     {
-        AddGroup,
-        RemoveGroup,
-        SetPermissions,
-        SetName,
-        SetDefault,
-        Count
+        addGroup,
+        removeGroup,
+        setPermissions,
+        setName,
+        setDefault,
+        count
     };
 
     enum class PermissionState : uint8_t
     {
-        Toggle,
-        SetAll,
-        ClearAll,
-        Count
+        toggle,
+        setAll,
+        clearAll,
+        count
     };
 
     class NetworkModifyGroupAction final : public GameActionBase<GameCommand::ModifyGroups>
     {
     private:
-        ModifyGroupType _type{ ModifyGroupType::Count };
+        ModifyGroupType _type{ ModifyGroupType::count };
         uint8_t _groupId{ std::numeric_limits<uint8_t>::max() };
         std::string _name;
         uint32_t _permissionIndex{ std::numeric_limits<uint32_t>::max() };
-        PermissionState _permissionState{ PermissionState::Count };
+        PermissionState _permissionState{ PermissionState::count };
 
     public:
         NetworkModifyGroupAction() = default;
         NetworkModifyGroupAction(
             ModifyGroupType type, uint8_t groupId = std::numeric_limits<uint8_t>::max(), std::string name = "",
-            uint32_t permissionIndex = 0, PermissionState permissionState = PermissionState::Count);
+            uint32_t permissionIndex = 0, PermissionState permissionState = PermissionState::count);
 
         void AcceptParameters(GameActionParameterVisitor&) final;
 

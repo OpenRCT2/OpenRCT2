@@ -15,16 +15,16 @@ namespace OpenRCT2::GameActions
 {
     enum class RideSetAppearanceType : uint8_t
     {
-        TrackColourMain,
-        TrackColourAdditional,
-        TrackColourSupports,
-        MazeStyle = TrackColourSupports,
-        VehicleColourBody,
-        VehicleColourTrim,
-        VehicleColourTertiary,
-        VehicleColourScheme,
-        EntranceStyle,
-        SellingItemColourIsRandom
+        trackColourMain,
+        trackColourAdditional,
+        trackColourSupports,
+        mazeStyle = trackColourSupports,
+        vehicleColourBody,
+        vehicleColourTrim,
+        vehicleColourTertiary,
+        vehicleColourScheme,
+        entranceStyle,
+        sellingItemColourIsRandom
     };
 
     class RideSetAppearanceAction final : public GameActionBase<GameCommand::SetRideAppearance>

@@ -15,9 +15,9 @@ namespace OpenRCT2::GameActions
 {
     enum class RideRatingType : uint8_t
     {
-        Excitement,
-        Intensity,
-        Nausea,
+        excitement,
+        intensity,
+        nausea,
     };
 
     class RideFreezeRatingAction final : public GameActionBase<GameCommand::FreezeRideRating>
