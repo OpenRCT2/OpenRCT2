@@ -131,6 +131,7 @@ namespace OpenRCT2::Audio
         float _cullThreshold = kCullVolumeMin;
         float _budgetAvg = 0.0f;
         uint32_t _comfortStreak = 0;
+        float _limiterGain = 1.0f;
 
         // Incremented from the game thread when the ring buffer is full.
         // Atomic so getStats() can read it safely from any thread
