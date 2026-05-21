@@ -14,7 +14,7 @@
 namespace OpenRCT2
 {
     RideManager::RideManager(const GameState_t& gameState)
-        : _gameState(gameState) {};
+        : _gameState(gameState){};
 
     size_t RideManager::size() const
     {

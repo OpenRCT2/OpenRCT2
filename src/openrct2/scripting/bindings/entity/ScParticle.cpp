@@ -16,14 +16,13 @@
 
 namespace OpenRCT2::Scripting
 {
-    static const EnumMap<uint8_t> CrashParticleTypeMap(
-        {
-            { "corner", 0 },
-            { "rod", 1 },
-            { "wheel", 2 },
-            { "panel", 3 },
-            { "seat", 4 },
-        });
+    static const EnumMap<uint8_t> CrashParticleTypeMap({
+        { "corner", 0 },
+        { "rod", 1 },
+        { "wheel", 2 },
+        { "panel", 3 },
+        { "seat", 4 },
+    });
 
     ScCrashedVehicleParticle gScCrashedVehicleParticle;
 

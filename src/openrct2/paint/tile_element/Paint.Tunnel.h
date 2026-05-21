@@ -76,7 +76,7 @@ struct TunnelEntry
 
     constexpr TunnelEntry(const uint8_t _height, const TunnelType _type)
         : height(_height)
-        , type(_type) {};
+        , type(_type){};
 };
 
 TunnelType GetTunnelType(TunnelGroup tunnelGroup, TunnelSubType tunnelSubType);

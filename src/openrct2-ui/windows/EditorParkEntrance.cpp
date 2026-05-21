@@ -187,12 +187,10 @@ namespace OpenRCT2::Ui::Windows
             int32_t sideDirection = (parkEntrancePosition.direction + 1) & 3;
             MapSelection::clearSelectedTiles();
             MapSelection::addSelectedTile({ parkEntrancePosition.x, parkEntrancePosition.y });
-            MapSelection::addSelectedTile(
-                { parkEntrancePosition.x + CoordsDirectionDelta[sideDirection].x,
-                  parkEntrancePosition.y + CoordsDirectionDelta[sideDirection].y });
-            MapSelection::addSelectedTile(
-                { parkEntrancePosition.x - CoordsDirectionDelta[sideDirection].x,
-                  parkEntrancePosition.y - CoordsDirectionDelta[sideDirection].y });
+            MapSelection::addSelectedTile({ parkEntrancePosition.x + CoordsDirectionDelta[sideDirection].x,
+                                            parkEntrancePosition.y + CoordsDirectionDelta[sideDirection].y });
+            MapSelection::addSelectedTile({ parkEntrancePosition.x - CoordsDirectionDelta[sideDirection].x,
+                                            parkEntrancePosition.y - CoordsDirectionDelta[sideDirection].y });
 
             gMapSelectArrowPosition = parkEntrancePosition;
             gMapSelectArrowDirection = parkEntrancePosition.direction;

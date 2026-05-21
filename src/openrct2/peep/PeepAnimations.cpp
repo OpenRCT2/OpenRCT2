@@ -23,80 +23,75 @@
 
 namespace OpenRCT2
 {
-    static const EnumMap<PeepAnimationType> availableGuestAnimations(
-        {
-            { "walking", PeepAnimationType::walking },
-            { "checkTime", PeepAnimationType::checkTime },
-            { "watchRide", PeepAnimationType::watchRide },
-            { "eatFood", PeepAnimationType::eatFood },
-            { "shakeHead", PeepAnimationType::shakeHead },
-            { "emptyPockets", PeepAnimationType::emptyPockets },
-            { "holdMat", PeepAnimationType::holdMat },
-            { "sittingIdle", PeepAnimationType::sittingIdle },
-            { "sittingEatFood", PeepAnimationType::sittingEatFood },
-            { "sittingLookAroundLeft", PeepAnimationType::sittingLookAroundLeft },
-            { "sittingLookAroundRight", PeepAnimationType::sittingLookAroundRight },
-            { "hanging", PeepAnimationType::hanging },
-            { "wow", PeepAnimationType::wow },
-            { "throwUp", PeepAnimationType::throwUp },
-            { "jump", PeepAnimationType::jump },
-            { "drowning", PeepAnimationType::drowning },
-            { "joy", PeepAnimationType::joy },
-            { "readMap", PeepAnimationType::readMap },
-            { "wave", PeepAnimationType::wave },
-            { "wave2", PeepAnimationType::wave2 },
-            { "takePhoto", PeepAnimationType::takePhoto },
-            { "clap", PeepAnimationType::clap },
-            { "disgust", PeepAnimationType::disgust },
-            { "drawPicture", PeepAnimationType::drawPicture },
-            { "beingWatched", PeepAnimationType::beingWatched },
-            { "withdrawMoney", PeepAnimationType::withdrawMoney },
-        });
+    static const EnumMap<PeepAnimationType> availableGuestAnimations({
+        { "walking", PeepAnimationType::walking },
+        { "checkTime", PeepAnimationType::checkTime },
+        { "watchRide", PeepAnimationType::watchRide },
+        { "eatFood", PeepAnimationType::eatFood },
+        { "shakeHead", PeepAnimationType::shakeHead },
+        { "emptyPockets", PeepAnimationType::emptyPockets },
+        { "holdMat", PeepAnimationType::holdMat },
+        { "sittingIdle", PeepAnimationType::sittingIdle },
+        { "sittingEatFood", PeepAnimationType::sittingEatFood },
+        { "sittingLookAroundLeft", PeepAnimationType::sittingLookAroundLeft },
+        { "sittingLookAroundRight", PeepAnimationType::sittingLookAroundRight },
+        { "hanging", PeepAnimationType::hanging },
+        { "wow", PeepAnimationType::wow },
+        { "throwUp", PeepAnimationType::throwUp },
+        { "jump", PeepAnimationType::jump },
+        { "drowning", PeepAnimationType::drowning },
+        { "joy", PeepAnimationType::joy },
+        { "readMap", PeepAnimationType::readMap },
+        { "wave", PeepAnimationType::wave },
+        { "wave2", PeepAnimationType::wave2 },
+        { "takePhoto", PeepAnimationType::takePhoto },
+        { "clap", PeepAnimationType::clap },
+        { "disgust", PeepAnimationType::disgust },
+        { "drawPicture", PeepAnimationType::drawPicture },
+        { "beingWatched", PeepAnimationType::beingWatched },
+        { "withdrawMoney", PeepAnimationType::withdrawMoney },
+    });
 
-    static const EnumMap<PeepAnimationType> availableHandymanAnimations(
-        {
-            { "walking", PeepAnimationType::walking },
-            { "watchRide", PeepAnimationType::watchRide },
-            { "hanging", PeepAnimationType::hanging },
-            { "staffMower", PeepAnimationType::staffMower },
-            { "staffSweep", PeepAnimationType::staffSweep },
-            { "drowning", PeepAnimationType::drowning },
-            { "staffWatering", PeepAnimationType::staffWatering },
-            { "staffEmptyBin", PeepAnimationType::staffEmptyBin },
-        });
+    static const EnumMap<PeepAnimationType> availableHandymanAnimations({
+        { "walking", PeepAnimationType::walking },
+        { "watchRide", PeepAnimationType::watchRide },
+        { "hanging", PeepAnimationType::hanging },
+        { "staffMower", PeepAnimationType::staffMower },
+        { "staffSweep", PeepAnimationType::staffSweep },
+        { "drowning", PeepAnimationType::drowning },
+        { "staffWatering", PeepAnimationType::staffWatering },
+        { "staffEmptyBin", PeepAnimationType::staffEmptyBin },
+    });
 
-    static const EnumMap<PeepAnimationType> availableMechanicAnimations(
-        {
-            { "walking", PeepAnimationType::walking },
-            { "watchRide", PeepAnimationType::watchRide },
-            { "hanging", PeepAnimationType::hanging },
-            { "drowning", PeepAnimationType::drowning },
-            { "staffAnswerCall", PeepAnimationType::staffAnswerCall },
-            { "staffAnswerCall2", PeepAnimationType::staffAnswerCall2 },
-            { "staffCheckBoard", PeepAnimationType::staffCheckBoard },
-            { "staffFix", PeepAnimationType::staffFix },
-            { "staffFix2", PeepAnimationType::staffFix2 },
-            { "staffFixGround", PeepAnimationType::staffFixGround },
-            { "staffFix3", PeepAnimationType::staffFix3 },
-        });
+    static const EnumMap<PeepAnimationType> availableMechanicAnimations({
+        { "walking", PeepAnimationType::walking },
+        { "watchRide", PeepAnimationType::watchRide },
+        { "hanging", PeepAnimationType::hanging },
+        { "drowning", PeepAnimationType::drowning },
+        { "staffAnswerCall", PeepAnimationType::staffAnswerCall },
+        { "staffAnswerCall2", PeepAnimationType::staffAnswerCall2 },
+        { "staffCheckBoard", PeepAnimationType::staffCheckBoard },
+        { "staffFix", PeepAnimationType::staffFix },
+        { "staffFix2", PeepAnimationType::staffFix2 },
+        { "staffFixGround", PeepAnimationType::staffFixGround },
+        { "staffFix3", PeepAnimationType::staffFix3 },
+    });
 
-    static const EnumMap<PeepAnimationType> availableSecurityAnimations(
-        {
-            { "walking", PeepAnimationType::walking },
-            { "watchRide", PeepAnimationType::watchRide },
-            { "hanging", PeepAnimationType::hanging },
-            { "drowning", PeepAnimationType::drowning },
-        });
+    static const EnumMap<PeepAnimationType> availableSecurityAnimations({
+        { "walking", PeepAnimationType::walking },
+        { "watchRide", PeepAnimationType::watchRide },
+        { "hanging", PeepAnimationType::hanging },
+        { "drowning", PeepAnimationType::drowning },
+    });
 
-    static const EnumMap<PeepAnimationType> availableEntertainerAnimations(
-        {
-            { "walking", PeepAnimationType::walking },
-            { "watchRide", PeepAnimationType::watchRide },
-            { "hanging", PeepAnimationType::hanging },
-            { "drowning", PeepAnimationType::drowning },
-            { "joy", PeepAnimationType::joy },
-            { "wave2", PeepAnimationType::wave2 },
-        });
+    static const EnumMap<PeepAnimationType> availableEntertainerAnimations({
+        { "walking", PeepAnimationType::walking },
+        { "watchRide", PeepAnimationType::watchRide },
+        { "hanging", PeepAnimationType::hanging },
+        { "drowning", PeepAnimationType::drowning },
+        { "joy", PeepAnimationType::joy },
+        { "wave2", PeepAnimationType::wave2 },
+    });
 
     const EnumMap<PeepAnimationType>& getAnimationsByPeepType(AnimationPeepType peepType)
     {
@@ -228,14 +223,13 @@ namespace OpenRCT2
                 if (scriptName.empty())
                     continue;
 
-                groups.push_back(
-                    {
-                        .objectId = ObjectEntryIndex(i),
-                        .group = group,
-                        .legacyPosition = animObj->GetLegacyPosition(group),
-                        .rawName = animObj->GetCostumeName(),
-                        .scriptName = scriptName,
-                    });
+                groups.push_back({
+                    .objectId = ObjectEntryIndex(i),
+                    .group = group,
+                    .legacyPosition = animObj->GetLegacyPosition(group),
+                    .rawName = animObj->GetCostumeName(),
+                    .scriptName = scriptName,
+                });
             }
         }
 
@@ -263,13 +257,12 @@ namespace OpenRCT2
             out << ' ';
             out << baseName;
 
-            availableCostumes.push_back(
-                {
-                    .index = availCostumeIndexes[i],
-                    .object = availCostumeObjects[i],
-                    .rawName = baseName,
-                    .friendlyName = out.str(),
-                });
+            availableCostumes.push_back({
+                .index = availCostumeIndexes[i],
+                .object = availCostumeObjects[i],
+                .rawName = baseName,
+                .friendlyName = out.str(),
+            });
         }
 
         std::sort(availableCostumes.begin(), availableCostumes.end(), [](const auto& a, const auto& b) {

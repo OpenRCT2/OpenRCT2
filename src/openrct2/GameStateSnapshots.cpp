@@ -139,7 +139,7 @@ struct GameStateSnapshot_t
                     reinterpret_cast<Staff&>(sprite).Serialise(ds);
                     break;
                 case EntityType::litter:
-                    reinterpret_cast<Litter&>(sprite).Serialise(ds);
+                    reinterpret_cast<Litter&>(sprite).serialise(ds);
                     break;
                 case EntityType::moneyEffect:
                     reinterpret_cast<MoneyEffect&>(sprite).Serialise(ds);
@@ -239,7 +239,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         std::memcpy(&valB, &spriteCmp.field, sizeof(struc::field));                                                            \
         uintptr_t offset = reinterpret_cast<uintptr_t>(&spriteBase.field) - reinterpret_cast<uintptr_t>(&spriteBase);          \
         changeData.diffs.push_back(                                                                                            \
-            GameStateSpriteChange::Diff{ static_cast<size_t>(offset), sizeof(struc::field), #struc, #field, valA, valB });     \
+            GameStateSpriteChange::Diff { static_cast<size_t>(offset), sizeof(struc::field), #struc, #field, valA, valB });    \
     }
 
     void CompareSpriteDataCommon(

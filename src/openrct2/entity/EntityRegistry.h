@@ -138,7 +138,7 @@ namespace OpenRCT2
         {
             for (auto* ent : EntityList<T>())
             {
-                ent->Serialise(ds);
+                ent->serialise(ds);
             }
         }
 

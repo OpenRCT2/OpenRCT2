@@ -2017,7 +2017,7 @@ namespace OpenRCT2
 
             if (const auto* litter = otherEnt->as<Litter>(); litter != nullptr)
             {
-                if (litter->SubType != Litter::Type::vomit && litter->SubType != Litter::Type::vomitAlt)
+                if (litter->subType != Litter::Type::vomit && litter->subType != Litter::Type::vomitAlt)
                 {
                     litterCount++;
                 }

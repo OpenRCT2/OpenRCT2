@@ -48,19 +48,18 @@ namespace OpenRCT2::Scripting
         LoadSc,
     };
 
-    static const EnumMap<TitleScript> TitleScriptMap(
-        {
-            { Title::LoadParkCommand::ScriptingName, TitleScript::Load },
-            { Title::SetLocationCommand::ScriptingName, TitleScript::Location },
-            { Title::RotateViewCommand::ScriptingName, TitleScript::Rotate },
-            { Title::SetZoomCommand::ScriptingName, TitleScript::Zoom },
-            { Title::FollowEntityCommand::ScriptingName, TitleScript::Follow },
-            { Title::SetSpeedCommand::ScriptingName, TitleScript::Speed },
-            { Title::WaitCommand::ScriptingName, TitleScript::Wait },
-            { Title::LoadScenarioCommand::ScriptingName, TitleScript::LoadSc },
-            { Title::RestartCommand::ScriptingName, TitleScript::Restart },
-            { Title::EndCommand::ScriptingName, TitleScript::End },
-        });
+    static const EnumMap<TitleScript> TitleScriptMap({
+        { Title::LoadParkCommand::ScriptingName, TitleScript::Load },
+        { Title::SetLocationCommand::ScriptingName, TitleScript::Location },
+        { Title::RotateViewCommand::ScriptingName, TitleScript::Rotate },
+        { Title::SetZoomCommand::ScriptingName, TitleScript::Zoom },
+        { Title::FollowEntityCommand::ScriptingName, TitleScript::Follow },
+        { Title::SetSpeedCommand::ScriptingName, TitleScript::Speed },
+        { Title::WaitCommand::ScriptingName, TitleScript::Wait },
+        { Title::LoadScenarioCommand::ScriptingName, TitleScript::LoadSc },
+        { Title::RestartCommand::ScriptingName, TitleScript::Restart },
+        { Title::EndCommand::ScriptingName, TitleScript::End },
+    });
 
     inline JSValue TitleScriptToJS(JSContext* ctx, TitleScript value)
     {

@@ -1296,9 +1296,8 @@ public:
         if (widget.left == -2)
             return;
 
-        GfxSetDirtyBlocks(
-            { { w.windowPos + ScreenCoordsXY{ widget.left, widget.top } },
-              { w.windowPos + ScreenCoordsXY{ widget.right + 1, widget.bottom + 1 } } });
+        GfxSetDirtyBlocks({ { w.windowPos + ScreenCoordsXY{ widget.left, widget.top } },
+                            { w.windowPos + ScreenCoordsXY{ widget.right + 1, widget.bottom + 1 } } });
     }
 
     /**

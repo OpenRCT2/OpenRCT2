@@ -24,31 +24,28 @@ using namespace OpenRCT2;
 
 namespace OpenRCT2::Scripting
 {
-    static const EnumMap<uint8_t> ResearchStageMap(
-        {
-            { "initial_research", RESEARCH_STAGE_INITIAL_RESEARCH },
-            { "designing", RESEARCH_STAGE_DESIGNING },
-            { "completing_design", RESEARCH_STAGE_COMPLETING_DESIGN },
-            { "unknown", RESEARCH_STAGE_UNKNOWN },
-            { "finished_all", RESEARCH_STAGE_FINISHED_ALL },
-        });
+    static const EnumMap<uint8_t> ResearchStageMap({
+        { "initial_research", RESEARCH_STAGE_INITIAL_RESEARCH },
+        { "designing", RESEARCH_STAGE_DESIGNING },
+        { "completing_design", RESEARCH_STAGE_COMPLETING_DESIGN },
+        { "unknown", RESEARCH_STAGE_UNKNOWN },
+        { "finished_all", RESEARCH_STAGE_FINISHED_ALL },
+    });
 
-    static const EnumMap<ResearchCategory> ResearchCategoryMap(
-        {
-            { "transport", ResearchCategory::transport },
-            { "gentle", ResearchCategory::gentle },
-            { "rollercoaster", ResearchCategory::rollercoaster },
-            { "thrill", ResearchCategory::thrill },
-            { "water", ResearchCategory::water },
-            { "shop", ResearchCategory::shop },
-            { "scenery", ResearchCategory::sceneryGroup },
-        });
+    static const EnumMap<ResearchCategory> ResearchCategoryMap({
+        { "transport", ResearchCategory::transport },
+        { "gentle", ResearchCategory::gentle },
+        { "rollercoaster", ResearchCategory::rollercoaster },
+        { "thrill", ResearchCategory::thrill },
+        { "water", ResearchCategory::water },
+        { "shop", ResearchCategory::shop },
+        { "scenery", ResearchCategory::sceneryGroup },
+    });
 
-    static const EnumMap<Research::EntryType> ResearchEntryTypeMap(
-        {
-            { "ride", Research::EntryType::ride },
-            { "scenery", Research::EntryType::scenery },
-        });
+    static const EnumMap<Research::EntryType> ResearchEntryTypeMap({
+        { "ride", Research::EntryType::ride },
+        { "scenery", Research::EntryType::scenery },
+    });
 
     static inline JSValue ResearchItemToJSValue(JSContext* ctx, const ResearchItem& value)
     {

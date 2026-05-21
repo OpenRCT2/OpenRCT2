@@ -180,7 +180,7 @@ namespace OpenRCT2::Ui::Windows
 
     public:
         ParkWindow(ParkData& parkData)
-            : _parkData(parkData) {};
+            : _parkData(parkData){};
 
         void onOpen() override
         {

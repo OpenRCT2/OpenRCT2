@@ -147,17 +147,16 @@ enum class Breakdown : uint8_t
 
     none = 255,
 };
-constexpr auto kAllBreakdownTypes = std::to_array(
-    {
-        Breakdown::safetyCutOut,
-        Breakdown::restraintsStuckClosed,
-        Breakdown::restraintsStuckOpen,
-        Breakdown::doorsStuckClosed,
-        Breakdown::doorsStuckOpen,
-        Breakdown::vehicleMalfunction,
-        Breakdown::brakesFailure,
-        Breakdown::controlFailure,
-    });
+constexpr auto kAllBreakdownTypes = std::to_array({
+    Breakdown::safetyCutOut,
+    Breakdown::restraintsStuckClosed,
+    Breakdown::restraintsStuckOpen,
+    Breakdown::doorsStuckClosed,
+    Breakdown::doorsStuckOpen,
+    Breakdown::vehicleMalfunction,
+    Breakdown::brakesFailure,
+    Breakdown::controlFailure,
+});
 constexpr auto kBreakdownCount = kAllBreakdownTypes.size();
 
 struct RideStation

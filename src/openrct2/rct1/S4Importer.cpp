@@ -397,15 +397,14 @@ namespace OpenRCT2::RCT1
         void AddDefaultEntries()
         {
             // Add default scenery groups
-            _sceneryGroupEntries.AddRange(
-                {
-                    "rct2.scenery_group.scgtrees",
-                    "rct2.scenery_group.scgshrub",
-                    "rct2.scenery_group.scggardn",
-                    "rct2.scenery_group.scgfence",
-                    "rct2.scenery_group.scgwalls",
-                    "rct2.scenery_group.scgpathx",
-                });
+            _sceneryGroupEntries.AddRange({
+                "rct2.scenery_group.scgtrees",
+                "rct2.scenery_group.scgshrub",
+                "rct2.scenery_group.scggardn",
+                "rct2.scenery_group.scgfence",
+                "rct2.scenery_group.scgwalls",
+                "rct2.scenery_group.scgpathx",
+            });
 
             // Add default footpaths
             _footpathSurfaceEntries.AddRange(
@@ -417,13 +416,12 @@ namespace OpenRCT2::RCT1
                   "rct1aa.footpath_surface.queue_yellow", "rct1aa.footpath_surface.queue_green" });
 
             // All four are always available. By using the same order as RCT1, we don’t need to map the indices later on.
-            _footpathRailingsEntries.AddRange(
-                {
-                    "rct2.footpath_railings.wood",     // RCT1_PATH_SUPPORT_TYPE_TRUSS
-                    "rct2.footpath_railings.concrete", // RCT1_PATH_SUPPORT_TYPE_COATED_WOOD
-                    "rct1ll.footpath_railings.space",  // RCT1_PATH_SUPPORT_TYPE_SPACE
-                    "rct1ll.footpath_railings.bamboo", // RCT1_PATH_SUPPORT_TYPE_BAMBOO
-                });
+            _footpathRailingsEntries.AddRange({
+                "rct2.footpath_railings.wood",     // RCT1_PATH_SUPPORT_TYPE_TRUSS
+                "rct2.footpath_railings.concrete", // RCT1_PATH_SUPPORT_TYPE_COATED_WOOD
+                "rct1ll.footpath_railings.space",  // RCT1_PATH_SUPPORT_TYPE_SPACE
+                "rct1ll.footpath_railings.bamboo", // RCT1_PATH_SUPPORT_TYPE_BAMBOO
+            });
 
             // Add default surfaces
             _terrainSurfaceEntries.AddRange(
@@ -435,12 +433,12 @@ namespace OpenRCT2::RCT1
                   "rct1ll.terrain_surface.roof_grey", "rct1ll.terrain_surface.rust", "rct1ll.terrain_surface.wood" });
 
             // Add default edges
-            _terrainEdgeEntries.AddRange(
-                { "rct2.terrain_edge.rock", "rct2.terrain_edge.wood_red", "rct2.terrain_edge.wood_black",
-                  "rct2.terrain_edge.ice", "rct1.terrain_edge.brick", "rct1.terrain_edge.iron", "rct1aa.terrain_edge.grey",
-                  "rct1aa.terrain_edge.yellow", "rct1aa.terrain_edge.red", "rct1ll.terrain_edge.purple",
-                  "rct1ll.terrain_edge.green", "rct1ll.terrain_edge.stone_brown", "rct1ll.terrain_edge.stone_grey",
-                  "rct1ll.terrain_edge.skyscraper_a", "rct1ll.terrain_edge.skyscraper_b" });
+            _terrainEdgeEntries.AddRange({ "rct2.terrain_edge.rock", "rct2.terrain_edge.wood_red",
+                                           "rct2.terrain_edge.wood_black", "rct2.terrain_edge.ice", "rct1.terrain_edge.brick",
+                                           "rct1.terrain_edge.iron", "rct1aa.terrain_edge.grey", "rct1aa.terrain_edge.yellow",
+                                           "rct1aa.terrain_edge.red", "rct1ll.terrain_edge.purple", "rct1ll.terrain_edge.green",
+                                           "rct1ll.terrain_edge.stone_brown", "rct1ll.terrain_edge.stone_grey",
+                                           "rct1ll.terrain_edge.skyscraper_a", "rct1ll.terrain_edge.skyscraper_b" });
         }
 
         void AddAvailableEntriesFromResearchList()
@@ -3040,7 +3038,7 @@ namespace OpenRCT2::RCT1
         auto* src = static_cast<const RCT12EntityLitter*>(&srcBase);
         ImportEntityCommonProperties(dst, src);
 
-        dst->SubType = Litter::Type(src->Type);
+        dst->subType = Litter::Type(src->Type);
         dst->creationTick = src->CreationTick;
     }
 

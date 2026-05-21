@@ -238,18 +238,17 @@ JSValue ScTrackSegment::getSubpositions(JSContext* ctx, JSValue thisVal, int arg
 
 static JSValue _trackCurveToString(JSContext* ctx, TrackCurve curve)
 {
-    static const EnumMap<TrackCurve> map(
-        {
-            { "straight", TrackCurve::none },
-            { "left", TrackCurve::left },
-            { "right", TrackCurve::right },
-            { "left_small", TrackCurve::leftSmall },
-            { "right_small", TrackCurve::rightSmall },
-            { "left_very_small", TrackCurve::leftVerySmall },
-            { "right_very_small", TrackCurve::rightVerySmall },
-            { "left_large", TrackCurve::leftLarge },
-            { "right_large", TrackCurve::rightLarge },
-        });
+    static const EnumMap<TrackCurve> map({
+        { "straight", TrackCurve::none },
+        { "left", TrackCurve::left },
+        { "right", TrackCurve::right },
+        { "left_small", TrackCurve::leftSmall },
+        { "right_small", TrackCurve::rightSmall },
+        { "left_very_small", TrackCurve::leftVerySmall },
+        { "right_very_small", TrackCurve::rightVerySmall },
+        { "left_large", TrackCurve::leftLarge },
+        { "right_large", TrackCurve::rightLarge },
+    });
 
     const auto text = std::string(map[curve]);
     return JSFromStdString(ctx, text);

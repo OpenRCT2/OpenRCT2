@@ -102,10 +102,9 @@ namespace OpenRCT2
                 {
                     for (auto i : range)
                     {
-                        result.push_back(
-                            std::make_unique<RequiredImage>(
-                                static_cast<uint32_t>(SPR_CSG_BEGIN + i),
-                                [](uint32_t idx) -> const G1Element* { return GfxGetG1Element(idx); }));
+                        result.push_back(std::make_unique<RequiredImage>(
+                            static_cast<uint32_t>(SPR_CSG_BEGIN + i),
+                            [](uint32_t idx) -> const G1Element* { return GfxGetG1Element(idx); }));
                     }
                 }
                 else
@@ -130,9 +129,8 @@ namespace OpenRCT2
                 auto range = ParseRange(rangeString);
                 for (auto i : range)
                 {
-                    result.push_back(
-                        std::make_unique<RequiredImage>(
-                            static_cast<uint32_t>(i), [](uint32_t idx) -> const G1Element* { return GfxGetG1Element(idx); }));
+                    result.push_back(std::make_unique<RequiredImage>(
+                        static_cast<uint32_t>(i), [](uint32_t idx) -> const G1Element* { return GfxGetG1Element(idx); }));
                 }
             }
         }
@@ -314,9 +312,8 @@ namespace OpenRCT2
             {
                 if (i >= 0 && i < numImages)
                 {
-                    result.push_back(
-                        std::make_unique<RequiredImage>(
-                            static_cast<uint32_t>(i), [images](uint32_t idx) -> const G1Element* { return &images[idx]; }));
+                    result.push_back(std::make_unique<RequiredImage>(
+                        static_cast<uint32_t>(i), [images](uint32_t idx) -> const G1Element* { return &images[idx]; }));
                 }
                 else
                 {

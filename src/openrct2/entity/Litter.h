@@ -39,12 +39,12 @@ namespace OpenRCT2
         };
 
         static constexpr auto cEntityType = EntityType::litter;
-        Type SubType;
+        Type subType;
         uint32_t creationTick;
         static void Create(const CoordsXYZD& litterPos, Type type);
         static void RemoveAt(const CoordsXYZ& litterPos);
-        void Serialise(DataSerialiser& stream);
-        StringId GetName() const;
-        uint32_t GetAge() const;
+        void serialise(DataSerialiser& stream);
+        StringId getName() const;
+        uint32_t getAge() const;
     };
 } // namespace OpenRCT2

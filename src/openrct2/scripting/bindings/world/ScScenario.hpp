@@ -23,21 +23,20 @@ namespace OpenRCT2::Scripting
 {
     using namespace OpenRCT2::Scenario;
 
-    static const EnumMap<ObjectiveType> ScenarioObjectiveTypeMap(
-        {
-            { "none", ObjectiveType::none },
-            { "guestsBy", ObjectiveType::guestsBy },
-            { "parkValueBy", ObjectiveType::parkValueBy },
-            { "haveFun", ObjectiveType::haveFun },
-            { "buildTheBest", ObjectiveType::buildTheBest },
-            { "10Rollercoasters", ObjectiveType::tenRollercoasters },
-            { "guestsAndRating", ObjectiveType::guestsAndRating },
-            { "monthlyRideIncome", ObjectiveType::monthlyRideIncome },
-            { "10RollercoastersLength", ObjectiveType::tenRollercoastersLength },
-            { "finish5Rollercoasters", ObjectiveType::finishFiveRollercoasters },
-            { "repayLoanAndParkValue", ObjectiveType::repayLoanAndParkValue },
-            { "monthlyFoodIncome", ObjectiveType::monthlyFoodIncome },
-        });
+    static const EnumMap<ObjectiveType> ScenarioObjectiveTypeMap({
+        { "none", ObjectiveType::none },
+        { "guestsBy", ObjectiveType::guestsBy },
+        { "parkValueBy", ObjectiveType::parkValueBy },
+        { "haveFun", ObjectiveType::haveFun },
+        { "buildTheBest", ObjectiveType::buildTheBest },
+        { "10Rollercoasters", ObjectiveType::tenRollercoasters },
+        { "guestsAndRating", ObjectiveType::guestsAndRating },
+        { "monthlyRideIncome", ObjectiveType::monthlyRideIncome },
+        { "10RollercoastersLength", ObjectiveType::tenRollercoastersLength },
+        { "finish5Rollercoasters", ObjectiveType::finishFiveRollercoasters },
+        { "repayLoanAndParkValue", ObjectiveType::repayLoanAndParkValue },
+        { "monthlyFoodIncome", ObjectiveType::monthlyFoodIncome },
+    });
 
     class ScScenarioObjective;
     extern ScScenarioObjective gScScenarioObjective;

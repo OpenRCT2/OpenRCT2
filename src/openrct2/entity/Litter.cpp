@@ -90,7 +90,7 @@ namespace OpenRCT2
         litter->spriteData.width = 6;
         litter->spriteData.heightMin = 6;
         litter->spriteData.heightMax = 3;
-        litter->SubType = type;
+        litter->subType = type;
         litter->moveTo(offsetLitterPos);
         litter->creationTick = gameState.currentTicks;
     }
@@ -136,23 +136,23 @@ namespace OpenRCT2
         STR_SHOP_ITEM_SINGULAR_EMPTY_BOWL_BLUE,
     };
 
-    StringId Litter::GetName() const
+    StringId Litter::getName() const
     {
-        if (EnumValue(SubType) >= std::size(litterNames))
+        if (EnumValue(subType) >= std::size(litterNames))
             return kStringIdNone;
-        return litterNames[EnumValue(SubType)];
+        return litterNames[EnumValue(subType)];
     }
 
-    uint32_t Litter::GetAge() const
+    uint32_t Litter::getAge() const
     {
         return getGameState().currentTicks - creationTick;
     }
 
-    void Litter::Serialise(DataSerialiser& stream)
+    void Litter::serialise(DataSerialiser& stream)
     {
         EntityBase::serialise(stream);
 
-        stream << SubType;
+        stream << subType;
         stream << creationTick;
     }
 } // namespace OpenRCT2

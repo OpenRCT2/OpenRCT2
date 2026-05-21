@@ -43,9 +43,8 @@ namespace OpenRCT2::PathFinding
     static constexpr uint8_t kMaxJunctionsGuestLeavingParkLost = 8;
 
     // Maximum amount of junctions.
-    static constexpr uint8_t kMaxJunctions = std::max(
-        { kMaxJunctionsStaff, kMaxJunctionsGuest, kMaxJunctionsGuestWithMap, kMaxJunctionsGuestLeavingPark,
-          kMaxJunctionsGuestLeavingParkLost });
+    static constexpr uint8_t kMaxJunctions = std::max({ kMaxJunctionsStaff, kMaxJunctionsGuest, kMaxJunctionsGuestWithMap,
+                                                        kMaxJunctionsGuestLeavingPark, kMaxJunctionsGuestLeavingParkLost });
 
     struct PathFindingState
     {
