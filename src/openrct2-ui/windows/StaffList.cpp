@@ -464,7 +464,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     ToolCancel();
                     auto* staffWindow = StaffOpen(closestStaffMember);
-                    staffWindow->onDropdown(WC_PEEP__WIDX_PATROL, 0);
+                    staffWindow->onDropdown(kWindowPeepWidgetIdxPatrol, 0);
                 }
                 else
                 {
