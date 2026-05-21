@@ -168,7 +168,7 @@ namespace OpenRCT2
         return std::make_pair(stringId, outValue);
     }
 
-    void MoneyEffect::Serialise(DataSerialiser& stream)
+    void MoneyEffect::serialise(DataSerialiser& stream)
     {
         EntityBase::serialise(stream);
         stream << frame;

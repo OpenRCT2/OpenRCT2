@@ -49,7 +49,7 @@ namespace OpenRCT2
         uint16_t Iteration;
         void Update();
         static void StartAnimation(JumpingFountainType newType, const CoordsXY& newLoc, const TileElement* tileElement);
-        void Serialise(DataSerialiser& stream);
+        void serialise(DataSerialiser& stream);
 
     private:
         JumpingFountainType GetType() const;

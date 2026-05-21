@@ -364,7 +364,7 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
         }
     }
 
-    void Duck::Serialise(DataSerialiser& stream)
+    void Duck::serialise(DataSerialiser& stream)
     {
         EntityBase::serialise(stream);
         stream << frame;

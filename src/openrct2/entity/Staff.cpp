@@ -2628,9 +2628,9 @@ namespace OpenRCT2
         }
     }
 
-    void Staff::Serialise(DataSerialiser& stream)
+    void Staff::serialise(DataSerialiser& stream)
     {
-        Peep::Serialise(stream);
+        Peep::serialise(stream);
         stream << AssignedStaffType;
         stream << MechanicTimeSinceCall;
         stream << HireDate;

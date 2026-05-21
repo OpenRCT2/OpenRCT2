@@ -2699,7 +2699,7 @@ namespace OpenRCT2
         return CoordsXY{ DestinationX, DestinationY };
     }
 
-    void Peep::Serialise(DataSerialiser& stream)
+    void Peep::serialise(DataSerialiser& stream)
     {
         EntityBase::serialise(stream);
         if (stream.IsLoading())

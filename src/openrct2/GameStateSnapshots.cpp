@@ -130,31 +130,31 @@ struct GameStateSnapshot_t
             switch (sprite.base.type)
             {
                 case EntityType::vehicle:
-                    reinterpret_cast<Vehicle&>(sprite).Serialise(ds);
+                    reinterpret_cast<Vehicle&>(sprite).serialise(ds);
                     break;
                 case EntityType::guest:
-                    reinterpret_cast<Guest&>(sprite).Serialise(ds);
+                    reinterpret_cast<Guest&>(sprite).serialise(ds);
                     break;
                 case EntityType::staff:
-                    reinterpret_cast<Staff&>(sprite).Serialise(ds);
+                    reinterpret_cast<Staff&>(sprite).serialise(ds);
                     break;
                 case EntityType::litter:
                     reinterpret_cast<Litter&>(sprite).serialise(ds);
                     break;
                 case EntityType::moneyEffect:
-                    reinterpret_cast<MoneyEffect&>(sprite).Serialise(ds);
+                    reinterpret_cast<MoneyEffect&>(sprite).serialise(ds);
                     break;
                 case EntityType::balloon:
-                    reinterpret_cast<Balloon&>(sprite).Serialise(ds);
+                    reinterpret_cast<Balloon&>(sprite).serialise(ds);
                     break;
                 case EntityType::duck:
-                    reinterpret_cast<Duck&>(sprite).Serialise(ds);
+                    reinterpret_cast<Duck&>(sprite).serialise(ds);
                     break;
                 case EntityType::jumpingFountain:
-                    reinterpret_cast<JumpingFountain&>(sprite).Serialise(ds);
+                    reinterpret_cast<JumpingFountain&>(sprite).serialise(ds);
                     break;
                 case EntityType::steamParticle:
-                    reinterpret_cast<SteamParticle&>(sprite).Serialise(ds);
+                    reinterpret_cast<SteamParticle&>(sprite).serialise(ds);
                     break;
                 case EntityType::null:
                     break;

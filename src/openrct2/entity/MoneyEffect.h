@@ -39,7 +39,7 @@ namespace OpenRCT2
         void SetValue(money64 value);
         void Update();
         std::pair<StringId, money64> GetStringId() const;
-        void Serialise(DataSerialiser& stream);
+        void serialise(DataSerialiser& stream);
         void Paint(PaintSession& session, int32_t imageDirection) const;
     };
 } // namespace OpenRCT2
