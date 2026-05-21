@@ -133,18 +133,18 @@ namespace OpenRCT2
 } // namespace OpenRCT2
 
 constexpr int32_t kWindowMainWidgetIdxViewport = 0;
-constexpr int32_t kWindowRideConstructionWidgetIdxConstruct = 27;
-constexpr int32_t kWindowRideConstructionWidgetIdxEntrance = 32;
-constexpr int32_t kWindowRideConstructionWidgetIdxExit = 33;
-constexpr int32_t kWindowRideConstructionWidgetIdxRotate = 34;
-constexpr int32_t kWindowScenaryWidgetIdxScenaryRotateObjectsButton = 5;
-constexpr int32_t kWindowScenaryWidgetIdxScenaryEyedropperButton = 10;
-constexpr int32_t kWindowPeepWidgetIdxPickup = 14;
-constexpr int32_t kWindowTrackDesignListWidgetIdxRotate = 8;
-constexpr int32_t kWindowTrackDesignPlaceWidgetIdxRotate = 3;
-constexpr int32_t kWindowEditorParkEntranceWidgetIdxRotateEntranceButton = 6;
-constexpr int32_t kWindowStaffWidgetIdxPickup = 9;
-constexpr int32_t kWindowStaffWidgetIdxPatrol = 10;
+constexpr int32_t kWindowRideConstructionWidgetIdxButtonConstruct = 27;
+constexpr int32_t kWindowRideConstructionWidgetIdxButtonEntrance = 32;
+constexpr int32_t kWindowRideConstructionWidgetIdxButtonExit = 33;
+constexpr int32_t kWindowRideConstructionWidgetIdxButtonRotate = 34;
+constexpr int32_t kWindowScenaryWidgetIdxScenaryButtonRotateObjects = 5;
+constexpr int32_t kWindowScenaryWidgetIdxScenaryButtonEyedropper = 10;
+constexpr int32_t kWindowPeepWidgetIdxButtonPickup = 14;
+constexpr int32_t kWindowTrackDesignListWidgetIdxButtonRotate = 8;
+constexpr int32_t kWindowTrackDesignPlaceWidgetIdxButtonRotate = 3;
+constexpr int32_t kWindowEditorParkEntranceWidgetIdxButtonRotateEntrance = 6;
+constexpr int32_t kWindowStaffWidgetIdxButtonPickup = 9;
+constexpr int32_t kWindowStaffWidgetIdxButtonPatrol = 10;
 constexpr int32_t kWindowTileInspectorWidgetIdxButtonRotate = 15;
 constexpr int32_t kWindowTileInspectorWidgetIdxButtonCopy = 18;
 constexpr int32_t kWindowTileInspectorWidgetIdxButtonPaste = 17;

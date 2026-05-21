@@ -93,50 +93,50 @@ static void ShortcutRotateConstructionObject()
 
     // Rotate scenery
     WindowBase* w = windowMgr->FindByClass(WindowClass::scenery);
-    if (w != nullptr && !widgetIsDisabled(*w, kWindowScenaryWidgetIdxScenaryRotateObjectsButton)
-        && w->widgets[kWindowScenaryWidgetIdxScenaryRotateObjectsButton].type != WidgetType::empty)
+    if (w != nullptr && !widgetIsDisabled(*w, kWindowScenaryWidgetIdxScenaryButtonRotateObjects)
+        && w->widgets[kWindowScenaryWidgetIdxScenaryButtonRotateObjects].type != WidgetType::empty)
     {
-        w->onMouseUp(kWindowScenaryWidgetIdxScenaryRotateObjectsButton);
+        w->onMouseUp(kWindowScenaryWidgetIdxScenaryButtonRotateObjects);
         return;
     }
 
     // Rotate construction track piece
     w = windowMgr->FindByClass(WindowClass::rideConstruction);
-    if (w != nullptr && !widgetIsDisabled(*w, kWindowRideConstructionWidgetIdxRotate)
-        && w->widgets[kWindowRideConstructionWidgetIdxRotate].type != WidgetType::empty)
+    if (w != nullptr && !widgetIsDisabled(*w, kWindowRideConstructionWidgetIdxButtonRotate)
+        && w->widgets[kWindowRideConstructionWidgetIdxButtonRotate].type != WidgetType::empty)
     {
         // Check if building a maze...
-        if (w->widgets[kWindowRideConstructionWidgetIdxRotate].tooltip != STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP)
+        if (w->widgets[kWindowRideConstructionWidgetIdxButtonRotate].tooltip != STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP)
         {
-            w->onMouseUp(kWindowRideConstructionWidgetIdxRotate);
+            w->onMouseUp(kWindowRideConstructionWidgetIdxButtonRotate);
             return;
         }
     }
 
     // Rotate track design preview
     w = windowMgr->FindByClass(WindowClass::trackDesignList);
-    if (w != nullptr && !widgetIsDisabled(*w, kWindowTrackDesignListWidgetIdxRotate)
-        && w->widgets[kWindowTrackDesignListWidgetIdxRotate].type != WidgetType::empty)
+    if (w != nullptr && !widgetIsDisabled(*w, kWindowTrackDesignListWidgetIdxButtonRotate)
+        && w->widgets[kWindowTrackDesignListWidgetIdxButtonRotate].type != WidgetType::empty)
     {
-        w->onMouseUp(kWindowTrackDesignListWidgetIdxRotate);
+        w->onMouseUp(kWindowTrackDesignListWidgetIdxButtonRotate);
         return;
     }
 
     // Rotate track design placement
     w = windowMgr->FindByClass(WindowClass::trackDesignPlace);
-    if (w != nullptr && !widgetIsDisabled(*w, kWindowTrackDesignPlaceWidgetIdxRotate)
-        && w->widgets[kWindowTrackDesignPlaceWidgetIdxRotate].type != WidgetType::empty)
+    if (w != nullptr && !widgetIsDisabled(*w, kWindowTrackDesignPlaceWidgetIdxButtonRotate)
+        && w->widgets[kWindowTrackDesignPlaceWidgetIdxButtonRotate].type != WidgetType::empty)
     {
-        w->onMouseUp(kWindowTrackDesignPlaceWidgetIdxRotate);
+        w->onMouseUp(kWindowTrackDesignPlaceWidgetIdxButtonRotate);
         return;
     }
 
     // Rotate park entrance
     w = windowMgr->FindByClass(WindowClass::editorParkEntrance);
-    if (w != nullptr && !widgetIsDisabled(*w, kWindowEditorParkEntranceWidgetIdxRotateEntranceButton)
-        && w->widgets[kWindowEditorParkEntranceWidgetIdxRotateEntranceButton].type != WidgetType::empty)
+    if (w != nullptr && !widgetIsDisabled(*w, kWindowEditorParkEntranceWidgetIdxButtonRotateEntrance)
+        && w->widgets[kWindowEditorParkEntranceWidgetIdxButtonRotateEntrance].type != WidgetType::empty)
     {
-        w->onMouseUp(kWindowEditorParkEntranceWidgetIdxRotateEntranceButton);
+        w->onMouseUp(kWindowEditorParkEntranceWidgetIdxButtonRotateEntrance);
         return;
     }
 
@@ -449,10 +449,10 @@ static void ShortcutOpenSceneryPicker()
         ToggleSceneryWindow();
 
     sceneryWindow = windowMgr->FindByClass(WindowClass::scenery);
-    if (sceneryWindow != nullptr && !widgetIsDisabled(*sceneryWindow, kWindowScenaryWidgetIdxScenaryEyedropperButton)
+    if (sceneryWindow != nullptr && !widgetIsDisabled(*sceneryWindow, kWindowScenaryWidgetIdxScenaryButtonEyedropper)
         && !gWindowSceneryEyedropperEnabled)
     {
-        sceneryWindow->onMouseUp(kWindowScenaryWidgetIdxScenaryEyedropperButton);
+        sceneryWindow->onMouseUp(kWindowScenaryWidgetIdxScenaryButtonEyedropper);
         return;
     }
 }

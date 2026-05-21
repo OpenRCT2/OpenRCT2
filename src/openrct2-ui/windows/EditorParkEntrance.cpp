@@ -65,7 +65,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_ROTATE_ENTRANCE_BUTTON,
     };
 
-    static_assert(WIDX_ROTATE_ENTRANCE_BUTTON == kWindowEditorParkEntranceWidgetIdxRotateEntranceButton);
+    static_assert(WIDX_ROTATE_ENTRANCE_BUTTON == kWindowEditorParkEntranceWidgetIdxButtonRotateEntrance);
 
     // clang-format off
     static constexpr auto _widgets = makeWidgets(

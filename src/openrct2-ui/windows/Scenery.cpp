@@ -111,8 +111,8 @@ namespace OpenRCT2::Ui::Windows
         WIDX_SCENERY_TAB_1,
     };
 
-    static_assert(WIDX_SCENERY_ROTATE_OBJECTS_BUTTON == kWindowScenaryWidgetIdxScenaryRotateObjectsButton);
-    static_assert(WIDX_SCENERY_EYEDROPPER_BUTTON == kWindowScenaryWidgetIdxScenaryEyedropperButton);
+    static_assert(WIDX_SCENERY_ROTATE_OBJECTS_BUTTON == kWindowScenaryWidgetIdxScenaryButtonRotateObjects);
+    static_assert(WIDX_SCENERY_EYEDROPPER_BUTTON == kWindowScenaryWidgetIdxScenaryButtonEyedropper);
 
     // clang-format off
     static constexpr auto WindowSceneryBaseWidgets = makeWidgets(
