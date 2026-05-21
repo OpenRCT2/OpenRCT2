@@ -13,12 +13,13 @@
 #include "Ride.h"
 
 #ifdef ENABLE_SCRIPTING
-static const EnumMap<Breakdown> kBreakdownMap({ { "safety_cut_out", Breakdown::safetyCutOut },
-                                                { "restraints_stuck_closed", Breakdown::restraintsStuckClosed },
-                                                { "restraints_stuck_open", Breakdown::restraintsStuckOpen },
-                                                { "doors_stuck_closed", Breakdown::doorsStuckClosed },
-                                                { "doors_stuck_open", Breakdown::doorsStuckOpen },
-                                                { "vehicle_malfunction", Breakdown::vehicleMalfunction },
-                                                { "brakes_failure", Breakdown::brakesFailure },
-                                                { "control_failure", Breakdown::controlFailure } });
+static const EnumMap<Breakdown> kBreakdownMap(
+    { { "safety_cut_out", Breakdown::safetyCutOut },
+      { "restraints_stuck_closed", Breakdown::restraintsStuckClosed },
+      { "restraints_stuck_open", Breakdown::restraintsStuckOpen },
+      { "doors_stuck_closed", Breakdown::doorsStuckClosed },
+      { "doors_stuck_open", Breakdown::doorsStuckOpen },
+      { "vehicle_malfunction", Breakdown::vehicleMalfunction },
+      { "brakes_failure", Breakdown::brakesFailure },
+      { "control_failure", Breakdown::controlFailure } });
 #endif

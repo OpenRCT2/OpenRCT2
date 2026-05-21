@@ -231,7 +231,7 @@ namespace OpenRCT2::Ui::Windows
 
     public:
         FinancesWindow(ParkData& parkData)
-            : _parkData(parkData){};
+            : _parkData(parkData) {};
 
         void onOpen() override
         {

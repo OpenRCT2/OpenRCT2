@@ -377,9 +377,7 @@ namespace OpenRCT2::Network
             {
                 throw std::runtime_error("Socket not listening.");
             }
-            struct sockaddr_storage client_addr
-            {
-            };
+            struct sockaddr_storage client_addr{};
             socklen_t client_len = sizeof(struct sockaddr_storage);
 
             std::unique_ptr<ITcpSocket> tcpSocket;
@@ -939,8 +937,9 @@ namespace OpenRCT2::Network
             memcpy(&address, &ifo.iiAddress.Address, sizeof(sockaddr));
             (reinterpret_cast<sockaddr_in*>(&address))->sin_addr.s_addr = ifo.iiAddress.AddressIn.sin_addr.s_addr
                 | ~ifo.iiNetmask.AddressIn.sin_addr.s_addr;
-            baddresses.push_back(std::make_unique<NetworkEndpoint>(
-                reinterpret_cast<const sockaddr*>(&address), static_cast<socklen_t>(sizeof(sockaddr))));
+            baddresses.push_back(
+                std::make_unique<NetworkEndpoint>(
+                    reinterpret_cast<const sockaddr*>(&address), static_cast<socklen_t>(sizeof(sockaddr))));
         }
     #else
         int sock = socket(AF_INET, SOCK_DGRAM, 0);

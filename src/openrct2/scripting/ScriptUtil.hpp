@@ -25,7 +25,7 @@ namespace OpenRCT2::Scripting
         JSContext* context = nullptr;
         JSValue callback = JS_UNDEFINED;
 
-        JSCallback(){};
+        JSCallback() {};
 
         JSCallback(JSContext* ctx, JSValue func)
             : context(ctx)

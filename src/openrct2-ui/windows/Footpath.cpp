@@ -1668,8 +1668,9 @@ namespace OpenRCT2::Ui::Windows
 
                 int32_t direction = _footpathConstructDirection;
                 MapSelection::clearSelectedTiles();
-                MapSelection::addSelectedTile({ _footpathConstructFromPosition.x + CoordsDirectionDelta[direction].x,
-                                                _footpathConstructFromPosition.y + CoordsDirectionDelta[direction].y });
+                MapSelection::addSelectedTile(
+                    { _footpathConstructFromPosition.x + CoordsDirectionDelta[direction].x,
+                      _footpathConstructFromPosition.y + CoordsDirectionDelta[direction].y });
             }
 
             const int32_t currentRotation = GetCurrentRotation();

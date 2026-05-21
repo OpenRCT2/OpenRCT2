@@ -574,8 +574,9 @@ namespace OpenRCT2::Scripting
             default:
             {
                 auto& scriptEngine = GetContext()->GetScriptEngine();
-                scriptEngine.LogPluginInfo("Cannot read 'sequence' property, tile element is not a TrackElement, "
-                                           "LargeSceneryElement, or EntranceElement.");
+                scriptEngine.LogPluginInfo(
+                    "Cannot read 'sequence' property, tile element is not a TrackElement, "
+                    "LargeSceneryElement, or EntranceElement.");
                 return JS_NULL;
             }
         }
@@ -628,8 +629,9 @@ namespace OpenRCT2::Scripting
             default:
             {
                 auto& scriptEngine = GetContext()->GetScriptEngine();
-                scriptEngine.LogPluginInfo("Cannot read 'sequence' property, tile element is not a TrackElement, "
-                                           "LargeSceneryElement, or EntranceElement.");
+                scriptEngine.LogPluginInfo(
+                    "Cannot read 'sequence' property, tile element is not a TrackElement, "
+                    "LargeSceneryElement, or EntranceElement.");
                 break;
             }
         }

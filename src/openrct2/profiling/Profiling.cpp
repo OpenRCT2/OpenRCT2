@@ -250,16 +250,17 @@ namespace OpenRCT2::Profiling
                         childIndices.push_back(std::distance(registry.begin(), it));
                 }
 
-                functions.push_back({
-                    { "name", func->getName() },
-                    { "callCount", func->getCallCount() },
-                    { "minTime", func->getMinTime() },
-                    { "maxTime", func->getMaxTime() },
-                    { "avgTime", func->getAverageTime() },
-                    { "totalTime", func->getTotalTime() },
-                    { "parents", parentIndices },
-                    { "children", childIndices },
-                });
+                functions.push_back(
+                    {
+                        { "name", func->getName() },
+                        { "callCount", func->getCallCount() },
+                        { "minTime", func->getMinTime() },
+                        { "maxTime", func->getMaxTime() },
+                        { "avgTime", func->getAverageTime() },
+                        { "totalTime", func->getTotalTime() },
+                        { "parents", parentIndices },
+                        { "children", childIndices },
+                    });
             }
 
             json_t root = { { "functions", functions } };
