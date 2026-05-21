@@ -142,10 +142,10 @@ static void ShortcutRotateConstructionObject()
 
     // Rotate selected element in tile inspector
     w = windowMgr->FindByClass(WindowClass::tileInspector);
-    if (w != nullptr && !widgetIsDisabled(*w, WC_TILE_INSPECTOR__WIDX_BUTTON_ROTATE)
-        && w->widgets[WC_TILE_INSPECTOR__WIDX_BUTTON_ROTATE].type != WidgetType::empty)
+    if (w != nullptr && !widgetIsDisabled(*w, kWindowTileInspectorWidgetIdxButtonRotate)
+        && w->widgets[kWindowTileInspectorWidgetIdxButtonRotate].type != WidgetType::empty)
     {
-        w->onMouseUp(WC_TILE_INSPECTOR__WIDX_BUTTON_ROTATE);
+        w->onMouseUp(kWindowTileInspectorWidgetIdxButtonRotate);
         return;
     }
 }
@@ -540,13 +540,13 @@ static void ShortcutIncreaseElementHeight()
         switch (EnumValue(w->tileInspectorPage))
         {
             case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_SURFACE:
-                action = WC_TILE_INSPECTOR__WIDX_SURFACE_SPINNER_HEIGHT_INCREASE;
+                action = kWindowTileInspectorWidgetIdxSurfaceSpinnerHeightIncrease;
                 break;
             case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_PATH:
-                action = WC_TILE_INSPECTOR__WIDX_PATH_SPINNER_HEIGHT_INCREASE;
+                action = kWindowTileInspectorWidgetIdxPathSpinnerHeightIncrease;
                 break;
             case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_TRACK:
-                action = WC_TILE_INSPECTOR__WIDX_TRACK_SPINNER_HEIGHT_INCREASE;
+                action = kWindowTileInspectorWidgetIdxTrackSpinnerHeightIncrease;
                 break;
             case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_SCENERY:
                 action = WC_TILE_INSPECTOR__WIDX_SCENERY_SPINNER_HEIGHT_INCREASE;
@@ -580,13 +580,13 @@ static void ShortcutDecreaseElementHeight()
         switch (EnumValue(w->tileInspectorPage))
         {
             case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_SURFACE:
-                action = WC_TILE_INSPECTOR__WIDX_SURFACE_SPINNER_HEIGHT_DECREASE;
+                action = kWindowTileInspectorWidgetIdxSurfaceSpinnerHeightDecrease;
                 break;
             case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_PATH:
-                action = WC_TILE_INSPECTOR__WIDX_PATH_SPINNER_HEIGHT_DECREASE;
+                action = kWindowTileInspectorWidgetIdxPathSpinnerHeightDecrease;
                 break;
             case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_TRACK:
-                action = WC_TILE_INSPECTOR__WIDX_TRACK_SPINNER_HEIGHT_DECREASE;
+                action = kWindowTileInspectorWidgetIdxTrackSpinnerHeightDecrease;
                 break;
             case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_SCENERY:
                 action = WC_TILE_INSPECTOR__WIDX_SCENERY_SPINNER_HEIGHT_DECREASE;
@@ -883,16 +883,16 @@ void ShortcutManager::registerDefaultShortcuts()
     registerShortcut(ShortcutId::kWindowRideConstructionBuild, STR_SHORTCUT_CONSTRUCTION_BUILD_CURRENT, "NUMPAD 0", ShortcutConstructionBuildCurrent);
     registerShortcut(ShortcutId::kWindowRideConstructionDemolish, STR_SHORTCUT_CONSTRUCTION_DEMOLISH_CURRENT, "NUMPAD -", ShortcutConstructionDemolishCurrent);
     registerShortcut(ShortcutId::kWindowTileInspectorToggleInvisibility, STR_SHORTCUT_TOGGLE_INVISIBILITY, WindowTileInspectorKeyboardShortcutToggleInvisibility);
-    registerShortcut(ShortcutId::kWindowTileInspectorCopy, STR_SHORTCUT_COPY_ELEMENT, std::bind(TileInspectorMouseUp, WC_TILE_INSPECTOR__WIDX_BUTTON_COPY));
-    registerShortcut(ShortcutId::kWindowTileInspectorPaste, STR_SHORTCUT_PASTE_ELEMENT, std::bind(TileInspectorMouseUp, WC_TILE_INSPECTOR__WIDX_BUTTON_PASTE));
-    registerShortcut(ShortcutId::kWindowTileInspectorSort, STR_SHORTCUT_SORT_ELEMENTS, std::bind(TileInspectorMouseUp, WC_TILE_INSPECTOR__WIDX_BUTTON_SORT));
-    registerShortcut(ShortcutId::kWindowTileInspectorRemove, STR_SHORTCUT_REMOVE_ELEMENT, std::bind(TileInspectorMouseUp, WC_TILE_INSPECTOR__WIDX_BUTTON_REMOVE));
-    registerShortcut(ShortcutId::kWindowTileInspectorMoveUp, STR_SHORTCUT_MOVE_ELEMENT_UP, std::bind(TileInspectorMouseUp, WC_TILE_INSPECTOR__WIDX_BUTTON_MOVE_UP));
-    registerShortcut(ShortcutId::kWindowTileInspectorMoveDown, STR_SHORTCUT_MOVE_ELEMENT_DOWN, std::bind(TileInspectorMouseUp, WC_TILE_INSPECTOR__WIDX_BUTTON_MOVE_DOWN));
-    registerShortcut(ShortcutId::kWindowTileInspectorIncreaseX, STR_SHORTCUT_INCREASE_X_COORD, std::bind(TileInspectorMouseDown, WC_TILE_INSPECTOR__WIDX_SPINNER_X_INCREASE));
-    registerShortcut(ShortcutId::kWindowTileInspectorDecreaseX, STR_SHORTCUT_DECREASE_X_COORD, std::bind(TileInspectorMouseDown, WC_TILE_INSPECTOR__WIDX_SPINNER_X_DECREASE));
-    registerShortcut(ShortcutId::kWindowTileInspectorIncreaseY, STR_SHORTCUT_INCREASE_Y_COORD, std::bind(TileInspectorMouseDown, WC_TILE_INSPECTOR__WIDX_SPINNER_Y_INCREASE));
-    registerShortcut(ShortcutId::kWindowTileInspectorDecreaseY, STR_SHORTCUT_DECREASE_Y_COORD, std::bind(TileInspectorMouseDown, WC_TILE_INSPECTOR__WIDX_SPINNER_Y_DECREASE));
+    registerShortcut(ShortcutId::kWindowTileInspectorCopy, STR_SHORTCUT_COPY_ELEMENT, std::bind(TileInspectorMouseUp, kWindowTileInspectorWidgetIdxButtonCopy));
+    registerShortcut(ShortcutId::kWindowTileInspectorPaste, STR_SHORTCUT_PASTE_ELEMENT, std::bind(TileInspectorMouseUp, kWindowTileInspectorWidgetIdxButtonPaste));
+    registerShortcut(ShortcutId::kWindowTileInspectorSort, STR_SHORTCUT_SORT_ELEMENTS, std::bind(TileInspectorMouseUp, kWindowTileInspectorWidgetIdxButtonSort));
+    registerShortcut(ShortcutId::kWindowTileInspectorRemove, STR_SHORTCUT_REMOVE_ELEMENT, std::bind(TileInspectorMouseUp, kWindowTileInspectorWidgetIdxButtonRemove));
+    registerShortcut(ShortcutId::kWindowTileInspectorMoveUp, STR_SHORTCUT_MOVE_ELEMENT_UP, std::bind(TileInspectorMouseUp, kWindowTileInspectorWidgetIdxButtonMoveUp));
+    registerShortcut(ShortcutId::kWindowTileInspectorMoveDown, STR_SHORTCUT_MOVE_ELEMENT_DOWN, std::bind(TileInspectorMouseUp, kWindowTileInspectorWidgetIdxButtonMoveDown));
+    registerShortcut(ShortcutId::kWindowTileInspectorIncreaseX, STR_SHORTCUT_INCREASE_X_COORD, std::bind(TileInspectorMouseDown, kWindowTileInspectorWidgetIdxSpinnerXIncrease));
+    registerShortcut(ShortcutId::kWindowTileInspectorDecreaseX, STR_SHORTCUT_DECREASE_X_COORD, std::bind(TileInspectorMouseDown, kWindowTileInspectorWidgetIdxSpinnerXDecrease));
+    registerShortcut(ShortcutId::kWindowTileInspectorIncreaseY, STR_SHORTCUT_INCREASE_Y_COORD, std::bind(TileInspectorMouseDown, kWindowTileInspectorWidgetIdxSpinnerYIncrease));
+    registerShortcut(ShortcutId::kWindowTileInspectorDecreaseY, STR_SHORTCUT_DECREASE_Y_COORD, std::bind(TileInspectorMouseDown, kWindowTileInspectorWidgetIdxSpinnerYDecrease));
     registerShortcut(ShortcutId::kWindowTileInspectorIncreaseHeight, STR_SHORTCUT_INCREASE_ELEM_HEIGHT, ShortcutIncreaseElementHeight);
     registerShortcut(ShortcutId::kWindowTileInspectorDecreaseHeight, STR_SHORTCUT_DECREASE_ELEM_HEIGHT, ShortcutDecreaseElementHeight);
     registerShortcut(ShortcutId::kWindowTileInspectorChangeWallSlope, STR_SHORTCUT_TOGGLE_WALL_SLOPE, ShortcutToggleWallSlope);
