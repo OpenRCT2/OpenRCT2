@@ -133,10 +133,10 @@ static void ShortcutRotateConstructionObject()
 
     // Rotate park entrance
     w = windowMgr->FindByClass(WindowClass::editorParkEntrance);
-    if (w != nullptr && !widgetIsDisabled(*w, WC_EDITOR_PARK_ENTRANCE__WIDX_ROTATE_ENTRANCE_BUTTON)
-        && w->widgets[WC_EDITOR_PARK_ENTRANCE__WIDX_ROTATE_ENTRANCE_BUTTON].type != WidgetType::empty)
+    if (w != nullptr && !widgetIsDisabled(*w, kWindowEditorParkEntranceWidgetIdxRotateEntranceButton)
+        && w->widgets[kWindowEditorParkEntranceWidgetIdxRotateEntranceButton].type != WidgetType::empty)
     {
-        w->onMouseUp(WC_EDITOR_PARK_ENTRANCE__WIDX_ROTATE_ENTRANCE_BUTTON);
+        w->onMouseUp(kWindowEditorParkEntranceWidgetIdxRotateEntranceButton);
         return;
     }
 
