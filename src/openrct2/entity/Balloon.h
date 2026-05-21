@@ -33,7 +33,7 @@ namespace OpenRCT2
         void Update();
         void Pop(bool playSound);
         void Press();
-        void Serialise(DataSerialiser& stream);
+        void serialise(DataSerialiser& stream);
         bool Collides() const;
     };
 } // namespace OpenRCT2

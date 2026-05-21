@@ -2631,7 +2631,7 @@ namespace OpenRCT2
     void ParkFile::ReadWriteEntity(OrcaStream& os, OrcaStream::ChunkStream& cs, Litter& entity)
     {
         ReadWriteEntityCommon(cs, entity);
-        cs.readWrite(entity.SubType);
+        cs.readWrite(entity.subType);
         cs.readWrite(entity.creationTick);
     }
 

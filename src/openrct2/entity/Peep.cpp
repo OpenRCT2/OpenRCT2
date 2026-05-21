@@ -2017,7 +2017,7 @@ namespace OpenRCT2
 
             if (const auto* litter = otherEnt->as<Litter>(); litter != nullptr)
             {
-                if (litter->SubType != Litter::Type::vomit && litter->SubType != Litter::Type::vomitAlt)
+                if (litter->subType != Litter::Type::vomit && litter->subType != Litter::Type::vomitAlt)
                 {
                     litterCount++;
                 }
@@ -2699,7 +2699,7 @@ namespace OpenRCT2
         return CoordsXY{ DestinationX, DestinationY };
     }
 
-    void Peep::Serialise(DataSerialiser& stream)
+    void Peep::serialise(DataSerialiser& stream)
     {
         EntityBase::serialise(stream);
         if (stream.IsLoading())

@@ -1508,7 +1508,7 @@ void Vehicle::EnableCollisionsForTrain()
     }
 }
 
-void Vehicle::Serialise(DataSerialiser& stream)
+void Vehicle::serialise(DataSerialiser& stream)
 {
     EntityBase::serialise(stream);
     stream << SubType;

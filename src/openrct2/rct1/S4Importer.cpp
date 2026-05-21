@@ -3040,7 +3040,7 @@ namespace OpenRCT2::RCT1
         auto* src = static_cast<const RCT12EntityLitter*>(&srcBase);
         ImportEntityCommonProperties(dst, src);
 
-        dst->SubType = Litter::Type(src->Type);
+        dst->subType = Litter::Type(src->Type);
         dst->creationTick = src->CreationTick;
     }
 

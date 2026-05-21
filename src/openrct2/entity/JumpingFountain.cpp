@@ -391,7 +391,7 @@ namespace OpenRCT2
         Create(newType, newLoc, direction >> 1, newFlags, Iteration);
     }
 
-    void JumpingFountain::Serialise(DataSerialiser& stream)
+    void JumpingFountain::serialise(DataSerialiser& stream)
     {
         EntityBase::serialise(stream);
         stream << frame;

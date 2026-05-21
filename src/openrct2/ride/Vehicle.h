@@ -322,7 +322,7 @@ struct Vehicle : OpenRCT2::EntityBase
         TrackTypeAndDirection |= trackDirection & kVehicleTrackDirectionMask;
     }
     void ApplyMass(int16_t appliedMass);
-    void Serialise(OpenRCT2::DataSerialiser& stream);
+    void serialise(OpenRCT2::DataSerialiser& stream);
     bool IsCableLift() const;
 
     friend void UpdateRotatingDefault(Vehicle& vehicle);

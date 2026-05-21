@@ -418,7 +418,7 @@ namespace OpenRCT2
         void SetDestination(const CoordsXY& coords, int32_t tolerance);
         [[nodiscard]] CoordsXY GetDestination() const;
 
-        void Serialise(class DataSerialiser& stream);
+        void serialise(class DataSerialiser& stream);
 
         // TODO: Make these private again when done refactoring
     public: // Peep

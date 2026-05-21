@@ -2320,7 +2320,7 @@ namespace OpenRCT2::RCT2
         auto dst = getGameState().entities.CreateEntityAt<::Litter>(EntityId::FromUnderlying(baseSrc.EntityIndex));
         auto src = static_cast<const RCT12EntityLitter*>(&baseSrc);
         ImportEntityCommonProperties(dst, src);
-        dst->SubType = ::Litter::Type(src->Type);
+        dst->subType = ::Litter::Type(src->Type);
         dst->creationTick = AdjustScenarioToCurrentTicks(_s6, src->CreationTick);
     }
 

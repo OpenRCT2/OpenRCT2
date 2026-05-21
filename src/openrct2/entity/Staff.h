@@ -89,7 +89,7 @@ namespace OpenRCT2
         bool CanIgnoreWideFlag(const CoordsXYZ& staffPos, TileElement* path) const;
 
         static void ResetStats();
-        void Serialise(DataSerialiser& stream);
+        void serialise(DataSerialiser& stream);
 
         void ClearPatrolArea();
         void SetPatrolArea(const CoordsXY& coords, bool value);

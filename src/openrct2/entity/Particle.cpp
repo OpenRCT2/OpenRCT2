@@ -244,7 +244,7 @@ namespace OpenRCT2
         }
     }
 
-    void SteamParticle::Serialise(DataSerialiser& stream)
+    void SteamParticle::serialise(DataSerialiser& stream)
     {
         EntityBase::serialise(stream);
         stream << frame;

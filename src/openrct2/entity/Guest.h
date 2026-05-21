@@ -362,7 +362,7 @@ namespace OpenRCT2
         void RemoveItem(ShopItem item);
         void GiveItem(ShopItem item);
         bool HasItem(ShopItem peepItem) const;
-        void Serialise(DataSerialiser& stream);
+        void serialise(DataSerialiser& stream);
 
         // Removes the ride from the guests memory, this includes
         // the history, thoughts, etc.

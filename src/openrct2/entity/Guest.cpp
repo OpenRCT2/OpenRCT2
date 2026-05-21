@@ -7807,9 +7807,9 @@ namespace OpenRCT2
         Audio::Play3D(soundId, curLoc);
     }
 
-    void Guest::Serialise(DataSerialiser& stream)
+    void Guest::serialise(DataSerialiser& stream)
     {
-        Peep::Serialise(stream);
+        Peep::serialise(stream);
         stream << GuestNumRides;
         stream << GuestNextInQueue;
         stream << ParkEntryTime;

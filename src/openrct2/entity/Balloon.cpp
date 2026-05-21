@@ -115,7 +115,7 @@ namespace OpenRCT2
         balloon->popped = (isPopped ? 1 : 0);
     }
 
-    void Balloon::Serialise(DataSerialiser& stream)
+    void Balloon::serialise(DataSerialiser& stream)
     {
         EntityBase::serialise(stream);
         stream << frame;
