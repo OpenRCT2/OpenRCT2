@@ -539,28 +539,28 @@ static void ShortcutIncreaseElementHeight()
         int action = -1;
         switch (EnumValue(w->tileInspectorPage))
         {
-            case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_SURFACE:
+            case kTileInspectorPageSurface:
                 action = kWindowTileInspectorWidgetIdxSurfaceSpinnerHeightIncrease;
                 break;
-            case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_PATH:
+            case kTileInspectorPagePath:
                 action = kWindowTileInspectorWidgetIdxPathSpinnerHeightIncrease;
                 break;
-            case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_TRACK:
+            case kTileInspectorPageTrack:
                 action = kWindowTileInspectorWidgetIdxTrackSpinnerHeightIncrease;
                 break;
-            case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_SCENERY:
+            case kTileInspectorPageScenary:
                 action = kWindowTileInspectorWidgetIdxScenarySpinnerHeightIncrease;
                 break;
-            case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_ENTRANCE:
+            case kTileInspectorPageEntrance:
                 action = kWindowTileInspectorWidgetIdxEntranceSpinnerHeightIncrease;
                 break;
-            case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_WALL:
+            case kTileInspectorPageWall:
                 action = kWindowTileInspectorWidgetIdxWallSpinnerHeightIncrease;
                 break;
-            case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_LARGE_SCENERY:
+            case kTileInspectorPageLargeScenary:
                 action = kWindowTileInspectorWidgetIdxLargeScenarySpinnerHeightIncrease;
                 break;
-            case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_BANNER:
+            case kTileInspectorPageBanner:
                 action = kWindowTileInspectorWidgetIdxBannerSpinnerHeightIncrease;
                 break;
         }
@@ -579,28 +579,28 @@ static void ShortcutDecreaseElementHeight()
         int action = -1;
         switch (EnumValue(w->tileInspectorPage))
         {
-            case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_SURFACE:
+            case kTileInspectorPageSurface:
                 action = kWindowTileInspectorWidgetIdxSurfaceSpinnerHeightDecrease;
                 break;
-            case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_PATH:
+            case kTileInspectorPagePath:
                 action = kWindowTileInspectorWidgetIdxPathSpinnerHeightDecrease;
                 break;
-            case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_TRACK:
+            case kTileInspectorPageTrack:
                 action = kWindowTileInspectorWidgetIdxTrackSpinnerHeightDecrease;
                 break;
-            case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_SCENERY:
+            case kTileInspectorPageScenary:
                 action = kWindowTileInspectorWidgetIdxScenarySpinnerHeightDecrease;
                 break;
-            case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_ENTRANCE:
+            case kTileInspectorPageEntrance:
                 action = kWindowTileInspectorWidgetIdxEntranceSpinnerHeightDecrease;
                 break;
-            case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_WALL:
+            case kTileInspectorPageWall:
                 action = kWindowTileInspectorWidgetIdxWallSpinnerHeightDecrease;
                 break;
-            case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_LARGE_SCENERY:
+            case kTileInspectorPageLargeScenary:
                 action = kWindowTileInspectorWidgetIdxLargeScenarySpinnerHeightDecrease;
                 break;
-            case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_BANNER:
+            case kTileInspectorPageBanner:
                 action = kWindowTileInspectorWidgetIdxBannerSpinnerHeightDecrease;
                 break;
         }
