@@ -178,20 +178,20 @@ constexpr int32_t WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_TRACK = EnumValue(TileI
 constexpr int32_t kWindowTileInspectorWidgetIdxTrackSpinnerHeightIncrease = 30;
 constexpr int32_t kWindowTileInspectorWidgetIdxTrackSpinnerHeightDecrease = 31;
 constexpr int32_t WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_SCENERY = EnumValue(TileInspectorPage::Scenery);
-constexpr int32_t WC_TILE_INSPECTOR__WIDX_SCENERY_SPINNER_HEIGHT_INCREASE = 29;
-constexpr int32_t WC_TILE_INSPECTOR__WIDX_SCENERY_SPINNER_HEIGHT_DECREASE = 30;
+constexpr int32_t kWindowTileInspectorWidgetIdxScenarySpinnerHeightIncrease = 29;
+constexpr int32_t kWindowTileInspectorWidgetIdxScenarySpinnerHeightDecrease = 30;
 constexpr int32_t WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_ENTRANCE = EnumValue(TileInspectorPage::Entrance);
-constexpr int32_t WC_TILE_INSPECTOR__WIDX_ENTRANCE_SPINNER_HEIGHT_INCREASE = 29;
-constexpr int32_t WC_TILE_INSPECTOR__WIDX_ENTRANCE_SPINNER_HEIGHT_DECREASE = 30;
+constexpr int32_t kWindowTileInspectorWidgetIdxEntranceSpinnerHeightIncrease = 29;
+constexpr int32_t kWindowTileInspectorWidgetIdxEntranceSpinnerHeightDecrease = 30;
 constexpr int32_t WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_WALL = EnumValue(TileInspectorPage::Wall);
-constexpr int32_t WC_TILE_INSPECTOR__WIDX_WALL_SPINNER_HEIGHT_INCREASE = 29;
-constexpr int32_t WC_TILE_INSPECTOR__WIDX_WALL_SPINNER_HEIGHT_DECREASE = 30;
+constexpr int32_t kWindowTileInspectorWidgetIdxWallSpinnerHeightIncrease = 29;
+constexpr int32_t kWindowTileInspectorWidgetIdxWallSpinnerHeightDecrease = 30;
 constexpr int32_t WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_LARGE_SCENERY = EnumValue(TileInspectorPage::LargeScenery);
-constexpr int32_t WC_TILE_INSPECTOR__WIDX_LARGE_SCENERY_SPINNER_HEIGHT_INCREASE = 29;
-constexpr int32_t WC_TILE_INSPECTOR__WIDX_LARGE_SCENERY_SPINNER_HEIGHT_DECREASE = 30;
+constexpr int32_t kWindowTileInspectorWidgetIdxLargeScenarySpinnerHeightIncrease = 29;
+constexpr int32_t kWindowTileInspectorWidgetIdxLargeScenarySpinnerHeightDecrease = 30;
 constexpr int32_t WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_BANNER = EnumValue(TileInspectorPage::Banner);
-constexpr int32_t WC_TILE_INSPECTOR__WIDX_BANNER_SPINNER_HEIGHT_INCREASE = 29;
-constexpr int32_t WC_TILE_INSPECTOR__WIDX_BANNER_SPINNER_HEIGHT_DECREASE = 30;
+constexpr int32_t kWindowTileInspectorWidgetIdxBannerSpinnerHeightIncrease = 29;
+constexpr int32_t kWindowTileInspectorWidgetIdxBannerSpinnerHeightDecrease = 30;
 
 enum class PromptMode : uint8_t
 {

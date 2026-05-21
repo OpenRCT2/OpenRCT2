@@ -549,19 +549,19 @@ static void ShortcutIncreaseElementHeight()
                 action = kWindowTileInspectorWidgetIdxTrackSpinnerHeightIncrease;
                 break;
             case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_SCENERY:
-                action = WC_TILE_INSPECTOR__WIDX_SCENERY_SPINNER_HEIGHT_INCREASE;
+                action = kWindowTileInspectorWidgetIdxScenarySpinnerHeightIncrease;
                 break;
             case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_ENTRANCE:
-                action = WC_TILE_INSPECTOR__WIDX_ENTRANCE_SPINNER_HEIGHT_INCREASE;
+                action = kWindowTileInspectorWidgetIdxEntranceSpinnerHeightIncrease;
                 break;
             case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_WALL:
-                action = WC_TILE_INSPECTOR__WIDX_WALL_SPINNER_HEIGHT_INCREASE;
+                action = kWindowTileInspectorWidgetIdxWallSpinnerHeightIncrease;
                 break;
             case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_LARGE_SCENERY:
-                action = WC_TILE_INSPECTOR__WIDX_LARGE_SCENERY_SPINNER_HEIGHT_INCREASE;
+                action = kWindowTileInspectorWidgetIdxLargeScenarySpinnerHeightIncrease;
                 break;
             case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_BANNER:
-                action = WC_TILE_INSPECTOR__WIDX_BANNER_SPINNER_HEIGHT_INCREASE;
+                action = kWindowTileInspectorWidgetIdxBannerSpinnerHeightIncrease;
                 break;
         }
         if (action != -1 && !widgetIsDisabled(*w, action) && w->widgets[action].type != WidgetType::empty)
@@ -589,19 +589,19 @@ static void ShortcutDecreaseElementHeight()
                 action = kWindowTileInspectorWidgetIdxTrackSpinnerHeightDecrease;
                 break;
             case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_SCENERY:
-                action = WC_TILE_INSPECTOR__WIDX_SCENERY_SPINNER_HEIGHT_DECREASE;
+                action = kWindowTileInspectorWidgetIdxScenarySpinnerHeightDecrease;
                 break;
             case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_ENTRANCE:
-                action = WC_TILE_INSPECTOR__WIDX_ENTRANCE_SPINNER_HEIGHT_DECREASE;
+                action = kWindowTileInspectorWidgetIdxEntranceSpinnerHeightDecrease;
                 break;
             case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_WALL:
-                action = WC_TILE_INSPECTOR__WIDX_WALL_SPINNER_HEIGHT_DECREASE;
+                action = kWindowTileInspectorWidgetIdxWallSpinnerHeightDecrease;
                 break;
             case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_LARGE_SCENERY:
-                action = WC_TILE_INSPECTOR__WIDX_LARGE_SCENERY_SPINNER_HEIGHT_DECREASE;
+                action = kWindowTileInspectorWidgetIdxLargeScenarySpinnerHeightDecrease;
                 break;
             case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_BANNER:
-                action = WC_TILE_INSPECTOR__WIDX_BANNER_SPINNER_HEIGHT_DECREASE;
+                action = kWindowTileInspectorWidgetIdxBannerSpinnerHeightDecrease;
                 break;
         }
         if (action != -1 && !widgetIsDisabled(*w, action) && w->widgets[action].type != WidgetType::empty)
