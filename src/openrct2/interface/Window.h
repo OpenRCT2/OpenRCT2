@@ -132,11 +132,6 @@ namespace OpenRCT2
     };
 } // namespace OpenRCT2
 
-// Cannot be expressed using a constexpr.
-// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define VALIDATE_GLOBAL_WIDX(wc, widx)                                                                                         \
-    static_assert(widx == wc##__##widx, "Global WIDX of " #widx " doesn't match actual value.")
-
 constexpr int32_t kWindowMainWidgetIdxViewport = 0;
 constexpr int32_t kWindowRideConstructionWidgetIdxConstruct = 27;
 constexpr int32_t kWindowRideConstructionWidgetIdxEntrance = 32;
