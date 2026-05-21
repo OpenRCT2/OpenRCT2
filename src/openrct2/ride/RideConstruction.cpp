@@ -1087,7 +1087,8 @@ static bool ride_modify_entrance_or_exit(const CoordsXYE& tileElement)
         // Replace entrance / exit
         ToolSet(
             *constructionWindow,
-            entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE ? kWindowRideConstructionWidgetIdxButtonEntrance : kWindowRideConstructionWidgetIdxButtonExit,
+            entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE ? kWindowRideConstructionWidgetIdxButtonEntrance
+                                                        : kWindowRideConstructionWidgetIdxButtonExit,
             Tool::crosshair);
         gRideEntranceExitPlaceType = entranceType;
         gRideEntranceExitPlaceRideIndex = rideIndex;
@@ -1112,8 +1113,9 @@ static bool ride_modify_entrance_or_exit(const CoordsXYE& tileElement)
             gRideEntranceExitPlaceType = entranceType;
             windowMgr->InvalidateByClass(WindowClass::rideConstruction);
 
-            auto newToolWidgetIndex = (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE) ? kWindowRideConstructionWidgetIdxButtonEntrance
-                                                                                    : kWindowRideConstructionWidgetIdxButtonExit;
+            auto newToolWidgetIndex = (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE)
+                ? kWindowRideConstructionWidgetIdxButtonEntrance
+                : kWindowRideConstructionWidgetIdxButtonExit;
 
             ToolCancel();
             ToolSet(*constructionWindow, newToolWidgetIndex, Tool::crosshair);

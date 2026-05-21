@@ -106,7 +106,8 @@ static void ShortcutRotateConstructionObject()
         && w->widgets[kWindowRideConstructionWidgetIdxButtonRotate].type != WidgetType::empty)
     {
         // Check if building a maze...
-        if (w->widgets[kWindowRideConstructionWidgetIdxButtonRotate].tooltip != STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP)
+        if (w->widgets[kWindowRideConstructionWidgetIdxButtonRotate].tooltip
+            != STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP)
         {
             w->onMouseUp(kWindowRideConstructionWidgetIdxButtonRotate);
             return;
