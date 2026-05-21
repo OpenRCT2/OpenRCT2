@@ -18,6 +18,21 @@
 
 namespace OpenRCT2::Audio
 {
+    static constexpr float kLimiterKnee = 0.9f;
+    static constexpr float kLimiterThreshold = 0.9f;
+    static constexpr float kLimiterAttack = 0.02f;
+    static constexpr float kLimiterRelease = 0.9999f;
+
+    static inline float safetyClip(float x)
+    {
+        constexpr float kCeil = 1.0f;
+        if (x > kCeil)
+            return kCeil;
+        if (x < -kCeil)
+            return -kCeil;
+        return x;
+    }
+
     AudioEngine::AudioEngine()
     {
     }
@@ -174,17 +189,44 @@ namespace OpenRCT2::Audio
         processCommands();
 
         size_t culled = 0;
-        mixAllVoices(outputBuffer, framesRequested, outputSampleRate, culled);
+        size_t firstHalf = framesRequested / 2;
+        size_t secondHalf = framesRequested - firstHalf;
 
-        // master volume + hard clip
-        size_t totalSamples = framesRequested * 2;
-        for (size_t i = 0; i < totalSamples; i++)
+        if (firstHalf > 0)
         {
-            outputBuffer[i] *= _masterVolume;
-            if (outputBuffer[i] > 1.0f)
-                outputBuffer[i] = 1.0f;
-            else if (outputBuffer[i] < -1.0f)
-                outputBuffer[i] = -1.0f;
+            mixAllVoices(outputBuffer, firstHalf, outputSampleRate, culled);
+            processCommands();
+        }
+
+        mixAllVoices(outputBuffer + firstHalf * 2, secondHalf, outputSampleRate, culled);
+
+        // Per-sample limiter with fast attack, slow release
+        {
+            float gain = _limiterGain;
+
+            for (size_t i = 0; i < framesRequested; i++)
+            {
+                float L = outputBuffer[i * 2] * _masterVolume;
+                float R = outputBuffer[i * 2 + 1] * _masterVolume;
+
+                float peak = std::max(std::fabs(L), std::fabs(R));
+
+                float targetGain = 1.0f;
+                if (peak * gain > kLimiterThreshold)
+                    targetGain = kLimiterThreshold / std::max(peak, 0.0001f);
+
+                if (targetGain < gain)
+                    gain = gain + kLimiterAttack * (targetGain - gain);
+                else
+                    gain = gain + (1.0f - kLimiterRelease) * (targetGain - gain);
+
+                gain = std::min(gain, 1.0f);
+
+                outputBuffer[i * 2] = safetyClip(L * gain);
+                outputBuffer[i * 2 + 1] = safetyClip(R * gain);
+            }
+
+            _limiterGain = gain;
         }
 
         auto t1 = std::chrono::high_resolution_clock::now();
@@ -215,6 +257,20 @@ namespace OpenRCT2::Audio
                     if (s < -32768.0f)
                         s = -32768.0f;
                     out[i] = static_cast<int16_t>(s);
+                }
+                break;
+            }
+            case AudioSampleFormat::s32:
+            {
+                auto* out = reinterpret_cast<int32_t*>(dst);
+                for (size_t i = 0; i < totalSamples; i++)
+                {
+                    double s = static_cast<double>(mixBuffer[i]) * 2147483647.0;
+                    if (s > 2147483647.0)
+                        s = 2147483647.0;
+                    if (s < -2147483648.0)
+                        s = -2147483648.0;
+                    out[i] = static_cast<int32_t>(s);
                 }
                 break;
             }
@@ -572,6 +628,75 @@ namespace OpenRCT2::Audio
         }
     }
 
+    static inline void mixMonoSteady(
+        const float* pcmData, uint64_t pcmLen, bool looping, double rateRatio, double& position, float* outputBuffer,
+        size_t frames, float gainL, float gainR)
+    {
+        double pos = position;
+        for (size_t i = 0; i < frames; i++)
+        {
+            auto idx = static_cast<uint64_t>(pos);
+            if (idx >= pcmLen)
+            {
+                if (looping)
+                {
+                    pos = std::fmod(pos, static_cast<double>(pcmLen));
+                    idx = static_cast<uint64_t>(pos);
+                }
+                else
+                {
+                    position = pos;
+                    return;
+                }
+            }
+
+            float frac = static_cast<float>(pos - static_cast<double>(idx));
+            uint64_t next = (idx + 1 < pcmLen) ? idx + 1 : (looping ? 0 : idx);
+
+            float sample = pcmData[idx] + (pcmData[next] - pcmData[idx]) * frac;
+            outputBuffer[i * 2] += sample * gainL;
+            outputBuffer[i * 2 + 1] += sample * gainR;
+
+            pos += rateRatio;
+        }
+        position = pos;
+    }
+
+    static inline void mixStereoSteady(
+        const float* pcmData, uint64_t pcmLen, bool looping, double rateRatio, double& position, float* outputBuffer,
+        size_t frames, float gainL, float gainR)
+    {
+        double pos = position;
+        for (size_t i = 0; i < frames; i++)
+        {
+            auto idx = static_cast<uint64_t>(pos);
+            if (idx >= pcmLen)
+            {
+                if (looping)
+                {
+                    pos = std::fmod(pos, static_cast<double>(pcmLen));
+                    idx = static_cast<uint64_t>(pos);
+                }
+                else
+                {
+                    position = pos;
+                    return;
+                }
+            }
+
+            float frac = static_cast<float>(pos - static_cast<double>(idx));
+            uint64_t next = (idx + 1 < pcmLen) ? idx + 1 : (looping ? 0 : idx);
+
+            float sL = pcmData[idx * 2] + (pcmData[next * 2] - pcmData[idx * 2]) * frac;
+            float sR = pcmData[idx * 2 + 1] + (pcmData[next * 2 + 1] - pcmData[idx * 2 + 1]) * frac;
+            outputBuffer[i * 2] += sL * gainL;
+            outputBuffer[i * 2 + 1] += sR * gainR;
+
+            pos += rateRatio;
+        }
+        position = pos;
+    }
+
     void AudioEngine::mixVoice(Voice& voice, float* outputBuffer, size_t frames, uint32_t outputSampleRate)
     {
         if (voice.pcmData == nullptr || voice.pcmLengthInFrames == 0)
@@ -608,6 +733,30 @@ namespace OpenRCT2::Audio
         }
 
         bool volumeRamping = !fading && (currentVolume != voice.targetVolume);
+        bool panChanged = (voice.prevPanL != targetPanL) || (voice.prevPanR != targetPanR);
+
+        // Steady-state fast path (no ramping or fading)
+        if (!fading && !volumeRamping && !panChanged)
+        {
+            float gainL = currentVolume * groupVol * targetPanL;
+            float gainR = currentVolume * groupVol * targetPanR;
+
+            if (voice.channels == 1)
+                mixMonoSteady(
+                    voice.pcmData, voice.pcmLengthInFrames, voice.looping, rateRatio, voice.playbackPosition, outputBuffer,
+                    frames, gainL, gainR);
+            else
+                mixStereoSteady(
+                    voice.pcmData, voice.pcmLengthInFrames, voice.looping, rateRatio, voice.playbackPosition, outputBuffer,
+                    frames, gainL, gainR);
+
+            if (static_cast<uint64_t>(voice.playbackPosition) >= voice.pcmLengthInFrames && !voice.looping)
+                voice.state = VoiceState::idle;
+
+            voice.prevPanL = targetPanL;
+            voice.prevPanR = targetPanR;
+            return;
+        }
 
         float panL = voice.prevPanL;
         float panR = voice.prevPanR;
