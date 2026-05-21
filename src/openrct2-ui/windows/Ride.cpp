@@ -2976,12 +2976,83 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
+        static ImageId getVehiclePreviewImageId(
+            const Ride& ride, const RideObjectEntry& rideEntry, const CarEntry& carEntry, int32_t trainIndex, int32_t carIndex,
+            bool isReversed)
+        {
+            int32_t vehicleColourIndex = 0;
+
+            switch (ride.vehicleColourSettings)
+            {
+                case VehicleColourSettings::same:
+                    vehicleColourIndex = 0;
+                    break;
+
+                case VehicleColourSettings::perTrain:
+                    vehicleColourIndex = trainIndex;
+                    break;
+
+                case VehicleColourSettings::perCar:
+                    vehicleColourIndex = carIndex;
+                    break;
+            }
+
+            VehicleColour vehicleColour = RideGetVehicleColour(ride, vehicleColourIndex);
+
+            ImageIndex imageIndex = carEntry.SpriteByYaw(Entity::Yaw::kBaseRotation / 2, SpriteGroupType::SlopeFlat);
+
+            if (isReversed)
+            {
+                auto baseRotation = carEntry.NumRotationSprites(SpriteGroupType::SlopeFlat);
+                imageIndex = carEntry.SpriteByYaw(
+                    (imageIndex + (baseRotation / 2)) & (baseRotation - 1), SpriteGroupType::SlopeFlat);
+            }
+
+            imageIndex &= carEntry.TabRotationMask;
+            imageIndex *= carEntry.base_num_frames;
+            imageIndex += carEntry.base_image_id;
+
+            return ImageId(imageIndex, vehicleColour.Body, vehicleColour.Trim, vehicleColour.Tertiary);
+        }
+
         struct VehicleDrawInfo
         {
             int16_t x;
             int16_t y;
             ImageId imageId;
         };
+
+        static size_t prepareTrainCarImages(
+            const Ride& ride, const RideObjectEntry& rideEntry, int32_t trainIndex, bool isReversed, int32_t x, int32_t y,
+            std::span<VehicleDrawInfo> out)
+        {
+            size_t count = 0;
+
+            for (int32_t j = 0; j < ride.numCarsPerTrain; ++j)
+            {
+                const int32_t carIndex = isReversed ? (ride.numCarsPerTrain - 1 - j) : j;
+
+                const auto vehicleIndex = RideEntryGetVehicleAtPosition(ride.subtype, ride.numCarsPerTrain, carIndex);
+                const auto& carEntry = rideEntry.Cars[vehicleIndex];
+
+                const int32_t dx = carEntry.spacing / 17432;
+                const int32_t dy = (carEntry.spacing / 2) / 17432;
+
+                x += dx;
+                y -= dy;
+
+                auto imageId = getVehiclePreviewImageId(ride, rideEntry, carEntry, trainIndex, carIndex, isReversed);
+
+                out[count++] = VehicleDrawInfo{ .x = static_cast<int16_t>(x),
+                                                .y = static_cast<int16_t>(y),
+                                                .imageId = imageId };
+
+                x += dx;
+                y -= dy;
+            }
+
+            return count;
+        }
 
         void VehicleOnScrollDraw(RenderTarget& rt, int32_t scrollIndex)
         {
@@ -2994,86 +3065,34 @@ namespace OpenRCT2::Ui::Windows
             // Background
             Rectangle::fill(rt, { { rt.x, rt.y }, { rt.x + rt.width, rt.y + rt.height } }, PaletteIndex::pi12);
 
-            Widget* widget = &widgets[WIDX_VEHICLE_TRAINS_PREVIEW];
-            int32_t startX = std::max(2, (widget->width() - 1 - ((ride->numTrains - 1) * 36)) / 2 - 25);
-            int32_t startY = widget->height() - 5;
+            const Widget& widget = widgets[WIDX_VEHICLE_TRAINS_PREVIEW];
+            int32_t startX = std::max(2, (widget.width() - 1 - ((ride->numTrains - 1) * 36)) / 2 - 25);
+            int32_t startY = widget.height() - 5;
 
             bool isReversed = ride->flags.has(RideFlag::reversedTrains);
-            int32_t carIndex = (isReversed) ? ride->numCarsPerTrain - 1 : 0;
-
+            const int32_t firstCarIndex = (isReversed) ? ride->numCarsPerTrain - 1 : 0;
             const auto& firstCarEntry = rideEntry->Cars[RideEntryGetVehicleAtPosition(
-                ride->subtype, ride->numCarsPerTrain, carIndex)];
+                ride->subtype, ride->numCarsPerTrain, firstCarIndex)];
             startY += firstCarEntry.tab_height;
 
-            // For each train
+            // Prepare and draw each train
             for (int32_t i = 0; i < ride->numTrains; i++)
             {
                 VehicleDrawInfo trainCarImages[Limits::kMaxCarsPerTrain];
-                VehicleDrawInfo* nextSpriteToDraw = trainCarImages;
-                int32_t x = startX;
-                int32_t y = startY;
 
-                // For each car in train
-                static_assert(std::numeric_limits<decltype(ride->numCarsPerTrain)>::max() <= std::size(trainCarImages));
-                for (int32_t j = 0; j < ride->numCarsPerTrain; j++)
+                std::span images(trainCarImages);
+                auto count = prepareTrainCarImages(*ride, *rideEntry, i, isReversed, startX, startY, images);
+
+                if (ride->getRideTypeDescriptor().flags.has(RtdFlag::layeredVehiclePreview) && count >= 2)
                 {
-                    carIndex = (isReversed) ? (ride->numCarsPerTrain - 1) - j : j;
-
-                    const auto& carEntry = rideEntry->Cars[RideEntryGetVehicleAtPosition(
-                        ride->subtype, ride->numCarsPerTrain, carIndex)];
-                    x += carEntry.spacing / 17432;
-                    y -= (carEntry.spacing / 2) / 17432;
-
-                    // Get colour of vehicle
-                    int32_t vehicleColourIndex = 0;
-                    switch (ride->vehicleColourSettings)
-                    {
-                        case VehicleColourSettings::same:
-                            vehicleColourIndex = 0;
-                            break;
-                        case VehicleColourSettings::perTrain:
-                            vehicleColourIndex = i;
-                            break;
-                        case VehicleColourSettings::perCar:
-                            vehicleColourIndex = carIndex;
-                            break;
-                    }
-                    VehicleColour vehicleColour = RideGetVehicleColour(*ride, vehicleColourIndex);
-
-                    ImageIndex imageIndex = carEntry.SpriteByYaw(Entity::Yaw::kBaseRotation / 2, SpriteGroupType::SlopeFlat);
-                    if (isReversed)
-                    {
-                        auto baseRotation = carEntry.NumRotationSprites(SpriteGroupType::SlopeFlat);
-                        imageIndex = carEntry.SpriteByYaw(
-                            (imageIndex + (baseRotation / 2)) & (baseRotation - 1), SpriteGroupType::SlopeFlat);
-                    }
-
-                    imageIndex &= carEntry.TabRotationMask;
-                    imageIndex *= carEntry.base_num_frames;
-                    imageIndex += carEntry.base_image_id;
-
-                    auto imageId = ImageId(imageIndex, vehicleColour.Body, vehicleColour.Trim, vehicleColour.Tertiary);
-
-                    nextSpriteToDraw->x = x;
-                    nextSpriteToDraw->y = y;
-                    nextSpriteToDraw->imageId = imageId;
-                    nextSpriteToDraw++;
-
-                    x += carEntry.spacing / 17432;
-                    y -= (carEntry.spacing / 2) / 17432;
+                    std::swap(images[count - 1], images[count - 2]);
                 }
 
-                if (ride->getRideTypeDescriptor().flags.has(RtdFlag::layeredVehiclePreview)
-                    && (nextSpriteToDraw - trainCarImages) >= 2)
+                // Draw each car in the train
+                for (auto& image : std::views::reverse(images.first(count)))
                 {
-                    VehicleDrawInfo tmp = *(nextSpriteToDraw - 1);
-                    *(nextSpriteToDraw - 1) = *(nextSpriteToDraw - 2);
-                    *(nextSpriteToDraw - 2) = tmp;
+                    GfxDrawSprite(rt, image.imageId, { image.x, image.y });
                 }
-
-                VehicleDrawInfo* current = nextSpriteToDraw;
-                while (--current >= trainCarImages)
-                    GfxDrawSprite(rt, current->imageId, { current->x, current->y });
 
                 startX += 36;
             }
