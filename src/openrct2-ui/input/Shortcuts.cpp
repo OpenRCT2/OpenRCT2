@@ -115,19 +115,19 @@ static void ShortcutRotateConstructionObject()
 
     // Rotate track design preview
     w = windowMgr->FindByClass(WindowClass::trackDesignList);
-    if (w != nullptr && !widgetIsDisabled(*w, WC_TRACK_DESIGN_LIST__WIDX_ROTATE)
-        && w->widgets[WC_TRACK_DESIGN_LIST__WIDX_ROTATE].type != WidgetType::empty)
+    if (w != nullptr && !widgetIsDisabled(*w, kWindowTrackDesignListWidgetIdxRotate)
+        && w->widgets[kWindowTrackDesignListWidgetIdxRotate].type != WidgetType::empty)
     {
-        w->onMouseUp(WC_TRACK_DESIGN_LIST__WIDX_ROTATE);
+        w->onMouseUp(kWindowTrackDesignListWidgetIdxRotate);
         return;
     }
 
     // Rotate track design placement
     w = windowMgr->FindByClass(WindowClass::trackDesignPlace);
-    if (w != nullptr && !widgetIsDisabled(*w, WC_TRACK_DESIGN_PLACE__WIDX_ROTATE)
-        && w->widgets[WC_TRACK_DESIGN_PLACE__WIDX_ROTATE].type != WidgetType::empty)
+    if (w != nullptr && !widgetIsDisabled(*w, kWindowTrackDesignPlaceWidgetIdxRotate)
+        && w->widgets[kWindowTrackDesignPlaceWidgetIdxRotate].type != WidgetType::empty)
     {
-        w->onMouseUp(WC_TRACK_DESIGN_PLACE__WIDX_ROTATE);
+        w->onMouseUp(kWindowTrackDesignPlaceWidgetIdxRotate);
         return;
     }
 

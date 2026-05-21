@@ -82,7 +82,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_COSTUME_BTN,
     };
 
-    VALIDATE_GLOBAL_WIDX(WC_PEEP, WIDX_PATROL);
+    static_assert(WIDX_PATROL == kWindowPeepWidgetIdxPatrol);
     VALIDATE_GLOBAL_WIDX(WC_STAFF, WIDX_PICKUP);
 
     // clang-format off

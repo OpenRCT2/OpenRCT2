@@ -57,7 +57,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_TOGGLE_SCENERY,
     };
 
-    VALIDATE_GLOBAL_WIDX(WC_TRACK_DESIGN_LIST, WIDX_ROTATE);
+    static_assert(WIDX_ROTATE == kWindowTrackDesignListWidgetIdxRotate);
 
     // clang-format off
     static constexpr auto kFlatBtnSize = ScreenSize{kRotateAndSceneryButtonSize, kRotateAndSceneryButtonSize};

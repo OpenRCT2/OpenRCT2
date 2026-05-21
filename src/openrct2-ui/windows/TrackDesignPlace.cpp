@@ -72,7 +72,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_PREVIEW,
     };
 
-    VALIDATE_GLOBAL_WIDX(WC_TRACK_DESIGN_PLACE, WIDX_ROTATE);
+    static_assert(WIDX_ROTATE == kWindowTrackDesignPlaceWidgetIdxRotate);
 
     // clang-format off
     static constexpr auto _trackPlaceWidgets = makeWidgets(
