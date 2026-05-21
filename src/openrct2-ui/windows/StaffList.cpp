@@ -464,7 +464,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     ToolCancel();
                     auto* staffWindow = StaffOpen(closestStaffMember);
-                    staffWindow->onDropdown(kWindowPeepWidgetIdxPatrol, 0);
+                    staffWindow->onDropdown(kWindowStaffWidgetIdxPatrol, 0);
                 }
                 else
                 {
@@ -575,7 +575,7 @@ namespace OpenRCT2::Ui::Windows
                             auto* wind = ContextOpenIntent(&intent);
                             if (wind != nullptr)
                             {
-                                ToolSet(*wind, WC_STAFF__WIDX_PICKUP, Tool::picker);
+                                ToolSet(*wind, kWindowStaffWidgetIdxPickup, Tool::picker);
                             }
                         });
                     GameActions::Execute(&pickupAction, getGameState());
