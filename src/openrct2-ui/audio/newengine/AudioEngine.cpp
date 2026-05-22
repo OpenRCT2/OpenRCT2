@@ -545,16 +545,22 @@ namespace OpenRCT2::Audio
         if (budgetPct > 70.0f)
         {
             _comfortStreak = 0;
+            _stressStreak++;
 
-            _cullThreshold = std::min(_cullThreshold * 1.5f, kCullVolumeMax);
-
-            size_t currentLimit = _voicePool.getVoiceLimit();
-            if (currentLimit > kVoiceLimitMin)
+            if (_stressStreak >= 3)
             {
-                _voicePool.setVoiceLimit(currentLimit - 8);
+                _cullThreshold = std::min(_cullThreshold * 1.5f, kCullVolumeMax);
+
+                size_t currentLimit = _voicePool.getVoiceLimit();
+                if (currentLimit > kVoiceLimitMin)
+                {
+                    _voicePool.setVoiceLimit(currentLimit - 8);
+                }
             }
             return;
         }
+
+        _stressStreak = 0;
 
         if (_budgetAvg < 15.0f)
         {
