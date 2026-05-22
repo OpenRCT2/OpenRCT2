@@ -2187,16 +2187,16 @@ namespace OpenRCT2::RCT2
         auto src = static_cast<const Peep*>(&baseSrc);
         ImportEntityPeep(dst, src);
 
-        dst->AssignedStaffType = StaffType(src->StaffType);
-        dst->MechanicTimeSinceCall = src->MechanicTimeSinceCall;
+        dst->assignedStaffType = StaffType(src->StaffType);
+        dst->mechanicTimeSinceCall = src->MechanicTimeSinceCall;
 
-        dst->HireDate = src->ParkEntryTime;
-        dst->StaffOrders = src->StaffOrders;
-        dst->StaffMowingTimeout = src->StaffMowingTimeout;
-        dst->StaffLawnsMown = src->PaidToEnter;
-        dst->StaffGardensWatered = src->PaidOnRides;
-        dst->StaffLitterSwept = src->PaidOnFood;
-        dst->StaffBinsEmptied = src->PaidOnSouvenirs;
+        dst->hireDate = src->ParkEntryTime;
+        dst->staffOrders = src->StaffOrders;
+        dst->staffMowingTimeout = src->StaffMowingTimeout;
+        dst->staffLawnsMown = src->PaidToEnter;
+        dst->staffGardensWatered = src->PaidOnRides;
+        dst->staffLitterSwept = src->PaidOnFood;
+        dst->staffBinsEmptied = src->PaidOnSouvenirs;
 
         ImportStaffPatrolArea(dst, src->StaffId);
     }

@@ -1534,12 +1534,12 @@ Staff* FindClosestMechanic(const CoordsXY& entrancePosition, int32_t forInspecti
             else if (peep->State != PeepState::patrolling)
                 continue;
 
-            if (!(peep->StaffOrders & STAFF_ORDERS_FIX_RIDES))
+            if (!(peep->staffOrders & STAFF_ORDERS_FIX_RIDES))
                 continue;
         }
         else
         {
-            if (peep->State != PeepState::patrolling || !(peep->StaffOrders & STAFF_ORDERS_INSPECT_RIDES))
+            if (peep->State != PeepState::patrolling || !(peep->staffOrders & STAFF_ORDERS_INSPECT_RIDES))
                 continue;
         }
 

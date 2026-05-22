@@ -192,7 +192,7 @@ namespace OpenRCT2::Scripting
                 auto staff = getGameState().entities.GetEntity<Staff>(sprite->id);
                 if (staff != nullptr)
                 {
-                    switch (staff->AssignedStaffType)
+                    switch (staff->assignedStaffType)
                     {
                         case StaffType::handyman:
                             JS_SetPropertyInt64(ctx, result, idx++, ScHandyman::New(ctx, sprite->id));
@@ -292,7 +292,7 @@ namespace OpenRCT2::Scripting
                 auto staff = getGameState().entities.GetEntity<Staff>(sprite->id);
                 if (staff != nullptr)
                 {
-                    switch (staff->AssignedStaffType)
+                    switch (staff->assignedStaffType)
                     {
                         case StaffType::handyman:
                             JS_SetPropertyInt64(ctx, result, idx++, ScHandyman::New(ctx, sprite->id));
@@ -484,7 +484,7 @@ namespace OpenRCT2::Scripting
                 auto staff = getGameState().entities.GetEntity<Staff>(spriteId);
                 if (staff != nullptr)
                 {
-                    switch (staff->AssignedStaffType)
+                    switch (staff->assignedStaffType)
                     {
                         case StaffType::handyman:
                             return ScHandyman::New(ctx, spriteId);

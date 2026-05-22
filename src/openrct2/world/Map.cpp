@@ -2314,7 +2314,7 @@ namespace OpenRCT2
                     auto staff = entity->as<Staff>();
                     if (staff != nullptr)
                     {
-                        auto patrol = staff->PatrolInfo;
+                        auto patrol = staff->patrolInfo;
                         if (patrol != nullptr)
                         {
                             auto positions = patrol->ToVector();

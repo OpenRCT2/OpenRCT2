@@ -829,7 +829,7 @@ std::optional<OpenRCT2::Drawing::Colour> GetPatrolAreaTileColour(const CoordsXY&
             {
                 return selected ? OpenRCT2::Drawing::Colour::icyBlue : OpenRCT2::Drawing::Colour::lightBlue;
             }
-            else if (IsPatrolAreaSetForStaffType(staff->AssignedStaffType, pos))
+            else if (IsPatrolAreaSetForStaffType(staff->assignedStaffType, pos))
             {
                 return selected ? OpenRCT2::Drawing::Colour::white : OpenRCT2::Drawing::Colour::grey;
             }

@@ -245,33 +245,33 @@ namespace OpenRCT2
         for (auto peep : EntityList<Staff>())
         {
             peep->SetHireDate(GetDate().GetMonthsElapsed());
-            peep->StaffLawnsMown = 0;
-            peep->StaffRidesFixed = 0;
-            peep->StaffGardensWatered = 0;
-            peep->StaffRidesInspected = 0;
-            peep->StaffLitterSwept = 0;
-            peep->StaffVandalsStopped = 0;
-            peep->StaffBinsEmptied = 0;
+            peep->staffLawnsMown = 0;
+            peep->staffRidesFixed = 0;
+            peep->staffGardensWatered = 0;
+            peep->staffRidesInspected = 0;
+            peep->staffLitterSwept = 0;
+            peep->staffVandalsStopped = 0;
+            peep->staffBinsEmptied = 0;
             peep->staffGuestsEntertained = 0;
         }
     }
 
     bool Staff::IsPatrolAreaSet(const CoordsXY& coords) const
     {
-        if (PatrolInfo != nullptr)
+        if (patrolInfo != nullptr)
         {
-            return PatrolInfo->Get(coords);
+            return patrolInfo->Get(coords);
         }
         return false;
     }
 
     void Staff::SetPatrolArea(const CoordsXY& coords, bool value)
     {
-        if (PatrolInfo == nullptr)
+        if (patrolInfo == nullptr)
         {
             if (value)
             {
-                PatrolInfo = new PatrolArea();
+                patrolInfo = new PatrolArea();
             }
             else
             {
@@ -279,7 +279,7 @@ namespace OpenRCT2
             }
         }
 
-        PatrolInfo->Set(coords, value);
+        patrolInfo->Set(coords, value);
     }
 
     void Staff::SetPatrolArea(const MapRange& range, bool value)
@@ -295,13 +295,13 @@ namespace OpenRCT2
 
     void Staff::ClearPatrolArea()
     {
-        delete PatrolInfo;
-        PatrolInfo = nullptr;
+        delete patrolInfo;
+        patrolInfo = nullptr;
     }
 
     bool Staff::HasPatrolArea() const
     {
-        return PatrolInfo == nullptr ? false : !PatrolInfo->IsEmpty();
+        return patrolInfo == nullptr ? false : !patrolInfo->IsEmpty();
     }
 
     /**
@@ -474,18 +474,18 @@ namespace OpenRCT2
      */
     bool Staff::DoHandymanPathFinding()
     {
-        StaffMowingTimeout++;
+        staffMowingTimeout++;
 
         Direction litterDirection = kInvalidDirection;
         uint8_t validDirections = GetValidPatrolDirections(NextLoc);
 
-        if ((StaffOrders & STAFF_ORDERS_SWEEPING) && ((getGameState().currentTicks + id.ToUnderlying()) & 0xFFF) > 110)
+        if ((staffOrders & STAFF_ORDERS_SWEEPING) && ((getGameState().currentTicks + id.ToUnderlying()) & 0xFFF) > 110)
         {
             litterDirection = HandymanDirectionToNearestLitter();
         }
 
         Direction newDirection = kInvalidDirection;
-        if (litterDirection == kInvalidDirection && (StaffOrders & STAFF_ORDERS_MOWING) && StaffMowingTimeout >= 12)
+        if (litterDirection == kInvalidDirection && (staffOrders & STAFF_ORDERS_MOWING) && staffMowingTimeout >= 12)
         {
             newDirection = HandymanDirectionToUncutGrass(validDirections);
         }
@@ -937,7 +937,7 @@ namespace OpenRCT2
      */
     bool Staff::DoPathFinding()
     {
-        switch (AssignedStaffType)
+        switch (assignedStaffType)
         {
             case StaffType::handyman:
                 return DoHandymanPathFinding();
@@ -954,14 +954,14 @@ namespace OpenRCT2
         }
     }
 
-    void Staff::SetHireDate(int32_t hireDate)
+    void Staff::SetHireDate(int32_t value)
     {
-        HireDate = hireDate;
+        this->hireDate = value;
     }
 
     int32_t Staff::GetHireDate() const
     {
-        return HireDate;
+        return hireDate;
     }
 
     Drawing::Colour StaffGetColour(StaffType staffType)
@@ -1053,7 +1053,7 @@ namespace OpenRCT2
                 surfaceElement->SetGrassLength(GRASS_LENGTH_MOWED);
                 MapInvalidateTileZoom0({ NextLoc, surfaceElement->getBaseZ(), surfaceElement->getBaseZ() + 16 });
             }
-            StaffLawnsMown = AddClamp(StaffLawnsMown, 1u);
+            staffLawnsMown = AddClamp(staffLawnsMown, 1u);
             WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
         }
     }
@@ -1064,7 +1064,7 @@ namespace OpenRCT2
      */
     void Staff::UpdateWatering()
     {
-        StaffMowingTimeout = 0;
+        staffMowingTimeout = 0;
         if (SubState == 0)
         {
             if (!CheckForPath())
@@ -1112,7 +1112,7 @@ namespace OpenRCT2
 
                 tile_element->asSmallScenery()->SetAge(0);
                 MapInvalidateTileZoom0({ actionLoc, tile_element->getBaseZ(), tile_element->getClearanceZ() });
-                StaffGardensWatered = AddClamp(StaffGardensWatered, 1u);
+                staffGardensWatered = AddClamp(staffGardensWatered, 1u);
                 WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
             } while (!(tile_element++)->isLastForTile());
 
@@ -1126,7 +1126,7 @@ namespace OpenRCT2
      */
     void Staff::UpdateEmptyingBin()
     {
-        StaffMowingTimeout = 0;
+        staffMowingTimeout = 0;
 
         if (SubState == 0)
         {
@@ -1195,7 +1195,7 @@ namespace OpenRCT2
             tile_element->asPath()->SetAdditionStatus(additionStatus);
 
             MapInvalidateTileZoom0({ NextLoc, tile_element->getBaseZ(), tile_element->getClearanceZ() });
-            StaffBinsEmptied = AddClamp(StaffBinsEmptied, 1u);
+            staffBinsEmptied = AddClamp(staffBinsEmptied, 1u);
             WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
         }
     }
@@ -1206,7 +1206,7 @@ namespace OpenRCT2
      */
     void Staff::UpdateSweeping()
     {
-        StaffMowingTimeout = 0;
+        staffMowingTimeout = 0;
         if (!CheckForPath())
             return;
 
@@ -1214,7 +1214,7 @@ namespace OpenRCT2
         {
             // Remove sick at this location
             Litter::RemoveAt(getLocation());
-            StaffLitterSwept = AddClamp(StaffLitterSwept, 1u);
+            staffLitterSwept = AddClamp(staffLitterSwept, 1u);
             WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
         }
         if (auto loc = UpdateAction(); loc.has_value())
@@ -1264,15 +1264,15 @@ namespace OpenRCT2
 
         if (SubState == 0)
         {
-            MechanicTimeSinceCall = 0;
+            mechanicTimeSinceCall = 0;
             ResetPathfindGoal();
             SubState = 2;
         }
 
         if (SubState <= 3)
         {
-            MechanicTimeSinceCall++;
-            if (MechanicTimeSinceCall > 2500)
+            mechanicTimeSinceCall++;
+            if (mechanicTimeSinceCall > 2500)
             {
                 if (ride->flags.has(RideFlag::dueInspection) && ride->mechanicStatus == MechanicStatus::heading)
                 {
@@ -1368,7 +1368,7 @@ namespace OpenRCT2
             {
                 SubState = 2;
                 PeepWindowStateUpdate(this);
-                MechanicTimeSinceCall = 0;
+                mechanicTimeSinceCall = 0;
                 ResetPathfindGoal();
                 return;
             }
@@ -1378,8 +1378,8 @@ namespace OpenRCT2
         }
         if (SubState <= 3)
         {
-            MechanicTimeSinceCall++;
-            if (MechanicTimeSinceCall > 2500)
+            mechanicTimeSinceCall++;
+            if (mechanicTimeSinceCall > 2500)
             {
                 ride->mechanicStatus = MechanicStatus::calling;
                 ride->windowInvalidateFlags.set(RideInvalidateFlag::maintenance);
@@ -1455,7 +1455,7 @@ namespace OpenRCT2
      */
     bool Staff::UpdatePatrollingFindWatering()
     {
-        if (!(StaffOrders & STAFF_ORDERS_WATER_FLOWERS))
+        if (!(staffOrders & STAFF_ORDERS_WATER_FLOWERS))
             return false;
 
         uint8_t chosen_position = ScenarioRand() & 7;
@@ -1526,7 +1526,7 @@ namespace OpenRCT2
      */
     bool Staff::UpdatePatrollingFindBin()
     {
-        if (!(StaffOrders & STAFF_ORDERS_EMPTY_BINS))
+        if (!(staffOrders & STAFF_ORDERS_EMPTY_BINS))
             return false;
 
         if (GetNextIsSurface())
@@ -1590,10 +1590,10 @@ namespace OpenRCT2
      */
     bool Staff::UpdatePatrollingFindGrass()
     {
-        if (!(StaffOrders & STAFF_ORDERS_MOWING))
+        if (!(staffOrders & STAFF_ORDERS_MOWING))
             return false;
 
-        if (StaffMowingTimeout < 12)
+        if (staffMowingTimeout < 12)
             return false;
 
         if (!(GetNextIsSurface()))
@@ -1622,7 +1622,7 @@ namespace OpenRCT2
      */
     bool Staff::UpdatePatrollingFindSweeping()
     {
-        if (!(StaffOrders & STAFF_ORDERS_SWEEPING))
+        if (!(staffOrders & STAFF_ORDERS_SWEEPING))
             return false;
         auto quad = EntityTileList<Litter>({ x, y });
         for (auto litter : quad)
@@ -1687,7 +1687,7 @@ namespace OpenRCT2
 
     void Staff::Tick128UpdateStaff()
     {
-        if (AssignedStaffType != StaffType::security)
+        if (assignedStaffType != StaffType::security)
             return;
 
         // Alternate between walking animations based on crowd size
@@ -1720,12 +1720,12 @@ namespace OpenRCT2
 
     bool Staff::IsMechanic() const
     {
-        return AssignedStaffType == StaffType::mechanic;
+        return assignedStaffType == StaffType::mechanic;
     }
 
     bool Staff::isEntertainer() const
     {
-        return AssignedStaffType == StaffType::entertainer;
+        return assignedStaffType == StaffType::entertainer;
     }
 
     void Staff::Update()
@@ -1850,7 +1850,7 @@ namespace OpenRCT2
             }
         }
 
-        if (AssignedStaffType != StaffType::handyman)
+        if (assignedStaffType != StaffType::handyman)
             return;
 
         if (UpdatePatrollingFindSweeping())
@@ -2521,13 +2521,13 @@ namespace OpenRCT2
             {
                 UpdateRideInspected(CurrentRide);
 
-                StaffRidesInspected = AddClamp(StaffRidesInspected, 1u);
+                staffRidesInspected = AddClamp(staffRidesInspected, 1u);
                 WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
                 ride.mechanicStatus = MechanicStatus::undefined;
                 return true;
             }
 
-            StaffRidesFixed = AddClamp(StaffRidesFixed, 1u);
+            staffRidesFixed = AddClamp(staffRidesFixed, 1u);
             WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
 
             orientation = PeepDirection << 3;
@@ -2631,14 +2631,14 @@ namespace OpenRCT2
     void Staff::serialise(DataSerialiser& stream)
     {
         Peep::serialise(stream);
-        stream << AssignedStaffType;
-        stream << MechanicTimeSinceCall;
-        stream << HireDate;
-        stream << StaffOrders;
-        stream << StaffMowingTimeout;
-        stream << StaffLawnsMown;      // union with StaffRidesFixed, staffGuestsEntertained
-        stream << StaffGardensWatered; // union with StaffRidesInspected
-        stream << StaffLitterSwept;    // union with StaffVandalsStopped
-        stream << StaffBinsEmptied;
+        stream << assignedStaffType;
+        stream << mechanicTimeSinceCall;
+        stream << hireDate;
+        stream << staffOrders;
+        stream << staffMowingTimeout;
+        stream << staffLawnsMown;      // union with staffRidesFixed, staffGuestsEntertained
+        stream << staffGardensWatered; // union with staffRidesInspected
+        stream << staffLitterSwept;    // union with staffVandalsStopped
+        stream << staffBinsEmptied;
     }
 } // namespace OpenRCT2

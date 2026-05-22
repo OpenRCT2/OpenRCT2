@@ -147,13 +147,13 @@ namespace OpenRCT2
 
             for (auto staff : EntityList<Staff>())
             {
-                if (EnumValue(staff->AssignedStaffType) != staffType)
+                if (EnumValue(staff->assignedStaffType) != staffType)
                     continue;
 
-                if (staff->PatrolInfo == nullptr)
+                if (staff->patrolInfo == nullptr)
                     continue;
 
-                mergedArea.Union(*staff->PatrolInfo);
+                mergedArea.Union(*staff->patrolInfo);
             }
         }
     }

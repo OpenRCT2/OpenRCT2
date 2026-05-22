@@ -1489,7 +1489,7 @@ namespace OpenRCT2
                 if (isStaff)
                 {
                     // Prevent staff from getting the same names by offsetting the name table based on staff type.
-                    nameId *= 256 * EnumValue(staff->AssignedStaffType) + 1;
+                    nameId *= 256 * EnumValue(staff->assignedStaffType) + 1;
                 }
 
                 auto realNameStringId = GetRealNameStringIDFromPeepID(nameId);
@@ -1497,7 +1497,7 @@ namespace OpenRCT2
             }
             else if (isStaff)
             {
-                auto staffNameIndex = static_cast<uint8_t>(staff->AssignedStaffType);
+                auto staffNameIndex = static_cast<uint8_t>(staff->assignedStaffType);
                 if (staffNameIndex >= std::size(kStaffNames))
                 {
                     staffNameIndex = 0;
@@ -2470,7 +2470,7 @@ namespace OpenRCT2
                 if (staff != nullptr && !GetNextIsSurface())
                 {
                     // Prevent staff from leaving the path on their own unless they're allowed to mow.
-                    if (!((staff->StaffOrders & STAFF_ORDERS_MOWING) && staff->StaffMowingTimeout >= 12))
+                    if (!((staff->staffOrders & STAFF_ORDERS_MOWING) && staff->staffMowingTimeout >= 12))
                     {
                         PeepReturnToCentreOfTile(staff);
                         return { pathingResult, tileResult };

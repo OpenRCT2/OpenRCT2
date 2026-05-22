@@ -54,7 +54,7 @@ namespace OpenRCT2::GameActions
 
         auto* staff = gameState.entities.TryGetEntity<Staff>(_spriteIndex);
         if (staff == nullptr
-            || (staff->AssignedStaffType != StaffType::handyman && staff->AssignedStaffType != StaffType::mechanic))
+            || (staff->assignedStaffType != StaffType::handyman && staff->assignedStaffType != StaffType::mechanic))
         {
             LOG_ERROR("Staff orders can't be changed for staff of type %u", _spriteIndex);
             return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_ACTION_INVALID_FOR_THAT_STAFF_TYPE);
@@ -71,7 +71,7 @@ namespace OpenRCT2::GameActions
             LOG_ERROR("Staff entity not found for spriteIndex %u", _spriteIndex);
             return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_STAFF_NOT_FOUND);
         }
-        staff->StaffOrders = _ordersId;
+        staff->staffOrders = _ordersId;
 
         auto* windowMgr = Ui::GetWindowManager();
         windowMgr->InvalidateByNumber(WindowClass::peep, _spriteIndex);

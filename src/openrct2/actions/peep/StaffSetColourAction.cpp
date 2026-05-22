@@ -67,7 +67,7 @@ namespace OpenRCT2::GameActions
         // Update each staff member's uniform
         for (auto peep : EntityList<Staff>())
         {
-            if (peep->AssignedStaffType == static_cast<StaffType>(_staffType))
+            if (peep->assignedStaffType == static_cast<StaffType>(_staffType))
             {
                 peep->TshirtColour = _colour;
                 peep->TrousersColour = _colour;

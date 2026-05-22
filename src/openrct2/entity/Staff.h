@@ -47,32 +47,32 @@ namespace OpenRCT2
         static constexpr auto cEntityType = EntityType::staff;
 
     public:
-        PatrolArea* PatrolInfo;
-        StaffType AssignedStaffType;
-        uint16_t MechanicTimeSinceCall; // time getting to ride to fix
-        int32_t HireDate;
-        uint8_t StaffOrders;
-        uint8_t StaffMowingTimeout;
+        PatrolArea* patrolInfo;
+        StaffType assignedStaffType;
+        uint16_t mechanicTimeSinceCall; // time getting to ride to fix
+        int32_t hireDate;
+        uint8_t staffOrders;
+        uint8_t staffMowingTimeout;
 
         union // 1st statistic
         {
-            uint32_t StaffLawnsMown;
-            uint32_t StaffRidesFixed;
+            uint32_t staffLawnsMown;
+            uint32_t staffRidesFixed;
             uint32_t staffGuestsEntertained;
         };
         union // 2nd statistic
         {
-            uint32_t StaffGardensWatered;
-            uint32_t StaffRidesInspected;
+            uint32_t staffGardensWatered;
+            uint32_t staffRidesInspected;
         };
         union // 3rd statistic
         {
-            uint32_t StaffLitterSwept;
-            uint32_t StaffVandalsStopped;
+            uint32_t staffLitterSwept;
+            uint32_t staffVandalsStopped;
         };
         union // 4th statistic
         {
-            uint32_t StaffBinsEmptied;
+            uint32_t staffBinsEmptied;
         };
 
         void Update();
@@ -83,7 +83,7 @@ namespace OpenRCT2
         bool IsLocationInPatrol(const CoordsXY& loc) const;
         bool IsLocationOnPatrolEdge(const CoordsXY& loc) const;
         bool DoPathFinding();
-        void SetHireDate(int32_t hireDate);
+        void SetHireDate(int32_t value);
         int32_t GetHireDate() const;
 
         bool CanIgnoreWideFlag(const CoordsXYZ& staffPos, TileElement* path) const;
@@ -157,19 +157,19 @@ namespace OpenRCT2
 
     enum class EntertainerCostume : uint8_t
     {
-        Panda,
-        Tiger,
-        Elephant,
-        Roman,
-        Gorilla,
-        Snowman,
-        Knight,
-        Astronaut,
-        Bandit,
-        Sheriff,
-        Pirate,
+        panda,
+        tiger,
+        elephant,
+        roman,
+        gorilla,
+        snowman,
+        knight,
+        astronaut,
+        bandit,
+        sheriff,
+        pirate,
 
-        Count
+        count
     };
 
     Drawing::Colour StaffGetColour(StaffType staffType);
