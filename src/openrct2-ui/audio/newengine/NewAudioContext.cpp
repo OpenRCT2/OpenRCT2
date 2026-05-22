@@ -370,6 +370,31 @@ namespace OpenRCT2::Audio
         return false;
     }
 
+    AudioStreamInfo NewAudioContext::ProbeStream(std::unique_ptr<IStream> stream)
+    {
+        auto* rw = createRWopsFromStream(std::move(stream));
+        if (rw == nullptr)
+            return {};
+
+        try
+        {
+            // CreateAudioSource takes ownership of rw (closes it on destruction)
+            auto sdlSource = CreateAudioSource(rw);
+            if (sdlSource == nullptr)
+                return {};
+
+            AudioStreamInfo info;
+            info.bytesPerSecond = sdlSource->GetBytesPerSecond();
+            info.length = sdlSource->GetLength();
+            return info;
+        }
+        catch (const std::exception& e)
+        {
+            LOG_VERBOSE("Unable to probe audio stream: %s", e.what());
+            return {};
+        }
+    }
+
     Float32AudioData* NewAudioContext::convertToFloat32(
         const void* pcmData, size_t pcmLen, AudioSampleFormat format, uint8_t srcChannels, int srcFreq)
     {
