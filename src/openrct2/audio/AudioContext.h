@@ -12,6 +12,7 @@
 #include "../core/IStream.hpp"
 #include "AudioMixer.h"
 
+#include <cstdint>
 #include <memory>
 #include <string>
 #include <vector>
@@ -25,6 +26,12 @@ namespace OpenRCT2::Audio
     /**
      * Audio services for playing music and sound effects.
      */
+    struct AudioStreamInfo
+    {
+        int32_t bytesPerSecond = 0;
+        uint64_t length = 0;
+    };
+
     struct IAudioContext
     {
         virtual ~IAudioContext() = default;
@@ -36,6 +43,14 @@ namespace OpenRCT2::Audio
 
         virtual IAudioSource* CreateStreamFromCSS(std::unique_ptr<IStream> stream, uint32_t index) = 0;
         virtual IAudioSource* CreateStreamFromWAV(std::unique_ptr<IStream> stream) = 0;
+
+        // Reads format metadata from a stream without fully decoding it
+        // For when you only need bytesPerSecond/length (e.g. MusicObject)
+        virtual AudioStreamInfo ProbeStream(std::unique_ptr<IStream> stream)
+        {
+            (void)stream;
+            return {};
+        }
 
         virtual void StartTitleMusic() = 0;
 
