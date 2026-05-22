@@ -208,6 +208,11 @@ namespace OpenRCT2::Audio
         return false;
     }
 
+    AudioStreamInfo DualAudioContext::ProbeStream(std::unique_ptr<IStream> stream)
+    {
+        return active()->ProbeStream(std::move(stream));
+    }
+
     std::unique_ptr<IAudioContext> createDualAudioContext()
     {
         return std::make_unique<DualAudioContext>();

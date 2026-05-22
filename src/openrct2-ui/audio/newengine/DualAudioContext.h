@@ -47,6 +47,7 @@ namespace OpenRCT2::Audio
         void SyncVolumeSettings() override;
         void SwitchAudioEngine() override;
         bool HandleAudioDeviceEvent(uint32_t eventType, uint32_t deviceIndex, bool isCapture) override;
+        AudioStreamInfo ProbeStream(std::unique_ptr<IStream> stream) override;
 
         std::shared_ptr<IAudioChannel> CreateChannel(
             IAudioSource* source, MixerGroup group, bool loop, int32_t volume, float pan, double rate) override;

@@ -132,6 +132,28 @@ namespace OpenRCT2::Audio
             }
         }
 
+        AudioStreamInfo ProbeStream(std::unique_ptr<IStream> stream) override
+        {
+            auto* rw = StreamToSDL2(std::move(stream));
+            if (rw == nullptr)
+                return {};
+
+            try
+            {
+                // CreateAudioSource takes ownership of rw (closes it on destruction)
+                auto source = CreateAudioSource(rw);
+                AudioStreamInfo info;
+                info.bytesPerSecond = source->GetBytesPerSecond();
+                info.length = source->GetLength();
+                return info;
+            }
+            catch (const std::exception& e)
+            {
+                LOG_VERBOSE("Unable to probe audio stream: %s", e.what());
+                return {};
+            }
+        }
+
         void StartTitleMusic() override
         {
         }
