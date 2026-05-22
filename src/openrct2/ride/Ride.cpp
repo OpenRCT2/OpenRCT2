@@ -1487,8 +1487,12 @@ static void RideCallClosestMechanic(Ride& ride)
 
 Staff* RideFindClosestMechanic(const Ride& ride, int32_t forInspection)
 {
+    const auto stationIndex = ride.inspectionStation.IsNull() ? RideGetFirstValidStationExit(ride) : ride.inspectionStation;
+    if (stationIndex.IsNull())
+        return nullptr;
+
     // Get either exit position or entrance position if there is no exit
-    auto& station = ride.getStation(ride.inspectionStation);
+    const auto& station = ride.getStation(stationIndex);
     TileCoordsXYZD location = station.Exit;
     if (location.IsNull())
     {

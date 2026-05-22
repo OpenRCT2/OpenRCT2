@@ -2,6 +2,7 @@
 ------------------------------------------------------------------------
 - Improved: [#26566] Improve the performance of sorting sprites.
 - Fix: [#26583] The default tab is not highlighted when opening a ride window.
+- Fix: [#26602] Crash when locating the nearest mechanic for a ride that has not previously been inspected.
 
 0.5.1 (2026-05-17)
 ------------------------------------------------------------------------
