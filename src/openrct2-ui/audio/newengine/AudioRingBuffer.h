@@ -29,6 +29,7 @@ namespace OpenRCT2::Audio
         static_assert((Capacity & (Capacity - 1)) == 0, "Capacity must be a power of two");
         static_assert(Capacity > 0, "Capacity must be greater than zero");
         static_assert(std::is_trivially_copyable_v<T>, "Ring buffer elements must be trivially copyable");
+        static_assert(Capacity <= 0xFFFFFFFF, "Capacity must fit in 32 bits for masking");
 
     public:
         bool tryPush(const T& item)
