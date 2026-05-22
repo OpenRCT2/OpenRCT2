@@ -16,6 +16,7 @@
 #include <SDL.h>
 #include <cmath>
 #include <openrct2/Diagnostic.h>
+#include <openrct2/OpenRCT2.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/audio/AudioSource.h>
 #include <openrct2/core/IStream.hpp>
@@ -356,6 +357,8 @@ namespace OpenRCT2::Audio
         _engine->setMasterVolume(master);
 
         float sfx = powf(static_cast<float>(sound.soundVolume) / 100.0f, 10.0f / 6.0f);
+        if (gLegacyScene == LegacyScene::titleSequence)
+            sfx = std::min(sfx, 0.75f);
         _engine->setGroupVolume(AudioEngineGroup::sound, sfx);
 
         float music = powf(static_cast<float>(sound.rideMusicVolume) / 100.0f, 10.0f / 6.0f);
