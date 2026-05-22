@@ -419,12 +419,7 @@ namespace OpenRCT2::Audio
         return _voicePool.getByGameHandle(handle);
     }
 
-    size_t AudioEngine::getActiveVoiceCount() const
-    {
-        return _voicePool.activeCount();
-    }
-
-    AudioEngineStats AudioEngine::getDebugStats() const
+    AudioEngineStats AudioEngine::getStats() const
     {
         AudioEngineStats stats = _stats;
         stats.droppedCommands = _droppedCommands.load(std::memory_order_relaxed);

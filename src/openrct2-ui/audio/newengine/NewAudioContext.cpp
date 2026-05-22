@@ -290,11 +290,6 @@ namespace OpenRCT2::Audio
         return true;
     }
 
-    bool NewAudioContext::isDeviceOpen() const
-    {
-        return _platform != nullptr && _platform->isOpen();
-    }
-
     void NewAudioContext::PlayOneShot(IAudioSource* source, float volume, float pan)
     {
         if (_engine == nullptr)

@@ -88,8 +88,7 @@ namespace OpenRCT2::Audio
         // voice finishes, is stopped, or gets stolen by another sound
         [[nodiscard]] bool isHandleActive(AudioHandle gameHandle) const;
 
-        [[nodiscard]] size_t getActiveVoiceCount() const;
-        [[nodiscard]] AudioEngineStats getDebugStats() const;
+        [[nodiscard]] AudioEngineStats getStats() const;
 
     private:
         void processCommands();
