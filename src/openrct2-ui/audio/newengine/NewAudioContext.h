@@ -80,8 +80,6 @@ namespace OpenRCT2::Audio
         AudioEngine* getEngine();
 
         bool IsNewEngine() const override;
-        bool isDeviceOpen() const;
-
         void PlayOneShot(IAudioSource* source, float volume, float pan) override;
         void SyncVolumeSettings() override;
         bool HandleAudioDeviceEvent(uint32_t eventType, uint32_t deviceIndex, bool isCapture) override;
