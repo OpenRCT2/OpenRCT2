@@ -140,7 +140,7 @@ void ScenarioReset(GameState_t& gameState)
     Duck::RemoveAll();
     Park::UpdateSize(park);
     MapCountRemainingLandRights();
-    Staff::ResetStats();
+    Staff::resetStats();
 
     gameState.lastEntranceStyle = objManager.GetLoadedObjectEntryIndex("rct2.station.plain");
     if (gameState.lastEntranceStyle == kObjectEntryIndexNull)

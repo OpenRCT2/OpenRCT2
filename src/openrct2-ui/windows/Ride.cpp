@@ -4134,7 +4134,7 @@ namespace OpenRCT2::Ui::Windows
 
                         for (auto peep : EntityList<Staff>())
                         {
-                            if (peep->IsMechanic())
+                            if (peep->isMechanic())
                             {
                                 stringId = STR_CALLING_MECHANIC;
                                 break;
@@ -4163,7 +4163,7 @@ namespace OpenRCT2::Ui::Windows
                     else
                     {
                         auto staff = getGameState().entities.GetEntity<Staff>(ride->mechanic);
-                        if (staff != nullptr && staff->IsMechanic())
+                        if (staff != nullptr && staff->isMechanic())
                         {
                             ft = Formatter();
                             staff->FormatNameTo(ft);

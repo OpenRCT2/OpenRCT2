@@ -88,7 +88,7 @@ namespace OpenRCT2::Scripting
                 peep->AnimationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::handyman);
                 peep->AnimationGroup = PeepAnimationGroup::normal;
             }
-            else if (value == "mechanic" && !peep->IsMechanic())
+            else if (value == "mechanic" && !peep->isMechanic())
             {
                 peep->assignedStaffType = StaffType::mechanic;
                 peep->AnimationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::mechanic);
@@ -522,7 +522,7 @@ namespace OpenRCT2::Scripting
     JSValue ScMechanic::ridesFixed_get(JSContext* ctx, JSValue thisVal)
     {
         auto peep = GetStaff(thisVal);
-        if (peep != nullptr && peep->IsMechanic())
+        if (peep != nullptr && peep->isMechanic())
         {
             return JS_NewUint32(ctx, peep->staffRidesFixed);
         }
@@ -535,7 +535,7 @@ namespace OpenRCT2::Scripting
     JSValue ScMechanic::ridesInspected_get(JSContext* ctx, JSValue thisVal)
     {
         auto peep = GetStaff(thisVal);
-        if (peep != nullptr && peep->IsMechanic())
+        if (peep != nullptr && peep->isMechanic())
         {
             return JS_NewUint32(ctx, peep->staffRidesInspected);
         }
@@ -617,7 +617,7 @@ namespace OpenRCT2::Scripting
             {
                 JSIterateArray(ctx, coordsOrRange, [staff, reset](JSContext* ctx2, JSValue v) {
                     auto coord = JSToCoordsXY(ctx2, v);
-                    staff->SetPatrolArea(coord, reset);
+                    staff->setPatrolArea(coord, reset);
                     MapInvalidateTileFull(coord);
                 });
             }
@@ -630,7 +630,7 @@ namespace OpenRCT2::Scripting
                     for (int32_t x = mapRange.GetX1(); x <= mapRange.GetX2(); x += kCoordsXYStep)
                     {
                         CoordsXY coord(x, y);
-                        staff->SetPatrolArea(coord, reset);
+                        staff->setPatrolArea(coord, reset);
                         MapInvalidateTileFull(coord);
                     }
                 }
@@ -667,7 +667,7 @@ namespace OpenRCT2::Scripting
         auto staff = GetStaff(thisVal);
         if (staff != nullptr)
         {
-            staff->ClearPatrolArea();
+            staff->clearPatrolArea();
             if (JS_IsArray(value))
             {
                 ModifyArea(ctx, thisVal, value, true);
@@ -683,7 +683,7 @@ namespace OpenRCT2::Scripting
         auto staff = GetStaff(thisVal);
         if (staff != nullptr)
         {
-            staff->ClearPatrolArea();
+            staff->clearPatrolArea();
             UpdateConsolidatedPatrolAreas();
         }
         return JS_UNDEFINED;
@@ -712,7 +712,7 @@ namespace OpenRCT2::Scripting
         if (staff != nullptr)
         {
             auto pos = JSToCoordsXY(ctx, coord);
-            return JS_NewBool(ctx, staff->IsLocationInPatrol(pos));
+            return JS_NewBool(ctx, staff->isLocationInPatrol(pos));
         }
         return JS_NewBool(ctx, false);
     }

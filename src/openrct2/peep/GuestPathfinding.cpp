@@ -732,7 +732,7 @@ namespace OpenRCT2::PathFinding
         if (currentElementIsWide)
         {
             const Staff* staff = peep.as<Staff>();
-            if (staff != nullptr && staff->CanIgnoreWideFlag(loc.ToCoordsXYZ(), currentTileElement))
+            if (staff != nullptr && staff->canIgnoreWideFlag(loc.ToCoordsXYZ(), currentTileElement))
                 currentElementIsWide = false;
         }
 
@@ -752,9 +752,9 @@ namespace OpenRCT2::PathFinding
 
         bool nextInPatrolArea = inPatrolArea;
         auto* staff = peep.as<Staff>();
-        if (staff != nullptr && staff->IsMechanic())
+        if (staff != nullptr && staff->isMechanic())
         {
-            nextInPatrolArea = staff->IsLocationInPatrol(loc.ToCoordsXY());
+            nextInPatrolArea = staff->isLocationInPatrol(loc.ToCoordsXY());
             if (inPatrolArea && !nextInPatrolArea)
             {
                 /* The mechanic will leave his patrol area by taking
@@ -859,7 +859,7 @@ namespace OpenRCT2::PathFinding
                     if (pathElement->IsWide())
                     {
                         /* Check if staff can ignore this wide flag. */
-                        if (staff == nullptr || !staff->CanIgnoreWideFlag(loc.ToCoordsXYZ(), tileElement))
+                        if (staff == nullptr || !staff->canIgnoreWideFlag(loc.ToCoordsXYZ(), tileElement))
                         {
                             searchResult = PathSearchResult::Wide;
                             found = true;
@@ -1450,12 +1450,12 @@ namespace OpenRCT2::PathFinding
 
                 bool inPatrolArea = false;
                 auto* staff = peep.as<Staff>();
-                if (staff != nullptr && staff->IsMechanic())
+                if (staff != nullptr && staff->isMechanic())
                 {
                     /* Mechanics are the only staff type that
                      * pathfind to a destination. Determine if the
                      * mechanic is in their patrol area. */
-                    inPatrolArea = staff->IsLocationInPatrol(peep.NextLoc);
+                    inPatrolArea = staff->isLocationInPatrol(peep.NextLoc);
                 }
 
                 LogPathfinding(

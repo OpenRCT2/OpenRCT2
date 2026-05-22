@@ -2503,7 +2503,7 @@ namespace OpenRCT2
         {
             if (patrolArea.empty())
             {
-                entity.ClearPatrolArea();
+                entity.clearPatrolArea();
             }
             else
             {

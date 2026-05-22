@@ -87,19 +87,19 @@ namespace OpenRCT2::GameActions
             switch (_mode)
             {
                 case StaffSetPatrolAreaMode::set:
-                    staff->SetPatrolArea(_range, true);
+                    staff->setPatrolArea(_range, true);
                     InvalidatePatrolTiles(_range);
                     break;
                 case StaffSetPatrolAreaMode::unset:
-                    staff->SetPatrolArea(_range, false);
-                    if (!staff->HasPatrolArea())
+                    staff->setPatrolArea(_range, false);
+                    if (!staff->hasPatrolArea())
                     {
-                        staff->ClearPatrolArea();
+                        staff->clearPatrolArea();
                     }
                     InvalidatePatrolTiles(_range);
                     break;
                 case StaffSetPatrolAreaMode::clearAll:
-                    staff->ClearPatrolArea();
+                    staff->clearPatrolArea();
                     GfxInvalidateScreen();
                     break;
             }

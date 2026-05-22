@@ -447,7 +447,7 @@ namespace OpenRCT2::Ui::Windows
                     }
 
                     // Disable clear patrol area if no area is set.
-                    if (!staff->HasPatrolArea())
+                    if (!staff->hasPatrolArea())
                     {
                         gDropdown.items[1].setDisabled(true);
                     }
@@ -946,7 +946,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             auto ft = Formatter();
-            ft.Add<int32_t>(staff->GetHireDate());
+            ft.Add<int32_t>(staff->getHireDate());
             drawText(rt, screenCoords, STR_STAFF_STAT_EMPLOYED_FOR, ft);
             screenCoords.y += kListRowHeight;
 

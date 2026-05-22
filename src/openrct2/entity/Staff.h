@@ -76,72 +76,72 @@ namespace OpenRCT2
         };
 
         void Update();
-        void Tick128UpdateStaff();
-        bool IsMechanic() const;
+        void tick128UpdateStaff();
+        bool isMechanic() const;
         bool isEntertainer() const;
-        bool IsPatrolAreaSet(const CoordsXY& coords) const;
-        bool IsLocationInPatrol(const CoordsXY& loc) const;
-        bool IsLocationOnPatrolEdge(const CoordsXY& loc) const;
-        bool DoPathFinding();
-        void SetHireDate(int32_t value);
-        int32_t GetHireDate() const;
+        bool isPatrolAreaSet(const CoordsXY& coords) const;
+        bool isLocationInPatrol(const CoordsXY& loc) const;
+        bool isLocationOnPatrolEdge(const CoordsXY& loc) const;
+        bool doPathFinding();
+        void setHireDate(int32_t value);
+        int32_t getHireDate() const;
 
-        bool CanIgnoreWideFlag(const CoordsXYZ& staffPos, TileElement* path) const;
+        bool canIgnoreWideFlag(const CoordsXYZ& staffPos, TileElement* path) const;
 
-        static void ResetStats();
+        static void resetStats();
         void serialise(DataSerialiser& stream);
 
-        void ClearPatrolArea();
-        void SetPatrolArea(const CoordsXY& coords, bool value);
-        void SetPatrolArea(const MapRange& range, bool value);
-        bool HasPatrolArea() const;
+        void clearPatrolArea();
+        void setPatrolArea(const CoordsXY& coords, bool value);
+        void setPatrolArea(const MapRange& range, bool value);
+        bool hasPatrolArea() const;
 
     private:
-        void UpdatePatrolling();
-        void UpdateMowing();
-        void UpdateSweeping();
-        void UpdateEmptyingBin();
-        void UpdateWatering();
-        void UpdateAnswering();
-        void UpdateFixing(int32_t steps);
-        bool UpdateFixingEnterStation(Ride& ride) const;
-        bool UpdateFixingMoveToBrokenDownVehicle(bool firstRun, const Ride& ride);
-        bool UpdateFixingFixVehicle(bool firstRun, const Ride& ride);
-        bool UpdateFixingFixVehicleMalfunction(bool firstRun, const Ride& ride);
-        bool UpdateFixingMoveToStationEnd(bool firstRun, const Ride& ride);
-        bool UpdateFixingFixStationEnd(bool firstRun);
-        bool UpdateFixingMoveToStationStart(bool firstRun, const Ride& ride);
-        bool UpdateFixingFixStationStart(bool firstRun, const Ride& ride);
-        bool UpdateFixingFixStationBrakes(bool firstRun, Ride& ride);
-        bool UpdateFixingMoveToStationExit(bool firstRun, const Ride& ride);
-        bool UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride& ride);
-        bool UpdateFixingLeaveByEntranceExit(bool firstRun, const Ride& ride);
-        void UpdateRideInspected(RideId rideIndex);
-        void UpdateHeadingToInspect();
+        void updatePatrolling();
+        void updateMowing();
+        void updateSweeping();
+        void updateEmptyingBin();
+        void updateWatering();
+        void updateAnswering();
+        void updateFixing(int32_t steps);
+        bool updateFixingEnterStation(Ride& ride) const;
+        bool updateFixingMoveToBrokenDownVehicle(bool firstRun, const Ride& ride);
+        bool updateFixingFixVehicle(bool firstRun, const Ride& ride);
+        bool updateFixingFixVehicleMalfunction(bool firstRun, const Ride& ride);
+        bool updateFixingMoveToStationEnd(bool firstRun, const Ride& ride);
+        bool updateFixingFixStationEnd(bool firstRun);
+        bool updateFixingMoveToStationStart(bool firstRun, const Ride& ride);
+        bool updateFixingFixStationStart(bool firstRun, const Ride& ride);
+        bool updateFixingFixStationBrakes(bool firstRun, Ride& ride);
+        bool updateFixingMoveToStationExit(bool firstRun, const Ride& ride);
+        bool updateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride& ride);
+        bool updateFixingLeaveByEntranceExit(bool firstRun, const Ride& ride);
+        void updateRideInspected(RideId rideIndex);
+        void updateHeadingToInspect();
 
-        bool DoHandymanPathFinding();
-        bool DoMechanicPathFinding();
-        bool DoEntertainerPathFinding();
-        bool DoMiscPathFinding();
-        bool IsMechanicHeadingToFixRideBlockingPath();
+        bool doHandymanPathFinding();
+        bool doMechanicPathFinding();
+        bool doEntertainerPathFinding();
+        bool doMiscPathFinding();
+        bool isMechanicHeadingToFixRideBlockingPath();
 
-        Direction HandymanDirectionRandSurface(uint8_t validDirections) const;
+        Direction handymanDirectionRandSurface(uint8_t validDirections) const;
 
-        void EntertainerUpdateNearbyPeeps();
-        bool SecurityGuardPathIsCrowded() const;
+        void entertainerUpdateNearbyPeeps();
+        bool securityGuardPathIsCrowded() const;
 
-        uint8_t GetValidPatrolDirections(const CoordsXY& loc) const;
-        Direction HandymanDirectionToNearestLitter() const;
-        uint8_t HandymanDirectionToUncutGrass(uint8_t valid_directions) const;
-        Direction DirectionSurface(Direction initialDirection) const;
-        Direction DirectionPath(uint8_t validDirections, PathElement* pathElement) const;
-        Direction MechanicDirectionSurface() const;
-        Direction MechanicDirectionPathRand(uint8_t pathDirections) const;
-        Direction MechanicDirectionPath(uint8_t validDirections, PathElement* pathElement);
-        bool UpdatePatrollingFindWatering();
-        bool UpdatePatrollingFindBin();
-        bool UpdatePatrollingFindSweeping();
-        bool UpdatePatrollingFindGrass();
+        uint8_t getValidPatrolDirections(const CoordsXY& loc) const;
+        Direction handymanDirectionToNearestLitter() const;
+        uint8_t handymanDirectionToUncutGrass(uint8_t valid_directions) const;
+        Direction directionSurface(Direction initialDirection) const;
+        Direction directionPath(uint8_t validDirections, PathElement* pathElement) const;
+        Direction mechanicDirectionSurface() const;
+        Direction mechanicDirectionPathRand(uint8_t pathDirections) const;
+        Direction mechanicDirectionPath(uint8_t validDirections, PathElement* pathElement);
+        bool updatePatrollingFindWatering();
+        bool updatePatrollingFindBin();
+        bool updatePatrollingFindSweeping();
+        bool updatePatrollingFindGrass();
     };
     static_assert(sizeof(Staff) <= 512);
 
@@ -153,23 +153,6 @@ namespace OpenRCT2
         STAFF_ORDERS_MOWING = (1 << 3),
         STAFF_ORDERS_INSPECT_RIDES = (1 << 0),
         STAFF_ORDERS_FIX_RIDES = (1 << 1)
-    };
-
-    enum class EntertainerCostume : uint8_t
-    {
-        panda,
-        tiger,
-        elephant,
-        roman,
-        gorilla,
-        snowman,
-        knight,
-        astronaut,
-        bandit,
-        sheriff,
-        pirate,
-
-        count
     };
 
     Drawing::Colour StaffGetColour(StaffType staffType);

@@ -225,7 +225,7 @@ namespace OpenRCT2
         {
             if ((index & kTicks128Mask) == currentTicksMasked)
             {
-                staff->Tick128UpdateStaff();
+                staff->tick128UpdateStaff();
             }
 
             staff->Update();
@@ -741,7 +741,7 @@ namespace OpenRCT2
         }
         else
         {
-            staff->ClearPatrolArea();
+            staff->clearPatrolArea();
             UpdateConsolidatedPatrolAreas();
 
             News::DisableNewsItems(News::ItemType::peep, staff->id.ToUnderlying());
@@ -2363,7 +2363,7 @@ namespace OpenRCT2
             else
             {
                 auto* staff = as<Staff>();
-                result = staff->DoPathFinding();
+                result = staff->doPathFinding();
             }
 
             if (result != 0)

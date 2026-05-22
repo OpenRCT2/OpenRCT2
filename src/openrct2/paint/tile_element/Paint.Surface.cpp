@@ -825,7 +825,7 @@ std::optional<OpenRCT2::Drawing::Colour> GetPatrolAreaTileColour(const CoordsXY&
         auto* staff = getGameState().entities.GetEntity<Staff>(staffId);
         if (staff != nullptr)
         {
-            if (staff->IsPatrolAreaSet(pos))
+            if (staff->isPatrolAreaSet(pos))
             {
                 return selected ? OpenRCT2::Drawing::Colour::icyBlue : OpenRCT2::Drawing::Colour::lightBlue;
             }

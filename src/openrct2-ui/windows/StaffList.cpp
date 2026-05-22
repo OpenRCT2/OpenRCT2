@@ -421,7 +421,7 @@ namespace OpenRCT2::Ui::Windows
                     drawTextEllipsised(rt, { actionOffset, y }, actionColumnSize, format, ft);
 
                     // True if a patrol path is set for the worker
-                    if (peep->HasPatrolArea())
+                    if (peep->hasPatrolArea())
                     {
                         GfxDrawSprite(rt, ImageId(SPR_STAFF_PATROL_PATH), { nameColumnSize + 5, y });
                     }
@@ -671,11 +671,11 @@ namespace OpenRCT2::Ui::Windows
 
                 if (isPatrolAreaSet)
                 {
-                    if (!peep->HasPatrolArea())
+                    if (!peep->hasPatrolArea())
                     {
                         continue;
                     }
-                    if (!peep->IsLocationInPatrol(footpathCoords))
+                    if (!peep->isLocationInPatrol(footpathCoords))
                     {
                         continue;
                     }

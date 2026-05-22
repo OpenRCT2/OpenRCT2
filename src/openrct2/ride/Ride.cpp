@@ -1521,7 +1521,7 @@ Staff* FindClosestMechanic(const CoordsXY& entrancePosition, int32_t forInspecti
 
     for (auto peep : EntityList<Staff>())
     {
-        if (!peep->IsMechanic())
+        if (!peep->isMechanic())
             continue;
 
         if (!forInspection)
@@ -1545,7 +1545,7 @@ Staff* FindClosestMechanic(const CoordsXY& entrancePosition, int32_t forInspecti
 
         auto location = entrancePosition.ToTileStart();
         if (MapIsLocationInPark(location))
-            if (!peep->IsLocationInPatrol(location))
+            if (!peep->isLocationInPatrol(location))
                 continue;
 
         if (peep->x == kLocationNull)
@@ -1566,7 +1566,7 @@ Staff* FindClosestMechanic(const CoordsXY& entrancePosition, int32_t forInspecti
 Staff* RideGetMechanic(const Ride& ride)
 {
     auto staff = getGameState().entities.GetEntity<Staff>(ride.mechanic);
-    if (staff != nullptr && staff->IsMechanic())
+    if (staff != nullptr && staff->isMechanic())
     {
         return staff;
     }
