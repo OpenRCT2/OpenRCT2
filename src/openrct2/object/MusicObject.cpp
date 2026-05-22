@@ -55,12 +55,11 @@ namespace OpenRCT2
             auto stream = track.Asset.GetStream();
             if (stream != nullptr)
             {
-                auto source = audioContext.CreateStreamFromWAV(std::move(stream));
-                if (source != nullptr)
+                auto info = audioContext.ProbeStream(std::move(stream));
+                if (info.bytesPerSecond > 0)
                 {
-                    track.BytesPerTick = source->GetBytesPerSecond() / 40;
-                    track.Size = source->GetLength();
-                    source->Release();
+                    track.BytesPerTick = info.bytesPerSecond / 40;
+                    track.Size = info.length;
                 }
                 else
                 {
