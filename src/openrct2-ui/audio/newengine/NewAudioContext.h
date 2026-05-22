@@ -88,11 +88,14 @@ namespace OpenRCT2::Audio
             IAudioSource* source, MixerGroup group, bool loop, int32_t volume, float pan, double rate) override;
 
     private:
-        Float32AudioData* convertToFloat32(const void* pcmData, size_t pcmLen, AudioSampleFormat format, uint8_t srcChannels, int srcFreq);
+        Float32AudioData* convertToFloat32(
+            const void* pcmData, size_t pcmLen, AudioSampleFormat format, uint8_t srcChannels, int srcFreq);
 
         std::unique_ptr<AudioEngine> _engine;
         std::unique_ptr<AudioPlatformSDL2> _platform;
 
+        // Append only from the game thread, pointers into these remain stable
+        // because unique_ptr indirection means vector growth doesn't move data
         std::vector<std::unique_ptr<Float32AudioData>> _audioData;
         std::vector<std::unique_ptr<Float32AudioSource>> _sources;
     };

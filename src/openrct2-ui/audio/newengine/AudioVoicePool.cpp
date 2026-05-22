@@ -42,6 +42,8 @@ namespace OpenRCT2::Audio
 
     AudioHandle AudioVoicePool::stealQuietest()
     {
+        // Looping voices (ride music, ambient) are never stolen and are instead
+        // semantically important and the player would notice. One shots are expendable
         float quietest = std::numeric_limits<float>::max();
         size_t quietestIndex = kMaxVoices;
 
