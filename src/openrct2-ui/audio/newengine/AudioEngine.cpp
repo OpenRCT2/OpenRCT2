@@ -18,9 +18,7 @@
 
 namespace OpenRCT2::Audio
 {
-    static constexpr float kLimiterKnee = 0.9f;
     static constexpr float kLimiterThreshold = 0.9f;
-    static constexpr float kLimiterAttack = 0.02f;
     static constexpr float kLimiterRelease = 0.9999f;
 
     static inline float safetyClip(float x)
@@ -200,7 +198,7 @@ namespace OpenRCT2::Audio
 
         mixAllVoices(outputBuffer + firstHalf * 2, secondHalf, outputSampleRate, culled);
 
-        // Per-sample limiter with fast attack, slow release
+        // Per-sample limiter with instant attack, slow release
         {
             float gain = _limiterGain;
 
@@ -216,7 +214,7 @@ namespace OpenRCT2::Audio
                     targetGain = kLimiterThreshold / std::max(peak, 0.0001f);
 
                 if (targetGain < gain)
-                    gain = gain + kLimiterAttack * (targetGain - gain);
+                    gain = targetGain;
                 else
                     gain = gain + (1.0f - kLimiterRelease) * (targetGain - gain);
 
@@ -590,6 +588,7 @@ namespace OpenRCT2::Audio
 
             float groupVol = getGroupVolume(voice.group);
             float effectiveVol = std::max(voice.volume, voice.targetVolume) * groupVol;
+
             if (effectiveVol < _cullThreshold && voice.state == VoiceState::playing)
             {
                 double rateRatio = (static_cast<double>(voice.sampleRate) / static_cast<double>(outputSampleRate)) * voice.rate;
