@@ -214,14 +214,14 @@ namespace OpenRCT2::Ui::Windows
     static_assert(kWindowTileInspectorWidgetIdxPathSpinnerHeightDecrease == WIDX_PATH_SPINNER_HEIGHT_DECREASE);
     static_assert(kWindowTileInspectorWidgetIdxTrackSpinnerHeightIncrease == WIDX_TRACK_SPINNER_HEIGHT_INCREASE);
     static_assert(kWindowTileInspectorWidgetIdxTrackSpinnerHeightDecrease == WIDX_TRACK_SPINNER_HEIGHT_DECREASE);
-    static_assert(kWindowTileInspectorWidgetIdxScenarySpinnerHeightIncrease == WIDX_SCENERY_SPINNER_HEIGHT_INCREASE);
-    static_assert(kWindowTileInspectorWidgetIdxScenarySpinnerHeightDecrease == WIDX_SCENERY_SPINNER_HEIGHT_DECREASE);
+    static_assert(kWindowTileInspectorWidgetIdxScenerySpinnerHeightIncrease == WIDX_SCENERY_SPINNER_HEIGHT_INCREASE);
+    static_assert(kWindowTileInspectorWidgetIdxScenerySpinnerHeightDecrease == WIDX_SCENERY_SPINNER_HEIGHT_DECREASE);
     static_assert(kWindowTileInspectorWidgetIdxEntranceSpinnerHeightIncrease == WIDX_ENTRANCE_SPINNER_HEIGHT_INCREASE);
     static_assert(kWindowTileInspectorWidgetIdxEntranceSpinnerHeightDecrease == WIDX_ENTRANCE_SPINNER_HEIGHT_DECREASE);
     static_assert(kWindowTileInspectorWidgetIdxWallSpinnerHeightIncrease == WIDX_WALL_SPINNER_HEIGHT_INCREASE);
     static_assert(kWindowTileInspectorWidgetIdxWallSpinnerHeightDecrease == WIDX_WALL_SPINNER_HEIGHT_DECREASE);
-    static_assert(kWindowTileInspectorWidgetIdxLargeScenarySpinnerHeightIncrease == WIDX_LARGE_SCENERY_SPINNER_HEIGHT_INCREASE);
-    static_assert(kWindowTileInspectorWidgetIdxLargeScenarySpinnerHeightDecrease == WIDX_LARGE_SCENERY_SPINNER_HEIGHT_DECREASE);
+    static_assert(kWindowTileInspectorWidgetIdxLargeScenerySpinnerHeightIncrease == WIDX_LARGE_SCENERY_SPINNER_HEIGHT_INCREASE);
+    static_assert(kWindowTileInspectorWidgetIdxLargeScenerySpinnerHeightDecrease == WIDX_LARGE_SCENERY_SPINNER_HEIGHT_DECREASE);
     static_assert(kWindowTileInspectorWidgetIdxBannerSpinnerHeightIncrease == WIDX_BANNER_SPINNER_HEIGHT_INCREASE);
     static_assert(kWindowTileInspectorWidgetIdxBannerSpinnerHeightDecrease == WIDX_BANNER_SPINNER_HEIGHT_DECREASE);
 

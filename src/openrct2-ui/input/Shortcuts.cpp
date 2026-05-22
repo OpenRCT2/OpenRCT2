@@ -93,10 +93,10 @@ static void ShortcutRotateConstructionObject()
 
     // Rotate scenery
     WindowBase* w = windowMgr->FindByClass(WindowClass::scenery);
-    if (w != nullptr && !widgetIsDisabled(*w, kWindowScenaryWidgetIdxScenaryButtonRotateObjects)
-        && w->widgets[kWindowScenaryWidgetIdxScenaryButtonRotateObjects].type != WidgetType::empty)
+    if (w != nullptr && !widgetIsDisabled(*w, kWindowSceneryWidgetIdxSceneryButtonRotateObjects)
+        && w->widgets[kWindowSceneryWidgetIdxSceneryButtonRotateObjects].type != WidgetType::empty)
     {
-        w->onMouseUp(kWindowScenaryWidgetIdxScenaryButtonRotateObjects);
+        w->onMouseUp(kWindowSceneryWidgetIdxSceneryButtonRotateObjects);
         return;
     }
 
@@ -450,10 +450,10 @@ static void ShortcutOpenSceneryPicker()
         ToggleSceneryWindow();
 
     sceneryWindow = windowMgr->FindByClass(WindowClass::scenery);
-    if (sceneryWindow != nullptr && !widgetIsDisabled(*sceneryWindow, kWindowScenaryWidgetIdxScenaryButtonEyedropper)
+    if (sceneryWindow != nullptr && !widgetIsDisabled(*sceneryWindow, kWindowSceneryWidgetIdxSceneryButtonEyedropper)
         && !gWindowSceneryEyedropperEnabled)
     {
-        sceneryWindow->onMouseUp(kWindowScenaryWidgetIdxScenaryButtonEyedropper);
+        sceneryWindow->onMouseUp(kWindowSceneryWidgetIdxSceneryButtonEyedropper);
         return;
     }
 }
@@ -549,8 +549,8 @@ static void ShortcutIncreaseElementHeight()
             case kTileInspectorPageTrack:
                 action = kWindowTileInspectorWidgetIdxTrackSpinnerHeightIncrease;
                 break;
-            case kTileInspectorPageScenary:
-                action = kWindowTileInspectorWidgetIdxScenarySpinnerHeightIncrease;
+            case kTileInspectorPageScenery:
+                action = kWindowTileInspectorWidgetIdxScenerySpinnerHeightIncrease;
                 break;
             case kTileInspectorPageEntrance:
                 action = kWindowTileInspectorWidgetIdxEntranceSpinnerHeightIncrease;
@@ -558,8 +558,8 @@ static void ShortcutIncreaseElementHeight()
             case kTileInspectorPageWall:
                 action = kWindowTileInspectorWidgetIdxWallSpinnerHeightIncrease;
                 break;
-            case kTileInspectorPageLargeScenary:
-                action = kWindowTileInspectorWidgetIdxLargeScenarySpinnerHeightIncrease;
+            case kTileInspectorPageLargeScenery:
+                action = kWindowTileInspectorWidgetIdxLargeScenerySpinnerHeightIncrease;
                 break;
             case kTileInspectorPageBanner:
                 action = kWindowTileInspectorWidgetIdxBannerSpinnerHeightIncrease;
@@ -589,8 +589,8 @@ static void ShortcutDecreaseElementHeight()
             case kTileInspectorPageTrack:
                 action = kWindowTileInspectorWidgetIdxTrackSpinnerHeightDecrease;
                 break;
-            case kTileInspectorPageScenary:
-                action = kWindowTileInspectorWidgetIdxScenarySpinnerHeightDecrease;
+            case kTileInspectorPageScenery:
+                action = kWindowTileInspectorWidgetIdxScenerySpinnerHeightDecrease;
                 break;
             case kTileInspectorPageEntrance:
                 action = kWindowTileInspectorWidgetIdxEntranceSpinnerHeightDecrease;
@@ -598,8 +598,8 @@ static void ShortcutDecreaseElementHeight()
             case kTileInspectorPageWall:
                 action = kWindowTileInspectorWidgetIdxWallSpinnerHeightDecrease;
                 break;
-            case kTileInspectorPageLargeScenary:
-                action = kWindowTileInspectorWidgetIdxLargeScenarySpinnerHeightDecrease;
+            case kTileInspectorPageLargeScenery:
+                action = kWindowTileInspectorWidgetIdxLargeScenerySpinnerHeightDecrease;
                 break;
             case kTileInspectorPageBanner:
                 action = kWindowTileInspectorWidgetIdxBannerSpinnerHeightDecrease;
