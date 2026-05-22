@@ -21,6 +21,7 @@
 #include <openrct2/ride/RideTypes.h>
 #include <openrct2/ride/TrackData.h>
 #include <openrct2/ride/ted/TrackElementDescriptor.h>
+#include <openrct2/util/Util.h>
 #include <openrct2/world/Map.h>
 #include <openrct2/world/tile_element/TrackElement.h>
 
@@ -231,7 +232,7 @@ namespace OpenRCT2
     {
         int32_t rideEntryIndex = RideGetEntryIndex(listItem.Type, listItem.EntryIndex);
         int32_t colour1 = RideGetRandomColourPresetIndex(listItem.Type);
-        int32_t colour2 = RideGetUnusedPresetVehicleColour(rideEntryIndex);
+        int32_t colour2 = RideGetUnusedPresetVehicleColour(rideEntryIndex, UtilRand());
 
         auto gameAction = GameActions::RideCreateAction(
             listItem.Type, listItem.EntryIndex, colour1, colour2, getGameState().lastEntranceStyle,
