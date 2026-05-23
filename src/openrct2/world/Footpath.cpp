@@ -762,8 +762,7 @@ namespace OpenRCT2
                         entranceIndex = item.entrance_index;
                     }
                     else if (
-                        rideIndex != item.ride_index
-                        || (entranceIndex != item.entrance_index && !item.entrance_index.IsNull()))
+                    rideIndex != item.ride_index || (entranceIndex != item.entrance_index && !item.entrance_index.IsNull()))
                     {
                         FootpathNeighbourListRemove(&neighbourList, i);
                         continue;
