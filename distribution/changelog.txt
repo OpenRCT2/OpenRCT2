@@ -1,6 +1,5 @@
 0.5.2 (in development)
 ------------------------------------------------------------------------
-- Feature: [#26611] Added an audio mixer group for Peep sounds in the Options menu.
 - Improved: [#26566] Improve the performance of sorting sprites.
 - Fix: [#26583] The default tab is not highlighted when opening a ride window.
 - Fix: [#26602] Crash when locating the nearest mechanic for a ride that has not previously been inspected.
