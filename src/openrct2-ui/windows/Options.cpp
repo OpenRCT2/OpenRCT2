@@ -1518,7 +1518,7 @@ namespace OpenRCT2::Ui::Windows
                 invalidateWidget(WIDX_MASTER_VOLUME);
             }
 
-            const auto& soundVolumeWidget = widgets[WIDX_MASTER_VOLUME];
+            const auto& soundVolumeWidget = widgets[WIDX_SOUND_VOLUME];
             const auto& soundVolumeScroll = scrolls[1];
             uint8_t soundVolume = GetScrollPercentage(soundVolumeWidget, soundVolumeScroll);
             if (soundVolume != Config::Get().sound.soundVolume)
@@ -1528,7 +1528,7 @@ namespace OpenRCT2::Ui::Windows
                 invalidateWidget(WIDX_SOUND_VOLUME);
             }
 
-            const auto& musicVolumeWidget = widgets[WIDX_MASTER_VOLUME];
+            const auto& musicVolumeWidget = widgets[WIDX_MUSIC_VOLUME];
             const auto& musicVolumeScroll = scrolls[2];
             uint8_t rideMusicVolume = GetScrollPercentage(musicVolumeWidget, musicVolumeScroll);
             if (rideMusicVolume != Config::Get().sound.rideMusicVolume)
