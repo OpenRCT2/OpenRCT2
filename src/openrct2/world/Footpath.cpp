@@ -751,26 +751,25 @@ namespace OpenRCT2
         {
             RideId rideIndex = RideId::GetNull();
             StationIndex entranceIndex = StationIndex::GetNull();
-            for (size_t i = 0; i < neighbourList.count; i++)
+            for (size_t i = 0; i < neighbourList.count;)
             {
-                if (!neighbourList.items[i].ride_index.IsNull())
+                auto& item = neighbourList.items[i];
+                if (!item.ride_index.IsNull())
                 {
                     if (rideIndex.IsNull())
                     {
-                        rideIndex = neighbourList.items[i].ride_index;
-                        entranceIndex = neighbourList.items[i].entrance_index;
-                    }
-                    else if (rideIndex != neighbourList.items[i].ride_index)
-                    {
-                        FootpathNeighbourListRemove(&neighbourList, i);
+                        rideIndex = item.ride_index;
+                        entranceIndex = item.entrance_index;
                     }
                     else if (
-                        rideIndex == neighbourList.items[i].ride_index && entranceIndex != neighbourList.items[i].entrance_index
-                        && !neighbourList.items[i].entrance_index.IsNull())
+                        rideIndex != item.ride_index
+                        || (entranceIndex != item.entrance_index && !item.entrance_index.IsNull()))
                     {
                         FootpathNeighbourListRemove(&neighbourList, i);
+                        continue;
                     }
                 }
+                i++;
             }
 
             neighbourList.count = std::min<size_t>(neighbourList.count, 2);
