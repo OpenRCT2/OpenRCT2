@@ -1232,7 +1232,7 @@ namespace OpenRCT2
                 _crowdSoundChannel = CreateAudioChannel(SoundId::crowdAmbience, true, 0);
                 if (_crowdSoundChannel != nullptr)
                 {
-                    _crowdSoundChannel->SetGroup(MixerGroup::Sound);
+                    _crowdSoundChannel->SetGroup(MixerGroup::Peep);
                 }
             }
             if (_crowdSoundChannel != nullptr)
@@ -1268,7 +1268,7 @@ namespace OpenRCT2
         }
 
         // Play applause noise
-        Play(SoundId::applause, 0, ContextGetWidth() / 2);
+        Play(SoundId::applause, 0, ContextGetWidth() / 2, MixerGroup::Peep);
     }
 
     /**

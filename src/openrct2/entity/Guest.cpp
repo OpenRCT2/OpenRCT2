@@ -1843,7 +1843,7 @@ namespace OpenRCT2
             int32_t laughType = ScenarioRand() & 7;
             if (laughType < 3)
             {
-                Audio::Play3D(laughs[laughType], getLocation());
+                Audio::Play3D(laughs[laughType], getLocation(), Audio::MixerGroup::Peep);
             }
         }
 
@@ -7804,7 +7804,7 @@ namespace OpenRCT2
             Audio::SoundId::cough4,
         };
         auto soundId = coughs[ScenarioRand() & 3];
-        Audio::Play3D(soundId, curLoc);
+        Audio::Play3D(soundId, curLoc, Audio::MixerGroup::Peep);
     }
 
     void Guest::serialise(DataSerialiser& stream)
