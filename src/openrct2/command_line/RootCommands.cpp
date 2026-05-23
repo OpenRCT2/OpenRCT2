@@ -177,7 +177,7 @@ namespace OpenRCT2
         {
             if (_verbose)
             {
-                _log_levels[EnumValue(DiagnosticLevel::Verbose)] = true;
+                _log_levels[EnumValue(DiagnosticLevel::verbose)] = true;
                 PrintLaunchInformation();
             }
 

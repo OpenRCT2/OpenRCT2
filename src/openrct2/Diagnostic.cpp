@@ -23,7 +23,7 @@
 using namespace OpenRCT2;
 
 [[maybe_unused]] static bool _log_location_enabled = true;
-bool _log_levels[EnumValue(DiagnosticLevel::Count)] = {
+bool _log_levels[EnumValue(DiagnosticLevel::count)] = {
     true, true, true, false, true,
 };
 
@@ -31,8 +31,8 @@ static FILE* diagnostic_get_stream(DiagnosticLevel level)
 {
     switch (level)
     {
-        case DiagnosticLevel::Verbose:
-        case DiagnosticLevel::Information:
+        case DiagnosticLevel::verbose:
+        case DiagnosticLevel::information:
             return stdout;
         default:
             return stderr;
@@ -41,7 +41,7 @@ static FILE* diagnostic_get_stream(DiagnosticLevel level)
 
 #ifdef __ANDROID__
 
-int _android_log_priority[EnumValue(DiagnosticLevel::Count)] = {
+int _android_log_priority[EnumValue(DiagnosticLevel::count)] = {
     ANDROID_LOG_FATAL, ANDROID_LOG_ERROR, ANDROID_LOG_WARN, ANDROID_LOG_VERBOSE, ANDROID_LOG_INFO,
 };
 
