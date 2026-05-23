@@ -392,7 +392,7 @@ void Vehicle::UpdateHauntedHouseOperating()
             invalidate();
             break;
         case 400:
-            Play3D(SoundId::hauntedHouseScream1, getLocation());
+            Play3D(SoundId::hauntedHouseScream1, getLocation(), MixerGroup::Peep);
             break;
         case 745:
             Play3D(SoundId::hauntedHouseScare, getLocation());
@@ -402,7 +402,7 @@ void Vehicle::UpdateHauntedHouseOperating()
             invalidate();
             break;
         case 1100:
-            Play3D(SoundId::hauntedHouseScream2, getLocation());
+            Play3D(SoundId::hauntedHouseScream2, getLocation(), MixerGroup::Peep);
             break;
     }
 }
