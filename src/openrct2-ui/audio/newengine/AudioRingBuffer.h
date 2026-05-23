@@ -30,6 +30,7 @@ namespace OpenRCT2::Audio
         static_assert(Capacity > 0, "Capacity must be greater than zero");
         static_assert(std::is_trivially_copyable_v<T>, "Ring buffer elements must be trivially copyable");
         static_assert(Capacity <= 0xFFFFFFFF, "Capacity must fit in 32 bits for masking");
+        static_assert(std::atomic<uint64_t>::is_always_lock_free, "64-bit atomics must be lock free for SPSC to work");
 
     public:
         bool tryPush(const T& item)
