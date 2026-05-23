@@ -308,6 +308,7 @@ namespace OpenRCT2::Audio
                     break;
                 case AudioCommandType::stopAll:
                     _voicePool.releaseAll();
+                    _voicePool.clearGameHandleMap();
                     for (size_t i = 0; i < kMaxVoices; i++)
                         markSlotInactive(i);
                     break;
@@ -407,7 +408,10 @@ namespace OpenRCT2::Audio
         voice->gameHandle = p.handle;
 
         if (p.handle.isValid())
+        {
+            _voicePool.registerGameHandle(p.handle.value, slotHandle.slotIndex());
             markSlotActive(slotHandle.slotIndex(), p.handle);
+        }
     }
 
     Voice* AudioEngine::resolveVoice(AudioHandle handle)
@@ -850,24 +854,42 @@ namespace OpenRCT2::Audio
         if (!gameHandle.isValid())
             return false;
 
-        for (size_t i = 0; i < kMaxVoices; i++)
-        {
-            if (_slotStatus[i].gameHandle.load(std::memory_order_relaxed) == gameHandle.value)
-                return _slotStatus[i].active.load(std::memory_order_relaxed);
-        }
+        uint64_t entry = _handleLookup[gameHandle.value & kHandleLookupMask].load(std::memory_order_relaxed);
+        uint32_t storedHandle = static_cast<uint32_t>(entry >> 32);
+        if (storedHandle != gameHandle.value)
+            return false;
 
-        return false;
+        uint16_t slot = static_cast<uint16_t>(entry & 0xFFFF);
+        if (slot >= kMaxVoices)
+            return false;
+
+        return _slotStatus[slot].gameHandle.load(std::memory_order_relaxed) == gameHandle.value
+            && _slotStatus[slot].active.load(std::memory_order_relaxed);
     }
 
     void AudioEngine::markSlotActive(size_t slotIndex, AudioHandle gameHandle)
     {
         _slotStatus[slotIndex].gameHandle.store(gameHandle.value, std::memory_order_relaxed);
         _slotStatus[slotIndex].active.store(true, std::memory_order_relaxed);
+
+        uint64_t packed = (static_cast<uint64_t>(gameHandle.value) << 32) | static_cast<uint64_t>(slotIndex);
+        _handleLookup[gameHandle.value & kHandleLookupMask].store(packed, std::memory_order_relaxed);
     }
 
     void AudioEngine::markSlotInactive(size_t slotIndex)
     {
+        uint32_t handle = _slotStatus[slotIndex].gameHandle.load(std::memory_order_relaxed);
         _slotStatus[slotIndex].active.store(false, std::memory_order_relaxed);
+
+        if (handle != AudioHandle::kInvalid)
+        {
+            _voicePool.unregisterGameHandle(handle);
+
+            size_t lookupPos = handle & kHandleLookupMask;
+            uint64_t current = _handleLookup[lookupPos].load(std::memory_order_relaxed);
+            if ((current >> 32) == handle)
+                _handleLookup[lookupPos].store(0, std::memory_order_relaxed);
+        }
     }
 
 } // namespace OpenRCT2::Audio

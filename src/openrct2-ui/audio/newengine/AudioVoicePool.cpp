@@ -93,12 +93,67 @@ namespace OpenRCT2::Audio
     {
         if (!gameHandle.isValid())
             return nullptr;
-        for (auto& voice : _voices)
+
+        size_t pos = gameHandle.value & kGameHandleMapMask;
+        for (size_t i = 0; i < kGameHandleMapSize; i++)
         {
-            if (voice.state != VoiceState::idle && voice.gameHandle == gameHandle)
-                return &voice;
+            size_t idx = (pos + i) & kGameHandleMapMask;
+            auto& entry = _gameHandleMap[idx];
+            if (entry.occupied && entry.key == gameHandle.value)
+                return &_voices[entry.voiceIndex];
+            if (!entry.occupied && entry.key == 0)
+                return nullptr;
         }
         return nullptr;
+    }
+
+    void AudioVoicePool::registerGameHandle(uint32_t handleVal, uint16_t voiceIndex)
+    {
+        size_t pos = handleVal & kGameHandleMapMask;
+        for (size_t i = 0; i < kGameHandleMapSize; i++)
+        {
+            size_t idx = (pos + i) & kGameHandleMapMask;
+            auto& entry = _gameHandleMap[idx];
+            if (!entry.occupied)
+            {
+                entry.key = handleVal;
+                entry.voiceIndex = voiceIndex;
+                entry.occupied = true;
+                return;
+            }
+            if (entry.key == handleVal)
+            {
+                entry.voiceIndex = voiceIndex;
+                return;
+            }
+        }
+    }
+
+    void AudioVoicePool::unregisterGameHandle(uint32_t handleVal)
+    {
+        size_t pos = handleVal & kGameHandleMapMask;
+        for (size_t i = 0; i < kGameHandleMapSize; i++)
+        {
+            size_t idx = (pos + i) & kGameHandleMapMask;
+            auto& entry = _gameHandleMap[idx];
+            if (entry.occupied && entry.key == handleVal)
+            {
+                entry.occupied = false;
+                return;
+            }
+            if (!entry.occupied && entry.key == 0)
+                return;
+        }
+    }
+
+    void AudioVoicePool::clearGameHandleMap()
+    {
+        for (auto& entry : _gameHandleMap)
+        {
+            entry.key = 0;
+            entry.voiceIndex = 0;
+            entry.occupied = false;
+        }
     }
 
     Voice& AudioVoicePool::getByIndex(size_t index)
