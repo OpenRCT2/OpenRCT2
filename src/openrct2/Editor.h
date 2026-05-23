@@ -35,16 +35,16 @@ namespace OpenRCT2::Editor
 
 enum class EditorStep : uint8_t
 {
-    ObjectSelection,       // 0
-    LandscapeEditor,       // 1
-    InventionsListSetUp,   // 2
-    OptionsSelection,      // 3
-    ObjectiveSelection,    // 4
-    ScenarioDetails,       // 5
-    SaveScenario,          // 6
-    RollercoasterDesigner, // 7
-    DesignsManager,        // 8
-    Invalid = 255,         // 255
+    objectSelection,       // 0
+    landscapeEditor,       // 1
+    inventionsListSetUp,   // 2
+    optionsSelection,      // 3
+    objectiveSelection,    // 4
+    scenarioDetails,       // 5
+    saveScenario,          // 6
+    rollercoasterDesigner, // 7
+    designsManager,        // 8
+    invalid = 255,         // 255
 };
 
 void EditorOpenWindowsForCurrentStep();

@@ -88,7 +88,7 @@ namespace OpenRCT2::Ui
             return info;
 
         //
-        if (gLegacyScene == LegacyScene::trackDesigner && getGameState().editorStep != EditorStep::RollercoasterDesigner)
+        if (gLegacyScene == LegacyScene::trackDesigner && getGameState().editorStep != EditorStep::rollercoasterDesigner)
             return info;
 
         info = GetMapCoordinatesFromPos(
@@ -275,7 +275,7 @@ namespace OpenRCT2::Ui
             return info;
 
         //
-        if (gLegacyScene == LegacyScene::trackDesigner && getGameState().editorStep != EditorStep::RollercoasterDesigner)
+        if (gLegacyScene == LegacyScene::trackDesigner && getGameState().editorStep != EditorStep::rollercoasterDesigner)
             return info;
 
         constexpr auto flags = static_cast<int32_t>(
