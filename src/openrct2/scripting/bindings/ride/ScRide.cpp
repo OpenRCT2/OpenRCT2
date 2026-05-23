@@ -70,6 +70,10 @@ namespace OpenRCT2::Scripting
             JS_CGETSET_DEF("numDrops", ScRide::numDrops_get, nullptr),
             JS_CGETSET_DEF("numLiftHills", ScRide::numLiftHills_get, nullptr),
             JS_CGETSET_DEF("highestDropHeight", ScRide::highestDropHeight_get, nullptr),
+            JS_CGETSET_DEF("numInversions", ScRide::numInversions_get, nullptr),
+            JS_CGETSET_DEF("numHoles", ScRide::numHoles_get, nullptr),
+            JS_CGETSET_DEF("shelteredLength", ScRide::shelteredLength_get, nullptr),
+            JS_CGETSET_DEF("hasWaterSplash", ScRide::hasWaterSplash_get, nullptr),
             JS_CGETSET_DEF("breakdown", ScRide::breakdown_get, nullptr),
             JS_CFUNC_DEF("setBreakdown", 1, ScRide::setBreakdown),
             JS_CFUNC_DEF("fixBreakdown", 0, ScRide::fixBreakdown),
@@ -765,6 +769,30 @@ namespace OpenRCT2::Scripting
     {
         auto ride = GetRide(thisVal);
         return JS_NewFloat64(ctx, ride != nullptr ? ride->highestDropHeight : 0);
+    }
+
+    JSValue ScRide::numInversions_get(JSContext* ctx, JSValue thisVal)
+    {
+        auto ride = GetRide(thisVal);
+        return JS_NewUint32(ctx, ride != nullptr ? ride->numInversions : 0);
+    }
+
+    JSValue ScRide::numHoles_get(JSContext* ctx, JSValue thisVal)
+    {
+        auto ride = GetRide(thisVal);
+        return JS_NewUint32(ctx, ride != nullptr ? ride->numHoles : 0);
+    }
+
+    JSValue ScRide::shelteredLength_get(JSContext* ctx, JSValue thisVal)
+    {
+        auto ride = GetRide(thisVal);
+        return JS_NewInt32(ctx, ride != nullptr ? ToHumanReadableRideLength(ride->shelteredLength) : 0);
+    }
+
+    JSValue ScRide::hasWaterSplash_get(JSContext* ctx, JSValue thisVal)
+    {
+        auto ride = GetRide(thisVal);
+        return JS_NewBool(ctx, ride != nullptr ? ride->hasWaterSplash() : false);
     }
 
     JSValue ScRide::breakdown_get(JSContext* ctx, JSValue thisVal)
