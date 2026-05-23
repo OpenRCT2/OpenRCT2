@@ -178,7 +178,7 @@ void Vehicle::UpdateCrashSetup()
 
     if (NumPeepsUntilTrainTail() != 0)
     {
-        Play3D(SoundId::hauntedHouseScream2, getLocation());
+        Play3D(SoundId::hauntedHouseScream2, getLocation(), MixerGroup::Peep);
     }
 
     int32_t edx = velocity >> 10;
