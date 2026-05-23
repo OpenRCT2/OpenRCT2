@@ -48,7 +48,7 @@ namespace OpenRCT2::Audio
 
         float fadePerSample = 0.0f;
 
-        AudioHandle gameHandle{AudioHandle::kInvalid};
+        AudioHandle gameHandle{ AudioHandle::kInvalid };
 
         void reset()
         {
@@ -66,7 +66,7 @@ namespace OpenRCT2::Audio
             prevPanL = 1.0f;
             prevPanR = 1.0f;
             fadePerSample = 0.0f;
-            gameHandle = {AudioHandle::kInvalid};
+            gameHandle = { AudioHandle::kInvalid };
         }
     };
 
@@ -87,11 +87,29 @@ namespace OpenRCT2::Audio
         [[nodiscard]] size_t activeCount() const;
 
         void setVoiceLimit(size_t limit);
-        [[nodiscard]] size_t getVoiceLimit() const { return _voiceLimit; }
+        [[nodiscard]] size_t getVoiceLimit() const
+        {
+            return _voiceLimit;
+        }
+
+        void registerGameHandle(uint32_t handleVal, uint16_t voiceIndex);
+        void unregisterGameHandle(uint32_t handleVal);
+        void clearGameHandleMap();
 
     private:
         size_t _voiceLimit = 128;
         std::array<Voice, kMaxVoices> _voices{};
+
+        // Only accessed from the audio thread so no atomics needed.
+        static constexpr size_t kGameHandleMapSize = 512;
+        static constexpr size_t kGameHandleMapMask = kGameHandleMapSize - 1;
+        struct GameHandleEntry
+        {
+            uint32_t key = 0;
+            uint16_t voiceIndex = 0;
+            bool occupied = false;
+        };
+        std::array<GameHandleEntry, kGameHandleMapSize> _gameHandleMap{};
     };
 
 } // namespace OpenRCT2::Audio

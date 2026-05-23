@@ -9,16 +9,15 @@
 
 #include "NewAudioContext.h"
 
-#include "NewEngineAudioChannel.h"
-
 #include "../SDLAudioSource.h"
+#include "NewEngineAudioChannel.h"
 
 #include <SDL.h>
 #include <cmath>
 #include <openrct2/Diagnostic.h>
 #include <openrct2/OpenRCT2.h>
-#include <openrct2/config/Config.h>
 #include <openrct2/audio/AudioSource.h>
+#include <openrct2/config/Config.h>
 #include <openrct2/core/IStream.hpp>
 
 namespace OpenRCT2::Audio
@@ -212,6 +211,10 @@ namespace OpenRCT2::Audio
                 return nullptr;
             }
 
+            // TODO: Everything gets fully decoded into memory right now...
+            // For short ride music tracks this is fine, but if someone loads a 20
+            // minute custom track it'll eat RAM away. This might need streaming playback
+            // for music specifically. It should probably happen eventually, but not today
             std::vector<uint8_t> rawPcm(static_cast<size_t>(dataLen));
             sdlSource->Read(rawPcm.data(), 0, rawPcm.size());
 
@@ -261,7 +264,14 @@ namespace OpenRCT2::Audio
             _engine->stopAll();
     }
 
+    // Crowd and vehicle sounds are still managed by the old global code
+    // in Peep.cpp and Audio.cpp, not through the new engine's voice pool.
+    // These are no-ops until that changes at some point
     void NewAudioContext::StopCrowdSound()
+    {
+    }
+
+    void NewAudioContext::StopVehicleSounds()
     {
     }
 
@@ -275,10 +285,6 @@ namespace OpenRCT2::Audio
     {
         if (_engine)
             _engine->stopGroup(AudioEngineGroup::titleMusic);
-    }
-
-    void NewAudioContext::StopVehicleSounds()
-    {
     }
 
     AudioEngine* NewAudioContext::getEngine()

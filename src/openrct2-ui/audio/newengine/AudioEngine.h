@@ -151,6 +151,14 @@ namespace OpenRCT2::Audio
         };
         std::array<SlotStatus, kMaxVoices> _slotStatus{};
 
+        // gameHandle -> slotIndex. Entries are packed as:
+        //   bits [63:32] = gameHandle value (0 means empty)
+        //   bits [15:0]  = voice slot index
+        // With 512 entries and at most 256 active handles sequential
+        static constexpr size_t kHandleLookupSize = 512;
+        static constexpr size_t kHandleLookupMask = kHandleLookupSize - 1;
+        std::array<std::atomic<uint64_t>, kHandleLookupSize> _handleLookup{};
+
         // Frozy was here
     };
 
