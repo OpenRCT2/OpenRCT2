@@ -1437,7 +1437,10 @@ declare global {
 
     interface StaffSetCostumeArgs extends GameActionArgs {
         id: number;
-        /** @see `EntertainerCostume` in {@link https://github.com/OpenRCT2/OpenRCT2/blob/develop/src/openrct2/entity/Staff.h} */
+
+        /**
+         * The costume (peep animation) object index.
+         */
         costume: number;
     }
 
