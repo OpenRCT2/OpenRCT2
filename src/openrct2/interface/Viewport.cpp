@@ -1964,7 +1964,7 @@ namespace OpenRCT2
             return 0;
 
         // Height labels in feet
-        if (Config::Get().general.measurementFormat == MeasurementFormat::Imperial)
+        if (Config::Get().general.measurementFormat == MeasurementFormat::imperial)
             return 1 * 256;
 
         // Height labels in metres

@@ -323,7 +323,7 @@ namespace OpenRCT2::Ui::Windows
                         // Print the value in the configured measurement units.
                         switch (Config::Get().general.measurementFormat)
                         {
-                            case MeasurementFormat::Metric:
+                            case MeasurementFormat::metric:
                             case MeasurementFormat::SI:
                             {
                                 auto ft = Formatter();
@@ -332,7 +332,7 @@ namespace OpenRCT2::Ui::Windows
                                 drawText(rt, screenCoords, STR_UNIT2DP_SUFFIX_METRES, ft, { this->colours[0] });
                                 break;
                             }
-                            case MeasurementFormat::Imperial:
+                            case MeasurementFormat::imperial:
                             {
                                 auto ft = Formatter();
                                 ft.Add<fixed16_1dp>(

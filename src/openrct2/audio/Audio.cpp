@@ -261,7 +261,7 @@ namespace OpenRCT2::Audio
     static std::map<TitleMusicKind, std::string_view> GetAvailableMusicMap()
     {
         auto musicMap = std::map<TitleMusicKind, std::string_view>{
-            { TitleMusicKind::OpenRCT2, AudioObjectIdentifiers::kOpenRCT2Title },
+            { TitleMusicKind::openRCT2, AudioObjectIdentifiers::kOpenRCT2Title },
             { TitleMusicKind::RCT2, AudioObjectIdentifiers::kRCT2Title },
         };
 
@@ -277,7 +277,7 @@ namespace OpenRCT2::Audio
     {
         auto musicMap = GetAvailableMusicMap();
         auto it = musicMap.find(musicKind);
-        if (musicKind == TitleMusicKind::Random)
+        if (musicKind == TitleMusicKind::random)
         {
             it = std::next(musicMap.begin(), UtilRand() % musicMap.size());
         }
@@ -287,7 +287,7 @@ namespace OpenRCT2::Audio
             return ObjectEntryDescriptor(ObjectType::audio, it->second);
         }
 
-        // No music descriptor for the current setting, intentional for TitleMusicKind::None
+        // No music descriptor for the current setting, intentional for TitleMusicKind::none
         return {};
     }
 

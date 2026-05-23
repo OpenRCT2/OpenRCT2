@@ -210,14 +210,14 @@ TEST_F(FormattingTests, escaped_braces)
 
 TEST_F(FormattingTests, velocity_mph)
 {
-    Config::Get().general.measurementFormat = MeasurementFormat::Imperial;
+    Config::Get().general.measurementFormat = MeasurementFormat::imperial;
     auto actual = FormatString("Train is going at {VELOCITY}.", 1024);
     ASSERT_EQ("Train is going at 1,024 mph.", actual);
 }
 
 TEST_F(FormattingTests, velocity_kph)
 {
-    Config::Get().general.measurementFormat = MeasurementFormat::Metric;
+    Config::Get().general.measurementFormat = MeasurementFormat::metric;
     auto actual = FormatString("Train is going at {VELOCITY}.", 1024);
     ASSERT_EQ("Train is going at 1,648 km/h.", actual);
 }
@@ -231,14 +231,14 @@ TEST_F(FormattingTests, velocity_mps)
 
 TEST_F(FormattingTests, length_imperial)
 {
-    Config::Get().general.measurementFormat = MeasurementFormat::Imperial;
+    Config::Get().general.measurementFormat = MeasurementFormat::imperial;
     auto actual = FormatString("Height: {LENGTH}", 1024);
     ASSERT_EQ("Height: 3,360 ft", actual);
 }
 
 TEST_F(FormattingTests, length_metric)
 {
-    Config::Get().general.measurementFormat = MeasurementFormat::Metric;
+    Config::Get().general.measurementFormat = MeasurementFormat::metric;
     auto actual = FormatString("Height: {LENGTH}", 1024);
     ASSERT_EQ("Height: 1,024 m", actual);
 }

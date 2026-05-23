@@ -645,10 +645,10 @@ namespace OpenRCT2::Platform
                 sizeof(measurement_system) / sizeof(wchar_t))
             == 0)
         {
-            return MeasurementFormat::Metric;
+            return MeasurementFormat::metric;
         }
 
-        return measurement_system == 1 ? MeasurementFormat::Imperial : MeasurementFormat::Metric;
+        return measurement_system == 1 ? MeasurementFormat::imperial : MeasurementFormat::metric;
     }
 
     uint8_t GetLocaleDateFormat()
@@ -712,10 +712,10 @@ namespace OpenRCT2::Platform
             == 0)
         {
             // Assume celsius by default if function call fails
-            return TemperatureUnit::Celsius;
+            return TemperatureUnit::celsius;
         }
 
-        return fahrenheit == 1 ? TemperatureUnit::Fahrenheit : TemperatureUnit::Celsius;
+        return fahrenheit == 1 ? TemperatureUnit::fahrenheit : TemperatureUnit::celsius;
     }
 
     bool ProcessIsElevated()

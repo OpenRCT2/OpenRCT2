@@ -215,7 +215,7 @@ namespace OpenRCT2::Ui::Windows
 
             int32_t temperature = getGameState().weatherCurrent.temperature;
             StringId format = STR_CELSIUS_VALUE;
-            if (Config::Get().general.temperatureFormat == TemperatureUnit::Fahrenheit)
+            if (Config::Get().general.temperatureFormat == TemperatureUnit::fahrenheit)
             {
                 temperature = Weather::celsiusToFahrenheit(temperature);
                 format = STR_FAHRENHEIT_VALUE;

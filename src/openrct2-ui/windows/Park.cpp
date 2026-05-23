@@ -946,7 +946,7 @@ namespace OpenRCT2::Ui::Windows
             // Draw park size
             auto parkSize = _parkData.size * 10;
             auto stringIndex = STR_PARK_SIZE_METRIC_LABEL;
-            if (Config::Get().general.measurementFormat == MeasurementFormat::Imperial)
+            if (Config::Get().general.measurementFormat == MeasurementFormat::imperial)
             {
                 stringIndex = STR_PARK_SIZE_IMPERIAL_LABEL;
                 parkSize = SquaredMetresToSquaredFeet(parkSize);

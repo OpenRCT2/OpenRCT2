@@ -22,12 +22,12 @@ namespace OpenRCT2
 
     enum class FileBrowserSort : int32_t
     {
-        NameAscending,
-        NameDescending,
-        SizeAscending,
-        SizeDescending,
-        DateAscending,
-        DateDescending,
+        nameAscending,
+        nameDescending,
+        sizeAscending,
+        sizeDescending,
+        dateAscending,
+        dateDescending,
     };
 
     enum class ParkPreviewPref : int32_t
@@ -39,29 +39,29 @@ namespace OpenRCT2
 
     enum class TemperatureUnit : int32_t
     {
-        Celsius,
-        Fahrenheit
+        celsius,
+        fahrenheit
     };
 
     enum class ScaleQuality : int32_t
     {
-        NearestNeighbour,
-        Linear,
-        SmoothNearestNeighbour
+        nearestNeighbour,
+        linear,
+        smoothNearestNeighbour
     };
 
     enum class MeasurementFormat : int32_t
     {
-        Imperial,
-        Metric,
+        imperial,
+        metric,
         SI
     };
 
     enum class TitleMusicKind : int32_t
     {
-        None,
-        Random,
-        OpenRCT2,
+        none,
+        random,
+        openRCT2,
         RCT1,
         RCT2,
     };

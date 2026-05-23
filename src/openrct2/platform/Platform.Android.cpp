@@ -163,7 +163,7 @@ namespace OpenRCT2::Platform
 
         env->DeleteLocalRef(activity);
         env->DeleteLocalRef(activityClass);
-        return isImperial == JNI_TRUE ? MeasurementFormat::Imperial : MeasurementFormat::Metric;
+        return isImperial == JNI_TRUE ? MeasurementFormat::imperial : MeasurementFormat::metric;
     }
 
     SteamPaths GetSteamPaths()

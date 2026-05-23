@@ -125,9 +125,9 @@ public:
         }
 
         ScaleQuality scaleQuality = GetContext()->GetUiContext().GetScaleQuality();
-        if (scaleQuality == ScaleQuality::SmoothNearestNeighbour)
+        if (scaleQuality == ScaleQuality::smoothNearestNeighbour)
         {
-            scaleQuality = ScaleQuality::Linear;
+            scaleQuality = ScaleQuality::linear;
             smoothNN = true;
         }
         else

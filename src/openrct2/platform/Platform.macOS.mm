@@ -221,10 +221,10 @@ namespace OpenRCT2::Platform
 
             if (metricSystem.boolValue)
             {
-                return MeasurementFormat::Metric;
+                return MeasurementFormat::metric;
             }
 
-            return MeasurementFormat::Imperial;
+            return MeasurementFormat::imperial;
         }
     }
 

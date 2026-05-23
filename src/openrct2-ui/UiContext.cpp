@@ -78,7 +78,7 @@ private:
     SDL_Window* _window = nullptr;
     int32_t _width = 0;
     int32_t _height = 0;
-    ScaleQuality _scaleQuality = ScaleQuality::NearestNeighbour;
+    ScaleQuality _scaleQuality = ScaleQuality::nearestNeighbour;
 
     std::vector<Resolution> _fsResolutions;
 
@@ -602,16 +602,16 @@ public:
     void TriggerResize() override
     {
         char scaleQualityBuffer[4];
-        _scaleQuality = ScaleQuality::SmoothNearestNeighbour;
+        _scaleQuality = ScaleQuality::smoothNearestNeighbour;
         if (Config::Get().general.windowScale == std::floor(Config::Get().general.windowScale))
         {
-            _scaleQuality = ScaleQuality::NearestNeighbour;
+            _scaleQuality = ScaleQuality::nearestNeighbour;
         }
 
         ScaleQuality scaleQuality = _scaleQuality;
-        if (_scaleQuality == ScaleQuality::SmoothNearestNeighbour)
+        if (_scaleQuality == ScaleQuality::smoothNearestNeighbour)
         {
-            scaleQuality = ScaleQuality::Linear;
+            scaleQuality = ScaleQuality::linear;
         }
         snprintf(scaleQualityBuffer, sizeof(scaleQualityBuffer), "%d", static_cast<int32_t>(scaleQuality));
         SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, scaleQualityBuffer);

@@ -90,17 +90,17 @@ namespace OpenRCT2::Ui::FileBrowser
 
         switch (Config::Get().general.loadSaveSort)
         {
-            case FileBrowserSort::NameAscending:
+            case FileBrowserSort::nameAscending:
                 return String::logicalCmp(a.name.c_str(), b.name.c_str()) < 0;
-            case FileBrowserSort::NameDescending:
+            case FileBrowserSort::nameDescending:
                 return -String::logicalCmp(a.name.c_str(), b.name.c_str()) < 0;
-            case FileBrowserSort::DateDescending:
+            case FileBrowserSort::dateDescending:
                 return -difftime(a.dateModified, b.dateModified) < 0;
-            case FileBrowserSort::DateAscending:
+            case FileBrowserSort::dateAscending:
                 return difftime(a.dateModified, b.dateModified) < 0;
-            case FileBrowserSort::SizeDescending:
+            case FileBrowserSort::sizeDescending:
                 return a.fileSizeBytes > b.fileSizeBytes;
-            case FileBrowserSort::SizeAscending:
+            case FileBrowserSort::sizeAscending:
                 return a.fileSizeBytes < b.fileSizeBytes;
         }
         return String::logicalCmp(a.name.c_str(), b.name.c_str()) < 0;

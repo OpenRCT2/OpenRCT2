@@ -556,10 +556,10 @@ namespace OpenRCT2
                     switch (Config::Get().general.measurementFormat)
                     {
                         default:
-                        case MeasurementFormat::Imperial:
+                        case MeasurementFormat::imperial:
                             FormatStringID(ss, STR_UNIT_SUFFIX_MILES_PER_HOUR, arg);
                             break;
-                        case MeasurementFormat::Metric:
+                        case MeasurementFormat::metric:
                             FormatStringID(ss, STR_UNIT_SUFFIX_KILOMETRES_PER_HOUR, MphToKmph(arg));
                             break;
                         case MeasurementFormat::SI:
@@ -586,10 +586,10 @@ namespace OpenRCT2
                     switch (Config::Get().general.measurementFormat)
                     {
                         default:
-                        case MeasurementFormat::Imperial:
+                        case MeasurementFormat::imperial:
                             FormatStringID(ss, STR_UNIT_SUFFIX_FEET, MetresToFeet(arg));
                             break;
-                        case MeasurementFormat::Metric:
+                        case MeasurementFormat::metric:
                         case MeasurementFormat::SI:
                             FormatStringID(ss, STR_UNIT_SUFFIX_METRES, arg);
                             break;
@@ -603,10 +603,10 @@ namespace OpenRCT2
                     switch (Config::Get().general.measurementFormat)
                     {
                         default:
-                        case MeasurementFormat::Imperial:
+                        case MeasurementFormat::imperial:
                             FormatStringID(ss, STR_UNIT_SUFFIX_FEET, MetresToFeet(metres));
                             break;
-                        case MeasurementFormat::Metric:
+                        case MeasurementFormat::metric:
                         case MeasurementFormat::SI:
                             FormatStringID(ss, STR_UNIT_SUFFIX_METRES, metres);
                             break;
