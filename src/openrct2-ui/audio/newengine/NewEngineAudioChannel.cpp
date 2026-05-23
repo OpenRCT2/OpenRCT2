@@ -9,8 +9,6 @@
 
 #include "NewEngineAudioChannel.h"
 
-#include <cmath>
-
 namespace OpenRCT2::Audio
 {
     NewEngineAudioChannel::NewEngineAudioChannel(
@@ -100,19 +98,6 @@ namespace OpenRCT2::Audio
         _pan = pan;
         if (_engine != nullptr)
             _engine->setPan(_handle, pan);
-
-        double decibels = (std::abs(_pan - 0.5f) * 2.0f) * 100.0;
-        double attenuation = pow(10, decibels / 20.0);
-        if (_pan <= 0.5f)
-        {
-            _volumeL = 1.0f;
-            _volumeR = static_cast<float>(1.0 / attenuation);
-        }
-        else
-        {
-            _volumeR = 1.0f;
-            _volumeL = static_cast<float>(1.0 / attenuation);
-        }
     }
 
     bool NewEngineAudioChannel::IsDone() const
