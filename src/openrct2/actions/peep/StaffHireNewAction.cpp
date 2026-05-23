@@ -196,17 +196,17 @@ namespace OpenRCT2::GameActions
             // Staff energy determines their walking speed
             switch (gameState.cheats.selectedStaffSpeed)
             {
-                case StaffSpeedCheat::None:
+                case StaffSpeedCheat::none:
                     newPeep->Energy = kCheatsStaffNormalSpeed;
                     newPeep->EnergyTarget = kCheatsStaffNormalSpeed;
                     break;
 
-                case StaffSpeedCheat::Frozen:
+                case StaffSpeedCheat::frozen:
                     newPeep->Energy = kCheatsStaffFreezeSpeed;
                     newPeep->EnergyTarget = kCheatsStaffFreezeSpeed;
                     break;
 
-                case StaffSpeedCheat::Fast:
+                case StaffSpeedCheat::fast:
                     newPeep->Energy = kCheatsStaffFastSpeed;
                     newPeep->EnergyTarget = kCheatsStaffFastSpeed;
                     break;

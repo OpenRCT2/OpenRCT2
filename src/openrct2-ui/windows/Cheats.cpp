@@ -1119,17 +1119,17 @@ static StringId window_cheats_page_titles[] = {
                 switch (dropdownIndex)
                 {
                     case 0:
-                        gameState.cheats.selectedStaffSpeed = StaffSpeedCheat::None;
+                        gameState.cheats.selectedStaffSpeed = StaffSpeedCheat::none;
                         speed = kCheatsStaffNormalSpeed;
                         break;
 
                     case 1:
-                        gameState.cheats.selectedStaffSpeed = StaffSpeedCheat::Frozen;
+                        gameState.cheats.selectedStaffSpeed = StaffSpeedCheat::frozen;
                         speed = kCheatsStaffFreezeSpeed;
                         break;
 
                     case 2:
-                        gameState.cheats.selectedStaffSpeed = StaffSpeedCheat::Fast;
+                        gameState.cheats.selectedStaffSpeed = StaffSpeedCheat::fast;
                         speed = kCheatsStaffFastSpeed;
                 }
                 CheatsSet(CheatType::setStaffSpeed, speed);
