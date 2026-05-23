@@ -399,7 +399,7 @@ namespace OpenRCT2::Audio
         }
     }
 
-    static bool IsFixedFrequencySound(SoundId id)
+    static bool IsRiderScreamSound(SoundId id)
     {
         switch (id)
         {
@@ -411,6 +411,18 @@ namespace OpenRCT2::Audio
             case SoundId::scream6:
             case SoundId::scream7:
             case SoundId::scream8:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    static bool IsFixedFrequencySound(SoundId id)
+    {
+        if (IsRiderScreamSound(id))
+            return true;
+        switch (id)
+        {
             case SoundId::trainWhistle:
             case SoundId::trainDeparting:
             case SoundId::tram:
@@ -496,6 +508,8 @@ namespace OpenRCT2::Audio
                 id, looping, DStoMixerVolume(volume), DStoMixerPan(pan), DStoMixerRate(frequency), false);
             if (channel != nullptr)
             {
+                if (IsRiderScreamSound(id))
+                    channel->SetGroup(MixerGroup::Peep);
                 sound.id = id;
                 sound.pan = sound_params->panX;
                 sound.volume = volume;
