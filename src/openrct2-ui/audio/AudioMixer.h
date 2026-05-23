@@ -38,8 +38,10 @@ namespace OpenRCT2::Audio
         float _volume = 1.0f;
         float _adjustSoundVolume = 0.0f;
         float _adjustMusicVolume = 0.0f;
+        float _adjustPeepVolume = 0.0f;
         uint8_t _settingSoundVolume = 0xFF;
         uint8_t _settingMusicVolume = 0xFF;
+        uint8_t _settingPeepVolume = 0xFF;
 
         std::vector<uint8_t> _channelBuffer;
         std::vector<uint8_t> _convertBuffer;

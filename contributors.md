@@ -123,7 +123,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Wenzhao Qiu (qwzhaox) - Misc.
 * Tiago Reul (reul) - Misc.
 * Fredrik Tegnell (fredriktegnell) - Misc.
-* Alex Parisi (alex-parisi) - Added API for returning metadata from all registered plugins.
+* Alex Parisi (alex-parisi) - Peep audio mixer group, misc.
 * Arnold Zhou (mrmagic2020) - Various plugin additions, new game option, misc.
 * John Dolph (johnwdolph) - Ride music UI, misc.
 * Harry Hopkinson (Harry-Hopkinson) - Added Cheat for guests ignoring price of rides and stalls.

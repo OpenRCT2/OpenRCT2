@@ -25,6 +25,7 @@ namespace OpenRCT2::Audio
         Sound,
         RideMusic,
         TitleMusic,
+        Peep,
     };
 
     struct IAudioSource;

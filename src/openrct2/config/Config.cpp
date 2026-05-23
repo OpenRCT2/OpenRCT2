@@ -451,6 +451,8 @@ namespace OpenRCT2::Config
             model->soundVolume = reader->GetInt32("sound_volume", 100);
             model->rideMusicEnabled = reader->GetBoolean("ride_music", true);
             model->rideMusicVolume = reader->GetInt32("ride_music_volume", 100);
+            model->peepEnabled = reader->GetBoolean("peep", true);
+            model->peepVolume = reader->GetInt32("peep_volume", 100);
             model->audioFocus = reader->GetBoolean("audio_focus", false);
         }
     }
@@ -467,6 +469,8 @@ namespace OpenRCT2::Config
         writer->WriteInt32("sound_volume", model->soundVolume);
         writer->WriteBoolean("ride_music", model->rideMusicEnabled);
         writer->WriteInt32("ride_music_volume", model->rideMusicVolume);
+        writer->WriteBoolean("peep", model->peepEnabled);
+        writer->WriteInt32("peep_volume", model->peepVolume);
         writer->WriteBoolean("audio_focus", model->audioFocus);
     }
 

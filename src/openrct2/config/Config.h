@@ -161,6 +161,8 @@ namespace OpenRCT2::Config
         uint8_t soundVolume;
         bool rideMusicEnabled;
         uint8_t rideMusicVolume;
+        bool peepEnabled;
+        uint8_t peepVolume;
         bool audioFocus;
     };
 
