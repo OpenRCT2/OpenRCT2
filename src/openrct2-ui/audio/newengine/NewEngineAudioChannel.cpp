@@ -13,10 +13,13 @@
 
 namespace OpenRCT2::Audio
 {
-    NewEngineAudioChannel::NewEngineAudioChannel(AudioEngine* engine, AudioHandle handle, MixerGroup group)
+    NewEngineAudioChannel::NewEngineAudioChannel(
+        AudioEngine* engine, AudioHandle handle, MixerGroup group, uint8_t channels, uint64_t lengthInFrames)
         : _engine(engine)
         , _handle(handle)
         , _group(group)
+        , _channels(channels)
+        , _lengthInFrames(lengthInFrames)
     {
     }
 
@@ -26,11 +29,6 @@ namespace OpenRCT2::Audio
         {
             _engine->stop(_handle);
         }
-    }
-
-    IAudioSource* NewEngineAudioChannel::GetSource() const
-    {
-        return nullptr;
     }
 
     MixerGroup NewEngineAudioChannel::GetGroup() const
@@ -57,51 +55,31 @@ namespace OpenRCT2::Audio
 
     uint64_t NewEngineAudioChannel::GetOffset() const
     {
-        return 0;
+        if (_engine == nullptr || !_handle.isValid())
+            return 0;
+
+        uint64_t positionInFrames = _engine->getOffset(_handle);
+        return positionInFrames * _channels * sizeof(float);
     }
 
-    bool NewEngineAudioChannel::SetOffset(uint64_t /*offset*/)
+    bool NewEngineAudioChannel::SetOffset(uint64_t offset)
     {
-        return false;
-    }
+        if (_engine == nullptr || !_handle.isValid())
+            return false;
 
-    int32_t NewEngineAudioChannel::GetLoop() const
-    {
-        return 0;
-    }
+        size_t bytesPerFrame = static_cast<size_t>(_channels) * sizeof(float);
+        uint64_t offsetInFrames = offset / bytesPerFrame;
 
-    void NewEngineAudioChannel::SetLoop(int32_t /*value*/)
-    {
+        if (offsetInFrames >= _lengthInFrames)
+            return false;
+
+        _engine->setOffset(_handle, offsetInFrames);
+        return true;
     }
 
     int32_t NewEngineAudioChannel::GetVolume() const
     {
         return _volume;
-    }
-
-    float NewEngineAudioChannel::GetVolumeL() const
-    {
-        return _volumeL;
-    }
-
-    float NewEngineAudioChannel::GetVolumeR() const
-    {
-        return _volumeR;
-    }
-
-    float NewEngineAudioChannel::GetOldVolumeL() const
-    {
-        return _oldVolumeL;
-    }
-
-    float NewEngineAudioChannel::GetOldVolumeR() const
-    {
-        return _oldVolumeR;
-    }
-
-    int32_t NewEngineAudioChannel::GetOldVolume() const
-    {
-        return _oldVolume;
     }
 
     void NewEngineAudioChannel::SetVolume(int32_t volume)
@@ -137,16 +115,6 @@ namespace OpenRCT2::Audio
         }
     }
 
-    bool NewEngineAudioChannel::IsStopping() const
-    {
-        return _stopping;
-    }
-
-    void NewEngineAudioChannel::SetStopping(bool value)
-    {
-        _stopping = value;
-    }
-
     bool NewEngineAudioChannel::IsDone() const
     {
         if (_done)
@@ -159,6 +127,77 @@ namespace OpenRCT2::Audio
             return !active && !_pendingActivation;
         }
         return true;
+    }
+
+    bool NewEngineAudioChannel::IsPlaying() const
+    {
+        return !IsDone();
+    }
+
+    void NewEngineAudioChannel::Stop()
+    {
+        _stopping = true;
+        // Aaa... Don't set _done = true here. The engine performs a 5ms fade-out,
+        // and IsDone() correctly checks isHandleActive() to detect when the
+        // voice has actually finished. Setting _done prematurely caused the game
+        // code to destroy resources while audio was still playing. NOT GOOD.
+        if (_engine != nullptr)
+            _engine->stop(_handle);
+    }
+
+    // -----------
+    // TODO: Remove. Legacy mixer interface stubs that aren't called by game code...
+    // The new engine handles these differently (voice pool, internal ramping,
+    // push-based mixing). Kept for IAudioChannel interface compat, but these should
+    // all be removed when the Legacy engine is yeeted.
+
+    IAudioSource* NewEngineAudioChannel::GetSource() const
+    {
+        return nullptr;
+    }
+
+    int32_t NewEngineAudioChannel::GetLoop() const
+    {
+        return 0;
+    }
+
+    void NewEngineAudioChannel::SetLoop(int32_t /*value*/)
+    {
+    }
+
+    float NewEngineAudioChannel::GetVolumeL() const
+    {
+        return _volumeL;
+    }
+
+    float NewEngineAudioChannel::GetVolumeR() const
+    {
+        return _volumeR;
+    }
+
+    float NewEngineAudioChannel::GetOldVolumeL() const
+    {
+        return _oldVolumeL;
+    }
+
+    float NewEngineAudioChannel::GetOldVolumeR() const
+    {
+        return _oldVolumeR;
+    }
+
+    int32_t NewEngineAudioChannel::GetOldVolume() const
+    {
+        return _oldVolume;
+    }
+
+    bool NewEngineAudioChannel::IsStopping() const
+    {
+        return _stopping;
+    }
+
+    void NewEngineAudioChannel::SetStopping(bool value)
+    {
+        _stopping = value;
     }
 
     void NewEngineAudioChannel::SetDone(bool value)
@@ -176,26 +215,10 @@ namespace OpenRCT2::Audio
         _deleteOnDone = value;
     }
 
-    bool NewEngineAudioChannel::IsPlaying() const
-    {
-        return !IsDone();
-    }
-
     void NewEngineAudioChannel::Play(IAudioSource* /*source*/, int32_t /*loop*/)
     {
         _done = false;
         _stopping = false;
-    }
-
-    void NewEngineAudioChannel::Stop()
-    {
-        _stopping = true;
-        // Aaa... Don't set _done = true here. The engine performs a 5ms fade-out,
-        // and IsDone() correctly checks isHandleActive() to detect when the
-        // voice has actually finished. Setting _done prematurely caused the game
-        // code to destroy resources while audio was still playing. NOT GOOD.
-        if (_engine != nullptr)
-            _engine->stop(_handle);
     }
 
     void NewEngineAudioChannel::UpdateOldVolume()

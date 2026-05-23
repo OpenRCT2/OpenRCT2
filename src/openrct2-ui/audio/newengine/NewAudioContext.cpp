@@ -237,6 +237,7 @@ namespace OpenRCT2::Audio
         }
     }
 
+    // TODO: Remove. Nothing calls this, so it can be removed from IAudioContext later... First legacy has to be yeeted.
     void NewAudioContext::StartTitleMusic()
     {
     }
@@ -344,7 +345,8 @@ namespace OpenRCT2::Audio
             data->samples.data(), data->lengthInFrames(), data->sampleRate, data->channels, normalizedVolume, pan,
             static_cast<float>(rate), engineGroup, loop);
 
-        auto channel = std::make_shared<NewEngineAudioChannel>(_engine.get(), handle, group);
+        auto channel = std::make_shared<NewEngineAudioChannel>(
+            _engine.get(), handle, group, data->channels, data->lengthInFrames());
         channel->SetVolume(volume);
         channel->SetPan(pan);
         channel->SetRate(rate);

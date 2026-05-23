@@ -139,6 +139,15 @@ namespace OpenRCT2::Audio
         submitCommand(cmd);
     }
 
+    void AudioEngine::setOffset(AudioHandle handle, uint64_t offsetInFrames)
+    {
+        AudioCommand cmd{};
+        cmd.type = AudioCommandType::setOffset;
+        cmd.data.setOffset.handle = handle;
+        cmd.data.setOffset.offsetInFrames = offsetInFrames;
+        submitCommand(cmd);
+    }
+
     void AudioEngine::setMasterVolume(float volume)
     {
         AudioCommand cmd{};
@@ -339,6 +348,9 @@ namespace OpenRCT2::Audio
                 case AudioCommandType::fadeOut:
                     processFadeOut(cmd);
                     break;
+                case AudioCommandType::setOffset:
+                    processSetOffset(cmd);
+                    break;
             }
         }
     }
@@ -525,6 +537,20 @@ namespace OpenRCT2::Audio
         }
     }
 
+    void AudioEngine::processSetOffset(const AudioCommand& cmd)
+    {
+        auto* voice = resolveVoice(cmd.data.setOffset.handle);
+        if (voice != nullptr && voice->state != VoiceState::idle)
+        {
+            uint64_t newPos = cmd.data.setOffset.offsetInFrames;
+            if (newPos < voice->pcmLengthInFrames)
+            {
+                voice->playbackPosition = static_cast<double>(newPos);
+                updateSlotPosition(_voicePool.indexOf(voice), newPos);
+            }
+        }
+    }
+
     float AudioEngine::getGroupVolume(AudioEngineGroup group) const
     {
         switch (group)
@@ -624,10 +650,12 @@ namespace OpenRCT2::Audio
 
             mixVoice(voice, outputBuffer, frames, outputSampleRate);
 
-            if (voice.state == VoiceState::idle)
+            if (voice.gameHandle.isValid())
             {
-                if (voice.gameHandle.isValid())
+                if (voice.state == VoiceState::idle)
                     markSlotInactive(i);
+                else
+                    updateSlotPosition(i, static_cast<uint64_t>(voice.playbackPosition));
             }
         }
     }
@@ -890,6 +918,31 @@ namespace OpenRCT2::Audio
             if ((current >> 32) == handle)
                 _handleLookup[lookupPos].store(0, std::memory_order_relaxed);
         }
+    }
+
+    void AudioEngine::updateSlotPosition(size_t slotIndex, uint64_t positionInFrames)
+    {
+        _slotStatus[slotIndex].positionInFrames.store(positionInFrames, std::memory_order_relaxed);
+    }
+
+    uint64_t AudioEngine::getOffset(AudioHandle gameHandle) const
+    {
+        if (!gameHandle.isValid())
+            return 0;
+
+        uint64_t entry = _handleLookup[gameHandle.value & kHandleLookupMask].load(std::memory_order_relaxed);
+        uint32_t storedHandle = static_cast<uint32_t>(entry >> 32);
+        if (storedHandle != gameHandle.value)
+            return 0;
+
+        uint16_t slot = static_cast<uint16_t>(entry & 0xFFFF);
+        if (slot >= kMaxVoices)
+            return 0;
+
+        if (_slotStatus[slot].gameHandle.load(std::memory_order_relaxed) != gameHandle.value)
+            return 0;
+
+        return _slotStatus[slot].positionInFrames.load(std::memory_order_relaxed);
     }
 
 } // namespace OpenRCT2::Audio

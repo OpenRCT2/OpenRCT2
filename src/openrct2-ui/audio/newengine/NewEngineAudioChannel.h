@@ -21,7 +21,8 @@ namespace OpenRCT2::Audio
     class NewEngineAudioChannel final : public IAudioChannel
     {
     public:
-        NewEngineAudioChannel(AudioEngine* engine, AudioHandle handle, MixerGroup group);
+        NewEngineAudioChannel(
+            AudioEngine* engine, AudioHandle handle, MixerGroup group, uint8_t channels, uint64_t lengthInFrames);
         ~NewEngineAudioChannel() override;
 
         IAudioSource* GetSource() const override;
@@ -71,6 +72,9 @@ namespace OpenRCT2::Audio
         float _oldVolumeL = 0.5f;
         float _oldVolumeR = 0.5f;
         mutable bool _pendingActivation = true;
+
+        uint8_t _channels = 1;
+        uint64_t _lengthInFrames = 0;
     };
 
 } // namespace OpenRCT2::Audio

@@ -82,6 +82,7 @@ namespace OpenRCT2::Audio
         setRate,
         setGroupVolume,
         fadeOut,
+        setOffset,
     };
 
     // pcmData pointers are NOT owned, caller keeps them alive during playback
@@ -160,6 +161,12 @@ namespace OpenRCT2::Audio
                 AudioHandle handle;
                 float durationMs;
             } fadeOut;
+
+            struct
+            {
+                AudioHandle handle;
+                uint64_t offsetInFrames;
+            } setOffset;
         } data;
     };
 
