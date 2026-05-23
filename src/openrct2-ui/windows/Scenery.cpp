@@ -510,7 +510,7 @@ namespace OpenRCT2::Ui::Windows
                         _hoverCounter++;
                         if (_hoverCounter < 8)
                         {
-                            if (InputGetState() != InputState::ScrollLeft)
+                            if (InputGetState() != InputState::scrollLeft)
                             {
                                 minHeight = _actualMinHeight;
                                 maxHeight = _actualMinHeight;
@@ -543,7 +543,7 @@ namespace OpenRCT2::Ui::Windows
             else
             {
                 _hoverCounter = 0;
-                if (InputGetState() != InputState::ScrollLeft)
+                if (InputGetState() != InputState::scrollLeft)
                 {
                     minHeight = _actualMinHeight;
                     maxHeight = _actualMinHeight;

@@ -265,7 +265,7 @@ void InputManager::handleViewScrolling()
     // Mouse edge scrolling
     if (Config::Get().general.edgeScrolling)
     {
-        if (InputGetState() != InputState::Normal)
+        if (InputGetState() != InputState::normal)
             return;
 
         if (isModifierKeyPressed(ModifierKey::shift) || isModifierKeyPressed(ModifierKey::ctrl))

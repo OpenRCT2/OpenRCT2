@@ -574,7 +574,7 @@ namespace OpenRCT2
             WindowInitAll();
 
             gInputFlags.clearAll();
-            InputSetState(InputState::Reset);
+            InputSetState(InputState::reset);
             gPressedWidget.windowClassification = WindowClass::null;
             gPickupPeepImage = ImageId();
             ResetTooltipNotShown();
