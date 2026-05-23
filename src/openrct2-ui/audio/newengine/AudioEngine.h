@@ -69,6 +69,7 @@ namespace OpenRCT2::Audio
         void setVolume(AudioHandle handle, float volume);
         void setPan(AudioHandle handle, float pan);
         void setRate(AudioHandle handle, float rate);
+        void setOffset(AudioHandle handle, uint64_t offsetInFrames);
         void setMasterVolume(float volume);
         void setGroupVolume(AudioEngineGroup group, float volume);
         void fadeOut(AudioHandle handle, float durationMs);
@@ -88,6 +89,10 @@ namespace OpenRCT2::Audio
         // voice finishes, is stopped, or gets stolen by another sound
         [[nodiscard]] bool isHandleActive(AudioHandle gameHandle) const;
 
+        // Returns the current playback position in frames for the given handle.
+        // Returns 0 if the handle's invalid
+        [[nodiscard]] uint64_t getOffset(AudioHandle gameHandle) const;
+
         [[nodiscard]] AudioEngineStats getStats() const;
 
     private:
@@ -101,6 +106,7 @@ namespace OpenRCT2::Audio
         void processSetMasterVolume(const AudioCommand& cmd);
         void processSetGroupVolume(const AudioCommand& cmd);
         void processFadeOut(const AudioCommand& cmd);
+        void processSetOffset(const AudioCommand& cmd);
 
         Voice* resolveVoice(AudioHandle handle);
 
@@ -148,8 +154,11 @@ namespace OpenRCT2::Audio
         {
             std::atomic<uint32_t> gameHandle{ AudioHandle::kInvalid };
             std::atomic<bool> active{ false };
+            std::atomic<uint64_t> positionInFrames{ 0 };
         };
         std::array<SlotStatus, kMaxVoices> _slotStatus{};
+
+        void updateSlotPosition(size_t slotIndex, uint64_t positionInFrames);
 
         // gameHandle -> slotIndex. Entries are packed as:
         //   bits [63:32] = gameHandle value (0 means empty)
