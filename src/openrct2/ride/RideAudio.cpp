@@ -179,7 +179,7 @@ namespace OpenRCT2::RideAudio
                 auto channel = CreateAudioChannel(source, MixerGroup::rideMusic, shouldLoop, 0);
                 if (channel != nullptr)
                 {
-                    _musicChannels.emplace_back(instance, channel, source);
+                    _musicChannels.emplace_back(instance, channel, nullptr);
                 }
             }
         }
