@@ -109,8 +109,8 @@ namespace OpenRCT2::Audio
         {
             bool active = _engine->isHandleActive(_handle);
             if (active)
-                _pendingActivation = false;
-            return !active && !_pendingActivation;
+                _pendingActivation.store(false, std::memory_order_relaxed);
+            return !active && !_pendingActivation.load(std::memory_order_relaxed);
         }
         return true;
     }
