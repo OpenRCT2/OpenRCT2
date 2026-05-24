@@ -97,6 +97,12 @@ namespace OpenRCT2::Audio
         return nullptr;
     }
 
+    void NewAudioContext::CloseDevice()
+    {
+        if (_platform)
+            _platform->close();
+    }
+
     std::vector<std::string> NewAudioContext::GetOutputDevices()
     {
         return AudioPlatformSDL2::enumerateDevices();
@@ -149,6 +155,8 @@ namespace OpenRCT2::Audio
 
     IAudioSource* NewAudioContext::CreateStreamFromCSS(std::unique_ptr<IStream> stream, uint32_t index)
     {
+        removeReleasedSources();
+
         auto* rw = createRWopsFromStream(std::move(stream));
         if (rw == nullptr)
             return nullptr;
@@ -348,7 +356,7 @@ namespace OpenRCT2::Audio
             static_cast<float>(rate), engineGroup, loop);
 
         auto channel = std::make_shared<NewEngineAudioChannel>(
-            _engine.get(), handle, group, data->channels, data->lengthInFrames());
+            _engine.get(), handle, group, data->channels, data->lengthInFrames(), data->sourceBytesPerFrame());
         channel->SetVolume(volume);
         channel->SetPan(pan);
         channel->SetRate(rate);
@@ -456,7 +464,7 @@ namespace OpenRCT2::Audio
         data->sampleRate = static_cast<uint32_t>(srcFreq);
         data->channels = srcChannels;
 
-        size_t srcBytesPerSample = 0;
+        size_t srcBytesPerSample = 2;
         switch (format)
         {
             case AudioSampleFormat::u8:
@@ -475,6 +483,8 @@ namespace OpenRCT2::Audio
                 srcBytesPerSample = 2;
                 break;
         }
+
+        data->sourceBytesPerSample = static_cast<uint8_t>(srcBytesPerSample);
 
         size_t totalSamples = pcmLen / srcBytesPerSample;
         data->samples.resize(totalSamples);
