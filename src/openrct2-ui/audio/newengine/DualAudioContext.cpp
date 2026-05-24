@@ -182,11 +182,15 @@ namespace OpenRCT2::Audio
             _useNewEngine = true;
             _newEngine->SetOutputDevice(Config::Get().sound.device);
             _newEngine->SyncVolumeSettings();
+            if (auto* mixer = _legacy->GetMixer())
+                mixer->Close();
         }
         else
         {
             _useNewEngine = false;
             _legacy->SetOutputDevice(Config::Get().sound.device);
+            if (_newEngine)
+                _newEngine->CloseDevice();
         }
 
         for (ObjectEntryIndex i = 0; i < kMaxAudioObjects; i++)

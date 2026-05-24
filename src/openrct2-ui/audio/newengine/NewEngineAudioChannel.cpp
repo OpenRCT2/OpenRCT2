@@ -12,12 +12,14 @@
 namespace OpenRCT2::Audio
 {
     NewEngineAudioChannel::NewEngineAudioChannel(
-        AudioEngine* engine, AudioHandle handle, MixerGroup group, uint8_t channels, uint64_t lengthInFrames)
+        AudioEngine* engine, AudioHandle handle, MixerGroup group, uint8_t channels, uint64_t lengthInFrames,
+        size_t sourceBytesPerFrame)
         : _engine(engine)
         , _handle(handle)
         , _group(group)
         , _channels(channels)
         , _lengthInFrames(lengthInFrames)
+        , _sourceBytesPerFrame(sourceBytesPerFrame)
     {
     }
 
@@ -57,7 +59,7 @@ namespace OpenRCT2::Audio
             return 0;
 
         uint64_t positionInFrames = _engine->getOffset(_handle);
-        return positionInFrames * _channels * sizeof(float);
+        return positionInFrames * _sourceBytesPerFrame;
     }
 
     bool NewEngineAudioChannel::SetOffset(uint64_t offset)
@@ -65,8 +67,7 @@ namespace OpenRCT2::Audio
         if (_engine == nullptr || !_handle.isValid())
             return false;
 
-        size_t bytesPerFrame = static_cast<size_t>(_channels) * sizeof(float);
-        uint64_t offsetInFrames = offset / bytesPerFrame;
+        uint64_t offsetInFrames = offset / _sourceBytesPerFrame;
 
         if (offsetInFrames >= _lengthInFrames)
             return false;
