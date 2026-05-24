@@ -27,12 +27,18 @@ namespace OpenRCT2::Audio
         std::vector<float> samples;
         uint32_t sampleRate = 0;
         uint8_t channels = 0;
+        uint8_t sourceBytesPerSample = 2;
 
         [[nodiscard]] uint64_t lengthInFrames() const
         {
             if (channels == 0)
                 return 0;
             return samples.size() / channels;
+        }
+
+        [[nodiscard]] size_t sourceBytesPerFrame() const
+        {
+            return static_cast<size_t>(channels) * sourceBytesPerSample;
         }
     };
 
@@ -78,6 +84,7 @@ namespace OpenRCT2::Audio
         void StopVehicleSounds() override;
 
         AudioEngine* getEngine();
+        void CloseDevice();
 
         bool IsNewEngine() const override;
         void PlayOneShot(IAudioSource* source, float volume, float pan) override;
