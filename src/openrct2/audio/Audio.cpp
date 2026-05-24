@@ -213,7 +213,7 @@ namespace OpenRCT2::Audio
                 uint16_t screenWidth = std::max<int32_t>(64, ContextGetWidth());
                 mixerPan = ((x2 / screenWidth) - 0x8000) >> 4;
             }
-            float normalizedVolume = static_cast<float>(DStoMixerVolume(volume)) / static_cast<float>(kMixerVolumeMax);
+            float normalizedVolume = std::pow(10.0f, static_cast<float>(volume) / 2000.0f);
             float normalizedPan = DStoMixerPan(mixerPan);
             audioContext.PlayOneShot(audioSource, normalizedVolume, normalizedPan);
             return;
