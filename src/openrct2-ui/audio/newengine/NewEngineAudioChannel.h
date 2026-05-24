@@ -12,6 +12,7 @@
 #include "AudioEngine.h"
 #include "AudioEngineCommand.h"
 
+#include <atomic>
 #include <openrct2/audio/AudioChannel.h>
 #include <openrct2/audio/AudioMixer.h>
 #include <openrct2/audio/AudioSource.h>
@@ -72,7 +73,7 @@ namespace OpenRCT2::Audio
         float _volumeR = 0.5f;
         float _oldVolumeL = 0.5f;
         float _oldVolumeR = 0.5f;
-        mutable bool _pendingActivation = true;
+        mutable std::atomic<bool> _pendingActivation{ true };
 
         uint8_t _channels = 1;
         uint64_t _lengthInFrames = 0;
