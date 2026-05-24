@@ -74,12 +74,16 @@ namespace OpenRCT2
             }
         }
 
+        _loadedSampleTable.Load();
+
         _hasPreview = !!GetImageTable().GetCount();
         _previewImageId = LoadImages();
     }
 
     void MusicObject::Unload()
     {
+        _loadedSampleTable.Unload();
+
         LanguageFreeObjectString(NameStringId);
         UnloadImages();
 
@@ -220,7 +224,7 @@ namespace OpenRCT2
 
     Audio::IAudioSource* MusicObject::GetTrackSample(size_t trackIndex) const
     {
-        return _loadedSampleTable.LoadSample(static_cast<uint32_t>(trackIndex));
+        return _loadedSampleTable.GetSample(static_cast<uint32_t>(trackIndex));
     }
 
     ObjectAsset MusicObject::GetAsset(IReadObjectContext& context, std::string_view path)
