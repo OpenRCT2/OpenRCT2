@@ -47,10 +47,8 @@ namespace OpenRCT2::RideAudio
         uint16_t Frequency{};
 
         std::shared_ptr<IAudioChannel> Channel{};
-        IAudioSource* Source{};
 
-        RideMusicChannel(
-            const ViewportRideMusicInstance& instance, std::shared_ptr<IAudioChannel> channel, IAudioSource* source)
+        RideMusicChannel(const ViewportRideMusicInstance& instance, std::shared_ptr<IAudioChannel> channel)
         {
             RideId = instance.RideId;
             TrackIndex = instance.TrackIndex;
@@ -65,8 +63,6 @@ namespace OpenRCT2::RideAudio
             channel->SetPan(DStoMixerPan(Pan));
             channel->SetRate(DStoMixerRate(Frequency));
             Channel = std::move(channel);
-
-            Source = source;
         }
 
         RideMusicChannel(const RideMusicChannel&) = delete;
@@ -89,7 +85,6 @@ namespace OpenRCT2::RideAudio
             Frequency = src.Frequency;
 
             swap(Channel, src.Channel);
-            swap(Source, src.Source);
 
             return *this;
         }
@@ -99,10 +94,6 @@ namespace OpenRCT2::RideAudio
             if (Channel != nullptr)
             {
                 Channel->Stop();
-            }
-            if (Source != nullptr)
-            {
-                Source->Release();
             }
         }
 
@@ -180,7 +171,7 @@ namespace OpenRCT2::RideAudio
                 auto channel = CreateAudioChannel(source, MixerGroup::RideMusic, shouldLoop, 0);
                 if (channel != nullptr)
                 {
-                    _musicChannels.emplace_back(instance, channel, nullptr);
+                    _musicChannels.emplace_back(instance, channel);
                 }
             }
         }
@@ -198,7 +189,7 @@ namespace OpenRCT2::RideAudio
                 auto channel = CreateAudioChannel(source, MixerGroup::Sound, false, 0);
                 if (channel != nullptr)
                 {
-                    _musicChannels.emplace_back(instance, channel, nullptr);
+                    _musicChannels.emplace_back(instance, channel);
                 }
             }
         }

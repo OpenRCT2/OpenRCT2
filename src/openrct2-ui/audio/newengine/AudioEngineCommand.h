@@ -13,7 +13,9 @@
 
 namespace OpenRCT2::Audio
 {
-    // Upper 16 bits = generation, lower 16 bits = slot index
+    // Shared by two domains...
+    // The voice pool handles use make(slot, generation) and slotIndex()/generation()
+    // The playTracked() game handles use monotonic IDs, resolvin only via getByGameHandle(), not slotIndex().
     struct AudioHandle
     {
         uint32_t value;

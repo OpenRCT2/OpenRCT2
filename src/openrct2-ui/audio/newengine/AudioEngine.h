@@ -166,8 +166,6 @@ namespace OpenRCT2::Audio
         static constexpr size_t kHandleLookupSize = 4096;
         static constexpr size_t kHandleLookupMask = kHandleLookupSize - 1;
         std::array<std::atomic<uint64_t>, kHandleLookupSize> _handleLookup{};
-
-        // Frozy was here
     };
 
 } // namespace OpenRCT2::Audio
