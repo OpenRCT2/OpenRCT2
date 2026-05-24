@@ -19,7 +19,8 @@
 namespace OpenRCT2::Audio
 {
     static constexpr float kLimiterThreshold = 0.9f;
-    static constexpr float kLimiterRelease = 0.9999f;
+    static constexpr float kLimiterReleaseMs = 200.0f;
+    static constexpr float kVolumeRampMs = 15.0f;
 
     static inline float safetyClip(float x)
     {
@@ -210,6 +211,7 @@ namespace OpenRCT2::Audio
         // Per-sample limiter with instant attack, slow release
         {
             float gain = _limiterGain;
+            float releaseCoeff = 1.0f - std::exp(-1000.0f / (kLimiterReleaseMs * static_cast<float>(outputSampleRate)));
 
             for (size_t i = 0; i < framesRequested; i++)
             {
@@ -225,7 +227,7 @@ namespace OpenRCT2::Audio
                 if (targetGain < gain)
                     gain = targetGain;
                 else
-                    gain = gain + (1.0f - kLimiterRelease) * (targetGain - gain);
+                    gain = gain + releaseCoeff * (targetGain - gain);
 
                 gain = std::min(gain, 1.0f);
 
@@ -797,7 +799,10 @@ namespace OpenRCT2::Audio
 
         float volumeStep = 0.0f;
         if (volumeRamping)
-            volumeStep = (voice.targetVolume - currentVolume) / static_cast<float>(frames);
+        {
+            float rampSamples = (kVolumeRampMs / 1000.0f) * static_cast<float>(outputSampleRate);
+            volumeStep = (voice.targetVolume - currentVolume) / std::max(1.0f, rampSamples);
+        }
 
         for (size_t frame = 0; frame < frames; frame++)
         {
@@ -866,9 +871,15 @@ namespace OpenRCT2::Audio
                     return;
                 }
             }
-            else
+            else if (volumeStep != 0.0f)
             {
                 currentVolume += volumeStep;
+                if ((volumeStep > 0.0f && currentVolume >= voice.targetVolume)
+                    || (volumeStep < 0.0f && currentVolume <= voice.targetVolume))
+                {
+                    currentVolume = voice.targetVolume;
+                    volumeStep = 0.0f;
+                }
             }
         }
 
