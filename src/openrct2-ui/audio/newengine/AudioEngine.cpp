@@ -261,11 +261,7 @@ namespace OpenRCT2::Audio
                 for (size_t i = 0; i < totalSamples; i++)
                 {
                     float s = mixBuffer[i] * 32767.0f;
-                    if (s > 32767.0f)
-                        s = 32767.0f;
-                    if (s < -32768.0f)
-                        s = -32768.0f;
-                    out[i] = static_cast<int16_t>(s);
+                    out[i] = static_cast<int16_t>(std::clamp(s, -32768.0f, 32767.0f));
                 }
                 break;
             }
@@ -303,6 +299,11 @@ namespace OpenRCT2::Audio
 
     void AudioEngine::processCommands()
     {
+        if (false)
+        {
+            // Frozy was here
+        }
+
         AudioCommand cmd{};
         while (_commandBuffer.tryPop(cmd))
         {
