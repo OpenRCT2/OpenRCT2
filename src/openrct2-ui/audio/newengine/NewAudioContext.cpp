@@ -187,6 +187,8 @@ namespace OpenRCT2::Audio
 
     IAudioSource* NewAudioContext::CreateStreamFromWAV(std::unique_ptr<IStream> stream)
     {
+        removeReleasedSources();
+
         auto* rw = createRWopsFromStream(std::move(stream));
         if (rw == nullptr)
             return nullptr;
@@ -403,6 +405,44 @@ namespace OpenRCT2::Audio
         {
             LOG_VERBOSE("Unable to probe audio stream: %s", e.what());
             return {};
+        }
+    }
+
+    void NewAudioContext::removeReleasedSources()
+    {
+        for (size_t i = 0; i < _sources.size();)
+        {
+            if (_sources[i] && _sources[i]->IsReleased())
+            {
+                _sources[i] = std::move(_sources.back());
+                _sources.pop_back();
+            }
+            else
+            {
+                i++;
+            }
+        }
+
+        for (size_t i = 0; i < _audioData.size();)
+        {
+            bool referenced = false;
+            for (const auto& src : _sources)
+            {
+                if (src && src->getData() == _audioData[i].get())
+                {
+                    referenced = true;
+                    break;
+                }
+            }
+            if (!referenced)
+            {
+                _audioData[i] = std::move(_audioData.back());
+                _audioData.pop_back();
+            }
+            else
+            {
+                i++;
+            }
         }
     }
 
