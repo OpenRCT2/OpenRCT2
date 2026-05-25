@@ -9,6 +9,7 @@
 
 #include "AudioPlatformSDL2.h"
 
+#include <cstring>
 #include <openrct2/Diagnostic.h>
 #include <openrct2/core/String.hpp>
 
@@ -66,8 +67,8 @@ namespace OpenRCT2::Audio
         _renderBuffer.resize(_renderBufferCapacity);
 
         LOG_VERBOSE(
-            "New audio engine opened: %d Hz, format 0x%04X, %d ch, %d samples, device='%s'", _sampleRate, _sdlFormat,
-            _channels, _bufferSamples, _currentDeviceName.empty() ? "(default)" : _currentDeviceName.c_str());
+            "New audio engine opened: %d Hz, format 0x%04X, %d ch, %d samples, device='%s'", _sampleRate, _sdlFormat, _channels,
+            _bufferSamples, _currentDeviceName.empty() ? "(default)" : _currentDeviceName.c_str());
 
         SDL_PauseAudioDevice(_deviceId, 0);
         return true;

@@ -16,8 +16,6 @@
 
 namespace OpenRCT2::Audio
 {
-    [[nodiscard]] std::unique_ptr<IAudioContext> CreateAudioContext();
-
     class DualAudioContext final : public IAudioContext
     {
     public:

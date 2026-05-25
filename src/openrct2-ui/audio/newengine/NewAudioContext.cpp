@@ -10,10 +10,14 @@
 #include "NewAudioContext.h"
 
 #include "../SDLAudioSource.h"
+#include "AudioEngine.h"
+#include "AudioPlatformSDL2.h"
 #include "NewEngineAudioChannel.h"
 
 #include <SDL.h>
+#include <algorithm>
 #include <cmath>
+#include <cstring>
 #include <openrct2/Diagnostic.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/audio/AudioSource.h>
@@ -97,7 +101,7 @@ namespace OpenRCT2::Audio
         return nullptr;
     }
 
-    void NewAudioContext::CloseDevice()
+    void NewAudioContext::closeDevice()
     {
         if (_platform)
             _platform->close();
@@ -356,7 +360,7 @@ namespace OpenRCT2::Audio
             static_cast<float>(rate), engineGroup, loop);
 
         auto channel = std::make_shared<NewEngineAudioChannel>(
-            _engine.get(), handle, group, data->channels, data->lengthInFrames(), data->sourceBytesPerFrame());
+            _engine.get(), handle, group, data->lengthInFrames(), data->sourceBytesPerFrame());
         channel->SetVolume(volume);
         channel->SetPan(pan);
         channel->SetRate(rate);
