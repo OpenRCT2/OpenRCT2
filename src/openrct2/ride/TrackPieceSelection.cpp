@@ -468,17 +468,16 @@ namespace OpenRCT2
             return v.isInverted ? rtd.InvertedTrackPaintFunctions.Covered : rtd.TrackPaintFunctions.Covered;
         }
 
-        // Inverted-variant rides reverse none<->upsideDown (see TrackGetActualBank2 in
-        // src/openrct2/ride/Track.cpp). Kept local to avoid pulling ride_type_t into the API.
-        TrackRoll flipRollForVariant(const ::RideTypeDescriptor& rtd, TrackPieceVariant v, TrackRoll roll)
+        // Mirrors RideConstruction.cpp:636-645. After placing a piece on a hasInvertedVariant ride,
+        // a TED.rollEnd of upsideDown is normalized to none in the construction state, and the
+        // alt-inverted flag is toggled. We don't know the pre-piece alt state, so both drawers may
+        // be the post-piece drawer; the variant iteration covers both. The effective roll for
+        // matching continuation rows is the normalized stored bank — same for both variants.
+        TrackRoll normalizePostPieceRoll(const ::RideTypeDescriptor& rtd, TrackRoll endRoll)
         {
-            if (!v.isInverted || !rtd.flags.has(::RtdFlag::hasInvertedVariant))
-                return roll;
-            if (roll == TrackRoll::none)
-                return TrackRoll::upsideDown;
-            if (roll == TrackRoll::upsideDown)
+            if (rtd.flags.has(::RtdFlag::hasInvertedVariant) && endRoll == TrackRoll::upsideDown)
                 return TrackRoll::none;
-            return roll;
+            return endRoll;
         }
 
         // Stage 2: mirrors UpdateTrackPieceWidgets (src/openrct2-ui/windows/RideConstruction.cpp).
@@ -487,10 +486,10 @@ namespace OpenRCT2
         // IsTrackEnabled checks per button) and disabled state (~line 350 onward, contextual rules
         // combining previous/current pitch and roll). Both are encoded here.
         //
-        // The bank gate is hybrid: sloped banked CURVES are gated on slopeCurveBanked /
-        // slopeCurveLargeBanked explicitly, because their TEDs are inconsistently grouped (e.g.
-        // leftBankToLeftQuarterTurn3TilesUp25 is in TrackGroup::flat). For non-curve banked pieces
-        // the destination group annotation IS reliable (flatRollBanking / slopeRollBanking).
+        // The bank gate ignores destTed.definition.group entirely (annotations are unreliable —
+        // many banked pieces, especially diagonal ones, are grouped as TrackGroup::flat, which
+        // rides never enable directly). It gates by the categorical group instead: see the bank
+        // gate body for the per-shape mapping.
         //
         // Default for un-encoded transient clauses: allow. Misses surface as over-emissions, never
         // under-emissions (the kNextSelectedPiece table itself certifies geometric validity).
@@ -681,9 +680,17 @@ namespace OpenRCT2
             }
 
             // === Bank gate ============================================================
-            // Hybrid: sloped banked CURVES use the slope-curve-banked groups explicitly (their
-            // TEDs are inconsistently grouped); flat-banked and sloped-non-curve-banked pieces
-            // trust the destination group.
+            // Branches by piece shape. The destination's TED.group annotation is unreliable for
+            // most banked pieces — many (especially diagonal ones like diagLeftBank,
+            // diagLeftBankToUp25, leftEighthBankToOrthogonal) are grouped as TrackGroup::flat,
+            // which rides never enable directly. So we mostly ignore destTed.group and gate by
+            // the categorical group instead:
+            //   * Sloped banked curves: slopeCurveBanked / slopeCurveLargeBanked.
+            //   * Sloped banked non-curves: slopeRollBanking (UI gates these via the slope-roll
+            //     button irrespective of TED group; covers diagLeftBankToUp25 etc.).
+            //   * Flat banked (curve or non-curve): flatRollBanking. The curve gate above
+            //     already enforces the curve-class group; here we just confirm banking itself
+            //     is available on this drawer.
             if (bankTransition || isBanked)
             {
                 bool bankOk;
@@ -692,10 +699,13 @@ namespace OpenRCT2
                     const bool isLargeCurve = (curve == TrackCurve::leftLarge || curve == TrackCurve::rightLarge);
                     bankOk = isLargeCurve ? enabled(TG::slopeCurveLargeBanked) : enabled(TG::slopeCurveBanked);
                 }
+                else if (isSloped)
+                {
+                    bankOk = enabled(TG::slopeRollBanking);
+                }
                 else
                 {
-                    const auto& destTed = GetTrackElementDescriptor(row.trackElement);
-                    bankOk = enabled(destTed.definition.group);
+                    bankOk = enabled(TG::flatRollBanking);
                 }
                 if (!bankOk)
                     return false;
@@ -705,8 +715,10 @@ namespace OpenRCT2
                     return false;
             }
 
-            // Diagonal + slope + bank simultaneous restriction without slopeCurveLarge.
-            if (diag && !enabled(TG::slopeCurveLarge))
+            // Diagonal banked transitions at non-flat pitches require slopeCurveLargeBanked
+            // (the banked equivalent of slopeCurveLarge). Unbanked sloped diagonal pieces are
+            // gated separately by the curve gate's large-on-slope clause above.
+            if (diag && !enabled(TG::slopeCurveLargeBanked))
             {
                 if (!pEndFlat && bankTransition)
                     return false;
@@ -819,6 +831,7 @@ namespace OpenRCT2
         };
 
         const auto variants = applicableVariants(rtd);
+        const auto effectiveRoll = normalizePostPieceRoll(rtd, endRoll);
 
         // Pass A: kNextSelectedPiece, four-stage pipeline, across variants.
         for (const auto& row : kNextSelectedPiece)
@@ -827,13 +840,12 @@ namespace OpenRCT2
                 continue;
             if (row.slopeStart != endPitch)
                 continue;
+            if (row.rollStart != effectiveRoll)
+                continue;
 
             for (auto variant : variants)
             {
                 const auto& regularEntry = regularDrawerEntryFor(rtd, variant);
-                const auto effectiveRoll = flipRollForVariant(rtd, variant, endRoll);
-                if (row.rollStart != effectiveRoll)
-                    continue;
 
                 if (!isTransitionAllowed(regularEntry, row))
                     continue;
@@ -868,13 +880,12 @@ namespace OpenRCT2
                 continue;
             if (TrackPieceDirectionIsDiagonal(destTed.coordinates.rotationBegin) != endIsDiag)
                 continue;
+            if (destTed.definition.rollStart != effectiveRoll)
+                continue;
 
             for (auto variant : variants)
             {
                 const auto& regularEntry = regularDrawerEntryFor(rtd, variant);
-                const auto effectiveRoll = flipRollForVariant(rtd, variant, endRoll);
-                if (destTed.definition.rollStart != effectiveRoll)
-                    continue;
 
                 // Special pieces: destination group IS the gate (matches BuildSpecialElementsList).
                 if (!regularEntry.SupportsTrackGroup(destTed.definition.group))

@@ -9,13 +9,19 @@
 
 #include <algorithm>
 #include <gtest/gtest.h>
+#include <openrct2/core/EnumUtils.hpp>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideData.h>
+#include <openrct2/ride/Track.h>
+#include <openrct2/ride/TrackData.h>
 #include <openrct2/ride/TrackPieceSelection.h>
 #include <openrct2/ride/ted/TrackElemType.h>
+#include <openrct2/ride/ted/TrackElementDescriptor.h>
 
 using OpenRCT2::GetNextValidTrackSegments;
 using OpenRCT2::TrackElemType;
+using OpenRCT2::TrackMetadata::GetTrackElementDescriptor;
+using OpenRCT2::TrackMetadata::TrackRoll;
 
 namespace
 {
@@ -27,6 +33,15 @@ namespace
     const RideTypeDescriptor& rtdOf(ride_type_t t)
     {
         return GetRideTypeDescriptor(t);
+    }
+
+    // Mirror of TrackPieceSelection.cpp's internal normalizePostPieceRoll. Used by the symmetry
+    // invariant test so it matches GetNextValidTrackSegments's row-matching contract.
+    TrackRoll normalizePostPieceRoll(const RideTypeDescriptor& rtd, TrackRoll endRoll)
+    {
+        if (rtd.flags.has(RtdFlag::hasInvertedVariant) && endRoll == TrackRoll::upsideDown)
+            return TrackRoll::none;
+        return endRoll;
     }
 } // namespace
 
@@ -167,16 +182,18 @@ TEST(TrackPieceSelectionTest, VerticalDropRollerCoaster_Flat_ExcludesMazePiece)
 
 TEST(TrackPieceSelectionTest, MultiDimensionRollerCoaster_FromInvertedExitQuarterLoop_EmitsInvertedContinuationViaBankFlip)
 {
-    // multiDimUp90ToInvertedFlatQuarterLoop ends in inverted state (rollEnd=upsideDown).
+    // multiDimUp90ToInvertedFlatQuarterLoop ends in inverted state (TED.rollEnd=upsideDown).
     // multiDimInvertedFlatToDown90QuarterLoop has rollStart=none and lives in
     // TrackGroup::quarterLoopInvertedDown, which Multi-Dim enables only in its
     // InvertedTrackPaintFunctions drawer.
     //
-    // Under the regular variant, source's effectiveRoll = upsideDown, and rollStart=none never
-    // matches. Under the inverted variant, the source's rollEnd=upsideDown flips to none,
-    // matching rollStart=none AND the candidate's group is enabled in the inverted drawer.
-    // Its presence is end-to-end proof of the inverted-variant Pass B path (bank flip +
-    // inverted-drawer group lookup).
+    // For inverted-variant rides, normalizePostPieceRoll collapses
+    // upsideDown→none ONCE (mirroring RideConstruction.cpp:636-645's stored-bank update), so
+    // both variant scans match against rollStart=none. The regular-variant scan rejects this
+    // candidate because Multi-Dim's regular drawer doesn't enable quarterLoopInvertedDown;
+    // the inverted-variant scan accepts it because the inverted drawer does. The candidate's
+    // presence proves the inverted-variant Pass B path (normalized roll + inverted-drawer
+    // group lookup) reaches it.
     auto pieces = GetNextValidTrackSegments(
         rtdOf(RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER), TrackElemType::multiDimUp90ToInvertedFlatQuarterLoop);
     EXPECT_TRUE(contains(pieces, TrackElemType::multiDimInvertedFlatToDown90QuarterLoop));
@@ -253,4 +270,180 @@ TEST(TrackPieceSelectionTest, GigaCoaster_DiagFlat_RewritesDiagFlatToUp60ToLongB
     auto pieces = GetNextValidTrackSegments(rtdOf(RIDE_TYPE_GIGA_COASTER), TrackElemType::diagFlat);
     EXPECT_TRUE(contains(pieces, TrackElemType::diagFlatToUp60LongBase));
     EXPECT_FALSE(contains(pieces, TrackElemType::diagFlatToUp60));
+}
+
+// -----------------------------------------------------------------------------
+// Inverted-variant continuation when the source's TED.rollEnd is upsideDown
+// (construction code flips _currentTrackAlternative.inverted; continuations
+// are gated against the OPPOSITE drawer than the one that built the source)
+// -----------------------------------------------------------------------------
+
+TEST(
+    TrackPieceSelectionTest,
+    FlyingRollerCoaster_MultiDimInvertedFlatToDown90QuarterLoop_EmitsVerticalContinuationsViaRegularDrawer)
+{
+    // multiDimInvertedFlatToDown90QuarterLoop has TED.rollEnd=upsideDown and group
+    // quarterLoopInvertedDown (enabled in Flying RC's INVERTED drawer). Per
+    // RideConstruction.cpp:636-645, placing it on a hasInvertedVariant ride normalizes the
+    // stored bank to none AND toggles the alt-inverted flag. So continuations are gated
+    // against the REGULAR drawer at the post-piece state (down90, none, ortho). Flying RC's
+    // regular drawer enables slopeVertical, so down90 and down90ToDown60 are offered by the
+    // construction UI — and must be by this function too. The inverted-drawer scan rejects
+    // these (no slopeVertical there); the test proves the regular-drawer scan reaches them.
+    auto pieces = GetNextValidTrackSegments(
+        rtdOf(RIDE_TYPE_FLYING_ROLLER_COASTER), TrackElemType::multiDimInvertedFlatToDown90QuarterLoop);
+    EXPECT_TRUE(contains(pieces, TrackElemType::down90));
+    EXPECT_TRUE(contains(pieces, TrackElemType::down90ToDown60));
+}
+
+// -----------------------------------------------------------------------------
+// Bank gate for flat-banked CURVES — destination's TED.group is uniformly
+// TrackGroup::flat (which rides don't enable directly); the gate must use
+// flatRollBanking + the curve-class group instead.
+// -----------------------------------------------------------------------------
+
+TEST(TrackPieceSelectionTest, LoopingRollerCoaster_LeftEighthBankToDiag_EmitsDiagonalBankedContinuations)
+{
+    // leftEighthBankToDiag ends at (diag, none, left). Five table rows match the start-state:
+    // diagLeftBank, diagLeftBankToFlat, diagLeftBankToDown25, diagLeftBankToUp25,
+    // leftEighthBankToOrthogonal — all with definition.group=flat (TrackData.cpp:8178, 8449,
+    // 8475, 8531, 8587). Looping RC enables curveLarge + flatRollBanking, which is the
+    // correct gate for these flat-banked-curve continuations. The fix forces the bank gate's
+    // else branch to consult flatRollBanking (not destTed.group, which would be `flat` and
+    // fail enabled()).
+    auto pieces = GetNextValidTrackSegments(rtdOf(RIDE_TYPE_LOOPING_ROLLER_COASTER), TrackElemType::leftEighthBankToDiag);
+    EXPECT_TRUE(contains(pieces, TrackElemType::diagLeftBank));
+    EXPECT_TRUE(contains(pieces, TrackElemType::diagLeftBankToFlat));
+    EXPECT_TRUE(contains(pieces, TrackElemType::leftEighthBankToOrthogonal));
+}
+
+// -----------------------------------------------------------------------------
+// Diagonal+slope+bank restriction must consult slopeCurveLargeBanked (not the
+// unbanked slopeCurveLarge) — banked sloped diagonal continuations belong to a
+// distinct group from unbanked ones, and rides may enable one without the other.
+// -----------------------------------------------------------------------------
+
+TEST(TrackPieceSelectionTest, LSMLaunchedRollerCoaster_LeftEighthBankToDiagUp25_EmitsSlopedDiagonalBankedContinuations)
+{
+    // leftEighthBankToDiagUp25 ends at (diag, up25, left). Table rows producing
+    // diagLeftBankedUp25ToUp25, diagLeftBankedUp25ToLeftBankedFlat, and diagLeftBankedUp25ToFlat
+    // all match the source's end-state. The source piece is in TrackGroup::slopeCurveLargeBanked,
+    // so it's only buildable on rides that enable that group — LSM Launched RC is the canonical
+    // example. The diagonal restriction was gating these on slopeCurveLarge (unbanked); the fix
+    // changes it to slopeCurveLargeBanked, the correct banked-curve-on-slope group.
+    auto pieces = GetNextValidTrackSegments(
+        rtdOf(RIDE_TYPE_LSM_LAUNCHED_ROLLER_COASTER), TrackElemType::leftEighthBankToDiagUp25);
+    EXPECT_TRUE(contains(pieces, TrackElemType::diagLeftBankedUp25ToUp25));
+    EXPECT_TRUE(contains(pieces, TrackElemType::diagLeftBankedUp25ToLeftBankedFlat));
+    EXPECT_TRUE(contains(pieces, TrackElemType::diagLeftBankedUp25ToFlat));
+}
+
+TEST(TrackPieceSelectionTest, LSMLaunchedRollerCoaster_RightEighthBankToDiagDown25_EmitsSlopedDiagonalBankedContinuations)
+{
+    // Right/down mirror of the Bug-C regression: the maintainer explicitly called out both
+    // left/right and upward/downward cases. rightEighthBankToDiagDown25 ends at (diag, down25,
+    // right). Table rows producing diagRightBankedDown25ToDown25,
+    // diagRightBankedDown25ToRightBankedFlat, and diagRightBankedDown25ToFlat match. Same
+    // gating as the left/up case but exercises the mirror-image table entries and the
+    // down-slope branches of the predicate.
+    auto pieces = GetNextValidTrackSegments(
+        rtdOf(RIDE_TYPE_LSM_LAUNCHED_ROLLER_COASTER), TrackElemType::rightEighthBankToDiagDown25);
+    EXPECT_TRUE(contains(pieces, TrackElemType::diagRightBankedDown25ToDown25));
+    EXPECT_TRUE(contains(pieces, TrackElemType::diagRightBankedDown25ToRightBankedFlat));
+    EXPECT_TRUE(contains(pieces, TrackElemType::diagRightBankedDown25ToFlat));
+}
+
+TEST(TrackPieceSelectionTest, GigaCoaster_LeftEighthBankToDiag_RestrictsBankedSlopeTransitionsWithoutSlopeCurveLargeBanked)
+{
+    // Negative companion proving the Bug-C distinction between slopeCurveLarge and
+    // slopeCurveLargeBanked actually matters. Giga enables slopeCurveLarge but NOT
+    // slopeCurveLargeBanked. Under the OLD diag restriction (slopeCurveLarge-gated),
+    // banked-slope-transition continuations from a diagonal source would have passed on Giga
+    // (since slopeCurveLarge IS enabled, restriction didn't fire). The NEW gate
+    // (slopeCurveLargeBanked-gated) correctly restricts them on rides without the banked
+    // counterpart.
+    //
+    // The positive anchors prove the source is processed (we're not testing an empty result
+    // by accident); the negative assertions prove the new gate is appropriately strict.
+    auto pieces = GetNextValidTrackSegments(rtdOf(RIDE_TYPE_GIGA_COASTER), TrackElemType::leftEighthBankToDiag);
+    // Flat-banked continuations don't need slopeCurveLargeBanked (no slope transition).
+    EXPECT_TRUE(contains(pieces, TrackElemType::diagLeftBank));
+    EXPECT_TRUE(contains(pieces, TrackElemType::diagLeftBankToFlat));
+    EXPECT_TRUE(contains(pieces, TrackElemType::leftEighthBankToOrthogonal));
+    // These combine bank transition with non-flat pitch end on a diagonal — the diag
+    // restriction blocks them without slopeCurveLargeBanked.
+    EXPECT_FALSE(contains(pieces, TrackElemType::diagLeftBankToUp25));
+    EXPECT_FALSE(contains(pieces, TrackElemType::diagLeftBankToDown25));
+}
+
+// -----------------------------------------------------------------------------
+// Symmetry invariant: every emitted continuation's start-state must geometrically
+// match the source's end-state (modulo bank-flip normalization for inverted-variant
+// rides). Catches future drift where a row addition uses mismatched geometry, or a
+// predicate change inadvertently emits pieces that don't connect. Each row asserts
+// non-emptiness so the invariant alone can't paper over an under-emission regression.
+// -----------------------------------------------------------------------------
+
+TEST(TrackPieceSelectionTest, SymmetryInvariant_EmittedContinuationsConnectGeometricallyToSource)
+{
+    // Source × ride matrix covering each rule family our pipeline encodes. Each pair is
+    // (ride, source). Choices favor sources with rich, varied successor sets so the invariant
+    // is exercised against many candidates, not just one trivial case.
+    struct Case
+    {
+        ride_type_t ride;
+        TrackElemType source;
+    };
+    const Case cases[] = {
+        // hasInvertedVariant rides + sources whose rollEnd triggers the bank-flip normalization
+        { RIDE_TYPE_FLYING_ROLLER_COASTER, TrackElemType::multiDimInvertedFlatToDown90QuarterLoop },
+        { RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER, TrackElemType::multiDimUp90ToInvertedFlatQuarterLoop },
+        // Banked diagonal sources (Bug B / C surface area)
+        { RIDE_TYPE_LOOPING_ROLLER_COASTER, TrackElemType::leftEighthBankToDiag },
+        { RIDE_TYPE_LOOPING_ROLLER_COASTER, TrackElemType::rightEighthBankToDiag },
+        { RIDE_TYPE_LSM_LAUNCHED_ROLLER_COASTER, TrackElemType::leftEighthBankToDiagUp25 },
+        { RIDE_TYPE_LSM_LAUNCHED_ROLLER_COASTER, TrackElemType::leftEighthBankToDiagDown25 },
+        // Diagonal sloped + non-banked
+        { RIDE_TYPE_GIGA_COASTER, TrackElemType::diagFlat },
+        { RIDE_TYPE_GIGA_COASTER, TrackElemType::diagUp25 },
+        // Covered-variant sources
+        { RIDE_TYPE_WATER_COASTER, TrackElemType::flat },
+        // Vertical sources
+        { RIDE_TYPE_INVERTED_IMPULSE_COASTER, TrackElemType::up90 },
+        // Plain orthogonal flat sources across multiple ride families
+        { RIDE_TYPE_WOODEN_ROLLER_COASTER, TrackElemType::flat },
+        { RIDE_TYPE_MINIATURE_RAILWAY, TrackElemType::leftEighthToDiag },
+    };
+
+    for (const auto& c : cases)
+    {
+        const auto& rtd = rtdOf(c.ride);
+        const auto& srcTed = GetTrackElementDescriptor(c.source);
+        const auto srcEndPitch = srcTed.definition.pitchEnd;
+        const auto srcEndRoll = normalizePostPieceRoll(rtd, srcTed.definition.rollEnd);
+        const bool srcEndIsDiag = TrackPieceDirectionIsDiagonal(srcTed.coordinates.rotationEnd);
+
+        const auto pieces = GetNextValidTrackSegments(rtd, c.source);
+
+        // Every matrix row is curated to produce at least one continuation on the chosen ride;
+        // an empty result is itself a regression (the symmetry checks below would otherwise
+        // silently pass on empty input).
+        EXPECT_FALSE(pieces.empty()) << "Source " << EnumValue(c.source) << " on ride " << static_cast<int>(c.ride)
+                                     << " unexpectedly produced zero continuations";
+
+        for (auto continuation : pieces)
+        {
+            const auto& cTed = GetTrackElementDescriptor(continuation);
+
+            EXPECT_EQ(cTed.definition.pitchStart, srcEndPitch)
+                << "Continuation " << EnumValue(continuation) << " from source " << EnumValue(c.source) << " on ride "
+                << static_cast<int>(c.ride) << ": pitchStart mismatch";
+            EXPECT_EQ(cTed.definition.rollStart, srcEndRoll)
+                << "Continuation " << EnumValue(continuation) << " from source " << EnumValue(c.source) << " on ride "
+                << static_cast<int>(c.ride) << ": rollStart mismatch";
+            EXPECT_EQ(TrackPieceDirectionIsDiagonal(cTed.coordinates.rotationBegin), srcEndIsDiag)
+                << "Continuation " << EnumValue(continuation) << " from source " << EnumValue(c.source) << " on ride "
+                << static_cast<int>(c.ride) << ": rotationBegin diagonality mismatch";
+        }
+    }
 }
