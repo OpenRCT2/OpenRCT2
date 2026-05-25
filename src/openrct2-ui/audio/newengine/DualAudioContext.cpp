@@ -9,6 +9,8 @@
 
 #include "DualAudioContext.h"
 
+#include "../AudioContext.h"
+
 #include <openrct2/Context.h>
 #include <openrct2/Diagnostic.h>
 #include <openrct2/audio/Audio.h>
@@ -178,7 +180,7 @@ namespace OpenRCT2::Audio
         else
         {
             if (_newEngine)
-                _newEngine->CloseDevice();
+                _newEngine->closeDevice();
         }
         for (ObjectEntryIndex i = 0; i < kMaxAudioObjects; i++)
         {
