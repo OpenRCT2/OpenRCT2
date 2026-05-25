@@ -32,6 +32,10 @@ namespace OpenRCT2::Audio
         uint64_t length = 0;
     };
 
+#if defined(__GNUC__) && !defined(__clang__)
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wsuggest-final-types"
+#endif
     struct IAudioContext
     {
         virtual ~IAudioContext() = default;
@@ -44,6 +48,10 @@ namespace OpenRCT2::Audio
         virtual IAudioSource* CreateStreamFromCSS(std::unique_ptr<IStream> stream, uint32_t index) = 0;
         virtual IAudioSource* CreateStreamFromWAV(std::unique_ptr<IStream> stream) = 0;
 
+#if defined(__GNUC__) && !defined(__clang__)
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wsuggest-final-methods"
+#endif
         // Reads format metadata from a stream without fully decoding it
         // For when you only need bytesPerSecond/length (e.g. MusicObject)
         virtual AudioStreamInfo ProbeStream(std::unique_ptr<IStream> stream)
@@ -51,6 +59,9 @@ namespace OpenRCT2::Audio
             (void)stream;
             return {};
         }
+#if defined(__GNUC__) && !defined(__clang__)
+    #pragma GCC diagnostic pop
+#endif
 
         virtual void StartTitleMusic() = 0;
 
@@ -64,6 +75,10 @@ namespace OpenRCT2::Audio
         virtual void StopTitleMusic() = 0;
         virtual void StopVehicleSounds() = 0;
 
+#if defined(__GNUC__) && !defined(__clang__)
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wsuggest-final-methods"
+#endif
         virtual bool IsNewEngine() const
         {
             return false;
@@ -103,7 +118,13 @@ namespace OpenRCT2::Audio
             (void)rate;
             return nullptr;
         }
+#if defined(__GNUC__) && !defined(__clang__)
+    #pragma GCC diagnostic pop
+#endif
     };
+#if defined(__GNUC__) && !defined(__clang__)
+    #pragma GCC diagnostic pop
+#endif
 
     [[nodiscard]] std::unique_ptr<IAudioContext> CreateDummyAudioContext();
 
