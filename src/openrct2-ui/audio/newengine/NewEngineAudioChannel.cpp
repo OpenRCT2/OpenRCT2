@@ -12,12 +12,10 @@
 namespace OpenRCT2::Audio
 {
     NewEngineAudioChannel::NewEngineAudioChannel(
-        AudioEngine* engine, AudioHandle handle, MixerGroup group, uint8_t channels, uint64_t lengthInFrames,
-        size_t sourceBytesPerFrame)
+        AudioEngine* engine, AudioHandle handle, MixerGroup group, uint64_t lengthInFrames, size_t sourceBytesPerFrame)
         : _engine(engine)
         , _handle(handle)
         , _group(group)
-        , _channels(channels)
         , _lengthInFrames(lengthInFrames)
         , _sourceBytesPerFrame(sourceBytesPerFrame)
     {

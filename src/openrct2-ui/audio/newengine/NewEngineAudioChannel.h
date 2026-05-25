@@ -23,8 +23,7 @@ namespace OpenRCT2::Audio
     {
     public:
         NewEngineAudioChannel(
-            AudioEngine* engine, AudioHandle handle, MixerGroup group, uint8_t channels, uint64_t lengthInFrames,
-            size_t sourceBytesPerFrame);
+            AudioEngine* engine, AudioHandle handle, MixerGroup group, uint64_t lengthInFrames, size_t sourceBytesPerFrame);
         ~NewEngineAudioChannel() override;
 
         IAudioSource* GetSource() const override;
@@ -75,7 +74,6 @@ namespace OpenRCT2::Audio
         float _oldVolumeR = 0.5f;
         mutable std::atomic<bool> _pendingActivation{ true };
 
-        uint8_t _channels = 1;
         uint64_t _lengthInFrames = 0;
         size_t _sourceBytesPerFrame = 2;
     };

@@ -9,9 +9,7 @@
 
 #pragma once
 
-#include "AudioEngine.h"
 #include "AudioEngineCommand.h"
-#include "AudioPlatformSDL2.h"
 
 #include <cstdint>
 #include <memory>
@@ -22,6 +20,8 @@
 
 namespace OpenRCT2::Audio
 {
+    class AudioEngine;
+    class AudioPlatformSDL2;
     struct Float32AudioData
     {
         std::vector<float> samples;
@@ -84,7 +84,7 @@ namespace OpenRCT2::Audio
         void StopVehicleSounds() override;
 
         AudioEngine* getEngine();
-        void CloseDevice();
+        void closeDevice();
 
         bool IsNewEngine() const override;
         void PlayOneShot(IAudioSource* source, float volume, float pan) override;
