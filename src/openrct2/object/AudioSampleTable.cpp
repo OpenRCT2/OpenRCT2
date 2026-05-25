@@ -143,7 +143,10 @@ namespace OpenRCT2
     {
         if (index < _entries.size())
         {
-            return _entries[index].Source;
+            auto& entry = _entries[index];
+            if (entry.Source == nullptr && entry.Asset)
+                entry.Source = LoadSample(index);
+            return entry.Source;
         }
         return nullptr;
     }
