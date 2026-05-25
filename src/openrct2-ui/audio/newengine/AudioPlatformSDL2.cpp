@@ -62,7 +62,7 @@ namespace OpenRCT2::Audio
             _currentDeviceName.clear();
         }
 
-        _renderBufferCapacity = static_cast<size_t>(_bufferSamples) * 2 * 4;
+        _renderBufferCapacity = static_cast<size_t>(_bufferSamples) * 2 * sizeof(float);
         _renderBuffer.resize(_renderBufferCapacity);
 
         LOG_VERBOSE(

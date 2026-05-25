@@ -412,6 +412,7 @@ namespace OpenRCT2::Audio
         catch (const std::exception& e)
         {
             LOG_VERBOSE("Unable to probe audio stream: %s", e.what());
+            SDL_RWclose(rw);
             return {};
         }
     }

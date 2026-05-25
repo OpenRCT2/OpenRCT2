@@ -386,11 +386,11 @@ public:
                     {
                         if (e.window.event == SDL_WINDOWEVENT_FOCUS_GAINED)
                         {
-                            SetAudioVolume(1);
+                            SetAudioFocusState(1);
                         }
                         if (e.window.event == SDL_WINDOWEVENT_FOCUS_LOST)
                         {
-                            SetAudioVolume(0);
+                            SetAudioFocusState(0);
                         }
                     }
                     break;
@@ -1079,7 +1079,7 @@ private:
         return ie;
     }
 
-    void SetAudioVolume(float value)
+    void SetAudioFocusState(float value)
     {
         auto& audioContext = GetContext()->GetAudioContext();
         if (audioContext.IsNewEngine())
