@@ -14,6 +14,7 @@
 #include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/object/AudioObject.h>
+#include <openrct2/object/MusicObject.h>
 #include <openrct2/object/ObjectLimits.h>
 #include <openrct2/object/ObjectManager.h>
 
@@ -163,6 +164,9 @@ namespace OpenRCT2::Audio
 
         LOG_INFO("Live-switching audio engine to %s", wantNew ? "new" : "legacy");
 
+        auto* context = GetContext();
+        auto& objManager = context->GetObjectManager();
+
         Audio::StopAll();
         active()->StopAll();
 
@@ -176,14 +180,17 @@ namespace OpenRCT2::Audio
             if (_newEngine)
                 _newEngine->CloseDevice();
         }
-
-        auto* context = GetContext();
-        auto& objManager = context->GetObjectManager();
         for (ObjectEntryIndex i = 0; i < kMaxAudioObjects; i++)
         {
             auto* obj = objManager.GetLoadedObject<AudioObject>(i);
             if (obj != nullptr)
                 obj->Unload();
+        }
+        for (ObjectEntryIndex i = 0; i < kMaxMusicObjects; i++)
+        {
+            auto* obj = objManager.GetLoadedObject<MusicObject>(i);
+            if (obj != nullptr)
+                obj->InvalidateSamples();
         }
 
         if (wantNew)
