@@ -86,6 +86,11 @@ namespace OpenRCT2
         NameStringId = 0;
     }
 
+    void MusicObject::InvalidateSamples()
+    {
+        _loadedSampleTable.Unload();
+    }
+
     void MusicObject::DrawPreview(Drawing::RenderTarget& rt, int32_t width, int32_t height) const
     {
         // Write (no image)
