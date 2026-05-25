@@ -37,35 +37,23 @@ namespace OpenRCT2::Audio
         {
             auto chunkId = SDL_ReadLE32(rw);
             if (chunkId != kChunkIdRIFF)
-            {
-                SDL_RWclose(rw);
                 throw std::runtime_error("Not a WAV file");
-            }
 
             // Read and discard chunk size
             SDL_ReadLE32(rw);
             auto chunkFormat = SDL_ReadLE32(rw);
             if (chunkFormat != kChunkIdWAVE)
-            {
-                SDL_RWclose(rw);
                 throw std::runtime_error("Not in WAVE format");
-            }
 
             auto fmtChunkSize = FindChunk(rw, kChunkIdFMT);
             if (!fmtChunkSize)
-            {
-                SDL_RWclose(rw);
                 throw std::runtime_error("Could not find FMT chunk");
-            }
 
             auto chunkStart = SDL_RWtell(rw);
 
             auto encoding = SDL_ReadLE16(rw);
             if (encoding != kPCMFormat)
-            {
-                SDL_RWclose(rw);
                 throw std::runtime_error("Not in PCM format");
-            }
 
             _format.channels = SDL_ReadLE16(rw);
             _format.freq = SDL_ReadLE32(rw);
@@ -81,7 +69,6 @@ namespace OpenRCT2::Audio
                     _format.format = AUDIO_S16LSB;
                     break;
                 default:
-                    SDL_RWclose(rw);
                     throw std::runtime_error("Unsupported bits per sample");
             }
 
@@ -89,10 +76,7 @@ namespace OpenRCT2::Audio
 
             auto dataChunkSize = FindChunk(rw, kChunkIdDATA);
             if (dataChunkSize == 0)
-            {
-                SDL_RWclose(rw);
                 throw std::runtime_error("Could not find DATA chunk");
-            }
 
             _dataLength = dataChunkSize;
             _dataBegin = static_cast<uint64_t>(SDL_RWtell(rw));

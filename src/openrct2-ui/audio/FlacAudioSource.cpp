@@ -62,6 +62,7 @@ namespace OpenRCT2::Audio
             if (_decoder == nullptr)
             {
                 LOG_VERBOSE("Could not create FLAC stream decoder");
+                _rw = nullptr;
                 return false;
             }
 
@@ -71,12 +72,14 @@ namespace OpenRCT2::Audio
             if (status != FLAC__STREAM_DECODER_INIT_STATUS_OK)
             {
                 LOG_VERBOSE("Could not initialise FLAC stream");
+                _rw = nullptr;
                 return false;
             }
 
             if (!FLAC__stream_decoder_process_until_end_of_metadata(_decoder))
             {
                 LOG_VERBOSE("Could not read FLAC metadata");
+                _rw = nullptr;
                 return false;
             }
 
