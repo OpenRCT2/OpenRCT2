@@ -50,5 +50,3 @@ void ChatDraw(OpenRCT2::Drawing::RenderTarget& rt, OpenRCT2::ColourWithFlags cha
 
 void ChatAddHistory(std::string_view s);
 void ChatInput(ChatInput input);
-
-int32_t ChatStringWrappedGetHeight(u8string_view args, int32_t width);

@@ -41,11 +41,14 @@ static int32_t _chatBottom;
 static int32_t _chatWidth;
 static int32_t _chatHeight;
 static TextInputSession* _chatTextInputSession;
+static size_t _chatTextInputLength;
+static size_t _chatTextInputPosition;
 
 static const u8string& ChatGetHistory(size_t index);
 static uint32_t ChatHistoryGetTime(size_t index);
 static void ChatClearInput();
 static int32_t ChatHistoryDrawString(RenderTarget& rt, const char* text, const ScreenCoordsXY& screenCoords, int32_t width);
+static int32_t ChatStringWrappedGetHeight(u8string_view args, int32_t width);
 
 bool ChatAvailable()
 {
@@ -57,6 +60,8 @@ void ChatOpen()
 {
     gChatOpen = true;
     _chatTextInputSession = ContextStartTextInput(_chatCurrentLine, kChatMaxMessageLength);
+    _chatTextInputLength = _chatTextInputSession->Length;
+    _chatTextInputPosition = _chatTextInputSession->SelectionStart;
 }
 
 void ChatClose()
@@ -104,14 +109,27 @@ void ChatDraw(RenderTarget& rt, ColourWithFlags chatBackgroundColor)
     _chatWidth = _chatRight - _chatLeft;
     _chatBottom = ContextGetHeight() - 45;
     _chatTop = _chatBottom - 10;
+    int32_t maxLineWidth = _chatWidth - 15;
 
     const char* inputLine = _chatCurrentLine.c_str();
     int32_t inputLineHeight = 10;
 
+    // Ensure caret stays visible while typing and navigating
+    if (_chatTextInputSession != nullptr)
+    {
+        if (_chatTextInputLength != _chatTextInputSession->Length
+            || _chatTextInputPosition != _chatTextInputSession->SelectionStart)
+        {
+            _chatTextInputLength = _chatTextInputSession->Length;
+            _chatTextInputPosition = _chatTextInputSession->SelectionStart;
+            _chatCaretTicks = 0;
+        }
+    }
+
     // Draw chat window
     if (gChatOpen)
     {
-        inputLineHeight = ChatStringWrappedGetHeight(inputLine, _chatWidth - 10);
+        inputLineHeight = ChatStringWrappedGetHeight(inputLine, maxLineWidth);
         _chatTop -= inputLineHeight;
 
         for (const auto& entry : _chatHistory)
@@ -121,7 +139,7 @@ void ChatDraw(RenderTarget& rt, ColourWithFlags chatBackgroundColor)
                 continue;
             }
             lineBuffer = entry;
-            int32_t lineHeight = ChatStringWrappedGetHeight(lineBuffer, _chatWidth - 10);
+            int32_t lineHeight = ChatStringWrappedGetHeight(lineBuffer, maxLineWidth);
             _chatTop -= (lineHeight + 5);
         }
 
@@ -174,7 +192,7 @@ void ChatDraw(RenderTarget& rt, ColourWithFlags chatBackgroundColor)
 
         lineBuffer = ChatGetHistory(i);
         auto lineCh = lineBuffer.c_str();
-        stringHeight = ChatHistoryDrawString(rt, lineCh, screenCoords, _chatWidth - 10) + 5;
+        stringHeight = ChatHistoryDrawString(rt, lineCh, screenCoords, maxLineWidth) + 5;
         GfxSetDirtyBlocks(
             { { screenCoords - ScreenCoordsXY{ 0, stringHeight } }, { screenCoords + ScreenCoordsXY{ _chatWidth, 20 } } });
 
@@ -193,15 +211,15 @@ void ChatDraw(RenderTarget& rt, ColourWithFlags chatBackgroundColor)
         screenCoords.y = _chatBottom - inputLineHeight - 5;
 
         inputLineHeight = drawTextWrapped(
-            rt, screenCoords + ScreenCoordsXY{ 0, 3 }, _chatWidth - 10, lineBuffer, { OpenRCT2::Drawing::kColourNull });
+            rt, screenCoords + ScreenCoordsXY{ 0, 3 }, maxLineWidth, lineBuffer, { OpenRCT2::Drawing::kColourNull });
         GfxSetDirtyBlocks({ screenCoords, { screenCoords + ScreenCoordsXY{ _chatWidth, inputLineHeight + 15 } } });
 
         // TODO: Show caret if the input text has multiple lines
-        if (_chatCaretTicks < 15 && getStringWidth(lineBuffer, FontStyle::medium) < (_chatWidth - 10))
+        if (_chatCaretTicks < 15 && getStringWidth(lineBuffer, FontStyle::medium) < maxLineWidth)
         {
             lineBuffer.assign(_chatCurrentLine.c_str(), _chatTextInputSession->SelectionStart);
             int32_t caretX = screenCoords.x + getStringWidth(lineBuffer, FontStyle::medium);
-            int32_t caretY = screenCoords.y + 14;
+            int32_t caretY = screenCoords.y + 13;
 
             Rectangle::fill(rt, { { caretX, caretY }, { caretX + 6, caretY + 1 } }, PaletteIndex::yellow10);
         }
@@ -313,7 +331,7 @@ static int32_t ChatHistoryDrawString(RenderTarget& rt, const char* text, const S
 
 // Wrap string without drawing, useful to get the height of a wrapped string.
 // Almost the same as gfx_draw_string_left_wrapped
-int32_t ChatStringWrappedGetHeight(u8string_view args, int32_t width)
+static int32_t ChatStringWrappedGetHeight(u8string_view args, int32_t width)
 {
     int32_t numLines;
     wrapString(FormatStringID(STR_STRING, args), width, FontStyle::medium, nullptr, &numLines);
