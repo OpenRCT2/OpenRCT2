@@ -243,10 +243,10 @@ namespace OpenRCT2::Audio
 
         updateGovernor(durationUs, framesRequested);
 
-        _stats.activeVoices = _voicePool.activeCount();
-        _stats.culledVoices = culled;
-        _stats.voiceLimit = _voicePool.getVoiceLimit();
-        _stats.lastCallbackDurationUs = durationUs;
+        _statActiveVoices.store(static_cast<uint32_t>(_voicePool.activeCount()), std::memory_order_relaxed);
+        _statCulledVoices.store(static_cast<uint32_t>(culled), std::memory_order_relaxed);
+        _statVoiceLimit.store(static_cast<uint32_t>(_voicePool.getVoiceLimit()), std::memory_order_relaxed);
+        _statCallbackUs.store(durationUs, std::memory_order_relaxed);
     }
 
     void AudioEngine::convertToDevice(const float* mixBuffer, uint8_t* dst, size_t frames, AudioSampleFormat format)
@@ -438,7 +438,12 @@ namespace OpenRCT2::Audio
 
     AudioEngineStats AudioEngine::getStats() const
     {
-        AudioEngineStats stats = _stats;
+        AudioEngineStats stats{};
+        stats.activeVoices = _statActiveVoices.load(std::memory_order_relaxed);
+        stats.culledVoices = _statCulledVoices.load(std::memory_order_relaxed);
+        stats.voiceLimit = _statVoiceLimit.load(std::memory_order_relaxed);
+        stats.lastCallbackDurationUs = _statCallbackUs.load(std::memory_order_relaxed);
+        stats.budgetPercent = _statBudgetPercent.load(std::memory_order_relaxed);
         stats.droppedCommands = _droppedCommands.load(std::memory_order_relaxed);
         return stats;
     }
@@ -573,7 +578,7 @@ namespace OpenRCT2::Audio
         float budgetPct = (callbackDurationUs / deadlineUs) * 100.0f;
 
         _budgetAvg = _budgetAvg * 0.9f + budgetPct * 0.1f;
-        _stats.budgetPercent = _budgetAvg;
+        _statBudgetPercent.store(_budgetAvg, std::memory_order_relaxed);
 
         if (budgetPct > 70.0f)
         {
