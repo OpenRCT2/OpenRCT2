@@ -165,14 +165,9 @@ namespace OpenRCT2::PathFinding
      * Gets the next station a guest would exit at when boarding a transport ride.
      * For continuous circuit it returns the next station in index order (wrapping around).
      * For 2-station shuttle it returns the other station.
-     * For 3+ station shuttle it returns nullopt... It's not supported due to the train's direction ambiguity.
      */
     static std::optional<StationIndex> GetNextStationForTransport(const Ride& ride, StationIndex entranceStation)
     {
-        // Skip 3+ station shuttles
-        if (ride.mode == RideMode::shuttle && ride.numStations > 2)
-            return std::nullopt;
-
         uint8_t curIdx = entranceStation.ToUnderlying();
 
         // Handle 2-station shuttle
@@ -213,11 +208,11 @@ namespace OpenRCT2::PathFinding
      */
     static bool IsUsableTransportRide(const Ride& ride)
     {
-        if (!ride.getRideTypeDescriptor().HasFlag(RtdFlag::isTransportRide))
+        if (!ride.getRideTypeDescriptor().flags.has(RtdFlag::isTransportRide))
             return false;
         if (ride.status != RideStatus::open)
             return false;
-        if (ride.lifecycleFlags & RIDE_LIFECYCLE_QUEUE_FULL)
+        if (ride.flags.has(RideFlag::queueFull))
             return false;
         if (RideGetPrice(ride) != 0)
             return false;
@@ -291,16 +286,16 @@ namespace OpenRCT2::PathFinding
 
         do
         {
-            if (element->GetType() != TileElementType::Entrance)
+            if (element->getType() != TileElementType::Entrance)
                 continue;
-            if (element->BaseHeight != exitLoc.z)
+            if (element->baseHeight != exitLoc.z)
                 continue;
-            if (element->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_EXIT)
+            if (element->asEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_EXIT)
                 continue;
 
             // Exit's stored direction points INTO the ride, reverse it
-            return DirectionReverse(element->GetDirection());
-        } while (!(element++)->IsLastForTile());
+            return DirectionReverse(element->getDirection());
+        } while (!(element++)->isLastForTile());
 
         return std::nullopt;
     }
@@ -318,16 +313,16 @@ namespace OpenRCT2::PathFinding
 
         do
         {
-            if (element->GetType() != TileElementType::Path)
+            if (element->getType() != TileElementType::Path)
                 continue;
 
             // Allow height tolerance for sloped paths
-            if (std::abs(element->BaseHeight - loc.z) > kPathHeightTolerance)
+            if (std::abs(element->baseHeight - loc.z) > kPathHeightTolerance)
                 continue;
 
-            outZ = element->BaseHeight;
+            outZ = element->baseHeight;
             return element;
-        } while (!(element++)->IsLastForTile());
+        } while (!(element++)->isLastForTile());
 
         return nullptr;
     }
@@ -1170,7 +1165,7 @@ namespace OpenRCT2::PathFinding
                 // transportRide was set when we detected this entrance
                 if (transportRide != nullptr && state.usedTransportRideId != rideIndex)
                 {
-                    StationIndex entranceStationIdx = tileElement->AsEntrance()->GetStationIndex();
+                    StationIndex entranceStationIdx = tileElement->asEntrance()->GetStationIndex();
                     auto nextStationOpt = GetNextStationForTransport(*transportRide, entranceStationIdx);
 
                     if (nextStationOpt.has_value())
@@ -1205,7 +1200,7 @@ namespace OpenRCT2::PathFinding
                                     state.usedTransportRideId = rideIndex;
 
                                     pathLoc.z = pathZ;
-                                    uint8_t exitEdges = exitPathElement->AsPath()->GetEdges();
+                                    uint8_t exitEdges = exitPathElement->asPath()->GetEdges();
                                     uint8_t transportCost = CalculateTransportCost(entranceStation, exitStation);
 
                                     // Search from exit path in all valid directions
@@ -1535,7 +1530,7 @@ namespace OpenRCT2::PathFinding
         state.foundPathViaTransport = false;
         // Check if any usable transport rides exist (only for guests, using cache)
         // Staff don't use transport rides (unfortunately?) so skip the cache check entirely for them
-        state.hasUsableTransport = (peep.As<Guest>() != nullptr) && _transportCache.CheckHasUsableTransport();
+        state.hasUsableTransport = (peep.as<Guest>() != nullptr) && _transportCache.CheckHasUsableTransport();
 
         // The max number of thin junctions searched - a per-search-path limit.
         state.maxJunctions = PeepPathfindGetMaxNumberJunctions(peep);
