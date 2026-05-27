@@ -123,7 +123,11 @@ namespace OpenRCT2::Audio
 
         float getGroupVolume(AudioEngineGroup group) const;
 
-        AudioEngineStats _stats{};
+        std::atomic<uint32_t> _statActiveVoices{ 0 };
+        std::atomic<uint32_t> _statCulledVoices{ 0 };
+        std::atomic<uint32_t> _statVoiceLimit{ 128 };
+        std::atomic<float> _statCallbackUs{ 0.0f };
+        std::atomic<float> _statBudgetPercent{ 0.0f };
         uint32_t _outputSampleRate = 48000;
 
         // Adaptive quality governor. Measures how much of the audio
