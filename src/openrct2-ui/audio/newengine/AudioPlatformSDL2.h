@@ -58,7 +58,8 @@ namespace OpenRCT2::Audio
         uint16_t _sdlFormat = 0;
         uint8_t _channels = 0;
         uint16_t _bufferSamples = 0;
-        size_t _renderBufferCapacity = 0;
+        // Stereo frames the render buffer holds because _renderBuffer has 2x this many floats
+        size_t _renderBufferFrames = 0;
 
         std::string _currentDeviceName;
         bool _autoReconnect = true;
