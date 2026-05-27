@@ -249,54 +249,6 @@ namespace OpenRCT2::Audio
         _statCallbackUs.store(durationUs, std::memory_order_relaxed);
     }
 
-    void AudioEngine::convertToDevice(const float* mixBuffer, uint8_t* dst, size_t frames, AudioSampleFormat format)
-    {
-        size_t totalSamples = frames * 2;
-
-        switch (format)
-        {
-            case AudioSampleFormat::s16:
-            {
-                auto* out = reinterpret_cast<int16_t*>(dst);
-                for (size_t i = 0; i < totalSamples; i++)
-                {
-                    float s = mixBuffer[i] * 32767.0f;
-                    out[i] = static_cast<int16_t>(std::clamp(s, -32768.0f, 32767.0f));
-                }
-                break;
-            }
-            case AudioSampleFormat::s32:
-            {
-                auto* out = reinterpret_cast<int32_t*>(dst);
-                for (size_t i = 0; i < totalSamples; i++)
-                {
-                    double s = static_cast<double>(mixBuffer[i]) * 2147483647.0;
-                    if (s > 2147483647.0)
-                        s = 2147483647.0;
-                    if (s < -2147483648.0)
-                        s = -2147483648.0;
-                    out[i] = static_cast<int32_t>(s);
-                }
-                break;
-            }
-            case AudioSampleFormat::f32:
-            {
-                std::memcpy(dst, mixBuffer, totalSamples * sizeof(float));
-                break;
-            }
-            default:
-            {
-                auto* out = reinterpret_cast<int16_t*>(dst);
-                for (size_t i = 0; i < totalSamples; i++)
-                {
-                    float s = mixBuffer[i] * 32767.0f;
-                    out[i] = static_cast<int16_t>(std::clamp(s, -32768.0f, 32767.0f));
-                }
-                break;
-            }
-        }
-    }
-
     void AudioEngine::processCommands()
     {
         if (false)
