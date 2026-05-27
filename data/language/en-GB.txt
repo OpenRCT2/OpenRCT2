@@ -1863,7 +1863,7 @@ STR_2669    :NumLock
 STR_2670    :Scroll
 STR_2680    :All research complete
 STR_2684    :Large group of guests arrive
-STR_2685    :Simplex Noise Parameters
+STR_2685    :Noise Parameters
 STR_2686    :Min. land height:
 STR_2687    :Max. land height:
 STR_2688    :Base Frequency:
@@ -3681,7 +3681,7 @@ STR_6681    :Heightmap file
 STR_6682    :Map Generator - Generator
 STR_6683    :Map Generator - Terrain
 STR_6684    :Map Generator - Water
-STR_6685    :Map Generator - Forests
+STR_6685    :Map Generator - Foliage
 STR_6686    :Tree to land ratio:
 STR_6687    :Min. tree altitude:
 STR_6688    :Max. tree altitude:
@@ -3818,7 +3818,7 @@ STR_7018    :{SPRITE}{MOVE_X}{17}{STRINGID}
 STR_7019    :{SPRITE}{MOVE_X}{27}{STRINGID}
 STR_7020    :{MOVE_X}{10}{SPRITE}{NEWLINE_SMALLER}{MOVE_X}{36}{STRINGID}
 STR_7021    :{MOVE_X}{10}{SPRITE}{NEWLINE_SMALLER}»{MOVE_X}{36}{STRINGID}
-STR_7022    :{STRING} - - 
+STR_7022    :{STRING} - -
 STR_7023    :Make invisible
 STR_7024    :Makes the whole ride invisible
 STR_7025    :Make visible
@@ -3827,3 +3827,99 @@ STR_7027    :{MOVE_X}{29}{STRINGID}
 STR_7028    :Quarter Helix up
 STR_7029    :Quarter Helix down
 STR_7030    :{WINDOW_COLOUR_2}Guests entertained: {BLACK}{COMMA32}
+STR_7051    :Simulate erosion
+STR_7052    :Particles per tile:
+STR_7053    :Enter particles per tile between {COMMA2DP32} and {COMMA2DP32}
+STR_7054    :Simulating erosion
+STR_7055    :Warped noise
+STR_7056    :None
+STR_7057    :Island
+STR_7058    :Valley
+STR_7059    :Coastal
+STR_7060    :River
+STR_7061    :Canyon
+STR_7062    :Noise bias
+STR_7063    :Type:
+STR_7064    :Strength:
+STR_7065    :Seed
+STR_7066    :Randomize
+STR_7067    :Enter bias strength between {COMMA2DP32} and {COMMA2DP32}
+STR_7068    :{COMMA2DP32}
+STR_7069    :Mountain
+STR_7070    :Cliff
+STR_7079    :Default
+STR_7080    :Map Generator - Land Style
+STR_7081    :New
+STR_7082    :{MOVE_X}{4}✓
+STR_7083    :Rule
+STR_7085    :Land
+STR_7086    :Edge
+STR_7087    :If
+STR_7088    :Then
+STR_7089    :New rule {UINT16}
+STR_7090    :Remove
+STR_7091    :Height
+STR_7094    :Height - WaterLevel
+STR_7095    :DistanceToWater
+STR_7096    :Noise
+STR_7097    :NormalAngle
+STR_7098    :Random
+STR_7099    :=
+STR_7100    :!=
+STR_7101    :<
+STR_7102    :>
+STR_7103    :<=
+STR_7104    :>=
+STR_7105    :{STRINGID} {STRINGID} {INT32}
+STR_7106    :{STRINGID} {STRINGID} {COMMA2DP32}
+STR_7107    :Small rock patches
+STR_7108    :Medium dirt patches
+STR_7109    :Large grass clumps patches
+STR_7110    :Mountain peaks
+STR_7111    :Mountain peak rock
+STR_7112    :Mountain peak snow
+STR_7113    :Rename
+STR_7114    :Enter rule name
+STR_7115    :Rule name
+STR_7116    :Remove
+STR_7117    :Edit
+STR_7118    :Add ▼
+STR_7119    :For each tile the rules are evaluated top to bottom, applying the land and edge style of the first matching rule or, if unset, the respective default rule style.
+STR_7120    :Edit condition
+STR_7121    :{STRINGID} {STRINGID} {LENGTH}
+STR_7122    :Seed offset:
+STR_7123    :BlendNoise
+STR_7124    :BlendHeight
+STR_7125    :{STRINGID}[{LENGTH}..{LENGTH}] {STRINGID} {STRINGID}
+STR_7126    :{STRINGID}[{COMMA2DP32}..{COMMA2DP32}] {STRINGID} {STRINGID}
+STR_7127    :Low:
+STR_7128    :High:
+STR_7129    :BlendHeight[Low..High]
+STR_7130    :BlendNoise[Low..High]
+STR_7131    :Enter {STRINGID} [{INT32}..{INT32}]
+STR_7132    :Enter {STRINGID} [{LENGTH}..{LENGTH}]
+STR_7133    :Enter {STRINGID} [{COMMA2DP32}..{COMMA2DP32}]
+STR_7140    :Items
+STR_7141    :Select
+STR_7142    :For each tile the rules are evaluated top to bottom, placing a foliage element from the pool of first matching rule. If the pool is empty no item is placed.
+STR_7143    :Select scenery
+STR_7144    :{UINT16}x
+STR_7145    :Land style
+STR_7146    :in
+STR_7147    :not in
+STR_7148    :{STRINGID} {STRINGID}
+STR_7149    :Cacti
+STR_7150    :Oasis
+STR_7151    :Shrubs
+STR_7152    :Arid
+STR_7153    :Snow covered conifers
+STR_7154    :Conifers
+STR_7155    :Cold
+STR_7156    :Canopy
+STR_7157    :Flowers
+STR_7158    :Ground
+STR_7159    :Rainforest
+STR_7160    :Broad-leaved
+STR_7161    :Mixed
+STR_7162    :Cypresses and pines
+STR_7163    :Mediterranean
