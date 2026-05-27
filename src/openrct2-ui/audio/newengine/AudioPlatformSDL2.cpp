@@ -63,8 +63,8 @@ namespace OpenRCT2::Audio
             _currentDeviceName.clear();
         }
 
-        _renderBufferCapacity = static_cast<size_t>(_bufferSamples) * 2 * sizeof(float);
-        _renderBuffer.resize(_renderBufferCapacity);
+        _renderBufferFrames = _bufferSamples;
+        _renderBuffer.assign(_renderBufferFrames * 2, 0.0f);
 
         LOG_VERBOSE(
             "New audio engine opened: %d Hz, format 0x%04X, %d ch, %d samples, device='%s'", _sampleRate, _sdlFormat, _channels,
@@ -82,6 +82,7 @@ namespace OpenRCT2::Audio
             _deviceId = 0;
         }
         _currentDeviceName.clear();
+        _renderBufferFrames = 0;
         _renderBuffer.clear();
         _renderBuffer.shrink_to_fit();
     }
@@ -251,37 +252,18 @@ namespace OpenRCT2::Audio
     {
         auto* platform = static_cast<AudioPlatformSDL2*>(userdata);
 
-        size_t bytesPerFrame;
-        switch (platform->_format)
-        {
-            case AudioSampleFormat::f32:
-                bytesPerFrame = platform->_channels * sizeof(float);
-                break;
-            case AudioSampleFormat::s32:
-                bytesPerFrame = platform->_channels * sizeof(int32_t);
-                break;
-            case AudioSampleFormat::s16:
-            default:
-                bytesPerFrame = platform->_channels * sizeof(int16_t);
-                break;
-        }
+        constexpr size_t kBytesPerFrame = 2 * sizeof(float);
 
-        size_t frames = static_cast<size_t>(length) / bytesPerFrame;
-
-        size_t maxFrames = platform->_renderBufferCapacity / 2;
-        if (frames > maxFrames)
-            frames = maxFrames;
+        size_t frames = static_cast<size_t>(length) / kBytesPerFrame;
+        if (frames > platform->_renderBufferFrames)
+            frames = platform->_renderBufferFrames;
 
         platform->_engine.render(platform->_renderBuffer.data(), frames, platform->_sampleRate);
 
-        if (platform->_format == AudioSampleFormat::f32 && platform->_channels == 2)
-        {
-            std::memcpy(stream, platform->_renderBuffer.data(), frames * 2 * sizeof(float));
-        }
-        else
-        {
-            AudioEngine::convertToDevice(platform->_renderBuffer.data(), stream, frames, platform->_format);
-        }
+        size_t bytes = frames * kBytesPerFrame;
+        std::memcpy(stream, platform->_renderBuffer.data(), bytes);
+        if (static_cast<size_t>(length) > bytes)
+            std::memset(stream + bytes, 0, static_cast<size_t>(length) - bytes);
     }
 
 } // namespace OpenRCT2::Audio

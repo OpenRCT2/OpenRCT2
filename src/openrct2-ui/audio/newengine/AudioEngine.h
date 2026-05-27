@@ -80,10 +80,6 @@ namespace OpenRCT2::Audio
         // float32 stereo into outputBuffer
         void render(float* outputBuffer, size_t framesRequested, uint32_t outputSampleRate);
 
-        // Converts the float32 mix result to whatever format the
-        // platform device actually uses (S16, F32, etc.)
-        static void convertToDevice(const float* mixBuffer, uint8_t* dst, size_t frames, AudioSampleFormat format);
-
         // Safe to call from the game thread, reads atomic shadow state
         // only, never touches the voice pool. Returns false once the
         // voice finishes, is stopped, or gets stolen by another sound
