@@ -19,6 +19,7 @@
 #include <openrct2/entity/Guest.h>
 #include <openrct2/peep/GuestPathfinding.h>
 #include <openrct2/ride/Ride.h>
+#include <openrct2/ride/RideData.h>
 #include <openrct2/ride/RideManager.hpp>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/world/Footpath.h>
@@ -58,6 +59,18 @@ protected:
         }
         return nullptr;
     }
+
+    static Ride* FindTransportRide()
+    {
+        auto& gameState = getGameState();
+        for (auto& ride : RideManager(gameState))
+        {
+            if (ride.getRideTypeDescriptor().flags.has(RtdFlag::isTransportRide) && ride.status == RideStatus::open
+                && ride.numStations >= 2)
+                return &ride;
+        }
+        return nullptr;
+    }
 };
 
 TEST_F(TransportPathfindingTest, GuestsUseTransportToReachDistantRide)
@@ -76,10 +89,8 @@ TEST_F(TransportPathfindingTest, GuestsUseTransportToReachDistantRide)
     ASSERT_NE(goalRide, nullptr);
     ASSERT_EQ(goalRide->status, RideStatus::open);
 
-    auto* transport = FindRideByName("Miniature Railroad");
+    auto* transport = FindTransportRide();
     ASSERT_NE(transport, nullptr);
-    ASSERT_EQ(transport->status, RideStatus::open);
-    ASSERT_GE(transport->numStations, 2);
 
     ScenarioRandSeed(0x12345678, 0x87654321);
 
