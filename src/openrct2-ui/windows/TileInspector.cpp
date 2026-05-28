@@ -1874,6 +1874,7 @@ namespace OpenRCT2::Ui::Windows
             } while (!(element++)->isLastForTile());
             windowTileInspectorElementCount = numItems;
             invalidate();
+            MapInvalidateTileFull(_toolMap);
         }
 
         void RemoveElement(int32_t elementIndex)
