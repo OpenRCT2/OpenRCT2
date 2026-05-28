@@ -159,13 +159,6 @@ namespace OpenRCT2::Audio
         std::array<SlotStatus, kMaxVoices> _slotStatus{};
 
         void updateSlotPosition(size_t slotIndex, uint64_t positionInFrames);
-
-        // gameHandle -> slotIndex. Entries are packed as:
-        //   bits [63:32] = gameHandle value (0 means empty)
-        //   bits [15:0]  = voice slot index
-        static constexpr size_t kHandleLookupSize = 4096;
-        static constexpr size_t kHandleLookupMask = kHandleLookupSize - 1;
-        std::array<std::atomic<uint64_t>, kHandleLookupSize> _handleLookup{};
     };
 
 } // namespace OpenRCT2::Audio
