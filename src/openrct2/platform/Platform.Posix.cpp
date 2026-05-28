@@ -353,10 +353,10 @@ namespace OpenRCT2::Platform
             if (!fnmatch("*_US*", langstring, 0) || !fnmatch("*_BS*", langstring, 0) || !fnmatch("*_BZ*", langstring, 0)
                 || !fnmatch("*_PW*", langstring, 0))
             {
-                return TemperatureUnit::Fahrenheit;
+                return TemperatureUnit::fahrenheit;
             }
         }
-        return TemperatureUnit::Celsius;
+        return TemperatureUnit::celsius;
     }
 
     bool ProcessIsElevated()

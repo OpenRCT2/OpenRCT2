@@ -69,8 +69,8 @@ namespace OpenRCT2::Config
 #pragma region Enums
 
     static const auto Enum_MeasurementFormat = ConfigEnum<MeasurementFormat>({
-        ConfigEnumEntry<MeasurementFormat>("IMPERIAL", MeasurementFormat::Imperial),
-        ConfigEnumEntry<MeasurementFormat>("METRIC", MeasurementFormat::Metric),
+        ConfigEnumEntry<MeasurementFormat>("IMPERIAL", MeasurementFormat::imperial),
+        ConfigEnumEntry<MeasurementFormat>("METRIC", MeasurementFormat::metric),
         ConfigEnumEntry<MeasurementFormat>("SI", MeasurementFormat::SI),
     });
 
@@ -113,17 +113,17 @@ namespace OpenRCT2::Config
     });
 
     static const auto Enum_Temperature = ConfigEnum<TemperatureUnit>({
-        ConfigEnumEntry<TemperatureUnit>("CELSIUS", TemperatureUnit::Celsius),
-        ConfigEnumEntry<TemperatureUnit>("FAHRENHEIT", TemperatureUnit::Fahrenheit),
+        ConfigEnumEntry<TemperatureUnit>("CELSIUS", TemperatureUnit::celsius),
+        ConfigEnumEntry<TemperatureUnit>("FAHRENHEIT", TemperatureUnit::fahrenheit),
     });
 
     static const auto Enum_FileBrowserSort = ConfigEnum<FileBrowserSort>({
-        ConfigEnumEntry<FileBrowserSort>("NAME_ASCENDING", FileBrowserSort::NameAscending),
-        ConfigEnumEntry<FileBrowserSort>("NAME_DESCENDING", FileBrowserSort::NameDescending),
-        ConfigEnumEntry<FileBrowserSort>("SIZE_ASCENDING", FileBrowserSort::SizeAscending),
-        ConfigEnumEntry<FileBrowserSort>("SIZE_DESCENDING", FileBrowserSort::SizeDescending),
-        ConfigEnumEntry<FileBrowserSort>("DATE_ASCENDING", FileBrowserSort::DateAscending),
-        ConfigEnumEntry<FileBrowserSort>("DATE_DESCENDING", FileBrowserSort::DateDescending),
+        ConfigEnumEntry<FileBrowserSort>("NAME_ASCENDING", FileBrowserSort::nameAscending),
+        ConfigEnumEntry<FileBrowserSort>("NAME_DESCENDING", FileBrowserSort::nameDescending),
+        ConfigEnumEntry<FileBrowserSort>("SIZE_ASCENDING", FileBrowserSort::sizeAscending),
+        ConfigEnumEntry<FileBrowserSort>("SIZE_DESCENDING", FileBrowserSort::sizeDescending),
+        ConfigEnumEntry<FileBrowserSort>("DATE_ASCENDING", FileBrowserSort::dateAscending),
+        ConfigEnumEntry<FileBrowserSort>("DATE_DESCENDING", FileBrowserSort::dateDescending),
     });
 
     static const auto Enum_ParkPreviewPref = ConfigEnum<ParkPreviewPref>({
@@ -226,7 +226,7 @@ namespace OpenRCT2::Config
             model->lastRunVersion = reader->GetString("last_run_version", "");
             model->invertViewportDrag = reader->GetBoolean("invert_viewport_drag", false);
             model->loadSaveSort = reader->GetEnum<FileBrowserSort>(
-                "load_save_sort", FileBrowserSort::NameAscending, Enum_FileBrowserSort);
+                "load_save_sort", FileBrowserSort::nameAscending, Enum_FileBrowserSort);
             model->minimizeFullscreenFocusLoss = reader->GetBoolean("minimize_fullscreen_focus_loss", true);
             model->disableScreensaver = reader->GetBoolean("disable_screensaver", true);
 

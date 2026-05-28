@@ -77,7 +77,7 @@ namespace OpenRCT2::Ui::Windows
             gDropdown.highlightedIndex = -1;
             gDropdown.hasTooltips = false;
             gDropdown.defaultIndex = -1;
-            InputSetState(InputState::DropdownActive);
+            InputSetState(InputState::dropdownActive);
         }
 
         static int32_t GetDefaultRowHeight()

@@ -199,7 +199,7 @@ static void ShortcutAdjustLand()
     if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != EditorStep::LandscapeEditor)
+    if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != EditorStep::landscapeEditor)
         return;
 
     if (isInTrackDesignerOrManager())
@@ -213,7 +213,7 @@ static void ShortcutAdjustWater()
     if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != EditorStep::LandscapeEditor)
+    if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != EditorStep::landscapeEditor)
         return;
 
     if (isInTrackDesignerOrManager())
@@ -227,7 +227,7 @@ static void ShortcutBuildScenery()
     if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != EditorStep::LandscapeEditor)
+    if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != EditorStep::landscapeEditor)
         return;
 
     if (isInTrackDesignerOrManager())
@@ -241,7 +241,7 @@ static void ShortcutBuildPaths()
     if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != EditorStep::LandscapeEditor)
+    if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != EditorStep::landscapeEditor)
         return;
 
     if (isInTrackDesignerOrManager())
@@ -343,7 +343,7 @@ static void ShortcutShowMap()
     if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (gLegacyScene != LegacyScene::scenarioEditor || getGameState().editorStep == EditorStep::LandscapeEditor)
+    if (gLegacyScene != LegacyScene::scenarioEditor || getGameState().editorStep == EditorStep::landscapeEditor)
         if (!(isInTrackDesignerOrManager()))
             ContextOpenWindow(WindowClass::map);
 }
@@ -400,7 +400,7 @@ static void ShortcutClearScenery()
     if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != EditorStep::LandscapeEditor)
+    if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != EditorStep::landscapeEditor)
         return;
 
     if (isInTrackDesignerOrManager())
@@ -440,7 +440,7 @@ static void ShortcutOpenSceneryPicker()
 {
     if ((gLegacyScene == LegacyScene::titleSequence || gLegacyScene == LegacyScene::trackDesigner
          || gLegacyScene == LegacyScene::trackDesignsManager)
-        || (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != EditorStep::LandscapeEditor))
+        || (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != EditorStep::landscapeEditor))
         return;
 
     auto* windowMgr = GetWindowManager();
@@ -762,7 +762,7 @@ void ShortcutManager::registerDefaultShortcuts()
         {
             windowMgr->CloseAll();
         }
-        else if (getGameState().editorStep == EditorStep::LandscapeEditor)
+        else if (getGameState().editorStep == EditorStep::landscapeEditor)
         {
             windowMgr->CloseTop();
         }

@@ -1409,7 +1409,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 switch (Config::Get().general.measurementFormat)
                 {
-                    case MeasurementFormat::Imperial:
+                    case MeasurementFormat::imperial:
                         value = FeetToMetres(value);
                         [[fallthrough]];
 

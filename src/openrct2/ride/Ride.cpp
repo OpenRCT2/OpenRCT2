@@ -699,21 +699,21 @@ void Ride::updateAll()
     {
         switch (getGameState().editorStep)
         {
-            case EditorStep::ObjectSelection:
-            case EditorStep::LandscapeEditor:
-            case EditorStep::InventionsListSetUp:
+            case EditorStep::objectSelection:
+            case EditorStep::landscapeEditor:
+            case EditorStep::inventionsListSetUp:
             {
                 for (auto& ride : RideManager(gameState))
                     ride.remove();
                 break;
             }
-            case EditorStep::OptionsSelection:
-            case EditorStep::ObjectiveSelection:
-            case EditorStep::ScenarioDetails:
-            case EditorStep::SaveScenario:
-            case EditorStep::RollercoasterDesigner:
-            case EditorStep::DesignsManager:
-            case EditorStep::Invalid:
+            case EditorStep::optionsSelection:
+            case EditorStep::objectiveSelection:
+            case EditorStep::scenarioDetails:
+            case EditorStep::saveScenario:
+            case EditorStep::rollerCoasterDesigner:
+            case EditorStep::designsManager:
+            case EditorStep::invalid:
                 break;
         }
         return;

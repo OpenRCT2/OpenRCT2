@@ -345,7 +345,7 @@ namespace OpenRCT2::RCT1
 
             // Do map initialisation, same kind of stuff done when loading scenario editor
             gameStateInitAll(gameState, { mapSize, mapSize });
-            gameState.editorStep = EditorStep::ObjectSelection;
+            gameState.editorStep = EditorStep::objectSelection;
             gameState.park.flags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
             gameState.scenarioOptions.category = Scenario::Category::other;
         }

@@ -33,16 +33,16 @@ namespace OpenRCT2
 
     enum class InputState
     {
-        Reset,
-        Normal,
-        WidgetPressed,
-        PositioningWindow,
-        ViewportRight,
-        DropdownActive,
-        ViewportLeft,
-        ScrollLeft,
-        Resizing,
-        ScrollRight
+        reset,
+        normal,
+        widgetPressed,
+        positioningWindow,
+        viewportRight,
+        dropdownActive,
+        viewportLeft,
+        scrollLeft,
+        resizing,
+        scrollRight
     };
 
     struct CursorState

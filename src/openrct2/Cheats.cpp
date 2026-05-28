@@ -55,7 +55,7 @@ void CheatsReset()
     gameState.cheats.allowRegularPathAsQueue = false;
     gameState.cheats.allowSpecialColourSchemes = false;
     gameState.cheats.makeAllDestructible = false;
-    gameState.cheats.selectedStaffSpeed = StaffSpeedCheat::None;
+    gameState.cheats.selectedStaffSpeed = StaffSpeedCheat::none;
     gameState.cheats.forcedParkRating = kForcedParkRatingDisabled;
 }
 

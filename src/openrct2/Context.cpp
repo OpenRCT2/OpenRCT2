@@ -574,7 +574,7 @@ namespace OpenRCT2
             WindowInitAll();
 
             gInputFlags.clearAll();
-            InputSetState(InputState::Reset);
+            InputSetState(InputState::reset);
             gPressedWidget.windowClassification = WindowClass::null;
             gPickupPeepImage = ImageId();
             ResetTooltipNotShown();
@@ -1063,35 +1063,35 @@ namespace OpenRCT2
             if (gOpenRCT2Headless)
             {
                 // NONE or OPEN are the only allowed actions for headless mode
-                if (gOpenRCT2StartupAction != StartupAction::Open)
+                if (gOpenRCT2StartupAction != StartupAction::open)
                 {
-                    gOpenRCT2StartupAction = StartupAction::None;
+                    gOpenRCT2StartupAction = StartupAction::none;
                 }
             }
             else
             {
-                if ((gOpenRCT2StartupAction == StartupAction::Title) && Config::Get().general.playIntro)
+                if ((gOpenRCT2StartupAction == StartupAction::title) && Config::Get().general.playIntro)
                 {
-                    gOpenRCT2StartupAction = StartupAction::Intro;
+                    gOpenRCT2StartupAction = StartupAction::intro;
                 }
             }
 
             IScene* nextScene{};
             switch (gOpenRCT2StartupAction)
             {
-                case StartupAction::Intro:
+                case StartupAction::intro:
                 {
                     nextScene = GetIntroScene();
                     break;
                 }
 
-                case StartupAction::Title:
+                case StartupAction::title:
                 {
                     nextScene = GetTitleScene();
                     break;
                 }
 
-                case StartupAction::Open:
+                case StartupAction::open:
                 {
                     // A path that includes "://" is illegal with all common filesystems, so it is almost certainly a URL
                     // This way all cURL supported protocols, like http, ftp, scp and smb are automatically handled
@@ -1139,7 +1139,7 @@ namespace OpenRCT2
                     break;
                 }
 
-                case StartupAction::Edit:
+                case StartupAction::edit:
                 {
                     if (String::sizeOf(gOpenRCT2StartupActionPath) == 0)
                     {

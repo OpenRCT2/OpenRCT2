@@ -94,7 +94,7 @@ namespace OpenRCT2::Platform
             return ([ "LR", "MM", "US" ]).includes(country) ? 1 : 0;
         });
 
-        return isImperial == 1 ? MeasurementFormat::Imperial : MeasurementFormat::Metric;
+        return isImperial == 1 ? MeasurementFormat::imperial : MeasurementFormat::metric;
     }
 
     SteamPaths GetSteamPaths()

@@ -426,7 +426,7 @@ namespace OpenRCT2::Ui::Windows
             auto i = 0;
             gDropdown.items[i++] = Dropdown::PlainMenuLabel(STR_SHORTCUT_SHOW_MAP);
             gDropdown.items[i++] = Dropdown::PlainMenuLabel(STR_EXTRA_VIEWPORT);
-            if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep == EditorStep::LandscapeEditor)
+            if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep == EditorStep::landscapeEditor)
             {
                 gDropdown.items[i++] = Dropdown::PlainMenuLabel(STR_MAPGEN_MENU_ITEM);
             }
@@ -456,7 +456,7 @@ namespace OpenRCT2::Ui::Windows
         void mapMenuDropdown(int16_t dropdownIndex)
         {
             int32_t customStartIndex = 3;
-            if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep == EditorStep::LandscapeEditor)
+            if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep == EditorStep::landscapeEditor)
             {
                 customStartIndex++;
             }
@@ -1168,21 +1168,21 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_NETWORK].type = WidgetType::empty;
 
             auto& gameState = getGameState();
-            if (gameState.editorStep != EditorStep::LandscapeEditor)
+            if (gameState.editorStep != EditorStep::landscapeEditor)
             {
                 widgets[WIDX_LAND].type = WidgetType::empty;
                 widgets[WIDX_WATER].type = WidgetType::empty;
             }
 
-            if (gameState.editorStep != EditorStep::RollercoasterDesigner)
+            if (gameState.editorStep != EditorStep::rollerCoasterDesigner)
             {
                 widgets[WIDX_RIDES].type = WidgetType::empty;
                 widgets[WIDX_CONSTRUCT_RIDE].type = WidgetType::empty;
                 widgets[WIDX_FASTFORWARD].type = WidgetType::empty;
             }
 
-            if (gameState.editorStep != EditorStep::LandscapeEditor
-                && gameState.editorStep != EditorStep::RollercoasterDesigner)
+            if (gameState.editorStep != EditorStep::landscapeEditor
+                && gameState.editorStep != EditorStep::rollerCoasterDesigner)
             {
                 widgets[WIDX_MAP].type = WidgetType::empty;
                 widgets[WIDX_SCENERY].type = WidgetType::empty;

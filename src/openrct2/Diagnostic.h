@@ -13,12 +13,12 @@
 
 enum class DiagnosticLevel
 {
-    Fatal,
-    Error,
-    Warning,
-    Verbose,
-    Information,
-    Count
+    fatal,
+    error,
+    warning,
+    verbose,
+    information,
+    count
 };
 
 /**
@@ -68,7 +68,7 @@ enum class DiagnosticLevel
     #define DEBUG_LEVEL_1 0
 #endif // defined(DEBUG)
 
-extern bool _log_levels[static_cast<uint8_t>(DiagnosticLevel::Count)];
+extern bool _log_levels[static_cast<uint8_t>(DiagnosticLevel::count)];
 
 void DiagnosticLog(DiagnosticLevel diagnosticLevel, const char* format, ...);
 void DiagnosticLogWithLocation(
@@ -82,8 +82,8 @@ void DiagnosticLogWithLocation(
         DiagnosticLogWithLocation(level, __FILE__, __func__, __LINE__, format, ##__VA_ARGS__)
 #endif // _MSC_VER
 
-#define LOG_FATAL(format, ...) DIAGNOSTIC_LOG_MACRO(DiagnosticLevel::Fatal, format, ##__VA_ARGS__)
-#define LOG_ERROR(format, ...) DIAGNOSTIC_LOG_MACRO(DiagnosticLevel::Error, format, ##__VA_ARGS__)
-#define LOG_WARNING(format, ...) DIAGNOSTIC_LOG_MACRO(DiagnosticLevel::Warning, format, ##__VA_ARGS__)
-#define LOG_VERBOSE(format, ...) DiagnosticLog(DiagnosticLevel::Verbose, format, ##__VA_ARGS__)
-#define LOG_INFO(format, ...) DIAGNOSTIC_LOG_MACRO(DiagnosticLevel::Information, format, ##__VA_ARGS__)
+#define LOG_FATAL(format, ...) DIAGNOSTIC_LOG_MACRO(DiagnosticLevel::fatal, format, ##__VA_ARGS__)
+#define LOG_ERROR(format, ...) DIAGNOSTIC_LOG_MACRO(DiagnosticLevel::error, format, ##__VA_ARGS__)
+#define LOG_WARNING(format, ...) DIAGNOSTIC_LOG_MACRO(DiagnosticLevel::warning, format, ##__VA_ARGS__)
+#define LOG_VERBOSE(format, ...) DiagnosticLog(DiagnosticLevel::verbose, format, ##__VA_ARGS__)
+#define LOG_INFO(format, ...) DIAGNOSTIC_LOG_MACRO(DiagnosticLevel::information, format, ##__VA_ARGS__)

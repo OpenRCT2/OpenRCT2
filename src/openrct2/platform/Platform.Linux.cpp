@@ -336,10 +336,10 @@ namespace OpenRCT2::Platform
             // using https://en.wikipedia.org/wiki/Metrication#Chronology_and_status_of_conversion_by_country as reference
             if (!fnmatch("*_US*", langstring, 0) || !fnmatch("*_MM*", langstring, 0) || !fnmatch("*_LR*", langstring, 0))
             {
-                return MeasurementFormat::Imperial;
+                return MeasurementFormat::imperial;
             }
         }
-        return MeasurementFormat::Metric;
+        return MeasurementFormat::metric;
     }
 
     SteamPaths GetSteamPaths()

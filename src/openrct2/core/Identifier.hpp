@@ -18,7 +18,7 @@ class TIdentifier
 {
     enum class ValueType : T
     {
-        Null = TNullValue,
+        null = TNullValue,
     } _handle;
 
 private:
@@ -39,7 +39,7 @@ public:
 
     static constexpr TIdentifier GetNull() noexcept
     {
-        return TIdentifier{ ValueType::Null };
+        return TIdentifier{ ValueType::null };
     }
 
     static constexpr TIdentifier FromUnderlying(const T val) noexcept
@@ -60,7 +60,7 @@ public:
 
     constexpr bool IsNull() const noexcept
     {
-        return _handle == ValueType::Null;
+        return _handle == ValueType::null;
     }
 
     auto operator<=>(const TIdentifier&) const = default;

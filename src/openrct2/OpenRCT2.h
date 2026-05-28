@@ -15,11 +15,11 @@ enum class PromptMode : uint8_t;
 
 enum class StartupAction
 {
-    None,
-    Intro,
-    Title,
-    Open,
-    Edit
+    none,
+    intro,
+    title,
+    open,
+    edit
 };
 
 enum class LegacyScene : uint8_t

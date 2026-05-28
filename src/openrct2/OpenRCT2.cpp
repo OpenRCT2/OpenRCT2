@@ -11,7 +11,7 @@
 
 #include "core/EnumUtils.hpp"
 
-StartupAction gOpenRCT2StartupAction = StartupAction::Title;
+StartupAction gOpenRCT2StartupAction = StartupAction::title;
 utf8 gOpenRCT2StartupActionPath[512] = { 0 };
 u8string gCustomUserDataPath = {};
 u8string gCustomOpenRCT2DataPath = {};

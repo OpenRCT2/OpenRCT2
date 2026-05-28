@@ -109,7 +109,7 @@ namespace OpenRCT2::Audio
         if (gLegacyScene == LegacyScene::scenarioEditor)
             return false;
 
-        if (gLegacyScene == LegacyScene::trackDesigner && getGameState().editorStep != EditorStep::RollercoasterDesigner)
+        if (gLegacyScene == LegacyScene::trackDesigner && getGameState().editorStep != EditorStep::rollerCoasterDesigner)
             return false;
 
         if (vehicle.sound1_id == SoundId::null && vehicle.sound2_id == SoundId::null)

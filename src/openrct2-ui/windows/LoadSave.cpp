@@ -777,16 +777,16 @@ namespace OpenRCT2::Ui::Windows
 
             auto& config = Config::Get().general;
             drawButtonCaption(
-                widgets[WIDX_SORT_NAME], STR_NAME_COLUMN, FileBrowserSort::NameAscending, FileBrowserSort::NameDescending);
+                widgets[WIDX_SORT_NAME], STR_NAME_COLUMN, FileBrowserSort::nameAscending, FileBrowserSort::nameDescending);
 
             if (config.fileBrowserShowSizeColumn)
                 drawButtonCaption(
-                    widgets[WIDX_SORT_SIZE], STR_FILEBROWSER_SIZE_COLUMN, FileBrowserSort::SizeAscending,
-                    FileBrowserSort::SizeDescending);
+                    widgets[WIDX_SORT_SIZE], STR_FILEBROWSER_SIZE_COLUMN, FileBrowserSort::sizeAscending,
+                    FileBrowserSort::sizeDescending);
 
             if (config.fileBrowserShowDateColumn)
                 drawButtonCaption(
-                    widgets[WIDX_SORT_DATE], STR_DATE_COLUMN, FileBrowserSort::DateAscending, FileBrowserSort::DateDescending);
+                    widgets[WIDX_SORT_DATE], STR_DATE_COLUMN, FileBrowserSort::dateAscending, FileBrowserSort::dateDescending);
 
             // 'Filename:' label
             if (action == LoadSaveAction::save)
@@ -836,13 +836,13 @@ namespace OpenRCT2::Ui::Windows
                 break;
 
                 case WIDX_SORT_NAME:
-                    if (Config::Get().general.loadSaveSort == FileBrowserSort::NameAscending)
+                    if (Config::Get().general.loadSaveSort == FileBrowserSort::nameAscending)
                     {
-                        Config::Get().general.loadSaveSort = FileBrowserSort::NameDescending;
+                        Config::Get().general.loadSaveSort = FileBrowserSort::nameDescending;
                     }
                     else
                     {
-                        Config::Get().general.loadSaveSort = FileBrowserSort::NameAscending;
+                        Config::Get().general.loadSaveSort = FileBrowserSort::nameAscending;
                     }
                     Config::Save();
                     SortList();
@@ -850,13 +850,13 @@ namespace OpenRCT2::Ui::Windows
                     break;
 
                 case WIDX_SORT_SIZE:
-                    if (Config::Get().general.loadSaveSort == FileBrowserSort::SizeDescending)
+                    if (Config::Get().general.loadSaveSort == FileBrowserSort::sizeDescending)
                     {
-                        Config::Get().general.loadSaveSort = FileBrowserSort::SizeAscending;
+                        Config::Get().general.loadSaveSort = FileBrowserSort::sizeAscending;
                     }
                     else
                     {
-                        Config::Get().general.loadSaveSort = FileBrowserSort::SizeDescending;
+                        Config::Get().general.loadSaveSort = FileBrowserSort::sizeDescending;
                     }
                     Config::Save();
                     SortList();
@@ -864,13 +864,13 @@ namespace OpenRCT2::Ui::Windows
                     break;
 
                 case WIDX_SORT_DATE:
-                    if (Config::Get().general.loadSaveSort == FileBrowserSort::DateDescending)
+                    if (Config::Get().general.loadSaveSort == FileBrowserSort::dateDescending)
                     {
-                        Config::Get().general.loadSaveSort = FileBrowserSort::DateAscending;
+                        Config::Get().general.loadSaveSort = FileBrowserSort::dateAscending;
                     }
                     else
                     {
-                        Config::Get().general.loadSaveSort = FileBrowserSort::DateDescending;
+                        Config::Get().general.loadSaveSort = FileBrowserSort::dateDescending;
                     }
                     Config::Save();
                     SortList();

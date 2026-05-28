@@ -522,8 +522,8 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             auto step = getGameState().editorStep;
-            bool isObjectiveSelection = step == EditorStep::ObjectiveSelection;
-            bool isScenarioDetails = step == EditorStep::ScenarioDetails;
+            bool isObjectiveSelection = step == EditorStep::objectiveSelection;
+            bool isScenarioDetails = step == EditorStep::scenarioDetails;
             bool isOtherTab = !isObjectiveSelection && !isScenarioDetails;
 
             // Disable tabs based on current editor step
