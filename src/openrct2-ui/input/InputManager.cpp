@@ -429,18 +429,18 @@ void InputManager::processChat(const InputEvent& e)
 {
     if (e.deviceKind == InputDeviceKind::keyboard && e.state == InputEventState::down)
     {
-        auto input = ChatInput::None;
+        auto input = ChatInput::none;
         switch (e.button)
         {
             case SDLK_ESCAPE:
-                input = ChatInput::Close;
+                input = ChatInput::close;
                 break;
             case SDLK_RETURN:
             case SDLK_KP_ENTER:
-                input = ChatInput::Send;
+                input = ChatInput::send;
                 break;
         }
-        if (input != ChatInput::None)
+        if (input != ChatInput::none)
         {
             ChatInput(input);
         }

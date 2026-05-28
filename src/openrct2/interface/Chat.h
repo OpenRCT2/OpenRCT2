@@ -27,9 +27,9 @@ struct ScreenCoordsXY;
 
 enum class ChatInput : uint8_t
 {
-    None,
-    Send,
-    Close,
+    none,
+    send,
+    close,
 };
 
 extern bool gChatOpen;
