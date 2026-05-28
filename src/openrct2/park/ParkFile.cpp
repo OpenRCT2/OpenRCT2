@@ -178,6 +178,8 @@ namespace OpenRCT2
             }
 
             // Initial cash will eventually be removed
+            // TODO: above comment was introduced with the NSF on 27 Oct 2021. What's the status?
+            //       (commit 34128dc262cefd38911b7833ecc2ec5ea40dee69)
             gameState.scenarioOptions.initialCash = gameState.parks[0].cash;
         }
 
