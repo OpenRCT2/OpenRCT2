@@ -898,6 +898,10 @@ namespace OpenRCT2
             os.readWriteChunk(ParkFileChunkType::park, [&gameState, &os, this](OrcaStream::ChunkStream& cs) {
                 auto version = os.getHeader().targetVersion;
 
+                // TODO: rework park initialisation to be performed/called for each of the parks read/written here.
+                // Currently, this is only done for the first park in gameStateInitAll!
+                // Instead, call Park::Initialise(park, gameState) directly below instead.
+
                 if (version >= kParkIdAsTileOwner)
                 {
                     // Park file supports storing data for multiple parks
@@ -906,13 +910,8 @@ namespace OpenRCT2
                 }
                 else
                 {
-                    // Park file only has data for one park; read existing into a vector element
-                    if (cs.getMode() == OrcaStream::Mode::reading)
-                    {
-                        gameState.parks.clear();
-                        gameState.parks.push_back(Park::ParkData{});
-                    }
-
+                    // Park file only has data for one park; read the one existing park directly
+                    // NB: this element already exists by virtue of `gameStateInitAll`
                     auto& park = gameState.parks[0];
                     ReadWritePark(park, cs, version);
                 }
@@ -1223,6 +1222,8 @@ namespace OpenRCT2
                         return;
                     }
 
+                    // !!! This implicitly creates and initialises a park through Park::Initialise!
+                    // TODO: move call to Park::Initialise to park chunk instead (indeed break up gameStateInitAll)
                     gameStateInitAll(gameState, gameState.mapSize);
 
                     auto numElements = cs.read<uint32_t>();
