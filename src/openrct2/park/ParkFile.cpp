@@ -1817,7 +1817,7 @@ namespace OpenRCT2
             {
                 if (guest != nullptr)
                 {
-                    cs.readWrite(guest->OutsideOfPark);
+                    cs.readWrite(guest->outsideOfPark);
                 }
                 else
                 {
@@ -1839,7 +1839,7 @@ namespace OpenRCT2
             {
                 if (guest != nullptr)
                 {
-                    cs.readWrite(guest->GuestNumRides);
+                    cs.readWrite(guest->guestNumRides);
                 }
                 else
                 {
@@ -1860,13 +1860,13 @@ namespace OpenRCT2
             {
                 if (guest != nullptr)
                 {
-                    cs.readWrite(guest->Happiness);
-                    cs.readWrite(guest->HappinessTarget);
-                    cs.readWrite(guest->Nausea);
-                    cs.readWrite(guest->NauseaTarget);
-                    cs.readWrite(guest->Hunger);
-                    cs.readWrite(guest->Thirst);
-                    cs.readWrite(guest->Toilet);
+                    cs.readWrite(guest->happiness);
+                    cs.readWrite(guest->happinessTarget);
+                    cs.readWrite(guest->nausea);
+                    cs.readWrite(guest->nauseaTarget);
+                    cs.readWrite(guest->hunger);
+                    cs.readWrite(guest->thirst);
+                    cs.readWrite(guest->toilet);
                 }
                 else
                 {
@@ -1886,7 +1886,7 @@ namespace OpenRCT2
             {
                 if (guest != nullptr)
                 {
-                    cs.readWrite(guest->TimeToConsume);
+                    cs.readWrite(guest->timeToConsume);
                 }
                 else
                 {
@@ -1901,13 +1901,13 @@ namespace OpenRCT2
                 {
                     if (cs.getMode() == OrcaStream::Mode::reading)
                     {
-                        guest->Intensity = IntensityRange(cs.read<uint8_t>());
+                        guest->intensity = IntensityRange(cs.read<uint8_t>());
                     }
                     else
                     {
-                        cs.write(static_cast<uint8_t>(guest->Intensity));
+                        cs.write(static_cast<uint8_t>(guest->intensity));
                     }
-                    cs.readWrite(guest->NauseaTolerance);
+                    cs.readWrite(guest->nauseaTolerance);
                 }
                 else
                 {
@@ -1924,17 +1924,17 @@ namespace OpenRCT2
                 {
                     money16 tempPaidOnDrink{};
                     cs.readWrite(tempPaidOnDrink);
-                    guest->PaidOnDrink = ToMoney64(tempPaidOnDrink);
+                    guest->paidOnDrink = ToMoney64(tempPaidOnDrink);
                     std::array<uint8_t, 16> rideTypeBeenOn;
                     cs.readWriteArray(rideTypeBeenOn, [&cs](uint8_t& rideType) {
                         cs.readWrite(rideType);
                         return true;
                     });
                     RideUse::GetTypeHistory().Set(guest->id, LegacyGetRideTypesBeenOn(rideTypeBeenOn));
-                    cs.readWrite(guest->ItemFlags);
-                    cs.readWrite(guest->Photo2RideRef);
-                    cs.readWrite(guest->Photo3RideRef);
-                    cs.readWrite(guest->Photo4RideRef);
+                    cs.readWrite(guest->itemFlags);
+                    cs.readWrite(guest->photo2RideRef);
+                    cs.readWrite(guest->photo3RideRef);
+                    cs.readWrite(guest->photo4RideRef);
                 }
                 else
                 {
@@ -1968,7 +1968,7 @@ namespace OpenRCT2
             {
                 if (guest != nullptr)
                 {
-                    cs.readWrite(guest->GuestNextInQueue);
+                    cs.readWrite(guest->guestNextInQueue);
                 }
                 else
                 {
@@ -1983,7 +1983,7 @@ namespace OpenRCT2
             {
                 if (guest != nullptr)
                 {
-                    cs.readWrite(guest->TimeInQueue);
+                    cs.readWrite(guest->timeInQueue);
                     std::array<uint8_t, 32> ridesBeenOn;
                     cs.readWriteArray(ridesBeenOn, [&cs](uint8_t& rideType) {
                         cs.readWrite(rideType);
@@ -2013,14 +2013,14 @@ namespace OpenRCT2
                     money32 tempCashSpent{};
                     cs.readWrite(tempCashInPocket);
                     cs.readWrite(tempCashSpent);
-                    guest->CashInPocket = ToMoney64(tempCashInPocket);
-                    guest->CashSpent = ToMoney64(tempCashSpent);
+                    guest->cashInPocket = ToMoney64(tempCashInPocket);
+                    guest->cashSpent = ToMoney64(tempCashSpent);
 
-                    cs.readWrite(guest->ParkEntryTime);
-                    cs.readWrite(guest->RejoinQueueTimeout);
-                    cs.readWrite(guest->PreviousRide);
-                    cs.readWrite(guest->PreviousRideTimeOut);
-                    cs.readWriteArray(guest->Thoughts, [&cs](PeepThought& thought) {
+                    cs.readWrite(guest->parkEntryTime);
+                    cs.readWrite(guest->rejoinQueueTimeout);
+                    cs.readWrite(guest->previousRide);
+                    cs.readWrite(guest->previousRideTimeOut);
+                    cs.readWriteArray(guest->thoughts, [&cs](PeepThought& thought) {
                         cs.readWrite(thought.type);
 
                         uint8_t item{};
@@ -2065,9 +2065,9 @@ namespace OpenRCT2
             {
                 if (guest != nullptr)
                 {
-                    cs.readWrite(guest->GuestHeadingToRideId);
-                    cs.readWrite(guest->GuestIsLostCountdown);
-                    cs.readWrite(guest->Photo1RideRef);
+                    cs.readWrite(guest->guestHeadingToRideId);
+                    cs.readWrite(guest->guestIsLostCountdown);
+                    cs.readWrite(guest->photo1RideRef);
                 }
                 else
                 {
@@ -2095,35 +2095,35 @@ namespace OpenRCT2
             {
                 if (guest != nullptr)
                 {
-                    cs.readWrite(guest->LitterCount);
-                    cs.readWrite(guest->GuestTimeOnRide);
-                    cs.readWrite(guest->DisgustingCount);
+                    cs.readWrite(guest->litterCount);
+                    cs.readWrite(guest->guestTimeOnRide);
+                    cs.readWrite(guest->disgustingCount);
 
                     money16 expenditures[4]{};
                     cs.readWrite(expenditures[0]);
                     cs.readWrite(expenditures[1]);
                     cs.readWrite(expenditures[2]);
                     cs.readWrite(expenditures[3]);
-                    guest->PaidToEnter = ToMoney64(expenditures[0]);
-                    guest->PaidOnRides = ToMoney64(expenditures[1]);
-                    guest->PaidOnFood = ToMoney64(expenditures[2]);
-                    guest->PaidOnSouvenirs = ToMoney64(expenditures[3]);
+                    guest->paidToEnter = ToMoney64(expenditures[0]);
+                    guest->paidOnRides = ToMoney64(expenditures[1]);
+                    guest->paidOnFood = ToMoney64(expenditures[2]);
+                    guest->paidOnSouvenirs = ToMoney64(expenditures[3]);
 
-                    cs.readWrite(guest->AmountOfFood);
-                    cs.readWrite(guest->AmountOfDrinks);
-                    cs.readWrite(guest->AmountOfSouvenirs);
-                    cs.readWrite(guest->VandalismSeen);
-                    cs.readWrite(guest->VoucherType);
-                    cs.readWrite(guest->VoucherRideId);
-                    cs.readWrite(guest->SurroundingsThoughtTimeout);
-                    cs.readWrite(guest->Angriness);
-                    cs.readWrite(guest->TimeLost);
-                    cs.readWrite(guest->DaysInQueue);
-                    cs.readWrite(guest->BalloonColour);
-                    cs.readWrite(guest->UmbrellaColour);
-                    cs.readWrite(guest->HatColour);
-                    cs.readWrite(guest->FavouriteRide);
-                    cs.readWrite(guest->FavouriteRideRating);
+                    cs.readWrite(guest->amountOfFood);
+                    cs.readWrite(guest->amountOfDrinks);
+                    cs.readWrite(guest->amountOfSouvenirs);
+                    cs.readWrite(guest->vandalismSeen);
+                    cs.readWrite(guest->voucherType);
+                    cs.readWrite(guest->voucherRideId);
+                    cs.readWrite(guest->surroundingsThoughtTimeout);
+                    cs.readWrite(guest->angriness);
+                    cs.readWrite(guest->timeLost);
+                    cs.readWrite(guest->daysInQueue);
+                    cs.readWrite(guest->balloonColour);
+                    cs.readWrite(guest->umbrellaColour);
+                    cs.readWrite(guest->hatColour);
+                    cs.readWrite(guest->favouriteRide);
+                    cs.readWrite(guest->favouriteRideRating);
                 }
                 else
                 {
@@ -2326,12 +2326,12 @@ namespace OpenRCT2
             return;
         }
 
-        cs.readWrite(guest.GuestNumRides);
-        cs.readWrite(guest.GuestNextInQueue);
-        cs.readWrite(guest.ParkEntryTime);
-        cs.readWrite(guest.GuestHeadingToRideId);
-        cs.readWrite(guest.GuestIsLostCountdown);
-        cs.readWrite(guest.GuestTimeOnRide);
+        cs.readWrite(guest.guestNumRides);
+        cs.readWrite(guest.guestNextInQueue);
+        cs.readWrite(guest.parkEntryTime);
+        cs.readWrite(guest.guestHeadingToRideId);
+        cs.readWrite(guest.guestIsLostCountdown);
+        cs.readWrite(guest.guestTimeOnRide);
 
         if (version <= 18)
         {
@@ -2341,39 +2341,39 @@ namespace OpenRCT2
             cs.readWrite(expenditures[2]);
             cs.readWrite(expenditures[3]);
             cs.readWrite(expenditures[4]);
-            guest.PaidToEnter = ToMoney64(expenditures[0]);
-            guest.PaidOnRides = ToMoney64(expenditures[1]);
-            guest.PaidOnFood = ToMoney64(expenditures[2]);
-            guest.PaidOnDrink = ToMoney64(expenditures[3]);
-            guest.PaidOnSouvenirs = ToMoney64(expenditures[4]);
+            guest.paidToEnter = ToMoney64(expenditures[0]);
+            guest.paidOnRides = ToMoney64(expenditures[1]);
+            guest.paidOnFood = ToMoney64(expenditures[2]);
+            guest.paidOnDrink = ToMoney64(expenditures[3]);
+            guest.paidOnSouvenirs = ToMoney64(expenditures[4]);
         }
         else
         {
-            cs.readWrite(guest.PaidToEnter);
-            cs.readWrite(guest.PaidOnRides);
-            cs.readWrite(guest.PaidOnFood);
-            cs.readWrite(guest.PaidOnDrink);
-            cs.readWrite(guest.PaidOnSouvenirs);
+            cs.readWrite(guest.paidToEnter);
+            cs.readWrite(guest.paidOnRides);
+            cs.readWrite(guest.paidOnFood);
+            cs.readWrite(guest.paidOnDrink);
+            cs.readWrite(guest.paidOnSouvenirs);
         }
 
-        cs.readWrite(guest.OutsideOfPark);
-        cs.readWrite(guest.Happiness);
-        cs.readWrite(guest.HappinessTarget);
-        cs.readWrite(guest.Nausea);
-        cs.readWrite(guest.NauseaTarget);
-        cs.readWrite(guest.Hunger);
-        cs.readWrite(guest.Thirst);
-        cs.readWrite(guest.Toilet);
-        cs.readWrite(guest.TimeToConsume);
+        cs.readWrite(guest.outsideOfPark);
+        cs.readWrite(guest.happiness);
+        cs.readWrite(guest.happinessTarget);
+        cs.readWrite(guest.nausea);
+        cs.readWrite(guest.nauseaTarget);
+        cs.readWrite(guest.hunger);
+        cs.readWrite(guest.thirst);
+        cs.readWrite(guest.toilet);
+        cs.readWrite(guest.timeToConsume);
         if (cs.getMode() == OrcaStream::Mode::reading)
         {
-            guest.Intensity = IntensityRange(cs.read<uint8_t>());
+            guest.intensity = IntensityRange(cs.read<uint8_t>());
         }
         else
         {
-            cs.write(static_cast<uint8_t>(guest.Intensity));
+            cs.write(static_cast<uint8_t>(guest.intensity));
         }
-        cs.readWrite(guest.NauseaTolerance);
+        cs.readWrite(guest.nauseaTolerance);
 
         if (os.getHeader().targetVersion < 3)
         {
@@ -2385,7 +2385,7 @@ namespace OpenRCT2
             RideUse::GetTypeHistory().Set(guest.id, LegacyGetRideTypesBeenOn(rideTypeBeenOn));
         }
 
-        cs.readWrite(guest.TimeInQueue);
+        cs.readWrite(guest.timeInQueue);
         if (os.getHeader().targetVersion < 3)
         {
             std::array<uint8_t, 32> ridesBeenOn;
@@ -2436,23 +2436,23 @@ namespace OpenRCT2
             money32 tempCashSpent{};
             cs.readWrite(tempCashInPocket);
             cs.readWrite(tempCashSpent);
-            guest.CashInPocket = ToMoney64(tempCashInPocket);
-            guest.CashSpent = ToMoney64(tempCashSpent);
+            guest.cashInPocket = ToMoney64(tempCashInPocket);
+            guest.cashSpent = ToMoney64(tempCashSpent);
         }
         else
         {
-            cs.readWrite(guest.CashInPocket);
-            cs.readWrite(guest.CashSpent);
+            cs.readWrite(guest.cashInPocket);
+            cs.readWrite(guest.cashSpent);
         }
 
-        cs.readWrite(guest.Photo1RideRef);
-        cs.readWrite(guest.Photo2RideRef);
-        cs.readWrite(guest.Photo3RideRef);
-        cs.readWrite(guest.Photo4RideRef);
-        cs.readWrite(guest.RejoinQueueTimeout);
-        cs.readWrite(guest.PreviousRide);
-        cs.readWrite(guest.PreviousRideTimeOut);
-        cs.readWriteArray(guest.Thoughts, [version = os.getHeader().targetVersion, &cs](PeepThought& thought) {
+        cs.readWrite(guest.photo1RideRef);
+        cs.readWrite(guest.photo2RideRef);
+        cs.readWrite(guest.photo3RideRef);
+        cs.readWrite(guest.photo4RideRef);
+        cs.readWrite(guest.rejoinQueueTimeout);
+        cs.readWrite(guest.previousRide);
+        cs.readWrite(guest.previousRideTimeOut);
+        cs.readWriteArray(guest.thoughts, [version = os.getHeader().targetVersion, &cs](PeepThought& thought) {
             cs.readWrite(thought.type);
             if (version <= 2)
             {
@@ -2468,24 +2468,24 @@ namespace OpenRCT2
             cs.readWrite(thought.fresh_timeout);
             return true;
         });
-        cs.readWrite(guest.LitterCount);
-        cs.readWrite(guest.DisgustingCount);
-        cs.readWrite(guest.AmountOfFood);
-        cs.readWrite(guest.AmountOfDrinks);
-        cs.readWrite(guest.AmountOfSouvenirs);
-        cs.readWrite(guest.VandalismSeen);
-        cs.readWrite(guest.VoucherType);
-        cs.readWrite(guest.VoucherRideId);
-        cs.readWrite(guest.SurroundingsThoughtTimeout);
-        cs.readWrite(guest.Angriness);
-        cs.readWrite(guest.TimeLost);
-        cs.readWrite(guest.DaysInQueue);
-        cs.readWrite(guest.BalloonColour);
-        cs.readWrite(guest.UmbrellaColour);
-        cs.readWrite(guest.HatColour);
-        cs.readWrite(guest.FavouriteRide);
-        cs.readWrite(guest.FavouriteRideRating);
-        cs.readWrite(guest.ItemFlags);
+        cs.readWrite(guest.litterCount);
+        cs.readWrite(guest.disgustingCount);
+        cs.readWrite(guest.amountOfFood);
+        cs.readWrite(guest.amountOfDrinks);
+        cs.readWrite(guest.amountOfSouvenirs);
+        cs.readWrite(guest.vandalismSeen);
+        cs.readWrite(guest.voucherType);
+        cs.readWrite(guest.voucherRideId);
+        cs.readWrite(guest.surroundingsThoughtTimeout);
+        cs.readWrite(guest.angriness);
+        cs.readWrite(guest.timeLost);
+        cs.readWrite(guest.daysInQueue);
+        cs.readWrite(guest.balloonColour);
+        cs.readWrite(guest.umbrellaColour);
+        cs.readWrite(guest.hatColour);
+        cs.readWrite(guest.favouriteRide);
+        cs.readWrite(guest.favouriteRideRating);
+        cs.readWrite(guest.itemFlags);
     }
 
     template<>

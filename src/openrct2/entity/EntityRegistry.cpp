@@ -440,7 +440,7 @@ namespace OpenRCT2
         else if (guest != nullptr)
         {
             guest->SetName({});
-            guest->GuestNextInQueue = EntityId::GetNull();
+            guest->guestNextInQueue = EntityId::GetNull();
 
             RideUse::GetHistory().RemoveHandle(guest->id);
             RideUse::GetTypeHistory().RemoveHandle(guest->id);

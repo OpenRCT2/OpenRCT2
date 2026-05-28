@@ -573,7 +573,7 @@ namespace OpenRCT2::PathFinding
         }
 
         bool isLeavingPark = (guest->PeepFlags & PEEP_FLAGS_LEAVING_PARK) != 0;
-        if (isLeavingPark && guest->GuestIsLostCountdown < 90)
+        if (isLeavingPark && guest->guestIsLostCountdown < 90)
         {
             return kMaxJunctionsGuestLeavingParkLost;
         }
@@ -581,7 +581,7 @@ namespace OpenRCT2::PathFinding
         if (isLeavingPark)
             return kMaxJunctionsGuestLeavingPark;
 
-        if (guest->HasItem(ShopItem::map))
+        if (guest->hasItem(ShopItem::map))
             return kMaxJunctionsGuestWithMap;
 
         return kMaxJunctionsGuest;
@@ -1854,7 +1854,7 @@ namespace OpenRCT2::PathFinding
     static StationIndex GuestPathfindingSelectRandomStation(
         const Guest& guest, int32_t numEntranceStations, BitSet<Limits::kMaxStationsPerRide>& entranceStations)
     {
-        int32_t select = guest.GuestNumRides % numEntranceStations;
+        int32_t select = guest.guestNumRides % numEntranceStations;
         while (select > 0)
         {
             for (StationIndex::UnderlyingType i = 0; i < Limits::kMaxStationsPerRide; i++)
@@ -1906,7 +1906,7 @@ namespace OpenRCT2::PathFinding
             return GuestSurfacePathFinding(peep);
         }
 
-        if (!peep.OutsideOfPark && peep.HeadingForRideOrParkExit())
+        if (!peep.outsideOfPark && peep.headingForRideOrParkExit())
         {
             /* If this tileElement is adjacent to any non-wide paths,
              * remove all of the edges to wide paths. */
@@ -1933,9 +1933,9 @@ namespace OpenRCT2::PathFinding
         if (!(edges & ~(1 << direction)))
         {
             // In a dead end.  Check if peep is lost, etc.
-            peep.CheckIfLost();
-            peep.CheckCantFindRide();
-            peep.CheckCantFindExit();
+            peep.checkIfLost();
+            peep.checkCantFindRide();
+            peep.checkCantFindExit();
         }
         else
         {
@@ -1957,7 +1957,7 @@ namespace OpenRCT2::PathFinding
 
         // Peep is outside the park.
         // Loc694F19:
-        if (peep.OutsideOfPark)
+        if (peep.outsideOfPark)
         {
             LogPathfinding(&peep, "Completed CalculateNextDestination - peep is outside the park.");
 
@@ -1978,7 +1978,7 @@ namespace OpenRCT2::PathFinding
          * In principle, peeps with food are not paying as much attention to
          * where they are going and are consequently more like to walk up
          * dead end paths, paths to ride exits, etc. */
-        if (!peep.HasFoodOrDrink() && (ScenarioRand() & 0xFFFF) >= 2184)
+        if (!peep.hasFoodOrDrink() && (ScenarioRand() & 0xFFFF) >= 2184)
         {
             uint8_t adjustedEdges = edges;
             for (Direction chosenDirection : kAllDirections)
@@ -2007,19 +2007,19 @@ namespace OpenRCT2::PathFinding
         /* If there are still multiple directions to choose from,
          * peeps with maps will randomly read the map: probability of doing so
          * is much higher when heading for a ride or the park exit. */
-        if (peep.HasItem(ShopItem::map))
+        if (peep.hasItem(ShopItem::map))
         {
             // If at least 2 directions consult map
             if (std::popcount(edges) >= 2)
             {
                 uint16_t probability = 1638;
-                if (peep.HeadingForRideOrParkExit())
+                if (peep.headingForRideOrParkExit())
                 {
                     probability = 9362;
                 }
                 if ((ScenarioRand() & 0xFFFF) < probability)
                 {
-                    peep.ReadMap();
+                    peep.readMap();
                 }
             }
         }
@@ -2031,7 +2031,7 @@ namespace OpenRCT2::PathFinding
             return GuestPathFindParkEntranceLeaving(peep, edges);
         }
 
-        if (peep.GuestHeadingToRideId.IsNull())
+        if (peep.guestHeadingToRideId.IsNull())
         {
             LogPathfinding(&peep, "Completed CalculateNextDestination - peep is aimless.");
 
@@ -2039,7 +2039,7 @@ namespace OpenRCT2::PathFinding
         }
 
         // Peep is heading for a ride.
-        RideId rideIndex = peep.GuestHeadingToRideId;
+        RideId rideIndex = peep.guestHeadingToRideId;
         auto ride = GetRide(rideIndex);
         if (ride == nullptr || ride->status != RideStatus::open)
         {

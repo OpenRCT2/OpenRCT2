@@ -94,7 +94,7 @@ namespace OpenRCT2::GameActions
         }
 
         // Easter egg functions are for guests only
-        guest->HandleEasterEggName();
+        guest->handleEasterEggName();
 
         GfxInvalidateScreen();
 

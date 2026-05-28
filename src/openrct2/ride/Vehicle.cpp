@@ -916,7 +916,7 @@ void Vehicle::PeepEasterEggHereWeAre() const
             auto* curPeep = getGameState().entities.GetEntity<Guest>(vehicle->peep[i]);
             if (curPeep != nullptr && curPeep->PeepFlags & PEEP_FLAGS_HERE_WE_ARE)
             {
-                curPeep->InsertNewThought(PeepThoughtType::HereWeAre, curPeep->CurrentRide);
+                curPeep->insertNewThought(PeepThoughtType::hereWeAre, curPeep->CurrentRide);
             }
         }
     }

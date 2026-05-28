@@ -896,14 +896,14 @@ namespace OpenRCT2
 
                     if (guest->State == PeepState::walking)
                     {
-                        guest->HappinessTarget = std::min(guest->HappinessTarget + 4, kPeepMaxHappiness);
+                        guest->happinessTarget = std::min(guest->happinessTarget + 4, kPeepMaxHappiness);
                         staffGuestsEntertained = AddClamp(staffGuestsEntertained, 1u);
                         WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
                     }
                     else if (guest->State == PeepState::queuing)
                     {
-                        guest->TimeInQueue = std::max(0, guest->TimeInQueue - 200);
-                        guest->HappinessTarget = std::min(guest->HappinessTarget + 3, kPeepMaxHappiness);
+                        guest->timeInQueue = std::max(0, guest->timeInQueue - 200);
+                        guest->happinessTarget = std::min(guest->happinessTarget + 3, kPeepMaxHappiness);
                         staffGuestsEntertained = AddClamp(staffGuestsEntertained, 1u);
                         WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
                     }

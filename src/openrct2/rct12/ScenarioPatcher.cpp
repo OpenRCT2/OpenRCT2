@@ -507,7 +507,7 @@ static void SwapRideEntranceAndExit(RideId rideId)
     {
         if (peep->State == PeepState::queuingFront && peep->CurrentRide == rideId)
         {
-            peep->RemoveFromQueue();
+            peep->removeFromQueue();
             peep->SetState(PeepState::falling);
             break;
         }

@@ -1186,11 +1186,11 @@ static StringId window_cheats_page_titles[] = {
                     break;
                 case WIDX_GUEST_NAUSEA_TOLERANCE_MAX:
                     CheatsSet(
-                        CheatType::setGuestParameter, GUEST_PARAMETER_NAUSEA_TOLERANCE, EnumValue(PeepNauseaTolerance::High));
+                        CheatType::setGuestParameter, GUEST_PARAMETER_NAUSEA_TOLERANCE, EnumValue(PeepNauseaTolerance::high));
                     break;
                 case WIDX_GUEST_NAUSEA_TOLERANCE_MIN:
                     CheatsSet(
-                        CheatType::setGuestParameter, GUEST_PARAMETER_NAUSEA_TOLERANCE, EnumValue(PeepNauseaTolerance::None));
+                        CheatType::setGuestParameter, GUEST_PARAMETER_NAUSEA_TOLERANCE, EnumValue(PeepNauseaTolerance::none));
                     break;
                 case WIDX_GUEST_TOILET_MAX:
                     CheatsSet(CheatType::setGuestParameter, GUEST_PARAMETER_TOILET, kPeepMaxToilet);

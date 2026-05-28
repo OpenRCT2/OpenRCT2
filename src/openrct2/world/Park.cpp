@@ -395,13 +395,13 @@ namespace OpenRCT2::Park
             uint32_t lostGuestCount = 0;
             for (auto peep : EntityList<Guest>())
             {
-                if (!peep->OutsideOfPark)
+                if (!peep->outsideOfPark)
                 {
-                    if (peep->Happiness > 128)
+                    if (peep->happiness > 128)
                     {
                         happyGuestCount++;
                     }
-                    if ((peep->PeepFlags & PEEP_FLAGS_LEAVING_PARK) && (peep->GuestIsLostCountdown < 90))
+                    if ((peep->PeepFlags & PEEP_FLAGS_LEAVING_PARK) && (peep->guestIsLostCountdown < 90))
                     {
                         lostGuestCount++;
                     }
@@ -541,7 +541,7 @@ namespace OpenRCT2::Park
         if (spawn != nullptr)
         {
             auto direction = DirectionReverse(spawn->direction);
-            peep = Guest::Generate({ spawn->x, spawn->y, spawn->z });
+            peep = Guest::generate({ spawn->x, spawn->y, spawn->z });
             if (peep != nullptr)
             {
                 peep->orientation = direction << 3;

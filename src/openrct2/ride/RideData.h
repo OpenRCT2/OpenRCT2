@@ -558,7 +558,7 @@ struct RideTypeDescriptor
     MusicTrackOffsetLengthFunc MusicTrackOffsetLength = OpenRCT2::RideAudio::RideMusicGetTrackOffsetLength_Default;
 
     UpdateRideApproachVehicleWaypointsFunction UpdateRideApproachVehicleWaypoints = OpenRCT2::
-        UpdateRideApproachVehicleWaypointsDefault;
+        updateRideApproachVehicleWaypointsDefault;
     RtdSpecialType specialType = RtdSpecialType::none;
 
     /** @deprecated */

@@ -60,19 +60,19 @@ void PaintGuestAccesories(
     if (guest.AnimationGroup == PeepAnimationGroup::hat)
     {
         auto itemOffset = kPeepSpriteHatItemStart;
-        auto imageId = ImageId(itemOffset + direction + itemFrame * 4, guest.HatColour);
+        auto imageId = ImageId(itemOffset + direction + itemFrame * 4, guest.hatColour);
         PaintAddImageAsChild(session, imageId, kPaintPeepOffset(guest.z), kPaintPeepBoundBox(guest.z));
     }
     else if (guest.AnimationGroup == PeepAnimationGroup::balloon)
     {
         auto itemOffset = kPeepSpriteBalloonItemStart;
-        auto imageId = ImageId(itemOffset + direction + itemFrame * 4, guest.BalloonColour);
+        auto imageId = ImageId(itemOffset + direction + itemFrame * 4, guest.balloonColour);
         PaintAddImageAsChild(session, imageId, kPaintPeepOffset(guest.z), kPaintPeepBoundBox(guest.z));
     }
     else if (guest.AnimationGroup == PeepAnimationGroup::umbrella)
     {
         auto itemOffset = kPeepSpriteUmbrellaItemStart;
-        auto imageId = ImageId(itemOffset + direction + itemFrame * 4, guest.UmbrellaColour);
+        auto imageId = ImageId(itemOffset + direction + itemFrame * 4, guest.umbrellaColour);
         PaintAddImageAsChild(session, imageId, kPaintPeepOffset(guest.z), kPaintPeepBoundBox(guest.z));
     }
 }
