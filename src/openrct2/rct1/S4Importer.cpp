@@ -1421,7 +1421,7 @@ namespace OpenRCT2::RCT1
                     x <<= 7;
                     int32_t y = val & 0x3E0;
                     y <<= 2;
-                    staffmember->SetPatrolArea(MapRange(x, y, x + (4 * kCoordsXYStep) - 1, y + (4 * kCoordsXYStep) - 1), true);
+                    staffmember->setPatrolArea(MapRange(x, y, x + (4 * kCoordsXYStep) - 1, y + (4 * kCoordsXYStep) - 1), true);
                 }
             }
         }
@@ -3020,15 +3020,15 @@ namespace OpenRCT2::RCT1
         auto* dst = getGameState().entities.CreateEntityAt<Staff>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const Peep*>(&srcBase);
         ImportPeep(dst, src);
-        dst->AssignedStaffType = StaffType(src->StaffType);
-        dst->MechanicTimeSinceCall = src->MechanicTimeSinceCall;
-        dst->HireDate = src->ParkEntryTime;
-        dst->StaffOrders = src->StaffOrders;
-        dst->StaffMowingTimeout = src->StaffMowingTimeout;
-        dst->StaffLawnsMown = src->PaidToEnter;
-        dst->StaffGardensWatered = src->PaidOnRides;
-        dst->StaffLitterSwept = src->PaidOnFood;
-        dst->StaffBinsEmptied = src->PaidOnSouvenirs;
+        dst->assignedStaffType = StaffType(src->StaffType);
+        dst->mechanicTimeSinceCall = src->MechanicTimeSinceCall;
+        dst->hireDate = src->ParkEntryTime;
+        dst->staffOrders = src->StaffOrders;
+        dst->staffMowingTimeout = src->StaffMowingTimeout;
+        dst->staffLawnsMown = src->PaidToEnter;
+        dst->staffGardensWatered = src->PaidOnRides;
+        dst->staffLitterSwept = src->PaidOnFood;
+        dst->staffBinsEmptied = src->PaidOnSouvenirs;
 
         ImportStaffPatrolArea(dst, src->StaffID);
     }

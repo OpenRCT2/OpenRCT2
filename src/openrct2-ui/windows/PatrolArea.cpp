@@ -204,7 +204,7 @@ namespace OpenRCT2::Ui::Windows
                 auto staff = getGameState().entities.GetEntity<Staff>(_staffId);
                 if (staff != nullptr)
                 {
-                    _mode = staff->IsPatrolAreaSet(*mapTile) ? GameActions::StaffSetPatrolAreaMode::unset
+                    _mode = staff->isPatrolAreaSet(*mapTile) ? GameActions::StaffSetPatrolAreaMode::unset
                                                              : GameActions::StaffSetPatrolAreaMode::set;
                 }
             }

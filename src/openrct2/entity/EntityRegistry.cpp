@@ -435,7 +435,7 @@ namespace OpenRCT2
         if (staff != nullptr)
         {
             staff->SetName({});
-            staff->ClearPatrolArea();
+            staff->clearPatrolArea();
         }
         else if (guest != nullptr)
         {

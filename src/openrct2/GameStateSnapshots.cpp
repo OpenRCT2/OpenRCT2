@@ -315,15 +315,15 @@ struct GameStateSnapshots final : public IGameStateSnapshots
     {
         CompareSpriteDataPeep(spriteBase, spriteCmp, changeData);
 
-        COMPARE_FIELD(Staff, AssignedStaffType);
-        COMPARE_FIELD(Staff, MechanicTimeSinceCall);
-        COMPARE_FIELD(Staff, HireDate);
-        COMPARE_FIELD(Staff, StaffOrders);
-        COMPARE_FIELD(Staff, StaffMowingTimeout);
-        COMPARE_FIELD(Staff, StaffRidesFixed);
-        COMPARE_FIELD(Staff, StaffRidesInspected);
-        COMPARE_FIELD(Staff, StaffLitterSwept);
-        COMPARE_FIELD(Staff, StaffBinsEmptied);
+        COMPARE_FIELD(Staff, assignedStaffType);
+        COMPARE_FIELD(Staff, mechanicTimeSinceCall);
+        COMPARE_FIELD(Staff, hireDate);
+        COMPARE_FIELD(Staff, staffOrders);
+        COMPARE_FIELD(Staff, staffMowingTimeout);
+        COMPARE_FIELD(Staff, staffRidesFixed);
+        COMPARE_FIELD(Staff, staffRidesInspected);
+        COMPARE_FIELD(Staff, staffLitterSwept);
+        COMPARE_FIELD(Staff, staffBinsEmptied);
     }
 
     void CompareSpriteDataGuest(const Guest& spriteBase, const Guest& spriteCmp, GameStateSpriteChange& changeData) const

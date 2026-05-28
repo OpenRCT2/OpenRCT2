@@ -447,7 +447,7 @@ namespace OpenRCT2::Ui::Windows
                     }
 
                     // Disable clear patrol area if no area is set.
-                    if (!staff->HasPatrolArea())
+                    if (!staff->hasPatrolArea())
                     {
                         gDropdown.items[1].setDisabled(true);
                     }
@@ -832,7 +832,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            switch (staff->AssignedStaffType)
+            switch (staff->assignedStaffType)
             {
                 case StaffType::entertainer:
                 {
@@ -906,7 +906,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            uint32_t staffOrders = staff->StaffOrders;
+            uint32_t staffOrders = staff->staffOrders;
             for (auto index = Numerics::bitScanForward(staffOrders); index != -1; index = Numerics::bitScanForward(staffOrders))
             {
                 staffOrders &= ~(1 << index);
@@ -940,51 +940,51 @@ namespace OpenRCT2::Ui::Windows
             if (!(getGameState().park.flags & PARK_FLAGS_NO_MONEY))
             {
                 auto ft = Formatter();
-                ft.Add<money64>(GetStaffWage(staff->AssignedStaffType));
+                ft.Add<money64>(GetStaffWage(staff->assignedStaffType));
                 drawText(rt, screenCoords, STR_STAFF_STAT_WAGES, ft);
                 screenCoords.y += kListRowHeight;
             }
 
             auto ft = Formatter();
-            ft.Add<int32_t>(staff->GetHireDate());
+            ft.Add<int32_t>(staff->getHireDate());
             drawText(rt, screenCoords, STR_STAFF_STAT_EMPLOYED_FOR, ft);
             screenCoords.y += kListRowHeight;
 
-            switch (staff->AssignedStaffType)
+            switch (staff->assignedStaffType)
             {
                 case StaffType::handyman:
                     ft = Formatter();
-                    ft.Add<uint32_t>(staff->StaffLawnsMown);
+                    ft.Add<uint32_t>(staff->staffLawnsMown);
                     drawText(rt, screenCoords, STR_STAFF_STAT_LAWNS_MOWN, ft);
                     screenCoords.y += kListRowHeight;
 
                     ft = Formatter();
-                    ft.Add<uint32_t>(staff->StaffGardensWatered);
+                    ft.Add<uint32_t>(staff->staffGardensWatered);
                     drawText(rt, screenCoords, STR_STAFF_STAT_GARDENS_WATERED, ft);
                     screenCoords.y += kListRowHeight;
 
                     ft = Formatter();
-                    ft.Add<uint32_t>(staff->StaffLitterSwept);
+                    ft.Add<uint32_t>(staff->staffLitterSwept);
                     drawText(rt, screenCoords, STR_STAFF_STAT_LITTER_SWEPT, ft);
                     screenCoords.y += kListRowHeight;
 
                     ft = Formatter();
-                    ft.Add<uint32_t>(staff->StaffBinsEmptied);
+                    ft.Add<uint32_t>(staff->staffBinsEmptied);
                     drawText(rt, screenCoords, STR_STAFF_STAT_BINS_EMPTIED, ft);
                     break;
                 case StaffType::mechanic:
                     ft = Formatter();
-                    ft.Add<uint32_t>(staff->StaffRidesInspected);
+                    ft.Add<uint32_t>(staff->staffRidesInspected);
                     drawText(rt, screenCoords, STR_STAFF_STAT_RIDES_INSPECTED, ft);
                     screenCoords.y += kListRowHeight;
 
                     ft = Formatter();
-                    ft.Add<uint32_t>(staff->StaffRidesFixed);
+                    ft.Add<uint32_t>(staff->staffRidesFixed);
                     drawText(rt, screenCoords, STR_STAFF_STAT_RIDES_FIXED, ft);
                     break;
                 case StaffType::security:
                     ft = Formatter();
-                    ft.Add<uint32_t>(staff->StaffVandalsStopped);
+                    ft.Add<uint32_t>(staff->staffVandalsStopped);
                     drawText(rt, screenCoords, STR_STAFF_STAT_VANDALS_STOPPED, ft);
                     break;
                 case StaffType::entertainer:
@@ -1033,7 +1033,7 @@ namespace OpenRCT2::Ui::Windows
                 setWidgetDisabled(widgetIndex, false);
             }
 
-            if (staff->AssignedStaffType == StaffType::security)
+            if (staff->assignedStaffType == StaffType::security)
             {
                 setWidgetDisabled(WIDX_TAB_2, true);
             }
@@ -1107,7 +1107,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            uint8_t newOrders = staff->StaffOrders ^ (1 << orderId);
+            uint8_t newOrders = staff->staffOrders ^ (1 << orderId);
             auto staffSetOrdersAction = GameActions::StaffSetOrdersAction(EntityId::FromUnderlying(number), newOrders);
             GameActions::Execute(&staffSetOrdersAction, getGameState());
         }

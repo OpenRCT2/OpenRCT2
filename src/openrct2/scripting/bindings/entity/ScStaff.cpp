@@ -58,7 +58,7 @@ namespace OpenRCT2::Scripting
         auto peep = GetStaff(thisVal);
         if (peep != nullptr)
         {
-            switch (peep->AssignedStaffType)
+            switch (peep->assignedStaffType)
             {
                 case StaffType::handyman:
                     return JSFromStdString(ctx, "handyman");
@@ -82,27 +82,27 @@ namespace OpenRCT2::Scripting
         auto peep = GetStaff(thisVal);
         if (peep != nullptr)
         {
-            if (value == "handyman" && peep->AssignedStaffType != StaffType::handyman)
+            if (value == "handyman" && peep->assignedStaffType != StaffType::handyman)
             {
-                peep->AssignedStaffType = StaffType::handyman;
+                peep->assignedStaffType = StaffType::handyman;
                 peep->AnimationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::handyman);
                 peep->AnimationGroup = PeepAnimationGroup::normal;
             }
-            else if (value == "mechanic" && !peep->IsMechanic())
+            else if (value == "mechanic" && !peep->isMechanic())
             {
-                peep->AssignedStaffType = StaffType::mechanic;
+                peep->assignedStaffType = StaffType::mechanic;
                 peep->AnimationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::mechanic);
                 peep->AnimationGroup = PeepAnimationGroup::normal;
             }
-            else if (value == "security" && peep->AssignedStaffType != StaffType::security)
+            else if (value == "security" && peep->assignedStaffType != StaffType::security)
             {
-                peep->AssignedStaffType = StaffType::security;
+                peep->assignedStaffType = StaffType::security;
                 peep->AnimationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::security);
                 peep->AnimationGroup = PeepAnimationGroup::normal;
             }
             else if (value == "entertainer" && !peep->isEntertainer())
             {
-                peep->AssignedStaffType = StaffType::entertainer;
+                peep->assignedStaffType = StaffType::entertainer;
                 peep->AnimationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::entertainer);
                 peep->AnimationGroup = PeepAnimationGroup::normal;
             }
@@ -148,7 +148,7 @@ namespace OpenRCT2::Scripting
         if (peep != nullptr)
         {
             auto idx = 0;
-            for (auto& costume : costumesByStaffType(peep->AssignedStaffType))
+            for (auto& costume : costumesByStaffType(peep->assignedStaffType))
             {
                 JS_SetPropertyInt64(ctx, availableCostumes, idx++, JSFromStdString(ctx, costume.scriptName));
             }
@@ -159,7 +159,7 @@ namespace OpenRCT2::Scripting
     JSValue ScStaff::getCostumeStrings(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
     {
         auto peep = GetStaff(thisVal);
-        auto animPeepType = getAnimationPeepType(peep->AssignedStaffType);
+        auto animPeepType = getAnimationPeepType(peep->assignedStaffType);
 
         JSValue availableCostumes = JS_NewArray(ctx);
         auto idx = 0;
@@ -179,7 +179,7 @@ namespace OpenRCT2::Scripting
             return JS_UNDEFINED;
         }
 
-        auto& costumes = costumesByStaffType(peep->AssignedStaffType);
+        auto& costumes = costumesByStaffType(peep->assignedStaffType);
 
         auto costume = std::find_if(costumes.begin(), costumes.end(), [peep](auto& candidate) {
             return candidate.objectId == peep->AnimationObjectIndex;
@@ -203,7 +203,7 @@ namespace OpenRCT2::Scripting
             return JS_UNDEFINED;
         }
 
-        auto& costumes = costumesByStaffType(peep->AssignedStaffType);
+        auto& costumes = costumesByStaffType(peep->assignedStaffType);
         auto costume = costumes.end();
 
         // Split by type passed so as to not break old plugins
@@ -243,7 +243,7 @@ namespace OpenRCT2::Scripting
     JSValue ScStaff::orders_get(JSContext* ctx, JSValue thisVal)
     {
         auto peep = GetStaff(thisVal);
-        return JS_NewUint32(ctx, peep != nullptr ? peep->StaffOrders : 0);
+        return JS_NewUint32(ctx, peep != nullptr ? peep->staffOrders : 0);
     }
 
     JSValue ScStaff::orders_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
@@ -253,7 +253,7 @@ namespace OpenRCT2::Scripting
         auto peep = GetStaff(thisVal);
         if (peep != nullptr)
         {
-            peep->StaffOrders = value;
+            peep->staffOrders = value;
         }
         return JS_UNDEFINED;
     }
@@ -287,7 +287,7 @@ namespace OpenRCT2::Scripting
         if (peep != nullptr)
         {
             auto idx = 0;
-            for (auto& animation : animationsByStaffType(peep->AssignedStaffType))
+            for (auto& animation : animationsByStaffType(peep->assignedStaffType))
             {
                 JS_SetPropertyInt64(ctx, availableAnimations, idx++, JSFromStdString(ctx, animation.first));
             }
@@ -308,7 +308,7 @@ namespace OpenRCT2::Scripting
             return spriteIds;
         }
 
-        auto animationGroups = animationsByStaffType(peep->AssignedStaffType);
+        auto animationGroups = animationsByStaffType(peep->assignedStaffType);
         auto animationType = animationGroups.TryGet(groupKey);
         if (animationType == std::nullopt)
         {
@@ -342,7 +342,7 @@ namespace OpenRCT2::Scripting
             return JSFromStdString(ctx, "");
         }
 
-        auto animationGroups = animationsByStaffType(peep->AssignedStaffType);
+        auto animationGroups = animationsByStaffType(peep->assignedStaffType);
         return JSFromStdString(ctx, animationGroups[peep->AnimationType]);
     }
 
@@ -352,7 +352,7 @@ namespace OpenRCT2::Scripting
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
 
         auto* peep = GetStaff(thisVal);
-        auto animationGroups = animationsByStaffType(peep->AssignedStaffType);
+        auto animationGroups = animationsByStaffType(peep->assignedStaffType);
         auto newType = animationGroups.TryGet(groupKey);
         if (newType == std::nullopt)
         {
@@ -454,9 +454,9 @@ namespace OpenRCT2::Scripting
     JSValue ScHandyman::lawnsMown_get(JSContext* ctx, JSValue thisVal)
     {
         auto peep = GetStaff(thisVal);
-        if (peep != nullptr && peep->AssignedStaffType == StaffType::handyman)
+        if (peep != nullptr && peep->assignedStaffType == StaffType::handyman)
         {
-            return JS_NewUint32(ctx, peep->StaffLawnsMown);
+            return JS_NewUint32(ctx, peep->staffLawnsMown);
         }
         else
         {
@@ -467,9 +467,9 @@ namespace OpenRCT2::Scripting
     JSValue ScHandyman::gardensWatered_get(JSContext* ctx, JSValue thisVal)
     {
         auto peep = GetStaff(thisVal);
-        if (peep != nullptr && peep->AssignedStaffType == StaffType::handyman)
+        if (peep != nullptr && peep->assignedStaffType == StaffType::handyman)
         {
-            return JS_NewUint32(ctx, peep->StaffGardensWatered);
+            return JS_NewUint32(ctx, peep->staffGardensWatered);
         }
         else
         {
@@ -480,9 +480,9 @@ namespace OpenRCT2::Scripting
     JSValue ScHandyman::litterSwept_get(JSContext* ctx, JSValue thisVal)
     {
         auto peep = GetStaff(thisVal);
-        if (peep != nullptr && peep->AssignedStaffType == StaffType::handyman)
+        if (peep != nullptr && peep->assignedStaffType == StaffType::handyman)
         {
-            return JS_NewUint32(ctx, peep->StaffLitterSwept);
+            return JS_NewUint32(ctx, peep->staffLitterSwept);
         }
         else
         {
@@ -493,9 +493,9 @@ namespace OpenRCT2::Scripting
     JSValue ScHandyman::binsEmptied_get(JSContext* ctx, JSValue thisVal)
     {
         auto peep = GetStaff(thisVal);
-        if (peep != nullptr && peep->AssignedStaffType == StaffType::handyman)
+        if (peep != nullptr && peep->assignedStaffType == StaffType::handyman)
         {
-            return JS_NewUint32(ctx, peep->StaffBinsEmptied);
+            return JS_NewUint32(ctx, peep->staffBinsEmptied);
         }
         else
         {
@@ -522,9 +522,9 @@ namespace OpenRCT2::Scripting
     JSValue ScMechanic::ridesFixed_get(JSContext* ctx, JSValue thisVal)
     {
         auto peep = GetStaff(thisVal);
-        if (peep != nullptr && peep->IsMechanic())
+        if (peep != nullptr && peep->isMechanic())
         {
-            return JS_NewUint32(ctx, peep->StaffRidesFixed);
+            return JS_NewUint32(ctx, peep->staffRidesFixed);
         }
         else
         {
@@ -535,9 +535,9 @@ namespace OpenRCT2::Scripting
     JSValue ScMechanic::ridesInspected_get(JSContext* ctx, JSValue thisVal)
     {
         auto peep = GetStaff(thisVal);
-        if (peep != nullptr && peep->IsMechanic())
+        if (peep != nullptr && peep->isMechanic())
         {
-            return JS_NewUint32(ctx, peep->StaffRidesInspected);
+            return JS_NewUint32(ctx, peep->staffRidesInspected);
         }
         else
         {
@@ -563,9 +563,9 @@ namespace OpenRCT2::Scripting
     JSValue ScSecurity::vandalsStopped_get(JSContext* ctx, JSValue thisVal)
     {
         auto peep = GetStaff(thisVal);
-        if (peep != nullptr && peep->AssignedStaffType == StaffType::security)
+        if (peep != nullptr && peep->assignedStaffType == StaffType::security)
         {
-            return JS_NewUint32(ctx, peep->StaffVandalsStopped);
+            return JS_NewUint32(ctx, peep->staffVandalsStopped);
         }
         else
         {
@@ -617,7 +617,7 @@ namespace OpenRCT2::Scripting
             {
                 JSIterateArray(ctx, coordsOrRange, [staff, reset](JSContext* ctx2, JSValue v) {
                     auto coord = JSToCoordsXY(ctx2, v);
-                    staff->SetPatrolArea(coord, reset);
+                    staff->setPatrolArea(coord, reset);
                     MapInvalidateTileFull(coord);
                 });
             }
@@ -630,7 +630,7 @@ namespace OpenRCT2::Scripting
                     for (int32_t x = mapRange.GetX1(); x <= mapRange.GetX2(); x += kCoordsXYStep)
                     {
                         CoordsXY coord(x, y);
-                        staff->SetPatrolArea(coord, reset);
+                        staff->setPatrolArea(coord, reset);
                         MapInvalidateTileFull(coord);
                     }
                 }
@@ -644,9 +644,9 @@ namespace OpenRCT2::Scripting
         auto array = JS_NewArray(ctx);
 
         auto staff = GetStaff(thisVal);
-        if (staff != nullptr && staff->PatrolInfo != nullptr)
+        if (staff != nullptr && staff->patrolInfo != nullptr)
         {
-            auto tiles = staff->PatrolInfo->ToVector();
+            auto tiles = staff->patrolInfo->ToVector();
 
             auto index = 0;
             for (const auto& tile : tiles)
@@ -667,7 +667,7 @@ namespace OpenRCT2::Scripting
         auto staff = GetStaff(thisVal);
         if (staff != nullptr)
         {
-            staff->ClearPatrolArea();
+            staff->clearPatrolArea();
             if (JS_IsArray(value))
             {
                 ModifyArea(ctx, thisVal, value, true);
@@ -683,7 +683,7 @@ namespace OpenRCT2::Scripting
         auto staff = GetStaff(thisVal);
         if (staff != nullptr)
         {
-            staff->ClearPatrolArea();
+            staff->clearPatrolArea();
             UpdateConsolidatedPatrolAreas();
         }
         return JS_UNDEFINED;
@@ -712,7 +712,7 @@ namespace OpenRCT2::Scripting
         if (staff != nullptr)
         {
             auto pos = JSToCoordsXY(ctx, coord);
-            return JS_NewBool(ctx, staff->IsLocationInPatrol(pos));
+            return JS_NewBool(ctx, staff->isLocationInPatrol(pos));
         }
         return JS_NewBool(ctx, false);
     }

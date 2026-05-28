@@ -59,33 +59,33 @@ namespace OpenRCT2
      *
      *  rct2: 0x006C0905
      */
-    bool Staff::IsLocationInPatrol(const CoordsXY& loc) const
+    bool Staff::isLocationInPatrol(const CoordsXY& loc) const
     {
         // Check if location is in the park
         if (!MapIsLocationOwnedOrHasRights(loc))
             return false;
 
         // Check if staff has patrol area
-        if (!HasPatrolArea())
+        if (!hasPatrolArea())
             return true;
 
-        return IsPatrolAreaSet(loc);
+        return isPatrolAreaSet(loc);
     }
 
     // Check whether the location x,y is inside and on the edge of the
     // patrol zone for mechanic.
-    bool Staff::IsLocationOnPatrolEdge(const CoordsXY& loc) const
+    bool Staff::isLocationOnPatrolEdge(const CoordsXY& loc) const
     {
         bool onZoneEdge = false;
         for (uint8_t neighbourDir = 0; !onZoneEdge && neighbourDir <= 7; neighbourDir++)
         {
             auto neighbourPos = loc + CoordsDirectionDelta[neighbourDir];
-            onZoneEdge = !IsLocationInPatrol(neighbourPos);
+            onZoneEdge = !isLocationInPatrol(neighbourPos);
         }
         return onZoneEdge;
     }
 
-    bool Staff::CanIgnoreWideFlag(const CoordsXYZ& staffPos, TileElement* path) const
+    bool Staff::canIgnoreWideFlag(const CoordsXYZ& staffPos, TileElement* path) const
     {
         /* Wide flags can potentially wall off parts of a staff patrol zone
          * for the heuristic search.
@@ -108,7 +108,7 @@ namespace OpenRCT2
          * both of these tiles are connected wide paths, the wide flag can be
          * ignored. */
 
-        if (!IsLocationOnPatrolEdge(staffPos))
+        if (!isLocationOnPatrolEdge(staffPos))
         {
             return false;
         }
@@ -123,11 +123,11 @@ namespace OpenRCT2
             auto adjacPos = staffPos + CoordsXYZ{ CoordsDirectionDelta[adjac_dir].x, CoordsDirectionDelta[adjac_dir].y, 0 };
 
             /* Ignore adjacent tiles outside the patrol zone. */
-            if (!IsLocationInPatrol(adjacPos))
+            if (!isLocationInPatrol(adjacPos))
                 continue;
 
             /* Ignore adjacent tiles on the patrol zone edge. */
-            if (IsLocationOnPatrolEdge(adjacPos))
+            if (isLocationOnPatrolEdge(adjacPos))
                 continue;
 
             /* Adjacent tile is inside the patrol zone but not on the
@@ -204,26 +204,26 @@ namespace OpenRCT2
      *  rct2: 0x006C095B
      *  returns 0xF if not in a valid patrol area
      */
-    uint8_t Staff::GetValidPatrolDirections(const CoordsXY& loc) const
+    uint8_t Staff::getValidPatrolDirections(const CoordsXY& loc) const
     {
         uint8_t directions = 0;
 
-        if (IsLocationInPatrol({ loc.x - kCoordsXYStep, loc.y }))
+        if (isLocationInPatrol({ loc.x - kCoordsXYStep, loc.y }))
         {
             directions |= (1 << 0);
         }
 
-        if (IsLocationInPatrol({ loc.x, loc.y + kCoordsXYStep }))
+        if (isLocationInPatrol({ loc.x, loc.y + kCoordsXYStep }))
         {
             directions |= (1 << 1);
         }
 
-        if (IsLocationInPatrol({ loc.x + kCoordsXYStep, loc.y }))
+        if (isLocationInPatrol({ loc.x + kCoordsXYStep, loc.y }))
         {
             directions |= (1 << 2);
         }
 
-        if (IsLocationInPatrol({ loc.x, loc.y - kCoordsXYStep }))
+        if (isLocationInPatrol({ loc.x, loc.y - kCoordsXYStep }))
         {
             directions |= (1 << 3);
         }
@@ -240,38 +240,38 @@ namespace OpenRCT2
      *
      *  rct2: 0x006C1955
      */
-    void Staff::ResetStats()
+    void Staff::resetStats()
     {
         for (auto peep : EntityList<Staff>())
         {
-            peep->SetHireDate(GetDate().GetMonthsElapsed());
-            peep->StaffLawnsMown = 0;
-            peep->StaffRidesFixed = 0;
-            peep->StaffGardensWatered = 0;
-            peep->StaffRidesInspected = 0;
-            peep->StaffLitterSwept = 0;
-            peep->StaffVandalsStopped = 0;
-            peep->StaffBinsEmptied = 0;
+            peep->setHireDate(GetDate().GetMonthsElapsed());
+            peep->staffLawnsMown = 0;
+            peep->staffRidesFixed = 0;
+            peep->staffGardensWatered = 0;
+            peep->staffRidesInspected = 0;
+            peep->staffLitterSwept = 0;
+            peep->staffVandalsStopped = 0;
+            peep->staffBinsEmptied = 0;
             peep->staffGuestsEntertained = 0;
         }
     }
 
-    bool Staff::IsPatrolAreaSet(const CoordsXY& coords) const
+    bool Staff::isPatrolAreaSet(const CoordsXY& coords) const
     {
-        if (PatrolInfo != nullptr)
+        if (patrolInfo != nullptr)
         {
-            return PatrolInfo->Get(coords);
+            return patrolInfo->Get(coords);
         }
         return false;
     }
 
-    void Staff::SetPatrolArea(const CoordsXY& coords, bool value)
+    void Staff::setPatrolArea(const CoordsXY& coords, bool value)
     {
-        if (PatrolInfo == nullptr)
+        if (patrolInfo == nullptr)
         {
             if (value)
             {
-                PatrolInfo = new PatrolArea();
+                patrolInfo = new PatrolArea();
             }
             else
             {
@@ -279,29 +279,29 @@ namespace OpenRCT2
             }
         }
 
-        PatrolInfo->Set(coords, value);
+        patrolInfo->Set(coords, value);
     }
 
-    void Staff::SetPatrolArea(const MapRange& range, bool value)
+    void Staff::setPatrolArea(const MapRange& range, bool value)
     {
         for (int32_t yy = range.GetY1(); yy <= range.GetY2(); yy += kCoordsXYStep)
         {
             for (int32_t xx = range.GetX1(); xx <= range.GetX2(); xx += kCoordsXYStep)
             {
-                SetPatrolArea({ xx, yy }, value);
+                setPatrolArea({ xx, yy }, value);
             }
         }
     }
 
-    void Staff::ClearPatrolArea()
+    void Staff::clearPatrolArea()
     {
-        delete PatrolInfo;
-        PatrolInfo = nullptr;
+        delete patrolInfo;
+        patrolInfo = nullptr;
     }
 
-    bool Staff::HasPatrolArea() const
+    bool Staff::hasPatrolArea() const
     {
-        return PatrolInfo == nullptr ? false : !PatrolInfo->IsEmpty();
+        return patrolInfo == nullptr ? false : !patrolInfo->IsEmpty();
     }
 
     /**
@@ -310,7 +310,7 @@ namespace OpenRCT2
      *
      * Returns kInvalidDirection when no nearby litter or unpathable litter
      */
-    Direction Staff::HandymanDirectionToNearestLitter() const
+    Direction Staff::handymanDirectionToNearestLitter() const
     {
         // Maximum manhattan distance that litter can be for a handyman to seek to it
         constexpr auto kTileRadius = 3;
@@ -344,7 +344,7 @@ namespace OpenRCT2
 
         auto litterTile = CoordsXY{ nearestLitter->x, nearestLitter->y }.ToTileStart();
 
-        if (!IsLocationInPatrol(litterTile))
+        if (!isLocationInPatrol(litterTile))
         {
             return kInvalidDirection;
         }
@@ -391,7 +391,7 @@ namespace OpenRCT2
      *
      *  rct2: 0x006BF931
      */
-    uint8_t Staff::HandymanDirectionToUncutGrass(uint8_t valid_directions) const
+    uint8_t Staff::handymanDirectionToUncutGrass(uint8_t valid_directions) const
     {
         if (!(GetNextIsSurface()))
         {
@@ -445,7 +445,7 @@ namespace OpenRCT2
      *
      *  rct2: 0x006BFD9C
      */
-    Direction Staff::HandymanDirectionRandSurface(uint8_t validDirections) const
+    Direction Staff::handymanDirectionRandSurface(uint8_t validDirections) const
     {
         Direction newDirection = ScenarioRand() % kNumOrthogonalDirections;
         for (int32_t i = 0; i < kNumOrthogonalDirections; ++i, ++newDirection)
@@ -472,29 +472,29 @@ namespace OpenRCT2
      *
      *  rct2: 0x006BFBA8
      */
-    bool Staff::DoHandymanPathFinding()
+    bool Staff::doHandymanPathFinding()
     {
-        StaffMowingTimeout++;
+        staffMowingTimeout++;
 
         Direction litterDirection = kInvalidDirection;
-        uint8_t validDirections = GetValidPatrolDirections(NextLoc);
+        uint8_t validDirections = getValidPatrolDirections(NextLoc);
 
-        if ((StaffOrders & STAFF_ORDERS_SWEEPING) && ((getGameState().currentTicks + id.ToUnderlying()) & 0xFFF) > 110)
+        if ((staffOrders & STAFF_ORDERS_SWEEPING) && ((getGameState().currentTicks + id.ToUnderlying()) & 0xFFF) > 110)
         {
-            litterDirection = HandymanDirectionToNearestLitter();
+            litterDirection = handymanDirectionToNearestLitter();
         }
 
         Direction newDirection = kInvalidDirection;
-        if (litterDirection == kInvalidDirection && (StaffOrders & STAFF_ORDERS_MOWING) && StaffMowingTimeout >= 12)
+        if (litterDirection == kInvalidDirection && (staffOrders & STAFF_ORDERS_MOWING) && staffMowingTimeout >= 12)
         {
-            newDirection = HandymanDirectionToUncutGrass(validDirections);
+            newDirection = handymanDirectionToUncutGrass(validDirections);
         }
 
         if (newDirection == kInvalidDirection)
         {
             if (GetNextIsSurface())
             {
-                newDirection = HandymanDirectionRandSurface(validDirections);
+                newDirection = handymanDirectionRandSurface(validDirections);
             }
             else
             {
@@ -506,7 +506,7 @@ namespace OpenRCT2
                 uint8_t pathDirections = (pathElement->GetEdges() & validDirections) & 0xF;
                 if (pathDirections == 0)
                 {
-                    newDirection = HandymanDirectionRandSurface(validDirections);
+                    newDirection = handymanDirectionRandSurface(validDirections);
                 }
                 else
                 {
@@ -551,7 +551,7 @@ namespace OpenRCT2
 
         while (!MapIsLocationValid(chosenTile))
         {
-            newDirection = HandymanDirectionRandSurface(validDirections);
+            newDirection = handymanDirectionRandSurface(validDirections);
             chosenTile = CoordsXY{ NextLoc } + CoordsDirectionDelta[newDirection];
         }
 
@@ -564,7 +564,7 @@ namespace OpenRCT2
         return false;
     }
 
-    Direction Staff::DirectionSurface(Direction initialDirection) const
+    Direction Staff::directionSurface(Direction initialDirection) const
     {
         uint8_t direction = initialDirection;
         for (int32_t i = 0; i < 3; ++i)
@@ -606,7 +606,7 @@ namespace OpenRCT2
      *
      *  rct2: 0x006BFF45
      */
-    Direction Staff::MechanicDirectionSurface() const
+    Direction Staff::mechanicDirectionSurface() const
     {
         Direction direction = ScenarioRand() & 3;
 
@@ -623,14 +623,14 @@ namespace OpenRCT2
             direction = DirectionFromTo(CoordsXY(x, y), location.ToCoordsXY());
         }
 
-        return DirectionSurface(direction);
+        return directionSurface(direction);
     }
 
     /**
      *
      *  rct2: 0x006C02D1
      */
-    Direction Staff::MechanicDirectionPathRand(uint8_t pathDirections) const
+    Direction Staff::mechanicDirectionPathRand(uint8_t pathDirections) const
     {
         if (ScenarioRand() & 1)
         {
@@ -654,14 +654,14 @@ namespace OpenRCT2
      *
      *  rct2: 0x006C0121
      */
-    Direction Staff::MechanicDirectionPath(uint8_t validDirections, PathElement* pathElement)
+    Direction Staff::mechanicDirectionPath(uint8_t validDirections, PathElement* pathElement)
     {
         uint32_t pathDirections = pathElement->GetEdges();
         pathDirections &= validDirections;
 
         if (pathDirections == 0)
         {
-            return MechanicDirectionSurface();
+            return mechanicDirectionSurface();
         }
 
         // Check if this is dead end - i.e. only way out is the reverse direction.
@@ -703,7 +703,7 @@ namespace OpenRCT2
                 // If no entrance is present either. This is an incorrect state.
                 if (location.IsNull())
                 {
-                    return MechanicDirectionPathRand(pathDirections);
+                    return mechanicDirectionPathRand(pathDirections);
                 }
             }
 
@@ -719,25 +719,25 @@ namespace OpenRCT2
                  * edited the path layout or the mechanic was already stuck in the
                  * save game (e.g. with a worse version of the pathfinding). */
                 ResetPathfindGoal();
-                return MechanicDirectionPathRand(pathDirections);
+                return mechanicDirectionPathRand(pathDirections);
             }
 
             return pathfindDirection;
         }
-        return MechanicDirectionPathRand(pathDirections);
+        return mechanicDirectionPathRand(pathDirections);
     }
 
     /**
      *
      *  rct2: 0x006BFF2C
      */
-    bool Staff::DoMechanicPathFinding()
+    bool Staff::doMechanicPathFinding()
     {
-        uint8_t validDirections = GetValidPatrolDirections(NextLoc);
+        uint8_t validDirections = getValidPatrolDirections(NextLoc);
         Direction newDirection = kInvalidDirection;
         if (GetNextIsSurface())
         {
-            newDirection = MechanicDirectionSurface();
+            newDirection = mechanicDirectionSurface();
         }
         else
         {
@@ -745,7 +745,7 @@ namespace OpenRCT2
             if (pathElement == nullptr)
                 return true;
 
-            newDirection = MechanicDirectionPath(validDirections, pathElement);
+            newDirection = mechanicDirectionPath(validDirections, pathElement);
         }
 
         // countof(CoordsDirectionDelta)
@@ -755,7 +755,7 @@ namespace OpenRCT2
 
         while (!MapIsLocationValid(chosenTile))
         {
-            newDirection = MechanicDirectionSurface();
+            newDirection = mechanicDirectionSurface();
             chosenTile = CoordsXY{ NextLoc } + CoordsDirectionDelta[newDirection];
         }
 
@@ -770,7 +770,7 @@ namespace OpenRCT2
      *
      *  rct2: 0x006C050B
      */
-    Direction Staff::DirectionPath(uint8_t validDirections, PathElement* pathElement) const
+    Direction Staff::directionPath(uint8_t validDirections, PathElement* pathElement) const
     {
         uint32_t pathDirections = pathElement->GetEdges();
         if (State != PeepState::answering && State != PeepState::headingToInspection)
@@ -780,7 +780,7 @@ namespace OpenRCT2
 
         if (pathDirections == 0)
         {
-            return DirectionSurface(ScenarioRand() & 3);
+            return directionSurface(ScenarioRand() & 3);
         }
 
         pathDirections &= ~(1u << DirectionReverse(PeepDirection));
@@ -811,14 +811,14 @@ namespace OpenRCT2
      *
      *  rct2: 0x006C0351
      */
-    bool Staff::DoMiscPathFinding()
+    bool Staff::doMiscPathFinding()
     {
-        uint8_t validDirections = GetValidPatrolDirections(NextLoc);
+        uint8_t validDirections = getValidPatrolDirections(NextLoc);
 
         Direction newDirection = kInvalidDirection;
         if (GetNextIsSurface())
         {
-            newDirection = DirectionSurface(ScenarioRand() & 3);
+            newDirection = directionSurface(ScenarioRand() & 3);
         }
         else
         {
@@ -826,14 +826,14 @@ namespace OpenRCT2
             if (pathElement == nullptr)
                 return true;
 
-            newDirection = DirectionPath(validDirections, pathElement);
+            newDirection = directionPath(validDirections, pathElement);
         }
 
         CoordsXY chosenTile = CoordsXY{ NextLoc } + CoordsDirectionDelta[newDirection];
 
         while (!MapIsLocationValid(chosenTile))
         {
-            newDirection = DirectionSurface(ScenarioRand() & 3);
+            newDirection = directionSurface(ScenarioRand() & 3);
             chosenTile = CoordsXY{ NextLoc } + CoordsDirectionDelta[newDirection];
         }
 
@@ -844,9 +844,9 @@ namespace OpenRCT2
         return false;
     }
 
-    bool Staff::IsMechanicHeadingToFixRideBlockingPath()
+    bool Staff::isMechanicHeadingToFixRideBlockingPath()
     {
-        if (!IsMechanic())
+        if (!isMechanic())
             return false;
 
         auto tileCoords = TileCoordsXYZ(CoordsXYZ{ GetDestination(), NextLoc.z });
@@ -866,7 +866,7 @@ namespace OpenRCT2
      *
      *  rct2: 0x006C086D
      */
-    void Staff::EntertainerUpdateNearbyPeeps()
+    void Staff::entertainerUpdateNearbyPeeps()
     {
         // Iterate over tiles within a 3-tile radius (96 units)
         constexpr auto kTileRadius = 3;
@@ -916,7 +916,7 @@ namespace OpenRCT2
      *
      *  rct2: 0x006C05AE
      */
-    bool Staff::DoEntertainerPathFinding()
+    bool Staff::doEntertainerPathFinding()
     {
         if (((ScenarioRand() & 0xFFFF) <= 0x4000) && IsActionInterruptableSafely())
         {
@@ -925,28 +925,28 @@ namespace OpenRCT2
             AnimationImageIdOffset = 0;
 
             UpdateCurrentAnimationType();
-            EntertainerUpdateNearbyPeeps();
+            entertainerUpdateNearbyPeeps();
         }
 
-        return DoMiscPathFinding();
+        return doMiscPathFinding();
     }
 
     /**
      *
      *  rct2: 0x006BF926
      */
-    bool Staff::DoPathFinding()
+    bool Staff::doPathFinding()
     {
-        switch (AssignedStaffType)
+        switch (assignedStaffType)
         {
             case StaffType::handyman:
-                return DoHandymanPathFinding();
+                return doHandymanPathFinding();
             case StaffType::mechanic:
-                return DoMechanicPathFinding();
+                return doMechanicPathFinding();
             case StaffType::security:
-                return DoMiscPathFinding();
+                return doMiscPathFinding();
             case StaffType::entertainer:
-                return DoEntertainerPathFinding();
+                return doEntertainerPathFinding();
 
             default:
                 assert(false);
@@ -954,14 +954,14 @@ namespace OpenRCT2
         }
     }
 
-    void Staff::SetHireDate(int32_t hireDate)
+    void Staff::setHireDate(int32_t value)
     {
-        HireDate = hireDate;
+        this->hireDate = value;
     }
 
-    int32_t Staff::GetHireDate() const
+    int32_t Staff::getHireDate() const
     {
-        return HireDate;
+        return hireDate;
     }
 
     Drawing::Colour StaffGetColour(StaffType staffType)
@@ -1014,7 +1014,7 @@ namespace OpenRCT2
      *
      *  rct2: 0x006BF567
      */
-    void Staff::UpdateMowing()
+    void Staff::updateMowing()
     {
         if (!CheckForPath())
             return;
@@ -1053,7 +1053,7 @@ namespace OpenRCT2
                 surfaceElement->SetGrassLength(GRASS_LENGTH_MOWED);
                 MapInvalidateTileZoom0({ NextLoc, surfaceElement->getBaseZ(), surfaceElement->getBaseZ() + 16 });
             }
-            StaffLawnsMown = AddClamp(StaffLawnsMown, 1u);
+            staffLawnsMown = AddClamp(staffLawnsMown, 1u);
             WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
         }
     }
@@ -1062,9 +1062,9 @@ namespace OpenRCT2
      *
      *  rct2: 0x006BF7E6
      */
-    void Staff::UpdateWatering()
+    void Staff::updateWatering()
     {
-        StaffMowingTimeout = 0;
+        staffMowingTimeout = 0;
         if (SubState == 0)
         {
             if (!CheckForPath())
@@ -1112,7 +1112,7 @@ namespace OpenRCT2
 
                 tile_element->asSmallScenery()->SetAge(0);
                 MapInvalidateTileZoom0({ actionLoc, tile_element->getBaseZ(), tile_element->getClearanceZ() });
-                StaffGardensWatered = AddClamp(StaffGardensWatered, 1u);
+                staffGardensWatered = AddClamp(staffGardensWatered, 1u);
                 WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
             } while (!(tile_element++)->isLastForTile());
 
@@ -1124,9 +1124,9 @@ namespace OpenRCT2
      *
      *  rct2: 0x006BF6C9
      */
-    void Staff::UpdateEmptyingBin()
+    void Staff::updateEmptyingBin()
     {
-        StaffMowingTimeout = 0;
+        staffMowingTimeout = 0;
 
         if (SubState == 0)
         {
@@ -1195,7 +1195,7 @@ namespace OpenRCT2
             tile_element->asPath()->SetAdditionStatus(additionStatus);
 
             MapInvalidateTileZoom0({ NextLoc, tile_element->getBaseZ(), tile_element->getClearanceZ() });
-            StaffBinsEmptied = AddClamp(StaffBinsEmptied, 1u);
+            staffBinsEmptied = AddClamp(staffBinsEmptied, 1u);
             WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
         }
     }
@@ -1204,9 +1204,9 @@ namespace OpenRCT2
      *
      *  rct2: 0x6BF641
      */
-    void Staff::UpdateSweeping()
+    void Staff::updateSweeping()
     {
-        StaffMowingTimeout = 0;
+        staffMowingTimeout = 0;
         if (!CheckForPath())
             return;
 
@@ -1214,7 +1214,7 @@ namespace OpenRCT2
         {
             // Remove sick at this location
             Litter::RemoveAt(getLocation());
-            StaffLitterSwept = AddClamp(StaffLitterSwept, 1u);
+            staffLitterSwept = AddClamp(staffLitterSwept, 1u);
             WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
         }
         if (auto loc = UpdateAction(); loc.has_value())
@@ -1240,7 +1240,7 @@ namespace OpenRCT2
      *
      *  rct2: 0x006C16D7
      */
-    void Staff::UpdateHeadingToInspect()
+    void Staff::updateHeadingToInspect()
     {
         auto ride = GetRide(CurrentRide);
         if (ride == nullptr)
@@ -1264,15 +1264,15 @@ namespace OpenRCT2
 
         if (SubState == 0)
         {
-            MechanicTimeSinceCall = 0;
+            mechanicTimeSinceCall = 0;
             ResetPathfindGoal();
             SubState = 2;
         }
 
         if (SubState <= 3)
         {
-            MechanicTimeSinceCall++;
-            if (MechanicTimeSinceCall > 2500)
+            mechanicTimeSinceCall++;
+            if (mechanicTimeSinceCall > 2500)
             {
                 if (ride->flags.has(RideFlag::dueInspection) && ride->mechanicStatus == MechanicStatus::heading)
                 {
@@ -1285,7 +1285,7 @@ namespace OpenRCT2
             if (!CheckForPath())
                 return;
 
-            if (ShouldWaitForLevelCrossing() && !IsMechanicHeadingToFixRideBlockingPath())
+            if (ShouldWaitForLevelCrossing() && !isMechanicHeadingToFixRideBlockingPath())
                 return;
 
             const auto [pathingResult, rideEntranceExitElement] = PerformNextAction();
@@ -1341,7 +1341,7 @@ namespace OpenRCT2
      *
      *  rct2: 0x006C0CB8
      */
-    void Staff::UpdateAnswering()
+    void Staff::updateAnswering()
     {
         auto ride = GetRide(CurrentRide);
         if (ride == nullptr || ride->mechanicStatus != MechanicStatus::heading)
@@ -1368,7 +1368,7 @@ namespace OpenRCT2
             {
                 SubState = 2;
                 PeepWindowStateUpdate(this);
-                MechanicTimeSinceCall = 0;
+                mechanicTimeSinceCall = 0;
                 ResetPathfindGoal();
                 return;
             }
@@ -1378,8 +1378,8 @@ namespace OpenRCT2
         }
         if (SubState <= 3)
         {
-            MechanicTimeSinceCall++;
-            if (MechanicTimeSinceCall > 2500)
+            mechanicTimeSinceCall++;
+            if (mechanicTimeSinceCall > 2500)
             {
                 ride->mechanicStatus = MechanicStatus::calling;
                 ride->windowInvalidateFlags.set(RideInvalidateFlag::maintenance);
@@ -1390,7 +1390,7 @@ namespace OpenRCT2
             if (!CheckForPath())
                 return;
 
-            if (ShouldWaitForLevelCrossing() && !IsMechanicHeadingToFixRideBlockingPath())
+            if (ShouldWaitForLevelCrossing() && !isMechanicHeadingToFixRideBlockingPath())
                 return;
 
             const auto [pathingResult, rideEntranceExitElement] = PerformNextAction();
@@ -1453,9 +1453,9 @@ namespace OpenRCT2
      *
      *  rct2: 0x006BF483
      */
-    bool Staff::UpdatePatrollingFindWatering()
+    bool Staff::updatePatrollingFindWatering()
     {
-        if (!(StaffOrders & STAFF_ORDERS_WATER_FLOWERS))
+        if (!(staffOrders & STAFF_ORDERS_WATER_FLOWERS))
             return false;
 
         uint8_t chosen_position = ScenarioRand() & 7;
@@ -1524,9 +1524,9 @@ namespace OpenRCT2
      *
      *  rct2: 0x006BF3A1
      */
-    bool Staff::UpdatePatrollingFindBin()
+    bool Staff::updatePatrollingFindBin()
     {
-        if (!(StaffOrders & STAFF_ORDERS_EMPTY_BINS))
+        if (!(staffOrders & STAFF_ORDERS_EMPTY_BINS))
             return false;
 
         if (GetNextIsSurface())
@@ -1588,12 +1588,12 @@ namespace OpenRCT2
      *
      *  rct2: 0x006BF322
      */
-    bool Staff::UpdatePatrollingFindGrass()
+    bool Staff::updatePatrollingFindGrass()
     {
-        if (!(StaffOrders & STAFF_ORDERS_MOWING))
+        if (!(staffOrders & STAFF_ORDERS_MOWING))
             return false;
 
-        if (StaffMowingTimeout < 12)
+        if (staffMowingTimeout < 12)
             return false;
 
         if (!(GetNextIsSurface()))
@@ -1620,9 +1620,9 @@ namespace OpenRCT2
      *
      *  rct2: 0x006BF295
      */
-    bool Staff::UpdatePatrollingFindSweeping()
+    bool Staff::updatePatrollingFindSweeping()
     {
-        if (!(StaffOrders & STAFF_ORDERS_SWEEPING))
+        if (!(staffOrders & STAFF_ORDERS_SWEEPING))
             return false;
         auto quad = EntityTileList<Litter>({ x, y });
         for (auto litter : quad)
@@ -1642,7 +1642,7 @@ namespace OpenRCT2
         return false;
     }
 
-    bool Staff::SecurityGuardPathIsCrowded() const
+    bool Staff::securityGuardPathIsCrowded() const
     {
         // Iterate over tiles within a 3-tile radius (96 units)
         constexpr auto kTileRadius = 3;
@@ -1685,14 +1685,14 @@ namespace OpenRCT2
         return false;
     }
 
-    void Staff::Tick128UpdateStaff()
+    void Staff::tick128UpdateStaff()
     {
-        if (AssignedStaffType != StaffType::security)
+        if (assignedStaffType != StaffType::security)
             return;
 
         // Alternate between walking animations based on crowd size
         auto newAnimationGroup = PeepAnimationGroup::normal;
-        if (State == PeepState::patrolling && SecurityGuardPathIsCrowded())
+        if (State == PeepState::patrolling && securityGuardPathIsCrowded())
             newAnimationGroup = PeepAnimationGroup::alternate;
 
         if (AnimationGroup == newAnimationGroup)
@@ -1718,14 +1718,14 @@ namespace OpenRCT2
         UpdateCurrentAnimationType();
     }
 
-    bool Staff::IsMechanic() const
+    bool Staff::isMechanic() const
     {
-        return AssignedStaffType == StaffType::mechanic;
+        return assignedStaffType == StaffType::mechanic;
     }
 
     bool Staff::isEntertainer() const
     {
-        return AssignedStaffType == StaffType::entertainer;
+        return assignedStaffType == StaffType::entertainer;
     }
 
     void Staff::Update()
@@ -1781,31 +1781,31 @@ namespace OpenRCT2
                     UpdatePicked();
                     break;
                 case PeepState::patrolling:
-                    UpdatePatrolling();
+                    updatePatrolling();
                     break;
                 case PeepState::mowing:
-                    UpdateMowing();
+                    updateMowing();
                     break;
                 case PeepState::sweeping:
-                    UpdateSweeping();
+                    updateSweeping();
                     break;
                 case PeepState::answering:
-                    UpdateAnswering();
+                    updateAnswering();
                     break;
                 case PeepState::fixing:
-                    UpdateFixing(stepsToTake);
+                    updateFixing(stepsToTake);
                     break;
                 case PeepState::inspecting:
-                    UpdateFixing(stepsToTake);
+                    updateFixing(stepsToTake);
                     break;
                 case PeepState::emptyingBin:
-                    UpdateEmptyingBin();
+                    updateEmptyingBin();
                     break;
                 case PeepState::watering:
-                    UpdateWatering();
+                    updateWatering();
                     break;
                 case PeepState::headingToInspection:
-                    UpdateHeadingToInspect();
+                    updateHeadingToInspect();
                     break;
                 default:
                     // TODO reset to default state
@@ -1819,12 +1819,12 @@ namespace OpenRCT2
      *
      *  rct2: 0x006BF1FD
      */
-    void Staff::UpdatePatrolling()
+    void Staff::updatePatrolling()
     {
         if (!CheckForPath())
             return;
 
-        if (ShouldWaitForLevelCrossing() && !IsMechanicHeadingToFixRideBlockingPath())
+        if (ShouldWaitForLevelCrossing() && !isMechanicHeadingToFixRideBlockingPath())
         {
             UpdateWaitingAtCrossing();
             return;
@@ -1850,19 +1850,19 @@ namespace OpenRCT2
             }
         }
 
-        if (AssignedStaffType != StaffType::handyman)
+        if (assignedStaffType != StaffType::handyman)
             return;
 
-        if (UpdatePatrollingFindSweeping())
+        if (updatePatrollingFindSweeping())
             return;
 
-        if (UpdatePatrollingFindGrass())
+        if (updatePatrollingFindGrass())
             return;
 
-        if (UpdatePatrollingFindBin())
+        if (updatePatrollingFindBin())
             return;
 
-        UpdatePatrollingFindWatering();
+        updatePatrollingFindWatering();
     }
 
     enum
@@ -1970,7 +1970,7 @@ namespace OpenRCT2
      *  rct2: 0x006C0E8B
      * Also used by inspecting.
      */
-    void Staff::UpdateFixing(int32_t steps)
+    void Staff::updateFixing(int32_t steps)
     {
         auto ride = GetRide(CurrentRide);
         if (ride == nullptr)
@@ -1995,54 +1995,54 @@ namespace OpenRCT2
             {
                 case PEEP_FIXING_ENTER_STATION:
                     NextFlags &= ~PEEP_NEXT_FLAG_IS_SLOPED;
-                    progressToNextSubstate = UpdateFixingEnterStation(*ride);
+                    progressToNextSubstate = updateFixingEnterStation(*ride);
                     break;
 
                 case PEEP_FIXING_MOVE_TO_BROKEN_DOWN_VEHICLE:
-                    progressToNextSubstate = UpdateFixingMoveToBrokenDownVehicle(firstRun, *ride);
+                    progressToNextSubstate = updateFixingMoveToBrokenDownVehicle(firstRun, *ride);
                     break;
 
                 case PEEP_FIXING_FIX_VEHICLE_CLOSED_RESTRAINTS:
                 case PEEP_FIXING_FIX_VEHICLE_CLOSED_DOORS:
                 case PEEP_FIXING_FIX_VEHICLE_OPEN_RESTRAINTS:
                 case PEEP_FIXING_FIX_VEHICLE_OPEN_DOORS:
-                    progressToNextSubstate = UpdateFixingFixVehicle(firstRun, *ride);
+                    progressToNextSubstate = updateFixingFixVehicle(firstRun, *ride);
                     break;
 
                 case PEEP_FIXING_FIX_VEHICLE_MALFUNCTION:
-                    progressToNextSubstate = UpdateFixingFixVehicleMalfunction(firstRun, *ride);
+                    progressToNextSubstate = updateFixingFixVehicleMalfunction(firstRun, *ride);
                     break;
 
                 case PEEP_FIXING_MOVE_TO_STATION_END:
-                    progressToNextSubstate = UpdateFixingMoveToStationEnd(firstRun, *ride);
+                    progressToNextSubstate = updateFixingMoveToStationEnd(firstRun, *ride);
                     break;
 
                 case PEEP_FIXING_FIX_STATION_END:
-                    progressToNextSubstate = UpdateFixingFixStationEnd(firstRun);
+                    progressToNextSubstate = updateFixingFixStationEnd(firstRun);
                     break;
 
                 case PEEP_FIXING_MOVE_TO_STATION_START:
-                    progressToNextSubstate = UpdateFixingMoveToStationStart(firstRun, *ride);
+                    progressToNextSubstate = updateFixingMoveToStationStart(firstRun, *ride);
                     break;
 
                 case PEEP_FIXING_FIX_STATION_START:
-                    progressToNextSubstate = UpdateFixingFixStationStart(firstRun, *ride);
+                    progressToNextSubstate = updateFixingFixStationStart(firstRun, *ride);
                     break;
 
                 case PEEP_FIXING_FIX_STATION_BRAKES:
-                    progressToNextSubstate = UpdateFixingFixStationBrakes(firstRun, *ride);
+                    progressToNextSubstate = updateFixingFixStationBrakes(firstRun, *ride);
                     break;
 
                 case PEEP_FIXING_MOVE_TO_STATION_EXIT:
-                    progressToNextSubstate = UpdateFixingMoveToStationExit(firstRun, *ride);
+                    progressToNextSubstate = updateFixingMoveToStationExit(firstRun, *ride);
                     break;
 
                 case PEEP_FIXING_FINISH_FIX_OR_INSPECT:
-                    progressToNextSubstate = UpdateFixingFinishFixOrInspect(firstRun, steps, *ride);
+                    progressToNextSubstate = updateFixingFinishFixOrInspect(firstRun, steps, *ride);
                     break;
 
                 case PEEP_FIXING_LEAVE_BY_ENTRANCE_EXIT:
-                    progressToNextSubstate = UpdateFixingLeaveByEntranceExit(firstRun, *ride);
+                    progressToNextSubstate = updateFixingLeaveByEntranceExit(firstRun, *ride);
                     break;
 
                 default:
@@ -2078,7 +2078,7 @@ namespace OpenRCT2
      * rct2: 0x006C0EEC
      * fixing SubState: enter_station - applies to fixing all break down reasons and ride inspections.
      */
-    bool Staff::UpdateFixingEnterStation(Ride& ride) const
+    bool Staff::updateFixingEnterStation(Ride& ride) const
     {
         ride.mechanicStatus = MechanicStatus::fixing;
         ride.windowInvalidateFlags.set(RideInvalidateFlag::maintenance);
@@ -2091,7 +2091,7 @@ namespace OpenRCT2
      * fixing SubState: move_to_broken_down_vehicle - applies to fixing all vehicle specific breakdown reasons
      * - see FixingSubstatesForBreakdown[]
      */
-    bool Staff::UpdateFixingMoveToBrokenDownVehicle(bool firstRun, const Ride& ride)
+    bool Staff::updateFixingMoveToBrokenDownVehicle(bool firstRun, const Ride& ride)
     {
         if (!firstRun)
         {
@@ -2144,7 +2144,7 @@ namespace OpenRCT2
      * 4. doors stuck open.
      * - see FixingSubstatesForBreakdown[]
      */
-    bool Staff::UpdateFixingFixVehicle(bool firstRun, const Ride& ride)
+    bool Staff::updateFixingFixVehicle(bool firstRun, const Ride& ride)
     {
         if (!firstRun)
         {
@@ -2186,7 +2186,7 @@ namespace OpenRCT2
      * fixing SubState: fix_vehicle_malfunction - applies fixing to vehicle malfunction.
      * - see FixingSubstatesForBreakdown[]
      */
-    bool Staff::UpdateFixingFixVehicleMalfunction(bool firstRun, const Ride& ride)
+    bool Staff::updateFixingFixVehicleMalfunction(bool firstRun, const Ride& ride)
     {
         if (!firstRun)
         {
@@ -2236,7 +2236,7 @@ namespace OpenRCT2
      * inspection.
      * - see FixingSubstatesForBreakdown[]
      */
-    bool Staff::UpdateFixingMoveToStationEnd(bool firstRun, const Ride& ride)
+    bool Staff::updateFixingMoveToStationEnd(bool firstRun, const Ride& ride)
     {
         if (!firstRun)
         {
@@ -2292,7 +2292,7 @@ namespace OpenRCT2
      * inspection.
      * - see FixingSubstatesForBreakdown[]
      */
-    bool Staff::UpdateFixingFixStationEnd(bool firstRun)
+    bool Staff::updateFixingFixStationEnd(bool firstRun)
     {
         if (!firstRun)
         {
@@ -2323,7 +2323,7 @@ namespace OpenRCT2
      * 3. applies to inspection.
      * - see FixingSubstatesForBreakdown[]
      */
-    bool Staff::UpdateFixingMoveToStationStart(bool firstRun, const Ride& ride)
+    bool Staff::updateFixingMoveToStationStart(bool firstRun, const Ride& ride)
     {
         if (!firstRun)
         {
@@ -2400,7 +2400,7 @@ namespace OpenRCT2
      * 2. applies to inspection.
      * - see FixingSubstatesForBreakdown[]
      */
-    bool Staff::UpdateFixingFixStationStart(bool firstRun, const Ride& ride)
+    bool Staff::updateFixingFixStationStart(bool firstRun, const Ride& ride)
     {
         if (!firstRun)
         {
@@ -2434,7 +2434,7 @@ namespace OpenRCT2
      * fixing SubState: fix_station_brakes - applies to fixing brake failure
      * - see FixingSubstatesForBreakdown[]
      */
-    bool Staff::UpdateFixingFixStationBrakes(bool firstRun, Ride& ride)
+    bool Staff::updateFixingFixStationBrakes(bool firstRun, Ride& ride)
     {
         if (!firstRun)
         {
@@ -2475,7 +2475,7 @@ namespace OpenRCT2
      * fixing SubState: move_to_station_exit - applies to fixing all failures & inspections
      * - see FixingSubstatesForBreakdown[]
      */
-    bool Staff::UpdateFixingMoveToStationExit(bool firstRun, const Ride& ride)
+    bool Staff::updateFixingMoveToStationExit(bool firstRun, const Ride& ride)
     {
         if (!firstRun)
         {
@@ -2513,21 +2513,21 @@ namespace OpenRCT2
      * fixing SubState: finish_fix_or_inspect - applies to fixing all failures & inspections
      * - see FixingSubstatesForBreakdown[]
      */
-    bool Staff::UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride& ride)
+    bool Staff::updateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride& ride)
     {
         if (!firstRun)
         {
             if (State == PeepState::inspecting)
             {
-                UpdateRideInspected(CurrentRide);
+                updateRideInspected(CurrentRide);
 
-                StaffRidesInspected = AddClamp(StaffRidesInspected, 1u);
+                staffRidesInspected = AddClamp(staffRidesInspected, 1u);
                 WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
                 ride.mechanicStatus = MechanicStatus::undefined;
                 return true;
             }
 
-            StaffRidesFixed = AddClamp(StaffRidesFixed, 1u);
+            staffRidesFixed = AddClamp(staffRidesFixed, 1u);
             WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
 
             orientation = PeepDirection << 3;
@@ -2555,7 +2555,7 @@ namespace OpenRCT2
      * fixing SubState: leave_by_entrance_exit - applies to fixing all failures & inspections
      * - see FixingSubstatesForBreakdown[]
      */
-    bool Staff::UpdateFixingLeaveByEntranceExit(bool firstRun, const Ride& ride)
+    bool Staff::updateFixingLeaveByEntranceExit(bool firstRun, const Ride& ride)
     {
         if (!firstRun)
         {
@@ -2599,7 +2599,7 @@ namespace OpenRCT2
     /**
      * rct2: 0x6B7588
      */
-    void Staff::UpdateRideInspected(RideId rideIndex)
+    void Staff::updateRideInspected(RideId rideIndex)
     {
         auto ride = GetRide(rideIndex);
         if (ride != nullptr)
@@ -2631,14 +2631,14 @@ namespace OpenRCT2
     void Staff::serialise(DataSerialiser& stream)
     {
         Peep::serialise(stream);
-        stream << AssignedStaffType;
-        stream << MechanicTimeSinceCall;
-        stream << HireDate;
-        stream << StaffOrders;
-        stream << StaffMowingTimeout;
-        stream << StaffLawnsMown;      // union with StaffRidesFixed, staffGuestsEntertained
-        stream << StaffGardensWatered; // union with StaffRidesInspected
-        stream << StaffLitterSwept;    // union with StaffVandalsStopped
-        stream << StaffBinsEmptied;
+        stream << assignedStaffType;
+        stream << mechanicTimeSinceCall;
+        stream << hireDate;
+        stream << staffOrders;
+        stream << staffMowingTimeout;
+        stream << staffLawnsMown;      // union with staffRidesFixed, staffGuestsEntertained
+        stream << staffGardensWatered; // union with staffRidesInspected
+        stream << staffLitterSwept;    // union with staffVandalsStopped
+        stream << staffBinsEmptied;
     }
 } // namespace OpenRCT2

@@ -1525,7 +1525,7 @@ Staff* FindClosestMechanic(const CoordsXY& entrancePosition, int32_t forInspecti
 
     for (auto peep : EntityList<Staff>())
     {
-        if (!peep->IsMechanic())
+        if (!peep->isMechanic())
             continue;
 
         if (!forInspection)
@@ -1538,18 +1538,18 @@ Staff* FindClosestMechanic(const CoordsXY& entrancePosition, int32_t forInspecti
             else if (peep->State != PeepState::patrolling)
                 continue;
 
-            if (!(peep->StaffOrders & STAFF_ORDERS_FIX_RIDES))
+            if (!(peep->staffOrders & STAFF_ORDERS_FIX_RIDES))
                 continue;
         }
         else
         {
-            if (peep->State != PeepState::patrolling || !(peep->StaffOrders & STAFF_ORDERS_INSPECT_RIDES))
+            if (peep->State != PeepState::patrolling || !(peep->staffOrders & STAFF_ORDERS_INSPECT_RIDES))
                 continue;
         }
 
         auto location = entrancePosition.ToTileStart();
         if (MapIsLocationInPark(location))
-            if (!peep->IsLocationInPatrol(location))
+            if (!peep->isLocationInPatrol(location))
                 continue;
 
         if (peep->x == kLocationNull)
@@ -1570,7 +1570,7 @@ Staff* FindClosestMechanic(const CoordsXY& entrancePosition, int32_t forInspecti
 Staff* RideGetMechanic(const Ride& ride)
 {
     auto staff = getGameState().entities.GetEntity<Staff>(ride.mechanic);
-    if (staff != nullptr && staff->IsMechanic())
+    if (staff != nullptr && staff->isMechanic())
     {
         return staff;
     }

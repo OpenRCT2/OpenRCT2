@@ -466,7 +466,7 @@ static void ConsoleCommandStaff(InteractiveConsole& console, const arguments_t& 
             {
                 auto name = peep->GetName();
                 console.WriteFormatLine(
-                    "staff id %03d type: %02u energy %03u name %s", peep->id, peep->AssignedStaffType, peep->Energy,
+                    "staff id %03d type: %02u energy %03u name %s", peep->id, peep->assignedStaffType, peep->Energy,
                     name.c_str());
             }
         }

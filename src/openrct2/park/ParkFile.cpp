@@ -1843,7 +1843,7 @@ namespace OpenRCT2
                 }
                 else
                 {
-                    cs.readWrite(staff->AssignedStaffType);
+                    cs.readWrite(staff->assignedStaffType);
                 }
             }
 
@@ -1972,7 +1972,7 @@ namespace OpenRCT2
                 }
                 else
                 {
-                    cs.readWrite(staff->MechanicTimeSinceCall);
+                    cs.readWrite(staff->mechanicTimeSinceCall);
                 }
             }
 
@@ -2043,7 +2043,7 @@ namespace OpenRCT2
                 {
                     cs.ignore<money32>();
                     cs.ignore<money32>();
-                    cs.readWrite(staff->HireDate);
+                    cs.readWrite(staff->hireDate);
                     cs.ignore<int8_t>();
                     cs.ignore<RideId>();
                     cs.ignore<uint16_t>();
@@ -2072,7 +2072,7 @@ namespace OpenRCT2
                 else
                 {
                     cs.ignore<RideId>();
-                    cs.readWrite(staff->StaffOrders);
+                    cs.readWrite(staff->staffOrders);
                     cs.ignore<RideId>();
                 }
             }
@@ -2128,12 +2128,12 @@ namespace OpenRCT2
                 else
                 {
                     cs.ignore<uint8_t>();
-                    cs.readWrite(staff->StaffMowingTimeout);
+                    cs.readWrite(staff->staffMowingTimeout);
                     cs.ignore<uint8_t>();
-                    cs.readWrite(staff->StaffLawnsMown);
-                    cs.readWrite(staff->StaffGardensWatered);
-                    cs.readWrite(staff->StaffLitterSwept);
-                    cs.readWrite(staff->StaffBinsEmptied);
+                    cs.readWrite(staff->staffLawnsMown);
+                    cs.readWrite(staff->staffGardensWatered);
+                    cs.readWrite(staff->staffLitterSwept);
+                    cs.readWrite(staff->staffBinsEmptied);
                     cs.ignore<uint8_t>();
                     cs.ignore<uint8_t>();
                     cs.ignore<uint8_t>();
@@ -2494,24 +2494,24 @@ namespace OpenRCT2
         ReadWritePeep(os, cs, entity);
 
         std::vector<TileCoordsXY> patrolArea;
-        if (cs.getMode() == OrcaStream::Mode::writing && entity.PatrolInfo != nullptr)
+        if (cs.getMode() == OrcaStream::Mode::writing && entity.patrolInfo != nullptr)
         {
-            patrolArea = entity.PatrolInfo->ToVector();
+            patrolArea = entity.patrolInfo->ToVector();
         }
         cs.readWriteVector(patrolArea, [&cs](TileCoordsXY& value) { cs.readWrite(value); });
         if (cs.getMode() == OrcaStream::Mode::reading)
         {
             if (patrolArea.empty())
             {
-                entity.ClearPatrolArea();
+                entity.clearPatrolArea();
             }
             else
             {
-                if (entity.PatrolInfo == nullptr)
-                    entity.PatrolInfo = new PatrolArea();
+                if (entity.patrolInfo == nullptr)
+                    entity.patrolInfo = new PatrolArea();
                 else
-                    entity.PatrolInfo->Clear();
-                entity.PatrolInfo->Union(patrolArea);
+                    entity.patrolInfo->Clear();
+                entity.patrolInfo->Union(patrolArea);
             }
         }
 
@@ -2520,19 +2520,19 @@ namespace OpenRCT2
             return;
         }
 
-        cs.readWrite(entity.AssignedStaffType);
-        cs.readWrite(entity.MechanicTimeSinceCall);
-        cs.readWrite(entity.HireDate);
+        cs.readWrite(entity.assignedStaffType);
+        cs.readWrite(entity.mechanicTimeSinceCall);
+        cs.readWrite(entity.hireDate);
         if (os.getHeader().targetVersion <= 4)
         {
             cs.ignore<uint8_t>();
         }
-        cs.readWrite(entity.StaffOrders);
-        cs.readWrite(entity.StaffMowingTimeout);
-        cs.readWrite(entity.StaffLawnsMown);
-        cs.readWrite(entity.StaffGardensWatered);
-        cs.readWrite(entity.StaffLitterSwept);
-        cs.readWrite(entity.StaffBinsEmptied);
+        cs.readWrite(entity.staffOrders);
+        cs.readWrite(entity.staffMowingTimeout);
+        cs.readWrite(entity.staffLawnsMown);
+        cs.readWrite(entity.staffGardensWatered);
+        cs.readWrite(entity.staffLitterSwept);
+        cs.readWrite(entity.staffBinsEmptied);
     }
 
     template<>

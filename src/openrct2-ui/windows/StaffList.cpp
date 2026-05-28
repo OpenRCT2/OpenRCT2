@@ -192,7 +192,7 @@ namespace OpenRCT2::Ui::Windows
                 for (auto peep : EntityList<Staff>())
                 {
                     getGameState().entities.EntitySetFlashing(peep, false);
-                    if (peep->AssignedStaffType == GetSelectedStaffType())
+                    if (peep->assignedStaffType == GetSelectedStaffType())
                     {
                         getGameState().entities.EntitySetFlashing(peep, true);
                     }
@@ -421,7 +421,7 @@ namespace OpenRCT2::Ui::Windows
                     drawTextEllipsised(rt, { actionOffset, y }, actionColumnSize, format, ft);
 
                     // True if a patrol path is set for the worker
-                    if (peep->HasPatrolArea())
+                    if (peep->hasPatrolArea())
                     {
                         GfxDrawSprite(rt, ImageId(SPR_STAFF_PATROL_PATH), { nameColumnSize + 5, y });
                     }
@@ -429,7 +429,7 @@ namespace OpenRCT2::Ui::Windows
                     auto staffOrderIcon_x = nameColumnSize + 20;
                     if (!peep->isEntertainer())
                     {
-                        auto staffOrders = peep->StaffOrders;
+                        auto staffOrders = peep->staffOrders;
                         auto staffOrderSprite = GetStaffOrderBaseSprite(GetSelectedStaffType());
 
                         while (staffOrders != 0)
@@ -493,7 +493,7 @@ namespace OpenRCT2::Ui::Windows
             for (auto* peep : EntityList<Staff>())
             {
                 getGameState().entities.EntitySetFlashing(peep, false);
-                if (peep->AssignedStaffType == GetSelectedStaffType())
+                if (peep->assignedStaffType == GetSelectedStaffType())
                 {
                     getGameState().entities.EntitySetFlashing(peep, true);
 
@@ -666,16 +666,16 @@ namespace OpenRCT2::Ui::Windows
             auto closestPeepDistance = std::numeric_limits<int32_t>::max();
             for (auto peep : EntityList<Staff>())
             {
-                if (peep->AssignedStaffType != GetSelectedStaffType())
+                if (peep->assignedStaffType != GetSelectedStaffType())
                     continue;
 
                 if (isPatrolAreaSet)
                 {
-                    if (!peep->HasPatrolArea())
+                    if (!peep->hasPatrolArea())
                     {
                         continue;
                     }
-                    if (!peep->IsLocationInPatrol(footpathCoords))
+                    if (!peep->isLocationInPatrol(footpathCoords))
                     {
                         continue;
                     }

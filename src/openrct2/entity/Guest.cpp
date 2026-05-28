@@ -6379,7 +6379,7 @@ namespace OpenRCT2
 
         for (auto innerPeep : EntityList<Staff>())
         {
-            if (innerPeep->AssignedStaffType != StaffType::security || innerPeep->x == kLocationNull)
+            if (innerPeep->assignedStaffType != StaffType::security || innerPeep->x == kLocationNull)
                 continue;
 
             int32_t xDist = abs(innerPeep->x - guest.x);
@@ -6387,7 +6387,7 @@ namespace OpenRCT2
 
             if (std::max(xDist, yDist) < 224)
             {
-                innerPeep->StaffVandalsStopped = AddClamp(innerPeep->StaffVandalsStopped, 1u);
+                innerPeep->staffVandalsStopped = AddClamp(innerPeep->staffVandalsStopped, 1u);
                 innerPeep->WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
                 return;
             }

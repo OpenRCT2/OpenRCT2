@@ -122,18 +122,18 @@ namespace OpenRCT2::GameActions
             newPeep->AnimationType = PeepAnimationType::walking;
             newPeep->PathCheckOptimisation = 0;
             newPeep->PeepFlags = 0;
-            newPeep->StaffLawnsMown = 0;
-            newPeep->StaffGardensWatered = 0;
-            newPeep->StaffLitterSwept = 0;
-            newPeep->StaffBinsEmptied = 0;
-            newPeep->StaffOrders = _staffOrders;
+            newPeep->staffLawnsMown = 0;
+            newPeep->staffGardensWatered = 0;
+            newPeep->staffLitterSwept = 0;
+            newPeep->staffBinsEmptied = 0;
+            newPeep->staffOrders = _staffOrders;
 
             // We search for the first available Id for a given staff type
             std::set<uint32_t> usedStaffIds;
 
             for (auto searchPeep : EntityList<Staff>())
             {
-                if (static_cast<uint8_t>(searchPeep->AssignedStaffType) != _staffType)
+                if (static_cast<uint8_t>(searchPeep->assignedStaffType) != _staffType)
                     continue;
 
                 usedStaffIds.insert(searchPeep->PeepId);
@@ -146,7 +146,7 @@ namespace OpenRCT2::GameActions
             }
 
             newPeep->PeepId = newStaffId;
-            newPeep->AssignedStaffType = static_cast<StaffType>(_staffType);
+            newPeep->assignedStaffType = static_cast<StaffType>(_staffType);
 
             auto animPeepType = AnimationPeepType(static_cast<uint8_t>(_staffType) + 1);
             ObjectEntryIndex animObjectIndex = _costumeIndex;
@@ -183,7 +183,7 @@ namespace OpenRCT2::GameActions
             }
 
             // Staff uses this
-            newPeep->SetHireDate(GetDate().GetMonthsElapsed());
+            newPeep->setHireDate(GetDate().GetMonthsElapsed());
             newPeep->PathfindGoal.x = 0xFF;
             newPeep->PathfindGoal.y = 0xFF;
             newPeep->PathfindGoal.z = 0xFF;
@@ -212,8 +212,8 @@ namespace OpenRCT2::GameActions
                     break;
             }
 
-            newPeep->StaffMowingTimeout = 0;
-            newPeep->PatrolInfo = nullptr;
+            newPeep->staffMowingTimeout = 0;
+            newPeep->patrolInfo = nullptr;
 
             res.setData(StaffHireNewActionResult{ newPeep->id });
         }
