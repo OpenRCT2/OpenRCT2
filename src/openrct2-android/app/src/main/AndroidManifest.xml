@@ -32,9 +32,9 @@
         </activity>
         <activity
             android:name=".GameActivity"
-            android:configChanges="orientation|screenSize|keyboard|keyboardHidden"
-            android:screenOrientation="landscape"
+            android:configChanges="density|keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode"
             android:preferMinimalPostProcessing="true"
+            android:resizeableActivity="true"
             >
 
         </activity>

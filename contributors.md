@@ -261,6 +261,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Jonas Doggart
 * (pg805)
 * Sjoerd de Bruin (sjoerddebruin)
+* Gareth Hubball (londospark)
 
 ## Toolchain
 * (Balletie) - macOS

@@ -39,6 +39,10 @@ static AAssetManager* _assetManager;
 static std::vector<OpenRCT2::Platform::AssetInfo> _assetList;
 static std::once_flag _assetManagerInitialized;
 static std::once_flag _assetListInitialized;
+static int32_t _safeAreaInsetLeft;
+static int32_t _safeAreaInsetTop;
+static int32_t _safeAreaInsetRight;
+static int32_t _safeAreaInsetBottom;
 
 // Initialized in JNI_OnLoad. Cannot be initialized here as JVM is not
 // available until after JNI_OnLoad is called.
@@ -243,6 +247,26 @@ namespace OpenRCT2::Platform
         env->DeleteLocalRef(activityClass);
 
         return displayScale;
+    }
+
+    int32_t GetSafeAreaInsetLeft()
+    {
+        return _safeAreaInsetLeft;
+    }
+
+    int32_t GetSafeAreaInsetTop()
+    {
+        return _safeAreaInsetTop;
+    }
+
+    int32_t GetSafeAreaInsetRight()
+    {
+        return _safeAreaInsetRight;
+    }
+
+    int32_t GetSafeAreaInsetBottom()
+    {
+        return _safeAreaInsetBottom;
     }
 
     jclass AndroidFindClass(JNIEnv* env, std::string_view name)
@@ -495,6 +519,15 @@ extern "C" JNIEXPORT jstring JNICALL
     Java_io_openrct2_PlatformConstants_getAndroidAssetPathPrefix(JNIEnv* env, jclass /* clazz */)
 {
     return env->NewStringUTF(std::string(OpenRCT2::Platform::kAndroidAssetPathPrefix).c_str());
+}
+
+extern "C" JNIEXPORT void JNICALL
+    Java_io_openrct2_GameActivity_nativeSetSafeAreaInsets(JNIEnv*, jclass, jint left, jint top, jint right, jint bottom)
+{
+    _safeAreaInsetLeft = left;
+    _safeAreaInsetTop = top;
+    _safeAreaInsetRight = right;
+    _safeAreaInsetBottom = bottom;
 }
 
 JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* pjvm, void* reserved)

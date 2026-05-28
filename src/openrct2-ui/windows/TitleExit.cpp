@@ -11,6 +11,7 @@
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/SpriteIds.h>
+#include <openrct2/platform/Platform.h>
 #include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
@@ -58,7 +59,10 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = GetWindowManager();
         return windowMgr->Create<TitleExitWindow>(
-            WindowClass::titleExit, ScreenCoordsXY(ContextGetWidth() - 40, ContextGetHeight() - 64), kWindowSize,
-            { WindowFlag::stickToBack, WindowFlag::transparent, WindowFlag::noTitleBar });
+            WindowClass::titleExit,
+            ScreenCoordsXY(
+                ContextGetWidth() - Platform::GetSafeAreaInsetRight() - kWindowSize.width,
+                ContextGetHeight() - Platform::GetSafeAreaInsetBottom() - kWindowSize.height),
+            kWindowSize, { WindowFlag::stickToBack, WindowFlag::transparent, WindowFlag::noTitleBar });
     }
 } // namespace OpenRCT2::Ui::Windows

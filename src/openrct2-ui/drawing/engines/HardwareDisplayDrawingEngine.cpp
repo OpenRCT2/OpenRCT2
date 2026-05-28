@@ -173,6 +173,8 @@ public:
         uint32_t format;
         SDL_QueryTexture(_screenTexture, &format, nullptr, nullptr, nullptr);
         _screenTextureFormat = SDL_AllocFormat(format);
+        SDL_RenderSetScale(_sdlRenderer, 1.0f, 1.0f);
+        SDL_RenderSetViewport(_sdlRenderer, nullptr);
 
         X8DrawingEngine::Resize(width, height);
     }

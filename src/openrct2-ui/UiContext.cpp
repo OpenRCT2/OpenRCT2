@@ -358,7 +358,10 @@ public:
                     ContextQuit();
                     break;
                 case SDL_WINDOWEVENT:
-                    if (e.window.event == SDL_WINDOWEVENT_RESIZED)
+                {
+                    const bool isResizeEvent = e.window.event == SDL_WINDOWEVENT_RESIZED
+                        || e.window.event == SDL_WINDOWEVENT_SIZE_CHANGED;
+                    if (isResizeEvent)
                     {
                         LOG_VERBOSE("New Window size: %ux%u\n", e.window.data1, e.window.data2);
                         OnResize(e.window.data1, e.window.data2);
@@ -366,6 +369,7 @@ public:
 
                     switch (e.window.event)
                     {
+                        case SDL_WINDOWEVENT_SIZE_CHANGED:
                         case SDL_WINDOWEVENT_RESIZED:
                         case SDL_WINDOWEVENT_MOVED:
                         case SDL_WINDOWEVENT_MAXIMIZED:
@@ -394,6 +398,7 @@ public:
                         }
                     }
                     break;
+                }
                 case SDL_MOUSEMOTION:
                     _cursorState.position = { static_cast<int32_t>(e.motion.x / Config::Get().general.windowScale),
                                               static_cast<int32_t>(e.motion.y / Config::Get().general.windowScale) };
@@ -828,6 +833,8 @@ private:
         SDL_SetWindowMinimumSize(_window, 720, 480);
         SetCursorTrap(Config::Get().general.trapCursor);
         _platformUiContext->SetWindowIcon(_window);
+
+        SDL_GetWindowSize(_window, &width, &height);
 
         // Initialise the surface, palette and draw buffer
         DrawingEngineInit();

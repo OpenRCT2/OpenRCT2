@@ -185,6 +185,26 @@ namespace OpenRCT2::Platform
     {
         return 1;
     }
+
+    int32_t GetSafeAreaInsetLeft()
+    {
+        return 0;
+    }
+
+    int32_t GetSafeAreaInsetTop()
+    {
+        return 0;
+    }
+
+    int32_t GetSafeAreaInsetRight()
+    {
+        return 0;
+    }
+
+    int32_t GetSafeAreaInsetBottom()
+    {
+        return 0;
+    }
 #endif
 
     void Sleep(uint32_t ms)
