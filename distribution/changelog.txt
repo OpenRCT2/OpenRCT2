@@ -1,6 +1,8 @@
 0.5.2 (in development)
 ------------------------------------------------------------------------
 - Improved: [#26566] Improve the performance of sorting sprites.
+- Fix: [#24613] Incorrect sprites drawn for path elements without a valid object.
+- Fix: [#26578] Crash when drawing path elements without a valid object.
 - Fix: [#26583] The default tab is not highlighted when opening a ride window.
 - Fix: [#26602] Crash when locating the nearest mechanic for a ride that has not previously been inspected.
 - Fix: [#26615] Missing junction path tile in Build your own Six Flags Over Texas.
