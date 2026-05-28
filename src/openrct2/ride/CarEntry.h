@@ -185,7 +185,7 @@ struct VehicleSpriteGroup
     OpenRCT2::Entity::Yaw::SpritePrecision spritePrecision{};
     bool Enabled() const
     {
-        return spritePrecision != OpenRCT2::Entity::Yaw::SpritePrecision::None;
+        return spritePrecision != OpenRCT2::Entity::Yaw::SpritePrecision::none;
     }
 };
 
