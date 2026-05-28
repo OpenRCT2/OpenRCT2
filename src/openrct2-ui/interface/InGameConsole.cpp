@@ -69,11 +69,11 @@ void InGameConsole::Input(ConsoleInput input)
 
     switch (input)
     {
-        case ConsoleInput::LineClear:
+        case ConsoleInput::lineClear:
             ClearInput();
             RefreshCaret();
             break;
-        case ConsoleInput::LineExecute:
+        case ConsoleInput::lineExecute:
             if (_consoleCurrentLine[0] != '\0')
             {
                 HistoryAdd(_consoleCurrentLine);
@@ -95,7 +95,7 @@ void InGameConsole::Input(ConsoleInput input)
             }
             ScrollToEnd();
             break;
-        case ConsoleInput::HistoryPrevious:
+        case ConsoleInput::historyPrevious:
             if (_consoleHistoryIndex > 0)
             {
                 _consoleHistoryIndex--;
@@ -105,7 +105,7 @@ void InGameConsole::Input(ConsoleInput input)
             _consoleTextInputSession->SelectionStart = _consoleCurrentLine.size();
             RefreshCaret(_consoleTextInputSession->SelectionStart);
             break;
-        case ConsoleInput::HistoryNext:
+        case ConsoleInput::historyNext:
             if (_consoleHistoryIndex + 1 < _consoleHistory.size())
             {
                 _consoleHistoryIndex++;
@@ -120,13 +120,13 @@ void InGameConsole::Input(ConsoleInput input)
             }
             RefreshCaret(_consoleTextInputSession->SelectionStart);
             break;
-        case ConsoleInput::ScrollPrevious:
+        case ConsoleInput::scrollPrevious:
         {
             int32_t scrollAmt = GetNumVisibleLines() - 1;
             Scroll(scrollAmt);
             break;
         }
-        case ConsoleInput::ScrollNext:
+        case ConsoleInput::scrollNext:
         {
             int32_t scrollAmt = GetNumVisibleLines() - 1;
             Scroll(-scrollAmt);

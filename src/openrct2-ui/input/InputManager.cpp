@@ -394,30 +394,30 @@ void InputManager::processInGameConsole(const InputEvent& e)
 {
     if (e.deviceKind == InputDeviceKind::keyboard && e.state == InputEventState::release)
     {
-        auto input = ConsoleInput::None;
+        auto input = ConsoleInput::none;
         switch (e.button)
         {
             case SDLK_ESCAPE:
-                input = ConsoleInput::LineClear;
+                input = ConsoleInput::lineClear;
                 break;
             case SDLK_RETURN:
             case SDLK_KP_ENTER:
-                input = ConsoleInput::LineExecute;
+                input = ConsoleInput::lineExecute;
                 break;
             case SDLK_UP:
-                input = ConsoleInput::HistoryPrevious;
+                input = ConsoleInput::historyPrevious;
                 break;
             case SDLK_DOWN:
-                input = ConsoleInput::HistoryNext;
+                input = ConsoleInput::historyNext;
                 break;
             case SDLK_PAGEUP:
-                input = ConsoleInput::ScrollPrevious;
+                input = ConsoleInput::scrollPrevious;
                 break;
             case SDLK_PAGEDOWN:
-                input = ConsoleInput::ScrollNext;
+                input = ConsoleInput::scrollNext;
                 break;
         }
-        if (input != ConsoleInput::None)
+        if (input != ConsoleInput::none)
         {
             auto& console = GetInGameConsole();
             console.Input(input);
