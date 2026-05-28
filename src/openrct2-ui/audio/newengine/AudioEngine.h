@@ -108,6 +108,7 @@ namespace OpenRCT2::Audio
 
         void mixAllVoices(float* outputBuffer, size_t frames, uint32_t outputSampleRate, size_t& culled);
         void mixVoice(Voice& voice, float* outputBuffer, size_t frames, uint32_t outputSampleRate);
+        void advanceVoiceSilently(Voice& voice, size_t frames, uint32_t outputSampleRate, size_t voiceIndex);
         void updateGovernor(float callbackDurationUs, size_t framesRequested);
 
         AudioRingBuffer<AudioCommand, kCommandBufferSize> _commandBuffer;
