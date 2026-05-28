@@ -281,19 +281,19 @@ void PaintLampLightEffects(PaintSession& session, const PathElement& pathEl, uin
             {
                 if (!(pathEl.GetEdges() & EDGE_NE))
                 {
-                    LightFx::Add3DLightMagicFromDrawingTile(session.MapPosition, -16, 0, height + 23, LightType::Lantern3);
+                    LightFx::Add3DLightMagicFromDrawingTile(session.MapPosition, -16, 0, height + 23, LightType::lantern3);
                 }
                 if (!(pathEl.GetEdges() & EDGE_SE))
                 {
-                    LightFx::Add3DLightMagicFromDrawingTile(session.MapPosition, 0, 16, height + 23, LightType::Lantern3);
+                    LightFx::Add3DLightMagicFromDrawingTile(session.MapPosition, 0, 16, height + 23, LightType::lantern3);
                 }
                 if (!(pathEl.GetEdges() & EDGE_SW))
                 {
-                    LightFx::Add3DLightMagicFromDrawingTile(session.MapPosition, 16, 0, height + 23, LightType::Lantern3);
+                    LightFx::Add3DLightMagicFromDrawingTile(session.MapPosition, 16, 0, height + 23, LightType::lantern3);
                 }
                 if (!(pathEl.GetEdges() & EDGE_NW))
                 {
-                    LightFx::Add3DLightMagicFromDrawingTile(session.MapPosition, 0, -16, height + 23, LightType::Lantern3);
+                    LightFx::Add3DLightMagicFromDrawingTile(session.MapPosition, 0, -16, height + 23, LightType::lantern3);
                 }
             }
         }

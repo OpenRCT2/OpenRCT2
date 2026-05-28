@@ -62,5 +62,5 @@ void PaintStaffLightingEffects(const Staff& staff)
             return;
     }
 
-    LightFx::Add3DLight(staff, 0, loc, LightFx::LightType::Spot1);
+    LightFx::Add3DLight(staff, 0, loc, LightFx::LightType::spot1);
 }

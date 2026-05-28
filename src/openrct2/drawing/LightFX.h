@@ -33,17 +33,17 @@ namespace OpenRCT2::Drawing::LightFx
 {
     enum class LightType : uint8_t
     {
-        None = 0,
+        none = 0,
 
-        Lantern0 = 4,
-        Lantern1 = 5,
-        Lantern2 = 6,
-        Lantern3 = 7,
+        lantern0 = 4,
+        lantern1 = 5,
+        lantern2 = 6,
+        lantern3 = 7,
 
-        Spot0 = 8,
-        Spot1 = 9,
-        Spot2 = 10,
-        Spot3 = 11,
+        spot0 = 8,
+        spot1 = 9,
+        spot2 = 10,
+        spot3 = 11,
     };
 
     void SetAvailable(bool available);

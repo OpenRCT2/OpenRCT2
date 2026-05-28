@@ -219,7 +219,7 @@ namespace OpenRCT2::Drawing::LightFx
             if ((posOnScreenX < -128) || (posOnScreenY < -128) || (posOnScreenX > _pixelInfo.width + 128)
                 || (posOnScreenY > _pixelInfo.height + 128))
             {
-                entry.type = LightType::None;
+                entry.type = LightType::none;
                 continue;
             }
 
@@ -389,7 +389,7 @@ namespace OpenRCT2::Drawing::LightFx
 
                 if (lightIntensityOccluded == 0)
                 {
-                    entry.type = LightType::None;
+                    entry.type = LightType::none;
                     continue;
                 }
 
@@ -403,7 +403,7 @@ namespace OpenRCT2::Drawing::LightFx
                 entry.lightIntensity -= 5 * zoomNumber;
                 if (GetLightTypeSize(entry.type) < zoomNumber)
                 {
-                    entry.type = LightType::None;
+                    entry.type = LightType::none;
                     continue;
                 }
 
@@ -485,42 +485,42 @@ namespace OpenRCT2::Drawing::LightFx
 
             switch (entry.type)
             {
-                case LightType::Lantern0:
+                case LightType::lantern0:
                     bufReadWidth = 32;
                     bufReadHeight = 32;
                     bufReadBase = _bakedLightTexture_lantern_0;
                     break;
-                case LightType::Lantern1:
+                case LightType::lantern1:
                     bufReadWidth = 64;
                     bufReadHeight = 64;
                     bufReadBase = _bakedLightTexture_lantern_1;
                     break;
-                case LightType::Lantern2:
+                case LightType::lantern2:
                     bufReadWidth = 128;
                     bufReadHeight = 128;
                     bufReadBase = _bakedLightTexture_lantern_2;
                     break;
-                case LightType::Lantern3:
+                case LightType::lantern3:
                     bufReadWidth = 256;
                     bufReadHeight = 256;
                     bufReadBase = _bakedLightTexture_lantern_3;
                     break;
-                case LightType::Spot0:
+                case LightType::spot0:
                     bufReadWidth = 32;
                     bufReadHeight = 32;
                     bufReadBase = _bakedLightTexture_spot_0;
                     break;
-                case LightType::Spot1:
+                case LightType::spot1:
                     bufReadWidth = 64;
                     bufReadHeight = 64;
                     bufReadBase = _bakedLightTexture_spot_1;
                     break;
-                case LightType::Spot2:
+                case LightType::spot2:
                     bufReadWidth = 128;
                     bufReadHeight = 128;
                     bufReadBase = _bakedLightTexture_spot_2;
                     break;
-                case LightType::Spot3:
+                case LightType::spot3:
                     bufReadWidth = 256;
                     bufReadHeight = 256;
                     bufReadBase = _bakedLightTexture_spot_3;
@@ -705,10 +705,10 @@ namespace OpenRCT2::Drawing::LightFx
     };
     void AddLightsMagicVehicle_ObservationTower(const Vehicle* vehicle)
     {
-        Add3DLight(*vehicle, 0, { vehicle->x, vehicle->y + 16, vehicle->z }, LightType::Spot3);
-        Add3DLight(*vehicle, 1, { vehicle->x + 16, vehicle->y, vehicle->z }, LightType::Spot3);
-        Add3DLight(*vehicle, 2, { vehicle->x - 16, vehicle->y, vehicle->z }, LightType::Spot3);
-        Add3DLight(*vehicle, 3, { vehicle->x, vehicle->y - 16, vehicle->z }, LightType::Spot3);
+        Add3DLight(*vehicle, 0, { vehicle->x, vehicle->y + 16, vehicle->z }, LightType::spot3);
+        Add3DLight(*vehicle, 1, { vehicle->x + 16, vehicle->y, vehicle->z }, LightType::spot3);
+        Add3DLight(*vehicle, 2, { vehicle->x - 16, vehicle->y, vehicle->z }, LightType::spot3);
+        Add3DLight(*vehicle, 3, { vehicle->x, vehicle->y - 16, vehicle->z }, LightType::spot3);
     }
 
     void AddLightsMagicVehicle_MineTrainCoaster(const Vehicle* vehicle)
@@ -717,13 +717,13 @@ namespace OpenRCT2::Drawing::LightFx
         {
             int16_t place_x = vehicle->x - kOffsetLookup[(vehicle->orientation + 0) % 32] * 2;
             int16_t place_y = vehicle->y - kOffsetLookup[(vehicle->orientation + 8) % 32] * 2;
-            Add3DLight(*vehicle, 0, { place_x, place_y, vehicle->z }, LightType::Spot3);
+            Add3DLight(*vehicle, 0, { place_x, place_y, vehicle->z }, LightType::spot3);
         }
     }
 
     void AddLightsMagicVehicle_ChairLift(const Vehicle* vehicle)
     {
-        Add3DLight(*vehicle, 0, { vehicle->x, vehicle->y, vehicle->z - 16 }, LightType::Lantern2);
+        Add3DLight(*vehicle, 0, { vehicle->x, vehicle->y, vehicle->z - 16 }, LightType::lantern2);
     }
     void AddLightsMagicVehicle_BoatHire(const Vehicle* vehicle)
     {
@@ -737,33 +737,33 @@ namespace OpenRCT2::Drawing::LightFx
         int16_t place_y = vehicle_draw->y;
         place_x -= kOffsetLookup[(vehicle_draw->orientation + 0) % 32];
         place_y -= kOffsetLookup[(vehicle_draw->orientation + 8) % 32];
-        Add3DLight(*vehicle, 0, { place_x, place_y, vehicle_draw->z }, LightType::Spot2);
+        Add3DLight(*vehicle, 0, { place_x, place_y, vehicle_draw->z }, LightType::spot2);
         place_x -= kOffsetLookup[(vehicle_draw->orientation + 0) % 32];
         place_y -= kOffsetLookup[(vehicle_draw->orientation + 8) % 32];
-        Add3DLight(*vehicle, 1, { place_x, place_y, vehicle_draw->z }, LightType::Spot2);
+        Add3DLight(*vehicle, 1, { place_x, place_y, vehicle_draw->z }, LightType::spot2);
     }
     void AddLightsMagicVehicle_Monorail(const Vehicle* vehicle)
     {
-        Add3DLight(*vehicle, 0, { vehicle->x, vehicle->y, vehicle->z + 12 }, LightType::Spot2);
+        Add3DLight(*vehicle, 0, { vehicle->x, vehicle->y, vehicle->z + 12 }, LightType::spot2);
         int16_t place_x = vehicle->x;
         int16_t place_y = vehicle->y;
         if (vehicle == vehicle->TrainHead())
         {
             place_x -= kOffsetLookup[(vehicle->orientation + 0) % 32] * 2;
             place_y -= kOffsetLookup[(vehicle->orientation + 8) % 32] * 2;
-            Add3DLight(*vehicle, 1, { place_x, place_y, vehicle->z + 10 }, LightType::Lantern3);
+            Add3DLight(*vehicle, 1, { place_x, place_y, vehicle->z + 10 }, LightType::lantern3);
             place_x -= kOffsetLookup[(vehicle->orientation + 0) % 32] * 3;
             place_y -= kOffsetLookup[(vehicle->orientation + 8) % 32] * 3;
-            Add3DLight(*vehicle, 2, { place_x, place_y, vehicle->z + 2 }, LightType::Lantern3);
+            Add3DLight(*vehicle, 2, { place_x, place_y, vehicle->z + 2 }, LightType::lantern3);
         }
         if (vehicle == vehicle->TrainTail())
         {
             place_x += kOffsetLookup[(vehicle->orientation + 0) % 32] * 2;
             place_y += kOffsetLookup[(vehicle->orientation + 8) % 32] * 2;
-            Add3DLight(*vehicle, 3, { place_x, place_y, vehicle->z + 10 }, LightType::Lantern3);
+            Add3DLight(*vehicle, 3, { place_x, place_y, vehicle->z + 10 }, LightType::lantern3);
             place_x += kOffsetLookup[(vehicle->orientation + 0) % 32] * 2;
             place_y += kOffsetLookup[(vehicle->orientation + 8) % 32] * 2;
-            Add3DLight(*vehicle, 4, { place_x, place_y, vehicle->z + 2 }, LightType::Lantern3);
+            Add3DLight(*vehicle, 4, { place_x, place_y, vehicle->z + 2 }, LightType::lantern3);
         }
     }
     void AddLightsMagicVehicle_MiniatureRailway(const Vehicle* vehicle)
@@ -772,14 +772,14 @@ namespace OpenRCT2::Drawing::LightFx
         {
             int16_t place_x = vehicle->x - kOffsetLookup[(vehicle->orientation + 0) % 32] * 2;
             int16_t place_y = vehicle->y - kOffsetLookup[(vehicle->orientation + 8) % 32] * 2;
-            Add3DLight(*vehicle, 1, { place_x, place_y, vehicle->z + 10 }, LightType::Lantern3);
+            Add3DLight(*vehicle, 1, { place_x, place_y, vehicle->z + 10 }, LightType::lantern3);
             place_x -= kOffsetLookup[(vehicle->orientation + 0) % 32] * 2;
             place_y -= kOffsetLookup[(vehicle->orientation + 8) % 32] * 2;
-            Add3DLight(*vehicle, 2, { place_x, place_y, vehicle->z + 2 }, LightType::Lantern3);
+            Add3DLight(*vehicle, 2, { place_x, place_y, vehicle->z + 2 }, LightType::lantern3);
         }
         else
         {
-            Add3DLight(*vehicle, 0, { vehicle->x, vehicle->y, vehicle->z + 10 }, LightType::Lantern3);
+            Add3DLight(*vehicle, 0, { vehicle->x, vehicle->y, vehicle->z + 10 }, LightType::lantern3);
         }
     }
 
@@ -799,16 +799,16 @@ namespace OpenRCT2::Drawing::LightFx
         uint8_t relativeRotation = (4 - GetCurrentRotation()) % 4;
         CoordsXY lanternOffset1 = CoordsXY(0, 16).Rotate(relativeRotation);
         CoordsXY lanternOffset2 = CoordsXY(16, 0).Rotate(relativeRotation);
-        Add3DLightMagicFromDrawingTile(mapPosition, lanternOffset1.x, lanternOffset1.y, height + zOffset, LightType::Lantern3);
-        Add3DLightMagicFromDrawingTile(mapPosition, lanternOffset2.x, lanternOffset2.y, height + zOffset, LightType::Lantern3);
-        Add3DLightMagicFromDrawingTile(mapPosition, 8, 32, height, LightType::Spot1);
-        Add3DLightMagicFromDrawingTile(mapPosition, 32, 8, height, LightType::Spot1);
-        Add3DLightMagicFromDrawingTile(mapPosition, -32, 8, height, LightType::Spot1);
-        Add3DLightMagicFromDrawingTile(mapPosition, 8, -32, height, LightType::Spot1);
-        Add3DLightMagicFromDrawingTile(mapPosition, -8, 32, height, LightType::Spot1);
-        Add3DLightMagicFromDrawingTile(mapPosition, 32, -8, height, LightType::Spot1);
-        Add3DLightMagicFromDrawingTile(mapPosition, -32, -8, height, LightType::Spot1);
-        Add3DLightMagicFromDrawingTile(mapPosition, -8, -32, height, LightType::Spot1);
+        Add3DLightMagicFromDrawingTile(mapPosition, lanternOffset1.x, lanternOffset1.y, height + zOffset, LightType::lantern3);
+        Add3DLightMagicFromDrawingTile(mapPosition, lanternOffset2.x, lanternOffset2.y, height + zOffset, LightType::lantern3);
+        Add3DLightMagicFromDrawingTile(mapPosition, 8, 32, height, LightType::spot1);
+        Add3DLightMagicFromDrawingTile(mapPosition, 32, 8, height, LightType::spot1);
+        Add3DLightMagicFromDrawingTile(mapPosition, -32, 8, height, LightType::spot1);
+        Add3DLightMagicFromDrawingTile(mapPosition, 8, -32, height, LightType::spot1);
+        Add3DLightMagicFromDrawingTile(mapPosition, -8, 32, height, LightType::spot1);
+        Add3DLightMagicFromDrawingTile(mapPosition, 32, -8, height, LightType::spot1);
+        Add3DLightMagicFromDrawingTile(mapPosition, -32, -8, height, LightType::spot1);
+        Add3DLightMagicFromDrawingTile(mapPosition, -8, -32, height, LightType::spot1);
     }
 
     void AddShopLights(const CoordsXY& mapPosition, const uint8_t direction, const int32_t height, const uint8_t zOffset)
@@ -817,15 +817,15 @@ namespace OpenRCT2::Drawing::LightFx
         {
             CoordsXY spotOffset1 = CoordsXY(-32, 8).Rotate(direction);
             CoordsXY spotOffset2 = CoordsXY(-32, 4).Rotate(direction);
-            Add3DLightMagicFromDrawingTile(mapPosition, spotOffset1.x, spotOffset1.y, height, LightType::Spot1);
-            Add3DLightMagicFromDrawingTile(mapPosition, spotOffset2.x, spotOffset2.y, height, LightType::Spot2);
+            Add3DLightMagicFromDrawingTile(mapPosition, spotOffset1.x, spotOffset1.y, height, LightType::spot1);
+            Add3DLightMagicFromDrawingTile(mapPosition, spotOffset2.x, spotOffset2.y, height, LightType::spot2);
         }
         else if (direction == (7 - GetCurrentRotation()) % 4) // Back left Facing Stall
         {
             CoordsXY spotOffset1 = CoordsXY(-32, -8).Rotate(direction);
             CoordsXY spotOffset2 = CoordsXY(-32, -4).Rotate(direction);
-            Add3DLightMagicFromDrawingTile(mapPosition, spotOffset1.x, spotOffset1.y, height, LightType::Spot1);
-            Add3DLightMagicFromDrawingTile(mapPosition, spotOffset2.x, spotOffset2.y, height, LightType::Spot2);
+            Add3DLightMagicFromDrawingTile(mapPosition, spotOffset1.x, spotOffset1.y, height, LightType::spot1);
+            Add3DLightMagicFromDrawingTile(mapPosition, spotOffset2.x, spotOffset2.y, height, LightType::spot2);
         }
         else // Forward Facing Stall
         {
@@ -833,9 +833,9 @@ namespace OpenRCT2::Drawing::LightFx
             CoordsXY spotOffset2 = CoordsXY(-32, -8).Rotate(direction);
             CoordsXY lanternOffset = CoordsXY(-16, 0).Rotate(direction);
             Add3DLightMagicFromDrawingTile(
-                mapPosition, lanternOffset.x, lanternOffset.y, height + zOffset, LightType::Lantern3);
-            Add3DLightMagicFromDrawingTile(mapPosition, spotOffset1.x, spotOffset1.y, height, LightType::Spot1);
-            Add3DLightMagicFromDrawingTile(mapPosition, spotOffset2.x, spotOffset2.y, height, LightType::Spot1);
+                mapPosition, lanternOffset.x, lanternOffset.y, height + zOffset, LightType::lantern3);
+            Add3DLightMagicFromDrawingTile(mapPosition, spotOffset1.x, spotOffset1.y, height, LightType::spot1);
+            Add3DLightMagicFromDrawingTile(mapPosition, spotOffset2.x, spotOffset2.y, height, LightType::spot1);
         }
     }
 
