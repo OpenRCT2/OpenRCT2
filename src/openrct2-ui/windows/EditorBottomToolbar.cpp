@@ -69,7 +69,7 @@ namespace OpenRCT2::Ui::Windows
             STR_EDITOR_STEP_OBJECTIVE_SELECTION,    // EditorStep::objectiveSelection
             STR_EDITOR_STEP_SCENARIO_DETAILS,       // EditorStep::scenarioDetails
             STR_EDITOR_STEP_SAVE_SCENARIO,          // EditorStep::saveScenario
-            STR_EDITOR_STEP_ROLLERCOASTER_DESIGNER, // EditorStep::rollercoasterDesigner
+            STR_EDITOR_STEP_ROLLERCOASTER_DESIGNER, // EditorStep::rollerCoasterDesigner
             STR_EDITOR_STEP_TRACK_DESIGNS_MANAGER,  // EditorStep::designsManager
         };
 
@@ -120,7 +120,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     HidePreviousStepButton();
                 }
-                else if (gameState.editorStep == EditorStep::rollercoasterDesigner)
+                else if (gameState.editorStep == EditorStep::rollerCoasterDesigner)
                 {
                     HideNextStepButton();
                 }

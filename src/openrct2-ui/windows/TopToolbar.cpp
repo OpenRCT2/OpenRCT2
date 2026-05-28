@@ -1174,7 +1174,7 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_WATER].type = WidgetType::empty;
             }
 
-            if (gameState.editorStep != EditorStep::rollercoasterDesigner)
+            if (gameState.editorStep != EditorStep::rollerCoasterDesigner)
             {
                 widgets[WIDX_RIDES].type = WidgetType::empty;
                 widgets[WIDX_CONSTRUCT_RIDE].type = WidgetType::empty;
@@ -1182,7 +1182,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             if (gameState.editorStep != EditorStep::landscapeEditor
-                && gameState.editorStep != EditorStep::rollercoasterDesigner)
+                && gameState.editorStep != EditorStep::rollerCoasterDesigner)
             {
                 widgets[WIDX_MAP].type = WidgetType::empty;
                 widgets[WIDX_SCENERY].type = WidgetType::empty;

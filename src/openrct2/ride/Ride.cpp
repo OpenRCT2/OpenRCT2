@@ -711,7 +711,7 @@ void Ride::updateAll()
             case EditorStep::objectiveSelection:
             case EditorStep::scenarioDetails:
             case EditorStep::saveScenario:
-            case EditorStep::rollercoasterDesigner:
+            case EditorStep::rollerCoasterDesigner:
             case EditorStep::designsManager:
             case EditorStep::invalid:
                 break;

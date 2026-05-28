@@ -533,7 +533,7 @@ void FinishObjectSelection()
             gameState.lastEntranceStyle = 0;
         }
 
-        gameState.editorStep = EditorStep::rollercoasterDesigner;
+        gameState.editorStep = EditorStep::rollerCoasterDesigner;
         GfxInvalidateScreen();
     }
     else

@@ -42,7 +42,7 @@ enum class EditorStep : uint8_t
     objectiveSelection,    // 4
     scenarioDetails,       // 5
     saveScenario,          // 6
-    rollercoasterDesigner, // 7
+    rollerCoasterDesigner, // 7
     designsManager,        // 8
     invalid = 255,         // 255
 };

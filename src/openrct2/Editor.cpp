@@ -399,7 +399,7 @@ namespace OpenRCT2::Editor
                 break;
             case EditorStep::landscapeEditor:
             case EditorStep::saveScenario:
-            case EditorStep::rollercoasterDesigner:
+            case EditorStep::rollerCoasterDesigner:
             case EditorStep::designsManager:
             case EditorStep::invalid:
                 break;
