@@ -223,12 +223,12 @@ namespace OpenRCT2
             _compressionLevel = compressionLevel;
         }
 
-        template<typename TFunc>
-        bool readWriteChunk(const uint32_t chunkId, TFunc f)
+        template<typename TChunk, typename TFunc>
+        bool readWriteChunk(TChunk chunkId, TFunc f)
         {
             if (_mode == Mode::reading)
             {
-                if (seekChunk(chunkId))
+                if (seekChunk(EnumValue(chunkId)))
                 {
                     ChunkStream stream(_buffer, _mode);
                     f(stream);
@@ -238,7 +238,7 @@ namespace OpenRCT2
                 return false;
             }
 
-            _currentChunk.id = chunkId;
+            _currentChunk.id = EnumValue(chunkId);
             _currentChunk.offset = _buffer.GetPosition();
             _currentChunk.length = 0;
             ChunkStream stream(_buffer, _mode);
