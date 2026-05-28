@@ -446,7 +446,7 @@ namespace OpenRCT2::Config
             model->masterSoundEnabled = reader->GetBoolean("master_sound", true);
             model->masterVolume = reader->GetInt32("master_volume", 100);
             model->titleMusic = static_cast<TitleMusicKind>(
-                reader->GetInt32("title_theme", EnumValue(TitleMusicKind::openRCT2)));
+                reader->GetInt32("title_theme", EnumValue(TitleMusicKind::OpenRCT2)));
             model->soundEnabled = reader->GetBoolean("sound", true);
             model->soundVolume = reader->GetInt32("sound_volume", 100);
             model->rideMusicEnabled = reader->GetBoolean("ride_music", true);

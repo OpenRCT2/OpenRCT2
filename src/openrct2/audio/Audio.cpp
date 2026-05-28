@@ -261,7 +261,7 @@ namespace OpenRCT2::Audio
     static std::map<TitleMusicKind, std::string_view> GetAvailableMusicMap()
     {
         auto musicMap = std::map<TitleMusicKind, std::string_view>{
-            { TitleMusicKind::openRCT2, AudioObjectIdentifiers::kOpenRCT2Title },
+            { TitleMusicKind::OpenRCT2, AudioObjectIdentifiers::kOpenRCT2Title },
             { TitleMusicKind::RCT2, AudioObjectIdentifiers::kRCT2Title },
         };
 

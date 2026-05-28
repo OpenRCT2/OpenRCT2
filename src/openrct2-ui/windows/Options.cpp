@@ -2356,7 +2356,7 @@ namespace OpenRCT2::Ui::Windows
             StringId Name;
         } TitleThemeOptions[] = {
             { TitleMusicKind::none, STR_OPTIONS_MUSIC_VALUE_NONE },
-            { TitleMusicKind::openRCT2, STR_OPENRCT2_DROPDOWN },
+            { TitleMusicKind::OpenRCT2, STR_OPENRCT2_DROPDOWN },
             { TitleMusicKind::RCT1, STR_ROLLERCOASTER_TYCOON_1_DROPDOWN },
             { TitleMusicKind::RCT2, STR_ROLLERCOASTER_TYCOON_2_DROPDOWN },
             { TitleMusicKind::random, STR_OPTIONS_MUSIC_VALUE_RANDOM },

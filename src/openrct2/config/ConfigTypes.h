@@ -61,7 +61,7 @@ namespace OpenRCT2
     {
         none,
         random,
-        openRCT2,
+        OpenRCT2,
         RCT1,
         RCT2,
     };
