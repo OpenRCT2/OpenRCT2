@@ -574,6 +574,34 @@ namespace OpenRCT2::Audio
         }
     }
 
+    void AudioEngine::advanceVoiceSilently(Voice& voice, size_t frames, uint32_t outputSampleRate, size_t voiceIndex)
+    {
+        if (voice.pcmLengthInFrames == 0)
+        {
+            voice.state = VoiceState::idle;
+            if (voice.gameHandle.isValid())
+                markSlotInactive(voiceIndex);
+            return;
+        }
+
+        double rateRatio = (static_cast<double>(voice.sampleRate) / static_cast<double>(outputSampleRate)) * voice.rate;
+        voice.playbackPosition += rateRatio * static_cast<double>(frames);
+
+        if (static_cast<uint64_t>(voice.playbackPosition) >= voice.pcmLengthInFrames)
+        {
+            if (voice.looping)
+            {
+                voice.playbackPosition = std::fmod(voice.playbackPosition, static_cast<double>(voice.pcmLengthInFrames));
+            }
+            else
+            {
+                voice.state = VoiceState::idle;
+                if (voice.gameHandle.isValid())
+                    markSlotInactive(voiceIndex);
+            }
+        }
+    }
+
     void AudioEngine::mixAllVoices(float* outputBuffer, size_t frames, uint32_t outputSampleRate, size_t& culled)
     {
         for (size_t i = 0; i < kMaxVoices; i++)
@@ -587,23 +615,7 @@ namespace OpenRCT2::Audio
 
             if (effectiveVol < _cullThreshold && voice.state == VoiceState::playing)
             {
-                double rateRatio = (static_cast<double>(voice.sampleRate) / static_cast<double>(outputSampleRate)) * voice.rate;
-                voice.playbackPosition += rateRatio * static_cast<double>(frames);
-
-                if (static_cast<uint64_t>(voice.playbackPosition) >= voice.pcmLengthInFrames)
-                {
-                    if (voice.looping)
-                    {
-                        voice.playbackPosition = std::fmod(
-                            voice.playbackPosition, static_cast<double>(voice.pcmLengthInFrames));
-                    }
-                    else
-                    {
-                        voice.state = VoiceState::idle;
-                        if (voice.gameHandle.isValid())
-                            markSlotInactive(i);
-                    }
-                }
+                advanceVoiceSilently(voice, frames, outputSampleRate, i);
                 culled++;
                 continue;
             }
