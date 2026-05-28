@@ -487,10 +487,14 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            const bool disablePickup = !peep->CanBePickedUp();
-            if (disablePickup != isWidgetDisabled(WIDX_PICKUP))
-                invalidate();
-            setWidgetDisabled(WIDX_PICKUP, disablePickup);
+            if (page == WINDOW_GUEST_OVERVIEW)
+            {
+                const bool disablePickup = !peep->CanBePickedUp();
+                if (disablePickup != isWidgetDisabled(WIDX_PICKUP))
+                    invalidate();
+                setWidgetDisabled(WIDX_PICKUP, disablePickup);
+            }
+
             setWidgetDisabled(WIDX_TAB_4, (getGameState().park.flags & PARK_FLAGS_NO_MONEY) != 0);
             setWidgetDisabled(WIDX_TAB_7, !Config::Get().general.debuggingTools);
         }
