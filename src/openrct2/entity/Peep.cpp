@@ -1052,8 +1052,8 @@ namespace OpenRCT2
             warningThrottle[0] = 4;
             if (Config::Get().notifications.guestWarnings)
             {
-                constexpr auto thoughtId = static_cast<uint32_t>(PeepThoughtType::hungry);
-                News::AddItemToQueue(News::ItemType::peeps, STR_PEEPS_ARE_HUNGRY, thoughtId, {});
+                constexpr auto kThoughtId = static_cast<uint32_t>(PeepThoughtType::hungry);
+                News::AddItemToQueue(News::ItemType::peeps, STR_PEEPS_ARE_HUNGRY, kThoughtId, {});
             }
         }
 
@@ -1064,8 +1064,8 @@ namespace OpenRCT2
             warningThrottle[1] = 4;
             if (Config::Get().notifications.guestWarnings)
             {
-                constexpr auto thoughtId = static_cast<uint32_t>(PeepThoughtType::thirsty);
-                News::AddItemToQueue(News::ItemType::peeps, STR_PEEPS_ARE_THIRSTY, thoughtId, {});
+                constexpr auto kThoughtId = static_cast<uint32_t>(PeepThoughtType::thirsty);
+                News::AddItemToQueue(News::ItemType::peeps, STR_PEEPS_ARE_THIRSTY, kThoughtId, {});
             }
         }
 
@@ -1076,8 +1076,8 @@ namespace OpenRCT2
             warningThrottle[2] = 4;
             if (Config::Get().notifications.guestWarnings)
             {
-                constexpr auto thoughtId = static_cast<uint32_t>(PeepThoughtType::toilet);
-                News::AddItemToQueue(News::ItemType::peeps, STR_PEEPS_CANT_FIND_TOILET, thoughtId, {});
+                constexpr auto kThoughtId = static_cast<uint32_t>(PeepThoughtType::toilet);
+                News::AddItemToQueue(News::ItemType::peeps, STR_PEEPS_CANT_FIND_TOILET, kThoughtId, {});
             }
         }
 
@@ -1088,8 +1088,8 @@ namespace OpenRCT2
             warningThrottle[3] = 4;
             if (Config::Get().notifications.guestWarnings)
             {
-                constexpr auto thoughtId = static_cast<uint32_t>(PeepThoughtType::badLitter);
-                News::AddItemToQueue(News::ItemType::peeps, STR_PEEPS_DISLIKE_LITTER, thoughtId, {});
+                constexpr auto kThoughtId = static_cast<uint32_t>(PeepThoughtType::badLitter);
+                News::AddItemToQueue(News::ItemType::peeps, STR_PEEPS_DISLIKE_LITTER, kThoughtId, {});
             }
         }
 
@@ -1100,8 +1100,8 @@ namespace OpenRCT2
             warningThrottle[4] = 4;
             if (Config::Get().notifications.guestWarnings)
             {
-                constexpr auto thoughtId = static_cast<uint32_t>(PeepThoughtType::pathDisgusting);
-                News::AddItemToQueue(News::ItemType::peeps, STR_PEEPS_DISGUSTED_BY_PATHS, thoughtId, {});
+                constexpr auto kThoughtId = static_cast<uint32_t>(PeepThoughtType::pathDisgusting);
+                News::AddItemToQueue(News::ItemType::peeps, STR_PEEPS_DISGUSTED_BY_PATHS, kThoughtId, {});
             }
         }
 
@@ -1112,8 +1112,8 @@ namespace OpenRCT2
             warningThrottle[5] = 4;
             if (Config::Get().notifications.guestWarnings)
             {
-                constexpr auto thoughtId = static_cast<uint32_t>(PeepThoughtType::vandalism);
-                News::AddItemToQueue(News::ItemType::peeps, STR_PEEPS_DISLIKE_VANDALISM, thoughtId, {});
+                constexpr auto kThoughtId = static_cast<uint32_t>(PeepThoughtType::vandalism);
+                News::AddItemToQueue(News::ItemType::peeps, STR_PEEPS_DISLIKE_VANDALISM, kThoughtId, {});
             }
         }
 
@@ -1124,8 +1124,8 @@ namespace OpenRCT2
             warningThrottle[6] = 4;
             if (Config::Get().notifications.guestWarnings)
             {
-                constexpr auto thoughtId = static_cast<uint32_t>(PeepThoughtType::cantFindExit);
-                News::AddItemToQueue(News::ItemType::peeps, STR_PEEPS_GETTING_LOST_OR_STUCK, thoughtId, {});
+                constexpr auto kThoughtId = static_cast<uint32_t>(PeepThoughtType::cantFindExit);
+                News::AddItemToQueue(News::ItemType::peeps, STR_PEEPS_GETTING_LOST_OR_STUCK, kThoughtId, {});
             }
         }
         else if (lostCounter >= kPeepLostWarningThreshold)
@@ -1133,8 +1133,8 @@ namespace OpenRCT2
             warningThrottle[6] = 4;
             if (Config::Get().notifications.guestWarnings)
             {
-                constexpr auto thoughtId = static_cast<uint32_t>(PeepThoughtType::lost);
-                News::AddItemToQueue(News::ItemType::peeps, STR_PEEPS_GETTING_LOST_OR_STUCK, thoughtId, {});
+                constexpr auto kThoughtId = static_cast<uint32_t>(PeepThoughtType::lost);
+                News::AddItemToQueue(News::ItemType::peeps, STR_PEEPS_GETTING_LOST_OR_STUCK, kThoughtId, {});
             }
         }
 
