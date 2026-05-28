@@ -299,7 +299,7 @@ void InputManager::handleModifiers()
     }
 #endif
 
-    if (Config::Get().general.virtualFloorStyle != VirtualFloorStyles::Off)
+    if (Config::Get().general.virtualFloorStyle != VirtualFloorStyles::off)
     {
         if (isModifierKeyPressed(ModifierKey::ctrl) || isModifierKeyPressed(ModifierKey::shift))
             VirtualFloorEnable();

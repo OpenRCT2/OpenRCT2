@@ -2559,7 +2559,7 @@ namespace OpenRCT2::Ui::Windows
                 rotation -= GetCurrentRotation();
                 rotation &= 0x3;
 
-                if (Config::Get().general.virtualFloorStyle != VirtualFloorStyles::Off)
+                if (Config::Get().general.virtualFloorStyle != VirtualFloorStyles::off)
                 {
                     VirtualFloorSetHeight(gSceneryPlaceZ);
                 }
@@ -2643,7 +2643,7 @@ namespace OpenRCT2::Ui::Windows
             rotation -= GetCurrentRotation();
             rotation &= 0x3;
 
-            if (Config::Get().general.virtualFloorStyle != VirtualFloorStyles::Off)
+            if (Config::Get().general.virtualFloorStyle != VirtualFloorStyles::off)
             {
                 VirtualFloorSetHeight(gSceneryPlaceZ);
             }
@@ -2669,7 +2669,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            if (Config::Get().general.virtualFloorStyle != VirtualFloorStyles::Off)
+            if (Config::Get().general.virtualFloorStyle != VirtualFloorStyles::off)
             {
                 VirtualFloorSetHeight(gSceneryPlaceZ);
             }
@@ -2753,7 +2753,7 @@ namespace OpenRCT2::Ui::Windows
 
             gridPos = gridPos.ToTileStart();
 
-            if (Config::Get().general.virtualFloorStyle != VirtualFloorStyles::Off)
+            if (Config::Get().general.virtualFloorStyle != VirtualFloorStyles::off)
             {
                 VirtualFloorSetHeight(gSceneryPlaceZ);
             }
@@ -2845,7 +2845,7 @@ namespace OpenRCT2::Ui::Windows
             rotation -= GetCurrentRotation();
             rotation &= 0x3;
 
-            if (Config::Get().general.virtualFloorStyle != VirtualFloorStyles::Off)
+            if (Config::Get().general.virtualFloorStyle != VirtualFloorStyles::off)
             {
                 VirtualFloorSetHeight(gSceneryPlaceZ);
             }
@@ -2885,7 +2885,7 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            if (Config::Get().general.virtualFloorStyle != VirtualFloorStyles::Off)
+            if (Config::Get().general.virtualFloorStyle != VirtualFloorStyles::off)
             {
                 VirtualFloorSetHeight(gSceneryPlaceZ);
             }

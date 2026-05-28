@@ -145,7 +145,7 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
 
     bool partOfVirtualFloor = false;
 
-    if (Config::Get().general.virtualFloorStyle != VirtualFloorStyles::Off)
+    if (Config::Get().general.virtualFloorStyle != VirtualFloorStyles::off)
     {
         partOfVirtualFloor = VirtualFloorTileIsFloor(session.MapPosition);
     }
@@ -298,7 +298,7 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
         session.MapPosition = mapPosition;
     } while (!(tile_element++)->isLastForTile());
 
-    if (Config::Get().general.virtualFloorStyle != VirtualFloorStyles::Off && partOfVirtualFloor)
+    if (Config::Get().general.virtualFloorStyle != VirtualFloorStyles::off && partOfVirtualFloor)
     {
         VirtualFloorPaint(session);
     }
