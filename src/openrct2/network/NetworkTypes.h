@@ -137,16 +137,16 @@ namespace OpenRCT2::Network
 
     enum class StatisticsGroup : uint32_t
     {
-        Total = 0, // Entire network traffic.
-        Base,      // Messages such as Tick, Ping
-        Commands,  // Command / Game actions
-        MapData,
-        Max,
+        total = 0, // Entire network traffic.
+        base,      // Messages such as Tick, Ping
+        commands,  // Command / Game actions
+        mapData,
+        max,
     };
 
     struct Stats
     {
-        uint64_t bytesReceived[EnumValue(StatisticsGroup::Max)];
-        uint64_t bytesSent[EnumValue(StatisticsGroup::Max)];
+        uint64_t bytesReceived[EnumValue(StatisticsGroup::max)];
+        uint64_t bytesSent[EnumValue(StatisticsGroup::max)];
     };
 } // namespace OpenRCT2::Network

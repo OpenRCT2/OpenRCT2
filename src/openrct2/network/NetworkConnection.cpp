@@ -267,25 +267,25 @@ namespace OpenRCT2::Network
         switch (packet.getCommand())
         {
             case Command::gameAction:
-                trafficGroup = StatisticsGroup::Commands;
+                trafficGroup = StatisticsGroup::commands;
                 break;
             case Command::map:
-                trafficGroup = StatisticsGroup::MapData;
+                trafficGroup = StatisticsGroup::mapData;
                 break;
             default:
-                trafficGroup = StatisticsGroup::Base;
+                trafficGroup = StatisticsGroup::base;
                 break;
         }
 
         if (sending)
         {
             stats.bytesSent[EnumValue(trafficGroup)] += packetSize;
-            stats.bytesSent[EnumValue(StatisticsGroup::Total)] += packetSize;
+            stats.bytesSent[EnumValue(StatisticsGroup::total)] += packetSize;
         }
         else
         {
             stats.bytesReceived[EnumValue(trafficGroup)] += packetSize;
-            stats.bytesReceived[EnumValue(StatisticsGroup::Total)] += packetSize;
+            stats.bytesReceived[EnumValue(StatisticsGroup::total)] += packetSize;
         }
     }
 
