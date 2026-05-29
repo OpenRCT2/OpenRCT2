@@ -182,7 +182,7 @@ namespace OpenRCT2::Network
         {
             LOG_ERROR("Failed to create hash of public key: %s", e.what());
         }
-        return nullptr;
+        return {};
     }
 
     bool Key::Sign(const uint8_t* md, const size_t len, std::vector<uint8_t>& signature) const

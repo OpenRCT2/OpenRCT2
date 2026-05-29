@@ -11,11 +11,20 @@
 
     #include "UiContext.h"
 
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wdeprecated-enum-enum-conversion"
+    #pragma clang diagnostic ignored "-Wdeprecated-anon-enum-enum-conversion"
+    #pragma clang diagnostic ignored "-Wunguarded-availability-new"
+    #pragma clang diagnostic ignored "-Wold-style-cast"
+    #pragma clang diagnostic ignored "-Wundef"
+    #pragma clang diagnostic ignored "-Wmissing-method-return-type"
+    #pragma clang diagnostic ignored "-Wavailability"
     #include <ApplicationServices/ApplicationServices.h>
     #include <Cocoa/Cocoa.h>
     #include <CoreFoundation/CFBundle.h>
     #include <SDL.h>
     #include <mach-o/dyld.h>
+    #pragma clang diagnostic pop
     #include <openrct2/Diagnostic.h>
     #include <openrct2/ui/UiContext.h>
     #include <string>
