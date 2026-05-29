@@ -9,6 +9,8 @@
 
 #include "AudioEngine.h"
 
+#include "AudioResampler.h"
+
 #include <algorithm>
 #include <atomic>
 #include <chrono>
@@ -21,6 +23,8 @@ namespace OpenRCT2::Audio
     static constexpr float kLimiterThreshold = 0.9f;
     static constexpr float kLimiterReleaseMs = 200.0f;
     static constexpr float kVolumeRampMs = 15.0f;
+    static constexpr float kStopFadeMs = 5.0f;
+    static constexpr float kPanFullAttenuationDb = 100.0f;
 
     static inline float safetyClip(float x)
     {
@@ -34,6 +38,7 @@ namespace OpenRCT2::Audio
 
     AudioEngine::AudioEngine()
     {
+        SincResampler::get();
     }
 
     AudioEngine::~AudioEngine()
@@ -163,6 +168,14 @@ namespace OpenRCT2::Audio
         cmd.type = AudioCommandType::setGroupVolume;
         cmd.data.setGroupVolume.group = group;
         cmd.data.setGroupVolume.volume = volume;
+        submitCommand(cmd);
+    }
+
+    void AudioEngine::setResamplerQuality(bool highQuality)
+    {
+        AudioCommand cmd{};
+        cmd.type = AudioCommandType::setResamplerQuality;
+        cmd.data.setResamplerQuality.highQuality = highQuality;
         submitCommand(cmd);
     }
 
@@ -306,6 +319,9 @@ namespace OpenRCT2::Audio
                 case AudioCommandType::setOffset:
                     processSetOffset(cmd);
                     break;
+                case AudioCommandType::setResamplerQuality:
+                    processSetResamplerQuality(cmd);
+                    break;
             }
         }
     }
@@ -416,7 +432,7 @@ namespace OpenRCT2::Audio
             voice->targetVolume = 0.0f;
             if (_outputSampleRate > 0)
             {
-                float durationSamples = (5.0f / 1000.0f) * static_cast<float>(_outputSampleRate);
+                float durationSamples = (kStopFadeMs / 1000.0f) * static_cast<float>(_outputSampleRate);
                 voice->fadePerSample = voice->volume / std::max(1.0f, durationSamples);
             }
             else
@@ -471,6 +487,11 @@ namespace OpenRCT2::Audio
                 _musicVolume = vol;
                 break;
         }
+    }
+
+    void AudioEngine::processSetResamplerQuality(const AudioCommand& cmd)
+    {
+        _useSincResampler = cmd.data.setResamplerQuality.highQuality;
     }
 
     void AudioEngine::processFadeOut(const AudioCommand& cmd)
@@ -632,75 +653,6 @@ namespace OpenRCT2::Audio
         }
     }
 
-    static inline void mixMonoSteady(
-        const float* pcmData, uint64_t pcmLen, bool looping, double rateRatio, double& position, float* outputBuffer,
-        size_t frames, float gainL, float gainR)
-    {
-        double pos = position;
-        for (size_t i = 0; i < frames; i++)
-        {
-            auto idx = static_cast<uint64_t>(pos);
-            if (idx >= pcmLen)
-            {
-                if (looping)
-                {
-                    pos = std::fmod(pos, static_cast<double>(pcmLen));
-                    idx = static_cast<uint64_t>(pos);
-                }
-                else
-                {
-                    position = pos;
-                    return;
-                }
-            }
-
-            float frac = static_cast<float>(pos - static_cast<double>(idx));
-            uint64_t next = (idx + 1 < pcmLen) ? idx + 1 : (looping ? 0 : idx);
-
-            float sample = pcmData[idx] + (pcmData[next] - pcmData[idx]) * frac;
-            outputBuffer[i * 2] += sample * gainL;
-            outputBuffer[i * 2 + 1] += sample * gainR;
-
-            pos += rateRatio;
-        }
-        position = pos;
-    }
-
-    static inline void mixStereoSteady(
-        const float* pcmData, uint64_t pcmLen, bool looping, double rateRatio, double& position, float* outputBuffer,
-        size_t frames, float gainL, float gainR)
-    {
-        double pos = position;
-        for (size_t i = 0; i < frames; i++)
-        {
-            auto idx = static_cast<uint64_t>(pos);
-            if (idx >= pcmLen)
-            {
-                if (looping)
-                {
-                    pos = std::fmod(pos, static_cast<double>(pcmLen));
-                    idx = static_cast<uint64_t>(pos);
-                }
-                else
-                {
-                    position = pos;
-                    return;
-                }
-            }
-
-            float frac = static_cast<float>(pos - static_cast<double>(idx));
-            uint64_t next = (idx + 1 < pcmLen) ? idx + 1 : (looping ? 0 : idx);
-
-            float sL = pcmData[idx * 2] + (pcmData[next * 2] - pcmData[idx * 2]) * frac;
-            float sR = pcmData[idx * 2 + 1] + (pcmData[next * 2 + 1] - pcmData[idx * 2 + 1]) * frac;
-            outputBuffer[i * 2] += sL * gainL;
-            outputBuffer[i * 2 + 1] += sR * gainR;
-
-            pos += rateRatio;
-        }
-        position = pos;
-    }
-
     void AudioEngine::mixVoice(Voice& voice, float* outputBuffer, size_t frames, uint32_t outputSampleRate)
     {
         if (voice.pcmData == nullptr || voice.pcmLengthInFrames == 0)
@@ -718,7 +670,7 @@ namespace OpenRCT2::Audio
         if (voice.pan != 0.5f)
         {
             float deviation = std::abs(voice.pan - 0.5f) * 2.0f;
-            float decibels = deviation * 100.0f;
+            float decibels = deviation * kPanFullAttenuationDb;
             float attenuation = std::pow(10.0f, decibels / 20.0f);
             if (voice.pan <= 0.5f)
                 targetPanR = 1.0f / attenuation;
@@ -745,14 +697,29 @@ namespace OpenRCT2::Audio
             float gainL = currentVolume * groupVol * targetPanL;
             float gainR = currentVolume * groupVol * targetPanR;
 
-            if (voice.channels == 1)
-                mixMonoSteady(
-                    voice.pcmData, voice.pcmLengthInFrames, voice.looping, rateRatio, voice.playbackPosition, outputBuffer,
-                    frames, gainL, gainR);
+            if (_useSincResampler)
+            {
+                const auto& resampler = SincResampler::get();
+                if (voice.channels == 1)
+                    resampler.mixMono(
+                        voice.pcmData, voice.pcmLengthInFrames, voice.looping, rateRatio, voice.playbackPosition, outputBuffer,
+                        frames, gainL, gainR);
+                else
+                    resampler.mixStereo(
+                        voice.pcmData, voice.pcmLengthInFrames, voice.looping, rateRatio, voice.playbackPosition, outputBuffer,
+                        frames, gainL, gainR);
+            }
             else
-                mixStereoSteady(
-                    voice.pcmData, voice.pcmLengthInFrames, voice.looping, rateRatio, voice.playbackPosition, outputBuffer,
-                    frames, gainL, gainR);
+            {
+                if (voice.channels == 1)
+                    LinearResampler::mixMono(
+                        voice.pcmData, voice.pcmLengthInFrames, voice.looping, rateRatio, voice.playbackPosition, outputBuffer,
+                        frames, gainL, gainR);
+                else
+                    LinearResampler::mixStereo(
+                        voice.pcmData, voice.pcmLengthInFrames, voice.looping, rateRatio, voice.playbackPosition, outputBuffer,
+                        frames, gainL, gainR);
+            }
 
             if (static_cast<uint64_t>(voice.playbackPosition) >= voice.pcmLengthInFrames && !voice.looping)
                 voice.state = VoiceState::idle;
@@ -774,18 +741,18 @@ namespace OpenRCT2::Audio
             volumeStep = (voice.targetVolume - currentVolume) / std::max(1.0f, rampSamples);
         }
 
+        const auto& resampler = SincResampler::get();
+        const auto resampleStep = SincResampler::makeStep(rateRatio);
+
         for (size_t frame = 0; frame < frames; frame++)
         {
-            double srcPos = voice.playbackPosition;
-            auto srcIndex = static_cast<uint64_t>(srcPos);
+            auto srcIndex = static_cast<uint64_t>(voice.playbackPosition);
 
             if (srcIndex >= voice.pcmLengthInFrames)
             {
                 if (voice.looping)
                 {
                     voice.playbackPosition = std::fmod(voice.playbackPosition, static_cast<double>(voice.pcmLengthInFrames));
-                    srcPos = voice.playbackPosition;
-                    srcIndex = static_cast<uint64_t>(srcPos);
                 }
                 else
                 {
@@ -794,28 +761,38 @@ namespace OpenRCT2::Audio
                 }
             }
 
-            float frac = static_cast<float>(srcPos - static_cast<double>(srcIndex));
-            uint64_t nextIndex = srcIndex + 1;
-            if (nextIndex >= voice.pcmLengthInFrames)
-                nextIndex = voice.looping ? 0 : srcIndex;
-
             float sampleL, sampleR;
-            if (voice.channels == 1)
+            if (_useSincResampler)
             {
-                float s0 = voice.pcmData[srcIndex];
-                float s1 = voice.pcmData[nextIndex];
-                float sample = s0 + (s1 - s0) * frac;
-                sampleL = sample;
-                sampleR = sample;
+                if (voice.channels == 1)
+                {
+                    float sample = resampler.sampleMono(
+                        voice.pcmData, voice.pcmLengthInFrames, voice.looping, voice.playbackPosition, resampleStep.dhb,
+                        resampleStep.filterScale);
+                    sampleL = sample;
+                    sampleR = sample;
+                }
+                else
+                {
+                    resampler.sampleStereo(
+                        voice.pcmData, voice.pcmLengthInFrames, voice.looping, voice.playbackPosition, resampleStep.dhb,
+                        resampleStep.filterScale, sampleL, sampleR);
+                }
             }
             else
             {
-                float s0L = voice.pcmData[srcIndex * 2];
-                float s0R = voice.pcmData[srcIndex * 2 + 1];
-                float s1L = voice.pcmData[nextIndex * 2];
-                float s1R = voice.pcmData[nextIndex * 2 + 1];
-                sampleL = s0L + (s1L - s0L) * frac;
-                sampleR = s0R + (s1R - s0R) * frac;
+                if (voice.channels == 1)
+                {
+                    float sample = LinearResampler::sampleMono(
+                        voice.pcmData, voice.pcmLengthInFrames, voice.looping, voice.playbackPosition);
+                    sampleL = sample;
+                    sampleR = sample;
+                }
+                else
+                {
+                    LinearResampler::sampleStereo(
+                        voice.pcmData, voice.pcmLengthInFrames, voice.looping, voice.playbackPosition, sampleL, sampleR);
+                }
             }
 
             float vol = currentVolume * groupVol;

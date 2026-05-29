@@ -3831,3 +3831,5 @@ STR_7031    :Audio engine:
 STR_7032    :Select which audio engine to use.
 STR_7033    :Legacy
 STR_7034    :New (experimental)
+STR_7035    :High quality resampling
+STR_7036    :Resample sounds with a windowed-sinc filter to preserve high frequencies. Turn off on slower hardware to use cheaper linear interpolation. Only affects the new audio engine.

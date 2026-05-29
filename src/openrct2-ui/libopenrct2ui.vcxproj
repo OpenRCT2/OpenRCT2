@@ -49,6 +49,7 @@
     <ClInclude Include="audio\newengine\AudioEngine.h" />
     <ClInclude Include="audio\newengine\AudioEngineCommand.h" />
     <ClInclude Include="audio\newengine\AudioPlatformSDL2.h" />
+    <ClInclude Include="audio\newengine\AudioResampler.h" />
     <ClInclude Include="audio\newengine\AudioRingBuffer.h" />
     <ClInclude Include="audio\newengine\AudioVoicePool.h" />
     <ClInclude Include="audio\newengine\DualAudioContext.h" />
