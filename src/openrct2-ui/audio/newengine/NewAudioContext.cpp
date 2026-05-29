@@ -386,6 +386,8 @@ namespace OpenRCT2::Audio
         float music = powf(static_cast<float>(sound.rideMusicVolume) / 100.0f, 10.0f / 6.0f);
         _engine->setGroupVolume(AudioEngineGroup::rideMusic, music);
         _engine->setGroupVolume(AudioEngineGroup::titleMusic, music);
+
+        _engine->setResamplerQuality(sound.highQualityResampling);
     }
 
     bool NewAudioContext::HandleAudioDeviceEvent(uint32_t eventType, uint32_t deviceIndex, bool isCapture)

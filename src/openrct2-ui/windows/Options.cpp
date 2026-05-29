@@ -181,6 +181,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_AUDIO_ENGINE_LABEL,
         WIDX_AUDIO_ENGINE,
         WIDX_AUDIO_ENGINE_DROPDOWN,
+        WIDX_HIGH_QUALITY_RESAMPLING_CHECKBOX,
 
         // Interface
         WIDX_THEMES_GROUP = WIDX_PAGE_START,
@@ -370,7 +371,8 @@ namespace OpenRCT2::Ui::Windows
         makeWidget({155, 102}, {145, 13}, WidgetType::scroll,       WindowColour::secondary, SCROLL_HORIZONTAL                             ), // Music volume
         makeWidget({ 10, 148}, {145, 12}, WidgetType::label,        WindowColour::secondary, STR_AUDIO_ENGINE_LABEL,  STR_AUDIO_ENGINE_TIP ),
         makeWidget({155, 147}, {145, 14}, WidgetType::dropdownMenu, WindowColour::secondary                                                ),
-        makeWidget({288, 148}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,      STR_AUDIO_ENGINE_TIP )
+        makeWidget({288, 148}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,      STR_AUDIO_ENGINE_TIP ),
+        makeWidget({ 10, 165}, {290, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_HIGH_QUALITY_RESAMPLING, STR_HIGH_QUALITY_RESAMPLING_TIP) // High quality resampling (new engine)
     );
 
     constexpr int32_t kControlsGroupStart = 53;
@@ -1418,6 +1420,17 @@ namespace OpenRCT2::Ui::Windows
                     Config::Save();
                     invalidate();
                     break;
+
+                case WIDX_HIGH_QUALITY_RESAMPLING_CHECKBOX:
+                {
+                    Config::Get().sound.highQualityResampling = !Config::Get().sound.highQualityResampling;
+                    Config::Save();
+                    auto& audioContext = GetContext()->GetAudioContext();
+                    if (audioContext.IsNewEngine())
+                        audioContext.SyncVolumeSettings();
+                    invalidate();
+                    break;
+                }
             }
         }
 
@@ -1654,6 +1667,10 @@ namespace OpenRCT2::Ui::Windows
             setCheckboxValue(WIDX_AUDIO_FOCUS_CHECKBOX, Config::Get().sound.audioFocus);
             widgetSetEnabled(*this, WIDX_SOUND_CHECKBOX, Config::Get().sound.masterSoundEnabled);
             widgetSetEnabled(*this, WIDX_MUSIC_CHECKBOX, Config::Get().sound.masterSoundEnabled);
+            setCheckboxValue(WIDX_HIGH_QUALITY_RESAMPLING_CHECKBOX, Config::Get().sound.highQualityResampling);
+            widgetSetEnabled(
+                *this, WIDX_HIGH_QUALITY_RESAMPLING_CHECKBOX,
+                Config::Get().sound.audioEngineType == AudioEngineType::newEngine);
 
             // Initialize only on first frame, otherwise the scrollbars won't be able to be modified
             if (currentFrame == 0)
