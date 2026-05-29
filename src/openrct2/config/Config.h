@@ -166,6 +166,7 @@ namespace OpenRCT2::Config
         uint8_t rideMusicVolume;
         bool audioFocus;
         AudioEngineType audioEngineType;
+        bool highQualityResampling;
     };
 
     struct Network

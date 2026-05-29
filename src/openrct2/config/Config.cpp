@@ -454,6 +454,7 @@ namespace OpenRCT2::Config
             model->audioFocus = reader->GetBoolean("audio_focus", false);
             model->audioEngineType = static_cast<AudioEngineType>(
                 reader->GetInt32("audio_engine", EnumValue(AudioEngineType::legacy)));
+            model->highQualityResampling = reader->GetBoolean("high_quality_resampling", true);
         }
     }
 
@@ -471,6 +472,7 @@ namespace OpenRCT2::Config
         writer->WriteInt32("ride_music_volume", model->rideMusicVolume);
         writer->WriteBoolean("audio_focus", model->audioFocus);
         writer->WriteInt32("audio_engine", EnumValue(model->audioEngineType));
+        writer->WriteBoolean("high_quality_resampling", model->highQualityResampling);
     }
 
     static void ReadNetwork(IIniReader* reader)

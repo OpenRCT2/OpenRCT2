@@ -75,6 +75,8 @@ namespace OpenRCT2::Audio
         void fadeOut(AudioHandle handle, float durationMs);
         void stopGroup(AudioEngineGroup group);
 
+        void setResamplerQuality(bool highQuality);
+
         // Called from the audio thread (the SDL callback). Drains the
         // command buffer, mixes active voices, and writes interleaved
         // float32 stereo into outputBuffer
@@ -103,6 +105,7 @@ namespace OpenRCT2::Audio
         void processSetGroupVolume(const AudioCommand& cmd);
         void processFadeOut(const AudioCommand& cmd);
         void processSetOffset(const AudioCommand& cmd);
+        void processSetResamplerQuality(const AudioCommand& cmd);
 
         Voice* resolveVoice(AudioHandle handle);
 
@@ -117,6 +120,7 @@ namespace OpenRCT2::Audio
         float _masterVolume = 1.0f;
         float _soundVolume = 1.0f;
         float _musicVolume = 1.0f;
+        bool _useSincResampler = true;
 
         float getGroupVolume(AudioEngineGroup group) const;
 
