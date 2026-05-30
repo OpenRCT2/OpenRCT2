@@ -148,10 +148,10 @@ namespace OpenRCT2::Ui::Windows
         WIDX_SPEED_SETTING_SPINNER_DOWN = WIDX_BANK_RIGHT,
     };
 
-    VALIDATE_GLOBAL_WIDX(WC_RIDE_CONSTRUCTION, WIDX_CONSTRUCT);
-    VALIDATE_GLOBAL_WIDX(WC_RIDE_CONSTRUCTION, WIDX_ENTRANCE);
-    VALIDATE_GLOBAL_WIDX(WC_RIDE_CONSTRUCTION, WIDX_EXIT);
-    VALIDATE_GLOBAL_WIDX(WC_RIDE_CONSTRUCTION, WIDX_ROTATE);
+    static_assert(WIDX_CONSTRUCT == kWindowRideConstructionWidgetIdxButtonConstruct);
+    static_assert(WIDX_ENTRANCE == kWindowRideConstructionWidgetIdxButtonEntrance);
+    static_assert(WIDX_EXIT == kWindowRideConstructionWidgetIdxButtonExit);
+    static_assert(WIDX_ROTATE == kWindowRideConstructionWidgetIdxButtonRotate);
 
     // clang-format off
     static constexpr auto kRideConstructionWidgets = makeWidgets(
@@ -2693,8 +2693,8 @@ namespace OpenRCT2::Ui::Windows
                         windowMgr->InvalidateByClass(WindowClass::rideConstruction);
 
                         auto newToolWidgetIndex = (gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_ENTRANCE)
-                            ? WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE
-                            : WC_RIDE_CONSTRUCTION__WIDX_EXIT;
+                            ? kWindowRideConstructionWidgetIdxButtonEntrance
+                            : kWindowRideConstructionWidgetIdxButtonExit;
 
                         ToolCancel();
                         ToolSet(*this, newToolWidgetIndex, Tool::crosshair);
@@ -2948,7 +2948,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (!RideAreAllPossibleEntrancesAndExitsBuilt(*ride).Successful)
                 {
-                    w->onMouseUp(WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE);
+                    w->onMouseUp(kWindowRideConstructionWidgetIdxButtonEntrance);
                 }
             }
         }

@@ -504,29 +504,29 @@ public:
             }
 
             case INTENT_ACTION_UPDATE_CLIMATE:
-                gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_CLIMATE;
+                gToolbarDirtyFlags |= bottomToolbarDirtyFlagClimate;
                 InvalidateByClass(WindowClass::guestList);
                 break;
 
             case INTENT_ACTION_UPDATE_GUEST_COUNT:
-                gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_PEEP_COUNT;
+                gToolbarDirtyFlags |= bottomToolbarDirtyFlagPeepCount;
                 InvalidateByClass(WindowClass::guestList);
                 InvalidateByClass(WindowClass::parkInformation);
                 WindowGuestListRefreshList();
                 break;
 
             case INTENT_ACTION_UPDATE_PARK_RATING:
-                gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_PARK_RATING;
+                gToolbarDirtyFlags |= bottomToolbarDirtyFlagParkRating;
                 InvalidateByClass(WindowClass::parkInformation);
                 break;
 
             case INTENT_ACTION_UPDATE_DATE:
-                gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_DATE;
+                gToolbarDirtyFlags |= bottomToolbarDirtyFlagDate;
                 break;
 
             case INTENT_ACTION_UPDATE_CASH:
                 InvalidateByClass(WindowClass::finances);
-                gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_MONEY;
+                gToolbarDirtyFlags |= bottomToolbarDirtyFlagMoney;
                 break;
 
             case INTENT_ACTION_UPDATE_BANNER:

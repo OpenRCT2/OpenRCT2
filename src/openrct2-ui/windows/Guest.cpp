@@ -114,7 +114,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_CARRYING_LABEL = WIDX_TAB_CONTENT_START,
     };
 
-    VALIDATE_GLOBAL_WIDX(WC_PEEP, WIDX_PICKUP);
+    static_assert(WIDX_PICKUP == kWindowPeepWidgetIdxButtonPickup);
 
     static constexpr int32_t kTabWidth = 30;
 
@@ -660,7 +660,7 @@ namespace OpenRCT2::Ui::Windows
                             WindowBase* wind = windowMgr->FindByNumber(WindowClass::peep, peepnum);
                             if (wind != nullptr)
                             {
-                                ToolSet(*wind, WC_PEEP__WIDX_PICKUP, Tool::picker);
+                                ToolSet(*wind, kWindowPeepWidgetIdxButtonPickup, Tool::picker);
                             }
                         });
                     GameActions::Execute(&pickupAction, gameState);
