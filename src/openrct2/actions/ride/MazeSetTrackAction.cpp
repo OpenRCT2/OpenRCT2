@@ -245,6 +245,7 @@ namespace OpenRCT2::GameActions
             trackElement->SetRideIndex(_rideIndex);
             trackElement->SetMazeEntry(0xFFFF);
             trackElement->setGhost(flags.has(CommandFlag::ghost));
+            trackElement->setOwner(Park::kDefaultParkOwnerId);
 
             tileElement = trackElement->as<TileElement>();
 

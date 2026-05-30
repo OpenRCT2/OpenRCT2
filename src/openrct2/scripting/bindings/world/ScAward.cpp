@@ -52,7 +52,10 @@ namespace OpenRCT2::Scripting
     Award* ScAward::GetAward(JSValue thisVal)
     {
         OpaqueAwardData* data = gScAward.GetOpaque<OpaqueAwardData*>(thisVal);
-        return &getGameState().park.currentAwards[data->index];
+
+        auto& gameState = getGameState();
+        auto& park = gameState.parks[0];
+        return &park.currentAwards[data->index];
     }
 
     JSValue ScAward::type_get(JSContext* ctx, JSValue thisVal)

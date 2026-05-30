@@ -12,6 +12,7 @@
 #include "Cheats.h"
 #include "Date.h"
 #include "Editor.h"
+#include "Identifiers.h"
 #include "Limits.h"
 #include "core/Random.hpp"
 #include "entity/EntityRegistry.h"
@@ -37,7 +38,7 @@ namespace OpenRCT2
 
     struct GameState_t
     {
-        Park::ParkData park{};
+        std::vector<Park::ParkData> parks{};
         Scenario::Options scenarioOptions;
         std::string pluginStorage;
         uint32_t currentTicks{};
@@ -107,5 +108,4 @@ namespace OpenRCT2
     void gameStateInitAll(GameState_t& gameState, const TileCoordsXY& mapSize);
     void gameStateTick();
     void gameStateUpdateLogic();
-
 } // namespace OpenRCT2

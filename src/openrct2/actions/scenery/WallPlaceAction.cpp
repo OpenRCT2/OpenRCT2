@@ -25,6 +25,7 @@
 #include "../../world/ConstructionClearance.h"
 #include "../../world/Map.h"
 #include "../../world/MapAnimation.h"
+#include "../../world/Park.h"
 #include "../../world/Scenery.h"
 #include "../../world/Wall.h"
 #include "../../world/tile_element/LargeSceneryElement.h"
@@ -379,6 +380,7 @@ namespace OpenRCT2::GameActions
 
         wallElement->SetEntryIndex(_wallType);
         wallElement->SetBannerIndex(banner != nullptr ? banner->id : BannerIndex::GetNull());
+        wallElement->setOwner(Park::kDefaultParkOwnerId);
 
         if (wallEntry->flags & WALL_SCENERY_HAS_TERTIARY_COLOUR)
         {

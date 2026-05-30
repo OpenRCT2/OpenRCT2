@@ -39,6 +39,7 @@
 #include "../windows/Intent.h"
 #include "Entrance.h"
 #include "Map.h"
+#include "MapRangeView.hpp"
 #include "tile_element/EntranceElement.h"
 #include "tile_element/SurfaceElement.h"
 
@@ -80,7 +81,7 @@ namespace OpenRCT2::Park
     static money64 calculateTotalRideValueForMoney(const ParkData& park, const GameState_t& gameState)
     {
         money64 totalRideValue = 0;
-        bool ridePricesUnlocked = RidePricesUnlocked(park) && !(gameState.park.flags & PARK_FLAGS_NO_MONEY);
+        bool ridePricesUnlocked = RidePricesUnlocked(park) && !(park.flags & PARK_FLAGS_NO_MONEY);
         for (auto& ride : RideManager(gameState))
         {
             if (ride.status != RideStatus::open)
@@ -769,5 +770,22 @@ namespace OpenRCT2::Park
     bool IsOpen(const ParkData& park)
     {
         return (park.flags & PARK_FLAGS_PARK_OPEN) != 0;
+    }
+
+    void resetTileOwnerData(GameState_t& gameState)
+    {
+        for (auto tileCoords : Map::getWorldRange())
+        {
+            // Fetch surface element to identify if the tile is owned by the park
+            auto* surface = MapGetSurfaceElementAt(tileCoords);
+            if (surface == nullptr)
+                continue;
+
+            auto ownership = surface->GetOwnership();
+            bool isOwned = (ownership & (OWNERSHIP_OWNED | OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)) != 0;
+            auto newOwner = isOwned ? kDefaultParkOwnerId : kNullOwnerId;
+
+            Map::resetOwnerIdForAllElementsOnTile(tileCoords, newOwner);
+        }
     }
 } // namespace OpenRCT2::Park

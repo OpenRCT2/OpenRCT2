@@ -224,7 +224,7 @@ static bool AwardIsDeservedMostBeautiful(GameState_t& gameState, Park::ParkData&
         }
     }
 
-    return (negativeCount <= 15 && positiveCount > getGameState().park.numGuestsInPark / 128);
+    return (negativeCount <= 15 && positiveCount > gameState.parks[0].numGuestsInPark / 128);
 }
 
 /** Entrance fee is more than total ride value. */
@@ -312,7 +312,7 @@ static bool AwardIsDeservedBestFood(GameState_t& gameState, Park::ParkData& park
         }
     }
 
-    if (shops < 7 || uniqueShops < 4 || shops < getGameState().park.numGuestsInPark / 128)
+    if (shops < 7 || uniqueShops < 4 || shops < gameState.parks[0].numGuestsInPark / 128)
         return false;
 
     // Count hungry peeps
@@ -357,7 +357,7 @@ static bool AwardIsDeservedWorstFood(GameState_t& gameState, Park::ParkData& par
         }
     }
 
-    if (uniqueShops > 2 || shops > getGameState().park.numGuestsInPark / 256)
+    if (uniqueShops > 2 || shops > gameState.parks[0].numGuestsInPark / 256)
         return false;
 
     // Count hungry peeps
@@ -389,7 +389,7 @@ static bool AwardIsDeservedBestToilets(GameState_t& gameState, Park::ParkData& p
         return false;
 
     // At least one open toilet for every 128 guests
-    if (numToilets < getGameState().park.numGuestsInPark / 128u)
+    if (numToilets < gameState.parks[0].numGuestsInPark / 128u)
         return false;
 
     // Count number of guests who are thinking they need the toilet
@@ -411,6 +411,7 @@ static bool AwardIsDeservedMostDisappointing(GameState_t& gameState, Park::ParkD
 {
     if (activeAwardTypes & EnumToFlag(AwardType::bestValue))
         return false;
+
     if (park.rating > 650)
         return false;
 
@@ -602,12 +603,17 @@ static bool AwardIsDeserved(GameState_t& gameState, Park::ParkData& park, AwardT
 
 void AwardReset()
 {
-    getGameState().park.currentAwards.clear();
+    auto& gameState = getGameState();
+    auto& park = gameState.parks[0];
+    park.currentAwards.clear();
 }
 
 static void AwardAdd(AwardType type)
 {
-    getGameState().park.currentAwards.push_back(Award{ 5u, type });
+    auto& gameState = getGameState();
+    auto& park = gameState.parks[0];
+
+    park.currentAwards.push_back(Award{ 5u, type });
     if (Config::Get().notifications.parkAward)
     {
         News::AddItemToQueue(News::ItemType::award, AwardGetNews(type), 0, {});
@@ -623,8 +629,9 @@ void AwardUpdateAll()
 {
     PROFILED_FUNCTION();
 
-    auto& currentAwards = getGameState().park.currentAwards;
-    auto* windowMgr = Ui::GetWindowManager();
+    auto& gameState = getGameState();
+    auto& park = gameState.parks[0];
+    auto& currentAwards = park.currentAwards;
 
     // Decrease award times
     for (auto& award : currentAwards)
@@ -638,13 +645,12 @@ void AwardUpdateAll()
     if (res != std::end(currentAwards))
     {
         currentAwards.erase(res, std::end(currentAwards));
+
+        auto* windowMgr = Ui::GetWindowManager();
         windowMgr->InvalidateByClass(WindowClass::parkInformation);
     }
 
     // Only add new awards if park is open
-    auto& gameState = getGameState();
-    auto& park = gameState.park;
-
     if (park.flags & PARK_FLAGS_PARK_OPEN)
     {
         // Set active award types as flags
@@ -675,7 +681,9 @@ void AwardUpdateAll()
 
 void AwardGrant(AwardType type)
 {
-    auto& currentAwards = getGameState().park.currentAwards;
+    auto& gameState = getGameState();
+    auto& park = gameState.parks[0];
+    auto& currentAwards = park.currentAwards;
 
     // Remove award type if already granted
     std::erase_if(currentAwards, [type](const Award& award) { return award.type == type; });

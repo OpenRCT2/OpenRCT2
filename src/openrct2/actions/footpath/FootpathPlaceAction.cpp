@@ -447,6 +447,7 @@ namespace OpenRCT2::GameActions
             pathElement->SetAdditionStatus(255);
             pathElement->SetIsBroken(false);
             pathElement->setGhost(GetFlags().has(CommandFlag::ghost));
+            pathElement->setOwner(Park::kDefaultParkOwnerId);
 
             FootpathQueueChainReset();
 

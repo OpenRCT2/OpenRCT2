@@ -366,7 +366,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 }
                 case WINDOW_FINANCES_PAGE_VALUE_GRAPH:
-                    onDrawGraph(rt, getGameState().park.value, STR_FINANCES_PARK_VALUE);
+                    onDrawGraph(rt, _parkData.value, STR_FINANCES_PARK_VALUE);
                     break;
                 case WINDOW_FINANCES_PAGE_PROFIT_GRAPH:
                 {
@@ -572,7 +572,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onPrepareDrawSummary()
         {
-            _loanSpinnerText = FormatStringID(STR_CURRENCY_FORMAT, getGameState().park.bankLoan);
+            _loanSpinnerText = FormatStringID(STR_CURRENCY_FORMAT, _parkData.bankLoan);
             widgets[WIDX_LOAN].setString(_loanSpinnerText.c_str());
 
             // Keep up with new months being added in the first two years.
@@ -584,7 +584,6 @@ namespace OpenRCT2::Ui::Windows
         {
             auto titleBarBottom = widgets[WIDX_TITLE].bottom;
             auto screenCoords = windowPos + ScreenCoordsXY{ 8, titleBarBottom + 37 };
-            auto& gameState = getGameState();
 
             // Expenditure / Income heading
             drawText(
@@ -629,7 +628,7 @@ namespace OpenRCT2::Ui::Windows
             drawText(rt, windowPos + ScreenCoordsXY{ 8, titleBarBottom + 280 }, stringId, ft);
 
             // Objective related financial information
-            if (gameState.scenarioOptions.objective.Type == Scenario::ObjectiveType::monthlyFoodIncome)
+            if (getGameState().scenarioOptions.objective.Type == Scenario::ObjectiveType::monthlyFoodIncome)
             {
                 auto lastMonthProfit = FinanceGetLastMonthShopProfit();
                 ft = Formatter();
@@ -670,7 +669,7 @@ namespace OpenRCT2::Ui::Windows
         void onPrepareDrawMarketing()
         {
             // Count number of active campaigns
-            int32_t numActiveCampaigns = static_cast<int32_t>(getGameState().park.marketingCampaigns.size());
+            int32_t numActiveCampaigns = static_cast<int32_t>(_parkData.marketingCampaigns.size());
             int32_t y = widgets[WIDX_TAB_1].top + std::max(1, numActiveCampaigns) * kListRowHeight + 75;
 
             // Update group box positions
@@ -732,7 +731,7 @@ namespace OpenRCT2::Ui::Windows
                         break;
                     default:
                     {
-                        auto parkName = getGameState().park.name.c_str();
+                        auto parkName = _parkData.name.c_str();
                         ft.Add<StringId>(STR_STRING);
                         ft.Add<const char*>(parkName);
                     }
@@ -880,7 +879,7 @@ namespace OpenRCT2::Ui::Windows
         if (window == nullptr)
         {
             // TODO: get parkData from parameter (park id)
-            auto& parkData = getGameState().park;
+            auto& parkData = getGameState().parks[0];
             window = windowMgr->Create<FinancesWindow>(
                 WindowClass::finances, kWindowSizeSummary, WindowFlag::higherContrastOnPress, parkData);
         }

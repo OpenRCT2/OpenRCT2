@@ -795,8 +795,10 @@ namespace OpenRCT2
                 News::AddItemToQueue(News::ItemType::blank, STR_NEWS_ITEM_GUEST_DROWNED, x | (y << 16), ft);
             }
 
+            // TODO: get park based on peep
             auto& gameState = getGameState();
-            gameState.park.ratingCasualtyPenalty = std::min(gameState.park.ratingCasualtyPenalty + 25, 1000);
+            auto& park = gameState.parks[0];
+            park.ratingCasualtyPenalty = std::min(park.ratingCasualtyPenalty + 25, 1000);
             Remove();
             return;
         }
@@ -962,12 +964,14 @@ namespace OpenRCT2
      */
     void PeepProblemWarningsUpdate()
     {
+        // TODO: get park based on peep
         auto& gameState = getGameState();
+        auto& park = gameState.parks[0];
 
         Ride* ride;
         uint32_t hungerCounter = 0, lostCounter = 0, noexitCounter = 0, thirstCounter = 0, litterCounter = 0,
                  disgustCounter = 0, toiletCounter = 0, vandalismCounter = 0;
-        uint8_t* warningThrottle = gameState.park.peepWarningThrottle;
+        uint8_t* warningThrottle = park.peepWarningThrottle;
 
         int32_t inQueueCounter = 0;
         int32_t tooLongQueueCounter = 0;
@@ -1047,7 +1051,7 @@ namespace OpenRCT2
         // could maybe be packed into a loop, would lose a lot of clarity though
         if (warningThrottle[0])
             --warningThrottle[0];
-        else if (hungerCounter >= kPeepHungerWarningThreshold && hungerCounter >= gameState.park.numGuestsInPark / 16)
+        else if (hungerCounter >= kPeepHungerWarningThreshold && hungerCounter >= park.numGuestsInPark / 16)
         {
             warningThrottle[0] = 4;
             if (Config::Get().notifications.guestWarnings)
@@ -1059,7 +1063,7 @@ namespace OpenRCT2
 
         if (warningThrottle[1])
             --warningThrottle[1];
-        else if (thirstCounter >= kPeepThirstWarningThreshold && thirstCounter >= gameState.park.numGuestsInPark / 16)
+        else if (thirstCounter >= kPeepThirstWarningThreshold && thirstCounter >= park.numGuestsInPark / 16)
         {
             warningThrottle[1] = 4;
             if (Config::Get().notifications.guestWarnings)
@@ -1071,7 +1075,7 @@ namespace OpenRCT2
 
         if (warningThrottle[2])
             --warningThrottle[2];
-        else if (toiletCounter >= kPeepToiletWarningThreshold && toiletCounter >= gameState.park.numGuestsInPark / 16)
+        else if (toiletCounter >= kPeepToiletWarningThreshold && toiletCounter >= park.numGuestsInPark / 16)
         {
             warningThrottle[2] = 4;
             if (Config::Get().notifications.guestWarnings)
@@ -1083,7 +1087,7 @@ namespace OpenRCT2
 
         if (warningThrottle[3])
             --warningThrottle[3];
-        else if (litterCounter >= kPeepLitterWarningThreshold && litterCounter >= gameState.park.numGuestsInPark / 32)
+        else if (litterCounter >= kPeepLitterWarningThreshold && litterCounter >= park.numGuestsInPark / 32)
         {
             warningThrottle[3] = 4;
             if (Config::Get().notifications.guestWarnings)
@@ -1095,7 +1099,7 @@ namespace OpenRCT2
 
         if (warningThrottle[4])
             --warningThrottle[4];
-        else if (disgustCounter >= kPeepDisgustWarningThreshold && disgustCounter >= gameState.park.numGuestsInPark / 32)
+        else if (disgustCounter >= kPeepDisgustWarningThreshold && disgustCounter >= park.numGuestsInPark / 32)
         {
             warningThrottle[4] = 4;
             if (Config::Get().notifications.guestWarnings)
@@ -1107,7 +1111,7 @@ namespace OpenRCT2
 
         if (warningThrottle[5])
             --warningThrottle[5];
-        else if (vandalismCounter >= kPeepVandalismWarningThreshold && vandalismCounter >= gameState.park.numGuestsInPark / 32)
+        else if (vandalismCounter >= kPeepVandalismWarningThreshold && vandalismCounter >= park.numGuestsInPark / 32)
         {
             warningThrottle[5] = 4;
             if (Config::Get().notifications.guestWarnings)
@@ -1476,9 +1480,12 @@ namespace OpenRCT2
     {
         if (Name == nullptr)
         {
+            // TODO: get park based on peep
             auto& gameState = getGameState();
-            const bool showGuestNames = gameState.park.flags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
-            const bool showStaffNames = gameState.park.flags & PARK_FLAGS_SHOW_REAL_STAFF_NAMES;
+            auto& park = gameState.parks[0];
+
+            const bool showGuestNames = park.flags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+            const bool showStaffNames = park.flags & PARK_FLAGS_SHOW_REAL_STAFF_NAMES;
 
             auto* staff = as<Staff>();
             const bool isStaff = staff != nullptr;
@@ -1760,7 +1767,10 @@ namespace OpenRCT2
                 return true;
             }
 
+            // TODO: get park by peep
             auto& gameState = getGameState();
+            auto& park = gameState.parks[0];
+
             uint8_t entranceDirection = tile_element->getDirection();
             if (entranceDirection != guest->PeepDirection)
             {
@@ -1780,7 +1790,7 @@ namespace OpenRCT2
                 if (!(guest->PeepFlags & PEEP_FLAGS_LEAVING_PARK))
                 {
                     // If the park is open and leaving flag isn't set return to centre
-                    if (gameState.park.flags & PARK_FLAGS_PARK_OPEN)
+                    if (park.flags & PARK_FLAGS_PARK_OPEN)
                     {
                         PeepReturnToCentreOfTile(guest);
                         return true;
@@ -1813,7 +1823,7 @@ namespace OpenRCT2
                 return true;
             }
 
-            if (!(gameState.park.flags & PARK_FLAGS_PARK_OPEN))
+            if (!(park.flags & PARK_FLAGS_PARK_OPEN))
             {
                 guest->State = PeepState::leavingPark;
                 guest->Var37 = 1;
@@ -1825,9 +1835,8 @@ namespace OpenRCT2
 
             bool found = false;
             auto entrance = std::find_if(
-                gameState.park.entrances.begin(), gameState.park.entrances.end(),
-                [coords](const auto& e) { return coords.ToTileStart() == e; });
-            if (entrance != gameState.park.entrances.end())
+                park.entrances.begin(), park.entrances.end(), [coords](const auto& e) { return coords.ToTileStart() == e; });
+            if (entrance != park.entrances.end())
             {
                 int16_t z = entrance->z / 8;
                 entranceDirection = entrance->direction;
@@ -1886,7 +1895,7 @@ namespace OpenRCT2
                 return true;
             }
 
-            auto entranceFee = Park::GetEntranceFee(gameState.park);
+            auto entranceFee = Park::GetEntranceFee(park);
             if (entranceFee != 0)
             {
                 if (guest->HasItem(ShopItem::voucher))
@@ -1914,12 +1923,11 @@ namespace OpenRCT2
                     return true;
                 }
 
-                gameState.park.totalIncomeFromAdmissions = AddClamp(gameState.park.totalIncomeFromAdmissions, entranceFee);
+                park.totalIncomeFromAdmissions = AddClamp(park.totalIncomeFromAdmissions, entranceFee);
                 guest->SpendMoney(guest->PaidToEnter, entranceFee, ExpenditureType::parkEntranceTickets);
                 guest->PeepFlags |= PEEP_FLAGS_HAS_PAID_FOR_PARK_ENTRY;
             }
 
-            auto& park = getGameState().park;
             park.totalAdmissions = AddClamp<uint64_t>(park.totalAdmissions, 1);
 
             auto* windowMgr = Ui::GetWindowManager();
@@ -2284,8 +2292,11 @@ namespace OpenRCT2
                 return true;
             }
 
+            auto& gameState = getGameState();
+            auto& park = gameState.parks[0];
+
             auto cost = ride->price[0];
-            if (cost != 0 && !(getGameState().park.flags & PARK_FLAGS_NO_MONEY))
+            if (cost != 0 && !(park.flags & PARK_FLAGS_NO_MONEY))
             {
                 ride->totalProfit = AddClamp(ride->totalProfit, cost);
                 ride->windowInvalidateFlags.set(RideInvalidateFlag::income);
@@ -2552,7 +2563,9 @@ namespace OpenRCT2
 
         if (peep_a->Name == nullptr && peep_b->Name == nullptr)
         {
-            if (getGameState().park.flags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
+            // TODO: get park by peep
+            auto& gameState = getGameState();
+            if (gameState.parks[0].flags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
             {
                 // Potentially could find a more optional way of sorting dynamic real names
             }
@@ -2582,18 +2595,20 @@ namespace OpenRCT2
      */
     void PeepUpdateNames()
     {
+        // TODO: pass park by ref
         auto& gameState = getGameState();
+        auto& park = gameState.parks[0];
         auto& config = Config::Get().general;
 
         if (config.showRealNamesOfGuests)
-            gameState.park.flags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+            park.flags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
         else
-            gameState.park.flags &= ~PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+            park.flags &= ~PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
 
         if (config.showRealNamesOfStaff)
-            gameState.park.flags |= PARK_FLAGS_SHOW_REAL_STAFF_NAMES;
+            park.flags |= PARK_FLAGS_SHOW_REAL_STAFF_NAMES;
         else
-            gameState.park.flags &= ~PARK_FLAGS_SHOW_REAL_STAFF_NAMES;
+            park.flags &= ~PARK_FLAGS_SHOW_REAL_STAFF_NAMES;
 
         auto intent = Intent(INTENT_ACTION_REFRESH_GUEST_LIST);
         ContextBroadcastIntent(&intent);
@@ -2603,9 +2618,11 @@ namespace OpenRCT2
     void IncrementGuestsInPark()
     {
         auto& gameState = getGameState();
-        if (gameState.park.numGuestsInPark < UINT32_MAX)
+        auto& park = gameState.parks[0];
+
+        if (park.numGuestsInPark < UINT32_MAX)
         {
-            gameState.park.numGuestsInPark++;
+            park.numGuestsInPark++;
         }
         else
         {
@@ -2616,9 +2633,11 @@ namespace OpenRCT2
     void IncrementGuestsHeadingForPark()
     {
         auto& gameState = getGameState();
-        if (gameState.park.numGuestsHeadingForPark < UINT32_MAX)
+        auto& park = gameState.parks[0];
+
+        if (park.numGuestsHeadingForPark < UINT32_MAX)
         {
-            gameState.park.numGuestsHeadingForPark++;
+            park.numGuestsHeadingForPark++;
         }
         else
         {
@@ -2629,9 +2648,11 @@ namespace OpenRCT2
     void DecrementGuestsInPark()
     {
         auto& gameState = getGameState();
-        if (gameState.park.numGuestsInPark > 0)
+        auto& park = gameState.parks[0];
+
+        if (park.numGuestsInPark > 0)
         {
-            gameState.park.numGuestsInPark--;
+            park.numGuestsInPark--;
         }
         else
         {
@@ -2642,10 +2663,11 @@ namespace OpenRCT2
     void DecrementGuestsHeadingForPark()
     {
         auto& gameState = getGameState();
+        auto& park = gameState.parks[0];
 
-        if (gameState.park.numGuestsHeadingForPark > 0)
+        if (park.numGuestsHeadingForPark > 0)
         {
-            gameState.park.numGuestsHeadingForPark--;
+            park.numGuestsHeadingForPark--;
         }
         else
         {

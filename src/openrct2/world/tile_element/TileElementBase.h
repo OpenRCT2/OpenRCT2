@@ -9,10 +9,9 @@
 
 #pragma once
 
+#include "../../Identifiers.h"
 #include "../Location.hpp"
 #include "TileElementType.h"
-
-#include <cstdint>
 
 namespace OpenRCT2
 {
@@ -56,7 +55,7 @@ namespace OpenRCT2
         uint8_t flags;           // 1. Upper nibble: flags. Lower nibble: occupied quadrants (one bit per quadrant).
         uint8_t baseHeight;      // 2
         uint8_t clearanceHeight; // 3
-        uint8_t owner;           // 4
+        uint8_t owner;           // 4. Lower nibble: owner/park index. Upper nibble: unassigned as of yet.
 
         void remove();
 
@@ -83,8 +82,8 @@ namespace OpenRCT2
         int32_t getClearanceZ() const;
         void setClearanceZ(int32_t newZ);
 
-        uint8_t getOwner() const;
-        void setOwner(uint8_t newOwner);
+        ParkId getOwner() const;
+        void setOwner(ParkId newOwner);
 
         template<typename TType>
         const TType* as() const

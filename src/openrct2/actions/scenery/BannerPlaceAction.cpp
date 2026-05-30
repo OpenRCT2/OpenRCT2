@@ -18,6 +18,7 @@
 #include "../../world/Footpath.h"
 #include "../../world/Map.h"
 #include "../../world/MapAnimation.h"
+#include "../../world/Park.h"
 #include "../../world/Scenery.h"
 #include "../../world/TileElementsView.h"
 #include "../../world/tile_element/BannerElement.h"
@@ -153,6 +154,7 @@ namespace OpenRCT2::GameActions
         bannerElement->ResetAllowedEdges();
         bannerElement->SetIndex(banner->id);
         bannerElement->setGhost(GetFlags().has(CommandFlag::ghost));
+        bannerElement->setOwner(Park::kDefaultParkOwnerId);
 
         MapInvalidateTileFull(_loc);
         MapAnimations::MarkTileForInvalidation(TileCoordsXY(_loc));

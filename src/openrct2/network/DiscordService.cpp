@@ -64,7 +64,7 @@ namespace OpenRCT2::Network
     static std::string GetParkName()
     {
         auto& gameState = getGameState();
-        return gameState.park.name;
+        return gameState.parks[0].name;
     }
 
     void DiscordService::Tick()

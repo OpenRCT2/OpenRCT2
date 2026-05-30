@@ -24,6 +24,7 @@
 #include "../../world/Footpath.h"
 #include "../../world/Map.h"
 #include "../../world/MapAnimation.h"
+#include "../../world/Park.h"
 #include "../../world/QuarterTile.h"
 #include "../../world/Wall.h"
 #include "../../world/tile_element/PathElement.h"
@@ -577,6 +578,7 @@ namespace OpenRCT2::GameActions
             trackElement->SetTrackType(_trackType);
             trackElement->SetRideType(_rideType);
             trackElement->setGhost(GetFlags().has(CommandFlag::ghost));
+            trackElement->setOwner(Park::kDefaultParkOwnerId);
 
             switch (_trackType)
             {

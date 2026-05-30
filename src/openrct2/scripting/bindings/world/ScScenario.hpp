@@ -323,13 +323,15 @@ namespace OpenRCT2::Scripting
         {
             JS_UNPACK_STR(value, ctx, jsValue);
             JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+
             auto& gameState = getGameState();
             if (value == "inProgress")
                 gameState.scenarioCompletedCompanyValue = kMoney64Undefined;
             else if (value == "failed")
                 gameState.scenarioCompletedCompanyValue = kCompanyValueOnFailedObjective;
             else if (value == "completed")
-                gameState.scenarioCompletedCompanyValue = gameState.park.companyValue;
+                gameState.scenarioCompletedCompanyValue = gameState.parks[0].companyValue;
+
             return JS_UNDEFINED;
         }
 
