@@ -254,7 +254,7 @@ void ChatInput(enum ChatInput input)
 {
     switch (input)
     {
-        case ChatInput::Send:
+        case ChatInput::send:
             if (!_chatCurrentLine.empty())
             {
                 Network::SendChat(_chatCurrentLine.c_str());
@@ -262,7 +262,7 @@ void ChatInput(enum ChatInput input)
             ChatClearInput();
             ChatClose();
             break;
-        case ChatInput::Close:
+        case ChatInput::close:
             ChatClose();
             break;
         default:

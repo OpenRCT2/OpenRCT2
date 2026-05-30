@@ -133,9 +133,9 @@ namespace OpenRCT2::Config
     });
 
     static const auto Enum_VirtualFloorStyle = ConfigEnum<VirtualFloorStyles>({
-        ConfigEnumEntry<VirtualFloorStyles>("OFF", VirtualFloorStyles::Off),
-        ConfigEnumEntry<VirtualFloorStyles>("CLEAR", VirtualFloorStyles::Clear),
-        ConfigEnumEntry<VirtualFloorStyles>("GLASSY", VirtualFloorStyles::Glassy),
+        ConfigEnumEntry<VirtualFloorStyles>("OFF", VirtualFloorStyles::off),
+        ConfigEnumEntry<VirtualFloorStyles>("CLEAR", VirtualFloorStyles::clear),
+        ConfigEnumEntry<VirtualFloorStyles>("GLASSY", VirtualFloorStyles::glassy),
     });
 
     static const auto Enum_RideInspectionInterval = ConfigEnum<RideInspection>({
@@ -217,7 +217,7 @@ namespace OpenRCT2::Config
             model->uncapFPS = reader->GetBoolean("uncap_fps", false);
             model->useVSync = reader->GetBoolean("use_vsync", true);
             model->virtualFloorStyle = reader->GetEnum<VirtualFloorStyles>(
-                "virtual_floor_style", VirtualFloorStyles::Glassy, Enum_VirtualFloorStyle);
+                "virtual_floor_style", VirtualFloorStyles::glassy, Enum_VirtualFloorStyle);
             model->dateFormat = reader->GetEnum<int32_t>("date_format", Platform::GetLocaleDateFormat(), Enum_DateFormat);
             model->autoStaffPlacement = reader->GetBoolean("auto_staff", true);
             model->handymenMowByDefault = reader->GetBoolean("handymen_mow_default", false);

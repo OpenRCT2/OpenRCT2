@@ -387,7 +387,7 @@ void VirtualFloorPaint(PaintSession& session)
             { { 5, 5, _virtualFloorHeight + ((dullEdges & EDGE_NW) ? -2 : 0) }, { 0, 0, 1 } });
     }
 
-    if (Config::Get().general.virtualFloorStyle != VirtualFloorStyles::Glassy)
+    if (Config::Get().general.virtualFloorStyle != VirtualFloorStyles::glassy)
         return;
 
     if (!weAreOccupied && !weAreLit && weAreAboveGround && weAreOwned)

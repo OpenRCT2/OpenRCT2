@@ -1433,7 +1433,7 @@ namespace OpenRCT2::Network
         {
             for (auto& connection : client_connection_list)
             {
-                for (size_t n = 0; n < EnumValue(StatisticsGroup::Max); n++)
+                for (size_t n = 0; n < EnumValue(StatisticsGroup::max); n++)
                 {
                     stats.bytesReceived[n] += connection->stats.bytesReceived[n];
                     stats.bytesSent[n] += connection->stats.bytesSent[n];

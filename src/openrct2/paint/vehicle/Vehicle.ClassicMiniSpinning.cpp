@@ -20,19 +20,19 @@ namespace OpenRCT2
     struct PitchInfo
     {
         uint8_t imageIndex = 0;
-        uint8_t precisionShift = Entity::Yaw::kPrecisionOffset[EnumValue(Entity::Yaw::SpritePrecision::Sprites1)];
+        uint8_t precisionShift = Entity::Yaw::kPrecisionOffset[EnumValue(Entity::Yaw::SpritePrecision::sprites1)];
         uint8_t rotation = 0;
         uint8_t boundingBoxIndex = 0;
-        uint8_t boundingBoxPrecisionShift = Entity::Yaw::kPrecisionOffset[EnumValue(Entity::Yaw::SpritePrecision::Sprites16)];
+        uint8_t boundingBoxPrecisionShift = Entity::Yaw::kPrecisionOffset[EnumValue(Entity::Yaw::SpritePrecision::sprites16)];
     };
 
     constexpr const std::array<PitchInfo, EnumValue(VehiclePitch::pitchCount)> kPitchInfos = []() consteval {
         std::array<PitchInfo, EnumValue(VehiclePitch::pitchCount)> pitchInfo;
         namespace Yaw = OpenRCT2::Entity::Yaw;
         const uint8_t reverse = Yaw::kBaseRotation / 2;
-        const uint8_t shift4 = Yaw::kPrecisionOffset[EnumValue(Yaw::SpritePrecision::Sprites4)];
-        const uint8_t shift8 = Yaw::kPrecisionOffset[EnumValue(Yaw::SpritePrecision::Sprites8)];
-        const uint8_t shift16 = Yaw::kPrecisionOffset[EnumValue(Yaw::SpritePrecision::Sprites16)];
+        const uint8_t shift4 = Yaw::kPrecisionOffset[EnumValue(Yaw::SpritePrecision::sprites4)];
+        const uint8_t shift8 = Yaw::kPrecisionOffset[EnumValue(Yaw::SpritePrecision::sprites8)];
+        const uint8_t shift16 = Yaw::kPrecisionOffset[EnumValue(Yaw::SpritePrecision::sprites16)];
         pitchInfo[EnumValue(VehiclePitch::up12)] = { 4, shift4, 0, 0, shift16 };
         pitchInfo[EnumValue(VehiclePitch::up25)] = { 68, shift16, 0, 16, shift16 };
         pitchInfo[EnumValue(VehiclePitch::up42)] = { 20, shift8, 0, 32, shift8 };

@@ -4522,176 +4522,176 @@ BitSet<EnumValue(TrackGroup::count)> RideEntryGetSupportedTrackPieces(const Ride
 {
     // TODO: Use a std::span when C++20 available as 6 is due to jagged array
     static const std::array<NecessarySpriteGroup, 9> trackPieceRequiredSprites[] = {
-        { SpriteGroupType::SlopeFlat, SpritePrecision::None },     // TrackGroup::flat
-        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites4 }, // TrackGroup::straight
-        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites4 }, // TrackGroup::stationEnd
-        { SpriteGroupType::Slopes25, SpritePrecision::Sprites4 },  // TrackGroup::liftHill
-        { SpriteGroupType::Slopes25, SpritePrecision::Sprites4, SpriteGroupType::Slopes60,
-          SpritePrecision::Sprites4 },                             // TrackGroup::liftHillSteep
-        { SpriteGroupType::Slopes25, SpritePrecision::Sprites16 }, // TrackGroup::liftHillCurve
-        { SpriteGroupType::FlatBanked22, SpritePrecision::Sprites4, SpriteGroupType::FlatBanked45,
-          SpritePrecision::Sprites16 }, // TrackGroup::flatRollBanking
-        { SpriteGroupType::Slopes60, SpritePrecision::Sprites4, SpriteGroupType::Slopes75, SpritePrecision::Sprites4,
-          SpriteGroupType::Slopes90, SpritePrecision::Sprites4, SpriteGroupType::SlopesLoop, SpritePrecision::Sprites4,
-          SpriteGroupType::SlopeInverted, SpritePrecision::Sprites4 }, // TrackGroup::verticalLoop
-        { SpriteGroupType::Slopes25, SpritePrecision::Sprites4 },      // TrackGroup::slope
-        { SpriteGroupType::Slopes60, SpritePrecision::Sprites4 },      // TrackGroup::slopeSteepDown
-        { SpriteGroupType::Slopes25, SpritePrecision::Sprites4, SpriteGroupType::Slopes60,
-          SpritePrecision::Sprites4 },                              // TrackGroup::flatToSteepSlope
-        { SpriteGroupType::Slopes25, SpritePrecision::Sprites16 },  // TrackGroup::slopeCurve
-        { SpriteGroupType::Slopes60, SpritePrecision::Sprites16 },  // TrackGroup::slopeCurveSteep
-        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites16 }, // TrackGroup::sBend
-        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites16 }, // TrackGroup::curveVerySmall
-        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites16 }, // TrackGroup::curveSmall
-        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites16 }, // TrackGroup::curve
-        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites16 }, // TrackGroup::curveLarge
-        { SpriteGroupType::FlatBanked22, SpritePrecision::Sprites4, SpriteGroupType::FlatBanked45, SpritePrecision::Sprites4,
-          SpriteGroupType::FlatBanked67, SpritePrecision::Sprites4, SpriteGroupType::FlatBanked90, SpritePrecision::Sprites4,
-          SpriteGroupType::InlineTwists, SpritePrecision::Sprites4, SpriteGroupType::SlopeInverted,
-          SpritePrecision::Sprites4 }, // TrackGroup::twist
-        { SpriteGroupType::Slopes60, SpritePrecision::Sprites4, SpriteGroupType::Slopes75, SpritePrecision::Sprites4,
-          SpriteGroupType::Slopes90, SpritePrecision::Sprites4, SpriteGroupType::SlopesLoop, SpritePrecision::Sprites4,
-          SpriteGroupType::SlopeInverted, SpritePrecision::Sprites4 }, // TrackGroup::halfLoop
-        { SpriteGroupType::Corkscrews, SpritePrecision::Sprites4, SpriteGroupType::SlopeInverted,
-          SpritePrecision::Sprites4 },                                 // TrackGroup::corkscrew
-        { SpriteGroupType::SlopeFlat, SpritePrecision::None },         // TrackGroup::tower
-        { SpriteGroupType::FlatBanked45, SpritePrecision::Sprites16 }, // TrackGroup::helixUpBankedHalf
-        { SpriteGroupType::FlatBanked45, SpritePrecision::Sprites16 }, // TrackGroup::helixDownBankedHalf
-        { SpriteGroupType::FlatBanked45, SpritePrecision::Sprites16 }, // TrackGroup::helixUpBankedQuarter
-        { SpriteGroupType::FlatBanked45, SpritePrecision::Sprites16 }, // TrackGroup::helixDownBankedQuarter
-        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites16 },    // TrackGroup::helixUpUnbankedQuarter
-        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites16 },    // TrackGroup::helixDownUnbankedQuarter
-        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites4 },     // TrackGroup::brakes
-        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites4 },     // TrackGroup::onridePhoto
-        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites4, SpriteGroupType::Slopes12,
-          SpritePrecision::Sprites4 }, // TrackGroup::waterSplash
-        { SpriteGroupType::Slopes75, SpritePrecision::Sprites4, SpriteGroupType::Slopes90,
-          SpritePrecision::Sprites4 }, // TrackGroup::slopeVertical
-        { SpriteGroupType::FlatBanked22, SpritePrecision::Sprites4, SpriteGroupType::FlatBanked45, SpritePrecision::Sprites4,
-          SpriteGroupType::InlineTwists, SpritePrecision::Sprites4, SpriteGroupType::SlopeInverted,
-          SpritePrecision::Sprites4 },                            // TrackGroup::barrelRoll
-        { SpriteGroupType::Slopes25, SpritePrecision::Sprites4 }, // TrackGroup::poweredLift
-        { SpriteGroupType::Slopes60, SpritePrecision::Sprites4, SpriteGroupType::Slopes75, SpritePrecision::Sprites4,
-          SpriteGroupType::Slopes90, SpritePrecision::Sprites4, SpriteGroupType::SlopesLoop, SpritePrecision::Sprites4,
-          SpriteGroupType::SlopeInverted, SpritePrecision::Sprites4 },     // TrackGroup::halfLoopLarge
-        { SpriteGroupType::Slopes12Banked22, SpritePrecision::Sprites16 }, // TrackGroup::slopeCurveBanked
-        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites16 },        // TrackGroup::logFlumeReverser
-        { SpriteGroupType::FlatBanked22, SpritePrecision::Sprites4, SpriteGroupType::FlatBanked45, SpritePrecision::Sprites4,
-          SpriteGroupType::InlineTwists, SpritePrecision::Sprites4, SpriteGroupType::SlopeInverted,
-          SpritePrecision::Sprites4 },                              // TrackGroup::heartlineRoll
-        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites16 }, // TrackGroup::reverser
-        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites4, SpriteGroupType::Slopes25, SpritePrecision::Sprites4,
-          SpriteGroupType::Slopes60, SpritePrecision::Sprites4, SpriteGroupType::Slopes75, SpritePrecision::Sprites4,
-          SpriteGroupType::Slopes90, SpritePrecision::Sprites4 }, // TrackGroup::reverseFreefall
-        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites4, SpriteGroupType::Slopes25, SpritePrecision::Sprites4,
-          SpriteGroupType::Slopes60, SpritePrecision::Sprites4, SpriteGroupType::Slopes75, SpritePrecision::Sprites4,
-          SpriteGroupType::Slopes90, SpritePrecision::Sprites4 },         // TrackGroup::slopeToFlat
-        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites4 },        // TrackGroup::blockBrakes
-        { SpriteGroupType::Slopes25Banked22, SpritePrecision::Sprites4 }, // TrackGroup::slopeRollBanking
-        { SpriteGroupType::Slopes25, SpritePrecision::Sprites4, SpriteGroupType::Slopes60,
-          SpritePrecision::Sprites4 },                             // TrackGroup::slopeSteepLong
-        { SpriteGroupType::Slopes90, SpritePrecision::Sprites16 }, // TrackGroup::curveVertical
-        { SpriteGroupType::Slopes25, SpritePrecision::Sprites4, SpriteGroupType::Slopes60,
-          SpritePrecision::Sprites4 },                                     // TrackGroup::liftHillCable
-        { SpriteGroupType::CurvedLiftHillUp, SpritePrecision::Sprites16 }, // TrackGroup::liftHillCurved
-        { SpriteGroupType::Slopes90, SpritePrecision::Sprites4, SpriteGroupType::SlopesLoop, SpritePrecision::Sprites4,
-          SpriteGroupType::SlopeInverted, SpritePrecision::Sprites4 }, // TrackGroup::quarterLoop
-        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites4 },     // TrackGroup::spinningTunnel
-        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites4 },     // TrackGroup::booster
-        { SpriteGroupType::FlatBanked22, SpritePrecision::Sprites4, SpriteGroupType::FlatBanked45, SpritePrecision::Sprites4,
-          SpriteGroupType::FlatBanked67, SpritePrecision::Sprites4, SpriteGroupType::FlatBanked90, SpritePrecision::Sprites4,
-          SpriteGroupType::InlineTwists, SpritePrecision::Sprites4, SpriteGroupType::SlopeInverted,
-          SpritePrecision::Sprites4 }, // TrackGroup::inlineTwistUninverted
-        { SpriteGroupType::FlatBanked22, SpritePrecision::Sprites4, SpriteGroupType::FlatBanked45, SpritePrecision::Sprites4,
-          SpriteGroupType::FlatBanked67, SpritePrecision::Sprites4, SpriteGroupType::FlatBanked90, SpritePrecision::Sprites4,
-          SpriteGroupType::InlineTwists, SpritePrecision::Sprites4, SpriteGroupType::SlopeInverted,
-          SpritePrecision::Sprites4 }, // TrackGroup::inlineTwistInverted
-        { SpriteGroupType::Slopes25, SpritePrecision::Sprites4, SpriteGroupType::Slopes60, SpritePrecision::Sprites4,
-          SpriteGroupType::Slopes75, SpritePrecision::Sprites4, SpriteGroupType::Slopes90,
-          SpritePrecision::Sprites4 }, // TrackGroup::quarterLoopUninvertedUp
-        { SpriteGroupType::Slopes25, SpritePrecision::Sprites4, SpriteGroupType::Slopes60, SpritePrecision::Sprites4,
-          SpriteGroupType::Slopes75, SpritePrecision::Sprites4, SpriteGroupType::Slopes90,
-          SpritePrecision::Sprites4 }, // TrackGroup::quarterLoopUninvertedDown
-        { SpriteGroupType::Slopes90, SpritePrecision::Sprites4, SpriteGroupType::SlopesLoop, SpritePrecision::Sprites4,
-          SpriteGroupType::SlopeInverted, SpritePrecision::Sprites4 }, // TrackGroup::quarterLoopInvertedUp
-        { SpriteGroupType::Slopes90, SpritePrecision::Sprites4, SpriteGroupType::SlopesLoop, SpritePrecision::Sprites4,
-          SpriteGroupType::SlopeInverted, SpritePrecision::Sprites4 }, // TrackGroup::quarterLoopInvertedDown
-        { SpriteGroupType::Slopes12, SpritePrecision::Sprites4 },      // TrackGroup::rapids
-        { SpriteGroupType::Slopes25, SpritePrecision::Sprites4, SpriteGroupType::Slopes60, SpritePrecision::Sprites4,
-          SpriteGroupType::Slopes75, SpritePrecision::Sprites4, SpriteGroupType::Slopes90,
-          SpritePrecision::Sprites4 }, // TrackGroup::flyingHalfLoopUninvertedUp
-        { SpriteGroupType::Slopes25, SpritePrecision::Sprites4, SpriteGroupType::Slopes60, SpritePrecision::Sprites4,
-          SpriteGroupType::Slopes75, SpritePrecision::Sprites4, SpriteGroupType::Slopes90, SpritePrecision::Sprites4,
-          SpriteGroupType::SlopesLoop, SpritePrecision::Sprites4, SpriteGroupType::SlopeInverted,
-          SpritePrecision::Sprites4 },                             // TrackGroup::flyingHalfLoopInvertedDown
+        { SpriteGroupType::SlopeFlat, SpritePrecision::none },     // TrackGroup::flat
+        { SpriteGroupType::SlopeFlat, SpritePrecision::sprites4 }, // TrackGroup::straight
+        { SpriteGroupType::SlopeFlat, SpritePrecision::sprites4 }, // TrackGroup::stationEnd
+        { SpriteGroupType::Slopes25, SpritePrecision::sprites4 },  // TrackGroup::liftHill
+        { SpriteGroupType::Slopes25, SpritePrecision::sprites4, SpriteGroupType::Slopes60,
+          SpritePrecision::sprites4 },                             // TrackGroup::liftHillSteep
+        { SpriteGroupType::Slopes25, SpritePrecision::sprites16 }, // TrackGroup::liftHillCurve
+        { SpriteGroupType::FlatBanked22, SpritePrecision::sprites4, SpriteGroupType::FlatBanked45,
+          SpritePrecision::sprites16 }, // TrackGroup::flatRollBanking
+        { SpriteGroupType::Slopes60, SpritePrecision::sprites4, SpriteGroupType::Slopes75, SpritePrecision::sprites4,
+          SpriteGroupType::Slopes90, SpritePrecision::sprites4, SpriteGroupType::SlopesLoop, SpritePrecision::sprites4,
+          SpriteGroupType::SlopeInverted, SpritePrecision::sprites4 }, // TrackGroup::verticalLoop
+        { SpriteGroupType::Slopes25, SpritePrecision::sprites4 },      // TrackGroup::slope
+        { SpriteGroupType::Slopes60, SpritePrecision::sprites4 },      // TrackGroup::slopeSteepDown
+        { SpriteGroupType::Slopes25, SpritePrecision::sprites4, SpriteGroupType::Slopes60,
+          SpritePrecision::sprites4 },                              // TrackGroup::flatToSteepSlope
+        { SpriteGroupType::Slopes25, SpritePrecision::sprites16 },  // TrackGroup::slopeCurve
+        { SpriteGroupType::Slopes60, SpritePrecision::sprites16 },  // TrackGroup::slopeCurveSteep
+        { SpriteGroupType::SlopeFlat, SpritePrecision::sprites16 }, // TrackGroup::sBend
+        { SpriteGroupType::SlopeFlat, SpritePrecision::sprites16 }, // TrackGroup::curveVerySmall
+        { SpriteGroupType::SlopeFlat, SpritePrecision::sprites16 }, // TrackGroup::curveSmall
+        { SpriteGroupType::SlopeFlat, SpritePrecision::sprites16 }, // TrackGroup::curve
+        { SpriteGroupType::SlopeFlat, SpritePrecision::sprites16 }, // TrackGroup::curveLarge
+        { SpriteGroupType::FlatBanked22, SpritePrecision::sprites4, SpriteGroupType::FlatBanked45, SpritePrecision::sprites4,
+          SpriteGroupType::FlatBanked67, SpritePrecision::sprites4, SpriteGroupType::FlatBanked90, SpritePrecision::sprites4,
+          SpriteGroupType::InlineTwists, SpritePrecision::sprites4, SpriteGroupType::SlopeInverted,
+          SpritePrecision::sprites4 }, // TrackGroup::twist
+        { SpriteGroupType::Slopes60, SpritePrecision::sprites4, SpriteGroupType::Slopes75, SpritePrecision::sprites4,
+          SpriteGroupType::Slopes90, SpritePrecision::sprites4, SpriteGroupType::SlopesLoop, SpritePrecision::sprites4,
+          SpriteGroupType::SlopeInverted, SpritePrecision::sprites4 }, // TrackGroup::halfLoop
+        { SpriteGroupType::Corkscrews, SpritePrecision::sprites4, SpriteGroupType::SlopeInverted,
+          SpritePrecision::sprites4 },                                 // TrackGroup::corkscrew
+        { SpriteGroupType::SlopeFlat, SpritePrecision::none },         // TrackGroup::tower
+        { SpriteGroupType::FlatBanked45, SpritePrecision::sprites16 }, // TrackGroup::helixUpBankedHalf
+        { SpriteGroupType::FlatBanked45, SpritePrecision::sprites16 }, // TrackGroup::helixDownBankedHalf
+        { SpriteGroupType::FlatBanked45, SpritePrecision::sprites16 }, // TrackGroup::helixUpBankedQuarter
+        { SpriteGroupType::FlatBanked45, SpritePrecision::sprites16 }, // TrackGroup::helixDownBankedQuarter
+        { SpriteGroupType::SlopeFlat, SpritePrecision::sprites16 },    // TrackGroup::helixUpUnbankedQuarter
+        { SpriteGroupType::SlopeFlat, SpritePrecision::sprites16 },    // TrackGroup::helixDownUnbankedQuarter
+        { SpriteGroupType::SlopeFlat, SpritePrecision::sprites4 },     // TrackGroup::brakes
+        { SpriteGroupType::SlopeFlat, SpritePrecision::sprites4 },     // TrackGroup::onridePhoto
+        { SpriteGroupType::SlopeFlat, SpritePrecision::sprites4, SpriteGroupType::Slopes12,
+          SpritePrecision::sprites4 }, // TrackGroup::waterSplash
+        { SpriteGroupType::Slopes75, SpritePrecision::sprites4, SpriteGroupType::Slopes90,
+          SpritePrecision::sprites4 }, // TrackGroup::slopeVertical
+        { SpriteGroupType::FlatBanked22, SpritePrecision::sprites4, SpriteGroupType::FlatBanked45, SpritePrecision::sprites4,
+          SpriteGroupType::InlineTwists, SpritePrecision::sprites4, SpriteGroupType::SlopeInverted,
+          SpritePrecision::sprites4 },                            // TrackGroup::barrelRoll
+        { SpriteGroupType::Slopes25, SpritePrecision::sprites4 }, // TrackGroup::poweredLift
+        { SpriteGroupType::Slopes60, SpritePrecision::sprites4, SpriteGroupType::Slopes75, SpritePrecision::sprites4,
+          SpriteGroupType::Slopes90, SpritePrecision::sprites4, SpriteGroupType::SlopesLoop, SpritePrecision::sprites4,
+          SpriteGroupType::SlopeInverted, SpritePrecision::sprites4 },     // TrackGroup::halfLoopLarge
+        { SpriteGroupType::Slopes12Banked22, SpritePrecision::sprites16 }, // TrackGroup::slopeCurveBanked
+        { SpriteGroupType::SlopeFlat, SpritePrecision::sprites16 },        // TrackGroup::logFlumeReverser
+        { SpriteGroupType::FlatBanked22, SpritePrecision::sprites4, SpriteGroupType::FlatBanked45, SpritePrecision::sprites4,
+          SpriteGroupType::InlineTwists, SpritePrecision::sprites4, SpriteGroupType::SlopeInverted,
+          SpritePrecision::sprites4 },                              // TrackGroup::heartlineRoll
+        { SpriteGroupType::SlopeFlat, SpritePrecision::sprites16 }, // TrackGroup::reverser
+        { SpriteGroupType::SlopeFlat, SpritePrecision::sprites4, SpriteGroupType::Slopes25, SpritePrecision::sprites4,
+          SpriteGroupType::Slopes60, SpritePrecision::sprites4, SpriteGroupType::Slopes75, SpritePrecision::sprites4,
+          SpriteGroupType::Slopes90, SpritePrecision::sprites4 }, // TrackGroup::reverseFreefall
+        { SpriteGroupType::SlopeFlat, SpritePrecision::sprites4, SpriteGroupType::Slopes25, SpritePrecision::sprites4,
+          SpriteGroupType::Slopes60, SpritePrecision::sprites4, SpriteGroupType::Slopes75, SpritePrecision::sprites4,
+          SpriteGroupType::Slopes90, SpritePrecision::sprites4 },         // TrackGroup::slopeToFlat
+        { SpriteGroupType::SlopeFlat, SpritePrecision::sprites4 },        // TrackGroup::blockBrakes
+        { SpriteGroupType::Slopes25Banked22, SpritePrecision::sprites4 }, // TrackGroup::slopeRollBanking
+        { SpriteGroupType::Slopes25, SpritePrecision::sprites4, SpriteGroupType::Slopes60,
+          SpritePrecision::sprites4 },                             // TrackGroup::slopeSteepLong
+        { SpriteGroupType::Slopes90, SpritePrecision::sprites16 }, // TrackGroup::curveVertical
+        { SpriteGroupType::Slopes25, SpritePrecision::sprites4, SpriteGroupType::Slopes60,
+          SpritePrecision::sprites4 },                                     // TrackGroup::liftHillCable
+        { SpriteGroupType::CurvedLiftHillUp, SpritePrecision::sprites16 }, // TrackGroup::liftHillCurved
+        { SpriteGroupType::Slopes90, SpritePrecision::sprites4, SpriteGroupType::SlopesLoop, SpritePrecision::sprites4,
+          SpriteGroupType::SlopeInverted, SpritePrecision::sprites4 }, // TrackGroup::quarterLoop
+        { SpriteGroupType::SlopeFlat, SpritePrecision::sprites4 },     // TrackGroup::spinningTunnel
+        { SpriteGroupType::SlopeFlat, SpritePrecision::sprites4 },     // TrackGroup::booster
+        { SpriteGroupType::FlatBanked22, SpritePrecision::sprites4, SpriteGroupType::FlatBanked45, SpritePrecision::sprites4,
+          SpriteGroupType::FlatBanked67, SpritePrecision::sprites4, SpriteGroupType::FlatBanked90, SpritePrecision::sprites4,
+          SpriteGroupType::InlineTwists, SpritePrecision::sprites4, SpriteGroupType::SlopeInverted,
+          SpritePrecision::sprites4 }, // TrackGroup::inlineTwistUninverted
+        { SpriteGroupType::FlatBanked22, SpritePrecision::sprites4, SpriteGroupType::FlatBanked45, SpritePrecision::sprites4,
+          SpriteGroupType::FlatBanked67, SpritePrecision::sprites4, SpriteGroupType::FlatBanked90, SpritePrecision::sprites4,
+          SpriteGroupType::InlineTwists, SpritePrecision::sprites4, SpriteGroupType::SlopeInverted,
+          SpritePrecision::sprites4 }, // TrackGroup::inlineTwistInverted
+        { SpriteGroupType::Slopes25, SpritePrecision::sprites4, SpriteGroupType::Slopes60, SpritePrecision::sprites4,
+          SpriteGroupType::Slopes75, SpritePrecision::sprites4, SpriteGroupType::Slopes90,
+          SpritePrecision::sprites4 }, // TrackGroup::quarterLoopUninvertedUp
+        { SpriteGroupType::Slopes25, SpritePrecision::sprites4, SpriteGroupType::Slopes60, SpritePrecision::sprites4,
+          SpriteGroupType::Slopes75, SpritePrecision::sprites4, SpriteGroupType::Slopes90,
+          SpritePrecision::sprites4 }, // TrackGroup::quarterLoopUninvertedDown
+        { SpriteGroupType::Slopes90, SpritePrecision::sprites4, SpriteGroupType::SlopesLoop, SpritePrecision::sprites4,
+          SpriteGroupType::SlopeInverted, SpritePrecision::sprites4 }, // TrackGroup::quarterLoopInvertedUp
+        { SpriteGroupType::Slopes90, SpritePrecision::sprites4, SpriteGroupType::SlopesLoop, SpritePrecision::sprites4,
+          SpriteGroupType::SlopeInverted, SpritePrecision::sprites4 }, // TrackGroup::quarterLoopInvertedDown
+        { SpriteGroupType::Slopes12, SpritePrecision::sprites4 },      // TrackGroup::rapids
+        { SpriteGroupType::Slopes25, SpritePrecision::sprites4, SpriteGroupType::Slopes60, SpritePrecision::sprites4,
+          SpriteGroupType::Slopes75, SpritePrecision::sprites4, SpriteGroupType::Slopes90,
+          SpritePrecision::sprites4 }, // TrackGroup::flyingHalfLoopUninvertedUp
+        { SpriteGroupType::Slopes25, SpritePrecision::sprites4, SpriteGroupType::Slopes60, SpritePrecision::sprites4,
+          SpriteGroupType::Slopes75, SpritePrecision::sprites4, SpriteGroupType::Slopes90, SpritePrecision::sprites4,
+          SpriteGroupType::SlopesLoop, SpritePrecision::sprites4, SpriteGroupType::SlopeInverted,
+          SpritePrecision::sprites4 },                             // TrackGroup::flyingHalfLoopInvertedDown
         {},                                                        // TrackGroup::flatRideBase
-        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites4 }, // TrackGroup::waterfall
-        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites4 }, // TrackGroup::whirlpool
-        { SpriteGroupType::Slopes25, SpritePrecision::Sprites4, SpriteGroupType::Slopes60,
-          SpritePrecision::Sprites4 }, // TrackGroup::brakeForDrop
-        { SpriteGroupType::Corkscrews, SpritePrecision::Sprites4, SpriteGroupType::SlopeInverted,
-          SpritePrecision::Sprites4 }, // TrackGroup::corkscrewUninverted
-        { SpriteGroupType::Corkscrews, SpritePrecision::Sprites4, SpriteGroupType::SlopeInverted,
-          SpritePrecision::Sprites4 }, // TrackGroup::corkscrewInverted
-        { SpriteGroupType::Slopes12, SpritePrecision::Sprites4, SpriteGroupType::Slopes25,
-          SpritePrecision::Sprites4 },                             // TrackGroup::heartlineTransfer
+        { SpriteGroupType::SlopeFlat, SpritePrecision::sprites4 }, // TrackGroup::waterfall
+        { SpriteGroupType::SlopeFlat, SpritePrecision::sprites4 }, // TrackGroup::whirlpool
+        { SpriteGroupType::Slopes25, SpritePrecision::sprites4, SpriteGroupType::Slopes60,
+          SpritePrecision::sprites4 }, // TrackGroup::brakeForDrop
+        { SpriteGroupType::Corkscrews, SpritePrecision::sprites4, SpriteGroupType::SlopeInverted,
+          SpritePrecision::sprites4 }, // TrackGroup::corkscrewUninverted
+        { SpriteGroupType::Corkscrews, SpritePrecision::sprites4, SpriteGroupType::SlopeInverted,
+          SpritePrecision::sprites4 }, // TrackGroup::corkscrewInverted
+        { SpriteGroupType::Slopes12, SpritePrecision::sprites4, SpriteGroupType::Slopes25,
+          SpritePrecision::sprites4 },                             // TrackGroup::heartlineTransfer
         {},                                                        // TrackGroup::miniGolfHole
-        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites4 }, // TrackGroup::rotationControlToggle
-        { SpriteGroupType::Slopes60, SpritePrecision::Sprites4 },  // TrackGroup::slopeSteepUp
-        { SpriteGroupType::Corkscrews, SpritePrecision::Sprites4, SpriteGroupType::SlopeInverted,
-          SpritePrecision::Sprites4 }, // TrackGroup::corkscrewLarge
-        { SpriteGroupType::Slopes60, SpritePrecision::Sprites4, SpriteGroupType::Slopes75, SpritePrecision::Sprites4,
-          SpriteGroupType::Slopes90, SpritePrecision::Sprites4, SpriteGroupType::SlopesLoop, SpritePrecision::Sprites4,
-          SpriteGroupType::SlopeInverted, SpritePrecision::Sprites4 }, // TrackGroup::halfLoopMedium
-        { SpriteGroupType::Slopes25, SpritePrecision::Sprites4, SpriteGroupType::Slopes12Banked22, SpritePrecision::Sprites4,
-          SpriteGroupType::Slopes25Banked22, SpritePrecision::Sprites4, SpriteGroupType::Slopes25Banked45,
-          SpritePrecision::Sprites4, SpriteGroupType::InlineTwists, SpritePrecision::Sprites4, SpriteGroupType::SlopeInverted,
-          SpritePrecision::Sprites4 }, // TrackGroup::zeroGRoll
-        { SpriteGroupType::Slopes42Banked22, SpritePrecision::Sprites4, SpriteGroupType::Slopes42Banked45,
-          SpritePrecision::Sprites4, SpriteGroupType::Slopes42Banked67, SpritePrecision::Sprites4,
-          SpriteGroupType::Slopes42Banked90, SpritePrecision::Sprites4, SpriteGroupType::Slopes60Banked22,
-          SpritePrecision::Sprites4 }, // TrackGroup::zeroGRollLarge
-        { SpriteGroupType::Slopes25, SpritePrecision::Sprites4, SpriteGroupType::Slopes60, SpritePrecision::Sprites4,
-          SpriteGroupType::Slopes75, SpritePrecision::Sprites4, SpriteGroupType::Slopes90,
-          SpritePrecision::Sprites4 }, // TrackGroup::flyingLargeHalfLoopUninvertedUp
-        { SpriteGroupType::Slopes25, SpritePrecision::Sprites4, SpriteGroupType::Slopes60, SpritePrecision::Sprites4,
-          SpriteGroupType::Slopes75, SpritePrecision::Sprites4, SpriteGroupType::Slopes90, SpritePrecision::Sprites4,
-          SpriteGroupType::SlopesLoop, SpritePrecision::Sprites4, SpriteGroupType::SlopeInverted,
-          SpritePrecision::Sprites4 }, // TrackGroup::flyingLargeHalfLoopInvertedDown
-        { SpriteGroupType::Slopes25, SpritePrecision::Sprites4, SpriteGroupType::Slopes60, SpritePrecision::Sprites4,
-          SpriteGroupType::Slopes75, SpritePrecision::Sprites4, SpriteGroupType::Slopes90, SpritePrecision::Sprites4,
-          SpriteGroupType::SlopesLoop, SpritePrecision::Sprites4, SpriteGroupType::SlopeInverted,
-          SpritePrecision::Sprites4 }, // TrackGroup::flyingLargeHalfLoopUninvertedDown
-        { SpriteGroupType::Slopes25, SpritePrecision::Sprites4, SpriteGroupType::Slopes60, SpritePrecision::Sprites4,
-          SpriteGroupType::Slopes75, SpritePrecision::Sprites4, SpriteGroupType::Slopes90,
-          SpritePrecision::Sprites4 }, // TrackGroup::flyingLargeHalfLoopInvertedUp
-        { SpriteGroupType::Slopes25, SpritePrecision::Sprites4, SpriteGroupType::Slopes60, SpritePrecision::Sprites4,
-          SpriteGroupType::Slopes75, SpritePrecision::Sprites4, SpriteGroupType::Slopes90,
-          SpritePrecision::Sprites4 }, // TrackGroup::flyingHalfLoopInvertedUp
-        { SpriteGroupType::Slopes25, SpritePrecision::Sprites4, SpriteGroupType::Slopes60, SpritePrecision::Sprites4,
-          SpriteGroupType::Slopes75, SpritePrecision::Sprites4, SpriteGroupType::Slopes90,
-          SpritePrecision::Sprites4 },                                     // TrackGroup::flyingHalfLoopUninvertedDown
-        { SpriteGroupType::Slopes25, SpritePrecision::Sprites16 },         // TrackGroup::slopeCurveLarge
-        { SpriteGroupType::Slopes25Banked45, SpritePrecision::Sprites16 }, // TrackGroup::slopeCurveLargeBanked
-        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites8 },         // TrackGroup::diagBrakes
-        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites8 },         // TrackGroup::diagBlockBrakes
-        { SpriteGroupType::Slopes25, SpritePrecision::Sprites8 },          // TrackGroup::inclinedBrakes
-        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites8 },         // TrackGroup::diagBooster
-        { SpriteGroupType::Slopes8, SpritePrecision::Sprites4, SpriteGroupType::Slopes16, SpritePrecision::Sprites4,
-          SpriteGroupType::Slopes25, SpritePrecision::Sprites8, SpriteGroupType::Slopes42, SpritePrecision::Sprites8,
-          SpriteGroupType::Slopes50, SpritePrecision::Sprites4 }, // TrackGroup::slopeSteepLong
-        { SpriteGroupType::Slopes50, SpritePrecision::Sprites4, SpriteGroupType::Slopes60Banked22, SpritePrecision::Sprites8,
-          SpriteGroupType::Slopes50Banked45, SpritePrecision::Sprites8, SpriteGroupType::Slopes50Banked67,
-          SpritePrecision::Sprites8, SpriteGroupType::Slopes50Banked90, SpritePrecision::Sprites8, SpriteGroupType::Corkscrews,
-          SpritePrecision::Sprites4, SpriteGroupType::Slopes25InlineTwists, SpritePrecision::Sprites4,
-          SpriteGroupType::SlopesLoop, SpritePrecision::Sprites4, SpriteGroupType::SlopeInverted,
-          SpritePrecision::Sprites4 }, // TrackGroup::diveLoop
-        { SpriteGroupType::Slopes8, SpritePrecision::Sprites4, SpriteGroupType::Slopes16,
-          SpritePrecision::Sprites4 }, // TrackGroup::diagSlope
-        { SpriteGroupType::Slopes25, SpritePrecision::Sprites8, SpriteGroupType::Slopes42, SpritePrecision::Sprites8,
-          SpriteGroupType::Slopes50, SpritePrecision::Sprites4 }, // TrackGroup::diagSlopeSteepUp
-        { SpriteGroupType::Slopes25, SpritePrecision::Sprites8, SpriteGroupType::Slopes42, SpritePrecision::Sprites8,
-          SpriteGroupType::Slopes50, SpritePrecision::Sprites4 }, // TrackGroup::diagSlopeSteepDown
+        { SpriteGroupType::SlopeFlat, SpritePrecision::sprites4 }, // TrackGroup::rotationControlToggle
+        { SpriteGroupType::Slopes60, SpritePrecision::sprites4 },  // TrackGroup::slopeSteepUp
+        { SpriteGroupType::Corkscrews, SpritePrecision::sprites4, SpriteGroupType::SlopeInverted,
+          SpritePrecision::sprites4 }, // TrackGroup::corkscrewLarge
+        { SpriteGroupType::Slopes60, SpritePrecision::sprites4, SpriteGroupType::Slopes75, SpritePrecision::sprites4,
+          SpriteGroupType::Slopes90, SpritePrecision::sprites4, SpriteGroupType::SlopesLoop, SpritePrecision::sprites4,
+          SpriteGroupType::SlopeInverted, SpritePrecision::sprites4 }, // TrackGroup::halfLoopMedium
+        { SpriteGroupType::Slopes25, SpritePrecision::sprites4, SpriteGroupType::Slopes12Banked22, SpritePrecision::sprites4,
+          SpriteGroupType::Slopes25Banked22, SpritePrecision::sprites4, SpriteGroupType::Slopes25Banked45,
+          SpritePrecision::sprites4, SpriteGroupType::InlineTwists, SpritePrecision::sprites4, SpriteGroupType::SlopeInverted,
+          SpritePrecision::sprites4 }, // TrackGroup::zeroGRoll
+        { SpriteGroupType::Slopes42Banked22, SpritePrecision::sprites4, SpriteGroupType::Slopes42Banked45,
+          SpritePrecision::sprites4, SpriteGroupType::Slopes42Banked67, SpritePrecision::sprites4,
+          SpriteGroupType::Slopes42Banked90, SpritePrecision::sprites4, SpriteGroupType::Slopes60Banked22,
+          SpritePrecision::sprites4 }, // TrackGroup::zeroGRollLarge
+        { SpriteGroupType::Slopes25, SpritePrecision::sprites4, SpriteGroupType::Slopes60, SpritePrecision::sprites4,
+          SpriteGroupType::Slopes75, SpritePrecision::sprites4, SpriteGroupType::Slopes90,
+          SpritePrecision::sprites4 }, // TrackGroup::flyingLargeHalfLoopUninvertedUp
+        { SpriteGroupType::Slopes25, SpritePrecision::sprites4, SpriteGroupType::Slopes60, SpritePrecision::sprites4,
+          SpriteGroupType::Slopes75, SpritePrecision::sprites4, SpriteGroupType::Slopes90, SpritePrecision::sprites4,
+          SpriteGroupType::SlopesLoop, SpritePrecision::sprites4, SpriteGroupType::SlopeInverted,
+          SpritePrecision::sprites4 }, // TrackGroup::flyingLargeHalfLoopInvertedDown
+        { SpriteGroupType::Slopes25, SpritePrecision::sprites4, SpriteGroupType::Slopes60, SpritePrecision::sprites4,
+          SpriteGroupType::Slopes75, SpritePrecision::sprites4, SpriteGroupType::Slopes90, SpritePrecision::sprites4,
+          SpriteGroupType::SlopesLoop, SpritePrecision::sprites4, SpriteGroupType::SlopeInverted,
+          SpritePrecision::sprites4 }, // TrackGroup::flyingLargeHalfLoopUninvertedDown
+        { SpriteGroupType::Slopes25, SpritePrecision::sprites4, SpriteGroupType::Slopes60, SpritePrecision::sprites4,
+          SpriteGroupType::Slopes75, SpritePrecision::sprites4, SpriteGroupType::Slopes90,
+          SpritePrecision::sprites4 }, // TrackGroup::flyingLargeHalfLoopInvertedUp
+        { SpriteGroupType::Slopes25, SpritePrecision::sprites4, SpriteGroupType::Slopes60, SpritePrecision::sprites4,
+          SpriteGroupType::Slopes75, SpritePrecision::sprites4, SpriteGroupType::Slopes90,
+          SpritePrecision::sprites4 }, // TrackGroup::flyingHalfLoopInvertedUp
+        { SpriteGroupType::Slopes25, SpritePrecision::sprites4, SpriteGroupType::Slopes60, SpritePrecision::sprites4,
+          SpriteGroupType::Slopes75, SpritePrecision::sprites4, SpriteGroupType::Slopes90,
+          SpritePrecision::sprites4 },                                     // TrackGroup::flyingHalfLoopUninvertedDown
+        { SpriteGroupType::Slopes25, SpritePrecision::sprites16 },         // TrackGroup::slopeCurveLarge
+        { SpriteGroupType::Slopes25Banked45, SpritePrecision::sprites16 }, // TrackGroup::slopeCurveLargeBanked
+        { SpriteGroupType::SlopeFlat, SpritePrecision::sprites8 },         // TrackGroup::diagBrakes
+        { SpriteGroupType::SlopeFlat, SpritePrecision::sprites8 },         // TrackGroup::diagBlockBrakes
+        { SpriteGroupType::Slopes25, SpritePrecision::sprites8 },          // TrackGroup::inclinedBrakes
+        { SpriteGroupType::SlopeFlat, SpritePrecision::sprites8 },         // TrackGroup::diagBooster
+        { SpriteGroupType::Slopes8, SpritePrecision::sprites4, SpriteGroupType::Slopes16, SpritePrecision::sprites4,
+          SpriteGroupType::Slopes25, SpritePrecision::sprites8, SpriteGroupType::Slopes42, SpritePrecision::sprites8,
+          SpriteGroupType::Slopes50, SpritePrecision::sprites4 }, // TrackGroup::slopeSteepLong
+        { SpriteGroupType::Slopes50, SpritePrecision::sprites4, SpriteGroupType::Slopes60Banked22, SpritePrecision::sprites8,
+          SpriteGroupType::Slopes50Banked45, SpritePrecision::sprites8, SpriteGroupType::Slopes50Banked67,
+          SpritePrecision::sprites8, SpriteGroupType::Slopes50Banked90, SpritePrecision::sprites8, SpriteGroupType::Corkscrews,
+          SpritePrecision::sprites4, SpriteGroupType::Slopes25InlineTwists, SpritePrecision::sprites4,
+          SpriteGroupType::SlopesLoop, SpritePrecision::sprites4, SpriteGroupType::SlopeInverted,
+          SpritePrecision::sprites4 }, // TrackGroup::diveLoop
+        { SpriteGroupType::Slopes8, SpritePrecision::sprites4, SpriteGroupType::Slopes16,
+          SpritePrecision::sprites4 }, // TrackGroup::diagSlope
+        { SpriteGroupType::Slopes25, SpritePrecision::sprites8, SpriteGroupType::Slopes42, SpritePrecision::sprites8,
+          SpriteGroupType::Slopes50, SpritePrecision::sprites4 }, // TrackGroup::diagSlopeSteepUp
+        { SpriteGroupType::Slopes25, SpritePrecision::sprites8, SpriteGroupType::Slopes42, SpritePrecision::sprites8,
+          SpriteGroupType::Slopes50, SpritePrecision::sprites4 }, // TrackGroup::diagSlopeSteepDown
     };
 
     static_assert(std::size(trackPieceRequiredSprites) == EnumValue(TrackGroup::count));
