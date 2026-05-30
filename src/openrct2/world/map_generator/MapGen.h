@@ -18,6 +18,9 @@ namespace OpenRCT2::World::MapGenerator
         blank,
         simplexNoise,
         heightmapImage,
+#ifdef ENABLE_SCRIPTING
+        plugin,
+#endif
     };
 
     struct Settings
